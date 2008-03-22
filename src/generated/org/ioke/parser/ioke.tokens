@@ -1,3 +1,9 @@
-Whitespace=5
-Tokens=6
-Separator=4
+Digits=11
+Digit=5
+IdentChars=6
+Tokens=12
+Whitespace=10
+Letter=4
+Identifier=7
+Separator=9
+PossibleTerminator=8

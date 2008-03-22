@@ -35,8 +35,8 @@
     <mkdir dir="${src.generated.parser.dir}"/>
     <mkdir dir="${src.dir}"/>
 
-    <uptodate property="grammar.lexer.notUpdated" targetfile="${src.generated.lexer.dir}/iokeLexer.java" srcfile="${antlr.lexer.dir}/${antlr.lexer.file}"/>
-    <uptodate property="grammar.parser.notUpdated" targetfile="${src.generated.parser.dir}/iokeParser.java" srcfile="${antlr.parser.dir}/${antlr.parser.file}"/>
+    <uptodate property="grammar.lexer.notUpdated" targetfile="${src.generated.dir}/iokeLexer.java" srcfile="${antlr.lexer.dir}/${antlr.lexer.file}"/>
+    <uptodate property="grammar.parser.notUpdated" targetfile="${src.generated.dir}/iokeParser.java" srcfile="${antlr.parser.dir}/${antlr.parser.file}"/>
   </target>
 
   <target name="generate.lexer" depends="prepare" description="Generates source files from the ANTLR definitions" unless="grammar.lexer.notUpdated">
@@ -76,18 +76,11 @@
 
   <taskdef name="junit" classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask"/> 
   <target name="test" depends="compile-tests" description="Runs all tests">
-<!--
     <junit haltonfailure="true" showoutput="true" > 
       <classpath refid="test.classpath"/> 
       <formatter type="brief" usefile="false" /> 
-      <test name="org.sciom.parser.LexerTest"/> 
-      <test name="org.sciom.parser.ParserTest"/> 
-      <test name="org.sciom.SequenceTest"/> 
-      <test name="org.sciom.MessageTest"/> 
-      <test name="org.sciom.PrimitivesTest"/> 
-      <test name="org.sciom.StateTest"/> 
+      <test name="org.ioke.parser.LexerSpecTest"/> 
     </junit>
--->
   </target>
 
   <target name="jar" depends="test" description="Create the ioke.jar file">

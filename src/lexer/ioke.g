@@ -23,6 +23,10 @@ import java.util.ArrayList;
         return new iokeLexer(new ANTLRReaderStream(input));
     }
 
+    public static List<Token> getTokens(String input) throws Exception {
+        return getTokens(getLexerFor(input));
+    }
+
     public static List<Token> getTokens(Reader reader) throws Exception {
         return getTokens(getLexerFor(reader));
     }
@@ -51,13 +55,32 @@ import java.util.ArrayList;
     
     public final static String tokenToName(int token) {
         switch(token) {
+        case Identifier: return "Identifier";
+        case Whitespace: return "Whitespace";
+        case PossibleTerminator: return "PossibleTerminator";
         case EOF: return "EOF";
         default: return "UNKNOWN TOKEN(" + token + ")";
         }
     }
 }
 
+Identifier : ((Letter | Digit | IdentChars))* 
+    | '=';
+PossibleTerminator : ';';
 Whitespace : Separator {skip();};
 
 fragment
+Letter : 'a' .. 'z' | 'A' .. 'Z' ;
+
+fragment
+Digit : '0'..'9' ;
+
+fragment
+Digits : Digit+ ;
+
+fragment
 Separator : (' ' | '\u000c' | '\u0009' | '\u000b' | '\\' '\u000a' )* ;
+
+fragment
+IdentChars : ('!' | '?' | '@' | '&' | '%' | '.' | '|' | '<' | '>' | '/' | '+' | '-' | '_' | ':' | '\\' | '*' | '^' | '~' | '`' | '\'') ;
+

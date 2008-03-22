@@ -3,7 +3,7 @@ The syntax of ioke should be quite similar to Io, with these differences:
 
 (this includes information about semantics too)
 
-- (), [] and {} should match up (lexer)
+- (), [] and {} should match up (parser)
 - these calls should create a synthetic message (parser)
 - )= should backpatch an assignment call (parser)
 - ]= and }= should backpatch the squareBracket, curlyBracket call into squareBracketAssign, curlyBracketAssign (parser)
@@ -15,7 +15,7 @@ The syntax of ioke should be quite similar to Io, with these differences:
   - symbolic   (lexer)
 
    - with_alpha can not include '='   (lexer)
-    - no identifiers can include (), [], {} or ,   (lexer)
+    - no identifiers can include (), [], {}, ; or ,   (lexer)
 
 - () with no message immediately before should insert an empty, synthetic message (parser)
 
