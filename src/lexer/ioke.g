@@ -64,10 +64,29 @@ import java.util.ArrayList;
     }
 }
 
+OpenSimple : '(' ;
+CloseSimple : ')' ;
+OpenSquare : '[' ;
+CloseSquare : ']' ;
+OpenCurly : '{' ;
+CloseCurly : '}' ;
+
+Comma : (',' NewLine*) {setText(",");};
+
 Identifier : ((Letter | Digit | IdentChars))* 
-    | '=';
-PossibleTerminator : ';';
+    | '=' 
+    | '==' 
+    | '==='
+    | '===='
+    | ('+' | '++' | '-' | '--' | '/' | '//' | '*' | '**' | '%' | '%%' | '^' | '^^' | '<' | '>' | '<<' | '>>' | '&' | '&&' | '|' | '||' | '~' | '~~' | '!' | '!!') '=';
+
+PossibleTerminator : ((';' | NewLine)+) {setText(";");};
+
 Whitespace : Separator {skip();};
+
+
+
+
 
 fragment
 Letter : 'a' .. 'z' | 'A' .. 'Z' ;
@@ -84,3 +103,5 @@ Separator : (' ' | '\u000c' | '\u0009' | '\u000b' | '\\' '\u000a' )* ;
 fragment
 IdentChars : ('!' | '?' | '@' | '&' | '%' | '.' | '|' | '<' | '>' | '/' | '+' | '-' | '_' | ':' | '\\' | '*' | '^' | '~' | '`' | '\'') ;
 
+fragment
+NewLine : ('\u000a' | '\u000d') ;

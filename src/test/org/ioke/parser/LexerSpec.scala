@@ -16,6 +16,14 @@ object LexerSpec extends Specification {
   def ident(name: String) = Tok(iokeLexer.Identifier, name)
   def term() = Tok(iokeLexer.PossibleTerminator, ";")
 
+  def openSimple() = Tok(iokeLexer.OpenSimple, "(")
+  def closeSimple() = Tok(iokeLexer.CloseSimple, ")")
+  def openSquare() = Tok(iokeLexer.OpenSquare, "[")
+  def closeSquare() = Tok(iokeLexer.CloseSquare, "]")
+  def openCurly() = Tok(iokeLexer.OpenCurly, "{")
+  def closeCurly() = Tok(iokeLexer.CloseCurly, "}")
+  def comma() = Tok(iokeLexer.Comma, ",")
+
   def tokens(tokens: Tok*) : ArrayList[Tok] = {
     val list = new ArrayList[Tok]()
     for(v <- tokens) 
@@ -78,8 +86,169 @@ object LexerSpec extends Specification {
         ident("bar")
       ))
     }
-    "handle lexings of symbol identifiers" in {}
-    "handle lexings of argument lists" in {}
+
+    "handle lexings of symbol identifiers" in {
+      lex("=") must be_==(tokens(
+        ident("=") 
+      ))
+
+      lex("=;=") must be_==(tokens(
+        ident("="),
+        term,
+        ident("=")
+      ))
+
+      lex("==") must be_==(tokens(
+        ident("==") 
+      ))
+
+      lex("===") must be_==(tokens(
+        ident("===") 
+      ))
+
+      lex("====") must be_==(tokens(
+        ident("====") 
+      ))
+
+      lex("=====") must be_==(tokens(
+        ident("===="),
+        ident("=")
+      ))
+
+      lex("+=") must be_==(tokens(
+        ident("+=") 
+      ))
+
+      lex("-=") must be_==(tokens(
+        ident("-=") 
+      ))
+
+      lex("/=") must be_==(tokens(
+        ident("/=") 
+      ))
+
+      lex("*=") must be_==(tokens(
+        ident("*=") 
+      ))
+
+      lex("++=") must be_==(tokens(
+        ident("++=") 
+      ))
+
+      lex("--=") must be_==(tokens(
+        ident("--=") 
+      ))
+
+      lex("//=") must be_==(tokens(
+        ident("//=") 
+      ))
+
+      lex("**=") must be_==(tokens(
+        ident("**=") 
+      ))
+
+      lex("~=") must be_==(tokens(
+        ident("~=") 
+      ))
+
+      lex("~~=") must be_==(tokens(
+        ident("~~=") 
+      ))
+
+      lex("<=") must be_==(tokens(
+        ident("<=") 
+      ))
+
+      lex(">=") must be_==(tokens(
+        ident(">=") 
+      ))
+
+      lex("<<=") must be_==(tokens(
+        ident("<<=") 
+      ))
+
+      lex(">>=") must be_==(tokens(
+        ident(">>=") 
+      ))
+
+      lex("&=") must be_==(tokens(
+        ident("&=") 
+      ))
+
+      lex("&&=") must be_==(tokens(
+        ident("&&=") 
+      ))
+
+      lex("|=") must be_==(tokens(
+        ident("|=") 
+      ))
+
+      lex("||=") must be_==(tokens(
+        ident("||=") 
+      ))
+
+      lex("%=") must be_==(tokens(
+        ident("%=") 
+      ))
+
+      lex("%%=") must be_==(tokens(
+        ident("%%=") 
+      ))
+
+      lex("^=") must be_==(tokens(
+        ident("^=") 
+      ))
+
+      lex("^^=") must be_==(tokens(
+        ident("^^=") 
+      ))
+
+      lex("!=") must be_==(tokens(
+        ident("!=") 
+      ))
+
+      lex("!!=") must be_==(tokens(
+        ident("!!=") 
+      ))
+    }
+
+    "handle lexings of argument lists" in {
+      lex("foo()") must be_==(tokens(
+        ident("foo"),
+        openSimple,
+        closeSimple
+      ))
+
+      lex("foo[]") must be_==(tokens(
+        ident("foo"),
+        openSquare,
+        closeSquare
+      ))
+
+      lex("foo{}") must be_==(tokens(
+        ident("foo"),
+        openCurly,
+        closeCurly
+      ))
+
+      lex("foo(abc)") must be_==(tokens(
+        ident("foo"),
+        openSimple,
+        ident("abc"),
+        closeSimple
+      ))
+
+      lex("foo(qux,bar)") must be_==(tokens(
+        ident("foo"),
+        openSimple,
+        ident("qux"),
+        comma,
+        ident("bar"),
+        closeSimple
+      ))
+
+    }
+
     "handle lexings of brackets" in {}
     "handle lexings of numbers" in {}
     "handle lexings of hex numbers" in {}
@@ -87,5 +256,19 @@ object LexerSpec extends Specification {
     "handle lexings of strings" in {}
     "handle lexings of comments" in {}
     "handle lexings of tri-strings" in {}
+
+    "handle terminations correctly" in {
+      lex("foo\nbar") must be_==(tokens(
+        ident("foo"),
+        term,
+        ident("bar")
+      ))
+
+      lex("foo,\nbar") must be_==(tokens(
+        ident("foo"),
+        comma,
+        ident("bar")
+      ))
+    }
   }
 }
