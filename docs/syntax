@@ -1,0 +1,34 @@
+The syntax of ioke should be quite similar to Io, with these differences:
+-------------------------------------------------------------------------
+
+(this includes information about semantics too)
+
+- (), [] and {} should match up (lexer)
+- these calls should create a synthetic message (parser)
+- )= should backpatch an assignment call (parser)
+- ]= and }= should backpatch the squareBracket, curlyBracket call into squareBracketAssign, curlyBracketAssign (parser)
+
+- Number should be divided into Real and Integer (lexer)
+
+- There are two kinds of identifiers:   (lexer)
+  - with_alpha   (lexer)
+  - symbolic   (lexer)
+
+   - with_alpha can not include '='   (lexer)
+    - no identifiers can include (), [], {} or ,   (lexer)
+
+- () with no message immediately before should insert an empty, synthetic message (parser)
+
+- Termination should only happen when ; or newline happens but it didn't end with a comma. (parser? have MaybeTermination token?)
+
+Parser will generally just do the modifications to the tree, and then emit a message with next pointers
+The ';' message have special meaning
+The parser sets up message lists in argument lists too
+
+
+
+
+
+
+
+later on insert syntactic sugar for other stuff
