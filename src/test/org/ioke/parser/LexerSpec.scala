@@ -17,8 +17,8 @@ object LexerSpec extends Specification {
   def integer(value: String) = Tok(iokeLexer.Integer, value)
   def hexInteger(value: String) = Tok(iokeLexer.HexInteger, value)
   def real(value: String) = Tok(iokeLexer.Real, value)
-  def string(value: String) = Tok(-2, value)
-  def triString(value: String) = Tok(-3, value) 
+  def string(value: String) = Tok(iokeLexer.SimpleString, value)
+  def multiString(value: String) = Tok(iokeLexer.MultiString, value) 
   def regexp(value: String) = Tok(-4, value)
   def assgnOp(value: String) = Tok(iokeLexer.AssignmentOperator, value)
   def unaryOp(value: String) = Tok(iokeLexer.UnaryOperator, value)
@@ -694,30 +694,57 @@ object LexerSpec extends Specification {
       ))
     }
 
-//     "handle lexings of strings" in {
-//       lex("\"\"") must be_==(tokens(
-//         string("\"\"")
-//       ))
+    "handle lexings of strings" in {
+      lex("\"\"") must be_==(tokens(
+        string("\"\"")
+      ))
 
-//       lex("\"a\"") must be_==(tokens(
-//         string("\"a\"")
-//       ))
+      lex("\"a\"") must be_==(tokens(
+        string("\"a\"")
+      ))
 
-//       // TODO: more tests
-//     }
+      lex("\"foo bar {# haha bdfbsdf!€€#Q&€%&€%&1234234657809=?123245 #}\"") must be_==(tokens(
+        string("\"foo bar {# haha bdfbsdf!€€#Q&€%&€%&1234234657809=?123245 #}\"")
+      ))
 
-//     // actually, maybe not make this tri-strings. Maybe just go with %{} and %[] from Ruby...
-//     "handle lexings of tri-strings" in {
-//       lex("\"\"\"\"\"\"") must be_==(tokens(
-//         triString("\"\"\"\"\"\"")
-//       ))
+      lex("\"\\\"\"") must be_==(tokens(
+        string("\"\\\"\"")
+      ))
 
-//       lex("\"\"\"a\"\"\"") must be_==(tokens(
-//         triString("\"\"\"a\"\"\"")
-//       ))
+      lex("\"\\n\"") must be_==(tokens(
+        string("\"\\n\"")
+      ))
 
-//       // TODO: more tests
-//     }
+      lex("\"\\\\\"") must be_==(tokens(
+        string("\"\\\\\"")
+      ))
+
+      lex("\"\n\"") must be_==(tokens(
+        string("\"\n\"")
+      ))
+    }
+
+    "handle lexings of multi-strings" in {
+      lex("%{}") must be_==(tokens(
+        multiString("%{}")
+      ))
+
+      lex("%[]") must be_==(tokens(
+        multiString("%[]")
+      ))
+
+      lex("%{\"}") must be_==(tokens(
+        multiString("%{\"}")
+      ))
+
+      lex("%[\"]") must be_==(tokens(
+        multiString("%[\"]")
+      ))
+
+      lex("%[\n]") must be_==(tokens(
+        multiString("%[\n]")
+      ))
+    }
 
 //     "handle lexings of regexp" in {
 //       lex("//") must be_==(tokens(

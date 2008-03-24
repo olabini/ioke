@@ -64,6 +64,12 @@ import java.util.ArrayList;
     }
 }
 
+MultiString 
+    : ('%{' ( options {greedy=false;} : .* ) '}')
+    | ('%[' ( options {greedy=false;} : .* ) ']') 
+    ;
+SimpleString : ('"' ( ('\\' ('"'|'\\')) | '\\'? ~('"'|'\\'))* '"');
+
 MultiComment : ('{#' ( options {greedy=false;} : .* ) '#}') {skip();};
 NewlineComment : '#' ( ~NewLine )* NewLine? {$type=PossibleTerminator;setText(";");} ;
 
