@@ -73,20 +73,75 @@ CloseCurly : '}' ;
 
 Comma : (',' NewLine*) {setText(",");};
 
-HexInteger : '0' ('x' | 'X') ;
+HexInteger : ('+'|'-')? '0' ('x' | 'X') (Digit | HexLetter)+;
 
-Integer : '0' ;
+Integer : ('+'|'-')? Digits ;
 
-Identifier : ((Letter | Digit | IdentChars)+) 
-    | '=' 
-    | '==' 
+Real
+    :   ('+'|'-')? 
+        (Digits '.' Digit* Exponent?
+    |    '.' Digits Exponent? 
+    |    Digits Exponent)
+    ;
+
+AssignmentOperator :
+        ('+' 
+        | '++' 
+        | '-' 
+        | '--' 
+        | '/' 
+        | '//' 
+        | '*' 
+        | '**' 
+        | '%' 
+        | '%%' 
+        | '^' 
+        | '^^' 
+        | '<<' 
+        | '>>' 
+        | '&' 
+        | '&&' 
+        | '|' 
+        | '||') '='
+    ;
+
+UnaryOperator : 
+      '@'
+    | '@@'
+    | '\''
+    | '`'
+    | '!'
+    | ':'
+    | 'return'
+    ;
+
+BinaryOperator : 
+      OpChars+
+    | '=='
     | '==='
     | '===='
-    | ('+' | '++' | '-' | '--' | '/' | '//' | '*' | '**' | '%' | '%%' | '^' | '^^' | '<' | '>' | '<<' | '>>' | '&' | '&&' | '|' | '||' | '~' | '~~' | '!' | '!!') '=';
+    | '<='
+    | '>='
+    | '~='
+    | '~~='
+    | '!='
+    | '!!='
+    | 'and'
+    | 'or'
+    ;
+
+Assignment : '=' ;
+
+Identifier : IdentStart IdentChars* ;
 
 PossibleTerminator : ((';' | NewLine)+) {setText(";");};
 
 Whitespace : Separator {skip();};
+
+
+
+fragment
+Exponent : ('e'|'E') ('+'|'-')? Digits ;
 
 fragment
 Letter : 'a' .. 'z' | 'A' .. 'Z' ;
@@ -98,13 +153,19 @@ fragment
 Digits : Digit+ ;
 
 fragment
-HexLetter : 'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'A' | 'B' | 'C' | 'D' | 'E' | 'F' ;
+HexLetter : 'a' .. 'f' | 'A' .. 'F' ;
 
 fragment
 Separator : (' ' | '\u000c' | '\u0009' | '\u000b' | '\\' '\u000a' )+ ;
 
 fragment
-IdentChars : ('!' | '?' | '@' | '&' | '%' | '.' | '|' | '<' | '>' | '/' | '+' | '-' | '_' | ':' | '\\' | '*' | '^' | '~' | '`' | '\'') ;
+OpChars : ('!' | '?' | '@' | '&' | '%' | '.' | '|' | '<' | '>' | '/' | '+' | '-' | '_' | ':' | '\\' | '*' | '^' | '~' | '`' | '\'') ;
+
+fragment
+IdentChars : Letter | Digit | ('!' | '?' | '@' | '&' | '%' | '.' | '|' | '<' | '>' | '/' | '+' | '-' | '_' | ':' | '\\' | '*' | '^' | '~' | '`' | '\'') ;
+
+fragment
+IdentStart : Letter | Digit | ('?' | '&' | '%' | '|' | '<' | '>' | '/' | '+' | '-' | '_' | '\\' | '*' | '^' | '~') ;
 
 fragment
 NewLine : ('\u000a' | '\u000d') ;

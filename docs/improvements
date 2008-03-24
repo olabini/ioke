@@ -1,4 +1,6 @@
 
+Condition system?
+
 . is cons/pair
  so, you can write
  {"a" . "b", "c" . "d"}
@@ -12,14 +14,14 @@ Object hierarchy
 
 
 BasicObject
-  internal:getSlot
-  internal:setSlot
+  internal:get-slot
+  internal:set-slot
 
 CoreMethods
-  squareBrackets
-  curlyBrackets 
-  getSlot
-  setSlot
+  square-brackets
+  curly-brackets 
+  get-slot
+  set-slot
   ...
 
 Object < BasicObject, CoreMethods
