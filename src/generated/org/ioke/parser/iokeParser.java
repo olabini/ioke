@@ -1,4 +1,4 @@
-// $ANTLR 3.0.1 ioke.g 2008-03-24 14:43:15
+// $ANTLR 3.0.1 ioke.g 2008-03-24 14:51:45
 
 package org.ioke.parser;
 
@@ -13,37 +13,39 @@ import org.antlr.runtime.tree.*;
 
 public class iokeParser extends Parser {
     public static final String[] tokenNames = new String[] {
-        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "OpenSimple", "CloseSimple", "OpenSquare", "CloseSquare", "OpenCurly", "CloseCurly", "NewLine", "Comma", "Digit", "HexLetter", "HexInteger", "Digits", "Integer", "Exponent", "Real", "AssignmentOperator", "UnaryOperator", "OpChars", "BinaryOperator", "Assignment", "IdentStart", "IdentChars", "Identifier", "PossibleTerminator", "Separator", "Whitespace", "Letter", "Tokens"
+        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "MultiComment", "NewLine", "NewlineComment", "OpenSimple", "CloseSimple", "OpenSquare", "CloseSquare", "OpenCurly", "CloseCurly", "Comma", "Digit", "HexLetter", "HexInteger", "Digits", "Integer", "Exponent", "Real", "AssignmentOperator", "UnaryOperator", "OpChars", "BinaryOperator", "Assignment", "IdentStart", "IdentChars", "Identifier", "PossibleTerminator", "Separator", "Whitespace", "Letter", "Tokens"
     };
-    public static final int Assignment=23;
-    public static final int CloseCurly=9;
-    public static final int Exponent=17;
-    public static final int OpChars=21;
-    public static final int HexLetter=13;
-    public static final int IdentChars=25;
-    public static final int Digit=12;
+    public static final int Assignment=25;
+    public static final int CloseCurly=12;
+    public static final int Exponent=19;
+    public static final int OpChars=23;
+    public static final int HexLetter=15;
+    public static final int IdentChars=27;
+    public static final int Digit=14;
     public static final int EOF=-1;
-    public static final int Tokens=31;
-    public static final int OpenSimple=4;
-    public static final int IdentStart=24;
-    public static final int Identifier=26;
-    public static final int Separator=28;
-    public static final int NewLine=10;
-    public static final int AssignmentOperator=19;
-    public static final int OpenSquare=6;
-    public static final int Digits=15;
-    public static final int CloseSimple=5;
-    public static final int HexInteger=14;
-    public static final int Real=18;
-    public static final int BinaryOperator=22;
-    public static final int UnaryOperator=20;
-    public static final int Whitespace=29;
-    public static final int Comma=11;
-    public static final int OpenCurly=8;
-    public static final int CloseSquare=7;
-    public static final int Letter=30;
-    public static final int Integer=16;
-    public static final int PossibleTerminator=27;
+    public static final int Tokens=33;
+    public static final int OpenSimple=7;
+    public static final int IdentStart=26;
+    public static final int Identifier=28;
+    public static final int Separator=30;
+    public static final int NewLine=5;
+    public static final int AssignmentOperator=21;
+    public static final int OpenSquare=9;
+    public static final int Digits=17;
+    public static final int CloseSimple=8;
+    public static final int NewlineComment=6;
+    public static final int HexInteger=16;
+    public static final int Real=20;
+    public static final int BinaryOperator=24;
+    public static final int MultiComment=4;
+    public static final int UnaryOperator=22;
+    public static final int Whitespace=31;
+    public static final int Comma=13;
+    public static final int OpenCurly=11;
+    public static final int CloseSquare=10;
+    public static final int Letter=32;
+    public static final int Integer=18;
+    public static final int PossibleTerminator=29;
 
         public iokeParser(TokenStream input) {
             super(input);

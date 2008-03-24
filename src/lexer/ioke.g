@@ -64,6 +64,9 @@ import java.util.ArrayList;
     }
 }
 
+MultiComment : ('{#' ( options {greedy=false;} : .* ) '#}') {skip();};
+NewlineComment :  '#' ( ~NewLine )* ( NewLine {$type=PossibleTerminator;setText(";");} ) {if($type!=PossibleTerminator){skip();}} ;
+
 OpenSimple : '(' ;
 CloseSimple : ')' ;
 OpenSquare : '[' ;
@@ -137,7 +140,6 @@ Identifier : IdentStart IdentChars* ;
 PossibleTerminator : ((';' | NewLine)+) {setText(";");};
 
 Whitespace : Separator {skip();};
-
 
 
 fragment

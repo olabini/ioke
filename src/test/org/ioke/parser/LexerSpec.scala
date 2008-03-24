@@ -693,18 +693,18 @@ object LexerSpec extends Specification {
 //       // TODO: more tests
 //     }
 
-//     "handle lexings of comments" in {
-//       lex("a/* another comment */b") must be_==(tokens(
-//         ident("a"),
-//         ident("b")
-//       ))
+    "handle lexings of comments" in {
+      lex("a{# another \ncom#ment #}b") must be_==(tokens(
+        ident("a"),
+        ident("b")
+      ))
 
-//       lex("a # one more comment\nb") must be_==(tokens(
-//         ident("a"),
-//         term,
-//         ident("b")
-//       ))
-//     }
+      lex("a # one more comment\nb") must be_==(tokens(
+        ident("a"),
+        term,
+        ident("b")
+      ))
+    }
 
 //     "handle lexings of tri-strings" in {
 //       lex("\"\"\"\"\"\"") must be_==(tokens(
