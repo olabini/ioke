@@ -19,7 +19,7 @@ object LexerSpec extends Specification {
   def real(value: String) = Tok(iokeLexer.Real, value)
   def string(value: String) = Tok(iokeLexer.SimpleString, value)
   def multiString(value: String) = Tok(iokeLexer.MultiString, value) 
-  def regexp(value: String) = Tok(-4, value)
+  def regexp(value: String) = Tok(iokeLexer.Regexp, value)
   def assgnOp(value: String) = Tok(iokeLexer.AssignmentOperator, value)
   def unaryOp(value: String) = Tok(iokeLexer.UnaryOperator, value)
   def binaryOp(value: String) = Tok(iokeLexer.BinaryOperator, value)
@@ -746,20 +746,51 @@ object LexerSpec extends Specification {
       ))
     }
 
-//     "handle lexings of regexp" in {
-//       lex("//") must be_==(tokens(
-//         regexp("//")
-//       ))
+    "handle lexings of regexp" in {
+      lex("//") must be_==(tokens(
+        regexp("//")
+      ))
 
-//       lex("/a/") must be_==(tokens(
-//         regexp("/a/")
-//       ))
+      lex("/a/") must be_==(tokens(
+        regexp("/a/")
+      ))
 
-//       lex("/a/i") must be_==(tokens(
-//         regexp("/a/i")
-//       ))
-//       // TODO: more tests
-//     }
+      lex("/a/i") must be_==(tokens(
+        regexp("/a/i")
+      ))
+
+      lex("/a/x") must be_==(tokens(
+        regexp("/a/x")
+      ))
+
+      lex("/a/m") must be_==(tokens(
+        regexp("/a/m")
+      ))
+
+      lex("/\n/") must be_==(tokens(
+        regexp("/\n/")
+      ))
+
+      lex("/\\n/") must be_==(tokens(
+        regexp("/\\n/")
+      ))
+
+      lex("/\"/") must be_==(tokens(
+        regexp("/\"/")
+      ))
+
+      lex("/#/") must be_==(tokens(
+        regexp("/#/")
+      ))
+
+      lex("/{# #}/") must be_==(tokens(
+        regexp("/{# #}/")
+      ))
+
+      lex("/\\//") must be_==(tokens(
+        regexp("/\\//")
+      ))
+    }
 
     "handle terminations correctly" in {
       lex("foo\nbar") must be_==(tokens(

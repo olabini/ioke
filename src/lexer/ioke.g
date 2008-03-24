@@ -70,6 +70,9 @@ MultiString
     ;
 SimpleString : ('"' ( ('\\' ('"'|'\\')) | '\\'? ~('"'|'\\'))* '"');
 
+Regexp
+    : ('/' ( ('\\' ('/'|'\\')) | '\\'? ~('/'|'\\'))* '/') ('i' | 'x' | 'm')* ;
+
 MultiComment : ('{#' ( options {greedy=false;} : .* ) '#}') {skip();};
 NewlineComment : '#' ( ~NewLine )* NewLine? {$type=PossibleTerminator;setText(";");} ;
 
