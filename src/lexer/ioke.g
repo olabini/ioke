@@ -55,10 +55,25 @@ import java.util.ArrayList;
     
     public final static String tokenToName(int token) {
         switch(token) {
+        case MultiString: return "MultiString";
+        case SimpleString: return "SimpleString";
+        case Regexp: return "Regexp";
+        case OpenSimple: return "OpenSimple";
+        case CloseSimple: return "CloseSimple";
+        case OpenSquare: return "OpenSquare";
+        case CloseSquare: return "CloseSquare";
+        case OpenCurly: return "OpenCurly";
+        case CloseCurly: return "CloseCurly";
+        case Comma: return "Comma";
         case Identifier: return "Identifier";
-        case Whitespace: return "Whitespace";
+        case HexInteger: return "HexInteger";
+        case Integer: return "Integer";
+        case Real: return "Real";
+        case Assignment: return "Assignment";
+        case AssignmentOperator: return "AssignmentOperator";
+        case UnaryOperator: return "UnaryOperator";
+        case BinaryOperator: return "BinaryOperator";
         case PossibleTerminator: return "PossibleTerminator";
-        case EOF: return "EOF";
         default: return "UNKNOWN TOKEN(" + token + ")";
         }
     }
