@@ -65,7 +65,7 @@ import java.util.ArrayList;
 }
 
 MultiComment : ('{#' ( options {greedy=false;} : .* ) '#}') {skip();};
-NewlineComment :  '#' ( ~NewLine )* ( NewLine {$type=PossibleTerminator;setText(";");} ) {if($type!=PossibleTerminator){skip();}} ;
+NewlineComment : '#' ( ~NewLine )* NewLine? {$type=PossibleTerminator;setText(";");} ;
 
 OpenSimple : '(' ;
 CloseSimple : ')' ;

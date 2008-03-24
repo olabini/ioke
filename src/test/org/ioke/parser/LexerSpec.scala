@@ -681,18 +681,6 @@ object LexerSpec extends Specification {
       ))
     }
 
-//     "handle lexings of strings" in {
-//       lex("\"\"") must be_==(tokens(
-//         string("\"\"")
-//       ))
-
-//       lex("\"a\"") must be_==(tokens(
-//         string("\"a\"")
-//       ))
-
-//       // TODO: more tests
-//     }
-
     "handle lexings of comments" in {
       lex("a{# another \ncom#ment #}b") must be_==(tokens(
         ident("a"),
@@ -706,6 +694,19 @@ object LexerSpec extends Specification {
       ))
     }
 
+//     "handle lexings of strings" in {
+//       lex("\"\"") must be_==(tokens(
+//         string("\"\"")
+//       ))
+
+//       lex("\"a\"") must be_==(tokens(
+//         string("\"a\"")
+//       ))
+
+//       // TODO: more tests
+//     }
+
+//     // actually, maybe not make this tri-strings. Maybe just go with %{} and %[] from Ruby...
 //     "handle lexings of tri-strings" in {
 //       lex("\"\"\"\"\"\"") must be_==(tokens(
 //         triString("\"\"\"\"\"\"")

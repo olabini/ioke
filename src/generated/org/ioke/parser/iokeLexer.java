@@ -1,4 +1,4 @@
-// $ANTLR 3.0.1 ioke.g 2008-03-24 14:52:59
+// $ANTLR 3.0.1 ioke.g 2008-03-24 14:59:12
 
 package org.ioke.parser;
 
@@ -179,11 +179,11 @@ public class iokeLexer extends Lexer {
     public final void mNewlineComment() throws RecognitionException {
         try {
             int _type = NewlineComment;
-            // ioke.g:68:16: ( '#' (~ NewLine )* ( NewLine ) )
-            // ioke.g:68:19: '#' (~ NewLine )* ( NewLine )
+            // ioke.g:68:16: ( '#' (~ NewLine )* ( NewLine )? )
+            // ioke.g:68:18: '#' (~ NewLine )* ( NewLine )?
             {
             match('#'); 
-            // ioke.g:68:23: (~ NewLine )*
+            // ioke.g:68:22: (~ NewLine )*
             loop2:
             do {
                 int alt2=2;
@@ -196,7 +196,7 @@ public class iokeLexer extends Lexer {
 
                 switch (alt2) {
             	case 1 :
-            	    // ioke.g:68:25: ~ NewLine
+            	    // ioke.g:68:24: ~ NewLine
             	    {
             	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='\u0004')||(input.LA(1)>='\u0006' && input.LA(1)<='\uFFFE') ) {
             	        input.consume();
@@ -217,15 +217,25 @@ public class iokeLexer extends Lexer {
                 }
             } while (true);
 
-            // ioke.g:68:37: ( NewLine )
-            // ioke.g:68:39: NewLine
-            {
-            mNewLine(); 
-            _type=PossibleTerminator;setText(";");
+            // ioke.g:68:36: ( NewLine )?
+            int alt3=2;
+            int LA3_0 = input.LA(1);
+
+            if ( (LA3_0=='\n'||LA3_0=='\r') ) {
+                alt3=1;
+            }
+            switch (alt3) {
+                case 1 :
+                    // ioke.g:68:36: NewLine
+                    {
+                    mNewLine(); 
+
+                    }
+                    break;
 
             }
 
-            if(_type!=PossibleTerminator){skip();}
+            _type=PossibleTerminator;setText(";");
 
             }
 
@@ -356,17 +366,17 @@ public class iokeLexer extends Lexer {
             {
             match(','); 
             // ioke.g:77:14: ( NewLine )*
-            loop3:
+            loop4:
             do {
-                int alt3=2;
-                int LA3_0 = input.LA(1);
+                int alt4=2;
+                int LA4_0 = input.LA(1);
 
-                if ( (LA3_0=='\n'||LA3_0=='\r') ) {
-                    alt3=1;
+                if ( (LA4_0=='\n'||LA4_0=='\r') ) {
+                    alt4=1;
                 }
 
 
-                switch (alt3) {
+                switch (alt4) {
             	case 1 :
             	    // ioke.g:77:14: NewLine
             	    {
@@ -376,7 +386,7 @@ public class iokeLexer extends Lexer {
             	    break;
 
             	default :
-            	    break loop3;
+            	    break loop4;
                 }
             } while (true);
 
@@ -402,13 +412,13 @@ public class iokeLexer extends Lexer {
             // ioke.g:79:14: ( '+' | '-' )? '0' ( 'x' | 'X' ) ( Digit | HexLetter )+
             {
             // ioke.g:79:14: ( '+' | '-' )?
-            int alt4=2;
-            int LA4_0 = input.LA(1);
+            int alt5=2;
+            int LA5_0 = input.LA(1);
 
-            if ( (LA4_0=='+'||LA4_0=='-') ) {
-                alt4=1;
+            if ( (LA5_0=='+'||LA5_0=='-') ) {
+                alt5=1;
             }
-            switch (alt4) {
+            switch (alt5) {
                 case 1 :
                     // ioke.g:
                     {
@@ -440,18 +450,18 @@ public class iokeLexer extends Lexer {
             }
 
             // ioke.g:79:41: ( Digit | HexLetter )+
-            int cnt5=0;
-            loop5:
+            int cnt6=0;
+            loop6:
             do {
-                int alt5=2;
-                int LA5_0 = input.LA(1);
+                int alt6=2;
+                int LA6_0 = input.LA(1);
 
-                if ( ((LA5_0>='0' && LA5_0<='9')||(LA5_0>='A' && LA5_0<='F')||(LA5_0>='a' && LA5_0<='f')) ) {
-                    alt5=1;
+                if ( ((LA6_0>='0' && LA6_0<='9')||(LA6_0>='A' && LA6_0<='F')||(LA6_0>='a' && LA6_0<='f')) ) {
+                    alt6=1;
                 }
 
 
-                switch (alt5) {
+                switch (alt6) {
             	case 1 :
             	    // ioke.g:
             	    {
@@ -470,12 +480,12 @@ public class iokeLexer extends Lexer {
             	    break;
 
             	default :
-            	    if ( cnt5 >= 1 ) break loop5;
+            	    if ( cnt6 >= 1 ) break loop6;
                         EarlyExitException eee =
-                            new EarlyExitException(5, input);
+                            new EarlyExitException(6, input);
                         throw eee;
                 }
-                cnt5++;
+                cnt6++;
             } while (true);
 
 
@@ -496,13 +506,13 @@ public class iokeLexer extends Lexer {
             // ioke.g:81:11: ( '+' | '-' )? Digits
             {
             // ioke.g:81:11: ( '+' | '-' )?
-            int alt6=2;
-            int LA6_0 = input.LA(1);
+            int alt7=2;
+            int LA7_0 = input.LA(1);
 
-            if ( (LA6_0=='+'||LA6_0=='-') ) {
-                alt6=1;
+            if ( (LA7_0=='+'||LA7_0=='-') ) {
+                alt7=1;
             }
-            switch (alt6) {
+            switch (alt7) {
                 case 1 :
                     // ioke.g:
                     {
@@ -541,13 +551,13 @@ public class iokeLexer extends Lexer {
             // ioke.g:84:9: ( '+' | '-' )? ( Digits '.' ( Digit )* ( Exponent )? | '.' Digits ( Exponent )? | Digits Exponent )
             {
             // ioke.g:84:9: ( '+' | '-' )?
-            int alt7=2;
-            int LA7_0 = input.LA(1);
+            int alt8=2;
+            int LA8_0 = input.LA(1);
 
-            if ( (LA7_0=='+'||LA7_0=='-') ) {
-                alt7=1;
+            if ( (LA8_0=='+'||LA8_0=='-') ) {
+                alt8=1;
             }
-            switch (alt7) {
+            switch (alt8) {
                 case 1 :
                     // ioke.g:
                     {
@@ -568,26 +578,26 @@ public class iokeLexer extends Lexer {
             }
 
             // ioke.g:85:9: ( Digits '.' ( Digit )* ( Exponent )? | '.' Digits ( Exponent )? | Digits Exponent )
-            int alt11=3;
-            alt11 = dfa11.predict(input);
-            switch (alt11) {
+            int alt12=3;
+            alt12 = dfa12.predict(input);
+            switch (alt12) {
                 case 1 :
                     // ioke.g:85:10: Digits '.' ( Digit )* ( Exponent )?
                     {
                     mDigits(); 
                     match('.'); 
                     // ioke.g:85:21: ( Digit )*
-                    loop8:
+                    loop9:
                     do {
-                        int alt8=2;
-                        int LA8_0 = input.LA(1);
+                        int alt9=2;
+                        int LA9_0 = input.LA(1);
 
-                        if ( ((LA8_0>='0' && LA8_0<='9')) ) {
-                            alt8=1;
+                        if ( ((LA9_0>='0' && LA9_0<='9')) ) {
+                            alt9=1;
                         }
 
 
-                        switch (alt8) {
+                        switch (alt9) {
                     	case 1 :
                     	    // ioke.g:85:21: Digit
                     	    {
@@ -597,18 +607,18 @@ public class iokeLexer extends Lexer {
                     	    break;
 
                     	default :
-                    	    break loop8;
+                    	    break loop9;
                         }
                     } while (true);
 
                     // ioke.g:85:28: ( Exponent )?
-                    int alt9=2;
-                    int LA9_0 = input.LA(1);
+                    int alt10=2;
+                    int LA10_0 = input.LA(1);
 
-                    if ( (LA9_0=='E'||LA9_0=='e') ) {
-                        alt9=1;
+                    if ( (LA10_0=='E'||LA10_0=='e') ) {
+                        alt10=1;
                     }
-                    switch (alt9) {
+                    switch (alt10) {
                         case 1 :
                             // ioke.g:85:28: Exponent
                             {
@@ -628,13 +638,13 @@ public class iokeLexer extends Lexer {
                     match('.'); 
                     mDigits(); 
                     // ioke.g:86:21: ( Exponent )?
-                    int alt10=2;
-                    int LA10_0 = input.LA(1);
+                    int alt11=2;
+                    int LA11_0 = input.LA(1);
 
-                    if ( (LA10_0=='E'||LA10_0=='e') ) {
-                        alt10=1;
+                    if ( (LA11_0=='E'||LA11_0=='e') ) {
+                        alt11=1;
                     }
-                    switch (alt10) {
+                    switch (alt11) {
                         case 1 :
                             // ioke.g:86:21: Exponent
                             {
@@ -677,21 +687,21 @@ public class iokeLexer extends Lexer {
             // ioke.g:91:9: ( '+' | '++' | '-' | '--' | '/' | '//' | '*' | '**' | '%' | '%%' | '^' | '^^' | '<<' | '>>' | '&' | '&&' | '|' | '||' ) '='
             {
             // ioke.g:91:9: ( '+' | '++' | '-' | '--' | '/' | '//' | '*' | '**' | '%' | '%%' | '^' | '^^' | '<<' | '>>' | '&' | '&&' | '|' | '||' )
-            int alt12=18;
+            int alt13=18;
             switch ( input.LA(1) ) {
             case '+':
                 {
-                int LA12_1 = input.LA(2);
+                int LA13_1 = input.LA(2);
 
-                if ( (LA12_1=='+') ) {
-                    alt12=2;
+                if ( (LA13_1=='+') ) {
+                    alt13=2;
                 }
-                else if ( (LA12_1=='=') ) {
-                    alt12=1;
+                else if ( (LA13_1=='=') ) {
+                    alt13=1;
                 }
                 else {
                     NoViableAltException nvae =
-                        new NoViableAltException("91:9: ( '+' | '++' | '-' | '--' | '/' | '//' | '*' | '**' | '%' | '%%' | '^' | '^^' | '<<' | '>>' | '&' | '&&' | '|' | '||' )", 12, 1, input);
+                        new NoViableAltException("91:9: ( '+' | '++' | '-' | '--' | '/' | '//' | '*' | '**' | '%' | '%%' | '^' | '^^' | '<<' | '>>' | '&' | '&&' | '|' | '||' )", 13, 1, input);
 
                     throw nvae;
                 }
@@ -699,17 +709,17 @@ public class iokeLexer extends Lexer {
                 break;
             case '-':
                 {
-                int LA12_2 = input.LA(2);
+                int LA13_2 = input.LA(2);
 
-                if ( (LA12_2=='-') ) {
-                    alt12=4;
+                if ( (LA13_2=='-') ) {
+                    alt13=4;
                 }
-                else if ( (LA12_2=='=') ) {
-                    alt12=3;
+                else if ( (LA13_2=='=') ) {
+                    alt13=3;
                 }
                 else {
                     NoViableAltException nvae =
-                        new NoViableAltException("91:9: ( '+' | '++' | '-' | '--' | '/' | '//' | '*' | '**' | '%' | '%%' | '^' | '^^' | '<<' | '>>' | '&' | '&&' | '|' | '||' )", 12, 2, input);
+                        new NoViableAltException("91:9: ( '+' | '++' | '-' | '--' | '/' | '//' | '*' | '**' | '%' | '%%' | '^' | '^^' | '<<' | '>>' | '&' | '&&' | '|' | '||' )", 13, 2, input);
 
                     throw nvae;
                 }
@@ -717,17 +727,17 @@ public class iokeLexer extends Lexer {
                 break;
             case '/':
                 {
-                int LA12_3 = input.LA(2);
+                int LA13_3 = input.LA(2);
 
-                if ( (LA12_3=='/') ) {
-                    alt12=6;
+                if ( (LA13_3=='/') ) {
+                    alt13=6;
                 }
-                else if ( (LA12_3=='=') ) {
-                    alt12=5;
+                else if ( (LA13_3=='=') ) {
+                    alt13=5;
                 }
                 else {
                     NoViableAltException nvae =
-                        new NoViableAltException("91:9: ( '+' | '++' | '-' | '--' | '/' | '//' | '*' | '**' | '%' | '%%' | '^' | '^^' | '<<' | '>>' | '&' | '&&' | '|' | '||' )", 12, 3, input);
+                        new NoViableAltException("91:9: ( '+' | '++' | '-' | '--' | '/' | '//' | '*' | '**' | '%' | '%%' | '^' | '^^' | '<<' | '>>' | '&' | '&&' | '|' | '||' )", 13, 3, input);
 
                     throw nvae;
                 }
@@ -735,17 +745,17 @@ public class iokeLexer extends Lexer {
                 break;
             case '*':
                 {
-                int LA12_4 = input.LA(2);
+                int LA13_4 = input.LA(2);
 
-                if ( (LA12_4=='*') ) {
-                    alt12=8;
+                if ( (LA13_4=='*') ) {
+                    alt13=8;
                 }
-                else if ( (LA12_4=='=') ) {
-                    alt12=7;
+                else if ( (LA13_4=='=') ) {
+                    alt13=7;
                 }
                 else {
                     NoViableAltException nvae =
-                        new NoViableAltException("91:9: ( '+' | '++' | '-' | '--' | '/' | '//' | '*' | '**' | '%' | '%%' | '^' | '^^' | '<<' | '>>' | '&' | '&&' | '|' | '||' )", 12, 4, input);
+                        new NoViableAltException("91:9: ( '+' | '++' | '-' | '--' | '/' | '//' | '*' | '**' | '%' | '%%' | '^' | '^^' | '<<' | '>>' | '&' | '&&' | '|' | '||' )", 13, 4, input);
 
                     throw nvae;
                 }
@@ -753,17 +763,17 @@ public class iokeLexer extends Lexer {
                 break;
             case '%':
                 {
-                int LA12_5 = input.LA(2);
+                int LA13_5 = input.LA(2);
 
-                if ( (LA12_5=='%') ) {
-                    alt12=10;
+                if ( (LA13_5=='%') ) {
+                    alt13=10;
                 }
-                else if ( (LA12_5=='=') ) {
-                    alt12=9;
+                else if ( (LA13_5=='=') ) {
+                    alt13=9;
                 }
                 else {
                     NoViableAltException nvae =
-                        new NoViableAltException("91:9: ( '+' | '++' | '-' | '--' | '/' | '//' | '*' | '**' | '%' | '%%' | '^' | '^^' | '<<' | '>>' | '&' | '&&' | '|' | '||' )", 12, 5, input);
+                        new NoViableAltException("91:9: ( '+' | '++' | '-' | '--' | '/' | '//' | '*' | '**' | '%' | '%%' | '^' | '^^' | '<<' | '>>' | '&' | '&&' | '|' | '||' )", 13, 5, input);
 
                     throw nvae;
                 }
@@ -771,17 +781,17 @@ public class iokeLexer extends Lexer {
                 break;
             case '^':
                 {
-                int LA12_6 = input.LA(2);
+                int LA13_6 = input.LA(2);
 
-                if ( (LA12_6=='^') ) {
-                    alt12=12;
+                if ( (LA13_6=='^') ) {
+                    alt13=12;
                 }
-                else if ( (LA12_6=='=') ) {
-                    alt12=11;
+                else if ( (LA13_6=='=') ) {
+                    alt13=11;
                 }
                 else {
                     NoViableAltException nvae =
-                        new NoViableAltException("91:9: ( '+' | '++' | '-' | '--' | '/' | '//' | '*' | '**' | '%' | '%%' | '^' | '^^' | '<<' | '>>' | '&' | '&&' | '|' | '||' )", 12, 6, input);
+                        new NoViableAltException("91:9: ( '+' | '++' | '-' | '--' | '/' | '//' | '*' | '**' | '%' | '%%' | '^' | '^^' | '<<' | '>>' | '&' | '&&' | '|' | '||' )", 13, 6, input);
 
                     throw nvae;
                 }
@@ -789,27 +799,27 @@ public class iokeLexer extends Lexer {
                 break;
             case '<':
                 {
-                alt12=13;
+                alt13=13;
                 }
                 break;
             case '>':
                 {
-                alt12=14;
+                alt13=14;
                 }
                 break;
             case '&':
                 {
-                int LA12_9 = input.LA(2);
+                int LA13_9 = input.LA(2);
 
-                if ( (LA12_9=='&') ) {
-                    alt12=16;
+                if ( (LA13_9=='&') ) {
+                    alt13=16;
                 }
-                else if ( (LA12_9=='=') ) {
-                    alt12=15;
+                else if ( (LA13_9=='=') ) {
+                    alt13=15;
                 }
                 else {
                     NoViableAltException nvae =
-                        new NoViableAltException("91:9: ( '+' | '++' | '-' | '--' | '/' | '//' | '*' | '**' | '%' | '%%' | '^' | '^^' | '<<' | '>>' | '&' | '&&' | '|' | '||' )", 12, 9, input);
+                        new NoViableAltException("91:9: ( '+' | '++' | '-' | '--' | '/' | '//' | '*' | '**' | '%' | '%%' | '^' | '^^' | '<<' | '>>' | '&' | '&&' | '|' | '||' )", 13, 9, input);
 
                     throw nvae;
                 }
@@ -817,17 +827,17 @@ public class iokeLexer extends Lexer {
                 break;
             case '|':
                 {
-                int LA12_10 = input.LA(2);
+                int LA13_10 = input.LA(2);
 
-                if ( (LA12_10=='|') ) {
-                    alt12=18;
+                if ( (LA13_10=='|') ) {
+                    alt13=18;
                 }
-                else if ( (LA12_10=='=') ) {
-                    alt12=17;
+                else if ( (LA13_10=='=') ) {
+                    alt13=17;
                 }
                 else {
                     NoViableAltException nvae =
-                        new NoViableAltException("91:9: ( '+' | '++' | '-' | '--' | '/' | '//' | '*' | '**' | '%' | '%%' | '^' | '^^' | '<<' | '>>' | '&' | '&&' | '|' | '||' )", 12, 10, input);
+                        new NoViableAltException("91:9: ( '+' | '++' | '-' | '--' | '/' | '//' | '*' | '**' | '%' | '%%' | '^' | '^^' | '<<' | '>>' | '&' | '&&' | '|' | '||' )", 13, 10, input);
 
                     throw nvae;
                 }
@@ -835,12 +845,12 @@ public class iokeLexer extends Lexer {
                 break;
             default:
                 NoViableAltException nvae =
-                    new NoViableAltException("91:9: ( '+' | '++' | '-' | '--' | '/' | '//' | '*' | '**' | '%' | '%%' | '^' | '^^' | '<<' | '>>' | '&' | '&&' | '|' | '||' )", 12, 0, input);
+                    new NoViableAltException("91:9: ( '+' | '++' | '-' | '--' | '/' | '//' | '*' | '**' | '%' | '%%' | '^' | '^^' | '<<' | '>>' | '&' | '&&' | '|' | '||' )", 13, 0, input);
 
                 throw nvae;
             }
 
-            switch (alt12) {
+            switch (alt13) {
                 case 1 :
                     // ioke.g:91:10: '+'
                     {
@@ -996,52 +1006,52 @@ public class iokeLexer extends Lexer {
         try {
             int _type = UnaryOperator;
             // ioke.g:111:15: ( '@' | '@@' | '\\'' | '`' | '!' | ':' | 'return' )
-            int alt13=7;
+            int alt14=7;
             switch ( input.LA(1) ) {
             case '@':
                 {
-                int LA13_1 = input.LA(2);
+                int LA14_1 = input.LA(2);
 
-                if ( (LA13_1=='@') ) {
-                    alt13=2;
+                if ( (LA14_1=='@') ) {
+                    alt14=2;
                 }
                 else {
-                    alt13=1;}
+                    alt14=1;}
                 }
                 break;
             case '\'':
                 {
-                alt13=3;
+                alt14=3;
                 }
                 break;
             case '`':
                 {
-                alt13=4;
+                alt14=4;
                 }
                 break;
             case '!':
                 {
-                alt13=5;
+                alt14=5;
                 }
                 break;
             case ':':
                 {
-                alt13=6;
+                alt14=6;
                 }
                 break;
             case 'r':
                 {
-                alt13=7;
+                alt14=7;
                 }
                 break;
             default:
                 NoViableAltException nvae =
-                    new NoViableAltException("111:1: UnaryOperator : ( '@' | '@@' | '\\'' | '`' | '!' | ':' | 'return' );", 13, 0, input);
+                    new NoViableAltException("111:1: UnaryOperator : ( '@' | '@@' | '\\'' | '`' | '!' | ':' | 'return' );", 14, 0, input);
 
                 throw nvae;
             }
 
-            switch (alt13) {
+            switch (alt14) {
                 case 1 :
                     // ioke.g:112:7: '@'
                     {
@@ -1107,41 +1117,41 @@ public class iokeLexer extends Lexer {
         try {
             int _type = BinaryOperator;
             // ioke.g:121:16: ( ( OpChars )+ | '==' | '===' | '====' | '<=' | '>=' | '~=' | '~~=' | '!=' | '!!=' | 'and' | 'or' )
-            int alt15=12;
+            int alt16=12;
             switch ( input.LA(1) ) {
             case '<':
                 {
-                int LA15_1 = input.LA(2);
+                int LA16_1 = input.LA(2);
 
-                if ( (LA15_1=='=') ) {
-                    alt15=5;
+                if ( (LA16_1=='=') ) {
+                    alt16=5;
                 }
                 else {
-                    alt15=1;}
+                    alt16=1;}
                 }
                 break;
             case '=':
                 {
-                int LA15_2 = input.LA(2);
+                int LA16_2 = input.LA(2);
 
-                if ( (LA15_2=='=') ) {
-                    int LA15_10 = input.LA(3);
+                if ( (LA16_2=='=') ) {
+                    int LA16_10 = input.LA(3);
 
-                    if ( (LA15_10=='=') ) {
-                        int LA15_16 = input.LA(4);
+                    if ( (LA16_10=='=') ) {
+                        int LA16_16 = input.LA(4);
 
-                        if ( (LA15_16=='=') ) {
-                            alt15=4;
+                        if ( (LA16_16=='=') ) {
+                            alt16=4;
                         }
                         else {
-                            alt15=3;}
+                            alt16=3;}
                     }
                     else {
-                        alt15=2;}
+                        alt16=2;}
                 }
                 else {
                     NoViableAltException nvae =
-                        new NoViableAltException("121:1: BinaryOperator : ( ( OpChars )+ | '==' | '===' | '====' | '<=' | '>=' | '~=' | '~~=' | '!=' | '!!=' | 'and' | 'or' );", 15, 2, input);
+                        new NoViableAltException("121:1: BinaryOperator : ( ( OpChars )+ | '==' | '===' | '====' | '<=' | '>=' | '~=' | '~~=' | '!=' | '!!=' | 'and' | 'or' );", 16, 2, input);
 
                     throw nvae;
                 }
@@ -1149,13 +1159,13 @@ public class iokeLexer extends Lexer {
                 break;
             case '>':
                 {
-                int LA15_3 = input.LA(2);
+                int LA16_3 = input.LA(2);
 
-                if ( (LA15_3=='=') ) {
-                    alt15=6;
+                if ( (LA16_3=='=') ) {
+                    alt16=6;
                 }
                 else {
-                    alt15=1;}
+                    alt16=1;}
                 }
                 break;
             case '~':
@@ -1163,22 +1173,22 @@ public class iokeLexer extends Lexer {
                 switch ( input.LA(2) ) {
                 case '=':
                     {
-                    alt15=7;
+                    alt16=7;
                     }
                     break;
                 case '~':
                     {
-                    int LA15_13 = input.LA(3);
+                    int LA16_13 = input.LA(3);
 
-                    if ( (LA15_13=='=') ) {
-                        alt15=8;
+                    if ( (LA16_13=='=') ) {
+                        alt16=8;
                     }
                     else {
-                        alt15=1;}
+                        alt16=1;}
                     }
                     break;
                 default:
-                    alt15=1;}
+                    alt16=1;}
 
                 }
                 break;
@@ -1187,22 +1197,22 @@ public class iokeLexer extends Lexer {
                 switch ( input.LA(2) ) {
                 case '=':
                     {
-                    alt15=9;
+                    alt16=9;
                     }
                     break;
                 case '!':
                     {
-                    int LA15_15 = input.LA(3);
+                    int LA16_15 = input.LA(3);
 
-                    if ( (LA15_15=='=') ) {
-                        alt15=10;
+                    if ( (LA16_15=='=') ) {
+                        alt16=10;
                     }
                     else {
-                        alt15=1;}
+                        alt16=1;}
                     }
                     break;
                 default:
-                    alt15=1;}
+                    alt16=1;}
 
                 }
                 break;
@@ -1223,43 +1233,43 @@ public class iokeLexer extends Lexer {
             case '`':
             case '|':
                 {
-                alt15=1;
+                alt16=1;
                 }
                 break;
             case 'a':
                 {
-                alt15=11;
+                alt16=11;
                 }
                 break;
             case 'o':
                 {
-                alt15=12;
+                alt16=12;
                 }
                 break;
             default:
                 NoViableAltException nvae =
-                    new NoViableAltException("121:1: BinaryOperator : ( ( OpChars )+ | '==' | '===' | '====' | '<=' | '>=' | '~=' | '~~=' | '!=' | '!!=' | 'and' | 'or' );", 15, 0, input);
+                    new NoViableAltException("121:1: BinaryOperator : ( ( OpChars )+ | '==' | '===' | '====' | '<=' | '>=' | '~=' | '~~=' | '!=' | '!!=' | 'and' | 'or' );", 16, 0, input);
 
                 throw nvae;
             }
 
-            switch (alt15) {
+            switch (alt16) {
                 case 1 :
                     // ioke.g:122:7: ( OpChars )+
                     {
                     // ioke.g:122:7: ( OpChars )+
-                    int cnt14=0;
-                    loop14:
+                    int cnt15=0;
+                    loop15:
                     do {
-                        int alt14=2;
-                        int LA14_0 = input.LA(1);
+                        int alt15=2;
+                        int LA15_0 = input.LA(1);
 
-                        if ( (LA14_0=='!'||(LA14_0>='%' && LA14_0<='\'')||(LA14_0>='*' && LA14_0<='+')||(LA14_0>='-' && LA14_0<='/')||LA14_0==':'||LA14_0=='<'||(LA14_0>='>' && LA14_0<='@')||LA14_0=='\\'||(LA14_0>='^' && LA14_0<='`')||LA14_0=='|'||LA14_0=='~') ) {
-                            alt14=1;
+                        if ( (LA15_0=='!'||(LA15_0>='%' && LA15_0<='\'')||(LA15_0>='*' && LA15_0<='+')||(LA15_0>='-' && LA15_0<='/')||LA15_0==':'||LA15_0=='<'||(LA15_0>='>' && LA15_0<='@')||LA15_0=='\\'||(LA15_0>='^' && LA15_0<='`')||LA15_0=='|'||LA15_0=='~') ) {
+                            alt15=1;
                         }
 
 
-                        switch (alt14) {
+                        switch (alt15) {
                     	case 1 :
                     	    // ioke.g:122:7: OpChars
                     	    {
@@ -1269,12 +1279,12 @@ public class iokeLexer extends Lexer {
                     	    break;
 
                     	default :
-                    	    if ( cnt14 >= 1 ) break loop14;
+                    	    if ( cnt15 >= 1 ) break loop15;
                                 EarlyExitException eee =
-                                    new EarlyExitException(14, input);
+                                    new EarlyExitException(15, input);
                                 throw eee;
                         }
-                        cnt14++;
+                        cnt15++;
                     } while (true);
 
 
@@ -1404,17 +1414,17 @@ public class iokeLexer extends Lexer {
             {
             mIdentStart(); 
             // ioke.g:138:25: ( IdentChars )*
-            loop16:
+            loop17:
             do {
-                int alt16=2;
-                int LA16_0 = input.LA(1);
+                int alt17=2;
+                int LA17_0 = input.LA(1);
 
-                if ( (LA16_0=='!'||(LA16_0>='%' && LA16_0<='\'')||(LA16_0>='*' && LA16_0<='+')||(LA16_0>='-' && LA16_0<=':')||LA16_0=='<'||(LA16_0>='>' && LA16_0<='Z')||LA16_0=='\\'||(LA16_0>='^' && LA16_0<='z')||LA16_0=='|'||LA16_0=='~') ) {
-                    alt16=1;
+                if ( (LA17_0=='!'||(LA17_0>='%' && LA17_0<='\'')||(LA17_0>='*' && LA17_0<='+')||(LA17_0>='-' && LA17_0<=':')||LA17_0=='<'||(LA17_0>='>' && LA17_0<='Z')||LA17_0=='\\'||(LA17_0>='^' && LA17_0<='z')||LA17_0=='|'||LA17_0=='~') ) {
+                    alt17=1;
                 }
 
 
-                switch (alt16) {
+                switch (alt17) {
             	case 1 :
             	    // ioke.g:138:25: IdentChars
             	    {
@@ -1424,7 +1434,7 @@ public class iokeLexer extends Lexer {
             	    break;
 
             	default :
-            	    break loop16;
+            	    break loop17;
                 }
             } while (true);
 
@@ -1449,18 +1459,18 @@ public class iokeLexer extends Lexer {
             // ioke.g:140:23: ( ';' | NewLine )+
             {
             // ioke.g:140:23: ( ';' | NewLine )+
-            int cnt17=0;
-            loop17:
+            int cnt18=0;
+            loop18:
             do {
-                int alt17=2;
-                int LA17_0 = input.LA(1);
+                int alt18=2;
+                int LA18_0 = input.LA(1);
 
-                if ( (LA17_0=='\n'||LA17_0=='\r'||LA17_0==';') ) {
-                    alt17=1;
+                if ( (LA18_0=='\n'||LA18_0=='\r'||LA18_0==';') ) {
+                    alt18=1;
                 }
 
 
-                switch (alt17) {
+                switch (alt18) {
             	case 1 :
             	    // ioke.g:
             	    {
@@ -1479,12 +1489,12 @@ public class iokeLexer extends Lexer {
             	    break;
 
             	default :
-            	    if ( cnt17 >= 1 ) break loop17;
+            	    if ( cnt18 >= 1 ) break loop18;
                         EarlyExitException eee =
-                            new EarlyExitException(17, input);
+                            new EarlyExitException(18, input);
                         throw eee;
                 }
-                cnt17++;
+                cnt18++;
             } while (true);
 
 
@@ -1537,13 +1547,13 @@ public class iokeLexer extends Lexer {
             }
 
             // ioke.g:146:22: ( '+' | '-' )?
-            int alt18=2;
-            int LA18_0 = input.LA(1);
+            int alt19=2;
+            int LA19_0 = input.LA(1);
 
-            if ( (LA18_0=='+'||LA18_0=='-') ) {
-                alt18=1;
+            if ( (LA19_0=='+'||LA19_0=='-') ) {
+                alt19=1;
             }
-            switch (alt18) {
+            switch (alt19) {
                 case 1 :
                     // ioke.g:
                     {
@@ -1621,18 +1631,18 @@ public class iokeLexer extends Lexer {
             // ioke.g:155:10: ( Digit )+
             {
             // ioke.g:155:10: ( Digit )+
-            int cnt19=0;
-            loop19:
+            int cnt20=0;
+            loop20:
             do {
-                int alt19=2;
-                int LA19_0 = input.LA(1);
+                int alt20=2;
+                int LA20_0 = input.LA(1);
 
-                if ( ((LA19_0>='0' && LA19_0<='9')) ) {
-                    alt19=1;
+                if ( ((LA20_0>='0' && LA20_0<='9')) ) {
+                    alt20=1;
                 }
 
 
-                switch (alt19) {
+                switch (alt20) {
             	case 1 :
             	    // ioke.g:155:10: Digit
             	    {
@@ -1642,12 +1652,12 @@ public class iokeLexer extends Lexer {
             	    break;
 
             	default :
-            	    if ( cnt19 >= 1 ) break loop19;
+            	    if ( cnt20 >= 1 ) break loop20;
                         EarlyExitException eee =
-                            new EarlyExitException(19, input);
+                            new EarlyExitException(20, input);
                         throw eee;
                 }
-                cnt19++;
+                cnt20++;
             } while (true);
 
 
@@ -1691,40 +1701,40 @@ public class iokeLexer extends Lexer {
             // ioke.g:161:13: ( ' ' | '\\u000c' | '\\u0009' | '\\u000b' | '\\\\' '\\u000a' )+
             {
             // ioke.g:161:13: ( ' ' | '\\u000c' | '\\u0009' | '\\u000b' | '\\\\' '\\u000a' )+
-            int cnt20=0;
-            loop20:
+            int cnt21=0;
+            loop21:
             do {
-                int alt20=6;
+                int alt21=6;
                 switch ( input.LA(1) ) {
                 case ' ':
                     {
-                    alt20=1;
+                    alt21=1;
                     }
                     break;
                 case '\f':
                     {
-                    alt20=2;
+                    alt21=2;
                     }
                     break;
                 case '\t':
                     {
-                    alt20=3;
+                    alt21=3;
                     }
                     break;
                 case '\u000B':
                     {
-                    alt20=4;
+                    alt21=4;
                     }
                     break;
                 case '\\':
                     {
-                    alt20=5;
+                    alt21=5;
                     }
                     break;
 
                 }
 
-                switch (alt20) {
+                switch (alt21) {
             	case 1 :
             	    // ioke.g:161:14: ' '
             	    {
@@ -1763,12 +1773,12 @@ public class iokeLexer extends Lexer {
             	    break;
 
             	default :
-            	    if ( cnt20 >= 1 ) break loop20;
+            	    if ( cnt21 >= 1 ) break loop21;
                         EarlyExitException eee =
-                            new EarlyExitException(20, input);
+                            new EarlyExitException(21, input);
                         throw eee;
                 }
-                cnt20++;
+                cnt21++;
             } while (true);
 
 
@@ -1882,9 +1892,9 @@ public class iokeLexer extends Lexer {
 
     public void mTokens() throws RecognitionException {
         // ioke.g:1:8: ( MultiComment | NewlineComment | OpenSimple | CloseSimple | OpenSquare | CloseSquare | OpenCurly | CloseCurly | Comma | HexInteger | Integer | Real | AssignmentOperator | UnaryOperator | BinaryOperator | Assignment | Identifier | PossibleTerminator | Whitespace )
-        int alt21=19;
-        alt21 = dfa21.predict(input);
-        switch (alt21) {
+        int alt22=19;
+        alt22 = dfa22.predict(input);
+        switch (alt22) {
             case 1 :
                 // ioke.g:1:10: MultiComment
                 {
@@ -2024,88 +2034,88 @@ public class iokeLexer extends Lexer {
     }
 
 
-    protected DFA11 dfa11 = new DFA11(this);
-    protected DFA21 dfa21 = new DFA21(this);
-    static final String DFA11_eotS =
+    protected DFA12 dfa12 = new DFA12(this);
+    protected DFA22 dfa22 = new DFA22(this);
+    static final String DFA12_eotS =
         "\5\uffff";
-    static final String DFA11_eofS =
+    static final String DFA12_eofS =
         "\5\uffff";
-    static final String DFA11_minS =
+    static final String DFA12_minS =
         "\2\56\3\uffff";
-    static final String DFA11_maxS =
+    static final String DFA12_maxS =
         "\1\71\1\145\3\uffff";
-    static final String DFA11_acceptS =
-        "\2\uffff\1\2\1\1\1\3";
-    static final String DFA11_specialS =
+    static final String DFA12_acceptS =
+        "\2\uffff\1\2\1\3\1\1";
+    static final String DFA12_specialS =
         "\5\uffff}>";
-    static final String[] DFA11_transitionS = {
+    static final String[] DFA12_transitionS = {
             "\1\2\1\uffff\12\1",
-            "\1\3\1\uffff\12\1\13\uffff\1\4\37\uffff\1\4",
+            "\1\4\1\uffff\12\1\13\uffff\1\3\37\uffff\1\3",
             "",
             "",
             ""
     };
 
-    static final short[] DFA11_eot = DFA.unpackEncodedString(DFA11_eotS);
-    static final short[] DFA11_eof = DFA.unpackEncodedString(DFA11_eofS);
-    static final char[] DFA11_min = DFA.unpackEncodedStringToUnsignedChars(DFA11_minS);
-    static final char[] DFA11_max = DFA.unpackEncodedStringToUnsignedChars(DFA11_maxS);
-    static final short[] DFA11_accept = DFA.unpackEncodedString(DFA11_acceptS);
-    static final short[] DFA11_special = DFA.unpackEncodedString(DFA11_specialS);
-    static final short[][] DFA11_transition;
+    static final short[] DFA12_eot = DFA.unpackEncodedString(DFA12_eotS);
+    static final short[] DFA12_eof = DFA.unpackEncodedString(DFA12_eofS);
+    static final char[] DFA12_min = DFA.unpackEncodedStringToUnsignedChars(DFA12_minS);
+    static final char[] DFA12_max = DFA.unpackEncodedStringToUnsignedChars(DFA12_maxS);
+    static final short[] DFA12_accept = DFA.unpackEncodedString(DFA12_acceptS);
+    static final short[] DFA12_special = DFA.unpackEncodedString(DFA12_specialS);
+    static final short[][] DFA12_transition;
 
     static {
-        int numStates = DFA11_transitionS.length;
-        DFA11_transition = new short[numStates][];
+        int numStates = DFA12_transitionS.length;
+        DFA12_transition = new short[numStates][];
         for (int i=0; i<numStates; i++) {
-            DFA11_transition[i] = DFA.unpackEncodedString(DFA11_transitionS[i]);
+            DFA12_transition[i] = DFA.unpackEncodedString(DFA12_transitionS[i]);
         }
     }
 
-    class DFA11 extends DFA {
+    class DFA12 extends DFA {
 
-        public DFA11(BaseRecognizer recognizer) {
+        public DFA12(BaseRecognizer recognizer) {
             this.recognizer = recognizer;
-            this.decisionNumber = 11;
-            this.eot = DFA11_eot;
-            this.eof = DFA11_eof;
-            this.min = DFA11_min;
-            this.max = DFA11_max;
-            this.accept = DFA11_accept;
-            this.special = DFA11_special;
-            this.transition = DFA11_transition;
+            this.decisionNumber = 12;
+            this.eot = DFA12_eot;
+            this.eof = DFA12_eof;
+            this.min = DFA12_min;
+            this.max = DFA12_max;
+            this.accept = DFA12_accept;
+            this.special = DFA12_special;
+            this.transition = DFA12_transition;
         }
         public String getDescription() {
             return "85:9: ( Digits '.' ( Digit )* ( Exponent )? | '.' Digits ( Exponent )? | Digits Exponent )";
         }
     }
-    static final String DFA21_eotS =
-        "\1\uffff\1\46\7\uffff\1\54\2\57\12\54\5\75\1\41\1\54\1\100\1\54"+
-        "\2\41\3\uffff\1\54\2\uffff\1\54\1\57\1\54\1\57\2\uffff\1\54\1\41"+
-        "\1\uffff\1\62\1\41\1\uffff\11\54\1\75\1\uffff\1\41\1\54\1\uffff"+
-        "\1\41\1\54\1\62\1\114\1\62\2\41\1\62\1\41\1\54\1\41\1\uffff\1\41"+
-        "\1\62\2\41\1\62\1\41\1\75";
-    static final String DFA21_eofS =
+    static final String DFA22_eotS =
+        "\1\uffff\1\46\7\uffff\1\53\2\57\12\53\5\75\1\41\1\53\1\100\1\53"+
+        "\2\41\3\uffff\1\53\2\uffff\1\53\2\57\1\53\1\uffff\1\53\1\uffff\1"+
+        "\41\1\uffff\1\41\1\62\1\uffff\11\53\1\75\1\uffff\1\41\1\53\1\uffff"+
+        "\1\41\1\53\1\62\1\114\1\41\2\62\2\41\1\53\1\41\1\uffff\1\41\1\62"+
+        "\2\41\1\62\1\41\1\75";
+    static final String DFA22_eofS =
         "\124\uffff";
-    static final String DFA21_minS =
+    static final String DFA22_minS =
         "\1\11\1\43\7\uffff\3\41\1\60\16\41\1\145\1\41\1\75\1\12\1\156\1"+
-        "\162\3\uffff\1\41\2\uffff\4\41\2\uffff\1\41\1\60\1\uffff\1\41\1"+
-        "\53\1\uffff\12\41\1\uffff\1\164\1\41\1\uffff\1\144\4\41\1\53\1\60"+
-        "\1\41\1\165\1\41\1\53\1\uffff\1\60\1\41\1\162\1\60\1\41\1\156\1"+
-        "\41";
-    static final String DFA21_maxS =
+        "\162\3\uffff\1\41\2\uffff\4\41\1\uffff\1\41\1\uffff\1\60\1\uffff"+
+        "\1\53\1\41\1\uffff\12\41\1\uffff\1\164\1\41\1\uffff\1\144\3\41\1"+
+        "\60\2\41\1\53\1\165\1\41\1\53\1\uffff\1\60\1\41\1\162\1\60\1\41"+
+        "\1\156\1\41";
+    static final String DFA22_maxS =
         "\1\176\1\43\7\uffff\3\176\1\71\16\176\1\145\1\176\1\75\1\176\1\156"+
-        "\1\162\3\uffff\1\176\2\uffff\4\176\2\uffff\1\176\1\146\1\uffff\1"+
-        "\176\1\71\1\uffff\12\176\1\uffff\1\164\1\176\1\uffff\1\144\4\176"+
-        "\2\71\1\176\1\165\1\176\1\71\1\uffff\1\71\1\176\1\162\1\71\1\176"+
-        "\1\156\1\176";
-    static final String DFA21_acceptS =
+        "\1\162\3\uffff\1\176\2\uffff\4\176\1\uffff\1\176\1\uffff\1\146\1"+
+        "\uffff\1\71\1\176\1\uffff\12\176\1\uffff\1\164\1\176\1\uffff\1\144"+
+        "\3\176\1\71\2\176\1\71\1\165\1\176\1\71\1\uffff\1\71\1\176\1\162"+
+        "\1\71\1\176\1\156\1\176";
+    static final String DFA22_acceptS =
         "\2\uffff\1\2\1\3\1\4\1\5\1\6\1\10\1\11\30\uffff\1\21\1\22\1\23\1"+
-        "\uffff\1\1\1\7\4\uffff\1\15\1\17\2\uffff\1\13\2\uffff\1\14\12\uffff"+
-        "\1\16\2\uffff\1\20\13\uffff\1\12\7\uffff";
-    static final String DFA21_specialS =
+        "\uffff\1\1\1\7\4\uffff\1\17\1\uffff\1\15\1\uffff\1\13\2\uffff\1"+
+        "\14\12\uffff\1\16\2\uffff\1\20\13\uffff\1\12\7\uffff";
+    static final String DFA22_specialS =
         "\124\uffff}>";
-    static final String[] DFA21_transitionS = {
+    static final String[] DFA22_transitionS = {
             "\1\43\1\42\2\43\1\42\22\uffff\1\43\1\31\1\uffff\1\2\1\uffff"+
             "\1\20\1\24\1\27\1\3\1\4\1\17\1\11\1\10\1\15\1\14\1\16\1\12\11"+
             "\13\1\32\1\42\1\22\1\35\1\23\1\44\1\26\32\41\1\5\1\36\1\6\1"+
@@ -2119,137 +2129,137 @@ public class iokeLexer extends Lexer {
             "",
             "",
             "",
-            "\1\55\3\uffff\3\55\2\uffff\1\55\1\47\1\uffff\1\55\1\51\1\55"+
-            "\1\50\11\52\1\55\1\uffff\1\55\1\53\3\55\32\41\1\uffff\1\55\1"+
-            "\uffff\3\55\32\41\1\uffff\1\55\1\uffff\1\55",
-            "\1\41\3\uffff\3\41\2\uffff\2\41\1\uffff\1\41\1\60\1\41\12\52"+
-            "\1\41\1\uffff\1\41\1\uffff\7\41\1\61\22\41\1\56\2\41\1\uffff"+
-            "\1\41\1\uffff\7\41\1\61\22\41\1\56\2\41\1\uffff\1\41\1\uffff"+
+            "\1\54\3\uffff\3\54\2\uffff\1\54\1\47\1\uffff\1\54\1\52\1\54"+
+            "\1\50\11\51\1\54\1\uffff\1\54\1\55\3\54\32\41\1\uffff\1\54\1"+
+            "\uffff\3\54\32\41\1\uffff\1\54\1\uffff\1\54",
+            "\1\41\3\uffff\3\41\2\uffff\2\41\1\uffff\1\41\1\61\1\41\12\51"+
+            "\1\41\1\uffff\1\41\1\uffff\7\41\1\60\22\41\1\56\2\41\1\uffff"+
+            "\1\41\1\uffff\7\41\1\60\22\41\1\56\2\41\1\uffff\1\41\1\uffff"+
             "\1\41",
-            "\1\41\3\uffff\3\41\2\uffff\2\41\1\uffff\1\41\1\60\1\41\12\52"+
-            "\1\41\1\uffff\1\41\1\uffff\7\41\1\61\25\41\1\uffff\1\41\1\uffff"+
-            "\7\41\1\61\25\41\1\uffff\1\41\1\uffff\1\41",
+            "\1\41\3\uffff\3\41\2\uffff\2\41\1\uffff\1\41\1\61\1\41\12\51"+
+            "\1\41\1\uffff\1\41\1\uffff\7\41\1\60\25\41\1\uffff\1\41\1\uffff"+
+            "\7\41\1\60\25\41\1\uffff\1\41\1\uffff\1\41",
             "\12\62",
-            "\1\55\3\uffff\3\55\2\uffff\2\55\1\uffff\1\63\1\51\1\55\1\50"+
-            "\11\52\1\55\1\uffff\1\55\1\53\3\55\32\41\1\uffff\1\55\1\uffff"+
-            "\3\55\32\41\1\uffff\1\55\1\uffff\1\55",
-            "\1\55\3\uffff\3\55\2\uffff\2\55\1\uffff\2\55\1\64\12\41\1\55"+
-            "\1\uffff\1\55\1\53\3\55\32\41\1\uffff\1\55\1\uffff\3\55\32\41"+
-            "\1\uffff\1\55\1\uffff\1\55",
-            "\1\55\3\uffff\3\55\2\uffff\1\65\1\55\1\uffff\3\55\12\41\1\55"+
-            "\1\uffff\1\55\1\53\3\55\32\41\1\uffff\1\55\1\uffff\3\55\32\41"+
-            "\1\uffff\1\55\1\uffff\1\55",
-            "\1\55\3\uffff\1\66\2\55\2\uffff\2\55\1\uffff\3\55\12\41\1\55"+
-            "\1\uffff\1\55\1\53\3\55\32\41\1\uffff\1\55\1\uffff\3\55\32\41"+
-            "\1\uffff\1\55\1\uffff\1\55",
-            "\1\55\3\uffff\3\55\2\uffff\2\55\1\uffff\3\55\12\41\1\55\1\uffff"+
-            "\1\55\1\53\3\55\32\41\1\uffff\1\55\1\uffff\1\67\2\55\32\41\1"+
-            "\uffff\1\55\1\uffff\1\55",
-            "\1\55\3\uffff\3\55\2\uffff\2\55\1\uffff\3\55\12\41\1\55\1\uffff"+
-            "\1\70\1\uffff\3\55\32\41\1\uffff\1\55\1\uffff\3\55\32\41\1\uffff"+
-            "\1\55\1\uffff\1\55",
-            "\1\55\3\uffff\3\55\2\uffff\2\55\1\uffff\3\55\12\41\1\55\1\uffff"+
-            "\1\55\1\uffff\1\71\2\55\32\41\1\uffff\1\55\1\uffff\3\55\32\41"+
-            "\1\uffff\1\55\1\uffff\1\55",
-            "\1\55\3\uffff\1\55\1\72\1\55\2\uffff\2\55\1\uffff\3\55\12\41"+
-            "\1\55\1\uffff\1\55\1\53\3\55\32\41\1\uffff\1\55\1\uffff\3\55"+
-            "\32\41\1\uffff\1\55\1\uffff\1\55",
-            "\1\55\3\uffff\3\55\2\uffff\2\55\1\uffff\3\55\12\41\1\55\1\uffff"+
-            "\1\55\1\53\3\55\32\41\1\uffff\1\55\1\uffff\3\55\32\41\1\uffff"+
-            "\1\73\1\uffff\1\55",
-            "\1\54\3\uffff\3\54\2\uffff\2\54\1\uffff\3\54\12\uffff\1\54\1"+
-            "\uffff\1\54\1\uffff\2\54\1\74\33\uffff\1\54\1\uffff\3\54\33"+
+            "\1\54\3\uffff\3\54\2\uffff\2\54\1\uffff\1\63\1\52\1\54\1\50"+
+            "\11\51\1\54\1\uffff\1\54\1\55\3\54\32\41\1\uffff\1\54\1\uffff"+
+            "\3\54\32\41\1\uffff\1\54\1\uffff\1\54",
+            "\1\54\3\uffff\3\54\2\uffff\2\54\1\uffff\2\54\1\64\12\41\1\54"+
+            "\1\uffff\1\54\1\55\3\54\32\41\1\uffff\1\54\1\uffff\3\54\32\41"+
+            "\1\uffff\1\54\1\uffff\1\54",
+            "\1\54\3\uffff\3\54\2\uffff\1\65\1\54\1\uffff\3\54\12\41\1\54"+
+            "\1\uffff\1\54\1\55\3\54\32\41\1\uffff\1\54\1\uffff\3\54\32\41"+
+            "\1\uffff\1\54\1\uffff\1\54",
+            "\1\54\3\uffff\1\66\2\54\2\uffff\2\54\1\uffff\3\54\12\41\1\54"+
+            "\1\uffff\1\54\1\55\3\54\32\41\1\uffff\1\54\1\uffff\3\54\32\41"+
+            "\1\uffff\1\54\1\uffff\1\54",
+            "\1\54\3\uffff\3\54\2\uffff\2\54\1\uffff\3\54\12\41\1\54\1\uffff"+
+            "\1\54\1\55\3\54\32\41\1\uffff\1\54\1\uffff\1\67\2\54\32\41\1"+
             "\uffff\1\54\1\uffff\1\54",
-            "\1\54\3\uffff\3\54\2\uffff\2\54\1\uffff\3\54\12\uffff\1\54\1"+
-            "\uffff\1\54\1\uffff\3\54\33\uffff\1\54\1\uffff\3\54\33\uffff"+
+            "\1\54\3\uffff\3\54\2\uffff\2\54\1\uffff\3\54\12\41\1\54\1\uffff"+
+            "\1\70\1\uffff\3\54\32\41\1\uffff\1\54\1\uffff\3\54\32\41\1\uffff"+
             "\1\54\1\uffff\1\54",
-            "\1\54\3\uffff\3\54\2\uffff\2\54\1\uffff\3\54\12\uffff\1\54\1"+
-            "\uffff\1\54\1\uffff\3\54\33\uffff\1\54\1\uffff\3\54\33\uffff"+
-            "\1\54\1\uffff\1\54",
-            "\1\54\3\uffff\3\54\2\uffff\2\54\1\uffff\3\54\12\uffff\1\54\1"+
-            "\uffff\5\54\33\uffff\1\54\1\uffff\3\54\33\uffff\1\54\1\uffff"+
-            "\1\54",
-            "\1\54\3\uffff\3\54\2\uffff\2\54\1\uffff\3\54\12\uffff\1\54\1"+
-            "\uffff\1\54\1\uffff\3\54\33\uffff\1\54\1\uffff\3\54\33\uffff"+
-            "\1\54\1\uffff\1\54",
+            "\1\54\3\uffff\3\54\2\uffff\2\54\1\uffff\3\54\12\41\1\54\1\uffff"+
+            "\1\54\1\uffff\1\71\2\54\32\41\1\uffff\1\54\1\uffff\3\54\32\41"+
+            "\1\uffff\1\54\1\uffff\1\54",
+            "\1\54\3\uffff\1\54\1\72\1\54\2\uffff\2\54\1\uffff\3\54\12\41"+
+            "\1\54\1\uffff\1\54\1\55\3\54\32\41\1\uffff\1\54\1\uffff\3\54"+
+            "\32\41\1\uffff\1\54\1\uffff\1\54",
+            "\1\54\3\uffff\3\54\2\uffff\2\54\1\uffff\3\54\12\41\1\54\1\uffff"+
+            "\1\54\1\55\3\54\32\41\1\uffff\1\54\1\uffff\3\54\32\41\1\uffff"+
+            "\1\73\1\uffff\1\54",
+            "\1\53\3\uffff\3\53\2\uffff\2\53\1\uffff\3\53\12\uffff\1\53\1"+
+            "\uffff\1\53\1\uffff\2\53\1\74\33\uffff\1\53\1\uffff\3\53\33"+
+            "\uffff\1\53\1\uffff\1\53",
+            "\1\53\3\uffff\3\53\2\uffff\2\53\1\uffff\3\53\12\uffff\1\53\1"+
+            "\uffff\1\53\1\uffff\3\53\33\uffff\1\53\1\uffff\3\53\33\uffff"+
+            "\1\53\1\uffff\1\53",
+            "\1\53\3\uffff\3\53\2\uffff\2\53\1\uffff\3\53\12\uffff\1\53\1"+
+            "\uffff\1\53\1\uffff\3\53\33\uffff\1\53\1\uffff\3\53\33\uffff"+
+            "\1\53\1\uffff\1\53",
+            "\1\53\3\uffff\3\53\2\uffff\2\53\1\uffff\3\53\12\uffff\1\53\1"+
+            "\uffff\5\53\33\uffff\1\53\1\uffff\3\53\33\uffff\1\53\1\uffff"+
+            "\1\53",
+            "\1\53\3\uffff\3\53\2\uffff\2\53\1\uffff\3\53\12\uffff\1\53\1"+
+            "\uffff\1\53\1\uffff\3\53\33\uffff\1\53\1\uffff\3\53\33\uffff"+
+            "\1\53\1\uffff\1\53",
             "\1\76",
-            "\1\55\3\uffff\3\55\2\uffff\2\55\1\uffff\3\55\12\41\1\55\1\uffff"+
-            "\1\55\1\uffff\3\55\32\41\1\uffff\1\55\1\uffff\3\55\32\41\1\uffff"+
-            "\1\55\1\uffff\1\77",
-            "\1\54",
-            "\1\43\26\uffff\1\55\3\uffff\3\55\2\uffff\2\55\1\uffff\3\55\12"+
-            "\41\1\55\1\uffff\1\55\1\uffff\3\55\32\41\1\uffff\1\55\1\uffff"+
-            "\3\55\32\41\1\uffff\1\55\1\uffff\1\55",
+            "\1\54\3\uffff\3\54\2\uffff\2\54\1\uffff\3\54\12\41\1\54\1\uffff"+
+            "\1\54\1\uffff\3\54\32\41\1\uffff\1\54\1\uffff\3\54\32\41\1\uffff"+
+            "\1\54\1\uffff\1\77",
+            "\1\53",
+            "\1\43\26\uffff\1\54\3\uffff\3\54\2\uffff\2\54\1\uffff\3\54\12"+
+            "\41\1\54\1\uffff\1\54\1\uffff\3\54\32\41\1\uffff\1\54\1\uffff"+
+            "\3\54\32\41\1\uffff\1\54\1\uffff\1\54",
             "\1\101",
             "\1\102",
             "",
             "",
             "",
-            "\1\55\3\uffff\3\55\2\uffff\2\55\1\uffff\3\55\12\41\1\55\1\uffff"+
-            "\1\55\1\uffff\3\55\32\41\1\uffff\1\55\1\uffff\3\55\32\41\1\uffff"+
-            "\1\55\1\uffff\1\55",
-            "",
-            "",
-            "\1\55\3\uffff\3\55\2\uffff\2\55\1\uffff\3\55\12\41\1\55\1\uffff"+
-            "\1\55\1\53\3\55\32\41\1\uffff\1\55\1\uffff\3\55\32\41\1\uffff"+
-            "\1\55\1\uffff\1\55",
-            "\1\41\3\uffff\3\41\2\uffff\2\41\1\uffff\1\41\1\60\1\41\12\52"+
-            "\1\41\1\uffff\1\41\1\uffff\7\41\1\61\22\41\1\56\2\41\1\uffff"+
-            "\1\41\1\uffff\7\41\1\61\22\41\1\56\2\41\1\uffff\1\41\1\uffff"+
-            "\1\41",
-            "\1\55\3\uffff\3\55\2\uffff\2\55\1\uffff\3\55\12\103\1\55\1\uffff"+
-            "\1\55\1\uffff\3\55\32\41\1\uffff\1\55\1\uffff\3\55\32\41\1\uffff"+
-            "\1\55\1\uffff\1\55",
-            "\1\41\3\uffff\3\41\2\uffff\2\41\1\uffff\1\41\1\60\1\41\12\52"+
-            "\1\41\1\uffff\1\41\1\uffff\7\41\1\61\25\41\1\uffff\1\41\1\uffff"+
-            "\7\41\1\61\25\41\1\uffff\1\41\1\uffff\1\41",
-            "",
-            "",
-            "\1\55\3\uffff\3\55\2\uffff\2\55\1\uffff\3\55\12\41\1\55\1\uffff"+
-            "\1\55\1\uffff\3\55\32\41\1\uffff\1\55\1\uffff\3\55\32\41\1\uffff"+
-            "\1\55\1\uffff\1\55",
-            "\12\104\7\uffff\6\104\32\uffff\6\104",
-            "",
-            "\1\41\3\uffff\3\41\2\uffff\2\41\1\uffff\3\41\12\105\1\41\1\uffff"+
-            "\1\41\1\uffff\7\41\1\106\25\41\1\uffff\1\41\1\uffff\7\41\1\106"+
-            "\25\41\1\uffff\1\41\1\uffff\1\41",
-            "\1\107\1\uffff\1\107\2\uffff\12\110",
-            "",
-            "\1\55\3\uffff\3\55\2\uffff\2\55\1\uffff\3\55\12\41\1\55\1\uffff"+
-            "\1\55\1\53\3\55\32\41\1\uffff\1\55\1\uffff\3\55\32\41\1\uffff"+
-            "\1\55\1\uffff\1\55",
-            "\1\55\3\uffff\3\55\2\uffff\2\55\1\uffff\3\55\12\41\1\55\1\uffff"+
-            "\1\55\1\53\3\55\32\41\1\uffff\1\55\1\uffff\3\55\32\41\1\uffff"+
-            "\1\55\1\uffff\1\55",
-            "\1\55\3\uffff\3\55\2\uffff\2\55\1\uffff\3\55\12\41\1\55\1\uffff"+
-            "\1\55\1\53\3\55\32\41\1\uffff\1\55\1\uffff\3\55\32\41\1\uffff"+
-            "\1\55\1\uffff\1\55",
-            "\1\55\3\uffff\3\55\2\uffff\2\55\1\uffff\3\55\12\41\1\55\1\uffff"+
-            "\1\55\1\53\3\55\32\41\1\uffff\1\55\1\uffff\3\55\32\41\1\uffff"+
-            "\1\55\1\uffff\1\55",
-            "\1\55\3\uffff\3\55\2\uffff\2\55\1\uffff\3\55\12\41\1\55\1\uffff"+
-            "\1\55\1\53\3\55\32\41\1\uffff\1\55\1\uffff\3\55\32\41\1\uffff"+
-            "\1\55\1\uffff\1\55",
-            "\1\55\3\uffff\3\55\2\uffff\2\55\1\uffff\3\55\12\41\1\55\1\uffff"+
-            "\1\55\1\53\3\55\32\41\1\uffff\1\55\1\uffff\3\55\32\41\1\uffff"+
-            "\1\55\1\uffff\1\55",
-            "\1\55\3\uffff\3\55\2\uffff\2\55\1\uffff\3\55\12\41\1\55\1\uffff"+
-            "\1\55\1\53\3\55\32\41\1\uffff\1\55\1\uffff\3\55\32\41\1\uffff"+
-            "\1\55\1\uffff\1\55",
-            "\1\55\3\uffff\3\55\2\uffff\2\55\1\uffff\3\55\12\41\1\55\1\uffff"+
-            "\1\55\1\53\3\55\32\41\1\uffff\1\55\1\uffff\3\55\32\41\1\uffff"+
-            "\1\55\1\uffff\1\55",
-            "\1\55\3\uffff\3\55\2\uffff\2\55\1\uffff\3\55\12\41\1\55\1\uffff"+
-            "\1\55\1\53\3\55\32\41\1\uffff\1\55\1\uffff\3\55\32\41\1\uffff"+
-            "\1\55\1\uffff\1\55",
-            "\1\54\3\uffff\3\54\2\uffff\2\54\1\uffff\3\54\12\uffff\1\54\1"+
-            "\uffff\1\54\1\uffff\3\54\33\uffff\1\54\1\uffff\3\54\33\uffff"+
+            "\1\54\3\uffff\3\54\2\uffff\2\54\1\uffff\3\54\12\41\1\54\1\uffff"+
+            "\1\54\1\uffff\3\54\32\41\1\uffff\1\54\1\uffff\3\54\32\41\1\uffff"+
             "\1\54\1\uffff\1\54",
             "",
+            "",
+            "\1\54\3\uffff\3\54\2\uffff\2\54\1\uffff\3\54\12\41\1\54\1\uffff"+
+            "\1\54\1\55\3\54\32\41\1\uffff\1\54\1\uffff\3\54\32\41\1\uffff"+
+            "\1\54\1\uffff\1\54",
+            "\1\41\3\uffff\3\41\2\uffff\2\41\1\uffff\1\41\1\61\1\41\12\51"+
+            "\1\41\1\uffff\1\41\1\uffff\7\41\1\60\22\41\1\56\2\41\1\uffff"+
+            "\1\41\1\uffff\7\41\1\60\22\41\1\56\2\41\1\uffff\1\41\1\uffff"+
+            "\1\41",
+            "\1\41\3\uffff\3\41\2\uffff\2\41\1\uffff\1\41\1\61\1\41\12\51"+
+            "\1\41\1\uffff\1\41\1\uffff\7\41\1\60\25\41\1\uffff\1\41\1\uffff"+
+            "\7\41\1\60\25\41\1\uffff\1\41\1\uffff\1\41",
+            "\1\54\3\uffff\3\54\2\uffff\2\54\1\uffff\3\54\12\103\1\54\1\uffff"+
+            "\1\54\1\uffff\3\54\32\41\1\uffff\1\54\1\uffff\3\54\32\41\1\uffff"+
+            "\1\54\1\uffff\1\54",
+            "",
+            "\1\54\3\uffff\3\54\2\uffff\2\54\1\uffff\3\54\12\41\1\54\1\uffff"+
+            "\1\54\1\uffff\3\54\32\41\1\uffff\1\54\1\uffff\3\54\32\41\1\uffff"+
+            "\1\54\1\uffff\1\54",
+            "",
+            "\12\104\7\uffff\6\104\32\uffff\6\104",
+            "",
+            "\1\105\1\uffff\1\105\2\uffff\12\106",
+            "\1\41\3\uffff\3\41\2\uffff\2\41\1\uffff\3\41\12\107\1\41\1\uffff"+
+            "\1\41\1\uffff\7\41\1\110\25\41\1\uffff\1\41\1\uffff\7\41\1\110"+
+            "\25\41\1\uffff\1\41\1\uffff\1\41",
+            "",
+            "\1\54\3\uffff\3\54\2\uffff\2\54\1\uffff\3\54\12\41\1\54\1\uffff"+
+            "\1\54\1\55\3\54\32\41\1\uffff\1\54\1\uffff\3\54\32\41\1\uffff"+
+            "\1\54\1\uffff\1\54",
+            "\1\54\3\uffff\3\54\2\uffff\2\54\1\uffff\3\54\12\41\1\54\1\uffff"+
+            "\1\54\1\55\3\54\32\41\1\uffff\1\54\1\uffff\3\54\32\41\1\uffff"+
+            "\1\54\1\uffff\1\54",
+            "\1\54\3\uffff\3\54\2\uffff\2\54\1\uffff\3\54\12\41\1\54\1\uffff"+
+            "\1\54\1\55\3\54\32\41\1\uffff\1\54\1\uffff\3\54\32\41\1\uffff"+
+            "\1\54\1\uffff\1\54",
+            "\1\54\3\uffff\3\54\2\uffff\2\54\1\uffff\3\54\12\41\1\54\1\uffff"+
+            "\1\54\1\55\3\54\32\41\1\uffff\1\54\1\uffff\3\54\32\41\1\uffff"+
+            "\1\54\1\uffff\1\54",
+            "\1\54\3\uffff\3\54\2\uffff\2\54\1\uffff\3\54\12\41\1\54\1\uffff"+
+            "\1\54\1\55\3\54\32\41\1\uffff\1\54\1\uffff\3\54\32\41\1\uffff"+
+            "\1\54\1\uffff\1\54",
+            "\1\54\3\uffff\3\54\2\uffff\2\54\1\uffff\3\54\12\41\1\54\1\uffff"+
+            "\1\54\1\55\3\54\32\41\1\uffff\1\54\1\uffff\3\54\32\41\1\uffff"+
+            "\1\54\1\uffff\1\54",
+            "\1\54\3\uffff\3\54\2\uffff\2\54\1\uffff\3\54\12\41\1\54\1\uffff"+
+            "\1\54\1\55\3\54\32\41\1\uffff\1\54\1\uffff\3\54\32\41\1\uffff"+
+            "\1\54\1\uffff\1\54",
+            "\1\54\3\uffff\3\54\2\uffff\2\54\1\uffff\3\54\12\41\1\54\1\uffff"+
+            "\1\54\1\55\3\54\32\41\1\uffff\1\54\1\uffff\3\54\32\41\1\uffff"+
+            "\1\54\1\uffff\1\54",
+            "\1\54\3\uffff\3\54\2\uffff\2\54\1\uffff\3\54\12\41\1\54\1\uffff"+
+            "\1\54\1\55\3\54\32\41\1\uffff\1\54\1\uffff\3\54\32\41\1\uffff"+
+            "\1\54\1\uffff\1\54",
+            "\1\53\3\uffff\3\53\2\uffff\2\53\1\uffff\3\53\12\uffff\1\53\1"+
+            "\uffff\1\53\1\uffff\3\53\33\uffff\1\53\1\uffff\3\53\33\uffff"+
+            "\1\53\1\uffff\1\53",
+            "",
             "\1\111",
-            "\1\55\3\uffff\3\55\2\uffff\2\55\1\uffff\3\55\12\41\1\55\1\uffff"+
-            "\1\55\1\uffff\3\55\32\41\1\uffff\1\55\1\uffff\3\55\32\41\1\uffff"+
-            "\1\55\1\uffff\1\55",
+            "\1\54\3\uffff\3\54\2\uffff\2\54\1\uffff\3\54\12\41\1\54\1\uffff"+
+            "\1\54\1\uffff\3\54\32\41\1\uffff\1\54\1\uffff\3\54\32\41\1\uffff"+
+            "\1\54\1\uffff\1\54",
             "",
             "\1\112",
             "\1\41\3\uffff\3\41\2\uffff\2\41\1\uffff\16\41\1\uffff\1\41\1"+
@@ -2261,14 +2271,14 @@ public class iokeLexer extends Lexer {
             "\1\41\3\uffff\3\41\2\uffff\2\41\1\uffff\3\41\12\104\1\41\1\uffff"+
             "\1\41\1\uffff\3\41\6\104\24\41\1\uffff\1\41\1\uffff\3\41\6\104"+
             "\24\41\1\uffff\1\41\1\uffff\1\41",
-            "\1\41\3\uffff\3\41\2\uffff\2\41\1\uffff\3\41\12\105\1\41\1\uffff"+
-            "\1\41\1\uffff\7\41\1\106\25\41\1\uffff\1\41\1\uffff\7\41\1\106"+
-            "\25\41\1\uffff\1\41\1\uffff\1\41",
-            "\1\115\1\uffff\1\115\2\uffff\12\116",
-            "\12\110",
-            "\1\41\3\uffff\3\41\2\uffff\2\41\1\uffff\3\41\12\110\1\41\1\uffff"+
+            "\12\106",
+            "\1\41\3\uffff\3\41\2\uffff\2\41\1\uffff\3\41\12\106\1\41\1\uffff"+
             "\1\41\1\uffff\35\41\1\uffff\1\41\1\uffff\35\41\1\uffff\1\41"+
             "\1\uffff\1\41",
+            "\1\41\3\uffff\3\41\2\uffff\2\41\1\uffff\3\41\12\107\1\41\1\uffff"+
+            "\1\41\1\uffff\7\41\1\110\25\41\1\uffff\1\41\1\uffff\7\41\1\110"+
+            "\25\41\1\uffff\1\41\1\uffff\1\41",
+            "\1\115\1\uffff\1\115\2\uffff\12\116",
             "\1\117",
             "\1\41\3\uffff\3\41\2\uffff\2\41\1\uffff\16\41\1\uffff\1\41\1"+
             "\uffff\35\41\1\uffff\1\41\1\uffff\35\41\1\uffff\1\41\1\uffff"+
@@ -2290,34 +2300,34 @@ public class iokeLexer extends Lexer {
             "\1\41"
     };
 
-    static final short[] DFA21_eot = DFA.unpackEncodedString(DFA21_eotS);
-    static final short[] DFA21_eof = DFA.unpackEncodedString(DFA21_eofS);
-    static final char[] DFA21_min = DFA.unpackEncodedStringToUnsignedChars(DFA21_minS);
-    static final char[] DFA21_max = DFA.unpackEncodedStringToUnsignedChars(DFA21_maxS);
-    static final short[] DFA21_accept = DFA.unpackEncodedString(DFA21_acceptS);
-    static final short[] DFA21_special = DFA.unpackEncodedString(DFA21_specialS);
-    static final short[][] DFA21_transition;
+    static final short[] DFA22_eot = DFA.unpackEncodedString(DFA22_eotS);
+    static final short[] DFA22_eof = DFA.unpackEncodedString(DFA22_eofS);
+    static final char[] DFA22_min = DFA.unpackEncodedStringToUnsignedChars(DFA22_minS);
+    static final char[] DFA22_max = DFA.unpackEncodedStringToUnsignedChars(DFA22_maxS);
+    static final short[] DFA22_accept = DFA.unpackEncodedString(DFA22_acceptS);
+    static final short[] DFA22_special = DFA.unpackEncodedString(DFA22_specialS);
+    static final short[][] DFA22_transition;
 
     static {
-        int numStates = DFA21_transitionS.length;
-        DFA21_transition = new short[numStates][];
+        int numStates = DFA22_transitionS.length;
+        DFA22_transition = new short[numStates][];
         for (int i=0; i<numStates; i++) {
-            DFA21_transition[i] = DFA.unpackEncodedString(DFA21_transitionS[i]);
+            DFA22_transition[i] = DFA.unpackEncodedString(DFA22_transitionS[i]);
         }
     }
 
-    class DFA21 extends DFA {
+    class DFA22 extends DFA {
 
-        public DFA21(BaseRecognizer recognizer) {
+        public DFA22(BaseRecognizer recognizer) {
             this.recognizer = recognizer;
-            this.decisionNumber = 21;
-            this.eot = DFA21_eot;
-            this.eof = DFA21_eof;
-            this.min = DFA21_min;
-            this.max = DFA21_max;
-            this.accept = DFA21_accept;
-            this.special = DFA21_special;
-            this.transition = DFA21_transition;
+            this.decisionNumber = 22;
+            this.eot = DFA22_eot;
+            this.eof = DFA22_eof;
+            this.min = DFA22_min;
+            this.max = DFA22_max;
+            this.accept = DFA22_accept;
+            this.special = DFA22_special;
+            this.transition = DFA22_transition;
         }
         public String getDescription() {
             return "1:1: Tokens : ( MultiComment | NewlineComment | OpenSimple | CloseSimple | OpenSquare | CloseSquare | OpenCurly | CloseCurly | Comma | HexInteger | Integer | Real | AssignmentOperator | UnaryOperator | BinaryOperator | Assignment | Identifier | PossibleTerminator | Whitespace );";
