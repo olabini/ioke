@@ -1,0 +1,26 @@
+
+. is cons/pair
+ so, you can write
+ {"a" . "b", "c" . "d"}
+and this will generate the equivalent of
+ {:a => :b, :c => :d} in Ruby
+
+.. and ... is obviously range
+
+Object hierarchy
+(uses : to namespace methods) 
+
+
+BasicObject
+  internal:getSlot
+  internal:setSlot
+
+CoreMethods
+  squareBrackets
+  curlyBrackets 
+  getSlot
+  setSlot
+  ...
+
+Object < BasicObject, CoreMethods
+
