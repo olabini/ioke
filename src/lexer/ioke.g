@@ -57,7 +57,6 @@ import java.util.ArrayList;
         switch(token) {
         case MultiString: return "MultiString";
         case SimpleString: return "SimpleString";
-        case Regexp: return "Regexp";
         case OpenSimple: return "OpenSimple";
         case CloseSimple: return "CloseSimple";
         case OpenSquare: return "OpenSquare";
@@ -84,9 +83,6 @@ MultiString
     | ('%[' ( options {greedy=false;} : .* ) ']') 
     ;
 SimpleString : ('"' ( ('\\' ('"'|'\\')) | '\\'? ~('"'|'\\'))* '"');
-
-Regexp
-    : ('/' ( ('\\' ('/'|'\\')) | '\\'? ~('/'|'\\'))* '/') ('i' | 'x' | 'm')* ;
 
 MultiComment : ('{#' ( options {greedy=false;} : .* ) '#}') {skip();};
 NewlineComment : '#' ( ~NewLine )* NewLine? {$type=PossibleTerminator;setText(";");} ;
