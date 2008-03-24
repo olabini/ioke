@@ -14,6 +14,12 @@ object LexerSpec extends Specification {
   case class Tok(tokenTope: Int, tokenValue: String)
 
   def ident(name: String) = Tok(iokeLexer.Identifier, name)
+  def integer(value: String) = Tok(iokeLexer.Integer, value)
+  def hexInteger(value: String) = Tok(iokeLexer.HexInteger, value)
+  def real(value: String) = Tok(-1, value)
+  def string(value: String) = Tok(-2, value)
+  def triString(value: String) = Tok(-3, value) 
+  def regexp(value: String) = Tok(-4, value)
   def term() = Tok(iokeLexer.PossibleTerminator, ";")
 
   def openSimple() = Tok(iokeLexer.OpenSimple, "(")
@@ -238,6 +244,14 @@ object LexerSpec extends Specification {
         closeSimple
       ))
 
+      lex("foo(abc hah)") must be_==(tokens(
+        ident("foo"),
+        openSimple,
+        ident("abc"),
+        ident("hah"),
+        closeSimple
+      ))
+
       lex("foo(qux,bar)") must be_==(tokens(
         ident("foo"),
         openSimple,
@@ -249,13 +263,125 @@ object LexerSpec extends Specification {
 
     }
 
-    "handle lexings of brackets" in {}
-    "handle lexings of numbers" in {}
-    "handle lexings of hex numbers" in {}
-    "handle lexings of floats" in {}
-    "handle lexings of strings" in {}
-    "handle lexings of comments" in {}
-    "handle lexings of tri-strings" in {}
+    "handle lexings of numbers" in {
+      lex("0") must be_==(tokens(
+        integer("0")
+      ))
+
+      lex("-1") must be_==(tokens(
+        integer("-1")
+      ))
+
+      lex("+1") must be_==(tokens(
+        integer("+1")
+      ))
+
+      lex("1234567890") must be_==(tokens(
+        integer("1234567890")
+      ))
+
+      lex("1\n1") must be_==(tokens(
+        integer("1"),
+        term,
+        integer("1")
+      ))
+    }
+
+    "handle lexings of hex numbers" in {
+      lex("0x0") must be_==(tokens(
+        hexInteger("0x0")
+      ))
+
+      lex("-0x1") must be_==(tokens(
+        hexInteger("-0x1")
+      ))
+
+      lex("+0x1") must be_==(tokens(
+        hexInteger("+0x1")
+      ))
+
+      lex("0X1") must be_==(tokens(
+        hexInteger("0X1")
+      ))
+
+      lex("0x1234567890ABCDEFabcdef") must be_==(tokens(
+        hexInteger("0x1234567890ABCDEFabcdef")
+      ))
+    }
+
+    "handle lexings of floats" in {
+      lex("0.0") must be_==(tokens(
+        real("0.0")
+      ))
+
+      lex("-0.0") must be_==(tokens(
+        real("-0.0")
+      ))
+
+      lex("+0.0") must be_==(tokens(
+        real("+0.0")
+      ))
+
+      // TODO: more tests
+    }
+
+    "handle lexings of strings" in {
+      lex("\"\"") must be_==(tokens(
+        string("\"\"")
+      ))
+
+      lex("\"a\"") must be_==(tokens(
+        string("\"a\"")
+      ))
+
+      // TODO: more tests
+    }
+
+    "handle lexings of comments" in {
+      lex("a // a comment\nb") must be_==(tokens(
+        ident("a"),
+        term,
+        ident("b")
+      ))
+
+      lex("a/* another comment */b") must be_==(tokens(
+        ident("a"),
+        ident("b")
+      ))
+
+      lex("a # one more comment\nb") must be_==(tokens(
+        ident("a"),
+        term,
+        ident("b")
+      ))
+    }
+
+    "handle lexings of tri-strings" in {
+      lex("\"\"\"\"\"\"") must be_==(tokens(
+        triString("\"\"\"\"\"\"")
+      ))
+
+      lex("\"\"\"a\"\"\"") must be_==(tokens(
+        triString("\"\"\"a\"\"\"")
+      ))
+
+      // TODO: more tests
+    }
+
+    "handle lexings of regexp" in {
+      lex("//") must be_==(tokens(
+        regexp("//")
+      ))
+
+      lex("/a/") must be_==(tokens(
+        regexp("/a/")
+      ))
+
+      lex("/a/i") must be_==(tokens(
+        regexp("/a/i")
+      ))
+      // TODO: more tests
+    }
 
     "handle terminations correctly" in {
       lex("foo\nbar") must be_==(tokens(

@@ -73,7 +73,11 @@ CloseCurly : '}' ;
 
 Comma : (',' NewLine*) {setText(",");};
 
-Identifier : ((Letter | Digit | IdentChars))* 
+HexInteger : '0' ('x' | 'X') ;
+
+Integer : '0' ;
+
+Identifier : ((Letter | Digit | IdentChars)+) 
     | '=' 
     | '==' 
     | '==='
@@ -83,10 +87,6 @@ Identifier : ((Letter | Digit | IdentChars))*
 PossibleTerminator : ((';' | NewLine)+) {setText(";");};
 
 Whitespace : Separator {skip();};
-
-
-
-
 
 fragment
 Letter : 'a' .. 'z' | 'A' .. 'Z' ;
@@ -98,7 +98,10 @@ fragment
 Digits : Digit+ ;
 
 fragment
-Separator : (' ' | '\u000c' | '\u0009' | '\u000b' | '\\' '\u000a' )* ;
+HexLetter : 'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'A' | 'B' | 'C' | 'D' | 'E' | 'F' ;
+
+fragment
+Separator : (' ' | '\u000c' | '\u0009' | '\u000b' | '\\' '\u000a' )+ ;
 
 fragment
 IdentChars : ('!' | '?' | '@' | '&' | '%' | '.' | '|' | '<' | '>' | '/' | '+' | '-' | '_' | ':' | '\\' | '*' | '^' | '~' | '`' | '\'') ;
