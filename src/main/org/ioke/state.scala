@@ -5,8 +5,8 @@ import scala.collection.mutable
 class iokeState {
   val symbols = mutable.Map[String, iokeObject]()
   var objectProto : iokeObject = iokeObject.prototype(this)
-  var arrayProto : iokeObject = ArrayData.prototype(this)
   var symbolProto : iokeObject = SymbolData.prototype(this)
+  var arrayProto : iokeObject = ArrayData.prototype(this)
 
   var activateSymbol : iokeObject = sym("activate")
   var forwardSymbol : iokeObject = sym("forward")
@@ -20,8 +20,15 @@ class iokeState {
 
   var semicolon : iokeObject = sym(";")
   
+  var stringProto = objectProto.CLONE
+  stringProto.meta.name = "String"
+  stringProto.setSlotTo(sym("type"), sym("String"))
+
+  // var bufferProto = BufferData.prototype(this)
+  
+  symbolProto.setPrototypeTo(stringProto)
+
   arrayProto.setPrototypeTo(objectProto)
-  symbolProto.setPrototypeTo(objectProto)
 
   var protos = objectProto.CLONE
   var core = objectProto.CLONE

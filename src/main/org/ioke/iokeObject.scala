@@ -4,7 +4,7 @@ import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
 
 // Tag in Io
-class Meta(val name : String, val state : iokeState) {
+class Meta(var name : String, val state : iokeState) {
   var cloneFunc : (iokeObject) => iokeObject = _
   var performFunc : Object = _
   var activateFunc : Object = _

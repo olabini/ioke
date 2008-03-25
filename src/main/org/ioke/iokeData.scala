@@ -48,7 +48,7 @@ case class SymbolData(var value : String) extends iokeData {
 }
 
 // mutable
-case class StringData(val value : StringBuffer) extends iokeData
+case class BufferData(val value : StringBuffer) extends iokeData
 
 object ArrayData {
   val rawClone = (prototype: iokeObject) => { 
