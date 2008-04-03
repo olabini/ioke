@@ -1,4 +1,3 @@
-
 # at-exit is an equivalent of the Ruby at_exit hook, that will add a lexical block
 # to be executed at the end of a program run.
 
@@ -22,7 +21,6 @@ Test = Object class-like(
 
    run! = method(
      # run all the tests in "Test groups"
-
 
      Test run? = false
    )

@@ -96,9 +96,9 @@ CloseCurly : '}' ;
 
 Comma : (',' NewLine*) {setText(",");};
 
-HexInteger : ('+'|'-')? '0' ('x' | 'X') (Digit | HexLetter)+;
+HexInteger : ('+'|'-')? '0' ('x' | 'X') (Digit | HexLetter | '_')+;
 
-Integer : ('+'|'-')? Digits ;
+Integer : ('+'|'-')? Digit (Digit | '_')* ;
 
 Real
     :   ('+'|'-')? 

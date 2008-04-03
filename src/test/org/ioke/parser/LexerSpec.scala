@@ -318,6 +318,22 @@ object LexerSpec extends Specification {
         integer("1234567890")
       ))
 
+      lex("_1") must be_==(tokens(
+        ident("_1")
+      ))
+
+      lex("1_") must be_==(tokens(
+        integer("1_")
+      ))
+
+      lex("1_2___________345") must be_==(tokens(
+        integer("1_2___________345")
+      ))
+
+      lex("1_000_000_000") must be_==(tokens(
+        integer("1_000_000_000")
+      ))
+
       lex("1\n1") must be_==(tokens(
         integer("1"),
         term,
@@ -340,6 +356,18 @@ object LexerSpec extends Specification {
 
       lex("0X1") must be_==(tokens(
         hexInteger("0X1")
+      ))
+
+      lex("0X_1") must be_==(tokens(
+        hexInteger("0X_1")
+      ))
+
+      lex("_0X1") must be_==(tokens(
+        ident("_0X1")
+      ))
+
+      lex("0X_1_2_3_4_5_6_7_8_9_0_A_B_C_D_E_F_") must be_==(tokens(
+        hexInteger("0X_1_2_3_4_5_6_7_8_9_0_A_B_C_D_E_F_")
       ))
 
       lex("0x1234567890ABCDEFabcdef") must be_==(tokens(

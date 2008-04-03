@@ -1,8 +1,6 @@
-
 {# The following reference to Test will automatically do something akin to 
       <code>use test</code>
    where use is a macro that expands to something nifty #}
-
 
 # ensure should be possible to use anywhere, and will directly run
 # the test assertion at that point if it's not within a Test block
