@@ -106,6 +106,12 @@
                             "chain"
                             "create"
                             "new"
+                            "do"
+                            "each"
+                            "call"
+                            "debug"
+                            "debug-name"
+                            "println"
                             )
   "ioke mode slot names")
 
@@ -248,8 +254,8 @@
 	  (end-of-line)
 	  (setq end-point (point))
 	  (beginning-of-line)
-	  (setq current-close-flag (looking-at "^[ \\t)]*)[ \\t)]*$"))
-	  (setq current-close-open-flag (looking-at "^[[:space:]]*).*([[:space:]]*$"))
+	  (setq current-close-flag (looking-at "^[]} \\t)]*)[]} \\t)]*$"))
+	  (setq current-close-open-flag (looking-at "^[[:space:]]*[]})].*[({[][[:space:]]*$"))
 	  (setq start-point (point))
 	  (setq current-depth (car (parse-partial-sexp start-point end-point)))
 	  ; and the previous non-blank line
@@ -262,8 +268,8 @@
 	  (end-of-line)
 	  (setq end-point (point))
 	  (beginning-of-line)
-	  (setq last-close-flag (looking-at "^[ \\t)]*)[ \\t)]*$"))
-	  (setq last-close-open-flag (looking-at "^[[:space:]]*).*([[:space:]]*$"))
+	  (setq last-close-flag (looking-at "^[]} \\t)]*)[]} \\t)]*$"))
+	  (setq last-close-open-flag (looking-at "^[[:space:]]*[]})].*[({[][[:space:]]*$"))
 	  (setq start-point (point))
 	  (setq last-depth (car (parse-partial-sexp start-point end-point)))))
       (let ((depth last-depth))
