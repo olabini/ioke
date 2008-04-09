@@ -112,6 +112,9 @@
                             "debug"
                             "debug-name"
                             "println"
+                            "message"
+                            "macro"
+                            "use"
                             )
   "ioke mode slot names")
 
