@@ -1,4 +1,4 @@
-// $ANTLR 3.0.1 ioke.g 2008-03-24 22:26:14
+// $ANTLR 3.0.1 ioke.g 2008-04-09 11:22:44
 
 package org.ioke.parser;
 
@@ -13,7 +13,7 @@ import org.antlr.runtime.tree.*;
 
 public class iokeParser extends Parser {
     public static final String[] tokenNames = new String[] {
-        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "MultiString", "SimpleString", "MultiComment", "NewLine", "NewlineComment", "OpenSimple", "CloseSimple", "OpenSquare", "CloseSquare", "OpenCurly", "CloseCurly", "Comma", "Digit", "HexLetter", "HexInteger", "Digits", "Integer", "Exponent", "Real", "AssignmentOperator", "UnaryOperator", "OpChars", "BinaryOperator", "Assignment", "IdentStart", "IdentChars", "Identifier", "PossibleTerminator", "Separator", "Whitespace", "Letter", "Tokens"
+        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "MultiString", "SimpleString", "MultiComment", "NewLine", "NewlineComment", "OpenSimple", "CloseSimple", "OpenSquare", "CloseSquare", "OpenCurly", "CloseCurly", "Comma", "Digit", "HexLetter", "HexInteger", "Integer", "Digits", "Exponent", "Real", "AssignmentOperator", "UnaryOperator", "OpChars", "BinaryOperator", "Assignment", "IdentStart", "IdentChars", "Identifier", "PossibleTerminator", "Separator", "Whitespace", "Letter", "Tokens"
     };
     public static final int MultiString=4;
     public static final int Assignment=27;
@@ -33,8 +33,8 @@ public class iokeParser extends Parser {
     public static final int AssignmentOperator=23;
     public static final int SimpleString=5;
     public static final int OpenSquare=11;
-    public static final int Digits=19;
     public static final int CloseSimple=10;
+    public static final int Digits=20;
     public static final int NewlineComment=8;
     public static final int HexInteger=18;
     public static final int Real=22;
@@ -46,7 +46,7 @@ public class iokeParser extends Parser {
     public static final int OpenCurly=13;
     public static final int CloseSquare=12;
     public static final int Letter=34;
-    public static final int Integer=20;
+    public static final int Integer=19;
     public static final int PossibleTerminator=31;
 
         public iokeParser(TokenStream input) {

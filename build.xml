@@ -80,6 +80,10 @@
       <classpath refid="test.classpath"/> 
       <formatter type="brief" usefile="false" /> 
       <test name="org.ioke.parser.LexerSpecTest"/> 
+      <test name="org.ioke.StateSpecTest"/> 
+      <test name="org.ioke.MetaSpecTest"/> 
+      <test name="org.ioke.ObjectSpecTest"/> 
+      <test name="org.ioke.DataSpecTest"/> 
     </junit>
   </target>
 

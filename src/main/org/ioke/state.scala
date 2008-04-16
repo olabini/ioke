@@ -3,6 +3,9 @@ package org.ioke
 import scala.collection.mutable
 
 class iokeState {
+  override def toString() = "iokeState"
+  def debugString() = "#<iokeState>"
+
   val symbols = mutable.Map[String, iokeObject]()
   var objectProto : iokeObject = iokeObject.prototype(this)
   var symbolProto : iokeObject = SymbolData.prototype(this)
@@ -55,7 +58,7 @@ class iokeState {
   core.setSlotTo(sym("true"), iokeTrue)
   iokeTrue.setSlotTo(sym("type"), sym("true"))
 
-  var iokeFalse : iokeObject = _
+  var iokeFalse : iokeObject = objectProto.CLONE 
   core.setSlotTo(sym("false"), iokeFalse)
   iokeFalse.setSlotTo(sym("false"), sym("false"))
 

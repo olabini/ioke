@@ -9,6 +9,8 @@ class Meta(var name : String, val state : iokeState) {
   var performFunc : Object = _
   var activateFunc : Object = _
   var compareFunc : Object = _
+
+  def debugString() = ""
 }
 
 object iokeObject {
@@ -36,7 +38,7 @@ object iokeObject {
 
 class iokeObject {
   var meta : Meta = _
-  var slots : mutable.Map[iokeObject, iokeObject] = _
+  var slots = mutable.Map.empty[iokeObject, iokeObject]
   var prototypes = new ArrayBuffer[iokeObject]
   var data : iokeData = _
 
