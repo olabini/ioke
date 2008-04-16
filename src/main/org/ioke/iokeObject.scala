@@ -10,9 +10,55 @@ class Meta(var name : String, val state : iokeState) {
   var activateFunc : Object = _
   var compareFunc : Object = _
 
-  def debugString() = ""
-}
+  override def toString() = "Meta(" + (if(name == null) { "<anonymous>" } else { name }) + ")"
+  override def equals(other: Any) = other match {
+    case that: Meta => {
+      this.name == that.name &&
+      this.state == that.state &&
+      this.cloneFunc == that.cloneFunc &&
+      this.performFunc == that.performFunc &&
+      this.activateFunc == that.activateFunc &&
+      this.compareFunc == that.compareFunc
+    }
+    case _ => false
+  }
 
+  override def hashCode() = {
+    var h = 0
+    if(null != name) {
+      h = h + name.hashCode << 0
+    }
+
+    if(null != state) {
+      h = h + state.hashCode << 0
+    }
+
+    if(null != cloneFunc) {
+      h = h + cloneFunc.hashCode << 0
+    }
+
+    if(null != performFunc) {
+      h = h + performFunc.hashCode << 0
+    }
+
+    if(null != activateFunc) {
+      h = h + activateFunc.hashCode << 0
+    }
+
+    if(null != compareFunc) {
+      h = h + compareFunc.hashCode << 0
+    }
+    h
+  }
+
+  def debugString() = {
+    if(name == null) {
+      "Meta(name=null)"
+    } else {
+      "Meta(name=\"" + name + "\")"
+    }
+  }
+}
 object iokeObject {
   val rawClone = (proto: iokeObject) => { 
     proto.rawClonePrimitive
@@ -65,4 +111,34 @@ class iokeObject {
   }
 
   def setSlotTo(key : iokeObject, value : iokeObject) = slots += Pair(key, value)
+
+  override def toString() = if(meta == null) { "<anonymous>" } else { meta.name }
+  override def equals(other: Any) = other match {
+    case that: iokeObject => {
+      if(null == data) {
+        this eq that
+      } else {
+        data.equals(that.data)
+      }
+    }
+    case _ => false
+  }
+
+  override def hashCode() = {
+    var h = 0
+    if(null == data) {
+      h = super.hashCode()
+    } else {
+      h = data.hashCode()
+    }
+    h
+  }
+
+  def debugString() = {
+    "#<Object" + 
+    (if(null!=meta){":" + meta.name}else{""}) + 
+    " slots=" + slots.mkString("[",",","]") + 
+    " prototypes=" + prototypes.mkString("[",",","]") + 
+    " data=" + data + ">"
+  }
 }

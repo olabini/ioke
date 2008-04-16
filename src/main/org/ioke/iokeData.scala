@@ -4,6 +4,13 @@ import scala.collection.mutable.ArrayBuffer
 
 case class iokeData {
   override def clone() = iokeData()
+
+  override def equals(other: Any) = other match {
+    case that: iokeData => {
+      this eq that
+    }
+    case _ => false
+  }
 }
 
 case class MessageData(name : iokeObject, 
@@ -45,10 +52,38 @@ object SymbolData {
 // immutable
 case class SymbolData(var value : String) extends iokeData {
   override def clone() = SymbolData(value)
+
+  override def toString() = value
+  def debugString() = "\"" + value + "\""
+  override def equals(other: Any) = other match {
+    case that: SymbolData => {
+      value.equals(that.value)
+    }
+    case _ => false
+  }
+
+  override def hashCode() = {
+    value.hashCode
+  }
 }
 
 // mutable
-case class BufferData(val value : StringBuffer) extends iokeData
+case class BufferData(val value : StringBuffer) extends iokeData {
+  def this(value : String) = this(new StringBuffer(value))
+
+  override def toString() = value.toString
+  def debugString() = "Buffer(\"" + value + "\")"
+  override def equals(other: Any) = other match {
+    case that: BufferData => {
+      value.toString.equals(that.value.toString)
+    }
+    case _ => false
+  }
+
+  override def hashCode() = {
+    value.toString.hashCode
+  }
+}
 
 object ArrayData {
   val rawClone = (prototype: iokeObject) => { 

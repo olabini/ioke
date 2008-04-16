@@ -66,7 +66,49 @@ object MetaSpec extends Specification {
     }
 
     "have a good hashcode method" in {
-      "TODO" must be_==("implemented")
+      val s = new iokeState
+      val m = new Meta("abc", s).hashCode
+      m must be_==(m)
+      new Meta("abc", s).hashCode must be_==(m)
+      new Meta("foo", s).hashCode mustNot be_==(m)
+      new Meta("abc", new iokeState).hashCode mustNot be_==(m)
+
+      val m2 = new Meta("abc", s)
+      val func = (inp: iokeObject) => inp
+      m2.cloneFunc = func
+
+      val m3 = new Meta("abc", s)
+      m3.cloneFunc = func
+
+      m2.hashCode must be_==(m3.hashCode)
+      m2.hashCode mustNot be_==(m)
+
+      val m4 = new Meta("abc", s)
+      m4.performFunc = func
+
+      val m5 = new Meta("abc", s)
+      m5.performFunc = func
+
+      m4.hashCode must be_==(m5.hashCode)
+      m4.hashCode mustNot be_==(m)      
+
+      val m6 = new Meta("abc", s)
+      m6.activateFunc = func
+
+      val m7 = new Meta("abc", s)
+      m7.activateFunc = func
+
+      m6.hashCode must be_==(m7.hashCode)
+      m6.hashCode mustNot be_==(m)      
+
+      val m8 = new Meta("abc", s)
+      m8.compareFunc = func
+
+      val m9 = new Meta("abc", s)
+      m9.compareFunc = func
+
+      m8.hashCode must be_==(m9.hashCode)
+      m8.hashCode mustNot be_==(m)      
     }
   }
 }

@@ -48,37 +48,57 @@ object DataSpec extends Specification {
 
   "SymbolData" should {
     "have a good string representation" in {
-      "TODO" must be_==("implemented")
+      new SymbolData("foo").toString must be_==("foo")
+      new SymbolData("123").toString must be_==("123")
+      new SymbolData("###").toString must be_==("###")
     }
 
     "have a good debug representation" in {
-      "TODO" must be_==("implemented")
+      new SymbolData("foo").debugString must be_==("\"foo\"")
+      new SymbolData("123").debugString must be_==("\"123\"")
+      new SymbolData("###").debugString must be_==("\"###\"")
     }
 
     "have a good equals method" in {
-      "TODO" must be_==("implemented")
+      val s = new SymbolData("foo")
+      s must be_==(s)
+      new SymbolData("bar") mustNot be_==(s)
+      new SymbolData("foo") must be_==(s)
     }
 
     "have a good hashcode method" in {
-      "TODO" must be_==("implemented")
+      val s = new SymbolData("foo")
+      s.hashCode must be_==(s.hashCode)
+      new SymbolData("bar").hashCode mustNot be_==(s.hashCode)
+      new SymbolData("foo").hashCode must be_==(s.hashCode)
     }
   }
 
   "BufferData" should {
     "have a good string representation" in {
-      "TODO" must be_==("implemented")
+      new BufferData("foo").toString must be_==("foo")
+      new BufferData("123").toString must be_==("123")
+      new BufferData("###").toString must be_==("###")
     }
 
     "have a good debug representation" in {
-      "TODO" must be_==("implemented")
+      new BufferData("foo").debugString must be_==("Buffer(\"foo\")")
+      new BufferData("123").debugString must be_==("Buffer(\"123\")")
+      new BufferData("###").debugString must be_==("Buffer(\"###\")")
     }
 
     "have a good equals method" in {
-      "TODO" must be_==("implemented")
+      val s = new BufferData("foo")
+      s must be_==(s)
+      new BufferData("bar") mustNot be_==(s)
+      new BufferData("foo") must be_==(s)
     }
 
     "have a good hashcode method" in {
-      "TODO" must be_==("implemented")
+      val s = new BufferData("foo")
+      s.hashCode must be_==(s.hashCode)
+      new BufferData("bar").hashCode mustNot be_==(s.hashCode)
+      new BufferData("foo").hashCode must be_==(s.hashCode)
     }
   }
 
