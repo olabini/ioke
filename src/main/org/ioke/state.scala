@@ -10,6 +10,7 @@ class iokeState {
   var objectProto : iokeObject = iokeObject.prototype(this)
   var symbolProto : iokeObject = SymbolData.prototype(this)
   var arrayProto : iokeObject = ArrayData.prototype(this)
+  var messageProto : iokeObject = MessageData.prototype(this)
 
   var activateSymbol : iokeObject = sym("activate")
   var forwardSymbol : iokeObject = sym("forward")
@@ -48,6 +49,7 @@ class iokeState {
   core.setSlotTo(sym("Object"), objectProto)
   core.setSlotTo(sym("Array"), arrayProto)
   core.setSlotTo(sym("Symbol"), symbolProto)
+  core.setSlotTo(sym("Message"), messageProto)
 
 //  var localsProto : iokeObject = objectProto.CLONE
 
@@ -79,4 +81,9 @@ class iokeState {
   
   //Equivalent of IoMessage_newWithName_
   def msg(value: String) : iokeObject = null  
+  def msg(value: MessageData) : iokeObject = {
+    val o = messageProto.CLONE
+    o.data = value
+    o
+  }
 }

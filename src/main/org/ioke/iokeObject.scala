@@ -112,7 +112,13 @@ class iokeObject {
 
   def setSlotTo(key : iokeObject, value : iokeObject) = slots += Pair(key, value)
 
-  override def toString() = if(meta == null) { "<anonymous>" } else { meta.name }
+  override def toString() = {
+    if(data == null) {
+      if(meta == null) { "<anonymous>" } else { meta.name }
+    } else {
+      data.toString
+    }
+  }
   override def equals(other: Any) = other match {
     case that: iokeObject => {
       if(null == data) {
