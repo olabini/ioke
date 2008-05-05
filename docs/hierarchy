@@ -1,4 +1,34 @@
 Object hierarchy
 ----------------
 
+BasicObject       -> BasicObject
+TopLevel          -> BasicObject
+Core              -> BasicObject
+Object            -> BasicObject, TopLevel, Core
+
+Message           -> Object
+
+Sequence          -> Object, Enumerable
+MutableSequence   -> Sequence
+
+Array             -> MutableSequence
+
+String            -> MutableSequence
+Symbol            -> Sequence
+
+Hash              -> Object, Enumerable
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
