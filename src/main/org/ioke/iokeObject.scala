@@ -58,6 +58,15 @@ class Meta(var name : String, val state : iokeState) {
       "Meta(name=\"" + name + "\")"
     }
   }
+
+  def copy(newName: String) = {
+    val n = new Meta(newName, state)
+    n.cloneFunc = this.cloneFunc
+    n.performFunc = this.performFunc
+    n.activateFunc = this.activateFunc
+    n.compareFunc = this.compareFunc
+    n
+  }
 }
 object iokeObject {
   val rawClone = (proto: iokeObject) => { 
@@ -76,7 +85,7 @@ object iokeObject {
   }
 
   def newMeta(state: iokeState) : Meta = {
-    val meta = new Meta("Object", state)
+    val meta = new Meta("BasicObject", state)
     meta.cloneFunc = rawClone
     meta
   }
@@ -98,6 +107,12 @@ class iokeObject {
     meta.cloneFunc(this)
   }
 
+  def CLONE_AS(name: String) : iokeObject = {
+    val v = meta.cloneFunc(this)
+    v.meta = v.meta.copy(name)
+    v
+  }
+
   def setPrototypeTo(prototype : iokeObject) : Unit = {
     prototypes.clear
     prototypes += prototype
@@ -111,6 +126,7 @@ class iokeObject {
   }
 
   def setSlotTo(key : iokeObject, value : iokeObject) = slots += Pair(key, value)
+  def getSlot(key : iokeObject) = slots(key)
 
   override def toString() = {
     if(data == null) {

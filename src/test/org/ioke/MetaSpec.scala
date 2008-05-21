@@ -110,5 +110,17 @@ object MetaSpec extends Specification {
       m8.hashCode must be_==(m9.hashCode)
       m8.hashCode mustNot be_==(m)      
     }
+
+    "have a copy method that works correctly" in {
+      val s = new iokeState
+      val m = new Meta("first", s)
+      val c = m.copy("second")
+      c.state must be_==(s)
+      c.name must be_==("second")
+      c.cloneFunc must be_==(m.cloneFunc)
+      c.performFunc must be_==(m.performFunc)
+      c.activateFunc must be_==(m.activateFunc)
+      c.compareFunc must be_==(m.compareFunc)
+    }
   }
 }

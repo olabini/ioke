@@ -32,6 +32,14 @@ object MessageData {
     self
   }
 
+  def prototype_from(prototype : iokeObject) : iokeObject = {
+    val self = prototype.CLONE_AS("Message")
+    self.meta.cloneFunc = rawClone
+//    self.meta.compareFunc = compare
+    self.data = SymbolData("")
+    self
+  }
+
   def newMeta(state: iokeState) : Meta = {
     val meta = new Meta("Message", state)
     meta.cloneFunc = rawClone
@@ -89,6 +97,14 @@ object SymbolData {
     self
   }
 
+  def prototype_from(prototype : iokeObject) : iokeObject = {
+    val self = prototype.CLONE_AS("Symbol")
+    self.meta.cloneFunc = rawClone
+//    self.meta.compareFunc = compare
+    self.data = SymbolData("")
+    self
+  }
+
   def newMeta(state: iokeState) : Meta = {
     val meta = new Meta("Symbol", state)
     meta.cloneFunc = rawClone
@@ -121,14 +137,44 @@ case class SymbolData(var value : String) extends iokeData {
   }
 }
 
+object StringData {
+  val rawClone = (prototype: iokeObject) => { 
+    val self = prototype.rawClonePrimitive
+    self.data = prototype.data.clone
+    self
+  }
+
+  def prototype(state : iokeState) : iokeObject = {
+    val self = iokeObject.createNew(state)
+    self.meta = newMeta(state)
+    self.data = StringData(new StringBuffer)
+    self
+  }
+
+  def prototype_from(prototype : iokeObject) : iokeObject = {
+    val self = prototype.CLONE_AS("String")
+    self.meta.cloneFunc = rawClone
+//    self.meta.compareFunc = compare
+    self.data = StringData(new StringBuffer)
+    self
+  }
+
+  def newMeta(state: iokeState) : Meta = {
+    val meta = new Meta("String", state)
+    meta.cloneFunc = rawClone
+//    meta.compareFunc = compare
+    meta
+  }
+}
+
 // mutable
-case class BufferData(val value : StringBuffer) extends iokeData {
+case class StringData(val value : StringBuffer) extends iokeData {
   def this(value : String) = this(new StringBuffer(value))
 
   override def toString() = value.toString
   override def debugString() = "Buffer(\"" + value + "\")"
   override def equals(other: Any) = other match {
-    case that: BufferData => {
+    case that: StringData => {
       value.toString.equals(that.value.toString)
     }
     case _ => false
@@ -149,6 +195,14 @@ object ArrayData {
   def prototype(state : iokeState) : iokeObject = {
     val self = iokeObject.createNew(state)
     self.meta = newMeta(state)
+    self.data = ArrayData(new ArrayBuffer[iokeObject])
+    self
+  }
+
+  def prototype_from(prototype : iokeObject) : iokeObject = {
+    val self = prototype.CLONE_AS("Array")
+    self.meta.cloneFunc = rawClone
+//    self.meta.compareFunc = compare
     self.data = ArrayData(new ArrayBuffer[iokeObject])
     self
   }

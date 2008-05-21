@@ -187,31 +187,31 @@ object DataSpec extends Specification {
     }
   }
 
-  "BufferData" should {
+  "StringData" should {
     "have a good string representation" in {
-      new BufferData("foo").toString must be_==("foo")
-      new BufferData("123").toString must be_==("123")
-      new BufferData("###").toString must be_==("###")
+      new StringData("foo").toString must be_==("foo")
+      new StringData("123").toString must be_==("123")
+      new StringData("###").toString must be_==("###")
     }
 
     "have a good debug representation" in {
-      new BufferData("foo").debugString must be_==("Buffer(\"foo\")")
-      new BufferData("123").debugString must be_==("Buffer(\"123\")")
-      new BufferData("###").debugString must be_==("Buffer(\"###\")")
+      new StringData("foo").debugString must be_==("Buffer(\"foo\")")
+      new StringData("123").debugString must be_==("Buffer(\"123\")")
+      new StringData("###").debugString must be_==("Buffer(\"###\")")
     }
 
     "have a good equals method" in {
-      val s = new BufferData("foo")
+      val s = new StringData("foo")
       s must be_==(s)
-      new BufferData("bar") mustNot be_==(s)
-      new BufferData("foo") must be_==(s)
+      new StringData("bar") mustNot be_==(s)
+      new StringData("foo") must be_==(s)
     }
 
     "have a good hashcode method" in {
-      val s = new BufferData("foo")
+      val s = new StringData("foo")
       s.hashCode must be_==(s.hashCode)
-      new BufferData("bar").hashCode mustNot be_==(s.hashCode)
-      new BufferData("foo").hashCode must be_==(s.hashCode)
+      new StringData("bar").hashCode mustNot be_==(s.hashCode)
+      new StringData("foo").hashCode must be_==(s.hashCode)
     }
   }
 

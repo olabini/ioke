@@ -83,6 +83,7 @@
       <test name="org.ioke.StateSpecTest"/> 
       <test name="org.ioke.MetaSpecTest"/> 
       <test name="org.ioke.ObjectSpecTest"/> 
+      <test name="org.ioke.CoreClassesSpecTest"/> 
       <test name="org.ioke.HierarchySpecTest"/> 
       <test name="org.ioke.DataSpecTest"/> 
     </junit>
