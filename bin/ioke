@@ -1,0 +1,199 @@
+#!/bin/bash
+# -----------------------------------------------------------------------------
+# ioke - Start Script for the Ioke interpreter
+#
+# script totally stolen from JRuby
+#
+# Environment Variable Prequisites
+#
+#   IOKE_OPTS    (Optional) Default Ioke command line args
+#
+#   JAVA_HOME     Must point at your Java Development Kit installation.
+#
+# -----------------------------------------------------------------------------
+
+cygwin=false
+
+# ----- Identify OS we are running under --------------------------------------
+case "`uname`" in
+CYGWIN*) cygwin=true
+esac
+
+# ----- Verify and Set Required Environment Variables -------------------------
+
+## resolve links - $0 may be a link to  home
+PRG=$0
+progname=`basename "$0"`
+
+while [ -h "$PRG" ] ; do
+  ls=`ls -ld "$PRG"`
+  link=`expr "$ls" : '.*-> \(.*\)$'`
+  if expr "$link" : '.*/.*' > /dev/null; then
+  PRG="$link"
+  else
+  PRG="`dirname $PRG`/$link"
+  fi
+done
+
+IOKE_HOME_1=`dirname "$PRG"`           # the ./bin dir
+IOKE_HOME=`dirname "$IOKE_HOME_1"`  # the . dir
+
+if [ -z "$IOKE_OPTS" ] ; then
+  IOKE_OPTS=""
+fi
+
+if [ -z "$JAVA_HOME" ] ; then
+  JAVA_CMD='java'
+else
+  if $cygwin; then
+    JAVA_HOME=`cygpath -u "$JAVA_HOME"`
+  fi
+  JAVA_CMD="$JAVA_HOME/bin/java"
+fi
+
+# ----- Set Up The Boot Classpath -------------------------------------------
+
+CP_DELIMETER=":"
+
+# add jruby jars for command-line execution
+for j in "$IOKE_HOME"/lib/dist/ioke*.jar; do
+    if [ "$IOKE_CP" ]; then
+        IOKE_CP="$IOKE_CP$CP_DELIMETER$j"
+        else
+        IOKE_CP="$j"
+    fi
+done
+
+if $cygwin; then
+    IOKE_CP=`cygpath -p -w "$IOKE_CP"`
+fi
+
+# ----- Set Up The System Classpath -------------------------------------------
+
+    # add other jars in lib to CP for command-line execution
+    for j in "$IOKE_HOME"/lib/release/*.jar; do
+        if [ "$CP" ]; then
+            CP="$CP$CP_DELIMETER$j"
+            else
+            CP="$j"
+        fi
+    done
+
+    if $cygwin; then
+	CP=`cygpath -p -w "$CP"`
+    fi
+
+# ----- Execute The Requested Command -----------------------------------------
+
+if [ -z "$JAVA_MEM" ] ; then
+  JAVA_MEM=-Xmx64m
+fi
+
+if [ -z "$JAVA_STACK" ] ; then
+  JAVA_STACK=-Xss512k
+fi
+
+JAVA_VM=-client
+
+# Split out any -J argument for passing to the JVM.
+# Scanning for args is aborted by '--'.
+declare -a java_args
+declare -a ioke_args
+    while [ $# -gt 0 ]
+do
+    case "$1" in
+    # Stuff after '-J' in this argument goes to JVM
+    -J*)
+        val=${1:2}
+        if [ "${val:0:4}" = "-Xmx" ]; then
+            JAVA_MEM=$val
+        elif [ "${val:0:4}" = "-Xss" ]; then
+            JAVA_STACK=$val
+        elif [ "${val}" = "" ]; then
+            $JAVA_CMD -help
+            echo "(Prepend -J in front of these options when using 'ioke' command)" 
+            exit
+        elif [ "${val}" = "-X" ]; then
+            $JAVA_CMD -X
+            echo "(Prepend -J in front of these options when using 'ioke' command)" 
+            exit
+        else
+            if [ "${val:0:3}" = "-ea" ]; then
+		VERIFY_IOKE="yes"
+	    fi
+            java_args=("${java_args[@]}" "${1:2}")
+        fi
+        ;;
+     # Match switches that take an argument
+     -e|-I|-S) ioke_args=("${ioke_args[@]}" "$1" "$2"); shift ;;
+     # Match same switches with argument stuck together
+     -e*|-I*|-S*) ioke_args=("${ioke_args[@]}" "$1" ) ;;
+     --manage)
+        java_args=("${java_args[@]}" "-Dcom.sun.management.jmxremote") ;;
+     # Don't launch a GUI window, no matter what
+     --headless)
+        java_args=("${java_args[@]}" "-Djava.awt.headless=true") ;;
+     # Run under JDB
+     --jdb)
+        if [ -z "$JAVA_HOME" ] ; then
+          JAVA_CMD='jdb'
+        else
+          if $cygwin; then
+            JAVA_HOME=`cygpath -u "$JAVA_HOME"`
+          fi
+          JAVA_CMD="$JAVA_HOME/bin/jdb"
+        fi ;;
+     --client)
+        JAVA_VM=-client ;;
+     --server)
+        JAVA_VM=-server ;;
+     --sample)
+        java_args=("${java_args[@]}" "-Xprof") ;;
+     # Abort processing on the double dash
+     --) break ;;
+     # Other opts go to ioke
+     -*) ioke_args=("${ioke_args[@]}" "$1") ;;
+     # Abort processing on first non-opt arg
+     *) break ;;
+    esac
+    shift
+done
+
+# Add a property to report memory max
+JAVA_OPTS="$JAVA_OPTS $JAVA_VM -Djruby.memory.max=${JAVA_MEM:4} -Djruby.stack.max=${JAVA_STACK:4}"
+
+# Append the rest of the arguments
+ioke_args=("${ioke_args[@]}" "$@")
+
+# Put the ruby_args back into the position arguments $1, $2 etc
+set -- "${ioke_args[@]}"
+
+JAVA_OPTS="$JAVA_OPTS $JAVA_MEM $JAVA_STACK"
+
+if $cygwin; then
+  IOKE_HOME=`cygpath --mixed "$JRUBY_HOME"`
+  
+  if [[ ( "${1:0:1}" = "/" ) && ( ( -f "$1" ) || ( -d "$1" )) ]]; then
+    win_arg=`cygpath -w "$1"`
+    shift
+    win_args=("$win_arg" "$@")
+    set -- "${win_args[@]}"
+  fi
+fi
+
+if [ "$IOKE_JRUBY" != "" ]; then
+  $JAVA_CMD $PROFILE_ARGS $JAVA_OPTS "${java_args[@]}" -classpath "$IOKE_CP$CP_DELIMETER$CP$CP_DELIMETER$CLASSPATH" \
+    "-Dioke.home=$IOKE_HOME" \
+    "-Dioke.lib=$IOKE_HOME/lib" -Dioke.script=ioke \
+    ioke.lang.Main $IOKE_OPTS "$@"
+
+  # Record the exit status immediately, or it will be overridden.
+  IOKE_STATUS=$?
+
+  exit $IOKE_STATUS
+else
+  exec "$JAVA_CMD" $JAVA_OPTS "${java_args[@]}" -Xbootclasspath/a:"$IOKE_CP" -classpath "$CP$CP_DELIMETER$CLASSPATH" \
+    "-Dioke.home=$IOKE_HOME" \
+    "-Dioke.lib=$IOKE_HOME/lib" -Dioke.script=ioke \
+    ioke.lang.Main $IOKE_OPTS "$@"
+fi
