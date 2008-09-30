@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<project basedir="." default="jar" name="ioke">
+  <description>
+    ioke is a next generation language, based on Io.
+  </description>
+
+  <property file="build.properties"/>
+  <property file="default.build.properties"/>
+
+  <path id="build.classpath">
+    <fileset dir="${lib.dir}" includes="*.jar" excludes="ioke.jar"/>
+  </path>
+
+  <path id="scala.build.classpath">
+    <fileset dir="${lib.dir}" includes="*.jar" excludes="ioke.jar"/>
+    <pathelement path="${classes.dir}"/>
+  </path>
+
+  <path id="test.classpath">
+    <fileset dir="${lib.dir}" includes="*.jar" excludes="ioke.jar"/>
+    <pathelement path="${classes.dir}"/>
+    <pathelement path="${classes.test.dir}"/>
+  </path>
+
+  <taskdef resource="scala/tools/ant/antlib.xml">
+    <classpath refid="build.classpath"/>
+  </taskdef>
+
+  <target name="prepare" description="Creates the directories needed for building">
+    <mkdir dir="${build.dir}"/>
+    <mkdir dir="${classes.dir}"/>
+    <mkdir dir="${classes.test.dir}"/>
+    <mkdir dir="${src.generated.lexer.dir}"/>
+    <mkdir dir="${src.generated.parser.dir}"/>
+    <mkdir dir="${src.dir}"/>
+
+    <uptodate property="grammar.lexer.notUpdated" targetfile="${src.generated.dir}/iokeLexer.java" srcfile="${antlr.lexer.dir}/${antlr.lexer.file}"/>
+    <uptodate property="grammar.parser.notUpdated" targetfile="${src.generated.dir}/iokeParser.java" srcfile="${antlr.parser.dir}/${antlr.parser.file}"/>
+  </target>
+
+  <target name="generate.lexer" depends="prepare" description="Generates source files from the ANTLR definitions" unless="grammar.lexer.notUpdated">
+    <java classname="org.antlr.Tool" fork="true" dir="${antlr.lexer.dir}" classpathref="build.classpath">
+      <arg line="-o ${src.generated.lexer.dir} ${antlr.lexer.file}"/>
+    </java>
+  </target>
+
+  <target name="generate.parser" depends="prepare" description="Generates source files from the ANTLR definitions" unless="grammar.parser.notUpdated">
+    <java classname="org.antlr.Tool" fork="true" dir="${antlr.parser.dir}" classpathref="build.classpath">
+      <arg line="-o ${src.generated.parser.dir} -lib ${src.generated.lexer.dir} ${antlr.parser.file}"/>
+    </java>
+  </target>
+
+  <target name="generate" depends="generate.lexer, generate.parser" description="Generates source files from the ANTLR definitions"/>
+
+  <target name="compile" depends="generate" description="Compile the source files for the project.">
+    <javac destdir="${classes.dir}" debug="true" source="${javac.version}" target="${javac.version}">
+      <classpath refid="build.classpath"/>
+      <src path="${src.dir}"/>
+      <src path="${src.generated.dir}"/>
+      <include name="**/*.java"/>
+    </javac>
+
+    <!-- Note that Javac compilation happens BEFORE Scala compilation. This means that Java cannot depend on Scala classes. -->
+
+    <scalac srcdir="${src.scala.dir}" destdir="${classes.dir}" classpathref="scala.build.classpath" force="changed">
+      <include name="**/*.scala"/>
+    </scalac>
+  </target>
+
+  <target name="compile-tests" depends="compile" description="Compile the source files for the project.">
+    <scalac srcdir="${src.scala.test.dir}" destdir="${classes.test.dir}" classpathref="scala.build.classpath" force="changed">
+      <include name="**/*.scala"/>
+    </scalac>
+  </target>
+
+  <taskdef name="junit" classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask"/> 
+  <target name="test" depends="compile-tests" description="Runs all tests">
+    <junit haltonfailure="true" showoutput="true" > 
+      <classpath refid="test.classpath"/> 
+      <formatter type="brief" usefile="false" /> 
+      <test name="org.ioke.parser.LexerSpecTest"/> 
+      <test name="org.ioke.StateSpecTest"/> 
+      <test name="org.ioke.MetaSpecTest"/> 
+      <test name="org.ioke.ObjectSpecTest"/> 
+      <test name="org.ioke.CoreClassesSpecTest"/> 
+      <test name="org.ioke.HierarchySpecTest"/> 
+      <test name="org.ioke.DataSpecTest"/> 
+    </junit>
+  </target>
+
+  <target name="jar" depends="test" description="Create the ioke.jar file">
+    <jar destfile="${lib.dir}/ioke.jar">
+      <fileset dir="${classes.dir}">
+        <include name="**/*.class"/>
+        <include name="**/*.properties"/>
+      </fileset>
+      <manifest>
+        <attribute name="Built-By" value="${user.name}"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="clean" description="clean almost everything">
+    <delete dir="${build.dir}"/>
+    <delete file="${lib.dir}/ioke.jar" quiet="true"/>
+    <delete dir="src/generated"/>
+  </target>
+</project>

@@ -1,0 +1,64 @@
+
+log-level = 3
+
+log = macro(level, &str,
+  if(level < log-level,
+    '(&str println)))
+
+
+log(3) "foobar"
+# will expand into nothing
+
+log(2) "barfoo"
+# will expand into
+("barfoo" println)
+
+log(1) some-operation
+# will expand into
+(some-operation println)
+
+log(1) Gah with(args) some-operation
+# will expand into
+(Gah with(args) some-operation println)
+
+
+
+boo = macro(&(str, grr(foo, bar) apa bapa),
+  '("a: " + &foo + " b: " + &str + " c: " + &bar + " d: " + &grr + " e: " + &apa + " f: " + &bapa))
+
+boo uno deux("str", unix bar febel) ho hum dum
+# will expand into
+("a: " + "str" + " b: " + uno + " c: " + unix bar febel + " d: " + deux + " e: " + ho + " f: " + hum)
+
+# The argument list to a macro is two things, first the arguments and second the message chain after it
+# the arguments that look like regular method arguments act the same way and will be evaluated the same way
+# however, one of these can be preceded by an ! which will make it unified and un-evaluated
+# The & works the same way but for the next pointers. & inside of a unification list will match
+# until the next real termination point
+# A macro should always return a message chain that can be spliced into the current context.
+# A return of nil will result in no splicing
+# The simplest way to create message chains is probably to use the ' method which will return 
+# a slightly modified chain. Of course you can always do something like this:
+message("foo", message("bar", nil, message("quux")))
+# which is the same as
+foo(bar quux)
+
+# inside a quote, everything will be copied verbatim, except for pieces preceded by &, which will be spliced into the current
+# place in a logical way. This needs to be a message of some sort.
+
+# One of the simpler macros available in the distribution is called use
+
+use test
+# will expand into
+internal:import-library("test")
+
+# by using a macro like this:
+
+use = macro(!name, &name,
+  if(name != nil,
+    if((name name == "string") && (name arguments length == 0),
+      '(internal:import-library(&name)),
+      '(internal:import-library(&(name name))))
+    '(internal:import-library(&(name name)))))
+
+# where &(name name) will first call name on the "name" variable and then splice that in.

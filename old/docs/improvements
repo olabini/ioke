@@ -1,0 +1,28 @@
+
+Condition system?
+
+. is cons/pair
+ so, you can write
+ {"a" . "b", "c" . "d"}
+and this will generate the equivalent of
+ {:a => :b, :c => :d} in Ruby
+
+.. and ... is obviously range
+
+Object hierarchy
+(uses : to namespace methods) 
+
+
+BasicObject
+  internal:get-slot
+  internal:set-slot
+
+CoreMethods
+  square-brackets
+  curly-brackets 
+  get-slot
+  set-slot
+  ...
+
+Object < BasicObject, CoreMethods
+

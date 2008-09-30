@@ -1,0 +1,103 @@
+# at-exit is an equivalent of the Ruby at_exit hook, that will add a lexical block
+# to be executed at the end of a program run.
+
+# once was used here earlier to make sure the code only runs once. The way to achieve that
+# is that after the first time the once code has been run, once will change it's own argument
+# to be a noop.
+
+at-exit(
+  if(Test run?,
+    Test run!))
+
+Object ensure = method(
+  # TODO: implement
+  ("NOT IMPLEMENTED: " + call method debug-name) println
+)
+
+# class-like wraps some of the prototype operations when it makes sense
+# it will mainly clone Object, then run the parameters in a do() block,
+# and provide some standard slots.
+Test = Object clone do(
+  # [] will call the global square-brackets which will create a new
+  # empty array
+  current-group = []
+  groups = []
+  collected-results = []
+  run? = true
+
+  run! = method(
+    groups each(run!) 
+    collected-results each(report)
+    Test run? = false
+  )
+
+  TestMatcher = BlankObject clone
+  
+  TestMatcher is = method(
+    # TODO: implement
+    ("NOT IMPLEMENTED: " + call method debug-name) println
+  )
+
+  TestMatcher not = method(
+    # TODO: implement
+    ("NOT IMPLEMENTED: " + call method debug-name) println
+  )
+
+  # chain will create an incomplete message that can be applied to something
+  # so you can take the expectation and run that on an object
+  TestMatcher expectation = chain(== true)
+  
+  # Struct allows the creation of a class-like object with
+  # properties
+  # Curly-brackets in this form is used as a short hand for do()
+  TestGroup = Struct create(name, tests) {
+    name = ""
+    tests = []
+    groups = []
+
+    run! = method(
+      groups each(run!) 
+      tests each(run!) 
+    )
+
+    # establish all the matchers and so on here
+    group = method(
+      # TODO: implement
+      ("NOT IMPLEMENTED: " + call method debug-name) println
+      # SAME AS: ("NOT IMPLEMENTED: " + call method container name + "#" + call method name) println 
+    )
+    ensure = method(
+      # TODO: implement
+      ("NOT IMPLEMENTED: " + call method debug-name) println
+    )
+    expect = ensure
+    never = method(
+      # TODO: implement
+      ("NOT IMPLEMENTED: " + call method debug-name) println
+    )
+  }
+
+
+  TestInstance = Struct create(group, test, expectation) {
+    # TODO: implement
+  }
+
+
+  # asterisk is not splatting as in Ruby, but more akin to the &body tag in Common Lisp macros
+  # but not really, actually, since this will just collect the contents of 
+  # all the arguments as code
+  curly-brackets = method(*body,
+    group = TestGroup clone
+
+    # Also, make sure that the group establishes String method
+    # for grouping for a while
+    # TODO: implement String replacing stuff
+    
+    # This is a common pattern in Ruby, that you add something to a list before some code,
+    # and then pop it afterwards
+    Test current-group with-added-element(group,
+      body run-with(group))
+
+    Test groups << group
+  )
+)
