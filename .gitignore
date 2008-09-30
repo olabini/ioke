@@ -1,2 +1,3 @@
 build
-lib/ioke.jar
+lib/dist/ioke.jar
+prj.el
