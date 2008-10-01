@@ -20,7 +20,13 @@ package ioke.lang.parser;
 
 messageChain
     :
-        expression+ EOF!
+        assignmentExpression+ EOF!
+    ;
+
+assignmentExpression
+    :
+        expression
+    |   expression '=' expression
     ;
 
 expression
@@ -38,7 +44,6 @@ message
 literal
     :
         StringLiteral
-    |   'nil'
     ;
 
 Identifier

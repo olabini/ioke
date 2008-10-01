@@ -7,15 +7,12 @@ package ioke.lang;
  *
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
-public class Origin extends IokeObject {
-    public Origin(Runtime runtime) {
+public class Base extends IokeObject {
+    public Base(Runtime runtime) {
         super(runtime);
     }
 
     public void init() {
+        
     }
-
-    public String toString() {
-        return "Origin";
-    }
-}// Origin
+}// Base

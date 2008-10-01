@@ -11,4 +11,8 @@ public class Method extends IokeObject {
     public Method(Runtime runtime) {
         super(runtime);
     }
+
+    public boolean isActivatable() {
+        return true;
+    }
 }// Method
