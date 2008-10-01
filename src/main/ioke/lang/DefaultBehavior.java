@@ -20,12 +20,19 @@ public class DefaultBehavior extends IokeObject {
                     return new Text(runtime, s.substring(1, s.length()-1));
                 }
             });
+
         registerMethod("=", new JavaMethod(runtime) {
                 public IokeObject activate(Context context, Message message, IokeObject on) {
                     String name = ((Message)message.getArg1()).getName();
-                    IokeObject value = ((Message)message.getArg2()).sendTo(context, context.ground);
+                    IokeObject value = ((Message)message.getArg2()).evaluateCompleteWith(context, context.ground);
                     on.setCell(name, value);
                     return value;
+                }
+            });
+
+        registerMethod("asString", new JavaMethod(runtime) {
+                public IokeObject activate(Context context, Message message, IokeObject on) {
+                    return new Text(runtime, on.toString());
                 }
             });
     }

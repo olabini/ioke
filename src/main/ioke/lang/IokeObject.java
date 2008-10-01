@@ -24,6 +24,10 @@ public class IokeObject {
         this.runtime = runtime;
     }
 
+    IokeObject allocateCopy() {
+        return new IokeObject(runtime);
+    }
+
     IokeObject findCell(String name, IdentityHashMap<IokeObject, Object> visited) {
         if(visited.containsKey(this)) {
             return runtime.nul;
