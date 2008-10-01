@@ -4,12 +4,11 @@
 package ioke.lang;
 
 /**
+ *
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
-public class Main {
-    public static void main(String[] args) throws Exception {
-        Runtime r = new Runtime();
-        r.init();
-        r.evaluateFile(args[0]);
+public class Method extends IokeObject {
+    public Method(Runtime runtime) {
+        super(runtime);
     }
-}// Main
+}// Method
