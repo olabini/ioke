@@ -4,6 +4,10 @@ options {
     output = AST; 
 }
 
+tokens {
+    MESSAGE_SEND;
+}
+
 @lexer::header {
 package ioke.lang.parser;
 }
@@ -20,13 +24,17 @@ package ioke.lang.parser;
 
 messageChain
     :
-        assignmentExpression+ EOF!
+        commatedExpression+ EOF!
+    ;
+
+commatedExpression
+    :
+        assignmentExpression (Comma assignmentExpression)*
     ;
 
 assignmentExpression
     :
-        expression
-    |   expression '=' expression
+        expression (Equals expression)?
     ;
 
 expression
@@ -38,7 +46,7 @@ expression
 
 message
     :
-        Identifier // add parenthesis stuff here later
+        Identifier ('(' commatedExpression? ')')? -> ^(MESSAGE_SEND Identifier commatedExpression?)
     ;
 
 literal
@@ -48,7 +56,7 @@ literal
 
 Identifier
     :
-        Letter (Letter|IDDigit)*
+        Letter (Letter|IDDigit|StrangeChars)*
     ;
 
 
@@ -65,6 +73,16 @@ Whitespace : Separator {skip();};
 
 LineComment
     : '#' ~('\n'|'\r')* {$channel=HIDDEN;}
+    ;
+
+Equals
+    :
+        '='
+    ;
+
+Comma
+    :
+        ','
     ;
 
 fragment
@@ -91,6 +109,16 @@ HexDigit : ('0'..'9'|'a'..'f'|'A'..'F') ;
 
 fragment
 Separator : (' ' | '\u000c' | '\u0009' | '\u000b' | '\\' '\u000a' )+ ;
+
+fragment
+StrangeChars
+    :
+        '_' |
+        '!' |
+        '?' |
+        '<' |
+        '>'
+    ;
 
 fragment
 IDDigit

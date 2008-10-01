@@ -18,6 +18,7 @@ public class Message extends IokeObject {
     private String name;
     private Object arg1;
     private Object arg2;
+    private List<IokeObject> arguments = new ArrayList<IokeObject>();
 
     Message next;
     Message prev;
@@ -43,10 +44,6 @@ public class Message extends IokeObject {
     }
 
     public static Message fromTree(Runtime runtime, Tree tree) {
-        return fromTree(runtime, tree, null);
-    }
-
-    public static Message fromTree(Runtime runtime, Tree tree, Message prev) {
         if(!tree.isNil()) {
             switch(tree.getType()) {
             case iokeParser.StringLiteral:
@@ -55,8 +52,30 @@ public class Message extends IokeObject {
                 return new Message(runtime, tree.getText());
             case iokeParser.Terminator:
                 return new Message(runtime, ";");
-            case iokeLexer.T16: // '='
+            case iokeParser.Equals:
                 return new Message(runtime, "=");
+            case iokeParser.Comma:
+                return new Message(runtime, ",");
+            case iokeParser.MESSAGE_SEND:
+                System.err.println(((org.antlr.runtime.tree.CommonTree)tree).toStringTree());
+                Message m = new Message(runtime, tree.getChild(0).getText());
+                Message currentArg = null;
+                for(int i=1,j=tree.getChildCount(); i<j; i++) {
+                    if(currentArg == null) {
+                        currentArg = fromTree(runtime, tree.getChild(i));
+                        if(currentArg.name.equals(",")) {
+                            currentArg = null;
+                        } else {
+                            m.arguments.add(currentArg);
+                        }
+                    } else {
+                        currentArg.next = fromTree(runtime, tree.getChild(i));
+                        currentArg.next.prev = currentArg;
+                        currentArg = currentArg.next;
+                    }
+                    System.err.println("added argument: " + (i-1) + " : " + m.arguments);
+                }
+                return m;
             default:
                 java.lang.System.err.println("NOOOO: Can't handle " + tree + " : " + tree.getType());
             }
