@@ -23,7 +23,7 @@
 
   <target name="generate.antlr" depends="prepare" description="Generates source files from the ANTLR definitions" unless="grammar.notUpdated">
     <java classname="org.antlr.Tool" fork="true" dir="${antlr.grammar.dir}" classpathref="build.classpath">
-      <arg line="-o ${src.generated.dir} ${antlr.grammar.file}"/>
+      <arg line="-o ${src.generated.dir.relative} ${antlr.grammar.file}"/>
     </java>
   </target>
 
@@ -64,6 +64,6 @@
   <target name="clean" description="clean almost everything">
     <delete dir="${build.dir}"/>
     <delete file="${lib.dist.dir}/ioke.jar" quiet="true"/>
-    <delete dir="${src.generated.dir"/>
+    <delete dir="${src.generated.dir}"/>
   </target>
 </project>

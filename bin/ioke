@@ -64,24 +64,17 @@ for j in "$IOKE_HOME"/lib/dist/ioke*.jar; do
     fi
 done
 
+for j in "$IOKE_HOME"/lib/release/*.jar; do
+    if [ "$IOKE_CP" ]; then
+        IOKE_CP="$IOKE_CP$CP_DELIMETER$j"
+        else
+        IOKE_CP="$j"
+    fi
+done
+
 if $cygwin; then
     IOKE_CP=`cygpath -p -w "$IOKE_CP"`
 fi
-
-# ----- Set Up The System Classpath -------------------------------------------
-
-    # add other jars in lib to CP for command-line execution
-    for j in "$IOKE_HOME"/lib/release/*.jar; do
-        if [ "$CP" ]; then
-            CP="$CP$CP_DELIMETER$j"
-            else
-            CP="$j"
-        fi
-    done
-
-    if $cygwin; then
-	CP=`cygpath -p -w "$CP"`
-    fi
 
 # ----- Execute The Requested Command -----------------------------------------
 
