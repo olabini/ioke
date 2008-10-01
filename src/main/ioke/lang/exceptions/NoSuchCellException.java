@@ -11,6 +11,6 @@ import ioke.lang.IokeObject;
  */
 public class NoSuchCellException extends IokeException {
     public NoSuchCellException(String name, IokeObject on) {
-        super("Can't find cell " + name + " on " + on);
+        super("Can't find cell '" + name + "' on " + on);
     }
 }// NoSuchCellException

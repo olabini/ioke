@@ -41,7 +41,6 @@ public class Runtime {
     public Message asString = new Message(this, "asString");
     public Message mimic = new Message(this, "mimic");
 
-
     // NOT TO BE EXPOSED TO Ioke - used for internal usage only
     NullObject nul = new NullObject(this);
 
