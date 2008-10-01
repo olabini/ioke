@@ -27,11 +27,14 @@ public class Runtime {
     private PrintWriter err;
     private Reader in;
 
-    Origin origin = new Origin(this);
-    System system = new System(this);
+    Base base = new Base(this);
     Ground ground = new Ground(this);
+    System system = new System(this);
+    Origin origin = new Origin(this);
     Nil nil = new Nil(this);
     Text text = new Text(this, "");
+
+    NullObject nul = new NullObject(this);
 
     public Message asString = new Message(this, "asString");
 
@@ -45,6 +48,10 @@ public class Runtime {
         this.err = err;
     }
 
+    public static Runtime getRuntime() {
+        return getRuntime(new PrintWriter(java.lang.System.out), new InputStreamReader(java.lang.System.in), new PrintWriter(java.lang.System.err));
+    }
+
     public static Runtime getRuntime(PrintWriter out, Reader in, PrintWriter err) {
         Runtime r = new Runtime(out, in, err);
         r.init();
@@ -56,16 +63,23 @@ public class Runtime {
     }
 
     public void init() {
-        origin.init();
+        base.init();
         system.init();
         ground.init();
+        origin.init();
         nil.init();
         text.init();
 
-        ground.mimics(origin);
+        ground.mimics(base);
         ground.mimics(system);
-        nil.mimics(ground);
-        text.mimics(ground);
+        origin.mimics(ground);
+
+        nil.mimics(origin);
+        text.mimics(origin);
+    }
+
+    public NullObject getNul() {
+        return nul;
     }
 
     public Ground getGround() {
@@ -76,15 +90,22 @@ public class Runtime {
         return this.nil;
     }
 
-    public EvaluationResult evaluateFile(String filename) {
+    public IokeObject evaluateStream(Reader reader) {
         try {
-            iokeParser parser = new iokeParser(new CommonTokenStream(new iokeLexer(new ANTLRReaderStream(new FileReader(filename)))));
+            iokeParser parser = new iokeParser(new CommonTokenStream(new iokeLexer(new ANTLRReaderStream(reader))));
+            return Message.fromTree(this, (Tree)(parser.messageChain().getTree())).evaluateComplete();
+        } catch(RuntimeException e) {
+            throw e;
+        } catch(Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-            Message message = Message.fromTree(this, (Tree)(parser.messageChain().getTree()));
-            
-            message.evaluateCompleteWith();
-
-            return EvaluationResult.OK;
+    public IokeObject evaluateFile(String filename) {
+        try {
+            return evaluateStream(new FileReader(filename));
+        } catch(RuntimeException e) {
+            throw e;
         } catch(Exception e) {
             throw new RuntimeException(e);
         }

@@ -7,8 +7,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.IdentityHashMap;
 
 import ioke.lang.exceptions.NotActivatableException;
+import ioke.lang.exceptions.NoSuchCellException;
 
 /**
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
@@ -18,22 +20,48 @@ public class IokeObject {
     Map<String, IokeObject> cells = new HashMap<String, IokeObject>();
     List<IokeObject> mimics = new ArrayList<IokeObject>();
     
-    IokeObject(Runtime runtime) {
+    public IokeObject(Runtime runtime) {
         this.runtime = runtime;
     }
 
-    public IokeObject findCell(String name) {
+    IokeObject findCell(String name, IdentityHashMap<IokeObject, Object> visited) {
+        if(visited.containsKey(this)) {
+            return runtime.nul;
+        }
+
         if(cells.containsKey(name)) {
             return cells.get(name);
         } else {
+            visited.put(this, null);
+
             for(IokeObject mimic : mimics) {
-                IokeObject cell = mimic.findCell(name);
-                if(!cell.isNil()) {
+                IokeObject cell = mimic.findCell(name, visited);
+                if(cell != runtime.nul) {
                     return cell;
                 }
             }
-            return runtime.getNil();
+
+            return runtime.nul;
         }
+    }
+
+    public IokeObject findCell(String name) {
+        return findCell(name, new IdentityHashMap<IokeObject, Object>());
+    }
+
+    public IokeObject perform(Context ctx, Message message) {
+        IokeObject cell = this.findCell(message.getName());
+
+        if(cell == runtime.nul) {
+            throw new NoSuchCellException(message.getName(), this);
+        }
+
+        return cell.getOrActivate(ctx, message, this);
+        
+    }
+
+    public void setCell(String name, IokeObject value) {
+        cells.put(name, value);
     }
 
     public boolean isNil() {
@@ -48,7 +76,23 @@ public class IokeObject {
         cells.put(name, m);
     }
 
-    public IokeObject activate(Message message, IokeObject on) {
+    public void registerCell(String name, IokeObject o) {
+        cells.put(name, o);
+    }
+
+    public boolean isActivatable() {
+        return false;
+    }
+
+    public IokeObject getOrActivate(Context context, Message message, IokeObject on) {
+        if(isActivatable()) {
+            return activate(context, message, on);
+        } else {
+            return this;
+        }
+    }
+
+    public IokeObject activate(Context context, Message message, IokeObject on) {
         throw new NotActivatableException("Can't activate " + this + "#" + message.getName() + " on " + on);
     }
 }// IokeObject

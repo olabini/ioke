@@ -1,10 +1,9 @@
-include_class('ioke.lang.Runtime') { 'IokeRuntime' }
-include_class('ioke.lang.EvaluationResult')
+include_class('ioke.lang.Runtime') { 'IokeRuntime' } unless defined?(IokeRuntime)
 
-import Java::java.io.PrintWriter
-import Java::java.io.StringWriter
-import Java::java.io.InputStreamReader
-import Java::java.lang.System
+import Java::java.io.PrintWriter unless defined?(PrintWriter)
+import Java::java.io.StringWriter unless defined?(StringWriter)
+import Java::java.io.InputStreamReader unless defined?(InputStreamReader)
+import Java::java.lang.System unless defined?(System)
 
 describe "script evaluation" do 
   describe "hello_world" do 
@@ -15,11 +14,15 @@ describe "script evaluation" do
       ioke.evaluate_file('test/scripts/hello_world.ik')
       sw.to_s.should == "Hello World\n"
     end
+  end
 
-    it 'should evaluate ok' do 
-      out = PrintWriter.new(StringWriter.new(20))
+  describe "hello_world2" do 
+    it 'should print Hello\nWorld' do 
+      sw = StringWriter.new(20)
+      out = PrintWriter.new(sw)
       ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
-      ioke.evaluate_file('test/scripts/hello_world.ik').should == EvaluationResult::OK
+      ioke.evaluate_file('test/scripts/hello_world2.ik')
+      sw.to_s.should == "Hello\nWorld\n"
     end
   end
 end

@@ -20,17 +20,21 @@ public class Text extends IokeObject {
 
     public void init() {
         registerMethod("println", new JavaMethod(runtime) {
-                public IokeObject activate(Message message, IokeObject on) {
-                    runtime.getOut().println(runtime.asString.sendTo(on).toString());
+                public IokeObject activate(Context context, Message message, IokeObject on) {
+                    runtime.getOut().println(runtime.asString.sendTo(context, on).toString());
                     runtime.getOut().flush();
                     return runtime.getNil();
                 }
             });
         registerMethod("asString", new JavaMethod(runtime) {
-                public IokeObject activate(Message message, IokeObject on) {
+                public IokeObject activate(Context context, Message message, IokeObject on) {
                     return on;
                 }
             });
+    }
+
+    public String getText() {
+        return text;
     }
 
     public String toString() {
