@@ -12,6 +12,9 @@ public class Method extends IokeObject {
         super(runtime);
     }
 
+    public void init() {
+    }
+
     public boolean isActivatable() {
         return true;
     }

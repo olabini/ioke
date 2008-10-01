@@ -27,16 +27,23 @@ public class Runtime {
     private PrintWriter err;
     private Reader in;
 
+    // Core objects and origins
     Base base = new Base(this);
     Ground ground = new Ground(this);
     DefaultBehavior defaultBehavior = new DefaultBehavior(this);
     Origin origin = new Origin(this);
     Nil nil = new Nil(this);
     Text text = new Text(this, "");
+    Method method = new Method(this);
+    JavaMethod javaMethod = new JavaMethod(this);
 
-    NullObject nul = new NullObject(this);
-
+    // Core messages
     public Message asString = new Message(this, "asString");
+    public Message mimic = new Message(this, "mimic");
+
+
+    // NOT TO BE EXPOSED TO Ioke - used for internal usage only
+    NullObject nul = new NullObject(this);
 
     public Runtime() {
         this(new PrintWriter(java.lang.System.out), new InputStreamReader(java.lang.System.in), new PrintWriter(java.lang.System.err));
@@ -76,6 +83,12 @@ public class Runtime {
 
         nil.mimics(origin);
         text.mimics(origin);
+
+        method.init();
+        javaMethod.init();
+
+        method.mimics(origin);
+        javaMethod.mimics(method);
     }
 
     public NullObject getNul() {
@@ -84,6 +97,22 @@ public class Runtime {
 
     public Ground getGround() {
         return this.ground;
+    }
+
+    public Origin getOrigin() {
+        return this.origin;
+    }
+
+    public Text getText() {
+        return this.text;
+    }
+
+    public Base getBase() {
+        return this.base;
+    }
+
+    public DefaultBehavior getDefaultBehavior() {
+        return this.defaultBehavior;
     }
 
     public Nil getNil() {
