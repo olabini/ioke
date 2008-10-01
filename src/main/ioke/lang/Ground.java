@@ -14,6 +14,10 @@ public class Ground extends IokeObject {
         super(runtime);
     }
 
+    IokeObject allocateCopy() {
+        return new Ground(runtime);
+    }
+
     public void init() {
         registerCell("Base", runtime.base);
         registerCell("DefaultBehavior", runtime.defaultBehavior);

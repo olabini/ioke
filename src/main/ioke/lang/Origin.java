@@ -12,10 +12,25 @@ public class Origin extends IokeObject {
         super(runtime);
     }
 
+    IokeObject allocateCopy() {
+        return new Origin(runtime);
+    }
+
     public void init() {
+        registerMethod("mimic", new JavaMethod(runtime) {
+                public IokeObject activate(Context context, Message message, IokeObject on) {
+                    IokeObject clone = on.allocateCopy();
+                    clone.mimics(on);
+                    return clone;
+                }
+            });
     }
 
     public String toString() {
-        return "Origin";
+        if(this == runtime.origin) {
+            return "Origin";
+        } else {
+            return "#<Origin:" + System.identityHashCode(this) + ">";
+        }
     }
 }// Origin

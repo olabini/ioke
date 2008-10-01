@@ -3,6 +3,9 @@
  */
 package ioke.lang;
 
+import java.util.List;
+import java.util.ArrayList;
+
 import org.antlr.runtime.tree.Tree;
 
 import ioke.lang.parser.iokeLexer;
@@ -27,6 +30,12 @@ public class Message extends IokeObject {
         super(runtime);
         this.name = name;
         this.arg1 = arg1;
+    }
+
+    IokeObject allocateCopy() {
+        Message m = new Message(runtime, name, arg1);
+        m.arg2 = arg2;
+        return m;
     }
 
     public void setNext(Message next) {
@@ -55,42 +64,46 @@ public class Message extends IokeObject {
             return null;
         } else {
             Message head = null;
-            Message current = null;
-            boolean haveTwistedAssignment = false;
+            List<Message> currents = new ArrayList<Message>();
 
             for(int i=0,j=tree.getChildCount(); i<j; i++) {
                 Message created = fromTree(runtime, tree.getChild(i));
 
-                if(!haveTwistedAssignment && current != null && current.name.equals("=")) {
-                    current.arg1 = current.prev;
-                    current.prev.next = null;
 
-                    if(current.prev.prev != null) {
-                        current.prev = current.prev.prev;
-                        current.prev.next = current;
-                        ((Message)current.arg1).prev = null;
+                if(currents.size() > 0 && currents.get(0).name.equals("=")) {
+                    currents.get(0).arg1 = currents.get(0).prev;
+
+                    currents.get(0).prev.next = null;
+
+                    if(currents.get(0).prev.prev != null) {
+                        currents.get(0).prev = currents.get(0).prev.prev;
+                        currents.get(0).prev.next = currents.get(0);
+                        ((Message)currents.get(0).arg1).prev = null;
                     } else {
-                        if(current.arg1 == head) {
-                            head = current;
+                        if(currents.get(0).arg1 == head) {
+                            head = currents.get(0);
                         }
-                        current.prev = null;
+                        currents.get(0).prev = null;
                     }
 
-                    current.arg2 = created;
-                    haveTwistedAssignment = true;
+                    currents.get(0).arg2 = created;
+                    currents.add(0, created);
                 } else {
-                    created.prev = current;
+                    if(created.name.equals(";") && currents.size() > 1) {
+                        currents.remove(0);
+                    }
+                    created.prev = currents.size() > 0 ? currents.get(0) : null;
 
                     if(head == null) {
                         head = created;
                     }
 
-                    if(current != null) {
-                        current.next = created;
+                    if(currents.size() > 0) {
+                        currents.get(0).next = created;
+                        currents.set(0, created);
+                    } else {
+                        currents.add(0, created);
                     }
-
-                    current = created;
-                    haveTwistedAssignment = false;
                 }
             }
             return head;
@@ -117,9 +130,8 @@ public class Message extends IokeObject {
         return evaluateCompleteWith(runtime.getGround());
     }
 
-    public IokeObject evaluateCompleteWith(IokeObject ground) {
+    public IokeObject evaluateCompleteWith(Context ctx, IokeObject ground) {
         IokeObject current = ground;
-        Context ctx = new Context(runtime, ground);
         IokeObject lastReal = runtime.getNil();
         Message m = this;
         while(m != null) {
@@ -134,12 +146,16 @@ public class Message extends IokeObject {
         return lastReal;
     }
 
+    public IokeObject evaluateCompleteWith(IokeObject ground) {
+        return evaluateCompleteWith(new Context(runtime, ground), ground);
+    }
+
     @Override
     public String toString() {
         if(arg1 != null) {
-            return name + "(" + arg1 + ") " + (null == next ? "" : next);
+            return name + "(" + arg1 + ", " + arg2 + ")" + (null == next ? "" : " " + next);
         } else {
-            return name + " " + (null == next ? "" : next);
+            return name + (null == next ? "" : " " + next);
         }
     }
 }// Message

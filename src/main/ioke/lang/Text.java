@@ -18,6 +18,10 @@ public class Text extends IokeObject {
         this.text = text;
     }
 
+    IokeObject allocateCopy() {
+        return new Text(runtime, text);
+    }
+
     public void init() {
         registerMethod("println", new JavaMethod(runtime) {
                 public IokeObject activate(Context context, Message message, IokeObject on) {

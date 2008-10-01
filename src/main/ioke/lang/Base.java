@@ -12,6 +12,10 @@ public class Base extends IokeObject {
         super(runtime);
     }
 
+    IokeObject allocateCopy() {
+        return new Base(runtime);
+    }
+
     public void init() {
         
     }
