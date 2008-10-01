@@ -15,9 +15,10 @@ public class Ground extends IokeObject {
     }
 
     public void init() {
-        registerCell("Origin", runtime.origin);
-        registerCell("System", runtime.system);
+        registerCell("Base", runtime.base);
+        registerCell("DefaultBehavior", runtime.defaultBehavior);
         registerCell("Ground", runtime.ground);
+        registerCell("Origin", runtime.origin);
         registerCell("Text", runtime.text);
         registerCell("nil", runtime.nil);
     }

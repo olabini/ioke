@@ -7,8 +7,8 @@ package ioke.lang;
  *
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
-public class System extends IokeObject {
-    public System(Runtime runtime) {
+public class DefaultBehavior extends IokeObject {
+    public DefaultBehavior(Runtime runtime) {
         super(runtime);
     }
 
@@ -29,4 +29,4 @@ public class System extends IokeObject {
                 }
             });
     }
-}// System
+}// DefaultBehavior

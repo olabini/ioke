@@ -29,7 +29,7 @@ public class Runtime {
 
     Base base = new Base(this);
     Ground ground = new Ground(this);
-    System system = new System(this);
+    DefaultBehavior defaultBehavior = new DefaultBehavior(this);
     Origin origin = new Origin(this);
     Nil nil = new Nil(this);
     Text text = new Text(this, "");
@@ -64,14 +64,14 @@ public class Runtime {
 
     public void init() {
         base.init();
-        system.init();
+        defaultBehavior.init();
         ground.init();
         origin.init();
         nil.init();
         text.init();
 
         ground.mimics(base);
-        ground.mimics(system);
+        ground.mimics(defaultBehavior);
         origin.mimics(ground);
 
         nil.mimics(origin);
