@@ -24,12 +24,12 @@ package ioke.lang.parser;
 
 messageChain
     :
-        commatedExpression+ EOF!
+        assignmentExpression+ EOF!
     ;
 
 commatedExpression
     :
-        assignmentExpression (Comma assignmentExpression)*
+        assignmentExpression+ (Comma assignmentExpression+)*
     ;
 
 assignmentExpression
