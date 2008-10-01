@@ -17,13 +17,6 @@ public class Origin extends IokeObject {
     }
 
     public void init() {
-        registerMethod("mimic", new JavaMethod(runtime) {
-                public IokeObject activate(Context context, Message message, IokeObject on) {
-                    IokeObject clone = on.allocateCopy();
-                    clone.mimics(on);
-                    return clone;
-                }
-            });
     }
 
     public String toString() {

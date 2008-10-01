@@ -11,4 +11,8 @@ public class JavaMethod extends Method {
     public JavaMethod(Runtime runtime) {
         super(runtime);
     }
+
+    public void init() {
+    }
 }
+
