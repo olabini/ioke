@@ -32,6 +32,10 @@ public class Message extends IokeObject {
         this.name = name;
         this.arg1 = arg1;
     }
+    
+    public List<IokeObject> getArguments() {
+        return arguments;
+    }
 
     IokeObject allocateCopy() {
         Message m = new Message(runtime, name, arg1);
@@ -57,7 +61,6 @@ public class Message extends IokeObject {
             case iokeParser.Comma:
                 return new Message(runtime, ",");
             case iokeParser.MESSAGE_SEND:
-                System.err.println(((org.antlr.runtime.tree.CommonTree)tree).toStringTree());
                 Message m = new Message(runtime, tree.getChild(0).getText());
                 Message currentArg = null;
                 for(int i=1,j=tree.getChildCount(); i<j; i++) {
@@ -73,7 +76,6 @@ public class Message extends IokeObject {
                         currentArg.next.prev = currentArg;
                         currentArg = currentArg.next;
                     }
-                    System.err.println("added argument: " + (i-1) + " : " + m.arguments);
                 }
                 return m;
             default:

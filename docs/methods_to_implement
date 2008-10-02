@@ -1,0 +1,113 @@
+- method
+- looping primitives
+   loop as primitive
+    - everything else defined in terms of loop
+   while
+   until
+   each
+
+   3 times
+
+ break
+ continue
+ return
+
+
+
+- java integration things
+
+
+
+- inspection
+  cellNames    -> slotNames
+  cellSummary  -> slotSummary
+  cell         -> getSlot
+
+  inspect - on Origin
+  asString on everything - good default on Origin  
+
+
+
+doFile
+doScript
+
+
+
+
+List each
+ add Enumerable stuff
+
+
+
+Ioke
+ Runtime
+ System
+ Machine
+
+
+aspects:
+ - before
+ - after
+ - surround
+
+- call initialization on creation
+ - defined in terms of aspects
+
+
+
+when invoking a method, create a Locals object, and also a self.
+ use "context" in the same way as Io "call"
+ context call sender == call sender
+
+    call sender
+    call message
+    call activated
+    call slotContext
+    call target
+
+
+true if("foo" print) else("gah" print)
+false unless("foo" print) else("gah" print)
+
+
+cellMissing === doesNotUnderstand === method_missing === forward
+resend
+super
+
+
+mimics == protos
+
+getCell == getSlot
+
+
+code
+
+
+
+
+
+true, false, nil
+< > == != <= >=
+<=>
+
+
+if, ifTrue, ifFalse, ifNil, ifNotNil
+
+
+
+allow @ and @@ as prefixes
+
+
+
+exceptions
+conditions would be nice
+
+add with() and from()
+
+
+lists
+hashes
+[] and {} and []= and {}= methods
+
+.. and ... for ranges
+
