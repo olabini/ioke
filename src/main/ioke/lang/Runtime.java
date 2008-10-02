@@ -28,17 +28,19 @@ public class Runtime {
     private Reader in;
 
     // Core objects and origins
-    Base base = new Base(this);
-    Ground ground = new Ground(this);
-    DefaultBehavior defaultBehavior = new DefaultBehavior(this);
-    Origin origin = new Origin(this);
-    Nil nil = new Nil(this);
-    Text text = new Text(this, "");
-    Method method = new Method(this);
-    JavaMethod javaMethod = new JavaMethod(this);
+    Base base = new Base(this, "Base is the top of the inheritance structure. Most of the objects in the system is derived from this instance. Base should keep it's cells to the bare minimum needed for the system");
+    Ground ground = new Ground(this, "Ground is the default place code is evaluated in. This is where you can find most of the global objects defined.");
+    IokeSystem system = new IokeSystem(this, "System defines things that represents the currently running system, such as load path.");
+    Proxy runtime = new Proxy(this, "Runtime gives meta-circular access to the currently executing Ioke runtime.");
+    DefaultBehavior defaultBehavior = new DefaultBehavior(this, "DefaultBehavior is a mixin that provides most of the methods shared by most instances in the system.");
+    Origin origin = new Origin(this, "Any object created from scratch should usually be derived from Origin.");
+    Nil nil = new Nil(this, "nil is an oddball object that always represents itself. It can not be mimicked and is one of the two false values.");
+    Text text = new Text(this, "Contains an immutable text.");
+    Method method = new Method(this, null, "Method is the instance all methods in the system is derived from.");
+    JavaMethod javaMethod = new JavaMethod(this, null, "JavaMethod is a derivation of Method that represents a primitive implemented in Java.");
 
     // Core messages
-    public Message asString = new Message(this, "asString");
+    public Message asText = new Message(this, "asText");
     public Message mimic = new Message(this, "mimic");
 
     // NOT TO BE EXPOSED TO Ioke - used for internal usage only
@@ -71,6 +73,8 @@ public class Runtime {
     public void init() {
         base.init();
         defaultBehavior.init();
+        system.init();
+        runtime.init();
         ground.init();
         origin.init();
         nil.init();
@@ -79,6 +83,9 @@ public class Runtime {
         ground.mimics(base);
         ground.mimics(defaultBehavior);
         origin.mimics(ground);
+
+        system.mimics(defaultBehavior);
+        runtime.mimics(defaultBehavior);
 
         nil.mimics(origin);
         text.mimics(origin);
@@ -136,6 +143,19 @@ public class Runtime {
             throw e;
         } catch(Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public static class Proxy extends IokeObject {
+        Proxy(Runtime runtime, String documentation) {
+            super(runtime, documentation);
+        }
+
+        public void init() {
+        }
+
+        public String toString() {
+            return "Runtime";
         }
     }
 }// Runtime

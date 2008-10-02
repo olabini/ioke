@@ -7,11 +7,15 @@ package ioke.lang;
  *
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
-public class Context extends IokeObject {
-    IokeObject ground;
-
-    public Context(Runtime runtime, IokeObject ground, String documentation) {
+public class IokeSystem extends IokeObject {
+    IokeSystem(Runtime runtime, String documentation) {
         super(runtime, documentation);
-        this.ground = ground;
     }
-}// Context
+
+    public void init() {
+    }
+
+    public String toString() {
+        return "System";
+    }
+}// IokeSystem

@@ -17,15 +17,17 @@ import ioke.lang.exceptions.NoSuchCellException;
  */
 public class IokeObject {
     Runtime runtime;
+    String documentation;
     Map<String, IokeObject> cells = new HashMap<String, IokeObject>();
     List<IokeObject> mimics = new ArrayList<IokeObject>();
     
-    public IokeObject(Runtime runtime) {
+    public IokeObject(Runtime runtime, String documentation) {
         this.runtime = runtime;
+        this.documentation = documentation;
     }
 
     IokeObject allocateCopy() {
-        return new IokeObject(runtime);
+        return new IokeObject(runtime, documentation);
     }
 
     IokeObject findCell(String name, IdentityHashMap<IokeObject, Object> visited) {
@@ -53,15 +55,18 @@ public class IokeObject {
         return findCell(name, new IdentityHashMap<IokeObject, Object>());
     }
 
-    public IokeObject perform(Context ctx, Message message) {
-        IokeObject cell = this.findCell(message.getName());
+    public IokeObject getCell(String name) {
+        IokeObject cell = this.findCell(name);
 
         if(cell == runtime.nul) {
-            throw new NoSuchCellException(message.getName(), this);
+            throw new NoSuchCellException(name, this);
         }
 
-        return cell.getOrActivate(ctx, message, this);
-        
+        return cell;
+    }
+
+    public IokeObject perform(Context ctx, Message message) {
+        return getCell(message.getName()).getOrActivate(ctx, message, this);
     }
 
     public void setCell(String name, IokeObject value) {
@@ -74,6 +79,10 @@ public class IokeObject {
 
     public void mimics(IokeObject mimic) {
         this.mimics.add(mimic);
+    }
+
+    public void registerMethod(Method m) {
+        cells.put(m.name, m);
     }
 
     public void registerMethod(String name, Method m) {

@@ -1,3 +1,10 @@
+- use
+ - with simple string case
+ 
+ - should be able to use load path from System
+ - should be able to use files from jar-files
+
+
 - method
 - looping primitives
    loop as primitive
@@ -111,3 +118,5 @@ hashes
 
 .. and ... for ranges
 
+
+------------------------------

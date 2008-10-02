@@ -11,7 +11,7 @@ public class Text extends IokeObject {
     private String text;
 
     public Text(Runtime runtime, String text) {
-        super(runtime);
+        super(runtime, "Text: " + text);
         if(runtime.text != null) {
             this.mimics(runtime.text);
         }
@@ -23,14 +23,14 @@ public class Text extends IokeObject {
     }
 
     public void init() {
-        registerMethod("println", new JavaMethod(runtime) {
+        registerMethod(new JavaMethod(runtime, "println", "Prints the text to standard output") {
                 public IokeObject activate(Context context, Message message, IokeObject on) {
-                    runtime.getOut().println(runtime.asString.sendTo(context, on).toString());
+                    runtime.getOut().println(runtime.asText.sendTo(context, on).toString());
                     runtime.getOut().flush();
                     return runtime.getNil();
                 }
             });
-        registerMethod("asString", new JavaMethod(runtime) {
+        registerMethod(new JavaMethod(runtime, "asText", "Returns a text representation of the object") {
                 public IokeObject activate(Context context, Message message, IokeObject on) {
                     return on;
                 }
