@@ -12,10 +12,8 @@ Text one println
 "----------------" println
 
 
-"Should be 5 times" println
-two println
+"Should be 3 times" println
 Origin two println
-Ground two println
 Text two println
 nil two println
 

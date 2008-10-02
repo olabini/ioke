@@ -9,7 +9,7 @@ package ioke.lang;
  */
 public class NullObject extends IokeObject {
     public NullObject(Runtime runtime) {
-        super(runtime);
+        super(runtime, "Null object - only to be used internally by the implementation");
     }
 
     public boolean isActivatable() {

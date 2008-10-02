@@ -10,12 +10,12 @@ package ioke.lang;
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
 public class Ground extends IokeObject {
-    Ground(Runtime runtime) {
-        super(runtime);
+    Ground(Runtime runtime, String documentation) {
+        super(runtime, documentation);
     }
 
     IokeObject allocateCopy() {
-        return new Ground(runtime);
+        return new Ground(runtime, documentation);
     }
 
     public void init() {
@@ -23,8 +23,12 @@ public class Ground extends IokeObject {
         registerCell("DefaultBehavior", runtime.defaultBehavior);
         registerCell("Ground", runtime.ground);
         registerCell("Origin", runtime.origin);
+        registerCell("System", runtime.system);
+        registerCell("Runtime", runtime.runtime);
         registerCell("Text", runtime.text);
         registerCell("nil", runtime.nil);
+        registerCell("Method", runtime.method);
+        registerCell("JavaMethod", runtime.javaMethod);
     }
 
     public String toString() {

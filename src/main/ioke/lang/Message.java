@@ -28,7 +28,7 @@ public class Message extends IokeObject {
     }
 
     public Message(Runtime runtime, String name, Object arg1) {
-        super(runtime);
+        super(runtime, "<message " + name + ">");
         this.name = name;
         this.arg1 = arg1;
     }
@@ -168,7 +168,7 @@ public class Message extends IokeObject {
     }
 
     public IokeObject evaluateCompleteWith(IokeObject ground) {
-        return evaluateCompleteWith(new Context(runtime, ground), ground);
+        return evaluateCompleteWith(new Context(runtime, ground, "Method activation context for " + name), ground);
     }
 
     @Override

@@ -9,8 +9,8 @@ describe IokeObject do
   
   describe "findCell" do 
     it "should handle recursive mimicing with no cell" do 
-      first = IokeObject.new(@runtime)
-      second = IokeObject.new(@runtime)
+      first = IokeObject.new(@runtime, "")
+      second = IokeObject.new(@runtime, "")
       first.mimics(second)
       second.mimics(first)
 
@@ -19,8 +19,8 @@ describe IokeObject do
     end
 
     it "should handle recursive mimicing with a cell" do 
-      first = IokeObject.new(@runtime)
-      second = IokeObject.new(@runtime)
+      first = IokeObject.new(@runtime, "")
+      second = IokeObject.new(@runtime, "")
       first.mimics(second)
       second.mimics(first)
       

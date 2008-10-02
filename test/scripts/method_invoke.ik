@@ -1,5 +1,5 @@
 test1 = method(
-  asString println
+  asText println
   "from test1" println)
 
 test1

@@ -10,8 +10,8 @@ import ioke.lang.exceptions.CantMimicOddballObject;
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
 public class Nil extends IokeObject {
-    Nil(Runtime runtime) {
-        super(runtime);
+    Nil(Runtime runtime, String documentation) {
+        super(runtime, documentation);
     }
 
     public void init() {
