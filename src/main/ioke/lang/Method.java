@@ -38,6 +38,11 @@ public class Method extends IokeObject {
                     return new Text(runtime, ((Method)on).name);
                 }
             });
+        registerMethod(new JavaMethod(runtime, "call", "activates this method with the arguments given to call") {
+                public IokeObject activate(Context context, Message message, IokeObject on) {
+                    return ((Method)on).activate(context, message, context.ground);
+                }
+            });
     }
 
     public boolean isActivatable() {
