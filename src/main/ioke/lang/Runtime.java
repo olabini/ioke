@@ -36,7 +36,8 @@ public class Runtime {
     Origin origin = new Origin(this, "Any object created from scratch should usually be derived from Origin.");
     Nil nil = new Nil(this, "nil is an oddball object that always represents itself. It can not be mimicked and is one of the two false values.");
     Text text = new Text(this, "Contains an immutable text.");
-    Method method = new Method(this, null, "Method is the instance all methods in the system is derived from.");
+    Method method = new Method(this, null, "Method is the origin of all methods in the system, both default and Java..");
+    DefaultMethod defaultMethod = new DefaultMethod(this, null, "DefaultMethod is the instance all methods in the system is derived from.");
     JavaMethod javaMethod = new JavaMethod(this, null, "JavaMethod is a derivation of Method that represents a primitive implemented in Java.");
 
     // Core messages
@@ -91,6 +92,7 @@ public class Runtime {
         text.mimics(origin);
 
         method.init();
+        defaultMethod.init();
         javaMethod.init();
 
         method.mimics(origin);

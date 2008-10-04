@@ -28,6 +28,7 @@ public class Ground extends IokeObject {
         registerCell("Text", runtime.text);
         registerCell("nil", runtime.nil);
         registerCell("Method", runtime.method);
+        registerCell("DefaultMethod", runtime.defaultMethod);
         registerCell("JavaMethod", runtime.javaMethod);
     }
 

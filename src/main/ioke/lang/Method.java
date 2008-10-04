@@ -12,24 +12,20 @@ import java.util.List;
 public class Method extends IokeObject {
     String name;
     private Context context;
-    private List<String> argumentNames;
-    private Message code;
 
     public Method(Runtime runtime, String name, String documentation) {
         super(runtime, documentation);
         this.name = name;
     }
 
-    public Method(Runtime runtime, Context context, List<String> argumentNames, Message code) {
+    public Method(Runtime runtime, Context context) {
         this(runtime, null, null);
-        if(runtime.method != null) {
+
+        if(runtime.method != null && this.getClass() == Method.class) {
             this.mimics(runtime.method);
         }
 
         this.context = context;
-        this.argumentNames = argumentNames;
-        this.code = code;
-        // TODO: Add documentation here
     }
 
     public void init() {
@@ -53,9 +49,8 @@ public class Method extends IokeObject {
         return true;
     }
 
-    // TODO: make this use a real model later, with argument names etc
     public IokeObject activate(Context context, Message message, IokeObject on) {
-        return code.evaluateCompleteWith(new Context(runtime, on, "Method activation context for " + message.getName()), on);
+        return runtime.nil;
     }
 
     public String toString() {

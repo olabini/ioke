@@ -1,0 +1,103 @@
+
+Default methods is what you get by default when using the method "method". In fact, the chain looks like this
+a Method mimics Origin
+a DefaultMethod mimics Method
+a JavaMethod mimics Method
+
+The semantics of a DefaultMethod is that it provides the default kinds of parameters and does not implement any "call by name" or "call by need" semantics for it's arguments. It does argument arity checking, so the kind of trickery that can be done in ALL methods in Io can not be done inside of a defaultMethod.
+
+Arguments work like this: The general rule is that the code for the method is whatever follows the last comma. If the call to method doesn't include anything, it will return nil when called.
+
+- documentation string
+ if there are more than one argument to method() and the first one is a literal string, that string will be the documentation slot for that method:
+  method("will return the value of 42", 42)
+  method("will return this string")
+
+- regular arguments
+ when defined: are unevaluated names that separate from each other with commas. they will be available as names in the local activation context for the method:
+
+reg = method(a, b, c,
+            "called with three arguments. Wow" println
+            a println
+            b println
+            c println)
+
+to call such a method, just provide the arguments:
+
+reg(1,2,3)
+
+A method with only regular parameters always have a fixed arity and will throw an exception if called with more or fewer arguments.
+
+- optional arguments
+ when defined: a default value for arguments can be provided. In that case the arity will be minimum the amount of regular parameters and maximum the amount of given optionals plus given regulars.
+ An optional parameter must always follow all required parameters:
+
+opt = method(a, b 1, c 2,
+            "called with one, two or three arguments. Wow" println
+            a println
+            b println
+            c println)
+  
+The default value can be any kind of value. It will be evaluated in the context of the definer of the method, so closing over variables can be done.
+
+To call such a method, just provide one, two or three arguments:
+
+opt("foo")
+opt("foo", 2)
+opt("foo", 2, 3)
+
+- keyword arguments
+Keyword arguments mostly work like in Common Lisp. The main difference is that definition order doesn't mean anything, and order of them in the parameters is also irrelevant. They are based on keywords which are lexed as ':' and an atom, either a string or regular. That means you can do:
+
+--Scratch this. The : is actually part of the name. Totally. It's the method invocation semantics that might want to treat it as a call to :(foo)
+
+:foo
+:"bar"
+
+keyword(foo)
+keyword("bar")
+
+
+In a definition it looks like this:
+
+key = method(a, :foo, b, :bar,
+  "provided argument foo:" println
+  foo println)
+
+Notice that the :foo keyword parameter turns into the variable foo. Also, if you don't specify a default value for keyword arguments, they will be initialized with nil. A default argument is provided exactly like with regular arguments:
+
+key = method(a, :foo 123, foo println)
+
+The ordering of regular parameters and optional parameters are NOT subjected to keyword parameters. Keyword parameters are collected before ordering semantics for arguments is applied.
+
+To call a method with keyword arguments, intersperse them in the call. It generally makes sense to put all of them at one point in the call, but it doesn't matter, since the ordering is not interesting and they get extracted before everything else:
+
+key(123, :foo "gar", :bar "flux")
+key(:foo "gar", 123 , :bar "flux")
+key(:bar "flux", :foo "gar", 123)
+
+are all the same. The main difference is that evaluation order is UNDEFINED. It's only regular arguments and optional arguments that have defined evaluation order. Keyword arguments can not refer to each other in their default values because of this. You can provide two arguments with the same keyword, but the result of doing that is undefined.
+
+- rest arguments
+
+A rest argument works like in Common Lisp except it will ignore keyword arguments - the exception to this rule is when keyword arguments have been provided that are not defined in the argument list. This will generally cause an exception, but with a rest argument it will work out ok. The general format of rest arguments is that they are a list of given arguments. If keyword arguments are in the mix they will arrive as two arguments.
+
+rest = method(a, b, *rest, rest asString println)
+
+Prefix * is not like :. The star is not part of the actual name, it's a prefix method that turns into a call to *@():
+
+*foo == *@(foo)
+*foo bar == *@(foo) bar
+foo * bar == *(foo, bar)
+
+You can do the same thing as in Ruby when calling a method, by splicing things with the star:
+
+foo(*args)
+
+this will provide the correct keyword arguments and all other arguments.
+
+foo(a, b, c, d)
+
+
+----
+Note that you CAN send code as an argument to a default method - but you need to wrap it in some way. There are several ways of doing this.
