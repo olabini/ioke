@@ -45,6 +45,10 @@ public class Method extends IokeObject {
             });
     }
 
+    public String getName() {
+        return name;
+    }
+
     public boolean isActivatable() {
         return true;
     }
