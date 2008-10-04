@@ -1,0 +1,27 @@
+literal lists, should they be [] or should a block be in []? leaning towards literal lists.
+what about aref and aset? should I use
+ list(1)  # being a short hand for list at(1)
+and 
+ list(2) = 123
+
+or try to get [] and []= working?
+ list[1] println
+and
+ list[2] = 123
+
+The obvious problem is that literal list syntax can't be used inside of the list origins at all. Is that enough of a problem to don't have it? hmm. no.
+Should ()= be supported? should {} and {}=? since {} will be there in some way, should {}=?
+
+{:foo 1,
+ :bar 2,
+ :x "abc"}
+
+A hash is just using the rest argument.
+Can also intersperse with other keys:
+
+{123, 2,
+ 321, 4}
+
+This obviously doesn't read as well.
+
+What will be the type of the keys in the above example? Keywords? probably. something like the symbol class I get.
