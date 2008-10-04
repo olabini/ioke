@@ -1,3 +1,15 @@
+Vocabulary:
+  Origin instead of Object
+  Ground instead of Lobby
+  Base instead of BasicObject or anything like that
+  DefaultBehavior instead of Kernel
+
+  cells instead of slots or properties
+
+Remember, all should be utf16
+
+iik - interactive Ioke
+
 - use
  - with simple string case
  

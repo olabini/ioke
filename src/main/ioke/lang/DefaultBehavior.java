@@ -73,7 +73,7 @@ public class DefaultBehavior extends IokeObject {
                         argNames.add(((Message)obj).getName());
                     }
 
-                    return new Method(runtime, context, argNames, (Message)args.get(args.size()-1));
+                    return new DefaultMethod(runtime, context, argNames, (Message)args.get(args.size()-1));
                 }
             });
 
