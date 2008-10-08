@@ -47,6 +47,8 @@ opt("foo", 2)
 opt("foo", 2, 3)
 
 - keyword arguments
+!!!  This section is now totally wrong and need to be reworked. Keyword parameters will use anything that ends with a colon, not beings. It will just be treated as an unevaluated message send in the context of being a parameter to a message sending.
+
 Keyword arguments mostly work like in Common Lisp. The main difference is that definition order doesn't mean anything, and order of them in the parameters is also irrelevant. They are based on keywords which are lexed as ':' and an atom, either a string or regular. That means you can do:
 
 --Scratch this. The : is actually part of the name. Totally. It's the method invocation semantics that might want to treat it as a call to :(foo)
