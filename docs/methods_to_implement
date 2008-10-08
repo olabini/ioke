@@ -11,6 +11,8 @@ Vocabulary:
 - read is message that returns a message chain, right through the parser, just like in Lisp
 - think for real about pretty printer
 
+empty '' call
+
 Remember, all should be utf16
 
 iik - interactive Ioke
