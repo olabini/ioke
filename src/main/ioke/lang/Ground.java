@@ -26,10 +26,14 @@ public class Ground extends IokeObject {
         registerCell("System", runtime.system);
         registerCell("Runtime", runtime.runtime);
         registerCell("Text", runtime.text);
+        registerCell("Number", runtime.number);
         registerCell("nil", runtime.nil);
+        registerCell("true", runtime._true);
+        registerCell("false", runtime._false);
         registerCell("Method", runtime.method);
         registerCell("DefaultMethod", runtime.defaultMethod);
         registerCell("JavaMethod", runtime.javaMethod);
+        registerCell("Mixins", runtime.mixins);
     }
 
     public String toString() {

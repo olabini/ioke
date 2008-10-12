@@ -61,6 +61,18 @@
     </jar>
   </target>
 
+  <target name="jar-notest" depends="compile" description="Create the ioke.jar file">
+    <jar destfile="${lib.dist.dir}/ioke.jar">
+      <fileset dir="${classes.dir}">
+        <include name="**/*.class"/>
+        <include name="**/*.properties"/>
+      </fileset>
+      <manifest>
+        <attribute name="Built-By" value="${user.name}"/>
+      </manifest>
+    </jar>
+  </target>
+
   <target name="clean" description="clean almost everything">
     <delete dir="${build.dir}"/>
     <delete file="${lib.dist.dir}/ioke.jar" quiet="true"/>
