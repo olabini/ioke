@@ -35,8 +35,8 @@ public class Runtime {
     DefaultBehavior defaultBehavior = new DefaultBehavior(this, "DefaultBehavior is a mixin that provides most of the methods shared by most instances in the system.");
     Origin origin = new Origin(this, "Any object created from scratch should usually be derived from Origin.");
     Nil nil = new Nil(this, "nil is an oddball object that always represents itself. It can not be mimicked and is one of the two false values.");
-    True _true = new True(this, "true is an oddball object that always represents itself. It can not be mimicked and represents the a true value.");
-    False _false = new False(this, "false is an oddball object that always represents itself. It can not be mimicked and is one of the two false values.");
+    public True _true = new True(this, "true is an oddball object that always represents itself. It can not be mimicked and represents the a true value.");
+    public False _false = new False(this, "false is an oddball object that always represents itself. It can not be mimicked and is one of the two false values.");
     Text text = new Text(this, "", "Contains an immutable text.");
     Number number = new Number(this, "0", "Represents an exact number");
     Method method = new Method(this, null, "Method is the origin of all methods in the system, both default and Java..");
@@ -147,7 +147,7 @@ public class Runtime {
         try {
             iokeParser parser = new iokeParser(new CommonTokenStream(new iokeLexer(new ANTLRReaderStream(reader))));
             Message m = Message.fromTree(this, (Tree)(parser.messageChain().getTree()));
-//             System.err.println(m);
+            System.err.println(m);
             return m;
         } catch(RuntimeException e) {
             throw e;
@@ -162,11 +162,14 @@ public class Runtime {
 
     public IokeObject evaluateFile(String filename) {
         try {
+            system.pushCurrentFile(filename);
             return evaluateStream(new FileReader(filename));
         } catch(RuntimeException e) {
             throw e;
         } catch(Exception e) {
             throw new RuntimeException(e);
+        } finally {
+            system.popCurrentFile();
         }
     }
 

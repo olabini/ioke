@@ -6,25 +6,32 @@ package ioke.lang.exceptions;
 import java.util.ArrayList;
 import java.util.List;
 
+import ioke.lang.Message;
+
 /**
  *
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
 public class IokeException extends RuntimeException {
-    public IokeException() {
+    Message message;
+    public IokeException(Message m) {
         super();
+        this.message = m;
     }
 
-    public IokeException(String message) {
+    public IokeException(Message m, String message) {
         super(message);
+        this.message = m;
     }
 
-    public IokeException(Throwable cause) {
+    public IokeException(Message m, Throwable cause) {
         super(cause);
+        this.message = m;
     }
 
-    public IokeException(String message, Throwable cause) {
+    public IokeException(Message m, String message, Throwable cause) {
         super(message, cause);
+        this.message = m;
     }
 
     public StackTraceElement[] getStackTrace() {
@@ -38,5 +45,9 @@ public class IokeException extends RuntimeException {
             }
         }
         return stes.toArray(new StackTraceElement[0]);
+    }
+
+    public String toString() {
+        return "[" + message.getFile() + ":" + message.getLine() + ":" + message.getPosition() + "] " + getMessage();
     }
 }// IokeException

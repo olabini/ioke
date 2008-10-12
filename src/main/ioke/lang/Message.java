@@ -18,6 +18,9 @@ public class Message extends IokeObject {
     private static enum Type {MESSAGE, BINARY, BINARY_ASSIGNMENT};
 
     private String name;
+    private String file;
+    private int line;
+    private int pos;
     private Type type = Type.MESSAGE;
 
     private List<Object> arguments = new ArrayList<Object>();
@@ -38,6 +41,8 @@ public class Message extends IokeObject {
         super(runtime, "<message " + name + ">");
         this.name = name;
 
+        this.file = runtime.system.currentFile();
+
         if(arg1 != null) {
             arguments.add(arg1);
         }
@@ -45,6 +50,30 @@ public class Message extends IokeObject {
     
     public List<Object> getArguments() {
         return arguments;
+    }
+
+    public int getArgumentCount() {
+        return arguments.size();
+    }
+
+    public String getFile() {
+        return file;
+    }
+
+    public int getLine() {
+        return line;
+    }
+
+    public int getPosition() {
+        return pos;
+    }
+
+    void setLine(int line) {
+        this.line = line;
+    }
+
+    void setPosition(int pos) {
+        this.pos = pos;
     }
 
     IokeObject allocateCopy() {
@@ -57,59 +86,78 @@ public class Message extends IokeObject {
         this.next = next;
     }
 
-    private static Message fromMessageSend(Runtime runtime, String name, int argStart, Tree tree) {
-        Message m = new Message(runtime, name);
-        Message currentArg = null;
-        for(int i=argStart,j=tree.getChildCount(); i<j; i++) {
-            if(currentArg == null) {
-                currentArg = fromTree(runtime, tree.getChild(i));
-                if(currentArg.name.equals(",")) {
-                    currentArg = null;
-                } else {
-                    m.arguments.add(currentArg);
-                }
-            } else {
-                currentArg.next = fromTree(runtime, tree.getChild(i));
-                currentArg.next.prev = currentArg;
-                currentArg = currentArg.next;
-            }
-        }
-        return m;
-    }
-
     public static Message fromTree(Runtime runtime, Tree tree) {
+        Message m = null;
+        int argStart = 0;
         if(!tree.isNil()) {
             switch(tree.getType()) {
             case iokeParser.StringLiteral:
-                return new Message(runtime, "internal:createText", tree.getText());
+                m = new Message(runtime, "internal:createText", tree.getText());
+                m.setLine(tree.getLine());
+                m.setPosition(tree.getCharPositionInLine());
+                return m;
             case iokeParser.NumberLiteral:
-                return new Message(runtime, "internal:createNumber", tree.getText());
+                m = new Message(runtime, "internal:createNumber", tree.getText());
+                m.setLine(tree.getLine());
+                m.setPosition(tree.getCharPositionInLine());
+                return m;
             case iokeParser.Identifier:
-                return new Message(runtime, tree.getText());
+                m = new Message(runtime, tree.getText());
+                m.setLine(tree.getLine());
+                m.setPosition(tree.getCharPositionInLine());
+                return m;
             case iokeParser.Terminator:
-                return new Message(runtime, ";");
+                m = new Message(runtime, ";");
+                m.setLine(tree.getLine());
+                m.setPosition(tree.getCharPositionInLine());
+                return m;
             case iokeParser.Equals:
-                return new Message(runtime, "=", null, Type.BINARY_ASSIGNMENT);
+                m = new Message(runtime, "=", null, Type.BINARY_ASSIGNMENT);
+                m.setLine(tree.getLine());
+                m.setPosition(tree.getCharPositionInLine());
+                return m;
             case iokeParser.Comma:
-                return new Message(runtime, ",");
+                m = new Message(runtime, ",");
+                m.setLine(tree.getLine());
+                m.setPosition(tree.getCharPositionInLine());
+                return m;
             case iokeParser.ComparisonOperator:
-                return new Message(runtime, tree.getText(), null, Type.BINARY);
+                m = new Message(runtime, tree.getText(), null, Type.BINARY);
+                m.setLine(tree.getLine());
+                m.setPosition(tree.getCharPositionInLine());
+                return m;
+            case iokeParser.RegularBinaryOperator:
+                m = new Message(runtime, tree.getText(), null, Type.BINARY);
+                m.setLine(tree.getLine());
+                m.setPosition(tree.getCharPositionInLine());
+                return m;
             case iokeParser.MESSAGE_SEND_EMPTY:
-                return fromMessageSend(runtime, "", 0, tree);
+                m = new Message(runtime, "");
+                break;
             case iokeParser.MESSAGE_SEND:
-                return fromMessageSend(runtime, tree.getChild(0).getText(), 1, tree);
+                m = new Message(runtime, tree.getChild(0).getText());
+                argStart = 1;
+                break;
             default:
                 java.lang.System.err.println("NOOOO: Can't handle " + tree + " : " + tree.getType());
+                return null;
             }
-            
-            return null;
-        } else {
-            Message head = null;
-            List<Message> currents = new ArrayList<Message>();
 
-            for(int i=0,j=tree.getChildCount(); i<j; i++) {
-                Message created = fromTree(runtime, tree.getChild(i));
+            m.setLine(tree.getLine());
+            m.setPosition(tree.getCharPositionInLine());
+        } 
 
+        Message head = null;
+        List<Message> currents = new ArrayList<Message>();
+
+        for(int i=argStart,j=tree.getChildCount(); i<j; i++) {
+            Message created = fromTree(runtime, tree.getChild(i));
+
+            if(created.name.equals(",") && m != null) {
+                m.arguments.add(head);
+                currents.clear();
+                head = null;
+            } else {
                 if(currents.size() > 0 && currents.get(0).type == Type.BINARY_ASSIGNMENT) {
                     currents.get(0).arguments.add(null);
                     currents.get(0).arguments.add(null);
@@ -139,7 +187,7 @@ public class Message extends IokeObject {
                     }
                     created.prev = currents.size() > 0 ? currents.get(0) : null;
 
-                    if(head == null) {
+                    if(head == null && !created.name.equals(";")) {
                         head = created;
                     }
 
@@ -151,8 +199,13 @@ public class Message extends IokeObject {
                     }
                 }
             }
-            return head;
         }
+
+        if(m != null && head != null) {
+            m.arguments.add(head);
+        }
+
+        return m == null ? head : m;
     }
 
     public String getName() {
@@ -165,7 +218,7 @@ public class Message extends IokeObject {
             return (IokeObject)o;
         }
 
-        return ((Message)o).evaluateCompleteWith(context, context.ground);
+        return ((Message)o).evaluateCompleteWith(context, context);
     }
 
     public Object getArg1() {

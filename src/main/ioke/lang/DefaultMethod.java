@@ -5,6 +5,8 @@ package ioke.lang;
 
 import java.util.List;
 
+import ioke.lang.exceptions.MismatchedArgumentCount;
+
 /**
  *
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
@@ -31,6 +33,18 @@ public class DefaultMethod extends Method {
 
     // TODO: make this use a real model later, with argument names etc
     public IokeObject activate(Context context, Message message, IokeObject on) {
-        return code.evaluateCompleteWith(new Context(runtime, on, "Method activation context for " + message.getName()), on);
+        Context c = new Context(runtime, context.ground, "Method activation context for " + message.getName());
+
+        int argCount = message.getArguments().size();
+
+        if(argCount != argumentNames.size()) {
+            throw new MismatchedArgumentCount(message, argumentNames.size(), argCount);
+        }
+        
+        for(int i=0; i<argCount; i++) {
+            c.setCell(argumentNames.get(i), message.getEvaluatedArgument(i, context));
+        }
+
+        return code.evaluateCompleteWith(c, c);
     }
 }// DefaultMethod

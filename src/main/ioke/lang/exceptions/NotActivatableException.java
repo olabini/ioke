@@ -3,24 +3,26 @@
  */
 package ioke.lang.exceptions;
 
+import ioke.lang.Message;
+
 /**
  *
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
 public class NotActivatableException extends IokeException {
-    public NotActivatableException() {
-        super();
+    public NotActivatableException(Message m) {
+        super(m);
     }
 
-    public NotActivatableException(String message) {
-        super(message);
+    public NotActivatableException(Message m, String message) {
+        super(m, message);
     }
 
-    public NotActivatableException(Throwable cause) {
-        super(cause);
+    public NotActivatableException(Message m, Throwable cause) {
+        super(m, cause);
     }
 
-    public NotActivatableException(String message, Throwable cause) {
-        super(message, cause);
+    public NotActivatableException(Message m, String message, Throwable cause) {
+        super(m, message, cause);
     }
 }// NotActivatableException

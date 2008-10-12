@@ -18,8 +18,8 @@ public class Nil extends IokeObject {
         
     }
 
-    IokeObject allocateCopy() {
-        throw new CantMimicOddballObject(this);
+    IokeObject allocateCopy(Message m) {
+        throw new CantMimicOddballObject(m, this);
     }
 
     public String toString() {
@@ -28,5 +28,9 @@ public class Nil extends IokeObject {
 
     public boolean isNil() {
         return true;
+    }
+
+    public boolean isTrue() {
+        return false;
     }
 }// Nil

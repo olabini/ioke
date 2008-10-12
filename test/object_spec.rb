@@ -14,8 +14,8 @@ describe IokeObject do
       first.mimics(second)
       second.mimics(first)
 
-      first.find_cell("hoho").should == @runtime.get_nul
-      second.find_cell("hoho").should == @runtime.get_nul
+      first.find_cell(nil, "hoho").should == @runtime.get_nul
+      second.find_cell(nil, "hoho").should == @runtime.get_nul
     end
 
     it "should handle recursive mimicing with a cell" do 
@@ -27,11 +27,11 @@ describe IokeObject do
       first.register_cell("one", second)
       second.register_cell("two", first)
       
-      first.find_cell("one").should == second
-      second.find_cell("one").should == second
+      first.find_cell(nil, "one").should == second
+      second.find_cell(nil, "one").should == second
 
-      first.find_cell("two").should == first
-      second.find_cell("two").should == first
+      first.find_cell(nil, "two").should == first
+      second.find_cell(nil, "two").should == first
     end
   end
 end

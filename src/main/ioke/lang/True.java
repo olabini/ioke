@@ -18,8 +18,8 @@ public class True extends IokeObject {
         
     }
 
-    IokeObject allocateCopy() {
-        throw new CantMimicOddballObject(this);
+    IokeObject allocateCopy(Message m) {
+        throw new CantMimicOddballObject(m, this);
     }
 
     public String toString() {
