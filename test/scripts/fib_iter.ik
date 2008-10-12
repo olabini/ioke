@@ -8,4 +8,4 @@ fib = method(n,
     cur ++)
   i)
 
-System ifMain(fib(300000) println)
+System ifMain(fib(30000) println)

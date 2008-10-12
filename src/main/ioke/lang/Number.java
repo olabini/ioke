@@ -54,7 +54,7 @@ public class Number extends IokeObject {
         return asJavaString();
     }
 
-    public Number convertToNumber() {
+    public Number convertToNumber(Message m) {
         return this;
     }
 
@@ -65,10 +65,29 @@ public class Number extends IokeObject {
                 public IokeObject activate(Context context, Message message, IokeObject on) {
                     IokeObject arg = ((Message)message).getEvaluatedArgument(0, context);
                     if(!(arg instanceof Number)) {
-                        arg = arg.convertToNumber();
+                        arg = arg.convertToNumber(message);
                     }
-
                     return new Number(runtime, IntNum.compare(((Number)on).value,((Number)arg).value));
+                }
+            });
+
+        registerMethod(new JavaMethod(runtime, "-", "returns the difference between this number and the argument") {
+                public IokeObject activate(Context context, Message message, IokeObject on) {
+                    IokeObject arg = ((Message)message).getEvaluatedArgument(0, context);
+                    if(!(arg instanceof Number)) {
+                        arg = arg.convertToNumber(message);
+                    }
+                    return new Number(runtime, IntNum.sub(((Number)on).value,((Number)arg).value));
+                }
+            });
+
+        registerMethod(new JavaMethod(runtime, "+", "returns the addition of this number and the argument") {
+                public IokeObject activate(Context context, Message message, IokeObject on) {
+                    IokeObject arg = ((Message)message).getEvaluatedArgument(0, context);
+                    if(!(arg instanceof Number)) {
+                        arg = arg.convertToNumber(message);
+                    }
+                    return new Number(runtime, IntNum.add(((Number)on).value,((Number)arg).value));
                 }
             });
 

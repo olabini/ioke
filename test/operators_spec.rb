@@ -9,6 +9,11 @@ end
 
 describe "operator" do 
   describe "<" do 
+    it "should be translated correctly inside a method definition" do 
+      m = parse("method(1<2)")
+      m.should == ""
+    end
+    
     it "should be translated correctly in infix" do 
       m = parse("1<2").to_string
       m.should == "internal:createNumber(1) <(internal:createNumber(2))"
@@ -17,11 +22,55 @@ describe "operator" do
     it "should be translated correctly with parenthesis" do 
       m = parse("1<(2)").to_string
       m.should == "internal:createNumber(1) <(internal:createNumber(2))"
+
+      m = parse("1 <(2)").to_string
+      m.should == "internal:createNumber(1) <(internal:createNumber(2))"
     end
 
       it "should be translated correctly with spaces" do 
       m = parse("1 < 2").to_string
       m.should == "internal:createNumber(1) <(internal:createNumber(2))"
+    end
+  end
+
+  describe "-" do 
+    it "should be translated correctly in infix" do 
+      m = parse("2-1").to_string
+      m.should == "internal:createNumber(2) -(internal:createNumber(1))"
+    end
+
+    it "should be translated correctly with parenthesis" do 
+      m = parse("2-(1)").to_string
+      m.should == "internal:createNumber(2) -(internal:createNumber(1))"
+
+      m = parse("2 -(1)").to_string
+      m.should == "internal:createNumber(2) -(internal:createNumber(1))"
+    end
+
+      it "should be translated correctly with spaces" do 
+      m = parse("2 - 1").to_string
+      m.should == "internal:createNumber(2) -(internal:createNumber(1))"
+    end
+  end
+
+
+  describe "+" do 
+    it "should be translated correctly in infix" do 
+      m = parse("2+1").to_string
+      m.should == "internal:createNumber(2) +(internal:createNumber(1))"
+    end
+
+    it "should be translated correctly with parenthesis" do 
+      m = parse("2+(1)").to_string
+      m.should == "internal:createNumber(2) +(internal:createNumber(1))"
+
+      m = parse("2 +(1)").to_string
+      m.should == "internal:createNumber(2) +(internal:createNumber(1))"
+    end
+
+      it "should be translated correctly with spaces" do 
+      m = parse("2 + 1").to_string
+      m.should == "internal:createNumber(2) +(internal:createNumber(1))"
     end
   end
 end

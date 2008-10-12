@@ -70,6 +70,7 @@ expression
 binaryOperator
     :
         ComparisonOperator
+    |   RegularBinaryOperator
     |   Equals
     ;
 
@@ -101,6 +102,12 @@ LineComment
 ComparisonOperator
     :
         '<'
+    ;
+
+RegularBinaryOperator
+    :
+        '-'
+    |   '+'
     ;
 
 Equals

@@ -8,6 +8,7 @@ import ioke.lang.IokeObject;
 import ioke.lang.JavaMethod;
 import ioke.lang.Context;
 import ioke.lang.Message;
+import ioke.lang.Number;
 
 /**
  *
@@ -22,7 +23,8 @@ public class Comparing extends IokeObject {
         registerMethod(new JavaMethod(runtime, "<", "return true if the receiver is less than the argument, otherwise false") {
                 public IokeObject activate(Context context, Message message, IokeObject on) {
                     IokeObject arg = ((Message)message).getEvaluatedArgument(0, context);
-                    return runtime.spaceShip.sendTo(context, on, arg);
+                    Number num = runtime.spaceShip.sendTo(context, on, arg).convertToNumber(message);
+                    return (num.asJavaInteger() < 0 ? runtime._true : runtime._false);
                 }
             });
     }
