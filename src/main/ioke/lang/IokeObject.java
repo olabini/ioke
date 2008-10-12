@@ -11,15 +11,16 @@ import java.util.IdentityHashMap;
 
 import ioke.lang.exceptions.NotActivatableException;
 import ioke.lang.exceptions.NoSuchCellException;
+import ioke.lang.exceptions.ObjectIsNotRightType;
 
 /**
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
 public class IokeObject {
-    Runtime runtime;
-    String documentation;
-    Map<String, IokeObject> cells = new HashMap<String, IokeObject>();
-    List<IokeObject> mimics = new ArrayList<IokeObject>();
+    public Runtime runtime;
+    public String documentation;
+    public Map<String, IokeObject> cells = new HashMap<String, IokeObject>();
+    public List<IokeObject> mimics = new ArrayList<IokeObject>();
     
     public IokeObject(Runtime runtime, String documentation) {
         this.runtime = runtime;
@@ -95,6 +96,10 @@ public class IokeObject {
 
     public boolean isActivatable() {
         return false;
+    }
+
+    public Number convertToNumber() {
+        throw new ObjectIsNotRightType(this, "Number");
     }
 
     public IokeObject getOrActivate(Context context, Message message, IokeObject on) {

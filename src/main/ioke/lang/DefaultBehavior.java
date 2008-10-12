@@ -16,11 +16,24 @@ public class DefaultBehavior extends IokeObject {
     }
 
     public void init() {
+        registerMethod(new JavaMethod(runtime, "", "returns result of evaluating first argument") {
+                public IokeObject activate(Context context, Message message, IokeObject on) {
+                    return message.getEvaluatedArgument(0, context);
+                }
+            });
+
         registerMethod(new JavaMethod(runtime, "internal:createText", "expects one 'strange' argument. creates a new instance of Text with the given Java String backing it.") {
                 public IokeObject activate(Context context, Message message, IokeObject on) {
                     String s = (String)message.getArg1();
                     
                     return new Text(runtime, s.substring(1, s.length()-1));
+                }
+            });
+
+        registerMethod(new JavaMethod(runtime, "internal:createNumber", "expects one 'strange' argument. creates a new instance of Number that represents the number found in the strange argument.") {
+                public IokeObject activate(Context context, Message message, IokeObject on) {
+                    String s = (String)message.getArg1();
+                    return new Number(runtime, s);
                 }
             });
 
@@ -59,7 +72,7 @@ public class DefaultBehavior extends IokeObject {
 
         registerMethod(new JavaMethod(runtime, "method", "expects any number of unevaluated arguments. if no arguments at all are given, will just return nil. creates a new method based on the arguments. this method will be evaluated using the context of the object it's called on, and thus the definition can not refer to the outside scope where the method is defined. (there are other ways of achieving this). all arguments except the last one is expected to be names of arguments that will be used in the method. there will possible be additions to the format of arguments later on - including named parameters and optional arguments. the actual code is the last argument given.") {
                 public IokeObject activate(Context context, Message message, IokeObject on) {
-                    List<IokeObject> args = message.getArguments();
+                    List<Object> args = message.getArguments();
 
                     if(args.size() == 0) {
                         return new JavaMethod(runtime, "nil", "returns nil") {
@@ -69,7 +82,7 @@ public class DefaultBehavior extends IokeObject {
                     }
 
                     List<String> argNames = new ArrayList<String>(args.size()-1);
-                    for(IokeObject obj : args.subList(0, args.size()-1)) {
+                    for(Object obj : args.subList(0, args.size()-1)) {
                         argNames.add(((Message)obj).getName());
                     }
 

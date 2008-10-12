@@ -1,0 +1,6 @@
+Different parts of Ioke is covered by different licences and copyrights:
+
+The package ioke.lang is covered by the file LICENSE.
+The package gnu.math is covered by the file LICENSE.kawa.
+
+Everything else is covered by the file LICENSE, unless noted.

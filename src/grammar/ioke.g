@@ -2,10 +2,12 @@ grammar ioke;
 
 options { 
     output = AST; 
+    backtrack = true;
 }
 
 tokens {
     MESSAGE_SEND;
+    MESSAGE_SEND_EMPTY;
 }
 
 @lexer::header {
@@ -16,10 +18,28 @@ package ioke.lang.parser;
 package ioke.lang.parser;
 }
 
-@lexer::members {
+@members {
+  protected void mismatch(IntStream input, int ttype, BitSet follow) throws RecognitionException {
+    throw new MismatchedTokenException(ttype, input);
+  }
+
+  public void recoverFromMismatchedSet(IntStream input, RecognitionException e, BitSet follow) throws RecognitionException {
+			reportError(e);
+    throw e;
+  }
 }
 
-@members {
+@rulecatch {
+  catch(RecognitionException e) {
+    throw e;
+  }
+}
+
+@lexer::members {
+  public void reportError(RecognitionException e) {
+    displayRecognitionError(this.getTokenNames(), e);
+    throw new RuntimeException(e);
+  }
 }
 
 messageChain
@@ -34,24 +54,23 @@ commatedExpression
 
 assignmentExpression
     :
-        expression (Equals expression)?
+        expression+ (binaryOperator expression)?
     ;
 
 expression
     :
-        literal
-    |   message
+        Identifier ('(' commatedExpression? ')')? -> ^(MESSAGE_SEND Identifier commatedExpression?)
+    |   binaryOperator '(' commatedExpression? ')'  -> ^(MESSAGE_SEND binaryOperator commatedExpression?)
+    |   '(' commatedExpression? ')'  -> ^(MESSAGE_SEND_EMPTY commatedExpression?)
+    |   StringLiteral
+    |   NumberLiteral
     |   Terminator
     ;
 
-message
+binaryOperator
     :
-        Identifier ('(' commatedExpression? ')')? -> ^(MESSAGE_SEND Identifier commatedExpression?)
-    ;
-
-literal
-    :
-        StringLiteral
+        ComparisonOperator
+    |   Equals
     ;
 
 Identifier
@@ -59,6 +78,10 @@ Identifier
         Letter (Letter|IDDigit|StrangeChars)*
     ;
 
+NumberLiteral
+    : '0'
+    | ('1'..'9') Digit*
+    ;
 
 StringLiteral
     :  '"' ( EscapeSequence | ~('\\'|'"') )* '"'
@@ -73,6 +96,11 @@ Whitespace : Separator {skip();};
 
 LineComment
     : '#' ~('\n'|'\r')* {$channel=HIDDEN;}
+    ;
+
+ComparisonOperator
+    :
+        '<'
     ;
 
 Equals
@@ -103,6 +131,9 @@ fragment
 UnicodeEscape
     :   '\\' 'u' HexDigit HexDigit HexDigit HexDigit
     ;
+
+fragment
+Digit : '0'..'9' ;
 
 fragment
 HexDigit : ('0'..'9'|'a'..'f'|'A'..'F') ;

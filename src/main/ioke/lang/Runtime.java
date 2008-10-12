@@ -35,14 +35,19 @@ public class Runtime {
     DefaultBehavior defaultBehavior = new DefaultBehavior(this, "DefaultBehavior is a mixin that provides most of the methods shared by most instances in the system.");
     Origin origin = new Origin(this, "Any object created from scratch should usually be derived from Origin.");
     Nil nil = new Nil(this, "nil is an oddball object that always represents itself. It can not be mimicked and is one of the two false values.");
-    Text text = new Text(this, "Contains an immutable text.");
+    True _true = new True(this, "true is an oddball object that always represents itself. It can not be mimicked and represents the a true value.");
+    False _false = new False(this, "false is an oddball object that always represents itself. It can not be mimicked and is one of the two false values.");
+    Text text = new Text(this, "", "Contains an immutable text.");
+    Number number = new Number(this, "0", "Represents an exact number");
     Method method = new Method(this, null, "Method is the origin of all methods in the system, both default and Java..");
     DefaultMethod defaultMethod = new DefaultMethod(this, null, "DefaultMethod is the instance all methods in the system is derived from.");
     JavaMethod javaMethod = new JavaMethod(this, null, "JavaMethod is a derivation of Method that represents a primitive implemented in Java.");
+    Mixins mixins = new Mixins(this, "Mixins is the name space for most mixins in the system. DefaultBehavior is the notable exception.");
 
     // Core messages
     public Message asText = new Message(this, "asText");
     public Message mimic = new Message(this, "mimic");
+    public Message spaceShip = new Message(this, "<=>");
 
     // NOT TO BE EXPOSED TO Ioke - used for internal usage only
     NullObject nul = new NullObject(this);
@@ -74,12 +79,16 @@ public class Runtime {
     public void init() {
         base.init();
         defaultBehavior.init();
+        mixins.init();
         system.init();
         runtime.init();
         ground.init();
         origin.init();
         nil.init();
+        _true.init();
+        _false.init();
         text.init();
+        number.init();
 
         ground.mimics(base);
         ground.mimics(defaultBehavior);
@@ -89,7 +98,10 @@ public class Runtime {
         runtime.mimics(defaultBehavior);
 
         nil.mimics(origin);
+        _true.mimics(origin);
+        _false.mimics(origin);
         text.mimics(origin);
+        number.mimics(origin);
 
         method.init();
         defaultMethod.init();
@@ -115,6 +127,10 @@ public class Runtime {
         return this.text;
     }
 
+    public Number getNumber() {
+        return this.number;
+    }
+
     public Base getBase() {
         return this.base;
     }
@@ -127,15 +143,21 @@ public class Runtime {
         return this.nil;
     }
 
-    public IokeObject evaluateStream(Reader reader) {
+    public Message parseStream(Reader reader) {
         try {
             iokeParser parser = new iokeParser(new CommonTokenStream(new iokeLexer(new ANTLRReaderStream(reader))));
-            return Message.fromTree(this, (Tree)(parser.messageChain().getTree())).evaluateComplete();
+            Message m = Message.fromTree(this, (Tree)(parser.messageChain().getTree()));
+//             System.err.println(m);
+            return m;
         } catch(RuntimeException e) {
             throw e;
         } catch(Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public IokeObject evaluateStream(Reader reader) {
+        return parseStream(reader).evaluateComplete();
     }
 
     public IokeObject evaluateFile(String filename) {
