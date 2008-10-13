@@ -60,7 +60,6 @@ public class DefaultBehavior extends IokeObject {
                 public IokeObject activate(IokeObject context, Message message, IokeObject on) {
                     String name = ((Message)message.getArg1()).getName();
                     IokeObject value = ((Message)message.getArg2()).evaluateCompleteWith(context, context.getRealContext());
-//                     System.err.println("=name : \"" + name + "\"");
                     on.setCell(name, value);
 
                     if((value instanceof Method) && (((Method)value).name == null)) {
@@ -74,6 +73,12 @@ public class DefaultBehavior extends IokeObject {
         registerMethod(new JavaMethod(runtime, "asText", "returns a textual representation of the object called on.") {
                 public IokeObject activate(IokeObject context, Message message, IokeObject on) {
                     return new Text(runtime, on.toString());
+                }
+            });
+
+        registerMethod(new JavaMethod(runtime, "representation", "returns a more detailed textual representation of the object called on, than asText.") {
+                public IokeObject activate(IokeObject context, Message message, IokeObject on) {
+                    return new Text(runtime, on.representation());
                 }
             });
 
