@@ -39,7 +39,7 @@ public class Number extends IokeObject {
     }
     
     @Override
-    IokeObject allocateCopy(Message m) {
+    IokeObject allocateCopy(Message m, IokeObject context) {
         return new Number(runtime, value);
     }
 
@@ -55,7 +55,7 @@ public class Number extends IokeObject {
         return asJavaString();
     }
 
-    public Number convertToNumber(Message m) {
+    public Number convertToNumber(Message m, IokeObject context) {
         return this;
     }
 
@@ -66,7 +66,7 @@ public class Number extends IokeObject {
                 public IokeObject activate(IokeObject context, Message message, IokeObject on) {
                     IokeObject arg = ((Message)message).getEvaluatedArgument(0, context);
                     if(!(arg instanceof Number)) {
-                        arg = arg.convertToNumber(message);
+                        arg = arg.convertToNumber(message, context);
                     }
                     return new Number(runtime, IntNum.compare(((Number)on).value,((Number)arg).value));
                 }
@@ -76,7 +76,7 @@ public class Number extends IokeObject {
                 public IokeObject activate(IokeObject context, Message message, IokeObject on) {
                     IokeObject arg = ((Message)message).getEvaluatedArgument(0, context);
                     if(!(arg instanceof Number)) {
-                        arg = arg.convertToNumber(message);
+                        arg = arg.convertToNumber(message, context);
                     }
                     return new Number(runtime, IntNum.sub(((Number)on).value,((Number)arg).value));
                 }
@@ -86,7 +86,7 @@ public class Number extends IokeObject {
                 public IokeObject activate(IokeObject context, Message message, IokeObject on) {
                     IokeObject arg = ((Message)message).getEvaluatedArgument(0, context);
                     if(!(arg instanceof Number)) {
-                        arg = arg.convertToNumber(message);
+                        arg = arg.convertToNumber(message, context);
                     }
                     return new Number(runtime, IntNum.add(((Number)on).value,((Number)arg).value));
                 }

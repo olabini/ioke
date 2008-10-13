@@ -25,7 +25,7 @@ public class Text extends IokeObject {
     }
 
     @Override
-    IokeObject allocateCopy(Message m) {
+    IokeObject allocateCopy(Message m, IokeObject context) {
         return new Text(runtime, text);
     }
 

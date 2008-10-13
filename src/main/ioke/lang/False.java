@@ -18,8 +18,8 @@ public class False extends IokeObject {
         
     }
 
-    IokeObject allocateCopy(Message m) {
-        throw new CantMimicOddballObject(m, this);
+    IokeObject allocateCopy(Message m, IokeObject context) {
+        throw new CantMimicOddballObject(m, this, context);
     }
 
     public String toString() {

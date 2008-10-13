@@ -94,7 +94,7 @@ public class Message extends IokeObject {
     }
 
     @Override
-    IokeObject allocateCopy(Message mex) {
+    IokeObject allocateCopy(Message mex, IokeObject context) {
         Message m = new Message(runtime, name);
         m.arguments = new ArrayList<Object>(this.arguments);
         return m;
@@ -257,7 +257,7 @@ public class Message extends IokeObject {
     }
 
     public IokeObject sendTo(IokeObject context, IokeObject recv, IokeObject argument) {
-        Message m = (Message)allocateCopy(this);
+        Message m = (Message)allocateCopy(this, context);
         m.arguments.clear();
         m.arguments.add(argument);
         return recv.perform(context, m);
