@@ -183,6 +183,11 @@ describe "operator" do
         m.should == "1 <(2)"
       end
 
+      it "should be translated correctly in infix, starting with letter" do 
+        m = parse("a<2").to_string
+        m.should == "a <(2)"
+      end
+
       it "should be translated correctly with parenthesis" do 
         m = parse("1<(2)").to_string
         m.should == "1 <(2)"

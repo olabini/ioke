@@ -20,6 +20,15 @@ public class Context extends IokeObject {
         this.ground = ground.getRealContext();
         this.message = message;
         this.surroundingContext = surroundingContext;
+        
+        if(runtime.context != null) {
+            this.mimics(runtime.context);
+        }
+
+        setCell("self", getRealContext());
+    }
+    
+    public void init() {
     }
 
     public IokeObject getRealContext() {
@@ -27,15 +36,12 @@ public class Context extends IokeObject {
     }
 
     IokeObject findCell(Message m, IokeObject context, String name, IdentityHashMap<IokeObject, Object> visited) {
-        if(visited.containsKey(this)) {
-            return runtime.nul;
-        }
-
-        if(cells.containsKey(name)) {
-            return cells.get(name);
-        } else {
-            visited.put(this, null);
+        IokeObject nn = super.findCell(m, context, name, visited);
+        
+        if(nn == runtime.nul) {
             return ground.findCell(m, context, name, visited);
+        } else {
+            return nn;
         }
     }
 

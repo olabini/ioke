@@ -268,12 +268,12 @@ public class Message extends IokeObject {
     }
 
     public IokeObject evaluateCompleteWith(IokeObject ctx, IokeObject ground) {
-        IokeObject current = ground;
+        IokeObject current = ctx;
         IokeObject lastReal = runtime.getNil();
         Message m = this;
         while(m != null) {
             if(m.name.equals(";")) {
-                current = ground;
+                current = ctx;
             } else {
                 current = m.sendTo(ctx, current);
                 lastReal = current;

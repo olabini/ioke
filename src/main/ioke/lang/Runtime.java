@@ -44,6 +44,7 @@ public class Runtime {
     JavaMethod javaMethod = new JavaMethod(this, null, "JavaMethod is a derivation of Method that represents a primitive implemented in Java.");
     Mixins mixins = new Mixins(this, "Mixins is the name space for most mixins in the system. DefaultBehavior is the notable exception.");
     Message message = new Message(this, null, Message.Type.EMPTY, "A message is the basic code unit in Ioke.");
+    Context context = new Context(this, ground, "An activation context.", null, ground);
 
     // Core messages
     public Message asText = new Message(this, "asText");
@@ -91,6 +92,7 @@ public class Runtime {
         _false.init();
         text.init();
         number.init();
+        context.init();
 
         ground.mimics(base);
         ground.mimics(defaultBehavior);
