@@ -114,7 +114,13 @@ LineComment
 
 ComparisonOperator
     :
-        '<'
+        '<=>'
+    |   '<='
+    |   '>='
+    |   '<'
+    |   '>'
+    |   '=='
+    |   '!='
     ;
 
 RegularBinaryOperator

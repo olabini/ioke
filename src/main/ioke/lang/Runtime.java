@@ -139,6 +139,14 @@ public class Runtime {
         return this.base;
     }
 
+    public True getTrue() {
+        return this._true;
+    }
+
+    public False getFalse() {
+        return this._false;
+    }
+
     public DefaultBehavior getDefaultBehavior() {
         return this.defaultBehavior;
     }
