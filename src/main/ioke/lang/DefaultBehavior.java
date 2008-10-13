@@ -22,6 +22,12 @@ public class DefaultBehavior extends IokeObject {
                 }
             });
 
+        registerMethod(new JavaMethod(runtime, "derive", "calls mimic.") {
+                public IokeObject activate(IokeObject context, Message message, IokeObject on) {
+                    return runtime.base.getCell(message, "mimic").activate(context, message, on);
+                }
+            });
+
         registerMethod(new JavaMethod(runtime, "if", "evaluates the first arguments, and then evaluates the second argument if the result was true, otherwise the last argument. returns the result of the call, or the result if it's not true.") {
                 public IokeObject activate(IokeObject context, Message message, IokeObject on) {
                     IokeObject test = message.getEvaluatedArgument(0, context);
