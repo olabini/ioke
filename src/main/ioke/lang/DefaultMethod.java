@@ -19,8 +19,9 @@ public class DefaultMethod extends Method {
         super(runtime, name, documentation);
     }
 
-    public DefaultMethod(Runtime runtime, IokeObject context, List<String> argumentNames, Message code) {
+    public DefaultMethod(Runtime runtime, IokeObject context, List<String> argumentNames, Message code, String documentation) {
         super(runtime, context);
+        this.documentation = documentation;
         this.argumentNames = argumentNames;
         this.code = code;
         if(runtime.defaultMethod != null) {

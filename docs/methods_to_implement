@@ -1,3 +1,11 @@
+
+autoimporter in the style of Io Importer
+ -- something like forward
+
+ADD Common Lisp style conditions - before it's too late
+  exceptions
+  conditions would be nice
+
 - Create benchmarker
 - Eval as message on Message. Will eval in the callers environment
 - read is message that returns a message chain, right through the parser, just like in Lisp
@@ -97,11 +105,7 @@ if, ifTrue, ifFalse, ifNil, ifNotNil
 
 allow @ and @@ as prefixes (that should be short cut for self in defaultmethod)
 
-exceptions
-conditions would be nice
-
 add with() and from()
-
 
 lists
 hashes
