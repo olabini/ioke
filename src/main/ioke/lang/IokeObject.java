@@ -31,11 +31,11 @@ public class IokeObject {
         return this;
     }
 
-    IokeObject allocateCopy(Message m) {
+    IokeObject allocateCopy(Message m, IokeObject context) {
         return new IokeObject(runtime, documentation);
     }
 
-    IokeObject findCell(Message m, String name, IdentityHashMap<IokeObject, Object> visited) {
+    IokeObject findCell(Message m, IokeObject context, String name, IdentityHashMap<IokeObject, Object> visited) {
         if(visited.containsKey(this)) {
             return runtime.nul;
         }
@@ -46,7 +46,7 @@ public class IokeObject {
             visited.put(this, null);
 
             for(IokeObject mimic : mimics) {
-                IokeObject cell = mimic.findCell(m, name, visited);
+                IokeObject cell = mimic.findCell(m, context, name, visited);
                 if(cell != runtime.nul) {
                     return cell;
                 }
@@ -56,22 +56,22 @@ public class IokeObject {
         }
     }
 
-    public IokeObject findCell(Message m, String name) {
-        return findCell(m, name, new IdentityHashMap<IokeObject, Object>());
+    public IokeObject findCell(Message m, IokeObject context, String name) {
+        return findCell(m, context, name, new IdentityHashMap<IokeObject, Object>());
     }
 
-    public IokeObject getCell(Message m, String name) {
-        IokeObject cell = this.findCell(m, name);
+    public IokeObject getCell(Message m, IokeObject context, String name) {
+        IokeObject cell = this.findCell(m, context, name);
 
         if(cell == runtime.nul) {
-            throw new NoSuchCellException(m, name, this);
+            throw new NoSuchCellException(m, name, this, context);
         }
 
         return cell;
     }
 
     public IokeObject perform(IokeObject ctx, Message message) {
-        return getCell(message, message.getName()).getOrActivate(ctx, message, this);
+        return getCell(message, ctx, message.getName()).getOrActivate(ctx, message, this);
     }
 
     public void setCell(String name, IokeObject value) {
@@ -106,8 +106,8 @@ public class IokeObject {
         return false;
     }
 
-    public Number convertToNumber(Message m) {
-        throw new ObjectIsNotRightType(m, this, "Number");
+    public Number convertToNumber(Message m, IokeObject context) {
+        throw new ObjectIsNotRightType(m, this, "Number", context);
     }
 
     public IokeObject getOrActivate(IokeObject context, Message message, IokeObject on) {
@@ -125,6 +125,6 @@ public class IokeObject {
     }
 
     public IokeObject activate(IokeObject context, Message message, IokeObject on) {
-        throw new NotActivatableException(message, "Can't activate " + this + "#" + message.getName() + " on " + on, on);
+        throw new NotActivatableException(message, "Can't activate " + this + "#" + message.getName() + " on " + on, on, context);
     }
 }// IokeObject

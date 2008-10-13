@@ -11,7 +11,7 @@ import ioke.lang.Message;
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
 public class NoSuchCellException extends IokeException {
-    public NoSuchCellException(Message m, String name, IokeObject on) {
-        super(m, "Object does not respond to '" + name + "'", on);
+    public NoSuchCellException(Message m, String name, IokeObject on, IokeObject context) {
+        super(m, "Object does not respond to '" + name + "'", on, context);
     }
 }// NoSuchCellException

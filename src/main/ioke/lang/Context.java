@@ -12,16 +12,21 @@ import java.util.IdentityHashMap;
 public class Context extends IokeObject {
     IokeObject ground;
 
-    public Context(Runtime runtime, IokeObject ground, String documentation) {
+    public Message message;
+    public IokeObject surroundingContext;
+
+    public Context(Runtime runtime, IokeObject ground, String documentation, Message message, IokeObject surroundingContext) {
         super(runtime, documentation);
         this.ground = ground.getRealContext();
+        this.message = message;
+        this.surroundingContext = surroundingContext;
     }
 
     public IokeObject getRealContext() {
         return ground;
     }
 
-    IokeObject findCell(Message m, String name, IdentityHashMap<IokeObject, Object> visited) {
+    IokeObject findCell(Message m, IokeObject context, String name, IdentityHashMap<IokeObject, Object> visited) {
         if(visited.containsKey(this)) {
             return runtime.nul;
         }
@@ -30,7 +35,7 @@ public class Context extends IokeObject {
             return cells.get(name);
         } else {
             visited.put(this, null);
-            return ground.findCell(m, name, visited);
+            return ground.findCell(m, context, name, visited);
         }
     }
 

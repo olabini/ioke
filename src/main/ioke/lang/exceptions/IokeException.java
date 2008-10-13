@@ -8,6 +8,7 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import ioke.lang.Context;
 import ioke.lang.Message;
 import ioke.lang.IokeObject;
 
@@ -18,28 +19,33 @@ import ioke.lang.IokeObject;
 public class IokeException extends RuntimeException {
     Message message;
     IokeObject on;
-    public IokeException(Message m, IokeObject on) {
+    IokeObject context;
+    public IokeException(Message m, IokeObject on, IokeObject context) {
         super();
         this.message = m;
         this.on = on;
+        this.context = context;
     }
 
-    public IokeException(Message m, String message, IokeObject on) {
+    public IokeException(Message m, String message, IokeObject on, IokeObject context) {
         super(message);
         this.message = m;
         this.on = on;
+        this.context = context;
     }
 
-    public IokeException(Message m, Throwable cause, IokeObject on) {
+    public IokeException(Message m, Throwable cause, IokeObject on, IokeObject context) {
         super(cause);
         this.message = m;
         this.on = on;
+        this.context = context;
     }
 
-    public IokeException(Message m, String message, Throwable cause, IokeObject on) {
+    public IokeException(Message m, String message, Throwable cause, IokeObject on, IokeObject context) {
         super(message, cause);
         this.message = m;
         this.on = on;
+        this.context = context;
     }
 
     public StackTraceElement[] getStackTrace() {
@@ -81,8 +87,23 @@ public class IokeException extends RuntimeException {
         }
         stream.println();
         stream.println();
-        stream.println(String.format("  %-48.48s %s", on.toString() + " " + message.thisCode(),"[" + message.getFile() + ":" + message.getLine() + ":" + message.getPosition() + "]"));
+
+        stream.println(String.format("  %-48.48s %s", on.toString() + " " + message.thisCode(),"[" + message.getFile() + ":" + message.getLine() + ":" + message.getPosition() + getContextMessageName(context) + "]"));
+
+        IokeObject ctx = context;
+        while(ctx instanceof Context) {
+            stream.println(String.format("  %-48.48s %s", ((Context)ctx).getRealContext().toString() + " " + ((Context)ctx).message.thisCode(),"[" + ((Context)ctx).message.getFile() + ":" + ((Context)ctx).message.getLine() + ":" + ((Context)ctx).message.getPosition()  + getContextMessageName(((Context)ctx).surroundingContext) + "]"));
+            ctx = ((Context)ctx).surroundingContext;
+        }
         stream.println();
+    }
+
+    private String getContextMessageName(IokeObject ctx) {
+        if(ctx instanceof Context) {
+            return ":in `" + ((Context)ctx).message.getName() + "'";
+        } else {
+            return "";
+        }
     }
 
     public String toString() {

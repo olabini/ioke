@@ -24,7 +24,7 @@ public class DefaultBehavior extends IokeObject {
 
         registerMethod(new JavaMethod(runtime, "derive", "calls mimic.") {
                 public IokeObject activate(IokeObject context, Message message, IokeObject on) {
-                    return runtime.base.getCell(message, "mimic").activate(context, message, on);
+                    return runtime.base.getCell(message, context, "mimic").activate(context, message, on);
                 }
             });
 
@@ -97,7 +97,7 @@ public class DefaultBehavior extends IokeObject {
         registerMethod(new JavaMethod(runtime, "getCell", "expects one evaluated text argument and returns the cell that matches that name, without activating even if it's activatable.") {
                 public IokeObject activate(IokeObject context, Message message, IokeObject on) {
                     String name = ((Text)(runtime.asText.sendTo(context, ((Message)message.getArguments().get(0)).evaluateCompleteWith(context, context.getRealContext())))).getText();
-                    return on.getCell(message, name);
+                    return on.getCell(message, context, name);
                 }
             });
 

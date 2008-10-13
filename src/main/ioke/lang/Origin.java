@@ -13,7 +13,7 @@ public class Origin extends IokeObject {
     }
 
     @Override
-    IokeObject allocateCopy(Message m) {
+    IokeObject allocateCopy(Message m, IokeObject context) {
         return new Origin(runtime, documentation);
     }
 

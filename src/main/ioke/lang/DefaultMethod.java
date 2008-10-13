@@ -35,10 +35,10 @@ public class DefaultMethod extends Method {
     public IokeObject activate(IokeObject context, Message message, IokeObject on) {
         int argCount = message.getArguments().size();
         if(argCount != argumentNames.size()) {
-            throw new MismatchedArgumentCount(message, argumentNames.size(), argCount, on);
+            throw new MismatchedArgumentCount(message, argumentNames.size(), argCount, on, context);
         }
         
-        Context c = new Context(runtime, on, "Method activation context for " + message.getName());
+        Context c = new Context(runtime, on, "Method activation context for " + message.getName(), message, context);
 
         for(int i=0; i<argCount; i++) {
             c.setCell(argumentNames.get(i), message.getEvaluatedArgument(i, context));
