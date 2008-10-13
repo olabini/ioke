@@ -125,6 +125,6 @@ public class IokeObject {
     }
 
     public IokeObject activate(IokeObject context, Message message, IokeObject on) {
-        throw new NotActivatableException(message, "Can't activate " + this + "#" + message.getName() + " on " + on);
+        throw new NotActivatableException(message, "Can't activate " + this + "#" + message.getName() + " on " + on, on);
     }
 }// IokeObject

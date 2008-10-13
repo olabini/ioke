@@ -25,8 +25,8 @@ public class Message extends IokeObject {
 
     private List<Object> arguments = new ArrayList<Object>();
 
-    Message next;
-    Message prev;
+    public Message next;
+    public Message prev;
 
     Message(Runtime runtime, String name, Type type, String documentation) {
         this(runtime, name, null, type);
@@ -291,8 +291,86 @@ public class Message extends IokeObject {
         return evaluateCompleteWith(ground, ground.getRealContext());
     }
 
+    public int codePositionOf(Message m) {
+        if(this == m) {
+            return 0;
+        }
+        StringBuilder base = new StringBuilder();
+
+        currentCode(base);
+        
+        if(next != null) {
+            if(this.type != Type.TERMINATOR) {
+                base.append(" ");
+            }
+
+            return base.length() + next.codePositionOf(m);
+        }
+        throw new RuntimeException("internal error, can't find message: " + m);
+    }
+
     public String code() {
-        return "TODO: implement";
+        StringBuilder base = new StringBuilder();
+
+        currentCode(base);
+        
+        if(next != null) {
+            if(this.type != Type.TERMINATOR) {
+                base.append(" ");
+            }
+
+            base.append(next.code());
+        }
+
+        return base.toString();
+    }
+
+    public String thisCode() {
+        StringBuilder base = new StringBuilder();
+
+        currentCode(base);
+        
+        return base.toString();
+    }
+
+    private void currentCode(StringBuilder base) {
+        if(this.name.equals("internal:createText") && (this.arguments.get(0) instanceof String)) {
+            base.append(this.arguments.get(0));
+        } else if(this.name.equals("internal:createNumber") && (this.arguments.get(0) instanceof String)) {
+            base.append(this.arguments.get(0));
+        } else if(this.type == Type.TERMINATOR) {
+            base.append(";\n");
+        } else {
+            base.append(this.name);
+            if(arguments.size() > 0) {
+                base.append("(");
+                String sep = "";
+                for(Object o : arguments) {
+                    base.append(sep).append(((Message)o).code());
+                    sep = ", ";
+                }
+                base.append(")");
+            }
+        }
+    }
+
+
+    public String codeSequenceTo(String name) {
+        if(this.name.equals(name)) {
+            return "";
+        } 
+
+        StringBuilder base = new StringBuilder();
+
+        currentCode(base);
+        
+        if(next != null && !next.name.equals(name)) {
+            base.append(" ");
+            base.append(next.codeSequenceTo(name));
+        }
+
+        return base.toString();
+
     }
 
     @Override
@@ -302,16 +380,6 @@ public class Message extends IokeObject {
     
     @Override
     public String toString() {
-        if(arguments.size() > 0) {
-            StringBuilder sb = new StringBuilder();
-            String sep = "";
-            for(Object o : arguments) {
-                sb.append(sep).append(o);
-                sep = ", ";
-            }
-            return name + "(" + sb + ")" + (null == next ? "" : " " + next);
-        } else {
-            return name + (null == next ? "" : " " + next);
-        }
+        return code();
     }
 }// Message

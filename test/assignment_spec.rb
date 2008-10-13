@@ -42,6 +42,6 @@ describe "assignment" do
 
   it "should work with something on the next line too" do 
     m = parse("count = count + 1\ncount println").to_string
-    m.should == "=(count, count +(internal:createNumber(1))) ; count println"
+    m.should == "=(count, count +(1)) ;\ncount println"
   end
 end
