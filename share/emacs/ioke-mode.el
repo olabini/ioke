@@ -77,7 +77,7 @@
 (defconst ioke-custom-face font-lock-builtin-face
   "The font to use for custom names.")
 
-(defconst ioke-nothing-face 'nothing
+(defconst ioke-nothing-face font-lock-builtin-face
   "The font to use for white names.")
 
 (defconst ioke-prototype-names '(
@@ -222,7 +222,7 @@
     `(,(concat "\\<" (regexp-opt ioke-custom-names t) "\\>") . ioke-custom-face)
     `(,(concat "\\<" (regexp-opt ioke-operator-names t) "\\>") . ioke-operator-face)
     `(,(regexp-opt ioke-special-names t) . ioke-special-face)
-    '("\\<[[:alnum:]!?_:-]+\\>" . ioke-nothing-face)
+;    '("\\<[[:alnum:]!?_:-]+\\>" . ioke-nothing-face)
     `(,(regexp-opt ioke-operator-symbols t) . ioke-operator-face)
     '("\\([[:alnum:]!?_:-]+\\)[[:space:]]*[+*/-]?=[^=]" 1 ioke-object-assign-face t)
     '("\\([[:alnum:]!?_:-]+\\)[[:space:]]*=[^=][[:space:]]*[[:alnum:]_:-]+[[:space:]]+clone" 1 ioke-object-clone-face t nil)
