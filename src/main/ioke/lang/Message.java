@@ -204,7 +204,9 @@ public class Message extends IokeObject {
                     currents.add(0, created);
                 } else {
                     if(created.type == Type.TERMINATOR && currents.size() > 1) {
-                        currents.remove(0);
+                        while(currents.size() > 1) {
+                            currents.remove(0);
+                        }
                     }
                     created.prev = currents.size() > 0 ? currents.get(0) : null;
 

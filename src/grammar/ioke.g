@@ -56,24 +56,25 @@ package ioke.lang.parser;
 
 messageChain
     :
-        assignmentExpression+ EOF!
+        expression+ EOF!
     ;
 
 commatedExpression
     :
-        assignmentExpression+ (Comma assignmentExpression+)*
+        expression+ (Comma expression+)*
     ;
 
-assignmentExpression
-    :
-        expression+ (binaryOperator expression)?
-    ;
+//assignmentExpression
+//    :
+//        expression+ (binaryOperator expression)?
+//    ;
 
 expression
     :
         Identifier ('(' commatedExpression? ')')? -> ^(MESSAGE_SEND Identifier commatedExpression?)
     |   binaryOperator '(' commatedExpression? ')'  -> ^(MESSAGE_SEND binaryOperator commatedExpression?)
     |   '(' commatedExpression? ')'  -> ^(MESSAGE_SEND_EMPTY commatedExpression?)
+    |   binaryOperator expression
     |   StringLiteral
     |   NumberLiteral
     |   Terminator
