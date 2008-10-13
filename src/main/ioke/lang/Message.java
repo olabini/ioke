@@ -15,7 +15,7 @@ import ioke.lang.parser.iokeParser;
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
 public class Message extends IokeObject {
-    public static enum Type {EMPTY, MESSAGE, BINARY, BINARY_ASSIGNMENT};
+    public static enum Type {EMPTY, MESSAGE, BINARY, BINARY_ASSIGNMENT, TERMINATOR, SEPARATOR};
 
     private String name;
     private String file;
@@ -125,7 +125,7 @@ public class Message extends IokeObject {
                 m.setPosition(tree.getCharPositionInLine());
                 return m;
             case iokeParser.Terminator:
-                m = new Message(runtime, ";");
+                m = new Message(runtime, ";", null, Type.TERMINATOR);
                 m.setLine(tree.getLine());
                 m.setPosition(tree.getCharPositionInLine());
                 return m;
@@ -135,7 +135,7 @@ public class Message extends IokeObject {
                 m.setPosition(tree.getCharPositionInLine());
                 return m;
             case iokeParser.Comma:
-                m = new Message(runtime, ",");
+                m = new Message(runtime, ",", null, Type.SEPARATOR);
                 m.setLine(tree.getLine());
                 m.setPosition(tree.getCharPositionInLine());
                 return m;
@@ -170,8 +170,11 @@ public class Message extends IokeObject {
 
         for(int i=argStart,j=tree.getChildCount(); i<j; i++) {
             Message created = fromTree(runtime, tree.getChild(i));
+            if(created.type == Type.TERMINATOR && head == null && currents.size() == 0) {
+                continue;
+            }
 
-            if(created.name.equals(",") && m != null) {
+            if(created.type == Type.SEPARATOR && m != null) {
                 m.arguments.add(head);
                 currents.clear();
                 head = null;
@@ -200,12 +203,12 @@ public class Message extends IokeObject {
                     currents.get(0).arguments.add(created);
                     currents.add(0, created);
                 } else {
-                    if(created.name.equals(";") && currents.size() > 1) {
+                    if(created.type == Type.TERMINATOR && currents.size() > 1) {
                         currents.remove(0);
                     }
                     created.prev = currents.size() > 0 ? currents.get(0) : null;
 
-                    if(head == null && !created.name.equals(";")) {
+                    if(head == null && created.type != Type.TERMINATOR) {
                         head = created;
                     }
 

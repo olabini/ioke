@@ -27,6 +27,11 @@ package ioke.lang.parser;
 			reportError(e);
     throw e;
   }
+
+  public Tree parseFully() throws RecognitionException {
+      messageChain_return result = messageChain();
+      return result == null ? (Tree)null : (Tree)(result.getTree());
+  }
 }
 
 @rulecatch {
@@ -36,6 +41,13 @@ package ioke.lang.parser;
 }
 
 @lexer::members {
+    public Token nextToken() {
+        Token t = super.nextToken();
+//        System.err.println("RETURNING TOKEN: " + t);
+        return t;
+    }
+
+
   public void reportError(RecognitionException e) {
     displayRecognitionError(this.getTokenNames(), e);
     throw new RuntimeException(e);
