@@ -93,17 +93,9 @@ getCell == getSlot
 
 code
 
-< > == != <= >=
-<=>
-
-
 if, ifTrue, ifFalse, ifNil, ifNotNil
 
-
-
-allow @ and @@ as prefixes
-
-
+allow @ and @@ as prefixes (that should be short cut for self in defaultmethod)
 
 exceptions
 conditions would be nice
