@@ -112,12 +112,21 @@ public class DefaultBehavior extends IokeObject {
                             }};
                     }
 
+                    String doc = null;
+
                     List<String> argNames = new ArrayList<String>(args.size()-1);
-                    for(Object obj : args.subList(0, args.size()-1)) {
+                    int start = 0;
+                    if(args.size() > 0 && ((Message)args.get(0)).getName().equals("internal:createText")) {
+                        start++;
+                        String s = ((String)((Message)args.get(0)).getArguments().get(0));
+                        doc = s.substring(1, s.length()-1);
+                    }
+
+                    for(Object obj : args.subList(start, args.size()-1)) {
                         argNames.add(((Message)obj).getName());
                     }
 
-                    return new DefaultMethod(runtime, context, argNames, (Message)args.get(args.size()-1));
+                    return new DefaultMethod(runtime, context, argNames, (Message)args.get(args.size()-1), doc);
                 }
             });
 

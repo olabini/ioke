@@ -106,12 +106,14 @@ public class Runtime {
         number.mimics(origin);
 
         message.mimics(origin);
-
+        method.mimics(origin);
+        
         method.init();
         defaultMethod.init();
         javaMethod.init();
 
         method.mimics(origin);
+        defaultMethod.mimics(method);
         javaMethod.mimics(method);
     }
 
