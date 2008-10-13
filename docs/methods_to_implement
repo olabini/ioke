@@ -1,17 +1,7 @@
-Vocabulary:
-  Origin instead of Object
-  Ground instead of Lobby
-  Base instead of BasicObject or anything like that
-  DefaultBehavior instead of Kernel
-
-  cells instead of slots or properties
-
 - Create benchmarker
 - Eval as message on Message. Will eval in the callers environment
 - read is message that returns a message chain, right through the parser, just like in Lisp
 - think for real about pretty printer
-
-empty '' call
 
 Remember, all should be utf16
 
@@ -93,27 +83,16 @@ when invoking a method, create a Locals object, and also a self.
     call target
 
 
-true if("foo" print) else("gah" print)
-false unless("foo" print) else("gah" print)
-
-
 cellMissing === doesNotUnderstand === method_missing === forward
 resend
 super
-
 
 mimics == protos
 
 getCell == getSlot
 
-
 code
 
-
-
-
-
-true, false, nil
 < > == != <= >=
 <=>
 
