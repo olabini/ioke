@@ -6,5 +6,5 @@ fib = method(n,
     fib(n - 1) + 
     fib(n - 2)))
 
-System ifMain(fib(30) println)
+System ifMain(fib(10) println)
 #count println

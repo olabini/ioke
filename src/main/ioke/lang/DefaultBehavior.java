@@ -60,7 +60,7 @@ public class DefaultBehavior extends IokeObject {
                 public IokeObject activate(IokeObject context, Message message, IokeObject on) {
                     String name = ((Message)message.getArg1()).getName();
                     IokeObject value = ((Message)message.getArg2()).evaluateCompleteWith(context, context.getRealContext());
-                    System.err.println("=name : \"" + name + "\"");
+//                     System.err.println("=name : \"" + name + "\"");
                     on.setCell(name, value);
 
                     if((value instanceof Method) && (((Method)value).name == null)) {

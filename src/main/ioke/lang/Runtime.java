@@ -150,8 +150,10 @@ public class Runtime {
     public Message parseStream(Reader reader) {
         try {
             iokeParser parser = new iokeParser(new CommonTokenStream(new iokeLexer(new ANTLRReaderStream(reader))));
-            Message m = Message.fromTree(this, (Tree)(parser.messageChain().getTree()));
-//             System.err.println(m);
+            Tree t = parser.parseFully();
+//             System.err.println("t: " + t.toStringTree());
+            Message m = Message.fromTree(this, t);
+//             System.err.println("m: " + m);
             return m;
         } catch(RuntimeException e) {
             throw e;
