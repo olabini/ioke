@@ -11,7 +11,7 @@ describe "parsing" do
   describe "parens without preceeding message" do 
     it "should be translated into identity message" do 
       m = parse("(1)").to_string
-      m.should == "(internal:createNumber(1))"
+      m.should == "(1)"
     end
   end
 end

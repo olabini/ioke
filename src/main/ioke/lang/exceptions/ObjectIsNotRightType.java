@@ -12,6 +12,6 @@ import ioke.lang.Message;
  */
 public class ObjectIsNotRightType extends IokeException {
     public ObjectIsNotRightType(Message m, IokeObject from, String type) {
-        super(m, "Object " + from + " can not be converted to: " + type);
+        super(m, "Object " + from + " can not be converted to: " + type, from);
     }
 }// ObjectIsNotRightType

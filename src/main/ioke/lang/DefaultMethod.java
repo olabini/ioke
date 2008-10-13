@@ -35,7 +35,7 @@ public class DefaultMethod extends Method {
     public IokeObject activate(IokeObject context, Message message, IokeObject on) {
         int argCount = message.getArguments().size();
         if(argCount != argumentNames.size()) {
-            throw new MismatchedArgumentCount(message, argumentNames.size(), argCount);
+            throw new MismatchedArgumentCount(message, argumentNames.size(), argCount, on);
         }
         
         Context c = new Context(runtime, on, "Method activation context for " + message.getName());

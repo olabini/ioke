@@ -12,6 +12,6 @@ import ioke.lang.Message;
  */
 public class CantMimicOddballObject extends IokeException {
     public CantMimicOddballObject(Message m, IokeObject oddball) {
-        super(m, "Can't mimic on oddball object: " + oddball);
+        super(m, "Can't mimic on oddball object: " + oddball, oddball);
     }
 }// CantMimicOddballObject
