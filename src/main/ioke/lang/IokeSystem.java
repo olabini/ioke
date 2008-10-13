@@ -13,6 +13,7 @@ import java.util.List;
  */
 public class IokeSystem extends IokeObject {
     private List<String> currentFile = new ArrayList<String>(Arrays.asList("<init>"));
+    private String currentProgram;
 
     IokeSystem(Runtime runtime, String documentation) {
         super(runtime, documentation);
@@ -30,11 +31,19 @@ public class IokeSystem extends IokeObject {
         return currentFile.get(0);
     }
 
+    public String currentProgram() {
+        return currentProgram;
+    }
+
+    public void setCurrentProgram(String currentProgram) {
+        this.currentProgram = currentProgram;
+    }
+
     public void init() {
         registerMethod(new JavaMethod(runtime, "ifMain", "returns result of evaluating first argument") {
-                public IokeObject activate(Context context, Message message, IokeObject on) {
-                    if(currentFile().equals(message.getFile())) {
-                        return ((Message)message.getArguments().get(0)).evaluateCompleteWith(context, context.ground);
+                public IokeObject activate(IokeObject context, Message message, IokeObject on) {
+                    if(currentProgram().equals(message.getFile())) {
+                        return ((Message)message.getArguments().get(0)).evaluateCompleteWith(context, context.getRealContext());
                     } else {
                         return runtime.nil;
                     }

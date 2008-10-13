@@ -43,6 +43,7 @@ public class Runtime {
     DefaultMethod defaultMethod = new DefaultMethod(this, null, "DefaultMethod is the instance all methods in the system is derived from.");
     JavaMethod javaMethod = new JavaMethod(this, null, "JavaMethod is a derivation of Method that represents a primitive implemented in Java.");
     Mixins mixins = new Mixins(this, "Mixins is the name space for most mixins in the system. DefaultBehavior is the notable exception.");
+    Message message = new Message(this, null, Message.Type.EMPTY, "A message is the basic code unit in Ioke.");
 
     // Core messages
     public Message asText = new Message(this, "asText");
@@ -82,6 +83,7 @@ public class Runtime {
         mixins.init();
         system.init();
         runtime.init();
+        message.init();
         ground.init();
         origin.init();
         nil.init();
@@ -102,6 +104,8 @@ public class Runtime {
         _false.mimics(origin);
         text.mimics(origin);
         number.mimics(origin);
+
+        message.mimics(origin);
 
         method.init();
         defaultMethod.init();
@@ -147,7 +151,7 @@ public class Runtime {
         try {
             iokeParser parser = new iokeParser(new CommonTokenStream(new iokeLexer(new ANTLRReaderStream(reader))));
             Message m = Message.fromTree(this, (Tree)(parser.messageChain().getTree()));
-            System.err.println(m);
+//             System.err.println(m);
             return m;
         } catch(RuntimeException e) {
             throw e;

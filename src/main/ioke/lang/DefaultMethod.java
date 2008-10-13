@@ -19,7 +19,7 @@ public class DefaultMethod extends Method {
         super(runtime, name, documentation);
     }
 
-    public DefaultMethod(Runtime runtime, Context context, List<String> argumentNames, Message code) {
+    public DefaultMethod(Runtime runtime, IokeObject context, List<String> argumentNames, Message code) {
         super(runtime, context);
         this.argumentNames = argumentNames;
         this.code = code;
@@ -32,19 +32,18 @@ public class DefaultMethod extends Method {
     }
 
     // TODO: make this use a real model later, with argument names etc
-    public IokeObject activate(Context context, Message message, IokeObject on) {
-        Context c = new Context(runtime, context.ground, "Method activation context for " + message.getName());
-
+    public IokeObject activate(IokeObject context, Message message, IokeObject on) {
         int argCount = message.getArguments().size();
-
         if(argCount != argumentNames.size()) {
             throw new MismatchedArgumentCount(message, argumentNames.size(), argCount);
         }
         
+        Context c = new Context(runtime, on, "Method activation context for " + message.getName());
+
         for(int i=0; i<argCount; i++) {
             c.setCell(argumentNames.get(i), message.getEvaluatedArgument(i, context));
         }
 
-        return code.evaluateCompleteWith(c, c);
+        return code.evaluateCompleteWith(c, on);
     }
 }// DefaultMethod

@@ -12,13 +12,14 @@ public class Base extends IokeObject {
         super(runtime, documentation);
     }
 
-    IokeObject allocateCopy() {
+    @Override
+    IokeObject allocateCopy(Message m) {
         return new Base(runtime, documentation);
     }
 
     public void init() {
         registerMethod(new JavaMethod(runtime, "mimic", "will return a new derivation of the receiving object. Might throw exceptions if the object is an oddball object.") {
-                public IokeObject activate(Context context, Message message, IokeObject on) {
+                public IokeObject activate(IokeObject context, Message message, IokeObject on) {
                     IokeObject clone = on.allocateCopy(message);
                     clone.mimics(on);
                     return clone;

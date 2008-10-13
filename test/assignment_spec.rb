@@ -27,4 +27,6 @@ describe "assignment" do
     result = ioke.evaluate_stream(StringReader.new(%q[Text a = "something"]))
     ioke.text.find_cell(nil, "a").should == result
   end
+  
+  it "should work with combination of equals and plus sign"
 end
