@@ -15,7 +15,7 @@ import ioke.lang.parser.iokeParser;
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
 public class Message extends IokeObject {
-    private static enum Type {MESSAGE, BINARY, BINARY_ASSIGNMENT};
+    public static enum Type {EMPTY, MESSAGE, BINARY, BINARY_ASSIGNMENT};
 
     private String name;
     private String file;
@@ -27,6 +27,11 @@ public class Message extends IokeObject {
 
     Message next;
     Message prev;
+
+    Message(Runtime runtime, String name, Type type, String documentation) {
+        this(runtime, name, null, type);
+        this.documentation = documentation;
+    }
 
     public Message(Runtime runtime, String name) {
         this(runtime, name, null);
@@ -41,11 +46,23 @@ public class Message extends IokeObject {
         super(runtime, "<message " + name + ">");
         this.name = name;
 
+        if(runtime.message != null) {
+            this.mimics(runtime.message);
+        }
+
         this.file = runtime.system.currentFile();
 
         if(arg1 != null) {
             arguments.add(arg1);
         }
+    }
+
+    public void init() {
+        registerMethod(new JavaMethod(runtime, "code", "Returns a code representation of the object") {
+                public IokeObject activate(IokeObject context, Message message, IokeObject on) {
+                    return new Text(runtime, ((Message)on).code());
+                }
+            });
     }
     
     public List<Object> getArguments() {
@@ -76,7 +93,8 @@ public class Message extends IokeObject {
         this.pos = pos;
     }
 
-    IokeObject allocateCopy() {
+    @Override
+    IokeObject allocateCopy(Message mex) {
         Message m = new Message(runtime, name);
         m.arguments = new ArrayList<Object>(this.arguments);
         return m;
@@ -212,13 +230,13 @@ public class Message extends IokeObject {
         return name;
     }
 
-    public IokeObject getEvaluatedArgument(int index, Context context) {
+    public IokeObject getEvaluatedArgument(int index, IokeObject context) {
         Object o = arguments.get(index);
         if(!(o instanceof Message)) {
             return (IokeObject)o;
         }
 
-        return ((Message)o).evaluateCompleteWith(context, context);
+        return ((Message)o).evaluateCompleteWithoutExplicitReceiver(context, context.getRealContext());
     }
 
     public Object getArg1() {
@@ -229,12 +247,12 @@ public class Message extends IokeObject {
         return arguments.get(1);
     }
 
-    public IokeObject sendTo(Context context, IokeObject recv) {
+    public IokeObject sendTo(IokeObject context, IokeObject recv) {
         return recv.perform(context, this);
     }
 
-    public IokeObject sendTo(Context context, IokeObject recv, IokeObject argument) {
-        Message m = (Message)allocateCopy();
+    public IokeObject sendTo(IokeObject context, IokeObject recv, IokeObject argument) {
+        Message m = (Message)allocateCopy(this);
         m.arguments.clear();
         m.arguments.add(argument);
         return recv.perform(context, m);
@@ -244,7 +262,7 @@ public class Message extends IokeObject {
         return evaluateCompleteWith(runtime.getGround());
     }
 
-    public IokeObject evaluateCompleteWith(Context ctx, IokeObject ground) {
+    public IokeObject evaluateCompleteWith(IokeObject ctx, IokeObject ground) {
         IokeObject current = ground;
         IokeObject lastReal = runtime.getNil();
         Message m = this;
@@ -260,10 +278,23 @@ public class Message extends IokeObject {
         return lastReal;
     }
 
-    public IokeObject evaluateCompleteWith(IokeObject ground) {
-        return evaluateCompleteWith(new Context(runtime, ground, "Method activation context for " + name), ground);
+    public IokeObject evaluateCompleteWithoutExplicitReceiver(IokeObject ctx, IokeObject ground) {
+        return evaluateCompleteWith(ctx, ctx);
     }
 
+    public IokeObject evaluateCompleteWith(IokeObject ground) {
+        return evaluateCompleteWith(ground, ground.getRealContext());
+    }
+
+    public String code() {
+        return "TODO: implement";
+    }
+
+    @Override
+    public String representation() {
+        return code();
+    }
+    
     @Override
     public String toString() {
         if(arguments.size() > 0) {

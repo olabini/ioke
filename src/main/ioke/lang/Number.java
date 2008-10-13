@@ -38,7 +38,8 @@ public class Number extends IokeObject {
         this.value = value;
     }
     
-    IokeObject allocateCopy() {
+    @Override
+    IokeObject allocateCopy(Message m) {
         return new Number(runtime, value);
     }
 
@@ -62,7 +63,7 @@ public class Number extends IokeObject {
         this.mimics(runtime.mixins.comparing);
 
         registerMethod(new JavaMethod(runtime, "<=>", "compares this number against the argument, returning -1, 0 or 1 based on which one is larger") {
-                public IokeObject activate(Context context, Message message, IokeObject on) {
+                public IokeObject activate(IokeObject context, Message message, IokeObject on) {
                     IokeObject arg = ((Message)message).getEvaluatedArgument(0, context);
                     if(!(arg instanceof Number)) {
                         arg = arg.convertToNumber(message);
@@ -72,7 +73,7 @@ public class Number extends IokeObject {
             });
 
         registerMethod(new JavaMethod(runtime, "-", "returns the difference between this number and the argument") {
-                public IokeObject activate(Context context, Message message, IokeObject on) {
+                public IokeObject activate(IokeObject context, Message message, IokeObject on) {
                     IokeObject arg = ((Message)message).getEvaluatedArgument(0, context);
                     if(!(arg instanceof Number)) {
                         arg = arg.convertToNumber(message);
@@ -82,7 +83,7 @@ public class Number extends IokeObject {
             });
 
         registerMethod(new JavaMethod(runtime, "+", "returns the addition of this number and the argument") {
-                public IokeObject activate(Context context, Message message, IokeObject on) {
+                public IokeObject activate(IokeObject context, Message message, IokeObject on) {
                     IokeObject arg = ((Message)message).getEvaluatedArgument(0, context);
                     if(!(arg instanceof Number)) {
                         arg = arg.convertToNumber(message);
@@ -92,7 +93,7 @@ public class Number extends IokeObject {
             });
 
         registerMethod(new JavaMethod(runtime, "asText", "Returns a text representation of the object") {
-                public IokeObject activate(Context context, Message message, IokeObject on) {
+                public IokeObject activate(IokeObject context, Message message, IokeObject on) {
                     return new Text(runtime, ((Number)on).toString());
                 }
             });

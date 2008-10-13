@@ -27,12 +27,15 @@ public class IokeObject {
         this.documentation = documentation;
     }
 
+    public IokeObject getRealContext() {
+        return this;
+    }
+
     IokeObject allocateCopy(Message m) {
         return new IokeObject(runtime, documentation);
     }
 
     IokeObject findCell(Message m, String name, IdentityHashMap<IokeObject, Object> visited) {
-//         System.err.println("Xlooking for " + name + " on " + this);
         if(visited.containsKey(this)) {
             return runtime.nul;
         }
@@ -67,7 +70,7 @@ public class IokeObject {
         return cell;
     }
 
-    public IokeObject perform(Context ctx, Message message) {
+    public IokeObject perform(IokeObject ctx, Message message) {
         return getCell(message, message.getName()).getOrActivate(ctx, message, this);
     }
 
@@ -107,7 +110,7 @@ public class IokeObject {
         throw new ObjectIsNotRightType(m, this, "Number");
     }
 
-    public IokeObject getOrActivate(Context context, Message message, IokeObject on) {
+    public IokeObject getOrActivate(IokeObject context, Message message, IokeObject on) {
         if(isActivatable()) {
             return activate(context, message, on);
         } else {
@@ -121,7 +124,7 @@ public class IokeObject {
         return sb.append("#<").append(this).append(": mimics=").append(mimics).append(" cells=").append(cells).append(">").toString();
     }
 
-    public IokeObject activate(Context context, Message message, IokeObject on) {
+    public IokeObject activate(IokeObject context, Message message, IokeObject on) {
         throw new NotActivatableException(message, "Can't activate " + this + "#" + message.getName() + " on " + on);
     }
 }// IokeObject

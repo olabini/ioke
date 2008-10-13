@@ -11,14 +11,14 @@ import java.util.List;
  */
 public class Method extends IokeObject {
     String name;
-    private Context context;
+    private IokeObject context;
 
     public Method(Runtime runtime, String name, String documentation) {
         super(runtime, documentation);
         this.name = name;
     }
 
-    public Method(Runtime runtime, Context context) {
+    public Method(Runtime runtime, IokeObject context) {
         this(runtime, null, null);
 
         if(runtime.method != null && this.getClass() == Method.class) {
@@ -30,13 +30,13 @@ public class Method extends IokeObject {
 
     public void init() {
         registerMethod(new JavaMethod(runtime, "name", "returns the name of the method") {
-                public IokeObject activate(Context context, Message message, IokeObject on) {
+                public IokeObject activate(IokeObject context, Message message, IokeObject on) {
                     return new Text(runtime, ((Method)on).name);
                 }
             });
         registerMethod(new JavaMethod(runtime, "call", "activates this method with the arguments given to call") {
-                public IokeObject activate(Context context, Message message, IokeObject on) {
-                    return ((Method)on).activate(context, message, context.ground);
+                public IokeObject activate(IokeObject context, Message message, IokeObject on) {
+                    return ((Method)on).activate(context, message, context.getRealContext());
                 }
             });
     }
@@ -49,7 +49,7 @@ public class Method extends IokeObject {
         return true;
     }
 
-    public IokeObject activate(Context context, Message message, IokeObject on) {
+    public IokeObject activate(IokeObject context, Message message, IokeObject on) {
         return runtime.nil;
     }
 

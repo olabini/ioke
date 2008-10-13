@@ -10,8 +10,18 @@ end
 describe "operator" do 
   describe "<" do 
     it "should be translated correctly inside a method definition" do 
-      m = parse("method(1<2)")
-      m.should == ""
+      m = parse("method(1<2)").to_string
+      m.should == "method(internal:createNumber(1) <(internal:createNumber(2)))"
+    end
+
+    it "should be translated correctly inside a nested method definition" do 
+      m = parse("method(method(1<2))").to_string
+      m.should == "method(method(internal:createNumber(1) <(internal:createNumber(2))))"
+    end
+
+    it "should be translated correctly inside a method definition with something else" do 
+      m = parse("method(n, if(1<2, n, n))").to_string
+      m.should == "method(n, if(internal:createNumber(1) <(internal:createNumber(2)), n, n))"
     end
     
     it "should be translated correctly in infix" do 

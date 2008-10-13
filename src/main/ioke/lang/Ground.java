@@ -14,7 +14,8 @@ public class Ground extends IokeObject {
         super(runtime, documentation);
     }
 
-    IokeObject allocateCopy() {
+    @Override
+    IokeObject allocateCopy(Message m) {
         return new Ground(runtime, documentation);
     }
 

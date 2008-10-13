@@ -12,14 +12,15 @@ public class Origin extends IokeObject {
         super(runtime, documentation);
     }
 
-    IokeObject allocateCopy() {
+    @Override
+    IokeObject allocateCopy(Message m) {
         return new Origin(runtime, documentation);
     }
 
     public void init() {
         // asText, asRepresentation
         registerMethod(new JavaMethod(runtime, "println", "Prints a text representation to standard output") {
-                public IokeObject activate(Context context, Message message, IokeObject on) {
+                public IokeObject activate(IokeObject context, Message message, IokeObject on) {
                     runtime.getOut().println(runtime.asText.sendTo(context, on).toString());
                     runtime.getOut().flush();
                     return runtime.getNil();

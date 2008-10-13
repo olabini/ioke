@@ -14,11 +14,14 @@ public class Context extends IokeObject {
 
     public Context(Runtime runtime, IokeObject ground, String documentation) {
         super(runtime, documentation);
-        this.ground = ground;
+        this.ground = ground.getRealContext();
+    }
+
+    public IokeObject getRealContext() {
+        return ground;
     }
 
     IokeObject findCell(Message m, String name, IdentityHashMap<IokeObject, Object> visited) {
-//         System.err.println("Ylooking for " + name + " on " + this);
         if(visited.containsKey(this)) {
             return runtime.nul;
         }
@@ -29,5 +32,10 @@ public class Context extends IokeObject {
             visited.put(this, null);
             return ground.findCell(m, name, visited);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Context:" + System.identityHashCode(this) + "<" + ground + ">";
     }
 }// Context

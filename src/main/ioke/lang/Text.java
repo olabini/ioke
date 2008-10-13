@@ -24,13 +24,14 @@ public class Text extends IokeObject {
         this.text = text;
     }
 
-    IokeObject allocateCopy() {
+    @Override
+    IokeObject allocateCopy(Message m) {
         return new Text(runtime, text);
     }
 
     public void init() {
         registerMethod(new JavaMethod(runtime, "asText", "Returns a text representation of the object") {
-                public IokeObject activate(Context context, Message message, IokeObject on) {
+                public IokeObject activate(IokeObject context, Message message, IokeObject on) {
                     return on;
                 }
             });
