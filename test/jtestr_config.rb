@@ -1,1 +1,2 @@
+rspec_formatter "s"
 
