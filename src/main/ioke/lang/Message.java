@@ -11,6 +11,8 @@ import org.antlr.runtime.tree.Tree;
 import ioke.lang.parser.iokeLexer;
 import ioke.lang.parser.iokeParser;
 
+import ioke.lang.exceptions.ControlFlow;
+
 /**
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
@@ -235,7 +237,7 @@ public class Message extends IokeObject {
         return name;
     }
 
-    public IokeObject getEvaluatedArgument(int index, IokeObject context) {
+    public IokeObject getEvaluatedArgument(int index, IokeObject context) throws ControlFlow {
         Object o = arguments.get(index);
         if(!(o instanceof Message)) {
             return (IokeObject)o;
@@ -252,22 +254,22 @@ public class Message extends IokeObject {
         return arguments.get(1);
     }
 
-    public IokeObject sendTo(IokeObject context, IokeObject recv) {
+    public IokeObject sendTo(IokeObject context, IokeObject recv) throws ControlFlow {
         return recv.perform(context, this);
     }
 
-    public IokeObject sendTo(IokeObject context, IokeObject recv, IokeObject argument) {
+    public IokeObject sendTo(IokeObject context, IokeObject recv, IokeObject argument) throws ControlFlow {
         Message m = (Message)allocateCopy(this, context);
         m.arguments.clear();
         m.arguments.add(argument);
         return recv.perform(context, m);
     }
 
-    public IokeObject evaluateComplete() {
+    public IokeObject evaluateComplete() throws ControlFlow {
         return evaluateCompleteWith(runtime.getGround());
     }
 
-    public IokeObject evaluateCompleteWith(IokeObject ctx, IokeObject ground) {
+    public IokeObject evaluateCompleteWith(IokeObject ctx, IokeObject ground) throws ControlFlow {
         IokeObject current = ctx;
         IokeObject lastReal = runtime.getNil();
         Message m = this;
@@ -283,11 +285,11 @@ public class Message extends IokeObject {
         return lastReal;
     }
 
-    public IokeObject evaluateCompleteWithoutExplicitReceiver(IokeObject ctx, IokeObject ground) {
+    public IokeObject evaluateCompleteWithoutExplicitReceiver(IokeObject ctx, IokeObject ground) throws ControlFlow {
         return evaluateCompleteWith(ctx, ctx);
     }
 
-    public IokeObject evaluateCompleteWith(IokeObject ground) {
+    public IokeObject evaluateCompleteWith(IokeObject ground) throws ControlFlow {
         return evaluateCompleteWith(ground, ground.getRealContext());
     }
 

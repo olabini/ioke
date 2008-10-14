@@ -13,6 +13,8 @@ import java.util.List;
 import ioke.lang.parser.iokeLexer;
 import ioke.lang.parser.iokeParser;
 
+import ioke.lang.exceptions.ControlFlow;
+
 import org.antlr.runtime.ANTLRReaderStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.Token;
@@ -174,11 +176,11 @@ public class Runtime {
         }
     }
 
-    public IokeObject evaluateStream(Reader reader) {
+    public IokeObject evaluateStream(Reader reader) throws ControlFlow {
         return parseStream(reader).evaluateComplete();
     }
 
-    public IokeObject evaluateFile(String filename) {
+    public IokeObject evaluateFile(String filename) throws ControlFlow {
         try {
             system.pushCurrentFile(filename);
             return evaluateStream(new FileReader(filename));

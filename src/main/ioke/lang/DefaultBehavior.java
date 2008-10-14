@@ -6,6 +6,8 @@ package ioke.lang;
 import java.util.ArrayList;
 import java.util.List;
 
+import ioke.lang.exceptions.ControlFlow;
+
 /**
  *
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
@@ -17,19 +19,45 @@ public class DefaultBehavior extends IokeObject {
 
     public void init() {
         registerMethod(new JavaMethod(runtime, "", "returns result of evaluating first argument") {
-                public IokeObject activate(IokeObject context, Message message, IokeObject on) {
+                public IokeObject activate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
                     return message.getEvaluatedArgument(0, context);
                 }
             });
 
         registerMethod(new JavaMethod(runtime, "derive", "calls mimic.") {
-                public IokeObject activate(IokeObject context, Message message, IokeObject on) {
+                public IokeObject activate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
                     return runtime.base.getCell(message, context, "mimic").activate(context, message, on);
                 }
             });
 
+        registerMethod(new JavaMethod(runtime, "break", "breaks out of the enclosing context. if an argument is supplied, this will be returned as the result of the object breaking out of") {
+                public IokeObject activate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
+                    IokeObject value = runtime.nil;
+                    if(message.getArgumentCount() > 0) {
+                        value = message.getEvaluatedArgument(0, context);
+                    }
+                    throw new ControlFlow.Break(value);
+                }
+            });
+
+        registerMethod(new JavaMethod(runtime, "loop", "loops forever - executing it's argument over and over until interrupted in some way.") {
+                public IokeObject activate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
+                    if(message.getArgumentCount() > 0) {
+                        try {
+                            while(true) {
+                                message.getEvaluatedArgument(0, context);
+                            }
+                        } catch(ControlFlow.Break e) {
+                            return e.getValue();
+                        }
+                    } else {
+                        while(true){}
+                    }
+                }
+            });
+
         registerMethod(new JavaMethod(runtime, "if", "evaluates the first arguments, and then evaluates the second argument if the result was true, otherwise the last argument. returns the result of the call, or the result if it's not true.") {
-                public IokeObject activate(IokeObject context, Message message, IokeObject on) {
+                public IokeObject activate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
                     IokeObject test = message.getEvaluatedArgument(0, context);
                     if(test.isTrue()) {
                         if(message.getArgumentCount() > 1) {
@@ -63,7 +91,7 @@ public class DefaultBehavior extends IokeObject {
             });
 
         registerMethod(new JavaMethod(runtime, "=", "expects two arguments, the first unevaluated, the second evaluated. assigns the result of evaluating the second argument in the context of the caller, and assigns this result to the name provided by the first argument. the first argument remains unevaluated. the result of the assignment is the value assigned to the name. if the second argument is a method-like object and it's name is not set, that name will be set to the name of the cell.") {
-                public IokeObject activate(IokeObject context, Message message, IokeObject on) {
+                public IokeObject activate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
                     String name = ((Message)message.getArg1()).getName();
                     IokeObject value = ((Message)message.getArg2()).evaluateCompleteWith(context, context.getRealContext());
                     on.setCell(name, value);
@@ -95,7 +123,7 @@ public class DefaultBehavior extends IokeObject {
             });
 
         registerMethod(new JavaMethod(runtime, "getCell", "expects one evaluated text argument and returns the cell that matches that name, without activating even if it's activatable.") {
-                public IokeObject activate(IokeObject context, Message message, IokeObject on) {
+                public IokeObject activate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
                     String name = ((Text)(runtime.asText.sendTo(context, ((Message)message.getArguments().get(0)).evaluateCompleteWith(context, context.getRealContext())))).getText();
                     return on.getCell(message, context, name);
                 }

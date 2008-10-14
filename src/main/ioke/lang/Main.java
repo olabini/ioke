@@ -9,7 +9,7 @@ import ioke.lang.exceptions.IokeException;
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
 public class Main {
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws Throwable {
         boolean debug = false;
         try {
             int start = 0;
