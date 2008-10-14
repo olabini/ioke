@@ -72,12 +72,21 @@ commatedExpression
 expression
     :
         Identifier ('(' commatedExpression? ')')? -> ^(MESSAGE_SEND Identifier commatedExpression?)
-    |   binaryOperator '(' commatedExpression? ')'  -> ^(MESSAGE_SEND binaryOperator commatedExpression?)
+    |   operator '(' commatedExpression? ')'  -> ^(MESSAGE_SEND operator commatedExpression?)
     |   '(' commatedExpression? ')'  -> ^(MESSAGE_SEND_EMPTY commatedExpression?)
     |   binaryOperator expression
+    |   unaryOperator
     |   StringLiteral
     |   NumberLiteral
     |   Terminator
+    ;
+
+operator
+    :
+        ComparisonOperator
+    |   RegularBinaryOperator
+    |   Equals
+    |   IncDec
     ;
 
 binaryOperator
@@ -85,6 +94,11 @@ binaryOperator
         ComparisonOperator
     |   RegularBinaryOperator
     |   Equals
+    ;
+
+unaryOperator
+    :
+        IncDec
     ;
 
 Identifier
@@ -132,6 +146,11 @@ RegularBinaryOperator
 Equals
     :
         '='
+    ;
+
+IncDec
+    :
+        '++'
     ;
 
 Comma

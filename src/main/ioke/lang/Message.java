@@ -17,7 +17,7 @@ import ioke.lang.exceptions.ControlFlow;
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
 public class Message extends IokeObject {
-    public static enum Type {EMPTY, MESSAGE, BINARY, BINARY_ASSIGNMENT, TERMINATOR, SEPARATOR};
+    public static enum Type {EMPTY, MESSAGE, BINARY, BINARY_ASSIGNMENT, UNARY_ASSIGNMENT, TERMINATOR, SEPARATOR};
 
     private String name;
     private String file;
@@ -136,6 +136,11 @@ public class Message extends IokeObject {
                 m.setLine(tree.getLine());
                 m.setPosition(tree.getCharPositionInLine());
                 return m;
+            case iokeParser.IncDec:
+                m = new Message(runtime, tree.getText(), null, Type.UNARY_ASSIGNMENT);
+                m.setLine(tree.getLine());
+                m.setPosition(tree.getCharPositionInLine());
+                return m;
             case iokeParser.Comma:
                 m = new Message(runtime, ",", null, Type.SEPARATOR);
                 m.setLine(tree.getLine());
@@ -201,6 +206,30 @@ public class Message extends IokeObject {
 
                     currents.get(0).arguments.set(1,created);
                     currents.add(0, created);
+                } else if(currents.size() > 0 && created.type == Type.UNARY_ASSIGNMENT) {
+                    Message c = currents.get(0);
+                    String _name = c.name;
+                    String _file = c.file;
+                    int _line = c.line;
+                    int _pos = c.pos;
+                    Type _type = c.type;
+                    List<Object> _arguments = c.arguments;
+                    
+                    c.name = created.name;
+                    c.file = created.file;
+                    c.line = created.line;
+                    c.pos = created.pos;
+                    c.type = created.type;
+                    c.arguments = created.arguments;
+
+                    created.name = _name;
+                    created.file = _file;
+                    created.line = _line;
+                    created.pos = _pos;
+                    created.type = _type;
+                    created.arguments = _arguments;
+                    
+                    c.arguments.add(0, created);
                 } else if(currents.size() > 0 && currents.get(0).type == Type.BINARY) {
                     currents.get(0).arguments.add(created);
                     currents.add(0, created);

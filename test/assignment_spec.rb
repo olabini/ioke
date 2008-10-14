@@ -44,4 +44,61 @@ describe "assignment" do
     m = parse("count = count + 1\ncount println").to_string
     m.should == "=(count, count +(1)) ;\ncount println"
   end
+
+  describe "++" do 
+    it "should parse correctly in postfix without space" do 
+      m = parse("a++").to_string
+      m.should == "++(a)"
+    end
+
+    it "should parse correctly with receiver in postfix without space" do 
+      m = parse("foo a++").to_string
+      m.should == "foo ++(a)"
+    end
+
+    it "should parse correctly in method call in postfix without space" do 
+      m = parse("foo(a++)").to_string
+      m.should == "foo(++(a))"
+    end
+    
+    it "should parse correctly in postfix with space" do 
+      m = parse("a ++").to_string
+      m.should == "++(a)"
+    end
+
+    it "should parse correctly with receiver in postfix with space" do 
+      m = parse("foo a ++").to_string
+      m.should == "foo ++(a)"
+    end
+
+    it "should parse correctly in method call in postfix with space" do 
+      m = parse("foo(a ++)").to_string
+      m.should == "foo(++(a))"
+    end
+    
+    it "should parse correctly as message send" do 
+      m = parse("++(a)").to_string
+      m.should == "++(a)"
+    end
+
+    it "should parse correctly with receiver as message send" do 
+      m = parse("foo ++(a)").to_string
+      m.should == "foo ++(a)"
+    end
+
+    it "should parse correctly in method call as message send" do 
+      m = parse("foo(++(a))").to_string
+      m.should == "foo(++(a))"
+    end
+    
+    it "should parse correctly when combined with assignment" do 
+      m = parse("foo x = a++").to_string
+      m.should == "foo =(x, ++(a))"
+    end
+
+    it "should parse correctly when combined with assignment and receiver" do 
+      m = parse("foo x = Foo a++").to_string
+      m.should == "foo =(x, Foo ++(a))"
+    end
+  end
 end
