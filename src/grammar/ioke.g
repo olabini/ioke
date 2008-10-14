@@ -117,7 +117,7 @@ StringLiteral
 
 Terminator
     :
-        ('\r'? '\n')+
+        (('\r'? '\n') | ';')+
     ;
 
 Whitespace : Separator {skip();};
