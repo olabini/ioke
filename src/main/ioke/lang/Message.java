@@ -294,6 +294,14 @@ public class Message extends IokeObject {
         return recv.perform(context, m);
     }
 
+    public IokeObject sendTo(IokeObject context, IokeObject recv, IokeObject arg1, IokeObject arg2) throws ControlFlow {
+        Message m = (Message)allocateCopy(this, context);
+        m.arguments.clear();
+        m.arguments.add(arg1);
+        m.arguments.add(arg2);
+        return recv.perform(context, m);
+    }
+
     public IokeObject evaluateComplete() throws ControlFlow {
         return evaluateCompleteWith(runtime.getGround());
     }

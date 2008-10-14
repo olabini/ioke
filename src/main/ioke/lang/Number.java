@@ -99,5 +99,11 @@ public class Number extends IokeObject {
                     return new Text(runtime, ((Number)on).toString());
                 }
             });
+
+        registerMethod(new JavaMethod(runtime, "succ", "Returns the successor of this number") {
+                public IokeObject activate(IokeObject context, Message message, IokeObject on) {
+                    return new Number(runtime, IntNum.add(((Number)on).value,IntNum.one()));
+                }
+            });
     }
 }// Number
