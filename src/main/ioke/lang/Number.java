@@ -105,5 +105,33 @@ public class Number extends IokeObject {
                     return new Number(runtime, IntNum.add(((Number)on).value,IntNum.one()));
                 }
             });
+
+        registerMethod(new JavaMethod(runtime, "times", "Expects one or two arguments. If one argument is given, executes it as many times as the value of the receiving number. If two arguments are given, the first will be an unevaluated name that will receive the current loop value on each repitition. the iteration length is limited to the positive maximum of a Java int") {
+                public IokeObject activate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
+                    int num = ((Number)on).value.intValue();
+                    switch(message.getArgumentCount()) {
+                    case 0:
+                        return runtime.nil;
+                    case 1: {
+                        IokeObject result = runtime.nil;
+                        while(num > 0) {
+                            result = message.getEvaluatedArgument(0, context);
+                            num--;
+                        }
+                        return result;
+                    }
+                    default:
+                        int ix = 0;
+                        String name = ((Message)(message.getArg1())).getName();
+                        IokeObject result = runtime.nil;
+                        while(ix<num) {
+                            context.setCell(name, new Number(runtime, IntNum.make(ix)));
+                            result = message.getEvaluatedArgument(1, context);
+                            ix++;
+                        }
+                        return result;
+                    }
+                }
+            });
     }
 }// Number
