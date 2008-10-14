@@ -21,9 +21,17 @@ public class Origin extends IokeObject {
 
     public void init() {
         // asText, asRepresentation
-        registerMethod(new JavaMethod(runtime, "println", "Prints a text representation to standard output") {
+        registerMethod(new JavaMethod(runtime, "println", "Prints a text representation and a newline to standard output") {
                 public IokeObject activate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
                     runtime.getOut().println(runtime.asText.sendTo(context, on).toString());
+                    runtime.getOut().flush();
+                    return runtime.getNil();
+                }
+            });
+
+        registerMethod(new JavaMethod(runtime, "print", "Prints a text representation to standard output") {
+                public IokeObject activate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
+                    runtime.getOut().print(runtime.asText.sendTo(context, on).toString());
                     runtime.getOut().flush();
                     return runtime.getNil();
                 }

@@ -40,6 +40,50 @@ public class DefaultBehavior extends IokeObject {
                 }
             });
 
+        registerMethod(new JavaMethod(runtime, "until", "until the first argument evaluates to something true, loops and evaluates the next argument") {
+                public IokeObject activate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
+                    if(message.getArgumentCount() == 0) {
+                        return runtime.nil;
+                    }
+
+                    boolean body = message.getArgumentCount() > 1;
+                    IokeObject ret = runtime.nil;
+
+                    try {
+                        while(!message.getEvaluatedArgument(0, context).isTrue()) {
+                            if(body) {
+                                ret = message.getEvaluatedArgument(1, context);
+                            }
+                        }
+                    } catch(ControlFlow.Break e) {
+                        ret = e.getValue();
+                    }
+                    return ret;
+                }
+            });
+
+        registerMethod(new JavaMethod(runtime, "while", "while the first argument evaluates to something true, loops and evaluates the next argument") {
+                public IokeObject activate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
+                    if(message.getArgumentCount() == 0) {
+                        return runtime.nil;
+                    }
+
+                    boolean body = message.getArgumentCount() > 1;
+                    IokeObject ret = runtime.nil;
+
+                    try {
+                        while(message.getEvaluatedArgument(0, context).isTrue()) {
+                            if(body) {
+                                ret = message.getEvaluatedArgument(1, context);
+                            }
+                        }
+                    } catch(ControlFlow.Break e) {
+                        ret = e.getValue();
+                    }
+                    return ret;
+                }
+            });
+
         registerMethod(new JavaMethod(runtime, "loop", "loops forever - executing it's argument over and over until interrupted in some way.") {
                 public IokeObject activate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
                     if(message.getArgumentCount() > 0) {
