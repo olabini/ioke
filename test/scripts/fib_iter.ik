@@ -1,11 +1,12 @@
 fib = method(n,
   i = 0
-  j = cur = 1
+  j = 1
+  cur = 1
   while(cur <= n,
     k = i
     i = j
     j = k + j
-    cur ++)
+    cur++)
   i)
 
-System ifMain(fib(30000) println)
+System ifMain(fib(300000))
