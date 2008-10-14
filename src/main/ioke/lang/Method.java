@@ -5,6 +5,8 @@ package ioke.lang;
 
 import java.util.List;
 
+import ioke.lang.exceptions.ControlFlow;
+
 /**
  *
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
@@ -35,7 +37,7 @@ public class Method extends IokeObject {
                 }
             });
         registerMethod(new JavaMethod(runtime, "call", "activates this method with the arguments given to call") {
-                public IokeObject activate(IokeObject context, Message message, IokeObject on) {
+                public IokeObject activate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
                     return ((Method)on).activate(context, message, context.getRealContext());
                 }
             });
@@ -49,7 +51,7 @@ public class Method extends IokeObject {
         return true;
     }
 
-    public IokeObject activate(IokeObject context, Message message, IokeObject on) {
+    public IokeObject activate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
         return runtime.nil;
     }
 

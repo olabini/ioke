@@ -6,6 +6,7 @@ package ioke.lang;
 import java.util.List;
 
 import ioke.lang.exceptions.MismatchedArgumentCount;
+import ioke.lang.exceptions.ControlFlow;
 
 /**
  *
@@ -33,7 +34,7 @@ public class DefaultMethod extends Method {
     }
 
     // TODO: make this use a real model later, with argument names etc
-    public IokeObject activate(IokeObject context, Message message, IokeObject on) {
+    public IokeObject activate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
         int argCount = message.getArguments().size();
         if(argCount != argumentNames.size()) {
             throw new MismatchedArgumentCount(message, argumentNames.size(), argCount, on, context);

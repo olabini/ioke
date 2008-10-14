@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 
+import ioke.lang.exceptions.ControlFlow;
+
 /**
  *
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
@@ -41,7 +43,7 @@ public class IokeSystem extends IokeObject {
 
     public void init() {
         registerMethod(new JavaMethod(runtime, "ifMain", "returns result of evaluating first argument") {
-                public IokeObject activate(IokeObject context, Message message, IokeObject on) {
+                public IokeObject activate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
                     if(currentProgram().equals(message.getFile())) {
                         return ((Message)message.getArguments().get(0)).evaluateCompleteWith(context, context.getRealContext());
                     } else {

@@ -12,6 +12,7 @@ import java.util.IdentityHashMap;
 import ioke.lang.exceptions.NotActivatableException;
 import ioke.lang.exceptions.NoSuchCellException;
 import ioke.lang.exceptions.ObjectIsNotRightType;
+import ioke.lang.exceptions.ControlFlow;
 
 /**
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
@@ -70,7 +71,7 @@ public class IokeObject {
         return cell;
     }
 
-    public IokeObject perform(IokeObject ctx, Message message) {
+    public IokeObject perform(IokeObject ctx, Message message) throws ControlFlow {
         return getCell(message, ctx, message.getName()).getOrActivate(ctx, message, this);
     }
 
@@ -110,7 +111,7 @@ public class IokeObject {
         throw new ObjectIsNotRightType(m, this, "Number", context);
     }
 
-    public IokeObject getOrActivate(IokeObject context, Message message, IokeObject on) {
+    public IokeObject getOrActivate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
         if(isActivatable()) {
             return activate(context, message, on);
         } else {
@@ -124,7 +125,7 @@ public class IokeObject {
         return sb.append("#<").append(this).append(": mimics=").append(mimics).append(" cells=").append(cells).append(">").toString();
     }
 
-    public IokeObject activate(IokeObject context, Message message, IokeObject on) {
+    public IokeObject activate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
         throw new NotActivatableException(message, "Can't activate " + this + "#" + message.getName() + " on " + on, on, context);
     }
 }// IokeObject

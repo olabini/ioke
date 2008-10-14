@@ -5,6 +5,8 @@ package ioke.lang;
 
 import gnu.math.IntNum;
 
+import ioke.lang.exceptions.ControlFlow;
+
 /**
  *
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
@@ -63,7 +65,7 @@ public class Number extends IokeObject {
         this.mimics(runtime.mixins.comparing);
 
         registerMethod(new JavaMethod(runtime, "<=>", "compares this number against the argument, returning -1, 0 or 1 based on which one is larger") {
-                public IokeObject activate(IokeObject context, Message message, IokeObject on) {
+                public IokeObject activate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
                     IokeObject arg = ((Message)message).getEvaluatedArgument(0, context);
                     if(!(arg instanceof Number)) {
                         arg = arg.convertToNumber(message, context);
@@ -73,7 +75,7 @@ public class Number extends IokeObject {
             });
 
         registerMethod(new JavaMethod(runtime, "-", "returns the difference between this number and the argument") {
-                public IokeObject activate(IokeObject context, Message message, IokeObject on) {
+                public IokeObject activate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
                     IokeObject arg = ((Message)message).getEvaluatedArgument(0, context);
                     if(!(arg instanceof Number)) {
                         arg = arg.convertToNumber(message, context);
@@ -83,7 +85,7 @@ public class Number extends IokeObject {
             });
 
         registerMethod(new JavaMethod(runtime, "+", "returns the addition of this number and the argument") {
-                public IokeObject activate(IokeObject context, Message message, IokeObject on) {
+                public IokeObject activate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
                     IokeObject arg = ((Message)message).getEvaluatedArgument(0, context);
                     if(!(arg instanceof Number)) {
                         arg = arg.convertToNumber(message, context);
