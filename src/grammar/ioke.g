@@ -172,9 +172,7 @@ StrangeChars
     :
         '_' |
         '!' |
-        '?' |
-        '<' |
-        '>'
+        '?'
     ;
 
 fragment

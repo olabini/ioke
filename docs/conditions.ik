@@ -1,18 +1,18 @@
 
 bindHandler(
-  noSuchCell: block(c, c asText println),
-  incorrectArity: block(c, c asText println),
+  noSuchCell: fn(c, c asText println),
+  incorrectArity: fn(c, c asText println),
   # code that might cause the above conditions
 )
 
 
 bindHandler(
-  somethingHappened: block(c, invokeRestart(useNewValue, 24))
+  somethingHappened: fn(c, invokeRestart(useNewValue, 24))
   loop(
     value = 1
     bindRestart(
-      useNewValue: block(val, value = val),
-      quit: block(break),
+      useNewValue: fn(val, value = val),
+      quit: fn(break),
 
       value println
       signal(somethingHappened)))
