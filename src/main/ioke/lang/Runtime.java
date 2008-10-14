@@ -52,6 +52,8 @@ public class Runtime {
     public Message asText = new Message(this, "asText");
     public Message mimic = new Message(this, "mimic");
     public Message spaceShip = new Message(this, "<=>");
+    public Message succ = new Message(this, "succ");
+    public Message setValue = new Message(this, "=");
 
     // NOT TO BE EXPOSED TO Ioke - used for internal usage only
     NullObject nul = new NullObject(this);

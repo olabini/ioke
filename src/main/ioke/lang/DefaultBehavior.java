@@ -134,10 +134,20 @@ public class DefaultBehavior extends IokeObject {
                 }
             });
 
+        registerMethod(new JavaMethod(runtime, "++", "expects one argument, which is the unevaluated name of the cell to work on. will retrieve the current value of this cell, call 'succ' to that value and then send = to the current receiver with the name and the resulting value.") {
+                public IokeObject activate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
+                    Message nameMessage = (Message)message.getArg1();
+                    String name = nameMessage.getName();
+                    IokeObject current = on.getCell(message, context, name);
+                    IokeObject value = runtime.succ.sendTo(context, current);
+                    return runtime.setValue.sendTo(context, on, nameMessage, value);
+                }
+            });
+
         registerMethod(new JavaMethod(runtime, "=", "expects two arguments, the first unevaluated, the second evaluated. assigns the result of evaluating the second argument in the context of the caller, and assigns this result to the name provided by the first argument. the first argument remains unevaluated. the result of the assignment is the value assigned to the name. if the second argument is a method-like object and it's name is not set, that name will be set to the name of the cell.") {
                 public IokeObject activate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
                     String name = ((Message)message.getArg1()).getName();
-                    IokeObject value = ((Message)message.getArg2()).evaluateCompleteWith(context, context.getRealContext());
+                    IokeObject value = message.getEvaluatedArgument(1, context);
                     on.setCell(name, value);
 
                     if((value instanceof Method) && (((Method)value).name == null)) {
