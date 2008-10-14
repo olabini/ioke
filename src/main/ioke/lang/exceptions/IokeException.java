@@ -74,7 +74,9 @@ public class IokeException extends RuntimeException {
         stream.println();
         stream.println("  Exception: " + getMessage());
         stream.println("  ---------");
-        stream.println("  " + start.codeSequenceTo(";"));
+        String s1 = start.codeSequenceTo(";");
+        int ix = s1.indexOf("\n");
+        stream.println("  " + (ix == -1 ? s1 : s1.substring(0,ix)));
         stream.print("  ");
 
         int position = start.codePositionOf(message);
@@ -88,11 +90,16 @@ public class IokeException extends RuntimeException {
         stream.println();
         stream.println();
 
-        stream.println(String.format("  %-48.48s %s", on.toString() + " " + message.thisCode(),"[" + message.getFile() + ":" + message.getLine() + ":" + message.getPosition() + getContextMessageName(context) + "]"));
+        s1 = message.thisCode();
+        ix = s1.indexOf("\n");
+
+        stream.println(String.format("  %-48.48s %s", on.toString() + " " + (ix == -1 ? s1 : s1.substring(0,ix)),"[" + message.getFile() + ":" + message.getLine() + ":" + message.getPosition() + getContextMessageName(context) + "]"));
 
         IokeObject ctx = context;
         while(ctx instanceof Context) {
-            stream.println(String.format("  %-48.48s %s", ((Context)ctx).getRealContext().toString() + " " + ((Context)ctx).message.thisCode(),"[" + ((Context)ctx).message.getFile() + ":" + ((Context)ctx).message.getLine() + ":" + ((Context)ctx).message.getPosition()  + getContextMessageName(((Context)ctx).surroundingContext) + "]"));
+            s1 = ((Context)ctx).message.thisCode();
+            ix = s1.indexOf("\n");
+            stream.println(String.format("  %-48.48s %s", ((Context)ctx).getRealContext().toString() + " " +  (ix == -1 ? s1 : s1.substring(0,ix)),"[" + ((Context)ctx).message.getFile() + ":" + ((Context)ctx).message.getLine() + ":" + ((Context)ctx).message.getPosition()  + getContextMessageName(((Context)ctx).surroundingContext) + "]"));
             ctx = ((Context)ctx).surroundingContext;
         }
         stream.println();
