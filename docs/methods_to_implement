@@ -21,12 +21,6 @@ Remember, all should be utf16
 
 iik - interactive Ioke
 
-- use
- - with simple string case
- 
- - should be able to use load path from System
- - should be able to use files from jar-files
-
 - something that allows stacking of ground. maybe just a simple "System ground" that is an array. This is used inside of the REPL for example.
 
 - method
