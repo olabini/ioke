@@ -213,8 +213,15 @@ public class DefaultBehavior extends IokeObject {
             });
 
         registerMethod(new JavaMethod(runtime, "use", "takes one or more evaluated string argument. will import the files corresponding to each of the strings named based on the Ioke loading behavior that can be found in the documentation for the loadBehavior cell on System.") {
-                public IokeObject activate(IokeObject context, Message message, IokeObject on) {
-                    
+                public IokeObject activate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
+                    if(message.getArgumentCount() > 0) {
+                        String name = ((Text)runtime.asText.sendTo(context, message.getEvaluatedArgument(0, context))).getText();
+                        if(runtime.system.use(context, message, name)) {
+                            return runtime._true;
+                        } else {
+                            return runtime._false;
+                        }
+                    }
                     
                     return runtime.nil;
                 }
