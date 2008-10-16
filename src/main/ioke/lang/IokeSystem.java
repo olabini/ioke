@@ -56,13 +56,19 @@ public class IokeSystem extends IokeObject {
     private static final String[] SUFFIXES = {"", ".ik"};
 
     public boolean use(IokeObject context, Message message, String name) throws ControlFlow {
-        System.err.println("use(" + context + "," + message + "," + name + ")");
+        Builtin b = runtime.getBuiltin(name);
+        if(b != null) {
+            b.load(runtime, context, message);
+            return true;
+        }
+
+//         System.err.println("use(" + context + "," + message + "," + name + ")");
         for(String suffix : SUFFIXES) {
-            System.err.println("- suffix: " + suffix);
+//             System.err.println("- suffix: " + suffix);
             File f = new File(currentWorkingDirectory, name + suffix);
-            System.err.println("- gah: " + f);
+//             System.err.println("- gah: " + f);
             if(f.exists()) {
-                System.err.println("- IT EXISTS");
+//                 System.err.println("- IT EXISTS");
                 runtime.evaluateFile(f);
                 return true;
             }
@@ -77,6 +83,12 @@ public class IokeSystem extends IokeObject {
         } catch(Exception e) {
             currentWorkingDirectory = ".";
         }
+
+        registerMethod(new JavaMethod(runtime, "currentFile", "returns the current file executing") {
+                public IokeObject activate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
+                    return new Text(runtime, currentFile.get(0));
+                }
+            });
 
         registerMethod(new JavaMethod(runtime, "ifMain", "returns result of evaluating first argument") {
                 public IokeObject activate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
