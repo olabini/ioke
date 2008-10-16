@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.InputStreamReader;
 import java.io.FileReader;
+import java.io.File;
 
 import java.util.List;
 
@@ -76,6 +77,14 @@ public class Runtime {
         Runtime r = new Runtime(out, in, err);
         r.init();
         return r;
+    }
+
+    public void setCurrentWorkingDirectory(String cwd) {
+        system.setCurrentWorkingDirectory(cwd);
+    }
+
+    public String getCurrentWorkingDirectory() {
+        return system.getCurrentWorkingDirectory();
     }
 
     public PrintWriter getOut() {
@@ -180,6 +189,19 @@ public class Runtime {
 
     public IokeObject evaluateStream(Reader reader) throws ControlFlow {
         return parseStream(reader).evaluateComplete();
+    }
+
+    public IokeObject evaluateFile(File f) throws ControlFlow {
+        try {
+            system.pushCurrentFile(f.getCanonicalPath());
+            return evaluateStream(new FileReader(f));
+        } catch(RuntimeException e) {
+            throw e;
+        } catch(Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            system.popCurrentFile();
+        }
     }
 
     public IokeObject evaluateFile(String filename) throws ControlFlow {

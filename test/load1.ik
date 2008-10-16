@@ -1,0 +1,1 @@
+Ground val = 42

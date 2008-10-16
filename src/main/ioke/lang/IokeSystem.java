@@ -3,6 +3,8 @@
  */
 package ioke.lang;
 
+import java.io.File;
+
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +18,8 @@ import ioke.lang.exceptions.ControlFlow;
 public class IokeSystem extends IokeObject {
     private List<String> currentFile = new ArrayList<String>(Arrays.asList("<init>"));
     private String currentProgram;
+    private String currentWorkingDirectory;
+
 
     IokeSystem(Runtime runtime, String documentation) {
         super(runtime, documentation);
@@ -41,7 +45,39 @@ public class IokeSystem extends IokeObject {
         this.currentProgram = currentProgram;
     }
 
+    public void setCurrentWorkingDirectory(String cwd) {
+        this.currentWorkingDirectory = cwd;
+    }
+
+    public String getCurrentWorkingDirectory() {
+        return this.currentWorkingDirectory;
+    }
+
+    private static final String[] SUFFIXES = {"", ".ik"};
+
+    public boolean use(IokeObject context, Message message, String name) throws ControlFlow {
+        System.err.println("use(" + context + "," + message + "," + name + ")");
+        for(String suffix : SUFFIXES) {
+            System.err.println("- suffix: " + suffix);
+            File f = new File(currentWorkingDirectory, name + suffix);
+            System.err.println("- gah: " + f);
+            if(f.exists()) {
+                System.err.println("- IT EXISTS");
+                runtime.evaluateFile(f);
+                return true;
+            }
+        }
+        // TODO: raise condition here...
+        return false;
+    }
+
     public void init() {
+        try {
+            currentWorkingDirectory = new File(".").getCanonicalPath();
+        } catch(Exception e) {
+            currentWorkingDirectory = ".";
+        }
+
         registerMethod(new JavaMethod(runtime, "ifMain", "returns result of evaluating first argument") {
                 public IokeObject activate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
                     if(currentProgram().equals(message.getFile())) {
