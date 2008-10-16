@@ -232,7 +232,7 @@ public class Runtime {
     public IokeObject evaluateFile(String filename) throws ControlFlow {
         try {
             system.pushCurrentFile(filename);
-            return evaluateStream(new FileReader(filename));
+            return evaluateStream(new FileReader(new File(system.getCurrentWorkingDirectory(), filename)));
         } catch(RuntimeException e) {
             throw e;
         } catch(Exception e) {
