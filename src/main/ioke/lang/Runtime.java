@@ -10,6 +10,8 @@ import java.io.FileReader;
 import java.io.File;
 
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 import ioke.lang.parser.iokeLexer;
 import ioke.lang.parser.iokeParser;
@@ -172,6 +174,16 @@ public class Runtime {
         return this.nil;
     }
 
+    private Map<String, Builtin> builtins = new HashMap<String, Builtin>();
+    
+    public void addBuiltinScript(String name, Builtin builtin) {
+        builtins.put(name, builtin);
+    }
+
+    public Builtin getBuiltin(String name) {
+        return builtins.get(name);
+    }
+
     public Message parseStream(Reader reader) {
         try {
             iokeParser parser = new iokeParser(new CommonTokenStream(new iokeLexer(new ANTLRReaderStream(reader))));
@@ -189,6 +201,19 @@ public class Runtime {
 
     public IokeObject evaluateStream(Reader reader) throws ControlFlow {
         return parseStream(reader).evaluateComplete();
+    }
+
+    public IokeObject evaluateStream(String name, Reader reader) throws ControlFlow {
+        try {
+            system.pushCurrentFile(name);
+            return evaluateStream(reader);
+        } catch(RuntimeException e) {
+            throw e;
+        } catch(Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            system.popCurrentFile();
+        }
     }
 
     public IokeObject evaluateFile(File f) throws ControlFlow {
