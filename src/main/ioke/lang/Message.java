@@ -96,7 +96,7 @@ public class Message extends IokeObject {
     }
 
     @Override
-    IokeObject allocateCopy(Message mex, IokeObject context) {
+    public IokeObject allocateCopy(Message mex, IokeObject context) {
         Message m = new Message(runtime, name);
         m.arguments = new ArrayList<Object>(this.arguments);
         return m;

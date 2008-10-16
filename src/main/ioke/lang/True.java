@@ -18,7 +18,7 @@ public class True extends IokeObject {
         
     }
 
-    IokeObject allocateCopy(Message m, IokeObject context) {
+    public IokeObject allocateCopy(Message m, IokeObject context) {
         throw new CantMimicOddballObject(m, this, context);
     }
 

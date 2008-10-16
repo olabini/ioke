@@ -41,7 +41,7 @@ public class Number extends IokeObject {
     }
     
     @Override
-    IokeObject allocateCopy(Message m, IokeObject context) {
+    public IokeObject allocateCopy(Message m, IokeObject context) {
         return new Number(runtime, value);
     }
 
@@ -51,6 +51,10 @@ public class Number extends IokeObject {
 
     public int asJavaInteger() {
         return value.intValue();
+    }
+
+    public long asJavaLong() {
+        return value.longValue();
     }
 
     public String toString() {

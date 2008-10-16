@@ -34,12 +34,12 @@ public class Runtime {
 
     // Core objects and origins
     Base base = new Base(this, "Base is the top of the inheritance structure. Most of the objects in the system is derived from this instance. Base should keep it's cells to the bare minimum needed for the system");
-    Ground ground = new Ground(this, "Ground is the default place code is evaluated in. This is where you can find most of the global objects defined.");
+    public Ground ground = new Ground(this, "Ground is the default place code is evaluated in. This is where you can find most of the global objects defined.");
     IokeSystem system = new IokeSystem(this, "System defines things that represents the currently running system, such as load path.");
     Proxy runtime = new Proxy(this, "Runtime gives meta-circular access to the currently executing Ioke runtime.");
     DefaultBehavior defaultBehavior = new DefaultBehavior(this, "DefaultBehavior is a mixin that provides most of the methods shared by most instances in the system.");
     Origin origin = new Origin(this, "Any object created from scratch should usually be derived from Origin.");
-    Nil nil = new Nil(this, "nil is an oddball object that always represents itself. It can not be mimicked and is one of the two false values.");
+    public Nil nil = new Nil(this, "nil is an oddball object that always represents itself. It can not be mimicked and is one of the two false values.");
     public True _true = new True(this, "true is an oddball object that always represents itself. It can not be mimicked and represents the a true value.");
     public False _false = new False(this, "false is an oddball object that always represents itself. It can not be mimicked and is one of the two false values.");
     Text text = new Text(this, "", "Contains an immutable text.");
@@ -132,6 +132,13 @@ public class Runtime {
         method.mimics(origin);
         defaultMethod.mimics(method);
         javaMethod.mimics(method);
+
+
+        addBuiltinScript("benchmark", new Builtin() {
+                public IokeObject load(Runtime runtime, IokeObject context, Message message) throws ControlFlow {
+                    return ioke.lang.extensions.benchmark.Benchmark.create(runtime);
+                }
+            });
     }
 
     public NullObject getNul() {
