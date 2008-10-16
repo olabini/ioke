@@ -32,11 +32,11 @@ public class IokeObject {
         return this;
     }
 
-    IokeObject allocateCopy(Message m, IokeObject context) {
+    public IokeObject allocateCopy(Message m, IokeObject context) {
         return new IokeObject(runtime, documentation);
     }
 
-    IokeObject findCell(Message m, IokeObject context, String name, IdentityHashMap<IokeObject, Object> visited) {
+    public IokeObject findCell(Message m, IokeObject context, String name, IdentityHashMap<IokeObject, Object> visited) {
         if(visited.containsKey(this)) {
             return runtime.nul;
         }

@@ -13,7 +13,7 @@ public class Base extends IokeObject {
     }
 
     @Override
-    IokeObject allocateCopy(Message m, IokeObject context) {
+    public IokeObject allocateCopy(Message m, IokeObject context) {
         return new Base(runtime, documentation);
     }
 

@@ -35,7 +35,7 @@ public class Context extends IokeObject {
         return ground;
     }
 
-    IokeObject findCell(Message m, IokeObject context, String name, IdentityHashMap<IokeObject, Object> visited) {
+    public IokeObject findCell(Message m, IokeObject context, String name, IdentityHashMap<IokeObject, Object> visited) {
         IokeObject nn = super.findCell(m, context, name, visited);
         
         if(nn == runtime.nul) {
