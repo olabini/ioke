@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 
+import ioke.lang.exceptions.IokeException;
 import ioke.lang.exceptions.ControlFlow;
 
 /**
@@ -74,7 +75,7 @@ public class IokeSystem extends IokeObject {
             }
         }
         // TODO: raise condition here...
-        return false;
+        throw new IokeException(message, "Couldn't find module '" + name + "' to load", context, context);
     }
 
     public void init() {
