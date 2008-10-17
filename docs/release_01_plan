@@ -1,0 +1,30 @@
+Ioke 0.1 should include:
+-------------------------
+
+- DefaultMethod
+   regular arguments
+   optional arguments
+   keyword arguments
+   rest arguments
+- break
+- return
+- conditions
+- List
+- Dict
+- Enumerable
+- squarebracket, curlybracket syntax
+- falseness defined
+- libraries
+ - iik
+ - gendoc
+
+Maybe:
+- IO
+- Program arguments
+- Primitive Java integration
+
+
+Not:
+ - aspects
+ - macros
+

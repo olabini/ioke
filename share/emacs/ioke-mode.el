@@ -103,13 +103,18 @@
                             "if"
                             "method"
                             "use"
+                            "print"
                             "println"
-                            "getCell"
+                            "cell"
                             "documentation"
                             "ifMain"
                             "while"
+                            "until"
                             "asText"
                             "mimic"
+                            "loop"
+                            "break"
+                            "self"
                             )
   "ioke mode slot names")
 

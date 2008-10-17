@@ -176,7 +176,7 @@ public class DefaultBehavior extends IokeObject {
                 }
             });
 
-        registerMethod(new JavaMethod(runtime, "getCell", "expects one evaluated text argument and returns the cell that matches that name, without activating even if it's activatable.") {
+        registerMethod(new JavaMethod(runtime, "cell", "expects one evaluated text argument and returns the cell that matches that name, without activating even if it's activatable.") {
                 public IokeObject activate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
                     String name = ((Text)(runtime.asText.sendTo(context, ((Message)message.getArguments().get(0)).evaluateCompleteWith(context, context.getRealContext())))).getText();
                     return on.getCell(message, context, name);
