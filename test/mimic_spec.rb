@@ -8,28 +8,28 @@ describe "mimicking" do
   it "should be able to mimic Origin" do 
     ioke = IokeRuntime.get_runtime()
     result = ioke.evaluate_stream(StringReader.new(%q[Origin mimic]))
-    result.java_class.name.should == 'ioke.lang.Origin'
+    result.find_cell(nil,nil, 'kind').data.text.should == 'Origin'
     result.should_not == ioke.origin
   end
 
   it "should be able to mimic Ground" do 
     ioke = IokeRuntime.get_runtime()
     result = ioke.evaluate_stream(StringReader.new(%q[Ground mimic]))
-    result.find_cell(nil,nil, 'kind').text.should == 'Ground'
+    result.find_cell(nil,nil, 'kind').data.text.should == 'Ground'
     result.should_not == ioke.ground
   end
 
   it "should be able to mimic Base" do 
     ioke = IokeRuntime.get_runtime()
     result = ioke.evaluate_stream(StringReader.new(%q[Base mimic]))
-    result.find_cell(nil,nil, 'kind').text.should == 'Base'
+    result.find_cell(nil,nil, 'kind').data.text.should == 'Base'
     result.should_not == ioke.base
   end
 
   it "should be able to mimic Text" do 
     ioke = IokeRuntime.get_runtime()
     result = ioke.evaluate_stream(StringReader.new(%q[Text mimic]))
-    result.java_class.name.should == 'ioke.lang.Text'
+    result.find_cell(nil,nil, 'kind').data.text.should == 'Text'
     result.should_not == ioke.text
   end
 

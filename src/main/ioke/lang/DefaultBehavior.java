@@ -122,7 +122,7 @@ public class DefaultBehavior {
                 public IokeObject activate(IokeObject context, Message message, IokeObject on) {
                     String s = (String)message.getArg1();
                     
-                    return new Text(runtime, s.substring(1, s.length()-1));
+                    return runtime.newText(s.substring(1, s.length()-1));
                 }
             });
 
@@ -159,25 +159,25 @@ public class DefaultBehavior {
 
         obj.registerMethod(new JavaMethod(runtime, "asText", "returns a textual representation of the object called on.") {
                 public IokeObject activate(IokeObject context, Message message, IokeObject on) {
-                    return new Text(runtime, on.toString());
+                    return runtime.newText(on.toString());
                 }
             });
 
         obj.registerMethod(new JavaMethod(runtime, "representation", "returns a more detailed textual representation of the object called on, than asText.") {
                 public IokeObject activate(IokeObject context, Message message, IokeObject on) {
-                    return new Text(runtime, on.representation());
+                    return runtime.newText(on.representation());
                 }
             });
 
         obj.registerMethod(new JavaMethod(runtime, "documentation", "returns the documentation text of the object called on. anything can have a documentation text and an object inherits it's documentation string text the object it mimcs - at mimic time.") {
                 public IokeObject activate(IokeObject context, Message message, IokeObject on) {
-                    return new Text(runtime, on.documentation);
+                    return runtime.newText(on.documentation);
                 }
             });
 
         obj.registerMethod(new JavaMethod(runtime, "cell", "expects one evaluated text argument and returns the cell that matches that name, without activating even if it's activatable.") {
                 public IokeObject activate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
-                    String name = ((Text)(runtime.asText.sendTo(context, ((Message)message.getArguments().get(0)).evaluateCompleteWith(context, context.getRealContext())))).getText();
+                    String name = ((Text)(runtime.asText.sendTo(context, ((Message)message.getArguments().get(0)).evaluateCompleteWith(context, context.getRealContext())).data)).getText();
                     return on.getCell(message, context, name);
                 }
             });
@@ -214,7 +214,7 @@ public class DefaultBehavior {
         obj.registerMethod(new JavaMethod(runtime, "use", "takes one or more evaluated string argument. will import the files corresponding to each of the strings named based on the Ioke loading behavior that can be found in the documentation for the loadBehavior cell on System.") {
                 public IokeObject activate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
                     if(message.getArgumentCount() > 0) {
-                        String name = ((Text)runtime.asText.sendTo(context, message.getEvaluatedArgument(0, context))).getText();
+                        String name = ((Text)runtime.asText.sendTo(context, message.getEvaluatedArgument(0, context)).data).getText();
                         if(((IokeSystem)runtime.system.data).use(context, message, name)) {
                             return runtime._true;
                         } else {

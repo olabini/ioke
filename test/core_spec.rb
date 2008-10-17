@@ -7,7 +7,7 @@ describe "core" do
     it "should have the correct kind" do 
       runtime = IokeRuntime.get_runtime
       result = runtime.nil.find_cell(nil, nil, "kind")
-      result.text.should == 'nil'
+      result.data.text.should == 'nil'
     end
 
     it "should not be possible to mimic" do 
@@ -28,7 +28,7 @@ describe "core" do
     it "should have the correct kind" do 
       runtime = IokeRuntime.get_runtime
       result = runtime.false.find_cell(nil, nil, "kind")
-      result.text.should == 'false'
+      result.data.text.should == 'false'
     end
 
     it "should not be possible to mimic" do 
@@ -49,7 +49,7 @@ describe "core" do
     it "should have the correct kind" do 
       runtime = IokeRuntime.get_runtime
       result = runtime.true.find_cell(nil, nil, "kind")
-      result.text.should == 'true'
+      result.data.text.should == 'true'
     end
 
     it "should not be possible to mimic" do 
@@ -70,7 +70,7 @@ describe "core" do
     it "should have the correct kind" do 
       runtime = IokeRuntime.get_runtime
       result = runtime.base.find_cell(nil, nil, "kind")
-      result.text.should == 'Base'
+      result.data.text.should == 'Base'
     end
 
     it "should have a 'mimic' cell" do 
@@ -84,7 +84,7 @@ describe "core" do
     it "should have the correct kind" do 
       runtime = IokeRuntime.get_runtime
       result = runtime.ground.find_cell(nil, nil, "kind")
-      result.text.should == 'Ground'
+      result.data.text.should == 'Ground'
     end
 
     it "should have all the expected cells" do 
@@ -111,7 +111,7 @@ describe "core" do
     it "should have the correct kind" do 
       runtime = IokeRuntime.get_runtime
       result = runtime.system.find_cell(nil, nil, "kind")
-      result.text.should == 'System'
+      result.data.text.should == 'System'
     end
   end
 
@@ -119,7 +119,7 @@ describe "core" do
     it "should have the correct kind" do 
       runtime = IokeRuntime.get_runtime
       result = runtime.runtime.find_cell(nil, nil, "kind")
-      result.text.should == 'Runtime'
+      result.data.text.should == 'Runtime'
     end
   end
 
@@ -127,7 +127,55 @@ describe "core" do
     it "should have the correct kind" do 
       runtime = IokeRuntime.get_runtime
       result = runtime.defaultBehavior.find_cell(nil, nil, "kind")
-      result.text.should == 'DefaultBehavior'
+      result.data.text.should == 'DefaultBehavior'
+    end
+  end
+
+  describe "Origin" do 
+    it "should have the correct kind" do 
+      runtime = IokeRuntime.get_runtime
+      result = runtime.origin.find_cell(nil, nil, "kind")
+      result.data.text.should == 'Origin'
+    end
+  end
+
+  describe "Text" do 
+    it "should have the correct kind" do 
+      runtime = IokeRuntime.get_runtime
+      result = runtime.text.find_cell(nil, nil, "kind")
+      result.data.text.should == 'Text'
+    end
+  end
+
+  describe "Number" do 
+    it "should have the correct kind" do 
+      runtime = IokeRuntime.get_runtime
+      result = runtime.number.find_cell(nil, nil, "kind")
+      result.data.text.should == 'Number'
+    end
+  end
+
+  describe "Method" do 
+    it "should have the correct kind" do 
+      runtime = IokeRuntime.get_runtime
+      result = runtime.getMethod.find_cell(nil, nil, "kind")
+      result.data.text.should == 'Method'
+    end
+  end
+
+  describe "DefaultMethod" do 
+    it "should have the correct kind" do 
+      runtime = IokeRuntime.get_runtime
+      result = runtime.default_method.find_cell(nil, nil, "kind")
+      result.data.text.should == 'DefaultMethod'
+    end
+  end
+
+  describe "JavaMethod" do 
+    it "should have the correct kind" do 
+      runtime = IokeRuntime.get_runtime
+      result = runtime.java_method.find_cell(nil, nil, "kind")
+      result.data.text.should == 'JavaMethod'
     end
   end
 end

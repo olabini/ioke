@@ -33,7 +33,7 @@ public class Method extends IokeObject {
     public void init() {
         registerMethod(new JavaMethod(runtime, "name", "returns the name of the method") {
                 public IokeObject activate(IokeObject context, Message message, IokeObject on) {
-                    return new Text(runtime, ((Method)on).name);
+                    return runtime.newText(((Method)on).name);
                 }
             });
         registerMethod(new JavaMethod(runtime, "call", "activates this method with the arguments given to call") {
