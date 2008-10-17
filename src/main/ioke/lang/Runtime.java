@@ -33,15 +33,15 @@ public class Runtime {
     private Reader in;
 
     // Core objects and origins
-    Base base = new Base(this, "Base is the top of the inheritance structure. Most of the objects in the system is derived from this instance. Base should keep it's cells to the bare minimum needed for the system");
+    public IokeObject base = new IokeObject(this, "Base is the top of the inheritance structure. Most of the objects in the system is derived from this instance. Base should keep it's cells to the bare minimum needed for the system");
     public Ground ground = new Ground(this, "Ground is the default place code is evaluated in. This is where you can find most of the global objects defined.");
     IokeSystem system = new IokeSystem(this, "System defines things that represents the currently running system, such as load path.");
     Proxy runtime = new Proxy(this, "Runtime gives meta-circular access to the currently executing Ioke runtime.");
     DefaultBehavior defaultBehavior = new DefaultBehavior(this, "DefaultBehavior is a mixin that provides most of the methods shared by most instances in the system.");
     Origin origin = new Origin(this, "Any object created from scratch should usually be derived from Origin.");
-    public Nil nil = new Nil(this, "nil is an oddball object that always represents itself. It can not be mimicked and is one of the two false values.");
-    public True _true = new True(this, "true is an oddball object that always represents itself. It can not be mimicked and represents the a true value.");
-    public False _false = new False(this, "false is an oddball object that always represents itself. It can not be mimicked and is one of the two false values.");
+    public IokeObject nil = new IokeObject(this, "nil is an oddball object that always represents itself. It can not be mimicked and is one of the two false values.", IokeData.Nil);
+    public IokeObject _true = new IokeObject(this, "true is an oddball object that always represents itself. It can not be mimicked and represents the a true value.", IokeData.True);
+    public IokeObject _false = new IokeObject(this, "false is an oddball object that always represents itself. It can not be mimicked and is one of the two false values.", IokeData.False);
     Text text = new Text(this, "", "Contains an immutable text.");
     Number number = new Number(this, "0", "Represents an exact number");
     Method method = new Method(this, null, "Method is the origin of all methods in the system, both default and Java..");
@@ -94,7 +94,7 @@ public class Runtime {
     }
 
     public void init() {
-        base.init();
+        Base.init(base);
         defaultBehavior.init();
         mixins.init();
         system.init();
@@ -161,15 +161,15 @@ public class Runtime {
         return this.number;
     }
 
-    public Base getBase() {
+    public IokeObject getBase() {
         return this.base;
     }
 
-    public True getTrue() {
+    public IokeObject getTrue() {
         return this._true;
     }
 
-    public False getFalse() {
+    public IokeObject getFalse() {
         return this._false;
     }
 
@@ -177,7 +177,7 @@ public class Runtime {
         return this.defaultBehavior;
     }
 
-    public Nil getNil() {
+    public IokeObject getNil() {
         return this.nil;
     }
 
@@ -247,6 +247,10 @@ public class Runtime {
         } finally {
             system.popCurrentFile();
         }
+    }
+
+    public IokeObject newText(String text) {
+        return new Text(this, text);
     }
 
     public static class Proxy extends IokeObject {

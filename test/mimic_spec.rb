@@ -22,7 +22,7 @@ describe "mimicking" do
   it "should be able to mimic Base" do 
     ioke = IokeRuntime.get_runtime()
     result = ioke.evaluate_stream(StringReader.new(%q[Base mimic]))
-    result.java_class.name.should == 'ioke.lang.Base'
+    result.find_cell(nil,nil, 'kind').text.should == 'Base'
     result.should_not == ioke.base
   end
 
