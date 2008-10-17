@@ -23,9 +23,24 @@ public class IokeObject {
     public Map<String, IokeObject> cells = new HashMap<String, IokeObject>();
     public List<IokeObject> mimics = new ArrayList<IokeObject>();
     
+    public IokeData data;
+
     public IokeObject(Runtime runtime, String documentation) {
+        this(runtime, documentation, IokeData.None);
+    }
+
+    public IokeObject(Runtime runtime, String documentation, IokeData data) {
         this.runtime = runtime;
         this.documentation = documentation;
+        this.data = data;
+    }
+
+    public void init() {
+        data.init(this);
+    }
+
+    public void setKind(String kind) {
+        cells.put("kind", runtime.newText(kind));
     }
 
     public IokeObject getRealContext() {
@@ -33,7 +48,7 @@ public class IokeObject {
     }
 
     public IokeObject allocateCopy(Message m, IokeObject context) {
-        return new IokeObject(runtime, documentation);
+        return new IokeObject(runtime, documentation, data.cloneData(this, m, context));
     }
 
     public IokeObject findCell(Message m, IokeObject context, String name, IdentityHashMap<IokeObject, Object> visited) {
@@ -80,11 +95,11 @@ public class IokeObject {
     }
 
     public boolean isNil() {
-        return false;
+        return data.isNil();
     }
 
     public boolean isTrue() {
-        return true;
+        return data.isTrue();
     }
 
     public void mimics(IokeObject mimic) {
@@ -117,6 +132,10 @@ public class IokeObject {
         } else {
             return this;
         }
+    }
+
+    public String toString() {
+        return data.toString();
     }
 
     public String representation() {
