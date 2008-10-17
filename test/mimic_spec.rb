@@ -15,7 +15,7 @@ describe "mimicking" do
   it "should be able to mimic Ground" do 
     ioke = IokeRuntime.get_runtime()
     result = ioke.evaluate_stream(StringReader.new(%q[Ground mimic]))
-    result.java_class.name.should == 'ioke.lang.Ground'
+    result.find_cell(nil,nil, 'kind').text.should == 'Ground'
     result.should_not == ioke.ground
   end
 

@@ -34,7 +34,7 @@ public class Runtime {
 
     // Core objects and origins
     public IokeObject base = new IokeObject(this, "Base is the top of the inheritance structure. Most of the objects in the system is derived from this instance. Base should keep it's cells to the bare minimum needed for the system");
-    public Ground ground = new Ground(this, "Ground is the default place code is evaluated in. This is where you can find most of the global objects defined.");
+    public IokeObject ground = new IokeObject(this, "Ground is the default place code is evaluated in. This is where you can find most of the global objects defined.");
     IokeSystem system = new IokeSystem(this, "System defines things that represents the currently running system, such as load path.");
     Proxy runtime = new Proxy(this, "Runtime gives meta-circular access to the currently executing Ioke runtime.");
     DefaultBehavior defaultBehavior = new DefaultBehavior(this, "DefaultBehavior is a mixin that provides most of the methods shared by most instances in the system.");
@@ -100,7 +100,7 @@ public class Runtime {
         system.init();
         runtime.init();
         message.init();
-        ground.init();
+        Ground.init(ground);
         origin.init();
         nil.init();
         _true.init();
@@ -145,12 +145,24 @@ public class Runtime {
         return nul;
     }
 
-    public Ground getGround() {
+    public IokeObject getGround() {
         return this.ground;
     }
 
     public Origin getOrigin() {
         return this.origin;
+    }
+
+    public IokeObject getSystem() {
+        return this.system;
+    }
+
+    public IokeObject getIokeRuntime() {
+        return this.runtime;
+    }
+
+    public IokeObject getMixins() {
+        return this.mixins;
     }
 
     public Text getText() {
@@ -171,6 +183,18 @@ public class Runtime {
 
     public IokeObject getFalse() {
         return this._false;
+    }
+
+    public IokeObject getMethod() {
+        return this.method;
+    }
+
+    public IokeObject getJavaMethod() {
+        return this.javaMethod;
+    }
+
+    public IokeObject getDefaultMethod() {
+        return this.defaultMethod;
     }
 
     public DefaultBehavior getDefaultBehavior() {
