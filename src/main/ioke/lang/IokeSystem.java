@@ -16,16 +16,11 @@ import ioke.lang.exceptions.ControlFlow;
  *
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
-public class IokeSystem extends IokeObject {
+public class IokeSystem extends IokeData {
     private List<String> currentFile = new ArrayList<String>(Arrays.asList("<init>"));
     private String currentProgram;
     private String currentWorkingDirectory;
 
-
-    IokeSystem(Runtime runtime, String documentation) {
-        super(runtime, documentation);
-    }
-    
     public void pushCurrentFile(String filename) {
         currentFile.add(0, filename);
     }
@@ -57,9 +52,9 @@ public class IokeSystem extends IokeObject {
     private static final String[] SUFFIXES = {"", ".ik"};
 
     public boolean use(IokeObject context, Message message, String name) throws ControlFlow {
-        Builtin b = runtime.getBuiltin(name);
+        Builtin b = context.runtime.getBuiltin(name);
         if(b != null) {
-            b.load(runtime, context, message);
+            b.load(context.runtime, context, message);
             return true;
         }
 
@@ -70,30 +65,38 @@ public class IokeSystem extends IokeObject {
 //             System.err.println("- gah: " + f);
             if(f.exists()) {
 //                 System.err.println("- IT EXISTS");
-                runtime.evaluateFile(f);
+                context.runtime.evaluateFile(f);
                 return true;
             }
         }
         // TODO: raise condition here...
         throw new IokeException(message, "Couldn't find module '" + name + "' to load", context, context);
     }
+    
+    public IokeData cloneData(IokeObject obj, Message m, IokeObject context) {
+        return new IokeSystem();
+    }
 
-    public void init() {
+    public void init(IokeObject obj) {
+        Runtime runtime = obj.runtime;
+
+        obj.setKind("System");
+
         try {
             currentWorkingDirectory = new File(".").getCanonicalPath();
         } catch(Exception e) {
             currentWorkingDirectory = ".";
         }
 
-        registerMethod(new JavaMethod(runtime, "currentFile", "returns the current file executing") {
+        obj.registerMethod(new JavaMethod(runtime, "currentFile", "returns the current file executing") {
                 public IokeObject activate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
-                    return new Text(runtime, currentFile.get(0));
+                    return new Text(runtime, ((IokeSystem)on.data).currentFile.get(0));
                 }
             });
 
-        registerMethod(new JavaMethod(runtime, "ifMain", "returns result of evaluating first argument") {
+        obj.registerMethod(new JavaMethod(runtime, "ifMain", "returns result of evaluating first argument") {
                 public IokeObject activate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
-                    if(currentProgram().equals(message.getFile())) {
+                    if(((IokeSystem)on.data).currentProgram().equals(message.getFile())) {
                         return ((Message)message.getArguments().get(0)).evaluateCompleteWith(context, context.getRealContext());
                     } else {
                         return runtime.nil;

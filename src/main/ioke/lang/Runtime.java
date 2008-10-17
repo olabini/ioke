@@ -35,7 +35,7 @@ public class Runtime {
     // Core objects and origins
     public IokeObject base = new IokeObject(this, "Base is the top of the inheritance structure. Most of the objects in the system is derived from this instance. Base should keep it's cells to the bare minimum needed for the system");
     public IokeObject ground = new IokeObject(this, "Ground is the default place code is evaluated in. This is where you can find most of the global objects defined.");
-    IokeSystem system = new IokeSystem(this, "System defines things that represents the currently running system, such as load path.");
+    public IokeObject system = new IokeObject(this, "System defines things that represents the currently running system, such as load path.", new IokeSystem());
     Proxy runtime = new Proxy(this, "Runtime gives meta-circular access to the currently executing Ioke runtime.");
     DefaultBehavior defaultBehavior = new DefaultBehavior(this, "DefaultBehavior is a mixin that provides most of the methods shared by most instances in the system.");
     Origin origin = new Origin(this, "Any object created from scratch should usually be derived from Origin.");
@@ -82,11 +82,11 @@ public class Runtime {
     }
 
     public void setCurrentWorkingDirectory(String cwd) {
-        system.setCurrentWorkingDirectory(cwd);
+        ((IokeSystem)system.data).setCurrentWorkingDirectory(cwd);
     }
 
     public String getCurrentWorkingDirectory() {
-        return system.getCurrentWorkingDirectory();
+        return ((IokeSystem)system.data).getCurrentWorkingDirectory();
     }
 
     public PrintWriter getOut() {
@@ -236,40 +236,40 @@ public class Runtime {
 
     public IokeObject evaluateStream(String name, Reader reader) throws ControlFlow {
         try {
-            system.pushCurrentFile(name);
+            ((IokeSystem)system.data).pushCurrentFile(name);
             return evaluateStream(reader);
         } catch(RuntimeException e) {
             throw e;
         } catch(Exception e) {
             throw new RuntimeException(e);
         } finally {
-            system.popCurrentFile();
+            ((IokeSystem)system.data).popCurrentFile();
         }
     }
 
     public IokeObject evaluateFile(File f) throws ControlFlow {
         try {
-            system.pushCurrentFile(f.getCanonicalPath());
+            ((IokeSystem)system.data).pushCurrentFile(f.getCanonicalPath());
             return evaluateStream(new FileReader(f));
         } catch(RuntimeException e) {
             throw e;
         } catch(Exception e) {
             throw new RuntimeException(e);
         } finally {
-            system.popCurrentFile();
+            ((IokeSystem)system.data).popCurrentFile();
         }
     }
 
     public IokeObject evaluateFile(String filename) throws ControlFlow {
         try {
-            system.pushCurrentFile(filename);
-            return evaluateStream(new FileReader(new File(system.getCurrentWorkingDirectory(), filename)));
+            ((IokeSystem)system.data).pushCurrentFile(filename);
+            return evaluateStream(new FileReader(new File(((IokeSystem)system.data).getCurrentWorkingDirectory(), filename)));
         } catch(RuntimeException e) {
             throw e;
         } catch(Exception e) {
             throw new RuntimeException(e);
         } finally {
-            system.popCurrentFile();
+            ((IokeSystem)system.data).popCurrentFile();
         }
     }
 
