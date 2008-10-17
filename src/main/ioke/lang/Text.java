@@ -17,11 +17,12 @@ public class Text extends IokeData {
     @Override
     public void init(IokeObject obj) {
         obj.setKind("Text");
-        obj.registerMethod(new JavaMethod(obj.runtime, "asText", "Returns a text representation of the object") {
-                public IokeObject activate(IokeObject context, Message message, IokeObject on) {
+        obj.registerMethod(obj.runtime.newJavaMethod("Returns a text representation of the object", new JavaMethod("asText") {
+                @Override
+                public IokeObject activate(IokeObject method, IokeObject context, Message message, IokeObject on) {
                     return on;
                 }
-            });
+            }));
     }
 
     public String getText() {

@@ -105,11 +105,11 @@ public class IokeObject {
         this.mimics.add(mimic);
     }
 
-    public void registerMethod(Method m) {
-        cells.put(m.name, m);
+    public void registerMethod(IokeObject m) {
+        cells.put(((Method)m.data).getName(), m);
     }
 
-    public void registerMethod(String name, Method m) {
+    public void registerMethod(String name, IokeObject m) {
         cells.put(name, m);
     }
 
@@ -118,7 +118,7 @@ public class IokeObject {
     }
 
     public boolean isActivatable() {
-        return false;
+        return data.isActivatable();
     }
 
     public IokeObject convertToNumber(Message m, IokeObject context) {
@@ -144,6 +144,6 @@ public class IokeObject {
     }
 
     public IokeObject activate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
-        throw new NotActivatableException(message, "Can't activate " + this + "#" + message.getName() + " on " + on, on, context);
+        return data.activate(this, context, message, on);
     }
 }// IokeObject

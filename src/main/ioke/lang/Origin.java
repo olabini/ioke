@@ -16,20 +16,22 @@ public class Origin {
         origin.setKind("Origin");
 
         // asText, asRepresentation
-        origin.registerMethod(new JavaMethod(runtime, "println", "Prints a text representation and a newline to standard output") {
-                public IokeObject activate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
+        origin.registerMethod(runtime.newJavaMethod("Prints a text representation and a newline to standard output", new JavaMethod("println") {
+                @Override
+                public IokeObject activate(IokeObject method, IokeObject context, Message message, IokeObject on) throws ControlFlow {
                     runtime.getOut().println(runtime.asText.sendTo(context, on).toString());
                     runtime.getOut().flush();
                     return runtime.getNil();
                 }
-            });
+            }));
 
-        origin.registerMethod(new JavaMethod(runtime, "print", "Prints a text representation to standard output") {
-                public IokeObject activate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
+        origin.registerMethod(runtime.newJavaMethod("Prints a text representation to standard output", new JavaMethod("print") {
+                @Override
+                public IokeObject activate(IokeObject method, IokeObject context, Message message, IokeObject on) throws ControlFlow {
                     runtime.getOut().print(runtime.asText.sendTo(context, on).toString());
                     runtime.getOut().flush();
                     return runtime.getNil();
                 }
-            });
+            }));
     }
 }// Origin

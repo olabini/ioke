@@ -44,9 +44,9 @@ public class Runtime {
     public IokeObject _false = new IokeObject(this, "false is an oddball object that always represents itself. It can not be mimicked and is one of the two false values.", IokeData.False);
     public IokeObject text = new IokeObject(this, "Contains an immutable text.", new Text(""));
     public IokeObject number = new IokeObject(this, "Represents an exact number", new Number("0"));
-    public Method method = new Method(this, null, "Method is the origin of all methods in the system, both default and Java..");
-    public DefaultMethod defaultMethod = new DefaultMethod(this, null, "DefaultMethod is the instance all methods in the system is derived from.");
-    public JavaMethod javaMethod = new JavaMethod(this, null, "JavaMethod is a derivation of Method that represents a primitive implemented in Java.");
+    public IokeObject method = new IokeObject(this, "Method is the origin of all methods in the system, both default and Java..", new Method((String)null));
+    public IokeObject defaultMethod = new IokeObject(this, "DefaultMethod is the instance all methods in the system is derived from.", new DefaultMethod((String)null));
+    public IokeObject javaMethod = new IokeObject(this, "JavaMethod is a derivation of Method that represents a primitive implemented in Java.", new JavaMethod((String)null));
     public Mixins mixins = new Mixins(this, "Mixins is the name space for most mixins in the system. DefaultBehavior is the notable exception.");
     public Message message = new Message(this, null, Message.Type.EMPTY, "A message is the basic code unit in Ioke.");
     public Context context = new Context(this, ground, "An activation context.", null, ground);
@@ -299,6 +299,18 @@ public class Runtime {
         obj.mimics(this.number);
         obj.data = new Number(number);
         return obj;
+    }
+
+    public IokeObject newMethod(String doc, IokeObject tp, Method impl) {
+        IokeObject obj = tp.allocateCopy(null, null);
+        obj.documentation = doc;
+        obj.mimics(tp);
+        obj.data = impl;
+        return obj;
+    }
+
+    public IokeObject newJavaMethod(String doc, JavaMethod impl) {
+        return newMethod(doc, this.javaMethod, impl);
     }
 
     public static void init(IokeObject runtime) {

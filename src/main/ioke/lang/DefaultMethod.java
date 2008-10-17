@@ -16,31 +16,30 @@ public class DefaultMethod extends Method {
     private List<String> argumentNames;
     private Message code;
 
-    public DefaultMethod(Runtime runtime, String name, String documentation) {
-        super(runtime, name, documentation);
+    public DefaultMethod(String name) {
+        super(name);
     }
 
-    public DefaultMethod(Runtime runtime, IokeObject context, List<String> argumentNames, Message code, String documentation) {
-        super(runtime, context);
-        this.documentation = documentation;
+    public DefaultMethod(IokeObject context, List<String> argumentNames, Message code) {
+        super(context);
         this.argumentNames = argumentNames;
         this.code = code;
-        if(runtime.defaultMethod != null) {
-            this.mimics(runtime.defaultMethod);
-        }
     }
 
-    public void init() {
+    @Override
+    public void init(IokeObject defaultMethod) {
+        defaultMethod.setKind("DefaultMethod");
     }
 
     // TODO: make this use a real model later, with argument names etc
-    public IokeObject activate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
+    @Override
+    public IokeObject activate(IokeObject self, IokeObject context, Message message, IokeObject on) throws ControlFlow {
         int argCount = message.getArguments().size();
         if(argCount != argumentNames.size()) {
             throw new MismatchedArgumentCount(message, argumentNames.size(), argCount, on, context);
         }
         
-        Context c = new Context(runtime, on, "Method activation context for " + message.getName(), message, context);
+        Context c = new Context(self.runtime, on, "Method activation context for " + message.getName(), message, context);
 
         for(int i=0; i<argCount; i++) {
             c.setCell(argumentNames.get(i), message.getEvaluatedArgument(i, context));
