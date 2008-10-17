@@ -5,7 +5,7 @@ import Java::java.io.StringReader unless defined?(StringReader)
 describe "documentation" do 
   def doc_for(cell)
     ioke = IokeRuntime.get_runtime()
-    ioke.evaluate_stream(StringReader.new("cell(\"#{cell}\") documentation")).text
+    ioke.evaluate_stream(StringReader.new("cell(\"#{cell}\") documentation")).data.text
   end
   
   it "should be correct for internal:createText" do 

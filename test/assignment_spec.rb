@@ -12,8 +12,7 @@ describe "assignment" do
   it "should work for a simple string" do 
     ioke = IokeRuntime.get_runtime()
     result = ioke.evaluate_stream(StringReader.new(%q[a = "foo"]))
-    result.java_class.name.should == 'ioke.lang.Text'
-    result.text.should == "foo"
+    result.data.text.should == "foo"
 
     ioke.ground.find_cell(nil, nil, "a").should == result
   end
@@ -21,7 +20,7 @@ describe "assignment" do
   it "should be possible to assign a large expression to default receiver" do 
     ioke = IokeRuntime.get_runtime()
     result = ioke.evaluate_stream(StringReader.new(%q[a = Origin mimic]))
-    result.java_class.name.should == 'ioke.lang.Origin'
+    result.find_cell(nil, nil, 'kind').data.text.should == 'Origin'
     result.should_not == ioke.origin
 
     ioke.ground.find_cell(nil, nil, "a").should == result

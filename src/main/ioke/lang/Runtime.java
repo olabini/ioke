@@ -38,18 +38,18 @@ public class Runtime {
     public IokeObject system = new IokeObject(this, "System defines things that represents the currently running system, such as load path.", new IokeSystem());
     public IokeObject runtime = new IokeObject(this, "Runtime gives meta-circular access to the currently executing Ioke runtime.");
     public IokeObject defaultBehavior = new IokeObject(this, "DefaultBehavior is a mixin that provides most of the methods shared by most instances in the system.");
-    Origin origin = new Origin(this, "Any object created from scratch should usually be derived from Origin.");
+    public IokeObject origin = new IokeObject(this, "Any object created from scratch should usually be derived from Origin.");
     public IokeObject nil = new IokeObject(this, "nil is an oddball object that always represents itself. It can not be mimicked and is one of the two false values.", IokeData.Nil);
     public IokeObject _true = new IokeObject(this, "true is an oddball object that always represents itself. It can not be mimicked and represents the a true value.", IokeData.True);
     public IokeObject _false = new IokeObject(this, "false is an oddball object that always represents itself. It can not be mimicked and is one of the two false values.", IokeData.False);
-    Text text = new Text(this, "", "Contains an immutable text.");
-    Number number = new Number(this, "0", "Represents an exact number");
-    Method method = new Method(this, null, "Method is the origin of all methods in the system, both default and Java..");
-    DefaultMethod defaultMethod = new DefaultMethod(this, null, "DefaultMethod is the instance all methods in the system is derived from.");
-    JavaMethod javaMethod = new JavaMethod(this, null, "JavaMethod is a derivation of Method that represents a primitive implemented in Java.");
-    Mixins mixins = new Mixins(this, "Mixins is the name space for most mixins in the system. DefaultBehavior is the notable exception.");
-    Message message = new Message(this, null, Message.Type.EMPTY, "A message is the basic code unit in Ioke.");
-    Context context = new Context(this, ground, "An activation context.", null, ground);
+    public IokeObject text = new IokeObject(this, "Contains an immutable text.", new Text(""));
+    public Number number = new Number(this, "0", "Represents an exact number");
+    public Method method = new Method(this, null, "Method is the origin of all methods in the system, both default and Java..");
+    public DefaultMethod defaultMethod = new DefaultMethod(this, null, "DefaultMethod is the instance all methods in the system is derived from.");
+    public JavaMethod javaMethod = new JavaMethod(this, null, "JavaMethod is a derivation of Method that represents a primitive implemented in Java.");
+    public Mixins mixins = new Mixins(this, "Mixins is the name space for most mixins in the system. DefaultBehavior is the notable exception.");
+    public Message message = new Message(this, null, Message.Type.EMPTY, "A message is the basic code unit in Ioke.");
+    public Context context = new Context(this, ground, "An activation context.", null, ground);
 
     // Core messages
     public Message asText = new Message(this, "asText");
@@ -101,7 +101,7 @@ public class Runtime {
         Runtime.init(runtime);
         message.init();
         Ground.init(ground);
-        origin.init();
+        Origin.init(origin);
         nil.init();
         _true.init();
         _false.init();
@@ -149,7 +149,7 @@ public class Runtime {
         return this.ground;
     }
 
-    public Origin getOrigin() {
+    public IokeObject getOrigin() {
         return this.origin;
     }
 
@@ -165,11 +165,11 @@ public class Runtime {
         return this.mixins;
     }
 
-    public Text getText() {
+    public IokeObject getText() {
         return this.text;
     }
 
-    public Number getNumber() {
+    public IokeObject getNumber() {
         return this.number;
     }
 
@@ -274,7 +274,10 @@ public class Runtime {
     }
 
     public IokeObject newText(String text) {
-        return new Text(this, text);
+        IokeObject obj = this.text.allocateCopy(null, null);
+        obj.mimics(this.text);
+        obj.data = new Text(text);
+        return obj;
     }
 
     public static void init(IokeObject runtime) {

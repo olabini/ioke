@@ -62,7 +62,7 @@ public class Message extends IokeObject {
     public void init() {
         registerMethod(new JavaMethod(runtime, "code", "Returns a code representation of the object") {
                 public IokeObject activate(IokeObject context, Message message, IokeObject on) {
-                    return new Text(runtime, ((Message)on).code());
+                    return runtime.newText(((Message)on).code());
                 }
             });
     }

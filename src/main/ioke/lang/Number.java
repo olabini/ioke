@@ -100,7 +100,7 @@ public class Number extends IokeObject {
 
         registerMethod(new JavaMethod(runtime, "asText", "Returns a text representation of the object") {
                 public IokeObject activate(IokeObject context, Message message, IokeObject on) {
-                    return new Text(runtime, ((Number)on).toString());
+                    return runtime.newText(((Number)on).toString());
                 }
             });
 

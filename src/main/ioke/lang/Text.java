@@ -7,30 +7,17 @@ package ioke.lang;
  *
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
-public class Text extends IokeObject {
+public class Text extends IokeData {
     private String text;
 
-    public Text(Runtime runtime, String text) {
-        super(runtime, runtime.text.documentation);
-        this.mimics(runtime.text);
-        this.text = text;
-    }
-
-    public Text(Runtime runtime, String text, String description) {
-        super(runtime, description);
-        if(runtime.text != null) {
-            this.mimics(runtime.text);
-        }
+    public Text(String text) {
         this.text = text;
     }
 
     @Override
-    public IokeObject allocateCopy(Message m, IokeObject context) {
-        return new Text(runtime, text);
-    }
-
-    public void init() {
-        registerMethod(new JavaMethod(runtime, "asText", "Returns a text representation of the object") {
+    public void init(IokeObject obj) {
+        obj.setKind("Text");
+        obj.registerMethod(new JavaMethod(obj.runtime, "asText", "Returns a text representation of the object") {
                 public IokeObject activate(IokeObject context, Message message, IokeObject on) {
                     return on;
                 }

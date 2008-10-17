@@ -90,7 +90,7 @@ public class IokeSystem extends IokeData {
 
         obj.registerMethod(new JavaMethod(runtime, "currentFile", "returns the current file executing") {
                 public IokeObject activate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
-                    return new Text(runtime, ((IokeSystem)on.data).currentFile.get(0));
+                    return runtime.newText(((IokeSystem)on.data).currentFile.get(0));
                 }
             });
 
