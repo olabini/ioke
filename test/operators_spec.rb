@@ -16,16 +16,16 @@ describe "operator" do
     it "should work for numbers" do 
       ioke = IokeRuntime.get_runtime
 
-      run("0<=>0", ioke).as_java_integer.should == 0
-      run("0<=>1", ioke).as_java_integer.should == -1
-      run("1<=>1", ioke).as_java_integer.should == 0
-      run("2<=>1", ioke).as_java_integer.should == 1
-      run("1<=>2", ioke).as_java_integer.should == -1
-      run("2<=>2", ioke).as_java_integer.should == 0
-      run("3<=>2", ioke).as_java_integer.should == 1
-      run("3<=>223524534", ioke).as_java_integer.should == -1
-      run("223524534<=>223524534", ioke).as_java_integer.should == 0
-      run("223524534<=>2", ioke).as_java_integer.should == 1
+      run("0<=>0", ioke).data.as_java_integer.should == 0
+      run("0<=>1", ioke).data.as_java_integer.should == -1
+      run("1<=>1", ioke).data.as_java_integer.should == 0
+      run("2<=>1", ioke).data.as_java_integer.should == 1
+      run("1<=>2", ioke).data.as_java_integer.should == -1
+      run("2<=>2", ioke).data.as_java_integer.should == 0
+      run("3<=>2", ioke).data.as_java_integer.should == 1
+      run("3<=>223524534", ioke).data.as_java_integer.should == -1
+      run("223524534<=>223524534", ioke).data.as_java_integer.should == 0
+      run("223524534<=>2", ioke).data.as_java_integer.should == 1
     end
   end
 

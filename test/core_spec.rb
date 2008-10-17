@@ -20,7 +20,7 @@ describe "core" do
     it "should act as false in if statement" do 
       runtime = IokeRuntime.get_runtime
       runtime.evaluate_stream(StringReader.new("if(nil, 42, 43)")).
-        as_java_integer.should == 43
+        data.as_java_integer.should == 43
     end
   end
 
@@ -41,7 +41,7 @@ describe "core" do
     it "should act as false in if statement" do 
       runtime = IokeRuntime.get_runtime
       runtime.evaluate_stream(StringReader.new("if(false, 42, 43)")).
-        as_java_integer.should == 43
+        data.as_java_integer.should == 43
     end
   end
   
@@ -62,7 +62,7 @@ describe "core" do
     it "should act as true in if statement" do 
       runtime = IokeRuntime.get_runtime
       runtime.evaluate_stream(StringReader.new("if(true, 42, 43)")).
-        as_java_integer.should == 42
+        data.as_java_integer.should == 42
     end
   end
   

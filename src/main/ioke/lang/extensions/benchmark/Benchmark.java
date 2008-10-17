@@ -41,10 +41,10 @@ public class Benchmark extends IokeObject {
                     long iterations = 1;
                     int index = 0;
                     if(count > 1) {
-                        bmRounds = ((Number)message.getEvaluatedArgument(index, context).convertToNumber(message, context)).asJavaInteger();
+                        bmRounds = ((Number)message.getEvaluatedArgument(index, context).convertToNumber(message, context).data).asJavaInteger();
                         index++;
                         if(count > 2) {
-                            iterations = ((Number)message.getEvaluatedArgument(index, context).convertToNumber(message, context)).asJavaLong();
+                            iterations = ((Number)message.getEvaluatedArgument(index, context).convertToNumber(message, context).data).asJavaLong();
                             index++;
                         }
                     }

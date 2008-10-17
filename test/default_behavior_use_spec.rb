@@ -13,19 +13,19 @@ describe "DefaultBehavior" do
     it "should load a file without a suffix in the same directory" do 
       result, runtime = run_with_cwd("use(\"load2\")")
       result.should == runtime.true
-      runtime.ground.find_cell(nil, nil, "val").as_java_integer.should == 43
+      runtime.ground.find_cell(nil, nil, "val").data.as_java_integer.should == 43
     end
 
     it "should load a file in the same directory" do 
       result, runtime = run_with_cwd("use(\"load1\")")
       result.should == runtime.true
-      runtime.ground.find_cell(nil, nil, "val").as_java_integer.should == 42
+      runtime.ground.find_cell(nil, nil, "val").data.as_java_integer.should == 42
     end
 
     it "should load a file in the same directory when explicitly have suffix" do 
       result, runtime = run_with_cwd("use(\"load1.ik\")")
       result.should == runtime.true
-      runtime.ground.find_cell(nil, nil, "val").as_java_integer.should == 42
+      runtime.ground.find_cell(nil, nil, "val").data.as_java_integer.should == 42
     end
     
     it "should not load something that's already been loaded"
@@ -39,7 +39,7 @@ describe "DefaultBehavior" do
       result, _ = run_with_cwd("use(\"load1\")", runtime)
       result.should == runtime.true
       runtime.ground.find_cell(nil, nil, "val").should == runtime.nul
-      runtime.ground.find_cell(nil, nil, "vex").as_java_integer.should == 25
+      runtime.ground.find_cell(nil, nil, "vex").data.as_java_integer.should == 25
     end
     
     #it "should be able to load from jar files too"

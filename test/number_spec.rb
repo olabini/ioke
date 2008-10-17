@@ -5,15 +5,13 @@ import Java::java.io.StringReader unless defined?(StringReader)
 def test_int(str, expected)
   ioke = IokeRuntime.get_runtime()
   result = ioke.evaluate_stream(StringReader.new(str))
-  result.java_class.name.should == 'ioke.lang.Number'
-  result.asJavaInteger.should == expected
+  result.data.asJavaInteger.should == expected
 end
 
 def test_longer(str, expected = str)
   ioke = IokeRuntime.get_runtime()
   result = ioke.evaluate_stream(StringReader.new(str))
-  result.java_class.name.should == 'ioke.lang.Number'
-  result.asJavaString.should == expected
+  result.data.asJavaString.should == expected
 end
 
 describe "numbers" do 

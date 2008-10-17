@@ -4,6 +4,7 @@
 package ioke.lang;
 
 import ioke.lang.exceptions.CantMimicOddballObject;
+import ioke.lang.exceptions.ObjectIsNotRightType;
 
 /**
  *
@@ -70,4 +71,7 @@ public abstract class IokeData {
     public boolean isNil() {return false;}
     public boolean isTrue() {return true;}
     public IokeData cloneData(IokeObject obj, Message m, IokeObject context) {return this;}
+    public IokeObject convertToNumber(IokeObject self, Message m, IokeObject context) {
+        throw new ObjectIsNotRightType(m, self, "Number", context);
+    }
 }// IokeData
