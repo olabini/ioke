@@ -43,7 +43,7 @@ public class Runtime {
     public IokeObject _true = new IokeObject(this, "true is an oddball object that always represents itself. It can not be mimicked and represents the a true value.", IokeData.True);
     public IokeObject _false = new IokeObject(this, "false is an oddball object that always represents itself. It can not be mimicked and is one of the two false values.", IokeData.False);
     public IokeObject text = new IokeObject(this, "Contains an immutable text.", new Text(""));
-    public Number number = new Number(this, "0", "Represents an exact number");
+    public IokeObject number = new IokeObject(this, "Represents an exact number", new Number("0"));
     public Method method = new Method(this, null, "Method is the origin of all methods in the system, both default and Java..");
     public DefaultMethod defaultMethod = new DefaultMethod(this, null, "DefaultMethod is the instance all methods in the system is derived from.");
     public JavaMethod javaMethod = new JavaMethod(this, null, "JavaMethod is a derivation of Method that represents a primitive implemented in Java.");
@@ -277,6 +277,27 @@ public class Runtime {
         IokeObject obj = this.text.allocateCopy(null, null);
         obj.mimics(this.text);
         obj.data = new Text(text);
+        return obj;
+    }
+
+    public IokeObject newNumber(String number) {
+        IokeObject obj = this.number.allocateCopy(null, null);
+        obj.mimics(this.number);
+        obj.data = new Number(number);
+        return obj;
+    }
+
+    public IokeObject newNumber(gnu.math.IntNum number) {
+        IokeObject obj = this.number.allocateCopy(null, null);
+        obj.mimics(this.number);
+        obj.data = new Number(number);
+        return obj;
+    }
+
+    public IokeObject newNumber(int number) {
+        IokeObject obj = this.number.allocateCopy(null, null);
+        obj.mimics(this.number);
+        obj.data = new Number(number);
         return obj;
     }
 

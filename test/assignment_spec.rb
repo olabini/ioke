@@ -36,7 +36,7 @@ describe "assignment" do
     ioke = IokeRuntime.get_runtime()
     result = ioke.evaluate_stream(StringReader.new(%q[a = 1 + 1]))
     ioke.ground.find_cell(nil, nil, "a").should == result
-    result.as_java_integer.should == 2
+    result.data.as_java_integer.should == 2
   end
 
   it "should work with something on the next line too" do 

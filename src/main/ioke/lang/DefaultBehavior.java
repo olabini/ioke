@@ -129,7 +129,7 @@ public class DefaultBehavior {
         obj.registerMethod(new JavaMethod(runtime, "internal:createNumber", "expects one 'strange' argument. creates a new instance of Number that represents the number found in the strange argument.") {
                 public IokeObject activate(IokeObject context, Message message, IokeObject on) {
                     String s = (String)message.getArg1();
-                    return new Number(runtime, s);
+                    return runtime.newNumber(s);
                 }
             });
 

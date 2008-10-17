@@ -25,7 +25,7 @@ public class Comparing extends IokeObject {
         registerMethod(new JavaMethod(runtime, "<", "return true if the receiver is less than the argument, otherwise false") {
                 public IokeObject activate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
                     IokeObject arg = ((Message)message).getEvaluatedArgument(0, context);
-                    Number num = runtime.spaceShip.sendTo(context, on, arg).convertToNumber(message, context);
+                    Number num = (Number)runtime.spaceShip.sendTo(context, on, arg).convertToNumber(message, context).data;
                     return (num.asJavaInteger() < 0 ? runtime._true : runtime._false);
                 }
             });
@@ -33,7 +33,7 @@ public class Comparing extends IokeObject {
         registerMethod(new JavaMethod(runtime, "<=", "return true if the receiver is less than or equal to the argument, otherwise false") {
                 public IokeObject activate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
                     IokeObject arg = ((Message)message).getEvaluatedArgument(0, context);
-                    Number num = runtime.spaceShip.sendTo(context, on, arg).convertToNumber(message, context);
+                    Number num = (Number)runtime.spaceShip.sendTo(context, on, arg).convertToNumber(message, context).data;
                     return (num.asJavaInteger() <= 0 ? runtime._true : runtime._false);
                 }
             });
@@ -41,7 +41,7 @@ public class Comparing extends IokeObject {
         registerMethod(new JavaMethod(runtime, ">", "return true if the receiver is greater than the argument, otherwise false") {
                 public IokeObject activate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
                     IokeObject arg = ((Message)message).getEvaluatedArgument(0, context);
-                    Number num = runtime.spaceShip.sendTo(context, on, arg).convertToNumber(message, context);
+                    Number num = (Number)runtime.spaceShip.sendTo(context, on, arg).convertToNumber(message, context).data;
                     return (num.asJavaInteger() > 0 ? runtime._true : runtime._false);
                 }
             });
@@ -49,7 +49,7 @@ public class Comparing extends IokeObject {
         registerMethod(new JavaMethod(runtime, ">=", "return true if the receiver is greater than or equal to the argument, otherwise false") {
                 public IokeObject activate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
                     IokeObject arg = ((Message)message).getEvaluatedArgument(0, context);
-                    Number num = runtime.spaceShip.sendTo(context, on, arg).convertToNumber(message, context);
+                    Number num = (Number)runtime.spaceShip.sendTo(context, on, arg).convertToNumber(message, context).data;
                     return (num.asJavaInteger() >= 0 ? runtime._true : runtime._false);
                 }
             });
@@ -57,7 +57,7 @@ public class Comparing extends IokeObject {
         registerMethod(new JavaMethod(runtime, "==", "return true if the receiver is equal to the argument, otherwise false") {
                 public IokeObject activate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
                     IokeObject arg = ((Message)message).getEvaluatedArgument(0, context);
-                    Number num = runtime.spaceShip.sendTo(context, on, arg).convertToNumber(message, context);
+                    Number num = (Number)runtime.spaceShip.sendTo(context, on, arg).convertToNumber(message, context).data;
                     return (num.asJavaInteger() == 0 ? runtime._true : runtime._false);
                 }
             });
@@ -65,13 +65,13 @@ public class Comparing extends IokeObject {
         registerMethod(new JavaMethod(runtime, "!=", "return true if the receiver is not equal to the argument, otherwise false") {
                 public IokeObject activate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
                     IokeObject arg = ((Message)message).getEvaluatedArgument(0, context);
-                    Number num = runtime.spaceShip.sendTo(context, on, arg).convertToNumber(message, context);
+                    Number num = (Number)runtime.spaceShip.sendTo(context, on, arg).convertToNumber(message, context).data;
                     return (num.asJavaInteger() != 0 ? runtime._true : runtime._false);
                 }
             });
     }
 
     public String toString() {
-        return "DefaultBehavior";
+        return "Comparing";
     }
 }// Comparing

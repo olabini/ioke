@@ -11,7 +11,6 @@ import java.util.IdentityHashMap;
 
 import ioke.lang.exceptions.NotActivatableException;
 import ioke.lang.exceptions.NoSuchCellException;
-import ioke.lang.exceptions.ObjectIsNotRightType;
 import ioke.lang.exceptions.ControlFlow;
 
 /**
@@ -122,8 +121,8 @@ public class IokeObject {
         return false;
     }
 
-    public Number convertToNumber(Message m, IokeObject context) {
-        throw new ObjectIsNotRightType(m, this, "Number", context);
+    public IokeObject convertToNumber(Message m, IokeObject context) {
+        return data.convertToNumber(this, m, context);
     }
 
     public IokeObject getOrActivate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
