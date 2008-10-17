@@ -5,7 +5,7 @@ import Java::java.io.StringReader unless defined?(StringReader)
 describe "documentation" do 
   def doc_for(cell)
     ioke = IokeRuntime.get_runtime()
-    ioke.evaluate_stream(StringReader.new("getCell(\"#{cell}\") documentation")).text
+    ioke.evaluate_stream(StringReader.new("cell(\"#{cell}\") documentation")).text
   end
   
   it "should be correct for internal:createText" do 
@@ -28,8 +28,8 @@ describe "documentation" do
       should == "returns the documentation text of the object called on. anything can have a documentation text and an object inherits it's documentation string text the object it mimcs - at mimic time."
   end
 
-  it "should be correct for getCell" do 
-    doc_for("getCell").
+  it "should be correct for cell" do 
+    doc_for("cell").
       should == "expects one evaluated text argument and returns the cell that matches that name, without activating even if it's activatable."
   end
 

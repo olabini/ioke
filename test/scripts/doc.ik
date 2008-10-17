@@ -1,2 +1,2 @@
 
-getCell("asText") documentation println
+cell("asText") documentation println
