@@ -55,8 +55,10 @@
         <include name="**/*.class"/>
         <include name="**/*.properties"/>
       </fileset>
+      <zipfileset src="${lib.release.dir}/antlr-runtime-3.0.1.jar" includes="**/*"/>
       <manifest>
         <attribute name="Built-By" value="${user.name}"/>
+        <attribute name="Main-Class" value="ioke.lang.Main"/>
       </manifest>
     </jar>
   </target>

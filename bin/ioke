@@ -64,13 +64,13 @@ for j in "$IOKE_HOME"/lib/dist/ioke*.jar; do
     fi
 done
 
-for j in "$IOKE_HOME"/lib/release/*.jar; do
-    if [ "$IOKE_CP" ]; then
-        IOKE_CP="$IOKE_CP$CP_DELIMETER$j"
-        else
-        IOKE_CP="$j"
-    fi
-done
+#for j in "$IOKE_HOME"/lib/release/*.jar; do
+#    if [ "$IOKE_CP" ]; then
+#        IOKE_CP="$IOKE_CP$CP_DELIMETER$j"
+#        else
+#        IOKE_CP="$j"
+#    fi
+#done
 
 if $cygwin; then
     IOKE_CP=`cygpath -p -w "$IOKE_CP"`
