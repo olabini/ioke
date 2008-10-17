@@ -216,7 +216,7 @@ public class DefaultBehavior extends IokeObject {
                 public IokeObject activate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
                     if(message.getArgumentCount() > 0) {
                         String name = ((Text)runtime.asText.sendTo(context, message.getEvaluatedArgument(0, context))).getText();
-                        if(runtime.system.use(context, message, name)) {
+                        if(((IokeSystem)runtime.system.data).use(context, message, name)) {
                             return runtime._true;
                         } else {
                             return runtime._false;

@@ -106,4 +106,12 @@ describe "core" do
       runtime.ground.find_cell(nil, nil, 'Mixins').should == runtime.mixins
     end
   end
+
+  describe "System" do 
+    it "should have the correct kind" do 
+      runtime = IokeRuntime.get_runtime
+      result = runtime.system.find_cell(nil, nil, "kind")
+      result.text.should == 'System'
+    end
+  end
 end

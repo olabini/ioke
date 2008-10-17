@@ -55,7 +55,7 @@ public class Main {
             if(cwd != null) {
                 r.setCurrentWorkingDirectory(cwd);
             }
-            r.system.setCurrentProgram(args[start]);
+            ((IokeSystem)r.system.data).setCurrentProgram(args[start]);
             r.evaluateFile(args[start]);
         } catch(IokeException e) {
             e.reportError(System.err);

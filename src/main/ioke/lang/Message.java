@@ -52,7 +52,7 @@ public class Message extends IokeObject {
             this.mimics(runtime.message);
         }
 
-        this.file = runtime.system.currentFile();
+        this.file = ((IokeSystem)runtime.system.data).currentFile();
 
         if(arg1 != null) {
             arguments.add(arg1);
