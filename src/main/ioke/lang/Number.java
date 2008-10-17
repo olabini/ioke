@@ -53,7 +53,7 @@ public class Number extends IokeData {
         final Runtime runtime = obj.runtime;
 
         obj.setKind("Number");
-        obj.mimics(runtime.mixins.comparing);
+        obj.mimics(runtime.mixins.getCell(null, null, "Comparing"));
         
         obj.registerMethod(runtime.newJavaMethod("compares this number against the argument, returning -1, 0 or 1 based on which one is larger", new JavaMethod("<=>") {
                 @Override

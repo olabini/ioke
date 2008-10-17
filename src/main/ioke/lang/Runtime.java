@@ -47,7 +47,7 @@ public class Runtime {
     public IokeObject method = new IokeObject(this, "Method is the origin of all methods in the system, both default and Java..", new Method((String)null));
     public IokeObject defaultMethod = new IokeObject(this, "DefaultMethod is the instance all methods in the system is derived from.", new DefaultMethod((String)null));
     public IokeObject javaMethod = new IokeObject(this, "JavaMethod is a derivation of Method that represents a primitive implemented in Java.", new JavaMethod((String)null));
-    public Mixins mixins = new Mixins(this, "Mixins is the name space for most mixins in the system. DefaultBehavior is the notable exception.");
+    public IokeObject mixins = new IokeObject(this, "Mixins is the name space for most mixins in the system. DefaultBehavior is the notable exception.");
     public Message message = new Message(this, null, Message.Type.EMPTY, "A message is the basic code unit in Ioke.");
     public Context context = new Context(this, ground, "An activation context.", null, ground);
 
@@ -96,7 +96,7 @@ public class Runtime {
     public void init() {
         Base.init(base);
         DefaultBehavior.init(defaultBehavior);
-        mixins.init();
+        Mixins.init(mixins);
         system.init();
         Runtime.init(runtime);
         message.init();

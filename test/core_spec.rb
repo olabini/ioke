@@ -178,4 +178,17 @@ describe "core" do
       result.data.text.should == 'JavaMethod'
     end
   end
+
+  describe "Mixins" do 
+    it "should have the correct kind" do 
+      runtime = IokeRuntime.get_runtime
+      result = runtime.mixins.find_cell(nil, nil, "kind")
+      result.data.text.should == 'Mixins'
+    end
+
+    it "should have Comparing defined" do 
+      runtime = IokeRuntime.get_runtime
+      runtime.mixins.find_cell(nil, nil, 'Comparing').should_not == runtime.nul
+    end
+  end
 end
