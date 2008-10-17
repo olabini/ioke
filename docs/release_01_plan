@@ -16,7 +16,8 @@ Ioke 0.1 should include:
 - falseness defined
 - libraries
  - iik
- - gendoc
+ - docgen
+ - verify/assure/testik (unit testing framework)
 
 Maybe:
 - IO
