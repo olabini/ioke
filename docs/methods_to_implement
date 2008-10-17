@@ -12,7 +12,6 @@ ADD Common Lisp style conditions - before it's too late
   exceptions
   conditions would be nice
 
-- Create benchmarker
 - Eval as message on Message. Will eval in the callers environment
 - read is message that returns a message chain, right through the parser, just like in Lisp
 - think for real about pretty printer
