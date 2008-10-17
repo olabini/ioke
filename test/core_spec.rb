@@ -114,4 +114,20 @@ describe "core" do
       result.text.should == 'System'
     end
   end
+
+  describe "Runtime" do 
+    it "should have the correct kind" do 
+      runtime = IokeRuntime.get_runtime
+      result = runtime.runtime.find_cell(nil, nil, "kind")
+      result.text.should == 'Runtime'
+    end
+  end
+
+  describe "DefaultBehavior" do 
+    it "should have the correct kind" do 
+      runtime = IokeRuntime.get_runtime
+      result = runtime.defaultBehavior.find_cell(nil, nil, "kind")
+      result.text.should == 'DefaultBehavior'
+    end
+  end
 end

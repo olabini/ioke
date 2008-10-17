@@ -36,8 +36,8 @@ public class Runtime {
     public IokeObject base = new IokeObject(this, "Base is the top of the inheritance structure. Most of the objects in the system is derived from this instance. Base should keep it's cells to the bare minimum needed for the system");
     public IokeObject ground = new IokeObject(this, "Ground is the default place code is evaluated in. This is where you can find most of the global objects defined.");
     public IokeObject system = new IokeObject(this, "System defines things that represents the currently running system, such as load path.", new IokeSystem());
-    Proxy runtime = new Proxy(this, "Runtime gives meta-circular access to the currently executing Ioke runtime.");
-    DefaultBehavior defaultBehavior = new DefaultBehavior(this, "DefaultBehavior is a mixin that provides most of the methods shared by most instances in the system.");
+    public IokeObject runtime = new IokeObject(this, "Runtime gives meta-circular access to the currently executing Ioke runtime.");
+    public IokeObject defaultBehavior = new IokeObject(this, "DefaultBehavior is a mixin that provides most of the methods shared by most instances in the system.");
     Origin origin = new Origin(this, "Any object created from scratch should usually be derived from Origin.");
     public IokeObject nil = new IokeObject(this, "nil is an oddball object that always represents itself. It can not be mimicked and is one of the two false values.", IokeData.Nil);
     public IokeObject _true = new IokeObject(this, "true is an oddball object that always represents itself. It can not be mimicked and represents the a true value.", IokeData.True);
@@ -95,10 +95,10 @@ public class Runtime {
 
     public void init() {
         Base.init(base);
-        defaultBehavior.init();
+        DefaultBehavior.init(defaultBehavior);
         mixins.init();
         system.init();
-        runtime.init();
+        Runtime.init(runtime);
         message.init();
         Ground.init(ground);
         origin.init();
@@ -197,7 +197,7 @@ public class Runtime {
         return this.defaultMethod;
     }
 
-    public DefaultBehavior getDefaultBehavior() {
+    public IokeObject getDefaultBehavior() {
         return this.defaultBehavior;
     }
 
@@ -277,16 +277,7 @@ public class Runtime {
         return new Text(this, text);
     }
 
-    public static class Proxy extends IokeObject {
-        Proxy(Runtime runtime, String documentation) {
-            super(runtime, documentation);
-        }
-
-        public void init() {
-        }
-
-        public String toString() {
-            return "Runtime";
-        }
+    public static void init(IokeObject runtime) {
+        runtime.setKind("Runtime");
     }
 }// Runtime
