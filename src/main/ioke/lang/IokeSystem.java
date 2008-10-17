@@ -78,7 +78,7 @@ public class IokeSystem extends IokeData {
     }
 
     public void init(IokeObject obj) {
-        Runtime runtime = obj.runtime;
+        final Runtime runtime = obj.runtime;
 
         obj.setKind("System");
 
@@ -88,21 +88,23 @@ public class IokeSystem extends IokeData {
             currentWorkingDirectory = ".";
         }
 
-        obj.registerMethod(new JavaMethod(runtime, "currentFile", "returns the current file executing") {
-                public IokeObject activate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
+        obj.registerMethod(runtime.newJavaMethod("returns the current file executing", new JavaMethod("currentFile") {
+                @Override
+                public IokeObject activate(IokeObject method, IokeObject context, Message message, IokeObject on) throws ControlFlow {
                     return runtime.newText(((IokeSystem)on.data).currentFile.get(0));
                 }
-            });
+            }));
 
-        obj.registerMethod(new JavaMethod(runtime, "ifMain", "returns result of evaluating first argument") {
-                public IokeObject activate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
+        obj.registerMethod(runtime.newJavaMethod("returns result of evaluating first argument", new JavaMethod("ifMain") {
+                @Override
+                public IokeObject activate(IokeObject method, IokeObject context, Message message, IokeObject on) throws ControlFlow {
                     if(((IokeSystem)on.data).currentProgram().equals(message.getFile())) {
                         return ((Message)message.getArguments().get(0)).evaluateCompleteWith(context, context.getRealContext());
                     } else {
                         return runtime.nil;
                     }
                 }
-            });
+            }));
     }
 
     public String toString() {

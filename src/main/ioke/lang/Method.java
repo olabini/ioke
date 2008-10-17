@@ -11,36 +11,33 @@ import ioke.lang.exceptions.ControlFlow;
  *
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
-public class Method extends IokeObject {
+public class Method extends IokeData {
     String name;
     private IokeObject context;
 
-    public Method(Runtime runtime, String name, String documentation) {
-        super(runtime, documentation);
+    public Method(String name) {
         this.name = name;
     }
 
-    public Method(Runtime runtime, IokeObject context) {
-        this(runtime, null, null);
-
-        if(runtime.method != null && this.getClass() == Method.class) {
-            this.mimics(runtime.method);
-        }
+    public Method(IokeObject context) {
+        this((String)null);
 
         this.context = context;
     }
 
-    public void init() {
-        registerMethod(new JavaMethod(runtime, "name", "returns the name of the method") {
+    @Override
+    public void init(IokeObject method) {
+        method.setKind("Method");
+        method.registerMethod(method.runtime.newJavaMethod("returns the name of the method", new JavaMethod("name") {
                 public IokeObject activate(IokeObject context, Message message, IokeObject on) {
-                    return runtime.newText(((Method)on).name);
+                    return on.runtime.newText(((Method)on.data).name);
                 }
-            });
-        registerMethod(new JavaMethod(runtime, "call", "activates this method with the arguments given to call") {
+            }));
+        method.registerMethod(method.runtime.newJavaMethod("activates this method with the arguments given to call", new JavaMethod("call") {
                 public IokeObject activate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
-                    return ((Method)on).activate(context, message, context.getRealContext());
+                    return on.activate(context, message, context.getRealContext());
                 }
-            });
+            }));
     }
 
     public String getName() {
@@ -51,14 +48,8 @@ public class Method extends IokeObject {
         return true;
     }
 
-    public IokeObject activate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
-        return runtime.nil;
-    }
-
-    public String toString() {
-        if(this == runtime.method) {
-            return "Method-origin";
-        }
-        return "Method<" + name + ">";
+    @Override
+    public IokeObject activate(IokeObject self, IokeObject context, Message message, IokeObject on) throws ControlFlow {
+        return self.runtime.nil;
     }
 }// Method

@@ -1,3 +1,6 @@
+TODO NOW: switch interfaces to use Object all over the place instead of IokeObject...
+  all places that need something should do 
+   IokeObject.as(arg)
 
 Look seriously at "become"
 

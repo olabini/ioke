@@ -11,11 +11,11 @@ describe "DefaultBehavior method" do
   
   it "should name itself after the slot it's assigned to if it has no name" do 
     ioke = IokeRuntime.get_runtime()
-    ioke.evaluate_stream(StringReader.new("x = method(nil)")).name.should == "x"
+    ioke.evaluate_stream(StringReader.new("x = method(nil)")).data.name.should == "x"
   end
   
   it "should not change it's name if it already has a name" do 
     ioke = IokeRuntime.get_runtime()
-    ioke.evaluate_stream(StringReader.new("x = method(nil)\ny = cell(\"x\")\ncell(\"y\")")).name.should == "x"
+    ioke.evaluate_stream(StringReader.new("x = method(nil)\ny = cell(\"x\")\ncell(\"y\")")).data.name.should == "x"
   end
 end

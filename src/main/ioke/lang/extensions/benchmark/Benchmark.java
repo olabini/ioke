@@ -34,8 +34,9 @@ public class Benchmark extends IokeObject {
     public void init() {
         runtime.ground.setCell("Benchmark", this);
         
-        registerMethod(new JavaMethod(runtime, "report", "expects two optional numbers, x (default 10) and y (default 1), and a block of code to run, and will run benchmark this block x times, while looping y times in each benchmark. after each loop will print the timings for this loop") {
-                public IokeObject activate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
+        registerMethod(runtime.newJavaMethod("expects two optional numbers, x (default 10) and y (default 1), and a block of code to run, and will run benchmark this block x times, while looping y times in each benchmark. after each loop will print the timings for this loop", new JavaMethod("report") {
+                @Override
+                public IokeObject activate(IokeObject method, IokeObject context, Message message, IokeObject on) throws ControlFlow {
                     int count = message.getArgumentCount();
                     int bmRounds = 10;
                     long iterations = 1;
@@ -64,7 +65,7 @@ public class Benchmark extends IokeObject {
 
                     return runtime.nil;
                 }
-            });
+            }));
     }
 
     public String toString() {

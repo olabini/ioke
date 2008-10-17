@@ -3,7 +3,9 @@
  */
 package ioke.lang;
 
+import ioke.lang.exceptions.ControlFlow;
 import ioke.lang.exceptions.CantMimicOddballObject;
+import ioke.lang.exceptions.NotActivatableException;
 import ioke.lang.exceptions.ObjectIsNotRightType;
 
 /**
@@ -70,8 +72,12 @@ public abstract class IokeData {
     public void init(IokeObject obj) {}
     public boolean isNil() {return false;}
     public boolean isTrue() {return true;}
+    public boolean isActivatable() {return false;}
     public IokeData cloneData(IokeObject obj, Message m, IokeObject context) {return this;}
     public IokeObject convertToNumber(IokeObject self, Message m, IokeObject context) {
         throw new ObjectIsNotRightType(m, self, "Number", context);
+    }
+    public IokeObject activate(IokeObject self, IokeObject context, Message message, IokeObject on) throws ControlFlow {
+        throw new NotActivatableException(message, "Can't activate " + self + "#" + message.getName() + " on " + on, on, context);
     }
 }// IokeData
