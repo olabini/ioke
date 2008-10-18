@@ -29,12 +29,12 @@ public class Method extends IokeData {
     public void init(IokeObject method) {
         method.setKind("Method");
         method.registerMethod(method.runtime.newJavaMethod("returns the name of the method", new JavaMethod("name") {
-                public IokeObject activate(IokeObject context, Message message, IokeObject on) {
+                public IokeObject activate(IokeObject context, IokeObject message, IokeObject on) {
                     return on.runtime.newText(((Method)on.data).name);
                 }
             }));
         method.registerMethod(method.runtime.newJavaMethod("activates this method with the arguments given to call", new JavaMethod("call") {
-                public IokeObject activate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
+                public IokeObject activate(IokeObject context, IokeObject message, IokeObject on) throws ControlFlow {
                     return on.activate(context, message, context.getRealContext());
                 }
             }));
@@ -49,7 +49,7 @@ public class Method extends IokeData {
     }
 
     @Override
-    public IokeObject activate(IokeObject self, IokeObject context, Message message, IokeObject on) throws ControlFlow {
+    public IokeObject activate(IokeObject self, IokeObject context, IokeObject message, IokeObject on) throws ControlFlow {
         return self.runtime.nil;
     }
 }// Method

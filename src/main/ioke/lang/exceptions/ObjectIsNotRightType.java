@@ -11,7 +11,7 @@ import ioke.lang.Message;
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
 public class ObjectIsNotRightType extends IokeException {
-    public ObjectIsNotRightType(Message m, IokeObject from, String type, IokeObject context) {
+    public ObjectIsNotRightType(IokeObject m, IokeObject from, String type, IokeObject context) {
         super(m, "Object " + from + " can not be converted to: " + type, from, context);
     }
 }// ObjectIsNotRightType

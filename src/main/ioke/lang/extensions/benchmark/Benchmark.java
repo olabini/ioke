@@ -21,7 +21,7 @@ public class Benchmark extends IokeObject {
     }
 
     @Override
-    public IokeObject allocateCopy(Message m, IokeObject context) {
+    public IokeObject allocateCopy(IokeObject m, IokeObject context) {
         return new Benchmark(runtime, documentation);
     }
 
@@ -36,7 +36,7 @@ public class Benchmark extends IokeObject {
         
         registerMethod(runtime.newJavaMethod("expects two optional numbers, x (default 10) and y (default 1), and a block of code to run, and will run benchmark this block x times, while looping y times in each benchmark. after each loop will print the timings for this loop", new JavaMethod("report") {
                 @Override
-                public IokeObject activate(IokeObject method, IokeObject context, Message message, IokeObject on) throws ControlFlow {
+                public IokeObject activate(IokeObject method, IokeObject context, IokeObject message, IokeObject on) throws ControlFlow {
                     int count = message.getArgumentCount();
                     int bmRounds = 10;
                     long iterations = 1;

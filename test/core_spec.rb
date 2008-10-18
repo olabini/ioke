@@ -191,4 +191,20 @@ describe "core" do
       runtime.mixins.find_cell(nil, nil, 'Comparing').should_not == runtime.nul
     end
   end
+
+  describe "Message" do 
+    it "should have the correct kind" do 
+      runtime = IokeRuntime.get_runtime
+      result = runtime.message.find_cell(nil, nil, "kind")
+      result.data.text.should == 'Message'
+    end
+  end
+
+  describe "Context" do 
+    it "should have the correct kind" do 
+      runtime = IokeRuntime.get_runtime
+      result = runtime.context.find_cell(nil, nil, "kind")
+      result.data.text.should == 'Context'
+    end
+  end
 end

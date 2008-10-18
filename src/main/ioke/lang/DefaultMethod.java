@@ -14,13 +14,13 @@ import ioke.lang.exceptions.ControlFlow;
  */
 public class DefaultMethod extends Method {
     private List<String> argumentNames;
-    private Message code;
+    private IokeObject code;
 
     public DefaultMethod(String name) {
         super(name);
     }
 
-    public DefaultMethod(IokeObject context, List<String> argumentNames, Message code) {
+    public DefaultMethod(IokeObject context, List<String> argumentNames, IokeObject code) {
         super(context);
         this.argumentNames = argumentNames;
         this.code = code;
@@ -33,7 +33,7 @@ public class DefaultMethod extends Method {
 
     // TODO: make this use a real model later, with argument names etc
     @Override
-    public IokeObject activate(IokeObject self, IokeObject context, Message message, IokeObject on) throws ControlFlow {
+    public IokeObject activate(IokeObject self, IokeObject context, IokeObject message, IokeObject on) throws ControlFlow {
         int argCount = message.getArguments().size();
         if(argCount != argumentNames.size()) {
             throw new MismatchedArgumentCount(message, argumentNames.size(), argCount, on, context);
