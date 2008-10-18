@@ -19,7 +19,7 @@ public class PlainTextBuiltin extends Builtin {
         this.name = name;
     }
 
-    public IokeObject load(Runtime runtime, IokeObject context, Message message) throws ControlFlow {
+    public IokeObject load(Runtime runtime, IokeObject context, IokeObject message) throws ControlFlow {
         return runtime.evaluateStream("<builtin:"+name+">", new StringReader(text));
     }
 }// PlainTextBuiltin

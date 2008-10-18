@@ -19,7 +19,7 @@ public class Text extends IokeData {
         obj.setKind("Text");
         obj.registerMethod(obj.runtime.newJavaMethod("Returns a text representation of the object", new JavaMethod("asText") {
                 @Override
-                public IokeObject activate(IokeObject method, IokeObject context, Message message, IokeObject on) {
+                public IokeObject activate(IokeObject method, IokeObject context, IokeObject message, IokeObject on) {
                     return on;
                 }
             }));

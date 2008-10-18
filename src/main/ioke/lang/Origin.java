@@ -18,7 +18,7 @@ public class Origin {
         // asText, asRepresentation
         origin.registerMethod(runtime.newJavaMethod("Prints a text representation and a newline to standard output", new JavaMethod("println") {
                 @Override
-                public IokeObject activate(IokeObject method, IokeObject context, Message message, IokeObject on) throws ControlFlow {
+                public IokeObject activate(IokeObject method, IokeObject context, IokeObject message, IokeObject on) throws ControlFlow {
                     runtime.getOut().println(runtime.asText.sendTo(context, on).toString());
                     runtime.getOut().flush();
                     return runtime.getNil();
@@ -27,7 +27,7 @@ public class Origin {
 
         origin.registerMethod(runtime.newJavaMethod("Prints a text representation to standard output", new JavaMethod("print") {
                 @Override
-                public IokeObject activate(IokeObject method, IokeObject context, Message message, IokeObject on) throws ControlFlow {
+                public IokeObject activate(IokeObject method, IokeObject context, IokeObject message, IokeObject on) throws ControlFlow {
                     runtime.getOut().print(runtime.asText.sendTo(context, on).toString());
                     runtime.getOut().flush();
                     return runtime.getNil();

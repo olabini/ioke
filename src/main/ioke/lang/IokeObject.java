@@ -46,11 +46,11 @@ public class IokeObject {
         return this;
     }
 
-    public IokeObject allocateCopy(Message m, IokeObject context) {
+    public IokeObject allocateCopy(IokeObject m, IokeObject context) {
         return new IokeObject(runtime, documentation, data.cloneData(this, m, context));
     }
 
-    public IokeObject findCell(Message m, IokeObject context, String name, IdentityHashMap<IokeObject, Object> visited) {
+    public IokeObject findCell(IokeObject m, IokeObject context, String name, IdentityHashMap<IokeObject, Object> visited) {
         if(visited.containsKey(this)) {
             return runtime.nul;
         }
@@ -71,11 +71,11 @@ public class IokeObject {
         }
     }
 
-    public IokeObject findCell(Message m, IokeObject context, String name) {
+    public IokeObject findCell(IokeObject m, IokeObject context, String name) {
         return findCell(m, context, name, new IdentityHashMap<IokeObject, Object>());
     }
 
-    public IokeObject getCell(Message m, IokeObject context, String name) {
+    public IokeObject getCell(IokeObject m, IokeObject context, String name) {
         IokeObject cell = this.findCell(m, context, name);
 
         if(cell == runtime.nul) {
@@ -85,7 +85,7 @@ public class IokeObject {
         return cell;
     }
 
-    public IokeObject perform(IokeObject ctx, Message message) throws ControlFlow {
+    public IokeObject perform(IokeObject ctx, IokeObject message) throws ControlFlow {
         return getCell(message, ctx, message.getName()).getOrActivate(ctx, message, this);
     }
 
@@ -99,6 +99,10 @@ public class IokeObject {
 
     public boolean isTrue() {
         return data.isTrue();
+    }
+
+    public boolean isMessage() {
+        return data.isMessage();
     }
 
     public void mimics(IokeObject mimic) {
@@ -121,11 +125,11 @@ public class IokeObject {
         return data.isActivatable();
     }
 
-    public IokeObject convertToNumber(Message m, IokeObject context) {
+    public IokeObject convertToNumber(IokeObject m, IokeObject context) {
         return data.convertToNumber(this, m, context);
     }
 
-    public IokeObject getOrActivate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
+    public IokeObject getOrActivate(IokeObject context, IokeObject message, IokeObject on) throws ControlFlow {
         if(isActivatable()) {
             return activate(context, message, on);
         } else {
@@ -143,7 +147,75 @@ public class IokeObject {
         return sb.append("#<").append(this).append(": mimics=").append(mimics).append(" cells=").append(cells).append(">").toString();
     }
 
-    public IokeObject activate(IokeObject context, Message message, IokeObject on) throws ControlFlow {
+    public IokeObject activate(IokeObject context, IokeObject message, IokeObject on) throws ControlFlow {
         return data.activate(this, context, message, on);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public IokeObject getEvaluatedArgument(int index, IokeObject context) throws ControlFlow {
+        return data.getEvaluatedArgument(this, index, context);
+    }
+
+    public IokeObject sendTo(IokeObject context, IokeObject recv) throws ControlFlow {
+        return data.sendTo(this, context, recv);
+    }
+
+    public IokeObject sendTo(IokeObject context, IokeObject recv, IokeObject argument) throws ControlFlow {
+        return data.sendTo(this, context, recv, argument);
+    }
+
+    public IokeObject sendTo(IokeObject context, IokeObject recv, IokeObject arg1, IokeObject arg2) throws ControlFlow {
+        return data.sendTo(this, context, recv, arg1, arg2);
+    }
+
+    public IokeObject evaluateComplete() throws ControlFlow {
+        return data.evaluateComplete(this);
+    }
+
+    public IokeObject evaluateCompleteWith(IokeObject ctx, IokeObject ground) throws ControlFlow {
+        return data.evaluateCompleteWith(this, ctx, ground);
+    }
+
+    public IokeObject evaluateCompleteWithoutExplicitReceiver(IokeObject ctx, IokeObject ground) throws ControlFlow {
+        return data.evaluateCompleteWithoutExplicitReceiver(this, ctx, ground);
+    }
+
+    public IokeObject evaluateCompleteWith(IokeObject ground) throws ControlFlow {
+        return data.evaluateCompleteWith(this, ground);
+    }
+
+    public List<Object> getArguments() {
+        return data.getArguments(this);
+    }
+
+    public int getArgumentCount() {
+        return data.getArgumentCount(this);
+    }
+
+    public String getName() {
+        return data.getName(this);
+    }
+
+    public String getFile() {
+        return data.getFile(this);
+    }
+
+    public int getLine() {
+        return data.getLine(this);
+    }
+
+    public int getPosition() {
+        return data.getPosition(this);
     }
 }// IokeObject

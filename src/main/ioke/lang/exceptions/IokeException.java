@@ -17,31 +17,31 @@ import ioke.lang.IokeObject;
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
 public class IokeException extends RuntimeException {
-    Message message;
+    IokeObject message;
     IokeObject on;
     IokeObject context;
-    public IokeException(Message m, IokeObject on, IokeObject context) {
+    public IokeException(IokeObject m, IokeObject on, IokeObject context) {
         super();
         this.message = m;
         this.on = on;
         this.context = context;
     }
 
-    public IokeException(Message m, String message, IokeObject on, IokeObject context) {
+    public IokeException(IokeObject m, String message, IokeObject on, IokeObject context) {
         super(message);
         this.message = m;
         this.on = on;
         this.context = context;
     }
 
-    public IokeException(Message m, Throwable cause, IokeObject on, IokeObject context) {
+    public IokeException(IokeObject m, Throwable cause, IokeObject on, IokeObject context) {
         super(cause);
         this.message = m;
         this.on = on;
         this.context = context;
     }
 
-    public IokeException(Message m, String message, Throwable cause, IokeObject on, IokeObject context) {
+    public IokeException(IokeObject m, String message, Throwable cause, IokeObject on, IokeObject context) {
         super(message, cause);
         this.message = m;
         this.on = on;
@@ -62,10 +62,10 @@ public class IokeException extends RuntimeException {
     }
 
     public void reportError(PrintStream stream) {
-        Message start = message;
+        IokeObject start = message;
 
-        while(start.prev != null && start.prev.getLine() == message.getLine()) {
-            start = start.prev;
+        while(Message.prev(start) != null && Message.prev(start).getLine() == message.getLine()) {
+            start = Message.prev(start);
         }
 
 //         System.err.println("for message : " + message);
@@ -74,12 +74,12 @@ public class IokeException extends RuntimeException {
         stream.println();
         stream.println("  Exception: " + getMessage());
         stream.println("  ---------");
-        String s1 = start.codeSequenceTo(";");
+        String s1 = Message.codeSequenceTo(start, ";");
         int ix = s1.indexOf("\n");
         stream.println("  " + (ix == -1 ? s1 : s1.substring(0,ix)));
         stream.print("  ");
 
-        int position = start.codePositionOf(message);
+        int position = Message.codePositionOf(start, message);
 
         for(int i=0,j=position;i<j;i++) {
             stream.print(" ");
@@ -90,14 +90,14 @@ public class IokeException extends RuntimeException {
         stream.println();
         stream.println();
 
-        s1 = message.thisCode();
+        s1 = Message.thisCode(message);
         ix = s1.indexOf("\n");
 
         stream.println(String.format("  %-48.48s %s", on.toString() + " " + (ix == -1 ? s1 : s1.substring(0,ix)),"[" + message.getFile() + ":" + message.getLine() + ":" + message.getPosition() + getContextMessageName(context) + "]"));
 
         IokeObject ctx = context;
         while(ctx instanceof Context) {
-            s1 = ((Context)ctx).message.thisCode();
+            s1 = Message.thisCode(((Context)ctx).message);
             ix = s1.indexOf("\n");
             stream.println(String.format("  %-48.48s %s", ((Context)ctx).getRealContext().toString() + " " +  (ix == -1 ? s1 : s1.substring(0,ix)),"[" + ((Context)ctx).message.getFile() + ":" + ((Context)ctx).message.getLine() + ":" + ((Context)ctx).message.getPosition()  + getContextMessageName(((Context)ctx).surroundingContext) + "]"));
             ctx = ((Context)ctx).surroundingContext;

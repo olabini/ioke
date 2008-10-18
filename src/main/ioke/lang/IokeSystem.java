@@ -51,7 +51,7 @@ public class IokeSystem extends IokeData {
 
     private static final String[] SUFFIXES = {"", ".ik"};
 
-    public boolean use(IokeObject context, Message message, String name) throws ControlFlow {
+    public boolean use(IokeObject context, IokeObject message, String name) throws ControlFlow {
         Builtin b = context.runtime.getBuiltin(name);
         if(b != null) {
             b.load(context.runtime, context, message);
@@ -73,7 +73,7 @@ public class IokeSystem extends IokeData {
         throw new IokeException(message, "Couldn't find module '" + name + "' to load", context, context);
     }
     
-    public IokeData cloneData(IokeObject obj, Message m, IokeObject context) {
+    public IokeData cloneData(IokeObject obj, IokeObject m, IokeObject context) {
         return new IokeSystem();
     }
 
@@ -90,14 +90,14 @@ public class IokeSystem extends IokeData {
 
         obj.registerMethod(runtime.newJavaMethod("returns the current file executing", new JavaMethod("currentFile") {
                 @Override
-                public IokeObject activate(IokeObject method, IokeObject context, Message message, IokeObject on) throws ControlFlow {
+                public IokeObject activate(IokeObject method, IokeObject context, IokeObject message, IokeObject on) throws ControlFlow {
                     return runtime.newText(((IokeSystem)on.data).currentFile.get(0));
                 }
             }));
 
         obj.registerMethod(runtime.newJavaMethod("returns result of evaluating first argument", new JavaMethod("ifMain") {
                 @Override
-                public IokeObject activate(IokeObject method, IokeObject context, Message message, IokeObject on) throws ControlFlow {
+                public IokeObject activate(IokeObject method, IokeObject context, IokeObject message, IokeObject on) throws ControlFlow {
                     if(((IokeSystem)on.data).currentProgram().equals(message.getFile())) {
                         return ((Message)message.getArguments().get(0)).evaluateCompleteWith(context, context.getRealContext());
                     } else {

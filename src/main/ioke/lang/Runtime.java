@@ -48,15 +48,15 @@ public class Runtime {
     public IokeObject defaultMethod = new IokeObject(this, "DefaultMethod is the instance all methods in the system is derived from.", new DefaultMethod((String)null));
     public IokeObject javaMethod = new IokeObject(this, "JavaMethod is a derivation of Method that represents a primitive implemented in Java.", new JavaMethod((String)null));
     public IokeObject mixins = new IokeObject(this, "Mixins is the name space for most mixins in the system. DefaultBehavior is the notable exception.");
-    public Message message = new Message(this, null, Message.Type.EMPTY, "A message is the basic code unit in Ioke.");
+    public IokeObject message = new IokeObject(this, "A message is the basic code unit in Ioke.", new Message(this, null, Message.Type.EMPTY));
     public Context context = new Context(this, ground, "An activation context.", null, ground);
 
     // Core messages
-    public Message asText = new Message(this, "asText");
-    public Message mimic = new Message(this, "mimic");
-    public Message spaceShip = new Message(this, "<=>");
-    public Message succ = new Message(this, "succ");
-    public Message setValue = new Message(this, "=");
+    public IokeObject asText = newMessage("asText");
+    public IokeObject mimic = newMessage("mimic");
+    public IokeObject spaceShip = newMessage("<=>");
+    public IokeObject succ = newMessage("succ");
+    public IokeObject setValue = newMessage("=");
 
     // NOT TO BE EXPOSED TO Ioke - used for internal usage only
     NullObject nul = new NullObject(this);
@@ -135,7 +135,7 @@ public class Runtime {
 
 
         addBuiltinScript("benchmark", new Builtin() {
-                public IokeObject load(Runtime runtime, IokeObject context, Message message) throws ControlFlow {
+                public IokeObject load(Runtime runtime, IokeObject context, IokeObject message) throws ControlFlow {
                     return ioke.lang.extensions.benchmark.Benchmark.create(runtime);
                 }
             });
@@ -215,12 +215,12 @@ public class Runtime {
         return builtins.get(name);
     }
 
-    public Message parseStream(Reader reader) {
+    public IokeObject parseStream(Reader reader) {
         try {
             iokeParser parser = new iokeParser(new CommonTokenStream(new iokeLexer(new ANTLRReaderStream(reader))));
             Tree t = parser.parseFully();
 //             System.err.println("t: " + t.toStringTree());
-            Message m = Message.fromTree(this, t);
+            IokeObject m = Message.fromTree(this, t);
 //             System.err.println("m: " + m);
             return m;
         } catch(RuntimeException e) {
@@ -311,6 +311,17 @@ public class Runtime {
 
     public IokeObject newJavaMethod(String doc, JavaMethod impl) {
         return newMethod(doc, this.javaMethod, impl);
+    }
+
+    public IokeObject newMessage(String name) {
+        return createMessage(new Message(this, name));
+    }
+
+    public IokeObject createMessage(Message m) {
+        IokeObject obj = this.message.allocateCopy(null, null);
+        obj.mimics(this.message);
+        obj.data = m;
+        return obj;
     }
 
     public static void init(IokeObject runtime) {
