@@ -12,8 +12,8 @@ import ioke.lang.mixins.Comparing;
 public class Mixins {
     public static void init(IokeObject mixins) {
         mixins.setKind("Mixins");
-        IokeObject comparing = new Comparing(mixins.runtime, "allows different objects to be compared, based on the spaceship operator being available");
-        comparing.init();
+        IokeObject comparing = new IokeObject(mixins.runtime, "allows different objects to be compared, based on the spaceship operator being available");
+        Comparing.init(comparing);
         mixins.registerCell("Comparing", comparing);
     }
 }// Mixins
