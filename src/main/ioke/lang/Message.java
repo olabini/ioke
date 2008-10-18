@@ -57,10 +57,6 @@ public class Message extends IokeData {
         return ((Message)message.data).arguments.get(0);
     }
 
-    public static Object getArg2(IokeObject message) {
-        return ((Message)message.data).arguments.get(1);
-    }
-
     public static Type type(IokeObject message) {
         return ((Message)message.data).type;
     }
