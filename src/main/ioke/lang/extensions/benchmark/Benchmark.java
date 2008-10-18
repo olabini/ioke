@@ -15,26 +15,19 @@ import ioke.lang.exceptions.ControlFlow;
  *
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
-public class Benchmark extends IokeObject {
-    Benchmark(Runtime runtime, String documentation) {
-        super(runtime, documentation);
-    }
-
-    @Override
-    public IokeObject allocateCopy(IokeObject m, IokeObject context) {
-        return new Benchmark(runtime, documentation);
-    }
-
+public class Benchmark {
     public static IokeObject create(Runtime runtime) {
-        Benchmark bm = new Benchmark(runtime, "Benchmark is a module that makes it easy to test the time code takes to run");
-        bm.init();
+        IokeObject bm = new IokeObject(runtime, "Benchmark is a module that makes it easy to test the time code takes to run");
+        Benchmark.init(bm);
         return bm;
     }
 
-    public void init() {
-        runtime.ground.setCell("Benchmark", this);
+    public static void init(IokeObject bm) {
+        Runtime runtime = bm.runtime;
+        bm.setKind("Benchmark");
+        runtime.ground.setCell("Benchmark", bm);
         
-        registerMethod(runtime.newJavaMethod("expects two optional numbers, x (default 10) and y (default 1), and a block of code to run, and will run benchmark this block x times, while looping y times in each benchmark. after each loop will print the timings for this loop", new JavaMethod("report") {
+        bm.registerMethod(runtime.newJavaMethod("expects two optional numbers, x (default 10) and y (default 1), and a block of code to run, and will run benchmark this block x times, while looping y times in each benchmark. after each loop will print the timings for this loop", new JavaMethod("report") {
                 @Override
                 public IokeObject activate(IokeObject method, IokeObject context, IokeObject message, IokeObject on) throws ControlFlow {
                     int count = message.getArgumentCount();
@@ -59,16 +52,12 @@ public class Benchmark extends IokeObject {
                         long time = after-before;
                         long secs = time/1000000000;
                         long rest = time%1000000000;
-                        runtime.getOut().println(String.format("%-32.32s %.6s.%09d", ((Message)message.getArguments().get(index)).thisCode(), secs, rest));
-                        runtime.getOut().flush();
+                        context.runtime.getOut().println(String.format("%-32.32s %.6s.%09d", Message.thisCode(((IokeObject)message.getArguments().get(index))), secs, rest));
+                        context.runtime.getOut().flush();
                     }
 
-                    return runtime.nil;
+                    return context.runtime.nil;
                 }
             }));
-    }
-
-    public String toString() {
-        return "Benchmark";
     }
 }// Benchmark

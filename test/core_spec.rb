@@ -207,4 +207,12 @@ describe "core" do
       result.data.text.should == 'Context'
     end
   end
+
+  describe "Comparing" do 
+    it "should have the correct kind" do 
+      runtime = IokeRuntime.get_runtime
+      result = runtime.ground.find_cell(nil, nil, "Mixins").find_cell(nil, nil, "Comparing").find_cell(nil, nil, "kind")
+      result.data.text.should == 'Comparing'
+    end
+  end
 end
