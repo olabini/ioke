@@ -74,8 +74,8 @@ public class Message extends IokeData {
         message.setKind("Message");
         message.registerMethod(message.runtime.newJavaMethod("Returns a code representation of the object", new JavaMethod("code") {
                 @Override
-                public IokeObject activate(IokeObject method, IokeObject context, IokeObject message, IokeObject on) {
-                    return method.runtime.newText(((Message)on.data).code());
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
+                    return method.runtime.newText(((Message)IokeObject.data(on)).code());
                 }
             }));
     }
@@ -313,7 +313,7 @@ public class Message extends IokeData {
     }
 
     @Override
-    public IokeObject getEvaluatedArgument(IokeObject self, int index, IokeObject context) throws ControlFlow {
+    public Object getEvaluatedArgument(IokeObject self, int index, IokeObject context) throws ControlFlow {
         IokeObject o = (IokeObject)arguments.get(index);
         if(!o.isMessage()) {
             return o;
@@ -323,36 +323,36 @@ public class Message extends IokeData {
     }
 
     @Override
-    public IokeObject sendTo(IokeObject self, IokeObject context, IokeObject recv) throws ControlFlow {
-        return recv.perform(context, self);
+    public Object sendTo(IokeObject self, IokeObject context, Object recv) throws ControlFlow {
+        return IokeObject.perform(recv, context, self);
     }
 
     @Override
-    public IokeObject sendTo(IokeObject self, IokeObject context, IokeObject recv, IokeObject argument) throws ControlFlow {
+    public Object sendTo(IokeObject self, IokeObject context, Object recv, Object argument) throws ControlFlow {
         IokeObject m = self.allocateCopy(self, context);
         m.getArguments().clear();
         m.getArguments().add(argument);
-        return recv.perform(context, m);
+        return IokeObject.perform(recv, context, m);
     }
 
     @Override
-    public IokeObject sendTo(IokeObject self, IokeObject context, IokeObject recv, IokeObject arg1, IokeObject arg2) throws ControlFlow {
+    public Object sendTo(IokeObject self, IokeObject context, Object recv, Object arg1, Object arg2) throws ControlFlow {
         IokeObject m = self.allocateCopy(self, context);
         m.getArguments().clear();
         m.getArguments().add(arg1);
         m.getArguments().add(arg2);
-        return recv.perform(context, m);
+        return IokeObject.perform(recv, context, m);
     }
 
     @Override
-    public IokeObject evaluateComplete(IokeObject self) throws ControlFlow {
+    public Object evaluateComplete(IokeObject self) throws ControlFlow {
         return evaluateCompleteWith(self, self.runtime.getGround());
     }
 
     @Override
-    public IokeObject evaluateCompleteWith(IokeObject self, IokeObject ctx, IokeObject ground) throws ControlFlow {
-        IokeObject current = ctx;
-        IokeObject lastReal = self.runtime.getNil();
+    public Object evaluateCompleteWith(IokeObject self, IokeObject ctx, Object ground) throws ControlFlow {
+        Object current = ctx;
+        Object lastReal = self.runtime.getNil();
         IokeObject m = self;
         while(m != null) {
             if(m.getName().equals(";")) {
@@ -367,13 +367,13 @@ public class Message extends IokeData {
     }
 
     @Override
-    public IokeObject evaluateCompleteWithoutExplicitReceiver(IokeObject self, IokeObject ctx, IokeObject ground) throws ControlFlow {
+    public Object evaluateCompleteWithoutExplicitReceiver(IokeObject self, IokeObject ctx, Object ground) throws ControlFlow {
         return evaluateCompleteWith(self, ctx, ctx);
     }
 
     @Override
-    public IokeObject evaluateCompleteWith(IokeObject self, IokeObject ground) throws ControlFlow {
-        return evaluateCompleteWith(self, ground, ground.getRealContext());
+    public Object evaluateCompleteWith(IokeObject self, Object ground) throws ControlFlow {
+        return evaluateCompleteWith(self, IokeObject.as(ground), IokeObject.getRealContext(ground));
     }
 
     public static int codePositionOf(IokeObject message, IokeObject m) {

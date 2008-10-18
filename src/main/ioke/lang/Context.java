@@ -10,14 +10,14 @@ import java.util.IdentityHashMap;
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
 public class Context extends IokeObject {
-    IokeObject ground;
+    Object ground;
 
     public IokeObject message;
     public IokeObject surroundingContext;
 
-    public Context(Runtime runtime, IokeObject ground, String documentation, IokeObject message, IokeObject surroundingContext) {
+    public Context(Runtime runtime, Object ground, String documentation, IokeObject message, IokeObject surroundingContext) {
         super(runtime, documentation);
-        this.ground = ground.getRealContext();
+        this.ground = IokeObject.getRealContext(ground);
         this.message = message;
         this.surroundingContext = surroundingContext;
         
@@ -28,19 +28,22 @@ public class Context extends IokeObject {
         setCell("self", getRealContext());
     }
     
+    @Override
     public void init() {
         setKind("Context");
     }
 
-    public IokeObject getRealContext() {
+    @Override
+    public Object getRealContext() {
         return ground;
     }
 
-    public IokeObject findCell(IokeObject m, IokeObject context, String name, IdentityHashMap<IokeObject, Object> visited) {
-        IokeObject nn = super.findCell(m, context, name, visited);
+    @Override
+    public Object findCell(IokeObject m, IokeObject context, String name, IdentityHashMap<IokeObject, Object> visited) {
+        Object nn = super.findCell(m, context, name, visited);
         
         if(nn == runtime.nul) {
-            return ground.findCell(m, context, name, visited);
+            return IokeObject.findCell(ground, m, context, name, visited);
         } else {
             return nn;
         }

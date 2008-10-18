@@ -11,18 +11,18 @@ import ioke.lang.IokeObject;
  */
 public class ControlFlow extends Throwable {
     public static class Break extends ControlFlow {
-        public Break(IokeObject value) {
+        public Break(Object value) {
             super(value);
         }
     }
 
-    private IokeObject value;
+    private Object value;
 
-    public ControlFlow(IokeObject value) {
+    public ControlFlow(Object value) {
         this.value = value;
     }
 
-    public IokeObject getValue() {
+    public Object getValue() {
         return value;
     }
 

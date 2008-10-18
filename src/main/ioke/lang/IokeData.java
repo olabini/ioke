@@ -80,40 +80,40 @@ public abstract class IokeData {
     public IokeObject convertToNumber(IokeObject self, IokeObject m, IokeObject context) {
         throw new ObjectIsNotRightType(m, self, "Number", context);
     }
-    public IokeObject activate(IokeObject self, IokeObject context, IokeObject message, IokeObject on) throws ControlFlow {
+    public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
         throw new NotActivatableException(message, "Can't activate " + self + "#" + message.getName() + " on " + on, on, context);
     }
 
-    public IokeObject getEvaluatedArgument(IokeObject message, int index, IokeObject context) throws ControlFlow {
+    public Object getEvaluatedArgument(IokeObject message, int index, IokeObject context) throws ControlFlow {
         throw new NotActivatableException(message, "Can't getEvaluatedArgument from " + message, context, context);
     }
 
-    public IokeObject sendTo(IokeObject message, IokeObject context, IokeObject recv) throws ControlFlow {
+    public Object sendTo(IokeObject message, IokeObject context, Object recv) throws ControlFlow {
         throw new NotActivatableException(message, "Can't sendTo on " + message, recv, context);
     }
 
-    public IokeObject sendTo(IokeObject message, IokeObject context, IokeObject recv, IokeObject argument) throws ControlFlow {
+    public Object sendTo(IokeObject message, IokeObject context, Object recv, Object argument) throws ControlFlow {
         throw new NotActivatableException(message, "Can't sendTo on " + message, recv, context);
     }
 
-    public IokeObject sendTo(IokeObject message, IokeObject context, IokeObject recv, IokeObject arg1, IokeObject arg2) throws ControlFlow {
+    public Object sendTo(IokeObject message, IokeObject context, Object recv, Object arg1, Object arg2) throws ControlFlow {
         throw new NotActivatableException(message, "Can't sendTo on " + message, recv, context);
     }
 
-    public IokeObject evaluateComplete(IokeObject message) throws ControlFlow {
+    public Object evaluateComplete(IokeObject message) throws ControlFlow {
         throw new NotActivatableException(message, "Can't evaluateComplete on " + message, message, message);
     }
 
-    public IokeObject evaluateCompleteWith(IokeObject message, IokeObject ctx, IokeObject ground) throws ControlFlow {
+    public Object evaluateCompleteWith(IokeObject message, IokeObject ctx, Object ground) throws ControlFlow {
         throw new NotActivatableException(message, "Can't evaluateCompleteWith on " + message, ground, ctx);
     }
 
-    public IokeObject evaluateCompleteWithoutExplicitReceiver(IokeObject message, IokeObject ctx, IokeObject ground) throws ControlFlow {
+    public Object evaluateCompleteWithoutExplicitReceiver(IokeObject message, IokeObject ctx, Object ground) throws ControlFlow {
         throw new NotActivatableException(message, "Can't evaluateCompleteWithoutExplicitReceiver on " + message, ground, ctx);
     }
 
-    public IokeObject evaluateCompleteWith(IokeObject message, IokeObject ground) throws ControlFlow {
-        throw new NotActivatableException(message, "Can't evaluateCompleteWith on " + message, ground, ground);
+    public Object evaluateCompleteWith(IokeObject message, Object ground) throws ControlFlow {
+        throw new NotActivatableException(message, "Can't evaluateCompleteWith on " + message, ground, null);
     }
 
     public List<Object> getArguments(IokeObject self) {

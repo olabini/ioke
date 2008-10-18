@@ -90,16 +90,16 @@ public class IokeSystem extends IokeData {
 
         obj.registerMethod(runtime.newJavaMethod("returns the current file executing", new JavaMethod("currentFile") {
                 @Override
-                public IokeObject activate(IokeObject method, IokeObject context, IokeObject message, IokeObject on) throws ControlFlow {
-                    return runtime.newText(((IokeSystem)on.data).currentFile.get(0));
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    return runtime.newText(((IokeSystem)IokeObject.data(on)).currentFile.get(0));
                 }
             }));
 
         obj.registerMethod(runtime.newJavaMethod("returns result of evaluating first argument", new JavaMethod("ifMain") {
                 @Override
-                public IokeObject activate(IokeObject method, IokeObject context, IokeObject message, IokeObject on) throws ControlFlow {
-                    if(((IokeSystem)on.data).currentProgram().equals(message.getFile())) {
-                        return ((Message)message.getArguments().get(0)).evaluateCompleteWith(context, context.getRealContext());
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    if(((IokeSystem)IokeObject.data(on)).currentProgram().equals(message.getFile())) {
+                        return ((IokeObject)message.getArguments().get(0)).evaluateCompleteWith(context, context.getRealContext());
                     } else {
                         return runtime.nil;
                     }
