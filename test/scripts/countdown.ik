@@ -3,5 +3,5 @@ count = method(n,
     n,
     count(n-1)+n))
 
-System ifMain(count(1000) println)
+System ifMain(count(500) println)
 
