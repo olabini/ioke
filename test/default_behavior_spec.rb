@@ -80,6 +80,11 @@ describe "DefaultBehavior" do
       ioke.evaluate_stream(StringReader.new(%q[x=42; until(x==50, x++; if(x==45, break))]))
       ioke.ground.find_cell(nil, nil, "x").data.as_java_integer.should == 45
     end
+    
+    it "should return nil if no arguments provided" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new(%q[until()])).should == ioke.nil
+    end
   end
 
   describe "'while'" do 
@@ -105,6 +110,11 @@ describe "DefaultBehavior" do
       ioke = IokeRuntime.get_runtime()
       ioke.evaluate_stream(StringReader.new(%q[x=42; while(x<50, x++; if(x==45, break))]))
       ioke.ground.find_cell(nil, nil, "x").data.as_java_integer.should == 45
+    end
+
+    it "should return nil if no arguments provided" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new(%q[while()])).should == ioke.nil
     end
   end
   
