@@ -146,7 +146,10 @@ describe "DefaultBehavior" do
   end
 
   describe "'asText'" do 
-    it "should call toString and return the text from that"
+    it "should call toString and return the text from that" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new(%q[Origin mimic asText])).data.text.should match(/^#<Origin:[0-9A-F]+>$/)
+    end
   end
 
   describe "'representation'" do 

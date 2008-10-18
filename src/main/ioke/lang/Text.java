@@ -32,8 +32,14 @@ public class Text extends IokeData {
     public String getText() {
         return text;
     }
-
+    
+    @Override
     public String toString() {
+        return text;
+    }
+
+    @Override
+    public String toString(IokeObject obj) {
         return text;
     }
 }// Text

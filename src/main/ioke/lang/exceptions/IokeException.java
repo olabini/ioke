@@ -114,6 +114,6 @@ public class IokeException extends RuntimeException {
     }
 
     public String toString() {
-        return "[" + message.getFile() + ":" + message.getLine() + ":" + message.getPosition() + "] " + getMessage();
+        return message == null ? getMessage() : "[" + message.getFile() + ":" + message.getLine() + ":" + message.getPosition() + "] " + getMessage();
     }
 }// IokeException

@@ -181,7 +181,7 @@ public class IokeObject {
     }
 
     public String toString() {
-        return data.toString();
+        return data.toString(this);
     }
 
     public String representation() {

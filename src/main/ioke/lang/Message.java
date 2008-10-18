@@ -492,7 +492,7 @@ public class Message extends IokeData {
     }
     
     @Override
-    public String toString() {
+    public String toString(IokeObject self) {
         return code();
     }
 }// Message
