@@ -153,7 +153,11 @@ describe "DefaultBehavior" do
   end
 
   describe "'representation'" do 
-    it "should call representation and return the text from that"
+    it "should call representation and return the text from that" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new(%q[Origin mimic representation])).data.text.
+        should match(/^#<#<Origin:[0-9A-F]+>: mimics=\[#<Origin:[0-9A-F]+>\] cells=\{\}>$/)
+    end
   end
 
   describe "'method'" do 
