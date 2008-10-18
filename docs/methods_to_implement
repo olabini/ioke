@@ -1,6 +1,6 @@
 Look seriously at "become"
 
-Common Lisp style format for outputting list structures and so on
+Common Lisp style "format" for outputting list structures and so on, as in "~{xc ~}"
 
 "kind" cell, like "type" in Io
 when something is assigned to a name with a capital letter, check if it has "kind", otherwise set it. In those cases also set an enclosure pointer to the place it's being set as part of.
