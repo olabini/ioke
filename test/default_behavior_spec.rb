@@ -1,4 +1,5 @@
 include_class('ioke.lang.Runtime') { 'IokeRuntime' } unless defined?(IokeRuntime)
+include_class('ioke.lang.exceptions.ControlFlow') unless defined?(ControlFlow)
 
 import Java::java.io.StringReader unless defined?(StringReader)
 
@@ -27,19 +28,84 @@ describe "DefaultBehavior" do
   end
   
   describe "'break'" do 
-    it "should raise a control flow exception by default"
+    it "should raise a control flow exception" do 
+      ioke = IokeRuntime.get_runtime()
+      proc do 
+        ioke.evaluate_stream(StringReader.new(%q[break]))
+      end.should raise_error(NativeException)
+    end
+
+    it "should have nil as value by default" do 
+      ioke = IokeRuntime.get_runtime()
+      begin 
+        ioke.evaluate_stream(StringReader.new(%q[break]))
+        false.should == true
+      rescue NativeException => e
+        e.cause.value.should == ioke.nil
+      end
+    end
+
+    it "should take a return value" do 
+      ioke = IokeRuntime.get_runtime()
+      begin 
+        ioke.evaluate_stream(StringReader.new(%q[break(42)]))
+        false.should == true
+      rescue NativeException => e
+        e.cause.value.data.as_java_integer.should == 42
+      end
+    end
   end
   
   describe "'until'" do 
-    it "should not do anything if initial argument is true"
-    it "should loop until the argument becomes true"
-    it "should be interrupted by break"
+    it "should not do anything if initial argument is true" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new(%q[x=42; until(true, x=43)]))
+      ioke.ground.find_cell(nil, nil, "x").data.as_java_integer.should == 42
+    end
+    
+    it "should loop until the argument becomes true" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new(%q[x=42; until(x==45, x++)]))
+      ioke.ground.find_cell(nil, nil, "x").data.as_java_integer.should == 45
+    end
+    
+    it "should return the last statement value" do 
+      ioke = IokeRuntime.get_runtime()
+      result = ioke.evaluate_stream(StringReader.new(%q[x=42; until(x==43, x++; "blurg")]))
+      result.data.text.should == "blurg"
+    end
+    
+    it "should be interrupted by break" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new(%q[x=42; until(x==50, x++; if(x==45, break))]))
+      ioke.ground.find_cell(nil, nil, "x").data.as_java_integer.should == 45
+    end
   end
 
   describe "'while'" do 
-    it "should not do anything if initial argument is false"
-    it "should loop until the argument becomes false"
-    it "should be interrupted by break"
+    it "should not do anything if initial argument is false" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new(%q[x=42; while(false, x=43)]))
+      ioke.ground.find_cell(nil, nil, "x").data.as_java_integer.should == 42
+    end
+    
+    it "should loop until the argument becomes false" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new(%q[x=42; while(x<45, x++)]))
+      ioke.ground.find_cell(nil, nil, "x").data.as_java_integer.should == 45
+    end
+    
+    it "should return the last statement value" do 
+      ioke = IokeRuntime.get_runtime()
+      result = ioke.evaluate_stream(StringReader.new(%q[x=42; while(x<43, x++; "blurg")]))
+      result.data.text.should == "blurg"
+    end
+    
+    it "should be interrupted by break" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new(%q[x=42; while(x<50, x++; if(x==45, break))]))
+      ioke.ground.find_cell(nil, nil, "x").data.as_java_integer.should == 45
+    end
   end
   
   describe "'loop'" do 
