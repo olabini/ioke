@@ -4,7 +4,26 @@ import Java::java.io.StringReader unless defined?(StringReader)
 
 describe "DefaultBehavior" do 
   describe "'derive'" do 
-    it "should work exactly like mimic"
+    it "should be able to derive from Origin" do 
+      ioke = IokeRuntime.get_runtime()
+      result = ioke.evaluate_stream(StringReader.new(%q[Origin derive]))
+      result.find_cell(nil,nil, 'kind').data.text.should == 'Origin'
+      result.should_not == ioke.origin
+    end
+
+    it "should be able to derive from Ground" do 
+      ioke = IokeRuntime.get_runtime()
+      result = ioke.evaluate_stream(StringReader.new(%q[Ground derive]))
+      result.find_cell(nil,nil, 'kind').data.text.should == 'Ground'
+      result.should_not == ioke.ground
+    end
+
+    it "should be able to derive from Text" do 
+      ioke = IokeRuntime.get_runtime()
+      result = ioke.evaluate_stream(StringReader.new(%q[Text derive]))
+      result.find_cell(nil,nil, 'kind').data.text.should == 'Text'
+      result.should_not == ioke.text
+    end
   end
   
   describe "'break'" do 
