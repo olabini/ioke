@@ -109,15 +109,40 @@ describe "DefaultBehavior" do
   end
   
   describe "'loop'" do 
-    it "should loop until interrupted by break"
+    it "should loop until interrupted by break" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new(%q[x=42; loop(x++; if(x==45, break))]))
+      ioke.ground.find_cell(nil, nil, "x").data.as_java_integer.should == 45
+    end
   end
 
   describe "'if'" do 
-    it "should evaluate it's first element once"
-    it "should return it's second argument if the first element evaluates to true"
-    it "should return it's third argument if the first element evaluates to false"
-    it "should return the result of evaluating the first argument if there are no more arguments"
-    it "should return the result of evaluating the first argument if it is false and there are only two arguments"
+    it "should evaluate it's first element once" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new(%q[x=42; if(x++)]))
+      ioke.ground.find_cell(nil, nil, "x").data.as_java_integer.should == 43
+    end
+    
+    it "should return it's second argument if the first element evaluates to true" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new(%q[if(true, 42, 43)])).data.as_java_integer.should == 42
+    end
+
+    it "should return it's third argument if the first element evaluates to false" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new(%q[if(false, 42, 43)])).data.as_java_integer.should == 43
+    end
+    
+    it "should return the result of evaluating the first argument if there are no more arguments" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new(%q[if(44)])).data.as_java_integer.should == 44
+    end
+    
+    it "should return the result of evaluating the first argument if it is false and there are only two arguments" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new(%q[if(false)])).should == ioke.false
+      ioke.evaluate_stream(StringReader.new(%q[if(nil)])).should == ioke.nil
+    end
   end
 
   describe "'asText'" do 
