@@ -22,6 +22,10 @@ describe "core" do
       runtime.evaluate_stream(StringReader.new("if(nil, 42, 43)")).
         data.as_java_integer.should == 43
     end
+    
+    it "should be nil" do 
+      IokeRuntime.get_runtime.nil.isNil.should be_true
+    end
   end
 
   describe "false" do 
@@ -43,6 +47,10 @@ describe "core" do
       runtime.evaluate_stream(StringReader.new("if(false, 42, 43)")).
         data.as_java_integer.should == 43
     end
+
+    it "should not be nil" do 
+      IokeRuntime.get_runtime.false.isNil.should be_false
+    end
   end
   
   describe "true" do 
@@ -63,6 +71,10 @@ describe "core" do
       runtime = IokeRuntime.get_runtime
       runtime.evaluate_stream(StringReader.new("if(true, 42, 43)")).
         data.as_java_integer.should == 42
+    end
+
+    it "should not be nil" do 
+      IokeRuntime.get_runtime.true.isNil.should be_false
     end
   end
   
@@ -112,6 +124,27 @@ describe "core" do
       runtime = IokeRuntime.get_runtime
       result = runtime.system.find_cell(nil, nil, "kind")
       result.data.text.should == 'System'
+    end
+    
+    describe "ifMain" do 
+      it "should run block when the currently running code is the main" do 
+        runtime = IokeRuntime.get_runtime
+        runtime.system.data.current_program = "<eval>"
+        runtime.evaluate_stream("<eval>", StringReader.new("System ifMain(xx = 42)"))
+        runtime.ground.find_cell(nil, nil, "xx").data.as_java_integer.should == 42
+      end
+
+      it "should not run block when the currently running code is not the main" do 
+        runtime = IokeRuntime.get_runtime
+        runtime.system.data.current_program = "<eval>"
+        runtime.evaluate_stream("<eval2>", StringReader.new("System ifMain(xx = 42)"))
+        runtime.ground.find_cell(nil, nil, "xx").should == runtime.nul
+      end
+    end
+    
+    it "should be possible to mimic system" do 
+      runtime = IokeRuntime.get_runtime
+      runtime.evaluate_stream(StringReader.new("System mimic"))
     end
   end
 
@@ -197,6 +230,10 @@ describe "core" do
       runtime = IokeRuntime.get_runtime
       result = runtime.message.find_cell(nil, nil, "kind")
       result.data.text.should == 'Message'
+    end
+    
+    describe "code" do 
+      it "should return a text representation of itself"
     end
   end
 

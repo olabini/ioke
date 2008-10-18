@@ -113,6 +113,7 @@ public class Runtime {
         ground.mimics(defaultBehavior);
         origin.mimics(ground);
 
+        system.mimics(base);
         system.mimics(defaultBehavior);
         runtime.mimics(defaultBehavior);
 

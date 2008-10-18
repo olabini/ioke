@@ -15,7 +15,9 @@ import ioke.lang.exceptions.ControlFlow;
  *
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
-public class Benchmark {
+public abstract class Benchmark {
+    private Benchmark() {}
+
     public static IokeObject create(Runtime runtime) {
         IokeObject bm = new IokeObject(runtime, "Benchmark is a module that makes it easy to test the time code takes to run");
         Benchmark.init(bm);

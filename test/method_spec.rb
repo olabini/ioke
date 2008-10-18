@@ -18,4 +18,9 @@ describe "DefaultBehavior method" do
     ioke = IokeRuntime.get_runtime()
     ioke.evaluate_stream(StringReader.new("x = method(nil)\ny = cell(\"x\")\ncell(\"y\")")).data.name.should == "x"
   end
+  
+  it "should know it's own name" do 
+    ioke = IokeRuntime.get_runtime()
+    ioke.evaluate_stream(StringReader.new("(x = method(nil)) name")).data.text.should == "x"
+  end
 end
