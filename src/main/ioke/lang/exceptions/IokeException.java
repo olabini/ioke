@@ -18,30 +18,30 @@ import ioke.lang.IokeObject;
  */
 public class IokeException extends RuntimeException {
     IokeObject message;
-    IokeObject on;
+    Object on;
     IokeObject context;
-    public IokeException(IokeObject m, IokeObject on, IokeObject context) {
+    public IokeException(IokeObject m, Object on, IokeObject context) {
         super();
         this.message = m;
         this.on = on;
         this.context = context;
     }
 
-    public IokeException(IokeObject m, String message, IokeObject on, IokeObject context) {
+    public IokeException(IokeObject m, String message, Object on, IokeObject context) {
         super(message);
         this.message = m;
         this.on = on;
         this.context = context;
     }
 
-    public IokeException(IokeObject m, Throwable cause, IokeObject on, IokeObject context) {
+    public IokeException(IokeObject m, Throwable cause, Object on, IokeObject context) {
         super(cause);
         this.message = m;
         this.on = on;
         this.context = context;
     }
 
-    public IokeException(IokeObject m, String message, Throwable cause, IokeObject on, IokeObject context) {
+    public IokeException(IokeObject m, String message, Throwable cause, Object on, IokeObject context) {
         super(message, cause);
         this.message = m;
         this.on = on;

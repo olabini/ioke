@@ -33,7 +33,7 @@ public class DefaultMethod extends Method {
 
     // TODO: make this use a real model later, with argument names etc
     @Override
-    public IokeObject activate(IokeObject self, IokeObject context, IokeObject message, IokeObject on) throws ControlFlow {
+    public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
         int argCount = message.getArguments().size();
         if(argCount != argumentNames.size()) {
             throw new MismatchedArgumentCount(message, argumentNames.size(), argCount, on, context);

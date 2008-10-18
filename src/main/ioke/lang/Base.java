@@ -13,9 +13,9 @@ public class Base {
         base.registerMethod(base.runtime.newJavaMethod("will return a new derivation of the receiving object. Might throw exceptions if the object is an oddball object.", 
                                                        new JavaMethod("mimic") {
                                                            @Override
-                                                           public IokeObject activate(IokeObject method, IokeObject context, IokeObject message, IokeObject on) {
-                                                               IokeObject clone = on.allocateCopy(message, context);
-                                                               clone.mimics(on);
+                                                           public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
+                                                               IokeObject clone = IokeObject.as(on).allocateCopy(message, context);
+                                                               clone.mimics(IokeObject.as(on));
                                                                return clone;
                                                            }}));
     }

@@ -230,11 +230,11 @@ public class Runtime {
         }
     }
 
-    public IokeObject evaluateStream(Reader reader) throws ControlFlow {
+    public Object evaluateStream(Reader reader) throws ControlFlow {
         return parseStream(reader).evaluateComplete();
     }
 
-    public IokeObject evaluateStream(String name, Reader reader) throws ControlFlow {
+    public Object evaluateStream(String name, Reader reader) throws ControlFlow {
         try {
             ((IokeSystem)system.data).pushCurrentFile(name);
             return evaluateStream(reader);
@@ -247,7 +247,7 @@ public class Runtime {
         }
     }
 
-    public IokeObject evaluateFile(File f) throws ControlFlow {
+    public Object evaluateFile(File f) throws ControlFlow {
         try {
             ((IokeSystem)system.data).pushCurrentFile(f.getCanonicalPath());
             return evaluateStream(new FileReader(f));
@@ -260,7 +260,7 @@ public class Runtime {
         }
     }
 
-    public IokeObject evaluateFile(String filename) throws ControlFlow {
+    public Object evaluateFile(String filename) throws ControlFlow {
         try {
             ((IokeSystem)system.data).pushCurrentFile(filename);
             return evaluateStream(new FileReader(new File(((IokeSystem)system.data).getCurrentWorkingDirectory(), filename)));

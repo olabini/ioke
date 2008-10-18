@@ -29,16 +29,16 @@ public class Benchmark {
         
         bm.registerMethod(runtime.newJavaMethod("expects two optional numbers, x (default 10) and y (default 1), and a block of code to run, and will run benchmark this block x times, while looping y times in each benchmark. after each loop will print the timings for this loop", new JavaMethod("report") {
                 @Override
-                public IokeObject activate(IokeObject method, IokeObject context, IokeObject message, IokeObject on) throws ControlFlow {
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     int count = message.getArgumentCount();
                     int bmRounds = 10;
                     long iterations = 1;
                     int index = 0;
                     if(count > 1) {
-                        bmRounds = ((Number)message.getEvaluatedArgument(index, context).convertToNumber(message, context).data).asJavaInteger();
+                        bmRounds = ((Number)IokeObject.convertToNumber(message.getEvaluatedArgument(index, context), message, context).data).asJavaInteger();
                         index++;
                         if(count > 2) {
-                            iterations = ((Number)message.getEvaluatedArgument(index, context).convertToNumber(message, context).data).asJavaLong();
+                            iterations = ((Number)IokeObject.convertToNumber(message.getEvaluatedArgument(index, context), message, context).data).asJavaLong();
                             index++;
                         }
                     }
