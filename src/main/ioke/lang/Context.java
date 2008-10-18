@@ -29,6 +29,7 @@ public class Context extends IokeObject {
     }
     
     public void init() {
+        setKind("Context");
     }
 
     public IokeObject getRealContext() {
