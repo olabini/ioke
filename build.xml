@@ -13,8 +13,16 @@
     <fileset dir="${lib.release.dir}" includes="*.jar"/>
   </path>
 
+  <path id="emma.lib" >
+    <pathelement location="${lib.build.dir}/emma.jar" />
+    <pathelement location="${lib.build.dir}/emma_ant.jar" />
+  </path>
+
+  <taskdef resource="emma_ant.properties" classpathref="emma.lib" />
+
   <target name="prepare" description="Creates the directories needed for building">
     <mkdir dir="${build.dir}"/>
+    <mkdir dir="${coverage.dir}"/>
     <mkdir dir="${classes.dir}"/>
     <mkdir dir="${src.generated.dir}"/>
 
@@ -47,6 +55,19 @@
 
   <target name="test-server" description="Starts test server">
     <jtestr-server port="20333" runtimes="3"/>
+  </target>
+
+  <target name="test-coverage" depends="compile" description="Runs all tests and emits test coverage information">
+    <emmajava libclasspathref="emma.lib" fullmetadata="yes" sourcepath="${src.dir}" classname="org.jtestr.JtestRRunner">
+      <classpath refid="build.classpath"/>
+      <classpath path="${classes.dir}"/>
+
+      <filter includes="ioke.lang.*"/>
+      
+      <txt outfile="${coverage.dir}/coverage.txt" />
+      <xml outfile="${coverage.dir}/coverage.xml" />
+      <html outfile="${coverage.dir}/coverage.html"  />
+    </emmajava>
   </target>
 
   <target name="jar" depends="test" description="Create the ioke.jar file">
