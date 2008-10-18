@@ -34,7 +34,8 @@ public abstract class IokeData {
                 return false;
             }
 
-            public String toString() {
+            @Override
+            public String toString(IokeObject self) {
                 return "nil";
             }
         };
@@ -52,7 +53,8 @@ public abstract class IokeData {
                 return false;
             }
 
-            public String toString() {
+            @Override
+            public String toString(IokeObject self) {
                 return "false";
             }
         };
@@ -66,7 +68,8 @@ public abstract class IokeData {
                 throw new CantMimicOddballObject(m, obj, context);
             }
 
-            public String toString() {
+            @Override
+            public String toString(IokeObject self) {
                 return "true";
             }
         };
@@ -138,5 +141,17 @@ public abstract class IokeData {
 
     public int getPosition(IokeObject self) {
         throw new NotActivatableException(self, "Can't get position from " + self, self, self);
+    }
+
+    public String toString(IokeObject self) {
+        Object obj = self.findCell(null, null, "kind");
+        int h = System.identityHashCode(self);
+        String hash = Integer.toHexString(h).toUpperCase();
+        if(obj instanceof NullObject) {
+            return "#<???:" + hash + ">";
+        }
+
+        String kind = ((Text)IokeObject.data(obj)).getText();
+        return "#<" + kind + ":" + hash + ">";
     }
 }// IokeData
