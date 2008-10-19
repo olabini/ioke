@@ -9,6 +9,38 @@ def parse(str)
 end
 
 describe "assignment" do 
+  # kind should be the full path - where Ground is the cutoff point. skip enc
+  
+  it "should set kind when assigned to a name with capital initial letter" do 
+    ioke = IokeRuntime.get_runtime()
+    ioke.evaluate_stream(StringReader.new(%q[Foo = Origin mimic]))
+    ioke.ground.find_cell(nil, nil, "Foo").find_cell(nil, nil, "kind").data.text.should == "Foo"
+  end
+
+  it "should set kind when assigned to a name inside something else" do 
+    ioke = IokeRuntime.get_runtime()
+    ioke.evaluate_stream(StringReader.new(%q[Foo = Origin mimic; Foo Bar = Origin mimic]))
+    ioke.ground.find_cell(nil, nil, "Foo").
+      find_cell(nil, nil, "Bar").
+      find_cell(nil, nil, "kind").
+      data.text.should == "Foo Bar"
+  end
+
+  it "should not set kind when it already has a kind" do 
+    ioke = IokeRuntime.get_runtime()
+    ioke.evaluate_stream(StringReader.new(%q[Foo = Origin mimic; Bar = Foo]))
+    ioke.ground.find_cell(nil, nil, "Foo").find_cell(nil, nil, "kind").data.text.should == "Foo"
+    ioke.ground.find_cell(nil, nil, "Bar").find_cell(nil, nil, "kind").data.text.should == "Foo"
+  end
+  
+  it "should not set kind when assigning to something with a lower case letter" do 
+    ioke = IokeRuntime.get_runtime()
+    ioke.evaluate_stream(StringReader.new(%q[foo = Origin mimic; bar = foo]))
+    ioke.ground.find_cell(nil, nil, "foo").find_cell(nil, nil, "kind").data.text.should == "Origin"
+    ioke.ground.find_cell(nil, nil, "bar").find_cell(nil, nil, "kind").data.text.should == "Origin"
+  end
+    
+  
   it "should work for a simple string" do 
     ioke = IokeRuntime.get_runtime()
     result = ioke.evaluate_stream(StringReader.new(%q[a = "foo"]))

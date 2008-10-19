@@ -162,6 +162,12 @@ public class DefaultBehavior {
 
                     if((IokeObject.data(value) instanceof Method) && ((Method)IokeObject.data(value)).name == null) {
                         ((Method)IokeObject.data(value)).name = name;
+                    } else if(name.length() > 0 && Character.isUpperCase(name.charAt(0)) && !IokeObject.as(value).hasKind()) {
+                        if(on == context.runtime.ground) {
+                            IokeObject.as(value).setKind(name);
+                        } else {
+                            IokeObject.as(value).setKind(IokeObject.as(on).getKind() + " " + name);
+                        }
                     }
                     
                     return value;

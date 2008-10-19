@@ -100,6 +100,14 @@ public class IokeObject {
         return cell;
     }
 
+    public String getKind() {
+        return ((Text)IokeObject.data(findCell(null, null, "kind"))).getText();
+    }
+
+    public boolean hasKind() {
+        return cells.containsKey("kind");
+    }
+
     public static Object getOrActivate(Object obj, IokeObject context, IokeObject message, Object on) throws ControlFlow {
         return as(obj).getOrActivate(context, message, on);
     }
