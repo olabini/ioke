@@ -127,10 +127,14 @@ public class DefaultBehavior {
 
         obj.registerMethod(runtime.newJavaMethod("expects one 'strange' argument. creates a new instance of Text with the given Java String backing it.", new JavaMethod("internal:createText") {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
-                    String s = (String)Message.getArg1(message);
-                    
-                    return runtime.newText(s.substring(1, s.length()-1));
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    Object o = Message.getArg1(message);
+                    if(o instanceof String) {
+                        String s = (String)o;
+                        return runtime.newText(s.substring(1, s.length()-1));
+                    } else {
+                        return IokeObject.convertToText(message.getEvaluatedArgument(0, context), message, context);
+                    }
                 }
             }));
 

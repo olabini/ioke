@@ -51,4 +51,10 @@ describe "parsing" do
       m.should == "(1)"
     end
   end
+  
+  describe "identifiers" do 
+    it "should be allowed to begin with colon"
+    it "should be allowed to end with colon"
+    it "should be allowed to have a colon in the middle"
+  end
 end

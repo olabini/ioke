@@ -34,6 +34,11 @@ public class Text extends IokeData {
     }
     
     @Override
+    public IokeObject convertToText(IokeObject self, IokeObject m, IokeObject context) {
+        return self;
+    }
+
+    @Override
     public String toString() {
         return text;
     }
