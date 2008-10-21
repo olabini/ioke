@@ -180,6 +180,14 @@ public class IokeObject {
         return data.convertToNumber(this, m, context);
     }
 
+    public static IokeObject convertToText(Object on, IokeObject m, IokeObject context) {
+        return ((IokeObject)on).convertToText(m, context);
+    }
+
+    public IokeObject convertToText(IokeObject m, IokeObject context) {
+        return data.convertToText(this, m, context);
+    }
+
     public Object getOrActivate(IokeObject context, IokeObject message, Object on) throws ControlFlow {
         if(isActivatable()) {
             return activate(context, message, on);

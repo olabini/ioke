@@ -4,6 +4,13 @@ include_class('ioke.lang.exceptions.ControlFlow') unless defined?(ControlFlow)
 import Java::java.io.StringReader unless defined?(StringReader)
 
 describe "DefaultBehavior" do 
+  describe "'internal:createText'" do 
+    it "should be possible to invoke from Ioke with a regular String" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new(%q[internal:createText("foo")])).data.text.should == "foo"
+    end
+  end
+
   describe "'derive'" do 
     it "should be able to derive from Origin" do 
       ioke = IokeRuntime.get_runtime()
