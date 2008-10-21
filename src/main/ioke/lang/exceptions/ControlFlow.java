@@ -16,6 +16,18 @@ public class ControlFlow extends Throwable {
         }
     }
 
+    public static class Continue extends ControlFlow {
+        public Continue() {
+            super(null);
+        }
+    }
+
+    public static class Return extends ControlFlow {
+        public Return(Object value) {
+            super(value);
+        }
+    }
+
     private Object value;
 
     public ControlFlow(Object value) {
