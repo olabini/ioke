@@ -44,6 +44,11 @@ public class Number extends IokeData {
     }
 
     @Override
+    public String toString(IokeObject obj) {
+        return asJavaString();
+    }
+
+    @Override
     public IokeObject convertToNumber(IokeObject self, IokeObject m, IokeObject context) {
         return self;
     }

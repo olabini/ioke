@@ -1,3 +1,6 @@
+Add freeze/thaw methods
+Use LinkedHashMap for cells, to keep insert order.
+
 Look seriously at "become"
 
 Common Lisp style "format" for outputting list structures and so on, as in "~{xc ~}"
