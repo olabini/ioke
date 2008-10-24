@@ -1,3 +1,6 @@
+Maybe use @something as a shortcut for cell("something") ... might be good. and it works for setting and getting stuff too, actually, if @ is self
+
+
 Add freeze/thaw methods
 Use LinkedHashMap for cells, to keep insert order.
 

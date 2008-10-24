@@ -1,3 +1,8 @@
+In Common Lisp 
+
+error will first signal, and then call invoke-debugger. invoke-debugger will first report the condition and then if we're not interactive will just quit.
+
+
 Errors and conditions, and surrounding functionality
 ----------------------------------------------------
 
