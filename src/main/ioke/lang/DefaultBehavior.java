@@ -250,8 +250,19 @@ public class DefaultBehavior {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
                     List<Object> args = message.getArguments();
-                    IokeObject code = args.isEmpty() ? method.runtime.nilMessage : IokeObject.as(args.get(0));
-                    return runtime.newLexicalBlock(runtime.lexicalBlock, new LexicalBlock(context, code));
+                    if(args.isEmpty()) {
+                        return runtime.newLexicalBlock(runtime.lexicalBlock, new LexicalBlock(context, java.util.Arrays.<String>asList(), method.runtime.nilMessage));
+                    }
+
+                    IokeObject code = IokeObject.as(args.get(args.size()-1));
+
+                    List<String> argNames = new ArrayList<String>(args.size()-1);
+                    
+                    for(Object obj : args.subList(0, args.size()-1)) {
+                        argNames.add(IokeObject.as(obj).getName());
+                    }
+
+                    return runtime.newLexicalBlock(runtime.lexicalBlock, new LexicalBlock(context, argNames, code));
                 }
             }));
 

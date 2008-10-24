@@ -88,12 +88,34 @@ CODE
       result.should == ioke.ground.find_cell(nil, nil, "x")
     end
 
+    it "should take arguments" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new(%q[fn(x, x) call(42)])).data.as_java_integer.should == 42
+      ioke.evaluate_stream(StringReader.new(%q[fn(x, x+2) call(42)])).data.as_java_integer.should == 44
+      ioke.evaluate_stream(StringReader.new(%q[fn(x, y, x+y+2) call(3,7)])).data.as_java_integer.should == 12
+    end
+    
+    it "should complain when given the wrong number of arguments" do 
+      ioke = IokeRuntime.get_runtime()
+
+      proc do 
+        ioke.evaluate_stream(StringReader.new(%q[fn() call(42)]))
+      end.should raise_error
+
+      proc do 
+        ioke.evaluate_stream(StringReader.new(%q[fn(x, x) call()]))
+      end.should raise_error
+
+      proc do 
+        ioke.evaluate_stream(StringReader.new(%q[fn(x, x) call(12, 42)]))
+      end.should raise_error
+    end
+
     it "should be able to update variables in the scope it was defined"
-    it "should be possible to get the code for the block by calling 'code' on it"
     it "should create a new variable when assigning something that doesn't exist"
-    it "should take arguments"
-    it "should shadow outer variables when getting arguments"
-    it "should be possible to have a block return another block that refers to things one level out"
-    it "should be possible to have a block return another block that refers to things two levels out"
+    it "should be possible to get the code for the block by calling 'code' on it"
+
+    it "should shadow reading of outer variables when getting arguments"
+    it "should shadow writing of outer variables when getting arguments"
   end
 end
