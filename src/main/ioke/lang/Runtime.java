@@ -51,6 +51,7 @@ public class Runtime {
     public IokeObject mixins = new IokeObject(this, "Mixins is the name space for most mixins in the system. DefaultBehavior is the notable exception.");
     public IokeObject message = new IokeObject(this, "A message is the basic code unit in Ioke.", new Message(this, null, Message.Type.EMPTY));
     public Context context = new Context(this, ground, "An activation context.", null, ground);
+    public LexicalContext lexicalContext = new LexicalContext(this, ground, "A lexical activation context.", null, ground);
 
     // Core messages
     public IokeObject asText = newMessage("asText");
@@ -58,6 +59,7 @@ public class Runtime {
     public IokeObject spaceShip = newMessage("<=>");
     public IokeObject succ = newMessage("succ");
     public IokeObject setValue = newMessage("=");
+    public IokeObject nilMessage = newMessage("nil");
 
     // NOT TO BE EXPOSED TO Ioke - used for internal usage only
     NullObject nul = new NullObject(this);
@@ -109,6 +111,7 @@ public class Runtime {
         text.init();
         number.init();
         context.init();
+        lexicalContext.init();
 
         ground.mimics(base);
         ground.mimics(defaultBehavior);
@@ -329,6 +332,13 @@ public class Runtime {
         IokeObject obj = this.message.allocateCopy(null, null);
         obj.mimics(this.message);
         obj.data = m;
+        return obj;
+    }
+
+    public IokeObject newLexicalBlock(IokeObject tp, LexicalBlock impl) {
+        IokeObject obj = tp.allocateCopy(null, null);
+        obj.mimics(tp);
+        obj.data = impl;
         return obj;
     }
 
