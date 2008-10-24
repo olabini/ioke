@@ -9,7 +9,7 @@ def run_with_cwd(str, ioke = IokeRuntime.get_runtime)
 end
 
 describe "DefaultBehavior" do 
-  describe "use" do 
+  describe "'use'" do 
     it "should load a file without a suffix in the same directory" do 
       result, runtime = run_with_cwd("use(\"load2\")")
       result.should == runtime.true
@@ -35,7 +35,7 @@ describe "DefaultBehavior" do
 
     it "should first try to load on name from predefined" do 
       runtime = IokeRuntime.get_runtime
-      runtime.add_builtin_script("load1", PlainTextBuiltin.new("load1", "System currentFile println; Ground vex = 25"))
+      runtime.add_builtin_script("load1", PlainTextBuiltin.new("load1", "Ground vex = 25"))
       result, _ = run_with_cwd("use(\"load1\")", runtime)
       result.should == runtime.true
       runtime.ground.find_cell(nil, nil, "val").should == runtime.nul

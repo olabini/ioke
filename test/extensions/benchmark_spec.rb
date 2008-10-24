@@ -9,7 +9,7 @@ import Java::java.lang.System unless defined?(System)
 
 describe "Extensions" do 
   describe "Benchmark" do 
-    describe "report" do 
+    describe "'report'" do 
       it "should execute code 10x1 times by default" do 
         sw = StringWriter.new(20)
         out = PrintWriter.new(sw)

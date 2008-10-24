@@ -7,7 +7,7 @@ describe IokeObject do
     @runtime.init
   end
   
-  describe "findCell" do 
+  describe "'findCell'" do 
     it "should handle recursive mimicing with no cell" do 
       first = IokeObject.new(@runtime, "")
       second = IokeObject.new(@runtime, "")

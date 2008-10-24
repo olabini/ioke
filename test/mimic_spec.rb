@@ -4,48 +4,49 @@ include_class('ioke.lang.exceptions.NoSuchCellException') unless defined?(NoSuch
 
 import Java::java.io.StringReader unless defined?(StringReader)
 
-describe "mimicking" do 
-  it "should be able to mimic Origin" do 
-    ioke = IokeRuntime.get_runtime()
-    result = ioke.evaluate_stream(StringReader.new(%q[Origin mimic]))
-    result.find_cell(nil,nil, 'kind').data.text.should == 'Origin'
-    result.should_not == ioke.origin
+describe "Base" do 
+  describe "'mimic'" do 
+    it "should be able to mimic Origin" do 
+      ioke = IokeRuntime.get_runtime()
+      result = ioke.evaluate_stream(StringReader.new(%q[Origin mimic]))
+      result.find_cell(nil,nil, 'kind').data.text.should == 'Origin'
+      result.should_not == ioke.origin
+    end
+
+    it "should be able to mimic Ground" do 
+      ioke = IokeRuntime.get_runtime()
+      result = ioke.evaluate_stream(StringReader.new(%q[Ground mimic]))
+      result.find_cell(nil,nil, 'kind').data.text.should == 'Ground'
+      result.should_not == ioke.ground
+    end
+
+    it "should be able to mimic Base" do 
+      ioke = IokeRuntime.get_runtime()
+      result = ioke.evaluate_stream(StringReader.new(%q[Base mimic]))
+      result.find_cell(nil,nil, 'kind').data.text.should == 'Base'
+      result.should_not == ioke.base
+    end
+
+    it "should be able to mimic Text" do 
+      ioke = IokeRuntime.get_runtime()
+      result = ioke.evaluate_stream(StringReader.new(%q[Text mimic]))
+      result.find_cell(nil,nil, 'kind').data.text.should == 'Text'
+      result.should_not == ioke.text
+    end
+
+    it "should not be able to mimic DefaultBehavior" do 
+      ioke = IokeRuntime.get_runtime()
+      proc do 
+        ioke.evaluate_stream(StringReader.new(%q[DefaultBehavior mimic]))
+      end.should raise_error(NoSuchCellException)
+    end
+
+    it "should not be able to mimic nil" do 
+      ioke = IokeRuntime.get_runtime()
+
+      proc do 
+        ioke.evaluate_stream(StringReader.new(%q[nil mimic]))
+      end.should raise_error(CantMimicOddballObject)
+    end
   end
-
-  it "should be able to mimic Ground" do 
-    ioke = IokeRuntime.get_runtime()
-    result = ioke.evaluate_stream(StringReader.new(%q[Ground mimic]))
-    result.find_cell(nil,nil, 'kind').data.text.should == 'Ground'
-    result.should_not == ioke.ground
-  end
-
-  it "should be able to mimic Base" do 
-    ioke = IokeRuntime.get_runtime()
-    result = ioke.evaluate_stream(StringReader.new(%q[Base mimic]))
-    result.find_cell(nil,nil, 'kind').data.text.should == 'Base'
-    result.should_not == ioke.base
-  end
-
-  it "should be able to mimic Text" do 
-    ioke = IokeRuntime.get_runtime()
-    result = ioke.evaluate_stream(StringReader.new(%q[Text mimic]))
-    result.find_cell(nil,nil, 'kind').data.text.should == 'Text'
-    result.should_not == ioke.text
-  end
-
-  it "should not be able to mimic DefaultBehavior" do 
-    ioke = IokeRuntime.get_runtime()
-    proc do 
-      ioke.evaluate_stream(StringReader.new(%q[DefaultBehavior mimic]))
-    end.should raise_error(NoSuchCellException)
-  end
-
-  it "should not be able to mimic nil" do 
-    ioke = IokeRuntime.get_runtime()
-
-    proc do 
-      ioke.evaluate_stream(StringReader.new(%q[nil mimic]))
-    end.should raise_error(CantMimicOddballObject)
-  end
-
 end

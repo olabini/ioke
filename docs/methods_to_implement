@@ -1,17 +1,6 @@
-Maybe use @something as a shortcut for cell("something") ... might be good. and it works for setting and getting stuff too, actually, if @ is self
 
+1. lexical blocks: fn
 
-Add freeze/thaw methods
-Use LinkedHashMap for cells, to keep insert order.
-
-Look seriously at "become"
-
-Common Lisp style "format" for outputting list structures and so on, as in "~{xc ~}"
-
-look at Io Locals for Context stuff...
-
-autoimporter in the style of Io Importer
- -- something like forward
 
 ADD Common Lisp style conditions - before it's too late
   exceptions
@@ -21,11 +10,9 @@ ADD Common Lisp style conditions - before it's too late
 - read is message that returns a message chain, right through the parser, just like in Lisp
 - think for real about pretty printer
 
-Remember, all should be utf16
+Maybe use @something as a shortcut for cell("something") ... might be good. and it works for setting and getting stuff too, actually, if @ is self
 
 iik - interactive Ioke
-
-- something that allows stacking of ground. maybe just a simple "System ground" that is an array. This is used inside of the REPL for example.
 
  each
 
@@ -54,13 +41,41 @@ Ioke
  System
  Machine
 
+cellMissing === doesNotUnderstand === method_missing === forward
+
+mimics == protos
+
+lists
+hashes
+[] and {} and []= and {}= methods
+
+
+lower prio
+----------
+
+- call initialization on creation
+ - defined in terms of aspects
+
+Add freeze/thaw methods
+Use LinkedHashMap for cells, to keep insert order.
+
+Look seriously at "become"
+
+Common Lisp style "format" for outputting list structures and so on, as in "~{xc ~}"
+
+look at Io Locals for Context stuff...
+
+autoimporter in the style of Io Importer
+ -- something like forward
+
+Remember, all should be utf16
+
+- something that allows stacking of ground. maybe just a simple "System ground" that is an array. This is used inside of the REPL for example.
+
 aspects:
  - before
  - after
  - surround
-
-- call initialization on creation
- - defined in terms of aspects
 
 when invoking a method, create a Locals object, and also a self.
  use "context" in the same way as Io "call"
@@ -72,22 +87,13 @@ when invoking a method, create a Locals object, and also a self.
     call slotContext
     call target
 
-cellMissing === doesNotUnderstand === method_missing === forward
 resend
 super
-
-mimics == protos
-
-code
 
 if, ifTrue, ifFalse, ifNil, ifNotNil
 
 allow @ and @@ as prefixes (that should be short cut for self in defaultmethod)
 
 add with() and from()
-
-lists
-hashes
-[] and {} and []= and {}= methods
 
 .. and ... for ranges

@@ -6,7 +6,7 @@ import Java::java.io.InputStreamReader unless defined?(InputStreamReader)
 import Java::java.lang.System unless defined?(System)
 
 describe "script evaluation" do 
-  describe "hello_world" do 
+  describe "'hello_world.ik'" do 
     it 'should print Hello World' do 
       sw = StringWriter.new(20)
       out = PrintWriter.new(sw)
@@ -16,7 +16,7 @@ describe "script evaluation" do
     end
   end
 
-  describe "hello_world2" do 
+  describe "'hello_world2.ik'" do 
     it 'should print Hello\nWorld' do 
       sw = StringWriter.new(20)
       out = PrintWriter.new(sw)
