@@ -31,6 +31,14 @@ public class DefaultBehavior {
                 }
             }));
 
+        obj.registerMethod(runtime.newJavaMethod("executes the argument with the receiver as context and ground.", new JavaMethod("do") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    IokeObject code = IokeObject.as(message.getArguments().get(0));
+                    return code.evaluateCompleteWith(IokeObject.as(on), IokeObject.as(on));
+                }
+            }));
+
         obj.registerMethod(runtime.newJavaMethod("breaks out of the enclosing context. if an argument is supplied, this will be returned as the result of the object breaking out of", new JavaMethod("break") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
@@ -241,7 +249,9 @@ public class DefaultBehavior {
         obj.registerMethod(runtime.newJavaMethod("creates a new lexical block that can be executed at will, while retaining a reference to the lexical closure it was created in. it will always update variables if they exist. there is currently no way of introducing shadowing variables in the local context. new variables can be created though, just like in a method. a lexical block mimics LexicalBlock, and can take arguments. at the moment these are restricted to required arguments, but support for the same argument types as DefaultMethod will come.", new JavaMethod("fn") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
-                    return runtime.lexicalBlock.mimic(message, context);
+                    List<Object> args = message.getArguments();
+                    IokeObject code = args.isEmpty() ? method.runtime.nilMessage : IokeObject.as(args.get(0));
+                    return runtime.newLexicalBlock(runtime.lexicalBlock, new LexicalBlock(context, code));
                 }
             }));
 

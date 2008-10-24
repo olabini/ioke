@@ -177,6 +177,22 @@ describe "DefaultBehavior" do
     end
   end
 
+  describe "'do'" do 
+    it "should execute a piece of code inside an object" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new(<<CODE))
+x = Origin mimic
+x do(
+  y = 42
+  z = "str"
+)
+CODE
+      ioke.ground.find_cell(nil,nil, 'y').should == ioke.nul
+      ioke.ground.find_cell(nil,nil, 'x').find_cell(nil,nil, 'y').data.as_java_integer.should == 42
+      ioke.ground.find_cell(nil,nil, 'x').find_cell(nil,nil, 'z').data.text.should == "str"
+    end
+  end
+  
   describe "'method'" do 
   end
 end
