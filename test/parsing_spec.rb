@@ -53,8 +53,32 @@ describe "parsing" do
   end
   
   describe "identifiers" do 
-    it "should be allowed to begin with colon"
-    it "should be allowed to end with colon"
-    it "should be allowed to have a colon in the middle"
+    it "should be allowed to begin with colon" do 
+      m = parse(":foo").to_string
+      m.should == ":foo"
+    end
+
+    it "should be allowed to only be a colon" do 
+      m = parse(":").to_string
+      m.should == ":"
+    end
+
+    it "should be allowed to end with colon" do 
+      m = parse("foo:").to_string
+      m.should == "foo:"
+    end
+
+    it "should be allowed to have a colon in the middle" do 
+      m = parse("foo:bar").to_string
+      m.should == "foo:bar"
+    end
+
+    it "should be allowed to have more than one colon in the middle" do 
+      m = parse("foo::bar").to_string
+      m.should == "foo::bar"
+
+      m = parse("f:o:o:b:a:r").to_string
+      m.should == "f:o:o:b:a:r"
+    end
   end
 end
