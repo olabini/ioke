@@ -82,6 +82,12 @@ public class IokeObject {
         }
     }
 
+    public IokeObject mimic(IokeObject message, IokeObject context) {
+        IokeObject clone = allocateCopy(message, context);
+        clone.mimics(this);
+        return clone;
+    }
+
     public Object findCell(IokeObject m, IokeObject context, String name) {
         return findCell(m, context, name, new IdentityHashMap<IokeObject, Object>());
     }

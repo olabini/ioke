@@ -47,6 +47,7 @@ public class Runtime {
     public IokeObject method = new IokeObject(this, "Method is the origin of all methods in the system, both default and Java..", new Method((String)null));
     public IokeObject defaultMethod = new IokeObject(this, "DefaultMethod is the instance all methods in the system is derived from.", new DefaultMethod((String)null));
     public IokeObject javaMethod = new IokeObject(this, "JavaMethod is a derivation of Method that represents a primitive implemented in Java.", new JavaMethod((String)null));
+    public IokeObject lexicalBlock = new IokeObject(this, "A lexical block allows you to delay a computation in a specific lexical context. See DefaultMethod#fn for detailed documentation.", new LexicalBlock(ground));
     public IokeObject mixins = new IokeObject(this, "Mixins is the name space for most mixins in the system. DefaultBehavior is the notable exception.");
     public IokeObject message = new IokeObject(this, "A message is the basic code unit in Ioke.", new Message(this, null, Message.Type.EMPTY));
     public Context context = new Context(this, ground, "An activation context.", null, ground);
@@ -129,11 +130,13 @@ public class Runtime {
         method.init();
         defaultMethod.init();
         javaMethod.init();
+        lexicalBlock.init();
 
         method.mimics(origin);
         defaultMethod.mimics(method);
         javaMethod.mimics(method);
 
+        lexicalBlock.mimics(origin);
 
         addBuiltinScript("benchmark", new Builtin() {
                 public IokeObject load(Runtime runtime, IokeObject context, IokeObject message) throws ControlFlow {
@@ -196,6 +199,10 @@ public class Runtime {
 
     public IokeObject getDefaultMethod() {
         return this.defaultMethod;
+    }
+
+    public IokeObject getLexicalBlock() {
+        return this.lexicalBlock;
     }
 
     public IokeObject getDefaultBehavior() {
