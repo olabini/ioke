@@ -3,7 +3,7 @@ include_class('ioke.lang.Runtime') { 'IokeRuntime' } unless defined?(IokeRuntime
 import Java::java.io.StringReader unless defined?(StringReader)
 
 describe "core" do 
-  describe "nil" do 
+  describe "'nil'" do 
     it "should have the correct kind" do 
       runtime = IokeRuntime.get_runtime
       result = runtime.nil.find_cell(nil, nil, "kind")
@@ -28,7 +28,7 @@ describe "core" do
     end
   end
 
-  describe "false" do 
+  describe "'false'" do 
     it "should have the correct kind" do 
       runtime = IokeRuntime.get_runtime
       result = runtime.false.find_cell(nil, nil, "kind")
@@ -53,7 +53,7 @@ describe "core" do
     end
   end
   
-  describe "true" do 
+  describe "'true'" do 
     it "should have the correct kind" do 
       runtime = IokeRuntime.get_runtime
       result = runtime.true.find_cell(nil, nil, "kind")
@@ -126,7 +126,7 @@ describe "core" do
       result.data.text.should == 'System'
     end
     
-    describe "ifMain" do 
+    describe "'ifMain'" do 
       it "should run block when the currently running code is the main" do 
         runtime = IokeRuntime.get_runtime
         runtime.system.data.current_program = "<eval>"
@@ -232,7 +232,7 @@ describe "core" do
       result.data.text.should == 'Message'
     end
     
-    describe "code" do 
+    describe "'code'" do 
       it "should return a text representation of itself"
     end
   end

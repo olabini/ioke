@@ -8,7 +8,7 @@ import Java::java.io.InputStreamReader unless defined?(InputStreamReader)
 import Java::java.lang.System unless defined?(System)
 
 describe "Origin" do 
-  describe "print" do 
+  describe "'print'" do 
     it "should print asText of object" do 
       sw = StringWriter.new(20)
       out = PrintWriter.new(sw)
@@ -18,7 +18,7 @@ describe "Origin" do
     end
   end
 
-  describe "println" do 
+  describe "'println'" do 
     it "should print asText of object and then a println" do 
       sw = StringWriter.new(20)
       out = PrintWriter.new(sw)

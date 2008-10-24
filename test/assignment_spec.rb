@@ -76,7 +76,7 @@ describe "assignment" do
     m.should == "=(count, count +(1)) ;\ncount println"
   end
 
-  describe "++" do 
+  describe "'++'" do 
     it "should parse correctly in postfix without space" do 
       m = parse("a++").to_string
       m.should == "++(a)"
