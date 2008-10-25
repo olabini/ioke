@@ -271,7 +271,9 @@ public class DefaultBehavior {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
                     List<Object> args = message.getArguments();
                     if(args.isEmpty()) {
-                        return runtime.newLexicalBlock(runtime.lexicalBlock, new LexicalBlock(context, java.util.Arrays.<String>asList(), method.runtime.nilMessage));
+                        IokeObject result = runtime.newLexicalBlock(runtime.lexicalBlock, new LexicalBlock(context, java.util.Arrays.<String>asList(), method.runtime.nilMessage));
+                        result.setCell("activatable", runtime._true);
+                        return result;
                     }
 
                     IokeObject code = IokeObject.as(args.get(args.size()-1));
