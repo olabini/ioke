@@ -4,6 +4,23 @@ include_class('ioke.lang.exceptions.ControlFlow') unless defined?(ControlFlow)
 import Java::java.io.StringReader unless defined?(StringReader)
 
 describe "DefaultBehavior" do
+  describe "'fnx'" do 
+    it "should return something that is activatable for empty list" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new(%q[fnx activatable])).should == ioke.true
+    end
+
+    it "should return something that is activatable for code" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new(%q[fnx("hello") activatable])).should == ioke.true
+    end
+
+    it "should return something that is activatable for code with arguments" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new(%q[fnx(x, y, x+y) activatable])).should == ioke.true
+    end
+  end
+  
   describe "'fn'" do 
     it "should mimic LexicalBlock" do 
       ioke = IokeRuntime.get_runtime()
@@ -111,11 +128,60 @@ CODE
       end.should raise_error
     end
 
-    it "should be able to update variables in the scope it was defined"
-    it "should create a new variable when assigning something that doesn't exist"
+    it "should be able to update variables in the scope it was defined" do 
+      ioke = IokeRuntime.get_runtime()
+      result = ioke.evaluate_stream(StringReader.new(<<CODE))
+x = Origin mimic
+x do(
+  y = 42
+  fn(y = 43) call
+  y
+)
+CODE
+      result.data.as_java_integer.should == 43
+
+      result = ioke.evaluate_stream(StringReader.new(<<CODE))
+x = Origin mimic
+x do(
+  y = 44
+  zz = fn(y = 45)
+)
+x zz call
+x y
+CODE
+      result.data.as_java_integer.should == 45
+    end
+    
+    
+    it "should create a new variable when assigning something that doesn't exist" do 
+      ioke = IokeRuntime.get_runtime()
+      result = ioke.evaluate_stream(StringReader.new(<<CODE))
+fn(blarg = 42; blarg) call
+CODE
+      result.data.as_java_integer.should == 42
+      ioke.ground.find_cell(nil, nil, "blarg").should == ioke.nul
+    end
+    
     it "should be possible to get the code for the block by calling 'code' on it"
 
-    it "should shadow reading of outer variables when getting arguments"
-    it "should shadow writing of outer variables when getting arguments"
+    it "should shadow reading of outer variables when getting arguments" do 
+      ioke = IokeRuntime.get_runtime()
+      result = ioke.evaluate_stream(StringReader.new(<<CODE))
+x = 32
+fn(x, x) call(43)
+CODE
+      result.data.as_java_integer.should == 43
+      ioke.ground.find_cell(nil, nil, "x").data.as_java_integer.should == 32
+    end
+    
+    it "should shadow writing of outer variables when getting arguments" do 
+      ioke = IokeRuntime.get_runtime()
+      result = ioke.evaluate_stream(StringReader.new(<<CODE))
+x = 32
+fn(x, x = 13; x) call(123)
+CODE
+      result.data.as_java_integer.should == 13
+      ioke.ground.find_cell(nil, nil, "x").data.as_java_integer.should == 32
+    end
   end
 end
