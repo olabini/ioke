@@ -208,6 +208,7 @@
   (let ((ioke-keymap (make-sparse-keymap)))
     (if ioke-electric-parens-p
         (progn
+          (define-key ioke-keymap "\C-c\C-t" 'ioke-eval-buffer)
           (define-key ioke-keymap "(" 'ioke-electric-open-paren)
           (define-key ioke-keymap ")" 'ioke-electric-close-paren)
           (define-key ioke-keymap "[" 'ioke-electric-open-s-paren)
@@ -244,6 +245,10 @@
     (modify-syntax-entry ?\n "> b" st)
     st)
   "ioke mode syntax table")
+
+(defun ioke-eval-buffer () (interactive)
+       "Evaluate the buffer with ioke."
+       (shell-command-on-region (point-min) (point-max) "ioke"))
 
 (defun ioke-indent-line ()
   "ioke mode indent line"
