@@ -13,16 +13,16 @@ import ioke.lang.exceptions.ControlFlow;
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
 public class DefaultMethod extends Method {
-    private List<String> argumentNames;
+    private DefaultArgumentsDefinition arguments;
     private IokeObject code;
 
     public DefaultMethod(String name) {
         super(name);
     }
 
-    public DefaultMethod(IokeObject context, List<String> argumentNames, IokeObject code) {
+    public DefaultMethod(IokeObject context, DefaultArgumentsDefinition arguments, IokeObject code) {
         super(context);
-        this.argumentNames = argumentNames;
+        this.arguments = arguments;
         this.code = code;
     }
 
@@ -34,16 +34,9 @@ public class DefaultMethod extends Method {
     // TODO: make this use a real model later, with argument names etc
     @Override
     public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-        int argCount = message.getArguments().size();
-        if(argCount != argumentNames.size()) {
-            throw new MismatchedArgumentCount(message, argumentNames.size(), argCount, on, context);
-        }
-        
         Context c = new Context(self.runtime, on, "Method activation context for " + message.getName(), message, context);
 
-        for(int i=0; i<argCount; i++) {
-            c.setCell(argumentNames.get(i), message.getEvaluatedArgument(i, context));
-        }
+        arguments.assignArgumentValues(c, context, message, on);
 
         return code.evaluateCompleteWith(c, on);
     }

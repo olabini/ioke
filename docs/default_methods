@@ -38,7 +38,7 @@ opt = method(a, b 1, c 2,
             b println
             c println)
   
-The default value can be any kind of value. It will be evaluated in the context of the definer of the method, so closing over variables can be done.
+The default value can be any kind of value. It will be evaluated in the context of the newly instantiated method context, which means you can refer to earlier variables.
 
 To call such a method, just provide one, two or three arguments:
 
