@@ -35,19 +35,24 @@ public class LexicalBlock extends IokeData {
         lexicalBlock.registerMethod(lexicalBlock.runtime.newJavaMethod("invokes the block with the arguments provided, returning the result of the last expression in the block", new JavaMethod("call") {
                 @Override
                 public Object activate(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on) throws ControlFlow {
-                    int argCount = message.getArguments().size();
-
-                    LexicalBlock lb = (LexicalBlock)IokeObject.as(on).data;
-                    if(argCount != lb.argumentNames.size()) {
-                        throw new MismatchedArgumentCount(message, lb.argumentNames.size(), argCount, on, context);
-                    }
-
-                    LexicalContext c = new LexicalContext(self.runtime, on, "Lexical activation context", message, lb.context);
-                    for(int i=0; i<argCount; i++) {
-                        c.setCell(lb.argumentNames.get(i), message.getEvaluatedArgument(i, dynamicContext));
-                    }
-                    return lb.message.evaluateCompleteWith(c, on);
+                    return IokeObject.as(on).activate(dynamicContext, message, on);
                 }
             }));
+    }
+
+    @Override
+    public Object activate(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on) throws ControlFlow {
+        int argCount = message.getArguments().size();
+
+        if(argCount != argumentNames.size()) {
+            throw new MismatchedArgumentCount(message, argumentNames.size(), argCount, on, context);
+        }
+
+        LexicalContext c = new LexicalContext(self.runtime, on, "Lexical activation context", message, this.context);
+        for(int i=0; i<argCount; i++) {
+            c.setCell(argumentNames.get(i), message.getEvaluatedArgument(i, dynamicContext));
+        }
+
+        return this.message.evaluateCompleteWith(c, on);
     }
 }// LexicalBlock

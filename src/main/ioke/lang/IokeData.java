@@ -77,7 +77,6 @@ public abstract class IokeData {
     public void init(IokeObject obj) {}
     public boolean isNil() {return false;}
     public boolean isTrue() {return true;}
-    public boolean isActivatable() {return false;}
     public boolean isMessage() {return false;}
     public IokeData cloneData(IokeObject obj, IokeObject m, IokeObject context) {return this;}
     public IokeObject convertToNumber(IokeObject self, IokeObject m, IokeObject context) {
