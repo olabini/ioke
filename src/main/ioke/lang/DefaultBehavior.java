@@ -238,11 +238,9 @@ public class DefaultBehavior {
                         doc = s.substring(1, s.length()-1);
                     }
 
-                    for(Object obj : args.subList(start, args.size()-1)) {
-                        argNames.add(((IokeObject)obj).getName());
-                    }
+                    DefaultArgumentsDefinition def = DefaultArgumentsDefinition.createFrom(args, start, args.size()-1);
 
-                    return runtime.newMethod(doc, runtime.defaultMethod, new DefaultMethod(context, argNames, (IokeObject)args.get(args.size()-1)));
+                    return runtime.newMethod(doc, runtime.defaultMethod, new DefaultMethod(context, def, (IokeObject)args.get(args.size()-1)));
                 }
             }));
 

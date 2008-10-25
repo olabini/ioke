@@ -192,7 +192,4 @@ CODE
       ioke.ground.find_cell(nil,nil, 'x').find_cell(nil,nil, 'z').data.text.should == "str"
     end
   end
-  
-  describe "'method'" do 
-  end
 end
