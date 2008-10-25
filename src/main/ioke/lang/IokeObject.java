@@ -167,7 +167,7 @@ public class IokeObject {
     }
 
     public boolean isActivatable() {
-        return data.isActivatable();
+        return isTrue(findCell(null, null, "activatable"));
     }
 
     public static IokeData data(Object on) {

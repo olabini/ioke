@@ -266,6 +266,28 @@ public class DefaultBehavior {
                 }
             }));
 
+        obj.registerMethod(runtime.newJavaMethod("does the same things as fn, but returns something that is activatable.", new JavaMethod("fnx") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
+                    List<Object> args = message.getArguments();
+                    if(args.isEmpty()) {
+                        return runtime.newLexicalBlock(runtime.lexicalBlock, new LexicalBlock(context, java.util.Arrays.<String>asList(), method.runtime.nilMessage));
+                    }
+
+                    IokeObject code = IokeObject.as(args.get(args.size()-1));
+
+                    List<String> argNames = new ArrayList<String>(args.size()-1);
+                    
+                    for(Object obj : args.subList(0, args.size()-1)) {
+                        argNames.add(IokeObject.as(obj).getName());
+                    }
+
+                    IokeObject result = runtime.newLexicalBlock(runtime.lexicalBlock, new LexicalBlock(context, argNames, code));
+                    result.setCell("activatable", runtime._true);
+                    return result;
+                }
+            }));
+
         obj.registerMethod(runtime.newJavaMethod("takes one or more evaluated string argument. will import the files corresponding to each of the strings named based on the Ioke loading behavior that can be found in the documentation for the loadBehavior cell on System.", new JavaMethod("use") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {

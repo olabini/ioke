@@ -16,4 +16,7 @@ public class NullObject extends IokeObject {
         return false;
     }
 
+    public boolean isTrue() {
+        return false;
+    }
 }// NullObject

@@ -28,6 +28,8 @@ public class Method extends IokeData {
     @Override
     public void init(IokeObject method) {
         method.setKind("Method");
+        method.registerCell("activatable", method.runtime._true);
+
         method.registerMethod(method.runtime.newJavaMethod("returns the name of the method", new JavaMethod("name") {
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) {
@@ -44,10 +46,6 @@ public class Method extends IokeData {
 
     public String getName() {
         return name;
-    }
-
-    public boolean isActivatable() {
-        return true;
     }
 
     @Override
