@@ -40,6 +40,10 @@ public class DefaultArgumentsDefinition {
         }
     }
 
+    public static DefaultArgumentsDefinition empty() {
+        return new DefaultArgumentsDefinition(new ArrayList<Argument>());
+    }
+
     public static DefaultArgumentsDefinition createFrom(List<Object> args, int start, int len) {
         List<Argument> arguments = new ArrayList<Argument>();
 
