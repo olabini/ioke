@@ -36,6 +36,24 @@ public class LexicalContext extends IokeObject {
         return ground;
     }
 
+    @Override
+    public void assign(String name, Object value) {
+        Object place = findPlace(name);
+        if(place == runtime.nul) {
+            place = this;
+        }
+        IokeObject.setCell(place, name, value);
+    }
+
+    @Override
+    protected Object findPlace(String name, IdentityHashMap<IokeObject, Object> visited) {
+        Object nn = super.findPlace(name, visited);
+        if(nn == runtime.nul) {
+            return IokeObject.findPlace(surroundingContext, name, visited);
+        } else {
+            return nn;
+        }
+    }
 
     @Override
     public Object findCell(IokeObject m, IokeObject context, String name, IdentityHashMap<IokeObject, Object> visited) {

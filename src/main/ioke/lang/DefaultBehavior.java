@@ -170,7 +170,7 @@ public class DefaultBehavior {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     String name = ((IokeObject)Message.getArg1(message)).getName();
                     Object value = message.getEvaluatedArgument(1, context);
-                    IokeObject.setCell(on, name, value);
+                    IokeObject.assign(on, name, value);
 
                     if((IokeObject.data(value) instanceof Method) && ((Method)IokeObject.data(value)).name == null) {
                         ((Method)IokeObject.data(value)).name = name;

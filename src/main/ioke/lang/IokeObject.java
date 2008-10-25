@@ -61,6 +61,38 @@ public class IokeObject {
         return as(obj).findCell(m, context, name, visited);
     }
 
+    public static Object findPlace(Object obj, String name, IdentityHashMap<IokeObject, Object> visited) {
+        return as(obj).findPlace(name, visited);
+    }
+
+    /**
+     * Finds the first object in the chain where name is available as a cell, or nul if nothing can be found.
+     * findPlace is cycle aware and will not loop in an infinite chain. subclasses should copy this behavior.
+     */
+    public Object findPlace(String name) {
+        return findPlace(name, new IdentityHashMap<IokeObject, Object>());
+    }
+
+    protected Object findPlace(String name, IdentityHashMap<IokeObject, Object> visited) {
+        if(visited.containsKey(this)) {
+            return runtime.nul;
+        }
+        if(cells.containsKey(name)) {
+            return this;
+        } else {
+            visited.put(this, null);
+
+            for(IokeObject mimic : mimics) {
+                Object place = mimic.findPlace(name, visited);
+                if(place != runtime.nul) {
+                    return place;
+                }
+            }
+
+            return runtime.nul;
+        }
+    }
+
     public Object findCell(IokeObject m, IokeObject context, String name, IdentityHashMap<IokeObject, Object> visited) {
         if(visited.containsKey(this)) {
             return runtime.nul;
@@ -131,6 +163,14 @@ public class IokeObject {
     }
 
     public void setCell(String name, Object value) {
+        cells.put(name, value);
+    }
+
+    public static void assign(Object on, String name, Object value) {
+        as(on).assign(name, value);
+    }
+
+    public void assign(String name, Object value) {
         cells.put(name, value);
     }
 
