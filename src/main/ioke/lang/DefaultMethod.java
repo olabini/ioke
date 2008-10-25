@@ -31,7 +31,6 @@ public class DefaultMethod extends Method {
         defaultMethod.setKind("DefaultMethod");
     }
 
-    // TODO: make this use a real model later, with argument names etc
     @Override
     public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
         Context c = new Context(self.runtime, on, "Method activation context for " + message.getName(), message, context);
