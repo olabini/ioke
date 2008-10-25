@@ -238,7 +238,7 @@ public class DefaultBehavior {
                         doc = s.substring(1, s.length()-1);
                     }
 
-                    DefaultArgumentsDefinition def = DefaultArgumentsDefinition.createFrom(args, start, args.size()-1);
+                    DefaultArgumentsDefinition def = DefaultArgumentsDefinition.createFrom(args, start, args.size()-1, message, on, context);
 
                     return runtime.newMethod(doc, runtime.defaultMethod, new DefaultMethod(context, def, (IokeObject)args.get(args.size()-1)));
                 }
@@ -254,7 +254,7 @@ public class DefaultBehavior {
 
                     IokeObject code = IokeObject.as(args.get(args.size()-1));
 
-                    DefaultArgumentsDefinition def = DefaultArgumentsDefinition.createFrom(args, 0, args.size()-1);
+                    DefaultArgumentsDefinition def = DefaultArgumentsDefinition.createFrom(args, 0, args.size()-1, message, on, context);
                     return runtime.newLexicalBlock(runtime.lexicalBlock, new LexicalBlock(context, def, code));
                 }
             }));
@@ -271,7 +271,7 @@ public class DefaultBehavior {
 
                     IokeObject code = IokeObject.as(args.get(args.size()-1));
 
-                    DefaultArgumentsDefinition def = DefaultArgumentsDefinition.createFrom(args, 0, args.size()-1);
+                    DefaultArgumentsDefinition def = DefaultArgumentsDefinition.createFrom(args, 0, args.size()-1, message, on, context);
                     IokeObject result = runtime.newLexicalBlock(runtime.lexicalBlock, new LexicalBlock(context, def, code));
                     result.setCell("activatable", runtime._true);
                     return result;
