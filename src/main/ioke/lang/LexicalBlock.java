@@ -21,7 +21,7 @@ public class LexicalBlock extends IokeData {
     }
 
     public LexicalBlock(IokeObject context) {
-        this(context, null, context.runtime.nilMessage);
+        this(context, DefaultArgumentsDefinition.empty(), context.runtime.nilMessage);
     }
 
     @Override
