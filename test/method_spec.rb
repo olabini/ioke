@@ -1,6 +1,8 @@
 include_class('ioke.lang.Runtime') { 'IokeRuntime' } unless defined?(IokeRuntime)
 include_class('ioke.lang.exceptions.MismatchedArgumentCount') unless defined?(MismatchedArgumentCount)
 include_class('ioke.lang.exceptions.ArgumentWithoutDefaultValue') unless defined?(ArgumentWithoutDefaultValue)
+include_class('ioke.lang.exceptions.MismatchedKeywords') unless defined?(MismatchedKeywords)
+include_class('ioke.lang.exceptions.NoSuchCellException') unless defined?(NoSuchCellException)
 
 import Java::java.io.StringReader unless defined?(StringReader)
 
@@ -388,8 +390,60 @@ CODE
     ioke.evaluate_stream(StringReader.new("m9(42, 14, z: 1)")).data.as_java_integer.should == 1
   end
   
-  it "should be possible to have keyword arguments use as default values things defined before it in the argument list"
-  it "should raise an error when providing a keyword argument that haven't been defined"
+  it "should be possible to have keyword arguments use as default values things defined before it in the argument list" do 
+    ioke = IokeRuntime.get_runtime()
+    ioke.evaluate_stream(StringReader.new(<<CODE))
+m1 = method(x, y: x+2, y)
+m2 = method(x 13, y: x+2, y)
+CODE
+
+    ioke.evaluate_stream(StringReader.new("m1(55)")).data.as_java_integer.should == 57
+    ioke.evaluate_stream(StringReader.new("m2")).data.as_java_integer.should == 15
+    ioke.evaluate_stream(StringReader.new("m2(55)")).data.as_java_integer.should == 57
+    
+    ioke.evaluate_stream(StringReader.new("m1(55, y: 111)")).data.as_java_integer.should == 111
+    ioke.evaluate_stream(StringReader.new("m2(y: 111)")).data.as_java_integer.should == 111
+    ioke.evaluate_stream(StringReader.new("m2(55, y: 111)")).data.as_java_integer.should == 111
+    ioke.evaluate_stream(StringReader.new("m2(y: 111, 55)")).data.as_java_integer.should == 111
+  end
+
+  it "should raise an error when providing a keyword argument that haven't been defined" do 
+    ioke = IokeRuntime.get_runtime()
+    ioke.evaluate_stream(StringReader.new(<<CODE))
+m1 = method(x, x)
+m2 = method(x 13, x)
+m3 = method(x: 42, x)
+CODE
+
+    proc do 
+      ioke.evaluate_stream(StringReader.new("m1(1, foo: 13)"))
+    end.should raise_error(MismatchedKeywords)
+
+    proc do 
+      ioke.evaluate_stream(StringReader.new("m2(foo: 13)"))
+    end.should raise_error(MismatchedKeywords)
+
+    proc do 
+      ioke.evaluate_stream(StringReader.new("m3(foo: 13)"))
+    end.should raise_error(MismatchedKeywords)
+  end
+
   it "should be possible to get a list of keyword arguments"
-  it "should be possible to use a keyword arguments value as a default value for a regular argument"
+
+  it "should be possible to use a keyword arguments value as a default value for a regular argument" do 
+    ioke = IokeRuntime.get_runtime()
+    ioke.evaluate_stream(StringReader.new(<<CODE))
+m1 = method(x:, y x+2, y)
+m2 = method(y x+2, x:, y)
+CODE
+
+    ioke.evaluate_stream(StringReader.new("m1(x: 14)")).data.as_java_integer.should == 16
+    ioke.evaluate_stream(StringReader.new("m1(13, x: 14)")).data.as_java_integer.should == 13
+    ioke.evaluate_stream(StringReader.new("m1(x: 14, 42)")).data.as_java_integer.should == 42
+    ioke.evaluate_stream(StringReader.new("m2(x: 14, 44)")).data.as_java_integer.should == 44
+
+    proc do 
+      ioke.evaluate_stream(StringReader.new("m2(x:15)"))
+    end.should raise_error(NoSuchCellException)
+  end
 end
