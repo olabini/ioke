@@ -44,6 +44,10 @@
       <src path="${src.generated.dir}"/>
       <include name="**/*.java"/>
     </javac>
+
+    <copy todir="${classes.dir}">
+      <fileset dir="${src.raw.dir}" includes="builtin/**/*.ik"/>
+    </copy>
   </target>
 
   <taskdef name="jtestr" classname="org.jtestr.ant.JtestRAntRunner" classpath="lib/build/jtestr.jar"/>
@@ -74,6 +78,7 @@
     <jar destfile="${lib.dist.dir}/ioke.jar">
       <fileset dir="${classes.dir}">
         <include name="**/*.class"/>
+        <include name="**/*.ik"/>
         <include name="**/*.properties"/>
       </fileset>
       <zipfileset src="${lib.release.dir}/antlr-runtime-3.0.1.jar" includes="**/*"/>
@@ -88,6 +93,7 @@
     <jar destfile="${lib.dist.dir}/ioke.jar">
       <fileset dir="${classes.dir}">
         <include name="**/*.class"/>
+        <include name="**/*.ik"/>
         <include name="**/*.properties"/>
       </fileset>
       <zipfileset src="${lib.release.dir}/antlr-runtime-3.0.1.jar" includes="**/*"/>
