@@ -16,5 +16,14 @@ public class JavaMethod extends Method {
     public void init(IokeObject javaMethod) {
         javaMethod.setKind("JavaMethod");
     }
+
+    public String inspectName() {
+        return getClass().getName();
+    }
+
+    @Override
+    public String representation(IokeObject self) {
+        return inspectName();
+    }
 }
 

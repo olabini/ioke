@@ -44,4 +44,13 @@ public class LexicalBlock extends IokeData {
 
         return this.message.evaluateCompleteWith(c, on);
     }
+
+    @Override
+    public String representation(IokeObject self) {
+        if(self.isActivatable()) {
+            return "fnx(...)";
+        } else {
+            return "fn(...)";
+        }
+    }
 }// LexicalBlock
