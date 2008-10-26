@@ -58,7 +58,7 @@ Restarts are mostly totally separate from conditions. The only place where they 
 You can establish restarts with this:
 
 x = restart(
-          report: fn(s, "flubber" println),
+          report: fn(s, "flubber"),
           test: fn(c, c mimics?(Condition)),
           fn(v1, v2,
           "implementation of restart" println))

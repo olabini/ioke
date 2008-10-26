@@ -8,6 +8,7 @@ import java.io.Reader;
 import java.io.InputStreamReader;
 import java.io.FileReader;
 import java.io.File;
+import java.io.StringReader;
 
 import java.util.List;
 import java.util.Map;
@@ -149,6 +150,11 @@ public class Runtime {
                     return ioke.lang.extensions.benchmark.Benchmark.create(runtime);
                 }
             });
+
+        try {
+            evaluateString("use(\"builtin/restarts\")");
+        } catch(ControlFlow cf) {
+        }
     }
 
     public NullObject getNul() {
@@ -250,6 +256,10 @@ public class Runtime {
 
     public Object evaluateStream(Reader reader) throws ControlFlow {
         return parseStream(reader).evaluateComplete();
+    }
+
+    public Object evaluateString(String str) throws ControlFlow {
+        return parseStream(new StringReader(str)).evaluateComplete();
     }
 
     public Object evaluateStream(String name, Reader reader) throws ControlFlow {

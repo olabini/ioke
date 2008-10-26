@@ -3,6 +3,8 @@
  */
 package ioke.lang;
 
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.File;
 
 import java.util.Arrays;
@@ -58,13 +60,20 @@ public class IokeSystem extends IokeData {
             return true;
         }
 
-//         System.err.println("use(" + context + "," + message + "," + name + ")");
         for(String suffix : SUFFIXES) {
-//             System.err.println("- suffix: " + suffix);
+            String before = "/";
+            if(name.startsWith("/")) {
+                before = "";
+            }
+
+            InputStream is = IokeSystem.class.getResourceAsStream(before + name + suffix);
+            if(null != is) {
+                context.runtime.evaluateStream(name+suffix, new InputStreamReader(is));
+                return true;
+            }
+
             File f = new File(currentWorkingDirectory, name + suffix);
-//             System.err.println("- gah: " + f);
             if(f.exists()) {
-//                 System.err.println("- IT EXISTS");
                 context.runtime.evaluateFile(f);
                 return true;
             }
