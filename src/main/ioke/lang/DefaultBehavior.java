@@ -35,6 +35,27 @@ public class DefaultBehavior {
                 }
             }));
 
+        obj.registerMethod(runtime.newJavaMethod("returns true if this object is nil, false otherwise.", new DefaultBehaviorJavaMethod("nil?") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    return IokeObject.as(on).isNil() ? method.runtime._true : method.runtime._false;
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("returns true if this object is not true, false otherwise.", new DefaultBehaviorJavaMethod("false?") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    return IokeObject.isTrue(on) ? method.runtime._false : method.runtime._true;
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("returns true if this object is true, false otherwise.", new DefaultBehaviorJavaMethod("true?") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    return IokeObject.isTrue(on) ? method.runtime._true : method.runtime._false;
+                }
+            }));
+
         obj.registerMethod(runtime.newJavaMethod("calls mimic.", new DefaultBehaviorJavaMethod("derive") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {

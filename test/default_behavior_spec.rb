@@ -192,4 +192,85 @@ CODE
       ioke.ground.find_cell(nil,nil, 'x').find_cell(nil,nil, 'z').data.text.should == "str"
     end
   end
+  
+  describe "'nil?'" do 
+    it "should return true for nil" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new("nil nil?")).should == ioke.true
+    end
+
+    it "should return false for false" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new("false nil?")).should == ioke.false
+    end
+    
+    it "should return false for true" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new("true nil?")).should == ioke.false
+    end
+    
+    it "should return false for a Number" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new("123 nil?")).should == ioke.false
+    end
+    
+    it "should return false for a Text" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new("\"flurg\" nil?")).should == ioke.false
+    end
+  end
+
+  describe "'true?'" do 
+    it "should return false for nil" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new("nil true?")).should == ioke.false
+    end
+
+    it "should return false for false" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new("false true?")).should == ioke.false
+    end
+    
+    it "should return true for true" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new("true true?")).should == ioke.true
+    end
+    
+    it "should return true for a Number" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new("123 true?")).should == ioke.true
+    end
+    
+    it "should return true for a Text" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new("\"flurg\" true?")).should == ioke.true
+    end
+  end
+
+  describe "'false?'" do 
+    it "should return true for nil" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new("nil false?")).should == ioke.true
+    end
+
+    it "should return true for false" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new("false false?")).should == ioke.true
+    end
+    
+    it "should return false for true" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new("true false?")).should == ioke.false
+    end
+    
+    it "should return false for a Number" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new("123 false?")).should == ioke.false
+    end
+    
+    it "should return false for a Text" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new("\"flurg\" false?")).should == ioke.false
+    end
+  end
 end
