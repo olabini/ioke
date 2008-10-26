@@ -47,38 +47,29 @@ opt("foo", 2)
 opt("foo", 2, 3)
 
 - keyword arguments
-!!!  This section is now totally wrong and need to be reworked. Keyword parameters will use anything that ends with a colon, not beings. It will just be treated as an unevaluated message send in the context of being a parameter to a message sending.
-
-Keyword arguments mostly work like in Common Lisp. The main difference is that definition order doesn't mean anything, and order of them in the parameters is also irrelevant. They are based on keywords which are lexed as ':' and an atom, either a string or regular. That means you can do:
-
---Scratch this. The : is actually part of the name. Totally. It's the method invocation semantics that might want to treat it as a call to :(foo)
-
-:foo
-:"bar"
-
-keyword(foo)
-keyword("bar")
-
+Keyword arguments mostly work like in Common Lisp. The main difference is that definition order doesn't mean anything, and order of them in the parameters is also irrelevant. They are based on messages which end with a ':'. These are called keywords. Order is ONLY important for default values - the order optional, regular and keyword arguments are set is always defined to be the order they are defined in.
 
 In a definition it looks like this:
 
-key = method(a, :foo, b, :bar,
+key = method(a, foo:, b, bar:,
   "provided argument foo:" println
   foo println)
 
-Notice that the :foo keyword parameter turns into the variable foo. Also, if you don't specify a default value for keyword arguments, they will be initialized with nil. A default argument is provided exactly like with regular arguments:
+Notice that the foo: keyword parameter turns into the variable foo. Also, if you don't specify a default value for keyword arguments, they will be initialized with nil. A default argument is provided exactly like with regular arguments:
 
-key = method(a, :foo 123, foo println)
+key = method(a, foo: 123, foo println)
+
+It's important to note that for lexing reasons you need to have a space between the colon and the default value, since the colon is actually part of the message name.
 
 The ordering of regular parameters and optional parameters are NOT subjected to keyword parameters. Keyword parameters are collected before ordering semantics for arguments is applied.
 
 To call a method with keyword arguments, intersperse them in the call. It generally makes sense to put all of them at one point in the call, but it doesn't matter, since the ordering is not interesting and they get extracted before everything else:
 
-key(123, :foo "gar", :bar "flux")
-key(:foo "gar", 123 , :bar "flux")
-key(:bar "flux", :foo "gar", 123)
+key(123, foo: "gar", bar: "flux")
+key(foo: "gar", 123 , bar: "flux")
+key(bar: "flux", foo: "gar", 123)
 
-are all the same. The main difference is that evaluation order is UNDEFINED. It's only regular arguments and optional arguments that have defined evaluation order. Keyword arguments can not refer to each other in their default values because of this. You can provide two arguments with the same keyword, but the result of doing that is undefined.
+are all the same. You can provide two arguments with the same keyword, but the result of doing that is undefined.
 
 - rest arguments
 
