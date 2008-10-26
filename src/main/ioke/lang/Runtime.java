@@ -43,6 +43,7 @@ public class Runtime {
     public IokeObject _true = new IokeObject(this, "true is an oddball object that always represents itself. It can not be mimicked and represents the a true value.", IokeData.True);
     public IokeObject _false = new IokeObject(this, "false is an oddball object that always represents itself. It can not be mimicked and is one of the two false values.", IokeData.False);
     public IokeObject text = new IokeObject(this, "Contains an immutable text.", new Text(""));
+    public IokeObject symbol = new IokeObject(this, "Represents a symbol - an object that always represents itself.", new Symbol(""));
     public IokeObject number = new IokeObject(this, "Represents an exact number", new Number("0"));
     public IokeObject method = new IokeObject(this, "Method is the origin of all methods in the system, both default and Java..", new Method((String)null));
     public IokeObject defaultMethod = new IokeObject(this, "DefaultMethod is the instance all methods in the system is derived from.", new DefaultMethod((String)null));
@@ -109,6 +110,7 @@ public class Runtime {
         _true.init();
         _false.init();
         text.init();
+        symbol.init();
         number.init();
         context.init();
         lexicalContext.init();
@@ -125,6 +127,7 @@ public class Runtime {
         _true.mimics(origin);
         _false.mimics(origin);
         text.mimics(origin);
+        symbol.mimics(origin);
         number.mimics(origin);
 
         message.mimics(origin);
@@ -174,6 +177,10 @@ public class Runtime {
 
     public IokeObject getText() {
         return this.text;
+    }
+
+    public IokeObject getSymbol() {
+        return this.symbol;
     }
 
     public IokeObject getNumber() {
@@ -340,6 +347,19 @@ public class Runtime {
         obj.mimics(tp);
         obj.data = impl;
         return obj;
+    }
+
+    private Map<String, IokeObject> symbolTable = new HashMap<String, IokeObject>();
+    public IokeObject getSymbol(String name) {
+        synchronized(symbolTable) {
+            IokeObject obj = symbolTable.get(name);
+            if(obj == null) {
+                obj = new IokeObject(this, this.symbol.documentation, new Symbol(name));
+                obj.mimics(this.symbol);
+                symbolTable.put(name, obj);
+            }
+            return obj;
+        }            
     }
 
     public static void init(IokeObject runtime) {

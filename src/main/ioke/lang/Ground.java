@@ -20,6 +20,7 @@ public class Ground {
         ground.registerCell("System", runtime.system);
         ground.registerCell("Runtime", runtime.runtime);
         ground.registerCell("Text", runtime.text);
+        ground.registerCell("Symbol", runtime.symbol);
         ground.registerCell("Number", runtime.number);
         ground.registerCell("nil", runtime.nil);
         ground.registerCell("true", runtime._true);
