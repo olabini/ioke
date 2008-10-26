@@ -96,6 +96,14 @@ public class Message extends IokeData {
         ((Message)message.data).pos = position;
     }
 
+    public static boolean isKeyword(Object message) {
+        return ((Message)IokeObject.data(message)).isKeyword();
+    }
+
+    public boolean isKeyword() {
+        return name.length() > 0 && name.charAt(name.length()-1) == ':';
+    }
+
     @Override
     public List<Object> getArguments(IokeObject self) {
         return arguments;
@@ -308,14 +316,18 @@ public class Message extends IokeData {
         return true;
     }
 
-    @Override
-    public Object getEvaluatedArgument(IokeObject self, int index, IokeObject context) throws ControlFlow {
-        IokeObject o = (IokeObject)arguments.get(index);
+    public static Object getEvaluatedArgument(Object argument, IokeObject context) throws ControlFlow {
+        IokeObject o = IokeObject.as(argument);
         if(!o.isMessage()) {
             return o;
         }
 
         return o.evaluateCompleteWithoutExplicitReceiver(context, context.getRealContext());
+    }
+
+    @Override
+    public Object getEvaluatedArgument(IokeObject self, int index, IokeObject context) throws ControlFlow {
+        return Message.getEvaluatedArgument(arguments.get(index), context);
     }
 
     @Override

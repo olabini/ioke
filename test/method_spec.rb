@@ -212,4 +212,40 @@ CODE
     ioke.evaluate_stream(StringReader.new("first(12)")).data.as_java_integer.should == 53
     ioke.evaluate_stream(StringReader.new("first(12, 52)")).data.as_java_integer.should == 52
   end
+  
+  it "should be possible to define a method with a keyword argument" do 
+    ioke = IokeRuntime.get_runtime()
+    ioke.evaluate_stream(StringReader.new(<<CODE))
+method(x:, x)
+CODE
+  end
+
+  it "should give nil as default value to keyword argument" do 
+    ioke = IokeRuntime.get_runtime()
+    ioke.evaluate_stream(StringReader.new(<<CODE))
+first = method(x:, x)
+CODE
+    
+    ioke.evaluate_stream(StringReader.new("first")).should == ioke.nil
+    ioke.evaluate_stream(StringReader.new("first()")).should == ioke.nil
+  end
+
+  it "should be possible to call with keyword argument" do 
+    ioke = IokeRuntime.get_runtime()
+    ioke.evaluate_stream(StringReader.new(<<CODE))
+first = method(x:, x)
+CODE
+    
+    ioke.evaluate_stream(StringReader.new("first(x: 12)")).data.as_java_integer.should == 12
+  end
+
+  it "should be possible to give a keyword argument a default value"
+  it "should be possible to give more than one keyword argument in any order"
+  it "should be possible to have both keyword argument and regular argument and give keyword argument before regular argument"
+  it "should be possible to have both keyword argument and regular argument and give keyword argument after regular argument"
+  it "should be possible to have both keyword argument and optional argument and intersperse keyword arguments"
+  it "should be possible to have keyword arguments use as default values things defined before it in the argument list"
+  it "should raise an error when providing a keyword argument that haven't been defined"
+  it "should be possible to get a list of keyword arguments"
+  it "should be possible to use a keyword arguments value as a default value for a regular argument"
 end
