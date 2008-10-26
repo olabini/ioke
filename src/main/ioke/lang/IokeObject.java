@@ -190,6 +190,10 @@ public class IokeObject {
         return data.isMessage();
     }
 
+    public List<IokeObject> getMimics() {
+        return mimics;
+    }
+
     public void mimics(IokeObject mimic) {
         this.mimics.add(mimic);
     }
