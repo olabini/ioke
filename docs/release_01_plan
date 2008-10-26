@@ -3,7 +3,7 @@ Ioke 0.1 should include:
 
 - DefaultMethod
 *  regular arguments
-   optional arguments
+*  optional arguments
    keyword arguments
    rest arguments
 * break
