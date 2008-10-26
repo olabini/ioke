@@ -363,4 +363,236 @@ CODE
     ioke.evaluate_stream(StringReader.new("first(12)")).data.as_java_integer.should == 53
     ioke.evaluate_stream(StringReader.new("first(12, 52)")).data.as_java_integer.should == 52
   end
+  
+  it "should be possible to define a block with a keyword argument" do 
+    ioke = IokeRuntime.get_runtime()
+    ioke.evaluate_stream(StringReader.new(<<CODE))
+fn(x:, x)
+CODE
+  end
+
+  it "should give nil as default value to keyword argument" do 
+    ioke = IokeRuntime.get_runtime()
+    ioke.evaluate_stream(StringReader.new(<<CODE))
+first = fnx(x:, x)
+CODE
+    
+    ioke.evaluate_stream(StringReader.new("first")).should == ioke.nil
+    ioke.evaluate_stream(StringReader.new("first()")).should == ioke.nil
+  end
+
+  it "should be possible to call with keyword argument" do 
+    ioke = IokeRuntime.get_runtime()
+    ioke.evaluate_stream(StringReader.new(<<CODE))
+first = fnx(x:, x)
+CODE
+    
+    ioke.evaluate_stream(StringReader.new("first(x: 12)")).data.as_java_integer.should == 12
+  end
+
+  it "should be possible to give a keyword argument a default value" do 
+    ioke = IokeRuntime.get_runtime()
+    ioke.evaluate_stream(StringReader.new(<<CODE))
+first = fnx(x: 42, x)
+CODE
+    
+    ioke.evaluate_stream(StringReader.new("first")).data.as_java_integer.should == 42
+    ioke.evaluate_stream(StringReader.new("first(x: 12)")).data.as_java_integer.should == 12
+  end
+
+  it "should be possible to give more than one keyword argument in any order" do 
+    ioke = IokeRuntime.get_runtime()
+    ioke.evaluate_stream(StringReader.new(<<CODE))
+first = fnx(x:, y:, x)
+second = fnx(x:, y:, y)
+CODE
+    
+    ioke.evaluate_stream(StringReader.new("first")).should == ioke.nil
+    ioke.evaluate_stream(StringReader.new("second")).should == ioke.nil
+
+    ioke.evaluate_stream(StringReader.new("first(x: 42)")).data.as_java_integer.should == 42
+    ioke.evaluate_stream(StringReader.new("second(x: 42)")).should == ioke.nil
+
+    ioke.evaluate_stream(StringReader.new("first(x: 42,y: 33)")).data.as_java_integer.should == 42
+    ioke.evaluate_stream(StringReader.new("second(x: 42, y: 33)")).data.as_java_integer.should == 33
+
+    ioke.evaluate_stream(StringReader.new("first(y: 42,x: 33)")).data.as_java_integer.should == 33
+    ioke.evaluate_stream(StringReader.new("second(y: 42, x: 33)")).data.as_java_integer.should == 42
+  end
+
+  it "should be possible to have both keyword argument and regular argument and give keyword argument before regular argument" do 
+    ioke = IokeRuntime.get_runtime()
+    ioke.evaluate_stream(StringReader.new(<<CODE))
+first = fnx(z, x:, x)
+second = fnx(z, x:, z)
+third = fnx(x:, z,  x)
+fourth = fnx(x:, z,  z)
+CODE
+    
+    ioke.evaluate_stream(StringReader.new("second(12)")).data.as_java_integer.should == 12
+    ioke.evaluate_stream(StringReader.new("fourth(13)")).data.as_java_integer.should == 13
+
+    ioke.evaluate_stream(StringReader.new("first(12)")).should == ioke.nil
+    ioke.evaluate_stream(StringReader.new("third(13)")).should == ioke.nil
+
+    ioke.evaluate_stream(StringReader.new("second(x: 321, 12)")).data.as_java_integer.should == 12
+    ioke.evaluate_stream(StringReader.new("fourth(x: 321, 13)")).data.as_java_integer.should == 13
+
+    ioke.evaluate_stream(StringReader.new("first(x: 333, 12)")).data.as_java_integer.should == 333
+    ioke.evaluate_stream(StringReader.new("third(x: 343, 13)")).data.as_java_integer.should == 343
+  end
+
+  it "should be possible to have both keyword argument and regular argument and give keyword argument after regular argument" do 
+    ioke = IokeRuntime.get_runtime()
+    ioke.evaluate_stream(StringReader.new(<<CODE))
+first = fnx(z, x:, x)
+second = fnx(z, x:, z)
+third = fnx(x:, z,  x)
+fourth = fnx(x:, z,  z)
+CODE
+    
+    ioke.evaluate_stream(StringReader.new("second(12)")).data.as_java_integer.should == 12
+    ioke.evaluate_stream(StringReader.new("fourth(13)")).data.as_java_integer.should == 13
+
+    ioke.evaluate_stream(StringReader.new("first(12)")).should == ioke.nil
+    ioke.evaluate_stream(StringReader.new("third(13)")).should == ioke.nil
+
+    ioke.evaluate_stream(StringReader.new("second(12, x: 321)")).data.as_java_integer.should == 12
+    ioke.evaluate_stream(StringReader.new("fourth(13, x: 321)")).data.as_java_integer.should == 13
+
+    ioke.evaluate_stream(StringReader.new("first(12, x: 333)")).data.as_java_integer.should == 333
+    ioke.evaluate_stream(StringReader.new("third(13, x: 343)")).data.as_java_integer.should == 343
+  end
+  
+  it "should be possible to have both keyword argument and optional argument and intersperse keyword arguments" do 
+    ioke = IokeRuntime.get_runtime()
+    ioke.evaluate_stream(StringReader.new(<<CODE))
+m1 = fnx(x, y 12, z:, x)
+m2 = fnx(x, y 12, z:, y)
+m3 = fnx(x, y 12, z:, z)
+m4 = fnx(x, z:, y 12, x)
+m5 = fnx(x, z:, y 12, y)
+m6 = fnx(x, z:, y 12, z)
+m7 = fnx(z:, x, y 12, x)
+m8 = fnx(z:, x, y 12, y)
+m9 = fnx(z:, x, y 12, z)
+CODE
+
+    ioke.evaluate_stream(StringReader.new("m1(42)")).data.as_java_integer.should == 42
+    ioke.evaluate_stream(StringReader.new("m2(42)")).data.as_java_integer.should == 12
+    ioke.evaluate_stream(StringReader.new("m3(42)")).should == ioke.nil
+    ioke.evaluate_stream(StringReader.new("m4(42)")).data.as_java_integer.should == 42
+    ioke.evaluate_stream(StringReader.new("m5(42)")).data.as_java_integer.should == 12
+    ioke.evaluate_stream(StringReader.new("m6(42)")).should == ioke.nil
+    ioke.evaluate_stream(StringReader.new("m7(42)")).data.as_java_integer.should == 42
+    ioke.evaluate_stream(StringReader.new("m8(42)")).data.as_java_integer.should == 12
+    ioke.evaluate_stream(StringReader.new("m9(42)")).should == ioke.nil
+
+    ioke.evaluate_stream(StringReader.new("m1(42, 13)")).data.as_java_integer.should == 42
+    ioke.evaluate_stream(StringReader.new("m2(42, 13)")).data.as_java_integer.should == 13
+    ioke.evaluate_stream(StringReader.new("m3(42, 13)")).should == ioke.nil
+    ioke.evaluate_stream(StringReader.new("m4(42, 13)")).data.as_java_integer.should == 42
+    ioke.evaluate_stream(StringReader.new("m5(42, 13)")).data.as_java_integer.should == 13
+    ioke.evaluate_stream(StringReader.new("m6(42, 13)")).should == ioke.nil
+    ioke.evaluate_stream(StringReader.new("m7(42, 13)")).data.as_java_integer.should == 42
+    ioke.evaluate_stream(StringReader.new("m8(42, 13)")).data.as_java_integer.should == 13
+    ioke.evaluate_stream(StringReader.new("m9(42, 13)")).should == ioke.nil
+
+    ioke.evaluate_stream(StringReader.new("m1(z: 1, 42)")).data.as_java_integer.should == 42
+    ioke.evaluate_stream(StringReader.new("m2(z: 1, 42)")).data.as_java_integer.should == 12
+    ioke.evaluate_stream(StringReader.new("m3(z: 1, 42)")).data.as_java_integer.should == 1
+    ioke.evaluate_stream(StringReader.new("m4(z: 1, 42)")).data.as_java_integer.should == 42
+    ioke.evaluate_stream(StringReader.new("m5(z: 1, 42)")).data.as_java_integer.should == 12
+    ioke.evaluate_stream(StringReader.new("m6(z: 1, 42)")).data.as_java_integer.should == 1
+    ioke.evaluate_stream(StringReader.new("m7(z: 1, 42)")).data.as_java_integer.should == 42
+    ioke.evaluate_stream(StringReader.new("m8(z: 1, 42)")).data.as_java_integer.should == 12
+    ioke.evaluate_stream(StringReader.new("m9(z: 1, 42)")).data.as_java_integer.should == 1
+
+    ioke.evaluate_stream(StringReader.new("m1(z: 1, 42, 14)")).data.as_java_integer.should == 42
+    ioke.evaluate_stream(StringReader.new("m2(z: 1, 42, 14)")).data.as_java_integer.should == 14
+    ioke.evaluate_stream(StringReader.new("m3(z: 1, 42, 14)")).data.as_java_integer.should == 1
+    ioke.evaluate_stream(StringReader.new("m4(z: 1, 42, 14)")).data.as_java_integer.should == 42
+    ioke.evaluate_stream(StringReader.new("m5(z: 1, 42, 14)")).data.as_java_integer.should == 14
+    ioke.evaluate_stream(StringReader.new("m6(z: 1, 42, 14)")).data.as_java_integer.should == 1
+    ioke.evaluate_stream(StringReader.new("m7(z: 1, 42, 14)")).data.as_java_integer.should == 42
+    ioke.evaluate_stream(StringReader.new("m8(z: 1, 42, 14)")).data.as_java_integer.should == 14
+    ioke.evaluate_stream(StringReader.new("m9(z: 1, 42, 14)")).data.as_java_integer.should == 1
+
+    ioke.evaluate_stream(StringReader.new("m1(42, z: 1, 14)")).data.as_java_integer.should == 42
+    ioke.evaluate_stream(StringReader.new("m2(42, z: 1, 14)")).data.as_java_integer.should == 14
+    ioke.evaluate_stream(StringReader.new("m3(42, z: 1, 14)")).data.as_java_integer.should == 1
+    ioke.evaluate_stream(StringReader.new("m4(42, z: 1, 14)")).data.as_java_integer.should == 42
+    ioke.evaluate_stream(StringReader.new("m5(42, z: 1, 14)")).data.as_java_integer.should == 14
+    ioke.evaluate_stream(StringReader.new("m6(42, z: 1, 14)")).data.as_java_integer.should == 1
+    ioke.evaluate_stream(StringReader.new("m7(42, z: 1, 14)")).data.as_java_integer.should == 42
+    ioke.evaluate_stream(StringReader.new("m8(42, z: 1, 14)")).data.as_java_integer.should == 14
+    ioke.evaluate_stream(StringReader.new("m9(42, z: 1, 14)")).data.as_java_integer.should == 1
+
+    ioke.evaluate_stream(StringReader.new("m1(42, 14, z: 1)")).data.as_java_integer.should == 42
+    ioke.evaluate_stream(StringReader.new("m2(42, 14, z: 1)")).data.as_java_integer.should == 14
+    ioke.evaluate_stream(StringReader.new("m3(42, 14, z: 1)")).data.as_java_integer.should == 1
+    ioke.evaluate_stream(StringReader.new("m4(42, 14, z: 1)")).data.as_java_integer.should == 42
+    ioke.evaluate_stream(StringReader.new("m5(42, 14, z: 1)")).data.as_java_integer.should == 14
+    ioke.evaluate_stream(StringReader.new("m6(42, 14, z: 1)")).data.as_java_integer.should == 1
+    ioke.evaluate_stream(StringReader.new("m7(42, 14, z: 1)")).data.as_java_integer.should == 42
+    ioke.evaluate_stream(StringReader.new("m8(42, 14, z: 1)")).data.as_java_integer.should == 14
+    ioke.evaluate_stream(StringReader.new("m9(42, 14, z: 1)")).data.as_java_integer.should == 1
+  end
+  
+  it "should be possible to have keyword arguments use as default values things defined before it in the argument list" do 
+    ioke = IokeRuntime.get_runtime()
+    ioke.evaluate_stream(StringReader.new(<<CODE))
+m1 = fnx(x, y: x+2, y)
+m2 = fnx(x 13, y: x+2, y)
+CODE
+
+    ioke.evaluate_stream(StringReader.new("m1(55)")).data.as_java_integer.should == 57
+    ioke.evaluate_stream(StringReader.new("m2")).data.as_java_integer.should == 15
+    ioke.evaluate_stream(StringReader.new("m2(55)")).data.as_java_integer.should == 57
+    
+    ioke.evaluate_stream(StringReader.new("m1(55, y: 111)")).data.as_java_integer.should == 111
+    ioke.evaluate_stream(StringReader.new("m2(y: 111)")).data.as_java_integer.should == 111
+    ioke.evaluate_stream(StringReader.new("m2(55, y: 111)")).data.as_java_integer.should == 111
+    ioke.evaluate_stream(StringReader.new("m2(y: 111, 55)")).data.as_java_integer.should == 111
+  end
+
+  it "should raise an error when providing a keyword argument that haven't been defined" do 
+    ioke = IokeRuntime.get_runtime()
+    ioke.evaluate_stream(StringReader.new(<<CODE))
+m1 = fnx(x, x)
+m2 = fnx(x 13, x)
+m3 = fnx(x: 42, x)
+CODE
+
+    proc do 
+      ioke.evaluate_stream(StringReader.new("m1(1, foo: 13)"))
+    end.should raise_error(MismatchedKeywords)
+
+    proc do 
+      ioke.evaluate_stream(StringReader.new("m2(foo: 13)"))
+    end.should raise_error(MismatchedKeywords)
+
+    proc do 
+      ioke.evaluate_stream(StringReader.new("m3(foo: 13)"))
+    end.should raise_error(MismatchedKeywords)
+  end
+
+  it "should be possible to get a list of keyword arguments"
+
+  it "should be possible to use a keyword arguments value as a default value for a regular argument" do 
+    ioke = IokeRuntime.get_runtime()
+    ioke.evaluate_stream(StringReader.new(<<CODE))
+m1 = fnx(x:, y x+2, y)
+m2 = fnx(y x+2, x:, y)
+CODE
+
+    ioke.evaluate_stream(StringReader.new("m1(x: 14)")).data.as_java_integer.should == 16
+    ioke.evaluate_stream(StringReader.new("m1(13, x: 14)")).data.as_java_integer.should == 13
+    ioke.evaluate_stream(StringReader.new("m1(x: 14, 42)")).data.as_java_integer.should == 42
+    ioke.evaluate_stream(StringReader.new("m2(x: 14, 44)")).data.as_java_integer.should == 44
+
+    proc do 
+      ioke.evaluate_stream(StringReader.new("m2(x:15)"))
+    end.should raise_error(NoSuchCellException)
+  end
 end
