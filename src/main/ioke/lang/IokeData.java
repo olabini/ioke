@@ -156,4 +156,8 @@ public abstract class IokeData {
         String kind = ((Text)IokeObject.data(obj)).getText();
         return "#<" + kind + ":" + hash + ">";
     }
+
+    public String representation(IokeObject self) {
+        return null;
+    }
 }// IokeData

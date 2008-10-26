@@ -247,8 +247,12 @@ public class IokeObject {
     }
 
     public String representation() {
-        StringBuilder sb = new StringBuilder();
+        String s = data.representation(this);
+        if(s != null) {
+            return s;
+        }
 
+        StringBuilder sb = new StringBuilder();
         return sb.append("#<").append(this).append(": mimics=").append(mimics).append(" cells=").append(cells).append(">").toString();
     }
 

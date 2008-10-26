@@ -52,4 +52,9 @@ public class Method extends IokeData {
     public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
         return self.runtime.nil;
     }
+
+    @Override
+    public String representation(IokeObject self) {
+        return "method(...)";
+    }
 }// Method

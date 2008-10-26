@@ -13,25 +13,36 @@ import ioke.lang.exceptions.ControlFlow;
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
 public class DefaultBehavior {
+    public abstract static class DefaultBehaviorJavaMethod extends JavaMethod {
+        public DefaultBehaviorJavaMethod(String name) {
+            super(name);
+        }
+
+        @Override
+        public String inspectName() {
+            return "DefaultBehavior_" + this.getName();
+        }
+    }
+
     public static void init(IokeObject obj) {
         final Runtime runtime = obj.runtime;
         obj.setKind("DefaultBehavior");
 
-        obj.registerMethod(runtime.newJavaMethod("returns result of evaluating first argument", new JavaMethod("") {
+        obj.registerMethod(runtime.newJavaMethod("returns result of evaluating first argument", new DefaultBehaviorJavaMethod("") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     return message.getEvaluatedArgument(0, context);
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("calls mimic.", new JavaMethod("derive") {
+        obj.registerMethod(runtime.newJavaMethod("calls mimic.", new DefaultBehaviorJavaMethod("derive") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     return IokeObject.activate(runtime.base.getCell(message, context, "mimic"), context, message, on);
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("executes the argument with the receiver as context and ground.", new JavaMethod("do") {
+        obj.registerMethod(runtime.newJavaMethod("executes the argument with the receiver as context and ground.", new DefaultBehaviorJavaMethod("do") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     IokeObject code = IokeObject.as(message.getArguments().get(0));
@@ -39,7 +50,7 @@ public class DefaultBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("breaks out of the enclosing context. if an argument is supplied, this will be returned as the result of the object breaking out of", new JavaMethod("break") {
+        obj.registerMethod(runtime.newJavaMethod("breaks out of the enclosing context. if an argument is supplied, this will be returned as the result of the object breaking out of", new DefaultBehaviorJavaMethod("break") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     Object value = runtime.nil;
@@ -50,7 +61,7 @@ public class DefaultBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("until the first argument evaluates to something true, loops and evaluates the next argument", new JavaMethod("until") {
+        obj.registerMethod(runtime.newJavaMethod("until the first argument evaluates to something true, loops and evaluates the next argument", new DefaultBehaviorJavaMethod("until") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     if(message.getArgumentCount() == 0) {
@@ -73,7 +84,7 @@ public class DefaultBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("while the first argument evaluates to something true, loops and evaluates the next argument", new JavaMethod("while") {
+        obj.registerMethod(runtime.newJavaMethod("while the first argument evaluates to something true, loops and evaluates the next argument", new DefaultBehaviorJavaMethod("while") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     if(message.getArgumentCount() == 0) {
@@ -96,7 +107,7 @@ public class DefaultBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("loops forever - executing it's argument over and over until interrupted in some way.", new JavaMethod("loop") {
+        obj.registerMethod(runtime.newJavaMethod("loops forever - executing it's argument over and over until interrupted in some way.", new DefaultBehaviorJavaMethod("loop") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     if(message.getArgumentCount() > 0) {
@@ -113,7 +124,7 @@ public class DefaultBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("evaluates the first arguments, and then evaluates the second argument if the result was true, otherwise the last argument. returns the result of the call, or the result if it's not true.", new JavaMethod("if") {
+        obj.registerMethod(runtime.newJavaMethod("evaluates the first arguments, and then evaluates the second argument if the result was true, otherwise the last argument. returns the result of the call, or the result if it's not true.", new DefaultBehaviorJavaMethod("if") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     Object test = message.getEvaluatedArgument(0, context);
@@ -133,7 +144,7 @@ public class DefaultBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("expects one 'strange' argument. creates a new instance of Text with the given Java String backing it.", new JavaMethod("internal:createText") {
+        obj.registerMethod(runtime.newJavaMethod("expects one 'strange' argument. creates a new instance of Text with the given Java String backing it.", new DefaultBehaviorJavaMethod("internal:createText") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     Object o = Message.getArg1(message);
@@ -146,7 +157,7 @@ public class DefaultBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("expects one 'strange' argument. creates a new instance of Number that represents the number found in the strange argument.", new JavaMethod("internal:createNumber") {
+        obj.registerMethod(runtime.newJavaMethod("expects one 'strange' argument. creates a new instance of Number that represents the number found in the strange argument.", new DefaultBehaviorJavaMethod("internal:createNumber") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
                     String s = (String)Message.getArg1(message);
@@ -154,7 +165,7 @@ public class DefaultBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("expects one argument, which is the unevaluated name of the cell to work on. will retrieve the current value of this cell, call 'succ' to that value and then send = to the current receiver with the name and the resulting value.", new JavaMethod("++") {
+        obj.registerMethod(runtime.newJavaMethod("expects one argument, which is the unevaluated name of the cell to work on. will retrieve the current value of this cell, call 'succ' to that value and then send = to the current receiver with the name and the resulting value.", new DefaultBehaviorJavaMethod("++") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     IokeObject nameMessage = (IokeObject)Message.getArg1(message);
@@ -165,7 +176,7 @@ public class DefaultBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("expects two arguments, the first unevaluated, the second evaluated. assigns the result of evaluating the second argument in the context of the caller, and assigns this result to the name provided by the first argument. the first argument remains unevaluated. the result of the assignment is the value assigned to the name. if the second argument is a method-like object and it's name is not set, that name will be set to the name of the cell.", new JavaMethod("=") {
+        obj.registerMethod(runtime.newJavaMethod("expects two arguments, the first unevaluated, the second evaluated. assigns the result of evaluating the second argument in the context of the caller, and assigns this result to the name provided by the first argument. the first argument remains unevaluated. the result of the assignment is the value assigned to the name. if the second argument is a method-like object and it's name is not set, that name will be set to the name of the cell.", new DefaultBehaviorJavaMethod("=") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     String name = ((IokeObject)Message.getArg1(message)).getName();
@@ -186,28 +197,28 @@ public class DefaultBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns a textual representation of the object called on.", new JavaMethod("asText") {
+        obj.registerMethod(runtime.newJavaMethod("returns a textual representation of the object called on.", new DefaultBehaviorJavaMethod("asText") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
                     return runtime.newText(on.toString());
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns a more detailed textual representation of the object called on, than asText.", new JavaMethod("representation") {
+        obj.registerMethod(runtime.newJavaMethod("returns a more detailed textual representation of the object called on, than asText.", new DefaultBehaviorJavaMethod("representation") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
                     return runtime.newText(IokeObject.as(on).representation());
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns the documentation text of the object called on. anything can have a documentation text and an object inherits it's documentation string text the object it mimcs - at mimic time.", new JavaMethod("documentation") {
+        obj.registerMethod(runtime.newJavaMethod("returns the documentation text of the object called on. anything can have a documentation text and an object inherits it's documentation string text the object it mimcs - at mimic time.", new DefaultBehaviorJavaMethod("documentation") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
                     return runtime.newText(IokeObject.as(on).documentation);
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("expects one evaluated text argument and returns the cell that matches that name, without activating even if it's activatable.", new JavaMethod("cell") {
+        obj.registerMethod(runtime.newJavaMethod("expects one evaluated text argument and returns the cell that matches that name, without activating even if it's activatable.", new DefaultBehaviorJavaMethod("cell") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     String name = Text.getText(runtime.asText.sendTo(context, IokeObject.as(message.getArguments().get(0)).evaluateCompleteWith(context, context.getRealContext())));
@@ -215,13 +226,13 @@ public class DefaultBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("expects any number of unevaluated arguments. if no arguments at all are given, will just return nil. creates a new method based on the arguments. this method will be evaluated using the context of the object it's called on, and thus the definition can not refer to the outside scope where the method is defined. (there are other ways of achieving this). all arguments except the last one is expected to be names of arguments that will be used in the method. there will possible be additions to the format of arguments later on - including named parameters and optional arguments. the actual code is the last argument given.", new JavaMethod("method") {
+        obj.registerMethod(runtime.newJavaMethod("expects any number of unevaluated arguments. if no arguments at all are given, will just return nil. creates a new method based on the arguments. this method will be evaluated using the context of the object it's called on, and thus the definition can not refer to the outside scope where the method is defined. (there are other ways of achieving this). all arguments except the last one is expected to be names of arguments that will be used in the method. there will possible be additions to the format of arguments later on - including named parameters and optional arguments. the actual code is the last argument given.", new DefaultBehaviorJavaMethod("method") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
                     List<Object> args = message.getArguments();
 
                     if(args.size() == 0) {
-                        return runtime.newJavaMethod("returns nil", new JavaMethod("nil") {
+                        return runtime.newJavaMethod("returns nil", new DefaultBehaviorJavaMethod("nil") {
                                 @Override
                                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
                                     return runtime.nil;
@@ -244,7 +255,7 @@ public class DefaultBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("creates a new lexical block that can be executed at will, while retaining a reference to the lexical closure it was created in. it will always update variables if they exist. there is currently no way of introducing shadowing variables in the local context. new variables can be created though, just like in a method. a lexical block mimics LexicalBlock, and can take arguments. at the moment these are restricted to required arguments, but support for the same argument types as DefaultMethod will come.", new JavaMethod("fn") {
+        obj.registerMethod(runtime.newJavaMethod("creates a new lexical block that can be executed at will, while retaining a reference to the lexical closure it was created in. it will always update variables if they exist. there is currently no way of introducing shadowing variables in the local context. new variables can be created though, just like in a method. a lexical block mimics LexicalBlock, and can take arguments. at the moment these are restricted to required arguments, but support for the same argument types as DefaultMethod will come.", new DefaultBehaviorJavaMethod("fn") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
                     List<Object> args = message.getArguments();
@@ -259,7 +270,7 @@ public class DefaultBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("does the same things as fn, but returns something that is activatable.", new JavaMethod("fnx") {
+        obj.registerMethod(runtime.newJavaMethod("does the same things as fn, but returns something that is activatable.", new DefaultBehaviorJavaMethod("fnx") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
                     List<Object> args = message.getArguments();
@@ -278,7 +289,7 @@ public class DefaultBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("takes one or more evaluated string argument. will import the files corresponding to each of the strings named based on the Ioke loading behavior that can be found in the documentation for the loadBehavior cell on System.", new JavaMethod("use") {
+        obj.registerMethod(runtime.newJavaMethod("takes one or more evaluated string argument. will import the files corresponding to each of the strings named based on the Ioke loading behavior that can be found in the documentation for the loadBehavior cell on System.", new DefaultBehaviorJavaMethod("use") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     if(message.getArgumentCount() > 0) {
