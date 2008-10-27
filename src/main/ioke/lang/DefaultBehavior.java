@@ -63,11 +63,12 @@ public class DefaultBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("executes the argument with the receiver as context and ground.", new DefaultBehaviorJavaMethod("do") {
+        obj.registerMethod(runtime.newJavaMethod("executes the argument with the receiver as context and ground, and then returns the receiver.", new DefaultBehaviorJavaMethod("do") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     IokeObject code = IokeObject.as(message.getArguments().get(0));
-                    return code.evaluateCompleteWith(IokeObject.as(on), IokeObject.as(on));
+                    code.evaluateCompleteWith(IokeObject.as(on), IokeObject.as(on));
+                    return on;
                 }
             }));
 

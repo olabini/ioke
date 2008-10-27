@@ -26,6 +26,7 @@ public class Context extends IokeObject {
         }
 
         setCell("self", getRealContext());
+        setCell("@", getRealContext());
     }
     
     @Override
