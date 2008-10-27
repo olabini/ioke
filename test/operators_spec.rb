@@ -127,6 +127,28 @@ describe "operator" do
   end
   
   describe "parsing" do 
+    describe "@" do 
+      it "should be parsed correctly empty" do 
+        m = parse("@").to_string
+        m.should == "@"
+      end
+
+      it "should be parsed correctly with arguments" do 
+        m = parse("@(foo)").to_string
+        m.should == "@(foo)"
+      end
+      
+      it "should be parsed correctly directly in front of another identifier" do 
+        m = parse("@abc").to_string
+        m.should == "@ abc"
+      end
+
+      it "should be parsed correctly directly in front of another identifier with space" do 
+        m = parse("@ abc").to_string
+        m.should == "@ abc"
+      end
+    end
+    
     describe "<=>" do 
       it "should be translated correctly inside a method definition" do 
         m = parse("method(1<=>2)").to_string

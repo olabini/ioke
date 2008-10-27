@@ -103,7 +103,8 @@ unaryOperator
 
 Identifier
     :
-        (Letter|':') (Letter|IDDigit|StrangeChars)*
+        '@'
+    |   (Letter|':') (Letter|IDDigit|StrangeChars)*
     ;
 
 NumberLiteral

@@ -446,4 +446,26 @@ CODE
       ioke.evaluate_stream(StringReader.new("m2(x:15)"))
     end.should raise_error(NoSuchCellException)
   end
+  
+  it "should have @ return the receiving object inside of a method" do 
+    ioke = IokeRuntime.get_runtime()
+    ioke.evaluate_stream(StringReader.new(<<CODE))
+obj = Origin mimic
+obj atSign = method(@)
+obj2 = obj mimic
+CODE
+    ioke.evaluate_stream(StringReader.new("obj atSign")).should == ioke.ground.find_cell(nil,nil,"obj")
+    ioke.evaluate_stream(StringReader.new("obj2 atSign")).should == ioke.ground.find_cell(nil,nil,"obj2")
+  end
+
+  it "should have 'self' return the receiving object inside of a method" do 
+    ioke = IokeRuntime.get_runtime()
+    ioke.evaluate_stream(StringReader.new(<<CODE))
+obj = Origin mimic
+obj selfMethod = method(self)
+obj2 = obj mimic
+CODE
+    ioke.evaluate_stream(StringReader.new("obj selfMethod")).should == ioke.ground.find_cell(nil,nil,"obj")
+    ioke.evaluate_stream(StringReader.new("obj2 selfMethod")).should == ioke.ground.find_cell(nil,nil,"obj2")
+  end
 end

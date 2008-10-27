@@ -7,8 +7,6 @@ ADD Common Lisp style conditions - before it's too late
 - read is message that returns a message chain, right through the parser, just like in Lisp
 - think for real about pretty printer
 
-Maybe use @something as a shortcut for cell("something") ... might be good. and it works for setting and getting stuff too, actually, if @ is self
-
 iik - interactive Ioke
 
  each
@@ -50,6 +48,23 @@ hashes
 lower prio
 ----------
 
+- assignment of places, through =
+ so for example:
+
+  foo bar x cell("bar") = "something"
+will translate into
+  foo bar x cell=("bar","something")
+
+ instead of
+  foo bar x setCell("bar", "something")
+
+also:
+  foo bar x(1) = "something"
+ or
+  foo bar x[1] = "something"
+ or
+  foo bar x{1,2} = "something"
+
 - call initialization on creation
  - defined in terms of aspects
 
@@ -88,8 +103,6 @@ resend
 super
 
 if, ifTrue, ifFalse, ifNil, ifNotNil
-
-allow @ and @@ as prefixes (that should be short cut for self in defaultmethod)
 
 add with() and from()
 
