@@ -3,10 +3,14 @@
  */
 package ioke.lang;
 
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashSet;
 
 import ioke.lang.exceptions.ControlFlow;
+import ioke.lang.exceptions.MismatchedArgumentCount;
+import ioke.lang.exceptions.MismatchedKeywords;
 
 /**
  *
@@ -335,6 +339,62 @@ public class DefaultBehavior {
                     }
                     
                     return runtime.nil;
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("takes one optional unevaluated parameter (this should be the first if provided), that is the name of the restart to create. this will default to nil. takes two keyword arguments, report: and test:. These should both be lexical blocks. if not provided, there will be reasonable defaults. the only required argument is something that evaluates into a lexical block. this block is what will be executed when the restart is invoked. will return a Restart mimic.", new DefaultBehaviorJavaMethod("restart") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    String name = null;
+                    IokeObject report = null;
+                    IokeObject test = null;
+                    IokeObject code = null;
+                    
+                    List<Object> args = message.getArguments();
+
+                    if(args.size() > 4 || args.size() < 1) {
+                        throw new MismatchedArgumentCount(message, "1..4", args.size(), on, context);
+                    }
+
+                    for(Object o : args) {
+                        Message m = (Message)IokeObject.data(o);
+                        if(m.isKeyword()) {
+                            String n = m.getName(null);
+                            if(n.equals("report:")) {
+                                report = IokeObject.as(m.next.evaluateCompleteWithoutExplicitReceiver(context, context.getRealContext()));
+                            } else if(n.equals("test:")) {
+                                test = IokeObject.as(m.next.evaluateCompleteWithoutExplicitReceiver(context, context.getRealContext()));
+                            } else {
+                                throw new MismatchedKeywords(message, new HashSet<String>(Arrays.asList("report:", "test:")), new HashSet<String>(Arrays.asList(n)), on, context);
+                            }
+                        } else {
+                            if(code != null) {
+                                name = code.getName();
+                                code = IokeObject.as(o);
+                            } else {
+                                code = IokeObject.as(o);
+                            }
+                        }
+                    }
+
+                    code = IokeObject.as(code.evaluateCompleteWithoutExplicitReceiver(context, context.getRealContext()));
+                    Object restart = runtime.mimic.sendTo(context, runtime.restart);
+                    
+                    IokeObject.setCell(restart, "code", code);
+
+                    if(null != name) {
+                        IokeObject.setCell(restart, "name", runtime.getSymbol(name));
+                    }
+
+                    if(null != test) {
+                        IokeObject.setCell(restart, "test", test);
+                    }
+
+                    if(null != report) {
+                        IokeObject.setCell(restart, "report", report);
+                    }
+
+                    return restart;
                 }
             }));
     }
