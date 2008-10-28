@@ -70,17 +70,126 @@ CODE
   end
   
   describe "'findRestart'" do 
-    it "should return nil if it can't find the named restart"
+    it "should return nil if it can't find the named restart" do 
+      ioke = IokeRuntime.get_runtime
 
-    it "should return the restart if found"
+      ioke.evaluate_stream(StringReader.new(<<CODE)).should == ioke.nil
+findRestart(:foo)
+CODE
+      
+      ioke.evaluate_stream(StringReader.new(<<CODE)).should == ioke.nil
+bind(
+  restart(bar, fn),
+  findRestart(:foo))
+CODE
+    end
 
-    it "should return the innermost restart for the name"
+    it "should return the restart if found" do 
+      ioke = IokeRuntime.get_runtime
+      
+      ioke.evaluate_stream(StringReader.new(<<CODE)).should_not == ioke.nil
+bind(
+  restart(foo, fn),
+  findRestart(:foo))
+CODE
 
-    it "should find the right restart when several are registered"
+      result = ioke.evaluate_stream(StringReader.new(<<CODE))
+re = restart(foo, fn)
+bind(
+  re,
+  findRestart(:foo))
+CODE
+      result.should == ioke.ground.find_cell(nil, nil, "re")
+    end
 
-    it "should fail when given nil"
+    it "should return the innermost restart for the name" do 
+      ioke = IokeRuntime.get_runtime
 
-    it "should take a restart as argument and return it if that restart is active"
+      result = ioke.evaluate_stream(StringReader.new(<<CODE))
+re1 = restart(foo, fn)
+re2 = restart(foo, fn)
+re3 = restart(foo, fn)
+bind(
+  re1,
+  bind(
+    re2,
+    bind(
+      re3,
+      findRestart(:foo))))
+CODE
+      result.should == ioke.ground.find_cell(nil, nil, "re3")
+
+      result = ioke.evaluate_stream(StringReader.new(<<CODE))
+re1 = restart(foo, fn)
+re2 = restart(foo, fn)
+re3 = restart(foo, fn)
+bind(
+  re1,
+  bind(
+    re2,
+    bind(
+      re3,
+      bind(
+        restart(bar, fn),
+        findRestart(:foo)))))
+CODE
+      result.should == ioke.ground.find_cell(nil, nil, "re3")
+    end
+
+    it "should fail when given nil" do 
+      ioke = IokeRuntime.get_runtime
+      proc do 
+        ioke.evaluate_stream(StringReader.new(<<CODE))
+findRestart(nil)
+CODE
+      end.should raise_error
+      
+      proc do 
+        ioke.evaluate_stream(StringReader.new(<<CODE))
+bind(
+  restart,
+  findRestart(nil))
+CODE
+      end.should raise_error
+
+      proc do 
+        ioke.evaluate_stream(StringReader.new(<<CODE))
+bind(
+  restart(foo, fn),
+  findRestart(nil))
+CODE
+      end.should raise_error
+    end
+
+    it "should take a restart as argument and return it when that restart is active" do 
+      ioke = IokeRuntime.get_runtime
+      
+      result = ioke.evaluate_stream(StringReader.new(<<CODE))
+re = restart(foo, fn)
+bind(
+  restart(foo, fn),
+  bind(
+    re,
+    bind(
+      restart(foo, fn),
+      findRestart(re))))
+CODE
+      result.should == ioke.ground.find_cell(nil, nil, "re")
+    end
+
+    it "should take a restart as argument and return nil when that restart is not active" do 
+      ioke = IokeRuntime.get_runtime
+      
+      result = ioke.evaluate_stream(StringReader.new(<<CODE))
+re = restart(foo, fn)
+bind(
+  restart(foo, fn),
+  bind(
+    restart(foo, fn),
+    findRestart(re)))
+CODE
+      result.should == ioke.nil
+    end
   end
   
   describe "'invokeRestart'" do 
