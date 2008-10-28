@@ -65,8 +65,6 @@ bind(10, 10)
 CODE
       end.should raise_error
     end
-    
-    it "should return the result of the invoked restart, if that restart is invoked"
   end
   
   describe "'findRestart'" do 
