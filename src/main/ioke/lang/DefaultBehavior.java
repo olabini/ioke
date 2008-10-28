@@ -469,5 +469,26 @@ public class DefaultBehavior {
                     throw new ControlFlow.Restart(realRestart, args);
                 }
             }));
+
+        obj.registerMethod(runtime.newJavaMethod("takes either a name (as a symbol) or a Restart instance. if the restart is active, will return that restart, otherwise returns nil..", new DefaultBehaviorJavaMethod("findRestart") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    IokeObject restart = IokeObject.as(message.getEvaluatedArgument(0, context));
+                    Runtime.RestartInfo realRestart = null;
+                    if(restart.isSymbol()) {
+                        String name = Symbol.getText(restart);
+                        realRestart = context.runtime.findActiveRestart(name);
+                    } else if(restart.getKind().equals("Restart")) {
+                        realRestart = context.runtime.findActiveRestart(restart);
+                    } else {
+                        throw new RuntimeException("unexpected argument: " + restart);
+                    }
+                    if(realRestart == null) {
+                        return context.runtime.nil;
+                    } else {
+                        return realRestart.restart;
+                    }
+                }
+            }));
     }
 }// DefaultBehavior
