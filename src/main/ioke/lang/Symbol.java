@@ -38,6 +38,11 @@ public class Symbol extends IokeData {
     public String getText() {
         return text;
     }
+
+    @Override
+    public boolean isSymbol() {
+        return true;
+}
     
     @Override
     public IokeObject convertToText(IokeObject self, IokeObject m, IokeObject context) {

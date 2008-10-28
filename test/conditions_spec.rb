@@ -85,6 +85,19 @@ CODE
   
   describe "'invokeRestart'" do 
     it "should fail if no restarts of the name is active"
+
+    it "should invoke the restart" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new(<<CODE)).data.as_java_integer.should == 13
+x = 1
+bind(
+  restart(foo, fn(x = 42;13)),
+  invokeRestart(:foo)
+)
+CODE
+      ioke.ground.find_cell(nil, nil, "x").data.as_java_integer.should == 42
+    end
+
     it "should invoke the innermost restart"
     it "should stay in the current context of the binding of the restart"
     it "should take arguments and pass these along to the restart"

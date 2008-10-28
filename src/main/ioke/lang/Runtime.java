@@ -10,6 +10,7 @@ import java.io.FileReader;
 import java.io.File;
 import java.io.StringReader;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
@@ -64,6 +65,9 @@ public class Runtime {
     public IokeObject pred = newMessage("pred");
     public IokeObject setValue = newMessage("=");
     public IokeObject nilMessage = newMessage("nil");
+    public IokeObject name = newMessage("name");
+    public IokeObject call = newMessage("call");
+    public IokeObject code = newMessage("code");
 
     // NOT TO BE EXPOSED TO Ioke - used for internal usage only
     NullObject nul = new NullObject(this);
@@ -379,6 +383,55 @@ public class Runtime {
             }
             return obj;
         }            
+    }
+
+    public static class RestartInfo {
+        public final String name;
+        public final IokeObject restart;
+        public final Object token;
+        public RestartInfo(String name, IokeObject restart, Object token) {
+            this.name = name;
+            this.restart = restart;
+            this.token = token;
+        }
+    }
+
+    private ThreadLocal<List<List<RestartInfo>>> restarts = new ThreadLocal<List<List<RestartInfo>>>() {
+             @Override
+             protected List<List<RestartInfo>> initialValue() {
+                 return new ArrayList<List<RestartInfo>>();
+             }};
+
+    public void registerRestarts(List<RestartInfo> restarts) {
+        this.restarts.get().add(0, restarts);
+    }
+
+    public void unregisterRestarts(List<RestartInfo> restarts) {
+        this.restarts.get().remove(restarts);
+    }
+
+    public RestartInfo findActiveRestart(String name) {
+        for(List<RestartInfo> lrp : restarts.get()) {
+            for(RestartInfo rp : lrp) {
+                if(name.equals(rp.name)) {
+                    return rp;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public RestartInfo findActiveRestart(IokeObject restart) {
+        for(List<RestartInfo> lrp : restarts.get()) {
+            for(RestartInfo rp : lrp) {
+                if(rp.restart == restart) {
+                    return rp;
+                }
+            }
+        }
+
+        return null;
     }
 
     public static void init(IokeObject runtime) {

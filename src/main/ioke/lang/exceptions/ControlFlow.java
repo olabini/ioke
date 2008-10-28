@@ -3,6 +3,7 @@
  */
 package ioke.lang.exceptions;
 
+import ioke.lang.Runtime;
 import ioke.lang.IokeObject;
 
 /**
@@ -25,6 +26,16 @@ public class ControlFlow extends Throwable {
     public static class Return extends ControlFlow {
         public Return(Object value) {
             super(value);
+        }
+    }
+
+    public static class Restart extends ControlFlow {
+        public Restart(Runtime.RestartInfo value) {
+            super(value);
+        }
+
+        public Runtime.RestartInfo getRestart() {
+            return (Runtime.RestartInfo)getValue();
         }
     }
 

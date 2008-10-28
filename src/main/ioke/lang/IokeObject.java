@@ -174,6 +174,10 @@ public class IokeObject {
         cells.put(name, value);
     }
 
+    public boolean isSymbol() {
+        return data.isSymbol();
+    }
+
     public boolean isNil() {
         return data.isNil();
     }
