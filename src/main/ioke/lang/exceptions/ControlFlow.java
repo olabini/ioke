@@ -3,6 +3,8 @@
  */
 package ioke.lang.exceptions;
 
+import java.util.List;
+
 import ioke.lang.Runtime;
 import ioke.lang.IokeObject;
 
@@ -30,12 +32,18 @@ public class ControlFlow extends Throwable {
     }
 
     public static class Restart extends ControlFlow {
-        public Restart(Runtime.RestartInfo value) {
+        private List<Object> arguments;
+        public Restart(Runtime.RestartInfo value, List<Object> arguments) {
             super(value);
+            this.arguments = arguments;
         }
 
         public Runtime.RestartInfo getRestart() {
             return (Runtime.RestartInfo)getValue();
+        }
+
+        public List<Object> getArguments() {
+            return this.arguments;
         }
     }
 

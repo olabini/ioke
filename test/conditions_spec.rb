@@ -84,9 +84,64 @@ CODE
   end
   
   describe "'invokeRestart'" do 
-    it "should fail if no restarts of the name is active"
+    it "should fail if no restarts of the name is active" do 
+      ioke = IokeRuntime.get_runtime()
+      proc do 
+        ioke.evaluate_stream(StringReader.new(<<CODE))
+invokeRestart(:bar)
+CODE
+      end.should raise_error
 
-    it "should invoke the restart" do 
+      proc do 
+        ioke.evaluate_stream(StringReader.new(<<CODE))
+bind(
+  restart(foo, fn()),
+  invokeRestart(:bar))
+CODE
+      end.should raise_error
+
+      proc do 
+        ioke.evaluate_stream(StringReader.new(<<CODE))
+bind(
+  restart(foo, fn()),
+  bind(
+    restart(foo, fn()),
+    invokeRestart(:bar)))
+CODE
+      end.should raise_error
+    end
+
+    it "should fail if no restarts of the restart is active" do 
+      ioke = IokeRuntime.get_runtime()
+      proc do 
+        ioke.evaluate_stream(StringReader.new(<<CODE))
+re = restart(bar, fn)
+invokeRestart(re)
+CODE
+      end.should raise_error
+
+      proc do 
+        ioke.evaluate_stream(StringReader.new(<<CODE))
+re = restart(bar, fn)
+bind(
+  restart(foo, fn),
+  invokeRestart(re))
+CODE
+      end.should raise_error
+
+      proc do 
+        ioke.evaluate_stream(StringReader.new(<<CODE))
+re = restart(bar, fn)
+bind(
+  restart(foo, fn),
+  bind(
+    restart(foo, fn),
+    invokeRestart(re)))
+CODE
+      end.should raise_error
+    end
+    
+    it "should invoke a restart when given the name" do 
       ioke = IokeRuntime.get_runtime()
       ioke.evaluate_stream(StringReader.new(<<CODE)).data.as_java_integer.should == 13
 x = 1
@@ -98,13 +153,79 @@ CODE
       ioke.ground.find_cell(nil, nil, "x").data.as_java_integer.should == 42
     end
 
-    it "should invoke the innermost restart"
-    it "should stay in the current context of the binding of the restart"
-    it "should take arguments and pass these along to the restart"
+    it "should invoke a restart when given the restart" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new(<<CODE)).data.as_java_integer.should == 13
+x = 1
+re = restart(foo, fn(x = 42;13))
+bind(
+  re,
+  invokeRestart(re)
+)
+CODE
+      ioke.ground.find_cell(nil, nil, "x").data.as_java_integer.should == 42
+    end
+    
+    it "should invoke the innermost restart when given the name" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new(<<CODE)).data.as_java_integer.should == 15
+x = 1
+invoked = 0
+bind(
+  restart(foo, fn(invoked++;x = 42;13)),
+  bind(
+    restart(foo, fn(invoked++;x = 43;14)),
+    bind(
+      restart(foo, fn(invoked++;x = 44;15)),
+        invokeRestart(:foo))))
+CODE
+      ioke.ground.find_cell(nil, nil, "x").data.as_java_integer.should == 44
+      ioke.ground.find_cell(nil, nil, "invoked").data.as_java_integer.should == 1
+    end
+
+    it "should invoke the right restart when given an instance" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new(<<CODE)).data.as_java_integer.should == 16
+x = 1
+invoked = 0
+re = restart(foo, fn(invoked++;x=24;16))
+bind(
+  restart(foo, fn(invoked++;x = 42;13)),
+  bind(
+    re,
+    bind(
+      restart(foo, fn(invoked++;x = 43;14)),
+      bind(
+        restart(foo, fn(invoked++;x = 44;15)),
+          invokeRestart(re)))))
+CODE
+      ioke.ground.find_cell(nil, nil, "x").data.as_java_integer.should == 24
+      ioke.ground.find_cell(nil, nil, "invoked").data.as_java_integer.should == 1
+    end
+
+    it "should take arguments and pass these along to the restart" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new(<<CODE)).data.as_java_integer.should == 13
+bind(
+  restart(foo, fn(x, x)),
+  invokeRestart(:foo, 13))
+CODE
+
+      ioke.evaluate_stream(StringReader.new(<<CODE)).data.as_java_integer.should == 13
+bind(
+  restart(foo, fn(x, y, x)),
+  invokeRestart(:foo, 13, 15))
+CODE
+
+      ioke.evaluate_stream(StringReader.new(<<CODE)).data.as_java_integer.should == 15
+bind(
+  restart(foo, fn(x, y, y)),
+  invokeRestart(:foo, 13, 15))
+CODE
+    end
   end
   
   describe "'computeRestarts'" do 
-    
   end
 end
 

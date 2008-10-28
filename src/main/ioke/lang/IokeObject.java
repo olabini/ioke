@@ -300,6 +300,10 @@ public class IokeObject {
         return data.sendTo(this, context, recv, arg1, arg2);
     }
 
+    public Object sendTo(IokeObject context, Object recv, List<Object> args) throws ControlFlow {
+        return data.sendTo(this, context, recv, args);
+    }
+
     public Object evaluateComplete() throws ControlFlow {
         return data.evaluateComplete(this);
     }
