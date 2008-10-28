@@ -52,6 +52,7 @@ public class Runtime {
     public IokeObject lexicalBlock = new IokeObject(this, "A lexical block allows you to delay a computation in a specific lexical context. See DefaultMethod#fn for detailed documentation.", new LexicalBlock(ground));
     public IokeObject mixins = new IokeObject(this, "Mixins is the name space for most mixins in the system. DefaultBehavior is the notable exception.");
     public IokeObject message = new IokeObject(this, "A message is the basic code unit in Ioke.", new Message(this, null, Message.Type.EMPTY));
+    public IokeObject restart = new IokeObject(this, "A Restart is the actual object that contains restart information");
     public Context context = new Context(this, ground, "An activation context.", null, ground);
     public LexicalContext lexicalContext = new LexicalContext(this, ground, "A lexical activation context.", null, ground);
 
@@ -77,11 +78,11 @@ public class Runtime {
         this.err = err;
     }
 
-    public static Runtime getRuntime() {
+    public static Runtime getRuntime() throws ControlFlow {
         return getRuntime(new PrintWriter(java.lang.System.out), new InputStreamReader(java.lang.System.in), new PrintWriter(java.lang.System.err));
     }
 
-    public static Runtime getRuntime(PrintWriter out, Reader in, PrintWriter err) {
+    public static Runtime getRuntime(PrintWriter out, Reader in, PrintWriter err) throws ControlFlow {
         Runtime r = new Runtime(out, in, err);
         r.init();
         return r;
@@ -99,7 +100,7 @@ public class Runtime {
         return out;
     }
 
-    public void init() {
+    public void init() throws ControlFlow {
         Base.init(base);
         DefaultBehavior.init(defaultBehavior);
         Mixins.init(mixins);
@@ -145,6 +146,9 @@ public class Runtime {
         javaMethod.mimics(method);
 
         lexicalBlock.mimics(origin);
+
+        Restart.init(restart);
+        restart.mimics(origin);
 
         addBuiltinScript("benchmark", new Builtin() {
                 public IokeObject load(Runtime runtime, IokeObject context, IokeObject message) throws ControlFlow {
@@ -224,6 +228,10 @@ public class Runtime {
 
     public IokeObject getDefaultBehavior() {
         return this.defaultBehavior;
+    }
+
+    public IokeObject getRestart() {
+        return this.restart;
     }
 
     public IokeObject getNil() {

@@ -118,6 +118,7 @@ describe "core" do
       runtime.ground.find_cell(nil, nil, 'JavaMethod').should == runtime.javaMethod
       runtime.ground.find_cell(nil, nil, 'LexicalBlock').should == runtime.lexicalBlock
       runtime.ground.find_cell(nil, nil, 'Mixins').should == runtime.mixins
+      runtime.ground.find_cell(nil, nil, 'Restart').should == runtime.restart
     end
   end
 
