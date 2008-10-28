@@ -78,6 +78,8 @@ public abstract class IokeData {
     public boolean isNil() {return false;}
     public boolean isTrue() {return true;}
     public boolean isMessage() {return false;}
+    public boolean isSymbol() {return false;}
+
     public IokeData cloneData(IokeObject obj, IokeObject m, IokeObject context) {return this;}
     public IokeObject convertToNumber(IokeObject self, IokeObject m, IokeObject context) {
         throw new ObjectIsNotRightType(m, self, "Number", context);
