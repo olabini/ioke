@@ -131,5 +131,74 @@ describe "assignment" do
       m = parse("foo x = Foo a++").to_string
       m.should == "foo =(x, Foo ++(a))"
     end
+    
+    it "should increment number" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new(%q[x = 0; x++]))
+      ioke.ground.find_cell(nil, nil, "x").data.as_java_integer.should == 1
+    end
+  end
+
+  describe "'--'" do 
+    it "should parse correctly in postfix without space" do 
+      m = parse("a--").to_string
+      m.should == "--(a)"
+    end
+
+    it "should parse correctly with receiver in postfix without space" do 
+      m = parse("foo a--").to_string
+      m.should == "foo --(a)"
+    end
+
+    it "should parse correctly in method call in postfix without space" do 
+      m = parse("foo(a--)").to_string
+      m.should == "foo(--(a))"
+    end
+    
+    it "should parse correctly in postfix with space" do 
+      m = parse("a --").to_string
+      m.should == "--(a)"
+    end
+
+    it "should parse correctly with receiver in postfix with space" do 
+      m = parse("foo a --").to_string
+      m.should == "foo --(a)"
+    end
+
+    it "should parse correctly in method call in postfix with space" do 
+      m = parse("foo(a --)").to_string
+      m.should == "foo(--(a))"
+    end
+    
+    it "should parse correctly as message send" do 
+      m = parse("--(a)").to_string
+      m.should == "--(a)"
+    end
+
+    it "should parse correctly with receiver as message send" do 
+      m = parse("foo --(a)").to_string
+      m.should == "foo --(a)"
+    end
+
+    it "should parse correctly in method call as message send" do 
+      m = parse("foo(--(a))").to_string
+      m.should == "foo(--(a))"
+    end
+    
+    it "should parse correctly when combined with assignment" do 
+      m = parse("foo x = a--").to_string
+      m.should == "foo =(x, --(a))"
+    end
+
+    it "should parse correctly when combined with assignment and receiver" do 
+      m = parse("foo x = Foo a--").to_string
+      m.should == "foo =(x, Foo --(a))"
+    end
+
+    it "should decrement number" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new(%q[x = 1; x--]))
+      ioke.ground.find_cell(nil, nil, "x").data.as_java_integer.should == 0
+    end
   end
 end

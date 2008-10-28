@@ -111,6 +111,13 @@ public class Number extends IokeData {
                 }
             }));
 
+        obj.registerMethod(runtime.newJavaMethod("Returns the predecessor of this number", new JavaMethod("pred") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
+                    return runtime.newNumber(IntNum.sub(Number.value(on),IntNum.one()));
+                }
+            }));
+
         obj.registerMethod(runtime.newJavaMethod("Expects one or two arguments. If one argument is given, executes it as many times as the value of the receiving number. If two arguments are given, the first will be an unevaluated name that will receive the current loop value on each repitition. the iteration length is limited to the positive maximum of a Java int", new JavaMethod("times") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {

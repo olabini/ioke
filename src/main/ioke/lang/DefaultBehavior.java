@@ -198,6 +198,17 @@ public class DefaultBehavior {
                 }
             }));
 
+        obj.registerMethod(runtime.newJavaMethod("expects one argument, which is the unevaluated name of the cell to work on. will retrieve the current value of this cell, call 'pred' to that value and then send = to the current receiver with the name and the resulting value.", new DefaultBehaviorJavaMethod("--") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    IokeObject nameMessage = (IokeObject)Message.getArg1(message);
+                    String name = nameMessage.getName();
+                    Object current = IokeObject.getCell(on, message, context, name);
+                    Object value = runtime.pred.sendTo(context, current);
+                    return runtime.setValue.sendTo(context, on, nameMessage, value);
+                }
+            }));
+
         obj.registerMethod(runtime.newJavaMethod("expects two arguments, the first unevaluated, the second evaluated. assigns the result of evaluating the second argument in the context of the caller, and assigns this result to the name provided by the first argument. the first argument remains unevaluated. the result of the assignment is the value assigned to the name. if the second argument is a method-like object and it's name is not set, that name will be set to the name of the cell.", new DefaultBehaviorJavaMethod("=") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
