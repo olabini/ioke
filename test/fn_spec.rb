@@ -51,7 +51,8 @@ describe "DefaultBehavior" do
 x = Origin mimic
 x do (
   y = 42
-  fn(y+1) call)
+  z = fn(y+1) call)
+x z
 CODE
       result.data.as_java_integer.should == 43
     end
@@ -137,8 +138,8 @@ x = Origin mimic
 x do(
   y = 42
   fn(y = 43) call
-  y
 )
+x y
 CODE
       result.data.as_java_integer.should == 43
 

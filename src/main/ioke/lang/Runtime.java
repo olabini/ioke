@@ -60,6 +60,7 @@ public class Runtime {
     public IokeObject mimic = newMessage("mimic");
     public IokeObject spaceShip = newMessage("<=>");
     public IokeObject succ = newMessage("succ");
+    public IokeObject pred = newMessage("pred");
     public IokeObject setValue = newMessage("=");
     public IokeObject nilMessage = newMessage("nil");
 

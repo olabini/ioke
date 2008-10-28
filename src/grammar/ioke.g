@@ -152,6 +152,7 @@ Equals
 IncDec
     :
         '++'
+    |   '--'
     ;
 
 Comma

@@ -225,6 +225,38 @@ describe "Number" do
     end
   end
 
+  describe "'pred'" do 
+    it "should return the predecessor of 0" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new("0 pred")).data.as_java_integer.should == -1
+    end
+
+    it "should return the predecessor of a small positive number" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new("1 pred")).data.as_java_integer.should == 0
+      ioke.evaluate_stream(StringReader.new("2 pred")).data.as_java_integer.should == 1
+      ioke.evaluate_stream(StringReader.new("12 pred")).data.as_java_integer.should == 11
+      ioke.evaluate_stream(StringReader.new("41 pred")).data.as_java_integer.should == 40
+      ioke.evaluate_stream(StringReader.new("99 pred")).data.as_java_integer.should == 98
+    end
+
+    it "should return the predecessor of a large positive number" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new("465467257434567 pred")).data.as_java_string.should == "465467257434566"
+      ioke.evaluate_stream(StringReader.new("6000000000000000000 pred")).data.as_java_string.should == "5999999999999999999"
+      ioke.evaluate_stream(StringReader.new("65536 pred")).data.as_java_string.should == "65535"
+      ioke.evaluate_stream(StringReader.new("34565464575678567876852464563575468678567835678456865785678 pred")).data.as_java_string.should == "34565464575678567876852464563575468678567835678456865785677"
+    end
+
+    it "should return the predecessor of a negative number" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new("(0-1) pred")).data.as_java_integer.should == -2
+      ioke.evaluate_stream(StringReader.new("(0-2) pred")).data.as_java_integer.should == -3
+      ioke.evaluate_stream(StringReader.new("(0-10) pred")).data.as_java_integer.should == -11
+      ioke.evaluate_stream(StringReader.new("(0-23534634654367) pred")).data.as_java_string.should == "-23534634654368"
+    end
+  end
+
   describe "'times'" do 
     it "should not do anything for a negative number" do 
       ioke = IokeRuntime.get_runtime()
