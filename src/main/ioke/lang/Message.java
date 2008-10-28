@@ -97,7 +97,11 @@ public class Message extends IokeData {
     }
 
     public static boolean isKeyword(Object message) {
-        return ((Message)IokeObject.data(message)).isKeyword();
+        if((message instanceof IokeObject) && (IokeObject.data(message) instanceof Message)) {
+            return ((Message)IokeObject.data(message)).isKeyword();
+        } else {
+            return false;
+        }
     }
 
     public boolean isKeyword() {
@@ -349,6 +353,14 @@ public class Message extends IokeData {
         m.getArguments().clear();
         m.getArguments().add(arg1);
         m.getArguments().add(arg2);
+        return IokeObject.perform(recv, context, m);
+    }
+
+    @Override
+    public Object sendTo(IokeObject self, IokeObject context, Object recv, List<Object> args) throws ControlFlow {
+        IokeObject m = self.allocateCopy(self, context);
+        m.getArguments().clear();
+        m.getArguments().addAll(args);
         return IokeObject.perform(recv, context, m);
     }
 

@@ -431,7 +431,7 @@ public class DefaultBehavior {
                         Runtime.RestartInfo ri = null;
                         if((ri = e.getRestart()).token == restarts) {
                             // Might need to unregister restarts before doing this...
-                            return runtime.call.sendTo(context, runtime.code.sendTo(context, ri.restart));
+                            return runtime.call.sendTo(context, runtime.code.sendTo(context, ri.restart), e.getArguments());
                         } else {
                             throw e;
                         }
@@ -446,6 +446,7 @@ public class DefaultBehavior {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     IokeObject restart = IokeObject.as(message.getEvaluatedArgument(0, context));
                     Runtime.RestartInfo realRestart = null;
+                    List<Object> args = new ArrayList<Object>();
                     if(restart.isSymbol()) {
                         String name = Symbol.getText(restart);
                         realRestart = context.runtime.findActiveRestart(name);
@@ -460,7 +461,12 @@ public class DefaultBehavior {
                         }
                     }
 
-                    throw new ControlFlow.Restart(realRestart);
+                    int argCount = message.getArguments().size();
+                    for(int i = 1;i<argCount;i++) {
+                        args.add(message.getEvaluatedArgument(i, context));
+                    }
+
+                    throw new ControlFlow.Restart(realRestart, args);
                 }
             }));
     }

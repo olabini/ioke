@@ -107,6 +107,10 @@ public abstract class IokeData {
         throw new NotActivatableException(message, "Can't sendTo on " + message, recv, context);
     }
 
+    public Object sendTo(IokeObject message, IokeObject context, Object recv, List<Object> args) throws ControlFlow {
+        throw new NotActivatableException(message, "Can't sendTo on " + message, recv, context);
+    }
+
     public Object evaluateComplete(IokeObject message) throws ControlFlow {
         throw new NotActivatableException(message, "Can't evaluateComplete on " + message, message, message);
     }
