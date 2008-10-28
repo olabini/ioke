@@ -397,5 +397,26 @@ public class DefaultBehavior {
                     return restart;
                 }
             }));
+        obj.registerMethod(runtime.newJavaMethod("will evaluate all arguments, and expects all except for the last to be a Restart. bind will associate these restarts for the duration of the execution of the last argument and then unbind them again. it will return the result of the last argument, or if a restart is executed it will instead return the result of that invocation.", new DefaultBehaviorJavaMethod("bind") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = message.getArguments();
+                    int argCount = args.size();
+                    if(argCount == 0) {
+                        return context.runtime.nil;
+                    }
+
+                    IokeObject code = IokeObject.as(args.get(argCount-1));
+
+                    for(Object o : args.subList(0, argCount-1)) {
+                        IokeObject restart = IokeObject.as(IokeObject.as(o).evaluateCompleteWithoutExplicitReceiver(context, context.getRealContext()));
+                        if(!restart.getKind().equals("Restart")) {
+                            throw new RuntimeException("argument " + o + " did not evaluate to a Restart");
+                        }
+                    }
+
+                    return code.evaluateCompleteWithoutExplicitReceiver(context, context.getRealContext());
+                }
+            }));
     }
 }// DefaultBehavior
