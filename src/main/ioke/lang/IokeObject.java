@@ -124,6 +124,30 @@ public class IokeObject {
         return findCell(m, context, name, new IdentityHashMap<IokeObject, Object>());
     }
 
+    public static boolean isKind(Object on, String kind) {
+        return IokeObject.as(on).isKind(kind, new IdentityHashMap<IokeObject, Object>());
+    }
+
+    private boolean isKind(String kind, IdentityHashMap<IokeObject, Object> visited) {
+        if(visited.containsKey(this)) {
+            return false;
+        }
+
+        if(cells.containsKey("kind") && kind.equals(Text.getText(cells.get("kind")))) {
+            return true;
+        }
+
+        visited.put(this, null);
+            
+        for(IokeObject mimic : mimics) {
+            if(mimic.isKind(kind, visited)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public static Object getCell(Object on, IokeObject m, IokeObject context, String name) {
         return ((IokeObject)on).getCell(m, context, name);
     }
@@ -199,7 +223,9 @@ public class IokeObject {
     }
 
     public void mimics(IokeObject mimic) {
-        this.mimics.add(mimic);
+        if(!this.mimics.contains(mimic)) {
+            this.mimics.add(mimic);
+        }
     }
 
     public void registerMethod(IokeObject m) {

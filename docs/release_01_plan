@@ -15,8 +15,8 @@ Ioke 0.1 should include:
 - squarebracket, curlybracket syntax
 - libraries
  - iik
- - docgen
- - verify/assure/testik (unit testing framework)
+ - dokgen
+ - affirm (verify/assure/affirm/testik) (unit testing framework)
 
 Maybe:
 - IO

@@ -260,7 +260,7 @@ describe "core" do
     it "should have the correct kind" do 
       runtime = IokeRuntime.get_runtime
       result = runtime.ground.find_cell(nil, nil, "Mixins").find_cell(nil, nil, "Comparing").find_cell(nil, nil, "kind")
-      result.data.text.should == 'Comparing'
+      result.data.text.should == 'Mixins Comparing'
     end
   end
 end
