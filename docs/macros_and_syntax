@@ -1,0 +1,8 @@
+
+Macros and Syntax in Ioke
+-------------------------
+
+A macro is more or less a method, except that the arguments are lazy and available for modification. It also includes destructuring on the arguments.
+Something like forwarding is probably _not_ a macro, but something like most of the enumerable methods eed to be macros.
+
+Syntax have the same kind of argument structure as macro, except that the result need to be a message chain. The resulting message chain will be spliced and the original syntax gone from the tree.
