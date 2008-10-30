@@ -76,8 +76,10 @@ expression
         Identifier ('(' commatedExpression? ')')? -> ^(MESSAGE_SEND Identifier commatedExpression?)
     |   operator '(' commatedExpression? ')'  -> ^(MESSAGE_SEND operator commatedExpression?)
     |   '(' commatedExpression? ')'  -> ^(MESSAGE_SEND_EMPTY commatedExpression?)
-    |   '[]'                         -> ^(MESSAGE_SEND_SQUARE)
-    |   '{}'                         -> ^(MESSAGE_SEND_CURLY)
+    |   '[]'                            -> ^(MESSAGE_SEND_SQUARE)
+    |   '[' ']'                         -> ^(MESSAGE_SEND_SQUARE)
+    |   '{}'                            -> ^(MESSAGE_SEND_CURLY)
+    |   '{' '}'                         -> ^(MESSAGE_SEND_CURLY)
     |   '[' commatedExpression ']'  -> ^(MESSAGE_SEND_SQUARE commatedExpression)
     |   '{' commatedExpression '}'  -> ^(MESSAGE_SEND_CURLY commatedExpression)
     |   binaryOperator expression
