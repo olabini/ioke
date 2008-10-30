@@ -273,4 +273,72 @@ CODE
       ioke.evaluate_stream(StringReader.new("\"flurg\" false?")).should == ioke.false
     end
   end
+
+  describe "kind?" do 
+    # This will have to wait until we can remove cells from objects
+    it "should return false if the object doesn't have a kind at all"
+
+    it "should return false if the kind doesn't match" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new("Text kind?(\"nil\")")).should == ioke.false
+      ioke.evaluate_stream(StringReader.new("Text kind?(\"Number\")")).should == ioke.false
+      ioke.evaluate_stream(StringReader.new("\"\" kind?(\"nil\")")).should == ioke.false
+      ioke.evaluate_stream(StringReader.new("\"\" kind?(\"Number\")")).should == ioke.false
+      ioke.evaluate_stream(StringReader.new("\"\" kind?(\"System\")")).should == ioke.false
+    end
+
+    it "should return true if the current object has the kind" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new("Text kind?(\"Text\")")).should == ioke.true
+    end
+    
+    it "should return true if the main mimic has the kind" do 
+      ioke = IokeRuntime.get_runtime()
+
+      ioke.evaluate_stream(StringReader.new("\"\" kind?(\"Text\")")).should == ioke.true
+      ioke.evaluate_stream(StringReader.new("\"\" kind?(\"DefaultBehavior\")")).should == ioke.true
+      ioke.evaluate_stream(StringReader.new("\"\" kind?(\"Base\")")).should == ioke.true
+      ioke.evaluate_stream(StringReader.new("\"\" kind?(\"Ground\")")).should == ioke.true
+      ioke.evaluate_stream(StringReader.new("\"\" kind?(\"Origin\")")).should == ioke.true
+    end
+
+    it "should return true if another mimic has the kind" do 
+      ioke = IokeRuntime.get_runtime()
+
+      ioke.evaluate_stream(StringReader.new("123 kind?(\"Mixins Comparing\")")).should == ioke.true
+    end
+
+    it "should handle a cycle of mimics correctly" do 
+      ioke = IokeRuntime.get_runtime()
+
+      ioke.evaluate_stream(StringReader.new("f = Origin mimic; f mimic!(f); f kind?(\"Origin\")")).should == ioke.true
+      ioke.evaluate_stream(StringReader.new("f = Origin mimic; Origin mimic!(f); f kind?(\"Origin\")")).should == ioke.true
+      ioke.evaluate_stream(StringReader.new("f = Origin mimic; Origin mimic!(f); f kind?(\"DefaultBehavior\")")).should == ioke.true
+    end
+  end
+  
+  describe "mimics?" do 
+    it "should return false if the object doesn't mimic anyone"
+    it "should return false if the object doesn't mimic the argument"
+    it "should return true if the object is the same as the argument"
+    it "should return true if any of the mimics are the argument"
+    it "should handle a cycle of mimics correctly"
+  end
+
+  describe "mimic!" do 
+    it "should add a new mimic to the list of mimics" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new("f = Origin mimic; g = Origin mimic; f mimic!(g)"))
+      ioke.ground.find_cell(nil, nil, "f").get_mimics.size.should == 2
+      ioke.ground.find_cell(nil, nil, "f").get_mimics.get(0).should == ioke.origin
+      ioke.ground.find_cell(nil, nil, "f").get_mimics.get(1).should == ioke.ground.find_cell(nil, nil, "g")
+    end
+
+    it "should not add a mimic that's already in the list"
+    it "should not be able to mimic nil"
+    it "should not be able to mimic true"
+    it "should not be able to mimic false"
+    it "should not be able to mimic symbols"
+    it "should return the receiving object"
+  end
 end

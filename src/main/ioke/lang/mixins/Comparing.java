@@ -18,7 +18,7 @@ import ioke.lang.exceptions.ControlFlow;
 public class Comparing {
     public static void init(IokeObject comparing) {
         Runtime runtime = comparing.runtime;
-        comparing.setKind("Comparing");
+        comparing.setKind("Mixins Comparing");
         comparing.registerMethod(runtime.newJavaMethod("return true if the receiver is less than the argument, otherwise false", new JavaMethod("<") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {

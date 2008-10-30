@@ -1,8 +1,8 @@
 
-1. kind?
+1. kind?, mimics?
 2. lists
-3. rescuer()
-4. handler()
+3. rescue()
+4. handle()
 5. signal!, error!, warning!
 6. create default hierarchy of conditions
 7. change internals to use conditions
