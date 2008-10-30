@@ -1,4 +1,4 @@
-build
+/build
 lib/dist/ioke.jar
 prj.el
 build.properties

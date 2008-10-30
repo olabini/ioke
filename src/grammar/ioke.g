@@ -25,7 +25,7 @@ package ioke.lang.parser;
     throw new MismatchedTokenException(ttype, input);
   }
 
-  public void recoverFromMismatchedSet(IntStream input, RecognitionException e, BitSet follow) throws RecognitionException {
+  public Object recoverFromMismatchedSet(IntStream input, RecognitionException e, BitSet follow) throws RecognitionException {
 			reportError(e);
     throw e;
   }
@@ -85,7 +85,8 @@ expression
     |   binaryOperator expression
     |   unaryOperator
     |   StringLiteral
-    |   NumberLiteral
+//    |   (DecimalLiteral) => DecimalLiteral
+    |   (NumberLiteral) => NumberLiteral
     |   Terminator
     ;
 
@@ -116,6 +117,10 @@ Identifier
         '@'
     |   (Letter|':') (Letter|IDDigit|StrangeChars)*
     ;
+
+//DecimalLiteral
+//    : Digit+ '.' Digit+
+//    ;
 
 NumberLiteral
     : '0'
