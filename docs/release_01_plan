@@ -12,7 +12,7 @@ Ioke 0.1 should include:
 - List
 - Dict
 - Enumerable
-- squarebracket, curlybracket syntax
+* squarebracket, curlybracket syntax
 - libraries
  - iik
  - dokgen
