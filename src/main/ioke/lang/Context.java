@@ -22,7 +22,7 @@ public class Context extends IokeObject {
         this.surroundingContext = surroundingContext;
         
         if(runtime.context != null) {
-            this.mimics(runtime.context);
+            this.mimicsWithoutCheck(runtime.context);
         }
 
         setCell("self", getRealContext());

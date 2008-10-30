@@ -22,7 +22,7 @@ public class LexicalContext extends IokeObject {
         this.surroundingContext = surroundingContext;
 
         if(runtime.lexicalContext != null) {
-            this.mimics(runtime.lexicalContext);
+            this.mimicsWithoutCheck(runtime.lexicalContext);
         }
     }
     

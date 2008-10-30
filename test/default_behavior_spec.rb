@@ -334,11 +334,44 @@ CODE
       ioke.ground.find_cell(nil, nil, "f").get_mimics.get(1).should == ioke.ground.find_cell(nil, nil, "g")
     end
 
-    it "should not add a mimic that's already in the list"
-    it "should not be able to mimic nil"
-    it "should not be able to mimic true"
-    it "should not be able to mimic false"
-    it "should not be able to mimic symbols"
-    it "should return the receiving object"
+    it "should not add a mimic that's already in the list" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new("f = Origin mimic; f mimic!(Origin); f mimic!(Origin); f mimic!(Origin); f mimic!(Origin)"))
+      ioke.ground.find_cell(nil, nil, "f").get_mimics.size.should == 1
+    end
+
+    it "should not be able to mimic nil" do 
+      ioke = IokeRuntime.get_runtime()
+      proc do 
+        ioke.evaluate_stream(StringReader.new("f = Origin mimic; f mimic!(nil)"))
+      end.should raise_error
+    end
+    
+    it "should not be able to mimic true" do 
+      ioke = IokeRuntime.get_runtime()
+      proc do 
+        ioke.evaluate_stream(StringReader.new("f = Origin mimic; f mimic!(true)"))
+      end.should raise_error
+    end
+    
+    it "should not be able to mimic false" do 
+      ioke = IokeRuntime.get_runtime()
+      proc do 
+        ioke.evaluate_stream(StringReader.new("f = Origin mimic; f mimic!(false)"))
+      end.should raise_error
+    end
+    
+    it "should not be able to mimic symbols" do 
+      ioke = IokeRuntime.get_runtime()
+      proc do 
+        ioke.evaluate_stream(StringReader.new("f = Origin mimic; f mimic!(:foo)"))
+      end.should raise_error
+    end
+    
+    it "should return the receiving object" do 
+      ioke = IokeRuntime.get_runtime()
+      result = ioke.evaluate_stream(StringReader.new("f = Origin mimic; f mimic!(Origin)"))
+      result.should == ioke.ground.find_cell(nil, nil, "f")
+    end
   end
 end
