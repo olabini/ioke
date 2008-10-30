@@ -73,11 +73,21 @@ describe "parsing" do
       m.should == "[]"
     end
 
+    it "should be parsed correctly when empty with spaces" do 
+      m = parse("[   ]").to_string
+      m.should == "[]"
+    end
+    
     it "should be parsed correctly with argument" do 
       m = parse("[1]").to_string
       m.should == "[](1)"
     end
 
+    it "should be parsed correctly with argument and spaces" do 
+      m = parse("[   1   ]").to_string
+      m.should == "[](1)"
+    end
+    
     it "should be parsed correctly with arguments" do 
       m = parse("[1, 2]").to_string
       m.should == "[](1, 2)"
@@ -137,11 +147,21 @@ describe "parsing" do
       m.should == "{}"
     end
 
+    it "should be parsed correctly when empty with spaces" do 
+      m = parse("{     }").to_string
+      m.should == "{}"
+    end
+    
     it "should be parsed correctly with argument" do 
       m = parse("{1}").to_string
       m.should == "{}(1)"
     end
 
+    it "should be parsed correctly with argument and spaces" do 
+      m = parse("{ 1     }").to_string
+      m.should == "{}(1)"
+    end
+    
     it "should be parsed correctly with arguments" do 
       m = parse("{1, 2}").to_string
       m.should == "{}(1, 2)"
