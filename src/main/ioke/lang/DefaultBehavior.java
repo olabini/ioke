@@ -499,6 +499,23 @@ public class DefaultBehavior {
                 }
             }));
 
+        obj.registerMethod(runtime.newJavaMethod("Takes one evaluated argument and returns either true or false if this object or one of it's mimics mimics that argument", new DefaultBehaviorJavaMethod("mimics?") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    IokeObject arg = IokeObject.as(message.getEvaluatedArgument(0, context));
+                    return IokeObject.isMimic(on, arg) ? context.runtime._true : context.runtime._false;
+                }
+            }));
+
+
+        obj.registerMethod(runtime.newJavaMethod("Takes one evaluated argument and returns either true or false if this object or one of it's mimics mimics that argument. exactly the same as 'mimics?'", new DefaultBehaviorJavaMethod("is?") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    IokeObject arg = IokeObject.as(message.getEvaluatedArgument(0, context));
+                    return IokeObject.isMimic(on, arg) ? context.runtime._true : context.runtime._false;
+                }
+            }));
+
         obj.registerMethod(runtime.newJavaMethod("Takes one evaluated argument and adds it to the list of mimics for the receiver. the receiver will be returned.", new DefaultBehaviorJavaMethod("mimic!") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {

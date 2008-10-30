@@ -128,6 +128,10 @@ public class IokeObject {
         return IokeObject.as(on).isKind(kind, new IdentityHashMap<IokeObject, Object>());
     }
 
+    public static boolean isMimic(Object on, IokeObject potentialMimic) {
+        return IokeObject.as(on).isMimic(potentialMimic, new IdentityHashMap<IokeObject, Object>());
+    }
+
     private boolean isKind(String kind, IdentityHashMap<IokeObject, Object> visited) {
         if(visited.containsKey(this)) {
             return false;
@@ -141,6 +145,26 @@ public class IokeObject {
             
         for(IokeObject mimic : mimics) {
             if(mimic.isKind(kind, visited)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean isMimic(IokeObject pot, IdentityHashMap<IokeObject, Object> visited) {
+        if(visited.containsKey(this)) {
+            return false;
+        }
+
+        if(this == pot || mimics.contains(pot)) {
+            return true;
+        }
+
+        visited.put(this, null);
+            
+        for(IokeObject mimic : mimics) {
+            if(mimic.isMimic(pot, visited)) {
                 return true;
             }
         }
