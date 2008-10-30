@@ -109,9 +109,67 @@ describe "assignment" do
   end
 
   describe "[]=" do 
+    it "should parse correctly without receiver, with arguments" do 
+      m = parse("[1] = 12").to_string
+      m.should == "=([](1), 12)"
+    end
+    
+    it "should parse correctly with receiver without spaces and arguments" do 
+      m = parse("foo[1] = 12").to_string
+      m.should == "foo =([](1), 12)"
+    end
+
+    it "should parse correctly with receiver without even more spaces and arguments" do 
+      m = parse("foo[1]=12").to_string
+      m.should == "foo =([](1), 12)"
+    end
+
+    it "should parse correctly with receiver with spaces and arguments" do 
+      m = parse("foo [1] = 12").to_string
+      m.should == "foo =([](1), 12)"
+    end
+    
+    it "should parse correctly with complicated expression on left hand side" do 
+      m = parse("foo[1] = 12+13+53+(x f(123))").to_string
+      m.should == "foo =([](1), 12 +(13 +(53 +(x f(123)))))"
+    end
+
+    it "should parse correctly with complicated expression on left hand side" do 
+      m = parse("foo[1] = 12+13+53+(x f(123))\n1").to_string
+      m.should == "foo =([](1), 12 +(13 +(53 +(x f(123))))) ;\n1"
+    end
   end
 
   describe "{}=" do 
+    it "should parse correctly without receiver, with arguments" do 
+      m = parse("{1} = 12").to_string
+      m.should == "=({}(1), 12)"
+    end
+    
+    it "should parse correctly with receiver without spaces and arguments" do 
+      m = parse("foo{1} = 12").to_string
+      m.should == "foo =({}(1), 12)"
+    end
+
+    it "should parse correctly with receiver without even more spaces and arguments" do 
+      m = parse("foo{1}=12").to_string
+      m.should == "foo =({}(1), 12)"
+    end
+
+    it "should parse correctly with receiver with spaces and arguments" do 
+      m = parse("foo {1} = 12").to_string
+      m.should == "foo =({}(1), 12)"
+    end
+    
+    it "should parse correctly with complicated expression on left hand side" do 
+      m = parse("foo{1} = 12+13+53+(x f(123))").to_string
+      m.should == "foo =({}(1), 12 +(13 +(53 +(x f(123)))))"
+    end
+
+    it "should parse correctly with complicated expression on left hand side" do 
+      m = parse("foo{1} = 12+13+53+(x f(123))\n1").to_string
+      m.should == "foo =({}(1), 12 +(13 +(53 +(x f(123))))) ;\n1"
+    end
   end
   
   describe "'++'" do 
