@@ -503,7 +503,7 @@ public class DefaultBehavior {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     IokeObject newMimic = IokeObject.as(message.getEvaluatedArgument(0, context));
-                    IokeObject.as(on).mimics(newMimic);
+                    IokeObject.as(on).mimics(newMimic, message, context);
                     return on;
                 }
             }));

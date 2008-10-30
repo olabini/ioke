@@ -14,9 +14,7 @@ public class Base {
                                                        new JavaMethod("mimic") {
                                                            @Override
                                                            public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
-                                                               IokeObject clone = IokeObject.as(on).allocateCopy(message, context);
-                                                               clone.mimics(IokeObject.as(on));
-                                                               return clone;
+                                                               return IokeObject.as(on).mimic(message, context);
                                                            }}));
     }
 }// Base

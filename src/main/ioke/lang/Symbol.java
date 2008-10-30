@@ -27,7 +27,8 @@ public class Symbol extends IokeData {
             }));
     }
 
-    public IokeData cloneData(IokeObject obj, IokeObject m, IokeObject context) {
+    @Override
+    public void checkMimic(IokeObject obj, IokeObject m, IokeObject context) {
         throw new CantMimicOddballObject(m, obj, context);
     }
 
@@ -42,7 +43,7 @@ public class Symbol extends IokeData {
     @Override
     public boolean isSymbol() {
         return true;
-}
+    }
     
     @Override
     public IokeObject convertToText(IokeObject self, IokeObject m, IokeObject context) {

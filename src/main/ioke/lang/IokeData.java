@@ -22,7 +22,8 @@ public abstract class IokeData {
                 obj.setKind("nil");
             }
 
-            public IokeData cloneData(IokeObject obj, IokeObject m, IokeObject context) {
+            @Override
+            public void checkMimic(IokeObject obj, IokeObject m, IokeObject context) {
                 throw new CantMimicOddballObject(m, obj, context);
             }
 
@@ -45,7 +46,8 @@ public abstract class IokeData {
                 obj.setKind("false");
             }
 
-            public IokeData cloneData(IokeObject obj, IokeObject m, IokeObject context) {
+            @Override
+            public void checkMimic(IokeObject obj, IokeObject m, IokeObject context) {
                 throw new CantMimicOddballObject(m, obj, context);
             }
 
@@ -64,7 +66,8 @@ public abstract class IokeData {
                 obj.setKind("true");
             }
 
-            public IokeData cloneData(IokeObject obj, IokeObject m, IokeObject context) {
+            @Override
+            public void checkMimic(IokeObject obj, IokeObject m, IokeObject context) {
                 throw new CantMimicOddballObject(m, obj, context);
             }
 
@@ -74,7 +77,9 @@ public abstract class IokeData {
             }
         };
 
+
     public void init(IokeObject obj) {}
+    public void checkMimic(IokeObject obj, IokeObject m, IokeObject context) {}
     public boolean isNil() {return false;}
     public boolean isTrue() {return true;}
     public boolean isMessage() {return false;}

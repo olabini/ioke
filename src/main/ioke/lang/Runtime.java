@@ -122,37 +122,37 @@ public class Runtime {
         context.init();
         lexicalContext.init();
 
-        ground.mimics(base);
-        ground.mimics(defaultBehavior);
-        origin.mimics(ground);
+        ground.mimicsWithoutCheck(base);
+        ground.mimicsWithoutCheck(defaultBehavior);
+        origin.mimicsWithoutCheck(ground);
 
-        system.mimics(base);
-        system.mimics(defaultBehavior);
-        runtime.mimics(defaultBehavior);
+        system.mimicsWithoutCheck(base);
+        system.mimicsWithoutCheck(defaultBehavior);
+        runtime.mimicsWithoutCheck(defaultBehavior);
 
-        nil.mimics(origin);
-        _true.mimics(origin);
-        _false.mimics(origin);
-        text.mimics(origin);
-        symbol.mimics(origin);
-        number.mimics(origin);
+        nil.mimicsWithoutCheck(origin);
+        _true.mimicsWithoutCheck(origin);
+        _false.mimicsWithoutCheck(origin);
+        text.mimicsWithoutCheck(origin);
+        symbol.mimicsWithoutCheck(origin);
+        number.mimicsWithoutCheck(origin);
 
-        message.mimics(origin);
-        method.mimics(origin);
+        message.mimicsWithoutCheck(origin);
+        method.mimicsWithoutCheck(origin);
         
         method.init();
         defaultMethod.init();
         javaMethod.init();
         lexicalBlock.init();
 
-        method.mimics(origin);
-        defaultMethod.mimics(method);
-        javaMethod.mimics(method);
+        method.mimicsWithoutCheck(origin);
+        defaultMethod.mimicsWithoutCheck(method);
+        javaMethod.mimicsWithoutCheck(method);
 
-        lexicalBlock.mimics(origin);
+        lexicalBlock.mimicsWithoutCheck(origin);
 
         Restart.init(restart);
-        restart.mimics(origin);
+        restart.mimicsWithoutCheck(origin);
 
         addBuiltinScript("benchmark", new Builtin() {
                 public IokeObject load(Runtime runtime, IokeObject context, IokeObject message) throws ControlFlow {
@@ -316,28 +316,28 @@ public class Runtime {
 
     public IokeObject newText(String text) {
         IokeObject obj = this.text.allocateCopy(null, null);
-        obj.mimics(this.text);
+        obj.mimicsWithoutCheck(this.text);
         obj.data = new Text(text);
         return obj;
     }
 
     public IokeObject newNumber(String number) {
         IokeObject obj = this.number.allocateCopy(null, null);
-        obj.mimics(this.number);
+        obj.mimicsWithoutCheck(this.number);
         obj.data = new Number(number);
         return obj;
     }
 
     public IokeObject newNumber(gnu.math.IntNum number) {
         IokeObject obj = this.number.allocateCopy(null, null);
-        obj.mimics(this.number);
+        obj.mimicsWithoutCheck(this.number);
         obj.data = new Number(number);
         return obj;
     }
 
     public IokeObject newNumber(int number) {
         IokeObject obj = this.number.allocateCopy(null, null);
-        obj.mimics(this.number);
+        obj.mimicsWithoutCheck(this.number);
         obj.data = new Number(number);
         return obj;
     }
@@ -345,7 +345,7 @@ public class Runtime {
     public IokeObject newMethod(String doc, IokeObject tp, Method impl) {
         IokeObject obj = tp.allocateCopy(null, null);
         obj.documentation = doc;
-        obj.mimics(tp);
+        obj.mimicsWithoutCheck(tp);
         obj.data = impl;
         return obj;
     }
@@ -360,14 +360,14 @@ public class Runtime {
 
     public IokeObject createMessage(Message m) {
         IokeObject obj = this.message.allocateCopy(null, null);
-        obj.mimics(this.message);
+        obj.mimicsWithoutCheck(this.message);
         obj.data = m;
         return obj;
     }
 
     public IokeObject newLexicalBlock(IokeObject tp, LexicalBlock impl) {
         IokeObject obj = tp.allocateCopy(null, null);
-        obj.mimics(tp);
+        obj.mimicsWithoutCheck(tp);
         obj.data = impl;
         return obj;
     }
@@ -378,7 +378,7 @@ public class Runtime {
             IokeObject obj = symbolTable.get(name);
             if(obj == null) {
                 obj = new IokeObject(this, this.symbol.documentation, new Symbol(name));
-                obj.mimics(this.symbol);
+                obj.mimicsWithoutCheck(this.symbol);
                 symbolTable.put(name, obj);
             }
             return obj;

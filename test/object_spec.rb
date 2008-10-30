@@ -11,8 +11,8 @@ describe IokeObject do
     it "should handle recursive mimicing with no cell" do 
       first = IokeObject.new(@runtime, "")
       second = IokeObject.new(@runtime, "")
-      first.mimics(second)
-      second.mimics(first)
+      first.mimics_without_check(second)
+      second.mimics_without_check(first)
 
       first.find_cell(nil, nil, "hoho").should == @runtime.get_nul
       second.find_cell(nil, nil, "hoho").should == @runtime.get_nul
@@ -21,8 +21,8 @@ describe IokeObject do
     it "should handle recursive mimicing with a cell" do 
       first = IokeObject.new(@runtime, "")
       second = IokeObject.new(@runtime, "")
-      first.mimics(second)
-      second.mimics(first)
+      first.mimics_without_check(second)
+      second.mimics_without_check(first)
       
       first.register_cell("one", second)
       second.register_cell("two", first)

@@ -116,7 +116,7 @@ public class IokeObject {
 
     public IokeObject mimic(IokeObject message, IokeObject context) {
         IokeObject clone = allocateCopy(message, context);
-        clone.mimics(this);
+        clone.mimics(this, message, context);
         return clone;
     }
 
@@ -222,7 +222,14 @@ public class IokeObject {
         return mimics;
     }
 
-    public void mimics(IokeObject mimic) {
+    public void mimicsWithoutCheck(IokeObject mimic) {
+        if(!this.mimics.contains(mimic)) {
+            this.mimics.add(mimic);
+        }
+    }
+
+    public void mimics(IokeObject mimic, IokeObject message, IokeObject context) {
+        mimic.data.checkMimic(mimic, message, context);
         if(!this.mimics.contains(mimic)) {
             this.mimics.add(mimic);
         }
