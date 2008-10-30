@@ -275,9 +275,6 @@ CODE
   end
 
   describe "kind?" do 
-    # This will have to wait until we can remove cells from objects
-    it "should return false if the object doesn't have a kind at all"
-
     it "should return false if the kind doesn't match" do 
       ioke = IokeRuntime.get_runtime()
       ioke.evaluate_stream(StringReader.new("Text kind?(\"nil\")")).should == ioke.false
@@ -318,13 +315,79 @@ CODE
   end
   
   describe "mimics?" do 
-    it "should return false if the object doesn't mimic anyone"
-    it "should return false if the object doesn't mimic the argument"
-    it "should return true if the object is the same as the argument"
-    it "should return true if any of the mimics are the argument"
-    it "should handle a cycle of mimics correctly"
+    it "should return false if the object doesn't mimic the argument" do 
+      ioke = IokeRuntime.get_runtime()
+
+      ioke.evaluate_stream(StringReader.new("f = Origin mimic; Origin mimics?(f)")).should == ioke.false
+      ioke.evaluate_stream(StringReader.new("f = Origin mimic; DefaultBehavior mimics?(f)")).should == ioke.false
+      ioke.evaluate_stream(StringReader.new("f = Origin mimic; 12 mimics?(f)")).should == ioke.false
+      ioke.evaluate_stream(StringReader.new("f = Origin mimic; f mimics?(12)")).should == ioke.false
+    end
+    
+    it "should return true if the object is the same as the argument" do 
+      ioke = IokeRuntime.get_runtime()
+
+      ioke.evaluate_stream(StringReader.new("f = Origin mimic; f mimics?(f)")).should == ioke.true
+      ioke.evaluate_stream(StringReader.new("Origin mimics?(Origin)")).should == ioke.true
+    end
+
+    it "should return true if any of the mimics are the argument" do 
+      ioke = IokeRuntime.get_runtime()
+
+      ioke.evaluate_stream(StringReader.new("x = Origin mimic; y = x mimic; z = y mimic; z mimics?(Origin)")).should == ioke.true
+      ioke.evaluate_stream(StringReader.new("x = Origin mimic; y = x mimic; z = y mimic; z mimics?(x)")).should == ioke.true
+      ioke.evaluate_stream(StringReader.new("x = Origin mimic; y = x mimic; z = y mimic; z mimics?(y)")).should == ioke.true
+      ioke.evaluate_stream(StringReader.new("x = Origin mimic; y = x mimic; z = y mimic; z mimics?(z)")).should == ioke.true
+      ioke.evaluate_stream(StringReader.new("f = Origin mimic; Origin mimic!(f); x = Origin mimic; y = x mimic; z = y mimic; z mimics?(f)")).should == ioke.true
+    end
+    
+    it "should handle a cycle of mimics correctly" do 
+      ioke = IokeRuntime.get_runtime()
+
+      ioke.evaluate_stream(StringReader.new("x = Origin mimic; y = x mimic; z = y mimic; Origin mimic!(z); z mimics?(Number)")).should == ioke.false
+      ioke.evaluate_stream(StringReader.new("x = Origin mimic; y = x mimic; z = y mimic; Origin mimic!(z); z mimics?(Origin)")).should == ioke.true
+      ioke.evaluate_stream(StringReader.new("x = Origin mimic; y = x mimic; z = y mimic; Origin mimic!(z); z mimics?(Base)")).should == ioke.true
+      ioke.evaluate_stream(StringReader.new("x = Origin mimic; x mimic!(x); x mimics?(Origin)")).should == ioke.true
+    end
   end
 
+  describe "is?" do 
+    it "should return false if the object doesn't mimic the argument" do 
+      ioke = IokeRuntime.get_runtime()
+
+      ioke.evaluate_stream(StringReader.new("f = Origin mimic; Origin is?(f)")).should == ioke.false
+      ioke.evaluate_stream(StringReader.new("f = Origin mimic; DefaultBehavior is?(f)")).should == ioke.false
+      ioke.evaluate_stream(StringReader.new("f = Origin mimic; 12 is?(f)")).should == ioke.false
+      ioke.evaluate_stream(StringReader.new("f = Origin mimic; f is?(12)")).should == ioke.false
+    end
+    
+    it "should return true if the object is the same as the argument" do 
+      ioke = IokeRuntime.get_runtime()
+
+      ioke.evaluate_stream(StringReader.new("f = Origin mimic; f is?(f)")).should == ioke.true
+      ioke.evaluate_stream(StringReader.new("Origin is?(Origin)")).should == ioke.true
+    end
+
+    it "should return true if any of the mimics are the argument" do 
+      ioke = IokeRuntime.get_runtime()
+
+      ioke.evaluate_stream(StringReader.new("x = Origin mimic; y = x mimic; z = y mimic; z is?(Origin)")).should == ioke.true
+      ioke.evaluate_stream(StringReader.new("x = Origin mimic; y = x mimic; z = y mimic; z is?(x)")).should == ioke.true
+      ioke.evaluate_stream(StringReader.new("x = Origin mimic; y = x mimic; z = y mimic; z is?(y)")).should == ioke.true
+      ioke.evaluate_stream(StringReader.new("x = Origin mimic; y = x mimic; z = y mimic; z is?(z)")).should == ioke.true
+      ioke.evaluate_stream(StringReader.new("f = Origin mimic; Origin mimic!(f); x = Origin mimic; y = x mimic; z = y mimic; z is?(f)")).should == ioke.true
+    end
+    
+    it "should handle a cycle of mimics correctly" do 
+      ioke = IokeRuntime.get_runtime()
+
+      ioke.evaluate_stream(StringReader.new("x = Origin mimic; y = x mimic; z = y mimic; Origin mimic!(z); z is?(Number)")).should == ioke.false
+      ioke.evaluate_stream(StringReader.new("x = Origin mimic; y = x mimic; z = y mimic; Origin mimic!(z); z is?(Origin)")).should == ioke.true
+      ioke.evaluate_stream(StringReader.new("x = Origin mimic; y = x mimic; z = y mimic; Origin mimic!(z); z is?(Base)")).should == ioke.true
+      ioke.evaluate_stream(StringReader.new("x = Origin mimic; x mimic!(x); x is?(Origin)")).should == ioke.true
+    end
+  end
+  
   describe "mimic!" do 
     it "should add a new mimic to the list of mimics" do 
       ioke = IokeRuntime.get_runtime()
