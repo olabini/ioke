@@ -205,6 +205,9 @@ public class Message extends IokeData {
             case iokeParser.MESSAGE_SEND_EMPTY:
                 m = new Message(runtime, "");
                 break;
+            case iokeParser.MESSAGE_SEND_SQUARE:
+                m = new Message(runtime, "[]");
+                break;
             case iokeParser.MESSAGE_SEND:
                 m = new Message(runtime, tree.getChild(0).getText());
                 argStart = 1;
