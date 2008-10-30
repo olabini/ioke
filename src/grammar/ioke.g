@@ -9,6 +9,7 @@ tokens {
     MESSAGE_SEND;
     MESSAGE_SEND_EMPTY;
     MESSAGE_SEND_SQUARE;
+    MESSAGE_SEND_CURLY;
 }
 
 @lexer::header {
@@ -76,7 +77,9 @@ expression
     |   operator '(' commatedExpression? ')'  -> ^(MESSAGE_SEND operator commatedExpression?)
     |   '(' commatedExpression? ')'  -> ^(MESSAGE_SEND_EMPTY commatedExpression?)
     |   '[]'                         -> ^(MESSAGE_SEND_SQUARE)
+    |   '{}'                         -> ^(MESSAGE_SEND_CURLY)
     |   '[' commatedExpression ']'  -> ^(MESSAGE_SEND_SQUARE commatedExpression)
+    |   '{' commatedExpression '}'  -> ^(MESSAGE_SEND_CURLY commatedExpression)
     |   binaryOperator expression
     |   unaryOperator
     |   StringLiteral
@@ -90,7 +93,8 @@ operator
     |   RegularBinaryOperator
     |   Equals
     |   IncDec
-    |   Brackets
+    |   SquareBrackets
+    |   CurlyBrackets
     ;
 
 binaryOperator
@@ -159,9 +163,14 @@ IncDec
     |   '--'
     ;
 
-Brackets
+SquareBrackets
     : 
         '[]'
+    ;
+
+CurlyBrackets
+    : 
+        '{}'
     ;
 
 Comma

@@ -116,6 +116,70 @@ describe "parsing" do
     end
   end
   
+  describe "curly brackets" do 
+    it "should be parsed correctly in regular message passing syntax" do 
+      m = parse("{}()").to_string
+      m.should == "{}"
+    end
+
+    it "should be parsed correctly in regular message passing syntax with arguments" do 
+      m = parse("{}(123)").to_string
+      m.should == "{}(123)"
+    end
+
+    it "should be parsed correctly in regular message passing syntax with arguments and receiver" do 
+      m = parse("foo bar(1) {}(123)").to_string
+      m.should == "foo bar(1) {}(123)"
+    end
+    
+    it "should be parsed correctly when empty" do 
+      m = parse("{}").to_string
+      m.should == "{}"
+    end
+
+    it "should be parsed correctly with argument" do 
+      m = parse("{1}").to_string
+      m.should == "{}(1)"
+    end
+
+    it "should be parsed correctly with arguments" do 
+      m = parse("{1, 2}").to_string
+      m.should == "{}(1, 2)"
+    end
+
+    it "should be parsed correctly with terminators inside" do 
+      m = parse("{1, \nfoo(24)}").to_string
+      m.should == "{}(1, foo(24))"
+    end
+
+    it "should be parsed correctly directly after an identifier" do 
+      m = parse("foo{1, 2}").to_string
+      m.should == "foo {}(1, 2)"
+    end
+
+    it "should be parsed correctly with a space directly after an identifier" do 
+      m = parse("foo {1, 2}").to_string
+      m.should == "foo {}(1, 2)"
+    end
+
+    it "should be parsed correctly inside a function application" do 
+      m = parse("foo({1, 2})").to_string
+      m.should == "foo({}(1, 2))"
+    end
+
+    it "should not parse correctly when mismatched" do 
+      proc do 
+        parse("foo({1, 2)}")
+      end.should raise_error
+    end
+
+    it "should not parse correctly when missing end" do 
+      proc do 
+        parse("{1, 2")
+      end.should raise_error
+    end
+  end
+
   describe "identifiers" do 
     it "should be allowed to begin with colon" do 
       m = parse(":foo").to_string
