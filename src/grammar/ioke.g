@@ -152,6 +152,9 @@ RegularBinaryOperator
     :
         '-'
     |   '+'
+    |   '=>'
+    |   '...'
+    |   '..'
     ;
 
 Equals
