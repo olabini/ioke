@@ -1,4 +1,4 @@
-- decimal numbers
+- decimal numbers, with scientific part
 - hex numbers
 - regular expressions?
 
@@ -7,8 +7,6 @@ currently unused, possible syntax:
 -  $
 -  @@
 -  ~
-
-If dot gets used
 -  #
 
 unary prefix:

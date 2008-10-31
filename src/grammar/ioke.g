@@ -120,11 +120,11 @@ Identifier
 
 NumberLiteral
     : '0' (
-            {(input.LA(2)>='0')&&(input.LA(2)<='9')}?=> FloatWithLeadingDot
+            {(input.LA(2)>='0')&&(input.LA(2)<='9')}?=> (FloatWithLeadingDot)
         |
         )
     | NonZeroDecimal (
-            {(input.LA(2)>='0')&&(input.LA(2)<='9')}?=> FloatWithLeadingDot
+            {(input.LA(2)>='0')&&(input.LA(2)<='9')}?=> (FloatWithLeadingDot)
         |
         )
     ;

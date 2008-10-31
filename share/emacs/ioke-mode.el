@@ -26,7 +26,7 @@
 
 ;;; Code:
 
-(defconst ioke-version "0.1"
+(defconst ioke-version "0"
   "ioke mode version number")
 
 (defconst ioke-interpreter-executable "ioke"
