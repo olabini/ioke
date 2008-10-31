@@ -318,6 +318,10 @@ public class IokeObject {
         return data.toString(this);
     }
 
+    public static String representation(Object o) {
+        return IokeObject.as(o).representation();
+    }
+
     public String representation() {
         String s = data.representation(this);
         if(s != null) {
