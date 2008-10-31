@@ -419,6 +419,28 @@ public class Message extends IokeData {
     }
 
     @Override
+    public Object evaluateCompleteWithReceiver(IokeObject self, IokeObject ctx, Object ground, Object receiver) throws ControlFlow {
+        Object current = receiver;
+        Object lastReal = self.runtime.getNil();
+        IokeObject m = self;
+        while(m != null) {
+            String name = m.getName();
+
+            if(name.equals(".")) {
+                current = ctx;
+            } else if(name.length() > 0 && name.charAt(0) == ':') {
+                current = self.runtime.getSymbol(name.substring(1));
+                lastReal = current;
+            } else {
+                current = m.sendTo(ctx, current);
+                lastReal = current;
+            }
+            m = Message.next(m);
+        }
+        return lastReal;
+    }
+
+    @Override
     public Object evaluateCompleteWithoutExplicitReceiver(IokeObject self, IokeObject ctx, Object ground) throws ControlFlow {
         return evaluateCompleteWith(self, ctx, ctx);
     }

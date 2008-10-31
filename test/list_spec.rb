@@ -319,7 +319,40 @@ describe "List" do
   end
   
   describe "'each'" do 
-    it "should have tests"
+    it "should not do anything for an empty list" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("x = 0. [] each(. x++). x").data.as_java_integer.should == 0
+    end
+    
+    it "should be possible to just give it a message chain, that will be invoked on each object" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("y = []. x = method(Ground y << self). [1,2,3] each(x). y == [1,2,3]").should == ioke.true
+      ioke.evaluate_string("x = 0. [1,2,3] each(nil. x++). x == 3").should == ioke.true
+    end
+    
+    it "should be possible to give it an argument name, and code" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("y = []. [1,2,3] each(x, y<<x). y == [1,2,3]").should == ioke.true
+    end
+
+    it "should return the object" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("y = [1,2,3]. (y each(x, x)) == y").should == ioke.true
+    end
+    
+    it "should establish a lexical context when invoking the methods. this context will be the same for all invocations." do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("[1,2,3] each(x, blarg=32)")
+      ioke.ground.find_cell(nil, nil, "x").should == ioke.nul
+      ioke.ground.find_cell(nil, nil, "blarg").should == ioke.nul
+      ioke.evaluate_string("x=14. [1,2,3] each(x, blarg=32)")
+      ioke.ground.find_cell(nil, nil, "x").data.as_java_integer.should == 14
+    end
+
+    it "should yield lists if running over a list of lists" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("y = []. [[1],[2],[3]] each(x, y<<x). y == [[1],[2],[3]]").should == ioke.true
+    end
   end
 
   describe "'remove!'" do 
