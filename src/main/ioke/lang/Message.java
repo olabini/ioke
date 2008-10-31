@@ -153,6 +153,7 @@ public class Message extends IokeData {
     }
 
     public static IokeObject fromTree(Runtime runtime, Tree tree) {
+        //        System.err.println(" fromTree(" + tree.toStringTree() + ")");
         Message m = null;
         int argStart = 0;
         if(!tree.isNil()) {
