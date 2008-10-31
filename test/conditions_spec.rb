@@ -253,7 +253,7 @@ CODE
       ioke.evaluate_stream(StringReader.new(<<CODE)).data.as_java_integer.should == 13
 x = 1
 bind(
-  restart(foo, fn(x = 42;13)),
+  restart(foo, fn(x = 42. 13)),
   invokeRestart(:foo)
 )
 CODE
@@ -264,7 +264,7 @@ CODE
       ioke = IokeRuntime.get_runtime()
       ioke.evaluate_stream(StringReader.new(<<CODE)).data.as_java_integer.should == 13
 x = 1
-re = restart(foo, fn(x = 42;13))
+re = restart(foo, fn(x = 42. 13))
 bind(
   re,
   invokeRestart(re)
@@ -279,11 +279,11 @@ CODE
 x = 1
 invoked = 0
 bind(
-  restart(foo, fn(invoked++;x = 42;13)),
+  restart(foo, fn(invoked++. x = 42. 13)),
   bind(
-    restart(foo, fn(invoked++;x = 43;14)),
+    restart(foo, fn(invoked++. x = 43. 14)),
     bind(
-      restart(foo, fn(invoked++;x = 44;15)),
+      restart(foo, fn(invoked++. x = 44. 15)),
         invokeRestart(:foo))))
 CODE
       ioke.ground.find_cell(nil, nil, "x").data.as_java_integer.should == 44
@@ -295,15 +295,15 @@ CODE
       ioke.evaluate_stream(StringReader.new(<<CODE)).data.as_java_integer.should == 16
 x = 1
 invoked = 0
-re = restart(foo, fn(invoked++;x=24;16))
+re = restart(foo, fn(invoked++. x=24. 16))
 bind(
-  restart(foo, fn(invoked++;x = 42;13)),
+  restart(foo, fn(invoked++. x = 42. 13)),
   bind(
     re,
     bind(
-      restart(foo, fn(invoked++;x = 43;14)),
+      restart(foo, fn(invoked++. x = 43. 14)),
       bind(
-        restart(foo, fn(invoked++;x = 44;15)),
+        restart(foo, fn(invoked++. x = 44. 15)),
           invokeRestart(re)))))
 CODE
       ioke.ground.find_cell(nil, nil, "x").data.as_java_integer.should == 24

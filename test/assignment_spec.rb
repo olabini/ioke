@@ -19,7 +19,7 @@ describe "assignment" do
 
   it "should set kind when assigned to a name inside something else" do 
     ioke = IokeRuntime.get_runtime()
-    ioke.evaluate_stream(StringReader.new(%q[Foo = Origin mimic; Foo Bar = Origin mimic]))
+    ioke.evaluate_stream(StringReader.new(%q[Foo = Origin mimic. Foo Bar = Origin mimic]))
     ioke.ground.find_cell(nil, nil, "Foo").
       find_cell(nil, nil, "Bar").
       find_cell(nil, nil, "kind").
@@ -28,14 +28,14 @@ describe "assignment" do
 
   it "should not set kind when it already has a kind" do 
     ioke = IokeRuntime.get_runtime()
-    ioke.evaluate_stream(StringReader.new(%q[Foo = Origin mimic; Bar = Foo]))
+    ioke.evaluate_stream(StringReader.new(%q[Foo = Origin mimic. Bar = Foo]))
     ioke.ground.find_cell(nil, nil, "Foo").find_cell(nil, nil, "kind").data.text.should == "Foo"
     ioke.ground.find_cell(nil, nil, "Bar").find_cell(nil, nil, "kind").data.text.should == "Foo"
   end
   
   it "should not set kind when assigning to something with a lower case letter" do 
     ioke = IokeRuntime.get_runtime()
-    ioke.evaluate_stream(StringReader.new(%q[foo = Origin mimic; bar = foo]))
+    ioke.evaluate_stream(StringReader.new(%q[foo = Origin mimic. bar = foo]))
     ioke.ground.find_cell(nil, nil, "foo").find_cell(nil, nil, "kind").data.text.should == "Origin"
     ioke.ground.find_cell(nil, nil, "bar").find_cell(nil, nil, "kind").data.text.should == "Origin"
   end
@@ -73,7 +73,7 @@ describe "assignment" do
 
   it "should work with something on the next line too" do 
     m = parse("count = count + 1\ncount println").to_string
-    m.should == "=(count, count +(1)) ;\ncount println"
+    m.should == "=(count, count +(1)) .\ncount println"
   end
 
   describe "()=" do 
@@ -104,7 +104,7 @@ describe "assignment" do
 
     it "should parse correctly with complicated expression on left hand side" do 
       m = parse("foo(1) = 12+13+53+(x f(123))\n1").to_string
-      m.should == "=(foo(1), 12 +(13 +(53 +(x f(123))))) ;\n1"
+      m.should == "=(foo(1), 12 +(13 +(53 +(x f(123))))) .\n1"
     end
   end
 
@@ -136,7 +136,7 @@ describe "assignment" do
 
     it "should parse correctly with complicated expression on left hand side" do 
       m = parse("foo[1] = 12+13+53+(x f(123))\n1").to_string
-      m.should == "foo =([](1), 12 +(13 +(53 +(x f(123))))) ;\n1"
+      m.should == "foo =([](1), 12 +(13 +(53 +(x f(123))))) .\n1"
     end
   end
 
@@ -168,7 +168,7 @@ describe "assignment" do
 
     it "should parse correctly with complicated expression on left hand side" do 
       m = parse("foo{1} = 12+13+53+(x f(123))\n1").to_string
-      m.should == "foo =({}(1), 12 +(13 +(53 +(x f(123))))) ;\n1"
+      m.should == "foo =({}(1), 12 +(13 +(53 +(x f(123))))) .\n1"
     end
   end
   
@@ -230,7 +230,7 @@ describe "assignment" do
     
     it "should increment number" do 
       ioke = IokeRuntime.get_runtime()
-      ioke.evaluate_stream(StringReader.new(%q[x = 0; x++]))
+      ioke.evaluate_stream(StringReader.new(%q[x = 0. x++]))
       ioke.ground.find_cell(nil, nil, "x").data.as_java_integer.should == 1
     end
   end
@@ -293,7 +293,7 @@ describe "assignment" do
 
     it "should decrement number" do 
       ioke = IokeRuntime.get_runtime()
-      ioke.evaluate_stream(StringReader.new(%q[x = 1; x--]))
+      ioke.evaluate_stream(StringReader.new(%q[x = 1. x--]))
       ioke.ground.find_cell(nil, nil, "x").data.as_java_integer.should == 0
     end
   end

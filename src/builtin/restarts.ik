@@ -20,5 +20,5 @@ DefaultBehavior restartx = method(
   test: fn(c, true),
   block nil,
 
-  if(block nil?, block = name; name = nil)
+  if(block nil?, block = name. name = nil)
   ConditionX Restart create(name, report, test, block))

@@ -14,7 +14,7 @@ describe "Extensions" do
         sw = StringWriter.new(20)
         out = PrintWriter.new(sw)
         ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
-        ioke.evaluate_stream(StringReader.new(%q[use("benchmark");iterations = 0]))
+        ioke.evaluate_stream(StringReader.new(%q[use("benchmark").iterations = 0]))
         ioke.evaluate_stream(StringReader.new(%q[Benchmark report(iterations++)]))
         ioke.ground.get_cell(nil, nil, "iterations").data.as_java_integer.should == 10
       end
@@ -23,7 +23,7 @@ describe "Extensions" do
         sw = StringWriter.new(20)
         out = PrintWriter.new(sw)
         ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
-        ioke.evaluate_stream(StringReader.new(%q[use("benchmark");iterations = 0]))
+        ioke.evaluate_stream(StringReader.new(%q[use("benchmark").iterations = 0]))
         ioke.evaluate_stream(StringReader.new(%q[Benchmark report(iterations++)]))
         str = sw.to_string.to_a
         str.length.should == 10
@@ -36,7 +36,7 @@ describe "Extensions" do
         sw = StringWriter.new(20)
         out = PrintWriter.new(sw)
         ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
-        ioke.evaluate_stream(StringReader.new(%q[use("benchmark");iterations = 0]))
+        ioke.evaluate_stream(StringReader.new(%q[use("benchmark").iterations = 0]))
         ioke.evaluate_stream(StringReader.new(%q[Benchmark report(5, iterations++)]))
         ioke.ground.get_cell(nil, nil, "iterations").data.as_java_integer.should == 5
         str = sw.to_string.to_a
@@ -46,7 +46,7 @@ describe "Extensions" do
         sw = StringWriter.new(20)
         out = PrintWriter.new(sw)
         ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
-        ioke.evaluate_stream(StringReader.new(%q[use("benchmark");iterations = 0]))
+        ioke.evaluate_stream(StringReader.new(%q[use("benchmark").iterations = 0]))
         ioke.evaluate_stream(StringReader.new(%q[Benchmark report(2, 3, iterations++)]))
         ioke.ground.get_cell(nil, nil, "iterations").data.as_java_integer.should == 6
         str = sw.to_string.to_a
