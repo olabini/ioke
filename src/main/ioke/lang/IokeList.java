@@ -28,7 +28,7 @@ public class IokeList extends IokeData {
         final Runtime runtime = obj.runtime;
 
         obj.setKind("List");
-        //        obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Enumerable")), runtime.nul, runtime.nul);
+        obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Enumerable")), runtime.nul, runtime.nul);
         
         obj.registerMethod(runtime.newJavaMethod("takes one argument, the index of the element to be returned. can be negative, and will in that case return indexed from the back of the list. if the index is outside the bounds of the list, will return nil. ", new JavaMethod("at") {
                 @Override

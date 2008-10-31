@@ -257,6 +257,14 @@ describe "core" do
     end
   end
 
+  describe "Enumerable" do 
+    it "should have the correct kind" do 
+      runtime = IokeRuntime.get_runtime
+      result = runtime.ground.find_cell(nil, nil, "Mixins").find_cell(nil, nil, "Enumerable").find_cell(nil, nil, "kind")
+      result.data.text.should == 'Mixins Enumerable'
+    end
+  end
+  
   describe "Comparing" do 
     it "should have the correct kind" do 
       runtime = IokeRuntime.get_runtime

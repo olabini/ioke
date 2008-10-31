@@ -21,6 +21,11 @@ describe "List" do
     ioke.evaluate_string("x kind?(\"List\")").should == ioke.true
   end
   
+  it "should mimic Enumerable" do 
+    ioke = IokeRuntime.get_runtime
+    ioke.list.get_mimics.should include(ioke.mixins.find_cell(nil, nil, "Enumerable"))
+  end
+  
   describe "'at'" do 
     it "should return nil if empty list" do 
       ioke = IokeRuntime.get_runtime
@@ -80,6 +85,12 @@ describe "List" do
       ioke.evaluate_string("[1,2,3,4][0-4]").data.as_java_integer.should == 1
     end
   end
+  
+  describe "'[]='"
+  describe "'=='" #Should always be equal based on the content of the lists
+  describe "'clear!'"
+  describe "'empty?'"
+  describe "'each'"
 end
 
 describe "DefaultBehavior" do 
