@@ -20,6 +20,66 @@ describe "List" do
     ioke.evaluate_string("x mimics?(List)").should == ioke.true
     ioke.evaluate_string("x kind?(\"List\")").should == ioke.true
   end
+  
+  describe "'at'" do 
+    it "should return nil if empty list" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("list at(0)").should == ioke.nil
+      ioke.evaluate_string("list at(10)").should == ioke.nil
+      ioke.evaluate_string("list at(0-1)").should == ioke.nil
+    end
+
+    it "should return nil if argument is over the size" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("list(1) at(1)").should == ioke.nil
+    end
+
+    it "should return from the front if the argument is zero or positive" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("[1,2,3,4] at(0)").data.as_java_integer.should == 1
+      ioke.evaluate_string("[1,2,3,4] at(1)").data.as_java_integer.should == 2
+      ioke.evaluate_string("[1,2,3,4] at(2)").data.as_java_integer.should == 3
+      ioke.evaluate_string("[1,2,3,4] at(3)").data.as_java_integer.should == 4
+    end
+
+    it "should return from the back if the argument is negative" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("[1,2,3,4] at(0-1)").data.as_java_integer.should == 4
+      ioke.evaluate_string("[1,2,3,4] at(0-2)").data.as_java_integer.should == 3
+      ioke.evaluate_string("[1,2,3,4] at(0-3)").data.as_java_integer.should == 2
+      ioke.evaluate_string("[1,2,3,4] at(0-4)").data.as_java_integer.should == 1
+    end
+  end
+
+  describe "'[]'" do 
+    it "should return nil if empty list" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("list[0]").should == ioke.nil
+      ioke.evaluate_string("list[10]").should == ioke.nil
+      ioke.evaluate_string("list[(0-1)]").should == ioke.nil
+    end
+
+    it "should return nil if argument is over the size" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("list(1)[1]").should == ioke.nil
+    end
+
+    it "should return from the front if the argument is zero or positive" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("[1,2,3,4][0]").data.as_java_integer.should == 1
+      ioke.evaluate_string("[1,2,3,4][1]").data.as_java_integer.should == 2
+      ioke.evaluate_string("[1,2,3,4][2]").data.as_java_integer.should == 3
+      ioke.evaluate_string("[1,2,3,4][3]").data.as_java_integer.should == 4
+    end
+
+    it "should return from the back if the argument is negative" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("[1,2,3,4][0-1]").data.as_java_integer.should == 4
+      ioke.evaluate_string("[1,2,3,4][0-2]").data.as_java_integer.should == 3
+      ioke.evaluate_string("[1,2,3,4][0-3]").data.as_java_integer.should == 2
+      ioke.evaluate_string("[1,2,3,4][0-4]").data.as_java_integer.should == 1
+    end
+  end
 end
 
 describe "DefaultBehavior" do 

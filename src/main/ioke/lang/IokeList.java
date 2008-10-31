@@ -6,6 +6,8 @@ package ioke.lang;
 import java.util.ArrayList;
 import java.util.List;
 
+import ioke.lang.exceptions.ControlFlow;
+
 /**
  *
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
@@ -27,6 +29,29 @@ public class IokeList extends IokeData {
 
         obj.setKind("List");
         //        obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Enumerable")), runtime.nul, runtime.nul);
+        
+        obj.registerMethod(runtime.newJavaMethod("takes one argument, the index of the element to be returned. can be negative, and will in that case return indexed from the back of the list. if the index is outside the bounds of the list, will return nil. ", new JavaMethod("at") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    Object arg = message.getEvaluatedArgument(0, context);
+                    if(!(IokeObject.data(arg) instanceof Number)) {
+                        arg = IokeObject.convertToNumber(arg, message, context);
+                    }
+                    int index = ((Number)IokeObject.data(arg)).asJavaInteger();
+                    List<Object> o = ((IokeList)IokeObject.data(on)).getList();
+                    if(index < 0) {
+                        index = o.size() + index;
+                    }
+
+                    if(index >= 0 && index < o.size()) {
+                        return o.get((int)index);
+                    } else {
+                        return context.runtime.nil;
+                    }
+                }
+            }));
+
+        obj.aliasMethod("at", "[]");
     }
 
     public void add(Object obj) {
@@ -39,5 +64,28 @@ public class IokeList extends IokeData {
 
     public IokeData cloneData(IokeObject obj, IokeObject m, IokeObject context) {
         return new IokeList(new ArrayList<Object>(list));
+    }
+
+    @Override
+    public String toString() {
+        return list.toString();
+    }
+
+    @Override
+    public String toString(IokeObject obj) {
+        return list.toString();
+    }
+
+    @Override
+    public String representation(IokeObject obj) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        String sep = "";
+        for(Object o : list) {
+            sb.append(sep).append(IokeObject.representation(o));
+            sep = ", ";
+        }
+        sb.append("]");
+        return sb.toString();
     }
 }// IokeList
