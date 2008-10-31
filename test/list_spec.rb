@@ -321,6 +321,18 @@ describe "List" do
   describe "'each'" do 
     it "should have tests"
   end
+
+  describe "'remove!'" do 
+    it "should have tests"
+  end
+
+  describe "'removeAt!'" do 
+    it "should have tests"
+  end
+
+  describe "'removeIf!'" do 
+    it "should have tests"
+  end
 end
 
 describe "DefaultBehavior" do 
