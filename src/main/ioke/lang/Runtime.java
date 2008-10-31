@@ -54,6 +54,7 @@ public class Runtime {
     public IokeObject mixins = new IokeObject(this, "Mixins is the name space for most mixins in the system. DefaultBehavior is the notable exception.");
     public IokeObject message = new IokeObject(this, "A message is the basic code unit in Ioke.", new Message(this, null, Message.Type.EMPTY));
     public IokeObject restart = new IokeObject(this, "A Restart is the actual object that contains restart information");
+    public IokeObject list = new IokeObject(this, "A list is a collection of objects that can change size", new IokeList());
     public Context context = new Context(this, ground, "An activation context.", null, ground);
     public LexicalContext lexicalContext = new LexicalContext(this, ground, "A lexical activation context.", null, ground);
 
@@ -121,6 +122,7 @@ public class Runtime {
         number.init();
         context.init();
         lexicalContext.init();
+        list.init();
 
         ground.mimicsWithoutCheck(base);
         ground.mimicsWithoutCheck(defaultBehavior);
@@ -139,6 +141,8 @@ public class Runtime {
 
         message.mimicsWithoutCheck(origin);
         method.mimicsWithoutCheck(origin);
+
+        list.mimicsWithoutCheck(origin);
         
         method.init();
         defaultMethod.init();
