@@ -94,6 +94,8 @@
                                  "JavaMethod"
                                  "Mixins"
                                  "Restart"
+                                 "List"
+                                 "Dict"
                                  )
   "ioke mode prototype names")
 
@@ -119,6 +121,9 @@
                             "false"
                             "nil"
                             "call"
+                            "list"
+                            "dict"
+                            "empty?"
                             )
   "ioke mode cell names")
 
