@@ -260,24 +260,24 @@ describe "Number" do
   describe "'times'" do 
     it "should not do anything for a negative number" do 
       ioke = IokeRuntime.get_runtime()
-      ioke.evaluate_stream(StringReader.new("x = 0; (0-1) times(x++); x")).data.as_java_integer.should == 0
-      ioke.evaluate_stream(StringReader.new("x = 0; (0-100) times(x++); x")).data.as_java_integer.should == 0
+      ioke.evaluate_stream(StringReader.new("x = 0. (0-1) times(x++). x")).data.as_java_integer.should == 0
+      ioke.evaluate_stream(StringReader.new("x = 0. (0-100) times(x++). x")).data.as_java_integer.should == 0
     end
     
     it "should not do anything for 0" do 
       ioke = IokeRuntime.get_runtime()
-      ioke.evaluate_stream(StringReader.new("x = 0; 0 times(x++); x")).data.as_java_integer.should == 0
+      ioke.evaluate_stream(StringReader.new("x = 0. 0 times(x++). x")).data.as_java_integer.should == 0
     end
 
     it "should execute the block one time for 1" do 
       ioke = IokeRuntime.get_runtime()
-      ioke.evaluate_stream(StringReader.new("x = 0; 1 times(x++); x")).data.as_java_integer.should == 1
+      ioke.evaluate_stream(StringReader.new("x = 0. 1 times(x++). x")).data.as_java_integer.should == 1
     end
 
     it "should execute the block the same number of times as the receiver" do 
       ioke = IokeRuntime.get_runtime()
-      ioke.evaluate_stream(StringReader.new("x = 0; 12 times(x++); x")).data.as_java_integer.should == 12
-      ioke.evaluate_stream(StringReader.new("x = 0; 343 times(x++); 343")).data.as_java_integer.should == 343
+      ioke.evaluate_stream(StringReader.new("x = 0. 12 times(x++). x")).data.as_java_integer.should == 12
+      ioke.evaluate_stream(StringReader.new("x = 0. 343 times(x++). 343")).data.as_java_integer.should == 343
     end
   end
 end

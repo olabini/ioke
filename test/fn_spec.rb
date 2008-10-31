@@ -40,12 +40,12 @@ describe "DefaultBehavior" do
       ioke = IokeRuntime.get_runtime()
       ioke.evaluate_stream(StringReader.new(%q[fn(1+1) call])).data.as_java_integer.should == 2
 
-      ioke.evaluate_stream(StringReader.new(%q[x = fn(42+4); x call; x call])).data.as_java_integer.should == 46
+      ioke.evaluate_stream(StringReader.new(%q[x = fn(42+4). x call. x call])).data.as_java_integer.should == 46
     end
     
     it "should have access to variables in the scope it was defined, in simple do" do 
       ioke = IokeRuntime.get_runtime()
-      ioke.evaluate_stream(StringReader.new(%q[x = 26; fn(x) call])).data.as_java_integer.should == 26
+      ioke.evaluate_stream(StringReader.new(%q[x = 26. fn(x) call])).data.as_java_integer.should == 26
 
       result = ioke.evaluate_stream(StringReader.new(<<CODE))
 x = Origin mimic
@@ -159,7 +159,7 @@ CODE
     it "should create a new variable when assigning something that doesn't exist" do 
       ioke = IokeRuntime.get_runtime()
       result = ioke.evaluate_stream(StringReader.new(<<CODE))
-fn(blarg = 42; blarg) call
+fn(blarg = 42. blarg) call
 CODE
       result.data.as_java_integer.should == 42
       ioke.ground.find_cell(nil, nil, "blarg").should == ioke.nul
@@ -181,7 +181,7 @@ CODE
       ioke = IokeRuntime.get_runtime()
       result = ioke.evaluate_stream(StringReader.new(<<CODE))
 x = 32
-fn(x, x = 13; x) call(123)
+fn(x, x = 13. x) call(123)
 CODE
       result.data.as_java_integer.should == 13
       ioke.ground.find_cell(nil, nil, "x").data.as_java_integer.should == 32
@@ -357,7 +357,7 @@ CODE
   it "should be possible to have more complicated expression as default value" do 
     ioke = IokeRuntime.get_runtime()
     ioke.evaluate_stream(StringReader.new(<<CODE))
-first  = fnx(x 13, y "foo";(x + 42)-1, y)
+first  = fnx(x 13, y "foo".(x + 42)-1, y)
 CODE
 
     ioke.evaluate_stream(StringReader.new("first")).data.as_java_integer.should == 54

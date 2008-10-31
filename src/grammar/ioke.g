@@ -135,13 +135,13 @@ StringLiteral
 
 Terminator
     :
-        (('\r'? '\n') | ';')+
+        (('\r'? '\n') | {(input.LA(2) != '.')}?=> '.')+
     ;
 
 Whitespace : Separator {skip();};
 
 LineComment
-    : '#' ~('\n'|'\r')* {$channel=HIDDEN;}
+    : ';' ~('\n'|'\r')* {$channel=HIDDEN;}
     ;
 
 ComparisonOperator

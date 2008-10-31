@@ -1,3 +1,3 @@
-# Simple example
+; Simple example
 "Hello World" println
 

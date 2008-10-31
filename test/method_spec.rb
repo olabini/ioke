@@ -207,7 +207,7 @@ CODE
   it "should be possible to have more complicated expression as default value" do 
     ioke = IokeRuntime.get_runtime()
     ioke.evaluate_stream(StringReader.new(<<CODE))
-first  = method(x 13, y "foo";(x + 42)-1, y)
+first  = method(x 13, y "foo".(x + 42)-1, y)
 CODE
 
     ioke.evaluate_stream(StringReader.new("first")).data.as_java_integer.should == 54

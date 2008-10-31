@@ -174,7 +174,7 @@ public class Message extends IokeData {
                 m.setPosition(tree.getCharPositionInLine());
                 return runtime.createMessage(m);
             case iokeParser.Terminator:
-                m = new Message(runtime, ";", null, Type.TERMINATOR);
+                m = new Message(runtime, ".", null, Type.TERMINATOR);
                 m.setLine(tree.getLine());
                 m.setPosition(tree.getCharPositionInLine());
                 return runtime.createMessage(m);
@@ -384,7 +384,7 @@ public class Message extends IokeData {
         while(m != null) {
             String name = m.getName();
 
-            if(name.equals(";")) {
+            if(name.equals(".")) {
                 current = ctx;
             } else if(name.length() > 0 && name.charAt(0) == ':') {
                 current = self.runtime.getSymbol(name.substring(1));
@@ -489,7 +489,7 @@ public class Message extends IokeData {
         } else if(this.name.equals("internal:createNumber") && (this.arguments.get(0) instanceof String)) {
             base.append(this.arguments.get(0));
         } else if(this.type == Type.TERMINATOR) {
-            base.append(";\n");
+            base.append(".\n");
         } else {
             base.append(this.name);
             if(arguments.size() > 0) {

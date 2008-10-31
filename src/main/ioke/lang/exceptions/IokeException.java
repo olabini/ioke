@@ -74,7 +74,7 @@ public class IokeException extends RuntimeException {
         stream.println();
         stream.println("  Exception: " + getMessage());
         stream.println("  ---------");
-        String s1 = Message.codeSequenceTo(start, ";");
+        String s1 = Message.codeSequenceTo(start, ".");
         int ix = s1.indexOf("\n");
         stream.println("  " + (ix == -1 ? s1 : s1.substring(0,ix)));
         stream.print("  ");
