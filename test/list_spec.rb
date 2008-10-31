@@ -227,12 +227,60 @@ describe "List" do
   end
   
   describe "'clear!'" do 
-    it "should have tests"
+    it "should not do anything on an empty list" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("x = []. x clear!. x size").data.as_java_integer.should == 0
+    end
+
+    it "should clear a list that has entries" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("x = [1,2,3,4]. x clear!. x size").data.as_java_integer.should == 0
+    end
+    
+    it "should return the list" do 
+      ioke = IokeRuntime.get_runtime
+      result = ioke.evaluate_string("x = [1,2,3,4]. x clear!")
+      result.should == ioke.ground.find_cell(nil, nil, "x")
+    end
+  end
+
+  describe "'size'" do 
+    it "should return zero for an empty list" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("x = []. x size").data.as_java_integer.should == 0
+    end
+    
+    it "should return the size for a non-empty list" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("[1] size").data.as_java_integer.should == 1
+      ioke.evaluate_string("[\"abc\", \"cde\"] size").data.as_java_integer.should == 2
+    end
+  end
+
+  describe "'length'" do 
+    it "should return zero for an empty list" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("x = []. x length").data.as_java_integer.should == 0
+    end
+    
+    it "should return the size for a non-empty list" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("[1] length").data.as_java_integer.should == 1
+      ioke.evaluate_string("[\"abc\", \"cde\"] length").data.as_java_integer.should == 2
+    end
   end
 
   describe "'empty?'" do 
-    it "should return true for an empty list"
-    it "should return false for an non empty list"
+    it "should return true for an empty list" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("x = []. x empty?").should == ioke.true
+    end
+    
+    it "should return false for an non empty list" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("x = [1]. x empty?").should == ioke.false
+      ioke.evaluate_string("x = [\"abc\", \"cde\"]. x empty?").should == ioke.false
+    end
   end
   
   describe "'each'" do 

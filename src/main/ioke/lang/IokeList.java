@@ -43,6 +43,29 @@ public class IokeList extends IokeData {
                 }
             }));
 
+        obj.registerMethod(runtime.newJavaMethod("will remove all the entries from the list, and then returns the list", new JavaMethod("clear!") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    ((IokeList)IokeObject.data(on)).getList().clear();
+                    return on;
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("returns true if this list is empty, false otherwise", new JavaMethod("empty?") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    return ((IokeList)IokeObject.data(on)).getList().isEmpty() ? context.runtime._true : context.runtime._false;
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("returns the size of this list", new JavaMethod("size") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    return context.runtime.newNumber(((IokeList)IokeObject.data(on)).getList().size());
+                }
+            }));
+        obj.aliasMethod("size", "length");
+
         obj.registerMethod(runtime.newJavaMethod("takes one argument, the index of the element to be returned. can be negative, and will in that case return indexed from the back of the list. if the index is outside the bounds of the list, will return nil. ", new JavaMethod("at") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
