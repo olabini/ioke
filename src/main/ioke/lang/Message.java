@@ -329,6 +329,14 @@ public class Message extends IokeData {
         return mx == null ? head : mx;
     }
 
+    public static String name(Object o) {
+        return ((Message)IokeObject.data(o)).name;
+    }
+
+    public static List<Object> arguments(Object o) {
+        return ((Message)IokeObject.data(o)).arguments;
+    }
+
     @Override
     public String getName(IokeObject self) {
         return name;

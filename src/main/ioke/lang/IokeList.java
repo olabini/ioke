@@ -136,6 +136,13 @@ public class IokeList extends IokeData {
     }
 
     @Override
+    public boolean isEqualTo(IokeObject self, Object other) {
+        return ((other instanceof IokeObject) && 
+                (IokeObject.data(other) instanceof IokeList) 
+                && this.list.equals(((IokeList)IokeObject.data(other)).list));
+    }
+
+    @Override
     public String toString() {
         return list.toString();
     }

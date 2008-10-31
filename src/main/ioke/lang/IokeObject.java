@@ -340,17 +340,18 @@ public class IokeObject {
         return data.activate(this, context, message, on);
     }
 
+    @Override
+    public boolean equals(Object other) {
+        return isEqualTo(other);
+    }
 
+    public static boolean equals(Object lhs, Object rhs) {
+        return IokeObject.as(lhs).isEqualTo(rhs);
+    }
 
-
-
-
-
-
-
-
-
-
+    public boolean isEqualTo(Object other) {
+        return data.isEqualTo(this, other);
+    }
 
     public Object getEvaluatedArgument(int index, IokeObject context) throws ControlFlow {
         return data.getEvaluatedArgument(this, index, context);

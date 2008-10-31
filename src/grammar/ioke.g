@@ -67,6 +67,10 @@ commatedExpression
         expression+ (Comma expression+)*
     ;
 
+twoExpressions
+    :
+        expression+ Comma expression+
+    ;
 //assignmentExpression
 //    :
 //        expression+ (binaryOperator expression)?
@@ -75,7 +79,8 @@ commatedExpression
 expression
     :
         Identifier ('(' commatedExpression? ')')? -> ^(MESSAGE_SEND Identifier commatedExpression?)
-    |   operator '(' commatedExpression? ')'  -> ^(MESSAGE_SEND operator commatedExpression?)
+    |   operator '(' commatedExpression? ')' -> ^(MESSAGE_SEND operator commatedExpression?)
+    |   trinaryOperator '(' twoExpressions ')'  -> ^(MESSAGE_SEND trinaryOperator twoExpressions)
     |   '(' commatedExpression? ')'  -> ^(MESSAGE_SEND_EMPTY commatedExpression?)
     |   '[]'                            -> ^(MESSAGE_SEND_SQUARE)
     |   '[' ']'                         -> ^(MESSAGE_SEND_SQUARE)
@@ -94,10 +99,14 @@ operator
     :
         ComparisonOperator
     |   RegularBinaryOperator
-    |   Equals
     |   IncDec
     |   SquareBrackets
     |   CurlyBrackets
+    ;
+
+trinaryOperator
+    :
+        Equals
     ;
 
 binaryOperator
