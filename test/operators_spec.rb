@@ -560,5 +560,45 @@ describe "operator" do
         m.should == '"foo" ...("bar" ...("quux"))'
       end
     end
+
+    describe "<<" do 
+      it "should be correctly translated in infix" do 
+        m = parse("2<<1").to_string
+        m.should == "2 <<(1)"
+
+        m = parse('"foo"<<"bar"').to_string
+        m.should == '"foo" <<("bar")'
+      end
+
+      it "should be translated correctly with parenthesis" do 
+        m = parse("2<<(1)").to_string
+        m.should == "2 <<(1)"
+
+        m = parse("2 <<(1)").to_string
+        m.should == "2 <<(1)"
+
+        m = parse('"foo"<<("bar")').to_string
+        m.should == '"foo" <<("bar")'
+
+        m = parse('"foo" <<("bar")').to_string
+        m.should == '"foo" <<("bar")'
+      end
+
+      it "should be translated correctly with spaces" do 
+        m = parse("2 << 1").to_string
+        m.should == "2 <<(1)"
+
+        m = parse('"foo" << "bar"').to_string
+        m.should == '"foo" <<("bar")'
+      end
+
+      it "should be translated correctly when chained" do 
+        m = parse("2 << 1 << 0").to_string
+        m.should == "2 <<(1 <<(0))"
+
+        m = parse('"foo" << "bar" << "quux"').to_string
+        m.should == '"foo" <<("bar" <<("quux"))'
+      end
+    end
   end
 end
