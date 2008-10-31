@@ -65,6 +65,39 @@ public class IokeList extends IokeData {
             }));
 
         obj.aliasMethod("at", "[]");
+
+        obj.registerMethod(runtime.newJavaMethod("takes two arguments, the index of the element to set, and the value to set. the index can be negative and will in that case set indexed from the end of the list. if the index is larger than the current size, the list will be expanded with nils. an exception will be raised if a abs(negative index) is larger than the size.", new JavaMethod("at=") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    Object arg = message.getEvaluatedArgument(0, context);
+                    Object value = message.getEvaluatedArgument(1, context);
+                    if(!(IokeObject.data(arg) instanceof Number)) {
+                        arg = IokeObject.convertToNumber(arg, message, context);
+                    }
+                    int index = ((Number)IokeObject.data(arg)).asJavaInteger();
+                    List<Object> o = ((IokeList)IokeObject.data(on)).getList();
+                    if(index < 0) {
+                        index = o.size() + index;
+                    }
+
+                    if(index < 0) {
+                        throw new RuntimeException("index " + arg + " out of bounds on " + on);
+                    }
+
+                    if(index >= o.size()) {
+                        int toAdd = (index-o.size()) + 1;
+                        for(int i=0;i<toAdd;i++) {
+                            o.add(context.runtime.nil);
+                        }
+                    }
+
+                    o.set((int)index, value);
+
+                    return value;
+                }
+            }));
+
+        obj.aliasMethod("at=", "[]=");
     }
 
     public void add(Object obj) {

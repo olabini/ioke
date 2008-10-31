@@ -57,6 +57,10 @@ public class Message extends IokeData {
         return ((Message)message.data).arguments.get(0);
     }
 
+    public static Object getArg2(IokeObject message) {
+        return ((Message)message.data).arguments.get(1);
+    }
+
     public static Type type(IokeObject message) {
         return ((Message)message.data).type;
     }
@@ -113,6 +117,10 @@ public class Message extends IokeData {
         return arguments;
     }
 
+    public void setArguments(List<Object> arguments) {
+        this.arguments = arguments;
+    }
+
     @Override
     public int getArgumentCount(IokeObject self) {
         return arguments.size();
@@ -131,6 +139,10 @@ public class Message extends IokeData {
     @Override
     public int getPosition(IokeObject self) {
         return pos;
+    }
+
+    void setFile(String file) {
+        this.file = file;
     }
 
     void setLine(int line) {
