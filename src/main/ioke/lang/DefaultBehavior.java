@@ -540,5 +540,22 @@ public class DefaultBehavior {
                     return on;
                 }
             }));
+
+        obj.registerMethod(runtime.newJavaMethod("Takes zero or more arguments and returns a newly created list containing the result of evaluating these arguments", new DefaultBehaviorJavaMethod("list") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    IokeObject newList = context.runtime.list.mimic(message, context);
+                    IokeList data = (IokeList)IokeObject.data(newList);
+
+                    List<Object> arguments = message.getArguments();
+                    for(Object o : arguments) {
+                        data.add(IokeObject.as(o).evaluateCompleteWithoutExplicitReceiver(context, context.getRealContext()));
+                    }
+
+                    return newList;
+                }
+            }));
+
+        obj.aliasMethod("list", "[]");
     }
 }// DefaultBehavior
