@@ -6,6 +6,18 @@ include_class('ioke.lang.exceptions.ArgumentWithoutDefaultValue') unless defined
 import Java::java.io.StringReader unless defined?(StringReader)
 
 describe "DefaultBehavior" do
+  describe "'ʎ'" do 
+    it "should be possible to create a new LexicalBlock with it" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new(%q[ʎ call])).should == ioke.nil
+    end
+
+    it "should be possible to create a new LexicalBlock with it that returns a value" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new(%q[ʎ(42) call])).data.as_java_integer.should == 42
+    end
+  end
+  
   describe "'fnx'" do 
     it "should return something that is activatable for empty list" do 
       ioke = IokeRuntime.get_runtime()

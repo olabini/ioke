@@ -19,22 +19,22 @@ describe "parsing" do
       m.should == ".\n"
     end
 
-    it "should parse a semicolon as a terminator" do 
+    it "should parse a period as a terminator" do 
       m = parse(".").to_string
       m.should == ".\n"
     end
 
-    it "should parse one semicolon and one newline as one terminator" do 
+    it "should parse one period and one newline as one terminator" do 
       m = parse(".\n").to_string
       m.should == ".\n"
     end
 
-    it "should parse one newline and one semicolon as one terminator" do 
+    it "should parse one newline and one period as one terminator" do 
       m = parse("\n.").to_string
       m.should == ".\n"
     end
 
-    it "should parse one newline and one semicolon and one newline as one terminator" do 
+    it "should parse one newline and one period and one newline as one terminator" do 
       m = parse("\n.\n").to_string
       m.should == ".\n"
     end
