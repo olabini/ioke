@@ -24,7 +24,7 @@ public class Method extends IokeData {
 
         this.context = context;
     }
-
+    
     @Override
     public void init(IokeObject method) {
         method.setKind("Method");

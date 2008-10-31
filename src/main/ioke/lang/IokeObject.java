@@ -263,6 +263,13 @@ public class IokeObject {
         cells.put(((Method)m.data).getName(), m);
     }
 
+    public void aliasMethod(String originalName, String newName) {
+        IokeObject io = as(findCell(null, null, originalName));
+        IokeObject newObj = io.mimic(null, null);
+        newObj.data = new AliasMethod(newName, (Method)io.data);
+        cells.put(newName, newObj);
+    }
+
     public void registerMethod(String name, IokeObject m) {
         cells.put(name, m);
     }
