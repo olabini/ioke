@@ -31,5 +31,6 @@ public class Ground {
         ground.registerCell("LexicalBlock", runtime.lexicalBlock);
         ground.registerCell("Mixins", runtime.mixins);
         ground.registerCell("Restart", runtime.restart);
+        ground.registerCell("List", runtime.list);
     }
 }// Ground
