@@ -288,7 +288,7 @@ public class DefaultBehavior {
 
                     List<String> argNames = new ArrayList<String>(args.size()-1);
                     int start = 0;
-                    if(args.size() > 0 && ((IokeObject)Message.getArg1(message)).getName().equals("internal:createText")) {
+                    if(args.size() > 1 && ((IokeObject)Message.getArg1(message)).getName().equals("internal:createText")) {
                         start++;
                         String s = ((String)((IokeObject)args.get(0)).getArguments().get(0));
                         doc = s.substring(1, s.length()-1);

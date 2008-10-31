@@ -223,9 +223,11 @@ describe "List" do
   
   #Should always be equal based on the content of the lists
   describe "'=='" do 
+    it "should have tests"
   end
   
   describe "'clear!'" do 
+    it "should have tests"
   end
 
   describe "'empty?'" do 
@@ -234,6 +236,7 @@ describe "List" do
   end
   
   describe "'each'" do 
+    it "should have tests"
   end
 end
 
