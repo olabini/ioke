@@ -86,11 +86,53 @@ describe "List" do
     end
   end
   
-  describe "'[]='"
-  describe "'=='" #Should always be equal based on the content of the lists
-  describe "'clear!'"
-  describe "'empty?'"
-  describe "'each'"
+  describe "'[]='" do 
+    it "should set the first element in an empty list"
+    it "should overwrite an existing element"
+    it "should expand the list up to the point where the element fits, if the index is further away"
+    it "should be possible to set with negative indices"
+    it "should throw an exception if setting with negative indices outside the range"
+  end
+
+  describe "'<<'" do 
+    it "should add the element at the end of an empty list" do 
+      ioke = IokeRuntime.get_runtime
+      result = ioke.evaluate_string("x = []. x << 42. x")
+      result.data.list.size.should == 1
+      result.data.list.get(0).data.as_java_integer.should == 42
+    end
+
+    it "should add the element at the end of a list with elements" do 
+      ioke = IokeRuntime.get_runtime
+      result = ioke.evaluate_string("x = [1, 2, 3]. x << 42. x")
+      result.data.list.size.should == 4
+      result.data.list.get(0).data.as_java_integer.should == 1
+      result.data.list.get(1).data.as_java_integer.should == 2
+      result.data.list.get(2).data.as_java_integer.should == 3
+      result.data.list.get(3).data.as_java_integer.should == 42
+    end
+    
+    it "should return the list after the append" do 
+      ioke = IokeRuntime.get_runtime
+      result = ioke.evaluate_string("x = []. x << 42")
+      result.should == ioke.ground.find_cell(nil, nil, "x")
+    end
+  end
+  
+  #Should always be equal based on the content of the lists
+  describe "'=='" do 
+  end
+  
+  describe "'clear!'" do 
+  end
+
+  describe "'empty?'" do 
+    it "should return true for an empty list"
+    it "should return false for an non empty list"
+  end
+  
+  describe "'each'" do 
+  end
 end
 
 describe "DefaultBehavior" do 
