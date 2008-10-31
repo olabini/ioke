@@ -58,23 +58,6 @@ hashes
 lower prio
 ----------
 
-- assignment of places, through =
- so for example:
-
-  foo bar x cell("bar") = "something"
-will translate into
-  foo bar x cell=("bar","something")
-
- instead of
-  foo bar x setCell("bar", "something")
-
-also:
-  foo bar x(1) = "something"
- or
-  foo bar x[1] = "something"
- or
-  foo bar x{1,2} = "something"
-
 - call initialization on creation
  - defined in terms of aspects
 
