@@ -34,6 +34,31 @@ public class IokeList extends IokeData {
         obj.setKind("List");
         obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Enumerable")), runtime.nul, runtime.nul);
         
+        obj.registerMethod(runtime.newJavaMethod("takes either one or two arguments. if one argument is given, it should be a message chain that will be sent to each object in the list. the result will be thrown away. if two arguments are given, the first is an unevaluated name that will be set to each of the values in the list in succession, and then the second argument will be evaluated in a scope with that argument in it. the code will evaluate in a lexical context, and if the argument name is available outside the context, it will be shadowed. the method will return the list.", new JavaMethod("each") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> ls = ((IokeList)IokeObject.data(on)).list;
+                    if(message.getArgumentCount() == 1) {
+                        IokeObject code = IokeObject.as(message.getArguments().get(0));
+
+                        for(Object o : ls) {
+                            code.evaluateCompleteWithReceiver(context, context.getRealContext(), o);
+                        }
+                    } else {
+                        LexicalContext c = new LexicalContext(context.runtime, context, "Lexical activation context for List#each", message, context);
+                        String name = IokeObject.as(message.getArguments().get(0)).getName();
+                        IokeObject code = IokeObject.as(message.getArguments().get(1));
+
+                        for(Object o : ls) {
+                            c.setCell(name, o);
+                            code.evaluateCompleteWithoutExplicitReceiver(c, c.getRealContext());
+                        }
+                    }
+
+                    return on;
+                }
+            }));
+
         obj.registerMethod(runtime.newJavaMethod("takes one argument and adds it at the end of the list, and then returns the list", new JavaMethod("<<") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {

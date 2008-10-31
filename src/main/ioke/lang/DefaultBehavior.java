@@ -234,6 +234,7 @@ public class DefaultBehavior {
                     String name = m1.getName();
                     if(m1.getArguments().size() == 0) {
                         Object value = message.getEvaluatedArgument(1, context);
+
                         IokeObject.assign(on, name, value);
 
                         if((IokeObject.data(value) instanceof Method) && ((Method)IokeObject.data(value)).name == null) {

@@ -128,6 +128,10 @@ public abstract class IokeData {
         throw new NotActivatableException(message, "Can't evaluateCompleteWith on " + message, ground, ctx);
     }
 
+    public Object evaluateCompleteWithReceiver(IokeObject message, IokeObject ctx, Object ground, Object receiver) throws ControlFlow {
+        throw new NotActivatableException(message, "Can't evaluateCompleteWith on " + message, ground, ctx);
+    }
+
     public Object evaluateCompleteWithoutExplicitReceiver(IokeObject message, IokeObject ctx, Object ground) throws ControlFlow {
         throw new NotActivatableException(message, "Can't evaluateCompleteWithoutExplicitReceiver on " + message, ground, ctx);
     }

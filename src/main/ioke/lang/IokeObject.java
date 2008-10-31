@@ -381,6 +381,10 @@ public class IokeObject {
         return data.evaluateCompleteWith(this, ctx, ground);
     }
 
+    public Object evaluateCompleteWithReceiver(IokeObject ctx, Object ground, Object receiver) throws ControlFlow {
+        return data.evaluateCompleteWithReceiver(this, ctx, ground, receiver);
+    }
+
     public Object evaluateCompleteWithoutExplicitReceiver(IokeObject ctx, Object ground) throws ControlFlow {
         return data.evaluateCompleteWithoutExplicitReceiver(this, ctx, ground);
     }
