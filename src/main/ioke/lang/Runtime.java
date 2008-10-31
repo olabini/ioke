@@ -322,6 +322,10 @@ public class Runtime {
     }
 
     public IokeObject newNumber(String number) {
+        if(number.indexOf('.') != -1) {
+            throw new RuntimeException("Can't handle decimal numbers yet. Sorry.");
+        }
+
         IokeObject obj = this.number.allocateCopy(null, null);
         obj.mimicsWithoutCheck(this.number);
         obj.data = new Number(number);
