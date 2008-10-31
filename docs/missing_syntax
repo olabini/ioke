@@ -1,6 +1,10 @@
+- line endings should not be terminators with a \ in front of them
+- precedence rules...
+- maybe string interpolation inside of strings?
+
 - decimal numbers, with scientific part
 - hex numbers
-- regular expressions?
+- regular expressions
 
 currently unused, possible syntax:
 -  '
@@ -11,6 +15,8 @@ currently unused, possible syntax:
 
 unary prefix:
 - !
+- -, +
+- *
 
 binary:
 - **   for expt

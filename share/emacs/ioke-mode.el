@@ -50,8 +50,8 @@
 (defconst ioke-prototype-face font-lock-type-face
   "The font to use for known prototypes.")
 
-(defconst ioke-slot-face font-lock-function-name-face
-  "The font to use for slots.")
+(defconst ioke-cell-face font-lock-function-name-face
+  "The font to use for cells.")
 
 (defconst ioke-object-face font-lock-builtin-face
   "The font to use for cloned objects.")
@@ -93,38 +93,45 @@
                                  "DefaultMethod"
                                  "JavaMethod"
                                  "Mixins"
+                                 "Restart"
                                  )
   "ioke mode prototype names")
 
-(defconst ioke-slot-names '(
-                            "true"
-                            "false"
-                            "nil"
-                            "if"
-                            "method"
-                            "use"
+(defconst ioke-cell-names '(
                             "print"
                             "println"
                             "cell"
                             "documentation"
-                            "ifMain"
                             "while"
                             "until"
                             "asText"
-                            "mimic"
+                            "representation"
+                            "fn"
+                            "fnx"
                             "loop"
-                            "break"
-                            "self"
+                            "bind"
+                            "restart"
+                            "do"
+                            "true?"
+                            "false?"
+                            "nil?"
+                            "true"
+                            "false"
+                            "nil"
+                            "call"
                             )
-  "ioke mode slot names")
+  "ioke mode cell names")
 
 (defconst ioke-operator-symbols '(
-				"'"
-				"."
+;;				"'"
+;;				"."
 				;;"?"
 				;;"("
 				;;")"
 
+                "..."
+                "=>"
+                                  
 				"++"
 				"--"
 
@@ -178,16 +185,20 @@
   "ioke mode operator symbols")
 
 (defconst ioke-operator-names '(
-                                "and"
-                                "or"
                                 "return"
-                                "super"
+                                "break"
+                                "mimic"
+                                "self"
+                                "use"
+                                "if"
+                                "method"
                                 )
   "ioke mode operator names")
 
 (defconst ioke-special-names '(
                                "`"
                                "'"
+                               "."
                                "@"
                                "@@"
                                )
@@ -198,7 +209,7 @@
 			    )
   "ioke mode custom names")
 
-(defconst ioke-region-comment-prefix "{#"
+(defconst ioke-region-comment-prefix ";"
   "ioke region comment prefix")
 
 (defvar ioke-mode-hook nil
@@ -215,34 +226,36 @@
           (define-key ioke-keymap "]" 'ioke-electric-close-s-paren)
           (define-key ioke-keymap "{" 'ioke-electric-open-c-paren)
           (define-key ioke-keymap "}" 'ioke-electric-close-c-paren)
-          (define-key ioke-keymap "\C-c#" 'ioke-comment-region)
+          (define-key ioke-keymap (kbd "C-/") 'comment-or-uncomment-region)
           ))
     ioke-keymap)
   "ioke mode keymap")
 
 (defconst ioke-font-lock-keywords
   (list
-    `(,(concat "\\<" (regexp-opt ioke-prototype-names t) "\\>") . ioke-prototype-face)
-    `(,(concat "\\<[A-Z][[:alnum:]!?_:-]*\\>") . ioke-prototype-face)
-    `(,(concat "\\<" (regexp-opt ioke-slot-names t) "\\>") . ioke-slot-face)
-    `(,(concat "\\<" (regexp-opt ioke-custom-names t) "\\>") . ioke-custom-face)
-    `(,(concat "\\<" (regexp-opt ioke-operator-names t) "\\>") . ioke-operator-face)
+    '("\\([[:alnum:]!?_:-]+\\)[[:space:]]*=[^=][[:space:]]*[[:alnum:]_:-]+[[:space:]]+mimic" 1 ioke-object-clone-face)
+    '("\\([[:alnum:]!?_:-]+\\)[[:space:]]*[+*/-]?=[^=]" 1 ioke-object-assign-face)
+    `(,(regexp-opt ioke-prototype-names 'words) . ioke-prototype-face)
+    '("\\<[A-Z][[:alnum:]!?_:-]*\\>" 0 ioke-prototype-face)
+    `(,(regexp-opt ioke-cell-names 'words) . ioke-cell-face)
+    `(,(regexp-opt ioke-custom-names 'words) . ioke-custom-face)
+    `(,(regexp-opt ioke-operator-names 'words) . ioke-operator-face)
     `(,(regexp-opt ioke-special-names t) . ioke-special-face)
-;    '("\\<[[:alnum:]!?_:-]+\\>" . ioke-nothing-face)
     `(,(regexp-opt ioke-operator-symbols t) . ioke-operator-face)
-    '("\\([[:alnum:]!?_:-]+\\)[[:space:]]*[+*/-]?=[^=]" 1 ioke-object-assign-face t)
-    '("\\([[:alnum:]!?_:-]+\\)[[:space:]]*=[^=][[:space:]]*[[:alnum:]_:-]+[[:space:]]+clone" 1 ioke-object-clone-face t nil)
-    '("\\<[[:digit:]_]+\\>" 0 ioke-number-face t)
-    '("[](){}[]+" 0 ioke-braces-face t)
-    '("{#\\(.\\|\n\\)*#}" 0 ioke-comment-face t)
-    '("#[^}].*$" 0 ioke-comment-face t)
+    '("\\<[[:digit:]_]+\\>" 0 ioke-number-face)
+    '("[](){}[]+" 0 ioke-braces-face)
    )
   "ioke mode font lock keywords")
 
 (defvar ioke-syntax-table
   (let ((st (make-syntax-table)))
-    (modify-syntax-entry ?_ "w" st)
-    (modify-syntax-entry ?\n "> b" st)
+    (modify-syntax-entry ?\; "<" st)
+    (modify-syntax-entry ?? "w" st)
+    (modify-syntax-entry ?! "w" st)
+    (modify-syntax-entry ?: "w" st)
+    (modify-syntax-entry ?, "." st)
+    (modify-syntax-entry ?. "." st)
+    (modify-syntax-entry ?\n ">" st)
     st)
   "ioke mode syntax table")
 
@@ -355,6 +368,8 @@
     (set-marker marker nil))
   (blink-matching-open))
 
+
+
 (defun ioke-comment-region (beg end &optional arg)
   "Comment region for Io."
   (interactive "r\nP")
@@ -370,6 +385,7 @@
   (make-local-variable 'font-lock-defaults)
   (setq font-lock-defaults '(ioke-font-lock-keywords nil nil nil))
   (set (make-local-variable 'indent-line-function) 'ioke-indent-line)
+  (set (make-local-variable 'comment-start) "; ")
   (setq major-mode 'ioke-mode)
   (setq mode-name "ioke mode")
   (run-hooks 'ioke-mode-hook)
