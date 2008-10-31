@@ -374,6 +374,15 @@ public class Runtime {
         return obj;
     }
 
+    public IokeObject newMessageFrom(IokeObject m, String name, List<Object> args) {
+        Message mess = new Message(this, name);
+        mess.setFile(m.getFile());
+        mess.setLine(m.getLine());
+        mess.setPosition(m.getPosition());
+        mess.setArguments(args);
+        return createMessage(mess);
+    }
+
     public IokeObject newLexicalBlock(IokeObject tp, LexicalBlock impl) {
         IokeObject obj = tp.allocateCopy(null, null);
         obj.mimicsWithoutCheck(tp);

@@ -87,11 +87,113 @@ describe "List" do
   end
   
   describe "'[]='" do 
-    it "should set the first element in an empty list"
-    it "should overwrite an existing element"
-    it "should expand the list up to the point where the element fits, if the index is further away"
-    it "should be possible to set with negative indices"
-    it "should throw an exception if setting with negative indices outside the range"
+    it "should set the first element in an empty list" do 
+      ioke = IokeRuntime.get_runtime
+      result = ioke.evaluate_string("x = []. x[0] = 42. x")
+      result.data.list.size.should == 1
+      result.data.list.get(0).data.as_java_integer.should == 42
+    end
+    
+    it "should overwrite an existing element" do 
+      ioke = IokeRuntime.get_runtime
+      result = ioke.evaluate_string("x = [40]. x[0] = 42. x")
+      result.data.list.size.should == 1
+      result.data.list.get(0).data.as_java_integer.should == 42
+    end
+
+    it "should expand the list up to the point where the element fits, if the index is further away" do 
+      ioke = IokeRuntime.get_runtime
+      result = ioke.evaluate_string("x = [40, 42]. x[10] = 45. x")
+      result.data.list.size.should == 11
+      result.data.list.get(0).data.as_java_integer.should == 40
+      result.data.list.get(1).data.as_java_integer.should == 42
+      result.data.list.get(2).should == ioke.nil
+      result.data.list.get(3).should == ioke.nil
+      result.data.list.get(4).should == ioke.nil
+      result.data.list.get(5).should == ioke.nil
+      result.data.list.get(6).should == ioke.nil
+      result.data.list.get(7).should == ioke.nil
+      result.data.list.get(8).should == ioke.nil
+      result.data.list.get(9).should == ioke.nil
+      result.data.list.get(10).data.as_java_integer.should == 45
+    end
+    
+    it "should be possible to set with negative indices" do 
+      ioke = IokeRuntime.get_runtime
+      result = ioke.evaluate_string("x = [40, 42, 44, 46]. x[0-2] = 52. x")
+      result.data.list.size.should == 4
+      result.data.list.get(0).data.as_java_integer.should == 40
+      result.data.list.get(1).data.as_java_integer.should == 42
+      result.data.list.get(2).data.as_java_integer.should == 52
+      result.data.list.get(3).data.as_java_integer.should == 46
+    end
+
+    it "should return the value set" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("[40, 42, 44, 46][0] = 33+44").data.as_java_integer.should == 77
+    end
+
+    it "should throw an exception if setting with negative indices outside the range" do 
+      ioke = IokeRuntime.get_runtime
+      proc do 
+        ioke.evaluate_string("[][0-1] = 52")
+      end.should raise_error
+    end
+  end
+
+  describe "'at='" do 
+    it "should set the first element in an empty list" do 
+      ioke = IokeRuntime.get_runtime
+      result = ioke.evaluate_string("x = []. x at(0) = 42. x")
+      result.data.list.size.should == 1
+      result.data.list.get(0).data.as_java_integer.should == 42
+    end
+    
+    it "should overwrite an existing element" do 
+      ioke = IokeRuntime.get_runtime
+      result = ioke.evaluate_string("x = [40]. x at(0) = 42. x")
+      result.data.list.size.should == 1
+      result.data.list.get(0).data.as_java_integer.should == 42
+    end
+
+    it "should expand the list up to the point where the element fits, if the index is further away" do 
+      ioke = IokeRuntime.get_runtime
+      result = ioke.evaluate_string("x = [40, 42]. x at(10) = 45. x")
+      result.data.list.size.should == 11
+      result.data.list.get(0).data.as_java_integer.should == 40
+      result.data.list.get(1).data.as_java_integer.should == 42
+      result.data.list.get(2).should == ioke.nil
+      result.data.list.get(3).should == ioke.nil
+      result.data.list.get(4).should == ioke.nil
+      result.data.list.get(5).should == ioke.nil
+      result.data.list.get(6).should == ioke.nil
+      result.data.list.get(7).should == ioke.nil
+      result.data.list.get(8).should == ioke.nil
+      result.data.list.get(9).should == ioke.nil
+      result.data.list.get(10).data.as_java_integer.should == 45
+    end
+    
+    it "should be possible to set with negative indices" do 
+      ioke = IokeRuntime.get_runtime
+      result = ioke.evaluate_string("x = [40, 42, 44, 46]. x at(0-2) = 52. x")
+      result.data.list.size.should == 4
+      result.data.list.get(0).data.as_java_integer.should == 40
+      result.data.list.get(1).data.as_java_integer.should == 42
+      result.data.list.get(2).data.as_java_integer.should == 52
+      result.data.list.get(3).data.as_java_integer.should == 46
+    end
+    
+    it "should return the value set" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("[40, 42, 44, 46] at(0) = 33+44").data.as_java_integer.should == 77
+    end
+
+    it "should throw an exception if setting with negative indices outside the range" do 
+      ioke = IokeRuntime.get_runtime
+      proc do 
+        ioke.evaluate_string("[] at(0-1) = 52")
+      end.should raise_error
+    end
   end
 
   describe "'<<'" do 

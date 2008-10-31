@@ -213,24 +213,32 @@ public class DefaultBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("expects two arguments, the first unevaluated, the second evaluated. assigns the result of evaluating the second argument in the context of the caller, and assigns this result to the name provided by the first argument. the first argument remains unevaluated. the result of the assignment is the value assigned to the name. if the second argument is a method-like object and it's name is not set, that name will be set to the name of the cell.", new DefaultBehaviorJavaMethod("=") {
+        obj.registerMethod(runtime.newJavaMethod("expects two arguments, the first unevaluated, the second evaluated. assigns the result of evaluating the second argument in the context of the caller, and assigns this result to the name provided by the first argument. the first argument remains unevaluated. the result of the assignment is the value assigned to the name. if the second argument is a method-like object and it's name is not set, that name will be set to the name of the cell. TODO: add setf documentation here.", new DefaultBehaviorJavaMethod("=") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    String name = ((IokeObject)Message.getArg1(message)).getName();
-                    Object value = message.getEvaluatedArgument(1, context);
-                    IokeObject.assign(on, name, value);
+                    IokeObject m1 = IokeObject.as(Message.getArg1(message));
+                    String name = m1.getName();
+                    if(m1.getArguments().size() == 0) {
+                        Object value = message.getEvaluatedArgument(1, context);
+                        IokeObject.assign(on, name, value);
 
-                    if((IokeObject.data(value) instanceof Method) && ((Method)IokeObject.data(value)).name == null) {
-                        ((Method)IokeObject.data(value)).name = name;
-                    } else if(name.length() > 0 && Character.isUpperCase(name.charAt(0)) && !IokeObject.as(value).hasKind()) {
-                        if(on == context.runtime.ground) {
-                            IokeObject.as(value).setKind(name);
-                        } else {
-                            IokeObject.as(value).setKind(IokeObject.as(on).getKind() + " " + name);
+                        if((IokeObject.data(value) instanceof Method) && ((Method)IokeObject.data(value)).name == null) {
+                            ((Method)IokeObject.data(value)).name = name;
+                        } else if(name.length() > 0 && Character.isUpperCase(name.charAt(0)) && !IokeObject.as(value).hasKind()) {
+                            if(on == context.runtime.ground) {
+                                IokeObject.as(value).setKind(name);
+                            } else {
+                                IokeObject.as(value).setKind(IokeObject.as(on).getKind() + " " + name);
+                            }
                         }
-                    }
                     
-                    return value;
+                        return value;
+                    } else {
+                        String newName = name + "=";
+                        List<Object> arguments = new ArrayList<Object>(m1.getArguments());
+                        arguments.add(Message.getArg2(message));
+                        return context.runtime.newMessageFrom(message, newName, arguments).sendTo(context, on);
+                    }
                 }
             }));
 
