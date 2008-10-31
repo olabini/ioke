@@ -69,6 +69,7 @@ public class Runtime {
     public IokeObject name = newMessage("name");
     public IokeObject call = newMessage("call");
     public IokeObject code = newMessage("code");
+    public IokeObject each = newMessage("each");
 
     // NOT TO BE EXPOSED TO Ioke - used for internal usage only
     NullObject nul = new NullObject(this);
