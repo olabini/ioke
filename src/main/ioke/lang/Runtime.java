@@ -159,7 +159,7 @@ public class Runtime {
                     return ioke.lang.extensions.benchmark.Benchmark.create(runtime);
                 }
             });
-
+        
         try {
             evaluateString("use(\"builtin/restarts\")");
         } catch(ControlFlow cf) {
@@ -256,9 +256,9 @@ public class Runtime {
         try {
             iokeParser parser = new iokeParser(new CommonTokenStream(new iokeLexer(new ANTLRReaderStream(reader))));
             Tree t = parser.parseFully();
-//             System.err.println("t: " + t.toStringTree());
+            //            System.err.println("t: " + t.toStringTree());
             IokeObject m = Message.fromTree(this, t);
-//             System.err.println("m: " + m);
+            //            System.err.println("m: " + m);
             return m;
         } catch(RuntimeException e) {
             throw e;

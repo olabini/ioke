@@ -5,6 +5,7 @@ options {
     backtrack = true;
 }
 
+
 tokens {
     MESSAGE_SEND;
     MESSAGE_SEND_EMPTY;
@@ -85,8 +86,7 @@ expression
     |   binaryOperator expression
     |   unaryOperator
     |   StringLiteral
-//    |   (DecimalLiteral) => DecimalLiteral
-    |   (NumberLiteral) => NumberLiteral
+    |   NumberLiteral
     |   Terminator
     ;
 
@@ -118,13 +118,15 @@ Identifier
     |   (Letter|':') (Letter|IDDigit|StrangeChars)*
     ;
 
-//DecimalLiteral
-//    : Digit+ '.' Digit+
-//    ;
-
 NumberLiteral
-    : '0'
-    | ('1'..'9') Digit*
+    : '0' (
+            {(input.LA(2)>='0')&&(input.LA(2)<='9')}?=> FloatWithLeadingDot
+        |
+        )
+    | NonZeroDecimal (
+            {(input.LA(2)>='0')&&(input.LA(2)<='9')}?=> FloatWithLeadingDot
+        |
+        )
     ;
 
 StringLiteral
@@ -205,6 +207,18 @@ OctalEscape
 fragment
 UnicodeEscape
     :   '\\' 'u' HexDigit HexDigit HexDigit HexDigit
+    ;
+
+fragment
+FloatWithLeadingDot
+        :
+            '.' Digit+
+        ;
+
+fragment
+NonZeroDecimal
+    :
+     ('1'..'9') Digit*
     ;
 
 fragment
