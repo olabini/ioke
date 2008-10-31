@@ -31,7 +31,7 @@ describe "Base" do
       ioke = IokeRuntime.get_runtime()
       result = ioke.evaluate_stream(StringReader.new(%q[Text mimic]))
       result.find_cell(nil,nil, 'kind').data.text.should == 'Text'
-      result.should_not == ioke.text
+      result.object_id.should_not == ioke.text.object_id
     end
 
     it "should not be able to mimic DefaultBehavior" do 

@@ -58,6 +58,13 @@ public class Number extends IokeData {
     }
 
     @Override
+    public boolean isEqualTo(IokeObject self, Object other) {
+        return ((other instanceof IokeObject) && 
+                (IokeObject.data(other) instanceof Number) 
+                && this.value.equals(((Number)IokeObject.data(other)).value));
+    }
+
+    @Override
     public void init(IokeObject obj) {
         final Runtime runtime = obj.runtime;
 

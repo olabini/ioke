@@ -76,6 +76,11 @@ describe "assignment" do
     m.should == "=(count, count +(1)) .\ncount println"
   end
 
+  it "should work when assigning something to the empty parenthesis" do 
+    m = parse("x = (10+20)").to_string
+    m.should == "=(x, (10 +(20)))"
+  end
+  
   describe "()=" do 
     it "should parse correctly without receiver, with arguments" do 
       m = parse("(1) = 12").to_string

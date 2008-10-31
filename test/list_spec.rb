@@ -14,7 +14,6 @@ describe "List" do
     ioke = IokeRuntime.get_runtime
     result = ioke.evaluate_string("x = List mimic")
     result.data.class.should == IokeList
-    result.should_not == ioke.list
     result.data.should_not == ioke.list.data
 
     ioke.evaluate_string("x mimics?(List)").should == ioke.true
@@ -223,7 +222,43 @@ describe "List" do
   
   #Should always be equal based on the content of the lists
   describe "'=='" do 
-    it "should have tests"
+    it "should return false when sent an argument that is not a list" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("[] == 1").should == ioke.false
+      ioke.evaluate_string("[1] == 1").should == ioke.false
+      ioke.evaluate_string("[1,2,3] == \"foo\"").should == ioke.false
+      ioke.evaluate_string("[] == method([])").should == ioke.false
+    end
+    
+    it "should return true for two empty lists" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("x = []. x == x").should == ioke.true
+      ioke.evaluate_string("[] == []").should == ioke.true
+    end
+    
+    it "should return true for two empty lists where one has a new cell" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("x = []. y = []. x blarg = 12. x == y").should == ioke.true
+    end
+    
+    it "should return false when the two lists have an element of different types" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("[1] == [\"1\"]").should == ioke.false
+      ioke.evaluate_string("[1, 2, 3] == [\"1\", \"2\", \"3\"]").should == ioke.false
+    end
+
+    it "should return false when the two lists have different length" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("[1] == []").should == ioke.false
+      ioke.evaluate_string("[1] == [1,2,3]").should == ioke.false
+    end
+    
+    it "should return true if the elements in the list are the same" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("[1] == [1]").should == ioke.true
+      ioke.evaluate_string("[\"1\"] == [\"1\"]").should == ioke.true
+      ioke.evaluate_string("[1,2,3,4,5,6,7] == [1,2,3,4,5,6,7]").should == ioke.true
+    end
   end
   
   describe "'clear!'" do 
@@ -294,7 +329,6 @@ describe "DefaultBehavior" do
       ioke = IokeRuntime.get_runtime
       result = ioke.evaluate_string("x = list")
       result.data.class.should == IokeList
-      result.should_not == ioke.list
       result.data.should_not == ioke.list.data
 
       ioke.evaluate_string("x mimics?(List)").should == ioke.true
@@ -302,7 +336,6 @@ describe "DefaultBehavior" do
 
       result = ioke.evaluate_string("x = list()")
       result.data.class.should == IokeList
-      result.should_not == ioke.list
       result.data.should_not == ioke.list.data
 
       ioke.evaluate_string("x mimics?(List)").should == ioke.true
@@ -326,7 +359,6 @@ describe "DefaultBehavior" do
       ioke = IokeRuntime.get_runtime
       result = ioke.evaluate_string("x = []")
       result.data.class.should == IokeList
-      result.should_not == ioke.list
       result.data.should_not == ioke.list.data
 
       ioke.evaluate_string("x mimics?(List)").should == ioke.true

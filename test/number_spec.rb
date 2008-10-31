@@ -163,6 +163,48 @@ describe "Number" do
 
     # It should convert it's argument to number if it's not a number
   end
+
+  describe "'=='" do 
+    it "should return true for the same number" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string("x = 1. x == x").should == ioke.true
+      ioke.evaluate_string("x = 10. x == x").should == ioke.true
+      ioke.evaluate_string("x = (0-20). x == x").should == ioke.true
+    end
+
+    it "should not return true for unequal numbers" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string("1 == 2").should == ioke.false
+      ioke.evaluate_string("1 == 200000").should == ioke.false
+      ioke.evaluate_string("1123223 == 65756756756").should == ioke.false
+      ioke.evaluate_string("(0-1) == 2").should == ioke.false
+    end
+    
+    it "should return true for the result of equal number calculations" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string("(1+1) == 2").should == ioke.true
+      ioke.evaluate_string("(2+1) == (1+2)").should == ioke.true
+    end
+    
+    it "should work correctly when comparing zeroes" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string("0 == 0").should == ioke.true
+      ioke.evaluate_string("1 == 0").should == ioke.false
+      ioke.evaluate_string("0 == 1").should == ioke.false
+    end
+
+    it "should work correctly when comparing negative numbers" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string("(0-19) == (0-19)").should == ioke.true
+      ioke.evaluate_string("(0-19) == (0-20)").should == ioke.false
+    end
+
+    it "should work correctly when comparing large positive numbers" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string("123234534675676786789678985463456345 == 123234534675676786789678985463456345").should == ioke.true
+      ioke.evaluate_string("8888856676776 == 8888856676776").should == ioke.true
+    end
+  end
   
   describe "'asText'" do 
     it "should return a representation of 0" do 

@@ -39,6 +39,13 @@ public class Text extends IokeData {
     }
 
     @Override
+    public boolean isEqualTo(IokeObject self, Object other) {
+        return ((other instanceof IokeObject) && 
+                (IokeObject.data(other) instanceof Text) 
+                && this.text.equals(((Text)IokeObject.data(other)).text));
+    }
+
+    @Override
     public String toString() {
         return text;
     }
