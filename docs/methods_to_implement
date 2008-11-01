@@ -1,5 +1,6 @@
 
-2. lists
+1. syntax
+2. enumerable
 3. rescue()
 4. handle()
 5. signal!, error!, warning!
@@ -50,9 +51,7 @@ cellMissing === doesNotUnderstand === method_missing === forward
 
 mimics == protos
 
-lists
 hashes
-[] and {} and []= and {}= methods
 
 
 lower prio

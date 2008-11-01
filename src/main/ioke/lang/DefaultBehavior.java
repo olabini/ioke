@@ -190,7 +190,7 @@ public class DefaultBehavior {
                     Object o = Message.getArg1(message);
                     if(o instanceof String) {
                         String s = (String)o;
-                        return runtime.newText(s.substring(1, s.length()-1));
+                        return runtime.newText(s.substring(1, s.length()-1).replaceAll("\\\\\n", ""));
                     } else {
                         return IokeObject.convertToText(message.getEvaluatedArgument(0, context), message, context);
                     }

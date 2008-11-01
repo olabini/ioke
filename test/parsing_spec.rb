@@ -38,8 +38,32 @@ describe "parsing" do
       m = parse("\n.\n").to_string
       m.should == ".\n"
     end
+    
+    it "should not parse a line ending with a slash as a terminator" do 
+      m = parse("foo\\\nbar").to_string
+      m.should == "foo bar"
+    end
+
+    it "should not parse a line ending with a slash and spaces around it as a terminator" do 
+      m = parse("foo    \\\n    bar").to_string
+      m.should == "foo bar"
+    end
   end
 
+  describe "strings" do 
+    it "should parse a string containing newlines" do 
+      m = parse("\"foo\nbar\"").to_string
+      m.should == "\"foo\nbar\""
+    end
+
+    describe "escapes" do 
+      it "should parse a newline as nothing if preceeded with a slash" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string("\"foo\\\nbar\"").data.text.should == "foobar"
+      end
+    end
+  end
+  
   describe "parens without preceeding message" do 
     it "should be translated into identity message" do 
       m = parse("(1)").to_string
