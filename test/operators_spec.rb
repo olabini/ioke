@@ -399,6 +399,17 @@ describe "operator" do
         m.should == "1 ==(2)"
       end
     end
+
+    describe "unary -" do 
+      it "should have tests"
+    end
+    
+    describe "unary binary operators" do 
+      # it should work correctly to continue a binary expression with no receiver, like in
+      #  map(*2) or map(*4**5 + 13)
+
+      it "should have tests"
+    end
     
     describe "-" do 
       it "should be translated correctly in infix" do 
@@ -420,6 +431,9 @@ describe "operator" do
       end
     end
 
+    describe "unary +" do 
+      it "should have tests"
+    end
 
     describe "+" do 
       it "should be translated correctly in infix" do 
@@ -438,6 +452,46 @@ describe "operator" do
       it "should be translated correctly with spaces" do 
         m = parse("2 + 1").to_string
         m.should == "2 +(1)"
+      end
+    end
+
+    describe "*" do 
+      it "should be translated correctly in infix" do 
+        m = parse("2*1").to_string
+        m.should == "2 *(1)"
+      end
+
+      it "should be translated correctly with parenthesis" do 
+        m = parse("2*(1)").to_string
+        m.should == "2 *(1)"
+
+        m = parse("2 *(1)").to_string
+        m.should == "2 *(1)"
+      end
+
+      it "should be translated correctly with spaces" do 
+        m = parse("2 * 1").to_string
+        m.should == "2 *(1)"
+      end
+    end
+
+    describe "/" do 
+      it "should be translated correctly in infix" do 
+        m = parse("2/1").to_string
+        m.should == "2 /(1)"
+      end
+
+      it "should be translated correctly with parenthesis" do 
+        m = parse("2/(1)").to_string
+        m.should == "2 /(1)"
+
+        m = parse("2 /(1)").to_string
+        m.should == "2 /(1)"
+      end
+
+      it "should be translated correctly with spaces" do 
+        m = parse("2 / 1").to_string
+        m.should == "2 /(1)"
       end
     end
     
@@ -598,6 +652,98 @@ describe "operator" do
 
         m = parse('"foo" << "bar" << "quux"').to_string
         m.should == '"foo" <<("bar" <<("quux"))'
+      end
+    end
+    
+    describe "precedence" do 
+      it "should work correctly for + and *" do 
+        m = parse("2+3*4").to_string
+        m.should == "2 +(3 *(4))"
+      end
+
+      it "should work correctly for * and +" do 
+        m = parse("2*3+4").to_string
+        m.should == "2 *(3) +(4)"
+      end
+
+      it "should work correctly for + and * with spaces" do 
+        m = parse("2 + 3 * 4").to_string
+        m.should == "2 +(3 *(4))"
+      end
+
+      it "should work correctly for * and + with spaces" do 
+        m = parse("2 * 3 + 4").to_string
+        m.should == "2 *(3) +(4)"
+      end
+
+      it "should work correctly for + and /" do 
+        m = parse("2+3/4").to_string
+        m.should == "2 +(3 /(4))"
+      end
+
+      it "should work correctly for / and +" do 
+        m = parse("2/3+4").to_string
+        m.should == "2 /(3) +(4)"
+      end
+
+      it "should work correctly for + and / with spaces" do 
+        m = parse("2 + 3 / 4").to_string
+        m.should == "2 +(3 /(4))"
+      end
+
+      it "should work correctly for / and + with spaces" do 
+        m = parse("2 / 3 + 4").to_string
+        m.should == "2 /(3) +(4)"
+      end
+
+      it "should work correctly for - and *" do 
+        m = parse("2-3*4").to_string
+        m.should == "2 -(3 *(4))"
+      end
+
+      it "should work correctly for * and -" do 
+        m = parse("2*3-4").to_string
+        m.should == "2 *(3) -(4)"
+      end
+
+      it "should work correctly for - and * with spaces" do 
+        m = parse("2 - 3 * 4").to_string
+        m.should == "2 -(3 *(4))"
+      end
+
+      it "should work correctly for * and - with spaces" do 
+        m = parse("2 * 3 - 4").to_string
+        m.should == "2 *(3) -(4)"
+      end
+
+      it "should work correctly for - and /" do 
+        m = parse("2-3/4").to_string
+        m.should == "2 -(3 /(4))"
+      end
+
+      it "should work correctly for / and -" do 
+        m = parse("2/3-4").to_string
+        m.should == "2 /(3) -(4)"
+      end
+
+      it "should work correctly for - and / with spaces" do 
+        m = parse("2 - 3 / 4").to_string
+        m.should == "2 -(3 /(4))"
+      end
+
+      it "should work correctly for / and - with spaces" do 
+        m = parse("2 / 3 - 4").to_string
+        m.should == "2 /(3) -(4)"
+      end
+      
+      it "should work correctly for unary minus" do 
+        m = parse("20 * -10").to_string
+        m.should == "20 *(-(10))"
+      end
+
+      it "should work correctly for unary plus" do 
+        m = parse("20 * +10").to_string
+        m.should == "20 *(+(10))"
       end
     end
   end

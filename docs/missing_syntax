@@ -1,5 +1,5 @@
-- line endings should not be terminators with a \ in front of them
 - precedence rules...
+- string escapes
 - maybe string interpolation inside of strings?
 
 - decimal numbers, with scientific part
