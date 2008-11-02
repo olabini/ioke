@@ -3,6 +3,9 @@
  */
 package ioke.lang;
 
+import java.io.Reader;
+import java.io.StringReader;
+
 import java.util.List;
 import java.util.ArrayList;
 
@@ -12,6 +15,11 @@ import ioke.lang.parser.iokeLexer;
 import ioke.lang.parser.iokeParser;
 
 import ioke.lang.exceptions.ControlFlow;
+
+import org.antlr.runtime.ANTLRReaderStream;
+import org.antlr.runtime.CommonTokenStream;
+import org.antlr.runtime.Token;
+import org.antlr.runtime.tree.Tree;
 
 /**
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
@@ -76,6 +84,19 @@ public class Message extends IokeData {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
                     return method.runtime.newText(((Message)IokeObject.data(on)).code());
+                }
+            }));
+        message.registerMethod(message.runtime.newJavaMethod("Will rearrange this message and all submessages to follow regular C style operator precedence rules. Will use Message OperatorTable to guide this operation. The operation is mutating, but should not change anything if done twice.", new JavaMethod("shuffleOperators") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
+                    return context.runtime.nil;
+                }
+            }));
+        message.registerMethod(message.runtime.newJavaMethod("Takes one evaluated argument and returns the message resulting from parsing and operator shuffling the resulting message.", new JavaMethod("fromText") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    String code = Text.getText(message.getEvaluatedArgument(0, context));
+                    return Message.newFromStream(context.runtime, new StringReader(code));
                 }
             }));
     }
@@ -163,6 +184,27 @@ public class Message extends IokeData {
     public void setNext(IokeObject next) {
         this.next = next;
     }
+
+    public static void opShuffle(IokeObject self) throws ControlFlow {
+        self.runtime.opShuffle.sendTo(self.runtime.ground, self);
+    }
+
+    public static IokeObject newFromStream(Runtime runtime, Reader reader) throws ControlFlow {
+        try {
+            iokeParser parser = new iokeParser(new CommonTokenStream(new iokeLexer(new ANTLRReaderStream(reader))));
+            Tree t = parser.parseFully();
+            //            System.err.println("t: " + t.toStringTree());
+            IokeObject m = fromTree(runtime, t);
+            //            System.err.println("m: " + m);
+            opShuffle(m);
+            return m;
+        } catch(RuntimeException e) {
+            throw e;
+        } catch(Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
 
     public static IokeObject fromTree(Runtime runtime, Tree tree) {
         //        System.err.println(" fromTree(" + tree.toStringTree() + ")");
@@ -253,71 +295,22 @@ public class Message extends IokeData {
                 currents.clear();
                 head = null;
             } else {
-                if(currents.size() > 0 && Message.type(currents.get(0)) == Type.BINARY_ASSIGNMENT) {
-                    currents.get(0).getArguments().add(null);
-                    currents.get(0).getArguments().add(null);
-                    currents.get(0).getArguments().set(0,Message.prev(currents.get(0)));
-
-                    Message.setNext(Message.prev(currents.get(0)), null);
-
-                    if(Message.prev(Message.prev(currents.get(0))) != null) {
-                        Message.setPrev(currents.get(0), Message.prev(Message.prev(currents.get(0))));
-                        Message.setNext(Message.prev(currents.get(0)), currents.get(0));
-                        Message.setPrev((IokeObject)currents.get(0).getArguments().get(0), null);
-                    } else {
-                        if(currents.get(0).getArguments().get(0) == head) {
-                            head = currents.get(0);
-                        }
-                        Message.setPrev(currents.get(0), null);
+                if(Message.type(created) == Type.TERMINATOR && currents.size() > 1) {
+                    while(currents.size() > 1) {
+                        currents.remove(0);
                     }
+                }
+                Message.setPrev(created, currents.size() > 0 ? currents.get(0) : null);
 
-                    currents.get(0).getArguments().set(1,created);
-                    currents.add(0, created);
-                } else if(currents.size() > 0 && Message.type(created) == Type.UNARY_ASSIGNMENT) {
-                    IokeObject c = currents.get(0);
-                    String _name = c.getName();
-                    String _file = c.getFile();
-                    int _line = c.getLine();
-                    int _pos = c.getPosition();
-                    Type _type = Message.type(c);
-                    List<Object> _arguments = c.getArguments();
-                    
-                    Message.setName(c, created.getName());
-                    Message.setFile(c, created.getFile());
-                    Message.setLine(c, created.getLine());
-                    Message.setPosition(c, created.getPosition());
-                    Message.setType(c, Message.type(created));
-                    Message.setArguments(c, created.getArguments());
+                if(head == null && Message.type(created) != Type.TERMINATOR) {
+                    head = created;
+                }
 
-                    Message.setName(created, _name);
-                    Message.setFile(created, _file);
-                    Message.setLine(created, _line);
-                    Message.setPosition(created, _pos);
-                    Message.setType(created, _type);
-                    Message.setArguments(created, _arguments);
-                    
-                    c.getArguments().add(0, created);
-                } else if(currents.size() > 0 && Message.type(currents.get(0)) == Type.BINARY) {
-                    currents.get(0).getArguments().add(created);
-                    currents.add(0, created);
+                if(currents.size() > 0) {
+                    Message.setNext(currents.get(0), created);
+                    currents.set(0, created);
                 } else {
-                    if(Message.type(created) == Type.TERMINATOR && currents.size() > 1) {
-                        while(currents.size() > 1) {
-                            currents.remove(0);
-                        }
-                    }
-                    Message.setPrev(created, currents.size() > 0 ? currents.get(0) : null);
-
-                    if(head == null && Message.type(created) != Type.TERMINATOR) {
-                        head = created;
-                    }
-
-                    if(currents.size() > 0) {
-                        Message.setNext(currents.get(0), created);
-                        currents.set(0, created);
-                    } else {
-                        currents.add(0, created);
-                    }
+                    currents.add(0, created);
                 }
             }
         }

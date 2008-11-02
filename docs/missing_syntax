@@ -1,4 +1,7 @@
-- precedence rules...
+- precedence rules... == fix opShuffle
+
+
+
 
 - string escapes
 - maybe string interpolation inside of strings?

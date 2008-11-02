@@ -71,10 +71,6 @@ twoExpressions
     :
         expression+ Comma expression+
     ;
-//assignmentExpression
-//    :
-//        expression+ (binaryOperator expression)?
-//    ;
 
 expression
     :
