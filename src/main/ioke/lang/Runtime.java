@@ -20,11 +20,6 @@ import ioke.lang.parser.iokeParser;
 
 import ioke.lang.exceptions.ControlFlow;
 
-import org.antlr.runtime.ANTLRReaderStream;
-import org.antlr.runtime.CommonTokenStream;
-import org.antlr.runtime.Token;
-import org.antlr.runtime.tree.Tree;
-
 /**
  *
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
@@ -70,6 +65,7 @@ public class Runtime {
     public IokeObject call = newMessage("call");
     public IokeObject code = newMessage("code");
     public IokeObject each = newMessage("each");
+    public IokeObject opShuffle = newMessage("shuffleOperators");
 
     // NOT TO BE EXPOSED TO Ioke - used for internal usage only
     NullObject nul = new NullObject(this);
@@ -165,10 +161,10 @@ public class Runtime {
                 }
             });
         
-        try {
-            evaluateString("use(\"builtin/restarts\")");
-        } catch(ControlFlow cf) {
-        }
+//         try {
+//             evaluateString("use(\"builtin/restarts\")");
+//         } catch(ControlFlow cf) {
+//         }
     }
 
     public NullObject getNul() {
@@ -257,19 +253,8 @@ public class Runtime {
         return builtins.get(name);
     }
 
-    public IokeObject parseStream(Reader reader) {
-        try {
-            iokeParser parser = new iokeParser(new CommonTokenStream(new iokeLexer(new ANTLRReaderStream(reader))));
-            Tree t = parser.parseFully();
-            //            System.err.println("t: " + t.toStringTree());
-            IokeObject m = Message.fromTree(this, t);
-            //            System.err.println("m: " + m);
-            return m;
-        } catch(RuntimeException e) {
-            throw e;
-        } catch(Exception e) {
-            throw new RuntimeException(e);
-        }
+    public IokeObject parseStream(Reader reader) throws ControlFlow {
+        return Message.newFromStream(this, reader);
     }
 
     public Object evaluateStream(Reader reader) throws ControlFlow {
