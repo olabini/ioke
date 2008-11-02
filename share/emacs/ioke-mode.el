@@ -44,41 +44,98 @@
 (defconst ioke-auto-mode-p t
   "Should the ioke mode add itself to the auto mode list?")
 
-(defconst ioke-comment-face font-lock-comment-face
-  "The font to use for comments.")
+(defgroup ioke-font-lock-faces nil
+  "Specific Ioke faces for highlighting Ioke sources."
+  :prefix "ioke-font-lock-"
+  :group (if (featurep 'xemacs)
+             'font-lock-faces
+           'font-lock-highlighting-faces))
 
-(defconst ioke-prototype-face font-lock-type-face
-  "The font to use for known prototypes.")
 
-(defconst ioke-cell-face font-lock-function-name-face
-  "The font to use for cells.")
+(defface ioke-font-lock-object-mimic-face
+  '((((class grayscale)) (:foreground "grey"))
+    (((class color)) (:foreground "medium blue"))
+    (t (:bold t)))
+  "Font Lock Mode face used to highlight mimicking of something."
+  :group 'ioke-font-lock-faces)
 
-(defconst ioke-object-face font-lock-builtin-face
-  "The font to use for cloned objects.")
+(defconst ioke-font-lock-object-mimic-face 'ioke-font-lock-object-mimic-face)
 
-(defconst ioke-operator-face font-lock-variable-name-face
-  "The font to use for operators.")
+(defface ioke-font-lock-operator-name-face
+  '((((type tty) (class color)) (:foreground "LightSteelBlue" :weight light))
+    (((class grayscale) (background light)) (:foreground "LightGray" :bold t))
+    (((class grayscale) (background dark)) (:foreground "DimGray" :bold t))
+    (((class color) (background light)) (:foreground "Orchid"))
+    (((class color) (background dark)) (:foreground "CornflowerBlue"))
+    (t (:bold t)))
+  "Font Lock mode face used to highlight operator names."
+  :group 'ioke-font-lock-faces)
 
-(defconst ioke-special-face font-lock-warning-face
-  "The font to use for special operators.")
+(defconst ioke-font-lock-operator-name-face 'ioke-font-lock-operator-name-face)
 
-(defconst ioke-number-face font-lock-constant-face
-  "The font to use for numbers.")
+(defface ioke-font-lock-operator-symbol-face
+  '((((type tty) (class color)) (:foreground "LightSteelBlue" :weight light))
+    (((class grayscale) (background light)) (:foreground "LightGray" :bold t))
+    (((class grayscale) (background dark)) (:foreground "DimGray" :bold t))
+    (((class color) (background light)) (:foreground "Orchid"))
+    (((class color) (background dark)) (:foreground "deep sky blue"))
+    (t (:bold t)))
+  "Font Lock mode face used to highlight operator symbols."
+  :group 'ioke-font-lock-faces)
 
-(defconst ioke-braces-face font-lock-preprocessor-face
-  "The font to use for braces.")
+(defconst ioke-font-lock-operator-symbol-face 'ioke-font-lock-operator-symbol-face)
 
-(defconst ioke-object-assign-face font-lock-builtin-face
-  "The font to use for object assignment.")
+(defface ioke-font-lock-number-face
+  '((((class grayscale) (background light)) (:foreground "DimGray" :italic t))
+    (((class grayscale) (background dark)) (:foreground "LightGray" :italic t))
+    (((class color) (background light)) (:foreground "RosyBrown"))
+    (((class color) (background dark)) (:foreground "LightSalmon"))
+    (t (:italic t)))
+  "Font Lock mode face used to highlight numbers."
+  :group 'ioke-font-lock-faces)
 
-(defconst ioke-object-clone-face font-lock-warning-face
-  "The font to use for object cloning.")
+(defconst ioke-font-lock-number-face 'ioke-font-lock-number-face)
 
-(defconst ioke-custom-face font-lock-builtin-face
-  "The font to use for custom names.")
+(defface ioke-font-lock-known-kind-face
+  '((((type tty) (class color)) (:foreground "magenta"))
+    (((class grayscale) (background light))
+     (:foreground "LightGray" :bold t :underline t))
+    (((class grayscale) (background dark))
+     (:foreground "Gray50" :bold t :underline t))
+    (((class color) (background light)) (:foreground "CadetBlue"))
+    (((class color) (background dark)) (:foreground "Aquamarine"))
+    (t (:bold t :underline t)))
+  "Font Lock mode face used to highlight known kinds."
+  :group 'ioke-font-lock-faces)
 
-(defconst ioke-nothing-face font-lock-builtin-face
-  "The font to use for white names.")
+(defconst ioke-font-lock-known-kind-face 'ioke-font-lock-known-kind-face)
+
+(defface ioke-font-lock-api-cell-face
+  '((((class grayscale) (background light)) (:foreground "DimGray"))
+    (((class grayscale) (background dark)) (:foreground "LightGray"))
+    (((class color) (background light)) (:foreground "dark goldenrod"))
+    (((class color) (background dark)) (:foreground "light goldenrod")))
+  "Font Lock mode face used to highlight API cells."
+  :group 'ioke-font-lock-faces)
+
+(defconst ioke-font-lock-api-cell-face 'ioke-font-lock-api-cell-face)
+(defconst ioke-font-lock-special-face font-lock-keyword-face)
+(defconst ioke-font-lock-kind-face font-lock-type-face)
+
+(defface ioke-font-lock-object-assign-face
+  '((((type tty) (class color)) (:foreground "blue" :weight light))
+    (((class grayscale) (background light)) (:foreground "LightGray" :bold t))
+    (((class grayscale) (background dark)) (:foreground "DimGray" :bold t))
+    (((class color) (background light)) (:foreground "Orchid"))
+    (((class color) (background dark)) (:foreground "LightSteelBlue"))
+    (t (:bold t)))
+  "Font Lock Mode face used to highlight assignment."
+  :group 'ioke-font-lock-faces)
+
+(defconst ioke-font-lock-object-assign-face 'ioke-font-lock-object-assign-face)
+(defconst ioke-font-lock-braces-face font-lock-preprocessor-face)
+(defconst ioke-font-lock-symbol-face font-lock-reference-face)
+(defconst ioke-font-lock-keyword-argument-face font-lock-reference-face)
 
 (defconst ioke-prototype-names '(
                                  "Base"
@@ -108,8 +165,6 @@
                             "until"
                             "asText"
                             "representation"
-                            "fn"
-                            "fnx"
                             "loop"
                             "bind"
                             "restart"
@@ -117,9 +172,6 @@
                             "true?"
                             "false?"
                             "nil?"
-                            "true"
-                            "false"
-                            "nil"
                             "call"
                             "list"
                             "dict"
@@ -182,7 +234,6 @@
 				"|="
 				"<<="
 				">>="
-				":="
 				"<-"
 				"<->"
 				"->"
@@ -196,7 +247,12 @@
                                 "self"
                                 "use"
                                 "if"
+                                "fn"
+                                "fnx"
                                 "method"
+                                "true"
+                                "false"
+                                "nil"
                                 )
   "ioke mode operator names")
 
@@ -204,6 +260,7 @@
                                "`"
                                "'"
                                "."
+                               ","
                                "@"
                                "@@"
                                )
@@ -238,17 +295,18 @@
 
 (defconst ioke-font-lock-keywords
   (list
-    '("\\([[:alnum:]!?_:-]+\\)[[:space:]]*=[^=][[:space:]]*[[:alnum:]_:-]+[[:space:]]+mimic" 1 ioke-object-clone-face)
-    '("\\([[:alnum:]!?_:-]+\\)[[:space:]]*[+*/-]?=[^=]" 1 ioke-object-assign-face)
-    `(,(regexp-opt ioke-prototype-names 'words) . ioke-prototype-face)
-    '("\\<[A-Z][[:alnum:]!?_:-]*\\>" 0 ioke-prototype-face)
-    `(,(regexp-opt ioke-cell-names 'words) . ioke-cell-face)
-    `(,(regexp-opt ioke-custom-names 'words) . ioke-custom-face)
-    `(,(regexp-opt ioke-operator-names 'words) . ioke-operator-face)
-    `(,(regexp-opt ioke-special-names t) . ioke-special-face)
-    `(,(regexp-opt ioke-operator-symbols t) . ioke-operator-face)
-    '("\\<[[:digit:]_]+\\>" 0 ioke-number-face)
-    '("[](){}[]+" 0 ioke-braces-face)
+    '("\\([[:alnum:]!?_:-]+\\)[[:space:]]*=[^=][[:space:]]*[[:alnum:]_:-]+[[:space:]]+mimic" 1 ioke-font-lock-object-mimic-face)
+    '("\\([[:alnum:]!?_:-]+\\)[[:space:]]*[+*/-]?=[^=]" 1 ioke-font-lock-object-assign-face)
+    `(,(regexp-opt ioke-prototype-names 'words) . ioke-font-lock-known-kind-face)
+    '("\\<[A-Z][[:alnum:]!?_:-]*\\>" 0 ioke-font-lock-kind-face)
+    '("\\<[[:alnum:]!?_:-]*?:\\>" 0 ioke-font-lock-keyword-argument-face)
+    '("\\<:[[:alnum:]!?_:-]*\\>" 0 ioke-font-lock-symbol-face)
+    `(,(regexp-opt ioke-operator-names 'words) . ioke-font-lock-operator-name-face)
+    `(,(regexp-opt ioke-operator-symbols t) . ioke-font-lock-operator-symbol-face)
+    `(,(regexp-opt ioke-special-names t) . ioke-font-lock-special-face)
+    `(,(regexp-opt ioke-cell-names 'words) . ioke-font-lock-api-cell-face)
+    '("\\<[[:digit:]_]+\\>" 0 ioke-font-lock-number-face)
+    '("[](){}[]+" 0 ioke-font-lock-braces-face)
    )
   "ioke mode font lock keywords")
 
