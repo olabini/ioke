@@ -10,13 +10,7 @@
 
 currently unused, possible syntax:
 -  '
--  $
--  @@
--  ~
 -  #
-
-unary prefix:
-- !
 
 binary:
 - +=

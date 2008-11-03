@@ -120,6 +120,7 @@ unaryOperator
 Identifier
     :
         '@'
+    |   '@@'
     |   (Letter|':') (Letter|IDDigit|StrangeChars)*
     ;
 
@@ -184,6 +185,9 @@ RegularBinaryOperator
     |   '>>'
     |   'or'
     |   'and'
+    |   '!'
+    |   '~'
+    |   '$'
     ;
 
 Equals
@@ -282,7 +286,7 @@ IDDigit
 
 fragment
 Letter
-    :  '\u0024'           |
+    :  
        '\u0041'..'\u005a' |
        '\u005f'           |
        '\u0061'..'\u007a' |
