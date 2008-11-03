@@ -1,3 +1,9 @@
+
+can't do. make it simple. use hash:
+
+#/foo/ =~ "foo"
+
+
 Quite simple:
    what can come before a regexp?
 foo() / 123 /

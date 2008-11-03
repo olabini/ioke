@@ -104,12 +104,12 @@ describe "assignment" do
     
     it "should parse correctly with complicated expression on left hand side" do 
       m = parse("foo(1) = 12+13+53+(x f(123))").to_string
-      m.should == "=(foo(1), 12 +(13 +(53 +(x f(123)))))"
+      m.should == "=(foo(1), 12 +(13) +(53) +(x f(123)))"
     end
 
     it "should parse correctly with complicated expression on left hand side" do 
       m = parse("foo(1) = 12+13+53+(x f(123))\n1").to_string
-      m.should == "=(foo(1), 12 +(13 +(53 +(x f(123))))) .\n1"
+      m.should == "=(foo(1), 12 +(13) +(53) +(x f(123))) .\n1"
     end
   end
 
@@ -136,12 +136,12 @@ describe "assignment" do
     
     it "should parse correctly with complicated expression on left hand side" do 
       m = parse("foo[1] = 12+13+53+(x f(123))").to_string
-      m.should == "foo =([](1), 12 +(13 +(53 +(x f(123)))))"
+      m.should == "foo =([](1), 12 +(13) +(53) +(x f(123)))"
     end
 
     it "should parse correctly with complicated expression on left hand side" do 
       m = parse("foo[1] = 12+13+53+(x f(123))\n1").to_string
-      m.should == "foo =([](1), 12 +(13 +(53 +(x f(123))))) .\n1"
+      m.should == "foo =([](1), 12 +(13) +(53) +(x f(123))) .\n1"
     end
   end
 
@@ -168,12 +168,12 @@ describe "assignment" do
     
     it "should parse correctly with complicated expression on left hand side" do 
       m = parse("foo{1} = 12+13+53+(x f(123))").to_string
-      m.should == "foo =({}(1), 12 +(13 +(53 +(x f(123)))))"
+      m.should == "foo =({}(1), 12 +(13) +(53) +(x f(123)))"
     end
 
     it "should parse correctly with complicated expression on left hand side" do 
       m = parse("foo{1} = 12+13+53+(x f(123))\n1").to_string
-      m.should == "foo =({}(1), 12 +(13 +(53 +(x f(123))))) .\n1"
+      m.should == "foo =({}(1), 12 +(13) +(53) +(x f(123))) .\n1"
     end
   end
   
