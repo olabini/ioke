@@ -157,8 +157,11 @@ ComparisonOperator
     |   '>='
     |   '<'
     |   '>'
+    |   '==='
     |   '=='
     |   '!='
+    |   '=~'
+    |   '!~'
     ;
 
 RegularBinaryOperator
@@ -171,6 +174,7 @@ RegularBinaryOperator
     |   '...'
     |   '..'
     |   '<<'
+    |   '>>'
     ;
 
 Equals

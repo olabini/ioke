@@ -130,6 +130,8 @@ public class Levels {
 		new OpTable("==",  6),
 		new OpTable("!=",  6),
 		new OpTable("===",  6),
+		new OpTable("=~",  6),
+		new OpTable("!~",  6),
 
 		new OpTable("&",   7),
 
