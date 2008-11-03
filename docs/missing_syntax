@@ -1,7 +1,15 @@
-- precedence rules... == fix opShuffle
-  == =() should NOT take an unevaluated thing, it should take a symbol:
-    Ground =(:foo, 1)  but opShuffle should be responsible for the setf shuffling in that case
+ - make a simple version of = that takes a symbol. maybe assign()
 
+ - allow for assigning of operators, so you can do:
+foo + = method()
+= = method()
+for = = method()
+bar <-> = method()
+bar .. = method()
+
+
+
+--- ONLY REMOVE FROM THIS LIST WHEN THE FEATURE IS TESTED (for parsing)
 
 - string escapes
 - maybe string interpolation inside of strings?
@@ -49,6 +57,32 @@ binary:
 - ||=
 - <<=
 - >>=
-- <-
 - ->
+- +>
+- !>
+- <>
+- &>
+- %>
+- #>
+- @>
+- />
+- *>
+- ?>
+- |>
+- ^>
+- ->>
+- +>>
+- !>>
+- <>>
+- &>>
+- %>>
+- #>>
+- @>>
+- />>
+- *>>
+- ?>>
+- |>>
+- ^>>
 - <->
+- =~
+- !~

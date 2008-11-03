@@ -528,10 +528,10 @@ describe "operator" do
 
       it "should be translated correctly when chained" do 
         m = parse("2 => 1 => 0").to_string
-        m.should == "2 =>(1 =>(0))"
+        m.should == "2 =>(1) =>(0)"
 
         m = parse('"foo" => "bar" => "quux"').to_string
-        m.should == '"foo" =>("bar" =>("quux"))'
+        m.should == '"foo" =>("bar") =>("quux")'
       end
     end
 
@@ -568,10 +568,10 @@ describe "operator" do
 
       it "should be translated correctly when chained" do 
         m = parse("2 .. 1 .. 0").to_string
-        m.should == "2 ..(1 ..(0))"
+        m.should == "2 ..(1) ..(0)"
 
         m = parse('"foo" .. "bar" .. "quux"').to_string
-        m.should == '"foo" ..("bar" ..("quux"))'
+        m.should == '"foo" ..("bar") ..("quux")'
       end
     end
 
@@ -608,10 +608,10 @@ describe "operator" do
 
       it "should be translated correctly when chained" do 
         m = parse("2 ... 1 ... 0").to_string
-        m.should == "2 ...(1 ...(0))"
+        m.should == "2 ...(1) ...(0)"
 
         m = parse('"foo" ... "bar" ... "quux"').to_string
-        m.should == '"foo" ...("bar" ...("quux"))'
+        m.should == '"foo" ...("bar") ...("quux")'
       end
     end
 
@@ -648,10 +648,10 @@ describe "operator" do
 
       it "should be translated correctly when chained" do 
         m = parse("2 << 1 << 0").to_string
-        m.should == "2 <<(1 <<(0))"
+        m.should == "2 <<(1) <<(0)"
 
         m = parse('"foo" << "bar" << "quux"').to_string
-        m.should == '"foo" <<("bar" <<("quux"))'
+        m.should == '"foo" <<("bar") <<("quux")'
       end
     end
     

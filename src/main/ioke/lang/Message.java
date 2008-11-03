@@ -62,6 +62,28 @@ public class Message extends IokeData {
         }
     }
 
+    public static boolean isTerminator(Object message) {
+        return ((Message)IokeObject.data(message)).type == Type.TERMINATOR;
+    }
+
+    public static void addArg(Object message, Object arg) {
+        IokeObject.as(message).getArguments().add(arg);
+    }
+
+    public static IokeObject copy(Object message) {
+        IokeObject copy = IokeObject.as(message).mimic(null, null);
+        copySourceLocation(message, copy);
+        Message.setPrev(copy, Message.prev(message));
+        Message.setNext(copy, Message.next(message));
+        return copy;
+    }
+
+    public static void copySourceLocation(Object from, Object to) {
+        Message.setFile(to, Message.file(from));
+        Message.setLine(to, Message.line(from));
+        Message.setPosition(to, Message.position(from));
+    }
+
     public static Object getArg1(IokeObject message) {
         return ((Message)message.data).arguments.get(0);
     }
@@ -92,15 +114,22 @@ public class Message extends IokeData {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
                     Levels levels = new Levels(IokeObject.as(on), context, message);
                     List<IokeObject> expressions = new ArrayList<IokeObject>();
-                    expressions.add(IokeObject.as(on));
+                    if(on instanceof IokeObject) {
+                        expressions.add(0, IokeObject.as(on));
 
-                    while(expressions.size() > 0) {
-                        IokeObject n = expressions.remove(0);
-                        do {
-                            levels.attach(n, expressions);
-                        } while((n = Message.next(n)) != null);
+                        while(expressions.size() > 0) {
+                            IokeObject n = expressions.remove(0);
+                            do {
+                                levels.attach(n, expressions);
+                                for(Object o : n.getArguments()) {
+                                    if(o instanceof IokeObject) { //Otherwise a pure String parameter to internal:createText
+                                        expressions.add(0, IokeObject.as(o));
+                                    }
+                                }
+                            } while((n = Message.next(n)) != null);
                         
-                        levels.nextMessage();
+                            levels.nextMessage(expressions);
+                        }
                     }
 
                     return on;
@@ -161,6 +190,30 @@ public class Message extends IokeData {
         return arguments.size();
     }
 
+    public static String file(Object message) {
+        return IokeObject.as(message).getFile();
+    }
+
+    public static int line(Object message) {
+        return IokeObject.as(message).getLine();
+    }
+
+    public static int position(Object message) {
+        return IokeObject.as(message).getPosition();
+    }
+
+    public static void setFile(Object message, String file) {
+        ((Message)IokeObject.data(message)).file = file;
+    }
+
+    public static void setLine(Object message, int line) {
+        ((Message)IokeObject.data(message)).line = line;
+    }
+
+    public static void setPosition(Object message, int pos) {
+        ((Message)IokeObject.data(message)).pos = pos;
+    }
+
     @Override
     public String getFile(IokeObject self) {
         return file;
@@ -192,6 +245,7 @@ public class Message extends IokeData {
     public IokeData cloneData(IokeObject obj, IokeObject message, IokeObject context) {
         Message m = new Message(obj.runtime, name);
         m.arguments = new ArrayList<Object>(((Message)obj.data).arguments);
+        m.type = ((Message)obj.data).type;
         return m;
     }
 
@@ -210,7 +264,9 @@ public class Message extends IokeData {
             //            System.err.println("t: " + t.toStringTree());
             IokeObject m = fromTree(runtime, t);
             //            System.err.println("m: " + m);
+//                         System.err.println("m1: " + m);
             opShuffle(m);
+//                         System.err.println("m2: " + m);
             return m;
         } catch(RuntimeException e) {
             throw e;
@@ -499,12 +555,12 @@ public class Message extends IokeData {
         return base.toString();
     }
 
-    public static IokeObject prev(IokeObject message) {
-        return ((Message)message.data).prev;
+    public static IokeObject prev(Object message) {
+        return ((Message)IokeObject.data(message)).prev;
     }
 
-    public static IokeObject next(IokeObject message) {
-        return ((Message)message.data).next;
+    public static IokeObject next(Object message) {
+        return ((Message)IokeObject.data(message)).next;
     }
 
     public static void setPrev(IokeObject message, IokeObject prev) {
