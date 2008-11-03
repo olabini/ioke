@@ -8,10 +8,6 @@
 - hex numbers
 - regular expressions
 
-currently unused, possible syntax:
--  '
--  #
-
 binary:
 - +=
 - -=
@@ -25,5 +21,3 @@ binary:
 - ||=
 - <<=
 - >>=
-
-- <->
