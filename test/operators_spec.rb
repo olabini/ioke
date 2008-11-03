@@ -1056,6 +1056,58 @@ describe "operator" do
         m.should == '"foo" ||("bar") ||("quux")'
       end
     end
+
+    describe "or" do 
+      it "should be translated correctly with parenthesis" do 
+        m = parse("2 or(1)").to_string
+        m.should == "2 or(1)"
+
+        m = parse('"foo" or("bar")').to_string
+        m.should == '"foo" or("bar")'
+      end
+
+      it "should be translated correctly with spaces" do 
+        m = parse("2 or 1").to_string
+        m.should == "2 or(1)"
+
+        m = parse('"foo" or "bar"').to_string
+        m.should == '"foo" or("bar")'
+      end
+
+      it "should be translated correctly when chained" do 
+        m = parse("2 or 1 or 0").to_string
+        m.should == "2 or(1) or(0)"
+
+        m = parse('"foo" or "bar" or "quux"').to_string
+        m.should == '"foo" or("bar") or("quux")'
+      end
+    end
+
+    describe "and" do 
+      it "should be translated correctly with parenthesis" do 
+        m = parse("2 and(1)").to_string
+        m.should == "2 and(1)"
+
+        m = parse('"foo" and("bar")').to_string
+        m.should == '"foo" and("bar")'
+      end
+
+      it "should be translated correctly with spaces" do 
+        m = parse("2 and 1").to_string
+        m.should == "2 and(1)"
+
+        m = parse('"foo" and "bar"').to_string
+        m.should == '"foo" and("bar")'
+      end
+
+      it "should be translated correctly when chained" do 
+        m = parse("2 and 1 and 0").to_string
+        m.should == "2 and(1) and(0)"
+
+        m = parse('"foo" and "bar" and "quux"').to_string
+        m.should == '"foo" and("bar") and("quux")'
+      end
+    end
     
     describe "precedence" do 
       it "should work correctly for + and *" do 

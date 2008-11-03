@@ -182,6 +182,8 @@ RegularBinaryOperator
     |   '..'
     |   '<<'
     |   '>>'
+    |   'or'
+    |   'and'
     ;
 
 Equals
