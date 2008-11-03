@@ -400,6 +400,112 @@ describe "operator" do
       end
     end
 
+    describe "===" do 
+      it "should be translated correctly inside a method definition" do 
+        m = parse("method(1===2)").to_string
+        m.should == "method(1 ===(2))"
+      end
+
+      it "should be translated correctly inside a nested method definition" do 
+        m = parse("method(method(1===2))").to_string
+        m.should == "method(method(1 ===(2)))"
+      end
+
+      it "should be translated correctly inside a method definition with something else" do 
+        m = parse("method(n, if(1===2, n, n))").to_string
+        m.should == "method(n, if(1 ===(2), n, n))"
+      end
+      
+      it "should be translated correctly in infix" do 
+        m = parse("1===2").to_string
+        m.should == "1 ===(2)"
+      end
+
+      it "should be translated correctly with parenthesis" do 
+        m = parse("1===(2)").to_string
+        m.should == "1 ===(2)"
+
+        m = parse("1 ===(2)").to_string
+        m.should == "1 ===(2)"
+      end
+
+      it "should be translated correctly with spaces" do 
+        m = parse("1 === 2").to_string
+        m.should == "1 ===(2)"
+      end
+    end
+
+    describe "=~" do 
+      it "should be translated correctly inside a method definition" do 
+        m = parse("method(1=~2)").to_string
+        m.should == "method(1 =~(2))"
+      end
+
+      it "should be translated correctly inside a nested method definition" do 
+        m = parse("method(method(1=~2))").to_string
+        m.should == "method(method(1 =~(2)))"
+      end
+
+      it "should be translated correctly inside a method definition with something else" do 
+        m = parse("method(n, if(1=~2, n, n))").to_string
+        m.should == "method(n, if(1 =~(2), n, n))"
+      end
+      
+      it "should be translated correctly in infix" do 
+        m = parse("1=~2").to_string
+        m.should == "1 =~(2)"
+      end
+
+      it "should be translated correctly with parenthesis" do 
+        m = parse("1=~(2)").to_string
+        m.should == "1 =~(2)"
+
+        m = parse("1 =~(2)").to_string
+        m.should == "1 =~(2)"
+      end
+
+      it "should be translated correctly with spaces" do 
+        m = parse("1 =~ 2").to_string
+        m.should == "1 =~(2)"
+      end
+    end
+
+    describe "!~" do 
+      it "should be translated correctly inside a method definition" do 
+        m = parse("method(1!~2)").to_string
+        m.should == "method(1 !~(2))"
+      end
+
+      it "should be translated correctly inside a nested method definition" do 
+        m = parse("method(method(1!~2))").to_string
+        m.should == "method(method(1 !~(2)))"
+      end
+
+      it "should be translated correctly inside a method definition with something else" do 
+        m = parse("method(n, if(1!~2, n, n))").to_string
+        m.should == "method(n, if(1 !~(2), n, n))"
+      end
+      
+      it "should be translated correctly in infix" do 
+        m = parse("1!~2").to_string
+        m.should == "1 !~(2)"
+      end
+
+      it "should be translated correctly with parenthesis" do 
+        m = parse("1!~(2)").to_string
+        m.should == "1 !~(2)"
+
+        m = parse("1 !~(2)").to_string
+        m.should == "1 !~(2)"
+      end
+
+      it "should be translated correctly with spaces" do 
+        m = parse("1 !~ 2").to_string
+        m.should == "1 !~(2)"
+      end
+    end
+    
+    
     describe "unary -" do 
       it "should parse correctly for a simple case" do 
         m = parse("-1").to_string
@@ -668,6 +774,48 @@ describe "operator" do
         m.should == '"foo" <<("bar") <<("quux")'
       end
     end
+
+    
+    describe ">>" do 
+      it "should be correctly translated in infix" do 
+        m = parse("2>>1").to_string
+        m.should == "2 >>(1)"
+
+        m = parse('"foo">>"bar"').to_string
+        m.should == '"foo" >>("bar")'
+      end
+
+      it "should be translated correctly with parenthesis" do 
+        m = parse("2>>(1)").to_string
+        m.should == "2 >>(1)"
+
+        m = parse("2 >>(1)").to_string
+        m.should == "2 >>(1)"
+
+        m = parse('"foo">>("bar")').to_string
+        m.should == '"foo" >>("bar")'
+
+        m = parse('"foo" >>("bar")').to_string
+        m.should == '"foo" >>("bar")'
+      end
+
+      it "should be translated correctly with spaces" do 
+        m = parse("2 >> 1").to_string
+        m.should == "2 >>(1)"
+
+        m = parse('"foo" >> "bar"').to_string
+        m.should == '"foo" >>("bar")'
+      end
+
+      it "should be translated correctly when chained" do 
+        m = parse("2 >> 1 >> 0").to_string
+        m.should == "2 >>(1) >>(0)"
+
+        m = parse('"foo" >> "bar" >> "quux"').to_string
+        m.should == '"foo" >>("bar") >>("quux")'
+      end
+    end
+    
     
     describe "precedence" do 
       it "should work correctly for + and *" do 

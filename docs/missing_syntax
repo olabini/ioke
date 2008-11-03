@@ -17,7 +17,6 @@ currently unused, possible syntax:
 
 unary prefix:
 - !
-- -, +
 - *
 
 binary:
@@ -25,8 +24,6 @@ binary:
 - *
 - /
 - %
-- >>
-- ===
 - &&
 - ||
 - or
@@ -73,5 +70,3 @@ binary:
 - |>>
 - ^>>
 - <->
-- =~
-- !~
