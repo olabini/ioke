@@ -148,6 +148,28 @@ describe "operator" do
         m.should == "@ abc"
       end
     end
+
+    describe "@@" do 
+      it "should be parsed correctly empty" do 
+        m = parse("@@").to_string
+        m.should == "@@"
+      end
+
+      it "should be parsed correctly with arguments" do 
+        m = parse("@@(foo)").to_string
+        m.should == "@@(foo)"
+      end
+      
+      it "should be parsed correctly directly in front of another identifier" do 
+        m = parse("@@abc").to_string
+        m.should == "@@ abc"
+      end
+
+      it "should be parsed correctly directly in front of another identifier with space" do 
+        m = parse("@@ abc").to_string
+        m.should == "@@ abc"
+      end
+    end
     
     describe "<=>" do 
       it "should be translated correctly inside a method definition" do 
@@ -1106,6 +1128,82 @@ describe "operator" do
 
         m = parse('"foo" and "bar" and "quux"').to_string
         m.should == '"foo" and("bar") and("quux")'
+      end
+    end
+
+    describe "!" do 
+      it "should work in a simple unary position" do 
+        m = parse("!false").to_string
+        m.should == '!(false)'
+      end
+
+      it "should work in a simple unary position with space" do 
+        m = parse("! false").to_string
+        m.should == '!(false)'
+      end
+
+      it "should work with parenthesis" do 
+        m = parse("!(false)").to_string
+        m.should == '!(false)'
+      end
+
+      it "should work in an expression" do 
+        m = parse("true && !false").to_string
+        m.should == 'true &&(!(false))'
+      end
+    end
+
+    describe "~" do 
+      it "should work in a simple unary position" do 
+        m = parse("~false").to_string
+        m.should == '~(false)'
+      end
+
+      it "should work in a simple unary position with space" do 
+        m = parse("~ false").to_string
+        m.should == '~(false)'
+      end
+
+      it "should work with parenthesis" do 
+        m = parse("~(false)").to_string
+        m.should == '~(false)'
+      end
+
+      it "should work in an expression" do 
+        m = parse("true && ~false").to_string
+        m.should == 'true &&(~(false))'
+      end
+
+      it "should work as a binary operator" do 
+        m = parse("true ~ false").to_string
+        m.should == 'true ~(false)'
+      end
+    end
+
+    describe "$" do 
+      it "should work in a simple unary position" do 
+        m = parse("$false").to_string
+        m.should == '$(false)'
+      end
+
+      it "should work in a simple unary position with space" do 
+        m = parse("$ false").to_string
+        m.should == '$(false)'
+      end
+
+      it "should work with parenthesis" do 
+        m = parse("$(false)").to_string
+        m.should == '$(false)'
+      end
+
+      it "should work in an expression" do 
+        m = parse("true && $false").to_string
+        m.should == 'true &&($(false))'
+      end
+
+      it "should work as a binary operator" do 
+        m = parse("true $ false").to_string
+        m.should == 'true $(false)'
       end
     end
     
