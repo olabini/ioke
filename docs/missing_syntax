@@ -17,19 +17,10 @@ currently unused, possible syntax:
 
 unary prefix:
 - !
-- *
 
 binary:
-- **   for expt
-- *
-- /
-- %
-- &&
-- ||
 - or
 - and
-- &
-- |
 - ^
 - +=
 - -=
