@@ -282,6 +282,10 @@ public class IokeObject {
         return isTrue(findCell(null, null, "activatable"));
     }
 
+    public IokeObject negate() {
+        return data.negate(this);
+    }
+
     public static IokeData data(Object on) {
         return ((IokeObject)on).data;
     }

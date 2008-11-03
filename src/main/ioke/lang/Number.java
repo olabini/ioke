@@ -39,6 +39,11 @@ public class Number extends IokeData {
     }
 
     @Override
+    public IokeObject negate(IokeObject obj) {
+        return obj.runtime.newNumber(IntNum.sub(IntNum.zero(), Number.value(obj)));
+    }
+
+    @Override
     public String toString() {
         return asJavaString();
     }
