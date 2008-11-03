@@ -85,6 +85,10 @@ public abstract class IokeData {
     public boolean isMessage() {return false;}
     public boolean isSymbol() {return false;}
 
+    public IokeObject negate(IokeObject obj) {
+        return obj;
+    }
+
     public boolean isEqualTo(IokeObject self, Object other) {
         return self == other;
     }
