@@ -84,7 +84,7 @@ expression
     |   '{' '}'                         -> ^(MESSAGE_SEND_CURLY)
     |   '[' commatedExpression ']'  -> ^(MESSAGE_SEND_SQUARE commatedExpression)
     |   '{' commatedExpression '}'  -> ^(MESSAGE_SEND_CURLY commatedExpression)
-    |   binaryOperator expression
+    |   binaryOperator
     |   unaryOperator
     |   StringLiteral
     |   NumberLiteral

@@ -13,6 +13,7 @@ import org.antlr.runtime.tree.Tree;
 
 import ioke.lang.parser.iokeLexer;
 import ioke.lang.parser.iokeParser;
+import ioke.lang.parser.Levels;
 
 import ioke.lang.exceptions.ControlFlow;
 
@@ -89,7 +90,20 @@ public class Message extends IokeData {
         message.registerMethod(message.runtime.newJavaMethod("Will rearrange this message and all submessages to follow regular C style operator precedence rules. Will use Message OperatorTable to guide this operation. The operation is mutating, but should not change anything if done twice.", new JavaMethod("shuffleOperators") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
-                    return context.runtime.nil;
+                    Levels levels = new Levels(IokeObject.as(on), context, message);
+                    List<IokeObject> expressions = new ArrayList<IokeObject>();
+                    expressions.add(IokeObject.as(on));
+
+                    while(expressions.size() > 0) {
+                        IokeObject n = expressions.remove(0);
+                        do {
+                            levels.attach(n, expressions);
+                        } while((n = Message.next(n)) != null);
+                        
+                        levels.nextMessage();
+                    }
+
+                    return on;
                 }
             }));
         message.registerMethod(message.runtime.newJavaMethod("Takes one evaluated argument and returns the message resulting from parsing and operator shuffling the resulting message.", new JavaMethod("fromText") {

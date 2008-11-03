@@ -50,6 +50,7 @@ public class Runtime {
     public IokeObject message = new IokeObject(this, "A message is the basic code unit in Ioke.", new Message(this, null, Message.Type.EMPTY));
     public IokeObject restart = new IokeObject(this, "A Restart is the actual object that contains restart information");
     public IokeObject list = new IokeObject(this, "A list is a collection of objects that can change size", new IokeList());
+    public IokeObject dict = new IokeObject(this, "A dictionary is a collection of mappings from one object to another object. The default Dict implementation will use hashing for this.", new Dict());
     public Context context = new Context(this, ground, "An activation context.", null, ground);
     public LexicalContext lexicalContext = new LexicalContext(this, ground, "A lexical activation context.", null, ground);
 
@@ -68,7 +69,7 @@ public class Runtime {
     public IokeObject opShuffle = newMessage("shuffleOperators");
 
     // NOT TO BE EXPOSED TO Ioke - used for internal usage only
-    NullObject nul = new NullObject(this);
+    public final NullObject nul = new NullObject(this);
 
     public Runtime() {
         this(new PrintWriter(java.lang.System.out), new InputStreamReader(java.lang.System.in), new PrintWriter(java.lang.System.err));
@@ -120,6 +121,7 @@ public class Runtime {
         context.init();
         lexicalContext.init();
         list.init();
+        dict.init();
 
         ground.mimicsWithoutCheck(base);
         ground.mimicsWithoutCheck(defaultBehavior);
@@ -140,6 +142,7 @@ public class Runtime {
         method.mimicsWithoutCheck(origin);
 
         list.mimicsWithoutCheck(origin);
+        dict.mimicsWithoutCheck(origin);
         
         method.init();
         defaultMethod.init();
@@ -304,6 +307,10 @@ public class Runtime {
         }
     }
 
+    public IokeObject newFromOrigin() {
+        return this.origin.mimic(null, null);
+    }
+
     public IokeObject newText(String text) {
         IokeObject obj = this.text.allocateCopy(null, null);
         obj.mimicsWithoutCheck(this.text);
@@ -372,6 +379,13 @@ public class Runtime {
         IokeObject obj = tp.allocateCopy(null, null);
         obj.mimicsWithoutCheck(tp);
         obj.data = impl;
+        return obj;
+    }
+
+    public IokeObject newDict(Map<Object, Object> map) {
+        IokeObject obj = dict.allocateCopy(null, null);
+        obj.mimicsWithoutCheck(dict);
+        obj.data = new Dict(map);
         return obj;
     }
 
