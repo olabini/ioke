@@ -401,14 +401,32 @@ describe "operator" do
     end
 
     describe "unary -" do 
-      it "should have tests"
+      it "should parse correctly for a simple case" do 
+        m = parse("-1").to_string
+        m.should == "-(1)"
+      end
+
+      it "should parse correctly for a larger number" do 
+        m = parse("-12342353453").to_string
+        m.should == "-(12342353453)"
+      end
+
+      it "should parse correctly several times over" do 
+        m = parse("- -1").to_string
+        m.should == "-(-(1))"
+      end
     end
     
     describe "unary binary operators" do 
-      # it should work correctly to continue a binary expression with no receiver, like in
-      #  map(*2) or map(*4**5 + 13)
+      it "should work for a simple expression" do 
+        m = parse("map(*2)").to_string
+        m.should == "map(*(2))"
+      end
 
-      it "should have tests"
+      it "should work for a more complicated expression" do 
+        m = parse("map(*4+5-13/3)").to_string
+        m.should == "map(*(4) +(5) -(13 /(3)))"
+      end
     end
     
     describe "-" do 
@@ -429,10 +447,6 @@ describe "operator" do
         m = parse("2 - 1").to_string
         m.should == "2 -(1)"
       end
-    end
-
-    describe "unary +" do 
-      it "should have tests"
     end
 
     describe "+" do 
