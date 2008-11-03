@@ -205,6 +205,18 @@ public class Levels {
 
     public static OpTable[] defaultAssignOperators = new OpTable[]{
 		new OpTable("=", 2),
+		new OpTable("+=", 2),
+		new OpTable("-=", 2),
+		new OpTable("/=", 2),
+		new OpTable("*=", 2),
+		new OpTable("%=", 2),
+		new OpTable("&=", 2),
+		new OpTable("&&=", 2),
+		new OpTable("|=", 2),
+		new OpTable("||=", 2),
+		new OpTable("^=", 2),
+		new OpTable("<<=", 2),
+		new OpTable(">>=", 2),
 		new OpTable("++", 1),
 		new OpTable("--", 1)
     };
