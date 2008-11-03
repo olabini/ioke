@@ -1,6 +1,6 @@
 - precedence rules... == fix opShuffle
-
-
+  == =() should NOT take an unevaluated thing, it should take a symbol:
+    Ground =(:foo, 1)  but opShuffle should be responsible for the setf shuffling in that case
 
 
 - string escapes
@@ -49,4 +49,6 @@ binary:
 - ||=
 - <<=
 - >>=
-
+- <-
+- ->
+- <->
