@@ -81,6 +81,30 @@ describe "assignment" do
     m.should == "=(x, (10 +(20)))"
   end
   
+  it "should be possible to assign a method to +" do 
+    m = parse("+ = method()").to_string
+    m.should == "=(+, method)"
+
+    m = parse("Ground + = method()").to_string
+    m.should == "Ground =(+, method)"
+  end
+  
+  it "should be possible to assign a method to =" do 
+    m = parse("= = method()").to_string
+    m.should == "=(=, method)"
+
+    m = parse("Ground = = method()").to_string
+    m.should == "Ground =(=, method)"
+  end
+
+  it "should be possible to assign a method to .." do 
+    m = parse(".. = method()").to_string
+    m.should == "=(.., method)"
+
+    m = parse("Ground .. = method()").to_string
+    m.should == "Ground =(.., method)"
+  end
+  
   describe "()=" do 
     it "should parse correctly without receiver, with arguments" do 
       m = parse("(1) = 12").to_string

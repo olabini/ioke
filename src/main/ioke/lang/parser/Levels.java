@@ -290,13 +290,13 @@ public class Levels {
         // =      msg
         // b c    Message.next(msg)
         */
-        if(isAssignOperator(messageSymbol) && msgArgCount == 0) {
+        if(isAssignOperator(messageSymbol) && msgArgCount == 0 && !((Message.next(msg) != null) && Message.name(Message.next(msg)).equals("="))) {
             Level currentLevel = currentLevel();
             IokeObject attaching = currentLevel.message;
             String setCellName;
 
             if(attaching == null) { // = b . 
-                // TODO: error here, since = requires a symbol to its left
+                throw new RuntimeException("Can't create assignment expression without lvalue");
             }
 
 			// a = b .
