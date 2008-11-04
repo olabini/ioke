@@ -120,6 +120,7 @@ describe "core" do
       runtime.ground.find_cell(nil, nil, 'Mixins').should == runtime.mixins
       runtime.ground.find_cell(nil, nil, 'Restart').should == runtime.restart
       runtime.ground.find_cell(nil, nil, 'List').should == runtime.list
+      runtime.ground.find_cell(nil, nil, 'DefaultMacro').should == runtime.defaultMacro
     end
   end
 
@@ -208,6 +209,14 @@ describe "core" do
     end
   end
 
+  describe "DefaultMacro" do 
+    it "should have the correct kind" do 
+      runtime = IokeRuntime.get_runtime
+      result = runtime.default_macro.find_cell(nil, nil, "kind")
+      result.data.text.should == 'DefaultMacro'
+    end
+  end
+  
   describe "JavaMethod" do 
     it "should have the correct kind" do 
       runtime = IokeRuntime.get_runtime
@@ -257,6 +266,14 @@ describe "core" do
     end
   end
 
+  describe "MacroContext" do 
+    it "should have the correct kind" do 
+      runtime = IokeRuntime.get_runtime
+      result = runtime.macro_context.find_cell(nil, nil, "kind")
+      result.data.text.should == 'MacroContext'
+    end
+  end
+  
   describe "Enumerable" do 
     it "should have the correct kind" do 
       runtime = IokeRuntime.get_runtime
