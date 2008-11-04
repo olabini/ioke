@@ -1,5 +1,0 @@
-Different code block versions:
-(Maybe change ioke.lang.Method in Java into ioke.lang.Code)
-method = strict oo, evaluated in object called on, no lexical scope, regular call-by-value arguments
-fn = lambda = block = lexical scoping. might need to have something to allow both lexical and obj lookup.
-what should dynamic lookup be called? dynFn? should there be dynamic lookup at all? could probably be faked anyway.

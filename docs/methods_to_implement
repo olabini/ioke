@@ -34,7 +34,6 @@ iik - interactive Ioke
 - inspection
   cellNames    -> slotNames
   cellSummary  -> slotSummary
-  cell         -> getSlot
 
   inspect - on Origin
   asText on everything - good default on Origin  
@@ -42,7 +41,6 @@ iik - interactive Ioke
 doFile
 doScript
 
-List each
  add Enumerable stuff
 
 Ioke
@@ -84,21 +82,7 @@ aspects:
  - after
  - surround
 
-when invoking a method, create a Locals object, and also a self.
- use "context" in the same way as Io "call"
- context call sender == call sender
-
-    call sender
-    call message
-    call activated
-    call slotContext
-    call target
-
 resend
 super
 
-if, ifTrue, ifFalse, ifNil, ifNotNil
-
 add with() and from()
-
-.. and ... for ranges

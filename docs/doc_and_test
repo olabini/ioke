@@ -1,0 +1,37 @@
+Documentation tool and testing tool
+-----------------------------------
+
+dokgen - live documentation tool
+affirm - testing framework in the style of rspec
+
+---
+
+Structure of affirm should generally mirror the real structure:
+
+describe(Mixins,
+  describe(Comparing,
+    describe(>,
+      before: fn(do something here),
+
+      it("should allow fluff to buff")
+
+      it("should allow fluff to buff",
+        (1 > 2) should == false
+      )
+  )))
+
+or:
+
+describe(Mixins Comparing >,
+  it("should work"))
+
+
+
+
+
+The point is that dokgen will have an option to include tests, and in that case will emit some magic that makes sure that the actual assertions doesn't run.
+Dokgen should generate a tree structure based on Ground. HTML mode should probably show three frames, one with Ground kinds, one with cells from this, and one main window.
+The main window shows documentation strings from the currently focused mimic. That information includes a link to see the source.
+All methods and so on will be cross linked into tests, so that you can see all the documentation for the tests that apply to a specific method. This list will allow you to drill down and see implementations of these tests too. That seems to be a good way to be able to keep your source in such a way that you know what haven't been tested and so on.
+
+Obviously allow to generate only for a subset - or for a specific application, and so on. Maybe a compare mode? Before and after, graph traversal style...
