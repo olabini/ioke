@@ -176,6 +176,11 @@ public class IokeObject {
         return ((IokeObject)on).getCell(m, context, name);
     }
 
+    public static Object setCell(Object on, IokeObject m, IokeObject context, String name, Object value) {
+        ((IokeObject)on).setCell(name, value);
+        return value;
+    }
+
     public Object getCell(IokeObject m, IokeObject context, String name) {
         Object cell = this.findCell(m, context, name);
 

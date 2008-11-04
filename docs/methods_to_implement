@@ -1,6 +1,13 @@
 
-1. syntax
-2. enumerable
+= should check for "foo=" before calling assign, so you can do
+  msg next = blah
+ instead of setNext
+
+implement easy macro, and then simple stuff like "", with, and so on.
+
+
+
+
 3. rescue()
 4. handle()
 5. signal!, error!, warning!

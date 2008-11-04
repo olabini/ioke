@@ -31,7 +31,7 @@ describe "DefaultBehavior" do
 
     it "should be correct for cell" do 
       doc_for("cell").
-        should == "expects one evaluated text argument and returns the cell that matches that name, without activating even if it's activatable."
+        should == "expects one evaluated text or symbol argument and returns the cell that matches that name, without activating even if it's activatable."
     end
 
     it "should be correct for method" do 

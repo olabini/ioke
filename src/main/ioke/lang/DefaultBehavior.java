@@ -285,11 +285,21 @@ public class DefaultBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("expects one evaluated text argument and returns the cell that matches that name, without activating even if it's activatable.", new DefaultBehaviorJavaMethod("cell") {
+        obj.registerMethod(runtime.newJavaMethod("expects one evaluated text or symbol argument and returns the cell that matches that name, without activating even if it's activatable.", new DefaultBehaviorJavaMethod("cell") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     String name = Text.getText(runtime.asText.sendTo(context, IokeObject.as(message.getArguments().get(0)).evaluateCompleteWith(context, context.getRealContext())));
                     return IokeObject.getCell(on, message, context, name);
+                }
+            }));
+
+
+        obj.registerMethod(runtime.newJavaMethod("expects one evaluated text or symbol argument that names the cell to set, sets this cell to the result of evaluating the second argument, and returns the value set.", new DefaultBehaviorJavaMethod("cell=") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    String name = Text.getText(runtime.asText.sendTo(context, IokeObject.as(message.getArguments().get(0)).evaluateCompleteWith(context, context.getRealContext())));
+                    Object val = message.getEvaluatedArgument(1, context);
+                    return IokeObject.setCell(on, message, context, name, val);
                 }
             }));
 

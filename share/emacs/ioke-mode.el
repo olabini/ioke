@@ -176,6 +176,7 @@
                             "list"
                             "dict"
                             "empty?"
+                            "with"
                             )
   "ioke mode cell names")
 
@@ -253,6 +254,7 @@
                                 "true"
                                 "false"
                                 "nil"
+                                "macro"
                                 )
   "ioke mode operator names")
 
