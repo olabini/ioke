@@ -62,6 +62,14 @@ public class Number extends IokeData {
         return ((Number)IokeObject.data(number)).value;
     }
 
+    public static int extractInt(Object number, IokeObject m, IokeObject context) {
+        if(!(IokeObject.data(number) instanceof Number)) {
+            number = IokeObject.convertToNumber(number, m, context);
+        }
+        
+        return value(number).intValue();
+    }
+
     @Override
     public boolean isEqualTo(IokeObject self, Object other) {
         return ((other instanceof IokeObject) && 

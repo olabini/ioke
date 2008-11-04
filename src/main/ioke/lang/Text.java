@@ -3,6 +3,8 @@
  */
 package ioke.lang;
 
+import ioke.lang.exceptions.ControlFlow;
+
 /**
  *
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
@@ -20,6 +22,39 @@ public class Text extends IokeData {
         obj.registerMethod(obj.runtime.newJavaMethod("Returns a text representation of the object", new JavaMethod("asText") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
+                    return on;
+                }
+            }));
+
+        obj.registerMethod(obj.runtime.newJavaMethod("takes one argument, that can be either an index or a range of two indicis. this slicing works the same as for Lists, so you can index from the end, both with the single index and with the range.", new JavaMethod("[]") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    Object arg = message.getEvaluatedArgument(0, context);
+                    IokeData data = IokeObject.data(arg);
+                    
+                    if(data instanceof Range) {
+                        String str = getText(on);
+                        int len = str.length();
+
+                        int from = Number.extractInt(((Range)data).getFrom(), message, context);
+                        int to = Number.extractInt(((Range)data).getTo(), message, context);
+                        boolean inclusive = ((Range)data).isInclusive();
+                        
+                        if(from < 0) {
+                            from = len + 1 + from;
+                        }
+
+                        if(to < 0) {
+                            to = len + 1 + to;
+                        }
+                        
+                        if(!inclusive) {
+                            to--;
+                        }
+
+                        return context.runtime.newText(str.substring(from, to));
+                    }
+
                     return on;
                 }
             }));

@@ -58,4 +58,8 @@ describe "Text" do
       ioke.evaluate_string("\"\" != \"a\"").should == ioke.true
     end
   end
+  
+  describe "'[]'" do 
+    it "should have tests"
+  end
 end
