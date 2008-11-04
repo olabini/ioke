@@ -52,6 +52,7 @@ public class Runtime {
     public IokeObject restart = new IokeObject(this, "A Restart is the actual object that contains restart information");
     public IokeObject list = new IokeObject(this, "A list is a collection of objects that can change size", new IokeList());
     public IokeObject dict = new IokeObject(this, "A dictionary is a collection of mappings from one object to another object. The default Dict implementation will use hashing for this.", new Dict());
+    public IokeObject range = new IokeObject(this, "A range is a collection of two objects of the same kind. This Range can be either inclusive or exclusive.", new Range(nil, nil, false));
     public IokeObject call = new IokeObject(this, "A call is the runtime structure that includes the specific information for a call, that is available inside a DefaultMacro.", new Call());
     public Context context = new Context(this, ground, "An activation context.", null, ground);
     public MacroContext macroContext = new MacroContext(this, ground, "A macro activation context.", null, ground);
@@ -121,6 +122,7 @@ public class Runtime {
         text.init();
         symbol.init();
         number.init();
+        range.init();
         context.init();
         lexicalContext.init();
         macroContext.init();
@@ -142,6 +144,7 @@ public class Runtime {
         text.mimicsWithoutCheck(origin);
         symbol.mimicsWithoutCheck(origin);
         number.mimicsWithoutCheck(origin);
+        range.mimicsWithoutCheck(origin);
 
         message.mimicsWithoutCheck(origin);
         method.mimicsWithoutCheck(origin);
@@ -176,6 +179,7 @@ public class Runtime {
             evaluateString("use(\"builtin/A1_defaultBehavior\")");
             evaluateString("use(\"builtin/A2_number\")");
             evaluateString("use(\"builtin/A3_booleans\")");
+            evaluateString("use(\"builtin/A4_range\")");
 
             evaluateString("use(\"builtin/M1_comparing\")");
             evaluateString("use(\"builtin/M2_enumerable\")");
@@ -435,6 +439,13 @@ public class Runtime {
         IokeObject obj = this.call.allocateCopy(null, null);
         obj.mimicsWithoutCheck(this.call);
         obj.data = new Call(ctx, message, surroundingContext, on);
+        return obj;
+    }
+
+    public IokeObject newRange(IokeObject from, IokeObject to, boolean inclusive) {
+        IokeObject obj = this.range.allocateCopy(null, null);
+        obj.mimicsWithoutCheck(this.range);
+        obj.data = new Range(from, to, inclusive);
         return obj;
     }
 
