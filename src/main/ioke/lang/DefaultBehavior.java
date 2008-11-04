@@ -32,20 +32,6 @@ public class DefaultBehavior {
         final Runtime runtime = obj.runtime;
         obj.setKind("DefaultBehavior");
 
-        obj.registerMethod(runtime.newJavaMethod("returns result of evaluating first argument", new DefaultBehaviorJavaMethod("") {
-                @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    return message.getEvaluatedArgument(0, context);
-                }
-            }));
-
-        obj.registerMethod(runtime.newJavaMethod("returns the negation of the argument", new DefaultBehaviorJavaMethod("-") {
-                @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    return IokeObject.as(message.getEvaluatedArgument(0, context)).negate();
-                }
-            }));
-
         obj.registerMethod(runtime.newJavaMethod("returns true if the left hand side is equal to the right hand side. exactly what this means depend on the object. the default behavior of Ioke objects is to only be equal if they are the same instance.", new DefaultBehaviorJavaMethod("==") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
@@ -78,22 +64,6 @@ public class DefaultBehavior {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     return IokeObject.isTrue(on) ? method.runtime._true : method.runtime._false;
-                }
-            }));
-
-        obj.registerMethod(runtime.newJavaMethod("calls mimic.", new DefaultBehaviorJavaMethod("derive") {
-                @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    return IokeObject.activate(runtime.base.getCell(message, context, "mimic"), context, message, on);
-                }
-            }));
-
-        obj.registerMethod(runtime.newJavaMethod("executes the argument with the receiver as context and ground, and then returns the receiver.", new DefaultBehaviorJavaMethod("do") {
-                @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    IokeObject code = IokeObject.as(message.getArguments().get(0));
-                    code.evaluateCompleteWith(IokeObject.as(on), IokeObject.as(on));
-                    return on;
                 }
             }));
 
@@ -389,25 +359,6 @@ public class DefaultBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("does the same things as fn, but returns something that is activatable.", new DefaultBehaviorJavaMethod("fnx") {
-                @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
-                    List<Object> args = message.getArguments();
-                    if(args.isEmpty()) {
-                        IokeObject result = runtime.newLexicalBlock(runtime.lexicalBlock, new LexicalBlock(context, DefaultArgumentsDefinition.empty(), method.runtime.nilMessage));
-                        result.setCell("activatable", runtime._true);
-                        return result;
-                    }
-
-                    IokeObject code = IokeObject.as(args.get(args.size()-1));
-
-                    DefaultArgumentsDefinition def = DefaultArgumentsDefinition.createFrom(args, 0, args.size()-1, message, on, context);
-                    IokeObject result = runtime.newLexicalBlock(runtime.lexicalBlock, new LexicalBlock(context, def, code));
-                    result.setCell("activatable", runtime._true);
-                    return result;
-                }
-            }));
-
         obj.registerMethod(runtime.newJavaMethod("takes one or more evaluated string argument. will import the files corresponding to each of the strings named based on the Ioke loading behavior that can be found in the documentation for the loadBehavior cell on System.", new DefaultBehaviorJavaMethod("use") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
@@ -607,22 +558,6 @@ public class DefaultBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("Takes zero or more arguments and returns a newly created list containing the result of evaluating these arguments", new DefaultBehaviorJavaMethod("list") {
-                @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    IokeObject newList = context.runtime.list.mimic(message, context);
-                    IokeList data = (IokeList)IokeObject.data(newList);
-
-                    List<Object> arguments = message.getArguments();
-                    for(Object o : arguments) {
-                        data.add(IokeObject.as(o).evaluateCompleteWithoutExplicitReceiver(context, context.getRealContext()));
-                    }
-
-                    return newList;
-                }
-            }));
-
-
         obj.registerMethod(runtime.newJavaMethod("Takes two evaluated text or symbol arguments that name the method to alias, and the new name to give it. returns the receiver.", new DefaultBehaviorJavaMethod("aliasMethod") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
@@ -632,7 +567,5 @@ public class DefaultBehavior {
                     return on;
                 }
             }));
-
-        obj.aliasMethod("list", "[]");
     }
 }// DefaultBehavior

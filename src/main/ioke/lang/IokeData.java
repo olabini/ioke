@@ -108,6 +108,10 @@ public abstract class IokeData {
         throw new NotActivatableException(message, "Can't getEvaluatedArgument from " + message, context, context);
     }
 
+    public List<Object> getEvaluatedArguments(IokeObject message, IokeObject context) throws ControlFlow {
+        throw new NotActivatableException(message, "Can't getEvaluatedArguments from " + message, context, context);
+    }
+
     public Object sendTo(IokeObject message, IokeObject context, Object recv) throws ControlFlow {
         throw new NotActivatableException(message, "Can't sendTo on " + message, recv, context);
     }
