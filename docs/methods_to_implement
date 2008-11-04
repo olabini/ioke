@@ -7,7 +7,6 @@ implement easy macro, and then simple stuff like "", with, and so on.
 
 
 
-
 3. rescue()
 4. handle()
 5. signal!, error!, warning!
