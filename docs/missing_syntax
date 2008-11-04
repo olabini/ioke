@@ -1,8 +1,5 @@
 --- ONLY REMOVE FROM THIS LIST WHEN THE FEATURE IS TESTED (for parsing)
 
-- string escapes
 - maybe string interpolation inside of strings?
 
-- decimal numbers, with scientific part
-- hex numbers
 - regular expressions

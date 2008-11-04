@@ -53,6 +53,16 @@ public class Text extends IokeData {
                         }
 
                         return context.runtime.newText(str.substring(from, to));
+                    } else if(data instanceof Number) {
+                        String str = getText(on);
+                        int len = str.length();
+
+                        int ix = ((Number)data).asJavaInteger();
+                        if(ix < 0) {
+                            ix = len + ix;
+                        }
+
+                        return context.runtime.newNumber(str.charAt(ix));
                     }
 
                     return on;

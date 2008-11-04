@@ -62,4 +62,46 @@ describe "Text" do
   describe "'[]'" do 
     it "should have tests"
   end
+  
+  describe "escapes" do 
+    describe "\\b" do 
+      it "should have tests"
+    end
+
+    describe "\\t" do 
+      it "should have tests"
+    end
+
+    describe "\\n" do 
+      it "should have tests"
+    end
+
+    describe "\\f" do 
+      it "should have tests"
+    end
+
+    describe "\\r" do 
+      it "should have tests"
+    end
+
+    describe "\\\"" do 
+      it "should have tests"
+    end
+
+    describe "\\\\" do 
+      it "should have tests"
+    end
+
+    describe "\\\\n" do 
+      it "should have tests"
+    end
+
+    describe "unicode" do 
+      it "should have tests"
+    end
+
+    describe "octal" do 
+      it "should have tests"
+    end
+  end
 end

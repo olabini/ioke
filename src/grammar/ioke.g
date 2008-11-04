@@ -126,14 +126,16 @@ Identifier
 
 NumberLiteral
     :
-        ('0' (
-                {(input.LA(2)>='0')&&(input.LA(2)<='9')}?=> (FloatWithLeadingDot)
-            |
-            )
-        | NonZeroDecimal (
-                {(input.LA(2)>='0')&&(input.LA(2)<='9')}?=> (FloatWithLeadingDot)
-            |
-            ))
+		'0'	('x'|'X') HexDigit+
+    |   '0' (
+            {(input.LA(2)>='0')&&(input.LA(2)<='9')}?=> (FloatWithLeadingDot)
+        |
+        )
+    |   NonZeroDecimal (
+            {(input.LA(2)>='0')&&(input.LA(2)<='9')}?=> (FloatWithLeadingDot)
+        | Exponent
+        |
+        )
     ;
 
 StringLiteral
@@ -268,7 +270,7 @@ Comma
 
 fragment
 EscapeSequence
-    :   '\\' ('b'|'t'|'n'|'f'|'r'|'\"'|'\''|'\\'|'\n')
+    :   '\\' ('b'|'t'|'n'|'f'|'r'|'\"'|'\\'|'\n')
     |   UnicodeEscape
     |   OctalEscape
     ;
@@ -288,8 +290,14 @@ UnicodeEscape
 fragment
 FloatWithLeadingDot
         :
-            '.' Digit+
+            '.' Digit+ (Exponent)?
         ;
+
+fragment
+Exponent
+    :	
+        ('e'|'E')	('+'|'-')?	('0'..'9')+
+    ;
 
 fragment
 NonZeroDecimal
