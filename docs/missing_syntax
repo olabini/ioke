@@ -1,5 +1,3 @@
 --- ONLY REMOVE FROM THIS LIST WHEN THE FEATURE IS TESTED (for parsing)
 
 - maybe string interpolation inside of strings?
-
-- regular expressions

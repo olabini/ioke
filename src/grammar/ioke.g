@@ -87,6 +87,7 @@ expression
     |   binaryOperator
     |   unaryOperator
     |   StringLiteral
+    |   RegexpLiteral
     |   NumberLiteral
     |   Terminator
     ;
@@ -141,6 +142,15 @@ NumberLiteral
 StringLiteral
     :  '"' ( EscapeSequence | ~('\\'|'"') )* '"'
     ;
+
+RegexpLiteral
+    :  '#/' ( EscapeSequenceRegexp | ~('\\'|'/') )* '/' RegexpModifier
+    ;
+
+fragment
+RegexpModifier
+		:	('o'|'x'|'p'|'n'|'i'|'u'|'m'|'s')*
+		;
 
 Terminator
     :
@@ -271,6 +281,14 @@ Comma
 fragment
 EscapeSequence
     :   '\\' ('b'|'t'|'n'|'f'|'r'|'\"'|'\\'|'\n')
+    |   UnicodeEscape
+    |   OctalEscape
+    ;
+
+
+fragment
+EscapeSequenceRegexp
+    :   '\\' ('b'|'t'|'n'|'f'|'r'|'/'|'\\'|'\n')
     |   UnicodeEscape
     |   OctalEscape
     ;
