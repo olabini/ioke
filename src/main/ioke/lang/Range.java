@@ -19,6 +19,18 @@ public class Range extends IokeData {
         this.to = to;
         this.inclusive = inclusive;
     }
+    
+    public IokeObject getFrom() {
+        return from;
+    }
+
+    public IokeObject getTo() {
+        return to;
+    }
+    
+    public boolean isInclusive() {
+        return inclusive;
+    }
 
     @Override
     public void init(IokeObject obj) {

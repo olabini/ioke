@@ -9,6 +9,10 @@ describe "Message" do
     it "should have tests"
   end
 
+  describe "'next'" do 
+    it "should have tests"
+  end
+  
   describe "'keyword?'" do 
     it "should have tests"
   end

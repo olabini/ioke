@@ -115,6 +115,17 @@ public class Message extends IokeData {
                     return method.runtime.newText(((Message)IokeObject.data(on)).name);
                 }
             }));
+        message.registerMethod(message.runtime.newJavaMethod("returns the next message in the chain, or nil", new JavaMethod("next") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
+                    IokeObject next = ((Message)IokeObject.data(on)).next;
+                    if(next == null) {
+                        return context.runtime.nil;
+                    } else {
+                        return next;
+                    }
+                }
+            }));
         message.registerMethod(message.runtime.newJavaMethod("returns true if this message is a keyword parameter or not", new JavaMethod("keyword?") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
