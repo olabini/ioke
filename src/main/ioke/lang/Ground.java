@@ -34,6 +34,7 @@ public class Ground {
         ground.registerCell("Restart", runtime.restart);
         ground.registerCell("List", runtime.list);
         ground.registerCell("Dict", runtime.dict);
+        ground.registerCell("Range", runtime.range);
         ground.registerCell("Message", runtime.message);
         ground.registerCell("Call", runtime.call);
     }
