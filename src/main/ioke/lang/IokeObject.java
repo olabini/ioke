@@ -271,7 +271,7 @@ public class IokeObject {
     public void aliasMethod(String originalName, String newName) {
         IokeObject io = as(findCell(null, null, originalName));
         IokeObject newObj = io.mimic(null, null);
-        newObj.data = new AliasMethod(newName, (Method)io.data);
+        newObj.data = new AliasMethod(newName, io.data);
         cells.put(newName, newObj);
     }
 

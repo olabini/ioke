@@ -109,6 +109,20 @@ public class Message extends IokeData {
                     return method.runtime.newText(((Message)IokeObject.data(on)).code());
                 }
             }));
+        message.registerMethod(message.runtime.newJavaMethod("Takes one evaluated argument and sends this message to that argument", new JavaMethod("sendTo") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    IokeObject realReceiver = IokeObject.as(message.getEvaluatedArgument(0, context));
+                    return IokeObject.as(on).sendTo(realReceiver, realReceiver);
+                }
+            }));
+        message.registerMethod(message.runtime.newJavaMethod("Takes one evaluated argument and sends this message chain to that argument", new JavaMethod("evaluateOn") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    IokeObject realReceiver = IokeObject.as(message.getEvaluatedArgument(0, context));
+                    return IokeObject.as(on).evaluateCompleteWith(realReceiver, realReceiver);
+                }
+            }));
         message.registerMethod(message.runtime.newJavaMethod("Will rearrange this message and all submessages to follow regular C style operator precedence rules. Will use Message OperatorTable to guide this operation. The operation is mutating, but should not change anything if done twice.", new JavaMethod("shuffleOperators") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {

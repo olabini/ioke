@@ -417,10 +417,17 @@ public class Runtime {
         return obj;
     }
 
+    public IokeObject newList(List<Object> list) {
+        IokeObject obj = this.list.allocateCopy(null, null);
+        obj.mimicsWithoutCheck(this.list);
+        obj.data = new IokeList(list);
+        return obj;
+    }
+
     public IokeObject newCallFrom(MacroContext ctx, IokeObject message, IokeObject surroundingContext) {
         IokeObject obj = this.call.allocateCopy(null, null);
         obj.mimicsWithoutCheck(this.call);
-        obj.data = new Call();
+        obj.data = new Call(message);
         return obj;
     }
 

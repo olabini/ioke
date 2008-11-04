@@ -244,10 +244,8 @@ public class DefaultBehavior {
 
                         IokeObject.assign(on, name, value);
 
-                        if((IokeObject.data(value) instanceof Method) && ((Method)IokeObject.data(value)).name == null) {
-                            ((Method)IokeObject.data(value)).name = name;
-                        } else if((IokeObject.data(value) instanceof DefaultMacro) && ((DefaultMacro)IokeObject.data(value)).name == null) {
-                            ((DefaultMacro)IokeObject.data(value)).name = name;
+                        if((IokeObject.data(value) instanceof Named) && ((Named)IokeObject.data(value)).getName() == null) {
+                            ((Named)IokeObject.data(value)).setName(name);
                         } else if(name.length() > 0 && Character.isUpperCase(name.charAt(0)) && !IokeObject.as(value).hasKind()) {
                             if(on == context.runtime.ground) {
                                 IokeObject.as(value).setKind(name);
@@ -621,6 +619,17 @@ public class DefaultBehavior {
                     }
 
                     return newList;
+                }
+            }));
+
+
+        obj.registerMethod(runtime.newJavaMethod("Takes two evaluated text or symbol arguments that name the method to alias, and the new name to give it. returns the receiver.", new DefaultBehaviorJavaMethod("aliasMethod") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    String fromName = Text.getText(runtime.asText.sendTo(context, message.getEvaluatedArgument(0, context)));
+                    String toName = Text.getText(runtime.asText.sendTo(context, message.getEvaluatedArgument(1, context)));
+                    IokeObject.as(on).aliasMethod(fromName, toName);
+                    return on;
                 }
             }));
 

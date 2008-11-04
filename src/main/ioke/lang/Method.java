@@ -11,7 +11,7 @@ import ioke.lang.exceptions.ControlFlow;
  *
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
-public class Method extends IokeData {
+public class Method extends IokeData implements Named {
     String name;
     private IokeObject context;
 
@@ -46,6 +46,10 @@ public class Method extends IokeData {
 
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
