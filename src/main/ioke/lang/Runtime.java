@@ -174,6 +174,11 @@ public class Runtime {
         
         try {
             evaluateString("use(\"builtin/A1_defaultBehavior\")");
+            evaluateString("use(\"builtin/A2_number\")");
+            evaluateString("use(\"builtin/A3_booleans\")");
+
+            evaluateString("use(\"builtin/M1_comparing\")");
+            evaluateString("use(\"builtin/M2_enumerable\")");
 
             evaluateString("use(\"builtin/restarts\")");
         } catch(ControlFlow cf) {

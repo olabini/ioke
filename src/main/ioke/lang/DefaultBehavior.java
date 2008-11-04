@@ -567,5 +567,7 @@ public class DefaultBehavior {
                     return on;
                 }
             }));
+
+        obj.aliasMethod("list", "[]");
     }
 }// DefaultBehavior

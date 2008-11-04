@@ -290,6 +290,10 @@ public class IokeObject {
     public IokeObject negate() {
         return data.negate(this);
     }
+    
+    Map<String, Object> getCells() {
+        return cells;
+    }
 
     public static IokeData data(Object on) {
         return ((IokeObject)on).data;

@@ -87,6 +87,17 @@ public class Number extends IokeData {
                 }
             }));
 
+        obj.registerMethod(runtime.newJavaMethod("compares this number against the argument, true if this number is the same, otherwise false", new JavaMethod("==") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    Object arg = message.getEvaluatedArgument(0, context);
+                    if(!(IokeObject.data(arg) instanceof Number)) {
+                        arg = IokeObject.convertToNumber(arg, message, context);
+                    }
+                    return (IntNum.compare(Number.value(on),Number.value(arg)) == 0) ? context.runtime._true : context.runtime._false;
+                }
+            }));
+
         obj.registerMethod(runtime.newJavaMethod("returns the difference between this number and the argument", new JavaMethod("-") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
