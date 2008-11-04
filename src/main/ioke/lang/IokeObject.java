@@ -366,6 +366,10 @@ public class IokeObject {
         return data.getEvaluatedArgument(this, index, context);
     }
 
+    public List<Object> getEvaluatedArguments(IokeObject context) throws ControlFlow {
+        return data.getEvaluatedArguments(this, context);
+    }
+
     public Object sendTo(IokeObject context, Object recv) throws ControlFlow {
         return data.sendTo(this, context, recv);
     }

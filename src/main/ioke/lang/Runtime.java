@@ -173,6 +173,8 @@ public class Runtime {
             });
         
         try {
+            evaluateString("use(\"builtin/A1_defaultBehavior\")");
+
             evaluateString("use(\"builtin/restarts\")");
         } catch(ControlFlow cf) {
         }
@@ -424,10 +426,10 @@ public class Runtime {
         return obj;
     }
 
-    public IokeObject newCallFrom(MacroContext ctx, IokeObject message, IokeObject surroundingContext) {
+    public IokeObject newCallFrom(MacroContext ctx, IokeObject message, IokeObject surroundingContext, IokeObject on) {
         IokeObject obj = this.call.allocateCopy(null, null);
         obj.mimicsWithoutCheck(this.call);
-        obj.data = new Call(message);
+        obj.data = new Call(ctx, message, surroundingContext, on);
         return obj;
     }
 

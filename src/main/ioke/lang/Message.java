@@ -439,6 +439,15 @@ public class Message extends IokeData {
     }
 
     @Override
+    public List<Object> getEvaluatedArguments(IokeObject self, IokeObject context) throws ControlFlow {
+        List<Object> args = new ArrayList<Object>(arguments.size());
+        for(Object o : arguments) {
+            args.add(getEvaluatedArgument(o, context));
+        }
+        return args;
+    }
+
+    @Override
     public Object sendTo(IokeObject self, IokeObject context, Object recv) throws ControlFlow {
         return IokeObject.perform(recv, context, self);
     }
