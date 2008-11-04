@@ -109,6 +109,18 @@ public class Message extends IokeData {
                     return method.runtime.newText(((Message)IokeObject.data(on)).code());
                 }
             }));
+        message.registerMethod(message.runtime.newJavaMethod("returns the name of this message", new JavaMethod("name") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
+                    return method.runtime.newText(((Message)IokeObject.data(on)).name);
+                }
+            }));
+        message.registerMethod(message.runtime.newJavaMethod("returns true if this message is a keyword parameter or not", new JavaMethod("keyword?") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
+                    return ((Message)IokeObject.data(on)).isKeyword() ? context.runtime._true : context.runtime._false;
+                }
+            }));
         message.registerMethod(message.runtime.newJavaMethod("Takes one evaluated argument and sends this message to that argument", new JavaMethod("sendTo") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {

@@ -2,7 +2,6 @@
 
 - string escapes
 - maybe string interpolation inside of strings?
-- check possibility of reader macros
 
 - decimal numbers, with scientific part
 - hex numbers
