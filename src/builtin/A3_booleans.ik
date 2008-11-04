@@ -1,7 +1,7 @@
 
 ;; ---- !
 
-Ground ! = method(
+DefaultBehavior ! = method(
   "returns true if the argument is false, and false if it's true",
   arg,
   

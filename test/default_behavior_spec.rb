@@ -510,4 +510,36 @@ CODE
       result.should == ioke.ground.find_cell(nil, nil, "f")
     end
   end
+  
+  describe "'with'" do 
+    it "should have tests"
+  end
+
+  describe "'!'" do 
+    it "should have tests"
+  end
+
+  describe "'nil?'" do 
+    it "should have tests"
+  end
+
+  describe "'false?'" do 
+    it "should have tests"
+  end
+
+  describe "'true?'" do 
+    it "should have tests"
+  end
+
+  describe "'not'" do 
+    it "should have tests"
+  end
+
+  describe "'and'" do 
+    it "should have tests"
+  end
+
+  describe "'or'" do 
+    it "should have tests"
+  end
 end
