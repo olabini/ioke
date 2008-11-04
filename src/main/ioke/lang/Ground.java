@@ -29,6 +29,7 @@ public class Ground {
         ground.registerCell("DefaultMethod", runtime.defaultMethod);
         ground.registerCell("JavaMethod", runtime.javaMethod);
         ground.registerCell("LexicalBlock", runtime.lexicalBlock);
+        ground.registerCell("DefaultMacro", runtime.defaultMacro);
         ground.registerCell("Mixins", runtime.mixins);
         ground.registerCell("Restart", runtime.restart);
         ground.registerCell("List", runtime.list);

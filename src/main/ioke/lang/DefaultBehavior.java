@@ -246,6 +246,8 @@ public class DefaultBehavior {
 
                         if((IokeObject.data(value) instanceof Method) && ((Method)IokeObject.data(value)).name == null) {
                             ((Method)IokeObject.data(value)).name = name;
+                        } else if((IokeObject.data(value) instanceof DefaultMacro) && ((DefaultMacro)IokeObject.data(value)).name == null) {
+                            ((DefaultMacro)IokeObject.data(value)).name = name;
                         } else if(name.length() > 0 && Character.isUpperCase(name.charAt(0)) && !IokeObject.as(value).hasKind()) {
                             if(on == context.runtime.ground) {
                                 IokeObject.as(value).setKind(name);
@@ -329,6 +331,32 @@ public class DefaultBehavior {
                     DefaultArgumentsDefinition def = DefaultArgumentsDefinition.createFrom(args, start, args.size()-1, message, on, context);
 
                     return runtime.newMethod(doc, runtime.defaultMethod, new DefaultMethod(context, def, (IokeObject)args.get(args.size()-1)));
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("expects one code argument, optionally preceeded by a documentation string. will create a new DefaultMacro based on the code and return it.", new DefaultBehaviorJavaMethod("macro") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
+                    List<Object> args = message.getArguments();
+
+                    if(args.size() == 0) {
+                        return runtime.newJavaMethod("returns nil", new DefaultBehaviorJavaMethod("nil") {
+                                @Override
+                                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
+                                    return runtime.nil;
+                                }});
+                    }
+
+                    String doc = null;
+
+                    int start = 0;
+                    if(args.size() > 1 && ((IokeObject)Message.getArg1(message)).getName().equals("internal:createText")) {
+                        start++;
+                        String s = ((String)((IokeObject)args.get(0)).getArguments().get(0));
+                        doc = s.substring(1, s.length()-1);
+                    }
+
+                    return runtime.newMacro(doc, runtime.defaultMacro, new DefaultMacro(context, (IokeObject)args.get(start)));
                 }
             }));
 
