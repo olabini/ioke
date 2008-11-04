@@ -52,6 +52,7 @@ public class Runtime {
     public IokeObject restart = new IokeObject(this, "A Restart is the actual object that contains restart information");
     public IokeObject list = new IokeObject(this, "A list is a collection of objects that can change size", new IokeList());
     public IokeObject dict = new IokeObject(this, "A dictionary is a collection of mappings from one object to another object. The default Dict implementation will use hashing for this.", new Dict());
+    public IokeObject call = new IokeObject(this, "A call is the runtime structure that includes the specific information for a call, that is available inside a DefaultMacro.", new Call());
     public Context context = new Context(this, ground, "An activation context.", null, ground);
     public MacroContext macroContext = new MacroContext(this, ground, "A macro activation context.", null, ground);
     public LexicalContext lexicalContext = new LexicalContext(this, ground, "A lexical activation context.", null, ground);
@@ -65,7 +66,7 @@ public class Runtime {
     public IokeObject setValue = newMessage("=");
     public IokeObject nilMessage = newMessage("nil");
     public IokeObject name = newMessage("name");
-    public IokeObject call = newMessage("call");
+    public IokeObject callMessage = newMessage("call");
     public IokeObject code = newMessage("code");
     public IokeObject each = newMessage("each");
     public IokeObject opShuffle = newMessage("shuffleOperators");
@@ -125,6 +126,7 @@ public class Runtime {
         macroContext.init();
         list.init();
         dict.init();
+        call.init();
 
         ground.mimicsWithoutCheck(base);
         ground.mimicsWithoutCheck(defaultBehavior);
@@ -152,6 +154,7 @@ public class Runtime {
         javaMethod.init();
         lexicalBlock.init();
         defaultMacro.init();
+        call.mimicsWithoutCheck(origin);
 
         method.mimicsWithoutCheck(origin);
         defaultMethod.mimicsWithoutCheck(method);
@@ -257,6 +260,10 @@ public class Runtime {
 
     public IokeObject getNil() {
         return this.nil;
+    }
+
+    public IokeObject getCall() {
+        return this.call;
     }
 
     private Map<String, Builtin> builtins = new HashMap<String, Builtin>();
@@ -407,6 +414,13 @@ public class Runtime {
         IokeObject obj = dict.allocateCopy(null, null);
         obj.mimicsWithoutCheck(dict);
         obj.data = new Dict(map);
+        return obj;
+    }
+
+    public IokeObject newCallFrom(MacroContext ctx, IokeObject message, IokeObject surroundingContext) {
+        IokeObject obj = this.call.allocateCopy(null, null);
+        obj.mimicsWithoutCheck(this.call);
+        obj.data = new Call();
         return obj;
     }
 

@@ -515,7 +515,7 @@ public class DefaultBehavior {
                         Runtime.RestartInfo ri = null;
                         if((ri = e.getRestart()).token == restarts) {
                             // Might need to unregister restarts before doing this...
-                            return runtime.call.sendTo(context, runtime.code.sendTo(context, ri.restart), e.getArguments());
+                            return runtime.callMessage.sendTo(context, runtime.code.sendTo(context, ri.restart), e.getArguments());
                         } else {
                             throw e;
                         }
