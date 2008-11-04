@@ -387,6 +387,79 @@ CODE
       ioke.evaluate_stream(StringReader.new("x = Origin mimic. x mimic!(x). x is?(Origin)")).should == ioke.true
     end
   end
+
+  describe "cell" do 
+    it "should be possible to get a cell using a Text argument" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string("x = 42. cell(\"x\") == x").should == ioke.true
+      ioke.evaluate_string("Text x = 42. Text cell(\"x\") == Text x").should == ioke.true
+    end
+
+    it "should be possible to get a cell using a Symbol argument" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string("x = 42. cell(:x) == x").should == ioke.true
+      ioke.evaluate_string("Text x = 42. Text cell(:x) == Text x").should == ioke.true
+    end
+
+    it "should be possible to get a cell with an empty name" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string("cell(\"\")").should_not == ioke.nil
+    end
+
+    it "should report an error if trying to get a cell that doesn't exist in that object" do 
+      ioke = IokeRuntime.get_runtime()
+
+      proc do 
+        ioke.evaluate_string("cell(:flurg)")
+      end.should raise_error
+
+      proc do 
+        ioke.evaluate_string("cell(\"flurg\")")
+      end.should raise_error
+    end
+  end
+
+  describe "cell=" do 
+    it "should be possible to set a cell using a Text argument" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string("cell(\"blurg\") = 42. blurg").data.as_java_integer.should == 42
+      ioke.evaluate_string("Text cell(\"murg\") = 42. Text murg").data.as_java_integer.should == 42
+    end
+
+    it "should be possible to set a cell using a Symbol argument" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string("cell(:blurg) = 42. blurg").data.as_java_integer.should == 42
+      ioke.evaluate_string("Text cell(:murg) = 42. Text murg").data.as_java_integer.should == 42
+    end
+
+    it "should be possible to set a cell with an empty name" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string("Text cell(\"\") = 42. Text cell(\"\")").data.as_java_integer.should == 42
+    end
+
+    it "should be possible to set a cell with complicated expressions" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string("f = Origin mimic. f b = \"foobar\". Text cell(f b) = 42+24-3. Text cell(:foobar)").data.as_java_integer.should == 63
+    end
+
+    it "should be possible to set a cell that doesn't exist" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string("cell(:blurg) = 42. blurg").data.as_java_integer.should == 42
+      ioke.evaluate_string("Text cell(:murg) = 42. Text murg").data.as_java_integer.should == 42
+    end 
+
+    it "should be possible to set a cell that does exist" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string("Ground x = 42. cell(:x) = 43. x").data.as_java_integer.should == 43
+    end
+
+    it "should be possible to set a cell that does exist in a mimic. this should not change the mimic value" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string("one = Origin mimic. one x = 42. two = one mimic. two cell(:x) = 43. one x").data.as_java_integer.should == 42
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string("one = Origin mimic. one x = 42. two = one mimic. two cell(:x) = 43. two x").data.as_java_integer.should == 43
+    end
+  end
   
   describe "mimic!" do 
     it "should add a new mimic to the list of mimics" do 
