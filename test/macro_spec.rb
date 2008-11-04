@@ -53,8 +53,24 @@ CODE
     ioke.evaluate_string("obj2 selfMacro").should == ioke.ground.find_cell(nil,nil,"obj2")
   end
 
-  it "should have 'call' defined inside the call to the macro"
-  it "should not evaluate it's arguments by default"
-  it "should take any kinds of arguments"
-  it "should return the last value in the macro"
+  it "should have 'call' defined inside the call to the macro" do 
+    ioke = IokeRuntime.get_runtime()
+    result = ioke.evaluate_string("macro(call) call")
+    result.find_cell(nil, nil, "kind").data.text.should == "Call"
+  end
+  
+  it "should not evaluate it's arguments by default" do 
+    ioke = IokeRuntime.get_runtime()
+    ioke.evaluate_string("x=42. macro(nil) call(x=13). x").data.as_java_integer.should == 42
+  end
+
+  it "should take any kinds of arguments" do 
+    ioke = IokeRuntime.get_runtime()
+    ioke.evaluate_string("x=macro(nil). x(13, 42, foo: 42*13)").should == ioke.nil
+  end
+
+  it "should return the last value in the macro" do 
+    ioke = IokeRuntime.get_runtime()
+    ioke.evaluate_string("x=macro(nil. 42+13.). x").data.as_java_integer.should == 55
+  end
 end

@@ -121,6 +121,7 @@ describe "core" do
       runtime.ground.find_cell(nil, nil, 'Restart').should == runtime.restart
       runtime.ground.find_cell(nil, nil, 'List').should == runtime.list
       runtime.ground.find_cell(nil, nil, 'DefaultMacro').should == runtime.defaultMacro
+      runtime.ground.find_cell(nil, nil, 'Call').should == runtime.call
     end
   end
 
@@ -169,6 +170,14 @@ describe "core" do
     end
   end
 
+  describe "Call" do 
+    it "should have the correct kind" do 
+      runtime = IokeRuntime.get_runtime
+      result = runtime.call.find_cell(nil, nil, "kind")
+      result.data.text.should == 'Call'
+    end
+  end
+  
   describe "Origin" do 
     it "should have the correct kind" do 
       runtime = IokeRuntime.get_runtime

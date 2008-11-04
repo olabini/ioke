@@ -27,7 +27,7 @@ public class MacroContext extends IokeObject {
 
         setCell("self", getRealContext());
         setCell("@", getRealContext());
-        //        setCell("call", getRealContext());
+        setCell("call", runtime.newCallFrom(this, message, surroundingContext));
     }
     
     @Override

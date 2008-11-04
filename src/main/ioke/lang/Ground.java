@@ -35,5 +35,6 @@ public class Ground {
         ground.registerCell("List", runtime.list);
         ground.registerCell("Dict", runtime.dict);
         ground.registerCell("Message", runtime.message);
+        ground.registerCell("Call", runtime.call);
     }
 }// Ground
