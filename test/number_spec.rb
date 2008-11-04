@@ -40,6 +40,10 @@ describe "Number" do
     ioke.number.get_mimics.should include(ioke.mixins.find_cell(nil, nil, "Comparing"))
   end
 
+  describe "'negation'" do 
+    it "should have tests"
+  end
+  
   describe "'<=>'" do 
     it "should return 0 for the same number" do 
       ioke = IokeRuntime.get_runtime()

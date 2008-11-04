@@ -261,10 +261,6 @@ describe "core" do
       result = runtime.message.find_cell(nil, nil, "kind")
       result.data.text.should == 'Message'
     end
-    
-    describe "'code'" do 
-      it "should return a text representation of itself"
-    end
   end
 
   describe "Context" do 
