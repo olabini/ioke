@@ -9,7 +9,7 @@ import ioke.lang.exceptions.ControlFlow;
  *
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
-public class DefaultMacro extends IokeData {
+public class DefaultMacro extends IokeData implements Named {
     String name;
     private IokeObject context;
     private IokeObject code;
@@ -46,6 +46,10 @@ public class DefaultMacro extends IokeData {
 
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
