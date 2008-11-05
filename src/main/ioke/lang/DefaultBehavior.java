@@ -174,6 +174,19 @@ public class DefaultBehavior {
                 }
             }));
 
+        obj.registerMethod(runtime.newJavaMethod("expects one 'strange' argument. creates a new instance of Pattern with the given Java String backing it.", new DefaultBehaviorJavaMethod("internal:createPattern") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    Object o = Message.getArg1(message);
+                    if(o instanceof String) {
+                        String s = (String)o;
+                        return runtime.newPattern(s.replaceAll("\\\\\n", ""));
+                    } else {
+                        return IokeObject.convertToPattern(message.getEvaluatedArgument(0, context), message, context);
+                    }
+                }
+            }));
+
         obj.registerMethod(runtime.newJavaMethod("expects one 'strange' argument. creates a new instance of Number that represents the number found in the strange argument.", new DefaultBehaviorJavaMethod("internal:createNumber") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
