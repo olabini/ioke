@@ -319,6 +319,13 @@ public class Message extends IokeData {
         int argStart = 0;
         if(!tree.isNil()) {
             switch(tree.getType()) {
+            case iokeParser.RegexpLiteral: {
+                String s = tree.getText();
+                m = new Message(runtime, "internal:createPattern", s.substring(2, s.length()-1));
+                m.setLine(tree.getLine());
+                m.setPosition(tree.getCharPositionInLine());
+                return runtime.createMessage(m);
+                }
             case iokeParser.StringLiteral: {
                 String s = tree.getText();
                 char first = s.charAt(0);
@@ -707,6 +714,8 @@ public class Message extends IokeData {
     private void currentCode(StringBuilder base) {
         if(this.name.equals("internal:createText") && (this.arguments.get(0) instanceof String)) {
             base.append('"').append(this.arguments.get(0)).append('"');
+        } else if(this.name.equals("internal:createPattern") && (this.arguments.get(0) instanceof String)) {
+            base.append("#/").append(this.arguments.get(0)).append('/');
         } else if(this.name.equals("internal:createNumber") && (this.arguments.get(0) instanceof String)) {
             base.append(this.arguments.get(0));
         } else if(this.type == Type.TERMINATOR) {
