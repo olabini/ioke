@@ -41,7 +41,30 @@ describe "Number" do
   end
 
   describe "'negation'" do 
-    it "should have tests"
+    it "should return zero for zero" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("0 negation").data.as_java_integer.should == 0
+    end
+
+    it "should return 1 for -1" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("-1 negation").data.as_java_integer.should == 1
+    end
+
+    it "should return -1 for 1" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("1 negation").data.as_java_integer.should == -1
+    end
+
+    it "should return a large positive number for a large negative number" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("-353654645676451123345674 negation").data.as_java_string.should == "353654645676451123345674"
+    end
+
+    it "should return a large negative number for a large positive number" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("353654645676451123345674 negation").data.as_java_string.should == "-353654645676451123345674"
+    end
   end
   
   describe "'<=>'" do 
