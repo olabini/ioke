@@ -146,6 +146,14 @@ public class Message extends IokeData {
                     return IokeObject.as(on).evaluateCompleteWith(realReceiver, realReceiver);
                 }
             }));
+        message.registerMethod(message.runtime.newJavaMethod("takes one index, and a context and returns the evaluated argument at that index.", new JavaMethod("evalArgAt") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    int index = Number.extractInt(message.getEvaluatedArgument(0, context), message, context);
+                    IokeObject newContext = IokeObject.as(message.getEvaluatedArgument(1, context));
+                    return IokeObject.as(on).getEvaluatedArgument(index, newContext);
+                }
+            }));
         message.registerMethod(message.runtime.newJavaMethod("Will rearrange this message and all submessages to follow regular C style operator precedence rules. Will use Message OperatorTable to guide this operation. The operation is mutating, but should not change anything if done twice.", new JavaMethod("shuffleOperators") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
