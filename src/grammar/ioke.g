@@ -55,6 +55,20 @@ package ioke.lang.parser;
     displayRecognitionError(this.getTokenNames(), e);
     throw new RuntimeException(e);
   }
+
+  private int interpolating = 0;
+
+  public void startInterpolation() {
+      interpolating++;
+  }
+
+  public void endInterpolation() {
+      interpolating--;
+  }
+
+  public boolean isInterpolating() {
+      return interpolating > 0;
+  }
 }
 
 messageChain
@@ -140,11 +154,35 @@ NumberLiteral
     ;
 
 StringLiteral
-    :  '"' ( EscapeSequence | ~('\\'|'"') )* '"'
+    :  ('"' 
+        ( ({!(input.LA(1) == '#' && input.LA(2) == '{')}?=> (EscapeSequence | ~('\\'|'"')))* ) 
+        (
+            '#{' {startInterpolation(); }
+        |   '"'))
+    | {isInterpolating()}?=> ('}' ( ({!(input.LA(1) == '#' && input.LA(2) == '{')}?=> (EscapeSequence | ~('\\'|'"')))* ) 
+        (
+            '#{' {startInterpolation(); }
+        |   '"'  {endInterpolation(); }))
+
     ;
 
 RegexpLiteral
     :  '#/' ( EscapeSequenceRegexp | ~('\\'|'/') )* '/' RegexpModifier
+    ;
+
+fragment
+EscapeSequence
+    :   '\\' ('b'|'t'|'n'|'f'|'r'|'\"'|'\\'|'\n'|'#')
+    |   UnicodeEscape
+    |   OctalEscape
+    ;
+
+
+fragment
+EscapeSequenceRegexp
+    :   '\\' ('b'|'t'|'n'|'f'|'r'|'/'|'\\'|'\n')
+    |   UnicodeEscape
+    |   OctalEscape
     ;
 
 fragment
@@ -278,20 +316,6 @@ Comma
         ','
     ;
 
-fragment
-EscapeSequence
-    :   '\\' ('b'|'t'|'n'|'f'|'r'|'\"'|'\\'|'\n')
-    |   UnicodeEscape
-    |   OctalEscape
-    ;
-
-
-fragment
-EscapeSequenceRegexp
-    :   '\\' ('b'|'t'|'n'|'f'|'r'|'/'|'\\'|'\n')
-    |   UnicodeEscape
-    |   OctalEscape
-    ;
 
 fragment
 OctalEscape

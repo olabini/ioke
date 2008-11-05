@@ -167,7 +167,7 @@ public class DefaultBehavior {
                     Object o = Message.getArg1(message);
                     if(o instanceof String) {
                         String s = (String)o;
-                        return runtime.newText(s.substring(1, s.length()-1).replaceAll("\\\\\n", ""));
+                        return runtime.newText(s.replaceAll("\\\\\n", ""));
                     } else {
                         return IokeObject.convertToText(message.getEvaluatedArgument(0, context), message, context);
                     }
@@ -293,7 +293,7 @@ public class DefaultBehavior {
                     if(args.size() > 1 && ((IokeObject)Message.getArg1(message)).getName().equals("internal:createText")) {
                         start++;
                         String s = ((String)((IokeObject)args.get(0)).getArguments().get(0));
-                        doc = s.substring(1, s.length()-1);
+                        doc = s;
                     }
 
                     DefaultArgumentsDefinition def = DefaultArgumentsDefinition.createFrom(args, start, args.size()-1, message, on, context);
@@ -321,7 +321,7 @@ public class DefaultBehavior {
                     if(args.size() > 1 && ((IokeObject)Message.getArg1(message)).getName().equals("internal:createText")) {
                         start++;
                         String s = ((String)((IokeObject)args.get(0)).getArguments().get(0));
-                        doc = s.substring(1, s.length()-1);
+                        doc = s;
                     }
 
                     return runtime.newMacro(doc, runtime.defaultMacro, new DefaultMacro(context, (IokeObject)args.get(start)));

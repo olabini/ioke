@@ -26,7 +26,7 @@ import org.antlr.runtime.tree.Tree;
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
 public class Message extends IokeData {
-    public static enum Type {EMPTY, MESSAGE, BINARY, BINARY_ASSIGNMENT, UNARY_ASSIGNMENT, TERMINATOR, SEPARATOR};
+    public static enum Type {EMPTY, MESSAGE, BINARY, BINARY_ASSIGNMENT, UNARY_ASSIGNMENT, TERMINATOR, SEPARATOR, START_INTERPOLATION, END_INTERPOLATION, MIDDLE_INTERPOLATION};
 
     private String name;
     private String file;
@@ -298,9 +298,9 @@ public class Message extends IokeData {
         try {
             iokeParser parser = new iokeParser(new CommonTokenStream(new iokeLexer(new ANTLRReaderStream(reader))));
             Tree t = parser.parseFully();
-            //            System.err.println("t: " + t.toStringTree());
+//                        System.err.println("t: " + t.toStringTree());
             IokeObject m = fromTree(runtime, t);
-            //            System.err.println("m: " + m);
+//                        System.err.println("m: " + m);
 //                         System.err.println("m1: " + m);
             opShuffle(m);
 //                         System.err.println("m2: " + m);
@@ -319,11 +319,34 @@ public class Message extends IokeData {
         int argStart = 0;
         if(!tree.isNil()) {
             switch(tree.getType()) {
-            case iokeParser.StringLiteral:
-                m = new Message(runtime, "internal:createText", tree.getText());
-                m.setLine(tree.getLine());
-                m.setPosition(tree.getCharPositionInLine());
-                return runtime.createMessage(m);
+            case iokeParser.StringLiteral: {
+                String s = tree.getText();
+                char first = s.charAt(0);
+                char last = s.charAt(s.length()-1);
+                if(first == '"' && last == '"') {
+                    m = new Message(runtime, "internal:createText", s.substring(1, s.length()-1));
+                    m.setLine(tree.getLine());
+                    m.setPosition(tree.getCharPositionInLine());
+                    return runtime.createMessage(m);
+                } else {
+                    if(first == '}' && last == '"') { // This is an ending
+                        m = new Message(runtime, "internal:createText", s.substring(1, s.length()-1), Type.END_INTERPOLATION);
+                        m.setLine(tree.getLine());
+                        m.setPosition(tree.getCharPositionInLine());
+                        return runtime.createMessage(m);
+                    } else if(first == '"') { // This is a beginning
+                        m = new Message(runtime, "internal:createText", s.substring(1, s.length()-2), Type.START_INTERPOLATION);
+                        m.setLine(tree.getLine());
+                        m.setPosition(tree.getCharPositionInLine());
+                        return runtime.createMessage(m);
+                    } else { // This is in the middle
+                        m = new Message(runtime, "internal:createText", s.substring(1, s.length()-2), Type.MIDDLE_INTERPOLATION);
+                        m.setLine(tree.getLine());
+                        m.setPosition(tree.getCharPositionInLine());
+                        return runtime.createMessage(m);
+                    }
+                }
+            }
             case iokeParser.NumberLiteral:
                 m = new Message(runtime, "internal:createNumber", tree.getText());
                 m.setLine(tree.getLine());
@@ -391,8 +414,48 @@ public class Message extends IokeData {
         IokeObject head = null;
         List<IokeObject> currents = new ArrayList<IokeObject>();
 
+        List<List<IokeObject>> oldCurrents = new ArrayList<List<IokeObject>>();
+        List<IokeObject> oldHeads = new ArrayList<IokeObject>();
+        List<IokeObject> oldMx = new ArrayList<IokeObject>();
+
         for(int i=argStart,j=tree.getChildCount(); i<j; i++) {
             IokeObject created = fromTree(runtime, tree.getChild(i));
+
+            switch(Message.type(created)) {
+            case START_INTERPOLATION:{
+                Message mvv = new Message(runtime, "internal:concatenateText");
+                mvv.setLine(tree.getLine());
+                mvv.setPosition(tree.getCharPositionInLine());
+                oldCurrents.add(0, currents);
+                oldHeads.add(0, head);
+                oldMx.add(0, mx);
+
+                currents = new ArrayList<IokeObject>();
+                head = created;
+                mx = runtime.createMessage(mvv);
+
+                created = runtime.createMessage(new Message(runtime, ",", null, Type.SEPARATOR));
+                break;
+            }
+            case MIDDLE_INTERPOLATION:
+                mx.getArguments().add(head);
+
+                currents.clear();
+                head = created;
+
+                created = runtime.createMessage(new Message(runtime, ",", null, Type.SEPARATOR));
+                break;
+            case END_INTERPOLATION:
+                mx.getArguments().add(head);
+                mx.getArguments().add(created);
+
+                currents = oldCurrents.remove(0);
+                head = oldHeads.remove(0);
+                created = mx;
+                mx = oldMx.remove(0);
+                break;
+            }
+
             if(Message.type(created) == Type.TERMINATOR && head == null && currents.size() == 0) {
                 continue;
             }
@@ -414,7 +477,7 @@ public class Message extends IokeData {
                 }
 
                 if(currents.size() > 0) {
-                    Message.setNext(currents.get(0), created);
+                    Message.setNextOfLast(currents.get(0), created);
                     currents.set(0, created);
                 } else {
                     currents.add(0, created);
@@ -617,6 +680,13 @@ public class Message extends IokeData {
         ((Message)message.data).next = next;
     }
 
+    public static void setNextOfLast(IokeObject message, IokeObject next) {
+        while(next(message) != null) {
+            message = next(message);
+        }
+        ((Message)message.data).next = next;
+    }
+
     public static String thisCode(IokeObject message) {
         return ((Message)message.data).thisCode();
     }
@@ -636,7 +706,7 @@ public class Message extends IokeData {
 
     private void currentCode(StringBuilder base) {
         if(this.name.equals("internal:createText") && (this.arguments.get(0) instanceof String)) {
-            base.append(this.arguments.get(0));
+            base.append('"').append(this.arguments.get(0)).append('"');
         } else if(this.name.equals("internal:createNumber") && (this.arguments.get(0) instanceof String)) {
             base.append(this.arguments.get(0));
         } else if(this.type == Type.TERMINATOR) {
