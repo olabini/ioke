@@ -732,7 +732,7 @@ public class Message extends IokeData {
             base.append(".\n");
         } else {
             base.append(this.name);
-            if(arguments.size() > 0) {
+            if(arguments.size() > 0 || this.name.length() == 0) {
                 base.append("(");
                 String sep = "";
                 for(Object o : arguments) {
