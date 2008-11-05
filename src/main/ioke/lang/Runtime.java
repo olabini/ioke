@@ -180,6 +180,7 @@ public class Runtime {
             evaluateString("use(\"builtin/A2_number\")");
             evaluateString("use(\"builtin/A3_booleans\")");
             evaluateString("use(\"builtin/A4_range\")");
+            evaluateString("use(\"builtin/A5_call\")");
 
             evaluateString("use(\"builtin/M1_comparing\")");
             evaluateString("use(\"builtin/M2_enumerable\")");

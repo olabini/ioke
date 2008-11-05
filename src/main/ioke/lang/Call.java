@@ -45,6 +45,13 @@ public class Call extends IokeData {
                 }
             }));
 
+        obj.registerMethod(runtime.newJavaMethod("returns the message that started this call", new JavaMethod("message") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    return ((Call)IokeObject.data(on)).message;
+                }
+            }));
+
         obj.registerMethod(runtime.newJavaMethod("returns a list of the result of evaluating all the arguments to this call", new JavaMethod("evaluatedArguments") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
