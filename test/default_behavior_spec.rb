@@ -516,30 +516,63 @@ CODE
   end
 
   describe "'!'" do 
-    it "should have tests"
-  end
-
-  describe "'nil?'" do 
-    it "should have tests"
-  end
-
-  describe "'false?'" do 
-    it "should have tests"
-  end
-
-  describe "'true?'" do 
-    it "should have tests"
+    it "should return the result of calling not on the object" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string("x = Origin mimic. x not = method(53). !x").data.as_java_integer.should == 53
+      ioke.evaluate_string("x = Origin mimic. x not = method(33). !x").data.as_java_integer.should == 33
+    end
   end
 
   describe "'not'" do 
-    it "should have tests"
+    it "should return nil for a number" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("123 not").should == ioke.nil
+    end
+
+    it "should return nil for a text" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('"foo" not').should == ioke.nil
+    end
   end
 
   describe "'and'" do 
-    it "should have tests"
+    it "should evaluate it's argument" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("x=41. 13 and(x=42). x").data.as_java_integer.should == 42
+    end
+
+    it "should complain if no argument is given" do 
+      ioke = IokeRuntime.get_runtime
+      proc do 
+        ioke.evaluate_string("\"blarg\" and()")
+      end.should raise_error
+    end
+
+    it "should return the result of the argument" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("5353 and(42)").data.as_java_integer.should == 42
+    end
+
+    it "should be available in infix" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("\"flurg\" and 43").data.as_java_integer.should == 43
+    end
   end
 
   describe "'or'" do 
-    it "should have tests"
+    it "should not evaluate it's argument" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("x=41. 123 or(x=42). x").data.as_java_integer.should == 41
+    end
+
+    it "should return the receiver" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("\"murg\" or(42)").data.text.should == "murg"
+    end
+
+    it "should be available in infix" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("444 or 43").data.as_java_integer.should == 444
+    end
   end
 end
