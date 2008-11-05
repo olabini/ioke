@@ -11,6 +11,7 @@ import java.util.HashSet;
 import ioke.lang.exceptions.ControlFlow;
 import ioke.lang.exceptions.MismatchedArgumentCount;
 import ioke.lang.exceptions.MismatchedKeywords;
+import ioke.lang.util.StringUtils;
 
 /**
  *
@@ -167,7 +168,7 @@ public class DefaultBehavior {
                     Object o = Message.getArg1(message);
                     if(o instanceof String) {
                         String s = (String)o;
-                        return runtime.newText(s.replaceAll("\\\\\n", ""));
+                        return runtime.newText(new StringUtils().replaceEscapes(s));
                     } else {
                         return IokeObject.convertToText(message.getEvaluatedArgument(0, context), message, context);
                     }
@@ -180,7 +181,7 @@ public class DefaultBehavior {
                     Object o = Message.getArg1(message);
                     if(o instanceof String) {
                         String s = (String)o;
-                        return runtime.newPattern(s.replaceAll("\\\\\n", ""));
+                        return runtime.newPattern(new StringUtils().replaceEscapes(s));
                     } else {
                         return IokeObject.convertToPattern(message.getEvaluatedArgument(0, context), message, context);
                     }

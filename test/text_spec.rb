@@ -63,37 +63,120 @@ describe "Text" do
     it "should have tests"
   end
   
+  describe "interpolation" do 
+    it "should have tests"
+  end
+  
   describe "escapes" do 
+    describe "text escape", :shared => true do 
+      it "should be replaced when it's the only thing in the text" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string('"' + @replace + '"').data.text.should == "#{@expect}"
+      end
+
+      it "should be replaced when it's at the start of the text" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string('"' + @replace + ' "').data.text.should == "#{@expect} "
+        ioke.evaluate_string('"' + @replace + 'arfoo"').data.text.should == "#{@expect}arfoo"
+      end
+
+      it "should be replaced when it's at the end of the text" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string('" ' + @replace + '"').data.text.should == " #{@expect}"
+        ioke.evaluate_string('"arfoo' + @replace + '"').data.text.should == "arfoo#{@expect}"
+      end
+
+      it "should be replaced when it's in the middle of the text" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string('" ' + @replace + ' "').data.text.should == " #{@expect} "
+        ioke.evaluate_string('"ar' + @replace + 'foo"').data.text.should == "ar#{@expect}foo"
+      end
+
+      it "should be replaced when there are several in a string" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string('"' + @replace + ' ' + @replace + ' adsf' + @replace + 'gtr' + @replace + 'rsergfg' + @replace + '' + @replace + '' + @replace + 'fert' + @replace + '"').data.text.should == "#{@expect} #{@expect} adsf#{@expect}gtr#{@expect}rsergfg#{@expect}#{@expect}#{@expect}fert#{@expect}"
+      end
+    end
+    
     describe "\\b" do 
-      it "should have tests"
+      before :each do 
+        @replace = '\b'
+        @expect = "\b"
+      end
+
+      it_should_behave_like "text escape"
     end
 
     describe "\\t" do 
-      it "should have tests"
+      before :each do 
+        @replace = '\t'
+        @expect = "\t"
+      end
+
+      it_should_behave_like "text escape"
     end
 
     describe "\\n" do 
-      it "should have tests"
+      before :each do 
+        @replace = '\n'
+        @expect = "\n"
+      end
+
+      it_should_behave_like "text escape"
     end
 
     describe "\\f" do 
-      it "should have tests"
+      before :each do 
+        @replace = '\f'
+        @expect = "\f"
+      end
+
+      it_should_behave_like "text escape"
     end
 
     describe "\\r" do 
-      it "should have tests"
+      before :each do 
+        @replace = '\r'
+        @expect = "\r"
+      end
+
+      it_should_behave_like "text escape"
     end
 
     describe "\\\"" do 
-      it "should have tests"
+      before :each do 
+        @replace = '\"'
+        @expect = '"'
+      end
+
+      it_should_behave_like "text escape"
+    end
+
+    describe "\\#" do 
+      before :each do 
+        @replace = '\#'
+        @expect = '#'
+      end
+
+      it_should_behave_like "text escape"
     end
 
     describe "\\\\" do 
-      it "should have tests"
+      before :each do 
+        @replace = '\\\\'
+        @expect = '\\'
+      end
+
+      it_should_behave_like "text escape"
     end
 
     describe "\\\\n" do 
-      it "should have tests"
+      before :each do 
+        @replace = "\\\n"
+        @expect = ''
+      end
+
+      it_should_behave_like "text escape"
     end
 
     describe "unicode" do 
