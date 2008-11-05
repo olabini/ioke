@@ -1,7 +1,4 @@
---- ONLY REMOVE FROM THIS LIST WHEN THE FEATURE IS TESTED (for parsing)
-
-- maybe string interpolation inside of strings?
- - alt string syntax: #[]
+- alt string syntax: #[]
  
 - maybe string interpolation inside of regexps?
- - alt reg syntax: #r[]
+- alt reg syntax: #r[]
