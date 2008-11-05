@@ -349,6 +349,14 @@ public class Runtime {
         return obj;
     }
 
+    public IokeObject newPattern(String pattern) {
+//         IokeObject obj = this.pattern.allocateCopy(null, null);
+//         obj.mimicsWithoutCheck(this.pattern);
+//         obj.data = new Pattern(pattern);
+//         return obj;
+        return nil;
+    }
+
     public IokeObject newNumber(String number) {
         if(number.indexOf('.') != -1) {
             throw new RuntimeException("Can't handle decimal numbers yet. Sorry.");

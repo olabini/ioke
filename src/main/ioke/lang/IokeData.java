@@ -100,6 +100,9 @@ public abstract class IokeData {
     public IokeObject convertToText(IokeObject self, IokeObject m, IokeObject context) {
         throw new ObjectIsNotRightType(m, self, "Text", context);
     }
+    public IokeObject convertToPattern(IokeObject self, IokeObject m, IokeObject context) {
+        throw new ObjectIsNotRightType(m, self, "Pattern", context);
+    }
     public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
         throw new NotActivatableException(message, "Can't activate " + self + "#" + message.getName() + " on " + on, on, context);
     }

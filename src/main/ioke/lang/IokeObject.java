@@ -315,8 +315,16 @@ public class IokeObject {
         return ((IokeObject)on).convertToText(m, context);
     }
 
+    public static IokeObject convertToPattern(Object on, IokeObject m, IokeObject context) {
+        return ((IokeObject)on).convertToPattern(m, context);
+    }
+
     public IokeObject convertToText(IokeObject m, IokeObject context) {
         return data.convertToText(this, m, context);
+    }
+
+    public IokeObject convertToPattern(IokeObject m, IokeObject context) {
+        return data.convertToPattern(this, m, context);
     }
 
     public Object getOrActivate(IokeObject context, IokeObject message, Object on) throws ControlFlow {
