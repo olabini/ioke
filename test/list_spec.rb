@@ -55,7 +55,7 @@ describe "List" do
     end
   end
 
-  describe "'[]'" do 
+  describe "'[number]'" do 
     it "should return nil if empty list" do 
       ioke = IokeRuntime.get_runtime
       ioke.evaluate_string("list[0]").should == ioke.nil
@@ -83,7 +83,13 @@ describe "List" do
       ioke.evaluate_string("[1,2,3,4][0-3]").data.as_java_integer.should == 2
       ioke.evaluate_string("[1,2,3,4][0-4]").data.as_java_integer.should == 1
     end
+    
+    it "should work with ranges too"
   end
+
+  describe "'[range]'" do 
+    it "should have tests"
+  end  
   
   describe "'[]='" do 
     it "should set the first element in an empty list" do 
@@ -365,6 +371,135 @@ describe "List" do
 
   describe "'removeIf!'" do 
     it "should have tests"
+  end
+  
+  describe "'first'" do 
+    it "should return nil for an empty list" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("[] first").should == ioke.nil
+    end
+
+    it "should return the first element for a non-empty list" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("[42] first").data.as_java_integer.should == 42
+    end
+  end
+
+  describe "'second'" do 
+    it "should return nil for an empty list" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("[] second").should == ioke.nil
+    end
+
+    it "should return nil for a list with one element" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("[33] second").should == ioke.nil
+    end
+
+    it "should return the second element for a list with more than one element" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("[33, 45] second").data.as_java_integer.should == 45
+    end
+  end
+
+  describe "'third'" do 
+    it "should return nil for an empty list" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("[] third").should == ioke.nil
+    end
+
+    it "should return nil for a list with one element" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("[33] third").should == ioke.nil
+    end
+
+    it "should return nil for a list with two elements" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("[33, 15] third").should == ioke.nil
+    end
+
+    it "should return the third element for a list with more than two elements" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("[7, 25, 333] third").data.as_java_integer.should == 333
+    end
+  end
+
+  describe "'last'" do 
+    it "should return nil for an empty list" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("[] last").should == ioke.nil
+    end
+
+    it "should return the only entry for a list with one element" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("[45] last").data.as_java_integer.should == 45
+    end
+
+    it "should return the last entry for a list with more than one entry" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("[33, 15, 45, 57] last").data.as_java_integer.should == 57
+    end
+  end
+
+  describe "'rest'" do 
+    it "should return an empty list for the empty list" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("[] rest == []").should == ioke.true
+    end
+
+    it "should return an empty list for a list with one entry" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("[1] rest == []").should == ioke.true
+      ioke.evaluate_string("[2] rest == []").should == ioke.true
+      ioke.evaluate_string("[\"foo\"] rest == []").should == ioke.true
+    end
+
+    it "should return a list with the one element for a list with two entries" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("[1, 2] rest == [2]").should == ioke.true
+    end
+
+    it "should return a list with the rest of the elements for a larger list" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("[1, 2, 3, 4, 5] rest == [2, 3, 4, 5]").should == ioke.true
+    end
+  end
+
+  describe "'butLast'" do 
+    it "should return an empty list for the empty list" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("[] butLast == []").should == ioke.true
+    end
+
+    it "should return an empty list for a list with one entry" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("[1] butLast == []").should == ioke.true
+    end
+
+    it "should return a list with the first entry for a list with two elements" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("[1, 2] butLast == [1]").should == ioke.true
+    end
+
+    it "should return a list with both entries for a list with two elements when given 2 as an argument" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("[1, 2] butLast(2) == [1, 2]").should == ioke.true
+    end
+
+    it "should return a list with several entries for a longer list, without arguments" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("[1, 2, 3, 4, 5, 6] butLast == [1, 2, 3, 4, 5]").should == ioke.true
+    end
+
+    it "should return a list with several entries for a longer list, with an argument of 3" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("[1, 2, 3, 4, 5, 6, 7] butLast(3) == [1, 2, 3, 4]").should == ioke.true
+    end
+
+    it "should return the list with the same entries for an argument of zero" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("[1, 2, 3, 4, 5, 6] butLast(0) == [1, 2, 3, 4, 5, 6]").should == ioke.true
+    end
   end
 end
 
