@@ -1,8 +1,6 @@
 
 add "it" and jregex matching
 
-- add List#first, List#second, List#third, List#last -> either one, or a list if given an argument, List#rest, List#butLast
-
 = should check for "foo=" before calling assign, so you can do
   msg next = blah
  instead of setNext
