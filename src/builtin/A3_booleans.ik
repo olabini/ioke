@@ -144,3 +144,73 @@ nil or = macro(
   "Evaluates the argument and returns the result",
 
   call argAt(0))
+
+
+;; ---- xor
+
+DefaultBehavior xor = macro(
+  "Evaluates the argument and returns the inverse of the argument",
+
+  if(call argAt(0), false, true))
+
+true xor = macro(
+  "Evaluates the argument and returns the inverse of the argument",
+
+  if(call argAt(0), false, true))
+
+false xor = macro(
+  "Evaluates the argument and returns the inverse of the inverse of the argument",
+
+  if(call argAt(0), true, false))
+
+nil xor = macro(
+  "Evaluates the argument and returns the inverse of the inverse of the argument",
+
+  if(call argAt(0), true, false))
+
+;; ---- nor
+
+DefaultBehavior nor = macro(
+  "Does not evaluate its argument and returns false",
+
+  false)
+
+true nor = macro(
+  "Does not evaluate its argument and returns false",
+
+  false)
+
+false nor = macro(
+  "Evaluates its argument and returns the inverse of it",
+
+  if(call argAt(0), false, true))
+
+nil nor = macro(
+  "Evaluates its argument and returns the inverse of it",
+
+  if(call argAt(0), false, true))
+
+;; ---- nand
+
+DefaultBehavior nand = macro(
+  "Evaluates its argument and returns the inverse of it",
+
+  if(call argAt(0), false, true))
+
+true nand = macro(
+  "Evaluates its argument and returns the inverse of it",
+
+  if(call argAt(0), false, true))
+
+false nand = macro(
+  "Does not evaluate its argument and returns true",
+
+  true)
+
+nil nand = macro(
+  "Does not evaluate its argument and returns true",
+
+  true)
+
+
+

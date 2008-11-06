@@ -73,4 +73,92 @@ describe "nil" do
       ioke.evaluate_string("nil or 43").data.as_java_integer.should == 43
     end
   end
+  
+  describe "'xor'" do 
+    it "should evaluate it's argument" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("x=41. false xor(x=42). x").data.as_java_integer.should == 42
+    end
+
+    it "should complain if no argument is given" do 
+      ioke = IokeRuntime.get_runtime
+      proc do 
+        ioke.evaluate_string("false xor()")
+      end.should raise_error
+    end
+
+    it "should return true if the argument is true" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("false xor(true)").should == ioke.true
+    end
+
+    it "should return false if the argument is false" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("false xor(false)").should == ioke.false
+    end
+
+    it "should return false if the argument is nil" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("false xor(nil)").should == ioke.false
+    end
+    
+    it "should be available in infix" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("false xor 43").should == ioke.true
+    end
+  end
+
+  describe "'nor'" do 
+    it "should evaluate it's argument" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("x=41. false nor(x=42). x").data.as_java_integer.should == 42
+    end
+
+    it "should complain if no argument is given" do 
+      ioke = IokeRuntime.get_runtime
+      proc do 
+        ioke.evaluate_string("false nor()")
+      end.should raise_error
+    end
+
+    it "should return false if the argument is true" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("false nor(42)").should == ioke.false
+    end
+
+    it "should return false if the argument is false" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("false nor(false)").should == ioke.true
+    end
+
+    it "should return false if the argument is nil" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("false nor(nil)").should == ioke.true
+    end
+
+    it "should be available in infix" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("false nor 43").should == ioke.false
+    end
+  end
+
+  describe "'nand'" do 
+    it "should not evaluate it's argument" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("x=41. nil nand(x=42). x").data.as_java_integer.should == 41
+    end
+
+    it "should return true" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("nil nand(42)").should == ioke.true
+      ioke.evaluate_string("nil nand(false)").should == ioke.true
+      ioke.evaluate_string("nil nand(nil)").should == ioke.true
+      ioke.evaluate_string("nil nand(true)").should == ioke.true
+    end
+    
+    it "should be available in infix" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("nil nand 43").should == ioke.true
+    end
+  end
 end

@@ -575,4 +575,89 @@ CODE
       ioke.evaluate_string("444 or 43").data.as_java_integer.should == 444
     end
   end
+
+  describe "'xor'" do 
+    it "should evaluate it's argument" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("x=41. 30 xor(x=42). x").data.as_java_integer.should == 42
+    end
+
+    it "should complain if no argument is given" do 
+      ioke = IokeRuntime.get_runtime
+      proc do 
+        ioke.evaluate_string("30 xor()")
+      end.should raise_error
+    end
+
+    it "should return false if the argument is true" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("30 xor(true)").should == ioke.false
+    end
+
+    it "should return true if the argument is false" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("30 xor(false)").should == ioke.true
+    end
+
+    it "should return true if the argument is nil" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("30 xor(nil)").should == ioke.true
+    end
+    
+    it "should be available in infix" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("30 xor 43").should == ioke.false
+    end
+  end
+
+  describe "'nor'" do 
+    it "should not evaluate it's argument" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("x=41. 30 nor(x=42). x").data.as_java_integer.should == 41
+    end
+
+    it "should return false" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("30 nor(42)").should == ioke.false
+    end
+
+    it "should be available in infix" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("30 nor 43").should == ioke.false
+    end
+  end
+
+  describe "'nand'" do 
+    it "should evaluate it's argument" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("x=41. 30 nand(x=42). x").data.as_java_integer.should == 42
+    end
+
+    it "should complain if no argument is given" do 
+      ioke = IokeRuntime.get_runtime
+      proc do 
+        ioke.evaluate_string("30 nand()")
+      end.should raise_error
+    end
+
+    it "should return false if the argument evaluates to true" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("30 nand(42)").should == ioke.false
+    end
+    
+    it "should return true if the argument evaluates to false" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("30 nand(false)").should == ioke.true
+    end
+    
+    it "should return true if the argument evaluates to nil" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("30 nand(nil)").should == ioke.true
+    end
+
+    it "should be available in infix" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("30 nand 43").should == ioke.false
+    end
+  end
 end
