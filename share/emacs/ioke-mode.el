@@ -137,6 +137,18 @@
 (defconst ioke-font-lock-symbol-face font-lock-reference-face)
 (defconst ioke-font-lock-keyword-argument-face font-lock-reference-face)
 
+(defface ioke-font-lock-regexp-face
+  '((((type tty) (class color)) (:foreground "DeepPink" :weight light))
+    (((class grayscale) (background light)) (:foreground "LightGray" :bold t))
+    (((class grayscale) (background dark)) (:foreground "DimGray" :bold t))
+    (((class color) (background light)) (:foreground "Orchid"))
+    (((class color) (background dark)) (:foreground "DeepPink"))
+    (t (:bold t)))
+  "Font Lock mode face used to highlight regexps."
+  :group 'ioke-font-lock-faces)
+
+(defconst ioke-font-lock-regexp-face 'ioke-font-lock-regexp-face)
+
 (defconst ioke-prototype-names '(
                                  "Base"
                                  "DefaultBehavior"
@@ -268,6 +280,11 @@
                                )
   "ioke mode special names")
 
+(defconst ioke-standout-names '(
+                               "it"
+                               )
+  "ioke mode names that should stand out")
+
 (defconst ioke-custom-names '(
 			    ; your custom identifiers here
 			    )
@@ -299,12 +316,13 @@
   (list
     '("\\([[:alnum:]!?_:-]+\\)[[:space:]]*=[^=][[:space:]]*[[:alnum:]_:-]+[[:space:]]+mimic" 1 ioke-font-lock-object-mimic-face)
     '("\\([[:alnum:]!?_:-]+\\)[[:space:]]*[+*/-]?=[^=]" 1 ioke-font-lock-object-assign-face)
+    '("#/.*?/[oxpniums]*" 0 ioke-font-lock-regexp-face)
     `(,(regexp-opt ioke-prototype-names 'words) . ioke-font-lock-known-kind-face)
+    `(,(regexp-opt ioke-standout-names 'words) . font-lock-warning-face)
     '("\\<[A-Z][[:alnum:]!?_:-]*\\>" 0 ioke-font-lock-kind-face)
     '("\\<[[:alnum:]!?_:-]*?:\\>" 0 ioke-font-lock-keyword-argument-face)
     '("\\<:[[:alnum:]!?_:-]*\\>" 0 ioke-font-lock-symbol-face)
     '("\\<[[:digit:]_\\.eE]+\\>" 0 ioke-font-lock-number-face)
-;    '("\\<#/.*?/[oxpniums]*\\>" 0 ioke-font-lock-regexp-face)
 ;    '("\\<%r[.*?][oxpniums]*\\>" 0 ioke-font-lock-regexp-face)
 ;    '("\\<%[.*?]\\>" 0 ioke-font-lock-string-face)
     `(,(regexp-opt ioke-operator-names 'words) . ioke-font-lock-operator-name-face)
