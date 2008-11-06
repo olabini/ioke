@@ -1,0 +1,17 @@
+inside of if and unless, while and until
+----------------------------------------
+an ItContext is established. this context handles the "it" name specially.
+it's a dynamic variable, but it's also lexically closureable:
+
+if(42*3, fn([it, if(13, fn(it))])) call call ; == [126, 13]
+
+Using it is a bit ugly, but it solves the problem of regexps. The pattern will be:
+
+if(#/foo/ =~ "foo",
+  it match println,
+  "No match found")
+
+Blog about this. note how it is different from using a magic variable inside of blocks, which is really different.
+
+
+

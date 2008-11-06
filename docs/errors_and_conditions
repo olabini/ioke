@@ -128,8 +128,8 @@ The searching for handlers and cases is quite interesting in CL, and Ioke will h
 "bind" is used for both handling and rescuing. It might look like this:
 
 bind(
-  rescuer(Error FileNotFound, Error IO, fn(e, "got error =(" println)),
-  handler(Warning, fn(w, "got warning: " print; w println)),
+  rescue(Error FileNotFound, Error IO, fn(e, "got error =(" println)),
+  handle(Warning, fn(w, "got warning: " print. w println)),
 
   doSomethingEvilHere
 )
