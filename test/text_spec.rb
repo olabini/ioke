@@ -59,7 +59,11 @@ describe "Text" do
     end
   end
   
-  describe "'[]'" do 
+  describe "'[number]'" do 
+    it "should have tests"
+  end
+
+  describe "'[range]'" do 
     it "should have tests"
   end
   

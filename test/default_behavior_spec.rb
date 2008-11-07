@@ -559,6 +559,30 @@ CODE
     end
   end
 
+  describe "'&&'" do 
+    it "should evaluate it's argument" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("x=41. 13 &&(x=42). x").data.as_java_integer.should == 42
+    end
+
+    it "should complain if no argument is given" do 
+      ioke = IokeRuntime.get_runtime
+      proc do 
+        ioke.evaluate_string("\"blarg\" &&()")
+      end.should raise_error
+    end
+
+    it "should return the result of the argument" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("5353 &&(42)").data.as_java_integer.should == 42
+    end
+
+    it "should be available in infix" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("\"flurg\" && 43").data.as_java_integer.should == 43
+    end
+  end
+  
   describe "'or'" do 
     it "should not evaluate it's argument" do 
       ioke = IokeRuntime.get_runtime
@@ -576,6 +600,23 @@ CODE
     end
   end
 
+  describe "'||'" do 
+    it "should not evaluate it's argument" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("x=41. 123 ||(x=42). x").data.as_java_integer.should == 41
+    end
+
+    it "should return the receiver" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("\"murg\" ||(42)").data.text.should == "murg"
+    end
+
+    it "should be available in infix" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("444 || 43").data.as_java_integer.should == 444
+    end
+  end
+  
   describe "'xor'" do 
     it "should evaluate it's argument" do 
       ioke = IokeRuntime.get_runtime

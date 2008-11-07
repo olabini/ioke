@@ -50,6 +50,23 @@ describe "nil" do
     end
   end
 
+  describe "'&&'" do 
+    it "should not evaluate it's argument" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("x=41. nil &&(x=42). x").data.as_java_integer.should == 41
+    end
+
+    it "should return nil" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("nil &&(42)").should == ioke.nil
+    end
+
+    it "should be available in infix" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("nil && 43").should == ioke.nil
+    end
+  end
+  
   describe "'or'" do 
     it "should evaluate it's argument" do 
       ioke = IokeRuntime.get_runtime
@@ -71,6 +88,30 @@ describe "nil" do
     it "should be available in infix" do 
       ioke = IokeRuntime.get_runtime
       ioke.evaluate_string("nil or 43").data.as_java_integer.should == 43
+    end
+  end
+  
+  describe "'||'" do 
+    it "should evaluate it's argument" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("x=41. nil ||(x=42). x").data.as_java_integer.should == 42
+    end
+
+    it "should complain if no argument is given" do 
+      ioke = IokeRuntime.get_runtime
+      proc do 
+        ioke.evaluate_string("nil ||()")
+      end.should raise_error
+    end
+
+    it "should return the result of the argument" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("nil ||(42)").data.as_java_integer.should == 42
+    end
+
+    it "should be available in infix" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("nil || 43").data.as_java_integer.should == 43
     end
   end
   

@@ -123,6 +123,13 @@ nil and = macro(
 
   nil)
 
+;; ---- &&
+
+DefaultBehavior aliasMethod("and", "&&")
+true aliasMethod("and", "&&")
+false aliasMethod("and", "&&")
+nil aliasMethod("and", "&&")
+
 ;; ---- or
 
 DefaultBehavior or = macro(
@@ -145,6 +152,12 @@ nil or = macro(
 
   call argAt(0))
 
+;; ---- ||
+
+DefaultBehavior aliasMethod("or", "||")
+true aliasMethod("or", "||")
+false aliasMethod("or", "||")
+nil aliasMethod("or", "||")
 
 ;; ---- xor
 

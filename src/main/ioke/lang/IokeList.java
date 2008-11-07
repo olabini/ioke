@@ -91,10 +91,48 @@ public class IokeList extends IokeData {
             }));
         obj.aliasMethod("size", "length");
 
-        obj.registerMethod(runtime.newJavaMethod("takes one argument, the index of the element to be returned. can be negative, and will in that case return indexed from the back of the list. if the index is outside the bounds of the list, will return nil. ", new JavaMethod("at") {
+        obj.registerMethod(runtime.newJavaMethod("takes one argument, the index of the element to be returned. can be negative, and will in that case return indexed from the back of the list. if the index is outside the bounds of the list, will return nil. the argument can also be a range, and will in that case interpret the first index as where to start, and the second the end. the end can be negative and will in that case be from the end. if the first argument is negative, or after the second, an empty list will be returned. if the end point is larger than the list, the size of the list will be used as the end point.", new JavaMethod("at") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     Object arg = message.getEvaluatedArgument(0, context);
+
+                    if(IokeObject.data(arg) instanceof Range) {
+                        int first = Number.extractInt(Range.getFrom(arg), message, context); 
+                        
+                        if(first < 0) {
+                            return context.runtime.newList(new ArrayList<Object>());
+                        }
+
+                        int last = Number.extractInt(Range.getTo(arg), message, context);
+                        boolean inclusive = Range.isInclusive(arg);
+
+                        List<Object> o = ((IokeList)IokeObject.data(on)).getList();
+                        int size = o.size();
+
+                        if(last < 0) {
+                            last = size + last;
+                        }
+
+                        if(last < 0) {
+                            return context.runtime.newList(new ArrayList<Object>());
+                        }
+
+                        if(last >= size) {
+                            
+                            last = inclusive ? size-1 : size;
+                        }
+
+                        if(first > last || (!inclusive && first == last)) {
+                            return context.runtime.newList(new ArrayList<Object>());
+                        }
+                        
+                        if(!inclusive) {
+                            last--;
+                        }
+                        
+                        return context.runtime.newList(new ArrayList<Object>(o.subList(first, last+1)));
+                   }
+
                     if(!(IokeObject.data(arg) instanceof Number)) {
                         arg = IokeObject.convertToNumber(arg, message, context);
                     }

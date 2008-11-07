@@ -27,5 +27,9 @@ List rest = method(
 List butLast = method(
   "returns all the entries in the list, except for the 'n' last one, where 'n' is an optional argument that defaults to 1.",
   n 1,
-  
-  if(@empty?, [], @[0 ..( -(n))]))
+
+  end = @length - n
+
+  if(end < 0 || @empty?,
+    [],
+    @[0...end]))
