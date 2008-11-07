@@ -11,6 +11,11 @@ describe "DefaultBehavior" do
     end
   end
 
+  describe "'cells'" do 
+    it "should return all the cells of this object by default"
+    it "should take a boolean, when given will make it return all cells in both this and it's parents objects"
+  end
+  
   describe "'derive'" do 
     it "should be able to derive from Origin" do 
       ioke = IokeRuntime.get_runtime()
@@ -274,7 +279,7 @@ CODE
     end
   end
 
-  describe "kind?" do 
+  describe "'kind?'" do 
     it "should return false if the kind doesn't match" do 
       ioke = IokeRuntime.get_runtime()
       ioke.evaluate_stream(StringReader.new("Text kind?(\"nil\")")).should == ioke.false
@@ -314,7 +319,7 @@ CODE
     end
   end
   
-  describe "mimics?" do 
+  describe "'mimics?'" do 
     it "should return false if the object doesn't mimic the argument" do 
       ioke = IokeRuntime.get_runtime()
 
@@ -351,7 +356,7 @@ CODE
     end
   end
 
-  describe "is?" do 
+  describe "'is?'" do 
     it "should return false if the object doesn't mimic the argument" do 
       ioke = IokeRuntime.get_runtime()
 
@@ -388,7 +393,7 @@ CODE
     end
   end
 
-  describe "cell" do 
+  describe "'cell'" do 
     it "should be possible to get a cell using a Text argument" do 
       ioke = IokeRuntime.get_runtime()
       ioke.evaluate_string("x = 42. cell(\"x\") == x").should == ioke.true
@@ -419,7 +424,7 @@ CODE
     end
   end
 
-  describe "cell=" do 
+  describe "'cell='" do 
     it "should be possible to set a cell using a Text argument" do 
       ioke = IokeRuntime.get_runtime()
       ioke.evaluate_string("cell(\"blurg\") = 42. blurg").data.as_java_integer.should == 42
@@ -461,7 +466,7 @@ CODE
     end
   end
   
-  describe "mimic!" do 
+  describe "'mimic!'" do 
     it "should add a new mimic to the list of mimics" do 
       ioke = IokeRuntime.get_runtime()
       ioke.evaluate_stream(StringReader.new("f = Origin mimic. g = Origin mimic. f mimic!(g)"))
