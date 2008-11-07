@@ -83,12 +83,102 @@ describe "List" do
       ioke.evaluate_string("[1,2,3,4][0-3]").data.as_java_integer.should == 2
       ioke.evaluate_string("[1,2,3,4][0-4]").data.as_java_integer.should == 1
     end
-    
-    it "should work with ranges too"
   end
 
   describe "'[range]'" do 
-    it "should have tests"
+    it "should return an empty list for any range given to an empty list" do 
+      ioke = IokeRuntime.get_runtime
+
+      ioke.evaluate_string("[][0..0] == []").should == ioke.true
+      ioke.evaluate_string("[][0...0] == []").should == ioke.true
+      ioke.evaluate_string("[][0..-1] == []").should == ioke.true
+      ioke.evaluate_string("[][0...-1] == []").should == ioke.true
+      ioke.evaluate_string("[][10..20] == []").should == ioke.true
+      ioke.evaluate_string("[][10...20] == []").should == ioke.true
+      ioke.evaluate_string("[][-1..20] == []").should == ioke.true
+    end
+    
+    it "should return an equal list for 0..-1" do 
+      ioke = IokeRuntime.get_runtime
+
+      ioke.evaluate_string("[][0..-1] == []").should == ioke.true
+      ioke.evaluate_string("[1,2,3][0..-1] == [1,2,3]").should == ioke.true
+      ioke.evaluate_string("[\"x\", \"y\"][0..-1] == [\"x\", \"y\"]").should == ioke.true
+    end
+
+    it "should return all except the first element for 1..-1" do 
+      ioke = IokeRuntime.get_runtime
+
+      ioke.evaluate_string("[1][1..-1] == []").should == ioke.true
+      ioke.evaluate_string("[1,2,3][1..-1] == [2,3]").should == ioke.true
+      ioke.evaluate_string("[\"x\", \"y\"][1..-1] == [\"y\"]").should == ioke.true
+    end
+
+    it "should return all except for the first and last for 1...-1" do 
+      ioke = IokeRuntime.get_runtime
+
+      ioke.evaluate_string("[1,2][1...-1] == []").should == ioke.true
+      ioke.evaluate_string("[1,2,3][1...-1] == [2]").should == ioke.true
+      ioke.evaluate_string("[\"x\", \"y\", \"zed\", \"bar\"][1...-1] == [\"y\", \"zed\"]").should == ioke.true
+    end
+
+    it "should return an array with the first element for 0..0" do 
+      ioke = IokeRuntime.get_runtime
+
+      ioke.evaluate_string("[1][0..0] == [1]").should == ioke.true
+      ioke.evaluate_string("[1,2,3][0..0] == [1]").should == ioke.true
+      ioke.evaluate_string("[\"x\", \"y\"][0..0] == [\"x\"]").should == ioke.true
+    end
+
+    it "should return an empty array for 0...0" do 
+      ioke = IokeRuntime.get_runtime
+
+      ioke.evaluate_string("[1][0...0] == []").should == ioke.true
+      ioke.evaluate_string("[1,2,3][0...0] == []").should == ioke.true
+      ioke.evaluate_string("[\"x\", \"y\"][0...0] == []").should == ioke.true
+    end
+
+    it "should return a slice from a larger array" do 
+      ioke = IokeRuntime.get_runtime
+
+      ioke.evaluate_string("[1,2,3,4,5,6,7,8,9,10,11][3..5] == [4,5,6]").should == ioke.true
+    end
+
+    it "should return a correct slice for an exclusive range" do 
+      ioke = IokeRuntime.get_runtime
+
+      ioke.evaluate_string("[1,2,3,4,5,6,7,8,9,10,11][3...6] == [4,5,6]").should == ioke.true
+    end
+
+    it "should return a correct slice for a slice that ends in a negative index" do 
+      ioke = IokeRuntime.get_runtime
+
+      ioke.evaluate_string("[1,2,3,4,5,6,7,8,9,10,11][3..-3] == [4,5,6,7,8,9]").should == ioke.true
+    end
+
+    it "should return a correct slice for an exclusive slice that ends in a negative index" do 
+      ioke = IokeRuntime.get_runtime
+
+      ioke.evaluate_string("[1,2,3,4,5,6,7,8,9,10,11][3...-3] == [4,5,6,7,8]").should == ioke.true
+    end
+
+    it "should return all elements up to the end of the slice, if the end argument is way out there" do 
+      ioke = IokeRuntime.get_runtime
+
+      ioke.evaluate_string("[1,2,3,4,5,6,7,8,9,10,11][5..3443343] == [6,7,8,9,10,11]").should == ioke.true
+      ioke.evaluate_string("[1,2,3,4,5,6,7,8,9,10,11][5...3443343] == [6,7,8,9,10,11]").should == ioke.true
+    end
+
+    it "should return an empty array for a totally messed up indexing" do 
+      ioke = IokeRuntime.get_runtime
+
+      ioke.evaluate_string("[1,2,3,4,5,6,7,8,9,10,11][-1..3] == []").should == ioke.true
+      ioke.evaluate_string("[1,2,3,4,5,6,7,8,9,10,11][-1..7557] == []").should == ioke.true
+      ioke.evaluate_string("[1,2,3,4,5,6,7,8,9,10,11][5..4] == []").should == ioke.true
+      ioke.evaluate_string("[1,2,3,4,5,6,7,8,9,10,11][-1...3] == []").should == ioke.true
+      ioke.evaluate_string("[1,2,3,4,5,6,7,8,9,10,11][-1...7557] == []").should == ioke.true
+      ioke.evaluate_string("[1,2,3,4,5,6,7,8,9,10,11][5...4] == []").should == ioke.true
+    end
   end  
   
   describe "'[]='" do 
@@ -481,9 +571,9 @@ describe "List" do
       ioke.evaluate_string("[1, 2] butLast == [1]").should == ioke.true
     end
 
-    it "should return a list with both entries for a list with two elements when given 2 as an argument" do 
+    it "should return an empty list for a list with two elements when given 2 as an argument" do 
       ioke = IokeRuntime.get_runtime
-      ioke.evaluate_string("[1, 2] butLast(2) == [1, 2]").should == ioke.true
+      ioke.evaluate_string("[1, 2] butLast(2) == []").should == ioke.true
     end
 
     it "should return a list with several entries for a longer list, without arguments" do 

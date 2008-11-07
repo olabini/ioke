@@ -6,6 +6,16 @@ probably add specific keywords inside the actual aspect...
 
 
 Person = Origin mimic
-Person after(mimic, checkInvariants)
-Person before(hello, doSomething)
-Person around(with, somethingElse)
+Person after(:mimic, checkInvariants)
+Person before(:hello, doSomething)
+Person around(:with, somethingElse)
+
+
+maybe also add something in the style of
+
+before(*any, log)
+before(match: :any, log)
+
+before(match: #/foo/, log)
+
+etc
