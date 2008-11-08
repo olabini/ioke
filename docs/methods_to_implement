@@ -50,7 +50,8 @@ Ioke
  System
  Machine
 
-cellMissing === doesNotUnderstand === method_missing === forward
+cellMissing, doesNotUnderstand, method_missing, forward
+dynamicCell, unknownCell, unhandledMessage, lastResort
 
 mimics == protos
 
