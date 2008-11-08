@@ -30,10 +30,45 @@ public class Dict extends IokeData {
     }
 
     public static Map<Object, Object> getMap(Object dict) {
-        return ((Dict)IokeObject.data(dict)).dict;
+        return ((Dict)IokeObject.data(dict)).getMap();
+    }
+
+    public Map<Object, Object> getMap() {
+        return dict;
     }
 
     public IokeData cloneData(IokeObject obj, IokeObject m, IokeObject context) {
         return new Dict(new HashMap<Object, Object>(dict));
+    }
+
+    @Override
+    public boolean isEqualTo(IokeObject self, Object other) {
+        return ((other instanceof IokeObject) && 
+                (IokeObject.data(other) instanceof Dict) 
+                && this.dict.equals(((Dict)IokeObject.data(other)).dict));
+    }
+
+    @Override
+    public String toString() {
+        return dict.toString();
+    }
+
+    @Override
+    public String toString(IokeObject obj) {
+        return dict.toString();
+    }
+
+    @Override
+    public String representation(IokeObject obj) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("{");
+        String sep = "";
+        for(Map.Entry<Object, Object> o : dict.entrySet()) {
+            sb.append(sep).append(IokeObject.representation(o.getKey()));
+            sb.append(" => ").append(IokeObject.representation(o.getValue()));
+            sep = ", ";
+        }
+        sb.append("}");
+        return sb.toString();
     }
 }// Dict

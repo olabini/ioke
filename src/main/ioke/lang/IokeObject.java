@@ -366,12 +366,21 @@ public class IokeObject {
         return isEqualTo(other);
     }
 
+    @Override
+    public int hashCode() {
+        return iokeHashCode();
+    }
+
     public static boolean equals(Object lhs, Object rhs) {
         return IokeObject.as(lhs).isEqualTo(rhs);
     }
 
     public boolean isEqualTo(Object other) {
         return data.isEqualTo(this, other);
+    }
+
+    public int iokeHashCode() {
+        return data.hashCode(this);
     }
 
     public Object getEvaluatedArgument(int index, IokeObject context) throws ControlFlow {

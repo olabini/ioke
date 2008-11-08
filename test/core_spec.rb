@@ -120,6 +120,8 @@ describe "core" do
       runtime.ground.find_cell(nil, nil, 'Mixins').should == runtime.mixins
       runtime.ground.find_cell(nil, nil, 'Restart').should == runtime.restart
       runtime.ground.find_cell(nil, nil, 'List').should == runtime.list
+      runtime.ground.find_cell(nil, nil, 'Dict').should == runtime.dict
+      runtime.ground.find_cell(nil, nil, 'Pair').should == runtime.pair
       runtime.ground.find_cell(nil, nil, 'DefaultMacro').should == runtime.defaultMacro
       runtime.ground.find_cell(nil, nil, 'Call').should == runtime.call
       runtime.ground.find_cell(nil, nil, 'Range').should == runtime.range

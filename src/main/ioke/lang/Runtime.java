@@ -53,6 +53,7 @@ public class Runtime {
     public IokeObject list = new IokeObject(this, "A list is a collection of objects that can change size", new IokeList());
     public IokeObject dict = new IokeObject(this, "A dictionary is a collection of mappings from one object to another object. The default Dict implementation will use hashing for this.", new Dict());
     public IokeObject range = new IokeObject(this, "A range is a collection of two objects of the same kind. This Range can be either inclusive or exclusive.", new Range(nil, nil, false));
+    public IokeObject pair = new IokeObject(this, "A pair is a collection of two objects of any kind. They are used among other things to represent Dict entries.", new Pair(nil, nil));
     public IokeObject call = new IokeObject(this, "A call is the runtime structure that includes the specific information for a call, that is available inside a DefaultMacro.", new Call());
     public Context context = new Context(this, ground, "An activation context.", null, ground);
     public MacroContext macroContext = new MacroContext(this, ground, "A macro activation context.", null, ground);
@@ -121,8 +122,9 @@ public class Runtime {
         _false.init();
         text.init();
         symbol.init();
-        number.init();
+        number.init(); 
         range.init();
+        pair.init();
         context.init();
         lexicalContext.init();
         macroContext.init();
@@ -145,6 +147,7 @@ public class Runtime {
         symbol.mimicsWithoutCheck(origin);
         number.mimicsWithoutCheck(origin);
         range.mimicsWithoutCheck(origin);
+        pair.mimicsWithoutCheck(origin);
 
         message.mimicsWithoutCheck(origin);
         method.mimicsWithoutCheck(origin);
@@ -182,6 +185,7 @@ public class Runtime {
             evaluateString("use(\"builtin/A4_range\")");
             evaluateString("use(\"builtin/A5_call\")");
             evaluateString("use(\"builtin/A6_list\")");
+            evaluateString("use(\"builtin/A7_dict\")");
 
             evaluateString("use(\"builtin/M1_comparing\")");
             evaluateString("use(\"builtin/M2_enumerable\")");
@@ -265,6 +269,10 @@ public class Runtime {
 
     public IokeObject getRestart() {
         return this.restart;
+    }
+
+    public IokeObject getPair() {
+        return this.pair;
     }
 
     public IokeObject getMacroContext() {
@@ -456,6 +464,13 @@ public class Runtime {
         IokeObject obj = this.range.allocateCopy(null, null);
         obj.mimicsWithoutCheck(this.range);
         obj.data = new Range(from, to, inclusive);
+        return obj;
+    }
+
+    public IokeObject newPair(Object first, Object second) {
+        IokeObject obj = this.pair.allocateCopy(null, null);
+        obj.mimicsWithoutCheck(this.pair);
+        obj.data = new Pair(first, second);
         return obj;
     }
 

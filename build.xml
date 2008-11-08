@@ -37,13 +37,25 @@
 
   <target name="generate" depends="generate.antlr" description="Generates source files from the ANTLR definitions"/>
 
-  <target name="compile" depends="generate" description="Compile the source files for the project.">
+  <target name="generate_filters" depends="generate.antlr" description="Generates source files from the ANTLR definitions">
+    <exec executable="ruby" input="generate_filter_data.rb"/>
+  </target>
+
+  <target name="compile" depends="generate, generate_filters" description="Compile the source files for the project.">
+    <filter filtersfile="version_data.properties"/>
+    <filter token="VERSION" value="0"/>
+    <filter token="VERSION_STRING" value="Ioke 0 (snapshot)"/>
+
     <javac destdir="${classes.dir}" debug="true" source="${javac.version}" target="${javac.version}">
       <classpath refid="build.classpath"/>
       <src path="${src.dir}"/>
       <src path="${src.generated.dir}"/>
       <include name="**/*.java"/>
     </javac>
+
+    <copy todir="${classes.dir}" filtering="true" overwrite="true">
+      <fileset dir="${src.dir}" includes="**/*.properties"/>
+    </copy>
 
     <copy todir="${classes.dir}">
       <fileset dir="${src.raw.dir}" includes="builtin/**/*.ik"/>

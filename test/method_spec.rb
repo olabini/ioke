@@ -468,4 +468,12 @@ CODE
     ioke.evaluate_stream(StringReader.new("obj selfMethod")).should == ioke.ground.find_cell(nil,nil,"obj")
     ioke.evaluate_stream(StringReader.new("obj2 selfMethod")).should == ioke.ground.find_cell(nil,nil,"obj2")
   end
+  
+  describe "rest (*)" do 
+    it "should have tests"
+  end
+  
+  describe "keyword rest (&)" do 
+    it "should have tests"
+  end
 end
