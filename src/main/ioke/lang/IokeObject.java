@@ -4,6 +4,7 @@
 package ioke.lang;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ import ioke.lang.exceptions.ControlFlow;
 public class IokeObject {
     public Runtime runtime;
     public String documentation;
-    public Map<String, Object> cells = new HashMap<String, Object>();
+    public Map<String, Object> cells = new LinkedHashMap<String, Object>();
     public List<IokeObject> mimics = new ArrayList<IokeObject>();
     
     public IokeData data;

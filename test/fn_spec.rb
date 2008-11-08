@@ -590,7 +590,18 @@ CODE
     end.should raise_error(MismatchedKeywords)
   end
 
-  it "should be possible to get a list of keyword arguments"
+  it "should be possible to get a list of keyword arguments" do 
+    ioke = IokeRuntime.get_runtime()
+    ioke.evaluate_string("fn keywords == []").should == ioke.true
+    ioke.evaluate_string("fn(a, a) keywords == []").should == ioke.true
+    ioke.evaluate_string("fn(a 1, a) keywords == []").should == ioke.true
+    ioke.evaluate_string("fn(a, b, a) keywords == []").should == ioke.true
+    ioke.evaluate_string("fn(a:, a) keywords == [:a]").should == ioke.true
+    ioke.evaluate_string("fn(x, a:, a) keywords == [:a]").should == ioke.true
+    ioke.evaluate_string("fn(x, a:, y, a) keywords == [:a]").should == ioke.true
+    ioke.evaluate_string("fn(x, a:, y, b: 123, a) keywords == [:a, :b]").should == ioke.true
+    ioke.evaluate_string("fn(x, a:, y, b: 123, foo: \"foo\", a) keywords == [:a, :b, :foo]").should == ioke.true
+  end
 
   it "should be possible to use a keyword arguments value as a default value for a regular argument" do 
     ioke = IokeRuntime.get_runtime()

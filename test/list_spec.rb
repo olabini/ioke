@@ -316,7 +316,6 @@ describe "List" do
     end
   end
   
-  #Should always be equal based on the content of the lists
   describe "'=='" do 
     it "should return false when sent an argument that is not a list" do 
       ioke = IokeRuntime.get_runtime
@@ -451,17 +450,17 @@ describe "List" do
     end
   end
 
-  describe "'remove!'" do 
-    it "should have tests"
-  end
+#   describe "'remove!'" do 
+#     it "should have tests"
+#   end
 
-  describe "'removeAt!'" do 
-    it "should have tests"
-  end
+#   describe "'removeAt!'" do 
+#     it "should have tests"
+#   end
 
-  describe "'removeIf!'" do 
-    it "should have tests"
-  end
+#   describe "'removeIf!'" do 
+#     it "should have tests"
+#   end
   
   describe "'first'" do 
     it "should return nil for an empty list" do 

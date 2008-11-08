@@ -1,6 +1,6 @@
 include_class('ioke.lang.Runtime') { 'IokeRuntime' } unless defined?(IokeRuntime)
 
-describe "'cellMissing'" do 
+describe "'forward'" do 
   it "should be invoked with the name of the cell and the original arguments to it"
 end
 

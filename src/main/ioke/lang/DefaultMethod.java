@@ -3,6 +3,7 @@
  */
 package ioke.lang;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ioke.lang.exceptions.MismatchedArgumentCount;
@@ -29,6 +30,18 @@ public class DefaultMethod extends Method {
     @Override
     public void init(IokeObject defaultMethod) {
         defaultMethod.setKind("DefaultMethod");
+        defaultMethod.registerMethod(defaultMethod.runtime.newJavaMethod("returns a list of the keywords this method takes", new JavaMethod("keywords") {
+                @Override
+                public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) {
+                    List<Object> keywords = new ArrayList<Object>();
+                    
+                    for(String keyword : ((DefaultMethod)IokeObject.data(on)).arguments.getKeywords()) {
+                        keywords.add(context.runtime.getSymbol(keyword.substring(0, keyword.length()-1)));
+                    }
+
+                    return context.runtime.newList(keywords);
+                }
+            }));
     }
 
     @Override

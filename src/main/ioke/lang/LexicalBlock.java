@@ -3,6 +3,9 @@
  */
 package ioke.lang;
 
+import java.util.List;
+import java.util.ArrayList;
+
 import ioke.lang.exceptions.ControlFlow;
 
 /**
@@ -32,6 +35,19 @@ public class LexicalBlock extends IokeData {
                 @Override
                 public Object activate(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on) throws ControlFlow {
                     return IokeObject.as(on).activate(dynamicContext, message, on);
+                }
+            }));
+
+        lexicalBlock.registerMethod(lexicalBlock.runtime.newJavaMethod("returns a list of the keywords this block takes", new JavaMethod("keywords") {
+                @Override
+                public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) {
+                    List<Object> keywords = new ArrayList<Object>();
+                    
+                    for(String keyword : ((LexicalBlock)IokeObject.data(on)).arguments.getKeywords()) {
+                        keywords.add(context.runtime.getSymbol(keyword.substring(0, keyword.length()-1)));
+                    }
+
+                    return context.runtime.newList(keywords);
                 }
             }));
     }

@@ -55,9 +55,6 @@ dynamicCell, unknownCell, unhandledMessage, lastResort
 
 mimics == protos
 
-hashes
-
-
 lower prio
 ----------
 
@@ -76,8 +73,6 @@ look at Io Locals for Context stuff...
 autoimporter in the style of Io Importer
  -- something like forward
 
-Remember, all should be utf16
-
 - something that allows stacking of ground. maybe just a simple "System ground" that is an array. This is used inside of the REPL for example.
 
 aspects:
@@ -88,4 +83,4 @@ aspects:
 resend
 super
 
-add with() and from()
+add from()
