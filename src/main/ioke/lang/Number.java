@@ -54,6 +54,11 @@ public class Number extends IokeData {
     }
 
     @Override
+    public String representation(IokeObject obj) {
+        return asJavaString();
+    }
+
+    @Override
     public IokeObject convertToNumber(IokeObject self, IokeObject m, IokeObject context) {
         return self;
     }
@@ -75,6 +80,11 @@ public class Number extends IokeData {
         return ((other instanceof IokeObject) && 
                 (IokeObject.data(other) instanceof Number) 
                 && this.value.equals(((Number)IokeObject.data(other)).value));
+    }
+
+    @Override
+    public int hashCode(IokeObject self) {
+        return this.value.hashCode();
     }
 
     @Override

@@ -91,6 +91,11 @@ public class Text extends IokeData {
     }
 
     @Override
+    public int hashCode(IokeObject self) {
+        return this.text.hashCode();
+    }
+
+    @Override
     public String toString() {
         return text;
     }
@@ -98,5 +103,11 @@ public class Text extends IokeData {
     @Override
     public String toString(IokeObject obj) {
         return text;
+    }
+
+    @Override
+    public String representation(IokeObject obj) {
+        // This should obviously have more stuff later for escaping and so on.
+        return "\"" + text + "\"";
     }
 }// Text

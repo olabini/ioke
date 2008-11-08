@@ -4,3 +4,4 @@ prj.el
 build.properties
 src/generated
 spike
+version_data.properties

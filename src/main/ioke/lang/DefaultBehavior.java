@@ -6,6 +6,8 @@ package ioke.lang;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.HashSet;
 
 import ioke.lang.exceptions.ControlFlow;
@@ -582,6 +584,46 @@ public class DefaultBehavior {
                 }
             }));
 
-        obj.aliasMethod("list", "[]");
+        obj.registerMethod(runtime.newJavaMethod("Takes one evaluated argument and returns a new Pair of the receiver and the argument", new DefaultBehaviorJavaMethod("=>") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    Object arg = message.getEvaluatedArgument(0, context);
+                    return context.runtime.newPair(on, arg);
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("creates a new Dict from the arguments provided. these arguments can be two different things - either a keyword argument, or a pair. if it's a keyword argument, the entry added to the dict for it will be a symbol with the name from the keyword, without the ending colon. if it's not a keyword, it is expected to be an evaluated pair, where the first part of the pair is the key, and the second part is the value.", new DefaultBehaviorJavaMethod("dict") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> arguments = message.getArguments();
+                    Map<Object, Object> moo = new HashMap<Object, Object>(arguments.size());
+
+                    for(Object o : arguments) {
+                        Object key, value;
+                        if(Message.isKeyword(o)) {
+                            String str = Message.name(o);
+                            key = context.runtime.getSymbol(str.substring(0, str.length()-1));
+                            if(Message.next(o) != null) {
+                                value = Message.getEvaluatedArgument(Message.next(o), context);
+                            } else {
+                                value = context.runtime.nil;
+                            }
+                        } else {
+                            Object result = Message.getEvaluatedArgument(o, context);
+                            if((result instanceof IokeObject) && (IokeObject.data(result) instanceof Pair)) {
+                                key = Pair.getFirst(result);
+                                value = Pair.getSecond(result);
+                            } else {
+                                key = result;
+                                value = context.runtime.nil;
+                            }
+                        }
+
+                        moo.put(key, value);
+                    }
+
+                    return context.runtime.newDict(moo);
+                }
+            }));
     }
 }// DefaultBehavior

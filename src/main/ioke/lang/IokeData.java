@@ -39,6 +39,11 @@ public abstract class IokeData {
             public String toString(IokeObject self) {
                 return "nil";
             }
+
+            @Override
+            public String representation(IokeObject self) {
+                return "nil";
+            }
         };
 
     public final static IokeData False = new IokeData(){
@@ -59,6 +64,11 @@ public abstract class IokeData {
             public String toString(IokeObject self) {
                 return "false";
             }
+
+            @Override
+            public String representation(IokeObject self) {
+                return "false";
+            }
         };
 
     public final static IokeData True = new IokeData(){
@@ -73,6 +83,11 @@ public abstract class IokeData {
 
             @Override
             public String toString(IokeObject self) {
+                return "true";
+            }
+
+            @Override
+            public String representation(IokeObject self) {
                 return "true";
             }
         };
@@ -91,6 +106,10 @@ public abstract class IokeData {
 
     public boolean isEqualTo(IokeObject self, Object other) {
         return self == other;
+    }
+
+    public int hashCode(IokeObject self) {
+        return System.identityHashCode(self);
     }
 
     public IokeData cloneData(IokeObject obj, IokeObject m, IokeObject context) {return this;}
@@ -177,7 +196,7 @@ public abstract class IokeData {
 
     public String toString(IokeObject self) {
         Object obj = self.findCell(null, null, "kind");
-        int h = System.identityHashCode(self);
+        int h = hashCode(self);
         String hash = Integer.toHexString(h).toUpperCase();
         if(obj instanceof NullObject) {
             return "#<???:" + hash + ">";
