@@ -77,10 +77,10 @@ A rest argument works like in Common Lisp except it will ignore keyword argument
 
 rest = method(a, b, *rest, rest asString println)
 
-Prefix * is not like :. The star is not part of the actual name, it's a prefix method that turns into a call to *@():
+Prefix * is not like :. The star is not part of the actual name, it's a prefix method that turns into a call to *():
 
-*foo == *@(foo)
-*foo bar == *@(foo) bar
+*foo == *(foo)
+*foo bar == *(foo) bar
 foo * bar == *(foo, bar)
 
 You can do the same thing as in Ruby when calling a method, by splicing things with the star:
@@ -90,6 +90,16 @@ foo(*args)
 this will provide the correct keyword arguments and all other arguments.
 
 foo(a, b, c, d)
+
+
+The rest argument will not collect keyword arguments, only the provided non-keyword arguments.
+You can catch any keyword arguments in with &, and also splice them the same way. They will provide the same order. The result of working with a & argument is a Dict.
+Using & is also how you provide the possibility to give any keyword argument to a call. Specifically, if a keyword argument has already been taken by a defined argument, it will not show up in the & list.
+
+x = method(a, b, foo:, *rest, &keywords, [a, b, foo, rest, keywords])
+x(13, foo: 42, bar: 17, xxxxxxx: "str", xx: 2+2, 1, 43, 44) ; =>  [13, 1, 42, [42, 44], {:bar => 17, :xxxxxxx => "str", :xx => 4}]
+
+
 
 
 ----
