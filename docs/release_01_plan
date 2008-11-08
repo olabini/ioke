@@ -9,8 +9,8 @@ Ioke 0.1 should include:
 * break
 - return
 - conditions
-- List
-- Dict
+* List
+* Dict
 - Enumerable
 * squarebracket, curlybracket syntax
 - libraries

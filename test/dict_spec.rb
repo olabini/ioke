@@ -24,7 +24,49 @@ describe "Dict" do
   end
   
   describe "'=='" do 
-    it "should have tests"
+    it "should return false when sent an argument that is not a dict" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("{} == 1").should == ioke.false
+      ioke.evaluate_string("{1=>2} == 1").should == ioke.false
+      ioke.evaluate_string("{1=>2,2=>3,3=>4} == \"foo\"").should == ioke.false
+      ioke.evaluate_string("{} == method({})").should == ioke.false
+    end
+    
+    it "should return true for two empty dicts" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("x = {}. x == x").should == ioke.true
+      ioke.evaluate_string("{} == {}").should == ioke.true
+    end
+    
+    it "should return true for two empty dicts where one has a new cell" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("x = {}. y = {}. x blarg = 12. x == y").should == ioke.true
+    end
+    
+    it "should return false when the two dicts have a key element of different types" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("{1=>2} == {\"1\"=>2}").should == ioke.false
+      ioke.evaluate_string("{1=>2, 2=>3, 3=>4} == {\"1\"=>2, \"2\"=>3, \"3\"=>4}").should == ioke.false
+    end
+
+    it "should return false when the two dicts have different size" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("{1} == {}").should == ioke.false
+      ioke.evaluate_string("{1} == {1,2,3}").should == ioke.false
+    end
+    
+    it "should return true if the elements in the dict are the same" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("{1} == {1=>nil}").should == ioke.true
+      ioke.evaluate_string("{1=>\"str\"} == {1=>\"str\"}").should == ioke.true
+      ioke.evaluate_string("{\"1\"=>123} == {\"1\"=>123}").should == ioke.true
+      ioke.evaluate_string("{1,2,3,4,5,6,7} == {1,2,3,4,5,6,7}").should == ioke.true
+    end
+
+    it "should return true if the elements in the dict are the same but in different order" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("{1,2,3,4,5,6,7} == {3,4,5,6,7,1,2,3}").should == ioke.true
+    end
   end
 end
 

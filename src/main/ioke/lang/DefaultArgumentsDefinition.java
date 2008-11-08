@@ -9,6 +9,8 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Collection;
 
 import ioke.lang.exceptions.ControlFlow;
 import ioke.lang.exceptions.MismatchedArgumentCount;
@@ -59,20 +61,24 @@ public class DefaultArgumentsDefinition {
     private int min;
     private int max;
     private List<Argument> arguments;
-    private Set<String> keywords;
+    private Collection<String> keywords;
 
-    private DefaultArgumentsDefinition(List<Argument> arguments, Set<String> keywords, int min, int max) {
+    private DefaultArgumentsDefinition(List<Argument> arguments, Collection<String> keywords, int min, int max) {
         this.arguments = arguments;
         this.keywords = keywords;
         this.min = min;
         this.max = max;
     }
 
+    public Collection<String> getKeywords() {
+        return keywords;
+    }
+
     public void assignArgumentValues(IokeObject locals, IokeObject context, IokeObject message, Object on) throws ControlFlow {
         List<Object> arguments = message.getArguments();
         List<Object> argumentsWithoutKeywords = new ArrayList<Object>();
         int argCount = 0;
-        Map<String, IokeObject> givenKeywords = new HashMap<String, IokeObject>();
+        Map<String, IokeObject> givenKeywords = new LinkedHashMap<String, IokeObject>();
         
         for(Object o : arguments) {
             if(Message.isKeyword(o)) {
@@ -115,12 +121,12 @@ public class DefaultArgumentsDefinition {
     }
 
     public static DefaultArgumentsDefinition empty() {
-        return new DefaultArgumentsDefinition(new ArrayList<Argument>(), new HashSet<String>(), 0, 0);
+        return new DefaultArgumentsDefinition(new ArrayList<Argument>(), new ArrayList<String>(), 0, 0);
     }
 
     public static DefaultArgumentsDefinition createFrom(List<Object> args, int start, int len, IokeObject message, Object on, IokeObject context) {
         List<Argument> arguments = new ArrayList<Argument>();
-        Set<String> keywords = new HashSet<String>();
+        List<String> keywords = new ArrayList<String>();
 
         int min = 0;
         int max = 0;
