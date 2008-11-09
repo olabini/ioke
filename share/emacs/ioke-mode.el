@@ -176,7 +176,7 @@
                             "while"
                             "until"
                             "asText"
-                            "representation"
+                            "inspect"
                             "loop"
                             "bind"
                             "restart"

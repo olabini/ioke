@@ -101,30 +101,30 @@ describe "core" do
 
     it "should have all the expected cells" do 
       runtime = IokeRuntime.get_runtime
-      runtime.ground.find_cell(nil, nil, 'Base').should == runtime.base
-      runtime.ground.find_cell(nil, nil, 'DefaultBehavior').should == runtime.defaultBehavior
-      runtime.ground.find_cell(nil, nil, 'Ground').should == runtime.ground
-      runtime.ground.find_cell(nil, nil, 'Origin').should == runtime.origin
-      runtime.ground.find_cell(nil, nil, 'System').should == runtime.system
-      runtime.ground.find_cell(nil, nil, 'Runtime').should == runtime.iokeRuntime
-      runtime.ground.find_cell(nil, nil, 'Text').should == runtime.text
-      runtime.ground.find_cell(nil, nil, 'Number').should == runtime.number
-      runtime.ground.find_cell(nil, nil, 'nil').should == runtime.nil
-      runtime.ground.find_cell(nil, nil, 'true').should == runtime.true
-      runtime.ground.find_cell(nil, nil, 'false').should == runtime.false
-      runtime.ground.find_cell(nil, nil, 'Method').should == runtime.get_method
-      runtime.ground.find_cell(nil, nil, 'Symbol').should == runtime.symbol
-      runtime.ground.find_cell(nil, nil, 'DefaultMethod').should == runtime.defaultMethod
-      runtime.ground.find_cell(nil, nil, 'JavaMethod').should == runtime.javaMethod
-      runtime.ground.find_cell(nil, nil, 'LexicalBlock').should == runtime.lexicalBlock
-      runtime.ground.find_cell(nil, nil, 'Mixins').should == runtime.mixins
-      runtime.ground.find_cell(nil, nil, 'Restart').should == runtime.restart
-      runtime.ground.find_cell(nil, nil, 'List').should == runtime.list
-      runtime.ground.find_cell(nil, nil, 'Dict').should == runtime.dict
-      runtime.ground.find_cell(nil, nil, 'Pair').should == runtime.pair
-      runtime.ground.find_cell(nil, nil, 'DefaultMacro').should == runtime.defaultMacro
-      runtime.ground.find_cell(nil, nil, 'Call').should == runtime.call
-      runtime.ground.find_cell(nil, nil, 'Range').should == runtime.range
+      runtime.ground.find_cell(nil, nil, 'Base').object_id.should == runtime.base.object_id
+      runtime.ground.find_cell(nil, nil, 'DefaultBehavior').object_id.should == runtime.defaultBehavior.object_id
+      runtime.ground.find_cell(nil, nil, 'Ground').object_id.should == runtime.ground.object_id
+      runtime.ground.find_cell(nil, nil, 'Origin').object_id.should == runtime.origin.object_id
+      runtime.ground.find_cell(nil, nil, 'System').object_id.should == runtime.system.object_id
+      runtime.ground.find_cell(nil, nil, 'Runtime').object_id.should == runtime.iokeRuntime.object_id
+      runtime.ground.find_cell(nil, nil, 'Text').object_id.should == runtime.text.object_id
+      runtime.ground.find_cell(nil, nil, 'Number').object_id.should == runtime.number.object_id
+      runtime.ground.find_cell(nil, nil, 'nil').object_id.should == runtime.nil.object_id
+      runtime.ground.find_cell(nil, nil, 'true').object_id.should == runtime.true.object_id
+      runtime.ground.find_cell(nil, nil, 'false').object_id.should == runtime.false.object_id
+      runtime.ground.find_cell(nil, nil, 'Method').object_id.should == runtime.get_method.object_id
+      runtime.ground.find_cell(nil, nil, 'Symbol').object_id.should == runtime.symbol.object_id
+      runtime.ground.find_cell(nil, nil, 'DefaultMethod').object_id.should == runtime.defaultMethod.object_id
+      runtime.ground.find_cell(nil, nil, 'JavaMethod').object_id.should == runtime.javaMethod.object_id
+      runtime.ground.find_cell(nil, nil, 'LexicalBlock').object_id.should == runtime.lexicalBlock.object_id
+      runtime.ground.find_cell(nil, nil, 'Mixins').object_id.should == runtime.mixins.object_id
+      runtime.ground.find_cell(nil, nil, 'Restart').object_id.should == runtime.restart.object_id
+      runtime.ground.find_cell(nil, nil, 'List').object_id.should == runtime.list.object_id
+      runtime.ground.find_cell(nil, nil, 'Dict').object_id.should == runtime.dict.object_id
+      runtime.ground.find_cell(nil, nil, 'Pair').object_id.should == runtime.pair.object_id
+      runtime.ground.find_cell(nil, nil, 'DefaultMacro').object_id.should == runtime.defaultMacro.object_id
+      runtime.ground.find_cell(nil, nil, 'Call').object_id.should == runtime.call.object_id
+      runtime.ground.find_cell(nil, nil, 'Range').object_id.should == runtime.range.object_id
     end
   end
 

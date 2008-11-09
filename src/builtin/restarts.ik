@@ -3,12 +3,12 @@ ConditionX do(
   Restart = Origin mimic do(
     create = method(name, report, test, block, 
       r = self mimic
-      r representation println
+      r inspect println
       r name = name
       r report = report
       r test = test
       r block = block
-      r representation println
+      r inspect println
       r)
     invoke = method(
       self block call)))

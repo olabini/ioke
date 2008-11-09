@@ -41,7 +41,7 @@ public abstract class IokeData {
             }
 
             @Override
-            public String representation(IokeObject self) {
+            public String inspect(IokeObject self) {
                 return "nil";
             }
         };
@@ -66,7 +66,7 @@ public abstract class IokeData {
             }
 
             @Override
-            public String representation(IokeObject self) {
+            public String inspect(IokeObject self) {
                 return "false";
             }
         };
@@ -87,7 +87,7 @@ public abstract class IokeData {
             }
 
             @Override
-            public String representation(IokeObject self) {
+            public String inspect(IokeObject self) {
                 return "true";
             }
         };
@@ -206,7 +206,7 @@ public abstract class IokeData {
         return "#<" + kind + ":" + hash + ">";
     }
 
-    public String representation(IokeObject self) {
+    public String inspect(IokeObject self) {
         return null;
     }
 }// IokeData

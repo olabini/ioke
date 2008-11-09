@@ -14,7 +14,7 @@ describe "List" do
     ioke = IokeRuntime.get_runtime
     result = ioke.evaluate_string("x = List mimic")
     result.data.class.should == IokeList
-    result.data.should_not == ioke.list.data
+    result.data.object_id.should_not == ioke.list.data.object_id
 
     ioke.evaluate_string("x mimics?(List)").should == ioke.true
     ioke.evaluate_string("x kind?(\"List\")").should == ioke.true
@@ -598,14 +598,14 @@ describe "DefaultBehavior" do
       ioke = IokeRuntime.get_runtime
       result = ioke.evaluate_string("x = list")
       result.data.class.should == IokeList
-      result.data.should_not == ioke.list.data
+      result.data.object_id.should_not == ioke.list.data.object_id
 
       ioke.evaluate_string("x mimics?(List)").should == ioke.true
       ioke.evaluate_string("x kind?(\"List\")").should == ioke.true
 
       result = ioke.evaluate_string("x = list()")
       result.data.class.should == IokeList
-      result.data.should_not == ioke.list.data
+      result.data.object_id.should_not == ioke.list.data.object_id
 
       ioke.evaluate_string("x mimics?(List)").should == ioke.true
       ioke.evaluate_string("x kind?(\"List\")").should == ioke.true
@@ -628,7 +628,7 @@ describe "DefaultBehavior" do
       ioke = IokeRuntime.get_runtime
       result = ioke.evaluate_string("x = []")
       result.data.class.should == IokeList
-      result.data.should_not == ioke.list.data
+      result.data.object_id.should_not == ioke.list.data.object_id
 
       ioke.evaluate_string("x mimics?(List)").should == ioke.true
       ioke.evaluate_string("x kind?(\"List\")").should == ioke.true

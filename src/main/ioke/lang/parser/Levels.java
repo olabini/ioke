@@ -337,6 +337,17 @@ public class Levels {
         int msgArgCount = msg.getArgumentCount();
         
         /*
+        // : "str" bar   becomes   :("str") bar
+        */
+        if(messageName.equals(":") && msgArgCount == 0 && Message.next(msg) != null) {
+            Object arg = Message.next(msg);
+            Message.setNext(msg, Message.next(arg));
+            Message.setNext(IokeObject.as(arg), null);
+            msg.getArguments().add(arg);
+            msgArgCount++;
+        }
+
+        /*
         // o a = b c . d  becomes  o =(a, b c) . d
         //
         // a      attaching

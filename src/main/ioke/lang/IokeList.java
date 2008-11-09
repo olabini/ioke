@@ -216,12 +216,12 @@ public class IokeList extends IokeData {
     }
 
     @Override
-    public String representation(IokeObject obj) {
+    public String inspect(IokeObject obj) {
         StringBuilder sb = new StringBuilder();
         sb.append("[");
         String sep = "";
         for(Object o : list) {
-            sb.append(sep).append(IokeObject.representation(o));
+            sb.append(sep).append(IokeObject.inspect(o));
             sep = ", ";
         }
         sb.append("]");

@@ -32,7 +32,7 @@ public class AliasMethod extends IokeData implements Named {
     }
 
     @Override
-    public String representation(IokeObject self) {
-        return realMethod.representation(self);
+    public String inspect(IokeObject self) {
+        return realMethod.inspect(self);
     }
 }// AliasMethod

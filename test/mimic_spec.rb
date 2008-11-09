@@ -17,7 +17,7 @@ describe "Base" do
       ioke = IokeRuntime.get_runtime()
       result = ioke.evaluate_stream(StringReader.new(%q[Ground mimic]))
       result.find_cell(nil,nil, 'kind').data.text.should == 'Ground'
-      result.should_not == ioke.ground
+      result.object_id.should_not == ioke.ground.object_id
     end
 
     it "should be able to mimic Base" do 

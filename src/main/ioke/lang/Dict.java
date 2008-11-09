@@ -59,13 +59,13 @@ public class Dict extends IokeData {
     }
 
     @Override
-    public String representation(IokeObject obj) {
+    public String inspect(IokeObject obj) {
         StringBuilder sb = new StringBuilder();
         sb.append("{");
         String sep = "";
         for(Map.Entry<Object, Object> o : dict.entrySet()) {
-            sb.append(sep).append(IokeObject.representation(o.getKey()));
-            sb.append(" => ").append(IokeObject.representation(o.getValue()));
+            sb.append(sep).append(IokeObject.inspect(o.getKey()));
+            sb.append(" => ").append(IokeObject.inspect(o.getValue()));
             sep = ", ";
         }
         sb.append("}");

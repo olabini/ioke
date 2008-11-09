@@ -56,26 +56,6 @@ public class DefaultBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns true if this object is nil, false otherwise.", new DefaultBehaviorJavaMethod("nil?") {
-                @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    return IokeObject.as(on).isNil() ? method.runtime._true : method.runtime._false;
-                }
-            }));
-
-        obj.registerMethod(runtime.newJavaMethod("returns true if this object is not true, false otherwise.", new DefaultBehaviorJavaMethod("false?") {
-                @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    return IokeObject.isTrue(on) ? method.runtime._false : method.runtime._true;
-                }
-            }));
-
-        obj.registerMethod(runtime.newJavaMethod("returns true if this object is true, false otherwise.", new DefaultBehaviorJavaMethod("true?") {
-                @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    return IokeObject.isTrue(on) ? method.runtime._true : method.runtime._false;
-                }
-            }));
 
         obj.registerMethod(runtime.newJavaMethod("breaks out of the enclosing context. if an argument is supplied, this will be returned as the result of the object breaking out of", new DefaultBehaviorJavaMethod("break") {
                 @Override
@@ -234,10 +214,10 @@ public class DefaultBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns a more detailed textual representation of the object called on, than asText.", new DefaultBehaviorJavaMethod("representation") {
+        obj.registerMethod(runtime.newJavaMethod("returns a more detailed textual representation of the object called on, than asText.", new DefaultBehaviorJavaMethod("inspect") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
-                    return runtime.newText(IokeObject.as(on).representation());
+                    return runtime.newText(IokeObject.as(on).inspect());
                 }
             }));
 
@@ -548,6 +528,14 @@ public class DefaultBehavior {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     Object arg = message.getEvaluatedArgument(0, context);
                     return context.runtime.newPair(on, arg);
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("Takes one evaluated argument that is expected to be a Text, and returns the symbol corresponding to that text", new DefaultBehaviorJavaMethod(":") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    String sym = Text.getText(runtime.asText.sendTo(context, message.getEvaluatedArgument(0, context)));
+                    return context.runtime.getSymbol(sym);
                 }
             }));
 

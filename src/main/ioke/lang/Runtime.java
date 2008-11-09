@@ -48,7 +48,7 @@ public class Runtime {
     public IokeObject lexicalBlock = new IokeObject(this, "A lexical block allows you to delay a computation in a specific lexical context. See DefaultMethod#fn for detailed documentation.", new LexicalBlock(ground));
     public IokeObject defaultMacro = new IokeObject(this, "DefaultMacro is the instance all macros in the system is derived from.", new DefaultMacro((String)null));
     public IokeObject mixins = new IokeObject(this, "Mixins is the name space for most mixins in the system. DefaultBehavior is the notable exception.");
-    public IokeObject message = new IokeObject(this, "A message is the basic code unit in Ioke.", new Message(this, null, Message.Type.EMPTY));
+    public IokeObject message = new IokeObject(this, "A message is the basic code unit in Ioke.", new Message(this, "", Message.Type.EMPTY));
     public IokeObject restart = new IokeObject(this, "A Restart is the actual object that contains restart information");
     public IokeObject list = new IokeObject(this, "A list is a collection of objects that can change size", new IokeList());
     public IokeObject dict = new IokeObject(this, "A dictionary is a collection of mappings from one object to another object. The default Dict implementation will use hashing for this.", new Dict());

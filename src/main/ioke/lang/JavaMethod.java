@@ -30,7 +30,7 @@ public class JavaMethod extends Method {
     }
 
     @Override
-    public String representation(IokeObject self) {
+    public String inspect(IokeObject self) {
         return inspectName();
     }
 }

@@ -62,7 +62,7 @@ public class LexicalBlock extends IokeData {
     }
 
     @Override
-    public String representation(IokeObject self) {
+    public String inspect(IokeObject self) {
         if(self.isActivatable()) {
             return "fnx(...)";
         } else {

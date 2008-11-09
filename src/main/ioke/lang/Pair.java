@@ -66,12 +66,12 @@ public class Pair extends IokeData {
     }
 
     @Override
-    public String representation(IokeObject obj) {
+    public String inspect(IokeObject obj) {
         StringBuilder sb = new StringBuilder();
 
-        sb.append(IokeObject.representation(first));
+        sb.append(IokeObject.inspect(first));
         sb.append(" => ");
-        sb.append(IokeObject.representation(second));
+        sb.append(IokeObject.inspect(second));
 
         return sb.toString();
     }

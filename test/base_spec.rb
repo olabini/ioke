@@ -22,7 +22,12 @@ describe "Base" do
       ioke.evaluate_string("x = Origin mimic. x Why = 1. x f = 13. x cellNames == [:Why, :f]").should == ioke.true
     end
     
-    it "should take a boolean, when given will make it return all cell names in both this and it's parents objects"
+    it "should take a boolean, when given will make it return all cell names in both this and it's parents objects" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("Base cellNames == [:kind, :mimic, :\"=\", :cell, :cellNames, :cells, :\"cell=\"]").should == ioke.true
+      ioke.evaluate_string("Base cellNames(false) == [:kind, :mimic, :\"=\", :cell, :cellNames, :cells, :\"cell=\"]").should == ioke.true
+      ioke.evaluate_string("Base cellNames(true) == [:kind, :mimic, :\"=\", :cell, :cellNames, :cells, :\"cell=\"]").should == ioke.true
+    end
   end
   
   describe "'cell'" do 

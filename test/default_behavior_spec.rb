@@ -23,7 +23,7 @@ describe "DefaultBehavior" do
       ioke = IokeRuntime.get_runtime()
       result = ioke.evaluate_stream(StringReader.new(%q[Ground derive]))
       result.find_cell(nil,nil, 'kind').data.text.should == 'Ground'
-      result.should_not == ioke.ground
+      result.object_id.should_not == ioke.ground.object_id
     end
 
     it "should be able to derive from Text" do 
@@ -169,10 +169,10 @@ describe "DefaultBehavior" do
     end
   end
 
-  describe "'representation'" do 
+  describe "'inspect'" do 
     it "should call representation and return the text from that" do 
       ioke = IokeRuntime.get_runtime()
-      ioke.evaluate_stream(StringReader.new(%q[Origin mimic representation])).data.text.
+      ioke.evaluate_stream(StringReader.new(%q[Origin mimic inspect])).data.text.
         should match(/^#<#<Origin:[0-9A-F]+>: mimics=\[#<Origin:[0-9A-F]+>\] cells=\{\}>$/)
     end
   end

@@ -12,7 +12,7 @@ describe "Pair" do
     ioke = IokeRuntime.get_runtime
     result = ioke.evaluate_string("x = Pair mimic")
     result.data.class.should == Pair
-    result.data.should_not == ioke.pair.data
+    result.data.object_id.should_not == ioke.pair.data.object_id
 
     ioke.evaluate_string("x mimics?(Pair)").should == ioke.true
     ioke.evaluate_string("x kind?(\"Pair\")").should == ioke.true
