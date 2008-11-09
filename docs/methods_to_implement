@@ -34,11 +34,7 @@ iik - interactive Ioke
 - java integration things
 
 - inspection
-  cellNames    -> slotNames
   cellSummary  -> slotSummary
-
-  inspect - on Origin
-  asText on everything - good default on Origin  
 
 doFile
 doScript
@@ -62,7 +58,6 @@ lower prio
  - defined in terms of aspects
 
 Add freeze/thaw methods
-Use LinkedHashMap for cells, to keep insert order.
 
 Look seriously at "become"
 
