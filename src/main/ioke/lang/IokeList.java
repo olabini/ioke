@@ -131,7 +131,7 @@ public class IokeList extends IokeData {
                         }
                         
                         return context.runtime.newList(new ArrayList<Object>(o.subList(first, last+1)));
-                   }
+                    }
 
                     if(!(IokeObject.data(arg) instanceof Number)) {
                         arg = IokeObject.convertToNumber(arg, message, context);
