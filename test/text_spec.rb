@@ -60,11 +60,132 @@ describe "Text" do
   end
   
   describe "'[number]'" do 
-    it "should have tests"
+    it "should return nil if empty text" do 
+      ioke = IokeRuntime.get_runtime
+
+      ioke.evaluate_string("\"\"[0]").should == ioke.nil
+      ioke.evaluate_string("\"\"[10]").should == ioke.nil
+      ioke.evaluate_string("\"\"[(0-1)]").should == ioke.nil
+    end
+
+    it "should return nil if argument is over the size" do 
+      ioke = IokeRuntime.get_runtime
+
+      ioke.evaluate_string("\"abc\"[10]").should == ioke.nil
+    end
+
+    it "should return from the front if the argument is zero or positive" do 
+      ioke = IokeRuntime.get_runtime
+
+      ioke.evaluate_string("\"abcd\"[0]").data.as_java_integer.should == 97
+      ioke.evaluate_string("\"abcd\"[1]").data.as_java_integer.should == 98
+      ioke.evaluate_string("\"abcd\"[2]").data.as_java_integer.should == 99
+      ioke.evaluate_string("\"abcd\"[3]").data.as_java_integer.should == 100
+    end
+
+    it "should return from the back if the argument is negative" do 
+      ioke = IokeRuntime.get_runtime
+
+      ioke.evaluate_string("\"abcd\"[-1]").data.as_java_integer.should == 100
+      ioke.evaluate_string("\"abcd\"[-2]").data.as_java_integer.should == 99
+      ioke.evaluate_string("\"abcd\"[-3]").data.as_java_integer.should == 98
+      ioke.evaluate_string("\"abcd\"[-4]").data.as_java_integer.should == 97
+    end
   end
 
   describe "'[range]'" do 
-    it "should have tests"
+    it "should return an empty text for any range given to an empty text" do 
+      ioke = IokeRuntime.get_runtime
+
+      ioke.evaluate_string('""[0..0]    == ""').should == ioke.true
+      ioke.evaluate_string('""[0...0]   == ""').should == ioke.true
+      ioke.evaluate_string('""[0..-1]   == ""').should == ioke.true
+      ioke.evaluate_string('""[0...-1]  == ""').should == ioke.true
+      ioke.evaluate_string('""[10..20]  == ""').should == ioke.true
+      ioke.evaluate_string('""[10...20] == ""').should == ioke.true
+      ioke.evaluate_string('""[-1..20]  == ""').should == ioke.true
+    end
+    
+    it "should return an equal text for 0..-1" do 
+      ioke = IokeRuntime.get_runtime
+
+      ioke.evaluate_string('""[0..-1] == ""').should == ioke.true
+      ioke.evaluate_string('"foo bar"[0..-1] == "foo bar"').should == ioke.true
+      ioke.evaluate_string('"f"[0..-1] == "f"').should == ioke.true
+    end
+
+    it "should return all except the first element for 1..-1" do 
+      ioke = IokeRuntime.get_runtime
+
+      ioke.evaluate_string('"foo bar"[1..-1] == "oo bar"').should == ioke.true
+      ioke.evaluate_string('"x"[1..-1] == ""').should == ioke.true
+      ioke.evaluate_string('"xxxxxxxx"[1..-1] == "xxxxxxx"').should == ioke.true
+    end
+
+    it "should return all except for the first and last for 1...-1" do 
+      ioke = IokeRuntime.get_runtime
+
+      ioke.evaluate_string('"fa"[1...-1] == ""').should == ioke.true
+      ioke.evaluate_string('"foobar"[1...-1] == "ooba"').should == ioke.true
+      ioke.evaluate_string('"xxxxxxxxxxxxxxx"[1...-1] == "xxxxxxxxxxxxx"').should == ioke.true
+    end
+
+    it "should return an text with the first element for 0..0" do 
+      ioke = IokeRuntime.get_runtime
+
+      ioke.evaluate_string('"f"[0..0] == "f"').should == ioke.true
+      ioke.evaluate_string('"foobar"[0..0] == "f"').should == ioke.true
+    end
+
+    it "should return an empty text for 0...0" do 
+      ioke = IokeRuntime.get_runtime
+
+      ioke.evaluate_string('""[0...0] == ""').should == ioke.true
+      ioke.evaluate_string('"f"[0...0] == ""').should == ioke.true
+      ioke.evaluate_string('"foobar"[0...0] == ""').should == ioke.true
+    end
+
+    it "should return a slice from a larger text" do 
+      ioke = IokeRuntime.get_runtime
+
+      ioke.evaluate_string('"123456789"[3..5] == "456"').should == ioke.true
+    end
+
+    it "should return a correct slice for an exclusive range" do 
+      ioke = IokeRuntime.get_runtime
+
+      ioke.evaluate_string('"123456789"[3...6] == "456"').should == ioke.true
+    end
+
+    it "should return a correct slice for a slice that ends in a negative index" do 
+      ioke = IokeRuntime.get_runtime
+
+      ioke.evaluate_string('"1234567891011"[3..-3] == "45678910"').should == ioke.true
+    end
+
+    it "should return a correct slice for an exclusive slice that ends in a negative index" do 
+      ioke = IokeRuntime.get_runtime
+
+      ioke.evaluate_string('"1234567891011"[3...-3] == "4567891"').should == ioke.true
+    end
+
+    it "should return all elements up to the end of the slice, if the end argument is way out there" do 
+      ioke = IokeRuntime.get_runtime
+
+      ioke.evaluate_string('"1234567891011"[5..3443343] == "67891011"').should == ioke.true
+      ioke.evaluate_string('"1234567891011"[5...3443343] == "67891011"').should == ioke.true
+    end
+
+    it "should return an empty array for a totally messed up indexing" do 
+      ioke = IokeRuntime.get_runtime
+
+      ioke.evaluate_string('"1234567891011"[-1..3] == ""').should == ioke.true
+      ioke.evaluate_string('"1234567891011"[-1..7557] == ""').should == ioke.true
+      ioke.evaluate_string('"1234567891011"[5..4] == ""').should == ioke.true
+      ioke.evaluate_string('"1234567891011"[-1...3] == ""').should == ioke.true
+      ioke.evaluate_string('"1234567891011"[-1...7557] == ""').should == ioke.true
+      ioke.evaluate_string('"1234567891011"[5...4] == ""').should == ioke.true
+    end
   end
   
   describe "interpolation" do 

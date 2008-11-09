@@ -33,36 +33,55 @@ public class Text extends IokeData {
                     IokeData data = IokeObject.data(arg);
                     
                     if(data instanceof Range) {
-                        String str = getText(on);
-                        int len = str.length();
-
-                        int from = Number.extractInt(((Range)data).getFrom(), message, context);
-                        int to = Number.extractInt(((Range)data).getTo(), message, context);
-                        boolean inclusive = ((Range)data).isInclusive();
+                        int first = Number.extractInt(Range.getFrom(arg), message, context); 
                         
-                        if(from < 0) {
-                            from = len + 1 + from;
+                        if(first < 0) {
+                            return context.runtime.newText("");
                         }
 
-                        if(to < 0) {
-                            to = len + 1 + to;
+                        int last = Number.extractInt(Range.getTo(arg), message, context);
+                        boolean inclusive = Range.isInclusive(arg);
+
+                        String str = getText(on);
+                        int size = str.length();
+
+                        if(last < 0) {
+                            last = size + last;
+                        }
+
+                        if(last < 0) {
+                            return context.runtime.newText("");
+                        }
+
+                        if(last >= size) {
+                            
+                            last = inclusive ? size-1 : size;
+                        }
+
+                        if(first > last || (!inclusive && first == last)) {
+                            return context.runtime.newText("");
                         }
                         
                         if(!inclusive) {
-                            to--;
+                            last--;
                         }
-
-                        return context.runtime.newText(str.substring(from, to));
+                        
+                        return context.runtime.newText(str.substring(first, last+1));
                     } else if(data instanceof Number) {
                         String str = getText(on);
                         int len = str.length();
 
                         int ix = ((Number)data).asJavaInteger();
+
                         if(ix < 0) {
                             ix = len + ix;
                         }
 
-                        return context.runtime.newNumber(str.charAt(ix));
+                        if(ix >= 0 && ix < len) {
+                            return context.runtime.newNumber(str.charAt(ix));
+                        } else {
+                            return context.runtime.nil;
+                        }
                     }
 
                     return on;
