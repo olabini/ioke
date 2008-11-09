@@ -67,7 +67,7 @@ public class Base {
                 }
             }));
 
-        base.registerMethod(base.runtime.newJavaMethod("takes one optional evaluated boolean argument, which defaults to false. if false, this method returns a list of the cell names of the receiver. if true, it returns the cell names of this object and all it's mimics recursively. if two arguments are provided, the cell names will be taken not from the receiver, but from the first of these arguments. this is to allow the inspection of things that don't mixin DefaultBehavior.", new JavaMethod("cellNames") {
+        base.registerMethod(base.runtime.newJavaMethod("takes one optional evaluated boolean argument, which defaults to false. if false, this method returns a list of the cell names of the receiver. if true, it returns the cell names of this object and all it's mimics recursively.", new JavaMethod("cellNames") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     if(message.getArgumentCount() > 0 && IokeObject.isTrue(message.getEvaluatedArgument(0, context))) {
@@ -111,17 +111,41 @@ public class Base {
             }));
 
 
-        base.registerMethod(base.runtime.newJavaMethod("takes one optional evaluated boolean argument, which defaults to false. if false, this method returns a dict of the cell names and values of the receiver. if true, it returns the cell names and values of this object and all it's mimics recursively. if two arguments are provided, the cells will be taken not from the receiver, but from the first of these arguments. this is to allow the inspection of things that don't mixin DefaultBehavior.", new JavaMethod("cells") {
+        base.registerMethod(base.runtime.newJavaMethod("takes one optional evaluated boolean argument, which defaults to false. if false, this method returns a dict of the cell names and values of the receiver. if true, it returns the cell names and values of this object and all it's mimics recursively.", new JavaMethod("cells") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    Map<String, Object> mso = IokeObject.as(on).getCells();
                     Map<Object, Object> cells = new LinkedHashMap<Object, Object>();
                     Runtime runtime = context.runtime;
 
-                    for(String s : mso.keySet()) {
-                        cells.put(runtime.getSymbol(s), mso.get(s));
-                    }
+                    if(message.getArgumentCount() > 0 && IokeObject.isTrue(message.getEvaluatedArgument(0, context))) {
+                        IdentityHashMap<Object, Object> visited = new IdentityHashMap<Object, Object>();
 
+                        List<Object> toVisit = new ArrayList<Object>();
+                        toVisit.add(on);
+
+                        while(!toVisit.isEmpty()) {
+                            IokeObject current = IokeObject.as(toVisit.remove(0));
+                            if(!visited.containsKey(current)) {
+                                visited.put(current, null);
+                                toVisit.addAll(current.getMimics());
+                                
+                                Map<String, Object> mso = current.getCells();
+
+                                for(String s : mso.keySet()) {
+                                    Object x = runtime.getSymbol(s);
+                                    if(!cells.containsKey(x)) {
+                                        cells.put(x, mso.get(s));
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        Map<String, Object> mso = IokeObject.as(on).getCells();
+
+                        for(String s : mso.keySet()) {
+                            cells.put(runtime.getSymbol(s), mso.get(s));
+                        }
+                    }
                     return runtime.newDict(cells);
                 }
             }));
