@@ -3,6 +3,16 @@
  */
 package ioke.lang;
 
+import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.HashSet;
+
+import ioke.lang.exceptions.ControlFlow;
+
 /**
  *
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
@@ -16,5 +26,84 @@ public class Base {
                                                            public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
                                                                return IokeObject.as(on).mimic(message, context);
                                                            }}));
+
+        base.registerMethod(base.runtime.newJavaMethod("expects two arguments, the first unevaluated, the second evaluated. assigns the result of evaluating the second argument in the context of the caller, and assigns this result to the name provided by the first argument. the first argument remains unevaluated. the result of the assignment is the value assigned to the name. if the second argument is a method-like object and it's name is not set, that name will be set to the name of the cell. TODO: add setf documentation here.", new JavaMethod("=") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    IokeObject m1 = IokeObject.as(Message.getArg1(message));
+                    String name = m1.getName();
+                    if(m1.getArguments().size() == 0) {
+                        Object value = message.getEvaluatedArgument(1, context);
+
+                        IokeObject.assign(on, name, value);
+
+                        if((IokeObject.data(value) instanceof Named) && ((Named)IokeObject.data(value)).getName() == null) {
+                            ((Named)IokeObject.data(value)).setName(name);
+                        } else if(name.length() > 0 && Character.isUpperCase(name.charAt(0)) && !IokeObject.as(value).hasKind()) {
+                            if(on == context.runtime.ground) {
+                                IokeObject.as(value).setKind(name);
+                            } else {
+                                IokeObject.as(value).setKind(IokeObject.as(on).getKind() + " " + name);
+                            }
+                        }
+                    
+                        return value;
+                    } else {
+                        String newName = name + "=";
+                        List<Object> arguments = new ArrayList<Object>(m1.getArguments());
+                        arguments.add(Message.getArg2(message));
+                        return context.runtime.newMessageFrom(message, newName, arguments).sendTo(context, on);
+                    }
+                }
+            }));
+
+        base.registerMethod(base.runtime.newJavaMethod("expects one evaluated text or symbol argument and returns the cell that matches that name, without activating even if it's activatable.", new JavaMethod("cell") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    String name = Text.getText(context.runtime.asText.sendTo(context, IokeObject.as(message.getArguments().get(0)).evaluateCompleteWith(context, context.getRealContext())));
+                    return IokeObject.getCell(on, message, context, name);
+                }
+            }));
+
+        base.registerMethod(base.runtime.newJavaMethod("takes one optional evaluated boolean argument, which defaults to false. if false, this method returns a list of the cell names of the receiver. if true, it returns the cell names of this object and all it's mimics recursively. if two arguments are provided, the cell names will be taken not from the receiver, but from the first of these arguments. this is to allow the inspection of things that don't mixin DefaultBehavior.", new JavaMethod("cellNames") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    Map<String, Object> mso = IokeObject.as(on).getCells();
+                    List<Object> names = new ArrayList<Object>();
+                    Runtime runtime = context.runtime;
+
+                    for(String s : mso.keySet()) {
+                        names.add(runtime.getSymbol(s));
+                    }
+
+                    return runtime.newList(names);
+                }
+            }));
+
+
+        base.registerMethod(base.runtime.newJavaMethod("takes one optional evaluated boolean argument, which defaults to false. if false, this method returns a dict of the cell names and values of the receiver. if true, it returns the cell names and values of this object and all it's mimics recursively. if two arguments are provided, the cells will be taken not from the receiver, but from the first of these arguments. this is to allow the inspection of things that don't mixin DefaultBehavior.", new JavaMethod("cells") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    Map<String, Object> mso = IokeObject.as(on).getCells();
+                    Map<Object, Object> cells = new LinkedHashMap<Object, Object>();
+                    Runtime runtime = context.runtime;
+
+                    for(String s : mso.keySet()) {
+                        cells.put(runtime.getSymbol(s), mso.get(s));
+                    }
+
+                    return runtime.newDict(cells);
+                }
+            }));
+
+
+        base.registerMethod(base.runtime.newJavaMethod("expects one evaluated text or symbol argument that names the cell to set, sets this cell to the result of evaluating the second argument, and returns the value set.", new JavaMethod("cell=") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    String name = Text.getText(context.runtime.asText.sendTo(context, IokeObject.as(message.getArguments().get(0)).evaluateCompleteWith(context, context.getRealContext())));
+                    Object val = message.getEvaluatedArgument(1, context);
+                    return IokeObject.setCell(on, message, context, name, val);
+                }
+            }));
     }
 }// Base

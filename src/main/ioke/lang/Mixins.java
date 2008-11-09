@@ -13,12 +13,13 @@ import ioke.lang.mixins.Enumerable;
 public class Mixins {
     public static void init(IokeObject mixins) {
         mixins.setKind("Mixins");
-        mixins.setCell("=", mixins.runtime.defaultBehavior.getCells().get("="));
-        mixins.setCell("cell", mixins.runtime.defaultBehavior.getCells().get("cell"));
-        mixins.setCell("cell=", mixins.runtime.defaultBehavior.getCells().get("cell="));
-        mixins.setCell("cells", mixins.runtime.defaultBehavior.getCells().get("cells"));
-        mixins.setCell("cellNames", mixins.runtime.defaultBehavior.getCells().get("cellNames"));
-        mixins.setCell("mimic", mixins.runtime.base.getCells().get("mimic"));
+
+        mixins.setCell("=",         mixins.runtime.base.getCells().get("="));
+        mixins.setCell("cell",      mixins.runtime.base.getCells().get("cell"));
+        mixins.setCell("cell=",     mixins.runtime.base.getCells().get("cell="));
+        mixins.setCell("cells",     mixins.runtime.base.getCells().get("cells"));
+        mixins.setCell("cellNames", mixins.runtime.base.getCells().get("cellNames"));
+        mixins.setCell("mimic",     mixins.runtime.base.getCells().get("mimic"));
 
         IokeObject comparing = new IokeObject(mixins.runtime, "allows different objects to be compared, based on the spaceship operator being available");
         comparing.mimicsWithoutCheck(mixins);
