@@ -87,7 +87,13 @@ describe "Mixins" do
       ioke.evaluate_string("x = Mixins mimic. x Why = 1. x f = 13. x cells == {f: 13, Why: 1}").should == ioke.true
     end
 
-    it "should take a boolean, when given will make it return all cells in both this and it's parents objects"
+    it "should take a boolean, when given will make it return all cells in both this and it's parents objects" do 
+      ioke = IokeRuntime.get_runtime
+
+      ioke.evaluate_string("x = Mixins mimic. x cells(true) == {kind: Mixins cell(:kind), mimic: Mixins cell(:mimic), :\"=\" => Mixins cell(:\"=\"), cell: Mixins cell(:cell), cellNames: Mixins cell(:cellNames), cells: Mixins cell(:cells), :\"cell=\" => Mixins cell(:\"cell=\"), Comparing: Mixins Comparing, Enumerable: Mixins Enumerable}").should == ioke.true
+
+      ioke.evaluate_string("x = Mixins mimic. x kind = \"blarg\". x cells(true) == {kind: \"blarg\", mimic: Mixins cell(:mimic), :\"=\" => Mixins cell(:\"=\"), cell: Mixins cell(:cell), cellNames: Mixins cell(:cellNames), cells: Mixins cell(:cells), :\"cell=\" => Mixins cell(:\"cell=\"), Comparing: Mixins Comparing, Enumerable: Mixins Enumerable}").should == ioke.true
+    end
   end
 
   describe "'cellNames'" do 
@@ -99,6 +105,13 @@ describe "Mixins" do
       ioke.evaluate_string("x = Mixins mimic. x Why = 1. x f = 13. x cellNames == [:Why, :f]").should == ioke.true
     end
 
-    it "should take a boolean, when given will make it return all cell names in both this and it's parents objects"
+    it "should take a boolean, when given will make it return all cell names in both this and it's parents objects" do 
+      ioke = IokeRuntime.get_runtime
+
+      ioke.evaluate_string("Mixins cellNames(true) == [:kind, :\"=\", :cell, :\"cell=\", :cells, :cellNames, :mimic, :Comparing, :Enumerable]").should == ioke.true
+      ioke.evaluate_string("Mixins mimic cellNames(true) == [:kind, :\"=\", :cell, :\"cell=\", :cells, :cellNames, :mimic, :Comparing, :Enumerable]").should == ioke.true
+      ioke.evaluate_string("x = Mixins mimic. x cellNames(true) == [:kind, :\"=\", :cell, :\"cell=\", :cells, :cellNames, :mimic, :Comparing, :Enumerable]").should == ioke.true
+      ioke.evaluate_string("x = Mixins mimic. x foo = 13. x cellNames(true) == [:foo, :kind, :\"=\", :cell, :\"cell=\", :cells, :cellNames, :mimic, :Comparing, :Enumerable]").should == ioke.true
+    end
   end
 end

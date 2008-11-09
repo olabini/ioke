@@ -218,7 +218,7 @@ public class Message extends IokeData {
     }
 
     public boolean isKeyword() {
-        return name.length() > 0 && name.charAt(name.length()-1) == ':';
+        return name.length() > 1 && arguments.size() == 0 && name.charAt(name.length()-1) == ':';
     }
 
     @Override
