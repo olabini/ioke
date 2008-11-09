@@ -340,12 +340,12 @@ public class IokeObject {
         return data.toString(this);
     }
 
-    public static String representation(Object o) {
-        return IokeObject.as(o).representation();
+    public static String inspect(Object o) {
+        return IokeObject.as(o).inspect();
     }
 
-    public String representation() {
-        String s = data.representation(this);
+    public String inspect() {
+        String s = data.inspect(this);
         if(s != null) {
             return s;
         }

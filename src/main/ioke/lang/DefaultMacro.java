@@ -53,7 +53,7 @@ public class DefaultMacro extends IokeData implements Named {
     }
 
     @Override
-    public String representation(IokeObject self) {
+    public String inspect(IokeObject self) {
         return "method(...)";
     }
 

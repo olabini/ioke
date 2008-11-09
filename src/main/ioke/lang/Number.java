@@ -54,7 +54,7 @@ public class Number extends IokeData {
     }
 
     @Override
-    public String representation(IokeObject obj) {
+    public String inspect(IokeObject obj) {
         return asJavaString();
     }
 

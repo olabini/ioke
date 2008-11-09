@@ -12,7 +12,7 @@ describe "Dict" do
     ioke = IokeRuntime.get_runtime
     result = ioke.evaluate_string("x = Dict mimic")
     result.data.class.should == Dict
-    result.data.should_not == ioke.dict.data
+    result.data.object_id.should_not == ioke.dict.data.object_id
 
     ioke.evaluate_string("x mimics?(Dict)").should == ioke.true
     ioke.evaluate_string("x kind?(\"Dict\")").should == ioke.true
@@ -78,14 +78,14 @@ describe "DefaultBehavior" do
       ioke = IokeRuntime.get_runtime
       result = ioke.evaluate_string("x = dict")
       result.data.class.should == Dict
-      result.data.should_not == ioke.dict.data
+      result.data.object_id.should_not == ioke.dict.data.object_id
 
       ioke.evaluate_string("x mimics?(Dict)").should == ioke.true
       ioke.evaluate_string("x kind?(\"Dict\")").should == ioke.true
 
       result = ioke.evaluate_string("x = dict()")
       result.data.class.should == Dict
-      result.data.should_not == ioke.dict.data
+      result.data.object_id.should_not == ioke.dict.data.object_id
 
       ioke.evaluate_string("x mimics?(Dict)").should == ioke.true
       ioke.evaluate_string("x kind?(\"Dict\")").should == ioke.true
@@ -121,7 +121,7 @@ describe "DefaultBehavior" do
       ioke = IokeRuntime.get_runtime
       result = ioke.evaluate_string("x = {}")
       result.data.class.should == Dict
-      result.data.should_not == ioke.dict.data
+      result.data.object_id.should_not == ioke.dict.data.object_id
 
       ioke.evaluate_string("x mimics?(Dict)").should == ioke.true
       ioke.evaluate_string("x kind?(\"Dict\")").should == ioke.true

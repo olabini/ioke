@@ -596,7 +596,7 @@ public class Message extends IokeData {
 
             if(name.equals(".")) {
                 current = ctx;
-            } else if(name.length() > 0 && name.charAt(0) == ':') {
+            } else if(name.length() > 1 && m.getArguments().size() == 0 && name.charAt(0) == ':') {
                 current = self.runtime.getSymbol(name.substring(1));
                 lastReal = current;
             } else {
@@ -738,6 +738,7 @@ public class Message extends IokeData {
                 String sep = "";
                 for(Object o : arguments) {
                     base.append(sep).append(Message.code((IokeObject)o));
+
                     sep = ", ";
                 }
                 base.append(")");
@@ -764,7 +765,7 @@ public class Message extends IokeData {
 
     }
 
-    public String representation() {
+    public String inspect() {
         return code();
     }
     

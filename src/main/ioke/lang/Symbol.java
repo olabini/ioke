@@ -3,6 +3,8 @@
  */
 package ioke.lang;
 
+import java.util.regex.Pattern;
+
 import ioke.lang.exceptions.CantMimicOddballObject;
 
 /**
@@ -60,8 +62,14 @@ public class Symbol extends IokeData {
         return text;
     }
 
+    private final static Pattern BAD_CHARS = Pattern.compile("[=]");
+
     @Override
-    public String representation(IokeObject obj) {
-        return ":" + text;
+    public String inspect(IokeObject obj) {
+        if(BAD_CHARS.matcher(text).find()) {
+            return ":\"" + text + "\"";
+        } else {
+            return ":" + text;
+        }
     }
 }// Symbol

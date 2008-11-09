@@ -106,7 +106,7 @@ public class Text extends IokeData {
     }
 
     @Override
-    public String representation(IokeObject obj) {
+    public String inspect(IokeObject obj) {
         // This should obviously have more stuff later for escaping and so on.
         return "\"" + text + "\"";
     }
