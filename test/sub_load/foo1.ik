@@ -1,0 +1,2 @@
+
+Ground fooHasBeenLoaded = 42
