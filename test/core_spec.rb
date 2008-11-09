@@ -102,7 +102,7 @@ describe "core" do
     it "should have all the expected cells" do 
       runtime = IokeRuntime.get_runtime
       runtime.ground.find_cell(nil, nil, 'Base').object_id.should == runtime.base.object_id
-      runtime.ground.find_cell(nil, nil, 'DefaultBehavior').object_id.should == runtime.defaultBehavior.object_id
+      runtime.ground.find_cell(nil, nil, 'DefaultBehavior').should == runtime.defaultBehavior
       runtime.ground.find_cell(nil, nil, 'Ground').object_id.should == runtime.ground.object_id
       runtime.ground.find_cell(nil, nil, 'Origin').object_id.should == runtime.origin.object_id
       runtime.ground.find_cell(nil, nil, 'System').object_id.should == runtime.system.object_id

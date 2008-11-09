@@ -26,6 +26,13 @@ public class Text extends IokeData {
                 }
             }));
 
+        obj.registerMethod(obj.runtime.newJavaMethod("Returns the length of this text", new JavaMethod("length") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
+                    return context.runtime.newNumber(getText(on).length());
+                }
+            }));
+
         obj.registerMethod(obj.runtime.newJavaMethod("takes one argument, that can be either an index or a range of two indicis. this slicing works the same as for Lists, so you can index from the end, both with the single index and with the range.", new JavaMethod("[]") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
