@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.HashSet;
 
@@ -276,6 +277,37 @@ public class DefaultBehavior {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     String name = Text.getText(runtime.asText.sendTo(context, IokeObject.as(message.getArguments().get(0)).evaluateCompleteWith(context, context.getRealContext())));
                     return IokeObject.getCell(on, message, context, name);
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("takes one optional evaluated boolean argument, which defaults to false. if false, this method returns a list of the cell names of the receiver. if true, it returns the cell names of this object and all it's mimics recursively.", new DefaultBehaviorJavaMethod("cellNames") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    Map<String, Object> mso = IokeObject.as(on).getCells();
+                    List<Object> names = new ArrayList<Object>();
+                    Runtime runtime = context.runtime;
+
+                    for(String s : mso.keySet()) {
+                        names.add(runtime.getSymbol(s));
+                    }
+
+                    return runtime.newList(names);
+                }
+            }));
+
+
+        obj.registerMethod(runtime.newJavaMethod("takes one optional evaluated boolean argument, which defaults to false. if false, this method returns a dict of the cell names and values of the receiver. if true, it returns the cell names and values of this object and all it's mimics recursively.", new DefaultBehaviorJavaMethod("cells") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    Map<String, Object> mso = IokeObject.as(on).getCells();
+                    Map<Object, Object> cells = new LinkedHashMap<Object, Object>();
+                    Runtime runtime = context.runtime;
+
+                    for(String s : mso.keySet()) {
+                        cells.put(runtime.getSymbol(s), mso.get(s));
+                    }
+
+                    return runtime.newDict(cells);
                 }
             }));
 
