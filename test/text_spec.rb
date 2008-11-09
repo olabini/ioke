@@ -2,6 +2,11 @@ include_class('ioke.lang.Runtime') { 'IokeRuntime' } unless defined?(IokeRuntime
 
 import Java::java.io.StringReader unless defined?(StringReader)
 
+def parse(str)
+  ioke = IokeRuntime.get_runtime()
+  ioke.parse_stream(StringReader.new(str))
+end
+
 describe "Text" do 
   describe "'=='" do 
     it "should return true for the same text" do 
@@ -189,7 +194,35 @@ describe "Text" do
   end
   
   describe "interpolation" do 
-    it "should have tests"
+    it "should parse correctly with a simple number inside of it" do 
+      m = parse('"foo #{1} bar"').to_string
+      m.should == 'internal:concatenateText("foo ", 1, " bar")'
+    end
+
+    it "should parse correctly with a complex expression" do 
+      m = parse('"foo #{29*5+foo bar} bar"').to_string
+      m.should == 'internal:concatenateText("foo ", 29 *(5) +(foo bar), " bar")'
+    end
+
+    it "should parse correctly with interpolation at the beginning of the text" do 
+      m = parse('"#{1} bar"').to_string
+      m.should == 'internal:concatenateText("", 1, " bar")'
+    end
+
+    it "should parse correctly with interpolation at the end of the text" do 
+      m = parse('"foo #{1}"').to_string
+      m.should == 'internal:concatenateText("foo ", 1, "")'
+    end
+
+    it "should parse correctly with more than one interpolation" do 
+      m = parse('"foo #{1} bar #{2} quux #{3}"').to_string
+      m.should == 'internal:concatenateText("foo ", 1, " bar ", 2, " quux ", 3, "")'
+    end
+
+    it "should parse correctly with nested interpolations" do 
+      m = parse('"foo #{"fux #{32} bar" bletch} bar"').to_string
+      m.should == 'internal:concatenateText("foo ", internal:concatenateText("fux ", 32, " bar") bletch, " bar")'
+    end
   end
   
   describe "escapes" do 
