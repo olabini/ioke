@@ -439,7 +439,18 @@ CODE
   end
   
   describe "'with'" do 
-    it "should have tests"
+    it "should just mimic an object if no arguments given" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string("Origin with cellNames == []").should == ioke.true
+    end
+
+    it "should set the given keywords as cells" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string("Origin with(foo: 13) cellNames == [:foo]").should == ioke.true
+      ioke.evaluate_string("Origin with(foo: 13) cells == {foo: 13}").should == ioke.true
+      ioke.evaluate_string("Origin with(foo: 13, bar: 14) cellNames == [:foo, :bar]").should == ioke.true
+      ioke.evaluate_string("Origin with(foo: 13, bar: 14) cells == {foo: 13, bar: 14}").should == ioke.true
+    end
   end
 
   describe "'!'" do 
