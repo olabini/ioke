@@ -8,8 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.HashSet;
+import java.util.Set;
 
 import ioke.lang.exceptions.ControlFlow;
 
@@ -68,15 +70,43 @@ public class Base {
         base.registerMethod(base.runtime.newJavaMethod("takes one optional evaluated boolean argument, which defaults to false. if false, this method returns a list of the cell names of the receiver. if true, it returns the cell names of this object and all it's mimics recursively. if two arguments are provided, the cell names will be taken not from the receiver, but from the first of these arguments. this is to allow the inspection of things that don't mixin DefaultBehavior.", new JavaMethod("cellNames") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    Map<String, Object> mso = IokeObject.as(on).getCells();
-                    List<Object> names = new ArrayList<Object>();
-                    Runtime runtime = context.runtime;
+                    if(message.getArgumentCount() > 0 && IokeObject.isTrue(message.getEvaluatedArgument(0, context))) {
+                        IdentityHashMap<Object, Object> visited = new IdentityHashMap<Object, Object>();
+                        List<Object> names = new ArrayList<Object>();
+                        Set<Object> visitedNames = new HashSet<Object>();
+                        Runtime runtime = context.runtime;
+                        List<Object> toVisit = new ArrayList<Object>();
+                        toVisit.add(on);
 
-                    for(String s : mso.keySet()) {
-                        names.add(runtime.getSymbol(s));
+                        while(!toVisit.isEmpty()) {
+                            IokeObject current = IokeObject.as(toVisit.remove(0));
+                            if(!visited.containsKey(current)) {
+                                visited.put(current, null);
+                                toVisit.addAll(current.getMimics());
+                                
+                                Map<String, Object> mso = current.getCells();
+
+                                for(String s : mso.keySet()) {
+                                    if(!visitedNames.contains(s)) {
+                                        visitedNames.add(s);
+                                        names.add(runtime.getSymbol(s));
+                                    }
+                                }
+                            }
+                        }
+                        
+                        return runtime.newList(names);
+                    } else {
+                        Map<String, Object> mso = IokeObject.as(on).getCells();
+                        List<Object> names = new ArrayList<Object>();
+                        Runtime runtime = context.runtime;
+
+                        for(String s : mso.keySet()) {
+                            names.add(runtime.getSymbol(s));
+                        }
+
+                        return runtime.newList(names);
                     }
-
-                    return runtime.newList(names);
                 }
             }));
 

@@ -24,9 +24,62 @@ describe "Base" do
     
     it "should take a boolean, when given will make it return all cell names in both this and it's parents objects" do 
       ioke = IokeRuntime.get_runtime
-      ioke.evaluate_string("Base cellNames == [:kind, :mimic, :\"=\", :cell, :cellNames, :cells, :\"cell=\"]").should == ioke.true
-      ioke.evaluate_string("Base cellNames(false) == [:kind, :mimic, :\"=\", :cell, :cellNames, :cells, :\"cell=\"]").should == ioke.true
-      ioke.evaluate_string("Base cellNames(true) == [:kind, :mimic, :\"=\", :cell, :cellNames, :cells, :\"cell=\"]").should == ioke.true
+      base_names = ioke.base.cells.key_set.to_a.map do |s| 
+        if s == "" || s =~ /[=\.:\-\+&|\{\[]/
+          ":\"#{s}\""
+        else
+          ":#{s}"
+        end
+      end
+
+      default_behavior_names = ioke.default_behavior.cells.key_set.to_a.map do |s| 
+        if s == "" || s =~ /[=\.:\-\+&|\{\[]/
+          ":\"#{s}\""
+        else
+          ":#{s}"
+        end
+      end
+
+      ground_names = ioke.ground.cells.key_set.to_a.map do |s| 
+        if s == "" || s =~ /[=\.:\-\+&|\{\[]/
+          ":\"#{s}\""
+        else
+          ":#{s}"
+        end
+      end
+
+      origin_names = ioke.origin.cells.key_set.to_a.map do |s| 
+        if s == "" || s =~ /[=\.:\-\+&|\{\[]/
+          ":\"#{s}\""
+        else
+          ":#{s}"
+        end
+      end
+
+      ground_all_names = ground_names + base_names + default_behavior_names
+      ground_all_names.uniq!
+
+      origin_all_names = origin_names + ground_all_names
+      origin_all_names.uniq!
+      
+      ioke.evaluate_string("Base cellNames == [#{base_names.join(", ")}]").should == ioke.true
+      ioke.evaluate_string("Base cellNames(false) == [#{base_names.join(", ")}]").should == ioke.true
+      ioke.evaluate_string("Base cellNames(true) == [#{base_names.join(", ")}]").should == ioke.true
+
+      ioke.evaluate_string("DefaultBehavior cellNames == [#{default_behavior_names.join(", ")}]").should == ioke.true
+      ioke.evaluate_string("DefaultBehavior cellNames(false) == [#{default_behavior_names.join(", ")}]").should == ioke.true
+      ioke.evaluate_string("DefaultBehavior cellNames(true) == [#{default_behavior_names.join(", ")}]").should == ioke.true
+
+      ioke.evaluate_string("Ground cellNames == [#{ground_names.join(", ")}]").should == ioke.true
+      ioke.evaluate_string("Ground cellNames(false) == [#{ground_names.join(", ")}]").should == ioke.true
+      ioke.evaluate_string("Ground cellNames(true) == [#{ground_all_names.join(", ")}]").should == ioke.true
+
+      ioke.evaluate_string("Origin cellNames == [#{origin_names.join(", ")}]").should == ioke.true
+      ioke.evaluate_string("Origin cellNames(false) == [#{origin_names.join(", ")}]").should == ioke.true
+      ioke.evaluate_string("Origin cellNames(true) == [#{origin_all_names.join(", ")}]").should == ioke.true
+
+      ioke.evaluate_string("Text x = Origin mimic. Text x cellNames(true) == [#{origin_all_names.join(", ")}]").should == ioke.true
+      ioke.evaluate_string("Text x = Origin mimic. Text x foo = 12. Text x cellNames(true) == [:foo, #{origin_all_names.join(", ")}]").should == ioke.true
     end
   end
   
