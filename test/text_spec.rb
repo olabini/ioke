@@ -338,11 +338,75 @@ describe "Text" do
     end
 
     describe "unicode" do 
-      it "should have tests"
+      it "should replace any unicode letter in a string with only it" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string('"\uAAAA" length').data.as_java_integer.should == 1
+        ioke.evaluate_string('"\uAAAA"[0]').data.as_java_integer.should == 0xAAAA
+      end
+
+      it "should replace a unicode letter at the beginning of a string" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string('"\u000a foo bar x"[0]').data.as_java_integer.should == 0xA
+        ioke.evaluate_string('"\u000a foo bar x"[1..-1]').data.text.should == " foo bar x"
+      end
+
+      it "should replace a unicode letter at the end of a string" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string('"blarg ucrg ma\u3332"[-1]').data.as_java_integer.should == 0x3332
+        ioke.evaluate_string('"blarg ucrg ma\u3332"[0..-2]').data.text.should == "blarg ucrg ma"
+      end
     end
 
     describe "octal" do 
-      it "should have tests"
+      it "should replace any octal letter in a string with only it" do 
+        ioke = IokeRuntime.get_runtime
+        (0..255).each do |number|
+          ioke.evaluate_string("\"\\#{number.to_s(8)}\" length").data.as_java_integer.should == 1
+          ioke.evaluate_string("\"\\#{number.to_s(8)}\"[0]").data.as_java_integer.should == number
+        end
+      end
+
+      it "should replace a octal letter at the beginning of a string" do 
+        ioke = IokeRuntime.get_runtime
+        (0..255).each do |number|
+          ioke.evaluate_string("\"\\#{number.to_s(8)} foo bar x\"[0]").data.as_java_integer.should == number
+          ioke.evaluate_string("\"\\#{number.to_s(8)} foo bar x\"[1..-1]").data.text.should == " foo bar x"
+        end
+      end
+
+      it "should replace a octal letter at the end of a string" do 
+        ioke = IokeRuntime.get_runtime
+        (0..255).each do |number|
+          ioke.evaluate_string("\"blarg xxx\\#{number.to_s(8)}\"[-1]").data.as_java_integer.should == number
+          ioke.evaluate_string("\"blarg xxx\\#{number.to_s(8)}\"[0..-2]").data.text.should == "blarg xxx"
+        end
+      end
+      
+      it "should handle an octal letter of one letter" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string('"blarg \0xxx"[6]').data.as_java_integer.should == 0
+        ioke.evaluate_string('"blarg \1xxx"[6]').data.as_java_integer.should == 1
+        ioke.evaluate_string('"blarg \2xxx"[6]').data.as_java_integer.should == 2
+        ioke.evaluate_string('"blarg \3xxx"[6]').data.as_java_integer.should == 3
+        ioke.evaluate_string('"blarg \4xxx"[6]').data.as_java_integer.should == 4
+        ioke.evaluate_string('"blarg \5xxx"[6]').data.as_java_integer.should == 5
+        ioke.evaluate_string('"blarg \6xxx"[6]').data.as_java_integer.should == 6
+        ioke.evaluate_string('"blarg \7xxx"[6]').data.as_java_integer.should == 7
+      end
+
+      it "should handle an octal letter of two letters" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string('"blarg \00xxx"[6]').data.as_java_integer.should == 0
+        ioke.evaluate_string('"blarg \01xxx"[6]').data.as_java_integer.should == 1
+        ioke.evaluate_string('"blarg \02xxx"[6]').data.as_java_integer.should == 2
+        ioke.evaluate_string('"blarg \03xxx"[6]').data.as_java_integer.should == 3
+        ioke.evaluate_string('"blarg \04xxx"[6]').data.as_java_integer.should == 4
+        ioke.evaluate_string('"blarg \05xxx"[6]').data.as_java_integer.should == 5
+        ioke.evaluate_string('"blarg \06xxx"[6]').data.as_java_integer.should == 6
+        ioke.evaluate_string('"blarg \07xxx"[6]').data.as_java_integer.should == 7
+        ioke.evaluate_string('"blarg \34xxx"[6]').data.as_java_integer.should == 28
+        ioke.evaluate_string('"blarg \12xxx"[6]').data.as_java_integer.should == 10
+      end
     end
   end
 end
