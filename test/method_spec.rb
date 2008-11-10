@@ -480,11 +480,93 @@ CODE
     ioke.evaluate_stream(StringReader.new("obj2 selfMethod")).should == ioke.ground.find_cell(nil,nil,"obj2")
   end
   
-  describe "rest (*)" do 
-    it "should have tests"
+  describe "rest (+)" do 
+    it "should to give any length of arguments to a rest-only argument" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("restm = method(+rest, rest)")
+      ioke.evaluate_string("restm == []").should == ioke.true
+      ioke.evaluate_string("restm(1) == [1]").should == ioke.true
+      ioke.evaluate_string("restm(nil, nil, nil) == [nil, nil, nil]").should == ioke.true
+      ioke.evaluate_string("restm(12+1, 13+2, 14+5) == [13, 15, 19]").should == ioke.true
+    end
+
+    it "should to give both rest and regular arguments" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("rest2 = method(a, b, +rest, [a, b, rest])")
+      ioke.evaluate_string("rest2(1,2) == [1,2,[]]").should == ioke.true
+      ioke.evaluate_string("rest2(1,2,3) == [1,2,[3]]").should == ioke.true
+      ioke.evaluate_string("rest2(1,2,3,4,5+2) == [1,2,[3,4,7]]").should == ioke.true
+    end
+
+    it "should to give both rest, optional and regular arguments" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("rest3 = method(a, b, c 13, d 14, +rest, [a, b, c, d, rest])")
+      ioke.evaluate_string("rest3(1,2) == [1,2,13,14,[]]").should == ioke.true
+      ioke.evaluate_string("rest3(1,2,33) == [1,2,33,14,[]]").should == ioke.true
+      ioke.evaluate_string("rest3(1,2,33,15) == [1,2,33,15,[]]").should == ioke.true
+      ioke.evaluate_string("rest3(1,2,33,15,2+2,2+3,2+5) == [1,2,33,15,[4,5,7]]").should == ioke.true
+    end
+
+    it "should to be possible to give keyword arguments to a method with a rest argument too" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("rest4 = method(a, b, boo: 12, +rest, [a, b, boo, rest])")
+      ioke.evaluate_string("rest4(1,2) == [1,2,12,[]]").should == ioke.true
+      ioke.evaluate_string("rest4(1,2,3,4) == [1,2,12,[3,4]]").should == ioke.true
+      ioke.evaluate_string("rest4(1,2,3+4) == [1,2,12,[7]]").should == ioke.true
+      ioke.evaluate_string("rest4(boo: 444, 1,2,3+4) == [1,2,444,[3+4]]").should == ioke.true
+      ioke.evaluate_string("rest4(1, boo: 444, 2, 3+4) == [1,2,444,[3+4]]").should == ioke.true
+      ioke.evaluate_string("rest4(1, 2, boo: 444, 3+4) == [1,2,444,[3+4]]").should == ioke.true
+      ioke.evaluate_string("rest4(1, 2, 3+4, boo: 444) == [1,2,444,[3+4]]").should == ioke.true
+    end
+
+    it "should be possible to splat out arguments from a list into a method with regular, optional and rest arguments" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("norest = method(a, b, [a,b])")
+      ioke.evaluate_string("rests  = method(+rest, rest)")
+      ioke.evaluate_string("rests2 = method(a, b, +rest, [a, b, rest])")
+
+      ioke.evaluate_string("rests([1,2,3,4]) == [[1,2,3,4]]").should == ioke.true
+      ioke.evaluate_string("rests(*[1,2,3,4]) == [1,2,3,4]").should == ioke.true
+      ioke.evaluate_string("x = [1,2,3,4]. rests(*x) == [1,2,3,4]").should == ioke.true
+
+      ioke.evaluate_string("rests2(*[1,2,3,4]) == [1,2,[3,4]]").should == ioke.true
+      ioke.evaluate_string("rests2(*[1,2]) == [1,2,[]]").should == ioke.true
+      ioke.evaluate_string("norest(*[1,2]) == [1,2]").should == ioke.true
+    end
   end
   
-  describe "keyword rest (&)" do 
-    it "should have tests"
+  describe "keyword rest (+:)" do 
+    it "should be possible to give any keyword argument to something with a keyword rest" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("krest = method(+:rest, rest)")
+      ioke.evaluate_string("krest == {}").should == ioke.true
+      ioke.evaluate_string("krest(foo: 1) == {foo: 1}").should == ioke.true
+      ioke.evaluate_string("krest(foo: nil, bar: nil, quux: nil) == {foo:, bar:, quux:}").should == ioke.true
+      ioke.evaluate_string("krest(one: 12+1, two: 13+2, three: 14+5) == {one: 13, two: 15, three: 19}").should == ioke.true
+    end
+
+    it "should be possible to combine with regular argument, rest arguments and optional arguments" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("oneeach = method(a, b, c 12, d 15, +rest, +:krest, [a, b, c, d, rest, krest])")
+      ioke.evaluate_string("oneeach(1,2) == [1,2,12,15,[],{}]")
+      ioke.evaluate_string("oneeach(1,2,3) == [1,2,3,15,[],{}]")
+      ioke.evaluate_string("oneeach(f: 111, 1,2) == [1,2,12,15,[],{f: 111}]")
+      ioke.evaluate_string("oneeach(1, f: 111, 2) == [1,2,12,15,[],{f: 111}]")
+      ioke.evaluate_string("oneeach(1, 2, f: 111) == [1,2,12,15,[],{f: 111}]")
+      ioke.evaluate_string("oneeach(1, 2, 44, f: 111) == [1,2,44,15,[],{f: 111}]")
+      ioke.evaluate_string("oneeach(1, 2, 44, 10, f: 111) == [1,2,44,10,[],{f: 111}]")
+      ioke.evaluate_string("oneeach(1, 2, 44, 10, 12, 13, f: 111) == [1,2,44,10,[12, 13],{f: 111}]")
+      ioke.evaluate_string("oneeach(1, x: 1111111, 2, 44, 10, 12, 13, f: 111) == [1,2,44,10,[12, 13],{f: 111, x: 1111111}]")
+    end
+    
+    it "should be possible to splat out keyword arguments" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("oneeach = method(a, b, c 12, d 15, +rest, +:krest, [a, b, c, d, rest, krest])")
+
+      ioke.evaluate_string("oneeach(1,2,*{foo: 123, bar: 333}) == [1,2,12,15,[],{foo: 123, bar: 333}]").should == ioke.true
+      ioke.evaluate_string("x = {foo: 123, bar: 333}. oneeach(1,2,*x) == [1,2,12,15,[],{foo: 123, bar: 333}]").should == ioke.true
+
+      ioke.evaluate_string("oneeach(1,2,*[18,19,20,21,22], *{foo: 123, bar: 333}) == [1,2,18,19,[20, 21, 22],{foo: 123, bar: 333}]").should == ioke.true
+    end
   end
 end

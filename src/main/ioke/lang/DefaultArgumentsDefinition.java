@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.Collection;
 
 import ioke.lang.exceptions.ControlFlow;
@@ -62,10 +63,14 @@ public class DefaultArgumentsDefinition {
     private int max;
     private List<Argument> arguments;
     private Collection<String> keywords;
+    private String rest = null;
+    private String krest = null;
 
-    private DefaultArgumentsDefinition(List<Argument> arguments, Collection<String> keywords, int min, int max) {
+    private DefaultArgumentsDefinition(List<Argument> arguments, Collection<String> keywords, String rest, String krest, int min, int max) {
         this.arguments = arguments;
         this.keywords = keywords;
+        this.rest = rest;
+        this.krest = krest;
         this.min = min;
         this.max = max;
     }
@@ -89,18 +94,19 @@ public class DefaultArgumentsDefinition {
             }
         }
         
-        if(argCount < min || argCount > max) {
+        if(argCount < min || (max != -1 && argCount > max)) {
             throw new MismatchedArgumentCount(message, "" + min + ".." + max, argCount, on, context);
         }
 
-        Set<String> intersection = new HashSet<String>(givenKeywords.keySet());
+        Set<String> intersection = new LinkedHashSet<String>(givenKeywords.keySet());
         intersection.removeAll(keywords);
 
-        if(!intersection.isEmpty()) {
+        if(krest == null && !intersection.isEmpty()) {
             throw new MismatchedKeywords(message, keywords, intersection, on, context);
         }
-        
-        for(int i=0, ix=0, j=this.arguments.size();i<j;i++) {
+
+        int ix = 0;
+        for(int i=0, j=this.arguments.size();i<j;i++) {
             Argument a = this.arguments.get(i);
             
             if(a instanceof KeywordArgument) {
@@ -118,10 +124,30 @@ public class DefaultArgumentsDefinition {
                 locals.setCell(a.getName(), Message.getEvaluatedArgument(argumentsWithoutKeywords.get(ix++), context));
             }
         }
+
+        if(krest != null) {
+            Map<Object, Object> krests = new LinkedHashMap<Object, Object>();
+            for(String s : intersection) {
+                IokeObject given = givenKeywords.get(s);
+                Object result = Message.getEvaluatedArgument(given, context);
+                krests.put(context.runtime.getSymbol(s.substring(0, s.length()-1)), result);
+            }
+            
+            locals.setCell(krest, context.runtime.newDict(krests));
+        }
+
+        if(rest != null) {
+            List<Object> rests = new ArrayList<Object>();
+            for(int j=argumentsWithoutKeywords.size();ix<j;ix++) {
+                rests.add(Message.getEvaluatedArgument(argumentsWithoutKeywords.get(ix), context));
+            }
+
+            locals.setCell(rest, context.runtime.newList(rests));
+        }
     }
 
     public static DefaultArgumentsDefinition empty() {
-        return new DefaultArgumentsDefinition(new ArrayList<Argument>(), new ArrayList<String>(), 0, 0);
+        return new DefaultArgumentsDefinition(new ArrayList<Argument>(), new ArrayList<String>(), null, null, 0, 0);
     }
 
     public static DefaultArgumentsDefinition createFrom(List<Object> args, int start, int len, IokeObject message, Object on, IokeObject context) {
@@ -131,6 +157,8 @@ public class DefaultArgumentsDefinition {
         int min = 0;
         int max = 0;
         boolean hadOptional = false;
+        String rest = null;
+        String krest = null;
 
         for(Object obj : args.subList(start, args.size()-1)) {
             Message m = (Message)IokeObject.data(obj);
@@ -142,10 +170,21 @@ public class DefaultArgumentsDefinition {
                 }
                 arguments.add(new KeywordArgument(name.substring(0, name.length()-1), dValue));
                 keywords.add(name);
+            } else if(m.getName(null).equals("+")) {
+                String name = Message.name(m.getArguments(null).get(0));
+                if(name.startsWith(":")) {
+                    krest = name.substring(1);
+                } else {
+                    rest = name;
+                    max = -1;
+                }
+                hadOptional = true;
             } else if(m.next != null) {
                 String name = m.getName(null);
                 hadOptional = true;
-                max++;
+                if(max != -1) {
+                    max++;
+                }
                 arguments.add(new OptionalArgument(name, m.next));
             } else {
                 if(hadOptional) {
@@ -159,6 +198,6 @@ public class DefaultArgumentsDefinition {
             }
         }
 
-        return new DefaultArgumentsDefinition(arguments, keywords, min, max);
+        return new DefaultArgumentsDefinition(arguments, keywords, rest, krest, min, max);
     }
 }// DefaultArgumentsDefinition
