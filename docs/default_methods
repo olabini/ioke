@@ -75,32 +75,26 @@ are all the same. You can provide two arguments with the same keyword, but the r
 
 A rest argument works like in Common Lisp except it will ignore keyword arguments - the exception to this rule is when keyword arguments have been provided that are not defined in the argument list. This will generally cause an exception, but with a rest argument it will work out ok. The general format of rest arguments is that they are a list of given arguments. If keyword arguments are in the mix they will arrive as two arguments.
 
-rest = method(a, b, *rest, rest asString println)
-
-Prefix * is not like :. The star is not part of the actual name, it's a prefix method that turns into a call to *():
-
-*foo == *(foo)
-*foo bar == *(foo) bar
-foo * bar == *(foo, bar)
+rest = method(a, b, +rest, rest asString println)
 
 You can do the same thing as in Ruby when calling a method, by splicing things with the star:
 
 foo(*args)
 
-this will provide the correct keyword arguments and all other arguments.
+this will provide the correct arguments and all other arguments.
 
 foo(a, b, c, d)
 
 
 The rest argument will not collect keyword arguments, only the provided non-keyword arguments.
-You can catch any keyword arguments in with &, and also splice them the same way. They will provide the same order. The result of working with a & argument is a Dict.
-Using & is also how you provide the possibility to give any keyword argument to a call. Specifically, if a keyword argument has already been taken by a defined argument, it will not show up in the & list.
+You can catch any keyword arguments in with +:, and also splice them with *. They will provide the same order. The result of working with a +: argument is a Dict.
+Using +: is also how you provide the possibility to give any keyword argument to a call. Specifically, if a keyword argument has already been taken by a defined argument, it will not show up in the +: list.
 
-x = method(a, b, foo:, *rest, &keywords, [a, b, foo, rest, keywords])
+x = method(a, b, foo:, +rest, +:keywords, [a, b, foo, rest, keywords])
 x(13, foo: 42, bar: 17, xxxxxxx: "str", xx: 2+2, 1, 43, 44) ; =>  [13, 1, 42, [42, 44], {:bar => 17, :xxxxxxx => "str", :xx => 4}]
 
 
-
+If a *-splat is applied to a list, it will cover regular, optional and rest arguments. If it's a dict, it will cover only the keyword arguments.
 
 ----
 Note that you CAN send code as an argument to a default method - but you need to wrap it in some way. There are several ways of doing this.
