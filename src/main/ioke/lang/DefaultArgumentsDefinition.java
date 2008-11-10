@@ -83,13 +83,27 @@ public class DefaultArgumentsDefinition {
         List<Object> arguments = message.getArguments();
         List<Object> argumentsWithoutKeywords = new ArrayList<Object>();
         int argCount = 0;
-        Map<String, IokeObject> givenKeywords = new LinkedHashMap<String, IokeObject>();
+        Map<String, Object> givenKeywords = new LinkedHashMap<String, Object>();
         
         for(Object o : arguments) {
             if(Message.isKeyword(o)) {
-                givenKeywords.put(IokeObject.as(o).getName(), ((Message)IokeObject.data(o)).next);
+                givenKeywords.put(IokeObject.as(o).getName(), Message.getEvaluatedArgument(((Message)IokeObject.data(o)).next, context));
+            } else if(Message.hasName(o, "*") && IokeObject.as(o).getArguments().size() == 1) { // Splat
+                Object result = Message.getEvaluatedArgument(IokeObject.as(o).getArguments().get(0), context);
+                if(IokeObject.data(result) instanceof IokeList) {
+                    List<Object> elements = IokeList.getList(result);
+                    argumentsWithoutKeywords.addAll(elements);
+                    argCount += elements.size();
+                } else if(IokeObject.data(result) instanceof Dict) {
+                    Map<Object, Object> keys = Dict.getMap(result);
+                    for(Map.Entry<Object, Object> me : keys.entrySet()) {
+                        givenKeywords.put(Text.getText(IokeObject.convertToText(me.getKey(), message, context)) + ":", me.getValue());
+                    }
+                } else {
+                    throw new RuntimeException("Asked to splat " + result + " which is nether a List nor a Dict. Buhu on you!");
+                }
             } else {
-                argumentsWithoutKeywords.add(o);
+                argumentsWithoutKeywords.add(Message.getEvaluatedArgument(o, context));
                 argCount++;
             }
         }
@@ -110,26 +124,26 @@ public class DefaultArgumentsDefinition {
             Argument a = this.arguments.get(i);
             
             if(a instanceof KeywordArgument) {
-                IokeObject given = givenKeywords.get(a.getName() + ":");
+                Object given = givenKeywords.get(a.getName() + ":");
                 Object result = null;
                 if(given == null) {
                     result = ((KeywordArgument)a).getDefaultValue().evaluateCompleteWithoutExplicitReceiver(locals, locals.getRealContext());
                 } else {
-                    result = Message.getEvaluatedArgument(given, context);
+                    result = given;
                 }
                 locals.setCell(a.getName(), result);
             } else if((a instanceof OptionalArgument) && ix>=argCount) {
                 locals.setCell(a.getName(), ((OptionalArgument)a).getDefaultValue().evaluateCompleteWithoutExplicitReceiver(locals, locals.getRealContext()));
             } else {
-                locals.setCell(a.getName(), Message.getEvaluatedArgument(argumentsWithoutKeywords.get(ix++), context));
+                locals.setCell(a.getName(), argumentsWithoutKeywords.get(ix++));
             }
         }
 
         if(krest != null) {
             Map<Object, Object> krests = new LinkedHashMap<Object, Object>();
             for(String s : intersection) {
-                IokeObject given = givenKeywords.get(s);
-                Object result = Message.getEvaluatedArgument(given, context);
+                Object given = givenKeywords.get(s);
+                Object result = given;
                 krests.put(context.runtime.getSymbol(s.substring(0, s.length()-1)), result);
             }
             
@@ -139,7 +153,7 @@ public class DefaultArgumentsDefinition {
         if(rest != null) {
             List<Object> rests = new ArrayList<Object>();
             for(int j=argumentsWithoutKeywords.size();ix<j;ix++) {
-                rests.add(Message.getEvaluatedArgument(argumentsWithoutKeywords.get(ix), context));
+                rests.add(argumentsWithoutKeywords.get(ix));
             }
 
             locals.setCell(rest, context.runtime.newList(rests));

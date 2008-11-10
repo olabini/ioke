@@ -122,7 +122,7 @@ describe "core" do
       runtime.ground.find_cell(nil, nil, 'List').object_id.should == runtime.list.object_id
       runtime.ground.find_cell(nil, nil, 'Dict').object_id.should == runtime.dict.object_id
       runtime.ground.find_cell(nil, nil, 'Pair').object_id.should == runtime.pair.object_id
-      runtime.ground.find_cell(nil, nil, 'DefaultMacro').object_id.should == runtime.defaultMacro.object_id
+      runtime.ground.find_cell(nil, nil, 'DefaultMacro').should == runtime.defaultMacro
       runtime.ground.find_cell(nil, nil, 'Call').object_id.should == runtime.call.object_id
       runtime.ground.find_cell(nil, nil, 'Range').object_id.should == runtime.range.object_id
     end
