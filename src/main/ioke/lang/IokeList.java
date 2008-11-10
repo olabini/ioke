@@ -194,6 +194,10 @@ public class IokeList extends IokeData {
         return list;
     }
 
+    public static List<Object> getList(Object on) {
+        return ((IokeList)(IokeObject.data(on))).getList();
+    }
+
     public IokeData cloneData(IokeObject obj, IokeObject m, IokeObject context) {
         return new IokeList(new ArrayList<Object>(list));
     }

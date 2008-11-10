@@ -217,6 +217,14 @@ public class Message extends IokeData {
         }
     }
 
+    public static boolean hasName(Object message, String name) {
+        if((message instanceof IokeObject) && (IokeObject.data(message) instanceof Message)) {
+            return Message.name(message).equals(name);
+        } else {
+            return false;
+        }
+    }
+
     public boolean isKeyword() {
         return name.length() > 1 && arguments.size() == 0 && name.charAt(name.length()-1) == ':';
     }
