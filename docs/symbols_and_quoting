@@ -1,6 +1,0 @@
-right now:
-
-'foo      == quote(foo) == message("foo")
-'foo(bar) ==  quote(foo(bar)) == message("foo", message("bar"))
-
-:foo      == :(foo) == symbol("foo")

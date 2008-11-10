@@ -1,11 +1,11 @@
 Ioke 0.1 should include:
 -------------------------
 
-- DefaultMethod
+* DefaultMethod
 *  regular arguments
 *  optional arguments
 *  keyword arguments
-   rest arguments
+*  rest arguments
 * break
 - return
 - conditions
