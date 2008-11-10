@@ -46,11 +46,6 @@ Ioke
  System
  Machine
 
-cellMissing, doesNotUnderstand, method_missing, forward
-dynamicCell, unknownCell, unhandledMessage, lastResort
-missingMessage, missing, unhandled, onMessage, receive
-otherMessage, filter, noCell
-
 pass
 
 
