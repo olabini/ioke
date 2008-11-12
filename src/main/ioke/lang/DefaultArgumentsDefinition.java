@@ -79,6 +79,37 @@ public class DefaultArgumentsDefinition {
         return keywords;
     }
 
+    public String getCode() {
+        StringBuilder sb = new StringBuilder();
+        for(Argument argument : arguments) {
+            if(!(argument instanceof KeywordArgument)) {
+                sb.append(argument.getName());
+            } else {
+                sb.append(argument.getName()).append(":");
+            }
+
+            if((argument instanceof OptionalArgument) && ((OptionalArgument)argument).getDefaultValue() != null) {
+                sb.append(" ");
+                sb.append(Message.code(((OptionalArgument)argument).getDefaultValue()));
+            } else if((argument instanceof KeywordArgument) && ((KeywordArgument)argument).getDefaultValue() != null) {
+                sb.append(" ");
+                sb.append(Message.code(((KeywordArgument)argument).getDefaultValue()));
+            }
+
+            sb.append(", ");
+        }
+
+        if(rest != null) {
+            sb.append("+").append(rest).append(", ");
+        }
+
+        if(krest != null) {
+            sb.append("+:").append(krest).append(", ");
+        }
+
+        return sb.toString();
+    }
+
     public void assignArgumentValues(IokeObject locals, IokeObject context, IokeObject message, Object on) throws ControlFlow {
         List<Object> arguments = message.getArguments();
         List<Object> argumentsWithoutKeywords = new ArrayList<Object>();

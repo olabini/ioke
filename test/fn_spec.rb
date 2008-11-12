@@ -179,7 +179,32 @@ CODE
       ioke.ground.find_cell(nil, nil, "blarg").should == ioke.nul
     end
     
-    it "should be possible to get the code for the block by calling 'code' on it"
+    it "should be possible to get the code for the block by calling 'code' on it" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("fn code").data.text.should == 'fn(nil)'
+      ioke.evaluate_string("fn(nil) code").data.text.should == 'fn(nil)'
+      ioke.evaluate_string("fn(1) code").data.text.should == 'fn(1)'
+      ioke.evaluate_string("fn(1 + 1) code").data.text.should == 'fn(1 +(1))'
+      ioke.evaluate_string("fn(x, x+x) code").data.text.should == 'fn(x, x +(x))'
+      ioke.evaluate_string("fn(x 12, x+x) code").data.text.should == 'fn(x 12, x +(x))'
+      ioke.evaluate_string("fn(x, x+x. x*x) code").data.text.should == "fn(x, x +(x) .\nx *(x))"
+      ioke.evaluate_string("fn(x:, x+x. x*x) code").data.text.should == "fn(x: nil, x +(x) .\nx *(x))"
+      ioke.evaluate_string("fn(x: 12, x+x. x*x) code").data.text.should == "fn(x: 12, x +(x) .\nx *(x))"
+      ioke.evaluate_string("fn(x, +rest, x+x. x*x) code").data.text.should == "fn(x, +rest, x +(x) .\nx *(x))"
+      ioke.evaluate_string("fn(x, +:rest, x+x. x*x) code").data.text.should == "fn(x, +:rest, x +(x) .\nx *(x))"
+
+      ioke.evaluate_string("fnx code").data.text.should == 'fnx(nil)'
+      ioke.evaluate_string("fnx(nil) code").data.text.should == 'fnx(nil)'
+      ioke.evaluate_string("fnx(1) code").data.text.should == 'fnx(1)'
+      ioke.evaluate_string("fnx(1 + 1) code").data.text.should == 'fnx(1 +(1))'
+      ioke.evaluate_string("fnx(x, x+x) code").data.text.should == 'fnx(x, x +(x))'
+      ioke.evaluate_string("fnx(x 12, x+x) code").data.text.should == 'fnx(x 12, x +(x))'
+      ioke.evaluate_string("fnx(x, x+x. x*x) code").data.text.should == "fnx(x, x +(x) .\nx *(x))"
+      ioke.evaluate_string("fnx(x:, x+x. x*x) code").data.text.should == "fnx(x: nil, x +(x) .\nx *(x))"
+      ioke.evaluate_string("fnx(x: 12, x+x. x*x) code").data.text.should == "fnx(x: 12, x +(x) .\nx *(x))"
+      ioke.evaluate_string("fnx(x, +rest, x+x. x*x) code").data.text.should == "fnx(x, +rest, x +(x) .\nx *(x))"
+      ioke.evaluate_string("fnx(x, +:rest, x+x. x*x) code").data.text.should == "fnx(x, +:rest, x +(x) .\nx *(x))"
+    end
 
     it "should shadow reading of outer variables when getting arguments" do 
       ioke = IokeRuntime.get_runtime()
