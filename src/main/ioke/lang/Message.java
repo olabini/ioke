@@ -112,7 +112,7 @@ public class Message extends IokeData {
         message.registerMethod(message.runtime.newJavaMethod("returns the name of this message", new JavaMethod("name") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
-                    return method.runtime.newText(((Message)IokeObject.data(on)).name);
+                    return method.runtime.getSymbol(((Message)IokeObject.data(on)).name);
                 }
             }));
         message.registerMethod(message.runtime.newJavaMethod("returns the next message in the chain, or nil", new JavaMethod("next") {
