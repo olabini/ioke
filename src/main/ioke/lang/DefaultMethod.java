@@ -42,6 +42,13 @@ public class DefaultMethod extends Method {
                     return context.runtime.newList(keywords);
                 }
             }));
+
+    }
+
+    @Override
+    public String getCode() {
+        String args = arguments.getCode();
+        return "method(" + args + Message.code(code) + ")";
     }
 
     @Override

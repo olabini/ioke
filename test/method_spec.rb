@@ -569,4 +569,19 @@ CODE
       ioke.evaluate_string("oneeach(1,2,*[18,19,20,21,22], *{foo: 123, bar: 333}) == [1,2,18,19,[20, 21, 22],{foo: 123, bar: 333}]").should == ioke.true
     end
   end
+  
+  it "should be possible to get the code for the method by calling 'code' on it" do 
+    ioke = IokeRuntime.get_runtime
+    ioke.evaluate_string("method code").data.text.should == 'method(nil)'
+    ioke.evaluate_string("method(nil) code").data.text.should == 'method(nil)'
+    ioke.evaluate_string("method(1) code").data.text.should == 'method(1)'
+    ioke.evaluate_string("method(1 + 1) code").data.text.should == 'method(1 +(1))'
+    ioke.evaluate_string("method(x, x+x) code").data.text.should == 'method(x, x +(x))'
+    ioke.evaluate_string("method(x 12, x+x) code").data.text.should == 'method(x 12, x +(x))'
+    ioke.evaluate_string("method(x, x+x. x*x) code").data.text.should == "method(x, x +(x) .\nx *(x))"
+    ioke.evaluate_string("method(x:, x+x. x*x) code").data.text.should == "method(x: nil, x +(x) .\nx *(x))"
+    ioke.evaluate_string("method(x: 12, x+x. x*x) code").data.text.should == "method(x: 12, x +(x) .\nx *(x))"
+    ioke.evaluate_string("method(x, +rest, x+x. x*x) code").data.text.should == "method(x, +rest, x +(x) .\nx *(x))"
+    ioke.evaluate_string("method(x, +:rest, x+x. x*x) code").data.text.should == "method(x, +:rest, x +(x) .\nx *(x))"
+  end
 end
