@@ -72,11 +72,37 @@ describe "Message" do
   end
 
   describe "'sendTo'" do 
-    it "should have tests"
+    it "should be possible to create a message from text, with arguments and send that to a number" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('Message fromText("+(200)") sendTo(20)').data.as_java_integer.should == 220
+    end
+    
+    it "should possible to send a simple message that is not predefined" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("f = method(self asText). Message fromText(\"f\") sendTo(42)").data.text.should == "42"
+    end
+    
+    it "should only send one message nad not follow the next pointer" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('Message fromText("+(200) +(10) -(5)") sendTo(20)').data.as_java_integer.should == 220
+    end
   end
 
   describe "'evaluateOn'" do 
-    it "should have tests"
+    it "should be possible to create a message from text, with arguments and send that to a number" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('Message fromText("+(200)") evaluateOn(20)').data.as_java_integer.should == 220
+    end
+    
+    it "should possible to send a simple message that is not predefined" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("f = method(self asText). Message fromText(\"f\") evaluateOn(42)").data.text.should == "42"
+    end
+    
+    it "should evaluate the full message chain" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('Message fromText("+(200) +(10) -(5)") evaluateOn(20)').data.as_java_integer.should == 225
+    end
   end
 
   describe "'fromText'" do 
