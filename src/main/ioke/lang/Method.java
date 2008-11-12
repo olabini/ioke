@@ -42,10 +42,21 @@ public class Method extends IokeData implements Named {
                     return IokeObject.as(on).activate(context, message, context.getRealContext());
                 }
             }));
+
+        method.registerMethod(method.runtime.newJavaMethod("returns the full code of this method, as a Text", new JavaMethod("code") {
+                @Override
+                public Object activate(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on) throws ControlFlow {
+                    return dynamicContext.runtime.newText(((Method)IokeObject.data(on)).getCode());
+                }
+            }));
     }
 
     public String getName() {
         return name;
+    }
+
+    public String getCode() {
+        return "method(nil)";
     }
 
     public void setName(String name) {
