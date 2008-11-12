@@ -209,7 +209,14 @@ public class IokeObject {
     }
 
     public Object perform(IokeObject ctx, IokeObject message) throws ControlFlow {
-        return getOrActivate(getCell(message, ctx, message.getName()), ctx, message, this);
+        String name = message.getName();
+        Object cell = this.findCell(message, ctx, name);
+        
+        if(cell == runtime.nul && ((cell = this.findCell(message, ctx, "pass")) == runtime.nul)) {
+            throw new NoSuchCellException(message, name, this, ctx);
+        }
+
+        return getOrActivate(cell, ctx, message, this);
     }
 
     public static void setCell(Object on, String name, Object value) {
