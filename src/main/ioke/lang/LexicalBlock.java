@@ -38,6 +38,17 @@ public class LexicalBlock extends IokeData {
                 }
             }));
 
+        lexicalBlock.registerMethod(lexicalBlock.runtime.newJavaMethod("returns the full code of this lexical block, as a Text", new JavaMethod("code") {
+                @Override
+                public Object activate(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on) throws ControlFlow {
+                    IokeObject obj = IokeObject.as(on);
+                    String x = obj.isActivatable() ? "x" : "";
+                    
+                    String args = ((LexicalBlock)IokeObject.data(on)).arguments.getCode();
+                    return context.runtime.newText("fn" + x + "(" + args + Message.code(((LexicalBlock)IokeObject.data(on)).message) + ")");
+                }
+            }));
+
         lexicalBlock.registerMethod(lexicalBlock.runtime.newJavaMethod("returns a list of the keywords this block takes", new JavaMethod("keywords") {
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) {
