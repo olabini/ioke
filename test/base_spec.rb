@@ -67,7 +67,7 @@ describe "Base" do
 
       origin_all_names = origin_names + ground_all_names
       origin_all_names.uniq!
-      
+
       ioke.evaluate_string("Base cellNames == [#{base_names.join(", ")}]").should == ioke.true
       ioke.evaluate_string("Base cellNames(false) == [#{base_names.join(", ")}]").should == ioke.true
       ioke.evaluate_string("Base cellNames(true) == [#{base_names.join(", ")}]").should == ioke.true

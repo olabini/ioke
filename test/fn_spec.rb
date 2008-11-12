@@ -6,34 +6,36 @@ include_class('ioke.lang.exceptions.ArgumentWithoutDefaultValue') unless defined
 import Java::java.io.StringReader unless defined?(StringReader)
 
 describe "DefaultBehavior" do
-  describe "'ʎ'" do 
-    it "should be possible to create a new LexicalBlock with it" do 
-      ioke = IokeRuntime.get_runtime()
-      ioke.evaluate_stream(StringReader.new(%q[ʎ call])).should == ioke.nil
-    end
+  # TODO: when tests are converted to Ioke, this should be unescaped again.
+  # Since Java 1.5 and 1.6 on Java + JRuby have trouble with the lambda sign, comment it out for now.
+#   describe "'ʎ'" do 
+#     it "should be possible to create a new LexicalBlock with it" do 
+#       ioke = IokeRuntime.get_runtime()
+#       ioke.evaluate_stream(StringReader.new(%q[ʎ call])).should == ioke.nil
+#     end
 
-    it "should be possible to create a new LexicalBlock with it that returns a value" do 
-      ioke = IokeRuntime.get_runtime()
-      ioke.evaluate_stream(StringReader.new(%q[ʎ(42) call])).data.as_java_integer.should == 42
-    end
-  end
+#     it "should be possible to create a new LexicalBlock with it that returns a value" do 
+#       ioke = IokeRuntime.get_runtime()
+#       ioke.evaluate_stream(StringReader.new(%q[ʎ(42) call])).data.as_java_integer.should == 42
+#     end
+#   end
   
-  describe "'fnx'" do 
-    it "should return something that is activatable for empty list" do 
-      ioke = IokeRuntime.get_runtime()
-      ioke.evaluate_stream(StringReader.new(%q[fnx activatable])).should == ioke.true
-    end
+#   describe "'fnx'" do 
+#     it "should return something that is activatable for empty list" do 
+#       ioke = IokeRuntime.get_runtime()
+#       ioke.evaluate_stream(StringReader.new(%q[fnx activatable])).should == ioke.true
+#     end
 
-    it "should return something that is activatable for code" do 
-      ioke = IokeRuntime.get_runtime()
-      ioke.evaluate_stream(StringReader.new(%q[fnx("hello") activatable])).should == ioke.true
-    end
+#     it "should return something that is activatable for code" do 
+#       ioke = IokeRuntime.get_runtime()
+#       ioke.evaluate_stream(StringReader.new(%q[fnx("hello") activatable])).should == ioke.true
+#     end
 
-    it "should return something that is activatable for code with arguments" do 
-      ioke = IokeRuntime.get_runtime()
-      ioke.evaluate_stream(StringReader.new(%q[fnx(x, y, x+y) activatable])).should == ioke.true
-    end
-  end
+#     it "should return something that is activatable for code with arguments" do 
+#       ioke = IokeRuntime.get_runtime()
+#       ioke.evaluate_stream(StringReader.new(%q[fnx(x, y, x+y) activatable])).should == ioke.true
+#     end
+#   end
   
   describe "'fn'" do 
     it "should mimic LexicalBlock" do 
