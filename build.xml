@@ -25,6 +25,7 @@
     <mkdir dir="${coverage.dir}"/>
     <mkdir dir="${classes.dir}"/>
     <mkdir dir="${src.generated.dir}"/>
+    <mkdir dir="${lib.dist.dir}"/>
 
     <uptodate property="grammar.notUpdated" targetfile="${src.generated.dir}/iokeLexer.java" srcfile="${antlr.grammar.dir}/${antlr.grammar.file}"/>
   </target>
