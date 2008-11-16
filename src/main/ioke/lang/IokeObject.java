@@ -311,6 +311,10 @@ public class IokeObject {
         return ((IokeObject)on);
     }
 
+    public Object getSelf() {
+        return this.cells.get("self");
+    }
+
     public static IokeObject convertToNumber(Object on, IokeObject m, IokeObject context) {
         return ((IokeObject)on).convertToNumber(m, context);
     }

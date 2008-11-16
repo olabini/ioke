@@ -160,8 +160,30 @@ describe "DefaultBehavior" do
       ioke.evaluate_stream(StringReader.new(%q[if(false)])).should == ioke.false
       ioke.evaluate_stream(StringReader.new(%q[if(nil)])).should == ioke.nil
     end
+    
+    it "should assign the test result to the variable it" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("if(42, it) == 42").should == ioke.true
+      ioke.evaluate_string("if(nil, 42, it) == nil").should == ioke.true
+      ioke.evaluate_string("if(false, 42, it) == false").should == ioke.true
+      ioke.evaluate_string("if(\"str\", 42, it) == 42").should == ioke.true
+    end
+
+    it "should have a lexical context for the it variable" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("if(42, fn(it)) call == 42").should == ioke.true
+    end
+
+    it "should be possible to nest it variables lexically" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("if(42, [it, if(13, [it, if(nil, 44, it), it])]) == [42, [13, nil, 13]]").should == ioke.true
+    end
   end
 
+  describe "'unless'" do 
+    it "should have tests"
+  end
+  
   describe "'asText'" do 
     it "should call toString and return the text from that" do 
       ioke = IokeRuntime.get_runtime()
