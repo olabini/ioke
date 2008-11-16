@@ -181,7 +181,49 @@ describe "DefaultBehavior" do
   end
 
   describe "'unless'" do 
-    it "should have tests"
+    it "should evaluate it's first element once" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string(%q[x=42. unless(x++)])
+      ioke.ground.find_cell(nil, nil, "x").data.as_java_integer.should == 43
+    end
+    
+    it "should return it's second argument if the first element evaluates to false" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string(%q[unless(false, 42, 43)]).data.as_java_integer.should == 42
+    end
+
+    it "should return it's third argument if the first element evaluates to true" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string(%q[unless(true, 42, 43)]).data.as_java_integer.should == 43
+    end
+    
+    it "should return the result of evaluating the first argument if there are no more arguments" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string(%q[unless(44)]).data.as_java_integer.should == 44
+    end
+    
+    it "should return the result of evaluating the first argument if it is true and there are only two arguments" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string(%q[unless(true, 13)]).should == ioke.true
+    end
+    
+    it "should assign the test result to the variable it" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("unless(42, nil, it) == 42").should == ioke.true
+      ioke.evaluate_string("unless(nil, it, 42) == nil").should == ioke.true
+      ioke.evaluate_string("unless(false, it, 42) == false").should == ioke.true
+      ioke.evaluate_string("unless(\"str\", it, 42) == 42").should == ioke.true
+    end
+
+    it "should have a lexical context for the it variable" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("unless(42, nil, fn(it)) call == 42").should == ioke.true
+    end
+
+    it "should be possible to nest it variables lexically" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("unless(42, nil, [it, unless(13, nil, [it, unless(nil, it, 44), it])]) == [42, [13, nil, 13]]").should == ioke.true
+    end
   end
   
   describe "'asText'" do 

@@ -155,6 +155,30 @@ public class DefaultBehavior {
                 }
             }));
 
+        obj.registerMethod(runtime.newJavaMethod("evaluates the first arguments, and then evaluates the second argument if the result was false, otherwise the last argument. returns the result of the call, or the result if it's true.", new DefaultBehaviorJavaMethod("unless") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    Object test = message.getEvaluatedArgument(0, context);
+
+                    LexicalContext itContext = new LexicalContext(context.runtime, context.getRealContext(), "Lexical activation context", message, context);
+                    itContext.setCell("it", test);
+
+                    if(IokeObject.isTrue(test)) {
+                        if(message.getArgumentCount() > 2) {
+                            return message.getEvaluatedArgument(2, itContext);
+                        } else {
+                            return test;
+                        }
+                    } else {
+                        if(message.getArgumentCount() > 1) {
+                            return message.getEvaluatedArgument(1, itContext);
+                        } else {
+                            return test;
+                        }
+                    }
+                }
+            }));
+
         obj.registerMethod(runtime.newJavaMethod("expects one 'strange' argument. creates a new instance of Text with the given Java String backing it.", new DefaultBehaviorJavaMethod("internal:createText") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
