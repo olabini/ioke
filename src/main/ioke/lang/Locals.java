@@ -24,7 +24,7 @@ public class Locals {
                                                        new JavaMethod("pass") {
                                                            @Override
                                                            public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                                                               Object selfDelegate = IokeObject.as(on).getCells().get("self");
+                                                               Object selfDelegate = IokeObject.as(on).getSelf();
 
                                                                if(selfDelegate != null && selfDelegate != on) {
                                                                    return IokeObject.perform(selfDelegate, context, message);

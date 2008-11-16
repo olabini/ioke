@@ -21,19 +21,21 @@ public class LexicalContext extends IokeObject {
         this.message = message;
         this.surroundingContext = surroundingContext;
 
-        if(runtime.lexicalContext != null) {
-            this.mimicsWithoutCheck(runtime.lexicalContext);
-        }
+        setKind("LexicalContext");
     }
     
     @Override
     public void init() {
-        setKind("LexicalContext");
     }
 
     @Override
     public Object getRealContext() {
         return ground;
+    }
+
+    @Override
+    public Object getSelf() {
+        return surroundingContext.getSelf();
     }
 
     @Override

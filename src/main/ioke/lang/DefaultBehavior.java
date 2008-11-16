@@ -135,15 +135,19 @@ public class DefaultBehavior {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     Object test = message.getEvaluatedArgument(0, context);
+
+                    LexicalContext itContext = new LexicalContext(context.runtime, context.getRealContext(), "Lexical activation context", message, context);
+                    itContext.setCell("it", test);
+
                     if(IokeObject.isTrue(test)) {
                         if(message.getArgumentCount() > 1) {
-                            return message.getEvaluatedArgument(1, context);
+                            return message.getEvaluatedArgument(1, itContext);
                         } else {
                             return test;
                         }
                     } else {
                         if(message.getArgumentCount() > 2) {
-                            return message.getEvaluatedArgument(2, context);
+                            return message.getEvaluatedArgument(2, itContext);
                         } else {
                             return test;
                         }
