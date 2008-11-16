@@ -274,14 +274,6 @@ describe "core" do
     end
   end
 
-  describe "Context" do 
-    it "should have the correct kind" do 
-      runtime = IokeRuntime.get_runtime
-      result = runtime.context.find_cell(nil, nil, "kind")
-      result.data.text.should == 'Context'
-    end
-  end
-
   describe "MacroContext" do 
     it "should have the correct kind" do 
       runtime = IokeRuntime.get_runtime

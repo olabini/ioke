@@ -299,7 +299,7 @@ public class IokeObject {
         return data.negate(this);
     }
     
-    Map<String, Object> getCells() {
+    public Map<String, Object> getCells() {
         return cells;
     }
 

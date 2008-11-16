@@ -8,7 +8,6 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import ioke.lang.Context;
 import ioke.lang.Message;
 import ioke.lang.IokeObject;
 
@@ -96,18 +95,19 @@ public class IokeException extends RuntimeException {
         stream.println(String.format("  %-48.48s %s", on.toString() + " " + (ix == -1 ? s1 : s1.substring(0,ix)),"[" + message.getFile() + ":" + message.getLine() + ":" + message.getPosition() + getContextMessageName(context) + "]"));
 
         IokeObject ctx = context;
-        while(ctx instanceof Context) {
-            s1 = Message.thisCode(((Context)ctx).message);
+        while("Locals".equals(ctx.getKind())) {
+            IokeObject m2 = IokeObject.as(ctx.getCells().get("currentMessage"));
+            s1 = Message.thisCode(m2);
             ix = s1.indexOf("\n");
-            stream.println(String.format("  %-48.48s %s", ((Context)ctx).getRealContext().toString() + " " +  (ix == -1 ? s1 : s1.substring(0,ix)),"[" + ((Context)ctx).message.getFile() + ":" + ((Context)ctx).message.getLine() + ":" + ((Context)ctx).message.getPosition()  + getContextMessageName(((Context)ctx).surroundingContext) + "]"));
-            ctx = ((Context)ctx).surroundingContext;
+            stream.println(String.format("  %-48.48s %s", ctx.toString() + " " +  (ix == -1 ? s1 : s1.substring(0,ix)),"[" + m2.getFile() + ":" + m2.getLine() + ":" + m2.getPosition()  + getContextMessageName(IokeObject.as(ctx.getCells().get("surroundingContext"))) + "]"));
+            ctx = IokeObject.as(ctx.getCells().get("surroundingContext"));
         }
         stream.println();
     }
 
     private String getContextMessageName(IokeObject ctx) {
-        if(ctx instanceof Context) {
-            return ":in `" + ((Context)ctx).message.getName() + "'";
+        if("Locals".equals(ctx.getKind())) {
+            return ":in `" + IokeObject.as(ctx.getCells().get("currentMessage")).getName() + "'";
         } else {
             return "";
         }
