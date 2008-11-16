@@ -59,7 +59,12 @@ public class DefaultMacro extends IokeData implements Named {
 
     @Override
     public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-        MacroContext c = new MacroContext(self.runtime, on, "Macro activation context for " + message.getName(), message, context);
+        IokeObject c = context.runtime.locals.mimic(message, context);
+        c.setCell("self", on);
+        c.setCell("@", on);
+        c.setCell("currentMessage", on);
+        c.setCell("surroundingContext", context);
+        c.setCell("call", context.runtime.newCallFrom(c, message, context, IokeObject.as(on)));
 
         return code.evaluateCompleteWith(c, on);
     }

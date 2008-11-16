@@ -55,7 +55,6 @@ public class Runtime {
     public IokeObject range = new IokeObject(this, "A range is a collection of two objects of the same kind. This Range can be either inclusive or exclusive.", new Range(nil, nil, false));
     public IokeObject pair = new IokeObject(this, "A pair is a collection of two objects of any kind. They are used among other things to represent Dict entries.", new Pair(nil, nil));
     public IokeObject call = new IokeObject(this, "A call is the runtime structure that includes the specific information for a call, that is available inside a DefaultMacro.", new Call());
-    public MacroContext macroContext = new MacroContext(this, ground, "A macro activation context.", null, ground);
     public LexicalContext lexicalContext = new LexicalContext(this, ground, "A lexical activation context.", null, ground);
 
     public IokeObject locals = new IokeObject(this, "Contains all the locals for a specific invocation");
@@ -127,7 +126,6 @@ public class Runtime {
         range.init();
         pair.init();
         lexicalContext.init();
-        macroContext.init();
         list.init();
         dict.init();
         call.init();
@@ -274,10 +272,6 @@ public class Runtime {
 
     public IokeObject getPair() {
         return this.pair;
-    }
-
-    public IokeObject getMacroContext() {
-        return this.macroContext;
     }
 
     public IokeObject getNil() {
@@ -454,7 +448,7 @@ public class Runtime {
         return obj;
     }
 
-    public IokeObject newCallFrom(MacroContext ctx, IokeObject message, IokeObject surroundingContext, IokeObject on) {
+    public IokeObject newCallFrom(IokeObject ctx, IokeObject message, IokeObject surroundingContext, IokeObject on) {
         IokeObject obj = this.call.allocateCopy(null, null);
         obj.mimicsWithoutCheck(this.call);
         obj.data = new Call(ctx, message, surroundingContext, on);
