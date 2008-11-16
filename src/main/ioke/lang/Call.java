@@ -10,7 +10,7 @@ import ioke.lang.exceptions.ControlFlow;
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
 public class Call extends IokeData {
-    private MacroContext ctx;
+    private IokeObject ctx;
     private IokeObject message;
     private IokeObject surroundingContext;
     private IokeObject on;
@@ -18,7 +18,7 @@ public class Call extends IokeData {
     public Call() {
     }
 
-    public Call(MacroContext ctx, IokeObject message, IokeObject surroundingContext, IokeObject on) {
+    public Call(IokeObject ctx, IokeObject message, IokeObject surroundingContext, IokeObject on) {
         this.ctx = ctx;
         this.message = message;
         this.surroundingContext = surroundingContext;
