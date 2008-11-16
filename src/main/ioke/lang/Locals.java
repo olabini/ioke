@@ -14,7 +14,12 @@ public class Locals {
         obj.setKind("Locals");
         obj.getMimics().clear();
 
-        // add support for =, I guess, and maybe something for cell and cell=
+        obj.setCell("=",         obj.runtime.base.getCells().get("="));
+        obj.setCell("cell",      obj.runtime.base.getCells().get("cell"));
+        obj.setCell("cell=",     obj.runtime.base.getCells().get("cell="));
+        obj.setCell("cells",     obj.runtime.base.getCells().get("cells"));
+        obj.setCell("cellNames", obj.runtime.base.getCells().get("cellNames"));
+
         obj.registerMethod(obj.runtime.newJavaMethod("will pass along the call to the real self object of this context.", 
                                                        new JavaMethod("pass") {
                                                            @Override

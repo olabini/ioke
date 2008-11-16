@@ -53,7 +53,13 @@ public class DefaultMethod extends Method {
 
     @Override
     public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-        Context c = new Context(self.runtime, on, "Method activation context for " + message.getName(), message, context);
+        IokeObject c = context.runtime.locals.mimic(message, context);
+        //        Context c = new Context(self.runtime, on, "Method activation context for " + message.getName(), message, context);
+        
+        c.setCell("self", on);
+        c.setCell("@", on);
+        c.setCell("currentMessage", on);
+        c.setCell("surroundingContext", context);
 
         arguments.assignArgumentValues(c, context, message, on);
 

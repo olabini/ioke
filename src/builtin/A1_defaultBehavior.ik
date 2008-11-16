@@ -27,7 +27,7 @@ DefaultBehavior fnx = macro(
 DefaultBehavior derive = method(
   "calls mimic.", 
 
-  @mimic)
+  mimic)
 
 DefaultBehavior list = macro(
   "Takes zero or more arguments and returns a newly created list containing the result of evaluating these arguments",
@@ -39,7 +39,7 @@ DefaultBehavior aliasMethod("list", "[]")
 DefaultBehavior with = macro(
   "takes any number of keyword arguments, followed by an optional code argument. will first create a new mimic of the receiver, then evaluate all the keyword arguments in order and set cells corresponding to the names of these keyword arguments to the evaluated arguments. if a code argument is supplied, it will be evaluated in the context of the newly created object, using something similar to 'do'. returns the created object.",
   
-  newObject = @mimic
+  newObject = mimic
   call arguments each(arg, 
     if(arg keyword?, 
       newObject cell(arg name asText[0..-2]) = arg next evaluateOn(call ground),

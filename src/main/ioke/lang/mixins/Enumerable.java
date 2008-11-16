@@ -6,7 +6,6 @@ package ioke.lang.mixins;
 import ioke.lang.Runtime;
 import ioke.lang.IokeObject;
 import ioke.lang.JavaMethod;
-import ioke.lang.Context;
 
 import ioke.lang.exceptions.ControlFlow;
 
