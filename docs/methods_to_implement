@@ -1,11 +1,4 @@
 
-add "it" and jregex matching
-
-= should check for "foo=" before calling assign, so you can do
-  msg next = blah
- instead of setNext
-
-
 3. rescue()
 4. handle()
 5. signal!, error!, warning!
@@ -47,6 +40,11 @@ Ioke
  Machine
 
 mimics == protos
+
+
+= should check for "foo=" before calling assign, so you can do
+  msg next = blah
+ instead of setNext
 
 lower prio
 ----------

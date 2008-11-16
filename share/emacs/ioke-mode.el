@@ -260,6 +260,7 @@
                                 "self"
                                 "use"
                                 "if"
+                                "unless"
                                 "fn"
                                 "fnx"
                                 "method"
