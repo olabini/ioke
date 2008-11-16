@@ -416,6 +416,29 @@ public class DefaultBehavior {
                 }
             }));
 
+        obj.registerMethod(runtime.newJavaMethod("takes zero or more arguments that should evaluate to a condition mimic - this list will match all the conditions this Rescue should be able to catch. the last argument is not optional, and should be something activatable that takes one argument - the condition instance. will return a Rescue mimic.", new DefaultBehaviorJavaMethod("rescue") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    int count = message.getArgumentCount();
+                    List<Object> conds = new ArrayList<Object>();
+                    for(int i=0, j=count-1; i<j; i++) {
+                        conds.add(message.getEvaluatedArgument(i, context));
+                    }
+
+                    if(conds.isEmpty()) {
+                        conds.add(context.runtime.condition);
+                    }
+
+                    Object handler = message.getEvaluatedArgument(count-1, context);
+                    Object rescue = context.runtime.mimic.sendTo(context, context.runtime.rescue);
+                    
+                    IokeObject.setCell(rescue, "handler", handler);
+                    IokeObject.setCell(rescue, "conditions", context.runtime.newList(conds));
+
+                    return rescue;
+                }
+            }));
+
         obj.registerMethod(runtime.newJavaMethod("will evaluate all arguments, and expects all except for the last to be a Restart. bind will associate these restarts for the duration of the execution of the last argument and then unbind them again. it will return the result of the last argument, or if a restart is executed it will instead return the result of that invocation.", new DefaultBehaviorJavaMethod("bind") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
@@ -430,17 +453,19 @@ public class DefaultBehavior {
 
                     try {
                         for(Object o : args.subList(0, argCount-1)) {
-                            IokeObject restart = IokeObject.as(IokeObject.as(o).evaluateCompleteWithoutExplicitReceiver(context, context.getRealContext()));
-                            if(!restart.getKind().equals("Restart")) {
-                                throw new RuntimeException("argument " + o + " did not evaluate to a Restart");
-                            }
-                            Object ioName = runtime.name.sendTo(context, restart);
-                            String name = null;
-                            if(ioName != runtime.nil) {
-                                name = Symbol.getText(ioName);
-                            }
+                            IokeObject bindable = IokeObject.as(IokeObject.as(o).evaluateCompleteWithoutExplicitReceiver(context, context.getRealContext()));
+                            if(IokeObject.isKind(bindable, "Restart")) {
+                                Object ioName = runtime.name.sendTo(context, bindable);
+                                String name = null;
+                                if(ioName != runtime.nil) {
+                                    name = Symbol.getText(ioName);
+                                }
                             
-                            restarts.add(new Runtime.RestartInfo(name, restart, restarts));
+                                restarts.add(new Runtime.RestartInfo(name, bindable, restarts));
+                            } else if(IokeObject.isKind(bindable, "Rescue")) {
+                            } else {
+                                throw new RuntimeException("argument " + o + " did not evaluate to a bindable object (A Restart or a Rescue)");
+                            }
                         }
                         runtime.registerRestarts(restarts);
 

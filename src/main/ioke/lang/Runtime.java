@@ -59,6 +59,9 @@ public class Runtime {
 
     public IokeObject locals = new IokeObject(this, "Contains all the locals for a specific invocation");
 
+    public IokeObject condition = new IokeObject(this, "The root mimic of all the conditions in the system");
+    public IokeObject rescue = new IokeObject(this, "A Rescue contains handling information from rescuing a Condition.");
+
     // Core messages
     public IokeObject asText = newMessage("asText");
     public IokeObject mimic = newMessage("mimic");
@@ -130,6 +133,8 @@ public class Runtime {
         dict.init();
         call.init();
         Locals.init(locals);
+        Condition.init(condition);
+        Rescue.init(rescue);
 
         ground.mimicsWithoutCheck(base);
         ground.mimicsWithoutCheck(defaultBehavior);
@@ -153,6 +158,9 @@ public class Runtime {
 
         list.mimicsWithoutCheck(origin);
         dict.mimicsWithoutCheck(origin);
+
+        condition.mimicsWithoutCheck(origin);
+        rescue.mimicsWithoutCheck(origin);
         
         method.init();
         defaultMethod.init();
@@ -268,6 +276,14 @@ public class Runtime {
 
     public IokeObject getRestart() {
         return this.restart;
+    }
+ 
+    public IokeObject getCondition() {
+        return this.condition;
+    }
+
+    public IokeObject getRescue() {
+        return this.rescue;
     }
 
     public IokeObject getPair() {

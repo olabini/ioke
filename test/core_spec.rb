@@ -125,6 +125,8 @@ describe "core" do
       runtime.ground.find_cell(nil, nil, 'DefaultMacro').should == runtime.defaultMacro
       runtime.ground.find_cell(nil, nil, 'Call').object_id.should == runtime.call.object_id
       runtime.ground.find_cell(nil, nil, 'Range').object_id.should == runtime.range.object_id
+      runtime.ground.find_cell(nil, nil, 'Condition').object_id.should == runtime.condition.object_id
+      runtime.ground.find_cell(nil, nil, 'Rescue').object_id.should == runtime.rescue.object_id
     end
   end
 
@@ -287,6 +289,14 @@ describe "core" do
       runtime = IokeRuntime.get_runtime
       result = runtime.ground.find_cell(nil, nil, "Mixins").find_cell(nil, nil, "Comparing").find_cell(nil, nil, "kind")
       result.data.text.should == 'Mixins Comparing'
+    end
+  end
+
+  describe "Condition" do 
+    it "should have the correct kind" do 
+      runtime = IokeRuntime.get_runtime
+      result = runtime.ground.find_cell(nil, nil, "Condition").find_cell(nil, nil, "kind")
+      result.data.text.should == 'Condition'
     end
   end
 end
