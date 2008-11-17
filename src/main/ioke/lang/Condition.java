@@ -11,5 +11,9 @@ public class Condition {
     public static void init(IokeObject obj) {
         Runtime runtime = obj.runtime;
         obj.setKind("Condition");
+
+        IokeObject conditionDefault = obj.mimic(null, null);
+        conditionDefault.setKind("Condition Default");
+        obj.setCell("Default", conditionDefault);
     }
 }// Condition

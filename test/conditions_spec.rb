@@ -3,6 +3,75 @@ include_class('ioke.lang.Runtime') { 'IokeRuntime' } unless defined?(IokeRuntime
 import Java::java.io.StringReader unless defined?(StringReader)
 
 describe 'DefaultBehavior' do 
+  describe "'signal!'" do 
+    it "should do nothing if no rescue has been registered for it" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("x = 1. signal!(\"foo\"). x++. x==2").should == ioke.true
+      ioke.evaluate_string(<<CODE).should == ioke.true
+x = 1
+C2 = Condition mimic
+bind(
+  rescue(C2, fn(e, x = 42)),
+  x++
+  signal!("something")
+  x++)
+x == 3
+CODE
+    end
+    
+    it "should transfer control if the condition is matched" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string(<<CODE).should == ioke.true
+x = 1
+bind(
+  rescue(fn(e, x = 42)),
+  signal!("something")
+  x = 13)
+x == 42
+CODE
+    end
+
+    it "should transfer control to the innermost handler that matches" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string(<<CODE).should == ioke.true
+x = 1
+C1 = Condition mimic
+C2 = Condition mimic
+bind(
+  rescue(C1, fn(e, x = 42)),
+  bind(
+    rescue(fn(e, x = 444)),
+    bind(
+      rescue(C2, fn(e, x = 222)),
+
+      signal!("something"))))
+x == 444
+CODE
+    end
+
+    it "should invoke the handler with the signalled condition" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string(<<CODE).should == ioke.true
+x = 1
+bind(
+  rescue(fn(e, x = e text)),
+  signal!("something")
+  x = 13)
+x == "something"
+CODE
+    end
+
+    it "should return the value of the handler from the bind of the rescue in question" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string(<<CODE).should == ioke.true
+bind(
+  rescue(fn(e, 42)),
+  signal!("something")
+  x = 13) == 42
+CODE
+    end
+  end
+  
   describe "'rescue'" do 
     it "should take only one argument, and in that case catch all Conditions" do 
       ioke = IokeRuntime.get_runtime

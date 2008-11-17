@@ -450,6 +450,7 @@ public class DefaultBehavior {
 
                     IokeObject code = IokeObject.as(args.get(argCount-1));
                     List<Runtime.RestartInfo> restarts = new ArrayList<Runtime.RestartInfo>();
+                    List<Runtime.RescueInfo> rescues = new ArrayList<Runtime.RescueInfo>();
 
                     try {
                         for(Object o : args.subList(0, argCount-1)) {
@@ -463,11 +464,17 @@ public class DefaultBehavior {
                             
                                 restarts.add(new Runtime.RestartInfo(name, bindable, restarts));
                             } else if(IokeObject.isKind(bindable, "Rescue")) {
+                                Object conditions = runtime.conditionsMessage.sendTo(context, bindable);
+                                
+                                List<Object> applicable = IokeList.getList(conditions);
+
+                                rescues.add(new Runtime.RescueInfo(bindable, applicable, rescues));
                             } else {
                                 throw new RuntimeException("argument " + o + " did not evaluate to a bindable object (A Restart or a Rescue)");
                             }
                         }
                         runtime.registerRestarts(restarts);
+                        runtime.registerRescues(rescues);
 
                         return code.evaluateCompleteWithoutExplicitReceiver(context, context.getRealContext());
                     } catch(ControlFlow.Restart e) {
@@ -477,10 +484,18 @@ public class DefaultBehavior {
                             return runtime.callMessage.sendTo(context, runtime.code.sendTo(context, ri.restart), e.getArguments());
                         } else {
                             throw e;
+                        } 
+                    } catch(ControlFlow.Rescue e) {
+                        Runtime.RescueInfo ri = null;
+                        if((ri = e.getRescue()).token == rescues) {
+                            return runtime.callMessage.sendTo(context, runtime.handlerMessage.sendTo(context, ri.rescue), e.getCondition());
+                        } else {
+                            throw e;
                         }
-                    } finally {
-                        runtime.unregisterRestarts(restarts);
-                    }
+                   } finally {
+                        runtime.unregisterRescues(rescues);
+                        runtime.unregisterRestarts(restarts); 
+                   }
                 }
             }));
 
@@ -531,6 +546,23 @@ public class DefaultBehavior {
                     } else {
                         return realRestart.restart;
                     }
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("takes one or more datums descibing the condition to signal. this datum can be either a mimic of a Condition, in which case it will be signalled directly, or it can be a mimic of a Condition with arguments, in which case it will first be mimicked and the arguments assigned in some way. finally, if the argument is a Text, a mimic of Condition Default will be signalled, with the provided text.", new DefaultBehaviorJavaMethod("signal!") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    Object datum = message.getEvaluatedArgument(0, context);
+                    // Assume datum is text for now.
+                    IokeObject newCondition = IokeObject.as(context.runtime.condition.getCell(message, context, "Default")).mimic(message, context);
+                    newCondition.setCell("text", datum);
+
+                    Runtime.RescueInfo rescue = context.runtime.findActiveRescueFor(newCondition);
+                    if(rescue != null) {
+                        throw new ControlFlow.Rescue(rescue, newCondition);
+                    }
+                    
+                    return newCondition;
                 }
             }));
 
