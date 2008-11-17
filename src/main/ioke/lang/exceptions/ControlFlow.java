@@ -47,6 +47,22 @@ public class ControlFlow extends Throwable {
         }
     }
 
+    public static class Rescue extends ControlFlow {
+        private IokeObject condition;
+        public Rescue(Runtime.RescueInfo value, IokeObject condition) {
+            super(value);
+            this.condition = condition;
+        }
+
+        public Runtime.RescueInfo getRescue() {
+            return (Runtime.RescueInfo)getValue();
+        }
+
+        public IokeObject getCondition() {
+            return this.condition;
+        }
+    }
+
     private Object value;
 
     public ControlFlow(Object value) {

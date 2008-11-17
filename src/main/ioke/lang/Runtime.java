@@ -75,6 +75,9 @@ public class Runtime {
     public IokeObject code = newMessage("code");
     public IokeObject each = newMessage("each");
     public IokeObject opShuffle = newMessage("shuffleOperators");
+    public IokeObject textMessage = newMessage("text");
+    public IokeObject conditionsMessage = newMessage("conditions");
+    public IokeObject handlerMessage = newMessage("handler");
 
     // NOT TO BE EXPOSED TO Ioke - used for internal usage only
     public final NullObject nul = new NullObject(this);
@@ -498,6 +501,17 @@ public class Runtime {
         }            
     }
 
+    public static class RescueInfo {
+        public final IokeObject rescue;
+        public final List<Object> applicableConditions;
+        public final Object token;
+        public RescueInfo(IokeObject rescue, List<Object> applicableConditions, Object token) {
+            this.rescue = rescue;
+            this.applicableConditions = applicableConditions;
+            this.token = token;
+        }
+    }
+
     public static class RestartInfo {
         public final String name;
         public final IokeObject restart;
@@ -515,12 +529,40 @@ public class Runtime {
                  return new ArrayList<List<RestartInfo>>();
              }};
 
+    private ThreadLocal<List<List<RescueInfo>>> rescues = new ThreadLocal<List<List<RescueInfo>>>() {
+             @Override
+             protected List<List<RescueInfo>> initialValue() {
+                 return new ArrayList<List<RescueInfo>>();
+             }};
+
     public void registerRestarts(List<RestartInfo> restarts) {
         this.restarts.get().add(0, restarts);
     }
 
     public void unregisterRestarts(List<RestartInfo> restarts) {
         this.restarts.get().remove(restarts);
+    }
+
+    public void registerRescues(List<RescueInfo> rescues) {
+        this.rescues.get().add(0, rescues);
+    }
+
+    public void unregisterRescues(List<RescueInfo> rescues) {
+        this.rescues.get().remove(rescues);
+    }
+
+    public RescueInfo findActiveRescueFor(IokeObject condition) {
+        for(List<RescueInfo> lrp : rescues.get()) {
+            for(RescueInfo rp : lrp) {
+                for(Object possibleKind : rp.applicableConditions) {
+                    if(IokeObject.isMimic(condition, IokeObject.as(possibleKind))) {
+                        return rp;
+                    }
+                }
+            }
+        }
+
+        return null;
     }
 
     public RestartInfo findActiveRestart(String name) {
