@@ -512,10 +512,12 @@ public class Runtime {
         public final IokeObject rescue;
         public final List<Object> applicableConditions;
         public final Object token;
-        public RescueInfo(IokeObject rescue, List<Object> applicableConditions, Object token) {
+        public final BindIndex index;
+        public RescueInfo(IokeObject rescue, List<Object> applicableConditions, Object token, BindIndex index) {
             this.rescue = rescue;
             this.applicableConditions = applicableConditions;
             this.token = token;
+            this.index = index;
         }
     }
 
@@ -523,10 +525,12 @@ public class Runtime {
         public final IokeObject handler;
         public final List<Object> applicableConditions;
         public final Object token;
-        public HandlerInfo(IokeObject handler, List<Object> applicableConditions, Object token) {
+        public final BindIndex index;
+        public HandlerInfo(IokeObject handler, List<Object> applicableConditions, Object token, BindIndex index) {
             this.handler = handler;
             this.applicableConditions = applicableConditions;
             this.token = token;
+            this.index = index;
         }
     }
 
@@ -534,10 +538,12 @@ public class Runtime {
         public final String name;
         public final IokeObject restart;
         public final Object token;
-        public RestartInfo(String name, IokeObject restart, Object token) {
+        public final BindIndex index;
+        public RestartInfo(String name, IokeObject restart, Object token, BindIndex index) {
             this.name = name;
             this.restart = restart;
             this.token = token;
+            this.index = index;
         }
     }
 
@@ -581,6 +587,53 @@ public class Runtime {
 
     public void unregisterHandlers(List<HandlerInfo> handlers) {
         this.handlers.get().remove(handlers);
+    }
+
+    public static class BindIndex {
+        public final int row;
+        public final int col;
+        public BindIndex(int row) {
+            this(row, 0);
+        }
+        public BindIndex(int row, int col) {
+            this.row = row;
+            this.col = col;
+        }
+        public BindIndex nextCol() {
+            return new BindIndex(this.row, this.col+1);
+        }
+        public boolean lessThan(BindIndex other) {
+            return this.row < other.row || 
+                (this.row == other.row && this.col < other.col);
+        }
+        public boolean greaterThan(BindIndex other) {
+            return this.row > other.row || 
+                (this.row == other.row && this.col > other.col);
+        }
+    }
+
+    public BindIndex getBindIndex() {
+        return new BindIndex(rescues.get().size());
+    }
+    
+    public List<HandlerInfo> findActiveHandlersFor(IokeObject condition, BindIndex stopIndex) {
+        List<HandlerInfo> result = new ArrayList<HandlerInfo>();
+        
+        for(List<HandlerInfo> lrp : handlers.get()) {
+            for(HandlerInfo rp : lrp) {
+                if(rp.index.lessThan(stopIndex)) {
+                    return result;
+                }
+
+                for(Object possibleKind : rp.applicableConditions) {
+                    if(IokeObject.isMimic(condition, IokeObject.as(possibleKind))) {
+                        result.add(rp);
+                    }
+                }
+            }
+        }
+
+        return result;
     }
 
     public RescueInfo findActiveRescueFor(IokeObject condition) {

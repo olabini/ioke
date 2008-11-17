@@ -116,7 +116,7 @@ describe "core" do
       runtime.ground.find_cell(nil, nil, 'Symbol').object_id.should == runtime.symbol.object_id
       runtime.ground.find_cell(nil, nil, 'DefaultMethod').object_id.should == runtime.defaultMethod.object_id
       runtime.ground.find_cell(nil, nil, 'JavaMethod').object_id.should == runtime.javaMethod.object_id
-      runtime.ground.find_cell(nil, nil, 'LexicalBlock').object_id.should == runtime.lexicalBlock.object_id
+      runtime.ground.find_cell(nil, nil, 'LexicalBlock').should == runtime.lexicalBlock
       runtime.ground.find_cell(nil, nil, 'Mixins').object_id.should == runtime.mixins.object_id
       runtime.ground.find_cell(nil, nil, 'Restart').object_id.should == runtime.restart.object_id
       runtime.ground.find_cell(nil, nil, 'List').object_id.should == runtime.list.object_id

@@ -4,6 +4,63 @@ import Java::java.io.StringReader unless defined?(StringReader)
 
 describe 'DefaultBehavior' do 
   describe "'signal!'" do 
+    it "should not execute a handler that's not applicable" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string(<<CODE).should == ioke.true
+x = 1
+C1 = Condition mimic
+bind(
+  handle(C1, fn(c, x = 42)),
+  signal!("foo"))
+x == 1
+CODE
+    end
+
+    it "should execute one applicable handler" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string(<<CODE).should == ioke.true
+x = 1
+bind(
+  handle(fn(c, x = 42)),
+  signal!("foo"))
+x == 42
+CODE
+    end
+
+    it "should execute two applicable handler, among some non-applicable" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string(<<CODE).should == ioke.true
+x = []
+C1 = Condition mimic
+bind(
+  handle(C1, fn(c, x << 13)),
+  bind(
+    handle(fn(c, x << 15)),
+    bind(
+      handle(C1, fn(c, x << 17)),
+      bind(
+        handle(Condition, fn(c, x << 19)),
+        signal!("foo")))))
+x == [19, 15]
+CODE
+    end
+
+    it "should not unwind the stack when invoking handlers" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string(<<CODE).should == ioke.true
+x = []
+bind(
+  handle(fn(c, x << 2)),
+  x << 1
+  signal!("foo")
+  x << 3
+)
+x == [1,2,3]
+CODE
+    end
+
+    it "should only invoke handlers up to the limit of the first applicable rescue"
+
     it "should do nothing if no rescue has been registered for it" do 
       ioke = IokeRuntime.get_runtime
       ioke.evaluate_string("x = 1. signal!(\"foo\"). x++. x==2").should == ioke.true

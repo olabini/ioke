@@ -476,6 +476,8 @@ public class DefaultBehavior {
                     List<Runtime.RescueInfo> rescues = new ArrayList<Runtime.RescueInfo>();
                     List<Runtime.HandlerInfo> handlers = new ArrayList<Runtime.HandlerInfo>();
 
+                    Runtime.BindIndex index = context.runtime.getBindIndex();
+
                     try {
                         for(Object o : args.subList(0, argCount-1)) {
                             IokeObject bindable = IokeObject.as(IokeObject.as(o).evaluateCompleteWithoutExplicitReceiver(context, context.getRealContext()));
@@ -486,15 +488,18 @@ public class DefaultBehavior {
                                     name = Symbol.getText(ioName);
                                 }
                             
-                                restarts.add(new Runtime.RestartInfo(name, bindable, restarts));
+                                restarts.add(new Runtime.RestartInfo(name, bindable, restarts, index));
+                                index = index.nextCol();
                             } else if(IokeObject.isKind(bindable, "Rescue")) {
                                 Object conditions = runtime.conditionsMessage.sendTo(context, bindable);
                                 List<Object> applicable = IokeList.getList(conditions);
-                                rescues.add(new Runtime.RescueInfo(bindable, applicable, rescues));
+                                rescues.add(new Runtime.RescueInfo(bindable, applicable, rescues, index));
+                                index = index.nextCol();
                             } else if(IokeObject.isKind(bindable, "Handler")) {
                                 Object conditions = runtime.conditionsMessage.sendTo(context, bindable);
                                 List<Object> applicable = IokeList.getList(conditions);
-                                handlers.add(new Runtime.HandlerInfo(bindable, applicable, handlers));
+                                handlers.add(new Runtime.HandlerInfo(bindable, applicable, handlers, index));
+                                index = index.nextCol();
                             } else {
                                 throw new RuntimeException("argument " + o + " did not evaluate to a bindable object (A Restart or a Rescue)");
                             }
@@ -586,6 +591,13 @@ public class DefaultBehavior {
                     newCondition.setCell("text", datum);
 
                     Runtime.RescueInfo rescue = context.runtime.findActiveRescueFor(newCondition);
+
+                    List<Runtime.HandlerInfo> handlers = context.runtime.findActiveHandlersFor(newCondition, (rescue == null) ? new Runtime.BindIndex(-1,-1) : rescue.index);
+
+                    for(Runtime.HandlerInfo rhi : handlers) {
+                        context.runtime.callMessage.sendTo(context, context.runtime.handlerMessage.sendTo(context, rhi.handler), newCondition);
+                    }
+
                     if(rescue != null) {
                         throw new ControlFlow.Rescue(rescue, newCondition);
                     }
