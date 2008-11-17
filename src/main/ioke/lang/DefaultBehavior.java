@@ -474,6 +474,7 @@ public class DefaultBehavior {
                     IokeObject code = IokeObject.as(args.get(argCount-1));
                     List<Runtime.RestartInfo> restarts = new ArrayList<Runtime.RestartInfo>();
                     List<Runtime.RescueInfo> rescues = new ArrayList<Runtime.RescueInfo>();
+                    List<Runtime.HandlerInfo> handlers = new ArrayList<Runtime.HandlerInfo>();
 
                     try {
                         for(Object o : args.subList(0, argCount-1)) {
@@ -488,16 +489,19 @@ public class DefaultBehavior {
                                 restarts.add(new Runtime.RestartInfo(name, bindable, restarts));
                             } else if(IokeObject.isKind(bindable, "Rescue")) {
                                 Object conditions = runtime.conditionsMessage.sendTo(context, bindable);
-                                
                                 List<Object> applicable = IokeList.getList(conditions);
-
                                 rescues.add(new Runtime.RescueInfo(bindable, applicable, rescues));
+                            } else if(IokeObject.isKind(bindable, "Handler")) {
+                                Object conditions = runtime.conditionsMessage.sendTo(context, bindable);
+                                List<Object> applicable = IokeList.getList(conditions);
+                                handlers.add(new Runtime.HandlerInfo(bindable, applicable, handlers));
                             } else {
                                 throw new RuntimeException("argument " + o + " did not evaluate to a bindable object (A Restart or a Rescue)");
                             }
                         }
                         runtime.registerRestarts(restarts);
                         runtime.registerRescues(rescues);
+                        runtime.registerHandlers(handlers);
 
                         return code.evaluateCompleteWithoutExplicitReceiver(context, context.getRealContext());
                     } catch(ControlFlow.Restart e) {
@@ -516,6 +520,7 @@ public class DefaultBehavior {
                             throw e;
                         }
                    } finally {
+                        runtime.unregisterHandlers(handlers);
                         runtime.unregisterRescues(rescues);
                         runtime.unregisterRestarts(restarts); 
                    }

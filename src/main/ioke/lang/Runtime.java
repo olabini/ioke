@@ -519,6 +519,17 @@ public class Runtime {
         }
     }
 
+    public static class HandlerInfo {
+        public final IokeObject handler;
+        public final List<Object> applicableConditions;
+        public final Object token;
+        public HandlerInfo(IokeObject handler, List<Object> applicableConditions, Object token) {
+            this.handler = handler;
+            this.applicableConditions = applicableConditions;
+            this.token = token;
+        }
+    }
+
     public static class RestartInfo {
         public final String name;
         public final IokeObject restart;
@@ -542,6 +553,12 @@ public class Runtime {
                  return new ArrayList<List<RescueInfo>>();
              }};
 
+    private ThreadLocal<List<List<HandlerInfo>>> handlers = new ThreadLocal<List<List<HandlerInfo>>>() {
+             @Override
+             protected List<List<HandlerInfo>> initialValue() {
+                 return new ArrayList<List<HandlerInfo>>();
+             }};
+
     public void registerRestarts(List<RestartInfo> restarts) {
         this.restarts.get().add(0, restarts);
     }
@@ -556,6 +573,14 @@ public class Runtime {
 
     public void unregisterRescues(List<RescueInfo> rescues) {
         this.rescues.get().remove(rescues);
+    }
+
+    public void registerHandlers(List<HandlerInfo> handlers) {
+        this.handlers.get().add(0, handlers);
+    }
+
+    public void unregisterHandlers(List<HandlerInfo> handlers) {
+        this.handlers.get().remove(handlers);
     }
 
     public RescueInfo findActiveRescueFor(IokeObject condition) {
