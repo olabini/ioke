@@ -61,6 +61,7 @@ public class Runtime {
 
     public IokeObject condition = new IokeObject(this, "The root mimic of all the conditions in the system");
     public IokeObject rescue = new IokeObject(this, "A Rescue contains handling information from rescuing a Condition.");
+    public IokeObject handler = new IokeObject(this, "A Handler contains handling information for handling a condition without unwinding the stack.");
 
     // Core messages
     public IokeObject asText = newMessage("asText");
@@ -138,6 +139,7 @@ public class Runtime {
         Locals.init(locals);
         Condition.init(condition);
         Rescue.init(rescue);
+        Handler.init(handler);
 
         ground.mimicsWithoutCheck(base);
         ground.mimicsWithoutCheck(defaultBehavior);
@@ -164,6 +166,7 @@ public class Runtime {
 
         condition.mimicsWithoutCheck(origin);
         rescue.mimicsWithoutCheck(origin);
+        handler.mimicsWithoutCheck(origin);
         
         method.init();
         defaultMethod.init();
@@ -287,6 +290,10 @@ public class Runtime {
 
     public IokeObject getRescue() {
         return this.rescue;
+    }
+
+    public IokeObject getHandler() {
+        return this.handler;
     }
 
     public IokeObject getPair() {

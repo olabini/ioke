@@ -439,6 +439,29 @@ public class DefaultBehavior {
                 }
             }));
 
+        obj.registerMethod(runtime.newJavaMethod("takes zero or more arguments that should evaluate to a condition mimic - this list will match all the conditions this Handler should be able to catch. the last argument is not optional, and should be something activatable that takes one argument - the condition instance. will return a Handler mimic.", new DefaultBehaviorJavaMethod("handle") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    int count = message.getArgumentCount();
+                    List<Object> conds = new ArrayList<Object>();
+                    for(int i=0, j=count-1; i<j; i++) {
+                        conds.add(message.getEvaluatedArgument(i, context));
+                    }
+
+                    if(conds.isEmpty()) {
+                        conds.add(context.runtime.condition);
+                    }
+
+                    Object code = message.getEvaluatedArgument(count-1, context);
+                    Object handle = context.runtime.mimic.sendTo(context, context.runtime.handler);
+                    
+                    IokeObject.setCell(handle, "handler", code);
+                    IokeObject.setCell(handle, "conditions", context.runtime.newList(conds));
+
+                    return handle;
+                }
+            }));
+
         obj.registerMethod(runtime.newJavaMethod("will evaluate all arguments, and expects all except for the last to be a Restart. bind will associate these restarts for the duration of the execution of the last argument and then unbind them again. it will return the result of the last argument, or if a restart is executed it will instead return the result of that invocation.", new DefaultBehaviorJavaMethod("bind") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {

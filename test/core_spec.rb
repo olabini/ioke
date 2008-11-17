@@ -127,6 +127,7 @@ describe "core" do
       runtime.ground.find_cell(nil, nil, 'Range').object_id.should == runtime.range.object_id
       runtime.ground.find_cell(nil, nil, 'Condition').object_id.should == runtime.condition.object_id
       runtime.ground.find_cell(nil, nil, 'Rescue').object_id.should == runtime.rescue.object_id
+      runtime.ground.find_cell(nil, nil, 'Handler').object_id.should == runtime.handler.object_id
     end
   end
 
