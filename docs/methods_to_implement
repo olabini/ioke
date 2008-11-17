@@ -66,3 +66,15 @@ aspects:
 
 resend
 super
+
+
+would it be interesting to have lexicalblocks be enumerable?
+
+newCounter = method(
+  x = 0
+  fn(x ++. x))
+x = newCounter
+x take(10)
+x take(3)
+
+
