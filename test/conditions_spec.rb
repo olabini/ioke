@@ -59,7 +59,24 @@ x == [1,2,3]
 CODE
     end
 
-    it "should only invoke handlers up to the limit of the first applicable rescue"
+    it "should only invoke handlers up to the limit of the first applicable rescue" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string(<<CODE).should == ioke.true
+x = []
+bind(
+  handle(fn(c, x << 1)),
+  handle(fn(c, x << 2)),
+  rescue(fn(c, x << 3)),
+  handle(fn(c, x << 4)),
+  bind(
+    handle(fn(c, x << 5)),
+    handle(fn(c, x << 6)),
+    bind(
+      handle(fn(c, x << 7)),
+      signal!("Foo"))))
+x == [7, 6, 5, 4, 3]
+CODE
+    end
 
     it "should do nothing if no rescue has been registered for it" do 
       ioke = IokeRuntime.get_runtime

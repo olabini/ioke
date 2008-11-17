@@ -488,20 +488,20 @@ public class DefaultBehavior {
                                     name = Symbol.getText(ioName);
                                 }
                             
-                                restarts.add(new Runtime.RestartInfo(name, bindable, restarts, index));
+                                restarts.add(0, new Runtime.RestartInfo(name, bindable, restarts, index));
                                 index = index.nextCol();
                             } else if(IokeObject.isKind(bindable, "Rescue")) {
                                 Object conditions = runtime.conditionsMessage.sendTo(context, bindable);
                                 List<Object> applicable = IokeList.getList(conditions);
-                                rescues.add(new Runtime.RescueInfo(bindable, applicable, rescues, index));
+                                rescues.add(0, new Runtime.RescueInfo(bindable, applicable, rescues, index));
                                 index = index.nextCol();
                             } else if(IokeObject.isKind(bindable, "Handler")) {
                                 Object conditions = runtime.conditionsMessage.sendTo(context, bindable);
                                 List<Object> applicable = IokeList.getList(conditions);
-                                handlers.add(new Runtime.HandlerInfo(bindable, applicable, handlers, index));
+                                handlers.add(0, new Runtime.HandlerInfo(bindable, applicable, handlers, index));
                                 index = index.nextCol();
                             } else {
-                                throw new RuntimeException("argument " + o + " did not evaluate to a bindable object (A Restart or a Rescue)");
+                                throw new RuntimeException("argument " + o + " did not evaluate to a bindable object (A Restart, Rescue or Handler)");
                             }
                         }
                         runtime.registerRestarts(restarts);
