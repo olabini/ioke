@@ -148,8 +148,45 @@ Signaling conditions
 
 This is the easiest part. Conditions are signalled using:
 
-signal!(datum, &args)
-error!(datum, &args)
-warning!(datum, &args)
+signal!(datum, +args)
+error!(datum, +args)
+warning!(datum, +args)
 
 where datum are mostly the same things as in Common Lisp, and args are the rest of the arguments that are passed to the creation function for a condition
+
+
+Implementing error! and warning!
+--------------------------------
+
+These are both implemented in terms of signal!. Specifically, if a rescue happens at any point, they obviously do the same thing. But if no rescue happens, the behavior is different in this way:
+warning! can be defined more or less like this:
+
+warning! = method(+rest,
+  bind(
+    restart(ignore, fn(condition)),
+
+    condition = signal!(*rest)
+    System err println(";; #{condition text}")))
+
+Specifically, if no non-local flow control happens to get us out, a warning gets printed. warnings can be ignored by invoking the ignore restart. this restart is clever enough to be able to return the condition that was created.
+
+A muffle-warnings method could do something like this:
+
+muffle-warnings = method(code, 
+  bind(
+    handle(Condition Warning, fn(invokeRestart(:ignore))),
+    code call))
+
+
+error! is trickier... it should have the same kind of approach as warning!, except what it should do is rather different. In fact, what it should do is this - if a debugger is online, invoke the debugger. It can be found in System Debugger or something like that. If no debugger is active, 
+... 
+ok, abcl first checks error depth, then calls debugger function. this will first run invoke-debugger-report-condition, which displays the actual condition.
+it then checks if it's running a REPL, if not it quits. if it is, it runs the debug-loop.
+
+Ioke will first report the error. Then check a if there is a debugger registered (which the REPL will register, for example), and if there is one, it will start it.
+if no debugger is active, it will call quit with the condition - the effect will be that quit will throw the condition as an exception - and thus allow stuff to catch it from the Java side.
+
+
+
+warning! will throw Condition Warning Default, if no instance is provided.
+error!   will throw Condition Error Default, if no instance is provided
