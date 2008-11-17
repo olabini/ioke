@@ -71,6 +71,24 @@ bind(
 CODE
     end
   end
+
+  describe "'handle'" do 
+    it "should take only one argument, and in that case catch all Conditions" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string(%q[handle(fn(e, 42)) handler call(1)]).data.as_java_integer.should == 42
+      ioke.evaluate_string(%q[handle(fn) conditions == [Condition]]).should == ioke.true
+    end
+
+    it "should take one or more Conditions to catch" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string(%q[c1 = Condition mimic. c2 = Condition mimic. handle(c1, c2, fn(e, 42)) conditions == [c1, c2]]).should == ioke.true
+    end
+    
+    it "should return something that has kind Handler" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string(%q[handle(fn) kind]).data.text.should == "Handler"
+    end
+  end
   
   describe "'rescue'" do 
     it "should take only one argument, and in that case catch all Conditions" do 
