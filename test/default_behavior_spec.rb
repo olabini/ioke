@@ -4,10 +4,24 @@ include_class('ioke.lang.exceptions.ControlFlow') unless defined?(ControlFlow)
 import Java::java.io.StringReader unless defined?(StringReader)
 
 describe "DefaultBehavior" do 
+  describe "'internal:concatenateText'" do 
+    it "should combine several strings" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string(%q[internal:concatenateText("foo", "bar", "flux")]).data.text.should == "foobarflux"
+      ioke.evaluate_string(%q[x = "str". internal:concatenateText("foo", x, "flux")]).data.text.should == "foostrflux"
+    end
+
+    it "should combine strings with the text representation of other stuff" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string(%q[internal:concatenateText("foo", 123, "flux")]).data.text.should == "foo123flux"
+      ioke.evaluate_string(%q[internal:concatenateText([1,2,3], "foo")]).data.text.should == "[1, 2, 3]foo"
+    end
+  end
+  
   describe "'internal:createText'" do 
     it "should be possible to invoke from Ioke with a regular String" do 
       ioke = IokeRuntime.get_runtime()
-      ioke.evaluate_stream(StringReader.new(%q[internal:createText("foo")])).data.text.should == "foo"
+      ioke.evaluate_string(%q[internal:createText("foo")]).data.text.should == "foo"
     end
   end
 

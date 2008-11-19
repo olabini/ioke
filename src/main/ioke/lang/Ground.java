@@ -41,5 +41,6 @@ public class Ground {
         ground.registerCell("Condition", runtime.condition);
         ground.registerCell("Rescue", runtime.rescue);
         ground.registerCell("Handler", runtime.handler);
+        ground.registerCell("IO", runtime.io);
     }
 }// Ground

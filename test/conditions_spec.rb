@@ -2,7 +2,84 @@ include_class('ioke.lang.Runtime') { 'IokeRuntime' } unless defined?(IokeRuntime
 
 import Java::java.io.StringReader unless defined?(StringReader)
 
+import Java::java.io.PrintWriter unless defined?(PrintWriter)
+import Java::java.io.StringWriter unless defined?(StringWriter)
+import Java::java.io.InputStreamReader unless defined?(InputStreamReader)
+import Java::java.lang.System unless defined?(System)
+
 describe 'DefaultBehavior' do 
+  describe "'warn!'" do 
+    it "should signal a Condition Warning Default by default" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string(<<CODE).should == ioke.true
+x = bind(
+      rescue(fn(c, c)),
+      warn!("something"))
+(x text == "something") && (x kind?("Condition Warning Default"))
+CODE
+    end
+    
+    it "should take an existing condition" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string(<<CODE).should == ioke.true
+c1 = Condition mimic
+bind(
+  rescue(fn(c, c == c1)),
+  warn!(c1))
+CODE
+    end
+
+    it "should take a condition mimic and a set of keyword parameters" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string(<<CODE).should == ioke.true
+cx = bind(
+       rescue(fn(c, c)),
+       warn!(Condition, foo: "bar"))
+(cx foo == "bar") && (cx != Condition)
+CODE
+    end
+    
+    it "should print something to System err if no restart or unwinding happens" do 
+      sw = StringWriter.new(20)
+      err = PrintWriter.new(sw)
+      
+      sw2 = StringWriter.new(0)
+      out = PrintWriter.new(sw2)
+
+      ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), err)
+      ioke.evaluate_string(<<CODE)
+warn!("something")
+CODE
+      sw.to_string.should == "WARNING: something\n"
+    end
+
+    it "should print whatever is returned from a call to report for the condition signalled" do 
+      sw = StringWriter.new(20)
+      err = PrintWriter.new(sw)
+      sw2 = StringWriter.new(0)
+      out = PrintWriter.new(sw2)
+      ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), err)
+      ioke.evaluate_string(<<CODE)
+c = Condition mimic
+c report = method("flurg")
+warn!(c)
+CODE
+      sw.to_string.should == "WARNING: flurg\n"
+    end
+    
+    it "should establish an ignore-restart" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string(<<CODE).should_not == ioke.nil
+gah = nil
+bind(
+    rescue(fn(c, gah)),
+    handle(fn(c, gah = findRestart(:ignore))),
+
+    warn!("something"))
+CODE
+    end
+  end
+  
   describe "'signal!'" do 
     it "should take an existing condition" do 
       ioke = IokeRuntime.get_runtime

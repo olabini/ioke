@@ -45,3 +45,16 @@ DefaultBehavior with = macro(
       newObject cell(arg name asText[0..-2]) = arg next evaluateOn(call ground),
       newObject doMessage(arg)))
   newObject)
+
+DefaultBehavior warn! = method(
+  "takes the same kind of arguments as 'signal!', and will signal a condition. the default condition used is Condition Warning Default. a restart called 'ignore' will be established. if no rescue or restart is invoked warn! will report a warning to System err.",
+  datum, +:krest,
+
+  if(datum kind?("Text"), 
+    datum = Condition Warning Default with(text: datum))
+  bind(
+    restart(ignore, fn(datum)),
+
+    result = signal!(datum, *krest)
+    System err println("WARNING: #{result report}")
+    result))

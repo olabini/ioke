@@ -110,6 +110,34 @@ public class DefaultArgumentsDefinition {
         return sb.toString();
     }
 
+    public static void getEvaluatedArguments(IokeObject message, IokeObject context, List<Object> posArgs, Map<String, Object> keyArgs) throws ControlFlow {
+        List<Object> arguments = message.getArguments();
+
+        for(Object o : arguments) {
+            if(Message.isKeyword(o)) {
+                String name = IokeObject.as(o).getName();
+
+                keyArgs.put(name.substring(0, name.length()-1), Message.getEvaluatedArgument(((Message)IokeObject.data(o)).next, context));
+            } else if(Message.hasName(o, "*") && IokeObject.as(o).getArguments().size() == 1) { // Splat
+                Object result = Message.getEvaluatedArgument(IokeObject.as(o).getArguments().get(0), context);
+                if(IokeObject.data(result) instanceof IokeList) {
+                    List<Object> elements = IokeList.getList(result);
+                    posArgs.addAll(elements);
+                } else if(IokeObject.data(result) instanceof Dict) {
+                    Map<Object, Object> keys = Dict.getMap(result);
+                    for(Map.Entry<Object, Object> me : keys.entrySet()) {
+                        String name = Text.getText(IokeObject.convertToText(me.getKey(), message, context));
+                        keyArgs.put(name, me.getValue());
+                    }
+                } else {
+                    throw new RuntimeException("Asked to splat " + result + " which is nether a List nor a Dict. Buhu on you!");
+                }
+            } else {
+                posArgs.add(Message.getEvaluatedArgument(o, context));
+            }
+        }
+    }
+
     public void assignArgumentValues(IokeObject locals, IokeObject context, IokeObject message, Object on) throws ControlFlow {
         List<Object> arguments = message.getArguments();
         List<Object> argumentsWithoutKeywords = new ArrayList<Object>();
