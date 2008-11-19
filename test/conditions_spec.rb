@@ -4,6 +4,26 @@ import Java::java.io.StringReader unless defined?(StringReader)
 
 describe 'DefaultBehavior' do 
   describe "'signal!'" do 
+    it "should take an existing condition" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string(<<CODE).should == ioke.true
+c1 = Condition mimic
+bind(
+  rescue(fn(c, c == c1)),
+  signal!(c1))
+CODE
+    end
+
+    it "should take a condition mimic and a set of keyword parameters" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string(<<CODE).should == ioke.true
+cx = bind(
+       rescue(fn(c, c)),
+       signal!(Condition, foo: "bar"))
+(cx foo == "bar") && (cx != Condition)
+CODE
+    end
+    
     it "should not execute a handler that's not applicable" do 
       ioke = IokeRuntime.get_runtime
       ioke.evaluate_string(<<CODE).should == ioke.true
