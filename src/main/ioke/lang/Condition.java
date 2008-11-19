@@ -15,5 +15,13 @@ public class Condition {
         IokeObject conditionDefault = obj.mimic(null, null);
         conditionDefault.setKind("Condition Default");
         obj.setCell("Default", conditionDefault);
+
+        IokeObject conditionWarning = obj.mimic(null, null);
+        conditionWarning.setKind("Condition Warning");
+        obj.setCell("Warning", conditionWarning);
+
+        IokeObject conditionWarningDefault = conditionWarning.mimic(null, null);
+        conditionWarningDefault.setKind("Condition Warning Default");
+        conditionWarning.setCell("Default", conditionWarningDefault);
     }
 }// Condition

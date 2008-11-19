@@ -140,6 +140,14 @@ public class IokeSystem extends IokeData {
         l.add(runtime.newText("."));
         loadPath = runtime.newList(l);
 
+        IokeObject outx = runtime.io.mimic(null, null);
+        outx.data = new IokeIO(runtime.out);
+        obj.registerCell("out", outx);
+
+        IokeObject errx = runtime.io.mimic(null, null);
+        errx.data = new IokeIO(runtime.err);
+        obj.registerCell("err", errx);
+
         obj.registerMethod(runtime.newJavaMethod("returns the current file executing", new JavaMethod("currentFile") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {

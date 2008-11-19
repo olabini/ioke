@@ -179,6 +179,26 @@ public class DefaultBehavior {
                 }
             }));
 
+        obj.registerMethod(runtime.newJavaMethod("takes zero or more arguments, calls asText on non-text arguments, and then concatenates them and returns the result.", new DefaultBehaviorJavaMethod("internal:concatenateText") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    
+                    StringBuilder sb = new StringBuilder();
+
+                    for(Object o : args) {
+                        if(IokeObject.data(o) instanceof Text) {
+                            sb.append(Text.getText(o));
+                        } else {
+                            sb.append(Text.getText(context.runtime.asText.sendTo(context, o)));
+                        }
+                    }
+
+                    return context.runtime.newText(sb.toString());
+                }
+            }));
+
         obj.registerMethod(runtime.newJavaMethod("expects one 'strange' argument. creates a new instance of Text with the given Java String backing it.", new DefaultBehaviorJavaMethod("internal:createText") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
@@ -585,24 +605,24 @@ public class DefaultBehavior {
         obj.registerMethod(runtime.newJavaMethod("takes one or more datums descibing the condition to signal. this datum can be either a mimic of a Condition, in which case it will be signalled directly, or it can be a mimic of a Condition with arguments, in which case it will first be mimicked and the arguments assigned in some way. finally, if the argument is a Text, a mimic of Condition Default will be signalled, with the provided text.", new DefaultBehaviorJavaMethod("signal!") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    Object datum = message.getEvaluatedArgument(0, context);
+                    List<Object> positionalArgs = new ArrayList<Object>();
+                    Map<String, Object> keywordArgs = new HashMap<String, Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, positionalArgs, keywordArgs);
+
                     IokeObject newCondition = null;
 
+                    Object datum = positionalArgs.get(0);
+
                     if(Text.isText(datum)) {
-                        // Assume datum is text for now.
                         newCondition = IokeObject.as(context.runtime.condition.getCell(message, context, "Default")).mimic(message, context);
                         newCondition.setCell("text", datum);
                     } else {
-                        if(message.getArgumentCount() == 1) {
+                        if(keywordArgs.size() == 0) {
                             newCondition = IokeObject.as(datum);
                         } else {
                             newCondition = IokeObject.as(datum).mimic(message, context);
-                            List<Object> arguments = message.getArguments();
-                            for(int i = 1, j = arguments.size(); i < j; i++) {
-                                Object arg = arguments.get(i);
-                                String name = Message.name(arg);
-                                Object val = Message.getEvaluatedArgument(Message.next(arg), context);
-                                newCondition.setCell(name.substring(0, name.length()-1), val);
+                            for(Map.Entry<String,Object> val : keywordArgs.entrySet()) {
+                                newCondition.setCell(val.getKey(), val.getValue());
                             }
                         }
                     }

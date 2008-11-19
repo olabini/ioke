@@ -25,9 +25,9 @@ import ioke.lang.exceptions.ControlFlow;
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
 public class Runtime {
-    private PrintWriter out;
-    private PrintWriter err;
-    private Reader in;
+    PrintWriter out;
+    PrintWriter err;
+    Reader in;
 
     // Core objects and origins
     public IokeObject base = new IokeObject(this, "Base is the top of the inheritance structure. Most of the objects in the system is derived from this instance. Base should keep it's cells to the bare minimum needed for the system");
@@ -62,6 +62,7 @@ public class Runtime {
     public IokeObject condition = new IokeObject(this, "The root mimic of all the conditions in the system");
     public IokeObject rescue = new IokeObject(this, "A Rescue contains handling information from rescuing a Condition.");
     public IokeObject handler = new IokeObject(this, "A Handler contains handling information for handling a condition without unwinding the stack.");
+    public IokeObject io = new IokeObject(this, "IO is the base for all input/output in Ioke", new IokeIO());
 
     // Core messages
     public IokeObject asText = newMessage("asText");
@@ -140,6 +141,7 @@ public class Runtime {
         Condition.init(condition);
         Rescue.init(rescue);
         Handler.init(handler);
+        io.init();
 
         ground.mimicsWithoutCheck(base);
         ground.mimicsWithoutCheck(defaultBehavior);
@@ -167,7 +169,9 @@ public class Runtime {
         condition.mimicsWithoutCheck(origin);
         rescue.mimicsWithoutCheck(origin);
         handler.mimicsWithoutCheck(origin);
-        
+
+        io.mimicsWithoutCheck(origin);
+
         method.init();
         defaultMethod.init();
         javaMethod.init();
@@ -199,6 +203,7 @@ public class Runtime {
             evaluateString("use(\"builtin/A5_call\")");
             evaluateString("use(\"builtin/A6_list\")");
             evaluateString("use(\"builtin/A7_dict\")");
+            evaluateString("use(\"builtin/A9_conditions\")");
 
             evaluateString("use(\"builtin/M1_comparing\")");
             evaluateString("use(\"builtin/M2_enumerable\")");
@@ -306,6 +311,10 @@ public class Runtime {
 
     public IokeObject getCall() {
         return this.call;
+    }
+
+    public IokeObject getIO() {
+        return this.io;
     }
 
     private Map<String, Builtin> builtins = new HashMap<String, Builtin>();

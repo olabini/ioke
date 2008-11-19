@@ -31,10 +31,10 @@ Object based system. Hierarchy:
 
 these are all available by doing:
   error!
-  warning!
+  warn!
   signal!
 
-where signal! is the most general, and error! and warning! are implemented using signal!
+where signal! is the most general, and error! and warn! are implemented using signal!
 
 You can give signal! anything at all, although it generally should be something that mimics Condition
 
@@ -150,18 +150,18 @@ This is the easiest part. Conditions are signalled using:
 
 signal!(datum, +args)
 error!(datum, +args)
-warning!(datum, +args)
+warn!(datum, +args)
 
 where datum are mostly the same things as in Common Lisp, and args are the rest of the arguments that are passed to the creation function for a condition
 
 
-Implementing error! and warning!
+Implementing error! and warn!
 --------------------------------
 
 These are both implemented in terms of signal!. Specifically, if a rescue happens at any point, they obviously do the same thing. But if no rescue happens, the behavior is different in this way:
-warning! can be defined more or less like this:
+warn! can be defined more or less like this:
 
-warning! = method(+rest,
+warn! = method(+rest,
   bind(
     restart(ignore, fn(condition)),
 
@@ -178,7 +178,7 @@ muffle-warnings = method(code,
     code call))
 
 
-error! is trickier... it should have the same kind of approach as warning!, except what it should do is rather different. In fact, what it should do is this - if a debugger is online, invoke the debugger. It can be found in System Debugger or something like that. If no debugger is active, 
+error! is trickier... it should have the same kind of approach as warn!, except what it should do is rather different. In fact, what it should do is this - if a debugger is online, invoke the debugger. It can be found in System Debugger or something like that. If no debugger is active, 
 ... 
 ok, abcl first checks error depth, then calls debugger function. this will first run invoke-debugger-report-condition, which displays the actual condition.
 it then checks if it's running a REPL, if not it quits. if it is, it runs the debug-loop.
@@ -188,5 +188,5 @@ if no debugger is active, it will call quit with the condition - the effect will
 
 
 
-warning! will throw Condition Warning Default, if no instance is provided.
+warn!    will throw Condition Warning Default, if no instance is provided.
 error!   will throw Condition Error Default, if no instance is provided
