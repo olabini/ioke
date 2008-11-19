@@ -13,6 +13,16 @@ import ioke.lang.IokeObject;
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
 public class ControlFlow extends Throwable {
+    public static class Exit extends ControlFlow {
+        public Exit() {
+            super(null);
+        }
+
+        public Exit(Object reason) {
+            super(reason);
+        }
+    }
+
     public static class Break extends ControlFlow {
         public Break(Object value) {
             super(value);
