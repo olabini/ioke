@@ -207,8 +207,6 @@ public class Runtime {
 
             evaluateString("use(\"builtin/M1_comparing\")");
             evaluateString("use(\"builtin/M2_enumerable\")");
-
-            evaluateString("use(\"builtin/restarts\")");
         } catch(ControlFlow cf) {
         }
     }
