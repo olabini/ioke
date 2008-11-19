@@ -1,5 +1,5 @@
 
-5. signal!, error!, warn!
+5. error!
 6. create default hierarchy of conditions
 7. change internals to use conditions
 8. simple IO

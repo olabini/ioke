@@ -1,4 +1,5 @@
 include_class('ioke.lang.Runtime') { 'IokeRuntime' } unless defined?(IokeRuntime)
+include_class('ioke.lang.exceptions.ControlFlow') unless defined?(ControlFlow)
 
 import Java::java.io.StringReader unless defined?(StringReader)
 
@@ -8,6 +9,59 @@ import Java::java.io.InputStreamReader unless defined?(InputStreamReader)
 import Java::java.lang.System unless defined?(System)
 
 describe 'DefaultBehavior' do 
+  describe "'error!'" do 
+    it "should signal a Condition Error Default by default" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string(<<CODE).should == ioke.true
+x = bind(
+      rescue(fn(c, c)),
+      error!("something"))
+(x text == "something") && (x kind?("Condition Error Default"))
+CODE
+    end
+
+    it "should take an existing condition" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string(<<CODE).should == ioke.true
+c1 = Condition mimic
+bind(
+  rescue(fn(c, c == c1)),
+  error!(c1))
+CODE
+    end
+
+    it "should take a condition mimic and a set of keyword parameters" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string(<<CODE).should == ioke.true
+cx = bind(
+       rescue(fn(c, c)),
+       error!(Condition, foo: "bar"))
+(cx foo == "bar") && (cx != Condition)
+CODE
+    end
+
+    it "should print the condition and exit when no debugger is registered" do 
+      sw = StringWriter.new(20)
+      err = PrintWriter.new(sw)
+      
+      sw2 = StringWriter.new(0)
+      out = PrintWriter.new(sw2)
+
+      ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), err)
+
+      proc do 
+        ioke.evaluate_string(<<CODE).should == ioke.true
+System currentDebugger = nil
+error!("oh noes")
+CODE
+      end.should raise_error
+      
+      sw.to_string.should == "*** - oh noes\n"
+    end
+
+    it "should print the condition and invoke the debugger if it's registered"
+  end
+  
   describe "'warn!'" do 
     it "should signal a Condition Warning Default by default" do 
       ioke = IokeRuntime.get_runtime

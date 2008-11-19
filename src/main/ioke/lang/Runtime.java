@@ -80,6 +80,9 @@ public class Runtime {
     public IokeObject textMessage = newMessage("text");
     public IokeObject conditionsMessage = newMessage("conditions");
     public IokeObject handlerMessage = newMessage("handler");
+    public IokeObject reportMessage = newMessage("report");
+    public IokeObject printMessage = newMessage("print");
+    public IokeObject printlnMessage = newMessage("println");
 
     // NOT TO BE EXPOSED TO Ioke - used for internal usage only
     public final NullObject nul = new NullObject(this);

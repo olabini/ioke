@@ -32,6 +32,37 @@ public class DefaultBehavior {
         }
     }
 
+    public static IokeObject signal(Object datum, List<Object> positionalArgs, Map<String, Object> keywordArgs, IokeObject message, IokeObject context) throws ControlFlow {
+        IokeObject newCondition = null;
+        if(Text.isText(datum)) {
+            newCondition = IokeObject.as(context.runtime.condition.getCell(message, context, "Default")).mimic(message, context);
+            newCondition.setCell("text", datum);
+        } else {
+            if(keywordArgs.size() == 0) {
+                newCondition = IokeObject.as(datum);
+            } else {
+                newCondition = IokeObject.as(datum).mimic(message, context);
+                for(Map.Entry<String,Object> val : keywordArgs.entrySet()) {
+                    newCondition.setCell(val.getKey(), val.getValue());
+                }
+            }
+        }
+
+        Runtime.RescueInfo rescue = context.runtime.findActiveRescueFor(newCondition);
+
+        List<Runtime.HandlerInfo> handlers = context.runtime.findActiveHandlersFor(newCondition, (rescue == null) ? new Runtime.BindIndex(-1,-1) : rescue.index);
+        
+        for(Runtime.HandlerInfo rhi : handlers) {
+            context.runtime.callMessage.sendTo(context, context.runtime.handlerMessage.sendTo(context, rhi.handler), newCondition);
+        }
+
+        if(rescue != null) {
+            throw new ControlFlow.Rescue(rescue, newCondition);
+        }
+                    
+        return newCondition;
+    }
+
     public static void init(IokeObject obj) {
         final Runtime runtime = obj.runtime;
         obj.setKind("DefaultBehavior");
@@ -609,37 +640,34 @@ public class DefaultBehavior {
                     Map<String, Object> keywordArgs = new HashMap<String, Object>();
                     DefaultArgumentsDefinition.getEvaluatedArguments(message, context, positionalArgs, keywordArgs);
 
-                    IokeObject newCondition = null;
+                    Object datum = positionalArgs.get(0);
+                    
+                    return signal(datum, positionalArgs, keywordArgs, message, context);
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("takes the same kind of arguments as 'signal!', and will signal a condition. the default condition used is Condition Error Default. if no rescue or restart is invoked error! will report the condition to System err and exit the currently running Ioke VM. this might be a problem when exceptions happen inside of running Java code, as callbacks and so on..", new DefaultBehaviorJavaMethod("error!") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> positionalArgs = new ArrayList<Object>();
+                    Map<String, Object> keywordArgs = new HashMap<String, Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, positionalArgs, keywordArgs);
 
                     Object datum = positionalArgs.get(0);
 
-                    if(Text.isText(datum)) {
-                        newCondition = IokeObject.as(context.runtime.condition.getCell(message, context, "Default")).mimic(message, context);
-                        newCondition.setCell("text", datum);
-                    } else {
-                        if(keywordArgs.size() == 0) {
-                            newCondition = IokeObject.as(datum);
-                        } else {
-                            newCondition = IokeObject.as(datum).mimic(message, context);
-                            for(Map.Entry<String,Object> val : keywordArgs.entrySet()) {
-                                newCondition.setCell(val.getKey(), val.getValue());
-                            }
-                        }
+                    if(IokeObject.data(datum) instanceof Text) {
+                        Object oldDatum = datum;
+                        datum = IokeObject.as(IokeObject.as(context.runtime.condition.getCell(message, context, "Error")).getCell(message, context, "Default")).mimic(message, context);
+                        IokeObject.setCell(datum, message, context, "text", oldDatum);
                     }
 
-                    Runtime.RescueInfo rescue = context.runtime.findActiveRescueFor(newCondition);
-
-                    List<Runtime.HandlerInfo> handlers = context.runtime.findActiveHandlersFor(newCondition, (rescue == null) ? new Runtime.BindIndex(-1,-1) : rescue.index);
-
-                    for(Runtime.HandlerInfo rhi : handlers) {
-                        context.runtime.callMessage.sendTo(context, context.runtime.handlerMessage.sendTo(context, rhi.handler), newCondition);
-                    }
-
-                    if(rescue != null) {
-                        throw new ControlFlow.Rescue(rescue, newCondition);
-                    }
+                    IokeObject condition = signal(datum, positionalArgs, keywordArgs, message, context);
+                    IokeObject err = IokeObject.as(context.runtime.system.getCell(message, context, "err"));
                     
-                    return newCondition;
+                    context.runtime.printMessage.sendTo(context, err, context.runtime.newText("*** - "));
+                    context.runtime.printlnMessage.sendTo(context, err, context.runtime.reportMessage.sendTo(context, condition));
+                    
+                    throw new ControlFlow.Exit(condition);
                 }
             }));
 
