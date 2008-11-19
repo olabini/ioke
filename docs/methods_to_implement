@@ -6,6 +6,8 @@
 9. read & eval
 10. implement a basic debugger -- in Ioke
 
+ -- think about adding Clojure-style metadata
+
 - Eval as message on Message. Will eval in the callers environment
 - read is message that returns a message chain, right through the parser, just like in Lisp
 - think for real about pretty printer

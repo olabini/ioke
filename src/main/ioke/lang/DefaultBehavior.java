@@ -586,9 +586,26 @@ public class DefaultBehavior {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     Object datum = message.getEvaluatedArgument(0, context);
-                    // Assume datum is text for now.
-                    IokeObject newCondition = IokeObject.as(context.runtime.condition.getCell(message, context, "Default")).mimic(message, context);
-                    newCondition.setCell("text", datum);
+                    IokeObject newCondition = null;
+
+                    if(Text.isText(datum)) {
+                        // Assume datum is text for now.
+                        newCondition = IokeObject.as(context.runtime.condition.getCell(message, context, "Default")).mimic(message, context);
+                        newCondition.setCell("text", datum);
+                    } else {
+                        if(message.getArgumentCount() == 1) {
+                            newCondition = IokeObject.as(datum);
+                        } else {
+                            newCondition = IokeObject.as(datum).mimic(message, context);
+                            List<Object> arguments = message.getArguments();
+                            for(int i = 1, j = arguments.size(); i < j; i++) {
+                                Object arg = arguments.get(i);
+                                String name = Message.name(arg);
+                                Object val = Message.getEvaluatedArgument(Message.next(arg), context);
+                                newCondition.setCell(name.substring(0, name.length()-1), val);
+                            }
+                        }
+                    }
 
                     Runtime.RescueInfo rescue = context.runtime.findActiveRescueFor(newCondition);
 

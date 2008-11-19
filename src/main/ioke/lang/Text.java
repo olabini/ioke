@@ -100,6 +100,10 @@ public class Text extends IokeData {
         return ((Text)(IokeObject.data(on))).getText();
     }
 
+    public static boolean isText(Object on) {
+        return IokeObject.data(on) instanceof Text;
+    }
+
     public String getText() {
         return text;
     }
