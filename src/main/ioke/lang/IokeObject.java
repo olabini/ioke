@@ -173,6 +173,14 @@ public class IokeObject {
         return false;
     }
 
+    public static Object getCellChain(Object on, IokeObject m, IokeObject c, String... names) {
+        Object current = on;
+        for(String name : names) {
+            current = getCell(current, m, c, name);
+        }
+        return current;
+    }
+    
     public static Object getCell(Object on, IokeObject m, IokeObject context, String name) {
         return ((IokeObject)on).getCell(m, context, name);
     }

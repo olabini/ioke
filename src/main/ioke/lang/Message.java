@@ -39,6 +39,8 @@ public class Message extends IokeData {
     public IokeObject next;
     public IokeObject prev;
 
+    private IokeObject cached = null;
+
     public Message(Runtime runtime, String name) {
         this(runtime, name, null, Type.MESSAGE);
     }
@@ -60,6 +62,12 @@ public class Message extends IokeData {
         if(arg1 != null) {
             arguments.add(arg1);
         }
+    }
+
+    public static Message wrap(IokeObject cachedResult) {
+        Message m = new Message(cachedResult.runtime, "");
+        m.cached = cachedResult;
+        return m;
     }
 
     public static boolean isTerminator(Object message) {
@@ -561,11 +569,19 @@ public class Message extends IokeData {
 
     @Override
     public Object sendTo(IokeObject self, IokeObject context, Object recv) throws ControlFlow {
+        if(cached != null) {
+            return cached;
+        }
+
         return IokeObject.perform(recv, context, self);
     }
 
     @Override
     public Object sendTo(IokeObject self, IokeObject context, Object recv, Object argument) throws ControlFlow {
+        if(cached != null) {
+            return cached;
+        }
+
         IokeObject m = self.allocateCopy(self, context);
         m.getArguments().clear();
         m.getArguments().add(argument);
@@ -574,6 +590,10 @@ public class Message extends IokeData {
 
     @Override
     public Object sendTo(IokeObject self, IokeObject context, Object recv, Object arg1, Object arg2) throws ControlFlow {
+        if(cached != null) {
+            return cached;
+        }
+
         IokeObject m = self.allocateCopy(self, context);
         m.getArguments().clear();
         m.getArguments().add(arg1);
@@ -583,6 +603,10 @@ public class Message extends IokeData {
 
     @Override
     public Object sendTo(IokeObject self, IokeObject context, Object recv, List<Object> args) throws ControlFlow {
+        if(cached != null) {
+            return cached;
+        }
+
         IokeObject m = self.allocateCopy(self, context);
         m.getArguments().clear();
         m.getArguments().addAll(args);

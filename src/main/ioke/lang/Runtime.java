@@ -85,6 +85,7 @@ public class Runtime {
     public IokeObject printlnMessage = newMessage("println");
     public IokeObject currentDebuggerMessage = newMessage("currentDebugger");
     public IokeObject invokeMessage = newMessage("invoke");
+    public IokeObject errorMessage = newMessage("error!");
 
     // NOT TO BE EXPOSED TO Ioke - used for internal usage only
     public final NullObject nul = new NullObject(this);
@@ -209,6 +210,7 @@ public class Runtime {
             evaluateString("use(\"builtin/A6_list\")");
             evaluateString("use(\"builtin/A7_dict\")");
             evaluateString("use(\"builtin/A9_conditions\")");
+            evaluateString("use(\"builtin/A10_text\")");
 
             evaluateString("use(\"builtin/M1_comparing\")");
             evaluateString("use(\"builtin/M2_enumerable\")");
@@ -477,6 +479,10 @@ public class Runtime {
         obj.mimicsWithoutCheck(dict);
         obj.data = new Dict(map);
         return obj;
+    }
+
+    public void errorCondition(IokeObject cond) throws ControlFlow {
+        errorMessage.sendTo(ground, ground, createMessage(Message.wrap(cond)));
     }
 
     public IokeObject newList(List<Object> list) {
