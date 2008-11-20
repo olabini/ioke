@@ -59,7 +59,26 @@ CODE
       sw.to_string.should == "*** - oh noes\n"
     end
 
-    it "should print the condition and invoke the debugger if it's registered"
+    it "should print the condition and invoke the debugger if it's registered" do 
+      sw = StringWriter.new(20)
+      err = PrintWriter.new(sw)
+      
+      sw2 = StringWriter.new(0)
+      out = PrintWriter.new(sw2)
+
+      ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), err)
+
+      ioke.evaluate_string(<<CODE).should_not == ioke.nil
+debugger = Origin mimic
+xx = nil
+debugger invoke = method(condition, context, Ground xx = [condition, context]. invokeRestart(:abort))
+System currentDebugger = debugger
+bind(restart(abort, fn),
+  error!("oh noes"))
+xx
+CODE
+      sw.to_string.should == "*** - oh noes\n"
+    end
   end
   
   describe "'warn!'" do 

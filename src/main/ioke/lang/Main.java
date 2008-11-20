@@ -87,6 +87,8 @@ public class Main {
                     r.evaluateStream("<stdin>", new InputStreamReader(System.in));
                 }
             }
+        } catch(ControlFlow.Exit e) {
+            System.exit(1);
         } catch(ControlFlow e) {
             String name = e.getClass().getName();
             System.err.println("unexpected control flow: " + name.substring(name.indexOf("$") + 1).toLowerCase());

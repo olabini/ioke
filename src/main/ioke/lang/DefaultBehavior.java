@@ -646,7 +646,7 @@ public class DefaultBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("takes the same kind of arguments as 'signal!', and will signal a condition. the default condition used is Condition Error Default. if no rescue or restart is invoked error! will report the condition to System err and exit the currently running Ioke VM. this might be a problem when exceptions happen inside of running Java code, as callbacks and so on..", new DefaultBehaviorJavaMethod("error!") {
+        obj.registerMethod(runtime.newJavaMethod("takes the same kind of arguments as 'signal!', and will signal a condition. the default condition used is Condition Error Default. if no rescue or restart is invoked error! will report the condition to System err and exit the currently running Ioke VM. this might be a problem when exceptions happen inside of running Java code, as callbacks and so on.. if 'System currentDebugger' is non-nil, it will be invoked before the exiting of the VM. the exit can only be avoided by invoking a restart. that means that error! will never return. ", new DefaultBehaviorJavaMethod("error!") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> positionalArgs = new ArrayList<Object>();
@@ -667,6 +667,12 @@ public class DefaultBehavior {
                     context.runtime.printMessage.sendTo(context, err, context.runtime.newText("*** - "));
                     context.runtime.printlnMessage.sendTo(context, err, context.runtime.reportMessage.sendTo(context, condition));
                     
+                    IokeObject currentDebugger = IokeObject.as(context.runtime.currentDebuggerMessage.sendTo(context, context.runtime.system));
+
+                    if(!currentDebugger.isNil()) {
+                        context.runtime.invokeMessage.sendTo(context, currentDebugger, condition, context);
+                    }
+
                     throw new ControlFlow.Exit(condition);
                 }
             }));

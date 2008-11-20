@@ -148,6 +148,8 @@ public class IokeSystem extends IokeData {
         errx.data = new IokeIO(runtime.err);
         obj.registerCell("err", errx);
 
+        obj.registerCell("currentDebugger", runtime.nil);
+
         obj.registerMethod(runtime.newJavaMethod("returns the current file executing", new JavaMethod("currentFile") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {

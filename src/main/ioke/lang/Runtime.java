@@ -83,6 +83,8 @@ public class Runtime {
     public IokeObject reportMessage = newMessage("report");
     public IokeObject printMessage = newMessage("print");
     public IokeObject printlnMessage = newMessage("println");
+    public IokeObject currentDebuggerMessage = newMessage("currentDebugger");
+    public IokeObject invokeMessage = newMessage("invoke");
 
     // NOT TO BE EXPOSED TO Ioke - used for internal usage only
     public final NullObject nul = new NullObject(this);
