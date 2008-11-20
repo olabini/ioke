@@ -17,6 +17,10 @@ Condition Error Invocation MismatchedKeywords          = Condition Error Invocat
 Condition Error Type IncorrectType = Condition Error Type mimic
 
 
+Condition Error Invocation MismatchedKeywords report = method(
+  "returns a representation of this error, printing the given keywords that wasn't expected",
+  "didn't expect keyword arguments: #{extra inspect} given to '#{receiver inspect} #{message name}'\n" + 
+    (context stackTraceAsText))
 
 Condition Warning Default report = method(
   "returns a representation of this warning. by default returns the 'text' cell",

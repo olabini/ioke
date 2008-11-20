@@ -1,0 +1,2 @@
+
+Text aliasMethod("internal:concatenateText", "+")

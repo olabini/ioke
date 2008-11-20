@@ -5,6 +5,10 @@ include_class('ioke.lang.exceptions.MismatchedKeywords') unless defined?(Mismatc
 include_class('ioke.lang.exceptions.NoSuchCellException') unless defined?(NoSuchCellException)
 
 import Java::java.io.StringReader unless defined?(StringReader)
+import Java::java.io.PrintWriter unless defined?(PrintWriter)
+import Java::java.io.StringWriter unless defined?(StringWriter)
+import Java::java.io.InputStreamReader unless defined?(InputStreamReader)
+import Java::java.lang.System unless defined?(System)
 
 describe "DefaultBehavior" do 
   describe "'method'" do 
@@ -408,7 +412,10 @@ CODE
   end
 
   it "should raise an error when providing a keyword argument that haven't been defined" do 
-    ioke = IokeRuntime.get_runtime()
+    sw = StringWriter.new(20)
+    out = PrintWriter.new(sw)
+
+    ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
     ioke.evaluate_stream(StringReader.new(<<CODE))
 m1 = method(x, x)
 m2 = method(x 13, x)

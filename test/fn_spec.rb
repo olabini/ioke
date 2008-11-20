@@ -4,6 +4,10 @@ include_class('ioke.lang.exceptions.MismatchedArgumentCount') unless defined?(Mi
 include_class('ioke.lang.exceptions.ArgumentWithoutDefaultValue') unless defined?(ArgumentWithoutDefaultValue)
 
 import Java::java.io.StringReader unless defined?(StringReader)
+import Java::java.io.PrintWriter unless defined?(PrintWriter)
+import Java::java.io.StringWriter unless defined?(StringWriter)
+import Java::java.io.InputStreamReader unless defined?(InputStreamReader)
+import Java::java.lang.System unless defined?(System)
 
 describe "DefaultBehavior" do
   # TODO: when tests are converted to Ioke, this should be unescaped again.
@@ -597,7 +601,11 @@ CODE
   end
 
   it "should raise an error when providing a keyword argument that haven't been defined" do 
-    ioke = IokeRuntime.get_runtime()
+    sw = StringWriter.new(20)
+    out = PrintWriter.new(sw)
+
+    ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
+
     ioke.evaluate_stream(StringReader.new(<<CODE))
 m1 = fnx(x, x)
 m2 = fnx(x 13, x)
@@ -605,15 +613,15 @@ m3 = fnx(x: 42, x)
 CODE
 
     proc do 
-      ioke.evaluate_stream(StringReader.new("m1(1, foo: 13)"))
+      ioke.evaluate_string("m1(1, foo: 13)")
     end.should raise_error(MismatchedKeywords)
 
     proc do 
-      ioke.evaluate_stream(StringReader.new("m2(foo: 13)"))
+      ioke.evaluate_string("m2(foo: 13)")
     end.should raise_error(MismatchedKeywords)
 
     proc do 
-      ioke.evaluate_stream(StringReader.new("m3(foo: 13)"))
+      ioke.evaluate_string("m3(foo: 13)")
     end.should raise_error(MismatchedKeywords)
   end
 

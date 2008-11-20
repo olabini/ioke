@@ -139,6 +139,7 @@ public class DefaultArgumentsDefinition {
     }
 
     public void assignArgumentValues(IokeObject locals, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+        Runtime runtime = context.runtime;
         List<Object> arguments = message.getArguments();
         List<Object> argumentsWithoutKeywords = new ArrayList<Object>();
         int argCount = 0;
@@ -175,7 +176,30 @@ public class DefaultArgumentsDefinition {
         intersection.removeAll(keywords);
 
         if(krest == null && !intersection.isEmpty()) {
-            throw new MismatchedKeywords(message, keywords, intersection, on, context);
+            IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
+                                                                         message, 
+                                                                         context, 
+                                                                         "Error", 
+                                                                         "Invocation", 
+                                                                         "MismatchedKeywords")).mimic(message, context);
+            condition.setCell("message", message);
+            condition.setCell("context", context);
+            condition.setCell("receiver", on);
+
+            List<Object> expected = new ArrayList<Object>();
+            for(String s : keywords) {
+                expected.add(runtime.newText(s));
+            }
+
+            condition.setCell("expected", runtime.newList(expected));
+
+            List<Object> extra = new ArrayList<Object>();
+            for(String s : intersection) {
+                extra.add(runtime.newText(s));
+            }
+            condition.setCell("extra", runtime.newList(extra));
+
+            runtime.errorCondition(condition);
         }
 
         int ix = 0;
@@ -203,10 +227,10 @@ public class DefaultArgumentsDefinition {
             for(String s : intersection) {
                 Object given = givenKeywords.get(s);
                 Object result = given;
-                krests.put(context.runtime.getSymbol(s.substring(0, s.length()-1)), result);
+                krests.put(runtime.getSymbol(s.substring(0, s.length()-1)), result);
             }
             
-            locals.setCell(krest, context.runtime.newDict(krests));
+            locals.setCell(krest, runtime.newDict(krests));
         }
 
         if(rest != null) {
@@ -215,7 +239,7 @@ public class DefaultArgumentsDefinition {
                 rests.add(argumentsWithoutKeywords.get(ix));
             }
 
-            locals.setCell(rest, context.runtime.newList(rests));
+            locals.setCell(rest, runtime.newList(rests));
         }
     }
 
