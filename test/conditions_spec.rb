@@ -706,3 +706,122 @@ describe "Restart" do
     ioke.evaluate_string(%q[Restart code kind]).data.text.should == "LexicalBlock"
   end
 end
+
+describe "Condition" do 
+  it "should have the right kind" do 
+    ioke = IokeRuntime.get_runtime
+    ioke.evaluate_string('Condition kind == "Condition"').should == ioke.true
+  end
+  
+  describe "Default" do 
+    it "should have the right kind" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('Condition Default kind == "Condition Default"').should == ioke.true
+    end
+  end
+
+  describe "Warning" do 
+    it "should have the right kind" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('Condition Warning kind == "Condition Warning"').should == ioke.true
+    end
+
+    describe "Default" do 
+      it "should have the right kind" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string('Condition Warning Default kind == "Condition Warning Default"').should == ioke.true
+      end
+    end
+  end
+   
+  describe "Error" do 
+    it "should have the right kind" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('Condition Error kind == "Condition Error"').should == ioke.true
+    end
+
+    describe "Default" do 
+      it "should have the right kind" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string('Condition Error Default kind == "Condition Error Default"').should == ioke.true
+      end
+    end
+    
+    describe "Arithmetic" do 
+      it "should have the right kind" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string('Condition Error Arithmetic kind == "Condition Error Arithmetic"').should == ioke.true
+      end
+
+      describe "DivisionByZero" do 
+        it "should have the right kind" do 
+          ioke = IokeRuntime.get_runtime
+          ioke.evaluate_string('Condition Error Arithmetic DivisionByZero kind == "Condition Error Arithmetic DivisionByZero"').should == ioke.true
+        end
+      end
+    end
+    
+    describe "NoSuchCell" do 
+      it "should have the right kind" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string('Condition Error NoSuchCell kind == "Condition Error NoSuchCell"').should == ioke.true
+      end
+    end
+
+    describe "Invocation" do 
+      it "should have the right kind" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string('Condition Error Invocation kind == "Condition Error Invocation"').should == ioke.true
+      end
+
+      describe "NotActivatable" do 
+        it "should have the right kind" do 
+          ioke = IokeRuntime.get_runtime
+          ioke.evaluate_string('Condition Error Invocation NotActivatable kind == "Condition Error Invocation NotActivatable"').should == ioke.true
+        end
+      end
+
+      describe "ArgumentWithoutDefaultValue" do 
+        it "should have the right kind" do 
+          ioke = IokeRuntime.get_runtime
+          ioke.evaluate_string('Condition Error Invocation ArgumentWithoutDefaultValue kind == "Condition Error Invocation ArgumentWithoutDefaultValue"').should == ioke.true
+        end
+      end
+
+      describe "MismatchedArgumentCount" do 
+        it "should have the right kind" do 
+          ioke = IokeRuntime.get_runtime
+          ioke.evaluate_string('Condition Error Invocation MismatchedArgumentCount kind == "Condition Error Invocation MismatchedArgumentCount"').should == ioke.true
+        end
+      end
+
+      describe "MismatchedKeywords" do 
+        it "should have the right kind" do 
+          ioke = IokeRuntime.get_runtime
+          ioke.evaluate_string('Condition Error Invocation MismatchedKeywords kind == "Condition Error Invocation MismatchedKeywords"').should == ioke.true
+        end
+      end
+    end
+    
+    describe "CantMimicOddball" do 
+      it "should have the right kind" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string('Condition Error CantMimicOddball kind == "Condition Error CantMimicOddball"').should == ioke.true
+      end
+    end
+
+    describe "Type" do 
+      it "should have the right kind" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string('Condition Error Type kind == "Condition Error Type"').should == ioke.true
+      end
+
+      describe "IncorrectType" do 
+        it "should have the right kind" do 
+          ioke = IokeRuntime.get_runtime
+          ioke.evaluate_string('Condition Error Type IncorrectType kind == "Condition Error Type IncorrectType"').should == ioke.true
+        end
+      end
+    end
+  end
+end
