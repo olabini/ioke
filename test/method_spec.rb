@@ -42,64 +42,103 @@ describe "DefaultMethod" do
   end
   
   it "should report arity failures with regular arguments" do 
-    ioke = IokeRuntime.get_runtime()
+    sw = StringWriter.new(20)
+    out = PrintWriter.new(sw)
+
+    ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
     ioke.evaluate_stream(StringReader.new(<<CODE))
 noargs = method(nil)
 onearg = method(x, nil)
 twoargs = method(x, y, nil)
 CODE
 
-    proc do 
+    begin 
       ioke.evaluate_stream(StringReader.new("noargs(1)"))
-    end.should raise_error(MismatchedArgumentCount)
+      true.should be_false
+    rescue NativeException => cfe
+      cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Invocation TooManyArguments"
+    end
 
-    proc do 
+    begin 
       ioke.evaluate_stream(StringReader.new("onearg"))
-    end.should raise_error(MismatchedArgumentCount)
+      true.should be_false
+    rescue NativeException => cfe
+      cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Invocation TooFewArguments"
+    end
 
-    proc do 
+    begin 
       ioke.evaluate_stream(StringReader.new("onearg()"))
-    end.should raise_error(MismatchedArgumentCount)
+      true.should be_false
+    rescue NativeException => cfe
+      cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Invocation TooFewArguments"
+    end
 
-    proc do 
+    begin 
       ioke.evaluate_stream(StringReader.new("onearg(1, 2)"))
-    end.should raise_error(MismatchedArgumentCount)
+      true.should be_false
+    rescue NativeException => cfe
+      cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Invocation TooManyArguments"
+    end
 
-    proc do 
+    begin 
       ioke.evaluate_stream(StringReader.new("twoargs"))
-    end.should raise_error(MismatchedArgumentCount)
+      true.should be_false
+    rescue NativeException => cfe
+      cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Invocation TooFewArguments"
+    end
 
-    proc do 
+    begin 
       ioke.evaluate_stream(StringReader.new("twoargs()"))
-    end.should raise_error(MismatchedArgumentCount)
+      true.should be_false
+    rescue NativeException => cfe
+      cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Invocation TooFewArguments"
+    end
 
-    proc do 
+    begin 
       ioke.evaluate_stream(StringReader.new("twoargs(1)"))
-    end.should raise_error(MismatchedArgumentCount)
+      true.should be_false
+    rescue NativeException => cfe
+      cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Invocation TooFewArguments"
+    end
 
-    proc do 
+    begin 
       ioke.evaluate_stream(StringReader.new("twoargs(1, 2, 3)"))
-    end.should raise_error(MismatchedArgumentCount)
+      true.should be_false
+    rescue NativeException => cfe
+      cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Invocation TooManyArguments"
+    end
   end
 
   it "should report arity failures with optional arguments" do 
-    ioke = IokeRuntime.get_runtime()
+    sw = StringWriter.new(20)
+    out = PrintWriter.new(sw)
+
+    ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
     ioke.evaluate_stream(StringReader.new(<<CODE))
 oneopt       = method(x 1, nil)
 twoopt       = method(x 1, y 2, nil)
 CODE
 
-    proc do 
+    begin 
       ioke.evaluate_stream(StringReader.new("oneopt(1, 2)"))
-    end.should raise_error(MismatchedArgumentCount)
+      true.should be_false
+    rescue NativeException => cfe
+      cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Invocation TooManyArguments"
+    end
 
-    proc do 
+    begin 
       ioke.evaluate_stream(StringReader.new("twoopt(1, 2, 3)"))
-    end.should raise_error(MismatchedArgumentCount)
+      true.should be_false
+    rescue NativeException => cfe
+      cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Invocation TooManyArguments"
+    end
   end
 
   it "should report arity failures with regular and optional arguments" do 
-    ioke = IokeRuntime.get_runtime()
+    sw = StringWriter.new(20)
+    out = PrintWriter.new(sw)
+
+    ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
     ioke.evaluate_stream(StringReader.new(<<CODE))
 oneopt       = method(y, x 1, nil)
 twoopt       = method(z, x 1, y 2, nil)
@@ -107,49 +146,82 @@ oneopttworeg = method(z, q, x 1, nil)
 twoopttworeg = method(z, q, x 1, y 2, nil)
 CODE
 
-    proc do 
+    begin 
       ioke.evaluate_stream(StringReader.new("oneopt"))
-    end.should raise_error(MismatchedArgumentCount)
+      true.should be_false
+    rescue NativeException => cfe
+      cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Invocation TooFewArguments"
+    end
 
-    proc do 
+    begin 
       ioke.evaluate_stream(StringReader.new("oneopt()"))
-    end.should raise_error(MismatchedArgumentCount)
+      true.should be_false
+    rescue NativeException => cfe
+      cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Invocation TooFewArguments"
+    end
 
-    proc do 
+    begin 
       ioke.evaluate_stream(StringReader.new("oneopt(1,2,3)"))
-    end.should raise_error(MismatchedArgumentCount)
+      true.should be_false
+    rescue NativeException => cfe
+      cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Invocation TooManyArguments"
+    end
     
-    proc do 
+    begin 
       ioke.evaluate_stream(StringReader.new("twoopt"))
-    end.should raise_error(MismatchedArgumentCount)
+      true.should be_false
+    rescue NativeException => cfe
+      cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Invocation TooFewArguments"
+    end
 
-    proc do 
+    begin 
       ioke.evaluate_stream(StringReader.new("twoopt()"))
-    end.should raise_error(MismatchedArgumentCount)
+      true.should be_false
+    rescue NativeException => cfe
+      cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Invocation TooFewArguments"
+    end
 
-    proc do 
+    begin 
       ioke.evaluate_stream(StringReader.new("twoopt(1,2,3,4)"))
-    end.should raise_error(MismatchedArgumentCount)
+      true.should be_false
+    rescue NativeException => cfe
+      cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Invocation TooManyArguments"
+    end
     
-    proc do 
+    begin 
       ioke.evaluate_stream(StringReader.new("oneopttworeg"))
-    end.should raise_error(MismatchedArgumentCount)
+      true.should be_false
+    rescue NativeException => cfe
+      cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Invocation TooFewArguments"
+    end
 
-    proc do 
+    begin 
       ioke.evaluate_stream(StringReader.new("oneopttworeg()"))
-    end.should raise_error(MismatchedArgumentCount)
+      true.should be_false
+    rescue NativeException => cfe
+      cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Invocation TooFewArguments"
+    end
 
-    proc do 
+    begin 
       ioke.evaluate_stream(StringReader.new("oneopttworeg(1)"))
-    end.should raise_error(MismatchedArgumentCount)
+      true.should be_false
+    rescue NativeException => cfe
+      cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Invocation TooFewArguments"
+    end
 
-    proc do 
+    begin 
       ioke.evaluate_stream(StringReader.new("oneopttworeg(1,2,3,4)"))
-    end.should raise_error(MismatchedArgumentCount)
+      true.should be_false
+    rescue NativeException => cfe
+      cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Invocation TooManyArguments"
+    end
 
-    proc do 
+    begin 
       ioke.evaluate_stream(StringReader.new("twoopttworeg(1,2,3,4,5)"))
-    end.should raise_error(MismatchedArgumentCount)
+      true.should be_false
+    rescue NativeException => cfe
+      cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Invocation TooManyArguments"
+    end
   end
   
   it "should report mismatched arguments when trying to define optional arguments before regular ones" do 

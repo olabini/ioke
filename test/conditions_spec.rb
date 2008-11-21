@@ -788,10 +788,17 @@ describe "Condition" do
         end
       end
 
-      describe "MismatchedArgumentCount" do 
+      describe "TooManyArguments" do 
         it "should have the right kind" do 
           ioke = IokeRuntime.get_runtime
-          ioke.evaluate_string('Condition Error Invocation MismatchedArgumentCount kind == "Condition Error Invocation MismatchedArgumentCount"').should == ioke.true
+          ioke.evaluate_string('Condition Error Invocation TooManyArguments kind == "Condition Error Invocation TooManyArguments"').should == ioke.true
+        end
+      end
+
+      describe "TooFewArguments" do 
+        it "should have the right kind" do 
+          ioke = IokeRuntime.get_runtime
+          ioke.evaluate_string('Condition Error Invocation TooFewArguments kind == "Condition Error Invocation TooFewArguments"').should == ioke.true
         end
       end
 
