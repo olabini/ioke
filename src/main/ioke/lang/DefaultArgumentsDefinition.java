@@ -168,12 +168,11 @@ public class DefaultArgumentsDefinition {
             }
         }
 
-        final int finalArgCount = argCount;
         
-        if(argCount < min || (max != -1 && argCount > max)) {
+        while(argCount < min || (max != -1 && argCount > max)) {
+            final int finalArgCount = argCount;
             if(argCount < min) {
-                // TODO Make it possible to add new arguments at a reader
-                IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
+                final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
                                                                              message, 
                                                                              context, 
                                                                              "Error", 
@@ -183,9 +182,19 @@ public class DefaultArgumentsDefinition {
                 condition.setCell("context", locals);
                 condition.setCell("receiver", on);
                 condition.setCell("missing", runtime.newNumber(min-argCount));
+                
+                List<Object> newArguments = runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
+                        public void run() throws ControlFlow {
+                            runtime.errorCondition(condition);
+                        }}, 
+                    context,
+                    new Restart.ArgumentGivingRestart("provideExtraArguments"),
+                    new Restart.DefaultValuesGivingRestart("substituteNilArguments", runtime.nil, min-argCount)
+                    );
 
-                runtime.errorCondition(condition);
-            } else {
+                argCount += newArguments.size();
+                argumentsWithoutKeywords.addAll(newArguments);
+             } else {
                 runtime.withReturningRestart("ignoreExtraArguments", context, new RunnableWithControlFlow() {
                         public void run() throws ControlFlow {
                             IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
@@ -201,6 +210,7 @@ public class DefaultArgumentsDefinition {
 
                             runtime.errorCondition(condition);
                         }});
+                argCount = max;
             }
         }
 
