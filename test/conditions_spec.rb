@@ -808,6 +808,13 @@ describe "Condition" do
           ioke.evaluate_string('Condition Error Invocation MismatchedKeywords kind == "Condition Error Invocation MismatchedKeywords"').should == ioke.true
         end
       end
+
+      describe "NotSpreadable" do 
+        it "should have the right kind" do 
+          ioke = IokeRuntime.get_runtime
+          ioke.evaluate_string('Condition Error Invocation NotSpreadable kind == "Condition Error Invocation NotSpreadable"').should == ioke.true
+        end
+      end
     end
     
     describe "CantMimicOddball" do 

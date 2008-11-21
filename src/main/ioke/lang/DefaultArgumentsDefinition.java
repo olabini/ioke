@@ -111,6 +111,7 @@ public class DefaultArgumentsDefinition {
     }
 
     public static void getEvaluatedArguments(IokeObject message, IokeObject context, List<Object> posArgs, Map<String, Object> keyArgs) throws ControlFlow {
+        final Runtime runtime = context.runtime;
         List<Object> arguments = message.getArguments();
 
         for(Object o : arguments) {
@@ -130,7 +131,27 @@ public class DefaultArgumentsDefinition {
                         keyArgs.put(name, me.getValue());
                     }
                 } else {
-                    throw new RuntimeException("Asked to splat " + result + " which is nether a List nor a Dict. Buhu on you!");
+                    final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
+                                                                                       message, 
+                                                                                       context, 
+                                                                                       "Error", 
+                                                                                       "Invocation", 
+                                                                                       "NotSpreadable")).mimic(message, context);
+                    condition.setCell("message", message);
+                    condition.setCell("context", context);
+                    condition.setCell("receiver", context);
+                    condition.setCell("given", result);
+                
+                    List<Object> outp = IokeList.getList(runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
+                            public void run() throws ControlFlow {
+                                runtime.errorCondition(condition);
+                            }}, 
+                            context,
+                            new Restart.DefaultValuesGivingRestart("ignoreArgument", runtime.nil, 0),
+                            new Restart.DefaultValuesGivingRestart("takeArgumentAsIs", IokeObject.as(result), 1)
+                            ));
+
+                    posArgs.addAll(outp);
                 }
             } else {
                 posArgs.add(Message.getEvaluatedArgument(o, context));
@@ -160,7 +181,28 @@ public class DefaultArgumentsDefinition {
                         givenKeywords.put(Text.getText(IokeObject.convertToText(me.getKey(), message, context)) + ":", me.getValue());
                     }
                 } else {
-                    throw new RuntimeException("Asked to splat " + result + " which is nether a List nor a Dict. Buhu on you!");
+                    final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
+                                                                                       message, 
+                                                                                       context, 
+                                                                                       "Error", 
+                                                                                       "Invocation", 
+                                                                                       "NotSpreadable")).mimic(message, context);
+                    condition.setCell("message", message);
+                    condition.setCell("context", locals);
+                    condition.setCell("receiver", on);
+                    condition.setCell("given", result);
+                
+                    List<Object> outp = IokeList.getList(runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
+                            public void run() throws ControlFlow {
+                                runtime.errorCondition(condition);
+                            }}, 
+                            context,
+                            new Restart.DefaultValuesGivingRestart("ignoreArgument", runtime.nil, 0),
+                            new Restart.DefaultValuesGivingRestart("takeArgumentAsIs", IokeObject.as(result), 1)
+                            ));
+
+                    argumentsWithoutKeywords.addAll(outp);
+                    argCount += outp.size();
                 }
             } else {
                 argumentsWithoutKeywords.add(Message.getEvaluatedArgument(o, context));
@@ -183,14 +225,14 @@ public class DefaultArgumentsDefinition {
                 condition.setCell("receiver", on);
                 condition.setCell("missing", runtime.newNumber(min-argCount));
                 
-                List<Object> newArguments = runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
+                List<Object> newArguments = IokeList.getList(runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
                         public void run() throws ControlFlow {
                             runtime.errorCondition(condition);
                         }}, 
                     context,
                     new Restart.ArgumentGivingRestart("provideExtraArguments"),
                     new Restart.DefaultValuesGivingRestart("substituteNilArguments", runtime.nil, min-argCount)
-                    );
+                        ));
 
                 argCount += newArguments.size();
                 argumentsWithoutKeywords.addAll(newArguments);
@@ -346,7 +388,7 @@ public class DefaultArgumentsDefinition {
                     condition.setCell("argumentName", runtime.getSymbol(m.getName(null)));
                     condition.setCell("index", runtime.newNumber(index));
                 
-                    List<Object> newValue = runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
+                    List<Object> newValue = IokeList.getList(runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
                             public void run() throws ControlFlow {
                                 runtime.errorCondition(condition);
                             }}, 
@@ -354,7 +396,7 @@ public class DefaultArgumentsDefinition {
                         // Maybe also provide an unevaluated message...
                         new Restart.ArgumentGivingRestart("provideDefaultValue"),
                         new Restart.DefaultValuesGivingRestart("substituteNilDefault", runtime.nil, 1)
-                        );
+                            ));
 
                     if(max != -1) {
                         max++;

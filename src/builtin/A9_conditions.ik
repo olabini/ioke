@@ -14,6 +14,7 @@ Condition Error Invocation ArgumentWithoutDefaultValue = Condition Error Invocat
 Condition Error Invocation TooFewArguments             = Condition Error Invocation mimic
 Condition Error Invocation TooManyArguments            = Condition Error Invocation mimic
 Condition Error Invocation MismatchedKeywords          = Condition Error Invocation mimic
+Condition Error Invocation NotSpreadable               = Condition Error Invocation mimic
 
 Condition Error Type IncorrectType = Condition Error Type mimic
 
@@ -21,7 +22,7 @@ Condition Error Type IncorrectType = Condition Error Type mimic
 Condition Error Invocation MismatchedKeywords report = method(
   "returns a representation of this error, printing the given keywords that wasn't expected",
 
-  "didn't expect keyword arguments: #{extra inspect} given to '#{message name}' (#{kind})
+  "didn't expect keyword arguments: #{extra inspect} given to '#{message name}' (#{self kind})
 
 #{context stackTraceAsText}")
 
@@ -45,7 +46,15 @@ Condition Error Invocation TooFewArguments report = method(
 Condition Error Invocation ArgumentWithoutDefaultValue report = method(
   "returns a representation of this error, printing the name and position of the argument that didn't have a default value",
 
-  "didn't get a default value to argument '#{argumentName}' at position #{index}, following an optional argument when defining a method (#{kind})
+  "didn't get a default value to argument '#{argumentName}' at position #{index}, following an optional argument when defining a method (#{self kind})
+
+#{context stackTraceAsText}")
+
+
+Condition Error Invocation NotSpreadable report = method(
+  "returns a representation of this error, printing the object that couldn't be spread",
+
+  "can't spread value '#{given inspect}' given to method '#{message name}' (#{self kind})
 
 #{context stackTraceAsText}")
 

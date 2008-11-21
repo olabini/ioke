@@ -526,7 +526,7 @@ public class Runtime {
         }            
     }
 
-    public List<Object> withRestartReturningArguments(RunnableWithControlFlow code, IokeObject context, Restart.JavaRestart... restarts) throws ControlFlow {
+    public Object withRestartReturningArguments(RunnableWithControlFlow code, IokeObject context, Restart.JavaRestart... restarts) throws ControlFlow {
         List<RestartInfo> rrs = new ArrayList<RestartInfo>();
         BindIndex index = getBindIndex();
         
@@ -547,7 +547,7 @@ public class Runtime {
             if((ri = e.getRestart()).token == rrs) {
                 Restart.JavaRestart currentRjr = (Restart.JavaRestart)ri.data;
                 IokeObject result = currentRjr.invoke(context, e.getArguments());
-                return IokeList.getList(result);
+                return result;
             } else {
                 throw e;
             } 

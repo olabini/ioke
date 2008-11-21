@@ -134,19 +134,31 @@ CODE
     end
     
     it "should complain when given the wrong number of arguments" do 
-      ioke = IokeRuntime.get_runtime()
+      sw = StringWriter.new(20)
+      out = PrintWriter.new(sw)
 
-      proc do 
+      ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
+
+      begin 
         ioke.evaluate_stream(StringReader.new(%q[fn() call(42)]))
-      end.should raise_error
+        true.should be_false
+      rescue NativeException => cfe
+        cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Invocation TooManyArguments"
+      end
 
-      proc do 
+      begin 
         ioke.evaluate_stream(StringReader.new(%q[fn(x, x) call()]))
-      end.should raise_error
+        true.should be_false
+      rescue NativeException => cfe
+        cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Invocation TooFewArguments"
+      end
 
-      proc do 
+      begin 
         ioke.evaluate_stream(StringReader.new(%q[fn(x, x) call(12, 42)]))
-      end.should raise_error
+        true.should be_false
+      rescue NativeException => cfe
+        cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Invocation TooManyArguments"
+      end
     end
 
     it "should be able to update variables in the scope it was defined" do 
@@ -417,7 +429,10 @@ CODE
   end
 
   it "should report mismatched arguments when trying to define optional arguments before regular ones" do 
-    ioke = IokeRuntime.get_runtime()
+    sw = StringWriter.new(20)
+    out = PrintWriter.new(sw)
+
+    ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
     begin 
       ioke.evaluate_stream(StringReader.new(<<CODE))
 fn(x 1, y, nil)
