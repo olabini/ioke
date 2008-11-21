@@ -526,6 +526,30 @@ public class Runtime {
         }            
     }
 
+    public void withReturningRestart(String name, IokeObject context, RunnableWithControlFlow code) throws ControlFlow {
+        IokeObject rr = IokeObject.as(mimic.sendTo(context, restart));
+        IokeObject.setCell(rr, "name", getSymbol(name));
+
+        List<RestartInfo> rrs = new ArrayList<RestartInfo>();
+        BindIndex index = getBindIndex();
+        rrs.add(0, new RestartInfo(name, rr, rrs, index));
+        index = index.nextCol();
+        registerRestarts(rrs);
+
+        try {
+            code.run();
+        } catch(ControlFlow.Restart e) {
+            RestartInfo ri = null;
+            if((ri = e.getRestart()).token == rrs) {
+                return;
+            } else {
+                throw e;
+            } 
+        } finally {
+            unregisterRestarts(rrs); 
+        }
+    }
+
     public static class RescueInfo {
         public final IokeObject rescue;
         public final List<Object> applicableConditions;
