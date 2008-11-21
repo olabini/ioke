@@ -39,7 +39,6 @@ describe "DefaultBehavior" do
 
     it "should search the added load paths" do 
       xpath = File.expand_path(File.join(File.dirname(__FILE__), "sub_load"))
-p xpath
       ioke = IokeRuntime.get_runtime
       result = ioke.evaluate_string(<<CODE)
 System loadPath << "#{xpath}"
