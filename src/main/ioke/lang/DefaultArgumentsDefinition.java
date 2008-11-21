@@ -292,7 +292,8 @@ public class DefaultArgumentsDefinition {
         return new DefaultArgumentsDefinition(new ArrayList<Argument>(), new ArrayList<String>(), null, null, 0, 0);
     }
 
-    public static DefaultArgumentsDefinition createFrom(List<Object> args, int start, int len, IokeObject message, Object on, IokeObject context) {
+    public static DefaultArgumentsDefinition createFrom(List<Object> args, int start, int len, final IokeObject message, final Object on, final IokeObject context) throws ControlFlow {
+        final Runtime runtime = context.runtime;
         List<Argument> arguments = new ArrayList<Argument>();
         List<String> keywords = new ArrayList<String>();
 
@@ -331,12 +332,40 @@ public class DefaultArgumentsDefinition {
             } else {
                 if(hadOptional) {
                     int index = args.indexOf(obj) + start;
-                    throw new ArgumentWithoutDefaultValue(message, index, on, context);
-                }
 
-                min++;
-                max++;
-                arguments.add(new Argument(IokeObject.as(obj).getName()));
+
+                    final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
+                                                                                       message, 
+                                                                                       context, 
+                                                                                       "Error", 
+                                                                                       "Invocation", 
+                                                                                       "ArgumentWithoutDefaultValue")).mimic(message, context);
+                    condition.setCell("message", message);
+                    condition.setCell("context", context);
+                    condition.setCell("receiver", on);
+                    condition.setCell("argumentName", runtime.getSymbol(m.getName(null)));
+                    condition.setCell("index", runtime.newNumber(index));
+                
+                    List<Object> newValue = runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
+                            public void run() throws ControlFlow {
+                                runtime.errorCondition(condition);
+                            }}, 
+                        context,
+                        // Maybe also provide an unevaluated message...
+                        new Restart.ArgumentGivingRestart("provideDefaultValue"),
+                        new Restart.DefaultValuesGivingRestart("substituteNilDefault", runtime.nil, 1)
+                        );
+
+                    if(max != -1) {
+                        max++;
+                    }
+
+                    arguments.add(new OptionalArgument(m.getName(null), runtime.createMessage(Message.wrap(IokeObject.as(newValue.get(0))))));
+                } else {
+                    min++;
+                    max++;
+                    arguments.add(new Argument(IokeObject.as(obj).getName()));
+                }
             }
         }
 

@@ -49,7 +49,7 @@ public class Ground {
                                                     new JavaMethod("stackTraceAsText") {
                                                         @Override
                                                         public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                                                            return context.runtime.newText(" ---");
+                                                            return context.runtime.newText("");
                                                         }}));
     }
 }// Ground

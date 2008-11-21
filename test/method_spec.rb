@@ -225,12 +225,18 @@ CODE
   end
   
   it "should report mismatched arguments when trying to define optional arguments before regular ones" do 
-    ioke = IokeRuntime.get_runtime()
-    proc do 
+    sw = StringWriter.new(20)
+    out = PrintWriter.new(sw)
+
+    ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
+    begin 
       ioke.evaluate_stream(StringReader.new(<<CODE))
 method(x 1, y, nil)
 CODE
-    end.should raise_error(ArgumentWithoutDefaultValue)
+      true.should be_false
+    rescue NativeException => cfe
+      cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Invocation ArgumentWithoutDefaultValue"
+    end
   end
     
   it "should be possible to give it one optional argument with simple data" do 

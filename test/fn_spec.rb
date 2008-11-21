@@ -234,7 +234,10 @@ end
 
 describe "LexicalBlock" do 
   it "should report arity failures with regular arguments" do 
-    ioke = IokeRuntime.get_runtime()
+    sw = StringWriter.new(20)
+    out = PrintWriter.new(sw)
+
+    ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
     ioke.evaluate_stream(StringReader.new(<<CODE))
 noargs = fnx(nil)
 onearg = fnx(x, nil)
@@ -299,7 +302,10 @@ CODE
   end
 
   it "should report arity failures with optional arguments" do 
-    ioke = IokeRuntime.get_runtime()
+    sw = StringWriter.new(20)
+    out = PrintWriter.new(sw)
+
+    ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
     ioke.evaluate_stream(StringReader.new(<<CODE))
 oneopt       = fnx(x 1, nil)
 twoopt       = fnx(x 1, y 2, nil)
@@ -321,7 +327,10 @@ CODE
   end
 
   it "should report arity failures with regular and optional arguments" do 
-    ioke = IokeRuntime.get_runtime()
+    sw = StringWriter.new(20)
+    out = PrintWriter.new(sw)
+
+    ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
     ioke.evaluate_stream(StringReader.new(<<CODE))
 oneopt       = fnx(y, x 1, nil)
 twoopt       = fnx(z, x 1, y 2, nil)
@@ -409,11 +418,14 @@ CODE
 
   it "should report mismatched arguments when trying to define optional arguments before regular ones" do 
     ioke = IokeRuntime.get_runtime()
-    proc do 
+    begin 
       ioke.evaluate_stream(StringReader.new(<<CODE))
 fn(x 1, y, nil)
 CODE
-    end.should raise_error(ArgumentWithoutDefaultValue)
+      true.should be_false
+    rescue NativeException => cfe
+      cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Invocation ArgumentWithoutDefaultValue"
+    end
   end
     
   it "should be possible to give it one optional argument with simple data" do 
