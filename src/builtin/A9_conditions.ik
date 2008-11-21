@@ -33,12 +33,22 @@ Condition Error Invocation TooManyArguments report = method(
 
 #{context stackTraceAsText}")
 
+
 Condition Error Invocation TooFewArguments report = method(
   "returns a representation of this error, printing how many arguments were missing",
 
   "didn't get enough arguments: #{missing} missing, to '#{message name}' (#{self kind})
 
 #{context stackTraceAsText}")
+
+
+Condition Error Invocation ArgumentWithoutDefaultValue report = method(
+  "returns a representation of this error, printing the name and position of the argument that didn't have a default value",
+
+  "didn't get a default value to argument '#{argumentName}' at position #{index}, following an optional argument when defining a method (#{kind})
+
+#{context stackTraceAsText}")
+
 
 
 Condition Warning Default report = method(
