@@ -138,8 +138,8 @@ public class DefaultArgumentsDefinition {
         }
     }
 
-    public void assignArgumentValues(IokeObject locals, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-        Runtime runtime = context.runtime;
+    public void assignArgumentValues(final IokeObject locals, final IokeObject context, final IokeObject message, final Object on) throws ControlFlow {
+        final Runtime runtime = context.runtime;
         List<Object> arguments = message.getArguments();
         List<Object> argumentsWithoutKeywords = new ArrayList<Object>();
         int argCount = 0;
@@ -172,34 +172,38 @@ public class DefaultArgumentsDefinition {
             throw new MismatchedArgumentCount(message, "" + min + ".." + max, argCount, on, context);
         }
 
-        Set<String> intersection = new LinkedHashSet<String>(givenKeywords.keySet());
+        final Set<String> intersection = new LinkedHashSet<String>(givenKeywords.keySet());
         intersection.removeAll(keywords);
 
         if(krest == null && !intersection.isEmpty()) {
-            IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
-                                                                         message, 
-                                                                         context, 
-                                                                         "Error", 
-                                                                         "Invocation", 
-                                                                         "MismatchedKeywords")).mimic(message, context);
-            condition.setCell("message", message);
-            condition.setCell("context", locals);
-            condition.setCell("receiver", on);
+            // restart: ignoreExtraKeywords
+            runtime.withReturningRestart("ignoreExtraKeywords", context, new RunnableWithControlFlow() {
+                    public void run() throws ControlFlow {
+                        IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
+                                                                                     message, 
+                                                                                     context, 
+                                                                                     "Error", 
+                                                                                     "Invocation", 
+                                                                                     "MismatchedKeywords")).mimic(message, context);
+                        condition.setCell("message", message);
+                        condition.setCell("context", locals);
+                        condition.setCell("receiver", on);
 
-            List<Object> expected = new ArrayList<Object>();
-            for(String s : keywords) {
-                expected.add(runtime.newText(s));
-            }
+                        List<Object> expected = new ArrayList<Object>();
+                        for(String s : keywords) {
+                            expected.add(runtime.newText(s));
+                        }
 
-            condition.setCell("expected", runtime.newList(expected));
+                        condition.setCell("expected", runtime.newList(expected));
 
-            List<Object> extra = new ArrayList<Object>();
-            for(String s : intersection) {
-                extra.add(runtime.newText(s));
-            }
-            condition.setCell("extra", runtime.newList(extra));
+                        List<Object> extra = new ArrayList<Object>();
+                        for(String s : intersection) {
+                            extra.add(runtime.newText(s));
+                        }
+                        condition.setCell("extra", runtime.newList(extra));
 
-            runtime.errorCondition(condition);
+                        runtime.errorCondition(condition);
+                    }});
         }
 
         int ix = 0;
