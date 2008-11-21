@@ -141,7 +141,7 @@ public class DefaultArgumentsDefinition {
     public void assignArgumentValues(final IokeObject locals, final IokeObject context, final IokeObject message, final Object on) throws ControlFlow {
         final Runtime runtime = context.runtime;
         List<Object> arguments = message.getArguments();
-        List<Object> argumentsWithoutKeywords = new ArrayList<Object>();
+        final List<Object> argumentsWithoutKeywords = new ArrayList<Object>();
         int argCount = 0;
         Map<String, Object> givenKeywords = new LinkedHashMap<String, Object>();
         
@@ -167,16 +167,47 @@ public class DefaultArgumentsDefinition {
                 argCount++;
             }
         }
+
+        final int finalArgCount = argCount;
         
         if(argCount < min || (max != -1 && argCount > max)) {
-            throw new MismatchedArgumentCount(message, "" + min + ".." + max, argCount, on, context);
+            if(argCount < min) {
+                // TODO Make it possible to add new arguments at a reader
+                IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
+                                                                             message, 
+                                                                             context, 
+                                                                             "Error", 
+                                                                             "Invocation", 
+                                                                             "TooFewArguments")).mimic(message, context);
+                condition.setCell("message", message);
+                condition.setCell("context", locals);
+                condition.setCell("receiver", on);
+                condition.setCell("missing", runtime.newNumber(min-argCount));
+
+                runtime.errorCondition(condition);
+            } else {
+                runtime.withReturningRestart("ignoreExtraArguments", context, new RunnableWithControlFlow() {
+                        public void run() throws ControlFlow {
+                            IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
+                                                                                         message, 
+                                                                                         context, 
+                                                                                         "Error", 
+                                                                                         "Invocation", 
+                                                                                         "TooManyArguments")).mimic(message, context);
+                            condition.setCell("message", message);
+                            condition.setCell("context", locals);
+                            condition.setCell("receiver", on);
+                            condition.setCell("extra", runtime.newList(argumentsWithoutKeywords.subList(max, finalArgCount)));
+
+                            runtime.errorCondition(condition);
+                        }});
+            }
         }
 
         final Set<String> intersection = new LinkedHashSet<String>(givenKeywords.keySet());
         intersection.removeAll(keywords);
 
         if(krest == null && !intersection.isEmpty()) {
-            // restart: ignoreExtraKeywords
             runtime.withReturningRestart("ignoreExtraKeywords", context, new RunnableWithControlFlow() {
                     public void run() throws ControlFlow {
                         IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 

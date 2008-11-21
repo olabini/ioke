@@ -11,7 +11,8 @@ Condition Error Arithmetic DivisionByZero = Condition Error Arithmetic mimic
 
 Condition Error Invocation NotActivatable              = Condition Error Invocation mimic
 Condition Error Invocation ArgumentWithoutDefaultValue = Condition Error Invocation mimic
-Condition Error Invocation MismatchedArgumentCount     = Condition Error Invocation mimic
+Condition Error Invocation TooFewArguments             = Condition Error Invocation mimic
+Condition Error Invocation TooManyArguments            = Condition Error Invocation mimic
 Condition Error Invocation MismatchedKeywords          = Condition Error Invocation mimic
 
 Condition Error Type IncorrectType = Condition Error Type mimic
@@ -20,13 +21,25 @@ Condition Error Type IncorrectType = Condition Error Type mimic
 Condition Error Invocation MismatchedKeywords report = method(
   "returns a representation of this error, printing the given keywords that wasn't expected",
 
-  start = message
-  while((start prev) && ((start prev line) == message line),
-    start = start prev)
-
-  "didn't expect keyword arguments: #{extra inspect} given to '#{message name}'
+  "didn't expect keyword arguments: #{extra inspect} given to '#{message name}' (#{kind})
 
 #{context stackTraceAsText}")
+
+
+Condition Error Invocation TooManyArguments report = method(
+  "returns a representation of this error, printing the given argument values that wasn't expected",
+
+  "didn't expect these arguments: #{extra inspect} given to '#{message name}' (#{self kind})
+
+#{context stackTraceAsText}")
+
+Condition Error Invocation TooFewArguments report = method(
+  "returns a representation of this error, printing how many arguments were missing",
+
+  "didn't get enough arguments: #{missing} missing, to '#{message name}' (#{self kind})
+
+#{context stackTraceAsText}")
+
 
 Condition Warning Default report = method(
   "returns a representation of this warning. by default returns the 'text' cell",
