@@ -422,17 +422,26 @@ m2 = method(x 13, x)
 m3 = method(x: 42, x)
 CODE
 
-    proc do 
-      ioke.evaluate_stream(StringReader.new("m1(1, foo: 13)"))
-    end.should raise_error(MismatchedKeywords)
+    begin 
+      ioke.evaluate_string("m1(1, foo: 13)")
+      true.should be_false
+    rescue NativeException => cfe
+      cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Invocation MismatchedKeywords"
+    end
 
-    proc do 
-      ioke.evaluate_stream(StringReader.new("m2(foo: 13)"))
-    end.should raise_error(MismatchedKeywords)
+    begin 
+      ioke.evaluate_string("m2(foo: 13)")
+      true.should be_false
+    rescue NativeException => cfe
+      cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Invocation MismatchedKeywords"
+    end
 
-    proc do 
-      ioke.evaluate_stream(StringReader.new("m3(foo: 13)"))
-    end.should raise_error(MismatchedKeywords)
+    begin 
+      ioke.evaluate_string("m3(foo: 13)")
+      true.should be_false
+    rescue NativeException => cfe
+      cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Invocation MismatchedKeywords"
+    end
   end
 
   it "should be possible to get a list of keyword arguments" do 

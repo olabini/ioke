@@ -183,7 +183,7 @@ public class DefaultArgumentsDefinition {
                                                                          "Invocation", 
                                                                          "MismatchedKeywords")).mimic(message, context);
             condition.setCell("message", message);
-            condition.setCell("context", context);
+            condition.setCell("context", locals);
             condition.setCell("receiver", on);
 
             List<Object> expected = new ArrayList<Object>();

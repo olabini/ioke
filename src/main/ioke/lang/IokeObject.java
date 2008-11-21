@@ -58,6 +58,10 @@ public class IokeObject {
         return new IokeObject(runtime, documentation, data.cloneData(this, m, context));
     }
 
+    public static Object findCell(Object obj, IokeObject m, IokeObject context, String name) {
+        return as(obj).findCell(m, context, name, new IdentityHashMap<IokeObject, Object>());
+    }
+
     public static Object findCell(Object obj, IokeObject m, IokeObject context, String name, IdentityHashMap<IokeObject, Object> visited) {
         return as(obj).findCell(m, context, name, visited);
     }
