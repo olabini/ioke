@@ -123,6 +123,24 @@ public class Message extends IokeData {
                     return method.runtime.getSymbol(((Message)IokeObject.data(on)).name);
                 }
             }));
+        message.registerMethod(message.runtime.newJavaMethod("returns the file name where this message is written", new JavaMethod("filename") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
+                    return method.runtime.newText(((Message)IokeObject.data(on)).file);
+                }
+            }));
+        message.registerMethod(message.runtime.newJavaMethod("returns the line where this message is written", new JavaMethod("line") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
+                    return method.runtime.newNumber(((Message)IokeObject.data(on)).line);
+                }
+            }));
+        message.registerMethod(message.runtime.newJavaMethod("returns the position on the line where this message is written", new JavaMethod("position") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
+                    return method.runtime.newNumber(((Message)IokeObject.data(on)).pos);
+                }
+            }));
         message.registerMethod(message.runtime.newJavaMethod("returns the next message in the chain, or nil", new JavaMethod("next") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
@@ -131,6 +149,17 @@ public class Message extends IokeData {
                         return context.runtime.nil;
                     } else {
                         return next;
+                    }
+                }
+            }));
+        message.registerMethod(message.runtime.newJavaMethod("returns the previous message in the chain, or nil", new JavaMethod("prev") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
+                    IokeObject prev = ((Message)IokeObject.data(on)).prev;
+                    if(prev == null) {
+                        return context.runtime.nil;
+                    } else {
+                        return prev;
                     }
                 }
             }));

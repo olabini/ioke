@@ -612,17 +612,26 @@ m2 = fnx(x 13, x)
 m3 = fnx(x: 42, x)
 CODE
 
-    proc do 
+    begin 
       ioke.evaluate_string("m1(1, foo: 13)")
-    end.should raise_error(MismatchedKeywords)
+      true.should be_false
+    rescue NativeException => cfe
+      cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Invocation MismatchedKeywords"
+    end
 
-    proc do 
+    begin 
       ioke.evaluate_string("m2(foo: 13)")
-    end.should raise_error(MismatchedKeywords)
+      true.should be_false
+    rescue NativeException => cfe
+      cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Invocation MismatchedKeywords"
+    end
 
-    proc do 
+    begin 
       ioke.evaluate_string("m3(foo: 13)")
-    end.should raise_error(MismatchedKeywords)
+      true.should be_false
+    rescue NativeException => cfe
+      cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Invocation MismatchedKeywords"
+    end
   end
 
   it "should be possible to get a list of keyword arguments" do 

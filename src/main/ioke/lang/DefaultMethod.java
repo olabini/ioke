@@ -56,7 +56,7 @@ public class DefaultMethod extends Method {
         IokeObject c = context.runtime.locals.mimic(message, context);
         c.setCell("self", on);
         c.setCell("@", on);
-        c.setCell("currentMessage", on);
+        c.setCell("currentMessage", message);
         c.setCell("surroundingContext", context);
 
         arguments.assignArgumentValues(c, context, message, on);

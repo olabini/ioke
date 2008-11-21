@@ -62,7 +62,7 @@ public class DefaultMacro extends IokeData implements Named {
         IokeObject c = context.runtime.locals.mimic(message, context);
         c.setCell("self", on);
         c.setCell("@", on);
-        c.setCell("currentMessage", on);
+        c.setCell("currentMessage", message);
         c.setCell("surroundingContext", context);
         c.setCell("call", context.runtime.newCallFrom(c, message, context, IokeObject.as(on)));
 

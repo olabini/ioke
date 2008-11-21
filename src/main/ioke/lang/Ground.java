@@ -3,6 +3,8 @@
  */
 package ioke.lang;
 
+import ioke.lang.exceptions.ControlFlow;
+
 /**
  * The Ground serves the same purpose as the Lobby in Self and Io.
  * This is the place where everything is evaluated.
@@ -42,5 +44,12 @@ public class Ground {
         ground.registerCell("Rescue", runtime.rescue);
         ground.registerCell("Handler", runtime.handler);
         ground.registerCell("IO", runtime.io);
+
+        ground.registerMethod(runtime.newJavaMethod("will return a text representation of the current stack trace", 
+                                                    new JavaMethod("stackTraceAsText") {
+                                                        @Override
+                                                        public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                                                            return context.runtime.newText(" ---");
+                                                        }}));
     }
 }// Ground

@@ -32,5 +32,44 @@ public class Locals {
 
                                                                return context.runtime.nil;
                                                            }}));
+
+        obj.registerMethod(obj.runtime.newJavaMethod("will return a text representation of the current stack trace", 
+                                                       new JavaMethod("stackTraceAsText") {
+                                                           @Override
+                                                           public Object activate(IokeObject method, IokeObject context, IokeObject m, Object on) throws ControlFlow {
+                                                               Runtime runtime = context.runtime;
+                                                               StringBuilder sb = new StringBuilder();
+
+                                                               IokeObject current = IokeObject.as(on);
+                                                               while("Locals".equals(current.getKind())) {
+                                                                   IokeObject message = IokeObject.as(IokeObject.getCell(current, m, context, "currentMessage"));
+                                                                   IokeObject start = message;
+                                                                   
+                                                                   while(Message.prev(start) != null && Message.prev(start).getLine() == message.getLine()) {
+                                                                       start = Message.prev(start);
+                                                                   }
+
+                                                                   String s1 = Message.code(start);
+
+                                                                   int ix = s1.indexOf("\n");
+                                                                   if(ix > -1) {
+                                                                       ix--;
+                                                                   }
+
+                                                                   sb.append(String.format(" %-48.48s %s\n", (ix == -1 ? s1 : s1.substring(0,ix)),"[" + message.getFile() + ":" + message.getLine() + ":" + message.getPosition()  + getContextMessageName(IokeObject.as(current.getCells().get("surroundingContext"))) + "]"));
+
+                                                                   current = IokeObject.as(IokeObject.findCell(current, m, context, "surroundingContext"));
+                                                               }
+
+                                                               return runtime.newText(sb.toString());
+                                                           }}));
+    }
+
+    public static String getContextMessageName(IokeObject ctx) {
+        if("Locals".equals(ctx.getKind())) {
+            return ":in `" + IokeObject.as(ctx.getCells().get("currentMessage")).getName() + "'";
+        } else {
+            return "";
+        }
     }
 }// Locals
