@@ -526,13 +526,43 @@ public class Runtime {
         }            
     }
 
+    public List<Object> withRestartReturningArguments(RunnableWithControlFlow code, IokeObject context, Restart.JavaRestart... restarts) throws ControlFlow {
+        List<RestartInfo> rrs = new ArrayList<RestartInfo>();
+        BindIndex index = getBindIndex();
+        
+        for(Restart.JavaRestart rjr : restarts) {
+            IokeObject rr = IokeObject.as(mimic.sendTo(context, restart));
+            IokeObject.setCell(rr, "name", getSymbol(rjr.getName()));
+
+            rrs.add(0, new RestartInfo(rjr.getName(), rr, rrs, index, rjr));
+            index = index.nextCol();
+        }
+        registerRestarts(rrs);
+
+        try {
+            code.run();
+            return new ArrayList<Object>();
+        } catch(ControlFlow.Restart e) {
+            RestartInfo ri = null;
+            if((ri = e.getRestart()).token == rrs) {
+                Restart.JavaRestart currentRjr = (Restart.JavaRestart)ri.data;
+                IokeObject result = currentRjr.invoke(context, e.getArguments());
+                return IokeList.getList(result);
+            } else {
+                throw e;
+            } 
+        } finally {
+            unregisterRestarts(rrs); 
+        }
+    }
+
     public void withReturningRestart(String name, IokeObject context, RunnableWithControlFlow code) throws ControlFlow {
         IokeObject rr = IokeObject.as(mimic.sendTo(context, restart));
         IokeObject.setCell(rr, "name", getSymbol(name));
 
         List<RestartInfo> rrs = new ArrayList<RestartInfo>();
         BindIndex index = getBindIndex();
-        rrs.add(0, new RestartInfo(name, rr, rrs, index));
+        rrs.add(0, new RestartInfo(name, rr, rrs, index, null));
         index = index.nextCol();
         registerRestarts(rrs);
 
@@ -581,11 +611,13 @@ public class Runtime {
         public final IokeObject restart;
         public final Object token;
         public final BindIndex index;
-        public RestartInfo(String name, IokeObject restart, Object token, BindIndex index) {
+        public final Object data;
+        public RestartInfo(String name, IokeObject restart, Object token, BindIndex index, Object data) {
             this.name = name;
             this.restart = restart;
             this.token = token;
             this.index = index;
+            this.data = data;
         }
     }
 

@@ -539,7 +539,7 @@ public class DefaultBehavior {
                                     name = Symbol.getText(ioName);
                                 }
                             
-                                restarts.add(0, new Runtime.RestartInfo(name, bindable, restarts, index));
+                                restarts.add(0, new Runtime.RestartInfo(name, bindable, restarts, index, null));
                                 index = index.nextCol();
                             } else if(IokeObject.isKind(bindable, "Rescue")) {
                                 Object conditions = runtime.conditionsMessage.sendTo(context, bindable);
