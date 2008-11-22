@@ -93,7 +93,7 @@ public abstract class IokeData {
         };
 
 
-    public void init(IokeObject obj) {}
+    public void init(IokeObject obj) throws ControlFlow {}
     public void checkMimic(IokeObject obj, IokeObject m, IokeObject context) {}
     public boolean isNil() {return false;}
     public boolean isTrue() {return true;}
