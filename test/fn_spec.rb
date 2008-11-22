@@ -738,7 +738,10 @@ CODE
   end
 
   it "should be possible to use a keyword arguments value as a default value for a regular argument" do 
-    ioke = IokeRuntime.get_runtime()
+    sw = StringWriter.new(20)
+    out = PrintWriter.new(sw)
+
+    ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
     ioke.evaluate_stream(StringReader.new(<<CODE))
 m1 = fnx(x:, y x+2, y)
 m2 = fnx(y x+2, x:, y)
@@ -749,9 +752,12 @@ CODE
     ioke.evaluate_stream(StringReader.new("m1(x: 14, 42)")).data.as_java_integer.should == 42
     ioke.evaluate_stream(StringReader.new("m2(x: 14, 44)")).data.as_java_integer.should == 44
 
-    proc do 
+    begin 
       ioke.evaluate_stream(StringReader.new("m2(x:15)"))
-    end.should raise_error(NoSuchCellException)
+      true.should be_false
+    rescue NativeException => cfe
+      cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error NoSuchCell"
+    end
   end
 
   describe "rest (+)" do 

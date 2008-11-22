@@ -19,6 +19,16 @@ Condition Error Invocation NotSpreadable               = Condition Error Invocat
 Condition Error Type IncorrectType = Condition Error Type mimic
 
 
+;; ALL REPORTS NEED TO ADD message stackTraceElement as first line. change context to do the same thing
+
+
+Condition Error NoSuchCell report = method(
+  "returns a representation of this error, showing the name of the missing cell and the object that didn't have it",
+
+  "couldn't find cell '#{cellName}' on '#{receiver inspect}' (#{self kind})
+
+#{context stackTraceAsText}")
+
 Condition Error Invocation MismatchedKeywords report = method(
   "returns a representation of this error, printing the given keywords that wasn't expected",
 

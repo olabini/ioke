@@ -221,11 +221,45 @@ public class IokeObject {
     }
 
     public Object perform(IokeObject ctx, IokeObject message) throws ControlFlow {
-        String name = message.getName();
+        final String name = message.getName();
+        final String outerName = name;
         Object cell = this.findCell(message, ctx, name);
         
-        if(cell == runtime.nul && ((cell = this.findCell(message, ctx, "pass")) == runtime.nul)) {
-            throw new NoSuchCellException(message, name, this, ctx);
+        while(cell == runtime.nul && ((cell = this.findCell(message, ctx, "pass")) == runtime.nul)) {
+            
+            final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
+                                                                               message, 
+                                                                               ctx, 
+                                                                               "Error", 
+                                                                               "NoSuchCell")).mimic(message, ctx);
+            condition.setCell("message", message);
+            condition.setCell("context", ctx);
+            condition.setCell("receiver", this);
+            condition.setCell("cellName", runtime.getSymbol(name));
+
+            final Object[] newCell = new Object[]{cell};
+
+            runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
+                    public void run() throws ControlFlow {
+                        runtime.errorCondition(condition);
+                    }}, 
+                ctx,
+                new Restart.ArgumentGivingRestart("useValue") { 
+                    public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
+                        newCell[0] = arguments.get(0);
+                        return context.runtime.nil;
+                    }
+                },
+                new Restart.ArgumentGivingRestart("storeValue") {
+                    public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
+                        newCell[0] = arguments.get(0);
+                        setCell(outerName, newCell[0]);
+                        return context.runtime.nil;
+                    }
+                }
+                );
+
+            cell = newCell[0];
         }
 
         return getOrActivate(cell, ctx, message, this);
