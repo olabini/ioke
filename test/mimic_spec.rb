@@ -35,10 +35,16 @@ describe "Base" do
     end
 
     it "should not be able to mimic DefaultBehavior" do 
-      ioke = IokeRuntime.get_runtime()
-      proc do 
+      sw = StringWriter.new(20)
+      out = PrintWriter.new(sw)
+
+      ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
+      begin
         ioke.evaluate_stream(StringReader.new(%q[DefaultBehavior mimic]))
-      end.should raise_error(NoSuchCellException)
+        true.should be_false
+      rescue NativeException => cfe
+        cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error NoSuchCell"
+      end
     end
 
     it "should not be able to mimic nil" do 
