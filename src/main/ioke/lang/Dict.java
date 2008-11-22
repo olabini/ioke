@@ -6,6 +6,8 @@ package ioke.lang;
 import java.util.Map;
 import java.util.HashMap;
 
+import ioke.lang.exceptions.ControlFlow;
+
 /**
  *
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
@@ -22,7 +24,7 @@ public class Dict extends IokeData {
     }
 
     @Override
-    public void init(IokeObject obj) {
+    public void init(IokeObject obj) throws ControlFlow {
         final Runtime runtime = obj.runtime;
 
         obj.setKind("Dict");

@@ -35,7 +35,7 @@ public class IokeObject {
         this.data = data;
     }
 
-    public void init() {
+    public void init() throws ControlFlow {
         data.init(this);
     }
 
@@ -177,7 +177,7 @@ public class IokeObject {
         return false;
     }
 
-    public static Object getCellChain(Object on, IokeObject m, IokeObject c, String... names) {
+    public static Object getCellChain(Object on, IokeObject m, IokeObject c, String... names) throws ControlFlow {
         Object current = on;
         for(String name : names) {
             current = getCell(current, m, c, name);
@@ -185,7 +185,7 @@ public class IokeObject {
         return current;
     }
     
-    public static Object getCell(Object on, IokeObject m, IokeObject context, String name) {
+    public static Object getCell(Object on, IokeObject m, IokeObject context, String name) throws ControlFlow {
         return ((IokeObject)on).getCell(m, context, name);
     }
 
@@ -194,11 +194,44 @@ public class IokeObject {
         return value;
     }
 
-    public Object getCell(IokeObject m, IokeObject context, String name) {
+    public Object getCell(IokeObject m, IokeObject context, String name) throws ControlFlow {
+        final String outerName = name;
         Object cell = this.findCell(m, context, name);
 
-        if(cell == runtime.nul) {
-            throw new NoSuchCellException(m, name, this, context);
+        while(cell == runtime.nul) {
+            final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
+                                                                               m, 
+                                                                               context, 
+                                                                               "Error", 
+                                                                               "NoSuchCell")).mimic(m, context);
+            condition.setCell("message", m);
+            condition.setCell("context", context);
+            condition.setCell("receiver", this);
+            condition.setCell("cellName", runtime.getSymbol(name));
+
+            final Object[] newCell = new Object[]{cell};
+
+            runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
+                    public void run() throws ControlFlow {
+                        runtime.errorCondition(condition);
+                    }}, 
+                context,
+                new Restart.ArgumentGivingRestart("useValue") { 
+                    public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
+                        newCell[0] = arguments.get(0);
+                        return context.runtime.nil;
+                    }
+                },
+                new Restart.ArgumentGivingRestart("storeValue") {
+                    public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
+                        newCell[0] = arguments.get(0);
+                        setCell(outerName, newCell[0]);
+                        return context.runtime.nil;
+                    }
+                }
+                );
+
+            cell = newCell[0];
         }
 
         return cell;
