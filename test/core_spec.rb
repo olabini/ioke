@@ -108,7 +108,7 @@ describe "core" do
       runtime.ground.find_cell(nil, nil, 'System').object_id.should == runtime.system.object_id
       runtime.ground.find_cell(nil, nil, 'Runtime').object_id.should == runtime.iokeRuntime.object_id
       runtime.ground.find_cell(nil, nil, 'Text').object_id.should == runtime.text.object_id
-      runtime.ground.find_cell(nil, nil, 'Number').object_id.should == runtime.number.object_id
+      runtime.ground.find_cell(nil, nil, 'Number').should == runtime.number
       runtime.ground.find_cell(nil, nil, 'nil').object_id.should == runtime.nil.object_id
       runtime.ground.find_cell(nil, nil, 'true').object_id.should == runtime.true.object_id
       runtime.ground.find_cell(nil, nil, 'false').object_id.should == runtime.false.object_id

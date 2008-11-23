@@ -458,7 +458,7 @@ public class Runtime {
         return obj;
     }
 
-    public IokeObject newMessageFrom(IokeObject m, String name, List<Object> args) {
+    public IokeObject newMessageFrom(IokeObject m, String name, List<Object> args) throws ControlFlow {
         Message mess = new Message(this, name);
         mess.setFile(m.getFile());
         mess.setLine(m.getLine());

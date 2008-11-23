@@ -338,7 +338,7 @@ public class DefaultBehavior {
 
         obj.registerMethod(runtime.newJavaMethod("expects one code argument, optionally preceeded by a documentation string. will create a new DefaultMacro based on the code and return it.", new DefaultBehaviorJavaMethod("macro") {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> args = message.getArguments();
 
                     if(args.size() == 0) {

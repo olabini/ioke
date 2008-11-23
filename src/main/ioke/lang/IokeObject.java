@@ -518,27 +518,27 @@ public class IokeObject {
         return data.evaluateCompleteWith(this, ground);
     }
 
-    public List<Object> getArguments() {
+    public List<Object> getArguments() throws ControlFlow {
         return data.getArguments(this);
     }
 
-    public int getArgumentCount() {
+    public int getArgumentCount() throws ControlFlow {
         return data.getArgumentCount(this);
     }
 
-    public String getName() {
+    public String getName() throws ControlFlow {
         return data.getName(this);
     }
 
-    public String getFile() {
+    public String getFile() throws ControlFlow {
         return data.getFile(this);
     }
 
-    public int getLine() {
+    public int getLine() throws ControlFlow {
         return data.getLine(this);
     }
 
-    public int getPosition() {
+    public int getPosition() throws ControlFlow {
         return data.getPosition(this);
     }
 }// IokeObject
