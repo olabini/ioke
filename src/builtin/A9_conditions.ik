@@ -4,6 +4,7 @@
 Condition Error Arithmetic       = Condition Error mimic
 Condition Error CantMimicOddball = Condition Error mimic
 Condition Error Invocation       = Condition Error mimic
+Condition Error IO               = Condition Error mimic
 Condition Error Load             = Condition Error mimic
 Condition Error NoSuchCell       = Condition Error mimic
 Condition Error Type             = Condition Error mimic

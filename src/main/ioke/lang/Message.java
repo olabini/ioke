@@ -701,30 +701,8 @@ public class Message extends IokeData {
         return evaluateCompleteWith(self, IokeObject.as(ground), IokeObject.getRealContext(ground));
     }
 
-    public static int codePositionOf(IokeObject message, IokeObject m) {
-        return ((Message)message.data).codePositionOf(m);
-    }
-
     public static String code(IokeObject message) {
         return ((Message)message.data).code();
-    }
-
-    public int codePositionOf(IokeObject m) {
-        if(this == m.data) {
-            return 0;
-        }
-        StringBuilder base = new StringBuilder();
-
-        currentCode(base);
-        
-        if(next != null) {
-            if(this.type != Type.TERMINATOR) {
-                base.append(" ");
-            }
-
-            return base.length() + Message.codePositionOf(next, m);
-        }
-        throw new RuntimeException("internal error, can't find message: " + m);
     }
 
     public String code() {
