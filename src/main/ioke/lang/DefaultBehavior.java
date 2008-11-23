@@ -12,7 +12,6 @@ import java.util.Map;
 import java.util.HashSet;
 
 import ioke.lang.exceptions.ControlFlow;
-import ioke.lang.exceptions.MismatchedArgumentCount;
 import ioke.lang.exceptions.MismatchedKeywords;
 import ioke.lang.util.StringUtils;
 
@@ -418,14 +417,43 @@ public class DefaultBehavior {
                     IokeObject report = null;
                     IokeObject test = null;
                     IokeObject code = null;
+                    final Runtime runtime = context.runtime;
                     
                     List<Object> args = message.getArguments();
-
-                    if(args.size() > 4 || args.size() < 1) {
-                        throw new MismatchedArgumentCount(message, "1..4", args.size(), on, context);
+                    int argCount = args.size();
+                    if(argCount > 4) {
+                        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
+                                                                                     message, 
+                                                                                     context, 
+                                                                                     "Error", 
+                                                                                     "Invocation", 
+                                                                                     "TooManyArguments")).mimic(message, context);
+                        condition.setCell("message", message);
+                        condition.setCell("context", context);
+                        condition.setCell("receiver", on);
+                        condition.setCell("extra", runtime.newList(args.subList(4, argCount)));
+                        runtime.withReturningRestart("ignoreExtraArguments", context, new RunnableWithControlFlow() {
+                                public void run() throws ControlFlow {
+                                    runtime.errorCondition(condition);
+                                }});
+                        argCount = 4;
+                    } else if(argCount < 1) {
+                        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
+                                                                                           message, 
+                                                                                           context, 
+                                                                                           "Error", 
+                                                                                           "Invocation", 
+                                                                                           "TooFewArguments")).mimic(message, context);
+                        condition.setCell("message", message);
+                        condition.setCell("context", context);
+                        condition.setCell("receiver", on);
+                        condition.setCell("missing", runtime.newNumber(1-argCount));
+                
+                        runtime.errorCondition(condition);
                     }
 
-                    for(Object o : args) {
+                    for(int i=0; i<argCount; i++) {
+                        Object o = args.get(i);
                         Message m = (Message)IokeObject.data(o);
                         if(m.isKeyword()) {
                             String n = m.getName(null);

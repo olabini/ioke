@@ -1,6 +1,5 @@
 include_class('ioke.lang.Runtime') { 'IokeRuntime' } unless defined?(IokeRuntime)
 include_class('ioke.lang.exceptions.ControlFlow') unless defined?(ControlFlow)
-include_class('ioke.lang.exceptions.MismatchedArgumentCount') unless defined?(MismatchedArgumentCount)
 
 import Java::java.io.StringReader unless defined?(StringReader)
 import Java::java.io.PrintWriter unless defined?(PrintWriter)
