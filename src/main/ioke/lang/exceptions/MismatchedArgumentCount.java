@@ -12,6 +12,6 @@ import ioke.lang.IokeObject;
  */
 public class MismatchedArgumentCount extends IokeException {
     public MismatchedArgumentCount(IokeObject m, String expected, int received, Object on, IokeObject context) {
-        super(m, m.getName() + " expected " + expected + " arguments, but got " + received, on, context);
+        super(m, m + " expected " + expected + " arguments, but got " + received, on, context);
     }
 }// MismatchedArgumentCount

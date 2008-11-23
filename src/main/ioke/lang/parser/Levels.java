@@ -14,6 +14,7 @@ import ioke.lang.Runtime;
 import ioke.lang.Dict;
 import ioke.lang.Number;
 import ioke.lang.Symbol;
+import ioke.lang.exceptions.ControlFlow;
 
 /**
  * Based on Levels from Io IoMessage_opShuffle.c
@@ -34,7 +35,7 @@ public class Levels {
         int precedence;
         public Level(Type type) { this.type = type; }
 
-        public void attach(IokeObject msg) {
+        public void attach(IokeObject msg) throws ControlFlow {
             switch(type) {
             case Attach:
                 Message.setNext(message, msg);
@@ -61,7 +62,7 @@ public class Levels {
             this.message = msg;
         }
 
-        public void finish(List<IokeObject> expressions) {
+        public void finish(List<IokeObject> expressions) throws ControlFlow {
             if(message != null) {
                 Message.setNext(message, null);
                 if(message.getArgumentCount() == 1) {
@@ -228,7 +229,7 @@ public class Levels {
         Map<Object, Object> create(Runtime runtime);
     }
 
-    public Levels(IokeObject msg, IokeObject context, IokeObject message) {
+    public Levels(IokeObject msg, IokeObject context, IokeObject message) throws ControlFlow {
         this.runtime = context.runtime;
         this._context = context;
         this._message = message;
@@ -263,7 +264,7 @@ public class Levels {
 
 
 
-    public Map<Object, Object> getOpTable(IokeObject opTable, String name, OpTableCreator creator) {
+    public Map<Object, Object> getOpTable(IokeObject opTable, String name, OpTableCreator creator) throws ControlFlow {
         IokeObject operators = IokeObject.as(opTable.findCell(_message, _context, name));
         if(operators != runtime.nul && (IokeObject.data(operators) instanceof Dict)) {
             return Dict.getMap(operators);
@@ -283,7 +284,7 @@ public class Levels {
         return Number.value(value).intValue();
     }
 
-    public void popDownTo(int targetLevel, List<IokeObject> expressions) {
+    public void popDownTo(int targetLevel, List<IokeObject> expressions) throws ControlFlow {
         Level level = null;
         while((level = stack.get(0)) != null && level.precedence <= targetLevel && level.type != Level.Type.Arg) {
             stack.remove(0).finish(expressions);
@@ -308,17 +309,17 @@ public class Levels {
         return Number.value(value).intValue();
     }
 
-    public String nameForAssignOperator(IokeObject messageSymbol) {
+    public String nameForAssignOperator(IokeObject messageSymbol) throws ControlFlow {
         return Symbol.getText(assignOperatorTable.get(messageSymbol));
     }
     
-    public void attachAndReplace(Level self, IokeObject msg) {
+    public void attachAndReplace(Level self, IokeObject msg) throws ControlFlow {
         self.attach(msg);
         self.type = Level.Type.Attach;
         self.message = msg;
     }
 
-    public void attachToTopAndPush(IokeObject msg, int precedence) {
+    public void attachToTopAndPush(IokeObject msg, int precedence) throws ControlFlow {
         Level top = stack.get(0);
         attachAndReplace(top, msg);
 
@@ -327,7 +328,7 @@ public class Levels {
         stack.add(0, level);
     }
     
-    public void attach(IokeObject msg, List<IokeObject> expressions) {
+    public void attach(IokeObject msg, List<IokeObject> expressions) throws ControlFlow {
         // TODO: fix all places with setNext to do setPrev too!!!
 
         String messageName = Message.name(msg);
@@ -435,7 +436,7 @@ public class Levels {
         }
     }
 
-    public void nextMessage(List<IokeObject> expressions) {
+    public void nextMessage(List<IokeObject> expressions) throws ControlFlow {
         while(stack.size() > 0) {
             stack.remove(0).finish(expressions);
         }

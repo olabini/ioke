@@ -60,7 +60,7 @@ public class IokeException extends RuntimeException {
         return stes.toArray(new StackTraceElement[0]);
     }
 
-    public void reportError(PrintStream stream) {
+    public void reportError(PrintStream stream) throws ControlFlow {
         IokeObject start = message;
 
         while(Message.prev(start) != null && Message.prev(start).getLine() == message.getLine()) {
@@ -105,7 +105,7 @@ public class IokeException extends RuntimeException {
         stream.println();
     }
 
-    private String getContextMessageName(IokeObject ctx) {
+    private String getContextMessageName(IokeObject ctx) throws ControlFlow {
         if("Locals".equals(ctx.getKind())) {
             return ":in `" + IokeObject.as(ctx.getCells().get("currentMessage")).getName() + "'";
         } else {
@@ -114,6 +114,10 @@ public class IokeException extends RuntimeException {
     }
 
     public String toString() {
-        return message == null ? getMessage() : "[" + message.getFile() + ":" + message.getLine() + ":" + message.getPosition() + "] " + getMessage();
+        try {
+            return message == null ? getMessage() : "[" + message.getFile() + ":" + message.getLine() + ":" + message.getPosition() + "] " + getMessage();
+        } catch(ControlFlow e) {
+            return "blah";
+        }
     }
 }// IokeException

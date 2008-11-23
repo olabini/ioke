@@ -122,76 +122,109 @@ public abstract class IokeData {
     public IokeObject convertToPattern(IokeObject self, IokeObject m, IokeObject context) {
         throw new ObjectIsNotRightType(m, self, "Pattern", context);
     }
+    
+    private void report(Object self, IokeObject context, IokeObject message, String name) throws ControlFlow {
+        IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
+                                                                     message, 
+                                                                     context, 
+                                                                     "Error", 
+                                                                     "Invocation",
+                                                                     "NotActivatable")).mimic(message, context);
+        condition.setCell("message", message);
+        condition.setCell("context", context);
+        condition.setCell("receiver", self);
+        condition.setCell("methodNAme", context.runtime.getSymbol(name));
+        context.runtime.errorCondition(condition);
+    }
+
     public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-        throw new NotActivatableException(message, "Can't activate " + self + "#" + message.getName() + " on " + on, on, context);
+        report(self, context, message, "activate");
+        return context.runtime.nil;
     }
 
     public Object getEvaluatedArgument(IokeObject message, int index, IokeObject context) throws ControlFlow {
-        throw new NotActivatableException(message, "Can't getEvaluatedArgument from " + message, context, context);
+        report(context, context, message, "getEvaluatedArgument(" + index + ")");
+        return context.runtime.nil;
     }
 
     public List<Object> getEvaluatedArguments(IokeObject message, IokeObject context) throws ControlFlow {
-        throw new NotActivatableException(message, "Can't getEvaluatedArguments from " + message, context, context);
+        report(context, context, message, "getEvaluatedArguments");
+        return null;
     }
 
     public Object sendTo(IokeObject message, IokeObject context, Object recv) throws ControlFlow {
-        throw new NotActivatableException(message, "Can't sendTo on " + message, recv, context);
+        report(recv, context, message, "sendTo");
+        return context.runtime.nil;
     }
 
     public Object sendTo(IokeObject message, IokeObject context, Object recv, Object argument) throws ControlFlow {
-        throw new NotActivatableException(message, "Can't sendTo on " + message, recv, context);
+        report(recv, context, message, "sendTo/1");
+        return context.runtime.nil;
     }
 
     public Object sendTo(IokeObject message, IokeObject context, Object recv, Object arg1, Object arg2) throws ControlFlow {
-        throw new NotActivatableException(message, "Can't sendTo on " + message, recv, context);
+        report(recv, context, message, "sendTo/2");
+        return context.runtime.nil;
     }
 
     public Object sendTo(IokeObject message, IokeObject context, Object recv, List<Object> args) throws ControlFlow {
-        throw new NotActivatableException(message, "Can't sendTo on " + message, recv, context);
+        report(recv, context, message, "sendTo/n");
+        return context.runtime.nil;
     }
 
     public Object evaluateComplete(IokeObject message) throws ControlFlow {
-        throw new NotActivatableException(message, "Can't evaluateComplete on " + message, message, message);
+        report(message, message, message, "evaluateComplete");
+        return message.runtime.nil;
     }
 
     public Object evaluateCompleteWith(IokeObject message, IokeObject ctx, Object ground) throws ControlFlow {
-        throw new NotActivatableException(message, "Can't evaluateCompleteWith on " + message, ground, ctx);
+        report(ground, ctx, message, "evaluateCompleteWith");
+        return ctx.runtime.nil;
     }
 
     public Object evaluateCompleteWithReceiver(IokeObject message, IokeObject ctx, Object ground, Object receiver) throws ControlFlow {
-        throw new NotActivatableException(message, "Can't evaluateCompleteWith on " + message, ground, ctx);
+        report(receiver, ctx, message, "evaluateCompleteWithReceiver");
+        return ctx.runtime.nil;
     }
 
     public Object evaluateCompleteWithoutExplicitReceiver(IokeObject message, IokeObject ctx, Object ground) throws ControlFlow {
-        throw new NotActivatableException(message, "Can't evaluateCompleteWithoutExplicitReceiver on " + message, ground, ctx);
+        report(ground, ctx, message, "evaluateCompleteWithoutExplicitReceiver");
+        return ctx.runtime.nil;
     }
 
     public Object evaluateCompleteWith(IokeObject message, Object ground) throws ControlFlow {
-        throw new NotActivatableException(message, "Can't evaluateCompleteWith on " + message, ground, null);
+        report(ground, IokeObject.as(ground), message, "evaluateCompleteWith");
+        return message.runtime.nil;
     }
 
-    public List<Object> getArguments(IokeObject self) {
-        throw new NotActivatableException(self, "Can't get arguments from " + self, self, self);
+    public List<Object> getArguments(IokeObject self) throws ControlFlow {
+        report(self, self, self, "getArguments");
+        return null;
     }
 
-    public int getArgumentCount(IokeObject self) {
-        throw new NotActivatableException(self, "Can't get argument count from " + self, self, self);
+    public int getArgumentCount(IokeObject self) throws ControlFlow {
+        report(self, self, self, "getArgumentCount");
+        return -1;
     }
 
-    public String getName(IokeObject self) {
-        throw new NotActivatableException(self, "Can't get message name from " + self, self, self);
+    public String getName(IokeObject self) throws ControlFlow {
+        report(self, self, self, "getName");
+        return null;
     }
 
-    public String getFile(IokeObject self) {
-        throw new NotActivatableException(self, "Can't get filename from " + self, self, self);
+    public String getFile(IokeObject self) throws ControlFlow {
+        report(self, self, self, "getFile");
+        return null;
     }
 
-    public int getLine(IokeObject self) {
-        throw new NotActivatableException(self, "Can't get line from " + self, self, self);
+    public int getLine(IokeObject self) throws ControlFlow {
+        report(self, self, self, "getLine");
+        return -1;
     }
 
-    public int getPosition(IokeObject self) {
-        throw new NotActivatableException(self, "Can't get position from " + self, self, self);
+    public int getPosition(IokeObject self) throws ControlFlow {
+        report(self, self, self, "getPosition");
+        return -1;
     }
 
     public String toString(IokeObject self) {

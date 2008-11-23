@@ -108,15 +108,24 @@ describe "Base" do
     end
 
     it "should report an error if trying to get a cell that doesn't exist in that object" do 
-      ioke = IokeRuntime.get_runtime()
+      sw = StringWriter.new(20)
+      out = PrintWriter.new(sw)
 
-      proc do 
+      ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
+
+      begin 
         ioke.evaluate_string("cell(:flurg)")
-      end.should raise_error
+        true.should be_false
+      rescue NativeException => cfe
+        cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error NoSuchCell"
+      end
 
-      proc do 
+      begin 
         ioke.evaluate_string("cell(\"flurg\")")
-      end.should raise_error
+        true.should be_false
+      rescue NativeException => cfe
+        cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error NoSuchCell"
+      end
     end
   end
 

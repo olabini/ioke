@@ -65,7 +65,7 @@ public class Locals {
                                                            }}));
     }
 
-    public static String getContextMessageName(IokeObject ctx) {
+    public static String getContextMessageName(IokeObject ctx) throws ControlFlow {
         if("Locals".equals(ctx.getKind())) {
             return ":in `" + IokeObject.as(ctx.getCells().get("currentMessage")).getName() + "'";
         } else {

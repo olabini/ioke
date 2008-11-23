@@ -74,11 +74,11 @@ public class Message extends IokeData {
         return ((Message)IokeObject.data(message)).type == Type.TERMINATOR;
     }
 
-    public static void addArg(Object message, Object arg) {
+    public static void addArg(Object message, Object arg) throws ControlFlow {
         IokeObject.as(message).getArguments().add(arg);
     }
 
-    public static IokeObject copy(Object message) {
+    public static IokeObject copy(Object message) throws ControlFlow {
         IokeObject copy = IokeObject.as(message).mimic(null, null);
         copySourceLocation(message, copy);
         Message.setPrev(copy, Message.prev(message));
@@ -86,7 +86,7 @@ public class Message extends IokeData {
         return copy;
     }
 
-    public static void copySourceLocation(Object from, Object to) {
+    public static void copySourceLocation(Object from, Object to) throws ControlFlow {
         Message.setFile(to, Message.file(from));
         Message.setLine(to, Message.line(from));
         Message.setPosition(to, Message.position(from));
@@ -193,7 +193,7 @@ public class Message extends IokeData {
             }));
         message.registerMethod(message.runtime.newJavaMethod("Will rearrange this message and all submessages to follow regular C style operator precedence rules. Will use Message OperatorTable to guide this operation. The operation is mutating, but should not change anything if done twice.", new JavaMethod("shuffleOperators") {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     Levels levels = new Levels(IokeObject.as(on), context, message);
                     List<IokeObject> expressions = new ArrayList<IokeObject>();
                     if(on instanceof IokeObject) {
@@ -280,27 +280,27 @@ public class Message extends IokeData {
         return arguments.size();
     }
 
-    public static String file(Object message) {
+    public static String file(Object message) throws ControlFlow {
         return IokeObject.as(message).getFile();
     }
 
-    public static int line(Object message) {
+    public static int line(Object message) throws ControlFlow {
         return IokeObject.as(message).getLine();
     }
 
-    public static int position(Object message) {
+    public static int position(Object message) throws ControlFlow {
         return IokeObject.as(message).getPosition();
     }
 
-    public static void setFile(Object message, String file) {
+    public static void setFile(Object message, String file) throws ControlFlow {
         ((Message)IokeObject.data(message)).file = file;
     }
 
-    public static void setLine(Object message, int line) {
+    public static void setLine(Object message, int line) throws ControlFlow {
         ((Message)IokeObject.data(message)).line = line;
     }
 
-    public static void setPosition(Object message, int pos) {
+    public static void setPosition(Object message, int pos) throws ControlFlow {
         ((Message)IokeObject.data(message)).pos = pos;
     }
 
@@ -367,7 +367,7 @@ public class Message extends IokeData {
     }
     
 
-    public static IokeObject fromTree(Runtime runtime, Tree tree) {
+    public static IokeObject fromTree(Runtime runtime, Tree tree) throws ControlFlow {
         //        System.err.println(" fromTree(" + tree.toStringTree() + ")");
         Message m = null;
         int argStart = 0;
@@ -771,7 +771,7 @@ public class Message extends IokeData {
     }
 
 
-    public static String codeSequenceTo(IokeObject message, String name) {
+    public static String codeSequenceTo(IokeObject message, String name) throws ControlFlow {
         return ((Message)message.data).codeSequenceTo(name);
     }
 
@@ -808,7 +808,7 @@ public class Message extends IokeData {
     }
 
 
-    public String codeSequenceTo(String name) {
+    public String codeSequenceTo(String name) throws ControlFlow {
         if(this.name.equals(name)) {
             return "";
         } 
