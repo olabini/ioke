@@ -5,7 +5,7 @@ package ioke.lang;
 
 import java.util.regex.Pattern;
 
-import ioke.lang.exceptions.CantMimicOddballObject;
+import ioke.lang.exceptions.ControlFlow;
 
 /**
  *
@@ -30,8 +30,16 @@ public class Symbol extends IokeData {
     }
 
     @Override
-    public void checkMimic(IokeObject obj, IokeObject m, IokeObject context) {
-        throw new CantMimicOddballObject(m, obj, context);
+    public void checkMimic(IokeObject obj, IokeObject m, IokeObject context) throws ControlFlow {
+        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
+                                                                           m, 
+                                                                           context,
+                                                                           "Error", 
+                                                                           "CantMimicOddball")).mimic(m, context);
+        condition.setCell("message", m);
+        condition.setCell("context", context);
+        condition.setCell("receiver", obj);
+        context.runtime.errorCondition(condition);
     }
 
     public static String getText(Object on) {

@@ -6,12 +6,14 @@ package ioke.lang;
 import ioke.lang.mixins.Comparing;
 import ioke.lang.mixins.Enumerable;
 
+import ioke.lang.exceptions.ControlFlow;
+
 /**
  *
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
 public class Mixins {
-    public static void init(IokeObject mixins) {
+    public static void init(IokeObject mixins) throws ControlFlow {
         mixins.setKind("Mixins");
 
         mixins.setCell("=",         mixins.runtime.base.getCells().get("="));

@@ -6,9 +6,6 @@ package ioke.lang;
 import java.util.List;
 
 import ioke.lang.exceptions.ControlFlow;
-import ioke.lang.exceptions.CantMimicOddballObject;
-import ioke.lang.exceptions.NotActivatableException;
-import ioke.lang.exceptions.ObjectIsNotRightType;
 
 /**
  *
@@ -23,8 +20,16 @@ public abstract class IokeData {
             }
 
             @Override
-            public void checkMimic(IokeObject obj, IokeObject m, IokeObject context) {
-                throw new CantMimicOddballObject(m, obj, context);
+            public void checkMimic(IokeObject obj, IokeObject m, IokeObject context) throws ControlFlow {
+                final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
+                                                                                   m, 
+                                                                                   context,
+                                                                                   "Error", 
+                                                                                   "CantMimicOddball")).mimic(m, context);
+                condition.setCell("message", m);
+                condition.setCell("context", context);
+                condition.setCell("receiver", obj);
+                context.runtime.errorCondition(condition);
             }
 
             public boolean isNil() {
@@ -52,8 +57,16 @@ public abstract class IokeData {
             }
 
             @Override
-            public void checkMimic(IokeObject obj, IokeObject m, IokeObject context) {
-                throw new CantMimicOddballObject(m, obj, context);
+            public void checkMimic(IokeObject obj, IokeObject m, IokeObject context) throws ControlFlow {
+                final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
+                                                                                   m, 
+                                                                                   context,
+                                                                                   "Error", 
+                                                                                   "CantMimicOddball")).mimic(m, context);
+                condition.setCell("message", m);
+                condition.setCell("context", context);
+                condition.setCell("receiver", obj);
+                context.runtime.errorCondition(condition);
             }
 
             public boolean isTrue() {
@@ -77,8 +90,16 @@ public abstract class IokeData {
             }
 
             @Override
-            public void checkMimic(IokeObject obj, IokeObject m, IokeObject context) {
-                throw new CantMimicOddballObject(m, obj, context);
+            public void checkMimic(IokeObject obj, IokeObject m, IokeObject context) throws ControlFlow {
+                final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
+                                                                                   m, 
+                                                                                   context,
+                                                                                   "Error", 
+                                                                                   "CantMimicOddball")).mimic(m, context);
+                condition.setCell("message", m);
+                condition.setCell("context", context);
+                condition.setCell("receiver", obj);
+                context.runtime.errorCondition(condition);
             }
 
             @Override
@@ -94,7 +115,7 @@ public abstract class IokeData {
 
 
     public void init(IokeObject obj) throws ControlFlow {}
-    public void checkMimic(IokeObject obj, IokeObject m, IokeObject context) {}
+    public void checkMimic(IokeObject obj, IokeObject m, IokeObject context) throws ControlFlow {}
     public boolean isNil() {return false;}
     public boolean isTrue() {return true;}
     public boolean isMessage() {return false;}
@@ -113,14 +134,92 @@ public abstract class IokeData {
     }
 
     public IokeData cloneData(IokeObject obj, IokeObject m, IokeObject context) {return this;}
-    public IokeObject convertToNumber(IokeObject self, IokeObject m, IokeObject context) {
-        throw new ObjectIsNotRightType(m, self, "Number", context);
+    public IokeObject convertToNumber(IokeObject self, IokeObject m, final IokeObject context) throws ControlFlow {
+        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
+                                                                           m, 
+                                                                           context, 
+                                                                           "Error", 
+                                                                           "Type",
+                                                                           "IncorrectType")).mimic(m, context);
+        condition.setCell("message", m);
+        condition.setCell("context", context);
+        condition.setCell("receiver", self);
+        condition.setCell("expectedType", context.runtime.getSymbol("Number"));
+
+        final Object[] newCell = new Object[]{self};
+
+        context.runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
+                public void run() throws ControlFlow {
+                    context.runtime.errorCondition(condition);
+                }}, 
+            context,
+            new Restart.ArgumentGivingRestart("useValue") { 
+                public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
+                    newCell[0] = arguments.get(0);
+                    return context.runtime.nil;
+                }
+            }
+            );
+
+        return IokeObject.convertToNumber(newCell[0], m, context);
     }
-    public IokeObject convertToText(IokeObject self, IokeObject m, IokeObject context) {
-        throw new ObjectIsNotRightType(m, self, "Text", context);
+    public IokeObject convertToText(IokeObject self, IokeObject m, final IokeObject context) throws ControlFlow {
+        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
+                                                                           m, 
+                                                                           context, 
+                                                                           "Error", 
+                                                                           "Type",
+                                                                           "IncorrectType")).mimic(m, context);
+        condition.setCell("message", m);
+        condition.setCell("context", context);
+        condition.setCell("receiver", self);
+        condition.setCell("expectedType", context.runtime.getSymbol("Text"));
+
+        final Object[] newCell = new Object[]{self};
+
+        context.runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
+                public void run() throws ControlFlow {
+                    context.runtime.errorCondition(condition);
+                }}, 
+            context,
+            new Restart.ArgumentGivingRestart("useValue") { 
+                public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
+                    newCell[0] = arguments.get(0);
+                    return context.runtime.nil;
+                }
+            }
+            );
+
+        return IokeObject.convertToText(newCell[0], m, context);
     }
-    public IokeObject convertToPattern(IokeObject self, IokeObject m, IokeObject context) {
-        throw new ObjectIsNotRightType(m, self, "Pattern", context);
+    public IokeObject convertToPattern(IokeObject self, IokeObject m, final IokeObject context) throws ControlFlow {
+        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
+                                                                           m, 
+                                                                           context, 
+                                                                           "Error", 
+                                                                           "Type",
+                                                                           "IncorrectType")).mimic(m, context);
+        condition.setCell("message", m);
+        condition.setCell("context", context);
+        condition.setCell("receiver", self);
+        condition.setCell("expectedType", context.runtime.getSymbol("Pattern"));
+
+        final Object[] newCell = new Object[]{self};
+
+        context.runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
+                public void run() throws ControlFlow {
+                    context.runtime.errorCondition(condition);
+                }}, 
+            context,
+            new Restart.ArgumentGivingRestart("useValue") { 
+                public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
+                    newCell[0] = arguments.get(0);
+                    return context.runtime.nil;
+                }
+            }
+            );
+
+        return IokeObject.convertToPattern(newCell[0], m, context);
     }
     
     private void report(Object self, IokeObject context, IokeObject message, String name) throws ControlFlow {

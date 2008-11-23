@@ -1,6 +1,10 @@
 include_class('ioke.lang.Runtime') { 'IokeRuntime' } unless defined?(IokeRuntime)
 
 import Java::java.io.StringReader unless defined?(StringReader)
+import Java::java.io.PrintWriter unless defined?(PrintWriter)
+import Java::java.io.StringWriter unless defined?(StringWriter)
+import Java::java.io.InputStreamReader unless defined?(InputStreamReader)
+import Java::java.lang.System unless defined?(System)
 
 describe "core" do 
   describe "'nil'" do 
@@ -11,7 +15,10 @@ describe "core" do
     end
 
     it "should not be possible to mimic" do 
-      runtime = IokeRuntime.get_runtime
+      sw = StringWriter.new(20)
+      out = PrintWriter.new(sw)
+
+      ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
       proc do 
         runtime.evaluate_stream(StringReader.new("nil mimic"))
       end.should raise_error
@@ -36,7 +43,10 @@ describe "core" do
     end
 
     it "should not be possible to mimic" do 
-      runtime = IokeRuntime.get_runtime
+      sw = StringWriter.new(20)
+      out = PrintWriter.new(sw)
+
+      ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
       proc do 
         runtime.evaluate_stream(StringReader.new("false mimic"))
       end.should raise_error
@@ -61,7 +71,10 @@ describe "core" do
     end
 
     it "should not be possible to mimic" do 
-      runtime = IokeRuntime.get_runtime
+      sw = StringWriter.new(20)
+      out = PrintWriter.new(sw)
+
+      ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
       proc do 
         runtime.evaluate_stream(StringReader.new("true mimic"))
       end.should raise_error

@@ -1,5 +1,11 @@
 include_class('ioke.lang.Runtime') { 'IokeRuntime' } unless defined?(IokeRuntime)
 
+import Java::java.io.StringReader unless defined?(StringReader)
+import Java::java.io.PrintWriter unless defined?(PrintWriter)
+import Java::java.io.StringWriter unless defined?(StringWriter)
+import Java::java.io.InputStreamReader unless defined?(InputStreamReader)
+import Java::java.lang.System unless defined?(System)
+
 describe "Mixins" do 
   describe "'cell'" do 
     it "should be possible to get a cell using a Text argument" do 
@@ -15,7 +21,10 @@ describe "Mixins" do
     end
 
     it "should report an error if trying to get a cell that doesn't exist in that object" do 
-      ioke = IokeRuntime.get_runtime
+      sw = StringWriter.new(20)
+      out = PrintWriter.new(sw)
+
+      ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
 
       proc do 
         ioke.evaluate_string("Mixins cell(:flurg)")

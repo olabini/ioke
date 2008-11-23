@@ -2,6 +2,10 @@ include_class('ioke.lang.Runtime') { 'IokeRuntime' } unless defined?(IokeRuntime
 include_class('ioke.lang.exceptions.ControlFlow') unless defined?(ControlFlow)
 
 import Java::java.io.StringReader unless defined?(StringReader)
+import Java::java.io.PrintWriter unless defined?(PrintWriter)
+import Java::java.io.StringWriter unless defined?(StringWriter)
+import Java::java.io.InputStreamReader unless defined?(InputStreamReader)
+import Java::java.lang.System unless defined?(System)
 
 describe "DefaultBehavior" do 
   describe "'internal:concatenateText'" do 
@@ -482,28 +486,40 @@ CODE
     end
 
     it "should not be able to mimic nil" do 
-      ioke = IokeRuntime.get_runtime()
+      sw = StringWriter.new(20)
+      out = PrintWriter.new(sw)
+
+      ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
       proc do 
         ioke.evaluate_stream(StringReader.new("f = Origin mimic. f mimic!(nil)"))
       end.should raise_error
     end
     
     it "should not be able to mimic true" do 
-      ioke = IokeRuntime.get_runtime()
+      sw = StringWriter.new(20)
+      out = PrintWriter.new(sw)
+
+      ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
       proc do 
         ioke.evaluate_stream(StringReader.new("f = Origin mimic. f mimic!(true)"))
       end.should raise_error
     end
     
     it "should not be able to mimic false" do 
-      ioke = IokeRuntime.get_runtime()
+      sw = StringWriter.new(20)
+      out = PrintWriter.new(sw)
+
+      ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
       proc do 
         ioke.evaluate_stream(StringReader.new("f = Origin mimic. f mimic!(false)"))
       end.should raise_error
     end
     
     it "should not be able to mimic symbols" do 
-      ioke = IokeRuntime.get_runtime()
+      sw = StringWriter.new(20)
+      out = PrintWriter.new(sw)
+
+      ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
       proc do 
         ioke.evaluate_stream(StringReader.new("f = Origin mimic. f mimic!(:foo)"))
       end.should raise_error
@@ -558,7 +574,10 @@ CODE
     end
 
     it "should complain if no argument is given" do 
-      ioke = IokeRuntime.get_runtime
+      sw = StringWriter.new(20)
+      out = PrintWriter.new(sw)
+
+      ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
       proc do 
         ioke.evaluate_string("\"blarg\" and()")
       end.should raise_error
@@ -582,7 +601,10 @@ CODE
     end
 
     it "should complain if no argument is given" do 
-      ioke = IokeRuntime.get_runtime
+      sw = StringWriter.new(20)
+      out = PrintWriter.new(sw)
+
+      ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
       proc do 
         ioke.evaluate_string("\"blarg\" &&()")
       end.should raise_error
@@ -640,7 +662,10 @@ CODE
     end
 
     it "should complain if no argument is given" do 
-      ioke = IokeRuntime.get_runtime
+      sw = StringWriter.new(20)
+      out = PrintWriter.new(sw)
+
+      ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
       proc do 
         ioke.evaluate_string("30 xor()")
       end.should raise_error
@@ -691,7 +716,10 @@ CODE
     end
 
     it "should complain if no argument is given" do 
-      ioke = IokeRuntime.get_runtime
+      sw = StringWriter.new(20)
+      out = PrintWriter.new(sw)
+
+      ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
       proc do 
         ioke.evaluate_string("30 nand()")
       end.should raise_error

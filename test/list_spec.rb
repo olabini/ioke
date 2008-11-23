@@ -2,6 +2,10 @@ include_class('ioke.lang.Runtime') { 'IokeRuntime' } unless defined?(IokeRuntime
 include_class('ioke.lang.IokeList') unless defined?(IokeList)
 
 import Java::java.io.StringReader unless defined?(StringReader)
+import Java::java.io.PrintWriter unless defined?(PrintWriter)
+import Java::java.io.StringWriter unless defined?(StringWriter)
+import Java::java.io.InputStreamReader unless defined?(InputStreamReader)
+import Java::java.lang.System unless defined?(System)
 
 describe "List" do 
   it "should have the correct kind" do 
@@ -229,7 +233,10 @@ describe "List" do
     end
 
     it "should throw an exception if setting with negative indices outside the range" do 
-      ioke = IokeRuntime.get_runtime
+      sw = StringWriter.new(20)
+      out = PrintWriter.new(sw)
+
+      ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
       proc do 
         ioke.evaluate_string("[][0-1] = 52")
       end.should raise_error
@@ -284,7 +291,10 @@ describe "List" do
     end
 
     it "should throw an exception if setting with negative indices outside the range" do 
-      ioke = IokeRuntime.get_runtime
+      sw = StringWriter.new(20)
+      out = PrintWriter.new(sw)
+
+      ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
       proc do 
         ioke.evaluate_string("[] at(0-1) = 52")
       end.should raise_error

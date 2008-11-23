@@ -383,7 +383,7 @@ public class Runtime {
         }
     }
 
-    public IokeObject newFromOrigin() {
+    public IokeObject newFromOrigin() throws ControlFlow {
         return this.origin.mimic(null, null);
     }
 

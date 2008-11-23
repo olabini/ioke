@@ -407,7 +407,10 @@ CODE
     end
 
     it "should fail if any argument except the last doesn't evaluate to a restart" do 
-      ioke = IokeRuntime.get_runtime()
+      sw = StringWriter.new(20)
+      out = PrintWriter.new(sw)
+
+      ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
       proc do 
         ioke.evaluate_string(<<CODE)
 bind(10, 10)
@@ -484,7 +487,10 @@ CODE
     end
 
     it "should fail when given nil" do 
-      ioke = IokeRuntime.get_runtime
+      sw = StringWriter.new(20)
+      out = PrintWriter.new(sw)
+
+      ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
       proc do 
         ioke.evaluate_string(<<CODE)
 findRestart(nil)
@@ -541,7 +547,10 @@ CODE
   
   describe "'invokeRestart'" do 
     it "should fail if no restarts of the name is active" do 
-      ioke = IokeRuntime.get_runtime()
+      sw = StringWriter.new(20)
+      out = PrintWriter.new(sw)
+
+      ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
       proc do 
         ioke.evaluate_string(<<CODE)
 invokeRestart(:bar)

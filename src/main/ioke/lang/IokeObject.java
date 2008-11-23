@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.IdentityHashMap;
 
-import ioke.lang.exceptions.NotActivatableException;
-import ioke.lang.exceptions.NoSuchCellException;
 import ioke.lang.exceptions.ControlFlow;
 
 /**
@@ -119,7 +117,7 @@ public class IokeObject {
         }
     }
 
-    public IokeObject mimic(IokeObject message, IokeObject context) {
+    public IokeObject mimic(IokeObject message, IokeObject context) throws ControlFlow {
         IokeObject clone = allocateCopy(message, context);
         clone.mimics(this, message, context);
         return clone;
@@ -344,7 +342,7 @@ public class IokeObject {
         }
     }
 
-    public void mimics(IokeObject mimic, IokeObject message, IokeObject context) {
+    public void mimics(IokeObject mimic, IokeObject message, IokeObject context) throws ControlFlow {
         mimic.data.checkMimic(mimic, message, context);
         if(!this.mimics.contains(mimic)) {
             this.mimics.add(mimic);
@@ -355,7 +353,7 @@ public class IokeObject {
         cells.put(((Method)m.data).getName(), m);
     }
 
-    public void aliasMethod(String originalName, String newName) {
+    public void aliasMethod(String originalName, String newName) throws ControlFlow {
         IokeObject io = as(findCell(null, null, originalName));
         IokeObject newObj = io.mimic(null, null);
         newObj.data = new AliasMethod(newName, io.data);
@@ -394,27 +392,27 @@ public class IokeObject {
         return this.cells.get("self");
     }
 
-    public static IokeObject convertToNumber(Object on, IokeObject m, IokeObject context) {
+    public static IokeObject convertToNumber(Object on, IokeObject m, IokeObject context) throws ControlFlow {
         return ((IokeObject)on).convertToNumber(m, context);
     }
 
-    public IokeObject convertToNumber(IokeObject m, IokeObject context) {
+    public IokeObject convertToNumber(IokeObject m, IokeObject context) throws ControlFlow {
         return data.convertToNumber(this, m, context);
     }
 
-    public static IokeObject convertToText(Object on, IokeObject m, IokeObject context) {
+    public static IokeObject convertToText(Object on, IokeObject m, IokeObject context) throws ControlFlow {
         return ((IokeObject)on).convertToText(m, context);
     }
 
-    public static IokeObject convertToPattern(Object on, IokeObject m, IokeObject context) {
+    public static IokeObject convertToPattern(Object on, IokeObject m, IokeObject context) throws ControlFlow {
         return ((IokeObject)on).convertToPattern(m, context);
     }
 
-    public IokeObject convertToText(IokeObject m, IokeObject context) {
+    public IokeObject convertToText(IokeObject m, IokeObject context) throws ControlFlow {
         return data.convertToText(this, m, context);
     }
 
-    public IokeObject convertToPattern(IokeObject m, IokeObject context) {
+    public IokeObject convertToPattern(IokeObject m, IokeObject context) throws ControlFlow {
         return data.convertToPattern(this, m, context);
     }
 
