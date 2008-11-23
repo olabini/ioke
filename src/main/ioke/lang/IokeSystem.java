@@ -125,7 +125,7 @@ public class IokeSystem extends IokeData {
         return new IokeSystem();
     }
 
-    public void init(IokeObject obj) {
+    public void init(IokeObject obj) throws ControlFlow {
         final Runtime runtime = obj.runtime;
 
         obj.setKind("System");

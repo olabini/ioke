@@ -1,5 +1,11 @@
 include_class('ioke.lang.Runtime') { 'IokeRuntime' } unless defined?(IokeRuntime)
 
+import Java::java.io.StringReader unless defined?(StringReader)
+import Java::java.io.PrintWriter unless defined?(PrintWriter)
+import Java::java.io.StringWriter unless defined?(StringWriter)
+import Java::java.io.InputStreamReader unless defined?(InputStreamReader)
+import Java::java.lang.System unless defined?(System)
+
 describe "true" do 
   describe "'false?'" do 
     it "should return false" do 
@@ -32,7 +38,10 @@ describe "true" do
     end
 
     it "should complain if no argument is given" do 
-      ioke = IokeRuntime.get_runtime
+      sw = StringWriter.new(20)
+      out = PrintWriter.new(sw)
+
+      ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
       proc do 
         ioke.evaluate_string("true and()")
       end.should raise_error
@@ -73,7 +82,10 @@ describe "true" do
     end
 
     it "should complain if no argument is given" do 
-      ioke = IokeRuntime.get_runtime
+      sw = StringWriter.new(20)
+      out = PrintWriter.new(sw)
+
+      ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
       proc do 
         ioke.evaluate_string("true &&()")
       end.should raise_error
@@ -114,7 +126,10 @@ describe "true" do
     end
 
     it "should complain if no argument is given" do 
-      ioke = IokeRuntime.get_runtime
+      sw = StringWriter.new(20)
+      out = PrintWriter.new(sw)
+
+      ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
       proc do 
         ioke.evaluate_string("true xor()")
       end.should raise_error
@@ -165,7 +180,10 @@ describe "true" do
     end
 
     it "should complain if no argument is given" do 
-      ioke = IokeRuntime.get_runtime
+      sw = StringWriter.new(20)
+      out = PrintWriter.new(sw)
+
+      ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
       proc do 
         ioke.evaluate_string("true nand()")
       end.should raise_error
@@ -283,7 +301,10 @@ describe "false" do
     end
 
     it "should complain if no argument is given" do 
-      ioke = IokeRuntime.get_runtime
+      sw = StringWriter.new(20)
+      out = PrintWriter.new(sw)
+
+      ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
       proc do 
         ioke.evaluate_string("false xor()")
       end.should raise_error
@@ -337,7 +358,10 @@ describe "false" do
     end
 
     it "should complain if no argument is given" do 
-      ioke = IokeRuntime.get_runtime
+      sw = StringWriter.new(20)
+      out = PrintWriter.new(sw)
+
+      ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
       proc do 
         ioke.evaluate_string("false or()")
       end.should raise_error
@@ -361,7 +385,10 @@ describe "false" do
     end
 
     it "should complain if no argument is given" do 
-      ioke = IokeRuntime.get_runtime
+      sw = StringWriter.new(20)
+      out = PrintWriter.new(sw)
+
+      ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
       proc do 
         ioke.evaluate_string("false ||()")
       end.should raise_error
@@ -385,7 +412,10 @@ describe "false" do
     end
 
     it "should complain if no argument is given" do 
-      ioke = IokeRuntime.get_runtime
+      sw = StringWriter.new(20)
+      out = PrintWriter.new(sw)
+
+      ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
       proc do 
         ioke.evaluate_string("false nor()")
       end.should raise_error

@@ -25,7 +25,7 @@ public class Base {
         base.registerMethod(base.runtime.newJavaMethod("will return a new derivation of the receiving object. Might throw exceptions if the object is an oddball object.", 
                                                        new JavaMethod("mimic") {
                                                            @Override
-                                                           public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
+                                                           public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                                                                return IokeObject.as(on).mimic(message, context);
                                                            }}));
 

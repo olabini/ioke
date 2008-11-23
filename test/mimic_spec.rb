@@ -1,8 +1,10 @@
 include_class('ioke.lang.Runtime') { 'IokeRuntime' } unless defined?(IokeRuntime)
-include_class('ioke.lang.exceptions.CantMimicOddballObject') unless defined?(CantMimicOddballObject)
-include_class('ioke.lang.exceptions.NoSuchCellException') unless defined?(NoSuchCellException)
 
 import Java::java.io.StringReader unless defined?(StringReader)
+import Java::java.io.PrintWriter unless defined?(PrintWriter)
+import Java::java.io.StringWriter unless defined?(StringWriter)
+import Java::java.io.InputStreamReader unless defined?(InputStreamReader)
+import Java::java.lang.System unless defined?(System)
 
 describe "Base" do 
   describe "'mimic'" do 
@@ -48,11 +50,17 @@ describe "Base" do
     end
 
     it "should not be able to mimic nil" do 
-      ioke = IokeRuntime.get_runtime()
+      sw = StringWriter.new(20)
+      out = PrintWriter.new(sw)
 
-      proc do 
+      ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
+
+      begin
         ioke.evaluate_stream(StringReader.new(%q[nil mimic]))
-      end.should raise_error(CantMimicOddballObject)
+        true.should be_false
+      rescue NativeException => cfe
+        cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error CantMimicOddball"
+      end
     end
   end
 end

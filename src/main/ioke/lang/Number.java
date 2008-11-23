@@ -67,7 +67,7 @@ public class Number extends IokeData {
         return ((Number)IokeObject.data(number)).value;
     }
 
-    public static int extractInt(Object number, IokeObject m, IokeObject context) {
+    public static int extractInt(Object number, IokeObject m, IokeObject context) throws ControlFlow {
         if(!(IokeObject.data(number) instanceof Number)) {
             number = IokeObject.convertToNumber(number, m, context);
         }
