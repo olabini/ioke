@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
 
-import ioke.lang.exceptions.IokeException;
 import ioke.lang.exceptions.ControlFlow;
 
 /**
@@ -59,7 +58,8 @@ public class IokeSystem extends IokeData {
 
     private static final String[] SUFFIXES = {"", ".ik"};
 
-    public boolean use(IokeObject context, IokeObject message, String name) throws ControlFlow {
+    public boolean use(IokeObject self, IokeObject context, IokeObject message, String name) throws ControlFlow {
+        final Runtime runtime = context.runtime;
         Builtin b = context.runtime.getBuiltin(name);
         if(b != null) {
             if(loaded.contains(name)) {
@@ -112,13 +112,65 @@ public class IokeSystem extends IokeData {
                         }
                     }
                 } catch(IOException e) {
-                    throw new IokeException(message, "Couldn't load module '" + name + "' because of: " + e, context, context);
+                    final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
+                                                                                       message, 
+                                                                                       context, 
+                                                                                       "Error", 
+                                                                                       "Load")).mimic(message, context);
+                    condition.setCell("message", message);
+                    condition.setCell("context", context);
+                    condition.setCell("receiver", self);
+                    condition.setCell("moduleName", runtime.newText(name));
+                    condition.setCell("exceptionMessage", runtime.newText(e.getMessage()));
+                    List<Object> ob = new ArrayList<Object>();
+                    for(StackTraceElement ste : e.getStackTrace()) {
+                        ob.add(runtime.newText(ste.toString()));
+                    }
+
+                    condition.setCell("exceptionStackTrace", runtime.newList(ob));
+
+                    final boolean[] continueLoadChain = new boolean[]{false};
+
+                    runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
+                            public void run() throws ControlFlow {
+                                runtime.errorCondition(condition);
+                            }}, 
+                        context,
+                        new Restart.ArgumentGivingRestart("continueLoadChain") { 
+                            public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
+                                continueLoadChain[0] = true;
+                                return runtime.nil;
+                            }
+                        },
+                        new Restart.ArgumentGivingRestart("ignoreLoadError") {
+                            public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
+                                continueLoadChain[0] = false;
+                                return runtime.nil;
+                            }
+                        }
+                        );
+                    if(!continueLoadChain[0]) {
+                        return false;
+                    }
                 }
             }
         }
         
-        // TODO: raise condition here...
-        throw new IokeException(message, "Couldn't find module '" + name + "' to load", context, context);
+        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
+                                                                           message, 
+                                                                           context, 
+                                                                           "Error", 
+                                                                           "Load")).mimic(message, context);
+        condition.setCell("message", message);
+        condition.setCell("context", context);
+        condition.setCell("receiver", self);
+        condition.setCell("moduleName", runtime.newText(name));
+
+        runtime.withReturningRestart("ignoreLoadError", context, new RunnableWithControlFlow() {
+                public void run() throws ControlFlow {
+                    runtime.errorCondition(condition);
+                }});
+        return false;
     }
     
     public IokeData cloneData(IokeObject obj, IokeObject m, IokeObject context) {

@@ -4,6 +4,7 @@
 Condition Error Arithmetic       = Condition Error mimic
 Condition Error CantMimicOddball = Condition Error mimic
 Condition Error Invocation       = Condition Error mimic
+Condition Error Load             = Condition Error mimic
 Condition Error NoSuchCell       = Condition Error mimic
 Condition Error Type             = Condition Error mimic
 
@@ -22,9 +23,17 @@ Condition Error Type IncorrectType = Condition Error Type mimic
 ;; ALL REPORTS NEED TO ADD message stackTraceElement as first line. change context to do the same thing
 
 Condition report = method(
-  "default implementation of reporting that only prints the name of the condition, and a stack tracek",
+  "default implementation of reporting that only prints the name of the condition, and a stack trace",
   
   "condition reported: (#{self kind})
+
+#{context stackTraceAsText}")
+
+
+Condition Error Load report = method(
+  "returns a representation of this error, showing the name of the module that couldn't be loaded, and if an ioexception occured, the message and stack trace of this",
+  
+  "couldn't load module '#{moduleName}' (#{self kind})
 
 #{context stackTraceAsText}")
 

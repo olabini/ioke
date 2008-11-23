@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.ArrayList;
 
 import ioke.lang.exceptions.ControlFlow;
-import ioke.lang.exceptions.IokeException;
 
 /**
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
@@ -92,12 +91,6 @@ public class Main {
         } catch(ControlFlow e) {
             String name = e.getClass().getName();
             System.err.println("unexpected control flow: " + name.substring(name.indexOf("$") + 1).toLowerCase());
-            if(debug) {
-                e.printStackTrace(System.err);
-            }
-            System.exit(1);
-        } catch(IokeException e) {
-            e.reportError(System.err);
             if(debug) {
                 e.printStackTrace(System.err);
             }
