@@ -6,6 +6,9 @@ package ioke.lang;
 import java.io.IOException;
 import java.io.Writer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ioke.lang.exceptions.ControlFlow;
 
 /**
@@ -41,7 +44,27 @@ public class IokeIO extends IokeData {
                         IokeIO.getWriter(on).write("\n");
                         IokeIO.getWriter(on).flush();
                     } catch(IOException e) {
-                        throw new RuntimeException(e);
+                        final Runtime runtime = context.runtime;
+                        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
+                                                                                           message, 
+                                                                                           context, 
+                                                                                           "Error", 
+                                                                                           "IO")).mimic(message, context);
+                        condition.setCell("message", message);
+                        condition.setCell("context", context);
+                        condition.setCell("receiver", on);
+                        condition.setCell("exceptionMessage", runtime.newText(e.getMessage()));
+                        List<Object> ob = new ArrayList<Object>();
+                        for(StackTraceElement ste : e.getStackTrace()) {
+                            ob.add(runtime.newText(ste.toString()));
+                        }
+
+                        condition.setCell("exceptionStackTrace", runtime.newList(ob));
+
+                        runtime.withReturningRestart("ignore", context, new RunnableWithControlFlow() {
+                                public void run() throws ControlFlow {
+                                    runtime.errorCondition(condition);
+                                }});
                     }
 
                     return context.runtime.getNil();
@@ -57,7 +80,27 @@ public class IokeIO extends IokeData {
                         IokeIO.getWriter(on).write(context.runtime.asText.sendTo(context, arg).toString());
                         IokeIO.getWriter(on).flush();
                     } catch(IOException e) {
-                        throw new RuntimeException(e);
+                        final Runtime runtime = context.runtime;
+                        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
+                                                                                           message, 
+                                                                                           context, 
+                                                                                           "Error", 
+                                                                                           "IO")).mimic(message, context);
+                        condition.setCell("message", message);
+                        condition.setCell("context", context);
+                        condition.setCell("receiver", on);
+                        condition.setCell("exceptionMessage", runtime.newText(e.getMessage()));
+                        List<Object> ob = new ArrayList<Object>();
+                        for(StackTraceElement ste : e.getStackTrace()) {
+                            ob.add(runtime.newText(ste.toString()));
+                        }
+
+                        condition.setCell("exceptionStackTrace", runtime.newList(ob));
+
+                        runtime.withReturningRestart("ignore", context, new RunnableWithControlFlow() {
+                                public void run() throws ControlFlow {
+                                    runtime.errorCondition(condition);
+                                }});
                     }
 
                     return context.runtime.getNil();

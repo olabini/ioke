@@ -763,6 +763,13 @@ describe "Condition" do
       end
     end
 
+    describe "IO" do 
+      it "should have the right kind" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string('Condition Error IO kind == "Condition Error IO"').should == ioke.true
+      end
+    end
+
     describe "Arithmetic" do 
       it "should have the right kind" do 
         ioke = IokeRuntime.get_runtime
