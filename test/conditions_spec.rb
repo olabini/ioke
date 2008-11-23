@@ -756,6 +756,13 @@ describe "Condition" do
       end
     end
     
+    describe "Load" do 
+      it "should have the right kind" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string('Condition Error Load kind == "Condition Error Load"').should == ioke.true
+      end
+    end
+
     describe "Arithmetic" do 
       it "should have the right kind" do 
         ioke = IokeRuntime.get_runtime
