@@ -12,7 +12,6 @@ import java.util.Map;
 import java.util.HashSet;
 
 import ioke.lang.exceptions.ControlFlow;
-import ioke.lang.exceptions.MismatchedKeywords;
 import ioke.lang.util.StringUtils;
 
 /**
@@ -462,7 +461,24 @@ public class DefaultBehavior {
                             } else if(n.equals("test:")) {
                                 test = IokeObject.as(m.next.evaluateCompleteWithoutExplicitReceiver(context, context.getRealContext()));
                             } else {
-                                throw new MismatchedKeywords(message, new HashSet<String>(Arrays.asList("report:", "test:")), new HashSet<String>(Arrays.asList(n)), on, context);
+                                final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
+                                                                                                   message, 
+                                                                                                   context, 
+                                                                                                   "Error", 
+                                                                                                   "Invocation", 
+                                                                                                   "MismatchedKeywords")).mimic(message, context);
+                                condition.setCell("message", message);
+                                condition.setCell("context", context);
+                                condition.setCell("receiver", on);
+                                condition.setCell("expected", runtime.newList(new ArrayList<Object>(Arrays.<Object>asList(runtime.newText("report:"), runtime.newText("test:")))));
+                                List<Object> extra = new ArrayList<Object>();
+                                extra.add(runtime.newText(n));
+                                condition.setCell("extra", runtime.newList(extra));
+                                
+                                runtime.withReturningRestart("ignoreExtraKeywords", context, new RunnableWithControlFlow() {
+                                        public void run() throws ControlFlow {
+                                            runtime.errorCondition(condition);
+                                        }});
                             }
                         } else {
                             if(code != null) {
