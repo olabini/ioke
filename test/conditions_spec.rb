@@ -847,6 +847,13 @@ describe "Condition" do
       end
     end
 
+    describe "Index" do 
+      it "should have the right kind" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string('Condition Error Index kind == "Condition Error Index"').should == ioke.true
+      end
+    end
+
     describe "Type" do 
       it "should have the right kind" do 
         ioke = IokeRuntime.get_runtime

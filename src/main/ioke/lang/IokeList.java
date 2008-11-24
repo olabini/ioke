@@ -154,7 +154,7 @@ public class IokeList extends IokeData {
 
         obj.registerMethod(runtime.newJavaMethod("takes two arguments, the index of the element to set, and the value to set. the index can be negative and will in that case set indexed from the end of the list. if the index is larger than the current size, the list will be expanded with nils. an exception will be raised if a abs(negative index) is larger than the size.", new JavaMethod("at=") {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                public Object activate(IokeObject method, final IokeObject context, final IokeObject message, Object on) throws ControlFlow {
                     Object arg = message.getEvaluatedArgument(0, context);
                     Object value = message.getEvaluatedArgument(1, context);
                     if(!(IokeObject.data(arg) instanceof Number)) {
@@ -166,8 +166,36 @@ public class IokeList extends IokeData {
                         index = o.size() + index;
                     }
 
-                    if(index < 0) {
-                        throw new RuntimeException("index " + arg + " out of bounds on " + on);
+                    while(index < 0) {
+                        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
+                                                                                           message, 
+                                                                                           context, 
+                                                                                           "Error", 
+                                                                                           "Index")).mimic(message, context);
+                        condition.setCell("message", message);
+                        condition.setCell("context", context);
+                        condition.setCell("receiver", on);
+                        condition.setCell("index", context.runtime.newNumber(index));
+
+                        final int[] newCell = new int[]{index};
+
+                        context.runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
+                                public void run() throws ControlFlow {
+                                    context.runtime.errorCondition(condition);
+                                }}, 
+                            context,
+                            new Restart.ArgumentGivingRestart("useValue") { 
+                                public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
+                                    newCell[0] = Number.extractInt(arguments.get(0), message, context);
+                                    return context.runtime.nil;
+                                }
+                            }
+                            );
+
+                        index = newCell[0];
+                        if(index < 0) {
+                            index = o.size() + index;
+                        }
                     }
 
                     if(index >= o.size()) {
