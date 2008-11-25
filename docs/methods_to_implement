@@ -1,13 +1,5 @@
 
-8. simple IO
-9. read & eval
-10. implement a basic debugger -- in Ioke
-
- -- think about adding Clojure-style metadata
-
-- Eval as message on Message. Will eval in the callers environment
-- read is message that returns a message chain, right through the parser, just like in Lisp
-- think for real about pretty printer
+implement a basic debugger -- in Ioke
 
 iik - interactive Ioke
 
@@ -54,9 +46,11 @@ Common Lisp style "format" for outputting list structures and so on, as in "~{xc
 look at Io Locals for Context stuff...
 
 autoimporter in the style of Io Importer
- -- something like forward
 
 - something that allows stacking of ground. maybe just a simple "System ground" that is an array. This is used inside of the REPL for example.
+
+ -- think about adding Clojure-style metadata
+ -- think for real about pretty printer
 
 aspects:
  - before
