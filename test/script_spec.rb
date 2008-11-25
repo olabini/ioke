@@ -11,7 +11,7 @@ describe "script evaluation" do
       sw = StringWriter.new(20)
       out = PrintWriter.new(sw)
       ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
-      ioke.evaluate_file('test/scripts/hello_world.ik')
+      ioke.evaluate_file('test/scripts/hello_world.ik', ioke.message, ioke.ground)
       sw.to_s.should == "Hello World\n"
     end
   end
@@ -21,7 +21,7 @@ describe "script evaluation" do
       sw = StringWriter.new(20)
       out = PrintWriter.new(sw)
       ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
-      ioke.evaluate_file('test/scripts/hello_world2.ik')
+      ioke.evaluate_file('test/scripts/hello_world2.ik', ioke.message, ioke.ground)
       sw.to_s.should == "Hello\nWorld\n"
     end
   end

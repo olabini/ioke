@@ -1,5 +1,4 @@
 
-7. change internals to use conditions
 8. simple IO
 9. read & eval
 10. implement a basic debugger -- in Ioke

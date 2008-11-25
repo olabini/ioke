@@ -156,14 +156,14 @@ describe "core" do
       it "should run block when the currently running code is the main" do 
         runtime = IokeRuntime.get_runtime
         runtime.system.data.current_program = "<eval>"
-        runtime.evaluate_stream("<eval>", StringReader.new("System ifMain(xx = 42)"))
+        runtime.evaluate_stream("<eval>", StringReader.new("System ifMain(xx = 42)"), runtime.message, runtime.ground)
         runtime.ground.find_cell(nil, nil, "xx").data.as_java_integer.should == 42
       end
 
       it "should not run block when the currently running code is not the main" do 
         runtime = IokeRuntime.get_runtime
         runtime.system.data.current_program = "<eval>"
-        runtime.evaluate_stream("<eval2>", StringReader.new("System ifMain(xx = 42)"))
+        runtime.evaluate_stream("<eval2>", StringReader.new("System ifMain(xx = 42)"), runtime.message, runtime.ground)
         runtime.ground.find_cell(nil, nil, "xx").should == runtime.nul
       end
     end

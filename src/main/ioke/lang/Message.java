@@ -221,7 +221,7 @@ public class Message extends IokeData {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     String code = Text.getText(message.getEvaluatedArgument(0, context));
-                    return Message.newFromStream(context.runtime, new StringReader(code));
+                    return Message.newFromStream(context.runtime, new StringReader(code), message, context);
                 }
             }));
     }
@@ -348,7 +348,7 @@ public class Message extends IokeData {
         self.runtime.opShuffle.sendTo(self.runtime.ground, self);
     }
 
-    public static IokeObject newFromStream(Runtime runtime, Reader reader) throws ControlFlow {
+    public static IokeObject newFromStream(Runtime runtime, Reader reader, IokeObject message, IokeObject context) throws ControlFlow {
         try {
             iokeParser parser = new iokeParser(new CommonTokenStream(new iokeLexer(new ANTLRReaderStream(reader))));
             Tree t = parser.parseFully();
@@ -366,10 +366,9 @@ public class Message extends IokeData {
             opShuffle(m);
 //                         System.err.println("m2: " + m);
             return m;
-        } catch(RuntimeException e) {
-            throw e;
         } catch(Exception e) {
-            throw new RuntimeException(e);
+            runtime.reportJavaException(e, message, context);
+            return null;
         }
     }
     

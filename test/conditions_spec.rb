@@ -861,6 +861,27 @@ describe "Condition" do
       end
     end
 
+    describe "JavaException" do 
+      it "should have the right kind" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string('Condition Error JavaException kind == "Condition Error JavaException"').should == ioke.true
+      end
+    end
+
+    describe "Parser" do 
+      it "should have the right kind" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string('Condition Error Parser kind == "Condition Error Parser"').should == ioke.true
+      end
+
+      describe "OpShuffle" do 
+        it "should have the right kind" do 
+          ioke = IokeRuntime.get_runtime
+          ioke.evaluate_string('Condition Error Parser OpShuffle kind == "Condition Error Parser OpShuffle"').should == ioke.true
+        end
+      end
+    end
+    
     describe "CommandLine" do 
       it "should have the right kind" do 
         ioke = IokeRuntime.get_runtime

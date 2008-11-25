@@ -29,6 +29,11 @@ public class Main {
     public static void main(String[] args) throws Throwable {
         Runtime r = new Runtime();
         r.init();
+        final IokeObject context = r.ground;
+        final Message mx = new Message(r, ".", null, Message.Type.TERMINATOR);
+        mx.setLine(0);
+        mx.setPosition(0);
+        final IokeObject message = r.createMessage(mx);
 
         boolean debug = false;
         String cwd = null;
@@ -63,8 +68,6 @@ public class Main {
                             cwd = arg.substring(2);
                         }
                     } else {
-                        final IokeObject context = r.ground;
-                        final IokeObject message = Message.newFromStream(r, new StringReader(""));
                         final IokeObject condition = IokeObject.as(IokeObject.getCellChain(r.condition, 
                                                                                            message, 
                                                                                            context, 
@@ -87,16 +90,16 @@ public class Main {
             ((IokeSystem)r.system.data).setCurrentProgram("-e");
 
             for(String script : scripts) {
-                r.evaluateStream("-e", new StringReader(script));
+                r.evaluateStream("-e", new StringReader(script), message, context);
             }
 
             if(args.length > start) { 
                 ((IokeSystem)r.system.data).setCurrentProgram(args[start]);
-                r.evaluateFile(args[start]);
+                r.evaluateFile(args[start], message, context);
             } else {
                 if(scripts.size() == 0) {
                     ((IokeSystem)r.system.data).setCurrentProgram("<stdin>");
-                    r.evaluateStream("<stdin>", new InputStreamReader(System.in));
+                    r.evaluateStream("<stdin>", new InputStreamReader(System.in), message, context);
                 }
             }
         } catch(ControlFlow.Exit e) {

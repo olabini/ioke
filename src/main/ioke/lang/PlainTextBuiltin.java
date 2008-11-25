@@ -21,6 +21,6 @@ public class PlainTextBuiltin extends Builtin {
 
     @Override
     public Object load(Runtime runtime, IokeObject context, IokeObject message) throws ControlFlow {
-        return runtime.evaluateStream("<builtin:"+name+">", new StringReader(text));
+        return runtime.evaluateStream("<builtin:"+name+">", new StringReader(text), message, context);
     }
 }// PlainTextBuiltin

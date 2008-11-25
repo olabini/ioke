@@ -87,7 +87,7 @@ public class IokeSystem extends IokeData {
                     if(loaded.contains(name+suffix)) {
                         return false;
                     } else {
-                        context.runtime.evaluateStream(name+suffix, new InputStreamReader(is));
+                        context.runtime.evaluateStream(name+suffix, new InputStreamReader(is), message, context);
                         loaded.add(name+suffix);
                         return true;
                     }
@@ -106,7 +106,7 @@ public class IokeSystem extends IokeData {
                         if(loaded.contains(f.getCanonicalPath())) {
                             return false;
                         } else {
-                            context.runtime.evaluateFile(f);
+                            context.runtime.evaluateFile(f, message, context);
                             loaded.add(f.getCanonicalPath());
                             return true;
                         }
