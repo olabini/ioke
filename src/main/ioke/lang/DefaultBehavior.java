@@ -634,6 +634,8 @@ public class DefaultBehavior {
         obj.registerMethod(runtime.newJavaMethod("takes either a name (as a symbol) or a Restart instance. if the restart is active, will transfer control to it, supplying the rest of the given arguments to that restart.", new DefaultBehaviorJavaMethod("invokeRestart") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    final Runtime runtime = context.runtime;
+
                     IokeObject restart = IokeObject.as(message.getEvaluatedArgument(0, context));
                     Runtime.RestartInfo realRestart = null;
                     List<Object> args = new ArrayList<Object>();
@@ -641,13 +643,40 @@ public class DefaultBehavior {
                         String name = Symbol.getText(restart);
                         realRestart = context.runtime.findActiveRestart(name);
                         if(null == realRestart) {
-                            throw new RuntimeException("No restart " + name + " is active");
+                            final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
+                                                                                               message, 
+                                                                                               context, 
+                                                                                               "Error", 
+                                                                                               "RestartNotActive")).mimic(message, context);
+                            condition.setCell("message", message);
+                            condition.setCell("context", context);
+                            condition.setCell("receiver", on);
+                            condition.setCell("restart", restart);
+                            
+                            runtime.withReturningRestart("ignoreMissingRestart", context, new RunnableWithControlFlow() {
+                                    public void run() throws ControlFlow {
+                                        runtime.errorCondition(condition);
+                                    }});
+                            return runtime.nil;
                         }
-                        
                     } else {
                         realRestart = context.runtime.findActiveRestart(restart);
                         if(null == realRestart) {
-                            throw new RuntimeException("The restart " + restart + " is not active");
+                            final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
+                                                                                               message, 
+                                                                                               context, 
+                                                                                               "Error", 
+                                                                                               "RestartNotActive")).mimic(message, context);
+                            condition.setCell("message", message);
+                            condition.setCell("context", context);
+                            condition.setCell("receiver", on);
+                            condition.setCell("restart", restart);
+                            
+                            runtime.withReturningRestart("ignoreMissingRestart", context, new RunnableWithControlFlow() {
+                                    public void run() throws ControlFlow {
+                                        runtime.errorCondition(condition);
+                                    }});
+                            return runtime.nil;
                         }
                     }
 
@@ -671,6 +700,7 @@ public class DefaultBehavior {
                     } else if(restart.getKind().equals("Restart")) {
                         realRestart = context.runtime.findActiveRestart(restart);
                     } else {
+                        // Type error
                         throw new RuntimeException("unexpected argument: " + restart);
                     }
                     if(realRestart == null) {
