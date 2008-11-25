@@ -353,6 +353,13 @@ public class Message extends IokeData {
             iokeParser parser = new iokeParser(new CommonTokenStream(new iokeLexer(new ANTLRReaderStream(reader))));
             Tree t = parser.parseFully();
 //                        System.err.println("t: " + t.toStringTree());
+            if(t == null) {
+                Message m = new Message(runtime, ".", null, Type.TERMINATOR);
+                m.setLine(0);
+                m.setPosition(0);
+                return runtime.createMessage(m);
+            }
+
             IokeObject m = fromTree(runtime, t);
 //                        System.err.println("m: " + m);
 //                         System.err.println("m1: " + m);

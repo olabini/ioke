@@ -73,7 +73,7 @@ package ioke.lang.parser;
 
 messageChain
     :
-        expression+ EOF!
+        expression* EOF!
     ;
 
 commatedExpression
