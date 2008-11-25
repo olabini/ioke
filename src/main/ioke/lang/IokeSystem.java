@@ -200,6 +200,10 @@ public class IokeSystem extends IokeData {
         errx.data = new IokeIO(runtime.err);
         obj.registerCell("err", errx);
 
+        IokeObject inx = runtime.io.mimic(null, null);
+        inx.data = new IokeIO(runtime.in);
+        obj.registerCell("in", inx);
+
         obj.registerCell("currentDebugger", runtime.nil);
 
         obj.registerMethod(runtime.newJavaMethod("returns the current file executing", new JavaMethod("currentFile") {
