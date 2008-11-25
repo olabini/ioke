@@ -8,7 +8,7 @@ Ioke 0.1 should include:
 *  rest arguments
 * break
 - return
-- conditions
+* conditions
 * List
 * Dict
 - Enumerable
