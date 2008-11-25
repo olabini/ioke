@@ -59,15 +59,16 @@ DefaultBehavior warn! = method(
     System err println("WARNING: #{result report}")
     result))
 
+
 ;; TODO: test all this behavior
+Dict addKeysAndValues = method(
+  "zips the keys and the values together into this dict",
+  keys, values, 
+
+  keys each(i, k, self[k] = values[i])
+  self)
+
 DefaultBehavior do(
-  Dict addKeysAndValues = method(
-    "zips the keys and the values together into this dict",
-    keys, values, 
-
-    keys each(i, k, self[k] = values[i])
-    self)
-
   cellDescriptionDict = method(
     "returns a dict containing each cell and it's corresponding description",
 
@@ -85,7 +86,7 @@ DefaultBehavior do(
     s
   )
 
-  inspect = cell(:cellSummary)
+;   inspect = cell(:cellSummary)
 
   notice = method(
     "returns the default notice text for this object",
