@@ -8,6 +8,16 @@ def parse(str)
 end
 
 describe "parsing" do 
+  it "should parse an empty string into a terminator message" do 
+    m = parse("").to_string
+    m.should == ".\n"
+  end
+
+  it "should parse a string with only spaces into a terminator message" do 
+    m = parse("  ").to_string
+    m.should == ".\n"
+  end
+  
   describe "terminators" do 
     it "should parse a newline as a terminator" do 
       m = parse("\n").to_string
