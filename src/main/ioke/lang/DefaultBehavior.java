@@ -689,22 +689,49 @@ public class DefaultBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("takes either a name (as a symbol) or a Restart instance. if the restart is active, will return that restart, otherwise returns nil..", new DefaultBehaviorJavaMethod("findRestart") {
+        obj.registerMethod(runtime.newJavaMethod("takes either a name (as a symbol) or a Restart instance. if the restart is active, will return that restart, otherwise returns nil.", new DefaultBehaviorJavaMethod("findRestart") {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                public Object activate(IokeObject method, final IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    final Runtime runtime = context.runtime;
                     IokeObject restart = IokeObject.as(message.getEvaluatedArgument(0, context));
                     Runtime.RestartInfo realRestart = null;
+                    while(!(restart.isSymbol() || restart.getKind().equals("Restart"))) {
+                        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
+                                                                                           message, 
+                                                                                           context, 
+                                                                                           "Error", 
+                                                                                           "Type",
+                                                                                           "IncorrectType")).mimic(message, context);
+                        condition.setCell("message", message);
+                        condition.setCell("context", context);
+                        condition.setCell("receiver", on);
+                        condition.setCell("expectedType", runtime.getSymbol("Restart"));
+                        
+                        final Object[] newCell = new Object[]{restart};
+                        
+                        runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
+                                public void run() throws ControlFlow {
+                                    runtime.errorCondition(condition);
+                                }}, 
+                            context,
+                            new Restart.ArgumentGivingRestart("useValue") { 
+                                public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
+                                    newCell[0] = arguments.get(0);
+                                    return runtime.nil;
+                                }
+                            }
+                            );
+                        restart = IokeObject.as(newCell[0]);
+                    }
+
                     if(restart.isSymbol()) {
                         String name = Symbol.getText(restart);
-                        realRestart = context.runtime.findActiveRestart(name);
+                        realRestart = runtime.findActiveRestart(name);
                     } else if(restart.getKind().equals("Restart")) {
-                        realRestart = context.runtime.findActiveRestart(restart);
-                    } else {
-                        // Type error
-                        throw new RuntimeException("unexpected argument: " + restart);
+                        realRestart = runtime.findActiveRestart(restart);
                     }
                     if(realRestart == null) {
-                        return context.runtime.nil;
+                        return runtime.nil;
                     } else {
                         return realRestart.restart;
                     }
