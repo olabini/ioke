@@ -58,3 +58,36 @@ DefaultBehavior warn! = method(
     result = signal!(datum, *krest)
     System err println("WARNING: #{result report}")
     result))
+
+;; TODO: test all this behavior
+DefaultBehavior do(
+  Dict addKeysAndValues = method(
+    "zips the keys and the values together into this dict",
+    keys, values, 
+
+    keys each(i, k, self[k] = values[i])
+    self)
+
+  cellDescriptionDict = method(
+    "returns a dict containing each cell and it's corresponding description",
+
+	cellNames = cell(:self) cellNames sort
+	cellDescs = cellNames map(name, cell(:self) cell(name) notice)
+	Dict mimic addKeysAndValues(cellNames, cellDescs))
+
+  cellSummary = method(
+    "returns a representation of the current object that includes information about it's cells",
+
+    s = " #{cell(:self) notice}:\n"
+    cellDescriptions = cellDescriptionDict
+	cellDescriptions keys sort each(k,
+	  s = s + ("  ", k alignLeft(16), " = ", cellDescriptions[k], "\n"))
+    s
+  )
+
+  inspect = cell(:cellSummary)
+
+  notice = method(
+    "returns the default notice text for this object",
+
+    "#{cell(:self) kind}_#{cell(:self) uniqueHexId}"))
