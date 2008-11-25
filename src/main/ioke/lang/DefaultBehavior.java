@@ -563,7 +563,8 @@ public class DefaultBehavior {
 
         obj.registerMethod(runtime.newJavaMethod("will evaluate all arguments, and expects all except for the last to be a Restart. bind will associate these restarts for the duration of the execution of the last argument and then unbind them again. it will return the result of the last argument, or if a restart is executed it will instead return the result of that invocation.", new DefaultBehaviorJavaMethod("bind") {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                public Object activate(IokeObject method, final IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    final Runtime runtime = context.runtime;
                     List<Object> args = message.getArguments();
                     int argCount = args.size();
                     if(argCount == 0) {
@@ -580,28 +581,59 @@ public class DefaultBehavior {
                     try {
                         for(Object o : args.subList(0, argCount-1)) {
                             IokeObject bindable = IokeObject.as(IokeObject.as(o).evaluateCompleteWithoutExplicitReceiver(context, context.getRealContext()));
-                            if(IokeObject.isKind(bindable, "Restart")) {
-                                Object ioName = runtime.name.sendTo(context, bindable);
-                                String name = null;
-                                if(ioName != runtime.nil) {
-                                    name = Symbol.getText(ioName);
-                                }
+                            boolean loop = false;
+                            do {
+                                loop = false;
+                                if(IokeObject.isKind(bindable, "Restart")) {
+                                    Object ioName = runtime.name.sendTo(context, bindable);
+                                    String name = null;
+                                    if(ioName != runtime.nil) {
+                                        name = Symbol.getText(ioName);
+                                    }
                             
-                                restarts.add(0, new Runtime.RestartInfo(name, bindable, restarts, index, null));
-                                index = index.nextCol();
-                            } else if(IokeObject.isKind(bindable, "Rescue")) {
-                                Object conditions = runtime.conditionsMessage.sendTo(context, bindable);
-                                List<Object> applicable = IokeList.getList(conditions);
-                                rescues.add(0, new Runtime.RescueInfo(bindable, applicable, rescues, index));
-                                index = index.nextCol();
-                            } else if(IokeObject.isKind(bindable, "Handler")) {
-                                Object conditions = runtime.conditionsMessage.sendTo(context, bindable);
-                                List<Object> applicable = IokeList.getList(conditions);
-                                handlers.add(0, new Runtime.HandlerInfo(bindable, applicable, handlers, index));
-                                index = index.nextCol();
-                            } else {
-                                throw new RuntimeException("argument " + o + " did not evaluate to a bindable object (A Restart, Rescue or Handler)");
-                            }
+                                    restarts.add(0, new Runtime.RestartInfo(name, bindable, restarts, index, null));
+                                    index = index.nextCol();
+                                } else if(IokeObject.isKind(bindable, "Rescue")) {
+                                    Object conditions = runtime.conditionsMessage.sendTo(context, bindable);
+                                    List<Object> applicable = IokeList.getList(conditions);
+                                    rescues.add(0, new Runtime.RescueInfo(bindable, applicable, rescues, index));
+                                    index = index.nextCol();
+                                } else if(IokeObject.isKind(bindable, "Handler")) {
+                                    Object conditions = runtime.conditionsMessage.sendTo(context, bindable);
+                                    List<Object> applicable = IokeList.getList(conditions);
+                                    handlers.add(0, new Runtime.HandlerInfo(bindable, applicable, handlers, index));
+                                    index = index.nextCol();
+                                } else {
+                                    final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
+                                                                                                       message, 
+                                                                                                       context, 
+                                                                                                       "Error", 
+                                                                                                       "Type",
+                                                                                                       "IncorrectType")).mimic(message, context);
+                                    condition.setCell("message", message);
+                                    condition.setCell("context", context);
+                                    condition.setCell("receiver", on);
+                                    condition.setCell("expectedType", runtime.getSymbol("Bindable"));
+                        
+                                    final Object[] newCell = new Object[]{bindable};
+                        
+                                    runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
+                                            public void run() throws ControlFlow {
+                                                runtime.errorCondition(condition);
+                                            }}, 
+                                        context,
+                                        new Restart.ArgumentGivingRestart("useValue") { 
+                                            public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
+                                                newCell[0] = arguments.get(0);
+                                                return runtime.nil;
+                                            }
+                                        }
+                                        );
+                                    bindable = IokeObject.as(newCell[0]);
+                                    loop = true;
+                                }
+                            } while(loop);
+                            loop = false;
                         }
                         runtime.registerRestarts(restarts);
                         runtime.registerRescues(rescues);
