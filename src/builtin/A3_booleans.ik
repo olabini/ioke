@@ -226,4 +226,11 @@ nil nand = macro(
   true)
 
 
+nil inspect = "nil"
+nil notice = "nil"
 
+true inspect = "true"
+true notice = "true"
+
+false inspect = "false"
+false notice = "false"
