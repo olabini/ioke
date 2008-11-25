@@ -5,6 +5,7 @@
 ; Enumerable take = method("takes one non-negative number and returns as many elements from the underlying enumerable. this explicitly works with infine collections that would loop forever if you called their each directly")
 
 ; Enumerable map/collect
+;    probably also add mapFn
 ; Enumerable inject/reduce/fold
 ; Enumerable asList
 ; Enumerable sort
