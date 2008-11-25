@@ -854,6 +854,13 @@ describe "Condition" do
       end
     end
 
+    describe "RestartNotActive" do 
+      it "should have the right kind" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string('Condition Error RestartNotActive kind == "Condition Error RestartNotActive"').should == ioke.true
+      end
+    end
+
     describe "Type" do 
       it "should have the right kind" do 
         ioke = IokeRuntime.get_runtime
