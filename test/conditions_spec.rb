@@ -861,6 +861,20 @@ describe "Condition" do
       end
     end
 
+    describe "CommandLine" do 
+      it "should have the right kind" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string('Condition Error CommandLine kind == "Condition Error CommandLine"').should == ioke.true
+      end
+
+      describe "DontUnderstandOption" do 
+        it "should have the right kind" do 
+          ioke = IokeRuntime.get_runtime
+          ioke.evaluate_string('Condition Error CommandLine DontUnderstandOption kind == "Condition Error CommandLine DontUnderstandOption"').should == ioke.true
+        end
+      end
+    end
+
     describe "Type" do 
       it "should have the right kind" do 
         ioke = IokeRuntime.get_runtime

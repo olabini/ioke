@@ -10,6 +10,9 @@ Condition Error NoSuchCell       = Condition Error mimic
 Condition Error Type             = Condition Error mimic
 Condition Error Index            = Condition Error mimic
 Condition Error RestartNotActive = Condition Error mimic
+Condition Error CommandLine      = Condition Error mimic
+
+Condition Error CommandLine DontUnderstandOption       = Condition Error CommandLine mimic
 
 Condition Error Arithmetic DivisionByZero = Condition Error Arithmetic mimic
 

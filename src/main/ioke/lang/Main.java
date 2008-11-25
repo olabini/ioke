@@ -27,6 +27,9 @@ public class Main {
 
 
     public static void main(String[] args) throws Throwable {
+        Runtime r = new Runtime();
+        r.init();
+
         boolean debug = false;
         String cwd = null;
         List<String> scripts = new ArrayList<String>();
@@ -60,13 +63,23 @@ public class Main {
                             cwd = arg.substring(2);
                         }
                     } else {
-                        throw new RuntimeException("Don't understand option: " + arg);
+                        final IokeObject context = r.ground;
+                        final IokeObject message = Message.newFromStream(r, new StringReader(""));
+                        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(r.condition, 
+                                                                                           message, 
+                                                                                           context, 
+                                                                                           "Error", 
+                                                                                           "CommandLine", 
+                                                                                           "DontUnderstandOption")).mimic(message, context);
+                        condition.setCell("message", message);
+                        condition.setCell("context", context);
+                        condition.setCell("receiver", context);
+                        condition.setCell("option", r.newText(arg));
+                        r.errorCondition(condition);
                     }
                 }
             }
 
-            Runtime r = new Runtime();
-            r.init();
             if(cwd != null) {
                 r.setCurrentWorkingDirectory(cwd);
             }
