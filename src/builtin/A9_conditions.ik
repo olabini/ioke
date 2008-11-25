@@ -11,10 +11,15 @@ Condition Error Type             = Condition Error mimic
 Condition Error Index            = Condition Error mimic
 Condition Error RestartNotActive = Condition Error mimic
 Condition Error CommandLine      = Condition Error mimic
+Condition Error JavaException    = Condition Error mimic
+Condition Error Parser           = Condition Error mimic
+
+
+Condition Error Parser OpShuffle                       = Condition Error Parser mimic
 
 Condition Error CommandLine DontUnderstandOption       = Condition Error CommandLine mimic
 
-Condition Error Arithmetic DivisionByZero = Condition Error Arithmetic mimic
+Condition Error Arithmetic DivisionByZero              = Condition Error Arithmetic mimic
 
 Condition Error Invocation NotActivatable              = Condition Error Invocation mimic
 Condition Error Invocation ArgumentWithoutDefaultValue = Condition Error Invocation mimic
@@ -25,13 +30,14 @@ Condition Error Invocation NotSpreadable               = Condition Error Invocat
 
 Condition Error Type IncorrectType = Condition Error Type mimic
 
+Condition Error text = "condition reported"
 
 ;; ALL REPORTS NEED TO ADD message stackTraceElement as first line. change context to do the same thing
 
 Condition report = method(
   "default implementation of reporting that only prints the name of the condition, and a stack trace",
   
-  "condition reported: (#{self kind})
+  "#{self text} (#{self kind})
 
 #{context stackTraceAsText}")
 

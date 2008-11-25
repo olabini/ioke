@@ -361,7 +361,17 @@ public class Levels {
             String setCellName;
 
             if(attaching == null) { // = b . 
-                throw new RuntimeException("Can't create assignment expression without lvalue");
+                final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
+                                                                                   _message, 
+                                                                                   _context, 
+                                                                                   "Error", 
+                                                                                   "Parser", 
+                                                                                   "OpShuffle")).mimic(_message, _context);
+                condition.setCell("message", _message);
+                condition.setCell("context", _context);
+                condition.setCell("receiver", _context);
+                condition.setCell("text", runtime.newText("Can't create assignment expression without lvalue"));
+                runtime.errorCondition(condition);
             }
 
 			// a = b .

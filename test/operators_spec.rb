@@ -8,7 +8,7 @@ end
 
 def parse(str)
   ioke = IokeRuntime.get_runtime()
-  ioke.parse_stream(StringReader.new(str))
+  ioke.parse_stream(StringReader.new(str), ioke.message, ioke.ground)
 end
 
 describe "operator" do 

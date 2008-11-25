@@ -18,9 +18,9 @@ public class Restart {
         restart.setKind("Restart");
 
         restart.registerCell("name", runtime.nil);
-        restart.registerCell("report", runtime.evaluateString("fn(r, \"restart: \" + r name)"));
-        restart.registerCell("test", runtime.evaluateString("fn(c, true)"));
-        restart.registerCell("code", runtime.evaluateString("fn()"));
+        restart.registerCell("report", runtime.evaluateString("fn(r, \"restart: \" + r name)", runtime.message, runtime.ground));
+        restart.registerCell("test", runtime.evaluateString("fn(c, true)", runtime.message, runtime.ground));
+        restart.registerCell("code", runtime.evaluateString("fn()", runtime.message, runtime.ground));
     }
 
 

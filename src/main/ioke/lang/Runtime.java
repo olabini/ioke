@@ -202,18 +202,18 @@ public class Runtime {
             });
         
         try {
-            evaluateString("use(\"builtin/A1_defaultBehavior\")");
-            evaluateString("use(\"builtin/A2_number\")");
-            evaluateString("use(\"builtin/A3_booleans\")");
-            evaluateString("use(\"builtin/A4_range\")");
-            evaluateString("use(\"builtin/A5_call\")");
-            evaluateString("use(\"builtin/A6_list\")");
-            evaluateString("use(\"builtin/A7_dict\")");
-            evaluateString("use(\"builtin/A9_conditions\")");
-            evaluateString("use(\"builtin/A10_text\")");
+            evaluateString("use(\"builtin/A1_defaultBehavior\")", message, ground);
+            evaluateString("use(\"builtin/A2_number\")", message, ground);
+            evaluateString("use(\"builtin/A3_booleans\")", message, ground);
+            evaluateString("use(\"builtin/A4_range\")", message, ground);
+            evaluateString("use(\"builtin/A5_call\")", message, ground);
+            evaluateString("use(\"builtin/A6_list\")", message, ground);
+            evaluateString("use(\"builtin/A7_dict\")", message, ground);
+            evaluateString("use(\"builtin/A9_conditions\")", message, ground);
+            evaluateString("use(\"builtin/A10_text\")", message, ground);
 
-            evaluateString("use(\"builtin/M1_comparing\")");
-            evaluateString("use(\"builtin/M2_enumerable\")");
+            evaluateString("use(\"builtin/M1_comparing\")", message, ground);
+            evaluateString("use(\"builtin/M2_enumerable\")", message, ground);
         } catch(ControlFlow cf) {
         }
     }
@@ -332,55 +332,81 @@ public class Runtime {
         return builtins.get(name);
     }
 
-    public IokeObject parseStream(Reader reader) throws ControlFlow {
-        return Message.newFromStream(this, reader);
+    public IokeObject parseStream(Reader reader, IokeObject message, IokeObject context) throws ControlFlow {
+        return Message.newFromStream(this, reader, message, context);
     }
 
+    public Object evaluateStream(Reader reader, IokeObject message, IokeObject context) throws ControlFlow {
+        return parseStream(reader, message, context).evaluateComplete();
+    }
+
+    public Object evaluateString(String str, IokeObject message, IokeObject context) throws ControlFlow {
+        return parseStream(new StringReader(str), message, context).evaluateComplete();
+    }
+
+    // ONLY FOR USE FROM RSPEC
     public Object evaluateStream(Reader reader) throws ControlFlow {
-        return parseStream(reader).evaluateComplete();
+        return evaluateStream(reader, this.message, this.ground);
     }
 
+    // ONLY FOR USE FROM RSPEC
     public Object evaluateString(String str) throws ControlFlow {
-        return parseStream(new StringReader(str)).evaluateComplete();
+        return evaluateString(str, this.message, this.ground);
     }
 
-    public Object evaluateStream(String name, Reader reader) throws ControlFlow {
+    public Object evaluateStream(String name, Reader reader, IokeObject message, IokeObject context) throws ControlFlow {
         try {
             ((IokeSystem)system.data).pushCurrentFile(name);
-            return evaluateStream(reader);
-        } catch(RuntimeException e) {
-            throw e;
+            return evaluateStream(reader, message, context);
         } catch(Exception e) {
-            throw new RuntimeException(e);
+            reportJavaException(e, message, context);
+            return null;
         } finally {
             ((IokeSystem)system.data).popCurrentFile();
         }
     }
 
-    public Object evaluateFile(File f) throws ControlFlow {
+    public Object evaluateFile(File f, IokeObject message, IokeObject context) throws ControlFlow {
         try {
             ((IokeSystem)system.data).pushCurrentFile(f.getCanonicalPath());
-            return evaluateStream(new FileReader(f));
-        } catch(RuntimeException e) {
-            throw e;
+            return evaluateStream(new FileReader(f), message, context);
         } catch(Exception e) {
-            throw new RuntimeException(e);
+            reportJavaException(e, message, context);
+            return null;
         } finally {
             ((IokeSystem)system.data).popCurrentFile();
         }
     }
 
-    public Object evaluateFile(String filename) throws ControlFlow {
+    public Object evaluateFile(String filename, IokeObject message, IokeObject context) throws ControlFlow {
         try {
             ((IokeSystem)system.data).pushCurrentFile(filename);
-            return evaluateStream(new FileReader(new File(((IokeSystem)system.data).getCurrentWorkingDirectory(), filename)));
-        } catch(RuntimeException e) {
-            throw e;
+            return evaluateStream(new FileReader(new File(((IokeSystem)system.data).getCurrentWorkingDirectory(), filename)), message, context);
         } catch(Exception e) {
-            throw new RuntimeException(e);
+            reportJavaException(e, message, context);
+            return null;
         } finally {
             ((IokeSystem)system.data).popCurrentFile();
         }
+    }
+
+    public void reportJavaException(Exception e, IokeObject message, IokeObject context) throws ControlFlow {
+        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(this.condition, 
+                                                                           message, 
+                                                                           context, 
+                                                                           "Error", 
+                                                                           "JavaException")).mimic(message, context);
+        condition.setCell("message", message);
+        condition.setCell("context", context);
+        condition.setCell("receiver", context);
+        condition.setCell("exceptionType", newText(e.getClass().getName()));
+        condition.setCell("exceptionMessage", newText(e.getMessage()));
+        List<Object> ob = new ArrayList<Object>();
+        for(StackTraceElement ste : e.getStackTrace()) {
+            ob.add(newText(ste.toString()));
+        }
+        condition.setCell("exceptionStackTrace", newList(ob));
+        this.errorCondition(condition);
     }
 
     public IokeObject newFromOrigin() throws ControlFlow {
@@ -402,9 +428,18 @@ public class Runtime {
         return nil;
     }
 
-    public IokeObject newNumber(String number) {
+    public IokeObject newNumber(String number) throws ControlFlow {
         if(number.indexOf('.') != -1) {
-            throw new RuntimeException("Can't handle decimal numbers yet. Sorry.");
+            final IokeObject condition = IokeObject.as(IokeObject.getCellChain(this.condition, 
+                                                                               this.message, 
+                                                                               this.ground, 
+                                                                               "Error", 
+                                                                               "Default")).mimic(this.message, this.ground);
+            condition.setCell("message", this.message);
+            condition.setCell("context", this.ground);
+            condition.setCell("receiver", this.ground);
+            condition.setCell("text", newText("Can't handle decimal numbers yet. Sorry."));
+            errorCondition(condition);
         }
 
         IokeObject obj = this.number.allocateCopy(null, null);
