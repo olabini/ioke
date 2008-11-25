@@ -42,6 +42,15 @@ Condition report = method(
 #{context stackTraceAsText}")
 
 
+Condition Error JavaException report = method(
+  "returns a representation of this error, showing some information about the java exception",
+  
+  "#{self exceptionType}: #{self exceptionMessage} (#{self kind})
+
+#{self exceptionStackTrace}
+
+#{context stackTraceAsText}")
+
 Condition Error Load report = method(
   "returns a representation of this error, showing the name of the module that couldn't be loaded, and if an ioexception occured, the message and stack trace of this",
   
