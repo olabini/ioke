@@ -41,6 +41,7 @@ public class Main {
         try {
             int start = 0;
             boolean done = false;
+            boolean readStdin = false;
 
             for(;!done && start<args.length;start++) {
                 String arg = args[start];
@@ -61,6 +62,8 @@ public class Main {
                     } else if(arg.equals("-h") || arg.equals("--help")) {
                         System.err.print(HELP);
                         return;
+                    } else if(arg.equals("-")) {
+                        readStdin = true;
                     } else if(arg.charAt(1) == 'C') {
                         if(arg.length() == 2) {
                             cwd = args[++start];
@@ -92,14 +95,18 @@ public class Main {
             for(String script : scripts) {
                 r.evaluateStream("-e", new StringReader(script), message, context);
             }
+            
+            if(readStdin) {
+                ((IokeSystem)r.system.data).setCurrentProgram("<stdin>");
+                r.evaluateStream("<stdin>", new InputStreamReader(System.in), message, context);
+            }
 
             if(args.length > start) { 
                 ((IokeSystem)r.system.data).setCurrentProgram(args[start]);
                 r.evaluateFile(args[start], message, context);
             } else {
                 if(scripts.size() == 0) {
-                    ((IokeSystem)r.system.data).setCurrentProgram("<stdin>");
-                    r.evaluateStream("<stdin>", new InputStreamReader(System.in), message, context);
+                    r.evaluateString("use(\"builtin/iik\"). IIk mainLoop", message, context);
                 }
             }
         } catch(ControlFlow.Exit e) {
