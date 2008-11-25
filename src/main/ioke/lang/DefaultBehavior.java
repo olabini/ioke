@@ -213,8 +213,12 @@ public class DefaultBehavior {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> args = new ArrayList<Object>();
                     DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
-                    
+
                     StringBuilder sb = new StringBuilder();
+
+                    if(IokeObject.data(on) instanceof Text) {
+                        sb.append(Text.getText(on));
+                    }
 
                     for(Object o : args) {
                         if(IokeObject.data(o) instanceof Text) {
