@@ -3,6 +3,8 @@
  */
 package ioke.lang;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -29,6 +31,27 @@ public class Dict extends IokeData {
 
         obj.setKind("Dict");
         obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Enumerable")), runtime.nul, runtime.nul);
+        obj.registerMethod(runtime.newJavaMethod("takes one argument, the key of the element to return. if the key doesn't map to anything in the dict, returns the default value", new JavaMethod("at") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> positionalArgs = new ArrayList<Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, positionalArgs, new HashMap<String, Object>());
+                    Object result = Dict.getMap(on).get(positionalArgs.get(0));
+                    if(result == null) {
+                        return context.runtime.nil;
+                    } else {
+                        return result;
+                    }
+                }}));
+
+        obj.registerMethod(runtime.newJavaMethod("takes two arguments, the key of the element to set and the value to set it too. returns the value set", new JavaMethod("[]=") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> positionalArgs = new ArrayList<Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, positionalArgs, new HashMap<String, Object>());
+                    Dict.getMap(on).put(positionalArgs.get(0), positionalArgs.get(1));
+                    return positionalArgs.get(1);
+                }}));
     }
 
     public static Map<Object, Object> getMap(Object dict) {

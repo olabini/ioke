@@ -95,12 +95,6 @@ Runtime notice = method(
 
 
 ;; TODO: test all this behavior
-; Dict addKeysAndValues = method(
-;   "zips the keys and the values together into this dict",
-;   keys, values, 
-
-;   keys each(i, k, self[k] = values[i])
-;   self)
 
 ; DefaultBehavior do(
 ;   cellDescriptionDict = method(
