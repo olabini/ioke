@@ -59,6 +59,8 @@ DefaultBehavior warn! = method(
     System err println("WARNING: #{result report}")
     result))
 
+
+
 DefaultBehavior do(
   notice = method(
     "returns a short text description of the receiver",
@@ -66,11 +68,25 @@ DefaultBehavior do(
     if(self == Origin,
       "Origin",
       if(self == Ground,
-        "Ground"
+        "Ground",
+        "unknown!!"
 
-          )))
+  )))
 )
 
+System notice = method(
+    "returns a short text description of the receiver, the text System if this is the main System object, otherwise falls back to the super implementation",
+
+    if(self == System,
+      "System",
+      super))
+
+Runtime notice = method(
+    "returns a short text description of the receiver, the text Runtime if this is the main Runtime object, otherwise falls back to the super implementation",
+
+    if(self == Runtime,
+      "Runtime",
+      super))
 
 ;; TODO: test all this behavior
 ; Dict addKeysAndValues = method(

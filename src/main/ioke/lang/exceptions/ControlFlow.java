@@ -19,7 +19,7 @@ public class ControlFlow extends Throwable {
         }
 
         public Exit(Object reason) {
-            super(reason);
+            super(reason, "OH NO, exit out of place, because of: " + reason);
         }
     }
 
@@ -76,6 +76,11 @@ public class ControlFlow extends Throwable {
     private Object value;
 
     public ControlFlow(Object value) {
+        this.value = value;
+    }
+
+    public ControlFlow(Object value, String message) {
+        super(message);
         this.value = value;
     }
 

@@ -56,6 +56,36 @@ public class IokeObject {
         return new IokeObject(runtime, documentation, data.cloneData(this, m, context));
     }
 
+    public static Object findSuperCellOn(Object obj, IokeObject early, IokeObject message, IokeObject context, String name) {
+        return as(obj).findSuperCell(early, message, context, name, new boolean[]{false}, new IdentityHashMap<IokeObject, Object>());
+    }
+
+    public Object findSuperCell(IokeObject early, IokeObject message, IokeObject context, String name, boolean[] found, IdentityHashMap<IokeObject, Object> visited) {
+        if(visited.containsKey(this)) {
+            return runtime.nul;
+        }
+
+        if(cells.containsKey(name)) {
+            if(found[0]) {
+                return cells.get(name);
+            }
+            if(early == cells.get(name)) {
+                found[0] = true;
+            }
+        }
+
+        visited.put(this, null);
+        
+        for(IokeObject mimic : mimics) {
+            Object cell = mimic.findSuperCell(early, message, context, name, found, visited);
+            if(cell != runtime.nul) {
+                return cell;
+            }
+        }
+
+        return runtime.nul;
+    }
+
     public static Object findCell(Object obj, IokeObject m, IokeObject context, String name) {
         return as(obj).findCell(m, context, name, new IdentityHashMap<IokeObject, Object>());
     }

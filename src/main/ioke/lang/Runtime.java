@@ -153,8 +153,9 @@ public class Runtime {
         ground.mimicsWithoutCheck(defaultBehavior);
         origin.mimicsWithoutCheck(ground);
 
-        system.mimicsWithoutCheck(base);
+        system.mimicsWithoutCheck(ground);
         system.mimicsWithoutCheck(defaultBehavior);
+        runtime.mimicsWithoutCheck(ground);
         runtime.mimicsWithoutCheck(defaultBehavior);
 
         nil.mimicsWithoutCheck(origin);

@@ -65,6 +65,11 @@ describe "Ground" do
       ioke = IokeRuntime.get_runtime
       ioke.evaluate_string('Ground notice').data.text.should == "Ground"
     end
+
+    it "should not return 'Ground' for a mimic" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('Ground mimic notice').data.text.should_not == "Ground"
+    end
   end
 end
 
@@ -74,6 +79,43 @@ describe "Origin" do
       ioke = IokeRuntime.get_runtime
       ioke.evaluate_string('Origin notice').data.text.should == "Origin"
     end
+
+    it "should not return 'Origin' for a mimic" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('Origin mimic notice').data.text.should_not == "Origin"
+    end
   end
 end
+
+# [Text, Symbol, Number, Method, DefaultMethod, JavaMethod, 
+# LexicalBlock, DefaultMacro, Restart, List, Dict, Range, Pair, Message, Call, Condition, Rescue, Handler, IO]
+
+describe "System" do 
+  describe "'notice'" do 
+    it "should return 'System'" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('System notice').data.text.should == "System"
+    end
+
+    it "should not return 'System' for a mimic" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('System mimic notice').data.text.should_not == "System"
+    end
+  end
+end
+
+describe "Runtime" do 
+  describe "'notice'" do 
+    it "should return 'Runtime'" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('Runtime notice').data.text.should == "Runtime"
+    end
+
+    it "should not return 'Runtime' for a mimic" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('Runtime mimic notice').data.text.should_not == "Runtime"
+    end
+  end
+end
+
 
