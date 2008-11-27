@@ -59,6 +59,18 @@ DefaultBehavior warn! = method(
     System err println("WARNING: #{result report}")
     result))
 
+DefaultBehavior do(
+  notice = method(
+    "returns a short text description of the receiver",
+
+    if(self == Origin,
+      "Origin",
+      if(self == Ground,
+        "Ground"
+
+          )))
+)
+
 
 ;; TODO: test all this behavior
 ; Dict addKeysAndValues = method(
