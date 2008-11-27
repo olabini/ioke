@@ -50,6 +50,19 @@ public class DefaultMethod extends Method {
         return "method(" + args + Message.code(code) + ")";
     }
 
+    private IokeObject createSuperCallFor(final IokeObject out_self, final IokeObject out_context, final IokeObject out_message, final Object out_on, final Object out_superCell) {
+        return out_context.runtime.newJavaMethod("will call the super method of the current message on the same receiver", new JavaMethod("super") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    if(IokeObject.data(out_superCell) instanceof Method) {
+                        return IokeObject.activate(out_superCell, context, message, out_on);
+                    } else {
+                        return out_superCell;
+                    }
+                }
+            });
+    }
+
     @Override
     public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
         IokeObject c = context.runtime.locals.mimic(message, context);
@@ -57,6 +70,11 @@ public class DefaultMethod extends Method {
         c.setCell("@", on);
         c.setCell("currentMessage", message);
         c.setCell("surroundingContext", context);
+
+        Object superCell = IokeObject.findSuperCellOn(on, self, message, context, name);
+        if(superCell != context.runtime.nul) {
+            c.setCell("super", createSuperCallFor(self, context, message, on, superCell));
+        }
 
         arguments.assignArgumentValues(c, context, message, on);
 
