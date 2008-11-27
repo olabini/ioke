@@ -68,8 +68,8 @@ public class Method extends IokeData implements Named {
         return self.runtime.nil;
     }
 
-    @Override
-    public String inspect(IokeObject self) {
-        return "method(...)";
-    }
+//     @Override
+//     public String inspect(IokeObject self) {
+//         return "method(...)";
+//     }
 }// Method

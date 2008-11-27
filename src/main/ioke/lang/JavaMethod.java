@@ -25,13 +25,13 @@ public class JavaMethod extends Method {
             }));
     }
 
-    public String inspectName() {
-        return getClass().getName();
-    }
+//     public String inspectName() {
+//         return getClass().getName();
+//     }
 
-    @Override
-    public String inspect(IokeObject self) {
-        return inspectName();
-    }
+//     @Override
+//     public String inspect(IokeObject self) {
+//         return inspectName();
+//     }
 }
 

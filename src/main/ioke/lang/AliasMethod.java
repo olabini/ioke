@@ -31,8 +31,8 @@ public class AliasMethod extends IokeData implements Named {
         return realMethod.activate(self, context, message, on);
     }
 
-    @Override
-    public String inspect(IokeObject self) {
-        return realMethod.inspect(self);
-    }
+//     @Override
+//     public String inspect(IokeObject self) {
+//         return realMethod.inspect(self);
+//     }
 }// AliasMethod

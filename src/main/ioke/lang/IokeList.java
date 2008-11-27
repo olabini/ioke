@@ -247,16 +247,16 @@ public class IokeList extends IokeData {
         return list.toString();
     }
 
-    @Override
-    public String inspect(IokeObject obj) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("[");
-        String sep = "";
-        for(Object o : list) {
-            sb.append(sep).append(IokeObject.inspect(o));
-            sep = ", ";
-        }
-        sb.append("]");
-        return sb.toString();
-    }
+//     @Override
+//     public String inspect(IokeObject obj) {
+//         StringBuilder sb = new StringBuilder();
+//         sb.append("[");
+//         String sep = "";
+//         for(Object o : list) {
+//             sb.append(sep).append(IokeObject.inspect(o));
+//             sep = ", ";
+//         }
+//         sb.append("]");
+//         return sb.toString();
+//     }
 }// IokeList

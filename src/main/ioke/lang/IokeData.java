@@ -45,10 +45,10 @@ public abstract class IokeData {
                 return "nil";
             }
 
-            @Override
-            public String inspect(IokeObject self) {
-                return "nil";
-            }
+//             @Override
+//             public String inspect(IokeObject self) {
+//                 return "nil";
+//             }
         };
 
     public final static IokeData False = new IokeData(){
@@ -78,10 +78,10 @@ public abstract class IokeData {
                 return "false";
             }
 
-            @Override
-            public String inspect(IokeObject self) {
-                return "false";
-            }
+//             @Override
+//             public String inspect(IokeObject self) {
+//                 return "false";
+//             }
         };
 
     public final static IokeData True = new IokeData(){
@@ -107,10 +107,10 @@ public abstract class IokeData {
                 return "true";
             }
 
-            @Override
-            public String inspect(IokeObject self) {
-                return "true";
-            }
+//             @Override
+//             public String inspect(IokeObject self) {
+//                 return "true";
+//             }
         };
 
 
@@ -338,7 +338,7 @@ public abstract class IokeData {
         return "#<" + kind + ":" + hash + ">";
     }
 
-    public String inspect(IokeObject self) {
-        return null;
-    }
+//     public String inspect(IokeObject self) {
+//         return null;
+//     }
 }// IokeData

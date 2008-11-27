@@ -53,10 +53,10 @@ public class Number extends IokeData {
         return asJavaString();
     }
 
-    @Override
-    public String inspect(IokeObject obj) {
-        return asJavaString();
-    }
+//     @Override
+//     public String inspect(IokeObject obj) {
+//         return asJavaString();
+//     }
 
     @Override
     public IokeObject convertToNumber(IokeObject self, IokeObject m, IokeObject context) {

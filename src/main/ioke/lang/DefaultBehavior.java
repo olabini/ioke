@@ -24,10 +24,10 @@ public class DefaultBehavior {
             super(name);
         }
 
-        @Override
-        public String inspectName() {
-            return "DefaultBehavior_" + this.getName();
-        }
+//         @Override
+//         public String inspectName() {
+//             return "DefaultBehavior_" + this.getName();
+//         }
     }
 
     public static IokeObject signal(Object datum, List<Object> positionalArgs, Map<String, Object> keywordArgs, IokeObject message, IokeObject context) throws ControlFlow {
@@ -295,12 +295,12 @@ public class DefaultBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns a more detailed textual representation of the object called on, than asText.", new DefaultBehaviorJavaMethod("inspect") {
-                @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
-                    return runtime.newText(IokeObject.as(on).inspect());
-                }
-            }));
+//         obj.registerMethod(runtime.newJavaMethod("returns a more detailed textual representation of the object called on, than asText.", new DefaultBehaviorJavaMethod("inspect") {
+//                 @Override
+//                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
+//                     return runtime.newText(IokeObject.as(on).inspect());
+//                 }
+//             }));
 
         obj.registerMethod(runtime.newJavaMethod("returns the documentation text of the object called on. anything can have a documentation text and an object inherits it's documentation string text the object it mimcs - at mimic time.", new DefaultBehaviorJavaMethod("documentation") {
                 @Override

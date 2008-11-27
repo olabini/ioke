@@ -72,12 +72,12 @@ public class LexicalBlock extends IokeData {
         return this.message.evaluateCompleteWith(c, on);
     }
 
-    @Override
-    public String inspect(IokeObject self) {
-        if(self.isActivatable()) {
-            return "fnx(...)";
-        } else {
-            return "fn(...)";
-        }
-    }
+//     @Override
+//     public String inspect(IokeObject self) {
+//         if(self.isActivatable()) {
+//             return "fnx(...)";
+//         } else {
+//             return "fn(...)";
+//         }
+//     }
 }// LexicalBlock

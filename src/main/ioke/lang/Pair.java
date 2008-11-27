@@ -65,14 +65,14 @@ public class Pair extends IokeData {
         return "" + first + " => " + second;
     }
 
-    @Override
-    public String inspect(IokeObject obj) {
-        StringBuilder sb = new StringBuilder();
+//     @Override
+//     public String inspect(IokeObject obj) {
+//         StringBuilder sb = new StringBuilder();
 
-        sb.append(IokeObject.inspect(first));
-        sb.append(" => ");
-        sb.append(IokeObject.inspect(second));
+//         sb.append(IokeObject.inspect(first));
+//         sb.append(" => ");
+//         sb.append(IokeObject.inspect(second));
 
-        return sb.toString();
-    }
+//         return sb.toString();
+//     }
 }// Pair

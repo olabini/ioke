@@ -60,17 +60,17 @@ public class Dict extends IokeData {
         return dict.toString();
     }
 
-    @Override
-    public String inspect(IokeObject obj) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("{");
-        String sep = "";
-        for(Map.Entry<Object, Object> o : dict.entrySet()) {
-            sb.append(sep).append(IokeObject.inspect(o.getKey()));
-            sb.append(" => ").append(IokeObject.inspect(o.getValue()));
-            sep = ", ";
-        }
-        sb.append("}");
-        return sb.toString();
-    }
+//     @Override
+//     public String inspect(IokeObject obj) {
+//         StringBuilder sb = new StringBuilder();
+//         sb.append("{");
+//         String sep = "";
+//         for(Map.Entry<Object, Object> o : dict.entrySet()) {
+//             sb.append(sep).append(IokeObject.inspect(o.getKey()));
+//             sb.append(" => ").append(IokeObject.inspect(o.getValue()));
+//             sep = ", ";
+//         }
+//         sb.append("}");
+//         return sb.toString();
+//     }
 }// Dict
