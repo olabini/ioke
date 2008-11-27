@@ -52,10 +52,10 @@ public class DefaultMacro extends IokeData implements Named {
         this.name = name;
     }
 
-    @Override
-    public String inspect(IokeObject self) {
-        return "method(...)";
-    }
+//     @Override
+//     public String inspect(IokeObject self) {
+//         return "method(...)";
+//     }
 
     @Override
     public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {

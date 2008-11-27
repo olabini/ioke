@@ -72,12 +72,12 @@ public class Symbol extends IokeData {
 
     private final static Pattern BAD_CHARS = Pattern.compile("[=\\.:\\-\\+&|\\{\\[]");
 
-    @Override
-    public String inspect(IokeObject obj) {
-        if(text.length() == 0 || BAD_CHARS.matcher(text).find()) {
-            return ":\"" + text + "\"";
-        } else {
-            return ":" + text;
-        }
-    }
+//     @Override
+//     public String inspect(IokeObject obj) {
+//         if(text.length() == 0 || BAD_CHARS.matcher(text).find()) {
+//             return ":\"" + text + "\"";
+//         } else {
+//             return ":" + text;
+//         }
+//     }
 }// Symbol

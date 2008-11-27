@@ -428,19 +428,19 @@ public class IokeObject {
         return data.toString(this);
     }
 
-    public static String inspect(Object o) {
-        return IokeObject.as(o).inspect();
-    }
+//     public static String inspect(Object o) {
+//         return IokeObject.as(o).inspect();
+//     }
 
-    public String inspect() {
-        String s = data.inspect(this);
-        if(s != null) {
-            return s;
-        }
+//     public String inspect() {
+//         String s = data.inspect(this);
+//         if(s != null) {
+//             return s;
+//         }
 
-        StringBuilder sb = new StringBuilder();
-        return sb.append("#<").append(this).append(": mimics=").append(mimics).append(" cells=").append(cells).append(">").toString();
-    }
+//         StringBuilder sb = new StringBuilder();
+//         return sb.append("#<").append(this).append(": mimics=").append(mimics).append(" cells=").append(cells).append(">").toString();
+//     }
 
     public static Object activate(Object self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
         return as(self).activate(context, message, on);

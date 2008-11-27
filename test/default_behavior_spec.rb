@@ -251,14 +251,6 @@ describe "DefaultBehavior" do
     end
   end
 
-  describe "'inspect'" do 
-    it "should call representation and return the text from that" do 
-      ioke = IokeRuntime.get_runtime()
-      ioke.evaluate_stream(StringReader.new(%q[Origin mimic inspect])).data.text.
-        should match(/^#<#<Origin:[0-9A-F]+>: mimics=\[#<Origin:[0-9A-F]+>\] cells=\{\}>$/)
-    end
-  end
-
   describe "'do'" do 
     it "should execute a piece of code inside an object" do 
       ioke = IokeRuntime.get_runtime()
