@@ -437,7 +437,7 @@ describe "List" do
     
     it "should be possible to give it an argument name, and code" do 
       ioke = IokeRuntime.get_runtime
-      ioke.evaluate_string("y = []. [1,2,3] each(x, y<<x). y == [1,2,3]").should == ioke.true
+      ioke.evaluate_string("y = []. [1,2,3] each(x, y << x). y == [1,2,3]").should == ioke.true
     end
 
     it "should return the object" do 
@@ -454,9 +454,14 @@ describe "List" do
       ioke.ground.find_cell(nil, nil, "x").data.as_java_integer.should == 14
     end
 
+    it "should be possible to give it an extra argument to get the index" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("y = []. [1, 2, 3, 4] each(i, x, y << [i, x]). y == [[0, 1], [1, 2], [2, 3], [3, 4]]").should == ioke.true
+    end
+    
     it "should yield lists if running over a list of lists" do 
       ioke = IokeRuntime.get_runtime
-      ioke.evaluate_string("y = []. [[1],[2],[3]] each(x, y<<x). y == [[1],[2],[3]]").should == ioke.true
+      ioke.evaluate_string("y = []. [[1],[2],[3]] each(x, y << x). y == [[1],[2],[3]]").should == ioke.true
     end
   end
 

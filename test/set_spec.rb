@@ -52,6 +52,11 @@ describe "Set" do
       ioke.evaluate_string("y = set(1,2,3). (y each(x, x)) == y").should == ioke.true
     end
     
+    it "should be possible to give it an extra argument to get the index" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("y = []. set(1, 2, 3, 4) each(i, x, y << i). y == [0,1,2,3]").should == ioke.true
+    end
+
     it "should establish a lexical context when invoking the methods. this context will be the same for all invocations." do 
       ioke = IokeRuntime.get_runtime
       ioke.evaluate_string("set(1,2,3) each(x, blarg=32)")
