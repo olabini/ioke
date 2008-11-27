@@ -655,4 +655,91 @@ describe "DefaultBehavior" do
       data[3].data.as_java_integer.should == 45
     end
   end
+  
+  describe "'sort'" do 
+    it "should return a new, sorted list of numbers" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("[1, 2, 3] sort == [1,2,3]").should == ioke.true
+      ioke.evaluate_string("[3, 2, 1] sort == [1,2,3]").should == ioke.true
+      ioke.evaluate_string("[2, 3, 1] sort == [1,2,3]").should == ioke.true
+      ioke.evaluate_string("[1, 3, 2] sort == [1,2,3]").should == ioke.true
+      ioke.evaluate_string("[1, 3, 3, 3, 2, 2] sort == [1,2,2,3,3,3]").should == ioke.true
+    end
+
+    it "should return a new, sorted list of strings" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('["foo", "bar", "quux"] sort == ["bar", "foo", "quux"]').should == ioke.true
+      ioke.evaluate_string('["foo", "Bar", "bar", "quux"] sort == ["Bar", "bar", "foo", "quux"]').should == ioke.true
+    end
+
+    it "should return a new, sorted list of symbols" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('[:foo, :bar, :quux] sort == [:bar, :foo, :quux]').should == ioke.true
+      ioke.evaluate_string('[:foo, :Bar, :bar, :quux] sort == [:Bar, :bar, :foo, :quux]').should == ioke.true
+    end
+
+    it "should sort based on '<=>'" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string(<<CODE).should == ioke.true
+Objs = Origin mimic
+
+x1 = Objs mimic
+x1 num = 42
+x2 = Objs mimic
+x2 num = 32
+x3 = Objs mimic
+x3 num = 52
+
+Objs <=> = method(other, self num <=> other num)
+
+[x1, x2, x3] sort == [x2, x1, x3]
+CODE
+    end
+  end
+
+  describe "'sort!'" do 
+    it "should return itself" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("x = []. x sort! uniqueHexId == x uniqueHexId").should == ioke.true
+    end
+
+    it "should sort a list of numbers" do
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("[1, 2, 3] sort! == [1,2,3]").should == ioke.true
+      ioke.evaluate_string("[3, 2, 1] sort! == [1,2,3]").should == ioke.true
+      ioke.evaluate_string("[2, 3, 1] sort! == [1,2,3]").should == ioke.true
+      ioke.evaluate_string("[1, 3, 2] sort! == [1,2,3]").should == ioke.true
+      ioke.evaluate_string("[1, 3, 3, 3, 2, 2] sort! == [1,2,2,3,3,3]").should == ioke.true
+    end
+
+    it "should sort a list of strings" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('["foo", "bar", "quux"] sort! == ["bar", "foo", "quux"]').should == ioke.true
+      ioke.evaluate_string('["foo", "Bar", "bar", "quux"] sort! == ["Bar", "bar", "foo", "quux"]').should == ioke.true
+    end
+
+    it "should sort a list of symbols" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('[:foo, :bar, :quux] sort! == [:bar, :foo, :quux]').should == ioke.true
+      ioke.evaluate_string('[:foo, :Bar, :bar, :quux] sort! == [:Bar, :bar, :foo, :quux]').should == ioke.true
+    end
+
+    it "should sort based on '<=>'" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string(<<CODE).should == ioke.true
+Objs = Origin mimic
+
+x1 = Objs mimic
+x1 num = 42
+x2 = Objs mimic
+x2 num = 32
+x3 = Objs mimic
+x3 num = 52
+
+Objs <=> = method(other, self num <=> other num)
+
+[x1, x2, x3] sort! == [x2, x1, x3]
+CODE
+    end
+  end
 end
