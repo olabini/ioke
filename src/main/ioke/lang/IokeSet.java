@@ -29,6 +29,31 @@ public class IokeSet extends IokeData {
 
         obj.setKind("Set");
         obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Enumerable")), runtime.nul, runtime.nul);
+
+        obj.registerMethod(runtime.newJavaMethod("takes either one or two arguments. if one argument is given, it should be a message chain that will be sent to each object in the set. the result will be thrown away. if two arguments are given, the first is an unevaluated name that will be set to each of the values in the set in succession, and then the second argument will be evaluated in a scope with that argument in it. the code will evaluate in a lexical context, and if the argument name is available outside the context, it will be shadowed. the method will return the set. the iteration order is not defined.", new JavaMethod("each") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    Set<Object> set = ((IokeSet)IokeObject.data(on)).set;
+                    if(message.getArgumentCount() == 1) {
+                        IokeObject code = IokeObject.as(message.getArguments().get(0));
+
+                        for(Object o : set) {
+                            code.evaluateCompleteWithReceiver(context, context.getRealContext(), o);
+                        }
+                    } else {
+                        LexicalContext c = new LexicalContext(context.runtime, context, "Lexical activation context for Set#each", message, context);
+                        String name = IokeObject.as(message.getArguments().get(0)).getName();
+                        IokeObject code = IokeObject.as(message.getArguments().get(1));
+
+                        for(Object o : set) {
+                            c.setCell(name, o);
+                            code.evaluateCompleteWithoutExplicitReceiver(c, c.getRealContext());
+                        }
+                    }
+
+                    return on;
+                }
+            }));
     }
 
     public Set<Object> getSet() {

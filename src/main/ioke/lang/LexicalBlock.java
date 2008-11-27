@@ -5,6 +5,7 @@ package ioke.lang;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import ioke.lang.exceptions.ControlFlow;
 
@@ -30,6 +31,24 @@ public class LexicalBlock extends IokeData {
     @Override
     public void init(IokeObject lexicalBlock) {
         lexicalBlock.setKind("LexicalBlock");
+
+        lexicalBlock.registerMethod(lexicalBlock.runtime.newJavaMethod("takes two evaluated arguments, where this first one is a list of messages which will be used as the arguments and the code, and the second is the context where this lexical scope should be created in", new JavaMethod("createFrom") {
+                @Override
+                public Object activate(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on) throws ControlFlow {
+                    Runtime runtime = dynamicContext.runtime;
+
+                    List<Object> positionalArgs = new ArrayList<Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, dynamicContext, positionalArgs, new HashMap<String, Object>());
+                    
+                    List<Object> args = IokeList.getList(positionalArgs.get(0));
+                    IokeObject ground = IokeObject.as(positionalArgs.get(1));
+
+                    IokeObject code = IokeObject.as(args.get(args.size()-1));
+
+                    DefaultArgumentsDefinition def = DefaultArgumentsDefinition.createFrom(args, 0, args.size()-1, message, on, dynamicContext);
+                    return runtime.newLexicalBlock(runtime.lexicalBlock, new LexicalBlock(ground, def, code));
+                }
+            }));
 
         lexicalBlock.registerMethod(lexicalBlock.runtime.newJavaMethod("invokes the block with the arguments provided, returning the result of the last expression in the block", new JavaMethod("call") {
                 @Override

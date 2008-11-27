@@ -35,3 +35,7 @@ List butLast = method(
   if(end < 0 || empty?,
     DefaultBehavior [],
     [0...end]))
+
+List asList = method(
+  "returns this list",
+  self)

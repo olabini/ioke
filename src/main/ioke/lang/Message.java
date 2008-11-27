@@ -8,6 +8,8 @@ import java.io.StringReader;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 
 import org.antlr.runtime.tree.Tree;
 
@@ -176,11 +178,27 @@ public class Message extends IokeData {
                     return IokeObject.as(on).sendTo(realReceiver, realReceiver);
                 }
             }));
-        message.registerMethod(message.runtime.newJavaMethod("Takes one evaluated argument and sends this message chain to that argument", new JavaMethod("evaluateOn") {
+        message.registerMethod(message.runtime.newJavaMethod("Takes one or more evaluated arguments and sends this message chain to where the first argument is ground, and if there are more arguments, the second is the receiver, and the rest will be the arguments", new JavaMethod("evaluateOn") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    IokeObject realReceiver = IokeObject.as(message.getEvaluatedArgument(0, context));
-                    return IokeObject.as(on).evaluateCompleteWith(realReceiver, realReceiver);
+                    List<Object> positionalArgs = new ArrayList<Object>();
+                    Map<String, Object> keywordArgs = new HashMap<String, Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, positionalArgs, keywordArgs);
+
+                    IokeObject messageGround = IokeObject.as(positionalArgs.get(0));
+                    IokeObject receiver = messageGround;
+                    int size = positionalArgs.size();
+                    if(size > 1) {
+                        receiver = IokeObject.as(positionalArgs.get(1));
+                        if(size > 2) {
+                            IokeObject m = IokeObject.as(on).allocateCopy(IokeObject.as(on), context);
+                            m.getArguments().clear();
+                            m.getArguments().addAll(positionalArgs.subList(2, size));
+                            on = m;
+                        }
+                    }
+                    
+                    return IokeObject.as(on).evaluateCompleteWith(receiver, messageGround);
                 }
             }));
         message.registerMethod(message.runtime.newJavaMethod("takes one index, and a context and returns the evaluated argument at that index.", new JavaMethod("evalArgAt") {

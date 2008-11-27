@@ -30,6 +30,38 @@ describe "Set" do
     ioke.set.get_mimics.should include(ioke.mixins.find_cell(nil, nil, "Enumerable"))
   end
 
+  describe "'each'" do 
+    it "should not do anything for an empty set" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("x = 0. set() each(. x++). x").data.as_java_integer.should == 0
+    end
+    
+    it "should be possible to just give it a message chain, that will be invoked on each object" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("y = []. x = method(Ground y << self). set(1,2,3) each(x). y sort == [1,2,3]").should == ioke.true
+      ioke.evaluate_string("x = 0. set(1,2,3) each(nil. x++). x == 3").should == ioke.true
+    end
+    
+    it "should be possible to give it an argument name, and code" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("y = []. set(1,2,3) each(x, y<<x). y sort == [1,2,3]").should == ioke.true
+    end
+
+    it "should return the object" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("y = set(1,2,3). (y each(x, x)) == y").should == ioke.true
+    end
+    
+    it "should establish a lexical context when invoking the methods. this context will be the same for all invocations." do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("set(1,2,3) each(x, blarg=32)")
+      ioke.ground.find_cell(nil, nil, "x").should == ioke.nul
+      ioke.ground.find_cell(nil, nil, "blarg").should == ioke.nul
+      ioke.evaluate_string("x=14. set(1,2,3) each(x, blarg=32)")
+      ioke.ground.find_cell(nil, nil, "x").data.as_java_integer.should == 14
+    end
+  end
+
   describe "'=='" do 
     it "should return false when sent an argument that is not a set" do 
       ioke = IokeRuntime.get_runtime
