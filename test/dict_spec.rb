@@ -68,6 +68,84 @@ describe "Dict" do
       ioke.evaluate_string("{1,2,3,4,5,6,7} == {3,4,5,6,7,1,2,3}").should == ioke.true
     end
   end
+
+  describe "'addKeysAndValues'" do 
+    it "should add the keys and values provided to the dict" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("{} addKeysAndValues([:foo, :bar, :x], [32, 111, 4]) == {foo: 32, bar: 111, x: 4}").should == ioke.true
+    end
+
+    it "should only add as many as there are keys" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("{} addKeysAndValues([:foo, :bar, :x], [32, 111, 4, 10, 42]) == {foo: 32, bar: 111, x: 4}").should == ioke.true
+    end
+
+    it "should return the dict" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("v = {}. v addKeysAndValues([], []) == v").should == ioke.true
+    end
+  end
+  
+  describe "'at'" do 
+    it "should return nil if empty dict" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("dict at(:foo)").should == ioke.nil
+      ioke.evaluate_string("dict at(\"bar\")").should == ioke.nil
+      ioke.evaluate_string("dict at(42)").should == ioke.nil
+    end
+
+    it "should return nil if argument is over the size" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("dict(bar: 42) at(:foo)").should == ioke.nil
+    end
+
+    it "should an element if it's in the dict" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("{foo: 123, 321 => \"foo\", \"bax\" => 42} at(:foo) == 123").should == ioke.true
+      ioke.evaluate_string("{foo: 123, 321 => \"foo\", \"bax\" => 42} at(321) == \"foo\"").should == ioke.true
+      ioke.evaluate_string("{foo: 123, 321 => \"foo\", \"bax\" => 42} at(\"bax\") == 42").should == ioke.true
+    end
+  end
+
+  describe "'[]'" do 
+    it "should return nil if empty dict" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("dict[:foo]").should == ioke.nil
+      ioke.evaluate_string("dict[\"bar\"]").should == ioke.nil
+      ioke.evaluate_string("dict[42]").should == ioke.nil
+    end
+
+    it "should return nil if argument is over the size" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("dict(bar: 42)[:foo]").should == ioke.nil
+    end
+
+    it "should an element if it's in the dict" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("{foo: 123, 321 => \"foo\", \"bax\" => 42}[:foo] == 123").should == ioke.true
+      ioke.evaluate_string("{foo: 123, 321 => \"foo\", \"bax\" => 42}[321] == \"foo\"").should == ioke.true
+      ioke.evaluate_string("{foo: 123, 321 => \"foo\", \"bax\" => 42}[\"bax\"] == 42").should == ioke.true
+    end
+  end
+  
+  describe "'[]='" do 
+    it "should add an element to an empty dict" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("x = {}. x[:foo] = :bar. x == {foo: :bar}").should == ioke.true
+      ioke.evaluate_string("x = {42 => 32}. x[:foo] = :bar. x == {42 => 32, foo: :bar}").should == ioke.true
+    end
+
+    it "should overwrite an existing element" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("x = {foo: 6666}. x[:foo] = :bar. x == {foo: :bar}").should == ioke.true
+      ioke.evaluate_string("x = {foo: 6666, 42 => 32}. x[:foo] = :bar. x == {42 => 32, foo: :bar}").should == ioke.true
+    end
+    
+    it "should return the value set" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("({foo: 6666}[42] = :bar) == :bar").should == ioke.true
+    end
+  end
 end
 
 describe "DefaultBehavior" do 
