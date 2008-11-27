@@ -2,6 +2,8 @@ include_class('ioke.lang.Runtime') { 'IokeRuntime' } unless defined?(IokeRuntime
 
 describe "DefaultBehavior" do 
   describe "'cellDescriptionDict'" do 
+
+  
   end
   
   describe "'cellSummary'" do 

@@ -914,5 +914,16 @@ public class DefaultBehavior {
                     return context.runtime.newDict(moo);
                 }
             }));
+
+        obj.registerMethod(runtime.newJavaMethod("creates a new Set from the result of evaluating all arguments provided.", new DefaultBehaviorJavaMethod("set") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> positionalArgs = new ArrayList<Object>();
+                    Map<String, Object> keywordArgs = new HashMap<String, Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, positionalArgs, keywordArgs);
+
+                    return context.runtime.newSet(positionalArgs);
+                }
+            }));
     }
 }// DefaultBehavior
