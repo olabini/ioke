@@ -29,6 +29,18 @@ describe "DefaultBehavior" do
     end
   end
 
+  describe "'uniqueHexId'" do 
+    it "should return different ids for different objects" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("Origin mimic uniqueHexId != Origin mimic uniqueHexId").should == ioke.true
+    end
+
+    it "should return the same id for the same object" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("x = Origin mimic. x uniqueHexId == x uniqueHexId").should == ioke.true
+    end
+  end
+  
   describe "'derive'" do 
     it "should be able to derive from Origin" do 
       ioke = IokeRuntime.get_runtime()

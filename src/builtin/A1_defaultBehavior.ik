@@ -62,6 +62,11 @@ DefaultBehavior warn! = method(
 
 
 DefaultBehavior do(
+  inspect = method(
+    "returns a longer description of the receiver, in general including cell information",
+    
+    cellSummary)
+
   notice = method(
     "returns a short text description of the receiver",
 
@@ -69,24 +74,25 @@ DefaultBehavior do(
       "Origin",
       if(self == Ground,
         "Ground",
-        "unknown!!"
 
+        "#{cell(:self) kind}_#{cell(:self) uniqueHexId}"
   )))
 )
 
 System notice = method(
-    "returns a short text description of the receiver, the text System if this is the main System object, otherwise falls back to the super implementation",
-
-    if(self == System,
-      "System",
-      super))
+  "returns a short text description of the receiver, the text System if this is the main System object, otherwise falls back to the super implementation",
+  
+  if(self == System,
+    "System",
+    super))
 
 Runtime notice = method(
-    "returns a short text description of the receiver, the text Runtime if this is the main Runtime object, otherwise falls back to the super implementation",
+  "returns a short text description of the receiver, the text Runtime if this is the main Runtime object, otherwise falls back to the super implementation",
 
-    if(self == Runtime,
-      "Runtime",
-      super))
+  if(self == Runtime,
+    "Runtime",
+    super))
+
 
 ;; TODO: test all this behavior
 ; Dict addKeysAndValues = method(
@@ -113,10 +119,3 @@ Runtime notice = method(
 ; 	  s = s + ("  ", k alignLeft(16), " = ", cellDescriptions[k], "\n"))
 ;     s
 ;   )
-
-;   inspect = cell(:cellSummary)
-
-;   notice = method(
-;     "returns the default notice text for this object",
-
-;     "#{cell(:self) kind}_#{cell(:self) uniqueHexId}"))

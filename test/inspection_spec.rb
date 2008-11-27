@@ -1,13 +1,44 @@
 include_class('ioke.lang.Runtime') { 'IokeRuntime' } unless defined?(IokeRuntime)
 
 describe "DefaultBehavior" do 
+  describe "'cellDescriptionDict'" do 
+  end
+  
   describe "'cellSummary'" do 
+    it "should use notice for the first line"
+    it "should use cellDescriptionDict for the data"
   end
   
   describe "'inspect'" do 
+    it "should use cellSummary" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string(<<CODE).should == ioke.true
+x = Origin mimic
+x cellSummary = "blarg"
+x inspect == "blarg"
+CODE
+    end
   end
 
   describe "'notice'" do 
+    it "should return the kind and hex string for a simple object from Origin" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string(<<CODE).should == ioke.true
+x = Origin mimic
+x uniqueHexId = "0x3FF420"
+x notice == "Origin_0x3FF420"
+CODE
+    end
+    
+    it "should handle a new kind" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string(<<CODE).should == ioke.true
+Blarg = Origin mimic
+x = Blarg mimic
+x uniqueHexId = "0x3FF420"
+x notice == "Blarg_0x3FF420"
+CODE
+    end
   end
 end
 
