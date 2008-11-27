@@ -102,7 +102,7 @@ Runtime notice = method(
 
 ; 	cellNames = cell(:self) cellNames sort
 ; 	cellDescs = cellNames map(name, cell(:self) cell(name) notice)
-; 	Dict mimic addKeysAndValues(cellNames, cellDescs))
+; 	dict addKeysAndValues(cellNames, cellDescs))
 
 ;   cellSummary = method(
 ;     "returns a representation of the current object that includes information about it's cells",

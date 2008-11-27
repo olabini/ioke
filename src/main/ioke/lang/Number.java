@@ -53,10 +53,13 @@ public class Number extends IokeData {
         return asJavaString();
     }
 
-//     @Override
-//     public String inspect(IokeObject obj) {
-//         return asJavaString();
-//     }
+    public static String getInspect(Object on) {
+        return ((Number)(IokeObject.data(on))).inspect(on);
+    }
+
+    public String inspect(Object obj) {
+        return asJavaString();
+    }
 
     @Override
     public IokeObject convertToNumber(IokeObject self, IokeObject m, IokeObject context) {
@@ -142,6 +145,20 @@ public class Number extends IokeData {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
                     return runtime.newText(on.toString());
+                }
+            }));
+
+        obj.registerMethod(obj.runtime.newJavaMethod("Returns a text inspection of the object", new JavaMethod("inspect") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
+                    return method.runtime.newText(Number.getInspect(on));
+                }
+            }));
+
+        obj.registerMethod(obj.runtime.newJavaMethod("Returns a brief text inspection of the object", new JavaMethod("notice") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
+                    return method.runtime.newText(Number.getInspect(on));
                 }
             }));
 
