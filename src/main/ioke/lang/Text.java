@@ -28,6 +28,20 @@ public class Text extends IokeData {
                 }
             }));
 
+        obj.registerMethod(obj.runtime.newJavaMethod("Returns a text inspection of the object", new JavaMethod("inspect") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
+                    return method.runtime.newText(Text.getInspect(on));
+                }
+            }));
+
+        obj.registerMethod(obj.runtime.newJavaMethod("Returns a brief text inspection of the object", new JavaMethod("notice") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
+                    return method.runtime.newText(Text.getInspect(on));
+                }
+            }));
+
         obj.registerMethod(obj.runtime.newJavaMethod("Returns the length of this text", new JavaMethod("length") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
@@ -113,6 +127,10 @@ public class Text extends IokeData {
         return ((Text)(IokeObject.data(on))).getText();
     }
 
+    public static String getInspect(Object on) {
+        return ((Text)(IokeObject.data(on))).inspect(on);
+    }
+
     public static boolean isText(Object on) {
         return IokeObject.data(on) instanceof Text;
     }
@@ -148,9 +166,8 @@ public class Text extends IokeData {
         return text;
     }
 
-//     @Override
-//     public String inspect(IokeObject obj) {
-//         // This should obviously have more stuff later for escaping and so on.
-//         return "\"" + text + "\"";
-//     }
+    public String inspect(Object obj) {
+        // This should obviously have more stuff later for escaping and so on.
+        return "\"" + text + "\"";
+    }
 }// Text

@@ -30,6 +30,20 @@ public class Symbol extends IokeData {
                 }
             }));
 
+        obj.registerMethod(obj.runtime.newJavaMethod("Returns a text inspection of the object", new JavaMethod("inspect") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
+                    return method.runtime.newText(Symbol.getInspect(on));
+                }
+            }));
+
+        obj.registerMethod(obj.runtime.newJavaMethod("Returns a brief text inspection of the object", new JavaMethod("notice") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
+                    return method.runtime.newText(Symbol.getInspect(on));
+                }
+            }));
+
         obj.registerMethod(obj.runtime.newJavaMethod("compares this symbol against the argument, returning -1, 0 or 1 based on which one is lexically larger", new JavaMethod("<=>") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
@@ -57,6 +71,10 @@ public class Symbol extends IokeData {
 
     public static String getText(Object on) {
         return ((Symbol)(IokeObject.data(on))).getText();
+    }
+
+    public static String getInspect(Object on) {
+        return ((Symbol)(IokeObject.data(on))).inspect(on);
     }
 
     public String getText() {
@@ -90,12 +108,11 @@ public class Symbol extends IokeData {
 
     private final static Pattern BAD_CHARS = Pattern.compile("[=\\.:\\-\\+&|\\{\\[]");
 
-//     @Override
-//     public String inspect(IokeObject obj) {
-//         if(text.length() == 0 || BAD_CHARS.matcher(text).find()) {
-//             return ":\"" + text + "\"";
-//         } else {
-//             return ":" + text;
-//         }
-//     }
+    public String inspect(Object obj) {
+        if(text.length() == 0 || BAD_CHARS.matcher(text).find()) {
+            return ":\"" + text + "\"";
+        } else {
+            return ":" + text;
+        }
+    }
 }// Symbol

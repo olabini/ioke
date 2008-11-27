@@ -446,6 +446,18 @@ public class IokeObject {
         return ((IokeObject)on).convertToPattern(m, context);
     }
 
+    public static String inspect(Object on) throws ControlFlow {
+        IokeObject ion = as(on);
+        Runtime runtime = ion.runtime;
+        return Text.getText(runtime.inspectMessage.sendTo(ion, ion));
+    }
+
+    public static String notice(Object on) throws ControlFlow {
+        IokeObject ion = as(on);
+        Runtime runtime = ion.runtime;
+        return Text.getText(runtime.noticeMessage.sendTo(ion, ion));
+    }
+
     public IokeObject convertToText(IokeObject m, IokeObject context) throws ControlFlow {
         return data.convertToText(this, m, context);
     }

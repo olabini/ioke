@@ -34,6 +34,20 @@ public class IokeList extends IokeData {
 
         obj.setKind("List");
         obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Enumerable")), runtime.nul, runtime.nul);
+
+        obj.registerMethod(obj.runtime.newJavaMethod("Returns a text inspection of the object", new JavaMethod("inspect") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    return method.runtime.newText(IokeList.getInspect(on));
+                }
+            }));
+
+        obj.registerMethod(obj.runtime.newJavaMethod("Returns a brief text inspection of the object", new JavaMethod("notice") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    return method.runtime.newText(IokeList.getNotice(on));
+                }
+            }));
         
         obj.registerMethod(runtime.newJavaMethod("takes either one or two or three arguments. if one argument is given, it should be a message chain that will be sent to each object in the list. the result will be thrown away. if two arguments are given, the first is an unevaluated name that will be set to each of the values in the list in succession, and then the second argument will be evaluated in a scope with that argument in it. if three arguments is given, the first one is an unevaluated name that will be set to the index of each element, and the other two arguments are the name of the argument for the value, and the actual code. the code will evaluate in a lexical context, and if the argument name is available outside the context, it will be shadowed. the method will return the list.", new JavaMethod("each") {
                 @Override
@@ -277,6 +291,14 @@ public class IokeList extends IokeData {
         return ((IokeList)(IokeObject.data(on))).getList();
     }
 
+    public static String getInspect(Object on) throws ControlFlow {
+        return ((IokeList)(IokeObject.data(on))).inspect(on);
+    }
+
+    public static String getNotice(Object on) throws ControlFlow {
+        return ((IokeList)(IokeObject.data(on))).notice(on);
+    }
+
     public IokeData cloneData(IokeObject obj, IokeObject m, IokeObject context) {
         return new IokeList(new ArrayList<Object>(list));
     }
@@ -298,16 +320,27 @@ public class IokeList extends IokeData {
         return list.toString();
     }
 
-//     @Override
-//     public String inspect(IokeObject obj) {
-//         StringBuilder sb = new StringBuilder();
-//         sb.append("[");
-//         String sep = "";
-//         for(Object o : list) {
-//             sb.append(sep).append(IokeObject.inspect(o));
-//             sep = ", ";
-//         }
-//         sb.append("]");
-//         return sb.toString();
-//     }
+    public String inspect(Object obj) throws ControlFlow {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        String sep = "";
+        for(Object o : list) {
+            sb.append(sep).append(IokeObject.inspect(o));
+            sep = ", ";
+        }
+        sb.append("]");
+        return sb.toString();
+    }
+
+    public String notice(Object obj) throws ControlFlow {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        String sep = "";
+        for(Object o : list) {
+            sb.append(sep).append(IokeObject.notice(o));
+            sep = ", ";
+        }
+        sb.append("]");
+        return sb.toString();
+    }
 }// IokeList

@@ -40,5 +40,12 @@ CustomEnumerable asList == ["3first", "1second", "2third"]
 CODE
       end
     end
+    
+    describe "'map'" do 
+      it "should return an empty list for an empty enumerable"
+      it "should return the same list for something that only returns itself"
+      it "should take one arguments and apply the inside"
+      it "should take two arguments and apply the code with the argument name bound"
+    end
   end
 end
