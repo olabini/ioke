@@ -19,12 +19,25 @@ public class Symbol extends IokeData {
     }
 
     @Override
-    public void init(IokeObject obj) {
+    public void init(IokeObject obj) throws ControlFlow {
         obj.setKind("Symbol");
+        obj.mimics(IokeObject.as(obj.runtime.mixins.getCell(null, null, "Comparing")), obj.runtime.nul, obj.runtime.nul);
+
         obj.registerMethod(obj.runtime.newJavaMethod("Returns a text representation of the object", new JavaMethod("asText") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
                     return method.runtime.newText(Symbol.getText(on));
+                }
+            }));
+
+        obj.registerMethod(obj.runtime.newJavaMethod("compares this symbol against the argument, returning -1, 0 or 1 based on which one is lexically larger", new JavaMethod("<=>") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    Object arg = message.getEvaluatedArgument(0, context);
+                    if(!(IokeObject.data(arg) instanceof Symbol)) {
+                        arg = IokeObject.convertToSymbol(arg, message, context);
+                    }
+                    return context.runtime.newNumber(Symbol.getText(on).compareTo(Symbol.getText(arg)));
                 }
             }));
     }
@@ -55,6 +68,11 @@ public class Symbol extends IokeData {
         return true;
     }
     
+    @Override
+    public IokeObject convertToSymbol(IokeObject self, IokeObject m, IokeObject context) {
+        return self;
+    }
+
     @Override
     public IokeObject convertToText(IokeObject self, IokeObject m, IokeObject context) {
         return self.runtime.newText(getText());

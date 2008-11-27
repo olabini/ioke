@@ -17,8 +17,10 @@ public class Text extends IokeData {
     }
 
     @Override
-    public void init(IokeObject obj) {
+    public void init(IokeObject obj) throws ControlFlow {
         obj.setKind("Text");
+        obj.mimics(IokeObject.as(obj.runtime.mixins.getCell(null, null, "Comparing")), obj.runtime.nul, obj.runtime.nul);
+
         obj.registerMethod(obj.runtime.newJavaMethod("Returns a text representation of the object", new JavaMethod("asText") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
@@ -30,6 +32,17 @@ public class Text extends IokeData {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
                     return context.runtime.newNumber(getText(on).length());
+                }
+            }));
+
+        obj.registerMethod(obj.runtime.newJavaMethod("compares this text against the argument, returning -1, 0 or 1 based on which one is lexically larger", new JavaMethod("<=>") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    Object arg = message.getEvaluatedArgument(0, context);
+                    if(!(IokeObject.data(arg) instanceof Text)) {
+                        arg = IokeObject.convertToText(arg, message, context);
+                    }
+                    return context.runtime.newNumber(Text.getText(on).compareTo(Text.getText(arg)));
                 }
             }));
 

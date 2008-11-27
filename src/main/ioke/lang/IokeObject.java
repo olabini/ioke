@@ -147,6 +147,10 @@ public class IokeObject {
         }
     }
 
+    public static IokeObject mimic(Object on, IokeObject message, IokeObject context) throws ControlFlow {
+        return as(on).mimic(message, context);
+    }
+
     public IokeObject mimic(IokeObject message, IokeObject context) throws ControlFlow {
         IokeObject clone = allocateCopy(message, context);
         clone.mimics(this, message, context);
@@ -434,12 +438,20 @@ public class IokeObject {
         return ((IokeObject)on).convertToText(m, context);
     }
 
+    public static IokeObject convertToSymbol(Object on, IokeObject m, IokeObject context) throws ControlFlow {
+        return ((IokeObject)on).convertToSymbol(m, context);
+    }
+
     public static IokeObject convertToPattern(Object on, IokeObject m, IokeObject context) throws ControlFlow {
         return ((IokeObject)on).convertToPattern(m, context);
     }
 
     public IokeObject convertToText(IokeObject m, IokeObject context) throws ControlFlow {
         return data.convertToText(this, m, context);
+    }
+
+    public IokeObject convertToSymbol(IokeObject m, IokeObject context) throws ControlFlow {
+        return data.convertToSymbol(this, m, context);
     }
 
     public IokeObject convertToPattern(IokeObject m, IokeObject context) throws ControlFlow {

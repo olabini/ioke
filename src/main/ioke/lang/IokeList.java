@@ -5,6 +5,7 @@ package ioke.lang;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Collections;
 
 import ioke.lang.exceptions.ControlFlow;
 
@@ -80,6 +81,37 @@ public class IokeList extends IokeData {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     return ((IokeList)IokeObject.data(on)).getList().isEmpty() ? context.runtime._true : context.runtime._false;
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("returns a new sorted version of this list", new JavaMethod("sort") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    Object newList = IokeObject.mimic(on, message, context);
+                    try {
+                        Collections.sort(((IokeList)IokeObject.data(newList)).getList(), new SpaceshipComparator(context, message));
+                    } catch(RuntimeException e) {
+                        if(e.getCause() instanceof ControlFlow) {
+                            throw (ControlFlow)e.getCause();
+                        }
+                        throw e;
+                    }
+                    return newList;
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("sorts this list in place and then returns it", new JavaMethod("sort!") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    try {
+                        Collections.sort(((IokeList)IokeObject.data(on)).getList(), new SpaceshipComparator(context, message));
+                    } catch(RuntimeException e) {
+                        if(e.getCause() instanceof ControlFlow) {
+                            throw (ControlFlow)e.getCause();
+                        }
+                        throw e;
+                    }
+                    return on;
                 }
             }));
 
