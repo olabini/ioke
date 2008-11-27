@@ -29,6 +29,48 @@ describe "Set" do
     ioke = IokeRuntime.get_runtime
     ioke.set.get_mimics.should include(ioke.mixins.find_cell(nil, nil, "Enumerable"))
   end
+
+  describe "'=='" do 
+    it "should return false when sent an argument that is not a set" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("set() == 1").should == ioke.false
+      ioke.evaluate_string("set(1) == 1").should == ioke.false
+      ioke.evaluate_string("set(1,2,3) == \"foo\"").should == ioke.false
+      ioke.evaluate_string("set() == method([])").should == ioke.false
+    end
+    
+    it "should return true for two empty sets" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("x = set(). x == x").should == ioke.true
+      ioke.evaluate_string("set() == set()").should == ioke.true
+    end
+    
+    it "should return true for two empty sets where one has a new cell" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("x = set(). y = set(). x blarg = 12. x == y").should == ioke.true
+    end
+    
+    it "should return false when the two sets have an element of different types" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("set(1) == set(\"1\")").should == ioke.false
+      ioke.evaluate_string("set(1, 2, 3) == set(\"1\", \"2\", \"3\")").should == ioke.false
+    end
+
+    it "should return false when the two sets have different length" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("set(1) == set()").should == ioke.false
+      ioke.evaluate_string("set(1) == set(1,2,3)").should == ioke.false
+    end
+    
+    it "should return true if the elements in the set are the same" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("set(1) == set(1)").should == ioke.true
+      ioke.evaluate_string("set(\"1\") == set(\"1\")").should == ioke.true
+      ioke.evaluate_string("set(1,2,3,4,5,6,7) == set(1,2,3,4,5,6,7)").should == ioke.true
+      ioke.evaluate_string("set(1,1,1,1,1,1,2,3,4,5,6,7) == set(1,2,3,4,5,6,7)").should == ioke.true
+      ioke.evaluate_string("set(1,2,3,4,5,6,7) == set(1,2,3,5,4,6,7)").should == ioke.true
+    end
+  end
 end
 
 describe "DefaultBehavior" do 
