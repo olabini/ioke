@@ -40,12 +40,33 @@ public class Pair extends IokeData {
 
         obj.setKind("Pair");
         obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Enumerable")), runtime.nul, runtime.nul);
+        obj.registerMethod(runtime.newJavaMethod("Returns a text inspection of the object", new JavaMethod("inspect") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    return method.runtime.newText(Pair.getInspect(on));
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("Returns a brief text inspection of the object", new JavaMethod("notice") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    return method.runtime.newText(Pair.getNotice(on));
+                }
+            }));
     }
 
     public IokeData cloneData(IokeObject obj, IokeObject m, IokeObject context) {
         return new Pair(first, second);
     }
 
+
+    public static String getInspect(Object on) throws ControlFlow {
+        return ((Pair)(IokeObject.data(on))).inspect(on);
+    }
+
+    public static String getNotice(Object on) throws ControlFlow {
+        return ((Pair)(IokeObject.data(on))).notice(on);
+    }
 
     @Override
     public boolean isEqualTo(IokeObject self, Object other) {
@@ -65,14 +86,23 @@ public class Pair extends IokeData {
         return "" + first + " => " + second;
     }
 
-//     @Override
-//     public String inspect(IokeObject obj) {
-//         StringBuilder sb = new StringBuilder();
+    public String inspect(Object obj) throws ControlFlow {
+        StringBuilder sb = new StringBuilder();
 
-//         sb.append(IokeObject.inspect(first));
-//         sb.append(" => ");
-//         sb.append(IokeObject.inspect(second));
+        sb.append(IokeObject.inspect(first));
+        sb.append(" => ");
+        sb.append(IokeObject.inspect(second));
 
-//         return sb.toString();
-//     }
+        return sb.toString();
+    }
+
+    public String notice(Object obj) throws ControlFlow {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(IokeObject.notice(first));
+        sb.append(" => ");
+        sb.append(IokeObject.notice(second));
+
+        return sb.toString();
+    }
 }// Pair
