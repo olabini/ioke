@@ -42,10 +42,29 @@ CODE
     end
     
     describe "'map'" do 
-      it "should return an empty list for an empty enumerable"
-      it "should return the same list for something that only returns itself"
-      it "should take one arguments and apply the inside"
-      it "should take two arguments and apply the code with the argument name bound"
+      it "should return an empty list for an empty enumerable" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string("[] map(x, x+2) == []").should == ioke.true
+        ioke.evaluate_string("{} map(x, x+2) == []").should == ioke.true
+        ioke.evaluate_string("set map(x, x+2) == []").should == ioke.true
+      end
+      
+      it "should return the same list for something that only returns itself" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string("[1, 2, 3] map(x, x) == [1, 2, 3]").should == ioke.true
+      end
+
+      it "should take one argument and apply the inside" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string("[1, 2, 3] map(+2) == [3, 4, 5]").should == ioke.true
+        ioke.evaluate_string("[1, 2, 3] map(. 1) == [1, 1, 1]").should == ioke.true
+      end
+
+      it "should take two arguments and apply the code with the argument name bound" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string("[1, 2, 3] map(x, x+3) == [4, 5, 6]").should == ioke.true
+        ioke.evaluate_string("[1, 2, 3] map(x, 1) == [1, 1, 1]").should == ioke.true
+      end
     end
   end
 end

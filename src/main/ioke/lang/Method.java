@@ -36,6 +36,18 @@ public class Method extends IokeData implements Named {
                     return context.runtime.newText(((Method)IokeObject.data(on)).name);
                 }
             }));
+        method.registerMethod(method.runtime.newJavaMethod("Returns a text inspection of the object", new JavaMethod("inspect") {
+                @Override
+                public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) {
+                    return context.runtime.newText(Method.getInspect(on));
+                }
+            }));
+        method.registerMethod(method.runtime.newJavaMethod("Returns a brief text inspection of the object", new JavaMethod("notice") {
+                @Override
+                public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) {
+                    return context.runtime.newText(Method.getNotice(on));
+                }
+            }));
         method.registerMethod(method.runtime.newJavaMethod("activates this method with the arguments given to call", new JavaMethod("call") {
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
@@ -68,8 +80,23 @@ public class Method extends IokeData implements Named {
         return self.runtime.nil;
     }
 
-//     @Override
-//     public String inspect(IokeObject self) {
-//         return "method(...)";
-//     }
+    public static String getInspect(Object on) {
+        return ((Method)(IokeObject.data(on))).inspect(on);
+    }
+
+    public static String getNotice(Object on) {
+        return ((Method)(IokeObject.data(on))).notice(on);
+    }
+
+    public String inspect(Object self) {
+        return getCode();
+    }
+
+    public String notice(Object self) {
+        if(name == null) {
+            return "method(...)";
+        } else {
+            return name + ":method(...)";
+        }
+    }
 }// Method

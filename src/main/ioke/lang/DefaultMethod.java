@@ -50,6 +50,16 @@ public class DefaultMethod extends Method {
         return "method(" + args + Message.code(code) + ")";
     }
 
+    @Override
+    public String inspect(Object self) {
+        String args = arguments.getCode();
+        if(name == null) {
+            return "method(" + args + Message.code(code) + ")";
+        } else {
+            return name + ":method(" + args + Message.code(code) + ")";
+        }
+    }
+
     private IokeObject createSuperCallFor(final IokeObject out_self, final IokeObject out_context, final IokeObject out_message, final Object out_on, final Object out_superCell) {
         return out_context.runtime.newJavaMethod("will call the super method of the current message on the same receiver", new JavaMethod("super") {
                 @Override

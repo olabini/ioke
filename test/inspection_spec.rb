@@ -14,7 +14,7 @@ describe "DefaultBehavior" do
 
     it "should return a dict with an element for a method" do 
       ioke = IokeRuntime.get_runtime
-      ioke.evaluate_string("x = Origin mimic. x foo = method(bar). x cellDescriptionDict == {foo: \"method(...)\"}").should == ioke.true
+      ioke.evaluate_string("x = Origin mimic. x foo = method(bar). x cellDescriptionDict == {foo: \"foo:method(...)\"}").should == ioke.true
     end
 
     it "should return a dict with more than one element" do 
@@ -200,9 +200,9 @@ describe "Number" do
 
     it "should return the textual representation of a negative number" do 
       ioke = IokeRuntime.get_runtime
-      ioke.evaluate_string('-(1) notice == "-1"').should == ioke.true
-      ioke.evaluate_string('-(22342340) notice == "-22342340"').should == ioke.true
-      ioke.evaluate_string('-(333391244) notice == "-333391244"').should == ioke.true
+      ioke.evaluate_string('(-1) notice == "-1"').should == ioke.true
+      ioke.evaluate_string('(-22342340) notice == "-22342340"').should == ioke.true
+      ioke.evaluate_string('(-333391244) notice == "-333391244"').should == ioke.true
     end
   end
   
@@ -216,9 +216,9 @@ describe "Number" do
 
     it "should return the textual representation of a negative number" do 
       ioke = IokeRuntime.get_runtime
-      ioke.evaluate_string('-(1) inspect == "-1"').should == ioke.true
-      ioke.evaluate_string('-(22342340) inspect == "-22342340"').should == ioke.true
-      ioke.evaluate_string('-(333391244) inspect == "-333391244"').should == ioke.true
+      ioke.evaluate_string('(-1) inspect == "-1"').should == ioke.true
+      ioke.evaluate_string('(-22342340) inspect == "-22342340"').should == ioke.true
+      ioke.evaluate_string('(-333391244) inspect == "-333391244"').should == ioke.true
     end
   end
 end
@@ -231,6 +231,13 @@ describe "DefaultMethod" do
       ioke.evaluate_string('method(nil) notice == "method(...)"').should == ioke.true
       ioke.evaluate_string('method(foo bar xxxxxx) notice == "method(...)"').should == ioke.true
     end
+    
+    it "should prepend the name if there is a name available" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('x = method(). cell(:x) notice == "x:method(...)"').should == ioke.true
+      ioke.evaluate_string('x = method(nil). cell(:x) notice == "x:method(...)"').should == ioke.true
+      ioke.evaluate_string('x = method(foo bar xxxxxx). cell(:x) notice == "x:method(...)"').should == ioke.true
+    end
   end
   
   describe "'inspect'" do 
@@ -238,6 +245,12 @@ describe "DefaultMethod" do
       ioke = IokeRuntime.get_runtime
       ioke.evaluate_string('method(foo bar) inspect == "method(foo bar)"').should == ioke.true
       ioke.evaluate_string('method(123 + 444) inspect == "method(123 +(444))"').should == ioke.true
+    end
+
+    it "should prepend a name if there is any" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('x = method(foo bar). cell(:x) inspect == "x:method(foo bar)"').should == ioke.true
+      ioke.evaluate_string('x = method(123 + 444). cell(:x) inspect == "x:method(123 +(444))"').should == ioke.true
     end
 
     it "should include any argument names provided" do 
@@ -256,13 +269,26 @@ describe "DefaultMacro" do
       ioke.evaluate_string('macro(nil) notice == "macro(...)"').should == ioke.true
       ioke.evaluate_string('macro(foo bar xxxxxx) notice == "macro(...)"').should == ioke.true
     end
+
+    it "should prepend the name if there is a name available" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('x = macro(). cell(:x) notice == "x:macro(...)"').should == ioke.true
+      ioke.evaluate_string('x = macro(nil). cell(:x) notice == "x:macro(...)"').should == ioke.true
+      ioke.evaluate_string('x = macro(foo bar xxxxxx). cell(:x) notice == "x:macro(...)"').should == ioke.true
+    end
   end
   
   describe "'inspect'" do 
-    it "should return the code inside the method" do 
+    it "should return the code inside the macro" do 
       ioke = IokeRuntime.get_runtime
       ioke.evaluate_string('macro(foo bar) inspect == "macro(foo bar)"').should == ioke.true
       ioke.evaluate_string('macro(123 + 444) inspect == "macro(123 +(444))"').should == ioke.true
+    end
+
+    it "should prepend the name if it is available" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('x = macro(foo bar). cell(:x) inspect == "x:macro(foo bar)"').should == ioke.true
+      ioke.evaluate_string('x = macro(123 + 444). cell(:x) inspect == "x:macro(123 +(444))"').should == ioke.true
     end
   end
 end
@@ -340,43 +366,121 @@ end
 
 describe "Dict" do 
   describe "'notice'" do 
-    it "should return something within curly brackets"
-    it "should try to use the keyword syntax if possible"
-    it "should return the notice format of things inside"
-    it "should return non-keyword things with pair syntax"
+    it "should return something within curly brackets" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('{} notice == "{}"').should == ioke.true
+    end
+
+    it "should try to use the keyword syntax if possible" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('result = {foo: "bar", "bar" => :foo} notice. (result == "{foo: \"bar\", \"bar\" => :foo}") || (result == "{\"bar\" => :foo, foo: \"bar\"}")').should == ioke.true
+      ioke.evaluate_string('{:foo => :bar} notice == "{foo: :bar}"').should == ioke.true
+    end
+
+    it "should return the notice format of things inside" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('{foo: method(abc foo bar)} notice == "{foo: method(...)}"').should == ioke.true
+      ioke.evaluate_string('{method(abc foo bar) => :foo} notice == "{method(...) => :foo}"').should == ioke.true
+    end
+
+    it "should return non-keyword things with pair syntax" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('{1=>1} notice == "{1 => 1}"').should == ioke.true
+      ioke.evaluate_string('{"bar"=>1} notice == "{\"bar\" => 1}"').should == ioke.true
+    end
   end
   
   describe "'inspect'" do 
-    it "should return something within curly brackets"
-    it "should try to use the keyword syntax if possible"
-    it "should return the inspect format of things inside"
-    it "should return non-keyword things with pair syntax"
+    it "should return something within curly brackets" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('{} inspect == "{}"').should == ioke.true
+    end
+
+    it "should try to use the keyword syntax if possible" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('result = {foo: "bar", "bar" => :foo} inspect. (result == "{foo: \"bar\", \"bar\" => :foo}") || (result == "{\"bar\" => :foo, foo: \"bar\"}")').should == ioke.true
+      ioke.evaluate_string('{:foo => :bar} inspect == "{foo: :bar}"').should == ioke.true
+    end
+
+    it "should return the inspect format of things inside" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('{foo: method(abc foo bar)} inspect == "{foo: method(abc foo bar)}"').should == ioke.true
+      ioke.evaluate_string('{method(abc foo bar) => :foo} inspect == "{method(abc foo bar) => :foo}"').should == ioke.true
+    end
+
+    it "should return non-keyword things with pair syntax" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('{1=>1} inspect == "{1 => 1}"').should == ioke.true
+      ioke.evaluate_string('{"bar"=>1} inspect == "{\"bar\" => 1}"').should == ioke.true
+    end
   end
 end
 
 describe "Set" do 
   describe "'notice'" do 
-    it "should return something inside of a call to set"
-    it "should use notice format for things inside"
-    it "should return all the elements separated by commas"
+    it "should return something inside of a call to set" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('set notice == "set()"').should == ioke.true
+      ioke.evaluate_string('set() notice == "set()"').should == ioke.true
+      ioke.evaluate_string('set(1) notice == "set(1)"').should == ioke.true
+    end
+
+    it "should use notice format for things inside" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('set(method(foo bar baz)) notice == "set(method(...))"').should == ioke.true
+    end
+
+    it "should return all the elements separated by commas" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('val = set(1, 2, 2, 2) notice. (val == "set(1, 2)") || (val == "set(2, 1)")').should == ioke.true
+    end
   end
   
   describe "'inspect'" do 
-    it "should return something inside of a call to set"
-    it "should use inspect format for things inside"
-    it "should return all the elements separated by commas"
+    it "should return something inside of a call to set" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('set inspect == "set()"').should == ioke.true
+      ioke.evaluate_string('set() inspect == "set()"').should == ioke.true
+      ioke.evaluate_string('set(1) inspect == "set(1)"').should == ioke.true
+    end
+    
+    it "should use inspect format for things inside" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('set(method(foo bar baz)) inspect == "set(method(foo bar baz))"').should == ioke.true
+    end
+
+    it "should return all the elements separated by commas" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('val = set(1, 2, 2, 2) inspect. (val == "set(1, 2)") || (val == "set(2, 1)")').should == ioke.true
+    end
   end
 end
 
 describe "Pair" do 
   describe "'notice'" do 
-    it "should return it's two elements separated by => "
-    it "should use notice format for elements"
+    it "should return it's two elements separated by => " do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('(1 => 2) notice == "1 => 2"').should == ioke.true
+    end
+
+    it "should use notice format for elements" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('(method(abc foo qux) => 2) notice == "method(...) => 2"').should == ioke.true
+      ioke.evaluate_string('(2 => method(abc foo qux)) notice == "2 => method(...)"').should == ioke.true
+    end
   end
   
   describe "'inspect'" do 
-    it "should return it's two elements separated by => "
-    it "should use inspect format for elements"
+    it "should return it's two elements separated by => " do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('(1 => 2) inspect == "1 => 2"').should == ioke.true
+    end
+
+    it "should use inspect format for elements" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('(method(abc foo qux) => 2) inspect == "method(abc foo qux) => 2"').should == ioke.true
+      ioke.evaluate_string('(2 => method(abc foo qux)) inspect == "2 => method(abc foo qux)"').should == ioke.true
+    end
   end
 end
 
