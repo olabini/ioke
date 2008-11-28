@@ -59,8 +59,6 @@ DefaultBehavior warn! = method(
     System err println("WARNING: #{result report}")
     result))
 
-
-
 DefaultBehavior do(
   inspect = method(
     "returns a longer description of the receiver, in general including cell information",
@@ -77,6 +75,13 @@ DefaultBehavior do(
 
         "#{cell(:self) kind}_#{cell(:self) uniqueHexId}"
   )))
+
+  cellDescriptionDict = method(
+    "returns a dict containing each cell and it's corresponding description",
+
+	cellNames = cell(:self) cellNames sort
+	cellDescs = cellNames map(name, cell(:self) cell(name) notice)
+	{} addKeysAndValues(cellNames, cellDescs))
 )
 
 System notice = method(

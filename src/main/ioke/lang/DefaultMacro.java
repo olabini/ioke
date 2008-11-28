@@ -42,6 +42,18 @@ public class DefaultMacro extends IokeData implements Named {
                     return IokeObject.as(on).activate(context, message, context.getRealContext());
                 }
             }));
+        macro.registerMethod(macro.runtime.newJavaMethod("Returns a text inspection of the object", new JavaMethod("inspect") {
+                @Override
+                public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) {
+                    return context.runtime.newText(DefaultMacro.getInspect(on));
+                }
+            }));
+        macro.registerMethod(macro.runtime.newJavaMethod("Returns a brief text inspection of the object", new JavaMethod("notice") {
+                @Override
+                public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) {
+                    return context.runtime.newText(DefaultMacro.getNotice(on));
+                }
+            }));
     }
 
     public String getName() {
@@ -52,10 +64,29 @@ public class DefaultMacro extends IokeData implements Named {
         this.name = name;
     }
 
-//     @Override
-//     public String inspect(IokeObject self) {
-//         return "method(...)";
-//     }
+    public static String getInspect(Object on) {
+        return ((DefaultMacro)(IokeObject.data(on))).inspect(on);
+    }
+
+    public static String getNotice(Object on) {
+        return ((DefaultMacro)(IokeObject.data(on))).notice(on);
+    }
+
+    public String inspect(Object self) {
+        if(name == null) {
+            return "macro(" + Message.code(code) + ")";
+        } else {
+            return name + ":macro(" + Message.code(code) + ")";
+        }
+    }
+
+    public String notice(Object self) {
+        if(name == null) {
+            return "macro(...)";
+        } else {
+            return name + ":macro(...)";
+        }
+    }
 
     @Override
     public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {

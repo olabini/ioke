@@ -80,6 +80,18 @@ public class LexicalBlock extends IokeData {
                     return context.runtime.newList(keywords);
                 }
             }));
+        lexicalBlock.registerMethod(lexicalBlock.runtime.newJavaMethod("Returns a text inspection of the object", new JavaMethod("inspect") {
+                @Override
+                public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) {
+                    return context.runtime.newText(LexicalBlock.getInspect(on));
+                }
+            }));
+        lexicalBlock.registerMethod(lexicalBlock.runtime.newJavaMethod("Returns a brief text inspection of the object", new JavaMethod("notice") {
+                @Override
+                public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) {
+                    return context.runtime.newText(LexicalBlock.getNotice(on));
+                }
+            }));
     }
 
     @Override
@@ -91,12 +103,28 @@ public class LexicalBlock extends IokeData {
         return this.message.evaluateCompleteWith(c, on);
     }
 
-//     @Override
-//     public String inspect(IokeObject self) {
-//         if(self.isActivatable()) {
-//             return "fnx(...)";
-//         } else {
-//             return "fn(...)";
-//         }
-//     }
+    public static String getInspect(Object on) {
+        return ((LexicalBlock)(IokeObject.data(on))).inspect(on);
+    }
+
+    public static String getNotice(Object on) {
+        return ((LexicalBlock)(IokeObject.data(on))).notice(on);
+    }
+
+    public String inspect(Object self) {
+        String args = arguments.getCode();
+        if(IokeObject.as(self).isActivatable()) {
+            return "fnx(" + args + Message.code(message) + ")";
+        } else {
+            return "fn(" + args + Message.code(message) + ")";
+        }
+    }
+
+    public String notice(Object self) {
+        if(IokeObject.as(self).isActivatable()) {
+            return "fnx(...)";
+        } else {
+            return "fn(...)";
+        }
+    }
 }// LexicalBlock

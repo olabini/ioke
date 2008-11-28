@@ -322,11 +322,12 @@ public class DefaultBehavior {
                     List<Object> args = message.getArguments();
 
                     if(args.size() == 0) {
-                        return runtime.newJavaMethod("returns nil", new DefaultBehaviorJavaMethod("nil") {
-                                @Override
-                                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
-                                    return runtime.nil;
-                                }});
+                        final Message mx = new Message(context.runtime, "nil", null, Message.Type.MESSAGE);
+                        mx.setFile(Message.file(message));
+                        mx.setLine(Message.line(message));
+                        mx.setPosition(Message.position(message));
+                        final IokeObject mmx = context.runtime.createMessage(mx);
+                        return runtime.newMethod(null, runtime.defaultMethod, new DefaultMethod(context, DefaultArgumentsDefinition.empty(), mmx));
                     }
 
                     String doc = null;
@@ -351,11 +352,13 @@ public class DefaultBehavior {
                     List<Object> args = message.getArguments();
 
                     if(args.size() == 0) {
-                        return runtime.newJavaMethod("returns nil", new DefaultBehaviorJavaMethod("nil") {
-                                @Override
-                                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
-                                    return runtime.nil;
-                                }});
+                        final Message mx = new Message(context.runtime, "nil", null, Message.Type.MESSAGE);
+                        mx.setFile(Message.file(message));
+                        mx.setLine(Message.line(message));
+                        mx.setPosition(Message.position(message));
+                        final IokeObject mmx = context.runtime.createMessage(mx);
+
+                        return runtime.newMacro(null, runtime.defaultMacro, new DefaultMacro(context, mmx));
                     }
 
                     String doc = null;
