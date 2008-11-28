@@ -108,8 +108,13 @@ public class Symbol extends IokeData {
 
     private final static Pattern BAD_CHARS = Pattern.compile("[=\\.:\\-\\+&|\\{\\[]");
 
+    public static boolean onlyGoodChars(Object sym) {
+        String text = Symbol.getText(sym);
+        return !(text.length() == 0 || BAD_CHARS.matcher(text).find());
+    }
+
     public String inspect(Object obj) {
-        if(text.length() == 0 || BAD_CHARS.matcher(text).find()) {
+        if(!onlyGoodChars(obj)) {
             return ":\"" + text + "\"";
         } else {
             return ":" + text;

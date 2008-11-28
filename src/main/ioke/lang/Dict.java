@@ -52,6 +52,20 @@ public class Dict extends IokeData {
                     Dict.getMap(on).put(positionalArgs.get(0), positionalArgs.get(1));
                     return positionalArgs.get(1);
                 }}));
+
+        obj.registerMethod(runtime.newJavaMethod("Returns a text inspection of the object", new JavaMethod("inspect") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    return method.runtime.newText(Dict.getInspect(on));
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("Returns a brief text inspection of the object", new JavaMethod("notice") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    return method.runtime.newText(Dict.getNotice(on));
+                }
+            }));
     }
 
     public static Map<Object, Object> getMap(Object dict) {
@@ -83,17 +97,57 @@ public class Dict extends IokeData {
         return dict.toString();
     }
 
-//     @Override
-//     public String inspect(IokeObject obj) {
-//         StringBuilder sb = new StringBuilder();
-//         sb.append("{");
-//         String sep = "";
-//         for(Map.Entry<Object, Object> o : dict.entrySet()) {
-//             sb.append(sep).append(IokeObject.inspect(o.getKey()));
-//             sb.append(" => ").append(IokeObject.inspect(o.getValue()));
-//             sep = ", ";
-//         }
-//         sb.append("}");
-//         return sb.toString();
-//     }
+    public static String getInspect(Object on) throws ControlFlow {
+        return ((Dict)(IokeObject.data(on))).inspect(on);
+    }
+
+    public static String getNotice(Object on) throws ControlFlow {
+        return ((Dict)(IokeObject.data(on))).notice(on);
+    }
+
+    public String inspect(Object obj) throws ControlFlow {
+        StringBuilder sb = new StringBuilder();
+        sb.append("{");
+        String sep = "";
+
+        for(Map.Entry<Object, Object> o : dict.entrySet()) {
+            sb.append(sep);
+            Object key = o.getKey();
+
+            if((IokeObject.data(key) instanceof Symbol) && Symbol.onlyGoodChars(key)) {
+                sb.append(Symbol.getText(key)).append(": ");
+            } else {
+                sb.append(IokeObject.inspect(key)).append(" => ");
+            }
+
+            sb.append(IokeObject.inspect(o.getValue()));
+            sep = ", ";
+        }
+
+        sb.append("}");
+        return sb.toString();
+    }
+
+    public String notice(Object obj) throws ControlFlow {
+        StringBuilder sb = new StringBuilder();
+        sb.append("{");
+        String sep = "";
+
+        for(Map.Entry<Object, Object> o : dict.entrySet()) {
+            sb.append(sep);
+            Object key = o.getKey();
+
+            if((IokeObject.data(key) instanceof Symbol) && Symbol.onlyGoodChars(key)) {
+                sb.append(Symbol.getText(key)).append(": ");
+            } else {
+                sb.append(IokeObject.notice(key)).append(" => ");
+            }
+
+            sb.append(IokeObject.notice(o.getValue()));
+            sep = ", ";
+        }
+
+        sb.append("}");
+        return sb.toString();
+    }
 }// Dict
