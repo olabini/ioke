@@ -438,6 +438,10 @@ public class IokeObject {
         return ((IokeObject)on).convertToText(m, context);
     }
 
+    public static IokeObject tryConvertToText(Object on, IokeObject m, IokeObject context) throws ControlFlow {
+        return ((IokeObject)on).tryConvertToText(m, context);
+    }
+
     public static IokeObject convertToSymbol(Object on, IokeObject m, IokeObject context) throws ControlFlow {
         return ((IokeObject)on).convertToSymbol(m, context);
     }
@@ -460,6 +464,10 @@ public class IokeObject {
 
     public IokeObject convertToText(IokeObject m, IokeObject context) throws ControlFlow {
         return data.convertToText(this, m, context);
+    }
+
+    public IokeObject tryConvertToText(IokeObject m, IokeObject context) throws ControlFlow {
+        return data.tryConvertToText(this, m, context);
     }
 
     public IokeObject convertToSymbol(IokeObject m, IokeObject context) throws ControlFlow {

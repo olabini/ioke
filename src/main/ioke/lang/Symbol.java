@@ -97,6 +97,11 @@ public class Symbol extends IokeData {
     }
 
     @Override
+    public IokeObject tryConvertToText(IokeObject self, IokeObject m, IokeObject context) {
+        return self.runtime.newText(getText());
+    }
+
+    @Override
     public String toString() {
         return text;
     }

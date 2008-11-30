@@ -163,6 +163,9 @@ public abstract class IokeData {
 
         return IokeObject.convertToNumber(newCell[0], m, context);
     }
+    public IokeObject tryConvertToText(IokeObject self, IokeObject m, final IokeObject context) throws ControlFlow {
+        return null;
+    }
     public IokeObject convertToText(IokeObject self, IokeObject m, final IokeObject context) throws ControlFlow {
         final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
                                                                            m, 
