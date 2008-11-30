@@ -1,4 +1,13 @@
 
+Text
+ format
+  test %s
+  test %16s
+  test %-16s
+  test %{, %} for repetition in Common Lisp format style - using each
+  test %*{, %} where each element is splatted before used inside  
+
+
 implement a basic debugger -- in Ioke
 
 iik - interactive Ioke
@@ -11,9 +20,6 @@ iik - interactive Ioke
 
 - java integration things
 
-- inspection
-  cellSummary  -> slotSummary
-
 doFile
 doScript
 
@@ -22,12 +28,12 @@ doScript
 mimics == protos
 
 
+lower prio
+----------
+
 = should check for "foo=" before calling assign, so you can do
   msg next = blah
  instead of setNext
-
-lower prio
-----------
 
 - call initialization on creation
  - defined in terms of aspects
@@ -37,8 +43,6 @@ Add freeze/thaw methods
 Look seriously at "become"
 
 Common Lisp style "format" for outputting list structures and so on, as in "~{xc ~}"
-
-look at Io Locals for Context stuff...
 
 autoimporter in the style of Io Importer
 
@@ -53,8 +57,6 @@ aspects:
  - surround
 
 resend
-super
-
 
 would it be interesting to have lexicalblocks be enumerable?
 
