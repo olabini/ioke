@@ -3,6 +3,11 @@
  */
 package ioke.lang;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+
 import ioke.lang.exceptions.ControlFlow;
 
 /**
@@ -46,6 +51,89 @@ public class Text extends IokeData {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
                     return context.runtime.newNumber(getText(on).length());
+                }
+            }));
+
+        obj.registerMethod(obj.runtime.newJavaMethod("Takes any number of arguments, and expects the text receiver to contain format specifications. The currently supported specifications are only %s and %{, %}. These have several parameters that can be used. See the spec for more info about these. The format method will return a new text based on the content of the receiver, and the arguments given.", new JavaMethod("format") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> positionalArgs = new ArrayList<Object>();
+                    Map<String, Object> keywordArgs = new HashMap<String, Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, positionalArgs, keywordArgs);
+
+                    String format = Text.getText(on);
+                    int argIndex = 0;
+                    int formatIndex = 0;
+                    int justify = 0;
+                    boolean negativeJustify = false;
+                    boolean doAgain = false;
+                    int argCount = positionalArgs.size();
+                    int formatLength = format.length();
+                    StringBuilder result = new StringBuilder();
+
+                    while(formatIndex < formatLength) {
+                        char c = format.charAt(formatIndex++);
+                        switch(c) {
+                        case '%':
+                            justify = 0;
+                            do {
+                                doAgain = false;
+                                c = format.charAt(formatIndex++);
+                                switch(c) {
+                                case 's':
+                                    // TODO: missing argument
+                                    Object arg = positionalArgs.get(argIndex++);
+                                    Object txt = IokeObject.tryConvertToText(arg, message, context);
+                                    if(txt == null) {
+                                        txt = context.runtime.asText.sendTo(context, arg);
+                                    }
+                                    String outTxt = Text.getText(txt);
+
+                                    if(outTxt.length() < justify) {
+                                        int missing = justify - outTxt.length();
+                                        char[] spaces = new char[missing];
+                                        java.util.Arrays.fill(spaces, ' ');
+                                        if(negativeJustify) {
+                                            result.append(outTxt);
+                                            result.append(spaces);
+                                        } else {
+                                            result.append(spaces);
+                                            result.append(outTxt);
+                                        }
+                                    } else {
+                                        result.append(outTxt);
+                                    }
+                                    break;
+                                case '0':
+                                case '1':
+                                case '2':
+                                case '3':
+                                case '4':
+                                case '5':
+                                case '6':
+                                case '7':
+                                case '8':
+                                case '9':
+                                    justify *= 10;
+                                    justify += (c - '0');
+                                    doAgain = true;
+                                    break;
+                                case '-':
+                                    negativeJustify = !negativeJustify;
+                                    doAgain = true;
+                                    break;
+                                default:
+                                    // TODO: unknown format specifier
+                                    break;
+                                }
+                            } while(doAgain);
+                            break;
+                        default:
+                            result.append(c);
+                            break;
+                        }
+                    }
+                    return context.runtime.newText(result.toString());
                 }
             }));
 
@@ -141,6 +229,11 @@ public class Text extends IokeData {
     
     @Override
     public IokeObject convertToText(IokeObject self, IokeObject m, IokeObject context) {
+        return self;
+    }
+
+    @Override
+    public IokeObject tryConvertToText(IokeObject self, IokeObject m, IokeObject context) {
         return self;
     }
 

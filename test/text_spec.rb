@@ -224,6 +224,63 @@ describe "Text" do
       m.should == 'internal:concatenateText("foo ", internal:concatenateText("fux ", 32, " bar") bletch, " bar")'
     end
   end
+
+  describe "'format'" do 
+    it "should insert a text with only a %s" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('"%s" format("bar")').data.text.should == "bar"
+      ioke.evaluate_string('"%s" format("")').data.text.should == ""
+      ioke.evaluate_string('"%s" format("\n")').data.text.should == "\n"
+    end
+
+    it "should insert a text with %s inside of stuff" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('"foo bar %s dfgdfg" format("bar")').data.text.should == "foo bar bar dfgdfg"
+      ioke.evaluate_string('"foo bar %s dfgdfg" format("flurg")').data.text.should == "foo bar flurg dfgdfg"
+    end
+
+    it "should insert two texts with two %s inside of stuff" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('"foo bar %s dfgdfg%sabc" format("bar", "mums")').data.text.should == "foo bar bar dfgdfgmumsabc"
+    end
+
+    it "should call asText when inserting %s" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string(<<CODE).data.text.should == "foo blurg bar"
+x = Origin mimic
+x asText = "blurg"
+"foo %s bar" format(x)
+CODE
+    end
+
+    it "should right adjust when given %s with a number" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('"%10s" format("bar")').data.text.should == "       bar"
+      ioke.evaluate_string('"a%10sb" format("bar")').data.text.should == "a       barb"
+    end
+
+    it "should left adjust when given %s with a negative number" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('"%-10s" format("bar")').data.text.should == "bar       "
+      ioke.evaluate_string('"a%-10sb" format("bar")').data.text.should == "abar       b"
+    end
+
+    it "should overflow when giving right adjustment but the string is too long" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('"%2s" format("barfly")').data.text.should == "barfly"
+      ioke.evaluate_string('"a%2sb" format("barfly")').data.text.should == "abarflyb"
+    end
+    
+    it "should overflow when giving left adjustment but the string is too long" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('"%-2s" format("barfly")').data.text.should == "barfly"
+      ioke.evaluate_string('"a%-2sb" format("barfly")').data.text.should == "abarflyb"
+    end
+    
+    it "should iterate over an element when using %{ and %}"
+    it "should iterate over an element with each when using %{ and %}"
+    it "should splat all inner elements when using %*{ and %}"
+  end
   
   describe "escapes" do 
     describe "text escape", :shared => true do 
