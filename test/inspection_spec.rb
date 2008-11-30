@@ -23,10 +23,28 @@ describe "DefaultBehavior" do
     end
   end
   
-  describe "'cellSummary'" do 
-    it "should use notice for the first line"
-    it "should use cellDescriptionDict for the data"
-  end
+#   describe "'cellSummary'" do 
+#     it "should use notice for the first line" do 
+#       ioke = IokeRuntime.get_runtime
+#       result = ioke.evaluate_string(<< CODE)
+# x = Origin mimic
+# x uniqueHexId = "0x3FF420"
+# x cellSummary
+# CODE
+#       result.should == " Origin_0x3FF420:\n"
+#     end
+
+#     it "should use cellDescriptionDict for the data" do 
+#       ioke = IokeRuntime.get_runtime
+#       result = ioke.evaluate_string(<< CODE)
+# x = Origin mimic
+# x uniqueHexId = "0x3FF420"
+# x cellDescriptionDict = {foo: "bar"}
+# x cellSummary
+# CODE
+#       result.should match(/  foo {13}= bar\n/)
+#     end
+#   end
   
   describe "'inspect'" do 
     it "should use cellSummary" do 

@@ -339,8 +339,11 @@ public class Levels {
         
         /*
         // : "str" bar   becomes   :("str") bar
+        // -foo bar      becomes   -(foo) bar
         */
-        if(messageName.equals(":") && msgArgCount == 0 && Message.next(msg) != null) {
+        if(msgArgCount == 0 && Message.next(msg) != null && ((messageName.equals(":")) || 
+                                                             (messageName.equals("-") && Message.prev(msg) == null))) {
+            precedence = -1;
             Object arg = Message.next(msg);
             Message.setNext(msg, Message.next(arg));
             Message.setNext(IokeObject.as(arg), null);
@@ -427,7 +430,7 @@ public class Levels {
         } else if(Message.isTerminator(msg)) {
             popDownTo(OP_LEVEL_MAX-1, expressions);
             attachAndReplace(currentLevel(), msg);
-        } else if(precedence != -1) { // An operator
+        } else if(precedence != -1 && !(messageName.equals("-") && Message.prev(msg) == null && msgArgCount > 0)) { // An operator
             if(msgArgCount > 0) {
                 // move arguments off to their own message to make () after operators behave like Cs grouping ()
                 IokeObject brackets = runtime.newMessage("");

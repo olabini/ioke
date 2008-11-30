@@ -534,13 +534,23 @@ describe "operator" do
         m.should == "-(1)"
       end
 
+      it "should parse correctly for a simple case with message send after" do 
+        m = parse("-1 println").to_string
+        m.should == "-(1) println"
+      end
+
+      it "should parse correctly for a simple case with message send after and parenthesis" do 
+        m = parse("-(1) println").to_string
+        m.should == "-(1) println"
+      end
+      
       it "should parse correctly for a larger number" do 
         m = parse("-12342353453").to_string
         m.should == "-(12342353453)"
       end
 
       it "should parse correctly several times over" do 
-        m = parse("- -1").to_string
+        m = parse("- -(1)").to_string
         m.should == "-(-(1))"
       end
     end

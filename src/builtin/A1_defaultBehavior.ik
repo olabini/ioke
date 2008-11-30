@@ -82,6 +82,14 @@ DefaultBehavior do(
 	cellNames = cell(:self) cellNames sort
 	cellDescs = cellNames map(name, cell(:self) cell(name) notice)
 	{} addKeysAndValues(cellNames, cellDescs))
+
+  cellSummary = method(
+    "returns a representation of the current object that includes information about it's cells",
+
+    cellDescriptions = cellDescriptionDict
+    vals = cellDescriptions keys sort map(k, [k, cellDescriptions[k]])
+  " #{cell(:self) notice}:
+  %*{  %-16s = %s\n%}" format(vals))
 )
 
 System notice = method(
@@ -97,24 +105,3 @@ Runtime notice = method(
   if(self == Runtime,
     "Runtime",
     super))
-
-
-;; TODO: test all this behavior
-
-; DefaultBehavior do(
-;   cellDescriptionDict = method(
-;     "returns a dict containing each cell and it's corresponding description",
-
-; 	cellNames = cell(:self) cellNames sort
-; 	cellDescs = cellNames map(name, cell(:self) cell(name) notice)
-; 	dict addKeysAndValues(cellNames, cellDescs))
-
-;   cellSummary = method(
-;     "returns a representation of the current object that includes information about it's cells",
-
-;     s = " #{cell(:self) notice}:\n"
-;     cellDescriptions = cellDescriptionDict
-; 	cellDescriptions keys sort each(k,
-; 	  s = s + ("  ", k alignLeft(16), " = ", cellDescriptions[k], "\n"))
-;     s
-;   )
