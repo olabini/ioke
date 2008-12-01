@@ -3,6 +3,9 @@
  */
 package ioke.lang;
 
+import java.util.List;
+
+import gnu.math.BitOps;
 import gnu.math.IntNum;
 
 import ioke.lang.exceptions.ControlFlow;
@@ -138,6 +141,143 @@ public class Number extends IokeData {
                         arg = IokeObject.convertToNumber(arg, message, context);
                     }
                     return runtime.newNumber(IntNum.add(Number.value(on),Number.value(arg)));
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("returns the product of this number and the argument", new JavaMethod("*") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    Object arg = message.getEvaluatedArgument(0, context);
+                    if(!(IokeObject.data(arg) instanceof Number)) {
+                        arg = IokeObject.convertToNumber(arg, message, context);
+                    }
+                    return runtime.newNumber(IntNum.times(Number.value(on),Number.value(arg)));
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("returns the quotient of this number and the argument", new JavaMethod("/") {
+                @Override
+                public Object activate(IokeObject method, final IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    Object arg = message.getEvaluatedArgument(0, context);
+                    if(!(IokeObject.data(arg) instanceof Number)) {
+                        arg = IokeObject.convertToNumber(arg, message, context);
+                    }
+                    IntNum result = new IntNum();
+                    boolean retry = false;
+                    do {
+                        retry = false;
+                        try {
+                            IntNum.divide(Number.value(on),Number.value(arg),result,null,IntNum.FLOOR);
+                        } catch(ArithmeticException e) {
+                            final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
+                                                                                               message, 
+                                                                                               context, 
+                                                                                               "Error", 
+                                                                                               "Arithmetic",
+                                                                                               "DivisionByZero")).mimic(message, context);
+                            condition.setCell("message", message);
+                            condition.setCell("context", context);
+                            condition.setCell("receiver", on);
+
+                            final Object[] newCell = new Object[]{arg};
+
+                            context.runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
+                                    public void run() throws ControlFlow {
+                                        context.runtime.errorCondition(condition);
+                                    }}, 
+                                context,
+                                new Restart.ArgumentGivingRestart("useValue") { 
+                                    public IokeObject invoke(IokeObject c2, List<Object> arguments) throws ControlFlow {
+                                        newCell[0] = arguments.get(0);
+                                        return c2.runtime.nil;
+                                    }
+                                }
+                                );
+
+                            retry = true;
+                            arg = newCell[0];
+                        }
+                    } while(retry);
+
+                    return runtime.newNumber(result);
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("returns the modulo of this number and the argument", new JavaMethod("%") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    Object arg = message.getEvaluatedArgument(0, context);
+                    if(!(IokeObject.data(arg) instanceof Number)) {
+                        arg = IokeObject.convertToNumber(arg, message, context);
+                    }
+                    return runtime.newNumber(IntNum.modulo(Number.value(on),Number.value(arg)));
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("returns this number to the power of the argument", new JavaMethod("**") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    Object arg = message.getEvaluatedArgument(0, context);
+                    if(!(IokeObject.data(arg) instanceof Number)) {
+                        arg = IokeObject.convertToNumber(arg, message, context);
+                    }
+                    return runtime.newNumber(IntNum.power(Number.value(on), Number.value(arg).intValue()));
+                }
+            }));
+
+
+        obj.registerMethod(runtime.newJavaMethod("returns this number bitwise and the argument", new JavaMethod("&") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    Object arg = message.getEvaluatedArgument(0, context);
+                    if(!(IokeObject.data(arg) instanceof Number)) {
+                        arg = IokeObject.convertToNumber(arg, message, context);
+                    }
+                    return runtime.newNumber(BitOps.and(Number.value(on), Number.value(arg)));
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("returns this number bitwise or the argument", new JavaMethod("|") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    Object arg = message.getEvaluatedArgument(0, context);
+                    if(!(IokeObject.data(arg) instanceof Number)) {
+                        arg = IokeObject.convertToNumber(arg, message, context);
+                    }
+                    return runtime.newNumber(BitOps.ior(Number.value(on), Number.value(arg)));
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("returns this number bitwise xor the argument", new JavaMethod("^") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    Object arg = message.getEvaluatedArgument(0, context);
+                    if(!(IokeObject.data(arg) instanceof Number)) {
+                        arg = IokeObject.convertToNumber(arg, message, context);
+                    }
+                    return runtime.newNumber(BitOps.xor(Number.value(on), Number.value(arg)));
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("returns this number left shifted by the argument", new JavaMethod("<<") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    Object arg = message.getEvaluatedArgument(0, context);
+                    if(!(IokeObject.data(arg) instanceof Number)) {
+                        arg = IokeObject.convertToNumber(arg, message, context);
+                    }
+                    return runtime.newNumber(IntNum.shift(Number.value(on), Number.value(arg).intValue()));
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("returns this number right shifted by the argument", new JavaMethod(">>") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    Object arg = message.getEvaluatedArgument(0, context);
+                    if(!(IokeObject.data(arg) instanceof Number)) {
+                        arg = IokeObject.convertToNumber(arg, message, context);
+                    }
+                    return runtime.newNumber(IntNum.shift(Number.value(on), -Number.value(arg).intValue()));
                 }
             }));
 

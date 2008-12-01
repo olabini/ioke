@@ -1,6 +1,4 @@
 
-0.   look at Io and figure what's missing
-1.   missing math
 2.   missing assignment ops
 3.   add "mimics"
 4.   add Dict#each
@@ -14,7 +12,7 @@
 
 implement a basic debugger -- in Ioke
 
-each - only for Dict
+each - for Dict
 
  continue
  return
