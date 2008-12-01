@@ -1,13 +1,4 @@
 
-Text
- format
-  test %s
-  test %16s
-  test %-16s
-  test %{, %} for repetition in Common Lisp format style - using each
-  test %*{, %} where each element is splatted before used inside  
-
-
 implement a basic debugger -- in Ioke
 
 iik - interactive Ioke

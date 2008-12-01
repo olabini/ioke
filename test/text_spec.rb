@@ -226,6 +226,39 @@ describe "Text" do
   end
 
   describe "'format'" do 
+    it "should create a text when no % is specified" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('"abc foo bar quux \n men men" format()').data.text.should == "abc foo bar quux \n men men"
+    end
+
+    it "should handle a % followed by a non-specifier" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('"abc foo% bar quux \n men men" format()').data.text.should == "abc foo% bar quux \n men men"
+      ioke.evaluate_string('"abc foo 10% bar quux \n men men" format()').data.text.should == "abc foo 10% bar quux \n men men"
+      ioke.evaluate_string('"abc foo 10%, bar quux \n men men" format()').data.text.should == "abc foo 10%, bar quux \n men men"
+      ioke.evaluate_string('"abc foo %01 bar quux \n men men" format()').data.text.should == "abc foo %01 bar quux \n men men"
+      ioke.evaluate_string('"abc foo %* bar quux \n men men" format()').data.text.should == "abc foo %* bar quux \n men men"
+      ioke.evaluate_string('"abc foo %-10 bar quux \n men men" format()').data.text.should == "abc foo %-10 bar quux \n men men"
+    end
+
+    it "should handle a % followed by a newline" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string(<<CODE).data.text.should == "foo%\n"
+"foo%
+" format
+CODE
+    end
+    
+    it "should handle a % followed by end of string" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('"abc%" format()').data.text.should == "abc%"
+    end
+
+    it "should handle a % at beginning of string" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('"% abc" format()').data.text.should == "% abc"
+    end
+    
     it "should insert a text with only a %s" do 
       ioke = IokeRuntime.get_runtime
       ioke.evaluate_string('"%s" format("bar")').data.text.should == "bar"
@@ -277,9 +310,39 @@ CODE
       ioke.evaluate_string('"a%-2sb" format("barfly")').data.text.should == "abarflyb"
     end
     
-    it "should iterate over an element when using %{ and %}"
-    it "should iterate over an element with each when using %{ and %}"
-    it "should splat all inner elements when using %*{ and %}"
+    it "should not print anything for an empty list, with %[ and %]" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('"foo %[bar %]quux" format([])').data.text.should == "foo quux"
+    end
+    
+    it "should iterate over an element when using %[ and %]" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('"foo %[%s - %]quux" format(["one", "two", "three"])').data.text.should == "foo one - two - three - quux"
+      ioke.evaluate_string('"%[%s - %]" format(["one", "two", "three"])').data.text.should == "one - two - three - "
+    end
+
+    it "should iterate over an element with each when using %[ and %]" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string(<<CODE)
+CustomEnumerable = Origin mimic
+CustomEnumerable mimic!(Mixins Enumerable)
+CustomEnumerable each = macro(
+  ; Assume only one argument  
+  first = call arguments first
+  first evaluateOn(call ground, "3first")
+  first evaluateOn(call ground, "1second")
+  first evaluateOn(call ground, "2third"))
+CODE
+
+      ioke.evaluate_string('"ah: %[%s-%] mama" format(CustomEnumerable)').data.text.should == "ah: 3first-1second-2third- mama"
+      ioke.evaluate_string('"%[%s%]" format(CustomEnumerable)').data.text.should == "3first1second2third"
+    end
+
+    it "should splat all inner elements when using %*[ and %]" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('"foo %*[%s = %s - %]quux" format([["one", "1", "ignored"], ["two", "2", "ignored"], ["three", "3", "ignored"]])').data.text.should == "foo one = 1 - two = 2 - three = 3 - quux"
+      ioke.evaluate_string('"%*[%s=%s%]" format([["one", "1", "ignored"], ["two", "2", "ignored"], ["three", "3", "ignored"]])').data.text.should == "one=1two=2three=3"
+    end
   end
   
   describe "escapes" do 
