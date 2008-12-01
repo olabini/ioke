@@ -1,28 +1,32 @@
 
-fix inspect for JavaMethod
+0.   look at Io and figure what's missing
+1.   missing math
+2.   missing assignment ops
+3.   add "mimics"
+4.   add Dict#each
+5.   add continue
+6.   add return
+7.   add most important Enumerable methods
+8.   work on "affirm"
+9.   work on "dokgen"
+???. work on "debug"
+
 
 implement a basic debugger -- in Ioke
 
-iik - interactive Ioke
+each - only for Dict
 
- each
-
- break
  continue
  return
 
-- java integration things
-
-doFile
-doScript
-
- add Enumerable stuff
+add Enumerable stuff
 
 mimics == protos
 
-
 lower prio
 ----------
+
+- java integration things
 
 = should check for "foo=" before calling assign, so you can do
   msg next = blah
@@ -48,14 +52,3 @@ aspects:
  - surround
 
 resend
-
-would it be interesting to have lexicalblocks be enumerable?
-
-newCounter = method(
-  x = 0
-  fn(x ++. x))
-x = newCounter
-x take(10)
-x take(3)
-
-
