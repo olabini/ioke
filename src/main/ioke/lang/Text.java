@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Arrays;
 
 import ioke.lang.exceptions.ControlFlow;
 
@@ -61,78 +62,9 @@ public class Text extends IokeData {
                     Map<String, Object> keywordArgs = new HashMap<String, Object>();
                     DefaultArgumentsDefinition.getEvaluatedArguments(message, context, positionalArgs, keywordArgs);
 
-                    String format = Text.getText(on);
-                    int argIndex = 0;
-                    int formatIndex = 0;
-                    int justify = 0;
-                    boolean negativeJustify = false;
-                    boolean doAgain = false;
-                    int argCount = positionalArgs.size();
-                    int formatLength = format.length();
                     StringBuilder result = new StringBuilder();
+                    Text.format(on, message, context, positionalArgs, result);
 
-                    while(formatIndex < formatLength) {
-                        char c = format.charAt(formatIndex++);
-                        switch(c) {
-                        case '%':
-                            justify = 0;
-                            do {
-                                doAgain = false;
-                                c = format.charAt(formatIndex++);
-                                switch(c) {
-                                case 's':
-                                    // TODO: missing argument
-                                    Object arg = positionalArgs.get(argIndex++);
-                                    Object txt = IokeObject.tryConvertToText(arg, message, context);
-                                    if(txt == null) {
-                                        txt = context.runtime.asText.sendTo(context, arg);
-                                    }
-                                    String outTxt = Text.getText(txt);
-
-                                    if(outTxt.length() < justify) {
-                                        int missing = justify - outTxt.length();
-                                        char[] spaces = new char[missing];
-                                        java.util.Arrays.fill(spaces, ' ');
-                                        if(negativeJustify) {
-                                            result.append(outTxt);
-                                            result.append(spaces);
-                                        } else {
-                                            result.append(spaces);
-                                            result.append(outTxt);
-                                        }
-                                    } else {
-                                        result.append(outTxt);
-                                    }
-                                    break;
-                                case '0':
-                                case '1':
-                                case '2':
-                                case '3':
-                                case '4':
-                                case '5':
-                                case '6':
-                                case '7':
-                                case '8':
-                                case '9':
-                                    justify *= 10;
-                                    justify += (c - '0');
-                                    doAgain = true;
-                                    break;
-                                case '-':
-                                    negativeJustify = !negativeJustify;
-                                    doAgain = true;
-                                    break;
-                                default:
-                                    // TODO: unknown format specifier
-                                    break;
-                                }
-                            } while(doAgain);
-                            break;
-                        default:
-                            result.append(c);
-                            break;
-                        }
-                    }
                     return context.runtime.newText(result.toString());
                 }
             }));
@@ -225,6 +157,147 @@ public class Text extends IokeData {
 
     public String getText() {
         return text;
+    }
+    
+    public static void format(Object on, IokeObject message, IokeObject context, List<Object> positionalArgs, StringBuilder result) throws ControlFlow {
+        formatString(Text.getText(on), 0, message, context, positionalArgs, result);
+    }
+
+    private static int formatString(final String format, int index, final IokeObject message, final IokeObject context, List<Object> positionalArgs, final StringBuilder result) throws ControlFlow {
+        int argIndex = 0;
+        int formatIndex = index;
+        int justify = 0;
+        boolean splat = false;
+        boolean negativeJustify = false;
+        boolean doAgain = false;
+        int argCount = positionalArgs.size();
+        int formatLength = format.length();
+        Object arg = null;
+        StringBuilder missingText = new StringBuilder();
+
+        while(formatIndex < formatLength) {
+            char c = format.charAt(formatIndex++);
+            switch(c) {
+            case '%':
+                justify = 0;
+                missingText.append(c);
+                do {
+                    doAgain = false;
+                    if(formatIndex < formatLength) {
+                        c = format.charAt(formatIndex++);
+                        missingText.append(c);
+                        
+                        switch(c) {
+                        case '*':
+                            splat = true;
+                            doAgain = true;
+                            break;
+                        case ']':
+                            return formatIndex;
+                        case '[':
+                            arg = positionalArgs.get(argIndex++);
+                            final int startLoop = formatIndex;
+                            final int[] endLoop = new int[]{-1};
+                            final boolean doSplat = splat;
+                            splat = false;
+                            context.runtime.each.sendTo(context, arg, context.runtime.createMessage(new Message(context.runtime, "internal:collectDataForText#format") { 
+                                    private Object doEvaluation(IokeObject ctx, Object ground, Object receiver) throws ControlFlow {
+                                        List<Object> args = null;
+                                        if(doSplat) {
+                                            args = IokeList.getList(receiver);
+                                        } else {
+                                            args = Arrays.asList(receiver);
+                                        }
+
+                                        int newVal = formatString(format, startLoop, message, context, args, result);
+                                        endLoop[0] = newVal;
+                                        return ctx.runtime.nil;
+                                    }
+                                    @Override
+                                    public Object evaluateCompleteWithReceiver(IokeObject self, IokeObject ctx, Object ground, Object receiver) throws ControlFlow {
+                                        return doEvaluation(ctx, ground, receiver);
+                                    }                                
+                                    @Override
+                                    public Object evaluateCompleteWith(IokeObject self, IokeObject ctx, Object ground) throws ControlFlow {
+                                        return doEvaluation(ctx, ground, ctx);
+                                    }                                
+                                }));
+                            if(endLoop[0] == -1) {
+                                int opened = 1;
+                                while(opened > 0 && formatIndex < formatLength) {
+                                    char c2 = format.charAt(formatIndex++);
+                                    if(c2 == '%' && formatIndex < formatLength) {
+                                        c2 = format.charAt(formatIndex++);
+                                        if(c2 == '[') {
+                                            opened++;
+                                        } else if(c2 == ']') {
+                                            opened--;
+                                        }
+                                    }
+                                }
+                            } else {
+                                formatIndex = endLoop[0];
+                            }
+                            break;
+                        case 's':
+                            // TODO: missing argument
+                            arg = positionalArgs.get(argIndex++);
+                            Object txt = IokeObject.tryConvertToText(arg, message, context);
+                            if(txt == null) {
+                                txt = context.runtime.asText.sendTo(context, arg);
+                            }
+                            String outTxt = Text.getText(txt);
+
+                            if(outTxt.length() < justify) {
+                                int missing = justify - outTxt.length();
+                                char[] spaces = new char[missing];
+                                java.util.Arrays.fill(spaces, ' ');
+                                if(negativeJustify) {
+                                    result.append(outTxt);
+                                    result.append(spaces);
+                                } else {
+                                    result.append(spaces);
+                                    result.append(outTxt);
+                                }
+                            } else {
+                                result.append(outTxt);
+                            }
+                            break;
+                        case '0':
+                        case '1':
+                        case '2':
+                        case '3':
+                        case '4':
+                        case '5':
+                        case '6':
+                        case '7':
+                        case '8':
+                        case '9':
+                            justify *= 10;
+                            justify += (c - '0');
+                            doAgain = true;
+                            break;
+                        case '-':
+                            negativeJustify = !negativeJustify;
+                            doAgain = true;
+                            break;
+                        default:
+                            result.append(missingText);
+                            missingText = new StringBuilder();
+                            break;
+                        }
+                    } else {
+                        result.append(missingText);
+                        missingText = new StringBuilder();
+                    }
+                } while(doAgain);
+                break;
+            default:
+                result.append(c);
+                break;
+            }
+        }
+        return formatLength;
     }
     
     @Override
