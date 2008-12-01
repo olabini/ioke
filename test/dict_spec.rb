@@ -146,6 +146,25 @@ describe "Dict" do
       ioke.evaluate_string("({foo: 6666}[42] = :bar) == :bar").should == ioke.true
     end
   end
+  
+  describe "'keys'" do 
+    it "should return an empty set for an empty dict" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("{} keys == set()").should == ioke.true
+    end
+
+    it "should return the one key in an dict with one element" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("{foo: 1} keys == set(:foo)").should == ioke.true
+      ioke.evaluate_string("{1=>:foo} keys == set(1)").should == ioke.true
+      ioke.evaluate_string("{\"str\" => :bar} keys == set(\"str\")").should == ioke.true
+    end
+
+    it "should return all the keys" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("{foo: 1, bar: 2, 3 => :quux} keys == set(:foo, :bar, 3)").should == ioke.true
+    end
+  end
 end
 
 describe "DefaultBehavior" do 

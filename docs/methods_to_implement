@@ -1,4 +1,6 @@
 
+fix inspect for JavaMethod
+
 implement a basic debugger -- in Ioke
 
 iik - interactive Ioke
@@ -32,8 +34,6 @@ lower prio
 Add freeze/thaw methods
 
 Look seriously at "become"
-
-Common Lisp style "format" for outputting list structures and so on, as in "~{xc ~}"
 
 autoimporter in the style of Io Importer
 

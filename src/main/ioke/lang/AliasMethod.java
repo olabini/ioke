@@ -9,13 +9,15 @@ import ioke.lang.exceptions.ControlFlow;
  *
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
-public class AliasMethod extends IokeData implements Named {
+public class AliasMethod extends IokeData implements Named, Inspectable {
     String name;
     IokeData realMethod;
+    IokeObject realSelf;
 
-    public AliasMethod(String name, IokeData realMethod) {
+    public AliasMethod(String name, IokeData realMethod, IokeObject realSelf) {
         this.name = name;
         this.realMethod = realMethod;
+        this.realSelf = realSelf;
     }
 
     public String getName() {
@@ -26,13 +28,16 @@ public class AliasMethod extends IokeData implements Named {
         this.name = name;
     }
 
-    @Override
-    public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-        return realMethod.activate(self, context, message, on);
+    public String inspect(Object self) {
+        return ((Inspectable)realMethod).inspect(realSelf);
     }
 
-//     @Override
-//     public String inspect(IokeObject self) {
-//         return realMethod.inspect(self);
-//     }
+    public String notice(Object self) {
+        return ((Inspectable)realMethod).notice(realSelf);
+    }
+
+    @Override
+    public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+        return realMethod.activate(realSelf, context, message, on);
+    }
 }// AliasMethod

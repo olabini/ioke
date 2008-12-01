@@ -59,29 +59,26 @@ Condition Error Load report = method(
 #{context stackTraceAsText}")
 
 
-;;; receiver inspect
 Condition Error NoSuchCell report = method(
   "returns a representation of this error, showing the name of the missing cell and the object that didn't have it",
 
-  "couldn't find cell '#{cellName}' on '#{receiver}' (#{self kind})
+  "couldn't find cell '#{cellName}' on '#{receiver notice}' (#{self kind})
 
 #{context stackTraceAsText}")
 
 
-;;; extra inspect
 Condition Error Invocation MismatchedKeywords report = method(
   "returns a representation of this error, printing the given keywords that wasn't expected",
 
-  "didn't expect keyword arguments: #{extra} given to '#{message name}' (#{self kind})
+  "didn't expect keyword arguments: #{extra notice} given to '#{message name}' (#{self kind})
 
 #{context stackTraceAsText}")
 
 
-;;; extra inspect
 Condition Error Invocation TooManyArguments report = method(
   "returns a representation of this error, printing the given argument values that wasn't expected",
 
-  "didn't expect these arguments: #{extra} given to '#{message name}' (#{self kind})
+  "didn't expect these arguments: #{extra notice} given to '#{message name}' (#{self kind})
 
 #{context stackTraceAsText}")
 
@@ -102,11 +99,10 @@ Condition Error Invocation ArgumentWithoutDefaultValue report = method(
 #{context stackTraceAsText}")
 
 
-;;; given inspect
 Condition Error Invocation NotSpreadable report = method(
   "returns a representation of this error, printing the object that couldn't be spread",
 
-  "can't spread value '#{given}' given to method '#{message name}' (#{self kind})
+  "can't spread value '#{given notice}' given to method '#{message name}' (#{self kind})
 
 #{context stackTraceAsText}")
 

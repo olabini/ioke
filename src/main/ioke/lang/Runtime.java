@@ -155,9 +155,11 @@ public class Runtime {
         Handler.init(handler);
         io.init();
 
-        ground.mimicsWithoutCheck(base);
         ground.mimicsWithoutCheck(defaultBehavior);
+        ground.mimicsWithoutCheck(base);
         origin.mimicsWithoutCheck(ground);
+
+        mixins.mimicsWithoutCheck(defaultBehavior);
 
         system.mimicsWithoutCheck(ground);
         system.mimicsWithoutCheck(defaultBehavior);

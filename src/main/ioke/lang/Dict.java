@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Set;
 
 import ioke.lang.exceptions.ControlFlow;
 
@@ -66,10 +67,21 @@ public class Dict extends IokeData {
                     return method.runtime.newText(Dict.getNotice(on));
                 }
             }));
+
+        obj.registerMethod(runtime.newJavaMethod("Returns all the keys of this dict", new JavaMethod("keys") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    return method.runtime.newSet(Dict.getKeys(on));
+                }
+            }));
     }
 
     public static Map<Object, Object> getMap(Object dict) {
         return ((Dict)IokeObject.data(dict)).getMap();
+    }
+
+    public static Set<Object> getKeys(Object dict) {
+        return ((Dict)IokeObject.data(dict)).getMap().keySet();
     }
 
     public Map<Object, Object> getMap() {

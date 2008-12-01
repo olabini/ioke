@@ -25,6 +25,11 @@ public class JavaMethod extends Method {
             }));
     }
 
+
+
+
+
+
 //     public String inspectName() {
 //         return getClass().getName();
 //     }

@@ -291,7 +291,6 @@ public class IokeObject {
         Object cell = this.findCell(message, ctx, name);
         
         while(cell == runtime.nul && ((cell = this.findCell(message, ctx, "pass")) == runtime.nul)) {
-            
             final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
                                                                                message, 
                                                                                ctx, 
@@ -390,7 +389,7 @@ public class IokeObject {
     public void aliasMethod(String originalName, String newName) throws ControlFlow {
         IokeObject io = as(findCell(null, null, originalName));
         IokeObject newObj = io.mimic(null, null);
-        newObj.data = new AliasMethod(newName, io.data);
+        newObj.data = new AliasMethod(newName, io.data, io);
         cells.put(newName, newObj);
     }
 
