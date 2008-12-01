@@ -8,13 +8,14 @@ Ioke 0.1 should include:
 *  rest arguments
 * break
 - return
+- continue
 * conditions
 * List
 * Dict
 - Enumerable
 * squarebracket, curlybracket syntax
 - libraries
- - iik
+ * iik
  - dokgen
  - affirm (verify/assure/affirm/testik) (unit testing framework)
 
