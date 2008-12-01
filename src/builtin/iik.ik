@@ -36,4 +36,6 @@ IIk = Origin mimic do(
           out println("+> #{in read evaluateOn(mainContext) inspect}")
           out println)))))
 
+;use("builtin/iik/inputMethod")
+
 System ifMain(IIk mainLoop)

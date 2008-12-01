@@ -8,12 +8,6 @@ end
 
 describe "DefaultBehavior" do 
   describe "'use'" do 
-    it "should load a file without a suffix in the same directory" do 
-      result, runtime = run_with_cwd("use(\"load2\")")
-      result.should == runtime.true
-      runtime.ground.find_cell(nil, nil, "val").data.as_java_integer.should == 43
-    end
-
     it "should load a file in the same directory" do 
       result, runtime = run_with_cwd("use(\"load1\")")
       result.should == runtime.true

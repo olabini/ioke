@@ -56,7 +56,8 @@ public class IokeSystem extends IokeData {
         return this.currentWorkingDirectory;
     }
 
-    private static final String[] SUFFIXES = {"", ".ik"};
+    private static final String[] SUFFIXES = {".ik"};
+    private static final String[] SUFFIXES_WITH_BLANK = {"", ".ik"};
 
     public boolean use(IokeObject self, IokeObject context, IokeObject message, String name) throws ControlFlow {
         final Runtime runtime = context.runtime;
@@ -73,10 +74,12 @@ public class IokeSystem extends IokeData {
 
         List<Object> paths = ((IokeList)IokeObject.data(loadPath)).getList();
 
+        String[] suffixes = name.endsWith(".ik") ? SUFFIXES_WITH_BLANK : SUFFIXES;
+
         for(Object o : paths) {
             String currentS = Text.getText(o);
 
-            for(String suffix : SUFFIXES) {
+            for(String suffix : suffixes) {
                 String before = "/";
                 if(name.startsWith("/")) {
                     before = "";
@@ -102,7 +105,7 @@ public class IokeSystem extends IokeData {
                         f = new File(new File(currentWorkingDirectory, currentS), name + suffix);
                     }
 
-                    if(f.exists()) {
+                    if(f.exists() && f.isFile()) {
                         if(loaded.contains(f.getCanonicalPath())) {
                             return false;
                         } else {
