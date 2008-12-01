@@ -26,17 +26,19 @@ public class JavaMethod extends Method {
     }
 
 
+    private String getDominantClassName() {
+        String name = getClass().getName();
+        int dollar = name.indexOf("$");
+        int dot = name.lastIndexOf(".");
+        if(dollar == -1) {
+            dollar = name.length();
+        }
+        return name.substring(dot+1, dollar);
+    }
 
-
-
-
-//     public String inspectName() {
-//         return getClass().getName();
-//     }
-
-//     @Override
-//     public String inspect(IokeObject self) {
-//         return inspectName();
-//     }
+    @Override
+    public String inspect(Object self) {
+        return "method(" + getDominantClassName() + ((name != null) ? ("_" + name) : "") + ")";
+    }
 }
 

@@ -44,11 +44,6 @@ public abstract class IokeData {
             public String toString(IokeObject self) {
                 return "nil";
             }
-
-//             @Override
-//             public String inspect(IokeObject self) {
-//                 return "nil";
-//             }
         };
 
     public final static IokeData False = new IokeData(){
@@ -77,11 +72,6 @@ public abstract class IokeData {
             public String toString(IokeObject self) {
                 return "false";
             }
-
-//             @Override
-//             public String inspect(IokeObject self) {
-//                 return "false";
-//             }
         };
 
     public final static IokeData True = new IokeData(){
@@ -106,11 +96,6 @@ public abstract class IokeData {
             public String toString(IokeObject self) {
                 return "true";
             }
-
-//             @Override
-//             public String inspect(IokeObject self) {
-//                 return "true";
-//             }
         };
 
 
@@ -369,8 +354,4 @@ public abstract class IokeData {
         String kind = ((Text)IokeObject.data(obj)).getText();
         return "#<" + kind + ":" + hash + ">";
     }
-
-//     public String inspect(IokeObject self) {
-//         return null;
-//     }
 }// IokeData
