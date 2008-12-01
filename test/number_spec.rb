@@ -191,6 +191,42 @@ describe "Number" do
     # It should convert it's argument to number if it's not a number
   end
 
+  describe "'*'" do 
+    it "should have tests"
+  end
+
+  describe "'**'" do 
+    it "should have tests"
+  end
+  
+  describe "'/'" do 
+    it "should have tests"
+  end
+
+  describe "'%'" do 
+    it "should have tests"
+  end
+
+  describe "'&'" do 
+    it "should have tests"
+  end
+
+  describe "'|'" do 
+    it "should have tests"
+  end
+  
+  describe "'^'" do 
+    it "should have tests"
+  end
+
+  describe "'>>'" do 
+    it "should have tests"
+  end
+
+  describe "'<<' " do 
+    it "should have tests"
+  end
+  
   describe "'=='" do 
     it "should return true for the same number" do 
       ioke = IokeRuntime.get_runtime()
