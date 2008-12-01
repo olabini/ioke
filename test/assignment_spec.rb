@@ -9,8 +9,6 @@ def parse(str)
 end
 
 describe "assignment" do 
-  # kind should be the full path - where Ground is the cutoff point. skip enc
-  
   it "should set kind when assigned to a name with capital initial letter" do 
     ioke = IokeRuntime.get_runtime()
     ioke.evaluate_stream(StringReader.new(%q[Foo = Origin mimic]))
@@ -709,5 +707,59 @@ describe "assignment" do
       ioke.evaluate_stream(StringReader.new(%q[x = 1. x--]))
       ioke.ground.find_cell(nil, nil, "x").data.as_java_integer.should == 0
     end
+  end
+end
+
+describe "DefaultBehavior" do 
+  describe "'+='" do 
+    it "should have tests"
+  end
+
+  describe "'-='" do 
+    it "should have tests"
+  end
+
+  describe "'/='" do 
+    it "should have tests"
+  end
+
+  describe "'*='" do 
+    it "should have tests"
+  end
+
+  describe "'**='" do 
+    it "should have tests"
+  end
+
+  describe "'%='" do 
+    it "should have tests"
+  end
+
+  describe "'&='" do 
+    it "should have tests"
+  end
+
+  describe "'&&='" do 
+    it "should have tests"
+  end
+
+  describe "'|='" do 
+    it "should have tests"
+  end
+
+  describe "'||='" do 
+    it "should have tests"
+  end
+
+  describe "'^='" do 
+    it "should have tests"
+  end
+
+  describe "'<<='" do 
+    it "should have tests"
+  end
+
+  describe "'>>='" do 
+    it "should have tests"
   end
 end
