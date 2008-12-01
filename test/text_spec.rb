@@ -63,6 +63,29 @@ describe "Text" do
       ioke.evaluate_string("\"\" != \"a\"").should == ioke.true
     end
   end
+
+  describe "'empty?'" do 
+    it "should return true for an empty text" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string('"" empty? ').should == ioke.true
+    end
+
+    it "should not return true for a non-empty text" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string('"a b c" empty? ').should == ioke.false
+    end
+
+    it "should not return true for a text with only spaces" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string('" " empty? ').should == ioke.false
+      ioke.evaluate_string('"  " empty? ').should == ioke.false
+    end
+
+    it "should not return true for a text with only a newline" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string('"\n" empty? ').should == ioke.false
+    end
+  end
   
   describe "'[number]'" do 
     it "should return nil if empty text" do 

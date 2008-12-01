@@ -1,11 +1,6 @@
 
 IIk do(
-  InputMethod = Origin mimic do(
-    gets = method(error!("#{self notice}#gets not implemented"))
-    readable_after_eof? = false
-  )
-
-  StdioInputMethod = InputMethod mimic do(
+  StdioInputMethod = Origin mimic do(
     new = method(
       "returns a newly initalized stdio input method",
 
@@ -20,18 +15,15 @@ IIk do(
     )
 
     eof? = method(IIk in eof?)
-
     readable_after_eof? = true
-
     line = method(lineToGet,
-      line[lineToGet])
-  )
+      line[lineToGet]))
 
   bind(
-    rescue(Condition Error Load, fn(ignored, nil)),
+    rescue(Condition Error Load, fn(ignored, "ignoring condition error load" println. nil)),
     
     use("readline")
-    ReadlineInputMethod = InputMethod mimic do(
+    ReadlineInputMethod = Origin mimic do(
       mimic!(Readline)
       
       new = method(
@@ -41,19 +33,17 @@ IIk do(
           lineNumber = 0
           line = []
           eof? = false
+          prompt = "iik> "
       ))
 
       gets = method(
-        if(readline("iik> ", false),
-          unless(it empty?, HISTORY << it)
-          line[lineNumber++] = "#{it}\n",
+        if(theString = readline(prompt, false),
+          unless(theString empty?, HISTORY << theString)
+          line[lineNumber++] = "#{theString}\n",
           
           eof? = true
           false))
 
       readable_after_eof? = true
-
       line = method(lineToGet,
-        line[lineToGet])
-    )
-  ))
+        line[lineToGet]))))

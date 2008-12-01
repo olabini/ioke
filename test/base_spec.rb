@@ -13,9 +13,9 @@ describe "Base" do
     it "should take a boolean, when given will make it return all cells in both this and it's parents objects" do 
       ioke = IokeRuntime.get_runtime
 
-      ioke.evaluate_string("x = Base mimic. x cells(true) == {kind: Base cell(:kind), mimic: Base cell(:mimic), :\"=\" => Base cell(:\"=\"), cell: Base cell(:cell), cellNames: Base cell(:cellNames), cells: Base cell(:cells), :\"cell=\" => Base cell(:\"cell=\"), notice: \"Base\"}").should == ioke.true
+      ioke.evaluate_string("x = Base mimic. x cells(true) == {kind: Base cell(:kind), mimic: Base cell(:mimic), :\"=\" => Base cell(:\"=\"), cell: Base cell(:cell), cellNames: Base cell(:cellNames), cells: Base cell(:cells), :\"cell=\" => Base cell(:\"cell=\"), notice: \"Base\", :\"cell?\" => Base cell(\"cell?\")}").should == ioke.true
 
-      ioke.evaluate_string("x = Base mimic. x kind = \"blarg\". x cells(true) == {kind: \"blarg\", mimic: Base cell(:mimic), :\"=\" => Base cell(:\"=\"), cell: Base cell(:cell), cellNames: Base cell(:cellNames), cells: Base cell(:cells), :\"cell=\" => Base cell(:\"cell=\"), notice: \"Base\"}").should == ioke.true
+      ioke.evaluate_string("x = Base mimic. x kind = \"blarg\". x cells(true) == {kind: \"blarg\", mimic: Base cell(:mimic), :\"=\" => Base cell(:\"=\"), cell: Base cell(:cell), cellNames: Base cell(:cellNames), cells: Base cell(:cells), :\"cell=\" => Base cell(:\"cell=\"), notice: \"Base\", :\"cell?\" => Base cell(\"cell?\")}").should == ioke.true
     end
   end
 
@@ -86,6 +86,33 @@ describe "Base" do
 
       ioke.evaluate_string("Text x = Origin mimic. Text x cellNames(true) sort == [#{origin_all_names.join(", ")}] sort").should == ioke.true
       ioke.evaluate_string("Text x = Origin mimic. Text x foo = 12. Text x cellNames(true) sort == [:foo, #{origin_all_names.join(", ")}] sort").should == ioke.true
+    end
+  end
+
+  describe "'cell?'" do 
+    it "should be possible to check for the existance of a cell using a text argument" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string("x = 42. cell?(\"x\")").should == ioke.true
+    end
+
+    it "should be possible to check for the existance of a cell using a symbol argument" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string("x = 42. cell?(:x)").should == ioke.true
+    end
+
+    it "should be possible to check for the existance of a cell with an empty name" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string('cell?("")').should == ioke.true
+    end
+
+    it "should be possible to check for the existance of a cell that doesn't exist" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string('cell?(:murg)').should == ioke.false
+    end
+
+    it "should be possible to check for the existance of a cell that does exist" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string('cell?(:Ground)').should == ioke.true
     end
   end
   

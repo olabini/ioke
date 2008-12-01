@@ -21,6 +21,8 @@ public class IokeObject {
     public Map<String, Object> cells = new LinkedHashMap<String, Object>();
     public List<IokeObject> mimics = new ArrayList<IokeObject>();
     
+    public Object opaque;
+
     public IokeData data;
 
     public IokeObject(Runtime runtime, String documentation) {

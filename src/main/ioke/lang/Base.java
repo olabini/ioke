@@ -67,6 +67,17 @@ public class Base {
                 }
             }));
 
+        base.registerMethod(base.runtime.newJavaMethod("expects one evaluated text or symbol argument and returns a boolean indicating whether such a cell is reachable from this point.", new JavaMethod("cell?") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    String name = Text.getText(context.runtime.asText.sendTo(context, args.get(0)));
+
+                    return IokeObject.findCell(on, message, context, name) != context.runtime.nul ? context.runtime._true : context.runtime._false;
+                }
+            }));
+
         base.registerMethod(base.runtime.newJavaMethod("takes one optional evaluated boolean argument, which defaults to false. if false, this method returns a list of the cell names of the receiver. if true, it returns the cell names of this object and all it's mimics recursively.", new JavaMethod("cellNames") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {

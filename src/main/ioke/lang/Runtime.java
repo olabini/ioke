@@ -210,6 +210,12 @@ public class Runtime {
                     return ioke.lang.extensions.benchmark.Benchmark.create(runtime);
                 }
             });
+
+        addBuiltinScript("readline", new Builtin() {
+                public IokeObject load(Runtime runtime, IokeObject context, IokeObject message) throws ControlFlow {
+                    return ioke.lang.extensions.readline.Readline.create(runtime);
+                }
+            });
         
         try {
             evaluateString("use(\"builtin/A1_defaultBehavior\")", message, ground);
