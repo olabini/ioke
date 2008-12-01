@@ -828,15 +828,6 @@ public class Message extends IokeData {
 
     }
 
-//     public String inspect() {
-//         return code();
-//     }
-
-//     @Override
-//     public String inspect(IokeObject self) {
-//         return code();
-//     }
-    
     @Override
     public String toString(IokeObject self) {
         return code();
