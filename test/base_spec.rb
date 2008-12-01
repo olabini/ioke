@@ -13,9 +13,9 @@ describe "Base" do
     it "should take a boolean, when given will make it return all cells in both this and it's parents objects" do 
       ioke = IokeRuntime.get_runtime
 
-      ioke.evaluate_string("x = Base mimic. x cells(true) == {kind: Base cell(:kind), mimic: Base cell(:mimic), :\"=\" => Base cell(:\"=\"), cell: Base cell(:cell), cellNames: Base cell(:cellNames), cells: Base cell(:cells), :\"cell=\" => Base cell(:\"cell=\")}").should == ioke.true
+      ioke.evaluate_string("x = Base mimic. x cells(true) == {kind: Base cell(:kind), mimic: Base cell(:mimic), :\"=\" => Base cell(:\"=\"), cell: Base cell(:cell), cellNames: Base cell(:cellNames), cells: Base cell(:cells), :\"cell=\" => Base cell(:\"cell=\"), notice: \"Base\"}").should == ioke.true
 
-      ioke.evaluate_string("x = Base mimic. x kind = \"blarg\". x cells(true) == {kind: \"blarg\", mimic: Base cell(:mimic), :\"=\" => Base cell(:\"=\"), cell: Base cell(:cell), cellNames: Base cell(:cellNames), cells: Base cell(:cells), :\"cell=\" => Base cell(:\"cell=\")}").should == ioke.true
+      ioke.evaluate_string("x = Base mimic. x kind = \"blarg\". x cells(true) == {kind: \"blarg\", mimic: Base cell(:mimic), :\"=\" => Base cell(:\"=\"), cell: Base cell(:cell), cellNames: Base cell(:cellNames), cells: Base cell(:cells), :\"cell=\" => Base cell(:\"cell=\"), notice: \"Base\"}").should == ioke.true
     end
   end
 
@@ -78,14 +78,14 @@ describe "Base" do
 
       ioke.evaluate_string("Ground cellNames == [#{ground_names.join(", ")}]").should == ioke.true
       ioke.evaluate_string("Ground cellNames(false) == [#{ground_names.join(", ")}]").should == ioke.true
-      ioke.evaluate_string("Ground cellNames(true) == [#{ground_all_names.join(", ")}]").should == ioke.true
+      ioke.evaluate_string("Ground cellNames(true) sort inspect").data.text.should == ioke.evaluate_string("[#{ground_all_names.join(", ")}] sort inspect").data.text
 
       ioke.evaluate_string("Origin cellNames == [#{origin_names.join(", ")}]").should == ioke.true
       ioke.evaluate_string("Origin cellNames(false) == [#{origin_names.join(", ")}]").should == ioke.true
-      ioke.evaluate_string("Origin cellNames(true) == [#{origin_all_names.join(", ")}]").should == ioke.true
+      ioke.evaluate_string("Origin cellNames(true) sort == [#{origin_all_names.join(", ")}] sort").should == ioke.true
 
-      ioke.evaluate_string("Text x = Origin mimic. Text x cellNames(true) == [#{origin_all_names.join(", ")}]").should == ioke.true
-      ioke.evaluate_string("Text x = Origin mimic. Text x foo = 12. Text x cellNames(true) == [:foo, #{origin_all_names.join(", ")}]").should == ioke.true
+      ioke.evaluate_string("Text x = Origin mimic. Text x cellNames(true) sort == [#{origin_all_names.join(", ")}] sort").should == ioke.true
+      ioke.evaluate_string("Text x = Origin mimic. Text x foo = 12. Text x cellNames(true) sort == [:foo, #{origin_all_names.join(", ")}] sort").should == ioke.true
     end
   end
   

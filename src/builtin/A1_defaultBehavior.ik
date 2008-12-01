@@ -59,22 +59,28 @@ DefaultBehavior warn! = method(
     System err println("WARNING: #{result report}")
     result))
 
+Base notice = "Base"
+
 DefaultBehavior do(
   inspect = method(
     "returns a longer description of the receiver, in general including cell information",
     
     cellSummary)
 
+
+
   notice = method(
     "returns a short text description of the receiver",
 
-    if(self == Origin,
+    if(currentMessage Origin == cell(:self),
       "Origin",
-      if(self == Ground,
+      if(currentMessage Ground == cell(:self),
         "Ground",
 
         "#{cell(:self) kind}_#{cell(:self) uniqueHexId}"
   )))
+
+
 
   cellDescriptionDict = method(
     "returns a dict containing each cell and it's corresponding description",
@@ -83,25 +89,27 @@ DefaultBehavior do(
 	cellDescs = cellNames map(name, cell(:self) cell(name) notice)
 	{} addKeysAndValues(cellNames, cellDescs))
 
+
+
   cellSummary = method(
     "returns a representation of the current object that includes information about it's cells",
 
     cellDescriptions = cellDescriptionDict
     vals = cellDescriptions keys sort map(k, [k, cellDescriptions[k]])
   " #{cell(:self) notice}:
-  %*{  %-16s = %s\n%}" format(vals))
+%*[  %-28s = %s\n%]" format(vals))
 )
 
 System notice = method(
   "returns a short text description of the receiver, the text System if this is the main System object, otherwise falls back to the super implementation",
   
-  if(self == System,
+  if(cell(:self) == System,
     "System",
     super))
 
 Runtime notice = method(
   "returns a short text description of the receiver, the text Runtime if this is the main Runtime object, otherwise falls back to the super implementation",
 
-  if(self == Runtime,
+  if(cell(:self) == Runtime,
     "Runtime",
     super))

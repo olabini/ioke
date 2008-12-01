@@ -11,7 +11,7 @@ import ioke.lang.exceptions.ControlFlow;
  *
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
-public class Method extends IokeData implements Named {
+public class Method extends IokeData implements Named, Inspectable {
     String name;
     private IokeObject context;
 
@@ -81,11 +81,11 @@ public class Method extends IokeData implements Named {
     }
 
     public static String getInspect(Object on) {
-        return ((Method)(IokeObject.data(on))).inspect(on);
+        return ((Inspectable)(IokeObject.data(on))).inspect(on);
     }
 
     public static String getNotice(Object on) {
-        return ((Method)(IokeObject.data(on))).notice(on);
+        return ((Inspectable)(IokeObject.data(on))).notice(on);
     }
 
     public String inspect(Object self) {
