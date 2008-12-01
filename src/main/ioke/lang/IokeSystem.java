@@ -66,9 +66,52 @@ public class IokeSystem extends IokeData {
             if(loaded.contains(name)) {
                 return false;
             } else {
-                b.load(context.runtime, context, message);
-                loaded.add(name);
-                return true;
+                try {
+                    b.load(context.runtime, context, message);
+                    loaded.add(name);
+                    return true;
+                } catch(Throwable e) {
+                    final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
+                                                                                       message, 
+                                                                                       context, 
+                                                                                       "Error", 
+                                                                                       "Load")).mimic(message, context);
+                    condition.setCell("message", message);
+                    condition.setCell("context", context);
+                    condition.setCell("receiver", self);
+                    condition.setCell("moduleName", runtime.newText(name));
+                    condition.setCell("exceptionMessage", runtime.newText(e.getMessage()));
+                    List<Object> ob = new ArrayList<Object>();
+                    for(StackTraceElement ste : e.getStackTrace()) {
+                        ob.add(runtime.newText(ste.toString()));
+                    }
+
+                    condition.setCell("exceptionStackTrace", runtime.newList(ob));
+
+                    final boolean[] continueLoadChain = new boolean[]{false};
+
+                    runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
+                            public void run() throws ControlFlow {
+                                runtime.errorCondition(condition);
+                            }}, 
+                        context,
+                        new Restart.ArgumentGivingRestart("continueLoadChain") { 
+                            public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
+                                continueLoadChain[0] = true;
+                                return runtime.nil;
+                            }
+                        },
+                        new Restart.ArgumentGivingRestart("ignoreLoadError") {
+                            public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
+                                continueLoadChain[0] = false;
+                                return runtime.nil;
+                            }
+                        }
+                        );
+                    if(!continueLoadChain[0]) {
+                        return false;
+                    }
+                }
             }
         }
 
@@ -114,7 +157,7 @@ public class IokeSystem extends IokeData {
                             return true;
                         }
                     }
-                } catch(IOException e) {
+                } catch(Throwable e) {
                     final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
                                                                                        message, 
                                                                                        context, 

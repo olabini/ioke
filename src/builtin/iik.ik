@@ -24,6 +24,10 @@ IIk = Origin mimic do(
       invokeRestart(:abort)
     )
 
+    io = if(IIk cell?(:ReadlineInputMethod),
+      ReadlineInputMethod new,
+      StdioInputMethod new)
+
     bind(
       rescue(IIk Exit, fn(c, out println("Bye."))),
       restart(quit, fn()),
@@ -31,11 +35,12 @@ IIk = Origin mimic do(
       loop(
         bind(
           restart(abort, fn()),
-          
-          out print("iik> ")
-          out println("+> #{in read evaluateOn(mainContext) inspect}")
+
+          if(io eof?, invokeRestart(:quit))
+
+          out println("+> #{Message fromText(io gets) evaluateOn(mainContext) inspect}")
           out println)))))
 
-;use("builtin/iik/inputMethod")
+use("builtin/iik/inputMethod")
 
 System ifMain(IIk mainLoop)
