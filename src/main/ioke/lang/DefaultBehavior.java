@@ -60,6 +60,194 @@ public class DefaultBehavior {
         obj.setCell("cells",     runtime.base.getCells().get("cells"));
         obj.setCell("cellNames", runtime.base.getCells().get("cellNames"));
 
+
+        obj.registerMethod(runtime.newJavaMethod("expects two arguments, the first unevaluated, the second evaluated. the first argument should be the name of a cell. the value of that cell will be retreived and then the + method will be called on it. finally, the result of the call to + will be assigned to the same name in the current scope. it will use = for this assignment. the result of the expression is the same as the result of the assignment. this method also work together with forms such as []=.", new JavaMethod("+=") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    IokeObject m1 = IokeObject.as(Message.getArg1(message));
+                    String name = m1.getName();
+                    if(m1.getArgumentCount() == 0) {
+                        Object val = IokeObject.getCell(on, message, context, name);
+                        Object result = context.runtime.plusMessage.sendTo(context, val, Message.getArg2(message));
+                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result))));
+                    } else {
+                        Object val = m1.sendTo(context, on);
+                        Object result = context.runtime.plusMessage.sendTo(context, val, Message.getArg2(message));
+                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result))));
+                    }
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("expects two arguments, the first unevaluated, the second evaluated. the first argument should be the name of a cell. the value of that cell will be retreived and then the - method will be called on it. finally, the result of the call to - will be assigned to the same name in the current scope. it will use = for this assignment. the result of the expression is the same as the result of the assignment. this method also work together with forms such as []=.", new JavaMethod("-=") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    IokeObject m1 = IokeObject.as(Message.getArg1(message));
+                    String name = m1.getName();
+                    if(m1.getArgumentCount() == 0) {
+                        Object val = IokeObject.getCell(on, message, context, name);
+                        Object result = context.runtime.minusMessage.sendTo(context, val, Message.getArg2(message));
+                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result))));
+                    } else {
+                        Object val = m1.sendTo(context, on);
+                        Object result = context.runtime.minusMessage.sendTo(context, val, Message.getArg2(message));
+                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result))));
+                    }
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("expects two arguments, the first unevaluated, the second evaluated. the first argument should be the name of a cell. the value of that cell will be retreived and then the * method will be called on it. finally, the result of the call to * will be assigned to the same name in the current scope. it will use = for this assignment. the result of the expression is the same as the result of the assignment. this method also work together with forms such as []=.", new JavaMethod("*=") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    IokeObject m1 = IokeObject.as(Message.getArg1(message));
+                    String name = m1.getName();
+                    if(m1.getArgumentCount() == 0) {
+                        Object val = IokeObject.getCell(on, message, context, name);
+                        Object result = context.runtime.multMessage.sendTo(context, val, Message.getArg2(message));
+                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result))));
+                    } else {
+                        Object val = m1.sendTo(context, on);
+                        Object result = context.runtime.multMessage.sendTo(context, val, Message.getArg2(message));
+                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result))));
+                    }
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("expects two arguments, the first unevaluated, the second evaluated. the first argument should be the name of a cell. the value of that cell will be retreived and then the / method will be called on it. finally, the result of the call to / will be assigned to the same name in the current scope. it will use = for this assignment. the result of the expression is the same as the result of the assignment. this method also work together with forms such as []=.", new JavaMethod("/=") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    IokeObject m1 = IokeObject.as(Message.getArg1(message));
+                    String name = m1.getName();
+                    if(m1.getArgumentCount() == 0) {
+                        Object val = IokeObject.getCell(on, message, context, name);
+                        Object result = context.runtime.divMessage.sendTo(context, val, Message.getArg2(message));
+                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result))));
+                    } else {
+                        Object val = m1.sendTo(context, on);
+                        Object result = context.runtime.divMessage.sendTo(context, val, Message.getArg2(message));
+                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result))));
+                    }
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("expects two arguments, the first unevaluated, the second evaluated. the first argument should be the name of a cell. the value of that cell will be retreived and then the % method will be called on it. finally, the result of the call to % will be assigned to the same name in the current scope. it will use = for this assignment. the result of the expression is the same as the result of the assignment. this method also work together with forms such as []=.", new JavaMethod("%=") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    IokeObject m1 = IokeObject.as(Message.getArg1(message));
+                    String name = m1.getName();
+                    if(m1.getArgumentCount() == 0) {
+                        Object val = IokeObject.getCell(on, message, context, name);
+                        Object result = context.runtime.modMessage.sendTo(context, val, Message.getArg2(message));
+                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result))));
+                    } else {
+                        Object val = m1.sendTo(context, on);
+                        Object result = context.runtime.modMessage.sendTo(context, val, Message.getArg2(message));
+                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result))));
+                    }
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("expects two arguments, the first unevaluated, the second evaluated. the first argument should be the name of a cell. the value of that cell will be retreived and then the ** method will be called on it. finally, the result of the call to ** will be assigned to the same name in the current scope. it will use = for this assignment. the result of the expression is the same as the result of the assignment. this method also work together with forms such as []=.", new JavaMethod("**=") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    IokeObject m1 = IokeObject.as(Message.getArg1(message));
+                    String name = m1.getName();
+                    if(m1.getArgumentCount() == 0) {
+                        Object val = IokeObject.getCell(on, message, context, name);
+                        Object result = context.runtime.expMessage.sendTo(context, val, Message.getArg2(message));
+                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result))));
+                    } else {
+                        Object val = m1.sendTo(context, on);
+                        Object result = context.runtime.expMessage.sendTo(context, val, Message.getArg2(message));
+                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result))));
+                    }
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("expects two arguments, the first unevaluated, the second evaluated. the first argument should be the name of a cell. the value of that cell will be retreived and then the & method will be called on it. finally, the result of the call to & will be assigned to the same name in the current scope. it will use = for this assignment. the result of the expression is the same as the result of the assignment. this method also work together with forms such as []=.", new JavaMethod("&=") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    IokeObject m1 = IokeObject.as(Message.getArg1(message));
+                    String name = m1.getName();
+                    if(m1.getArgumentCount() == 0) {
+                        Object val = IokeObject.getCell(on, message, context, name);
+                        Object result = context.runtime.binAndMessage.sendTo(context, val, Message.getArg2(message));
+                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result))));
+                    } else {
+                        Object val = m1.sendTo(context, on);
+                        Object result = context.runtime.binAndMessage.sendTo(context, val, Message.getArg2(message));
+                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result))));
+                    }
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("expects two arguments, the first unevaluated, the second evaluated. the first argument should be the name of a cell. the value of that cell will be retreived and then the | method will be called on it. finally, the result of the call to | will be assigned to the same name in the current scope. it will use = for this assignment. the result of the expression is the same as the result of the assignment. this method also work together with forms such as []=.", new JavaMethod("|=") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    IokeObject m1 = IokeObject.as(Message.getArg1(message));
+                    String name = m1.getName();
+                    if(m1.getArgumentCount() == 0) {
+                        Object val = IokeObject.getCell(on, message, context, name);
+                        Object result = context.runtime.binOrMessage.sendTo(context, val, Message.getArg2(message));
+                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result))));
+                    } else {
+                        Object val = m1.sendTo(context, on);
+                        Object result = context.runtime.binOrMessage.sendTo(context, val, Message.getArg2(message));
+                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result))));
+                    }
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("expects two arguments, the first unevaluated, the second evaluated. the first argument should be the name of a cell. the value of that cell will be retreived and then the ^ method will be called on it. finally, the result of the call to ^ will be assigned to the same name in the current scope. it will use = for this assignment. the result of the expression is the same as the result of the assignment. this method also work together with forms such as []=.", new JavaMethod("^=") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    IokeObject m1 = IokeObject.as(Message.getArg1(message));
+                    String name = m1.getName();
+                    if(m1.getArgumentCount() == 0) {
+                        Object val = IokeObject.getCell(on, message, context, name);
+                        Object result = context.runtime.binXorMessage.sendTo(context, val, Message.getArg2(message));
+                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result))));
+                    } else {
+                        Object val = m1.sendTo(context, on);
+                        Object result = context.runtime.binXorMessage.sendTo(context, val, Message.getArg2(message));
+                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result))));
+                    }
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("expects two arguments, the first unevaluated, the second evaluated. the first argument should be the name of a cell. the value of that cell will be retreived and then the << method will be called on it. finally, the result of the call to << will be assigned to the same name in the current scope. it will use = for this assignment. the result of the expression is the same as the result of the assignment. this method also work together with forms such as []=.", new JavaMethod("<<=") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    IokeObject m1 = IokeObject.as(Message.getArg1(message));
+                    String name = m1.getName();
+                    if(m1.getArgumentCount() == 0) {
+                        Object val = IokeObject.getCell(on, message, context, name);
+                        Object result = context.runtime.lshMessage.sendTo(context, val, Message.getArg2(message));
+                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result))));
+                    } else {
+                        Object val = m1.sendTo(context, on);
+                        Object result = context.runtime.lshMessage.sendTo(context, val, Message.getArg2(message));
+                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result))));
+                    }
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("expects two arguments, the first unevaluated, the second evaluated. the first argument should be the name of a cell. the value of that cell will be retreived and then the >> method will be called on it. finally, the result of the call to >> will be assigned to the same name in the current scope. it will use = for this assignment. the result of the expression is the same as the result of the assignment. this method also work together with forms such as []=.", new JavaMethod(">>=") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    IokeObject m1 = IokeObject.as(Message.getArg1(message));
+                    String name = m1.getName();
+                    if(m1.getArgumentCount() == 0) {
+                        Object val = IokeObject.getCell(on, message, context, name);
+                        Object result = context.runtime.rshMessage.sendTo(context, val, Message.getArg2(message));
+                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result))));
+                    } else {
+                        Object val = m1.sendTo(context, on);
+                        Object result = context.runtime.rshMessage.sendTo(context, val, Message.getArg2(message));
+                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result))));
+                    }
+                }
+            }));
+
         obj.registerMethod(runtime.newJavaMethod("returns true if the left hand side is equal to the right hand side. exactly what this means depend on the object. the default behavior of Ioke objects is to only be equal if they are the same instance.", new JavaMethod("==") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {

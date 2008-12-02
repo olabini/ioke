@@ -188,6 +188,7 @@ public class Levels {
 
 		new OpTable("+=",  13),
 		new OpTable("-=",  13),
+		new OpTable("**=",  13),
 		new OpTable("*=",  13),
 		new OpTable("/=",  13),
 		new OpTable("%=",  13),
@@ -213,6 +214,7 @@ public class Levels {
 		new OpTable("-=", 2),
 		new OpTable("/=", 2),
 		new OpTable("*=", 2),
+		new OpTable("**=", 2),
 		new OpTable("%=", 2),
 		new OpTable("&=", 2),
 		new OpTable("&&=", 2),
