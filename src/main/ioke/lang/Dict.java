@@ -74,6 +74,49 @@ public class Dict extends IokeData {
                     return method.runtime.newSet(Dict.getKeys(on));
                 }
             }));
+        obj.registerMethod(runtime.newJavaMethod("takes either one or two or three arguments. if one argument is given, it should be a message chain that will be sent to each object in the dict. the result will be thrown away. if two arguments are given, the first is an unevaluated name that will be set to each of the entries in the dict in succession, and then the second argument will be evaluated in a scope with that argument in it. if three arguments is given, the first one is an unevaluated name that will be set to the index of each element, and the other two arguments are the name of the argument for the value, and the actual code. the code will evaluate in a lexical context, and if the argument name is available outside the context, it will be shadowed. the method will return the dict. the entries yielded will be mimics of Pair.", new JavaMethod("each") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    Runtime runtime = context.runtime;
+                    Map<Object, Object> ls = Dict.getMap(on);
+                    switch(message.getArgumentCount()) {
+                    case 1: {
+                        IokeObject code = IokeObject.as(message.getArguments().get(0));
+
+                        for(Map.Entry<Object, Object> o : ls.entrySet()) {
+                            code.evaluateCompleteWithReceiver(context, context.getRealContext(), runtime.newPair(o.getKey(), o.getValue()));
+                        }
+                        break;
+                    }
+                    case 2: {
+                        LexicalContext c = new LexicalContext(context.runtime, context, "Lexical activation context for List#each", message, context);
+                        String name = IokeObject.as(message.getArguments().get(0)).getName();
+                        IokeObject code = IokeObject.as(message.getArguments().get(1));
+
+                        for(Map.Entry<Object, Object> o : ls.entrySet()) {
+                            c.setCell(name, runtime.newPair(o.getKey(), o.getValue()));
+                            code.evaluateCompleteWithoutExplicitReceiver(c, c.getRealContext());
+                        }
+                        break;
+                    }
+                    case 3: {
+                        LexicalContext c = new LexicalContext(context.runtime, context, "Lexical activation context for List#each", message, context);
+                        String iname = IokeObject.as(message.getArguments().get(0)).getName();
+                        String name = IokeObject.as(message.getArguments().get(1)).getName();
+                        IokeObject code = IokeObject.as(message.getArguments().get(2));
+
+                        int index = 0;
+                        for(Map.Entry<Object, Object> o : ls.entrySet()) {
+                            c.setCell(name, runtime.newPair(o.getKey(), o.getValue()));
+                            c.setCell(iname, runtime.newNumber(index++));
+                            code.evaluateCompleteWithoutExplicitReceiver(c, c.getRealContext());
+                        }
+                        break;
+                    }
+                    }
+                    return on;
+                }
+            }));
     }
 
     public static Map<Object, Object> getMap(Object dict) {

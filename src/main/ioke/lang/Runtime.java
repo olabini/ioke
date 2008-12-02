@@ -237,6 +237,7 @@ public class Runtime {
             evaluateString("use(\"builtin/A5_call\")", message, ground);
             evaluateString("use(\"builtin/A6_list\")", message, ground);
             evaluateString("use(\"builtin/A7_dict\")", message, ground);
+            evaluateString("use(\"builtin/A8_pair\")", message, ground);
             evaluateString("use(\"builtin/A9_conditions\")", message, ground);
             evaluateString("use(\"builtin/A10_text\")", message, ground);
 

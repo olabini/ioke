@@ -40,6 +40,8 @@ public class Pair extends IokeData {
 
         obj.setKind("Pair");
         obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Enumerable")), runtime.nul, runtime.nul);
+        obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Comparing")), runtime.nul, runtime.nul);
+
         obj.registerMethod(runtime.newJavaMethod("Returns the first value", new JavaMethod("first") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
