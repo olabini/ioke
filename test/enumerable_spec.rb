@@ -45,7 +45,7 @@ CODE
       it "should return an empty list for an empty enumerable" do 
         ioke = IokeRuntime.get_runtime
         ioke.evaluate_string("[] map(x, x+2) == []").should == ioke.true
-#        ioke.evaluate_string("{} map(x, x+2) == []").should == ioke.true
+        ioke.evaluate_string("{} map(x, x+2) == []").should == ioke.true
         ioke.evaluate_string("set map(x, x+2) == []").should == ioke.true
       end
       

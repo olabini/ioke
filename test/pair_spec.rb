@@ -23,6 +23,11 @@ describe "Pair" do
     ioke.pair.get_mimics.should include(ioke.mixins.find_cell(nil, nil, "Enumerable"))
   end
 
+  it "should mimic Comparing" do 
+    ioke = IokeRuntime.get_runtime
+    ioke.pair.get_mimics.should include(ioke.mixins.find_cell(nil, nil, "Comparing"))
+  end
+
   describe "'first'" do 
     it "should return the first element" do 
       ioke = IokeRuntime.get_runtime
@@ -48,6 +53,20 @@ describe "Pair" do
     it "should return the second element" do 
       ioke = IokeRuntime.get_runtime
       ioke.evaluate_string("(1=>2) value == 2").should == ioke.true
+    end
+  end
+  
+  describe "'<=>'" do 
+    it "should first compare the first value and return the result of that" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("((1=>1) <=> (2=>1)) == 1<=>2").should == ioke.true
+      ioke.evaluate_string("((4=>1) <=> (3=>1)) == 4<=>3").should == ioke.true
+    end
+    
+    it "should then compare the second value and return the result of that" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("((1=>1) <=> (1=>2)) == 1<=>2").should == ioke.true
+      ioke.evaluate_string("((1=>4) <=> (1=>3)) == 4<=>3").should == ioke.true
     end
   end
 end

@@ -165,6 +165,43 @@ describe "Dict" do
       ioke.evaluate_string("{foo: 1, bar: 2, 3 => :quux} keys == set(:foo, :bar, 3)").should == ioke.true
     end
   end
+
+  describe "'each'" do 
+    it "should not do anything for an empty dict" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("x = 0. {} each(. x++). x").data.as_java_integer.should == 0
+    end
+    
+    it "should be possible to just give it a message chain, that will be invoked on each object" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("y = []. x = method(Ground y << self). {one: 1, two: 2, three: 3} each(x). y sort == [:one => 1, :two => 2, :three => 3] sort").should == ioke.true
+      ioke.evaluate_string("x = 0. {one: 1, two: 2, three: 3} each(nil. x++). x == 3").should == ioke.true
+    end
+    
+    it "should be possible to give it an argument name, and code" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("y = []. {one: 1, two: 2, three: 3} each(x, y << x). y sort == [:one => 1, :two => 2, :three => 3] sort").should == ioke.true
+    end
+
+    it "should return the object" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("y = {one: 1, two: 2, three: 3}. (y each(x, x)) == y").should == ioke.true
+    end
+    
+    it "should establish a lexical context when invoking the methods. this context will be the same for all invocations." do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("{one: 1, two: 2, three: 3} each(x, blarg=32)")
+      ioke.ground.find_cell(nil, nil, "x").should == ioke.nul
+      ioke.ground.find_cell(nil, nil, "blarg").should == ioke.nul
+      ioke.evaluate_string("x=14. {one: 1, two: 2, three: 3} each(x, blarg=32)")
+      ioke.ground.find_cell(nil, nil, "x").data.as_java_integer.should == 14
+    end
+
+    it "should be possible to give it an extra argument to get the index" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("y = []. {one: 1, two: 2, three: 3, four: 4} each(i, x, y << i). y == [0,1,2,3]").should == ioke.true
+    end
+  end
 end
 
 describe "DefaultBehavior" do 
