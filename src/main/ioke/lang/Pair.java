@@ -40,6 +40,34 @@ public class Pair extends IokeData {
 
         obj.setKind("Pair");
         obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Enumerable")), runtime.nul, runtime.nul);
+        obj.registerMethod(runtime.newJavaMethod("Returns the first value", new JavaMethod("first") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    return ((Pair)IokeObject.data(on)).first;
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("Returns the first value", new JavaMethod("key") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    return ((Pair)IokeObject.data(on)).first;
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("Returns the second value", new JavaMethod("second") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    return ((Pair)IokeObject.data(on)).second;
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("Returns the second value", new JavaMethod("value") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    return ((Pair)IokeObject.data(on)).second;
+                }
+            }));
+
         obj.registerMethod(runtime.newJavaMethod("Returns a text inspection of the object", new JavaMethod("inspect") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {

@@ -22,6 +22,34 @@ describe "Pair" do
     ioke = IokeRuntime.get_runtime
     ioke.pair.get_mimics.should include(ioke.mixins.find_cell(nil, nil, "Enumerable"))
   end
+
+  describe "'first'" do 
+    it "should return the first element" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("(1=>2) first == 1").should == ioke.true
+    end
+  end
+
+  describe "'key'" do 
+    it "should return the first element" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("(1=>2) key == 1").should == ioke.true
+    end
+  end
+
+  describe "'second'" do 
+    it "should return the second element" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("(1=>2) second == 2").should == ioke.true
+    end
+  end
+
+  describe "'value'" do 
+    it "should return the second element" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("(1=>2) value == 2").should == ioke.true
+    end
+  end
 end
 
 describe "DefaultBehavior" do 
