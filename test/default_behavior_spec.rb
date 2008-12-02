@@ -360,6 +360,148 @@ CODE
     end
   end
 
+  describe "'mimics'" do 
+    it "should return an empty list for DefaultBehavior" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string("DefaultBehavior mimics == []").should == ioke.true
+    end
+
+    it "should return a list with Origin for a simple mimic" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string("Origin mimic mimics == [Origin]").should == ioke.true
+    end
+
+    it "should return a list with all mimics" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string(<<CODE).should == ioke.true
+X = Origin mimic
+Y = Origin mimic
+Z = Origin mimic
+y = Y mimic
+y mimic!(X)
+y mimic!(Z)
+y mimics == [Y, X, Z]
+CODE
+    end
+  end
+
+  describe "'removeAllMimics!'" do 
+    it "should return the object" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string(<<CODE).should == ioke.true
+x = Origin mimic
+x uniqueHexId = DefaultBehavior cell(:uniqueHexId)
+x removeAllMimics! uniqueHexId == x uniqueHexId
+CODE
+    end
+
+    it "should remove all mimics" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string(<<CODE).should == ioke.true
+x = Origin mimic
+x mimic!(Text)
+x mimics = DefaultBehavior cell(:mimics)
+x removeAllMimics! mimics == []
+CODE
+    end
+  end
+
+  describe "'removeMimic!'" do 
+    it "should not remove something it doesn't mimic" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string("Origin mimic removeMimic!(\"foo\") mimics == [Origin]").should == ioke.true
+    end
+
+    it "should return the object" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string("x = Origin mimic. x removeMimic!(1) == x").should == ioke.true
+    end
+    
+    it "should remove any mimic it has" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string(<<CODE).should == ioke.true
+x = Origin mimic
+x mimics = DefaultBehavior cell(:mimics)
+x removeMimic!(Origin)
+x mimics == []
+CODE
+    end
+
+    it "should not remove any other mimic" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string(<<CODE).should == ioke.true
+x = Origin mimic
+y = Origin mimic
+x mimic!(y)
+x removeMimic!(y)
+x mimics == [Origin]
+CODE
+    end
+  end
+  
+  
+  describe "'prependMimic!'" do 
+    it "should add a new mimic to the list of mimics" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new("f = Origin mimic. g = Origin mimic. f prependMimic!(g)"))
+      ioke.ground.find_cell(nil, nil, "f").get_mimics.size.should == 2
+      ioke.ground.find_cell(nil, nil, "f").get_mimics.get(1).should == ioke.origin
+      ioke.ground.find_cell(nil, nil, "f").get_mimics.get(0).should == ioke.ground.find_cell(nil, nil, "g")
+    end
+
+    it "should not add a mimic that's already in the list" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_stream(StringReader.new("f = Origin mimic. f prependMimic!(Origin). f prependMimic!(Origin). f prependMimic!(Origin). f prependMimic!(Origin)"))
+      ioke.ground.find_cell(nil, nil, "f").get_mimics.size.should == 1
+    end
+
+    it "should not be able to mimic nil" do 
+      sw = StringWriter.new(20)
+      out = PrintWriter.new(sw)
+
+      ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
+      proc do 
+        ioke.evaluate_stream(StringReader.new("f = Origin mimic. f prependMimic!(nil)"))
+      end.should raise_error
+    end
+    
+    it "should not be able to mimic true" do 
+      sw = StringWriter.new(20)
+      out = PrintWriter.new(sw)
+
+      ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
+      proc do 
+        ioke.evaluate_stream(StringReader.new("f = Origin mimic. f prependMimic!(true)"))
+      end.should raise_error
+    end
+    
+    it "should not be able to mimic false" do 
+      sw = StringWriter.new(20)
+      out = PrintWriter.new(sw)
+
+      ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
+      proc do 
+        ioke.evaluate_stream(StringReader.new("f = Origin mimic. f prependMimic!(false)"))
+      end.should raise_error
+    end
+    
+    it "should not be able to mimic symbols" do 
+      sw = StringWriter.new(20)
+      out = PrintWriter.new(sw)
+
+      ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
+      proc do 
+        ioke.evaluate_stream(StringReader.new("f = Origin mimic. f prependMimic!(:foo)"))
+      end.should raise_error
+    end
+    
+    it "should return the receiving object" do 
+      ioke = IokeRuntime.get_runtime()
+      result = ioke.evaluate_stream(StringReader.new("f = Origin mimic. f prependMimic!(Origin)"))
+      result.should == ioke.ground.find_cell(nil, nil, "f")
+    end
+  end
+  
   describe "'kind?'" do 
     it "should return false if the kind doesn't match" do 
       ioke = IokeRuntime.get_runtime()

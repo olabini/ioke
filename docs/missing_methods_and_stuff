@@ -5,10 +5,8 @@ missing:
 
 - in?      as in "13 in?(aList)"
 - same?    more or less same as "one uniqueHexId == two uniqueHexId"
-- removeCell
-- removeAllCells
-- removeMimic
-- removeAllMimics
+- removeMimic!
+- removeAllMimics!
 
 
 - decimals
