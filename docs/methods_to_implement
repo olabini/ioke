@@ -1,5 +1,4 @@
 
-4.   add Dict#each
 5.   add continue
 6.   add return
 7.   add most important Enumerable methods
@@ -9,8 +8,6 @@
 
 
 implement a basic debugger -- in Ioke
-
-each - for Dict
 
  continue
  return
