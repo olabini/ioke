@@ -842,7 +842,33 @@ describe "DefaultBehavior" do
   end
 
   describe "'&&='" do 
-    it "should have tests"
+    it "should not assign a cell if it doesn't exist" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string("x &&= 42. cell?(:x)").should == ioke.false
+    end
+
+    it "should not assign a cell if it is nil" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string("x = nil. x &&= 42. x == nil").should == ioke.true
+    end
+
+    it "should not assign a cell if it is false" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string("x = false. x &&= 42. x == false").should == ioke.true
+    end
+
+    it "should assign a cell that exist" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string("x = 43. x &&= 42. x == 42").should == ioke.true
+    end
+
+    it "should work with a place" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string("x = [1, 3]. x[1] &&= 42.     x == [1, 42]").should == ioke.true
+      ioke.evaluate_string("x = [2, 3]. x[2] &&= 42.     x == [2, 3]").should == ioke.true
+      ioke.evaluate_string("x = [3, nil]. x[1] &&= 42.   x == [3, nil]").should == ioke.true
+      ioke.evaluate_string("x = [4, false]. x[1] &&= 42. x == [4, false]").should == ioke.true
+    end
   end
 
   describe "'|='" do 
@@ -859,7 +885,33 @@ describe "DefaultBehavior" do
   end
 
   describe "'||='" do 
-    it "should have tests"
+    it "should assign a cell if it doesn't exist" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string("x ||= 42. x == 42").should == ioke.true
+    end
+
+    it "should assign a cell if it is nil" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string("x = nil. x ||= 42. x == 42").should == ioke.true
+    end
+
+    it "should assign a cell if it is false" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string("x = false. x ||= 42. x == 42").should == ioke.true
+    end
+
+    it "should not assign a cell that exist" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string("x = 43. x ||= 42. x == 43").should == ioke.true
+    end
+
+    it "should work with a place" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string("x = [1, 3]. x[1] ||= 42.     x == [1, 3]").should == ioke.true
+      ioke.evaluate_string("x = [2, 3]. x[2] ||= 42.     x == [2, 3, 42]").should == ioke.true
+      ioke.evaluate_string("x = [3, nil]. x[1] ||= 42.   x == [3, 42]").should == ioke.true
+      ioke.evaluate_string("x = [4, false]. x[1] ||= 42. x == [4, 42]").should == ioke.true
+    end
   end
 
   describe "'^='" do 
