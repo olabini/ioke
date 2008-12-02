@@ -43,6 +43,10 @@ public class IokeObject {
         cells.put("kind", runtime.newText(kind));
     }
 
+    public static List<IokeObject> getMimics(Object on) {
+        return as(on).mimics;
+    }
+
     public static Object getRealContext(Object o) {
         if(o instanceof IokeObject) {
             return IokeObject.as(o).getRealContext();
@@ -381,6 +385,13 @@ public class IokeObject {
         mimic.data.checkMimic(mimic, message, context);
         if(!this.mimics.contains(mimic)) {
             this.mimics.add(mimic);
+        }
+    }
+
+    public void mimics(int index, IokeObject mimic, IokeObject message, IokeObject context) throws ControlFlow {
+        mimic.data.checkMimic(mimic, message, context);
+        if(!this.mimics.contains(mimic)) {
+            this.mimics.add(index, mimic);
         }
     }
 

@@ -1057,7 +1057,6 @@ public class DefaultBehavior {
                 }
             }));
 
-
         obj.registerMethod(runtime.newJavaMethod("Takes one evaluated argument and returns either true or false if this object or one of it's mimics mimics that argument. exactly the same as 'mimics?'", new JavaMethod("is?") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
@@ -1066,11 +1065,45 @@ public class DefaultBehavior {
                 }
             }));
 
+        obj.registerMethod(runtime.newJavaMethod("returns a list of all the mimics of the receiver. it will not be the same list as is used to back the object, so modifications to this list will not show up in the object.", new JavaMethod("mimics") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    return context.runtime.newList(new ArrayList<Object>(IokeObject.getMimics(on)));
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("removes all mimics on the receiver, and returns the receiver", new JavaMethod("removeAllMimics!") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    IokeObject.getMimics(on).clear();
+                    return on;
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("removes the argument mimic from the list of all mimics on the receiver. will do nothing if the receiver has no such mimic. it returns the receiver", new JavaMethod("removeMimic!") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> positionalArgs = new ArrayList<Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, positionalArgs, new HashMap<String, Object>());
+                    IokeObject.getMimics(on).remove(positionalArgs.get(0));
+                    return on;
+                }
+            }));
+
         obj.registerMethod(runtime.newJavaMethod("Takes one evaluated argument and adds it to the list of mimics for the receiver. the receiver will be returned.", new JavaMethod("mimic!") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     IokeObject newMimic = IokeObject.as(message.getEvaluatedArgument(0, context));
                     IokeObject.as(on).mimics(newMimic, message, context);
+                    return on;
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("Takes one evaluated argument and prepends it to the list of mimics for the receiver. the receiver will be returned.", new JavaMethod("prependMimic!") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    IokeObject newMimic = IokeObject.as(message.getEvaluatedArgument(0, context));
+                    IokeObject.as(on).mimics(0, newMimic, message, context);
                     return on;
                 }
             }));
