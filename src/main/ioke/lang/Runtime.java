@@ -92,6 +92,18 @@ public class Runtime {
     public IokeObject inspectMessage = newMessage("inspect");
     public IokeObject noticeMessage = newMessage("notice");
 
+    public IokeObject plusMessage = newMessage("+");
+    public IokeObject minusMessage = newMessage("-");
+    public IokeObject multMessage = newMessage("*");
+    public IokeObject divMessage = newMessage("/");
+    public IokeObject modMessage = newMessage("%");
+    public IokeObject expMessage = newMessage("**");
+    public IokeObject binAndMessage = newMessage("&");
+    public IokeObject binOrMessage = newMessage("|");
+    public IokeObject binXorMessage = newMessage("^");
+    public IokeObject lshMessage = newMessage("<<");
+    public IokeObject rshMessage = newMessage(">>");
+
     // NOT TO BE EXPOSED TO Ioke - used for internal usage only
     public final NullObject nul = new NullObject(this);
 

@@ -1,9 +1,16 @@
 include_class('ioke.lang.Runtime') { 'IokeRuntime' } unless defined?(IokeRuntime)
 
 import Java::java.io.StringReader unless defined?(StringReader)
+import Java::java.io.PrintWriter unless defined?(PrintWriter)
+import Java::java.io.StringWriter unless defined?(StringWriter)
+import Java::java.io.InputStreamReader unless defined?(InputStreamReader)
+import Java::java.lang.System unless defined?(System)
 
 def parse(str)
-  ioke = IokeRuntime.get_runtime()
+  sw = StringWriter.new(20)
+  out = PrintWriter.new(sw)
+
+  ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
   ioke.parse_stream(StringReader.new(str), ioke.message, ioke.ground)
 end
 
