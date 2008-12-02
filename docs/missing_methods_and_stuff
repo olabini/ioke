@@ -5,9 +5,6 @@ missing:
 
 - in?      as in "13 in?(aList)"
 - same?    more or less same as "one uniqueHexId == two uniqueHexId"
-- removeMimic!
-- removeAllMimics!
-
 
 - decimals
 - rationals
