@@ -446,6 +446,22 @@ public class IokeObject {
         return data.convertToNumber(this, m, context);
     }
 
+
+    public static IokeObject convertToRational(Object on, IokeObject m, IokeObject context, boolean signalCondition) throws ControlFlow {
+        return ((IokeObject)on).convertToRational(m, context, signalCondition);
+    }
+
+    public IokeObject convertToRational(IokeObject m, IokeObject context, boolean signalCondition) throws ControlFlow {
+        IokeObject result = data.convertToRational(this, m, context, signalCondition);
+        if(result == null) {
+            if(findCell(m, context, "asRational") != context.runtime.nul) {
+                return IokeObject.as(context.runtime.asRational.sendTo(context, this));
+            }
+            return context.runtime.nil;
+        }
+        return result;
+    }
+
     public static IokeObject convertToText(Object on, IokeObject m, IokeObject context) throws ControlFlow {
         return ((IokeObject)on).convertToText(m, context);
     }
