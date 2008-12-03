@@ -422,6 +422,22 @@ describe "List" do
       ioke.evaluate_string("x = [\"abc\", \"cde\"]. x empty?").should == ioke.false
     end
   end
+
+  describe "'include?'" do 
+    it "should return false for something not in the list" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("[] include?(:foo)").should == ioke.false
+      ioke.evaluate_string("[1] include?(2)").should == ioke.false
+      ioke.evaluate_string("[1, :foo, \"bar\"] include?(2)").should == ioke.false
+    end
+
+    it "should return true for something in the list" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("[:foo] include?(:foo)").should == ioke.true
+      ioke.evaluate_string("[1, 2] include?(2)").should == ioke.true
+      ioke.evaluate_string("[2, 1, :foo, \"bar\"] include?(2)").should == ioke.true
+    end
+  end
   
   describe "'each'" do 
     it "should not do anything for an empty list" do 
