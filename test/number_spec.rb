@@ -155,7 +155,27 @@ describe "Number" do
         ioke.evaluate_stream(StringReader.new("(0-1)<=>1")).data.as_java_integer.should == -1
       end
 
-      # It should convert it's argument to number if it's not a number
+      it "should convert itself to a decimal if the argument is a decimal" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_string("1<=>1.0").data.as_java_integer.should == 0
+        ioke.evaluate_string("1<=>1.1").data.as_java_integer.should == -1
+        ioke.evaluate_string("1<=>0.9").data.as_java_integer.should == 1
+      end
+
+      it "should should convert its argument to a rational if its not a number or a decimal" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_string(<<CODE).data.as_java_integer.should == 0
+x = Origin mimic
+y = 0
+x asRational = method(Ground y = 13. 42)
+42 <=> x
+CODE
+      end
+      
+      it "should return nil if it can't be converted and there is no way of comparing" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_string('1 <=> Origin mimic').should == ioke.nil
+      end
     end
 
     describe "'-'" do 
@@ -198,7 +218,8 @@ describe "Number" do
         ioke.evaluate_stream(StringReader.new("1325234534634564564576367-0")).data.as_java_string.should == "1325234534634564564576367"
       end
       
-      # It should convert it's argument to number if it's not a number
+      it "should convert itself to a decimal if the argument is a decimal"
+      it "should should convert its argument to a number if its not a number or a decimal"
     end
 
     describe "'+'" do 
@@ -246,7 +267,8 @@ describe "Number" do
         ioke.evaluate_stream(StringReader.new("34545636745678657856786786785678+0")).data.as_java_string.should == "34545636745678657856786786785678"
       end
 
-      # It should convert it's argument to number if it's not a number
+      it "should convert itself to a decimal if the argument is a decimal"
+      it "should should convert its argument to a number if its not a number or a decimal"
     end
 
     describe "'*'" do 
@@ -278,6 +300,9 @@ describe "Number" do
         ioke = IokeRuntime.get_runtime
         ioke.evaluate_string("-21*-2 == 42").should == ioke.true
       end
+
+      it "should convert itself to a decimal if the argument is a decimal"
+      it "should should convert its argument to a number if its not a number or a decimal"
     end
 
     describe "'**'" do 
@@ -301,6 +326,8 @@ describe "Number" do
         ioke = IokeRuntime.get_runtime
         ioke.evaluate_string("2 ** 40 == 1099511627776").should == ioke.true
       end
+
+      it "should should convert its argument to a number if its not a number or a decimal"
     end
     
     describe "'/'" do 
@@ -347,6 +374,9 @@ describe "Number" do
         ioke = IokeRuntime.get_runtime
         ioke.evaluate_string("-8200/-10 == 820").should == ioke.true
       end
+
+      it "should convert itself to a decimal if the argument is a decimal"
+      it "should should convert its argument to a number if its not a number or a decimal"
     end
 
     describe "'=='" do 
@@ -389,6 +419,9 @@ describe "Number" do
         ioke.evaluate_string("123234534675676786789678985463456345 == 123234534675676786789678985463456345").should == ioke.true
         ioke.evaluate_string("8888856676776 == 8888856676776").should == ioke.true
       end
+
+      it "should convert itself to a decimal if the argument is a decimal"
+      it "should should convert its argument to a number if its not a number or a decimal"
     end
     
     describe "'asText'" do 
@@ -479,6 +512,8 @@ describe "Number" do
         ioke.evaluate_string("123234534675676786789678985463456345.234234 == 123234534675676786789678985463456345.234234").should == ioke.true
         ioke.evaluate_string("8888856676776.0101 == 8888856676776.0101").should == ioke.true
       end
+
+      it "should should convert its argument to a decimal if its not a decimal"
     end
   end
 
@@ -524,6 +559,8 @@ describe "Number" do
         ioke.evaluate_string("-13%-4 == -1").should == ioke.true
         ioke.evaluate_string("13%-4 == -3").should == ioke.true
       end
+
+      it "should should convert its argument to a number if its not a number"
     end
     
     describe "'times'" do 
@@ -571,6 +608,8 @@ describe "Number" do
         ioke = IokeRuntime.get_runtime
         ioke.evaluate_string("(-1 & 2**64) == 18446744073709551616").should == ioke.true
       end
+
+      it "should should convert its argument to a number if its not a number"
     end
 
     describe "'|'" do 
@@ -591,6 +630,8 @@ describe "Number" do
         ioke = IokeRuntime.get_runtime
         ioke.evaluate_string("(-1|2**64) == -1").should == ioke.true
       end
+
+      it "should should convert its argument to a number if its not a number"
     end
     
     describe "'^'" do 
@@ -612,6 +653,8 @@ describe "Number" do
         ioke = IokeRuntime.get_runtime
         ioke.evaluate_string("(-1 ^ 2**64) == -18446744073709551617").should == ioke.true
       end
+
+      it "should should convert its argument to a number if its not a number"
     end
 
     describe "'>>'" do 
@@ -633,6 +676,8 @@ describe "Number" do
         ioke.evaluate_string("-7 >> 1 == -4").should == ioke.true
         ioke.evaluate_string("-4095 >> 3 == -512").should == ioke.true
       end
+
+      it "should should convert its argument to a number if its not a number"
     end
 
     describe "'<< '" do 
@@ -652,6 +697,8 @@ describe "Number" do
         ioke = IokeRuntime.get_runtime
         ioke.evaluate_string("6<<255 == 347376267711948586270712955026063723559809953996921692118372752023739388919808").should == ioke.true
       end
+
+      it "should should convert its argument to a number if its not a number"
     end
 
     describe "'succ'" do 

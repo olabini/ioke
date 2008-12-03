@@ -5,7 +5,9 @@ package ioke.lang;
 
 import java.math.BigDecimal;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
 
 import gnu.math.BitOps;
 import gnu.math.IntNum;
@@ -93,6 +95,11 @@ public class Number extends IokeData {
         return self;
     }
 
+    @Override
+    public IokeObject convertToRational(IokeObject self, IokeObject m, final IokeObject context, boolean signalCondition) throws ControlFlow {
+        return self;
+    }
+
     public static RatNum value(Object number) {
         return ((Number)IokeObject.data(number)).value;
     }
@@ -156,14 +163,28 @@ public class Number extends IokeData {
         decimal.init();
         number.registerCell("Decimal", decimal);
         
-        rational.registerMethod(runtime.newJavaMethod("compares this number against the argument, returning -1, 0 or 1 based on which one is larger", new JavaMethod("<=>") {
+        rational.registerMethod(runtime.newJavaMethod("compares this number against the argument, returning -1, 0 or 1 based on which one is larger. if the argument is a decimal, the receiver will be converted into a form suitable for comparing against a decimal, and then compared - it's not specified whether this will actually call Decimal#<=> or not. if the argument is neither a Rational nor a Decimal, it tries to call asRational, and if that doesn't work it returns nil.", new JavaMethod("<=>") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    Object arg = message.getEvaluatedArgument(0, context);
-                    if(!(IokeObject.data(arg) instanceof Number)) {
-                        arg = IokeObject.convertToNumber(arg, message, context);
+                    List<Object> args = new ArrayList<Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    Object arg = args.get(0);
+
+                    IokeData data = IokeObject.data(arg);
+                    
+                    if(data instanceof Decimal) {
+                        return context.runtime.newNumber(Number.value(on).asBigDecimal().compareTo(Decimal.value(arg)));
+                    } else {
+                        if(!(data instanceof Number)) {
+                            arg = IokeObject.convertToRational(arg, message, context, false);
+                            if(!(IokeObject.data(arg) instanceof Number)) {
+                                // Can't compare, so bail out
+                                return context.runtime.nil;
+                            }
+                        }
+
+                        return context.runtime.newNumber(IntNum.compare(Number.value(on),Number.value(arg)));
                     }
-                    return runtime.newNumber(IntNum.compare(Number.value(on),Number.value(arg)));
                 }
             }));
 
