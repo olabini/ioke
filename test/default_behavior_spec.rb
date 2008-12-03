@@ -53,6 +53,28 @@ describe "DefaultBehavior" do
     end
   end
   
+  describe "'in?'" do 
+    it "should call 'include?' on the argument with itself as argument" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string(<<CODE).should == ioke.true
+x = Origin mimic
+x include? = method(arg, [arg, 42])
+y = Origin mimic
+y in?(x) == [y, 42]
+CODE
+    end
+    
+    it "should return true if the object is in a list" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("1 in?([1,2,3])").should == ioke.true
+    end
+
+    it "should return false if the object is not in a list" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("1 in?([2, 3, 4])").should == ioke.false
+    end
+  end
+  
   describe "'derive'" do 
     it "should be able to derive from Origin" do 
       ioke = IokeRuntime.get_runtime()
