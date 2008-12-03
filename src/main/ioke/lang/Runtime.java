@@ -10,6 +10,8 @@ import java.io.FileReader;
 import java.io.File;
 import java.io.StringReader;
 
+import java.math.BigDecimal;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -472,6 +474,20 @@ public class Runtime {
     }
 
     public IokeObject newDecimal(String number) throws ControlFlow {
+        IokeObject obj = this.decimal.allocateCopy(null, null);
+        obj.mimicsWithoutCheck(this.decimal);
+        obj.data = Decimal.decimal(number);
+        return obj;
+    }
+
+    public IokeObject newDecimal(Number number) throws ControlFlow {
+        IokeObject obj = this.decimal.allocateCopy(null, null);
+        obj.mimicsWithoutCheck(this.decimal);
+        obj.data = Decimal.decimal(number.getValue());
+        return obj;
+    }
+
+    public IokeObject newDecimal(BigDecimal number) throws ControlFlow {
         IokeObject obj = this.decimal.allocateCopy(null, null);
         obj.mimicsWithoutCheck(this.decimal);
         obj.data = Decimal.decimal(number);

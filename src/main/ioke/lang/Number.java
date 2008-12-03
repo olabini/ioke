@@ -67,6 +67,10 @@ public class Number extends IokeData {
         return value.longValue();
     }
 
+    public RatNum getValue() {
+        return value;
+    }
+
     @Override
     public IokeObject negate(IokeObject obj) {
         return obj.runtime.newNumber((RatNum)RatNum.neg(Number.value(obj)));
@@ -199,25 +203,45 @@ public class Number extends IokeData {
                 }
             }));
 
-        rational.registerMethod(runtime.newJavaMethod("returns the difference between this number and the argument", new JavaMethod("-") {
+        rational.registerMethod(runtime.newJavaMethod("returns the difference between this number and the argument. if the argument is a decimal, the receiver will be converted into a form suitable for subtracting against a decimal, and then subtracted. if the argument is neither a Rational nor a Decimal, it tries to call asRational, and if that fails it signals a condition.", new JavaMethod("-") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    Object arg = message.getEvaluatedArgument(0, context);
-                    if(!(IokeObject.data(arg) instanceof Number)) {
-                        arg = IokeObject.convertToNumber(arg, message, context);
+                    List<Object> args = new ArrayList<Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    Object arg = args.get(0);
+
+                    IokeData data = IokeObject.data(arg);
+                    
+                    if(data instanceof Decimal) {
+                        return context.runtime.minusMessage.sendTo(context, context.runtime.newDecimal(((Number)IokeObject.data(on))), arg);
+                    } else {
+                        if(!(data instanceof Number)) {
+                            arg = IokeObject.convertToRational(arg, message, context, true);
+                        }
+
+                        return context.runtime.newNumber((RatNum)Number.value(on).sub(Number.value(arg)));
                     }
-                    return runtime.newNumber((RatNum)Number.value(on).sub(Number.value(arg)));
                 }
             }));
 
-        rational.registerMethod(runtime.newJavaMethod("returns the addition of this number and the argument", new JavaMethod("+") {
+        rational.registerMethod(runtime.newJavaMethod("returns the addition of this number and the argument. if the argument is a decimal, the receiver will be converted into a form suitable for addition against a decimal, and then added. if the argument is neither a Rational nor a Decimal, it tries to call asRational, and if that fails it signals a condition.", new JavaMethod("+") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    Object arg = message.getEvaluatedArgument(0, context);
-                    if(!(IokeObject.data(arg) instanceof Number)) {
-                        arg = IokeObject.convertToNumber(arg, message, context);
+                    List<Object> args = new ArrayList<Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    Object arg = args.get(0);
+
+                    IokeData data = IokeObject.data(arg);
+                    
+                    if(data instanceof Decimal) {
+                        return context.runtime.plusMessage.sendTo(context, context.runtime.newDecimal(((Number)IokeObject.data(on))), arg);
+                    } else {
+                        if(!(data instanceof Number)) {
+                            arg = IokeObject.convertToRational(arg, message, context, true);
+                        }
+
+                        return context.runtime.newNumber(RatNum.add(Number.value(on),Number.value(arg),1));
                     }
-                    return runtime.newNumber(RatNum.add(Number.value(on),Number.value(arg),1));
                 }
             }));
 

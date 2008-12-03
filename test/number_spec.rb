@@ -166,8 +166,7 @@ describe "Number" do
         ioke = IokeRuntime.get_runtime()
         ioke.evaluate_string(<<CODE).data.as_java_integer.should == 0
 x = Origin mimic
-y = 0
-x asRational = method(Ground y = 13. 42)
+x asRational = method(42)
 42 <=> x
 CODE
       end
@@ -218,8 +217,34 @@ CODE
         ioke.evaluate_stream(StringReader.new("1325234534634564564576367-0")).data.as_java_string.should == "1325234534634564564576367"
       end
       
-      it "should convert itself to a decimal if the argument is a decimal"
-      it "should should convert its argument to a number if its not a number or a decimal"
+      it "should convert itself to a decimal if the argument is a decimal" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_string("1-0.6").data.as_java_string.should == "0.4"
+        ioke.evaluate_string("3-1.2").data.as_java_string.should == "1.8"
+      end
+
+      it "should should convert its argument to a rational if its not a number or a decimal" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_string(<<CODE).data.as_java_integer.should == 1
+x = Origin mimic
+x asRational = method(42)
+43 - x
+CODE
+      end
+      
+      it "should signal a condition if it can't be converted and there is no way of subtracting" do 
+        sw = StringWriter.new(20)
+        out = PrintWriter.new(sw)
+
+        ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
+
+        begin 
+          ioke.evaluate_string('1 - Origin mimic').should == ioke.nil
+          true.should be_false
+        rescue NativeException => cfe
+          cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Type IncorrectType"
+        end
+      end
     end
 
     describe "'+'" do 
@@ -267,8 +292,34 @@ CODE
         ioke.evaluate_stream(StringReader.new("34545636745678657856786786785678+0")).data.as_java_string.should == "34545636745678657856786786785678"
       end
 
-      it "should convert itself to a decimal if the argument is a decimal"
-      it "should should convert its argument to a number if its not a number or a decimal"
+      it "should convert itself to a decimal if the argument is a decimal" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_string("1+0.6").data.as_java_string.should == "1.6"
+        ioke.evaluate_string("3+1.2").data.as_java_string.should == "4.2"
+      end
+
+      it "should should convert its argument to a rational if its not a number or a decimal" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_string(<<CODE).data.as_java_integer.should == 42
+x = Origin mimic
+x asRational = method(42)
+1 + x
+CODE
+      end
+      
+      it "should signal a condition if it can't be converted and there is no way of subtracting" do 
+        sw = StringWriter.new(20)
+        out = PrintWriter.new(sw)
+
+        ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
+
+        begin 
+          ioke.evaluate_string('1 + Origin mimic').should == ioke.nil
+          true.should be_false
+        rescue NativeException => cfe
+          cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Type IncorrectType"
+        end
+      end
     end
 
     describe "'*'" do 
@@ -515,6 +566,47 @@ CODE
 
       it "should should convert its argument to a decimal if its not a decimal"
     end
+    
+    describe "'-'" do 
+      it "should return 0.0 for the difference between 0.0 and 0.0" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_string("0.0-0.0").data.as_java_string.should == "0.0"
+      end
+      
+      it "should return the difference between really large numbers" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_string("123435334645674745675675757.1-123435334645674745675675756.1").data.as_java_string.should == "1.0"
+        ioke.evaluate_string(("123435334645674745675675757.2-1.1")).data.as_java_string.should == "123435334645674745675675756.1"
+        ioke.evaluate_string(("123435334645674745675675757.0-24334534544345345345345.0")).data.as_java_string.should == "123411000111130400330330412.0"
+      end
+      
+      it "should return the difference between smaller numbers" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_string(("1.0-1.0")).data.as_java_string.should == "0.0"
+        ioke.evaluate_string(("0.0-1.0")).data.as_java_string.should == "-1.0"
+        ioke.evaluate_string(("2.0-1.0")).data.as_java_string.should == "1.0"
+        ioke.evaluate_string(("10.0-5.0")).data.as_java_string.should == "5.0"
+        ioke.evaluate_string(("234.0-30.0")).data.as_java_string.should == "204.0"
+        ioke.evaluate_string(("30.0-35.0")).data.as_java_string.should == "-5.0"
+      end
+      
+      it "should return the difference between negative numbers" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_string(("(0.0-1.0)-1.0")).data.as_java_string.should == "-2.0"
+        ioke.evaluate_string(("(0.0-1.0)-5.0")).data.as_java_string.should == "-6.0"
+        ioke.evaluate_string(("(0.0-1.0)-(0.0-5.0)")).data.as_java_string.should == "4.0"
+        ioke.evaluate_string(("(0.0-10.0)-5.0")).data.as_java_string.should == "-15.0"
+        ioke.evaluate_string("(0.0-10.0)-(0.0-5.0)").data.as_java_string.should == "-5.0"
+        ioke.evaluate_string("(0.0-2545345345346547456756.0)-(0.0-2545345345346547456755.0)").data.as_java_string.should == "-1.0"
+      end
+
+      it "should return the number when 0 is the argument" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_string("(0.0-1.0)-0.0").data.as_java_string.should == "-1.0"
+        ioke.evaluate_string("10.0-0.0").data.as_java_string.should == "10.0"
+        ioke.evaluate_string("1325234534634564564576367.0-0.0").data.as_java_string.should == "1325234534634564564576367.0"
+      end
+    end  
   end
 
   describe "Integer" do 
