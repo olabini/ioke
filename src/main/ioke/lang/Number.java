@@ -33,6 +33,18 @@ public class Number extends IokeData {
         this.value = value;
     }
     
+    public static Number integer(String val) {
+        return new Number(val);
+    }
+
+    public static Number integer(int val) {
+        return new Number(val);
+    }
+
+    public static Number integer(IntNum val) {
+        return new Number(val);
+    }
+
     public String asJavaString() {
         return value.toString();
     }
@@ -100,11 +112,39 @@ public class Number extends IokeData {
     @Override
     public void init(IokeObject obj) throws ControlFlow {
         final Runtime runtime = obj.runtime;
-
+        final IokeObject number = obj;
+        
         obj.setKind("Number");
         obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Comparing")), runtime.nul, runtime.nul);
+
+        IokeObject real = new IokeObject(runtime, "A real number can be either a rational number or a decimal number");
+        real.mimicsWithoutCheck(number);
+        real.setKind("Number Real");
+        number.registerCell("Real", real);
+
+        IokeObject rational = new IokeObject(runtime, "A rational number is either an integer or a ratio");
+        rational.mimicsWithoutCheck(real);
+        rational.setKind("Number Rational");
+        number.registerCell("Rational", rational);
+
+        IokeObject integer = new IokeObject(runtime, "An integral number");
+        integer.mimicsWithoutCheck(rational);
+        integer.setKind("Number Integer");
+        number.registerCell("Integer", integer);
+        runtime.integer = integer;
+
+        IokeObject ratio = new IokeObject(runtime, "A ratio of two integral numbers");
+        ratio.mimicsWithoutCheck(rational);
+        ratio.setKind("Number Ratio");
+        number.registerCell("Ratio", ratio);
+
+        IokeObject decimal = new IokeObject(runtime, "An exact, unlimited representation of a decimal number");
+        decimal.mimicsWithoutCheck(real);
+        decimal.setKind("Number Decimal");
+        number.registerCell("Decimal", decimal);
+        runtime.decimal = decimal;
         
-        obj.registerMethod(runtime.newJavaMethod("compares this number against the argument, returning -1, 0 or 1 based on which one is larger", new JavaMethod("<=>") {
+        number.registerMethod(runtime.newJavaMethod("compares this number against the argument, returning -1, 0 or 1 based on which one is larger", new JavaMethod("<=>") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     Object arg = message.getEvaluatedArgument(0, context);
@@ -115,7 +155,7 @@ public class Number extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("compares this number against the argument, true if this number is the same, otherwise false", new JavaMethod("==") {
+        number.registerMethod(runtime.newJavaMethod("compares this number against the argument, true if this number is the same, otherwise false", new JavaMethod("==") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     Object arg = message.getEvaluatedArgument(0, context);
@@ -126,7 +166,7 @@ public class Number extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns the difference between this number and the argument", new JavaMethod("-") {
+        number.registerMethod(runtime.newJavaMethod("returns the difference between this number and the argument", new JavaMethod("-") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     Object arg = message.getEvaluatedArgument(0, context);
@@ -137,7 +177,7 @@ public class Number extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns the addition of this number and the argument", new JavaMethod("+") {
+        number.registerMethod(runtime.newJavaMethod("returns the addition of this number and the argument", new JavaMethod("+") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     Object arg = message.getEvaluatedArgument(0, context);
@@ -148,7 +188,7 @@ public class Number extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns the product of this number and the argument", new JavaMethod("*") {
+        number.registerMethod(runtime.newJavaMethod("returns the product of this number and the argument", new JavaMethod("*") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     Object arg = message.getEvaluatedArgument(0, context);
@@ -159,7 +199,7 @@ public class Number extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns the quotient of this number and the argument", new JavaMethod("/") {
+        number.registerMethod(runtime.newJavaMethod("returns the quotient of this number and the argument", new JavaMethod("/") {
                 @Override
                 public Object activate(IokeObject method, final IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     Object arg = message.getEvaluatedArgument(0, context);
@@ -207,7 +247,7 @@ public class Number extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns the modulo of this number and the argument", new JavaMethod("%") {
+        number.registerMethod(runtime.newJavaMethod("returns the modulo of this number and the argument", new JavaMethod("%") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     Object arg = message.getEvaluatedArgument(0, context);
@@ -218,7 +258,7 @@ public class Number extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns this number to the power of the argument", new JavaMethod("**") {
+        number.registerMethod(runtime.newJavaMethod("returns this number to the power of the argument", new JavaMethod("**") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     Object arg = message.getEvaluatedArgument(0, context);
@@ -230,7 +270,7 @@ public class Number extends IokeData {
             }));
 
 
-        obj.registerMethod(runtime.newJavaMethod("returns this number bitwise and the argument", new JavaMethod("&") {
+        integer.registerMethod(runtime.newJavaMethod("returns this number bitwise and the argument", new JavaMethod("&") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     Object arg = message.getEvaluatedArgument(0, context);
@@ -241,7 +281,7 @@ public class Number extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns this number bitwise or the argument", new JavaMethod("|") {
+        integer.registerMethod(runtime.newJavaMethod("returns this number bitwise or the argument", new JavaMethod("|") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     Object arg = message.getEvaluatedArgument(0, context);
@@ -252,7 +292,7 @@ public class Number extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns this number bitwise xor the argument", new JavaMethod("^") {
+        integer.registerMethod(runtime.newJavaMethod("returns this number bitwise xor the argument", new JavaMethod("^") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     Object arg = message.getEvaluatedArgument(0, context);
@@ -263,7 +303,7 @@ public class Number extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns this number left shifted by the argument", new JavaMethod("<<") {
+        integer.registerMethod(runtime.newJavaMethod("returns this number left shifted by the argument", new JavaMethod("<<") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     Object arg = message.getEvaluatedArgument(0, context);
@@ -274,7 +314,7 @@ public class Number extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns this number right shifted by the argument", new JavaMethod(">>") {
+        integer.registerMethod(runtime.newJavaMethod("returns this number right shifted by the argument", new JavaMethod(">>") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     Object arg = message.getEvaluatedArgument(0, context);
@@ -285,42 +325,42 @@ public class Number extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("Returns a text representation of the object", new JavaMethod("asText") {
+        number.registerMethod(runtime.newJavaMethod("Returns a text representation of the object", new JavaMethod("asText") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
                     return runtime.newText(on.toString());
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newJavaMethod("Returns a text inspection of the object", new JavaMethod("inspect") {
+        number.registerMethod(obj.runtime.newJavaMethod("Returns a text inspection of the object", new JavaMethod("inspect") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
                     return method.runtime.newText(Number.getInspect(on));
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newJavaMethod("Returns a brief text inspection of the object", new JavaMethod("notice") {
+        number.registerMethod(obj.runtime.newJavaMethod("Returns a brief text inspection of the object", new JavaMethod("notice") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
                     return method.runtime.newText(Number.getInspect(on));
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("Returns the successor of this number", new JavaMethod("succ") {
+        integer.registerMethod(runtime.newJavaMethod("Returns the successor of this number", new JavaMethod("succ") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
                     return runtime.newNumber(IntNum.add(Number.value(on),IntNum.one()));
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("Returns the predecessor of this number", new JavaMethod("pred") {
+        integer.registerMethod(runtime.newJavaMethod("Returns the predecessor of this number", new JavaMethod("pred") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
                     return runtime.newNumber(IntNum.sub(Number.value(on),IntNum.one()));
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("Expects one or two arguments. If one argument is given, executes it as many times as the value of the receiving number. If two arguments are given, the first will be an unevaluated name that will receive the current loop value on each repitition. the iteration length is limited to the positive maximum of a Java int", new JavaMethod("times") {
+        integer.registerMethod(runtime.newJavaMethod("Expects one or two arguments. If one argument is given, executes it as many times as the value of the receiving number. If two arguments are given, the first will be an unevaluated name that will receive the current loop value on each repitition. the iteration length is limited to the positive maximum of a Java int", new JavaMethod("times") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     int num = Number.value(on).intValue();
