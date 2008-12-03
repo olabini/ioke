@@ -452,10 +452,13 @@ public class IokeObject {
     }
 
     public IokeObject convertToRational(IokeObject m, IokeObject context, boolean signalCondition) throws ControlFlow {
-        IokeObject result = data.convertToRational(this, m, context, signalCondition);
+        IokeObject result = data.convertToRational(this, m, context, false);
         if(result == null) {
             if(findCell(m, context, "asRational") != context.runtime.nul) {
                 return IokeObject.as(context.runtime.asRational.sendTo(context, this));
+            }
+            if(signalCondition) {
+                return data.convertToRational(this, m, context, true);
             }
             return context.runtime.nil;
         }

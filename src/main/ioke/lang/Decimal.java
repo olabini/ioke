@@ -9,8 +9,13 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
 import java.util.Locale;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import ioke.lang.exceptions.ControlFlow;
+
+import gnu.math.RatNum;
 
 /**
  *
@@ -29,6 +34,14 @@ public class Decimal extends IokeData {
     }
 
     public static Decimal decimal(String val) {
+        return new Decimal(val);
+    }
+
+    public static Decimal decimal(RatNum val) {
+        return new Decimal(val.asBigDecimal());
+    }
+
+    public static Decimal decimal(BigDecimal val) {
         return new Decimal(val);
     }
 
@@ -96,5 +109,16 @@ public class Decimal extends IokeData {
                     return (Decimal.value(on).compareTo(Decimal.value(arg)) == 0) ? context.runtime._true : context.runtime._false;
                 }
             }));
+
+        decimal.registerMethod(runtime.newJavaMethod("returns the difference between this number and the argument.", new JavaMethod("-") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    Object arg = args.get(0);
+                    return context.runtime.newDecimal(Decimal.value(on).subtract(Decimal.value(arg)));
+                }
+            }));
+
     }
 }// Decimal
