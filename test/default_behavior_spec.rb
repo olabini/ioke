@@ -29,6 +29,18 @@ describe "DefaultBehavior" do
     end
   end
 
+  describe "'same?'" do 
+    it "should return false for different objects" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("Origin mimic same?(Origin mimic)").should == ioke.false
+    end
+
+    it "should return true for the same objects" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("x = Origin mimic. x same?(x)").should == ioke.true
+    end
+  end
+  
   describe "'uniqueHexId'" do 
     it "should return different ids for different objects" do 
       ioke = IokeRuntime.get_runtime
