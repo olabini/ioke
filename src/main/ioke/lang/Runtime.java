@@ -231,6 +231,7 @@ public class Runtime {
         
         try {
             evaluateString("use(\"builtin/A1_defaultBehavior\")", message, ground);
+            evaluateString("use(\"builtin/A1_defaultBehavior_inspection\")", message, ground);
             evaluateString("use(\"builtin/A2_number\")", message, ground);
             evaluateString("use(\"builtin/A3_booleans\")", message, ground);
             evaluateString("use(\"builtin/A4_range\")", message, ground);
