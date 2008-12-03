@@ -22,6 +22,10 @@ import ioke.lang.parser.iokeParser;
 
 import ioke.lang.exceptions.ControlFlow;
 
+import gnu.math.RatNum;
+import gnu.math.IntNum;
+import gnu.math.IntFraction;
+
 /**
  *
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
@@ -69,6 +73,7 @@ public class Runtime {
 
     public IokeObject integer = null;
     public IokeObject decimal = null;
+    public IokeObject ratio = null;
 
     // Core messages
     public IokeObject asText = newMessage("asText");
@@ -486,11 +491,25 @@ public class Runtime {
         }
     }
 
-    public IokeObject newNumber(gnu.math.IntNum number) {
+    public IokeObject newNumber(IntNum number) {
         IokeObject obj = this.integer.allocateCopy(null, null);
         obj.mimicsWithoutCheck(this.integer);
         obj.data = Number.integer(number);
         return obj;
+    }
+
+    public IokeObject newNumber(RatNum number) {
+        if(number instanceof IntNum) {
+            IokeObject obj = this.integer.allocateCopy(null, null);
+            obj.mimicsWithoutCheck(this.integer);
+            obj.data = Number.integer((IntNum)number);
+            return obj;
+        } else {
+            IokeObject obj = this.ratio.allocateCopy(null, null);
+            obj.mimicsWithoutCheck(this.ratio);
+            obj.data = Number.ratio((IntFraction)number);
+            return obj;
+        }
     }
 
     public IokeObject newNumber(int number) {

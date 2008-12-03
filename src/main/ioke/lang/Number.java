@@ -7,6 +7,8 @@ import java.util.List;
 
 import gnu.math.BitOps;
 import gnu.math.IntNum;
+import gnu.math.RatNum;
+import gnu.math.IntFraction;
 
 import ioke.lang.exceptions.ControlFlow;
 
@@ -15,7 +17,7 @@ import ioke.lang.exceptions.ControlFlow;
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
 public class Number extends IokeData {
-    private final IntNum value;
+    private final RatNum value;
 
     public Number(String textRepresentation) {
         if(textRepresentation.startsWith("0x") || textRepresentation.startsWith("0X")) {
@@ -29,7 +31,7 @@ public class Number extends IokeData {
         value = IntNum.make(javaNumber);
     }
 
-    public Number(IntNum value) {
+    public Number(RatNum value) {
         this.value = value;
     }
     
@@ -42,6 +44,10 @@ public class Number extends IokeData {
     }
 
     public static Number integer(IntNum val) {
+        return new Number(val);
+    }
+
+    public static Number ratio(IntFraction val) {
         return new Number(val);
     }
 
@@ -59,7 +65,7 @@ public class Number extends IokeData {
 
     @Override
     public IokeObject negate(IokeObject obj) {
-        return obj.runtime.newNumber(IntNum.sub(IntNum.zero(), Number.value(obj)));
+        return obj.runtime.newNumber((RatNum)RatNum.neg(Number.value(obj)));
     }
 
     @Override
@@ -85,8 +91,12 @@ public class Number extends IokeData {
         return self;
     }
 
-    public static IntNum value(Object number) {
+    public static RatNum value(Object number) {
         return ((Number)IokeObject.data(number)).value;
+    }
+
+    public static IntNum intValue(Object number) {
+        return (IntNum)((Number)IokeObject.data(number)).value;
     }
 
     public static int extractInt(Object number, IokeObject m, IokeObject context) throws ControlFlow {
@@ -94,7 +104,7 @@ public class Number extends IokeData {
             number = IokeObject.convertToNumber(number, m, context);
         }
         
-        return value(number).intValue();
+        return intValue(number).intValue();
     }
 
     @Override
@@ -137,6 +147,7 @@ public class Number extends IokeData {
         ratio.mimicsWithoutCheck(rational);
         ratio.setKind("Number Ratio");
         number.registerCell("Ratio", ratio);
+        runtime.ratio = ratio;
 
         IokeObject decimal = new IokeObject(runtime, "An exact, unlimited representation of a decimal number");
         decimal.mimicsWithoutCheck(real);
@@ -173,7 +184,7 @@ public class Number extends IokeData {
                     if(!(IokeObject.data(arg) instanceof Number)) {
                         arg = IokeObject.convertToNumber(arg, message, context);
                     }
-                    return runtime.newNumber(IntNum.sub(Number.value(on),Number.value(arg)));
+                    return runtime.newNumber((RatNum)Number.value(on).sub(Number.value(arg)));
                 }
             }));
 
@@ -184,7 +195,7 @@ public class Number extends IokeData {
                     if(!(IokeObject.data(arg) instanceof Number)) {
                         arg = IokeObject.convertToNumber(arg, message, context);
                     }
-                    return runtime.newNumber(IntNum.add(Number.value(on),Number.value(arg)));
+                    return runtime.newNumber(RatNum.add(Number.value(on),Number.value(arg),1));
                 }
             }));
 
@@ -195,66 +206,59 @@ public class Number extends IokeData {
                     if(!(IokeObject.data(arg) instanceof Number)) {
                         arg = IokeObject.convertToNumber(arg, message, context);
                     }
-                    return runtime.newNumber(IntNum.times(Number.value(on),Number.value(arg)));
+                    return runtime.newNumber(RatNum.times(Number.value(on),Number.value(arg)));
                 }
             }));
 
-        number.registerMethod(runtime.newJavaMethod("returns the quotient of this number and the argument", new JavaMethod("/") {
+        number.registerMethod(runtime.newJavaMethod("returns the quotient of this number and the argument. if the division is not exact, it will return a Ratio.", new JavaMethod("/") {
                 @Override
                 public Object activate(IokeObject method, final IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     Object arg = message.getEvaluatedArgument(0, context);
                     if(!(IokeObject.data(arg) instanceof Number)) {
                         arg = IokeObject.convertToNumber(arg, message, context);
                     }
-                    IntNum result = new IntNum();
-                    boolean retry = false;
-                    do {
-                        retry = false;
-                        try {
-                            IntNum.divide(Number.value(on),Number.value(arg),result,null,IntNum.FLOOR);
-                        } catch(ArithmeticException e) {
-                            final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
-                                                                                               message, 
-                                                                                               context, 
-                                                                                               "Error", 
-                                                                                               "Arithmetic",
-                                                                                               "DivisionByZero")).mimic(message, context);
-                            condition.setCell("message", message);
-                            condition.setCell("context", context);
-                            condition.setCell("receiver", on);
+                    
+                    while(Number.value(arg).isZero()) {
+                        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
+                                                                                           message, 
+                                                                                           context, 
+                                                                                           "Error", 
+                                                                                           "Arithmetic",
+                                                                                           "DivisionByZero")).mimic(message, context);
+                        condition.setCell("message", message);
+                        condition.setCell("context", context);
+                        condition.setCell("receiver", on);
 
-                            final Object[] newCell = new Object[]{arg};
+                        final Object[] newCell = new Object[]{arg};
 
-                            context.runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
-                                    public void run() throws ControlFlow {
-                                        context.runtime.errorCondition(condition);
-                                    }}, 
-                                context,
-                                new Restart.ArgumentGivingRestart("useValue") { 
-                                    public IokeObject invoke(IokeObject c2, List<Object> arguments) throws ControlFlow {
-                                        newCell[0] = arguments.get(0);
-                                        return c2.runtime.nil;
-                                    }
+                        context.runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
+                                public void run() throws ControlFlow {
+                                    context.runtime.errorCondition(condition);
+                                }}, 
+                            context,
+                            new Restart.ArgumentGivingRestart("useValue") { 
+                                public IokeObject invoke(IokeObject c2, List<Object> arguments) throws ControlFlow {
+                                    newCell[0] = arguments.get(0);
+                                    return c2.runtime.nil;
                                 }
-                                );
+                            }
+                            );
+                        
+                        arg = newCell[0];
+                    }
 
-                            retry = true;
-                            arg = newCell[0];
-                        }
-                    } while(retry);
-
-                    return runtime.newNumber(result);
+                    return runtime.newNumber(RatNum.divide(Number.value(on),Number.value(arg)));
                 }
             }));
 
-        number.registerMethod(runtime.newJavaMethod("returns the modulo of this number and the argument", new JavaMethod("%") {
+        integer.registerMethod(runtime.newJavaMethod("returns the modulo of this number and the argument", new JavaMethod("%") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     Object arg = message.getEvaluatedArgument(0, context);
                     if(!(IokeObject.data(arg) instanceof Number)) {
                         arg = IokeObject.convertToNumber(arg, message, context);
                     }
-                    return runtime.newNumber(IntNum.modulo(Number.value(on),Number.value(arg)));
+                    return runtime.newNumber(IntNum.modulo(Number.intValue(on),Number.intValue(arg)));
                 }
             }));
 
@@ -265,7 +269,7 @@ public class Number extends IokeData {
                     if(!(IokeObject.data(arg) instanceof Number)) {
                         arg = IokeObject.convertToNumber(arg, message, context);
                     }
-                    return runtime.newNumber(IntNum.power(Number.value(on), Number.value(arg).intValue()));
+                    return runtime.newNumber((RatNum)Number.value(on).power(Number.intValue(arg)));
                 }
             }));
 
@@ -277,7 +281,7 @@ public class Number extends IokeData {
                     if(!(IokeObject.data(arg) instanceof Number)) {
                         arg = IokeObject.convertToNumber(arg, message, context);
                     }
-                    return runtime.newNumber(BitOps.and(Number.value(on), Number.value(arg)));
+                    return runtime.newNumber(BitOps.and(Number.intValue(on), Number.intValue(arg)));
                 }
             }));
 
@@ -288,7 +292,7 @@ public class Number extends IokeData {
                     if(!(IokeObject.data(arg) instanceof Number)) {
                         arg = IokeObject.convertToNumber(arg, message, context);
                     }
-                    return runtime.newNumber(BitOps.ior(Number.value(on), Number.value(arg)));
+                    return runtime.newNumber(BitOps.ior(Number.intValue(on), Number.intValue(arg)));
                 }
             }));
 
@@ -299,7 +303,7 @@ public class Number extends IokeData {
                     if(!(IokeObject.data(arg) instanceof Number)) {
                         arg = IokeObject.convertToNumber(arg, message, context);
                     }
-                    return runtime.newNumber(BitOps.xor(Number.value(on), Number.value(arg)));
+                    return runtime.newNumber(BitOps.xor(Number.intValue(on), Number.intValue(arg)));
                 }
             }));
 
@@ -310,7 +314,7 @@ public class Number extends IokeData {
                     if(!(IokeObject.data(arg) instanceof Number)) {
                         arg = IokeObject.convertToNumber(arg, message, context);
                     }
-                    return runtime.newNumber(IntNum.shift(Number.value(on), Number.value(arg).intValue()));
+                    return runtime.newNumber(IntNum.shift(Number.intValue(on), Number.intValue(arg).intValue()));
                 }
             }));
 
@@ -321,7 +325,7 @@ public class Number extends IokeData {
                     if(!(IokeObject.data(arg) instanceof Number)) {
                         arg = IokeObject.convertToNumber(arg, message, context);
                     }
-                    return runtime.newNumber(IntNum.shift(Number.value(on), -Number.value(arg).intValue()));
+                    return runtime.newNumber(IntNum.shift(Number.intValue(on), -Number.intValue(arg).intValue()));
                 }
             }));
 
@@ -349,14 +353,14 @@ public class Number extends IokeData {
         integer.registerMethod(runtime.newJavaMethod("Returns the successor of this number", new JavaMethod("succ") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
-                    return runtime.newNumber(IntNum.add(Number.value(on),IntNum.one()));
+                    return runtime.newNumber(IntNum.add(Number.intValue(on),IntNum.one()));
                 }
             }));
 
         integer.registerMethod(runtime.newJavaMethod("Returns the predecessor of this number", new JavaMethod("pred") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
-                    return runtime.newNumber(IntNum.sub(Number.value(on),IntNum.one()));
+                    return runtime.newNumber(IntNum.sub(Number.intValue(on),IntNum.one()));
                 }
             }));
 

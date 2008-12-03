@@ -301,53 +301,30 @@ describe "Number" do
       ioke.evaluate_string("200/5 == 40").should == ioke.true
     end
 
-    it "should shave off fractional parts when dividing uneven numbers" do 
+    it "should return a rational when dividing uneven numbers" do 
       ioke = IokeRuntime.get_runtime
-      ioke.evaluate_string("8192/10 == 819").should == ioke.true
-      ioke.evaluate_string("3/2 == 1").should == ioke.true
-      ioke.evaluate_string("5/2 == 2").should == ioke.true
-      ioke.evaluate_string("1/2 == 0").should == ioke.true
+      ioke.evaluate_string("x = 8192/10. (x mimics?(Number Ratio)) && (x == 4096/5)").should == ioke.true
+      ioke.evaluate_string("x = 3/2. (x mimics?(Number Ratio)) && (x != 1) && (x == 3/2)").should == ioke.true
+      ioke.evaluate_string("x = 5/2. (x mimics?(Number Ratio)) && (x != 2) && (x == 5/2)").should == ioke.true
+      ioke.evaluate_string("x = 1/2. (x mimics?(Number Ratio)) && (x != 0) && (x == 1/2)").should == ioke.true
     end
 
     it "should divide negative numbers correctly" do 
       ioke = IokeRuntime.get_runtime
-      ioke.evaluate_string("-8192/10 == -820").should == ioke.true
+      ioke.evaluate_string("-8200/10 == -820").should == ioke.true
     end
 
     it "should divide with a negative dividend correctly" do 
       ioke = IokeRuntime.get_runtime
-      ioke.evaluate_string("8192/-10 == -820").should == ioke.true
+      ioke.evaluate_string("8200/-10 == -820").should == ioke.true
     end
 
     it "should divide a negative number with a negative dividend" do 
       ioke = IokeRuntime.get_runtime
-      ioke.evaluate_string("-8192/-10 == 819").should == ioke.true
+      ioke.evaluate_string("-8200/-10 == 820").should == ioke.true
     end
   end
 
-  describe "'%'" do 
-    it "should return the number when taking the modulo of 0" do 
-      ioke = IokeRuntime.get_runtime
-      ioke.evaluate_string("0%0 == 0").should == ioke.true
-      ioke.evaluate_string("13%0 == 13").should == ioke.true
-      ioke.evaluate_string("-10%0 == -10").should == ioke.true
-    end
-    
-    it "should return the regular modulus" do 
-      ioke = IokeRuntime.get_runtime
-      ioke.evaluate_string("13%4 == 1").should == ioke.true
-      ioke.evaluate_string("4%13 == 4").should == ioke.true
-      ioke.evaluate_string("1%2 == 1").should == ioke.true
-    end 
-
-    it "should return modulus for negative numbers" do 
-      ioke = IokeRuntime.get_runtime
-      ioke.evaluate_string("-13%4 == 3").should == ioke.true
-      ioke.evaluate_string("-13%-4 == -1").should == ioke.true
-      ioke.evaluate_string("13%-4 == -3").should == ioke.true
-    end
-  end
-  
   describe "'=='" do 
     it "should return true for the same number" do 
       ioke = IokeRuntime.get_runtime()
@@ -475,6 +452,29 @@ describe "Number" do
       ioke.evaluate_string('-1 kind == "Number Integer"').should == ioke.true
       ioke.evaluate_string('43534564356356456456 kind == "Number Integer"').should == ioke.true
       ioke.evaluate_string('0xFFF kind == "Number Integer"').should == ioke.true
+    end
+    
+    describe "'%'" do 
+      it "should return the number when taking the modulo of 0" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string("0%0 == 0").should == ioke.true
+        ioke.evaluate_string("13%0 == 13").should == ioke.true
+        ioke.evaluate_string("-10%0 == -10").should == ioke.true
+      end
+      
+      it "should return the regular modulus" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string("13%4 == 1").should == ioke.true
+        ioke.evaluate_string("4%13 == 4").should == ioke.true
+        ioke.evaluate_string("1%2 == 1").should == ioke.true
+      end 
+
+      it "should return modulus for negative numbers" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string("-13%4 == 3").should == ioke.true
+        ioke.evaluate_string("-13%-4 == -1").should == ioke.true
+        ioke.evaluate_string("13%-4 == -3").should == ioke.true
+      end
     end
     
     describe "'times'" do 
