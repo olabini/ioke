@@ -101,301 +101,6 @@ describe "Number" do
     end
   end
   
-  describe "'<=>'" do 
-    it "should return 0 for the same number" do 
-      ioke = IokeRuntime.get_runtime()
-      ioke.evaluate_stream(StringReader.new("0<=>0")).data.as_java_integer.should == 0
-      ioke.evaluate_stream(StringReader.new("1<=>1")).data.as_java_integer.should == 0
-      ioke.evaluate_stream(StringReader.new("10<=>10")).data.as_java_integer.should == 0
-      ioke.evaluate_stream(StringReader.new("12413423523452345345345<=>12413423523452345345345")).data.as_java_integer.should == 0
-      ioke.evaluate_stream(StringReader.new("(0-1)<=>(0-1)")).data.as_java_integer.should == 0
-    end
-
-    it "should return 1 when the left number is larger than the right" do 
-      ioke = IokeRuntime.get_runtime()
-      ioke.evaluate_stream(StringReader.new("1<=>0")).data.as_java_integer.should == 1
-      ioke.evaluate_stream(StringReader.new("2<=>1")).data.as_java_integer.should == 1
-      ioke.evaluate_stream(StringReader.new("10<=>9")).data.as_java_integer.should == 1
-      ioke.evaluate_stream(StringReader.new("12413423523452345345345<=>12413423523452345345344")).data.as_java_integer.should == 1
-      ioke.evaluate_stream(StringReader.new("0<=>(0-1)")).data.as_java_integer.should == 1
-      ioke.evaluate_stream(StringReader.new("1<=>(0-1)")).data.as_java_integer.should == 1
-    end
-
-    it "should return -1 when the left number is smaller than the right" do 
-      ioke = IokeRuntime.get_runtime()
-      ioke.evaluate_stream(StringReader.new("0<=>1")).data.as_java_integer.should == -1
-      ioke.evaluate_stream(StringReader.new("1<=>2")).data.as_java_integer.should == -1
-      ioke.evaluate_stream(StringReader.new("9<=>10")).data.as_java_integer.should == -1
-      ioke.evaluate_stream(StringReader.new("12413423523452345345343<=>12413423523452345345344")).data.as_java_integer.should == -1
-      ioke.evaluate_stream(StringReader.new("(0-1)<=>0")).data.as_java_integer.should == -1
-      ioke.evaluate_stream(StringReader.new("(0-1)<=>1")).data.as_java_integer.should == -1
-    end
-
-    # It should convert it's argument to number if it's not a number
-  end
-
-  describe "'-'" do 
-    it "should return 0 for the difference between 0 and 0" do 
-      ioke = IokeRuntime.get_runtime()
-      ioke.evaluate_stream(StringReader.new("0-0")).data.as_java_integer.should == 0
-    end
-    
-    it "should return the difference between really large numbers" do 
-      ioke = IokeRuntime.get_runtime()
-      ioke.evaluate_stream(StringReader.new("123435334645674745675675757-123435334645674745675675756")).data.as_java_integer.should == 1
-      ioke.evaluate_stream(StringReader.new("123435334645674745675675757-1")).data.as_java_string.should == "123435334645674745675675756"
-      ioke.evaluate_stream(StringReader.new("123435334645674745675675757-24334534544345345345345")).data.as_java_string.should == "123411000111130400330330412"
-    end
-    
-    it "should return the difference between smaller numbers" do 
-      ioke = IokeRuntime.get_runtime()
-      ioke.evaluate_stream(StringReader.new("1-1")).data.as_java_integer.should == 0
-      ioke.evaluate_stream(StringReader.new("0-1")).data.as_java_integer.should == -1
-      ioke.evaluate_stream(StringReader.new("2-1")).data.as_java_integer.should == 1
-      ioke.evaluate_stream(StringReader.new("10-5")).data.as_java_integer.should == 5
-      ioke.evaluate_stream(StringReader.new("234-30")).data.as_java_integer.should == 204
-      ioke.evaluate_stream(StringReader.new("30-35")).data.as_java_integer.should == -5
-    end
-    
-    it "should return the difference between negative numbers" do 
-      ioke = IokeRuntime.get_runtime()
-      ioke.evaluate_stream(StringReader.new("(0-1)-1")).data.as_java_integer.should == -2
-      ioke.evaluate_stream(StringReader.new("(0-1)-5")).data.as_java_integer.should == -6
-      ioke.evaluate_stream(StringReader.new("(0-1)-(0-5)")).data.as_java_integer.should == 4
-      ioke.evaluate_stream(StringReader.new("(0-10)-5")).data.as_java_integer.should == -15
-      ioke.evaluate_stream(StringReader.new("(0-10)-(0-5)")).data.as_java_integer.should == -5
-      ioke.evaluate_stream(StringReader.new("(0-2545345345346547456756)-(0-2545345345346547456755)")).data.as_java_integer.should == -1
-    end
-
-    it "should return the number when 0 is the argument" do 
-      ioke = IokeRuntime.get_runtime()
-      ioke.evaluate_stream(StringReader.new("(0-1)-0")).data.as_java_integer.should == -1
-      ioke.evaluate_stream(StringReader.new("10-0")).data.as_java_integer.should == 10
-      ioke.evaluate_stream(StringReader.new("1325234534634564564576367-0")).data.as_java_string.should == "1325234534634564564576367"
-    end
-    
-    # It should convert it's argument to number if it's not a number
-  end
-
-  describe "'+'" do 
-    it "should return 0 for the sum of 0 and 0" do 
-      ioke = IokeRuntime.get_runtime()
-      ioke.evaluate_stream(StringReader.new("0+0")).data.as_java_integer.should == 0
-    end
-
-    it "should return the sum of really large numbers" do 
-      ioke = IokeRuntime.get_runtime()
-      ioke.evaluate_stream(StringReader.new("234235345636345634567345675467+1")).data.as_java_string.should == "234235345636345634567345675468"
-      ioke.evaluate_stream(StringReader.new("21342342342345345+778626453756754687567865785678")).data.as_java_string.should == "778626453756776029910208131023"
-      ioke.evaluate_stream(StringReader.new("234234+63456345745676574567571345456345645675674567878567856785678657856568768")).data.
-        as_java_string.should == "63456345745676574567571345456345645675674567878567856785678657856803002"
-    end
-
-    it "should return the sum of smaller numbers" do 
-      ioke = IokeRuntime.get_runtime()
-      ioke.evaluate_stream(StringReader.new("1+1")).data.as_java_integer.should == 2
-      ioke.evaluate_stream(StringReader.new("10+1")).data.as_java_integer.should == 11
-      ioke.evaluate_stream(StringReader.new("15+15")).data.as_java_integer.should == 30
-      ioke.evaluate_stream(StringReader.new("16+15")).data.as_java_integer.should == 31
-    end
-
-    it "should return the sum of negative numbers" do 
-      ioke = IokeRuntime.get_runtime()
-      ioke.evaluate_stream(StringReader.new("1+(0-1)")).data.as_java_integer.should == 0
-      ioke.evaluate_stream(StringReader.new("(0-1)+2")).data.as_java_integer.should == 1
-      ioke.evaluate_stream(StringReader.new("(0-1)+(0-1)")).data.as_java_integer.should == -2
-    end
-
-    it "should return the number when 0 is the receiver" do 
-      ioke = IokeRuntime.get_runtime()
-      ioke.evaluate_stream(StringReader.new("0+1")).data.as_java_integer.should == 1
-      ioke.evaluate_stream(StringReader.new("0+(0-1)")).data.as_java_integer.should == -1
-      ioke.evaluate_stream(StringReader.new("0+124423")).data.as_java_integer.should == 124423
-      ioke.evaluate_stream(StringReader.new("0+34545636745678657856786786785678")).data.as_java_string.should == "34545636745678657856786786785678"
-    end
-
-    it "should return the number when 0 is the argument" do 
-      ioke = IokeRuntime.get_runtime()
-      ioke.evaluate_stream(StringReader.new("1+0")).data.as_java_integer.should == 1
-      ioke.evaluate_stream(StringReader.new("(0-1)+0")).data.as_java_integer.should == -1
-      ioke.evaluate_stream(StringReader.new("124423+0")).data.as_java_integer.should == 124423
-      ioke.evaluate_stream(StringReader.new("34545636745678657856786786785678+0")).data.as_java_string.should == "34545636745678657856786786785678"
-    end
-
-    # It should convert it's argument to number if it's not a number
-  end
-
-  describe "'*'" do 
-    it "should multiply with 0" do 
-      ioke = IokeRuntime.get_runtime
-      ioke.evaluate_string("1*0 == 0").should == ioke.true
-      ioke.evaluate_string("34253453*0 == 0").should == ioke.true
-      ioke.evaluate_string("-1*0 == 0").should == ioke.true
-    end
-
-    it "should return the same number when multiplying with 1" do 
-      ioke = IokeRuntime.get_runtime
-      ioke.evaluate_string("1*1 == 1").should == ioke.true
-      ioke.evaluate_string("34253453*1 == 34253453").should == ioke.true
-      ioke.evaluate_string("-1*1 == -1").should == ioke.true
-    end
-
-    it "should return a really large number when multiplying large numbers" do 
-      ioke = IokeRuntime.get_runtime
-      ioke.evaluate_string("2345346456745722*12213212323899088545 == 28644214249339912541248622627954490").should == ioke.true
-    end
-
-    it "should return a negative number when multiplying with one negative number" do 
-      ioke = IokeRuntime.get_runtime
-      ioke.evaluate_string("-21*2 == -42").should == ioke.true
-    end
-
-    it "should return a positive number when multiplying with two negative numbers" do 
-      ioke = IokeRuntime.get_runtime
-      ioke.evaluate_string("-21*-2 == 42").should == ioke.true
-    end
-  end
-
-  describe "'**'" do 
-    it "should return 1 for raising to 0" do 
-      ioke = IokeRuntime.get_runtime
-      ioke.evaluate_string("1**0 == 1").should == ioke.true
-    end
-
-    it "should return the number when raising to 1" do 
-      ioke = IokeRuntime.get_runtime
-      ioke.evaluate_string("2**1 == 2").should == ioke.true
-    end
-
-    it "should raise a number" do 
-      ioke = IokeRuntime.get_runtime
-      ioke.evaluate_string("2**2 == 4").should == ioke.true
-      ioke.evaluate_string("2**3 == 8").should == ioke.true
-    end
-
-    it "should raise a number to a large number" do 
-      ioke = IokeRuntime.get_runtime
-      ioke.evaluate_string("2 ** 40 == 1099511627776").should == ioke.true
-    end
-  end
-  
-  describe "'/'" do 
-    it "should cause a condition when dividing with 0" do 
-      sw = StringWriter.new(20)
-      out = PrintWriter.new(sw)
-
-      ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
-
-      begin 
-        ioke.evaluate_string("10/0")
-        true.should be_false
-      rescue NativeException => cfe
-        cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Arithmetic DivisionByZero"
-      end
-    end
-
-    it "should divide simple numbers" do 
-      ioke = IokeRuntime.get_runtime
-      ioke.evaluate_string("2/1 == 2").should == ioke.true
-      ioke.evaluate_string("4/2 == 2").should == ioke.true
-      ioke.evaluate_string("200/5 == 40").should == ioke.true
-    end
-
-    it "should return a rational when dividing uneven numbers" do 
-      ioke = IokeRuntime.get_runtime
-      ioke.evaluate_string("x = 8192/10. (x mimics?(Number Ratio)) && (x == 4096/5)").should == ioke.true
-      ioke.evaluate_string("x = 3/2. (x mimics?(Number Ratio)) && (x != 1) && (x == 3/2)").should == ioke.true
-      ioke.evaluate_string("x = 5/2. (x mimics?(Number Ratio)) && (x != 2) && (x == 5/2)").should == ioke.true
-      ioke.evaluate_string("x = 1/2. (x mimics?(Number Ratio)) && (x != 0) && (x == 1/2)").should == ioke.true
-    end
-
-    it "should divide negative numbers correctly" do 
-      ioke = IokeRuntime.get_runtime
-      ioke.evaluate_string("-8200/10 == -820").should == ioke.true
-    end
-
-    it "should divide with a negative dividend correctly" do 
-      ioke = IokeRuntime.get_runtime
-      ioke.evaluate_string("8200/-10 == -820").should == ioke.true
-    end
-
-    it "should divide a negative number with a negative dividend" do 
-      ioke = IokeRuntime.get_runtime
-      ioke.evaluate_string("-8200/-10 == 820").should == ioke.true
-    end
-  end
-
-  describe "'=='" do 
-    it "should return true for the same number" do 
-      ioke = IokeRuntime.get_runtime()
-      ioke.evaluate_string("x = 1. x == x").should == ioke.true
-      ioke.evaluate_string("x = 10. x == x").should == ioke.true
-      ioke.evaluate_string("x = (0-20). x == x").should == ioke.true
-    end
-
-    it "should not return true for unequal numbers" do 
-      ioke = IokeRuntime.get_runtime()
-      ioke.evaluate_string("1 == 2").should == ioke.false
-      ioke.evaluate_string("1 == 200000").should == ioke.false
-      ioke.evaluate_string("1123223 == 65756756756").should == ioke.false
-      ioke.evaluate_string("(0-1) == 2").should == ioke.false
-    end
-    
-    it "should return true for the result of equal number calculations" do 
-      ioke = IokeRuntime.get_runtime()
-      ioke.evaluate_string("(1+1) == 2").should == ioke.true
-      ioke.evaluate_string("(2+1) == (1+2)").should == ioke.true
-    end
-    
-    it "should work correctly when comparing zeroes" do 
-      ioke = IokeRuntime.get_runtime()
-      ioke.evaluate_string("0 == 0").should == ioke.true
-      ioke.evaluate_string("1 == 0").should == ioke.false
-      ioke.evaluate_string("0 == 1").should == ioke.false
-    end
-
-    it "should work correctly when comparing negative numbers" do 
-      ioke = IokeRuntime.get_runtime()
-      ioke.evaluate_string("(0-19) == (0-19)").should == ioke.true
-      ioke.evaluate_string("(0-19) == (0-20)").should == ioke.false
-    end
-
-    it "should work correctly when comparing large positive numbers" do 
-      ioke = IokeRuntime.get_runtime()
-      ioke.evaluate_string("123234534675676786789678985463456345 == 123234534675676786789678985463456345").should == ioke.true
-      ioke.evaluate_string("8888856676776 == 8888856676776").should == ioke.true
-    end
-  end
-  
-  describe "'asText'" do 
-    it "should return a representation of 0" do 
-      ioke = IokeRuntime.get_runtime()
-      ioke.evaluate_stream(StringReader.new("0 asText")).data.text.should == "0"
-    end
-
-    it "should return a representation of a small positive number" do 
-      ioke = IokeRuntime.get_runtime()
-      ioke.evaluate_stream(StringReader.new("1 asText")).data.text.should == "1"
-      ioke.evaluate_stream(StringReader.new("12 asText")).data.text.should == "12"
-      ioke.evaluate_stream(StringReader.new("9232423 asText")).data.text.should == "9232423"
-    end
-    
-    it "should return a representation of a large positive number" do 
-      ioke = IokeRuntime.get_runtime()
-      ioke.evaluate_stream(StringReader.new("65535 asText")).data.text.should == "65535"
-      ioke.evaluate_stream(StringReader.new("65536 asText")).data.text.should == "65536"
-      ioke.evaluate_stream(StringReader.new("1235345341231298989793249879238543956783485384758333478526 asText")).data.text.should == "1235345341231298989793249879238543956783485384758333478526"
-      ioke.evaluate_stream(StringReader.new("99999999999999999999999999 asText")).data.text.should == "99999999999999999999999999"
-    end
-
-    it "should return a representation of a negative number" do 
-      ioke = IokeRuntime.get_runtime()
-      ioke.evaluate_stream(StringReader.new("(0-65535) asText")).data.text.should == "-65535"
-      ioke.evaluate_stream(StringReader.new("(0-65536) asText")).data.text.should == "-65536"
-      ioke.evaluate_stream(StringReader.new("(0-1) asText")).data.text.should == "-1"
-      ioke.evaluate_stream(StringReader.new("(0-645654) asText")).data.text.should == "-645654"
-    end
-  end
 
   describe "Real" do 
     it "should have the correct kind" do 
@@ -419,6 +124,307 @@ describe "Number" do
       ioke = IokeRuntime.get_runtime
       ioke.evaluate_string('Number Rational mimics?(Number Real)').should == ioke.true
     end
+
+    describe "'<=>'" do 
+      it "should return 0 for the same number" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_stream(StringReader.new("0<=>0")).data.as_java_integer.should == 0
+        ioke.evaluate_stream(StringReader.new("1<=>1")).data.as_java_integer.should == 0
+        ioke.evaluate_stream(StringReader.new("10<=>10")).data.as_java_integer.should == 0
+        ioke.evaluate_stream(StringReader.new("12413423523452345345345<=>12413423523452345345345")).data.as_java_integer.should == 0
+        ioke.evaluate_stream(StringReader.new("(0-1)<=>(0-1)")).data.as_java_integer.should == 0
+      end
+
+      it "should return 1 when the left number is larger than the right" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_stream(StringReader.new("1<=>0")).data.as_java_integer.should == 1
+        ioke.evaluate_stream(StringReader.new("2<=>1")).data.as_java_integer.should == 1
+        ioke.evaluate_stream(StringReader.new("10<=>9")).data.as_java_integer.should == 1
+        ioke.evaluate_stream(StringReader.new("12413423523452345345345<=>12413423523452345345344")).data.as_java_integer.should == 1
+        ioke.evaluate_stream(StringReader.new("0<=>(0-1)")).data.as_java_integer.should == 1
+        ioke.evaluate_stream(StringReader.new("1<=>(0-1)")).data.as_java_integer.should == 1
+      end
+
+      it "should return -1 when the left number is smaller than the right" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_stream(StringReader.new("0<=>1")).data.as_java_integer.should == -1
+        ioke.evaluate_stream(StringReader.new("1<=>2")).data.as_java_integer.should == -1
+        ioke.evaluate_stream(StringReader.new("9<=>10")).data.as_java_integer.should == -1
+        ioke.evaluate_stream(StringReader.new("12413423523452345345343<=>12413423523452345345344")).data.as_java_integer.should == -1
+        ioke.evaluate_stream(StringReader.new("(0-1)<=>0")).data.as_java_integer.should == -1
+        ioke.evaluate_stream(StringReader.new("(0-1)<=>1")).data.as_java_integer.should == -1
+      end
+
+      # It should convert it's argument to number if it's not a number
+    end
+
+    describe "'-'" do 
+      it "should return 0 for the difference between 0 and 0" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_stream(StringReader.new("0-0")).data.as_java_integer.should == 0
+      end
+      
+      it "should return the difference between really large numbers" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_stream(StringReader.new("123435334645674745675675757-123435334645674745675675756")).data.as_java_integer.should == 1
+        ioke.evaluate_stream(StringReader.new("123435334645674745675675757-1")).data.as_java_string.should == "123435334645674745675675756"
+        ioke.evaluate_stream(StringReader.new("123435334645674745675675757-24334534544345345345345")).data.as_java_string.should == "123411000111130400330330412"
+      end
+      
+      it "should return the difference between smaller numbers" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_stream(StringReader.new("1-1")).data.as_java_integer.should == 0
+        ioke.evaluate_stream(StringReader.new("0-1")).data.as_java_integer.should == -1
+        ioke.evaluate_stream(StringReader.new("2-1")).data.as_java_integer.should == 1
+        ioke.evaluate_stream(StringReader.new("10-5")).data.as_java_integer.should == 5
+        ioke.evaluate_stream(StringReader.new("234-30")).data.as_java_integer.should == 204
+        ioke.evaluate_stream(StringReader.new("30-35")).data.as_java_integer.should == -5
+      end
+      
+      it "should return the difference between negative numbers" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_stream(StringReader.new("(0-1)-1")).data.as_java_integer.should == -2
+        ioke.evaluate_stream(StringReader.new("(0-1)-5")).data.as_java_integer.should == -6
+        ioke.evaluate_stream(StringReader.new("(0-1)-(0-5)")).data.as_java_integer.should == 4
+        ioke.evaluate_stream(StringReader.new("(0-10)-5")).data.as_java_integer.should == -15
+        ioke.evaluate_stream(StringReader.new("(0-10)-(0-5)")).data.as_java_integer.should == -5
+        ioke.evaluate_stream(StringReader.new("(0-2545345345346547456756)-(0-2545345345346547456755)")).data.as_java_integer.should == -1
+      end
+
+      it "should return the number when 0 is the argument" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_stream(StringReader.new("(0-1)-0")).data.as_java_integer.should == -1
+        ioke.evaluate_stream(StringReader.new("10-0")).data.as_java_integer.should == 10
+        ioke.evaluate_stream(StringReader.new("1325234534634564564576367-0")).data.as_java_string.should == "1325234534634564564576367"
+      end
+      
+      # It should convert it's argument to number if it's not a number
+    end
+
+    describe "'+'" do 
+      it "should return 0 for the sum of 0 and 0" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_stream(StringReader.new("0+0")).data.as_java_integer.should == 0
+      end
+
+      it "should return the sum of really large numbers" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_stream(StringReader.new("234235345636345634567345675467+1")).data.as_java_string.should == "234235345636345634567345675468"
+        ioke.evaluate_stream(StringReader.new("21342342342345345+778626453756754687567865785678")).data.as_java_string.should == "778626453756776029910208131023"
+        ioke.evaluate_stream(StringReader.new("234234+63456345745676574567571345456345645675674567878567856785678657856568768")).data.
+          as_java_string.should == "63456345745676574567571345456345645675674567878567856785678657856803002"
+      end
+
+      it "should return the sum of smaller numbers" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_stream(StringReader.new("1+1")).data.as_java_integer.should == 2
+        ioke.evaluate_stream(StringReader.new("10+1")).data.as_java_integer.should == 11
+        ioke.evaluate_stream(StringReader.new("15+15")).data.as_java_integer.should == 30
+        ioke.evaluate_stream(StringReader.new("16+15")).data.as_java_integer.should == 31
+      end
+
+      it "should return the sum of negative numbers" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_stream(StringReader.new("1+(0-1)")).data.as_java_integer.should == 0
+        ioke.evaluate_stream(StringReader.new("(0-1)+2")).data.as_java_integer.should == 1
+        ioke.evaluate_stream(StringReader.new("(0-1)+(0-1)")).data.as_java_integer.should == -2
+      end
+
+      it "should return the number when 0 is the receiver" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_stream(StringReader.new("0+1")).data.as_java_integer.should == 1
+        ioke.evaluate_stream(StringReader.new("0+(0-1)")).data.as_java_integer.should == -1
+        ioke.evaluate_stream(StringReader.new("0+124423")).data.as_java_integer.should == 124423
+        ioke.evaluate_stream(StringReader.new("0+34545636745678657856786786785678")).data.as_java_string.should == "34545636745678657856786786785678"
+      end
+
+      it "should return the number when 0 is the argument" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_stream(StringReader.new("1+0")).data.as_java_integer.should == 1
+        ioke.evaluate_stream(StringReader.new("(0-1)+0")).data.as_java_integer.should == -1
+        ioke.evaluate_stream(StringReader.new("124423+0")).data.as_java_integer.should == 124423
+        ioke.evaluate_stream(StringReader.new("34545636745678657856786786785678+0")).data.as_java_string.should == "34545636745678657856786786785678"
+      end
+
+      # It should convert it's argument to number if it's not a number
+    end
+
+    describe "'*'" do 
+      it "should multiply with 0" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string("1*0 == 0").should == ioke.true
+        ioke.evaluate_string("34253453*0 == 0").should == ioke.true
+        ioke.evaluate_string("-1*0 == 0").should == ioke.true
+      end
+
+      it "should return the same number when multiplying with 1" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string("1*1 == 1").should == ioke.true
+        ioke.evaluate_string("34253453*1 == 34253453").should == ioke.true
+        ioke.evaluate_string("-1*1 == -1").should == ioke.true
+      end
+
+      it "should return a really large number when multiplying large numbers" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string("2345346456745722*12213212323899088545 == 28644214249339912541248622627954490").should == ioke.true
+      end
+
+      it "should return a negative number when multiplying with one negative number" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string("-21*2 == -42").should == ioke.true
+      end
+
+      it "should return a positive number when multiplying with two negative numbers" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string("-21*-2 == 42").should == ioke.true
+      end
+    end
+
+    describe "'**'" do 
+      it "should return 1 for raising to 0" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string("1**0 == 1").should == ioke.true
+      end
+
+      it "should return the number when raising to 1" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string("2**1 == 2").should == ioke.true
+      end
+
+      it "should raise a number" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string("2**2 == 4").should == ioke.true
+        ioke.evaluate_string("2**3 == 8").should == ioke.true
+      end
+
+      it "should raise a number to a large number" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string("2 ** 40 == 1099511627776").should == ioke.true
+      end
+    end
+    
+    describe "'/'" do 
+      it "should cause a condition when dividing with 0" do 
+        sw = StringWriter.new(20)
+        out = PrintWriter.new(sw)
+
+        ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
+
+        begin 
+          ioke.evaluate_string("10/0")
+          true.should be_false
+        rescue NativeException => cfe
+          cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Arithmetic DivisionByZero"
+        end
+      end
+
+      it "should divide simple numbers" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string("2/1 == 2").should == ioke.true
+        ioke.evaluate_string("4/2 == 2").should == ioke.true
+        ioke.evaluate_string("200/5 == 40").should == ioke.true
+      end
+
+      it "should return a rational when dividing uneven numbers" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string("x = 8192/10. (x mimics?(Number Ratio)) && (x == 4096/5)").should == ioke.true
+        ioke.evaluate_string("x = 3/2. (x mimics?(Number Ratio)) && (x != 1) && (x == 3/2)").should == ioke.true
+        ioke.evaluate_string("x = 5/2. (x mimics?(Number Ratio)) && (x != 2) && (x == 5/2)").should == ioke.true
+        ioke.evaluate_string("x = 1/2. (x mimics?(Number Ratio)) && (x != 0) && (x == 1/2)").should == ioke.true
+      end
+
+      it "should divide negative numbers correctly" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string("-8200/10 == -820").should == ioke.true
+      end
+
+      it "should divide with a negative dividend correctly" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string("8200/-10 == -820").should == ioke.true
+      end
+
+      it "should divide a negative number with a negative dividend" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string("-8200/-10 == 820").should == ioke.true
+      end
+    end
+
+    describe "'=='" do 
+      it "should return true for the same number" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_string("x = 1. x == x").should == ioke.true
+        ioke.evaluate_string("x = 10. x == x").should == ioke.true
+        ioke.evaluate_string("x = (0-20). x == x").should == ioke.true
+      end
+
+      it "should not return true for unequal numbers" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_string("1 == 2").should == ioke.false
+        ioke.evaluate_string("1 == 200000").should == ioke.false
+        ioke.evaluate_string("1123223 == 65756756756").should == ioke.false
+        ioke.evaluate_string("(0-1) == 2").should == ioke.false
+      end
+      
+      it "should return true for the result of equal number calculations" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_string("(1+1) == 2").should == ioke.true
+        ioke.evaluate_string("(2+1) == (1+2)").should == ioke.true
+      end
+      
+      it "should work correctly when comparing zeroes" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_string("0 == 0").should == ioke.true
+        ioke.evaluate_string("1 == 0").should == ioke.false
+        ioke.evaluate_string("0 == 1").should == ioke.false
+      end
+
+      it "should work correctly when comparing negative numbers" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_string("(0-19) == (0-19)").should == ioke.true
+        ioke.evaluate_string("(0-19) == (0-20)").should == ioke.false
+      end
+
+      it "should work correctly when comparing large positive numbers" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_string("123234534675676786789678985463456345 == 123234534675676786789678985463456345").should == ioke.true
+        ioke.evaluate_string("8888856676776 == 8888856676776").should == ioke.true
+      end
+    end
+    
+    describe "'asText'" do 
+      it "should return a representation of 0" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_stream(StringReader.new("0 asText")).data.text.should == "0"
+      end
+
+      it "should return a representation of a Ratio" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_stream(StringReader.new("(1/3) asText")).data.text.should == "1/3"
+      end
+
+      it "should return a representation of a small positive number" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_stream(StringReader.new("1 asText")).data.text.should == "1"
+        ioke.evaluate_stream(StringReader.new("12 asText")).data.text.should == "12"
+        ioke.evaluate_stream(StringReader.new("9232423 asText")).data.text.should == "9232423"
+      end
+      
+      it "should return a representation of a large positive number" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_stream(StringReader.new("65535 asText")).data.text.should == "65535"
+        ioke.evaluate_stream(StringReader.new("65536 asText")).data.text.should == "65536"
+        ioke.evaluate_stream(StringReader.new("1235345341231298989793249879238543956783485384758333478526 asText")).data.text.should == "1235345341231298989793249879238543956783485384758333478526"
+        ioke.evaluate_stream(StringReader.new("99999999999999999999999999 asText")).data.text.should == "99999999999999999999999999"
+      end
+
+      it "should return a representation of a negative number" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_stream(StringReader.new("(0-65535) asText")).data.text.should == "-65535"
+        ioke.evaluate_stream(StringReader.new("(0-65536) asText")).data.text.should == "-65536"
+        ioke.evaluate_stream(StringReader.new("(0-1) asText")).data.text.should == "-1"
+        ioke.evaluate_stream(StringReader.new("(0-645654) asText")).data.text.should == "-645654"
+      end
+    end
   end
 
   describe "Decimal" do 
@@ -430,6 +436,49 @@ describe "Number" do
     it "should mimic Real" do 
       ioke = IokeRuntime.get_runtime
       ioke.evaluate_string('Number Decimal mimics?(Number Real)').should == ioke.true
+    end
+
+    it "should be the kind of simple decimal numbers" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('0.0 kind == "Number Decimal"').should == ioke.true
+      ioke.evaluate_string('1.0 kind == "Number Decimal"').should == ioke.true
+      ioke.evaluate_string('424345.255 kind == "Number Decimal"').should == ioke.true
+#      ioke.evaluate_string('-1.0 kind == "Number Decimal"').should == ioke.true
+      ioke.evaluate_string('435345643563.56456456 kind == "Number Decimal"').should == ioke.true
+      ioke.evaluate_string('10e6 kind == "Number Decimal"').should == ioke.true
+    end
+
+    describe "'=='" do 
+      it "should return true for the same number" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_string("x = 1.0. x == x").should == ioke.true
+        ioke.evaluate_string("x = 10.0. x == x").should == ioke.true
+#        ioke.evaluate_string("x = -20.0. x == x").should == ioke.true
+      end
+
+      it "should not return true for unequal numbers" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_string("1.1 == 2.0").should == ioke.false
+        ioke.evaluate_string("1.2 == 200000.0").should == ioke.false
+        ioke.evaluate_string("1123223.3233223 == 65756756756.0").should == ioke.false
+#        ioke.evaluate_string("-1.0 == 2").should == ioke.false
+      end
+      
+      it "should return true for the result of equal number calculations"
+      it "should work correctly when comparing zeroes" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_string("0.0 == 0.0").should == ioke.true
+        ioke.evaluate_string("1.0 == 0.0").should == ioke.false
+        ioke.evaluate_string("0.0 == 1.0").should == ioke.false
+      end
+
+      it "should work correctly when comparing negative numbers"
+
+      it "should work correctly when comparing large positive numbers" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_string("123234534675676786789678985463456345.234234 == 123234534675676786789678985463456345.234234").should == ioke.true
+        ioke.evaluate_string("8888856676776.0101 == 8888856676776.0101").should == ioke.true
+      end
     end
   end
 

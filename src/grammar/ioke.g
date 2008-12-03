@@ -103,6 +103,7 @@ expression
     |   StringLiteral
     |   RegexpLiteral
     |   NumberLiteral
+    |   DecimalLiteral
     |   Terminator
     ;
 
@@ -139,16 +140,20 @@ Identifier
     |   (Letter|':') (Letter|IDDigit|StrangeChars)*
     ;
 
+DecimalLiteral
+    :
+    ;
+
 NumberLiteral
     :
 		'0'	('x'|'X') HexDigit+
     |   '0' (
-            {(input.LA(2)>='0')&&(input.LA(2)<='9')}?=> (FloatWithLeadingDot)
+            {(input.LA(2)>='0')&&(input.LA(2)<='9')}?=> (FloatWithLeadingDot) {$type=DecimalLiteral;}
         |
         )
     |   NonZeroDecimal (
-            {(input.LA(2)>='0')&&(input.LA(2)<='9')}?=> (FloatWithLeadingDot)
-        | Exponent
+            {(input.LA(2)>='0')&&(input.LA(2)<='9')}?=> (FloatWithLeadingDot) {$type=DecimalLiteral;}
+        | Exponent {$type=DecimalLiteral;}
         |
         )
     ;

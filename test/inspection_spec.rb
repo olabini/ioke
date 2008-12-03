@@ -239,6 +239,44 @@ describe "Number" do
       ioke.evaluate_string('(-333391244) inspect == "-333391244"').should == ioke.true
     end
   end
+
+  describe "Decimal" do 
+    describe "'notice'" do 
+      it "should return the textual representation of the number" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string('0.0 notice == "0.0"').should == ioke.true
+        ioke.evaluate_string('1.0 notice == "1.0"').should == ioke.true
+        ioke.evaluate_string('1.3434534534534263456345 notice == "1.3434534534534263456345"').should == ioke.true
+        ioke.evaluate_string('1.000000000000000 notice == "1.0"').should == ioke.true
+        ioke.evaluate_string('1e3 notice == "1000.0"').should == ioke.true
+        ioke.evaluate_string('22342340.0 notice == "22342340.0"').should == ioke.true
+        ioke.evaluate_string('333391244.0 notice == "333391244.0"').should == ioke.true
+      end
+
+      it "should return the textual representation of a negative number" #do 
+#         ioke = IokeRuntime.get_runtime
+#         ioke.evaluate_string('(-1.0) notice == "-1.0"').should == ioke.true
+#         ioke.evaluate_string('(-22342340.0) notice == "-22342340.0"').should == ioke.true
+#         ioke.evaluate_string('(-333391244.0) notice == "-333391244.0"').should == ioke.true
+#       end
+    end
+    
+    describe "'inspect'" do 
+      it "should return the textual representation of the number" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string('0.1 inspect == "0.1"').should == ioke.true
+        ioke.evaluate_string('22342340.1 inspect == "22342340.1"').should == ioke.true
+        ioke.evaluate_string('333391244.1 inspect == "333391244.1"').should == ioke.true
+      end
+
+      it "should return the textual representation of a negative number" #do 
+#         ioke = IokeRuntime.get_runtime
+#         ioke.evaluate_string('(-1.1) inspect == "-1.1"').should == ioke.true
+#         ioke.evaluate_string('(-22342340.1) inspect == "-22342340.1"').should == ioke.true
+#         ioke.evaluate_string('(-333391244.1) inspect == "-333391244.1"').should == ioke.true
+#       end
+    end
+  end
 end
 
 describe "DefaultMethod" do 

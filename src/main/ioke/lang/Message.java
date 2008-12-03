@@ -439,6 +439,11 @@ public class Message extends IokeData {
                 m.setLine(tree.getLine());
                 m.setPosition(tree.getCharPositionInLine());
                 return runtime.createMessage(m);
+            case iokeParser.DecimalLiteral:
+                m = new Message(runtime, "internal:createDecimal", tree.getText());
+                m.setLine(tree.getLine());
+                m.setPosition(tree.getCharPositionInLine());
+                return runtime.createMessage(m);
             case iokeParser.Identifier:
                 m = new Message(runtime, tree.getText());
                 m.setLine(tree.getLine());
@@ -791,6 +796,8 @@ public class Message extends IokeData {
         } else if(this.name.equals("internal:createPattern") && (this.arguments.get(0) instanceof String)) {
             base.append("#/").append(this.arguments.get(0)).append('/').append(this.arguments.get(1));
         } else if(this.name.equals("internal:createNumber") && (this.arguments.get(0) instanceof String)) {
+            base.append(this.arguments.get(0));
+        } else if(this.name.equals("internal:createDecimal") && (this.arguments.get(0) instanceof String)) {
             base.append(this.arguments.get(0));
         } else if(this.type == Type.TERMINATOR) {
             base.append(".\n");

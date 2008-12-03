@@ -3,6 +3,8 @@
  */
 package ioke.lang;
 
+import java.math.BigDecimal;
+
 import java.util.List;
 
 import gnu.math.BitOps;
@@ -149,13 +151,12 @@ public class Number extends IokeData {
         number.registerCell("Ratio", ratio);
         runtime.ratio = ratio;
 
-        IokeObject decimal = new IokeObject(runtime, "An exact, unlimited representation of a decimal number");
+        IokeObject decimal = new IokeObject(runtime, "An exact, unlimited representation of a decimal number", new Decimal(BigDecimal.ZERO));
         decimal.mimicsWithoutCheck(real);
-        decimal.setKind("Number Decimal");
+        decimal.init();
         number.registerCell("Decimal", decimal);
-        runtime.decimal = decimal;
         
-        number.registerMethod(runtime.newJavaMethod("compares this number against the argument, returning -1, 0 or 1 based on which one is larger", new JavaMethod("<=>") {
+        rational.registerMethod(runtime.newJavaMethod("compares this number against the argument, returning -1, 0 or 1 based on which one is larger", new JavaMethod("<=>") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     Object arg = message.getEvaluatedArgument(0, context);
@@ -166,7 +167,7 @@ public class Number extends IokeData {
                 }
             }));
 
-        number.registerMethod(runtime.newJavaMethod("compares this number against the argument, true if this number is the same, otherwise false", new JavaMethod("==") {
+        rational.registerMethod(runtime.newJavaMethod("compares this number against the argument, true if this number is the same, otherwise false", new JavaMethod("==") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     Object arg = message.getEvaluatedArgument(0, context);
@@ -177,7 +178,7 @@ public class Number extends IokeData {
                 }
             }));
 
-        number.registerMethod(runtime.newJavaMethod("returns the difference between this number and the argument", new JavaMethod("-") {
+        rational.registerMethod(runtime.newJavaMethod("returns the difference between this number and the argument", new JavaMethod("-") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     Object arg = message.getEvaluatedArgument(0, context);
@@ -188,7 +189,7 @@ public class Number extends IokeData {
                 }
             }));
 
-        number.registerMethod(runtime.newJavaMethod("returns the addition of this number and the argument", new JavaMethod("+") {
+        rational.registerMethod(runtime.newJavaMethod("returns the addition of this number and the argument", new JavaMethod("+") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     Object arg = message.getEvaluatedArgument(0, context);
@@ -199,7 +200,7 @@ public class Number extends IokeData {
                 }
             }));
 
-        number.registerMethod(runtime.newJavaMethod("returns the product of this number and the argument", new JavaMethod("*") {
+        rational.registerMethod(runtime.newJavaMethod("returns the product of this number and the argument", new JavaMethod("*") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     Object arg = message.getEvaluatedArgument(0, context);
@@ -210,7 +211,7 @@ public class Number extends IokeData {
                 }
             }));
 
-        number.registerMethod(runtime.newJavaMethod("returns the quotient of this number and the argument. if the division is not exact, it will return a Ratio.", new JavaMethod("/") {
+        rational.registerMethod(runtime.newJavaMethod("returns the quotient of this number and the argument. if the division is not exact, it will return a Ratio.", new JavaMethod("/") {
                 @Override
                 public Object activate(IokeObject method, final IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     Object arg = message.getEvaluatedArgument(0, context);
@@ -262,7 +263,7 @@ public class Number extends IokeData {
                 }
             }));
 
-        number.registerMethod(runtime.newJavaMethod("returns this number to the power of the argument", new JavaMethod("**") {
+        rational.registerMethod(runtime.newJavaMethod("returns this number to the power of the argument", new JavaMethod("**") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     Object arg = message.getEvaluatedArgument(0, context);
@@ -329,21 +330,21 @@ public class Number extends IokeData {
                 }
             }));
 
-        number.registerMethod(runtime.newJavaMethod("Returns a text representation of the object", new JavaMethod("asText") {
+        rational.registerMethod(runtime.newJavaMethod("Returns a text representation of the object", new JavaMethod("asText") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
                     return runtime.newText(on.toString());
                 }
             }));
 
-        number.registerMethod(obj.runtime.newJavaMethod("Returns a text inspection of the object", new JavaMethod("inspect") {
+        rational.registerMethod(obj.runtime.newJavaMethod("Returns a text inspection of the object", new JavaMethod("inspect") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
                     return method.runtime.newText(Number.getInspect(on));
                 }
             }));
 
-        number.registerMethod(obj.runtime.newJavaMethod("Returns a brief text inspection of the object", new JavaMethod("notice") {
+        rational.registerMethod(obj.runtime.newJavaMethod("Returns a brief text inspection of the object", new JavaMethod("notice") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
                     return method.runtime.newText(Number.getInspect(on));

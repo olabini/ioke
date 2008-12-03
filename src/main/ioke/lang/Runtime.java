@@ -470,25 +470,18 @@ public class Runtime {
         return nil;
     }
 
+    public IokeObject newDecimal(String number) throws ControlFlow {
+        IokeObject obj = this.decimal.allocateCopy(null, null);
+        obj.mimicsWithoutCheck(this.decimal);
+        obj.data = Decimal.decimal(number);
+        return obj;
+    }
+
     public IokeObject newNumber(String number) throws ControlFlow {
-        if(number.indexOf('.') != -1) {
-            final IokeObject condition = IokeObject.as(IokeObject.getCellChain(this.condition, 
-                                                                               this.message, 
-                                                                               this.ground, 
-                                                                               "Error", 
-                                                                               "Default")).mimic(this.message, this.ground);
-            condition.setCell("message", this.message);
-            condition.setCell("context", this.ground);
-            condition.setCell("receiver", this.ground);
-            condition.setCell("text", newText("Can't handle decimal numbers yet. Sorry."));
-            errorCondition(condition);
-            return null;
-        } else {
-            IokeObject obj = this.integer.allocateCopy(null, null);
-            obj.mimicsWithoutCheck(this.integer);
-            obj.data = Number.integer(number);
-            return obj;
-        }
+        IokeObject obj = this.integer.allocateCopy(null, null);
+        obj.mimicsWithoutCheck(this.integer);
+        obj.data = Number.integer(number);
+        return obj;
     }
 
     public IokeObject newNumber(IntNum number) {
