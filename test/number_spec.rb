@@ -36,6 +36,30 @@ describe "parsing" do
       test_longer("112142342353453453453453453475434574675674564756896765786781121213200000")
     end
   end
+  
+  describe "hexadecimal numbers" do 
+    it "should be possible to parse a 0" do 
+      test_int("0x0", 0)
+    end
+
+    it "should be possible to parse a 1" do 
+      test_int("0x1", 1)
+    end
+
+    it "should be possible to parse a larger number" do 
+      test_int("0xA", 10)
+      test_int("0xb", 11)
+      test_int("0xC", 12)
+      test_int("0xD", 13)
+      test_int("0xe", 14)
+      test_int("0xF", 15)
+      test_int("0xFA111CD", 262214093)
+    end
+
+    it "should be possible to parse a really large number" do 
+      test_longer("0xFAD23234235FFFFFF4434334534500000000000232345234FFDDDDDDD", "422632681289240890518030477270484810255193915833100047461304598650333")
+    end
+  end
 end
 
 describe "Number" do 

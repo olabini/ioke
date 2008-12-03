@@ -18,7 +18,11 @@ public class Number extends IokeData {
     private final IntNum value;
 
     public Number(String textRepresentation) {
-        value = IntNum.valueOf(textRepresentation);
+        if(textRepresentation.startsWith("0x") || textRepresentation.startsWith("0X")) {
+            value = IntNum.valueOf(textRepresentation.substring(2), 16);
+        } else {
+            value = IntNum.valueOf(textRepresentation);
+        }
     }
 
     public Number(int javaNumber) {
