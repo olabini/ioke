@@ -215,14 +215,6 @@ describe "core" do
     end
   end
 
-  describe "Number" do 
-    it "should have the correct kind" do 
-      runtime = IokeRuntime.get_runtime
-      result = runtime.number.find_cell(nil, nil, "kind")
-      result.data.text.should == 'Number'
-    end
-  end
-
   describe "Range" do 
     it "should have the correct kind" do 
       runtime = IokeRuntime.get_runtime

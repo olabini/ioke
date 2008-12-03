@@ -67,6 +67,9 @@ public class Runtime {
     public IokeObject handler = new IokeObject(this, "A Handler contains handling information for handling a condition without unwinding the stack.");
     public IokeObject io = new IokeObject(this, "IO is the base for all input/output in Ioke", new IokeIO());
 
+    public IokeObject integer = null;
+    public IokeObject decimal = null;
+
     // Core messages
     public IokeObject asText = newMessage("asText");
     public IokeObject mimic = newMessage("mimic");
@@ -474,25 +477,26 @@ public class Runtime {
             condition.setCell("receiver", this.ground);
             condition.setCell("text", newText("Can't handle decimal numbers yet. Sorry."));
             errorCondition(condition);
+            return null;
+        } else {
+            IokeObject obj = this.integer.allocateCopy(null, null);
+            obj.mimicsWithoutCheck(this.integer);
+            obj.data = Number.integer(number);
+            return obj;
         }
-
-        IokeObject obj = this.number.allocateCopy(null, null);
-        obj.mimicsWithoutCheck(this.number);
-        obj.data = new Number(number);
-        return obj;
     }
 
     public IokeObject newNumber(gnu.math.IntNum number) {
-        IokeObject obj = this.number.allocateCopy(null, null);
-        obj.mimicsWithoutCheck(this.number);
-        obj.data = new Number(number);
+        IokeObject obj = this.integer.allocateCopy(null, null);
+        obj.mimicsWithoutCheck(this.integer);
+        obj.data = Number.integer(number);
         return obj;
     }
 
     public IokeObject newNumber(int number) {
-        IokeObject obj = this.number.allocateCopy(null, null);
-        obj.mimicsWithoutCheck(this.number);
-        obj.data = new Number(number);
+        IokeObject obj = this.integer.allocateCopy(null, null);
+        obj.mimicsWithoutCheck(this.integer);
+        obj.data = Number.integer(number);
         return obj;
     }
 
