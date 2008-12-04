@@ -552,7 +552,11 @@ CODE
         ioke.evaluate_string("-1.0 == 2.0").should == ioke.false
       end
       
-      it "should return true for the result of equal number calculations"
+      it "should return true for the result of equal number calculations" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_string("(1.0+1.0) == 2.0").should == ioke.true
+        ioke.evaluate_string("(2.1+1.0) == (1.1+2.0)").should == ioke.true
+      end
 
       it "should work correctly when comparing zeroes" do 
         ioke = IokeRuntime.get_runtime()
@@ -561,7 +565,11 @@ CODE
         ioke.evaluate_string("0.0 == 1.0").should == ioke.false
       end
 
-      it "should work correctly when comparing negative numbers"
+      it "should work correctly when comparing negative numbers" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_string("(0.0-19.1) == (0.0-19.1)").should == ioke.true
+        ioke.evaluate_string("(0.0-19.0) == (0.0-20.1)").should == ioke.false
+      end
 
       it "should work correctly when comparing large positive numbers" do 
         ioke = IokeRuntime.get_runtime()
