@@ -91,7 +91,11 @@ public class DefaultMethod extends Method {
         try {
             return code.evaluateCompleteWith(c, on);
         } catch(ControlFlow.Return e) {
-            return e.getValue();
+            if(e.context == c) {
+                return e.getValue();
+            } else {
+                throw e;
+            }
         }
     }
 }// DefaultMethod

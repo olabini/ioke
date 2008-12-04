@@ -82,4 +82,15 @@ m = macro(if(true, return(:bar)). Ground x = 24)
 (m() == :bar) && (x == 42)
 CODE
   end
+
+  it "should return even from inside of a lexical block" do 
+    ioke = IokeRuntime.get_runtime
+    ioke.evaluate_string(<<CODE).data.as_java_integer.should == 42
+x = method(block, block call)
+y = macro(
+  x(fn(return(42)))
+  43)
+y
+CODE
+  end
 end

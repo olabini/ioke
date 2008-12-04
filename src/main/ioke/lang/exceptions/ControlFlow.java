@@ -36,8 +36,10 @@ public class ControlFlow extends Throwable {
     }
 
     public static class Return extends ControlFlow {
-        public Return(Object value) {
+        public final Object context;
+        public Return(Object value, Object context) {
             super(value);
+            this.context = context;
         }
     }
 
