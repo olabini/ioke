@@ -1,6 +1,5 @@
 
 
-; Enumerable inject/reduce/fold
 ; Enumerable select/findAll
 ; Enumerable all?
 ; Enumerable count
@@ -149,8 +148,39 @@ Mixins Enumerable inject = macro(
         call ground cell(elementName) = cell(:n)
         sum = theCode evaluateOn(call ground, cell(:sum))))
 
-    return(sum)
-  )
+    return(sum),
+
+    if(len == 2,
+      elementName = call arguments first name
+      theCode = call arguments second
+
+      sum = nil
+
+      self each(i, n,
+        if(i == 0,
+          sum = cell(:n),
+        
+          call ground cell(elementName) = cell(:n)
+          sum = theCode evaluateOn(call ground, cell(:sum))))
+
+      return(sum),
+
+      if(len == 3,
+        lexicalCode = LexicalBlock createFrom(call arguments, call ground)
+        sum = nil
+        self each(i, n,
+          if(i == 0,
+            sum = cell(:n),
+            sum = lexicalCode call(cell(:sum), cell(:n))))
+        return(sum),
+
+        ; len == 4
+        sum = call argAt(0)
+        lexicalCode = LexicalBlock createFrom(call arguments[1..-1], call ground)
+        self each(n,
+          sum = lexicalCode call(cell(:sum), cell(:n)))
+        return(sum)
+      )))
   nil) 
 
 
@@ -158,3 +188,5 @@ Mixins Enumerable inject = macro(
 Mixins Enumerable aliasMethod("map", "collect")
 Mixins Enumerable aliasMethod("mapFn", "collectFn")
 Mixins Enumerable aliasMethod("find", "detect")
+Mixins Enumerable aliasMethod("inject", "reduce")
+Mixins Enumerable aliasMethod("inject", "fold")
