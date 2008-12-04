@@ -337,6 +337,13 @@ public class DefaultBehavior {
                 }
             }));
 
+        obj.registerMethod(runtime.newJavaMethod("breaks out of the enclosing context and continues from that point again.", new JavaMethod("continue") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    throw new ControlFlow.Continue();
+                }
+            }));
+
         obj.registerMethod(runtime.newJavaMethod("until the first argument evaluates to something true, loops and evaluates the next argument", new JavaMethod("until") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
@@ -346,16 +353,22 @@ public class DefaultBehavior {
 
                     boolean body = message.getArgumentCount() > 1;
                     Object ret = runtime.nil;
-
-                    try {
-                        while(!IokeObject.isTrue(message.getEvaluatedArgument(0, context))) {
-                            if(body) {
-                                ret = message.getEvaluatedArgument(1, context);
+                    boolean doAgain = false;
+                    do {
+                        doAgain = false;
+                        try {
+                            while(!IokeObject.isTrue(message.getEvaluatedArgument(0, context))) {
+                                if(body) {
+                                    ret = message.getEvaluatedArgument(1, context);
+                                }
                             }
+                        } catch(ControlFlow.Break e) {
+                            ret = e.getValue();
+                        } catch(ControlFlow.Continue e) {
+                            doAgain = true;
                         }
-                    } catch(ControlFlow.Break e) {
-                        ret = e.getValue();
-                    }
+                    } while(doAgain);
+
                     return ret;
                 }
             }));
@@ -369,16 +382,22 @@ public class DefaultBehavior {
 
                     boolean body = message.getArgumentCount() > 1;
                     Object ret = runtime.nil;
-
-                    try {
-                        while(IokeObject.isTrue(message.getEvaluatedArgument(0, context))) {
-                            if(body) {
-                                ret = message.getEvaluatedArgument(1, context);
+                    boolean doAgain = false;
+                    do {
+                        doAgain = false;
+                        try {
+                            while(IokeObject.isTrue(message.getEvaluatedArgument(0, context))) {
+                                if(body) {
+                                    ret = message.getEvaluatedArgument(1, context);
+                                }
                             }
+                        } catch(ControlFlow.Break e) {
+                            ret = e.getValue();
+                        } catch(ControlFlow.Continue e) {
+                            doAgain = true;
                         }
-                    } catch(ControlFlow.Break e) {
-                        ret = e.getValue();
-                    }
+                    } while(doAgain);
+
                     return ret;
                 }
             }));
@@ -387,12 +406,15 @@ public class DefaultBehavior {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     if(message.getArgumentCount() > 0) {
-                        try {
-                            while(true) {
-                                message.getEvaluatedArgument(0, context);
+                        while(true) {
+                            try {
+                                while(true) {
+                                    message.getEvaluatedArgument(0, context);
+                                }
+                            } catch(ControlFlow.Break e) {
+                                return e.getValue();
+                            } catch(ControlFlow.Continue e) {
                             }
-                        } catch(ControlFlow.Break e) {
-                            return e.getValue();
                         }
                     } else {
                         while(true){}
