@@ -337,6 +337,19 @@ public class DefaultBehavior {
                 }
             }));
 
+        obj.registerMethod(runtime.newJavaMethod("returns from the enclosing method/macro. if an argument is supplied, this will be returned as the result of the method/macro breaking out of.", new JavaMethod("return") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    Object value = runtime.nil;
+                    List<Object> args = new ArrayList<Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    if(args.size() > 0) {
+                        value = args.get(0);
+                    }
+                    throw new ControlFlow.Return(value);
+                }
+            }));
+
         obj.registerMethod(runtime.newJavaMethod("breaks out of the enclosing context and continues from that point again.", new JavaMethod("continue") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {

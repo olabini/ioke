@@ -88,6 +88,10 @@ public class DefaultMethod extends Method {
 
         arguments.assignArgumentValues(c, context, message, on);
 
-        return code.evaluateCompleteWith(c, on);
+        try {
+            return code.evaluateCompleteWith(c, on);
+        } catch(ControlFlow.Return e) {
+            return e.getValue();
+        }
     }
 }// DefaultMethod

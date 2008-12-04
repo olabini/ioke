@@ -73,4 +73,13 @@ CODE
     ioke = IokeRuntime.get_runtime()
     ioke.evaluate_string("x=macro(nil. 42+13.). x").data.as_java_integer.should == 55
   end
+  
+  it "should be possible to return from it prematurely, with return" do 
+    ioke = IokeRuntime.get_runtime
+    ioke.evaluate_string(<<CODE).should == ioke.true
+x = 42
+m = macro(if(true, return(:bar)). Ground x = 24)
+(m() == :bar) && (x == 42)
+CODE
+  end
 end

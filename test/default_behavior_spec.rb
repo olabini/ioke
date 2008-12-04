@@ -126,7 +126,7 @@ CODE
       end
     end
   end
-
+  
   describe "'continue'" do 
     it "should raise a control flow exception" do 
       ioke = IokeRuntime.get_runtime()
@@ -142,6 +142,35 @@ CODE
         false.should == true
       rescue NativeException => e
         e.cause.value.should == nil
+      end
+    end
+  end
+
+  describe "'return'" do 
+    it "should raise a control flow exception" do 
+      ioke = IokeRuntime.get_runtime()
+      proc do 
+        ioke.evaluate_string("return")
+      end.should raise_error(NativeException)
+    end
+
+    it "should have nil as value by default" do 
+      ioke = IokeRuntime.get_runtime()
+      begin 
+        ioke.evaluate_string("return")
+        false.should == true
+      rescue NativeException => e
+        e.cause.value.should == ioke.nil
+      end
+    end
+
+    it "should take a return value" do 
+      ioke = IokeRuntime.get_runtime()
+      begin 
+        ioke.evaluate_string("return(42)")
+        false.should == true
+      rescue NativeException => e
+        e.cause.value.data.as_java_integer.should == 42
       end
     end
   end
