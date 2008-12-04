@@ -602,6 +602,13 @@ public class Runtime {
         return obj;
     }
 
+    public IokeObject newList(List<Object> list, IokeObject orig) {
+        IokeObject obj = orig.allocateCopy(null, null);
+        obj.mimicsWithoutCheck(orig);
+        obj.data = new IokeList(list);
+        return obj;
+    }
+
     public IokeObject newCallFrom(IokeObject ctx, IokeObject message, IokeObject surroundingContext, IokeObject on) {
         IokeObject obj = this.call.allocateCopy(null, null);
         obj.mimicsWithoutCheck(this.call);

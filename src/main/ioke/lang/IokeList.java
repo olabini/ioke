@@ -127,6 +127,18 @@ public class IokeList extends IokeData {
                 }
             }));
 
+        obj.registerMethod(runtime.newJavaMethod("returns a new list that contains the receivers elements and the elements of the list sent in as the argument.", new JavaMethod("+") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    List<Object> newList = new ArrayList<Object>();
+                    newList.addAll(((IokeList)IokeObject.data(on)).getList());
+                    newList.addAll(((IokeList)IokeObject.data(args.get(0))).getList());
+                    return context.runtime.newList(newList, IokeObject.as(on));
+                }
+            }));
+
         obj.registerMethod(runtime.newJavaMethod("returns a new sorted version of this list", new JavaMethod("sort") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {

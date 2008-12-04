@@ -763,4 +763,18 @@ Objs <=> = method(other, self num <=> other num)
 CODE
     end
   end
+  
+  describe "'+'" do 
+    it "should return the same list when applied to an empty list" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("x = [1,2,3]. (x + []) == x").should == ioke.true
+      ioke.evaluate_string("x = [1,2,3]. ([] + x) == x").should == ioke.true
+    end
+    
+    it "should add two lists together, preserving the order" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("x = [1,2,3]. (x + [4,5,6]) == [1,2,3,4,5,6]").should == ioke.true
+      ioke.evaluate_string("x = [1,2,3]. ([4,5,6] + x) == [4,5,6,1,2,3]").should == ioke.true
+    end
+  end
 end
