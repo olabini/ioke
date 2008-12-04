@@ -292,7 +292,10 @@ public class IokeObject {
     }
 
     public Object perform(IokeObject ctx, IokeObject message) throws ControlFlow {
-        final String name = message.getName();
+        return perform(ctx, message, message.getName());
+    }
+
+    public Object perform(IokeObject ctx, IokeObject message, final String name) throws ControlFlow {
         final String outerName = name;
         Object cell = this.findCell(message, ctx, name);
         

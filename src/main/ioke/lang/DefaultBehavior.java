@@ -559,7 +559,7 @@ public class DefaultBehavior {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     IokeObject nameMessage = (IokeObject)Message.getArg1(message);
                     String name = nameMessage.getName();
-                    Object current = IokeObject.getCell(on, message, context, name);
+                    Object current = IokeObject.as(on).perform(context, message, name);
                     Object value = runtime.succ.sendTo(context, current);
                     return runtime.setValue.sendTo(context, on, nameMessage, value);
                 }
@@ -570,7 +570,7 @@ public class DefaultBehavior {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     IokeObject nameMessage = (IokeObject)Message.getArg1(message);
                     String name = nameMessage.getName();
-                    Object current = IokeObject.getCell(on, message, context, name);
+                    Object current = IokeObject.as(on).perform(context, message, name);
                     Object value = runtime.pred.sendTo(context, current);
                     return runtime.setValue.sendTo(context, on, nameMessage, value);
                 }

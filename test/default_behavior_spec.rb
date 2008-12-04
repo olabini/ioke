@@ -987,4 +987,16 @@ CODE
       ioke.evaluate_string("30 nand 43").should == ioke.false
     end
   end
+  
+  describe "'genSym'" do 
+    it "should generate a new thing every time called" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("genSym == genSym").should == ioke.false
+    end
+
+    it "should generate a symbol" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('genSym kind == "Symbol"').should == ioke.true
+    end
+  end
 end
