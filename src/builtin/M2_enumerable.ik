@@ -185,7 +185,10 @@ Mixins Enumerable inject = macro(
       )))
   nil) 
 
+Mixins Enumerable flatMap = macro(
+  "expects to get the same kind of arguments as map, and that each map operation returns a list. these lists will then be folded into a single list.",
 
+  call resendToMethod("map") fold(+))
 
 Mixins Enumerable aliasMethod("map", "collect")
 Mixins Enumerable aliasMethod("mapFn", "collectFn")
