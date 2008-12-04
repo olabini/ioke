@@ -370,6 +370,10 @@ public class IokeObject {
         return data.isTrue();
     }
 
+    public static boolean isMessage(Object obj) {
+        return as(obj).isMessage();
+    }
+
     public boolean isMessage() {
         return data.isMessage();
     }
