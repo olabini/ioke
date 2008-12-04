@@ -352,9 +352,34 @@ CODE
         ioke.evaluate_string("-21*-2 == 42").should == ioke.true
       end
 
-      it "should convert itself to a decimal if the argument is a decimal"
-      it "should convert its argument to a number if its not a number or a decimal"
-      it "should signal a condition if it isn't a number and can't be converted"
+      it "should convert itself to a decimal if the argument is a decimal" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_string("1*0.6").data.as_java_string.should == "0.6"
+        ioke.evaluate_string("3*1.2").data.as_java_string.should == "3.6"
+      end
+
+      it "should convert its argument to a rational if its not a number or a decimal" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_string(<<CODE).data.as_java_integer.should == 42
+x = Origin mimic
+x asRational = method(21)
+2 * x
+CODE
+      end
+      
+      it "should signal a condition if it can't be converted and there is no way of multiplying" do 
+        sw = StringWriter.new(20)
+        out = PrintWriter.new(sw)
+
+        ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
+
+        begin 
+          ioke.evaluate_string('1 * Origin mimic').should == ioke.nil
+          true.should be_false
+        rescue NativeException => cfe
+          cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Type IncorrectType"
+        end
+      end
     end
 
     describe "'**'" do 
@@ -728,6 +753,67 @@ CODE
 
         begin 
           ioke.evaluate_string('1.0 + Origin mimic').should == ioke.nil
+          true.should be_false
+        rescue NativeException => cfe
+          cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Type IncorrectType"
+        end
+      end
+    end
+    
+    
+    describe "'*'" do 
+      it "should multiply with 0.0" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string("1.0*0.0 == 0.0").should == ioke.true
+        ioke.evaluate_string("34253453.0*0.0 == 0.0").should == ioke.true
+        ioke.evaluate_string("-1.0*0.0 == 0.0").should == ioke.true
+      end
+
+      it "should return the same number when multiplying with 1.0" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string("1.0*1.0 == 1.0").should == ioke.true
+        ioke.evaluate_string("34253453.1*1.0 == 34253453.1").should == ioke.true
+        ioke.evaluate_string("-1.0*1.0 == -1.0").should == ioke.true
+      end
+
+      it "should return a really large number when multiplying large numbers" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string("2345346456745722.0*12213212323899088545.0 == 28644214249339912541248622627954490.0").should == ioke.true
+      end
+
+      it "should return a negative number when multiplying with one negative number" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string("-21.0*2.0 == -42.0").should == ioke.true
+      end
+
+      it "should return a positive number when multiplying with two negative numbers" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string("-21.0*-2.0 == 42.0").should == ioke.true
+      end
+
+      it "should convert its argument to a decimal if its not a decimal" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_string("0.6*2").data.as_java_string.should == "1.2"
+        ioke.evaluate_string("1.2*3").data.as_java_string.should == "3.6"
+      end
+
+      it "should convert its argument to a decimal with asDecimal if its not a decimal and not a rational" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_string(<<CODE).data.as_java_string.should == "42.4"
+x = Origin mimic
+x asDecimal = method(21.2)
+2.0 * x
+CODE
+      end
+      
+      it "should signal a condition if it isn't a decimal and can't be converted" do 
+        sw = StringWriter.new(20)
+        out = PrintWriter.new(sw)
+
+        ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
+
+        begin 
+          ioke.evaluate_string('1.0 * Origin mimic').should == ioke.nil
           true.should be_false
         rescue NativeException => cfe
           cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Type IncorrectType"
