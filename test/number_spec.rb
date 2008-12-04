@@ -577,8 +577,17 @@ CODE
         ioke.evaluate_string("8888856676776.0101 == 8888856676776.0101").should == ioke.true
       end
 
-      it "should convert its argument to a decimal if its not a decimal"
-      it "should return false for comparisons against unrelated objects"
+      it "should convert its argument to a decimal if it is a rational" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_string("2.0 == 2").should == ioke.true
+        ioke.evaluate_string("2.1 == 2").should == ioke.false
+      end
+
+      it "should return false for comparisons against unrelated objects" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_string("2.1 == \"foo\"").should == ioke.false
+        ioke.evaluate_string("2.1 == :blarg").should == ioke.false
+      end
     end
     
     describe "'-'" do 

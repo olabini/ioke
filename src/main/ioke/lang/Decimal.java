@@ -105,8 +105,16 @@ public class Decimal extends IokeData {
         decimal.registerMethod(runtime.newJavaMethod("compares this number against the argument, true if this number is the same, otherwise false", new JavaMethod("==") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    Object arg = message.getEvaluatedArgument(0, context);
-                    return (Decimal.value(on).compareTo(Decimal.value(arg)) == 0) ? context.runtime._true : context.runtime._false;
+                    List<Object> args = new ArrayList<Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    Object arg = args.get(0);
+                    if(IokeObject.data(arg) instanceof Number) {
+                        return (Decimal.value(on).compareTo(Number.value(arg).asBigDecimal()) == 0) ? context.runtime._true : context.runtime._false;
+                    } else if(IokeObject.data(arg) instanceof Decimal) {
+                        return (Decimal.value(on).compareTo(Decimal.value(arg)) == 0) ? context.runtime._true : context.runtime._false;
+                    } else {
+                        return context.runtime._false;
+                    }
                 }
             }));
 
