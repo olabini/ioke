@@ -241,7 +241,7 @@ public class Message extends IokeData {
                         }
                     }
                     
-                    return IokeObject.as(on).evaluateCompleteWith(receiver, messageGround);
+                    return IokeObject.as(on).evaluateCompleteWithReceiver(messageGround, messageGround, receiver);
                 }
             }));
         message.registerMethod(message.runtime.newJavaMethod("takes one index, and a context and returns the evaluated argument at that index.", new JavaMethod("evalArgAt") {
