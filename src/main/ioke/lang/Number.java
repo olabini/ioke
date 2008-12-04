@@ -326,11 +326,17 @@ public class Number extends IokeData {
         rational.registerMethod(runtime.newJavaMethod("returns this number to the power of the argument", new JavaMethod("**") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    Object arg = message.getEvaluatedArgument(0, context);
-                    if(!(IokeObject.data(arg) instanceof Number)) {
-                        arg = IokeObject.convertToNumber(arg, message, context);
+                    List<Object> args = new ArrayList<Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    Object arg = args.get(0);
+
+                    IokeData data = IokeObject.data(arg);
+                    
+                    if(!(data instanceof Number)) {
+                        arg = IokeObject.convertToRational(arg, message, context, true);
                     }
-                    return runtime.newNumber((RatNum)Number.value(on).power(Number.intValue(arg)));
+
+                    return context.runtime.newNumber((RatNum)Number.value(on).power(Number.intValue(arg)));
                 }
             }));
 

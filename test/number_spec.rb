@@ -404,8 +404,28 @@ CODE
         ioke.evaluate_string("2 ** 40 == 1099511627776").should == ioke.true
       end
 
-      it "should convert its argument to a number if its not a number or a decimal"
-      it "should signal a condition if it isn't a number and can't be converted"
+      it "should convert its argument to a rational if its not a number or a decimal" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_string(<<CODE).data.as_java_integer.should == 8
+x = Origin mimic
+x asRational = method(3)
+2 ** x
+CODE
+      end
+
+      it "should signal a condition if it isn't a rational and can't be converted" do 
+        sw = StringWriter.new(20)
+        out = PrintWriter.new(sw)
+
+        ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
+
+        begin 
+          ioke.evaluate_string('1 ** (Origin mimic)').should == ioke.nil
+          true.should be_false
+        rescue NativeException => cfe
+          cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Type IncorrectType"
+        end
+      end
     end
     
     describe "'/'" do 
