@@ -18,6 +18,24 @@ CustomEnumerable each = macro(
     lexical call("2third")))
 CODE
 
+$CUSTOM_ENUMERABLE_STRING2 = <<CODE
+CustomEnumerable2 = Origin mimic
+CustomEnumerable2 mimic!(Mixins Enumerable)
+CustomEnumerable2 each = macro(
+  len = call arguments length
+  
+  if(len == 1,
+    first = call arguments first
+    first evaluateOn(call ground, 42)
+    first evaluateOn(call ground, 16)
+    first evaluateOn(call ground, 17),
+    
+    lexical = LexicalBlock createFrom(call arguments, call ground)
+    lexical call(42)
+    lexical call(16)
+    lexical call(17)))
+CODE
+
 describe "Mixins" do 
   describe "Enumerable" do 
     describe "'sort'" do 
@@ -334,5 +352,55 @@ CustomEnumerable detect(x, x != "foo") == "3first"
 CODE
       end
     end
+    
+    describe "'inject'" do
+      # inject needs: a start value, an argument name, a sum argument name, and code
+      # versions:
+      
+      # inject(+)                                  => inject(    sum,    x,    sum    +(x))
+      # inject(x, + x)                             => inject(    sumArg, x,    sumArg +(x))
+      # inject(sumArg, xArg, sumArg + xArg)        => inject(    sumArg, xArg, sumArg + xArg)
+      # inject("", sumArg, xArg, sumArg + xArg)    => inject("", sumArg, xArg, sumArg +(xArg))
+
+      it "should take one argument that is a message chain and apply that on the sum, with the current arg as argument" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string("[1,2,3] inject(+) == 6").should == ioke.true
+        ioke.evaluate_string("[1,2,3] inject(*(5) -) == 12").should == ioke.true
+        ioke.evaluate_string(<<CODE).should == ioke.true
+#$CUSTOM_ENUMERABLE_STRING2
+CustomEnumerable inject(-) == 9
+CODE
+      end
+
+      it "should take two arguments that is an argument name and a message chain and apply that on the sum" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string("[1,2,3] inject(x, + x*2) == 11").should == ioke.true
+        ioke.evaluate_string("[1,2,3] inject(x, *(5) - x) == 12").should == ioke.true
+        ioke.evaluate_string(<<CODE).should == ioke.true
+#$CUSTOM_ENUMERABLE_STRING2
+CustomEnumerable inject(x, - x) == 9
+CODE
+      end
+
+      it "should take three arguments that is the sum name, the argument name and code to apply" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string("[1,2,3] inject(sum, x, sum + x*2) == 11").should == ioke.true
+        ioke.evaluate_string("[1,2,3] inject(sum, x, sum *(5) - x) == 12").should == ioke.true
+        ioke.evaluate_string(<<CODE).should == ioke.true
+#$CUSTOM_ENUMERABLE_STRING2
+CustomEnumerable inject(sum, x, sum - x) == 9
+CODE
+      end
+
+      it "should take four arguments that is the initial value, the sum name, the argument name and code to apply" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string("[1,2,3] inject(13, sum, x, sum + x*2) == 25").should == ioke.true
+        ioke.evaluate_string("[1,2,3] inject(1, sum, x, sum *(5) - x) == 87").should == ioke.true
+        ioke.evaluate_string(<<CODE).should == ioke.true
+#$CUSTOM_ENUMERABLE_STRING2
+CustomEnumerable inject(100, sum, x, sum - x) == 25
+CODE
+      end
+    end    
   end
 end

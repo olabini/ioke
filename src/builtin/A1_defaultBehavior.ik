@@ -64,3 +64,6 @@ DefaultBehavior in? = method(
   aList,
   
   aList include?(self))
+
+DefaultBehavior genSym = method(n,
+  fnx(:"#<GS#{n++}>")) call(0)

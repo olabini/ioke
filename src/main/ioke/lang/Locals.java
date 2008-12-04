@@ -15,6 +15,21 @@ public class Locals {
         obj.getMimics().clear();
 
         obj.setCell("=",         obj.runtime.base.getCells().get("="));
+        obj.setCell("++",        obj.runtime.defaultBehavior.getCells().get("++"));
+        obj.setCell("--",        obj.runtime.defaultBehavior.getCells().get("--"));
+        obj.setCell("+=",        obj.runtime.defaultBehavior.getCells().get("+="));
+        obj.setCell("-=",        obj.runtime.defaultBehavior.getCells().get("-="));
+        obj.setCell("/=",        obj.runtime.defaultBehavior.getCells().get("/="));
+        obj.setCell("*=",        obj.runtime.defaultBehavior.getCells().get("*="));
+        obj.setCell("%=",        obj.runtime.defaultBehavior.getCells().get("%="));
+        obj.setCell("**=",        obj.runtime.defaultBehavior.getCells().get("**="));
+        obj.setCell("&=",        obj.runtime.defaultBehavior.getCells().get("&="));
+        obj.setCell("|=",        obj.runtime.defaultBehavior.getCells().get("|="));
+        obj.setCell("^=",        obj.runtime.defaultBehavior.getCells().get("^="));
+        obj.setCell("<<=",        obj.runtime.defaultBehavior.getCells().get("<<="));
+        obj.setCell(">>=",        obj.runtime.defaultBehavior.getCells().get(">>="));
+        obj.setCell("&&=",        obj.runtime.defaultBehavior.getCells().get("&&="));
+        obj.setCell("||=",        obj.runtime.defaultBehavior.getCells().get("||="));
         obj.setCell("cell",      obj.runtime.base.getCells().get("cell"));
         obj.setCell("cell=",     obj.runtime.base.getCells().get("cell="));
         obj.setCell("cells",     obj.runtime.base.getCells().get("cells"));

@@ -127,6 +127,34 @@ Mixins Enumerable find = macro(
       self each(n, if(lexicalCode call(cell(:n)), return(cell(:n))))))
   nil)
 
+Mixins Enumerable inject = macro(
+  "takes one, two, three or four arguments. all versions need an initial sum, code to execute, a place to put the current sum in the code, and a place to stick the current element of the enumerable. if one argument, it has to be a message chain. this message chain will be applied on the current sum. the element will be appended to the argument list of the last message send in the chain. the initial sum is the first element, and the code will be executed once less than the size of the enumerable due to this. if two arguments given, the first argument is the name of the variable to put the current element in, and the message will still be sent to the sum - and the initial sum works the same way as for one argument. when three arguments are given, the whole thing will be turned into a lexical closure, where the first argument is the name of the sum variable, the second argument is the name of the element variable, and the last argument is the code. when given four arguments, the only difference is that the first argument will be evaluated as the initial sum.",
+
+  len = call arguments length
+
+  if(len == 1,
+    elementName = genSym
+    theCode = call arguments first deepClone
+    last = theCode
+    while(last next,
+      last = last next)
+    last appendArgument(message(elementName))
+
+    sum = nil
+
+    self each(i, n,
+      if(i == 0,
+        sum = cell(:n),
+        
+        call ground cell(elementName) = cell(:n)
+        sum = theCode evaluateOn(call ground, cell(:sum))))
+
+    return(sum)
+  )
+  nil) 
+
+
+
 Mixins Enumerable aliasMethod("map", "collect")
 Mixins Enumerable aliasMethod("mapFn", "collectFn")
 Mixins Enumerable aliasMethod("find", "detect")
