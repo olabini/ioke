@@ -3,28 +3,25 @@
 ; Enumerable select/findAll
 ; Enumerable all?
 ; Enumerable count
-
-; Most of these should be able to return an enumerator instead
-
+; Enumerable reject
+; Enumerable first
+; Enumerable one?
+; Enumerable findIndex
+; Enumerable partition
+; Enumerable member?/include?
 ; Enumerable take = method("takes one non-negative number and returns as many elements from the underlying enumerable. this explicitly works with infine collections that would loop forever if you called their each directly")
+; Enumerable takeWhile
+; Enumerable drop
+; Enumerable dropWhile
+
+
+
 
 ; Enumerable sortBy
 ; Enumerable grep
 ; Enumerable zip
-; Enumerable findIndex
-; Enumerable reject
-; Enumerable partition
-; Enumerable first
-; Enumerable one?
-; Enumerable none?
-; Enumerable member?/include?
 
-; Enumerable takeWhile
-; Enumerable drop
-; Enumerable dropWhile
 ; Enumerable cycle
-
-; Enumerable takeNth(n)
 
 Mixins Enumerable asList = method(
   "will return a list created from calling each on the receiver until everything has been yielded. if a more efficient version is possible of this, the object should implement it, since other Enumerable methods will use this for some operations. note that asList is not required to return a new list",
@@ -193,5 +190,6 @@ Mixins Enumerable flatMap = macro(
 Mixins Enumerable aliasMethod("map", "collect")
 Mixins Enumerable aliasMethod("mapFn", "collectFn")
 Mixins Enumerable aliasMethod("find", "detect")
+Mixins Enumerable aliasMethod("find", "filter")
 Mixins Enumerable aliasMethod("inject", "reduce")
 Mixins Enumerable aliasMethod("inject", "fold")
