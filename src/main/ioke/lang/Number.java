@@ -104,6 +104,11 @@ public class Number extends IokeData {
         return self;
     }
 
+    @Override
+    public IokeObject convertToDecimal(IokeObject self, IokeObject m, final IokeObject context, boolean signalCondition) throws ControlFlow {
+        return context.runtime.newDecimal(this);
+    }
+
     public static RatNum value(Object number) {
         return ((Number)IokeObject.data(number)).value;
     }

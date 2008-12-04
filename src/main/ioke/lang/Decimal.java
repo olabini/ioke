@@ -65,6 +65,11 @@ public class Decimal extends IokeData {
         return asJavaString();
     }
 
+    @Override
+    public IokeObject convertToDecimal(IokeObject self, IokeObject m, final IokeObject context, boolean signalCondition) throws ControlFlow {
+        return self;
+    }
+
     public static String getInspect(Object on) {
         return ((Decimal)(IokeObject.data(on))).inspect(on);
     }
@@ -124,7 +129,18 @@ public class Decimal extends IokeData {
                     List<Object> args = new ArrayList<Object>();
                     DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
                     Object arg = args.get(0);
-                    return context.runtime.newDecimal(Decimal.value(on).subtract(Decimal.value(arg)));
+
+                    IokeData data = IokeObject.data(arg);
+                    
+                    if(data instanceof Number) {
+                        return context.runtime.newDecimal(Decimal.value(on).subtract(Number.value(arg).asBigDecimal()));
+                    } else {
+                        if(!(data instanceof Decimal)) {
+                            arg = IokeObject.convertToDecimal(arg, message, context, true);
+                        }
+
+                        return context.runtime.newDecimal(Decimal.value(on).subtract(Decimal.value(arg)));
+                    }
                 }
             }));
 

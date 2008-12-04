@@ -451,6 +451,10 @@ public class IokeObject {
         return ((IokeObject)on).convertToRational(m, context, signalCondition);
     }
 
+    public static IokeObject convertToDecimal(Object on, IokeObject m, IokeObject context, boolean signalCondition) throws ControlFlow {
+        return ((IokeObject)on).convertToDecimal(m, context, signalCondition);
+    }
+
     public IokeObject convertToRational(IokeObject m, IokeObject context, boolean signalCondition) throws ControlFlow {
         IokeObject result = data.convertToRational(this, m, context, false);
         if(result == null) {
@@ -459,6 +463,20 @@ public class IokeObject {
             }
             if(signalCondition) {
                 return data.convertToRational(this, m, context, true);
+            }
+            return context.runtime.nil;
+        }
+        return result;
+    }
+
+    public IokeObject convertToDecimal(IokeObject m, IokeObject context, boolean signalCondition) throws ControlFlow {
+        IokeObject result = data.convertToDecimal(this, m, context, false);
+        if(result == null) {
+            if(findCell(m, context, "asDecimal") != context.runtime.nul) {
+                return IokeObject.as(context.runtime.asDecimal.sendTo(context, this));
+            }
+            if(signalCondition) {
+                return data.convertToDecimal(this, m, context, true);
             }
             return context.runtime.nil;
         }
