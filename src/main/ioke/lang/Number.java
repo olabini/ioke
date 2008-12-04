@@ -274,41 +274,50 @@ public class Number extends IokeData {
         rational.registerMethod(runtime.newJavaMethod("returns the quotient of this number and the argument. if the division is not exact, it will return a Ratio.", new JavaMethod("/") {
                 @Override
                 public Object activate(IokeObject method, final IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    Object arg = message.getEvaluatedArgument(0, context);
-                    if(!(IokeObject.data(arg) instanceof Number)) {
-                        arg = IokeObject.convertToNumber(arg, message, context);
-                    }
+                    List<Object> args = new ArrayList<Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    Object arg = args.get(0);
+
+                    IokeData data = IokeObject.data(arg);
                     
-                    while(Number.value(arg).isZero()) {
-                        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
-                                                                                           message, 
-                                                                                           context, 
-                                                                                           "Error", 
-                                                                                           "Arithmetic",
-                                                                                           "DivisionByZero")).mimic(message, context);
-                        condition.setCell("message", message);
-                        condition.setCell("context", context);
-                        condition.setCell("receiver", on);
+                    if(data instanceof Decimal) {
+                        return context.runtime.divMessage.sendTo(context, context.runtime.newDecimal(((Number)IokeObject.data(on))), arg);
+                    } else {
+                        if(!(data instanceof Number)) {
+                            arg = IokeObject.convertToRational(arg, message, context, true);
+                        }
 
-                        final Object[] newCell = new Object[]{arg};
+                        while(Number.value(arg).isZero()) {
+                            final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
+                                                                                               message, 
+                                                                                               context, 
+                                                                                               "Error", 
+                                                                                               "Arithmetic",
+                                                                                               "DivisionByZero")).mimic(message, context);
+                            condition.setCell("message", message);
+                            condition.setCell("context", context);
+                            condition.setCell("receiver", on);
 
-                        context.runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
-                                public void run() throws ControlFlow {
-                                    context.runtime.errorCondition(condition);
-                                }}, 
-                            context,
-                            new Restart.ArgumentGivingRestart("useValue") { 
-                                public IokeObject invoke(IokeObject c2, List<Object> arguments) throws ControlFlow {
-                                    newCell[0] = arguments.get(0);
-                                    return c2.runtime.nil;
+                            final Object[] newCell = new Object[]{arg};
+
+                            context.runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
+                                    public void run() throws ControlFlow {
+                                        context.runtime.errorCondition(condition);
+                                    }}, 
+                                context,
+                                new Restart.ArgumentGivingRestart("useValue") { 
+                                    public IokeObject invoke(IokeObject c2, List<Object> arguments) throws ControlFlow {
+                                        newCell[0] = arguments.get(0);
+                                        return c2.runtime.nil;
+                                    }
                                 }
-                            }
-                            );
+                                );
                         
-                        arg = newCell[0];
-                    }
+                            arg = newCell[0];
+                        }
 
-                    return runtime.newNumber(RatNum.divide(Number.value(on),Number.value(arg)));
+                        return context.runtime.newNumber(RatNum.divide(Number.value(on),Number.value(arg)));
+                    }
                 }
             }));
 
