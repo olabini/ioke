@@ -2,8 +2,6 @@
 
 ; Enumerable take = method("takes one non-negative number and returns as many elements from the underlying enumerable. this explicitly works with infine collections that would loop forever if you called their each directly")
 
-; Enumerable map/collect
-;    probably also add mapFn
 ; Enumerable inject/reduce/fold
 ; Enumerable asList
 ; Enumerable sort
@@ -56,3 +54,20 @@ Mixins Enumerable map = macro(
     lexicalCode = LexicalBlock createFrom(call arguments, call ground)
     self each(n, result << lexicalCode call(n)))
   result)
+
+Mixins Enumerable mapFn = method(
+  "takes zero or more arguments that evaluates to lexical blocks. these blocks should all take one argument. these blocks will be chained together and applied on each element in the receiver. the final result will be collected into a list. the evaluation happens left-to-right, meaning the first method invoked will be the first argument.",
+  +blocks,
+
+  ;; use this form instead of [], since we might be inside of a List or a Dict
+  result = list()
+
+  self each(n,
+    current = n
+    blocks each(b, current = cell(:b) call(current))
+    result << current)
+
+  result)
+
+Mixins Enumerable aliasMethod("map", "collect")
+Mixins Enumerable aliasMethod("mapFn", "collectFn")
