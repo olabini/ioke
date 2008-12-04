@@ -253,12 +253,12 @@ describe "Number" do
         ioke.evaluate_string('333391244.0 notice == "333391244.0"').should == ioke.true
       end
 
-      it "should return the textual representation of a negative number" #do 
-#         ioke = IokeRuntime.get_runtime
-#         ioke.evaluate_string('(-1.0) notice == "-1.0"').should == ioke.true
-#         ioke.evaluate_string('(-22342340.0) notice == "-22342340.0"').should == ioke.true
-#         ioke.evaluate_string('(-333391244.0) notice == "-333391244.0"').should == ioke.true
-#       end
+      it "should return the textual representation of a negative number" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string('(-1.0) notice == "-1.0"').should == ioke.true
+        ioke.evaluate_string('(-22342340.0) notice == "-22342340.0"').should == ioke.true
+        ioke.evaluate_string('(-333391244.0) notice == "-333391244.0"').should == ioke.true
+      end
     end
     
     describe "'inspect'" do 
@@ -269,12 +269,12 @@ describe "Number" do
         ioke.evaluate_string('333391244.1 inspect == "333391244.1"').should == ioke.true
       end
 
-      it "should return the textual representation of a negative number" #do 
-#         ioke = IokeRuntime.get_runtime
-#         ioke.evaluate_string('(-1.1) inspect == "-1.1"').should == ioke.true
-#         ioke.evaluate_string('(-22342340.1) inspect == "-22342340.1"').should == ioke.true
-#         ioke.evaluate_string('(-333391244.1) inspect == "-333391244.1"').should == ioke.true
-#       end
+      it "should return the textual representation of a negative number" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string('(-1.1) inspect == "-1.1"').should == ioke.true
+        ioke.evaluate_string('(-22342340.1) inspect == "-22342340.1"').should == ioke.true
+        ioke.evaluate_string('(-333391244.1) inspect == "-333391244.1"').should == ioke.true
+      end
     end
   end
 end
