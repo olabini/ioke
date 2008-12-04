@@ -120,5 +120,14 @@ public class Decimal extends IokeData {
                 }
             }));
 
+        decimal.registerMethod(runtime.newJavaMethod("returns the sum of this number and the argument.", new JavaMethod("+") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    Object arg = args.get(0);
+                    return context.runtime.newDecimal(Decimal.value(on).add(Decimal.value(arg)));
+                }
+            }));
     }
 }// Decimal
