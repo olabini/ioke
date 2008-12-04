@@ -302,12 +302,12 @@ CODE
         ioke = IokeRuntime.get_runtime()
         ioke.evaluate_string(<<CODE).data.as_java_integer.should == 42
 x = Origin mimic
-x asRational = method(42)
+x asRational = method(41)
 1 + x
 CODE
       end
       
-      it "should signal a condition if it can't be converted and there is no way of subtracting" do 
+      it "should signal a condition if it can't be converted and there is no way of adding" do 
         sw = StringWriter.new(20)
         out = PrintWriter.new(sw)
 
@@ -354,6 +354,7 @@ CODE
 
       it "should convert itself to a decimal if the argument is a decimal"
       it "should should convert its argument to a number if its not a number or a decimal"
+      it "should signal a condition if it isn't a number and can't be converted"
     end
 
     describe "'**'" do 
@@ -379,6 +380,7 @@ CODE
       end
 
       it "should should convert its argument to a number if its not a number or a decimal"
+      it "should signal a condition if it isn't a number and can't be converted"
     end
     
     describe "'/'" do 
@@ -428,6 +430,7 @@ CODE
 
       it "should convert itself to a decimal if the argument is a decimal"
       it "should should convert its argument to a number if its not a number or a decimal"
+      it "should signal a condition if it isn't a number and can't be converted"
     end
 
     describe "'=='" do 
@@ -473,6 +476,7 @@ CODE
 
       it "should convert itself to a decimal if the argument is a decimal"
       it "should should convert its argument to a number if its not a number or a decimal"
+      it "should return false for unrelated objects"
     end
     
     describe "'asText'" do 
@@ -566,6 +570,7 @@ CODE
       end
 
       it "should should convert its argument to a decimal if its not a decimal"
+      it "should return false for comparisons against unrelated objects"
     end
     
     describe "'-'" do 
@@ -611,8 +616,59 @@ CODE
 
     it "should should convert its argument to a decimal if its not a decimal"
     it "should should convert its argument to a decimal with asDecimal if its not a decimal and not a rational"
+    it "should signal a condition if it isn't a number and can't be converted"
   end
 
+  describe "'+'" do 
+    it "should return 0.0 for the sum of 0.0 and 0.0" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string(("0.0+0.0")).data.as_java_string.should == "0.0"
+    end
+
+    it "should return the sum of really large numbers" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string(("234235345636345634567345675467.1+1.2")).data.as_java_string.should == "234235345636345634567345675468.3"
+      ioke.evaluate_string(("21342342342345345.0+778626453756754687567865785678.1")).data.as_java_string.should == "778626453756776029910208131023.1"
+      ioke.evaluate_string(("234234.0+63456345745676574567571345456345645675674567878567856785678657856568768.0")).data.
+        as_java_string.should == "63456345745676574567571345456345645675674567878567856785678657856803002.0"
+    end
+
+    it "should return the sum of smaller numbers" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string(("1.0+1.1")).data.as_java_string.should == "2.1"
+      ioke.evaluate_string(("10.0+1.0")).data.as_java_string.should == "11.0"
+      ioke.evaluate_string(("15.5+15.0")).data.as_java_string.should == "30.5"
+      ioke.evaluate_string(("16.0+15.0")).data.as_java_string.should == "31.0"
+    end
+
+    it "should return the sum of negative numbers" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string(("1.0+(0.0-1.0)")).data.as_java_string.should == "0.0"
+      ioke.evaluate_string(("(0.0-1.0)+2.0")).data.as_java_string.should == "1.0"
+      ioke.evaluate_string(("(0.0-1.0)+(0.0-1.0)")).data.as_java_string.should == "-2.0"
+    end
+
+    it "should return the number when 0.0 is the receiver" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string(("0.0+1.0")).data.as_java_string.should == "1.0"
+      ioke.evaluate_string(("0.0+(0.0-1.0)")).data.as_java_string.should == "-1.0"
+      ioke.evaluate_string(("0.0+124423.0")).data.as_java_string.should == "124423.0"
+      ioke.evaluate_string(("0.0+34545636745678657856786786785678.1")).data.as_java_string.should == "34545636745678657856786786785678.1"
+    end
+
+    it "should return the number when 0.0 is the argument" do 
+      ioke = IokeRuntime.get_runtime()
+      ioke.evaluate_string(("1.3+0.0")).data.as_java_string.should == "1.3"
+      ioke.evaluate_string(("(0.0-1.0)+0.0")).data.as_java_string.should == "-1.0"
+      ioke.evaluate_string(("124423.0+0.0")).data.as_java_string.should == "124423.0"
+      ioke.evaluate_string(("34545636745678657856786786785678.0+0.0")).data.as_java_string.should == "34545636745678657856786786785678.0"
+    end
+
+    it "should should convert its argument to a decimal if its not a decimal"
+    it "should should convert its argument to a decimal with asDecimal if its not a decimal and not a rational"
+    it "should signal a condition if it isn't a decimal and can't be converted"
+  end
+  
   describe "Integer" do 
     it "should have the correct kind" do 
       ioke = IokeRuntime.get_runtime
