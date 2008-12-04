@@ -543,9 +543,17 @@ CODE
         ioke.evaluate_string("8888856676776 == 8888856676776").should == ioke.true
       end
 
-      it "should convert itself to a decimal if the argument is a decimal"
-      it "should convert its argument to a number if its not a number or a decimal"
-      it "should return false for unrelated objects"
+      it "should convert itself to a decimal if the argument is a decimal" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_string("2 == 2.0").should == ioke.true
+        ioke.evaluate_string("2 == 2.1").should == ioke.false
+      end
+
+      it "should return false for unrelated objects" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_string("2 == \"foo\"").should == ioke.false
+        ioke.evaluate_string("2 == :blarg").should == ioke.false
+      end
     end
     
     describe "'asText'" do 
@@ -659,6 +667,63 @@ CODE
       end
     end
     
+    describe "'<=>'" do 
+      it "should return 0 for the same number" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_string(("0.0<=>0.0")).data.as_java_integer.should == 0
+        ioke.evaluate_string(("1.0<=>1.0")).data.as_java_integer.should == 0
+        ioke.evaluate_string(("10.0<=>10.0")).data.as_java_integer.should == 0
+        ioke.evaluate_string(("12413423523452345345345.0<=>12413423523452345345345.0")).data.as_java_integer.should == 0
+        ioke.evaluate_string(("(0.0-1.0)<=>(0.0-1.0)")).data.as_java_integer.should == 0
+        ioke.evaluate_string(("1.2<=>1.2")).data.as_java_integer.should == 0
+      end
+
+      it "should return 1 when the left number is larger than the right" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_string(("1.0<=>0.0")).data.as_java_integer.should == 1
+        ioke.evaluate_string(("2.0<=>1.0")).data.as_java_integer.should == 1
+        ioke.evaluate_string(("10.0<=>9.0")).data.as_java_integer.should == 1
+        ioke.evaluate_string(("12413423523452345345345.0<=>12413423523452345345344.0")).data.as_java_integer.should == 1
+        ioke.evaluate_string(("0.0<=>(0.0-1.0)")).data.as_java_integer.should == 1
+        ioke.evaluate_string(("1.0<=>(0.0-1.0)")).data.as_java_integer.should == 1
+        ioke.evaluate_string(("0.001<=>0.0009")).data.as_java_integer.should == 1
+        ioke.evaluate_string(("0.2<=>0.1")).data.as_java_integer.should == 1
+      end
+
+      it "should return -1 when the left number is smaller than the right" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_string(("0.0<=>1.0")).data.as_java_integer.should == -1
+        ioke.evaluate_string(("1.0<=>2.0")).data.as_java_integer.should == -1
+        ioke.evaluate_string(("9.0<=>10.0")).data.as_java_integer.should == -1
+        ioke.evaluate_string(("12413423523452345345343.0<=>12413423523452345345344.0")).data.as_java_integer.should == -1
+        ioke.evaluate_string(("(0.0-1.0)<=>0.0")).data.as_java_integer.should == -1
+        ioke.evaluate_string(("(0.0-1.0)<=>1.0")).data.as_java_integer.should == -1
+        ioke.evaluate_string(("0.0009<=>0.001")).data.as_java_integer.should == -1
+        ioke.evaluate_string(("0.1<=>0.2")).data.as_java_integer.should == -1
+      end
+
+      it "should convert argument to a decimal if the argument is a rational" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_string("1.0<=>1").data.as_java_integer.should == 0
+        ioke.evaluate_string("1.1<=>1").data.as_java_integer.should == 1
+        ioke.evaluate_string("0.9<=>1").data.as_java_integer.should == -1
+      end
+
+      it "should convert its argument to a decimal if its not a rational or a decimal" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_string(<<CODE).data.as_java_integer.should == 0
+x = Origin mimic
+x asDecimal = method(42.0)
+42.0 <=> x
+CODE
+      end
+      
+      it "should return nil if it can't be converted and there is no way of comparing" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_string('1.0 <=> Origin mimic').should == ioke.nil
+      end
+    end
+
     describe "'-'" do 
       it "should return 0.0 for the difference between 0.0 and 0.0" do 
         ioke = IokeRuntime.get_runtime()

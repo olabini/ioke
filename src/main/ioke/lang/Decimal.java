@@ -123,6 +123,31 @@ public class Decimal extends IokeData {
                 }
             }));
 
+        decimal.registerMethod(runtime.newJavaMethod("compares this number against the argument, returning -1, 0 or 1 based on which one is larger. if the argument is a rational, it will be converted into a form suitable for comparing against a decimal, and then compared. if the argument is neither a Rational nor a Decimal, it tries to call asDecimal, and if that doesn't work it returns nil.", new JavaMethod("<=>") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    Object arg = args.get(0);
+
+                    IokeData data = IokeObject.data(arg);
+                    
+                    if(data instanceof Number) {
+                        return context.runtime.newNumber(Decimal.value(on).compareTo(Number.value(arg).asBigDecimal()));
+                    } else {
+                        if(!(data instanceof Decimal)) {
+                            arg = IokeObject.convertToDecimal(arg, message, context, false);
+                            if(!(IokeObject.data(arg) instanceof Decimal)) {
+                                // Can't compare, so bail out
+                                return context.runtime.nil;
+                            }
+                        }
+
+                        return context.runtime.newNumber(Decimal.value(on).compareTo(Decimal.value(arg)));
+                    }
+                }
+            }));
+
         decimal.registerMethod(runtime.newJavaMethod("returns the difference between this number and the argument. if the argument is a rational, it will be converted into a form suitable for subtracting against a decimal, and then subtracted. if the argument is neither a Rational nor a Decimal, it tries to call asDecimal, and if that fails it signals a condition.", new JavaMethod("-") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {

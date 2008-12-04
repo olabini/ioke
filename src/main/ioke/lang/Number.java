@@ -200,11 +200,16 @@ public class Number extends IokeData {
         rational.registerMethod(runtime.newJavaMethod("compares this number against the argument, true if this number is the same, otherwise false", new JavaMethod("==") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    Object arg = message.getEvaluatedArgument(0, context);
-                    if(!(IokeObject.data(arg) instanceof Number)) {
-                        arg = IokeObject.convertToNumber(arg, message, context);
+                    List<Object> args = new ArrayList<Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    Object arg = args.get(0);
+                    if(IokeObject.data(arg) instanceof Decimal) {
+                        return (Number.value(on).asBigDecimal().compareTo(Decimal.value(arg)) == 0) ? context.runtime._true : context.runtime._false;
+                    } else if(IokeObject.data(arg) instanceof Number) {
+                        return IntNum.compare(Number.value(on),Number.value(arg)) == 0 ? context.runtime._true : context.runtime._false;
+                    } else {
+                        return context.runtime._false;
                     }
-                    return (IntNum.compare(Number.value(on),Number.value(arg)) == 0) ? context.runtime._true : context.runtime._false;
                 }
             }));
 
