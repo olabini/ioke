@@ -185,5 +185,55 @@ public class Decimal extends IokeData {
                     }
                 }
             }));
+
+        decimal.registerMethod(runtime.newJavaMethod("returns the quotient of this number and the argument.", new JavaMethod("/") {
+                @Override
+                public Object activate(IokeObject method, final IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    Object arg = args.get(0);
+
+                    IokeData data = IokeObject.data(arg);
+                    
+                    if(data instanceof Number) {
+                        return context.runtime.newDecimal(Decimal.value(on).divide(Number.value(arg).asBigDecimal()).stripTrailingZeros());
+                    } else {
+                        if(!(data instanceof Decimal)) {
+                            arg = IokeObject.convertToDecimal(arg, message, context, true);
+                        }
+
+                        while(Decimal.value(arg).compareTo(BigDecimal.ZERO) == 0) {
+                            final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
+                                                                                               message, 
+                                                                                               context, 
+                                                                                               "Error", 
+                                                                                               "Arithmetic",
+                                                                                               "DivisionByZero")).mimic(message, context);
+                            condition.setCell("message", message);
+                            condition.setCell("context", context);
+                            condition.setCell("receiver", on);
+
+                            final Object[] newCell = new Object[]{arg};
+
+                            context.runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
+                                    public void run() throws ControlFlow {
+                                        context.runtime.errorCondition(condition);
+                                    }}, 
+                                context,
+                                new Restart.ArgumentGivingRestart("useValue") { 
+                                    public IokeObject invoke(IokeObject c2, List<Object> arguments) throws ControlFlow {
+                                        newCell[0] = arguments.get(0);
+                                        return c2.runtime.nil;
+                                    }
+                                }
+                                );
+                        
+                            arg = newCell[0];
+                        }
+
+                        return context.runtime.newDecimal(Decimal.value(on).divide(Decimal.value(arg)).stripTrailingZeros());
+                    }
+                }
+            }));
     }
 }// Decimal

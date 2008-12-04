@@ -62,7 +62,6 @@ describe "parsing" do
   end
 end
 
-
 describe "Number" do 
   it "should have the correct kind" do 
     ioke = IokeRuntime.get_runtime
@@ -473,9 +472,34 @@ CODE
         ioke.evaluate_string("-8200/-10 == 820").should == ioke.true
       end
 
-      it "should convert itself to a decimal if the argument is a decimal"
-      it "should convert its argument to a number if its not a number or a decimal"
-      it "should signal a condition if it isn't a number and can't be converted"
+      it "should convert itself to a decimal if the argument is a decimal" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_string("1/0.5").data.as_java_string.should == "2.0"
+        ioke.evaluate_string("3/1.2").data.as_java_string.should == "2.5"
+      end
+      
+      it "should convert its argument to a number if its not a number or a decimal" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_string(<<CODE).data.as_java_integer.should == 21
+x = Origin mimic
+x asRational = method(2)
+42 / x
+CODE
+      end
+
+      it "should signal a condition if it isn't a number and can't be converted" do 
+        sw = StringWriter.new(20)
+        out = PrintWriter.new(sw)
+
+        ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
+
+        begin 
+          ioke.evaluate_string('1 / Origin mimic').should == ioke.nil
+          true.should be_false
+        rescue NativeException => cfe
+          cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Type IncorrectType"
+        end
+      end
     end
 
     describe "'=='" do 
@@ -834,6 +858,73 @@ CODE
 
         begin 
           ioke.evaluate_string('1.0 * Origin mimic').should == ioke.nil
+          true.should be_false
+        rescue NativeException => cfe
+          cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Type IncorrectType"
+        end
+      end
+    end
+    
+    describe "'/'" do 
+      it "should cause a condition when dividing with 0.0" do 
+        sw = StringWriter.new(20)
+        out = PrintWriter.new(sw)
+
+        ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
+
+        begin 
+          ioke.evaluate_string("10.0/0.0")
+          true.should be_false
+        rescue NativeException => cfe
+          cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Arithmetic DivisionByZero"
+        end
+      end
+
+      it "should divide simple numbers" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string("2.0/1.0 == 2.0").should == ioke.true
+        ioke.evaluate_string("4.2/2.0 == 2.1").should == ioke.true
+        ioke.evaluate_string("200.0/5.0 == 40.0").should == ioke.true
+      end
+
+      it "should divide negative numbers correctly" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string("-8200.0/10.0 == -820.0").should == ioke.true
+      end
+
+      it "should divide with a negative dividend correctly" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string("8200.0/-10.0 == -820.0").should == ioke.true
+      end
+
+      it "should divide a negative number with a negative dividend" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string("-8200.0/-10.0 == 820.0").should == ioke.true
+      end
+
+      it "should convert its argument to a decimal if its not a decimal" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_string("0.5/5").data.as_java_string.should == "0.1"
+        ioke.evaluate_string("3.4/2").data.as_java_string.should == "1.7"
+      end
+      
+      it "should convert its argument to a decimal with asDecimal if its not a decimal and not a rational" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_string(<<CODE).data.as_java_string.should == "21.4"
+x = Origin mimic
+x asDecimal = method(2.0)
+42.8 / x
+CODE
+      end
+
+      it "should signal a condition if it isn't a decimal and can't be converted" do 
+        sw = StringWriter.new(20)
+        out = PrintWriter.new(sw)
+
+        ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
+
+        begin 
+          ioke.evaluate_string('1.0 / Origin mimic').should == ioke.nil
           true.should be_false
         rescue NativeException => cfe
           cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Type IncorrectType"
