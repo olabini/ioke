@@ -506,6 +506,15 @@ CODE
 CustomEnumerable2 fold(100, sum, x, sum - x) == 25
 CODE
       end
-    end    
+    end
+    
+    describe "'flatMap'" do 
+      it "should return a correct flattened map" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string("[1,2,3] flatMap(x, [x]) == [1,2,3]").should == ioke.true
+        ioke.evaluate_string("[1,2,3] flatMap(x, [x, x+10, x+20]) == [1,11,21,2,12,22,3,13,23]").should == ioke.true
+        ioke.evaluate_string("[4,5,6] flatMap(x, [x+20, x+10, x]) == [24,14,4,25,15,5,26,16,6]").should == ioke.true
+      end
+    end
   end
 end
