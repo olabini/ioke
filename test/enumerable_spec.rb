@@ -159,5 +159,40 @@ CustomEnumerable collectFn(x, x2) == ["3fiflurg", "1seflurg", "2thflurg"]
 CODE
       end
     end
+    
+    describe "'any?'" do 
+      it "should take zero arguments and just check if any of the values are true" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string("[1,2,3] any?").should == ioke.true
+        ioke.evaluate_string("[nil,false,nil] any?").should == ioke.false
+        ioke.evaluate_string("[nil,false,true] any?").should == ioke.true
+        ioke.evaluate_string(<<CODE).should == ioke.true
+#$CUSTOM_ENUMERABLE_STRING
+CustomEnumerable any?
+CODE
+      end
+
+      it "should take one argument that is a predicate that is applied to each element in the enumeration" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string("[1,2,3] any?(==2)").should == ioke.true
+        ioke.evaluate_string("[nil,false,nil] any?(nil?)").should == ioke.true
+        ioke.evaluate_string("[nil,false,true] any?(==2)").should == ioke.false
+        ioke.evaluate_string(<<CODE).should == ioke.true
+#$CUSTOM_ENUMERABLE_STRING
+CustomEnumerable any?(!= "foo")
+CODE
+      end
+
+      it "should take two arguments that will be turned into a lexical block and applied" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string("[1,2,3] any?(x, x==2)").should == ioke.true
+        ioke.evaluate_string("[nil,false,nil] any?(x, x nil?)").should == ioke.true
+        ioke.evaluate_string("[nil,false,true] any?(x, x==2)").should == ioke.false
+        ioke.evaluate_string(<<CODE).should == ioke.true
+#$CUSTOM_ENUMERABLE_STRING
+CustomEnumerable any?(x, x != "foo")
+CODE
+      end
+    end
   end
 end

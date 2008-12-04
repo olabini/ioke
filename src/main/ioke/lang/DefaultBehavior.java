@@ -346,7 +346,12 @@ public class DefaultBehavior {
                     if(args.size() > 0) {
                         value = args.get(0);
                     }
-                    throw new ControlFlow.Return(value);
+                    IokeObject ctx = context;
+                    while(ctx instanceof LexicalContext) {
+                        ctx = ((LexicalContext)ctx).surroundingContext;
+                    }
+
+                    throw new ControlFlow.Return(value, ctx);
                 }
             }));
 

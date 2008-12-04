@@ -1,19 +1,25 @@
+
+
+; Enumerable inject/reduce/fold
+; Enumerable select/findAll
+
+; Enumerable some?
+; Enumerable any?
+; Enumerable all?
+
+; Enumerable count
+
+
+
+
 ; Most of these should be able to return an enumerator instead
 
 ; Enumerable take = method("takes one non-negative number and returns as many elements from the underlying enumerable. this explicitly works with infine collections that would loop forever if you called their each directly")
 
-; Enumerable inject/reduce/fold
-; Enumerable asList
-; Enumerable sort
 ; Enumerable sortBy
-; Enumerable select/findAll
 ; Enumerable grep
 ; Enumerable find/detect
-; Enumerable some?
-; Enumerable any?
-; Enumerable all?
 ; Enumerable zip
-; Enumerable count
 ; Enumerable findIndex
 ; Enumerable reject
 ; Enumerable partition
@@ -71,3 +77,18 @@ Mixins Enumerable mapFn = method(
 
 Mixins Enumerable aliasMethod("map", "collect")
 Mixins Enumerable aliasMethod("mapFn", "collectFn")
+
+Mixins Enumerable any? = macro(
+  "takes zero, one or two arguments. if zero arguments, returns true if any of the elements yielded by each is true, otherwise false. if one argument, expects it to be a message chain. if that message chain, when applied to the current element returns a true value, the method returns true. finally, if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and tested against the values in this element. if it returns true for any element, this method returns true, otherwise false.",
+  
+  len = call arguments length
+  if(len == 0,
+    self each(n, if(n, return(true))),
+
+    if(len == 1,
+      theCode = call arguments first
+      self each(n, if(theCode evaluateOn(call ground, n), return(true))),
+      
+      lexicalCode = LexicalBlock createFrom(call arguments, call ground)
+      self each(n, if(lexicalCode call(n), return(true)))))
+  false)

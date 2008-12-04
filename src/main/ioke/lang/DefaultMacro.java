@@ -100,7 +100,11 @@ public class DefaultMacro extends IokeData implements Named, Inspectable {
         try {
             return code.evaluateCompleteWith(c, on);
         } catch(ControlFlow.Return e) {
-            return e.getValue();
+            if(e.context == c) {
+                return e.getValue();
+            } else {
+                throw e;
+            }
         }
     }
 }// DefaultMacro
