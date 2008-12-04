@@ -250,14 +250,24 @@ public class Number extends IokeData {
                 }
             }));
 
-        rational.registerMethod(runtime.newJavaMethod("returns the product of this number and the argument", new JavaMethod("*") {
+        rational.registerMethod(runtime.newJavaMethod("returns the product of this number and the argument. if the argument is a decimal, the receiver will be converted into a form suitable for multiplying against a decimal, and then multiplied. if the argument is neither a Rational nor a Decimal, it tries to call asRational, and if that fails it signals a condition.", new JavaMethod("*") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    Object arg = message.getEvaluatedArgument(0, context);
-                    if(!(IokeObject.data(arg) instanceof Number)) {
-                        arg = IokeObject.convertToNumber(arg, message, context);
+                    List<Object> args = new ArrayList<Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    Object arg = args.get(0);
+
+                    IokeData data = IokeObject.data(arg);
+                    
+                    if(data instanceof Decimal) {
+                        return context.runtime.multMessage.sendTo(context, context.runtime.newDecimal(((Number)IokeObject.data(on))), arg);
+                    } else {
+                        if(!(data instanceof Number)) {
+                            arg = IokeObject.convertToRational(arg, message, context, true);
+                        }
+
+                        return context.runtime.newNumber(RatNum.times(Number.value(on),Number.value(arg)));
                     }
-                    return runtime.newNumber(RatNum.times(Number.value(on),Number.value(arg)));
                 }
             }));
 
