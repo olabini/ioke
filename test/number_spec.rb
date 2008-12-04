@@ -527,7 +527,7 @@ CODE
       ioke.evaluate_string('0.0 kind == "Number Decimal"').should == ioke.true
       ioke.evaluate_string('1.0 kind == "Number Decimal"').should == ioke.true
       ioke.evaluate_string('424345.255 kind == "Number Decimal"').should == ioke.true
-#      ioke.evaluate_string('-1.0 kind == "Number Decimal"').should == ioke.true
+      ioke.evaluate_string('-1.0 kind == "Number Decimal"').should == ioke.true
       ioke.evaluate_string('435345643563.56456456 kind == "Number Decimal"').should == ioke.true
       ioke.evaluate_string('10e6 kind == "Number Decimal"').should == ioke.true
     end
@@ -537,7 +537,7 @@ CODE
         ioke = IokeRuntime.get_runtime()
         ioke.evaluate_string("x = 1.0. x == x").should == ioke.true
         ioke.evaluate_string("x = 10.0. x == x").should == ioke.true
-#        ioke.evaluate_string("x = -20.0. x == x").should == ioke.true
+        ioke.evaluate_string("x = -20.0. x == x").should == ioke.true
       end
 
       it "should not return true for unequal numbers" do 
@@ -545,10 +545,11 @@ CODE
         ioke.evaluate_string("1.1 == 2.0").should == ioke.false
         ioke.evaluate_string("1.2 == 200000.0").should == ioke.false
         ioke.evaluate_string("1123223.3233223 == 65756756756.0").should == ioke.false
-#        ioke.evaluate_string("-1.0 == 2").should == ioke.false
+        ioke.evaluate_string("-1.0 == 2.0").should == ioke.false
       end
       
       it "should return true for the result of equal number calculations"
+
       it "should work correctly when comparing zeroes" do 
         ioke = IokeRuntime.get_runtime()
         ioke.evaluate_string("0.0 == 0.0").should == ioke.true
@@ -606,7 +607,10 @@ CODE
         ioke.evaluate_string("10.0-0.0").data.as_java_string.should == "10.0"
         ioke.evaluate_string("1325234534634564564576367.0-0.0").data.as_java_string.should == "1325234534634564564576367.0"
       end
-    end  
+    end
+
+    it "should should convert its argument to a decimal if its not a decimal"
+    it "should should convert its argument to a decimal with asDecimal if its not a decimal and not a rational"
   end
 
   describe "Integer" do 
