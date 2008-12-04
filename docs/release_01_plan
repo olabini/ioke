@@ -7,8 +7,8 @@ Ioke 0.1 should include:
 *  keyword arguments
 *  rest arguments
 * break
-- return
-- continue
+* return
+* continue
 * conditions
 * List
 * Dict
