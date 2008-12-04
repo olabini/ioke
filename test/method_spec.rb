@@ -680,4 +680,13 @@ CODE
     ioke.evaluate_string("method(x, +rest, x+x. x*x) code").data.text.should == "method(x, +rest, x +(x) .\nx *(x))"
     ioke.evaluate_string("method(x, +:rest, x+x. x*x) code").data.text.should == "method(x, +:rest, x +(x) .\nx *(x))"
   end
+  
+  it "should be possible to return from it prematurely, with return" do 
+    ioke = IokeRuntime.get_runtime
+    ioke.evaluate_string(<<CODE).should == ioke.true
+x = 42
+m = method(if(true, return(:bar)). Ground x = 24)
+(m() == :bar) && (x == 42)
+CODE
+  end
 end

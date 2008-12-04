@@ -97,6 +97,10 @@ public class DefaultMacro extends IokeData implements Named, Inspectable {
         c.setCell("surroundingContext", context);
         c.setCell("call", context.runtime.newCallFrom(c, message, context, IokeObject.as(on)));
 
-        return code.evaluateCompleteWith(c, on);
+        try {
+            return code.evaluateCompleteWith(c, on);
+        } catch(ControlFlow.Return e) {
+            return e.getValue();
+        }
     }
 }// DefaultMacro
