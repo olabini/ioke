@@ -630,9 +630,34 @@ CODE
         ioke.evaluate_string("1325234534634564564576367.0-0.0").data.as_java_string.should == "1325234534634564564576367.0"
       end
 
-      it "should convert its argument to a decimal if its not a decimal"
-      it "should convert its argument to a decimal with asDecimal if its not a decimal and not a rational"
-      it "should signal a condition if it isn't a number and can't be converted"
+      it "should convert its argument to a decimal if its not a decimal" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_string("1.6-1").data.as_java_string.should == "0.6"
+        ioke.evaluate_string("3.2-2").data.as_java_string.should == "1.2"
+      end
+
+      it "should convert its argument to a decimal with asDecimal if its not a decimal and not a rational" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_string(<<CODE).data.as_java_string.should == "1.4"
+x = Origin mimic
+x asDecimal = method(42.0)
+43.4 - x
+CODE
+      end
+
+      it "should signal a condition if it isn't a number and can't be converted" do 
+        sw = StringWriter.new(20)
+        out = PrintWriter.new(sw)
+
+        ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
+
+        begin 
+          ioke.evaluate_string('1.0 - Origin mimic').should == ioke.nil
+          true.should be_false
+        rescue NativeException => cfe
+          cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Type IncorrectType"
+        end
+      end
     end
 
     describe "'+'" do 

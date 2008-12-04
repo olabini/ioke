@@ -80,6 +80,7 @@ public class Runtime {
     // Core messages
     public IokeObject asText = newMessage("asText");
     public IokeObject asRational = newMessage("asRational");
+    public IokeObject asDecimal = newMessage("asDecimal");
     public IokeObject mimic = newMessage("mimic");
     public IokeObject spaceShip = newMessage("<=>");
     public IokeObject succ = newMessage("succ");
