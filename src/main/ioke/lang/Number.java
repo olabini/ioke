@@ -329,11 +329,17 @@ public class Number extends IokeData {
         integer.registerMethod(runtime.newJavaMethod("returns the modulo of this number and the argument", new JavaMethod("%") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    Object arg = message.getEvaluatedArgument(0, context);
-                    if(!(IokeObject.data(arg) instanceof Number)) {
-                        arg = IokeObject.convertToNumber(arg, message, context);
+                    List<Object> args = new ArrayList<Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    Object arg = args.get(0);
+
+                    IokeData data = IokeObject.data(arg);
+                    
+                    if(!(data instanceof Number)) {
+                        arg = IokeObject.convertToRational(arg, message, context, true);
                     }
-                    return runtime.newNumber(IntNum.modulo(Number.intValue(on),Number.intValue(arg)));
+
+                    return context.runtime.newNumber(IntNum.modulo(Number.intValue(on),Number.intValue(arg)));
                 }
             }));
 
@@ -358,55 +364,85 @@ public class Number extends IokeData {
         integer.registerMethod(runtime.newJavaMethod("returns this number bitwise and the argument", new JavaMethod("&") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    Object arg = message.getEvaluatedArgument(0, context);
-                    if(!(IokeObject.data(arg) instanceof Number)) {
-                        arg = IokeObject.convertToNumber(arg, message, context);
+                    List<Object> args = new ArrayList<Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    Object arg = args.get(0);
+
+                    IokeData data = IokeObject.data(arg);
+                    
+                    if(!(data instanceof Number)) {
+                        arg = IokeObject.convertToRational(arg, message, context, true);
                     }
-                    return runtime.newNumber(BitOps.and(Number.intValue(on), Number.intValue(arg)));
+
+                    return context.runtime.newNumber(BitOps.and(Number.intValue(on), Number.intValue(arg)));
                 }
             }));
 
         integer.registerMethod(runtime.newJavaMethod("returns this number bitwise or the argument", new JavaMethod("|") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    Object arg = message.getEvaluatedArgument(0, context);
-                    if(!(IokeObject.data(arg) instanceof Number)) {
-                        arg = IokeObject.convertToNumber(arg, message, context);
+                    List<Object> args = new ArrayList<Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    Object arg = args.get(0);
+
+                    IokeData data = IokeObject.data(arg);
+                    
+                    if(!(data instanceof Number)) {
+                        arg = IokeObject.convertToRational(arg, message, context, true);
                     }
-                    return runtime.newNumber(BitOps.ior(Number.intValue(on), Number.intValue(arg)));
+
+                    return context.runtime.newNumber(BitOps.ior(Number.intValue(on), Number.intValue(arg)));
                 }
             }));
 
         integer.registerMethod(runtime.newJavaMethod("returns this number bitwise xor the argument", new JavaMethod("^") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    Object arg = message.getEvaluatedArgument(0, context);
-                    if(!(IokeObject.data(arg) instanceof Number)) {
-                        arg = IokeObject.convertToNumber(arg, message, context);
+                    List<Object> args = new ArrayList<Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    Object arg = args.get(0);
+
+                    IokeData data = IokeObject.data(arg);
+                    
+                    if(!(data instanceof Number)) {
+                        arg = IokeObject.convertToRational(arg, message, context, true);
                     }
-                    return runtime.newNumber(BitOps.xor(Number.intValue(on), Number.intValue(arg)));
+
+                    return context.runtime.newNumber(BitOps.xor(Number.intValue(on), Number.intValue(arg)));
                 }
             }));
 
         integer.registerMethod(runtime.newJavaMethod("returns this number left shifted by the argument", new JavaMethod("<<") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    Object arg = message.getEvaluatedArgument(0, context);
-                    if(!(IokeObject.data(arg) instanceof Number)) {
-                        arg = IokeObject.convertToNumber(arg, message, context);
+                    List<Object> args = new ArrayList<Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    Object arg = args.get(0);
+
+                    IokeData data = IokeObject.data(arg);
+                    
+                    if(!(data instanceof Number)) {
+                        arg = IokeObject.convertToRational(arg, message, context, true);
                     }
-                    return runtime.newNumber(IntNum.shift(Number.intValue(on), Number.intValue(arg).intValue()));
+
+                    return context.runtime.newNumber(IntNum.shift(Number.intValue(on), Number.intValue(arg).intValue()));
                 }
             }));
 
         integer.registerMethod(runtime.newJavaMethod("returns this number right shifted by the argument", new JavaMethod(">>") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    Object arg = message.getEvaluatedArgument(0, context);
-                    if(!(IokeObject.data(arg) instanceof Number)) {
-                        arg = IokeObject.convertToNumber(arg, message, context);
+                    List<Object> args = new ArrayList<Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    Object arg = args.get(0);
+
+                    IokeData data = IokeObject.data(arg);
+                    
+                    if(!(data instanceof Number)) {
+                        arg = IokeObject.convertToRational(arg, message, context, true);
                     }
-                    return runtime.newNumber(IntNum.shift(Number.intValue(on), -Number.intValue(arg).intValue()));
+
+                    return context.runtime.newNumber(IntNum.shift(Number.intValue(on), -Number.intValue(arg).intValue()));
                 }
             }));
 
