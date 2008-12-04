@@ -355,6 +355,27 @@ public class DefaultBehavior {
                 }
             }));
 
+        obj.registerMethod(runtime.newJavaMethod("returns a new message with the name given as argument to this method.", new JavaMethod("message") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    Object o = args.get(0);
+                    
+                    String name = null;
+                    if(IokeObject.data(o) instanceof Text) {
+                        name = Text.getText(o);
+                    } else {
+                        name = Text.getText(context.runtime.asText.sendTo(context, o));
+                    }
+
+                    Message m = new Message(context.runtime, name);
+                    IokeObject ret = context.runtime.createMessage(m);
+                    Message.copySourceLocation(message, ret);
+                    return ret;
+                }
+            }));
+
         obj.registerMethod(runtime.newJavaMethod("breaks out of the enclosing context and continues from that point again.", new JavaMethod("continue") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {

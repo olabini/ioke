@@ -29,11 +29,16 @@ CustomEnumerable2 each = macro(
     first evaluateOn(call ground, 42)
     first evaluateOn(call ground, 16)
     first evaluateOn(call ground, 17),
-    
-    lexical = LexicalBlock createFrom(call arguments, call ground)
-    lexical call(42)
-    lexical call(16)
-    lexical call(17)))
+    if(len == 2,
+      lexical = LexicalBlock createFrom(call arguments, call ground)
+      lexical call(42)
+      lexical call(16)
+      lexical call(17),
+
+      lexical = LexicalBlock createFrom(call arguments, call ground)
+      lexical call(0, 42)
+      lexical call(1, 16)
+      lexical call(2, 17))))
 CODE
 
 describe "Mixins" do 
@@ -368,7 +373,7 @@ CODE
         ioke.evaluate_string("[1,2,3] inject(*(5) -) == 12").should == ioke.true
         ioke.evaluate_string(<<CODE).should == ioke.true
 #$CUSTOM_ENUMERABLE_STRING2
-CustomEnumerable inject(-) == 9
+CustomEnumerable2 inject(-) == 9
 CODE
       end
 
@@ -378,7 +383,7 @@ CODE
         ioke.evaluate_string("[1,2,3] inject(x, *(5) - x) == 12").should == ioke.true
         ioke.evaluate_string(<<CODE).should == ioke.true
 #$CUSTOM_ENUMERABLE_STRING2
-CustomEnumerable inject(x, - x) == 9
+CustomEnumerable2 inject(x, - x) == 9
 CODE
       end
 
@@ -388,7 +393,7 @@ CODE
         ioke.evaluate_string("[1,2,3] inject(sum, x, sum *(5) - x) == 12").should == ioke.true
         ioke.evaluate_string(<<CODE).should == ioke.true
 #$CUSTOM_ENUMERABLE_STRING2
-CustomEnumerable inject(sum, x, sum - x) == 9
+CustomEnumerable2 inject(sum, x, sum - x) == 9
 CODE
       end
 
@@ -398,7 +403,7 @@ CODE
         ioke.evaluate_string("[1,2,3] inject(1, sum, x, sum *(5) - x) == 87").should == ioke.true
         ioke.evaluate_string(<<CODE).should == ioke.true
 #$CUSTOM_ENUMERABLE_STRING2
-CustomEnumerable inject(100, sum, x, sum - x) == 25
+CustomEnumerable2 inject(100, sum, x, sum - x) == 25
 CODE
       end
     end    

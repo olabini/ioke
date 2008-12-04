@@ -999,4 +999,21 @@ CODE
       ioke.evaluate_string('genSym kind == "Symbol"').should == ioke.true
     end
   end
+  
+  describe "'message'" do 
+    it "should return a new message" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('message("foo") kind?("Message")').should == ioke.true
+    end
+    
+    it "should take a text argument" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('message("foo") name == :foo').should == ioke.true
+    end
+
+    it "should take a symbol argument" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('message(:foo) name == :foo').should == ioke.true
+    end
+  end
 end

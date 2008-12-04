@@ -88,6 +88,33 @@ public class Message extends IokeData {
         return copy;
     }
 
+    public static IokeObject deepCopy(Object message) throws ControlFlow {
+        IokeObject copy = IokeObject.as(message).mimic(null, null);
+        copySourceLocation(message, copy);
+        Message orgMsg = (Message)IokeObject.data(message);
+        Message copyMsg = (Message)IokeObject.data(copy);
+        
+        copyMsg.type = orgMsg.type;
+        copyMsg.cached = orgMsg.cached;
+
+        List<Object> newArgs = new ArrayList<Object>();
+        for(Object arg : orgMsg.arguments) {
+            if((arg instanceof IokeObject) && IokeObject.isMessage(arg)) {
+                newArgs.add(deepCopy(arg));
+            } else {
+                newArgs.add(arg);
+            }
+        }
+        copyMsg.arguments = newArgs;
+
+        if(orgMsg.next != null) {
+            copyMsg.next = deepCopy(orgMsg.next);
+            Message.setPrev(orgMsg.next, copy);
+        }
+
+        return copy;
+    }
+
     public static void copySourceLocation(Object from, Object to) throws ControlFlow {
         Message.setFile(to, Message.file(from));
         Message.setLine(to, Message.line(from));
@@ -165,6 +192,12 @@ public class Message extends IokeData {
                     }
                 }
             }));
+        message.registerMethod(message.runtime.newJavaMethod("returns a deep clone of this message chain, starting at the current point.", new JavaMethod("deepCopy") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    return Message.deepCopy(on);
+                }
+            }));
         message.registerMethod(message.runtime.newJavaMethod("returns true if this message is a keyword parameter or not", new JavaMethod("keyword?") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
@@ -176,6 +209,16 @@ public class Message extends IokeData {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     IokeObject realReceiver = IokeObject.as(message.getEvaluatedArgument(0, context));
                     return IokeObject.as(on).sendTo(realReceiver, realReceiver);
+                }
+            }));
+        message.registerMethod(message.runtime.newJavaMethod("evaluates the argument and adds it to the argument list of this message.", new JavaMethod("appendArgument") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    Object o = args.get(0);
+                    IokeObject.as(on).getArguments().add(o);
+                    return on;
                 }
             }));
         message.registerMethod(message.runtime.newJavaMethod("Takes one or more evaluated arguments and sends this message chain to where the first argument is ground, and if there are more arguments, the second is the receiver, and the rest will be the arguments", new JavaMethod("evaluateOn") {
