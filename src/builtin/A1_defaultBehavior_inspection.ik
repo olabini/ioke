@@ -35,7 +35,7 @@ DefaultBehavior do(
     "returns a representation of the current object that includes information about it's cells",
 
     cellDescriptions = cellDescriptionDict
-    vals = cellDescriptions keys sort map(k, [k, cellDescriptions[k]])
+    vals = cellDescriptions keys sort map(k, list(k, cellDescriptions[k]))
   " #{cell(:self) notice}:
 %*[  %-28s = %s\n%]" format(vals))
 )

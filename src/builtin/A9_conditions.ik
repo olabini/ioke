@@ -64,6 +64,7 @@ Condition Error NoSuchCell report = method(
 
   "couldn't find cell '#{cellName}' on '#{receiver notice}' (#{self kind})
 
+#{message filename}:#{message line}:#{message position}
 #{context stackTraceAsText}")
 
 
