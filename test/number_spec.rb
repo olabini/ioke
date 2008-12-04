@@ -1041,7 +1041,28 @@ CODE
         ioke.evaluate_string("13%-4 == -3").should == ioke.true
       end
 
-      it "should convert its argument to a number if its not a number"
+      it "should convert its argument to a number if its not a number or a decimal" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_string(<<CODE).data.as_java_integer.should == 1
+x = Origin mimic
+x asRational = method(3)
+10 % x
+CODE
+      end
+
+      it "should signal a condition if it isn't a number and can't be converted" do 
+        sw = StringWriter.new(20)
+        out = PrintWriter.new(sw)
+
+        ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
+
+        begin 
+          ioke.evaluate_string('1 % Origin mimic').should == ioke.nil
+          true.should be_false
+        rescue NativeException => cfe
+          cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Type IncorrectType"
+        end
+      end
     end
     
     describe "'times'" do 
@@ -1090,7 +1111,28 @@ CODE
         ioke.evaluate_string("(-1 & 2**64) == 18446744073709551616").should == ioke.true
       end
 
-      it "should convert its argument to a number if its not a number"
+      it "should convert its argument to a number if its not a number or a decimal" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_string(<<CODE).data.as_java_integer.should == 2
+x = Origin mimic
+x asRational = method(3)
+10 & x
+CODE
+      end
+
+      it "should signal a condition if it isn't a number and can't be converted" do 
+        sw = StringWriter.new(20)
+        out = PrintWriter.new(sw)
+
+        ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
+
+        begin 
+          ioke.evaluate_string('1 & Origin mimic').should == ioke.nil
+          true.should be_false
+        rescue NativeException => cfe
+          cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Type IncorrectType"
+        end
+      end
     end
 
     describe "'|'" do 
@@ -1112,7 +1154,28 @@ CODE
         ioke.evaluate_string("(-1|2**64) == -1").should == ioke.true
       end
 
-      it "should convert its argument to a number if its not a number"
+      it "should convert its argument to a number if its not a number or a decimal" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_string(<<CODE).data.as_java_integer.should == 11
+x = Origin mimic
+x asRational = method(3)
+10 | x
+CODE
+      end
+
+      it "should signal a condition if it isn't a number and can't be converted" do 
+        sw = StringWriter.new(20)
+        out = PrintWriter.new(sw)
+
+        ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
+
+        begin 
+          ioke.evaluate_string('1 | Origin mimic').should == ioke.nil
+          true.should be_false
+        rescue NativeException => cfe
+          cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Type IncorrectType"
+        end
+      end
     end
     
     describe "'^'" do 
@@ -1135,7 +1198,28 @@ CODE
         ioke.evaluate_string("(-1 ^ 2**64) == -18446744073709551617").should == ioke.true
       end
 
-      it "should convert its argument to a number if its not a number"
+      it "should convert its argument to a number if its not a number or a decimal" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_string(<<CODE).data.as_java_integer.should == 9
+x = Origin mimic
+x asRational = method(3)
+10 ^ x
+CODE
+      end
+
+      it "should signal a condition if it isn't a number and can't be converted" do 
+        sw = StringWriter.new(20)
+        out = PrintWriter.new(sw)
+
+        ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
+
+        begin 
+          ioke.evaluate_string('1 ^ Origin mimic').should == ioke.nil
+          true.should be_false
+        rescue NativeException => cfe
+          cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Type IncorrectType"
+        end
+      end
     end
 
     describe "'>>'" do 
@@ -1158,7 +1242,28 @@ CODE
         ioke.evaluate_string("-4095 >> 3 == -512").should == ioke.true
       end
 
-      it "should convert its argument to a number if its not a number"
+      it "should convert its argument to a number if its not a number or a decimal" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_string(<<CODE).data.as_java_integer.should == 3
+x = Origin mimic
+x asRational = method(1)
+7 >> x
+CODE
+      end
+
+      it "should signal a condition if it isn't a number and can't be converted" do 
+        sw = StringWriter.new(20)
+        out = PrintWriter.new(sw)
+
+        ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
+
+        begin 
+          ioke.evaluate_string('1 >> Origin mimic').should == ioke.nil
+          true.should be_false
+        rescue NativeException => cfe
+          cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Type IncorrectType"
+        end
+      end
     end
 
     describe "'<< '" do 
@@ -1179,7 +1284,28 @@ CODE
         ioke.evaluate_string("6<<255 == 347376267711948586270712955026063723559809953996921692118372752023739388919808").should == ioke.true
       end
 
-      it "should convert its argument to a number if its not a number"
+      it "should convert its argument to a number if its not a number or a decimal" do 
+        ioke = IokeRuntime.get_runtime()
+        ioke.evaluate_string(<<CODE).data.as_java_integer.should == 28
+x = Origin mimic
+x asRational = method(2)
+7 << x
+CODE
+      end
+
+      it "should signal a condition if it isn't a number and can't be converted" do 
+        sw = StringWriter.new(20)
+        out = PrintWriter.new(sw)
+
+        ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
+
+        begin 
+          ioke.evaluate_string('1 << Origin mimic').should == ioke.nil
+          true.should be_false
+        rescue NativeException => cfe
+          cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Type IncorrectType"
+        end
+      end
     end
 
     describe "'succ'" do 

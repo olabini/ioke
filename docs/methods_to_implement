@@ -14,8 +14,6 @@ implement a basic debugger -- in Ioke
 
 add Enumerable stuff
 
-mimics == protos
-
 lower prio
 ----------
 
