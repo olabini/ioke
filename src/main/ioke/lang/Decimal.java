@@ -123,7 +123,7 @@ public class Decimal extends IokeData {
                 }
             }));
 
-        decimal.registerMethod(runtime.newJavaMethod("returns the difference between this number and the argument.", new JavaMethod("-") {
+        decimal.registerMethod(runtime.newJavaMethod("returns the difference between this number and the argument. if the argument is a rational, it will be converted into a form suitable for subtracting against a decimal, and then subtracted. if the argument is neither a Rational nor a Decimal, it tries to call asDecimal, and if that fails it signals a condition.", new JavaMethod("-") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> args = new ArrayList<Object>();
@@ -144,13 +144,24 @@ public class Decimal extends IokeData {
                 }
             }));
 
-        decimal.registerMethod(runtime.newJavaMethod("returns the sum of this number and the argument.", new JavaMethod("+") {
+        decimal.registerMethod(runtime.newJavaMethod("returns the sum of this number and the argument. if the argument is a rational, it will be converted into a form suitable for addition against a decimal, and then added. if the argument is neither a Rational nor a Decimal, it tries to call asDecimal, and if that fails it signals a condition.", new JavaMethod("+") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> args = new ArrayList<Object>();
                     DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
                     Object arg = args.get(0);
-                    return context.runtime.newDecimal(Decimal.value(on).add(Decimal.value(arg)));
+
+                    IokeData data = IokeObject.data(arg);
+                    
+                    if(data instanceof Number) {
+                        return context.runtime.newDecimal(Decimal.value(on).add(Number.value(arg).asBigDecimal()));
+                    } else {
+                        if(!(data instanceof Decimal)) {
+                            arg = IokeObject.convertToDecimal(arg, message, context, true);
+                        }
+
+                        return context.runtime.newDecimal(Decimal.value(on).add(Decimal.value(arg)));
+                    }
                 }
             }));
     }
