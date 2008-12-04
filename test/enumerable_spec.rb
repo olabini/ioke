@@ -407,5 +407,105 @@ CustomEnumerable2 inject(100, sum, x, sum - x) == 25
 CODE
       end
     end    
+
+    describe "'reduce'" do
+      # reduce needs: a start value, an argument name, a sum argument name, and code
+      # versions:
+      
+      # reduce(+)                                  => reduce(    sum,    x,    sum    +(x))
+      # reduce(x, + x)                             => reduce(    sumArg, x,    sumArg +(x))
+      # reduce(sumArg, xArg, sumArg + xArg)        => reduce(    sumArg, xArg, sumArg + xArg)
+      # reduce("", sumArg, xArg, sumArg + xArg)    => reduce("", sumArg, xArg, sumArg +(xArg))
+
+      it "should take one argument that is a message chain and apply that on the sum, with the current arg as argument" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string("[1,2,3] reduce(+) == 6").should == ioke.true
+        ioke.evaluate_string("[1,2,3] reduce(*(5) -) == 12").should == ioke.true
+        ioke.evaluate_string(<<CODE).should == ioke.true
+#$CUSTOM_ENUMERABLE_STRING2
+CustomEnumerable2 reduce(-) == 9
+CODE
+      end
+
+      it "should take two arguments that is an argument name and a message chain and apply that on the sum" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string("[1,2,3] reduce(x, + x*2) == 11").should == ioke.true
+        ioke.evaluate_string("[1,2,3] reduce(x, *(5) - x) == 12").should == ioke.true
+        ioke.evaluate_string(<<CODE).should == ioke.true
+#$CUSTOM_ENUMERABLE_STRING2
+CustomEnumerable2 reduce(x, - x) == 9
+CODE
+      end
+
+      it "should take three arguments that is the sum name, the argument name and code to apply" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string("[1,2,3] reduce(sum, x, sum + x*2) == 11").should == ioke.true
+        ioke.evaluate_string("[1,2,3] reduce(sum, x, sum *(5) - x) == 12").should == ioke.true
+        ioke.evaluate_string(<<CODE).should == ioke.true
+#$CUSTOM_ENUMERABLE_STRING2
+CustomEnumerable2 reduce(sum, x, sum - x) == 9
+CODE
+      end
+
+      it "should take four arguments that is the initial value, the sum name, the argument name and code to apply" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string("[1,2,3] reduce(13, sum, x, sum + x*2) == 25").should == ioke.true
+        ioke.evaluate_string("[1,2,3] reduce(1, sum, x, sum *(5) - x) == 87").should == ioke.true
+        ioke.evaluate_string(<<CODE).should == ioke.true
+#$CUSTOM_ENUMERABLE_STRING2
+CustomEnumerable2 reduce(100, sum, x, sum - x) == 25
+CODE
+      end
+    end    
+
+    describe "'fold'" do
+      # fold needs: a start value, an argument name, a sum argument name, and code
+      # versions:
+      
+      # fold(+)                                  => fold(    sum,    x,    sum    +(x))
+      # fold(x, + x)                             => fold(    sumArg, x,    sumArg +(x))
+      # fold(sumArg, xArg, sumArg + xArg)        => fold(    sumArg, xArg, sumArg + xArg)
+      # fold("", sumArg, xArg, sumArg + xArg)    => fold("", sumArg, xArg, sumArg +(xArg))
+
+      it "should take one argument that is a message chain and apply that on the sum, with the current arg as argument" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string("[1,2,3] fold(+) == 6").should == ioke.true
+        ioke.evaluate_string("[1,2,3] fold(*(5) -) == 12").should == ioke.true
+        ioke.evaluate_string(<<CODE).should == ioke.true
+#$CUSTOM_ENUMERABLE_STRING2
+CustomEnumerable2 fold(-) == 9
+CODE
+      end
+
+      it "should take two arguments that is an argument name and a message chain and apply that on the sum" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string("[1,2,3] fold(x, + x*2) == 11").should == ioke.true
+        ioke.evaluate_string("[1,2,3] fold(x, *(5) - x) == 12").should == ioke.true
+        ioke.evaluate_string(<<CODE).should == ioke.true
+#$CUSTOM_ENUMERABLE_STRING2
+CustomEnumerable2 fold(x, - x) == 9
+CODE
+      end
+
+      it "should take three arguments that is the sum name, the argument name and code to apply" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string("[1,2,3] fold(sum, x, sum + x*2) == 11").should == ioke.true
+        ioke.evaluate_string("[1,2,3] fold(sum, x, sum *(5) - x) == 12").should == ioke.true
+        ioke.evaluate_string(<<CODE).should == ioke.true
+#$CUSTOM_ENUMERABLE_STRING2
+CustomEnumerable2 fold(sum, x, sum - x) == 9
+CODE
+      end
+
+      it "should take four arguments that is the initial value, the sum name, the argument name and code to apply" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string("[1,2,3] fold(13, sum, x, sum + x*2) == 25").should == ioke.true
+        ioke.evaluate_string("[1,2,3] fold(1, sum, x, sum *(5) - x) == 87").should == ioke.true
+        ioke.evaluate_string(<<CODE).should == ioke.true
+#$CUSTOM_ENUMERABLE_STRING2
+CustomEnumerable2 fold(100, sum, x, sum - x) == 25
+CODE
+      end
+    end    
   end
 end
