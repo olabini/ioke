@@ -10,10 +10,6 @@ lower prio
 
 - java integration things
 
-= should check for "foo=" before calling assign, so you can do
-  msg next = blah
- instead of setNext
-
 - call initialization on creation
  - defined in terms of aspects
 
