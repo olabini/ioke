@@ -328,6 +328,12 @@ Mixins Enumerable include? = method(
       return(true)))
   return(false))
 
+Mixins Enumerable take = method(
+  "takes one argument and a list with as many elements from the collection, or all elements if the requested number is larger than the size.",
+  howMany,
+
+  self first(howMany))
+
 Mixins Enumerable aliasMethod("map", "collect")
 Mixins Enumerable aliasMethod("mapFn", "collectFn")
 Mixins Enumerable aliasMethod("find", "detect")
@@ -336,3 +342,4 @@ Mixins Enumerable aliasMethod("inject", "fold")
 Mixins Enumerable aliasMethod("select", "findAll")
 Mixins Enumerable aliasMethod("select", "filter")
 Mixins Enumerable aliasMethod("include?", "member?")
+
