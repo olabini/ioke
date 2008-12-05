@@ -37,7 +37,7 @@ public class Base {
                     if(m1.getArguments().size() == 0) {
                         Object value = message.getEvaluatedArgument(1, context);
 
-                        IokeObject.assign(on, name, value);
+                        IokeObject.assign(on, name, value, context, message);
 
                         if((IokeObject.data(value) instanceof Named) && ((Named)IokeObject.data(value)).getName() == null) {
                             ((Named)IokeObject.data(value)).setName(name);

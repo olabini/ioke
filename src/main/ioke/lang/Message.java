@@ -67,7 +67,11 @@ public class Message extends IokeData {
     }
 
     public static Message wrap(IokeObject cachedResult) {
-        Message m = new Message(cachedResult.runtime, "");
+        return wrap("", cachedResult);
+    }
+
+    public static Message wrap(String name, IokeObject cachedResult) {
+        Message m = new Message(cachedResult.runtime, name);
         m.cached = cachedResult;
         return m;
     }
@@ -150,6 +154,16 @@ public class Message extends IokeData {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
                     return method.runtime.getSymbol(((Message)IokeObject.data(on)).name);
+                }
+            }));
+        message.registerMethod(message.runtime.newJavaMethod("sets the name of the message and then returns that name", new JavaMethod("name=") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    Object o = args.get(0);
+                    Message.setName(IokeObject.as(on), (IokeObject.data(o) instanceof Text) ? Text.getText(o) : Symbol.getText(o));
+                    return o;
                 }
             }));
         message.registerMethod(message.runtime.newJavaMethod("returns the file name where this message is written", new JavaMethod("filename") {

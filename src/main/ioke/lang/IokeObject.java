@@ -346,12 +346,16 @@ public class IokeObject {
         cells.put(name, value);
     }
 
-    public static void assign(Object on, String name, Object value) {
-        as(on).assign(name, value);
+    public static void assign(Object on, String name, Object value, IokeObject context, IokeObject message) throws ControlFlow {
+        as(on).assign(name, value, context, message);
     }
 
-    public void assign(String name, Object value) {
-        cells.put(name, value);
+    public void assign(String name, Object value, IokeObject context, IokeObject message) throws ControlFlow {
+        if(!Symbol.BAD_CHARS.matcher(name).find() && findCell(message, context, name + "=") != runtime.nul) {
+            runtime.createMessage(new Message(runtime, name + "=", IokeObject.as(value))).sendTo(context, this);
+        } else {
+            cells.put(name, value);
+        }
     }
 
     public boolean isSymbol() {
