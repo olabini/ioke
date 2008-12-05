@@ -319,6 +319,15 @@ Mixins Enumerable partition = macro(
 
   list(resultTrue, resultFalse))
 
+Mixins Enumerable include? = method(
+  "takes one argument and returns true if this element is in the collection. comparisons is done with ==.",
+  toFind,
+
+  self each(n, 
+    if(toFind == cell(:n),
+      return(true)))
+  return(false))
+
 Mixins Enumerable aliasMethod("map", "collect")
 Mixins Enumerable aliasMethod("mapFn", "collectFn")
 Mixins Enumerable aliasMethod("find", "detect")
@@ -326,3 +335,4 @@ Mixins Enumerable aliasMethod("inject", "reduce")
 Mixins Enumerable aliasMethod("inject", "fold")
 Mixins Enumerable aliasMethod("select", "findAll")
 Mixins Enumerable aliasMethod("select", "filter")
+Mixins Enumerable aliasMethod("include?", "member?")
