@@ -1,19 +1,5 @@
 
 
-; Enumerable partition
-; Enumerable member?/include?
-; Enumerable take = method("takes one non-negative number and returns as many elements from the underlying enumerable. this explicitly works with infine collections that would loop forever if you called their each directly")
-; Enumerable takeWhile
-; Enumerable drop
-; Enumerable dropWhile
-; Enumerable cycle
-; Enumerable sortBy
-; Enumerable zip
-; Enumerable grep
-
-
-
-
 Mixins Enumerable asList = method(
   "will return a list created from calling each on the receiver until everything has been yielded. if a more efficient version is possible of this, the object should implement it, since other Enumerable methods will use this for some operations. note that asList is not required to return a new list",
 
