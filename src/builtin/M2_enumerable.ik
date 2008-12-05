@@ -185,9 +185,29 @@ Mixins Enumerable flatMap = macro(
 
   call resendToMethod("map") fold(+))
 
+Mixins Enumerable select = macro(
+  "takes zero, one or two arguments. if zero arguments, will return a list with all the values that are true in the original collection. if one argument is given, it will be applied as a message chain, that should be a predicate. those elements that match the predicate will be returned. if two arguments are given, they will be turned into a lexical block and used as a predicate to choose elements.",
+
+  len = call arguments length
+  result = list()
+  if(len == 0,
+    self each(n, if(cell(:n), result << cell(:n))),
+
+    if(len == 1,
+      theCode = call arguments first
+      self each(n, if(theCode evaluateOn(call ground, cell(:n)), result << cell(:n))),
+      
+      lexicalCode = LexicalBlock createFrom(call arguments, call ground)
+      self each(n, if(lexicalCode call(cell(:n)), result << cell(:n)))))
+
+  result)
+
+
+
 Mixins Enumerable aliasMethod("map", "collect")
 Mixins Enumerable aliasMethod("mapFn", "collectFn")
 Mixins Enumerable aliasMethod("find", "detect")
-Mixins Enumerable aliasMethod("find", "filter")
 Mixins Enumerable aliasMethod("inject", "reduce")
 Mixins Enumerable aliasMethod("inject", "fold")
+Mixins Enumerable aliasMethod("select", "findAll")
+Mixins Enumerable aliasMethod("select", "filter")

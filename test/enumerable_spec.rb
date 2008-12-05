@@ -358,41 +358,6 @@ CODE
       end
     end
 
-    describe "'filter'" do 
-      it "should take zero arguments and just check if any of the values are true, and then return it" do 
-        ioke = IokeRuntime.get_runtime
-        ioke.evaluate_string("[1,2,3] filter == 1").should == ioke.true
-        ioke.evaluate_string("[nil,false,nil] filter").should == ioke.nil
-        ioke.evaluate_string("[nil,false,true] filter == true").should == ioke.true
-        ioke.evaluate_string(<<CODE).should == ioke.true
-#$CUSTOM_ENUMERABLE_STRING
-CustomEnumerable filter == "3first"
-CODE
-      end
-
-      it "should take one argument that is a predicate that is applied to each element in the enumeration" do 
-        ioke = IokeRuntime.get_runtime
-        ioke.evaluate_string("[1,2,3] filter(==2) == 2").should == ioke.true
-        ioke.evaluate_string("[nil,false,nil] filter(nil?) == nil").should == ioke.true
-        ioke.evaluate_string("[nil,false,true] filter(==2)").should == ioke.nil
-        ioke.evaluate_string(<<CODE).should == ioke.true
-#$CUSTOM_ENUMERABLE_STRING
-CustomEnumerable filter(!= "foo") == "3first"
-CODE
-      end
-
-      it "should take two arguments that will be turned into a lexical block and applied" do 
-        ioke = IokeRuntime.get_runtime
-        ioke.evaluate_string("[1,2,3] filter(x, x==2) == 2").should == ioke.true
-        ioke.evaluate_string("[nil,false,nil] filter(x, x nil?) == nil").should == ioke.true
-        ioke.evaluate_string("[nil,false,true] filter(x, x==2)").should == ioke.nil
-        ioke.evaluate_string(<<CODE).should == ioke.true
-#$CUSTOM_ENUMERABLE_STRING
-CustomEnumerable filter(x, x != "foo") == "3first"
-CODE
-      end
-    end
-    
     describe "'inject'" do
       # inject needs: a start value, an argument name, a sum argument name, and code
       # versions:
@@ -622,6 +587,41 @@ CODE
       end
     end
 
+    describe "'filter'" do 
+      it "should take zero arguments and return a list with only the true values" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string("[1,2,3] filter == [1,2,3]").should == ioke.true
+        ioke.evaluate_string("[nil,false,nil] filter == []").should == ioke.true
+        ioke.evaluate_string("[nil,false,true] filter == [true]").should == ioke.true
+        ioke.evaluate_string(<<CODE).should == ioke.true
+#$CUSTOM_ENUMERABLE_STRING
+CustomEnumerable filter == CustomEnumerable asList
+CODE
+      end
+
+      it "should take one argument that ends up being a predicate and return a list of the values that is true" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string("[1,2,3] filter(>1) == [2,3]").should == ioke.true
+        ioke.evaluate_string("[nil,false,nil] filter(nil?) == [nil, nil]").should == ioke.true
+        ioke.evaluate_string("[nil,false,true] filter(==2) == []").should == ioke.true
+        ioke.evaluate_string(<<CODE).should == ioke.true
+#$CUSTOM_ENUMERABLE_STRING
+CustomEnumerable filter([0...1] != "1") == ["3first", "2third"]
+CODE
+      end
+
+      it "should take two arguments that ends up being a predicate and return a list of the values that is true" do 
+        ioke = IokeRuntime.get_runtime
+        ioke.evaluate_string("[1,2,3] filter(x, x>1) == [2,3]").should == ioke.true
+        ioke.evaluate_string("[nil,false,nil] filter(x, x nil?) == [nil, nil]").should == ioke.true
+        ioke.evaluate_string("[nil,false,true] filter(x, x==2) == []").should == ioke.true
+        ioke.evaluate_string(<<CODE).should == ioke.true
+#$CUSTOM_ENUMERABLE_STRING
+CustomEnumerable filter(x, x != "2third") == ["3first", "1second"]
+CODE
+      end
+    end
+    
     describe "'all?'" do 
       it "should take zero arguments and just check if all of the values are true" do 
         ioke = IokeRuntime.get_runtime
