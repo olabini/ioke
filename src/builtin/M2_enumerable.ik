@@ -423,6 +423,38 @@ Mixins Enumerable cycle = macro(
     if(internal empty?, return(nil))
     loop(internal each(x, lexicalCode call(cell(:x))))))
     
+Mixins Enumerable zip = method(
+  "takes zero or more arguments, where all arguments should be a list, except that the last might also be a lexical block. zip will create a list of lists, where each internal list is a combination of the current element, and the corresponding elements from all the lists. if the lists are shorter than this collection, nils will be supplied. if a lexical block is provided, it will be called with each list created, and if that's the case nil will be returned from zip",
+  +listsAndFns,
+  
+  theFn = listsAndFns last
+  if(cell(:theFn) && (cell(:theFn) mimics?(LexicalBlock)),
+    listsAndFns = listsAndFns[0..-2]
+    self each(ix, n,
+      internal = list(cell(:n))
+      listsAndFns each(n2, internal << cell(:n2)[ix])
+      cell(:theFn) call(internal))
+    nil,
+
+    result = list()
+    self each(ix, n,
+      internal = list(cell(:n))
+      listsAndFns each(n2, internal << cell(:n2)[ix])
+      result << internal)
+    result))
+
+Mixins Enumerable sortBy = macro(
+  "takes one or two arguments that are used to transform the objects into something that can be sorted, then sorts based on that. if one argument, that argument is handled as a message chain, and if two arguments it will be turned into a lexical block and used.",
+  
+  len = call arguments length
+
+  if(len == 1,
+    theCode = call arguments first
+    map(x, list(theCode evaluateOn(call ground, cell(:x)), cell(:x))) sort map(second),
+    
+    lexicalCode = LexicalBlock createFrom(call arguments, call ground)
+    map(x, list(lexicalCode call(cell(:x)), cell(:x))) sort map(second)))
+
 
 Mixins Enumerable aliasMethod("map", "collect")
 Mixins Enumerable aliasMethod("mapFn", "collectFn")
