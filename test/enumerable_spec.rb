@@ -1141,11 +1141,11 @@ CODE
       
       it "should take two arguments where the second argument is a message chain and return the result of calling that chain on everything that matches with ===" do 
         ioke = IokeRuntime.get_runtime
-        ioke.evaluate_string('[1,2,3,4,5,6,7,8,9] grep(2..5, +(1) asText) == ["3","4","5","6"]').should == ioke.true
+        ioke.evaluate_string('[1,2,3,4,5,6,7,8,9] grep(2..5, + 1) == [3,4,5,6]').should == ioke.true
         ioke.evaluate_string(<<CODE).should == ioke.true
 customObj = Origin mimic
 customObj === = method(other, (other < 3) || (other > 5))
-[1,2,3,4,5,6,7,8,9] grep(customObj, +(1) asText) == ["2","3","7","8","9","10"]
+[1,2,3,4,5,6,7,8,9] grep(customObj, + 1) == [2,3,7,8,9,10]
 CODE
       end
 

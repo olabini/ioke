@@ -621,62 +621,7 @@ describe "List" do
       ioke.evaluate_string("[1, 2, 3, 4, 5, 6] butLast(0) == [1, 2, 3, 4, 5, 6]").should == ioke.true
     end
   end
-end
 
-describe "DefaultBehavior" do 
-  describe "'list'" do 
-    it "should create a new empty list when given no arguments" do 
-      ioke = IokeRuntime.get_runtime
-      result = ioke.evaluate_string("x = list")
-      result.data.class.should == IokeList
-      result.data.object_id.should_not == ioke.list.data.object_id
-
-      ioke.evaluate_string("x mimics?(List)").should == ioke.true
-      ioke.evaluate_string("x kind?(\"List\")").should == ioke.true
-
-      result = ioke.evaluate_string("x = list()")
-      result.data.class.should == IokeList
-      result.data.object_id.should_not == ioke.list.data.object_id
-
-      ioke.evaluate_string("x mimics?(List)").should == ioke.true
-      ioke.evaluate_string("x kind?(\"List\")").should == ioke.true
-    end
-    
-    it "should create a new list with the evaluated arguments" do 
-      ioke = IokeRuntime.get_runtime
-      result = ioke.evaluate_string("list(1, 2, \"abc\", 3+42)")
-      data = result.data.list
-      data.size.should == 4
-      data[0].data.as_java_integer.should == 1
-      data[1].data.as_java_integer.should == 2
-      data[2].data.text.should == "abc"
-      data[3].data.as_java_integer.should == 45
-    end
-  end
-  
-  describe "'[]'" do 
-    it "should create a new empty list when given no arguments" do 
-      ioke = IokeRuntime.get_runtime
-      result = ioke.evaluate_string("x = []")
-      result.data.class.should == IokeList
-      result.data.object_id.should_not == ioke.list.data.object_id
-
-      ioke.evaluate_string("x mimics?(List)").should == ioke.true
-      ioke.evaluate_string("x kind?(\"List\")").should == ioke.true
-    end
-    
-    it "should create a new list with the evaluated arguments" do 
-      ioke = IokeRuntime.get_runtime
-      result = ioke.evaluate_string("[1, 2, \"abc\", 3+42]")
-      data = result.data.list
-      data.size.should == 4
-      data[0].data.as_java_integer.should == 1
-      data[1].data.as_java_integer.should == 2
-      data[2].data.text.should == "abc"
-      data[3].data.as_java_integer.should == 45
-    end
-  end
-  
   describe "'sort'" do 
     it "should return a new, sorted list of numbers" do 
       ioke = IokeRuntime.get_runtime
@@ -785,10 +730,65 @@ CODE
       ioke.evaluate_string("([] <=> [1]) == -1").should == ioke.true
       ioke.evaluate_string("([1] <=> []) == 1").should == ioke.true
       ioke.evaluate_string("([1] <=> [1]) == 0").should == ioke.true
-      ioke.evaluate_string("([1,2] <=> [1]) == -1").should == ioke.true
-      ioke.evaluate_string("([1] <=> [1,2]) == 1").should == ioke.true
+      ioke.evaluate_string("([1,2] <=> [1]) == 1").should == ioke.true
+      ioke.evaluate_string("([1] <=> [1,2]) == -1").should == ioke.true
       ioke.evaluate_string("([1,2] <=> [1,3]) == -1").should == ioke.true
-      ioke.evaluate_string("([1,3] <=> [1,2]) == 11").should == ioke.true
+      ioke.evaluate_string("([1,3] <=> [1,2]) == 1").should == ioke.true
+    end
+  end
+end
+
+describe "DefaultBehavior" do 
+  describe "'list'" do 
+    it "should create a new empty list when given no arguments" do 
+      ioke = IokeRuntime.get_runtime
+      result = ioke.evaluate_string("x = list")
+      result.data.class.should == IokeList
+      result.data.object_id.should_not == ioke.list.data.object_id
+
+      ioke.evaluate_string("x mimics?(List)").should == ioke.true
+      ioke.evaluate_string("x kind?(\"List\")").should == ioke.true
+
+      result = ioke.evaluate_string("x = list()")
+      result.data.class.should == IokeList
+      result.data.object_id.should_not == ioke.list.data.object_id
+
+      ioke.evaluate_string("x mimics?(List)").should == ioke.true
+      ioke.evaluate_string("x kind?(\"List\")").should == ioke.true
+    end
+    
+    it "should create a new list with the evaluated arguments" do 
+      ioke = IokeRuntime.get_runtime
+      result = ioke.evaluate_string("list(1, 2, \"abc\", 3+42)")
+      data = result.data.list
+      data.size.should == 4
+      data[0].data.as_java_integer.should == 1
+      data[1].data.as_java_integer.should == 2
+      data[2].data.text.should == "abc"
+      data[3].data.as_java_integer.should == 45
+    end
+  end
+  
+  describe "'[]'" do 
+    it "should create a new empty list when given no arguments" do 
+      ioke = IokeRuntime.get_runtime
+      result = ioke.evaluate_string("x = []")
+      result.data.class.should == IokeList
+      result.data.object_id.should_not == ioke.list.data.object_id
+
+      ioke.evaluate_string("x mimics?(List)").should == ioke.true
+      ioke.evaluate_string("x kind?(\"List\")").should == ioke.true
+    end
+    
+    it "should create a new list with the evaluated arguments" do 
+      ioke = IokeRuntime.get_runtime
+      result = ioke.evaluate_string("[1, 2, \"abc\", 3+42]")
+      data = result.data.list
+      data.size.should == 4
+      data[0].data.as_java_integer.should == 1
+      data[1].data.as_java_integer.should == 2
+      data[2].data.text.should == "abc"
+      data[3].data.as_java_integer.should == 45
     end
   end
 end
