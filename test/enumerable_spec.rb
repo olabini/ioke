@@ -955,10 +955,10 @@ CODE
       it "should take two arguments and apply the lexical block created from it, and return a list with all elements until the block returns false" do 
         ioke = IokeRuntime.get_runtime
         ioke.evaluate_string("[1,2,3] takeWhile(x, x<3) == [1,2]").should == ioke.true
-        ioke.evaluate_string("[1,2,3] takeWhile(x, x!=2) == [1]").should == ioke.true
+        ioke.evaluate_string("[1,2,3] takeWhile(x, x != 2) == [1]").should == ioke.true
         ioke.evaluate_string(<<CODE).should == ioke.true
 #$CUSTOM_ENUMERABLE_STRING
-CustomEnumerable takeWhile(x, x!="2third") == ["3first", "1second"]
+CustomEnumerable takeWhile(x, x != "2third") == ["3first", "1second"]
 CODE
       end
     end
@@ -1012,10 +1012,10 @@ CODE
       it "should take two arguments and apply the lexical block created from it, and return a list with all elements after the block returns false" do 
         ioke = IokeRuntime.get_runtime
         ioke.evaluate_string("[1,2,3] dropWhile(x, x<3) == [3]").should == ioke.true
-        ioke.evaluate_string("[1,2,3] dropWhile(x, x!=2) == [2,3]").should == ioke.true
+        ioke.evaluate_string("[1,2,3] dropWhile(x, x != 2) == [2,3]").should == ioke.true
         ioke.evaluate_string(<<CODE).should == ioke.true
 #$CUSTOM_ENUMERABLE_STRING
-CustomEnumerable dropWhile(x, x!="2third") == ["2third"]
+CustomEnumerable dropWhile(x, x != "2third") == ["2third"]
 CODE
       end
     end
@@ -1069,6 +1069,7 @@ CODE
       it "should take one argument and apply it" do 
         ioke = IokeRuntime.get_runtime
         ioke.evaluate_string(<<CODE)
+res = []
 m1 = method(
   [1,2,3] cycle(+1. if(Ground res length == 10, return)))
 m1
