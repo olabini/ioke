@@ -1071,7 +1071,7 @@ CODE
         ioke.evaluate_string(<<CODE)
 res = []
 m1 = method(
-  [1,2,3] cycle(+1. if(Ground res length == 10, return)))
+  [1,2,3] cycle(+1. if(Ground res length == 10, return). Ground res << "foo"))
 m1
 CODE
       end

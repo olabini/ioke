@@ -49,6 +49,32 @@ public class IokeList extends IokeData {
                     return method.runtime.newText(IokeList.getNotice(on));
                 }
             }));
+
+        obj.registerMethod(obj.runtime.newJavaMethod("Compares this object against the argument. The comparison is only based on the elements inside the lists, which are in turn compared using <=>.", new JavaMethod("<=>") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    List<Object> one = IokeList.getList(on);
+                    List<Object> two = IokeList.getList(args.get(0));
+
+                    int len = Math.min(one.size(), two.size());
+                    SpaceshipComparator sc = new SpaceshipComparator(context, message);
+
+                    for(int i = 0; i < len; i++) {
+                        int v = sc.compare(one.get(i), two.get(i));
+                        if(v != 0) {
+                            return context.runtime.newNumber(v);
+                        }
+                    }
+
+                    len = one.size() - two.size();
+
+                    if(len == 0) return context.runtime.newNumber(0);
+                    if(len > 0) return context.runtime.newNumber(1);
+                    return context.runtime.newNumber(-1);
+                }
+            }));
         
         obj.registerMethod(runtime.newJavaMethod("takes either one or two or three arguments. if one argument is given, it should be a message chain that will be sent to each object in the list. the result will be thrown away. if two arguments are given, the first is an unevaluated name that will be set to each of the values in the list in succession, and then the second argument will be evaluated in a scope with that argument in it. if three arguments is given, the first one is an unevaluated name that will be set to the index of each element, and the other two arguments are the name of the argument for the value, and the actual code. the code will evaluate in a lexical context, and if the argument name is available outside the context, it will be shadowed. the method will return the list.", new JavaMethod("each") {
                 @Override

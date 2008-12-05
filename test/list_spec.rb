@@ -777,4 +777,18 @@ CODE
       ioke.evaluate_string("x = [1,2,3]. ([4,5,6] + x) == [4,5,6,1,2,3]").should == ioke.true
     end
   end
+  
+  describe "'<=>'" do 
+    it "should sort based on the elements inside" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string("([] <=> []) == 0").should == ioke.true
+      ioke.evaluate_string("([] <=> [1]) == -1").should == ioke.true
+      ioke.evaluate_string("([1] <=> []) == 1").should == ioke.true
+      ioke.evaluate_string("([1] <=> [1]) == 0").should == ioke.true
+      ioke.evaluate_string("([1,2] <=> [1]) == -1").should == ioke.true
+      ioke.evaluate_string("([1] <=> [1,2]) == 1").should == ioke.true
+      ioke.evaluate_string("([1,2] <=> [1,3]) == -1").should == ioke.true
+      ioke.evaluate_string("([1,3] <=> [1,2]) == 11").should == ioke.true
+    end
+  end
 end
