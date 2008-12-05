@@ -329,10 +329,100 @@ Mixins Enumerable include? = method(
   return(false))
 
 Mixins Enumerable take = method(
-  "takes one argument and a list with as many elements from the collection, or all elements if the requested number is larger than the size.",
+  "takes one argument and returns a list with as many elements from the collection, or all elements if the requested number is larger than the size.",
   howMany,
 
   self first(howMany))
+
+Mixins Enumerable takeWhile = macro(
+  "takes zero, one or two arguments. it will evaluate a predicate once for each element, and collect all the elements until the predicate returns false for the first time. at that point the collected list will be returned. if zero arguments, the predicate is the element itself. if one argument, expects it to be a message chain to apply as a predicate. if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and used as the predicate.",
+  
+  len = call arguments length
+  result = list()
+  if(len == 0,
+    self each(n, 
+      if(cell(:n), 
+        result << cell(:n),
+        return(result))),
+
+    if(len == 1,
+      theCode = call arguments first
+      self each(n, 
+        if(theCode evaluateOn(call ground, cell(:n)), 
+          result << cell(:n),
+          return(result))),
+      
+      lexicalCode = LexicalBlock createFrom(call arguments, call ground)
+      self each(n, 
+        if(lexicalCode call(cell(:n)), 
+          result << cell(:n),
+          return(result)))))
+  result)
+
+Mixins Enumerable drop = method(
+  "takes one argument and returns a list of all the elements in this object except for how many that should be avoided.",
+  howMany,
+
+  result = list()
+  currentCount = howMany
+  self each(n, 
+    if(currentCount > 0, 
+      currentCount--,
+      result << cell(:n)))
+  result)
+
+Mixins Enumerable dropWhile = macro(
+  "takes zero, one or two arguments. it will evaluate a predicate once for each element, and avoid all the elements until the predicate returns false for the first time, then it will start collecting data. if zero arguments, the predicate is the element itself. if one argument, expects it to be a message chain to apply as a predicate. if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and used as the predicate.",
+  
+  len = call arguments length
+  result = list()
+  collecting = false
+  if(len == 0,
+    self each(n, 
+      if(collecting, 
+        result << cell(:n),
+        unless(cell(:n),
+          collecting = true
+          result << cell(:n)))),
+
+    if(len == 1,
+      theCode = call arguments first
+      self each(n, 
+        if(collecting, 
+          result << cell(:n),
+          unless(theCode evaluateOn(call ground, cell(:n)),
+            collecting = true
+            result << cell(:n)))),
+      
+      lexicalCode = LexicalBlock createFrom(call arguments, call ground)
+      self each(n, 
+        if(collecting, 
+          result << cell(:n),
+          unless(lexicalCode call(cell(:n)),
+            collecting = true
+            result << cell(:n))))))
+  result)
+
+Mixins Enumerable cycle = macro(
+  "takes one or two arguments and cycles over the elements of this collection. the cycling will be done by calling each once and collecting the result, and then using this to continue cycling. if one argument is given, it should be a message chain to apply. if two arguments are given, they will be turned into a lexical block and applied. if the collection is empty, returns nil.",
+
+  len = call arguments length
+  internal = list()
+  if(len == 1,
+    theCode = call arguments first
+    self each(n,
+      internal << cell(:n)
+      theCode evaluateOn(call ground, cell(:n)))
+    if(internal empty?, return(nil))
+    loop(internal each(x, theCode evaluateOn(call ground, cell(:x)))),
+
+    lexicalCode = LexicalBlock createFrom(call arguments, call ground)
+    self each(n,
+      internal << cell(:n)
+      lexicalCode call(cell(:n)))
+    if(internal empty?, return(nil))
+    loop(internal each(x, lexicalCode call(cell(:x))))))
+    
 
 Mixins Enumerable aliasMethod("map", "collect")
 Mixins Enumerable aliasMethod("mapFn", "collectFn")
