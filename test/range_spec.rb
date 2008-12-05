@@ -146,4 +146,33 @@ describe "Range" do
       ioke.evaluate_string("(0...13) exclusive?").should == ioke.true
     end
   end
+  
+  describe "'==='" do 
+    it "should match something inside the range" do 
+      ioke = IokeRuntime.get_runtime
+
+      ioke.evaluate_string("(1..5) === 1").should == ioke.true
+      ioke.evaluate_string("(1..5) === 2").should == ioke.true
+      ioke.evaluate_string("(1..5) === 3").should == ioke.true
+      ioke.evaluate_string("(1..5) === 4").should == ioke.true
+      ioke.evaluate_string("(1..5) === 5").should == ioke.true
+      ioke.evaluate_string("(1..5) === 1.5").should == ioke.true
+      ioke.evaluate_string("(1..5) === 4.9999").should == ioke.true
+      ioke.evaluate_string("(1...5) === 4.9999").should == ioke.true
+      ioke.evaluate_string("(1..5) === 4/3").should == ioke.true
+    end
+
+    it "should not match something outside the range" do 
+      ioke = IokeRuntime.get_runtime
+
+      ioke.evaluate_string("(1..5) === 0").should == ioke.false
+      ioke.evaluate_string("(1...5) === 5").should == ioke.false
+      ioke.evaluate_string("(1..5) === 0.5").should == ioke.false
+      ioke.evaluate_string("(1..5) === 5.000001").should == ioke.false
+      ioke.evaluate_string("(1...5) === 5.0").should == ioke.false
+      ioke.evaluate_string("(1..5) === 1/3").should == ioke.false
+
+      ioke.evaluate_string("(1..5) === :foo").should == ioke.false
+    end
+  end
 end
