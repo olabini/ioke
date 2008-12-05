@@ -13,15 +13,13 @@
 ; Enumerable takeWhile
 ; Enumerable drop
 ; Enumerable dropWhile
-
-
-
-
-; Enumerable sortBy
-; Enumerable grep
-; Enumerable zip
-
 ; Enumerable cycle
+; Enumerable sortBy
+; Enumerable zip
+; Enumerable grep
+
+
+
 
 Mixins Enumerable asList = method(
   "will return a list created from calling each on the receiver until everything has been yielded. if a more efficient version is possible of this, the object should implement it, since other Enumerable methods will use this for some operations. note that asList is not required to return a new list",
