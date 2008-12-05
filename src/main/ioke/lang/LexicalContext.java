@@ -39,7 +39,7 @@ public class LexicalContext extends IokeObject {
     }
 
     @Override
-    public void assign(String name, Object value) {
+    public void assign(String name, Object value, IokeObject context, IokeObject message) {
         Object place = findPlace(name);
         if(place == runtime.nul) {
             place = this;

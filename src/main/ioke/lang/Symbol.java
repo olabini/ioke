@@ -111,7 +111,7 @@ public class Symbol extends IokeData {
         return text;
     }
 
-    private final static Pattern BAD_CHARS = Pattern.compile("[=\\.:\\-\\+&|\\{\\[]");
+    public final static Pattern BAD_CHARS = Pattern.compile("[!=\\.:\\-\\+&|\\{\\[]");
 
     public static boolean onlyGoodChars(Object sym) {
         String text = Symbol.getText(sym);
