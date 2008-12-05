@@ -456,6 +456,28 @@ Mixins Enumerable sortBy = macro(
     map(x, list(lexicalCode call(cell(:x)), cell(:x))) sort map(second)))
 
 
+Mixins Enumerable grep = macro(
+  "takes one, two or three arguments. grep will first find any elements in the collection matching the first argument with '==='. if two or three arguments are given, these will be used to transform the matching object and then add the transformed version instead of the original element to the result list. the two argument version expects the second argument to be a message chain, and the three argument version expects it to be something that can be turned into a lexical block",
+  
+  len = call arguments length
+  result = list()
+  matchingAgainst = call argAt(0)
+  if(len == 1,
+    self each(n,
+      if(matchingAgainst === cell(:n),
+        result << cell(:n))),
+    if(len == 2,
+      theCode = call arguments second
+      self each(n,
+        if(matchingAgainst === cell(:n),
+          result << theCode evaluateOn(call ground, cell(:n)))),
+
+      lexicalCode = LexicalBlock createFrom(call arguments[1..-1], call ground)
+      self each(n,
+        if(matchingAgainst === cell(:n),
+          result << lexicalCode call(cell(:n))))))
+  result)
+
 Mixins Enumerable aliasMethod("map", "collect")
 Mixins Enumerable aliasMethod("mapFn", "collectFn")
 Mixins Enumerable aliasMethod("find", "detect")

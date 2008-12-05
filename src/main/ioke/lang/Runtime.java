@@ -115,6 +115,11 @@ public class Runtime {
     public IokeObject binXorMessage = newMessage("^");
     public IokeObject lshMessage = newMessage("<<");
     public IokeObject rshMessage = newMessage(">>");
+    public IokeObject ltMessage = newMessage("<"); 
+    public IokeObject lteMessage = newMessage("<=");
+    public IokeObject gtMessage = newMessage(">");
+    public IokeObject gteMessage = newMessage(">=");
+    public IokeObject eqMessage = newMessage("==");
 
     // NOT TO BE EXPOSED TO Ioke - used for internal usage only
     public final NullObject nul = new NullObject(this);
