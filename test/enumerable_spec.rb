@@ -11,11 +11,17 @@ CustomEnumerable each = macro(
     first evaluateOn(call ground, "3first")
     first evaluateOn(call ground, "1second")
     first evaluateOn(call ground, "2third"),
-    
-    lexical = LexicalBlock createFrom(call arguments, call ground)
-    lexical call("3first")
-    lexical call("1second")
-    lexical call("2third")))
+
+    if(len == 2,
+      lexical = LexicalBlock createFrom(call arguments, call ground)
+      lexical call("3first")
+      lexical call("1second")
+      lexical call("2third"),
+
+      lexical = LexicalBlock createFrom(call arguments, call ground)
+      lexical call(0, "3first")
+      lexical call(1, "1second")
+      lexical call(2, "2third"))))
 CODE
 
 $CUSTOM_ENUMERABLE_STRING2 = <<CODE
@@ -728,8 +734,8 @@ CODE
       it "should take an optional argument of how many to return" do 
         ioke = IokeRuntime.get_runtime
         ioke.evaluate_string("set first(0) == []").should == ioke.true
-        ioke.evaluate_string("set first(1) == [nil]").should == ioke.true
-        ioke.evaluate_string("set first(2) == [nil, nil]").should == ioke.true
+        ioke.evaluate_string("set first(1) == []").should == ioke.true
+        ioke.evaluate_string("set first(2) == []").should == ioke.true
       end
       
       it "should return the first element for a non-empty collection" do 
@@ -745,9 +751,9 @@ CODE
         ioke = IokeRuntime.get_runtime
         ioke.evaluate_string("set(42) first(0) == []").should == ioke.true
         ioke.evaluate_string("set(42) first(1) == [42]").should == ioke.true
-        ioke.evaluate_string("set(42) first(2) == [42, nil]").should == ioke.true
-        ioke.evaluate_string("set(42, 44, 46) first(2) == [42, 44] sort").should == ioke.true
-        ioke.evaluate_string("set(42, 44, 46) first(3) == [42, 44, 46] sort").should == ioke.true
+        ioke.evaluate_string("set(42) first(2) == [42]").should == ioke.true
+        ioke.evaluate_string("[42, 44, 46] first(2) == [42, 44]").should == ioke.true
+        ioke.evaluate_string("set(42, 44, 46) first(3) sort == [42, 44, 46]").should == ioke.true
         ioke.evaluate_string(<<CODE).should == ioke.true
 #$CUSTOM_ENUMERABLE_STRING
 CustomEnumerable first(2) == ["3first", "1second"]
@@ -841,7 +847,7 @@ CODE
         ioke = IokeRuntime.get_runtime
         ioke.evaluate_string("[1,2,3] partition(==2) == [[2], [1,3]]").should == ioke.true
         ioke.evaluate_string("[nil,false,nil] partition(nil?) == [[nil,nil], [false]]").should == ioke.true
-        ioke.evaluate_string("[nil,false,true] partition(==2) == [[true], [nil, false]]").should == ioke.true
+        ioke.evaluate_string("[nil,false,true] partition(==2) == [[], [nil, false, true]]").should == ioke.true
         ioke.evaluate_string(<<CODE).should == ioke.true
 #$CUSTOM_ENUMERABLE_STRING
 CustomEnumerable partition(!= "foo") == [["3first", "1second", "2third"], []]
@@ -852,7 +858,7 @@ CODE
         ioke = IokeRuntime.get_runtime
         ioke.evaluate_string("[1,2,3] partition(x, x==2) == [[2], [1,3]]").should == ioke.true
         ioke.evaluate_string("[nil,false,nil] partition(x, x nil?) == [[nil,nil], [false]]").should == ioke.true
-        ioke.evaluate_string("[nil,false,true] partition(x, x==2) == [[true], [nil, false]]").should == ioke.true
+        ioke.evaluate_string("[nil,false,true] partition(x, x==2) == [[], [nil, false, true]]").should == ioke.true
         ioke.evaluate_string(<<CODE).should == ioke.true
 #$CUSTOM_ENUMERABLE_STRING
 CustomEnumerable partition(x, x != "foo") == [["3first", "1second", "2third"], []]

@@ -1,12 +1,5 @@
 
 
-; Enumerable select/findAll
-; Enumerable all?
-; Enumerable count
-; Enumerable reject
-; Enumerable first
-; Enumerable one?
-; Enumerable findIndex
 ; Enumerable partition
 ; Enumerable member?/include?
 ; Enumerable take = method("takes one non-negative number and returns as many elements from the underlying enumerable. this explicitly works with infine collections that would loop forever if you called their each directly")
@@ -217,6 +210,34 @@ Mixins Enumerable all? = macro(
       self each(n, unless(lexicalCode call(cell(:n)), return(false)))))
   true)
 
+Mixins Enumerable one? = macro(
+  "takes zero, one or two arguments. if zero arguments, returns true if exactly one of the elements is true, otherwise false. if one argument, expects it to be a message chain that will be used as a predicate. if that predicate returns true for exactly one element, returns true, otherwise false. finally, if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and tested against the values in this element. if it returns true for exactly one element, returns true, otherwise false",
+  
+  len = call arguments length
+  result = false
+  if(len == 0,
+    self each(n, 
+      if(cell(:n),
+        if(result,
+          return(false),
+          result = true))),
+
+    if(len == 1,
+      theCode = call arguments first
+      self each(n, 
+        if(theCode evaluateOn(call ground, cell(:n)),
+          if(result,
+            return(false),
+            result = true))),
+      
+      lexicalCode = LexicalBlock createFrom(call arguments, call ground)
+      self each(n,
+        if(lexicalCode call(cell(:n)),
+          if(result,
+            return(false),
+            result = true)))))
+  result)
+
 Mixins Enumerable count = macro(
   "takes zero, one or two arguments. if zero arguments, returns the number of elements in the collection. if one argument, expects it to be a message chain. if that message chain, that will be used as a predicate. returns the number of elements where the predicate returns true. finally, if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and used as a predicate, and the result will be the number of elements matching the predicate.",
   
@@ -249,6 +270,54 @@ Mixins Enumerable reject = macro(
       self each(n, unless(lexicalCode call(cell(:n)), result << cell(:n)))))
 
   result)
+
+Mixins Enumerable first = method(
+  "takes one optional argument. if no argument is given, first will return the first element in the collection, or nil if no such element exists. if an argument is given, it should be a number describing how many elements to get. the return value will be a list in that case",
+  howMany nil,
+
+  if(howMany,
+    result = list()
+    self each(n, 
+      if(howMany == 0, return(result))
+      howMany--
+      result << cell(:n))
+    return(result),
+
+    self each(n, return(cell(:n)))
+    return(nil)))
+
+Mixins Enumerable findIndex = macro(
+  "takes zero, one or two arguments. if zero arguments, returns the index of the first element that is true, otherwise nil. if one argument, expects it to be a message chain. if that message chain, when applied to the current element returns a true value, the corresponding element index is returned. finally, if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and tested against the values in this element. if it returns true for any element, the element index will be returned, otherwise nil.",
+  
+  len = call arguments length
+  if(len == 0,
+    self each(ix, n, if(cell(:n), return(ix))),
+
+    if(len == 1,
+      theCode = call arguments first
+      self each(ix, n, if(theCode evaluateOn(call ground, cell(:n)), return(ix))),
+      
+      lexicalCode = LexicalBlock createFrom(call arguments, call ground)
+      self each(ix, n, if(lexicalCode call(cell(:n)), return(ix)))))
+  nil)
+
+Mixins Enumerable partition = macro(
+  "takes zero, one or two arguments. if zero arguments, will return a list containing two list, where the first list contains all true values, and the second all the false values. if one argument is given, it will be used as a predicate message chain, and the return lists will be based on the result of this predicate. finally, if three arguments are given, they will be turned into a lexical block and used as a predicate to determine the result value.",
+
+  len = call arguments length
+  resultTrue = list()
+  resultFalse = list()
+  if(len == 0,
+    self each(n, if(cell(:n), resultTrue, resultFalse) << cell(:n)),
+
+    if(len == 1,
+      theCode = call arguments first
+      self each(n, if(theCode evaluateOn(call ground, cell(:n)), resultTrue, resultFalse) << cell(:n)),
+      
+      lexicalCode = LexicalBlock createFrom(call arguments, call ground)
+      self each(n, if(lexicalCode call(cell(:n)), resultTrue, resultFalse) << cell(:n))))
+
+  list(resultTrue, resultFalse))
 
 Mixins Enumerable aliasMethod("map", "collect")
 Mixins Enumerable aliasMethod("mapFn", "collectFn")

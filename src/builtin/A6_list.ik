@@ -1,9 +1,4 @@
 
-List first = method(
-  "returns the first element of this list, or nil of the list is empty",
-  
-  [0])
-
 List second = method(
   "returns the second element of this list, or nil of the list has less than two entries",
   
