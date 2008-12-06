@@ -39,6 +39,7 @@ public class Ground {
         ground.registerCell("Set", runtime.set);
         ground.registerCell("Range", runtime.range);
         ground.registerCell("Pair", runtime.pair);
+        ground.registerCell("DateTime", runtime.dateTime);
         ground.registerCell("Message", runtime.message);
         ground.registerCell("Call", runtime.call);
         ground.registerCell("Condition", runtime.condition);

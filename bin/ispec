@@ -1,3 +1,4 @@
 #!/usr/bin/env ioke
 
 use("ispec")
+System exit(ISpec Runner CommandLine run(ISpec ispec_options))

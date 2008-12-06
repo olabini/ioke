@@ -67,6 +67,7 @@ public class Runtime {
     public IokeObject pair = new IokeObject(this, "A pair is a collection of two objects of any kind. They are used among other things to represent Dict entries.", new Pair(nil, nil));
     public IokeObject call = new IokeObject(this, "A call is the runtime structure that includes the specific information for a call, that is available inside a DefaultMacro.", new Call());
     public LexicalContext lexicalContext = new LexicalContext(this, ground, "A lexical activation context.", null, ground);
+    public IokeObject dateTime = new IokeObject(this, "A DateTime represents the current date and time in a particular time zone.", new DateTime(0));
 
     public IokeObject locals = new IokeObject(this, "Contains all the locals for a specific invocation");
 
@@ -179,6 +180,7 @@ public class Runtime {
         number.init(); 
         range.init();
         pair.init();
+        dateTime.init();
         lexicalContext.init();
         list.init();
         dict.init();
@@ -209,6 +211,7 @@ public class Runtime {
         number.mimicsWithoutCheck(origin);
         range.mimicsWithoutCheck(origin);
         pair.mimicsWithoutCheck(origin);
+        dateTime.mimicsWithoutCheck(origin);
 
         message.mimicsWithoutCheck(origin);
         method.mimicsWithoutCheck(origin);
@@ -367,6 +370,10 @@ public class Runtime {
         return this.pair;
     }
 
+    public IokeObject getDateTime() {
+        return this.dateTime;
+    }
+
     public IokeObject getNil() {
         return this.nil;
     }
@@ -438,7 +445,13 @@ public class Runtime {
     public Object evaluateFile(String filename, IokeObject message, IokeObject context) throws ControlFlow {
         try {
             ((IokeSystem)system.data).pushCurrentFile(filename);
-            return evaluateStream(new FileReader(new File(((IokeSystem)system.data).getCurrentWorkingDirectory(), filename)), message, context);
+            if(filename.startsWith("/") || (filename.length() > 2 && filename.charAt(1) == '\\')) {
+                return evaluateStream(new FileReader(new File(filename)), message, context);
+            } else {
+                return evaluateStream(new FileReader(new File(((IokeSystem)system.data).getCurrentWorkingDirectory(), filename)), message, context);
+            }
+
+
         } catch(Exception e) {
             reportJavaException(e, message, context);
             return null;
@@ -534,7 +547,7 @@ public class Runtime {
         }
     }
 
-    public IokeObject newNumber(int number) {
+    public IokeObject newNumber(long number) {
         IokeObject obj = this.integer.allocateCopy(null, null);
         obj.mimicsWithoutCheck(this.integer);
         obj.data = Number.integer(number);
@@ -638,6 +651,13 @@ public class Runtime {
         IokeObject obj = this.pair.allocateCopy(null, null);
         obj.mimicsWithoutCheck(this.pair);
         obj.data = new Pair(first, second);
+        return obj;
+    }
+
+    public IokeObject newDateTime(org.joda.time.DateTime dt) {
+        IokeObject obj = this.dateTime.allocateCopy(null, null);
+        obj.mimicsWithoutCheck(this.dateTime);
+        obj.data = new DateTime(dt);
         return obj;
     }
 
