@@ -16,7 +16,7 @@ describe(Pair,
     x should have kind("Pair"))
 
   it("should mimic Enumerable",
-    Pair should not mimic(Mixins Enumerable))
+    Pair should mimic(Mixins Enumerable))
 
   it("should mimic Comparing",
     Pair should mimic(Mixins Comparing))
