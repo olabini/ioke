@@ -101,6 +101,9 @@ public class Main {
 
             ((IokeSystem)r.system.data).setCurrentProgram("-e");
 
+            ((IokeSystem)r.system.data).addLoadPath(System.getProperty("ioke.lib", ".") + "/ioke");
+            ((IokeSystem)r.system.data).addLoadPath("lib/ioke");
+
             for(String ss : loadDirs) {
                 ((IokeSystem)r.system.data).addLoadPath(ss);
             }
