@@ -6,6 +6,10 @@ Affirm do(
       newSelf specs = []
       newSelf)
 
+    stackTraceAsText = method(
+      "#{code filename}:#{code line}:#{code position}"
+    )
+
     fullName = method(
       "returns the name of this context, prepended with the surrounding names",
       if(cell?(:surrounding),
@@ -15,13 +19,16 @@ Affirm do(
     run = method(
       "runs all the defined descriptions and specs",
       reporter,
-
+      
+      reporter addExampleGroup(self)
+      success = true
       specs each(n,
-        if(n first == :description,
+        insideSuccess = if(n first == :description,
           n second run(reporter),
-          if(n first == :test,
-            Affirm runTest(self, n second, n third, reporter),
-            Affirm runPending(self, n second, reporter)))))
+          Affirm runTest(self, n second, n third, reporter))
+        if(success, success = insideSuccess))
+      success
+    )
 
     it = macro(
       "takes one text argument, and one optional code argument. if the code argument is left out, this spec will be marked as pending",
