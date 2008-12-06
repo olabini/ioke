@@ -14,7 +14,7 @@ Ioke 0.1 should include:
 * Dict
 * Enumerable
 * squarebracket, curlybracket syntax
-- Program/script arguments
+* Program/script arguments
 - libraries
  * iik
  - dokgen

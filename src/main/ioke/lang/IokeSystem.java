@@ -37,6 +37,7 @@ public class IokeSystem extends IokeData {
     private List<AtExitInfo> atExit = new ArrayList<AtExitInfo>();
 
     private IokeObject loadPath;
+    private IokeObject programArguments;
 
     public void pushCurrentFile(String filename) {
         currentFile.add(0, filename);
@@ -72,6 +73,10 @@ public class IokeSystem extends IokeData {
 
     public void addLoadPath(String newPath) {
         IokeList.getList(loadPath).add(loadPath.runtime.newText(newPath));
+    }
+
+    public void addArgument(String newArgument) {
+        IokeList.getList(programArguments).add(programArguments.runtime.newText(newArgument));
     }
 
     private static final String[] SUFFIXES = {".ik"};
@@ -255,6 +260,7 @@ public class IokeSystem extends IokeData {
         List<Object> l = new ArrayList<Object>();
         l.add(runtime.newText("."));
         loadPath = runtime.newList(l);
+        programArguments = runtime.newList(new ArrayList<Object>());
 
         IokeObject outx = runtime.io.mimic(null, null);
         outx.data = new IokeIO(runtime.out);
@@ -283,6 +289,8 @@ public class IokeSystem extends IokeData {
                     return ((IokeSystem)IokeObject.data(on)).loadPath;
                 }
             }));
+
+        obj.registerCell("programArguments", programArguments);
 
         obj.registerMethod(runtime.newJavaMethod("returns result of evaluating first argument", new JavaMethod("ifMain") {
                 @Override

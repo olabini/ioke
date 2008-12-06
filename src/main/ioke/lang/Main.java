@@ -118,6 +118,11 @@ public class Main {
             }
 
             if(args.length > start) { 
+                if(args.length > (start+1)) {
+                    for(int i=start+1,j=args.length; i<j; i++) {
+                        r.addArgument(args[i]);
+                    }
+                }
                 ((IokeSystem)r.system.data).setCurrentProgram(args[start]);
                 r.evaluateFile(args[start], message, context);
             } else {
