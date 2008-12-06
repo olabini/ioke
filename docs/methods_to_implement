@@ -2,6 +2,8 @@
 2. System atExit
 3. program arguments
 4. add way to get the current time
+5. add syntax for #!
+6. make lib/ioke added to load path by default
 
 8.   work on "ispec"
 9.   work on "dokgen"

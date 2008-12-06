@@ -55,6 +55,7 @@ public class Main {
                         done = true;
                     } else if(arg.equals("-d")) {
                         debug = true;
+                        r.debug = true;
                     } else if(arg.startsWith("-e")) {
                         if(arg.length() == 2) {
                             scripts.add(args[++start]);
@@ -121,7 +122,12 @@ public class Main {
                     r.evaluateString("use(\"builtin/iik\"). IIk mainLoop", message, context);
                 }
             }
+            r.tearDown();
         } catch(ControlFlow.Exit e) {
+            try {
+                r.tearDown();
+            } catch(ControlFlow.Exit e2) {
+            }
             System.exit(1);
         } catch(ControlFlow e) {
             String name = e.getClass().getName();

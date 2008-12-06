@@ -14,16 +14,15 @@ Ioke 0.1 should include:
 * Dict
 * Enumerable
 * squarebracket, curlybracket syntax
+- Program/script arguments
 - libraries
  * iik
  - dokgen
- - affirm (verify/assure/affirm/testik) (unit testing framework)
+ - ispec
 
 Maybe:
 - IO
-- Program/script arguments
 - Primitive Java integration
-
 
 Not:
  - aspects

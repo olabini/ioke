@@ -21,15 +21,29 @@ import ioke.lang.exceptions.ControlFlow;
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
 public class IokeSystem extends IokeData {
+    public static class AtExitInfo {
+        public final IokeObject context;
+        public final IokeObject message;
+        public AtExitInfo(IokeObject context, IokeObject message) {
+            this.context = context;
+            this.message = message;
+        }
+    }
+
     private List<String> currentFile = new ArrayList<String>(Arrays.asList("<init>"));
     private String currentProgram;
     private String currentWorkingDirectory;
     private Set<String> loaded = new HashSet<String>();
+    private List<AtExitInfo> atExit = new ArrayList<AtExitInfo>();
 
     private IokeObject loadPath;
 
     public void pushCurrentFile(String filename) {
         currentFile.add(0, filename);
+    }
+
+    public static List<AtExitInfo> getAtExits(Object on) {
+        return ((IokeSystem)IokeObject.data(on)).atExit;
     }
 
     public String popCurrentFile() {
@@ -278,6 +292,14 @@ public class IokeSystem extends IokeData {
                     } else {
                         return runtime.nil;
                     }
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("adds a new piece of code that should be executed on exit", new JavaMethod("atExit") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getAtExits(on).add(new AtExitInfo(context, IokeObject.as(message.getArguments().get(0))));
+                    return context.runtime.nil;
                 }
             }));
     }

@@ -33,6 +33,8 @@ import gnu.math.IntFraction;
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
 public class Runtime {
+    public boolean debug = false;
+
     PrintWriter out;
     PrintWriter err;
     Reader in;
@@ -868,6 +870,29 @@ public class Runtime {
         }
 
         return null;
+    }
+
+    public void tearDown() throws ControlFlow.Exit {
+        int status = 0;
+        List<IokeSystem.AtExitInfo> atExits = IokeSystem.getAtExits(system);
+        while(!atExits.isEmpty()) {
+            IokeSystem.AtExitInfo atExit = atExits.remove(0);
+            try {
+                atExit.message.evaluateCompleteWithoutExplicitReceiver(atExit.context, atExit.context.getRealContext());
+            } catch(ControlFlow.Exit e) {
+                status = 1;
+            } catch(ControlFlow e) {
+                String name = e.getClass().getName();
+                System.err.println("unexpected control flow: " + name.substring(name.indexOf("$") + 1).toLowerCase());
+                if(debug) {
+                    e.printStackTrace(System.err);
+                }
+                status = 1;
+            }
+        }
+        if(status != 0) {
+            throw new ControlFlow.Exit();
+        }
     }
 
     public static void init(IokeObject runtime) {
