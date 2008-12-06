@@ -58,18 +58,18 @@ ISpec do(
 
     start = method(numberOfExamples,
       clear!
-      @startTime = 0
+      @startTime = DateTime now
       formatters each(start(numberOfExamples)))
 
     end = method(
-      @endTime = 0)
+      @endTime = DateTime now)
 
     dump = method(
       formatters each(startDump)
       dumpPending
       dumpFailures
       formatters each(f, 
-        f dumpSummary("0.0", examples length, failures length, pendingCount)
+        f dumpSummary(duration, examples length, failures length, pendingCount)
         f close)
 
       failures length)
@@ -90,5 +90,13 @@ ISpec do(
         message = "Not Yet Implemented")
       @pendingCount += 1
       formatters each(examplePending(example, message)))
+
+    duration = method(
+      if((startTime nil?) || (endTime nil?),
+        "0.0",
+        val = endTime - startTime
+        after = val%1000
+        before = (val - after)/1000
+        "#{before}.#{after}"))
   )
 )

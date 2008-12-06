@@ -31,7 +31,7 @@ public class Number extends IokeData {
         }
     }
 
-    public Number(int javaNumber) {
+    public Number(long javaNumber) {
         value = IntNum.make(javaNumber);
     }
 
@@ -43,7 +43,7 @@ public class Number extends IokeData {
         return new Number(val);
     }
 
-    public static Number integer(int val) {
+    public static Number integer(long val) {
         return new Number(val);
     }
 
