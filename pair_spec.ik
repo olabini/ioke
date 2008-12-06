@@ -1,8 +1,7 @@
 use("affirm")
 
 describe(Pair,
-  it("should report pending stuff")
-
+;  it("should report pending stuff")
   it("should have the correct kind",
     Pair kind should == "Pair")
 
