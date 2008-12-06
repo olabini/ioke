@@ -1,4 +1,10 @@
 
+; new structure
+;  Affirm Reporter
+;  Affirm SpecRunner
+;  Affirm Collector
+
+
 Affirm = Origin mimic do(
   ShouldContext = Origin mimic
   ShouldContext __mimic__ = Origin cell(:mimic)
