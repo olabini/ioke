@@ -158,6 +158,10 @@ public class Runtime {
         return out;
     }
 
+    public void addArgument(String arg) {
+        ((IokeSystem)IokeObject.data(system)).addArgument(arg);
+    }
+
     public void init() throws ControlFlow {
         Base.init(base);
         DefaultBehavior.init(defaultBehavior);
