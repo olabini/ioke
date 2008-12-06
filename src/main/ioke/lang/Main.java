@@ -22,6 +22,7 @@ public class Main {
         " -e script       execute the script. if provided, no program file is necessary.\n" +
         "                 there can be many of these provided on the same command line.\n" +
         " -h, --help      help, this message\n" +
+        " -Idir           add directory to 'System loadPath'. May be used more than once\n" +
         " --copyright     print the copyright\n" +
         " --version       print current version\n";
 
@@ -38,6 +39,7 @@ public class Main {
         boolean debug = false;
         String cwd = null;
         List<String> scripts = new ArrayList<String>();
+        List<String> loadDirs = new ArrayList<String>();
         try {
             int start = 0;
             boolean done = false;
@@ -53,11 +55,17 @@ public class Main {
                         done = true;
                     } else if(arg.equals("-d")) {
                         debug = true;
-                    } else if(arg.equals("-e")) {
+                    } else if(arg.startsWith("-e")) {
                         if(arg.length() == 2) {
                             scripts.add(args[++start]);
                         } else {
                             scripts.add(arg.substring(2));
+                        }
+                    } else if(arg.startsWith("-I")) {
+                        if(arg.length() == 2) {
+                            loadDirs.add(args[++start]);
+                        } else {
+                            loadDirs.add(arg.substring(2));
                         }
                     } else if(arg.equals("-h") || arg.equals("--help")) {
                         System.err.print(HELP);
@@ -91,6 +99,10 @@ public class Main {
             }
 
             ((IokeSystem)r.system.data).setCurrentProgram("-e");
+
+            for(String ss : loadDirs) {
+                ((IokeSystem)r.system.data).addLoadPath(ss);
+            }
 
             for(String script : scripts) {
                 r.evaluateStream("-e", new StringReader(script), message, context);

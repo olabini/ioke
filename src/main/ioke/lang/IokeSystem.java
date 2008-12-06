@@ -56,6 +56,10 @@ public class IokeSystem extends IokeData {
         return this.currentWorkingDirectory;
     }
 
+    public void addLoadPath(String newPath) {
+        IokeList.getList(loadPath).add(loadPath.runtime.newText(newPath));
+    }
+
     private static final String[] SUFFIXES = {".ik"};
     private static final String[] SUFFIXES_WITH_BLANK = {"", ".ik"};
 
