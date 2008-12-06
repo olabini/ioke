@@ -1,4 +1,4 @@
-Affirm do(
+ISpec do(
   runTest = method(
     "runs a specific test in the given describe context",
     context, name, code, reporter,
@@ -15,13 +15,13 @@ Affirm do(
     bind(
       rescue(Ground Condition, 
         fn(c, executionError ||= c. "gah: got: #{c}")),
-      handle(Affirm Condition, 
+      handle(ISpec Condition, 
         fn(c, c describeContext = newContext)),
       if(code, 
         ;; don't evaluate directly, instead send it to a macro on the newContext, which can give it a real back trace context
         code evaluateOn(newContext, newContext),
 
-        error!(Affirm ExamplePending, text: "Not Yet Implemented")))
+        error!(ISpec ExamplePending, text: "Not Yet Implemented")))
 
     reporter exampleFinished(newContext, executionError)
 
