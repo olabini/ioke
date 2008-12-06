@@ -15,6 +15,11 @@ def parse(str)
 end
 
 describe "parsing" do 
+  it "should ignore a first line that starts with #!" do 
+    m = parse("#!/foo/bar 123\nfoo").to_string
+    m.should == "foo"
+  end
+  
   it "should parse an empty string into a terminator message" do 
     m = parse("").to_string
     m.should == ".\n"

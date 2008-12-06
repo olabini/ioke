@@ -204,6 +204,7 @@ Whitespace : Separator {skip();};
 
 LineComment
     : ';' ~('\n'|'\r')* {$channel=HIDDEN;}
+    | '#!' ~('\n'|'\r')* {$channel=HIDDEN;}
     ;
 
 ComparisonOperator
