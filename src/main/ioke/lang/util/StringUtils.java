@@ -45,6 +45,9 @@ public class StringUtils {
                 case 'b':
                     result.append('\b');
                     break;
+                case 'e':
+                    result.append((char)27);
+                    break;
                 case '"':
                     result.append('"');
                     break;

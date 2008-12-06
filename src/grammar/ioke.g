@@ -177,7 +177,7 @@ RegexpLiteral
 
 fragment
 EscapeSequence
-    :   '\\' ('b'|'t'|'n'|'f'|'r'|'\"'|'\\'|'\n'|'#')
+    :   '\\' ('b'|'t'|'n'|'f'|'r'|'\"'|'\\'|'\n'|'#'|'e')
     |   UnicodeEscape
     |   OctalEscape
     ;
