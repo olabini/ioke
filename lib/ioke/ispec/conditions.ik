@@ -1,5 +1,5 @@
 
-Affirm do(
+ISpec do(
   Condition = Ground Condition mimic
 
   ExpectationNotMet = Condition mimic

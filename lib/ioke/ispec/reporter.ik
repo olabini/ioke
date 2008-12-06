@@ -1,5 +1,5 @@
 
-Affirm do(
+ISpec do(
   Reporter = Origin mimic
   Reporter do(
     Failure = Origin mimic do(
@@ -14,7 +14,7 @@ Affirm do(
           "'#{example fullDescription}' FAILED",
           "#{condition kind} in '#{example fullDescription}'"))
 
-      expectationNotMet? = method(condition mimics?(Affirm ExpectationNotMet))
+      expectationNotMet? = method(condition mimics?(ISpec ExpectationNotMet))
     )
 
     create = method(options,
@@ -45,7 +45,7 @@ Affirm do(
       examples << example
       if(error nil?,
         examplePassed(example),
-        if(error mimics?(Affirm ExamplePending),
+        if(error mimics?(ISpec ExamplePending),
           examplePending(example, error text),
           exampleFailed(example, error))))
 

@@ -1,5 +1,5 @@
 
-Affirm do(
+ISpec do(
   DescribeContext = Origin mimic do(
     create = method(
       newSelf = mimic
@@ -25,7 +25,7 @@ Affirm do(
       specs each(n,
         insideSuccess = if(n first == :description,
           n second run(reporter),
-          Affirm runTest(self, n second, n third, reporter))
+          ISpec runTest(self, n second, n third, reporter))
         if(success, success = insideSuccess))
       success
     )

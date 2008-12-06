@@ -1,4 +1,4 @@
-use("affirm")
+use("ispec")
 
 describe(Pair,
 ;  it("should report pending stuff")
@@ -66,4 +66,4 @@ describe(DefaultBehavior,
   )
 )
 
-Affirm run
+ISpec run

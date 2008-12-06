@@ -1,9 +1,9 @@
 
-Affirm do(
+ISpec do(
   Formatter = Origin mimic
 
   Formatter do(
-    TextFormatter = Affirm Formatter mimic do(
+    TextFormatter = ISpec Formatter mimic do(
       start = method(exampleCount, @pendingExamples = [])
 
       examplePending = method(example, message,
@@ -53,7 +53,7 @@ Affirm do(
       blue    = method(text, colour(text, "\e[34m"))
     )
 
-    SpecDocFormatter = Affirm Formatter TextFormatter mimic do(
+    SpecDocFormatter = ISpec Formatter TextFormatter mimic do(
       addExampleGroup = method(exampleGroup, 
         super(exampleGroup)
         "" println
@@ -73,7 +73,7 @@ Affirm do(
       )
     )
 
-    ProgressBarFormatter = Affirm Formatter TextFormatter mimic do(
+    ProgressBarFormatter = ISpec Formatter TextFormatter mimic do(
       exampleFailed = method(example, counter, failure,
         red("F") print
       )
