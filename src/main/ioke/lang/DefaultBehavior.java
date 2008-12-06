@@ -23,12 +23,14 @@ public class DefaultBehavior {
         IokeObject newCondition = null;
         if(Text.isText(datum)) {
             newCondition = IokeObject.as(context.runtime.condition.getCell(message, context, "Default")).mimic(message, context);
+            newCondition.setCell("context", context);
             newCondition.setCell("text", datum);
         } else {
             if(keywordArgs.size() == 0) {
                 newCondition = IokeObject.as(datum);
             } else {
                 newCondition = IokeObject.as(datum).mimic(message, context);
+                newCondition.setCell("context", context);
                 for(Map.Entry<String,Object> val : keywordArgs.entrySet()) {
                     newCondition.setCell(val.getKey(), val.getValue());
                 }

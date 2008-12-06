@@ -18,14 +18,14 @@ Affirm do(
     msg = call message deepCopy
     msg name = "#{realName}?"
     unless(msg sendTo(self realValue),
-      error!(Affirm Condition ExpectationNotMet, text: "expected: #{realValue} #{msg code} to be true")))
+      error!(Affirm ExpectationNotMet, text: "expected #{realValue} #{msg code} to be true")))
 
   NotShouldContext pass = macro(
     realName = call message name
     msg = call message deepCopy
     msg name = "#{realName}?"
     if(msg sendTo(self realValue),
-      error!(Affirm Condition ExpectationNotMet, text: "expected: #{realValue} #{msg code} to be false")))
+      error!(Affirm ExpectationNotMet, text: "expected #{realValue} #{msg code} to be false")))
 
   NotShouldContext create = method(former,
     newSelf = self __mimic__
@@ -35,19 +35,19 @@ Affirm do(
 
   ShouldContext == = method(value,
     unless(realValue == value,
-      error!(Affirm Condition ExpectationNotMet, text: "expected: #{value inspect} to == #{realValue inspect}")))
+      error!(Affirm ExpectationNotMet, text: "expected #{value inspect} to == #{realValue inspect}")))
 
   NotShouldContext == = method(value,
     if(realValue == value,
-      error!(Affirm Condition ExpectationNotMet, text: "expected: #{value inspect} to not == #{realValue inspect}")))
+      error!(Affirm ExpectationNotMet, text: "expected #{value inspect} to not == #{realValue inspect}")))
 
   ShouldContext mimic = method(value,
     unless(realValue mimics?(value),
-      error!(Affirm Condition ExpectationNotMet, text: "expected: #{realValue inspect} to mimic #{value kind}")))
+      error!(Affirm ExpectationNotMet, text: "expected #{realValue inspect} to mimic #{value kind}")))
 
   NotShouldContext mimic = method(value,
     if(realValue mimics?(value),
-      error!(Affirm Condition ExpectationNotMet, text: "expected: #{realValue inspect} to not mimic #{value kind}")))
+      error!(Affirm ExpectationNotMet, text: "expected #{realValue inspect} to not mimic #{value kind}")))
 
   ShouldContext not = method(
     "inverts the expected matching",

@@ -2,37 +2,93 @@
 Affirm do(
   Reporter = Origin mimic
   Reporter do(
-    mimic!(Affirm TextFormatter)
+    Failure = Origin mimic do(
+      create = method(example, condition,
+        newFailure = self mimic
+        newFailure example = example
+        newFailure condition = condition
+        newFailure)
+      
+      header = method(
+        if(expectationNotMet?,
+          "'#{example fullDescription}' FAILED",
+          "#{condition kind} in '#{example fullDescription}'"))
 
-    SpecDocReporter = Affirm Reporter mimic
-
-    ProgressBarReporter = Affirm Reporter mimic do(
-      exampleFailed = method(example, counter, failure,
-        red("F") print
-      )
-
-      examplePassed = method(example, 
-        green(".") print
-      )
-
-      examplePending = method(example, message, 
-        super(example, message)
-        yellow("P") print
-      )
-
-      startDump      = method("" println)
-      pass           = method(+rest, +:krest, nil) ;ignore other methods
+      expectationNotMet? = method(condition mimics?(Affirm ExpectationNotMet))
     )
 
-    start           = method(exampleCount, nil)
-    exampleStarted  = method(example, nil)
-    exampleFailed   = method(example, counter, failure, nil)
-    examplePassed   = method(example, nil)
-    examplePending  = method(example, message, nil)
-    startDump       = method()
-    dumpFailure     = method(counter, failure, nil)
-    dumpSummary     = method(duration, exampleCount, failureCount, pendingCount, nil)
-    dumpPending     = method(nil)
-    close           = method(nil)
+    create = method(options,
+      newReporter = self mimic
+      newReporter options = options
+      newReporter clear!
+      newReporter)
+
+    clear! = method(
+      @exampleGroups = []
+      @failures = []
+      @pendingCount = 0
+      @examples = []
+      @startTime = nil
+      @endTime = nil
+    )
+
+    formatters = method(options formatters)
+
+    addExampleGroup = method(exampleGroup,
+      formatters each( addExampleGroup(exampleGroup) )
+      exampleGroups << exampleGroup)
+
+    exampleStarted = method(example,
+      formatters each( exampleStarted(example) ))
+
+    exampleFinished = method(example, error nil,
+      examples << example
+      if(error nil?,
+        examplePassed(example),
+        if(error mimics?(Affirm ExamplePending),
+          examplePending(example, error text),
+          exampleFailed(example, error))))
+
+    failure = method(example, error,
+      failure = Failure create(example, error)
+      failures << failure
+      formatters each(exampleFailed(example, failures length, failure)))
+
+    aliasMethod("failure", "exampleFailed")
+
+    start = method(numberOfExamples,
+      clear!
+      @startTime = 0
+      formatters each(start(numberOfExamples)))
+
+    end = method(
+      @endTime = 0)
+
+    dump = method(
+      formatters each(startDump)
+      dumpPending
+      dumpFailures
+      formatters each(f, 
+        f dumpSummary("0.0", examples length, failures length, pendingCount)
+        f close)
+
+      failures length)
+    
+    dumpFailures = method(
+      if(failures empty?, return)
+
+      failures inject(1, index, failure,
+        formatters each(dumpFailure(index, failure))
+        index + 1))
+
+    dumpPending = method(formatters each(dumpPending))
+
+    examplePassed = method(example, formatters each(examplePassed(example)))
+
+    examplePending = method(example, message,
+      if(message nil?,
+        message = "Not Yet Implemented")
+      @pendingCount += 1
+      formatters each(examplePending(example, message)))
   )
 )
