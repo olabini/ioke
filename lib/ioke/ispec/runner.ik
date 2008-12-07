@@ -1,4 +1,12 @@
 ISpec do(
+  Runner = Origin mimic do(
+    CommandLine = Origin mimic do(
+      run = method(instance_ispec_options,
+        nil
+      )
+    )
+  )
+
   runTest = method(
     "runs a specific test in the given describe context",
     context, name, code, reporter,

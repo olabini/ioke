@@ -14,12 +14,27 @@ import ioke.lang.IokeObject;
  */
 public class ControlFlow extends Throwable {
     public static class Exit extends ControlFlow {
+        private int exitValue = 1;
         public Exit() {
             super(null);
         }
 
         public Exit(Object reason) {
             super(reason, "OH NO, exit out of place, because of: " + reason);
+        }
+
+        public Exit(int value) {
+            super(null);
+            this.exitValue = value;
+        }
+
+        public Exit(Object reason, int value) {
+            super(reason, "OH NO, exit out of place, because of: " + reason);
+            this.exitValue = value;
+        }
+
+        public int getExitValue() {
+            return exitValue;
         }
     }
 
