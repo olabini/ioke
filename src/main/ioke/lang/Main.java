@@ -132,11 +132,13 @@ public class Main {
             }
             r.tearDown();
         } catch(ControlFlow.Exit e) {
+            int exitVal = e.getExitValue();
             try {
                 r.tearDown();
             } catch(ControlFlow.Exit e2) {
+                exitVal = e2.getExitValue();
             }
-            System.exit(1);
+            System.exit(exitVal);
         } catch(ControlFlow e) {
             String name = e.getClass().getName();
             System.err.println("unexpected control flow: " + name.substring(name.indexOf("$") + 1).toLowerCase());

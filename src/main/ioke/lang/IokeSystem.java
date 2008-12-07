@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.HashMap;
 
 import ioke.lang.exceptions.ControlFlow;
 
@@ -287,6 +288,19 @@ public class IokeSystem extends IokeData {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     return ((IokeSystem)IokeObject.data(on)).loadPath;
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("forcibly exits the currently running interpreter. takes one optional argument that defaults to 1 - which is the value to return from the process, if the process is exited.", new JavaMethod("exit") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    int val = 1;
+                    if(args.size() > 0) {
+                        val = Number.extractInt(args.get(0), message, context);
+                    }
+                    throw new ControlFlow.Exit(val);
                 }
             }));
 
