@@ -75,6 +75,7 @@ public class Runtime {
     public IokeObject rescue = new IokeObject(this, "A Rescue contains handling information from rescuing a Condition.");
     public IokeObject handler = new IokeObject(this, "A Handler contains handling information for handling a condition without unwinding the stack.");
     public IokeObject io = new IokeObject(this, "IO is the base for all input/output in Ioke", new IokeIO());
+    public IokeObject fileSystem = new IokeObject(this, "Gives access to things related to the file system");
 
     public IokeObject integer = null;
     public IokeObject decimal = null;
@@ -191,6 +192,7 @@ public class Runtime {
         Rescue.init(rescue);
         Handler.init(handler);
         io.init();
+        FileSystem.init(fileSystem);
 
         ground.mimicsWithoutCheck(defaultBehavior);
         ground.mimicsWithoutCheck(base);
@@ -225,6 +227,8 @@ public class Runtime {
         handler.mimicsWithoutCheck(origin);
 
         io.mimicsWithoutCheck(origin);
+
+        fileSystem.mimicsWithoutCheck(origin);
 
         method.init();
         defaultMethod.init();
@@ -364,6 +368,10 @@ public class Runtime {
 
     public IokeObject getHandler() {
         return this.handler;
+    }
+
+    public IokeObject getFileSystem() {
+        return this.fileSystem;
     }
 
     public IokeObject getPair() {
