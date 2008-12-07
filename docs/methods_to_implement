@@ -1,6 +1,5 @@
 
 - handle arguments to the ispec command
-- support globbing - Add Files[]. (steal from JRuby)
 - tie everything into the build process
 
 8.   work on "ispec"

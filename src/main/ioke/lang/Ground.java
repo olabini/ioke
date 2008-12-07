@@ -46,6 +46,7 @@ public class Ground {
         ground.registerCell("Rescue", runtime.rescue);
         ground.registerCell("Handler", runtime.handler);
         ground.registerCell("IO", runtime.io);
+        ground.registerCell("FileSystem", runtime.fileSystem);
 
         ground.registerMethod(runtime.newJavaMethod("will return a text representation of the current stack trace", 
                                                     new JavaMethod("stackTraceAsText") {
