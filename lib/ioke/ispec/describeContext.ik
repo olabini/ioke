@@ -2,6 +2,7 @@
 ISpec do(
   DescribeContext = Origin mimic do(
     create = method(
+      ISpec Runner registerAtExitHook
       newSelf = mimic
       newSelf specs = []
       newSelf)

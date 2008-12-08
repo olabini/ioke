@@ -13,6 +13,34 @@ describe "FileSystem" do
     result.data.text.should == 'FileSystem'
   end
 
+  describe "'directory?'" do 
+    it "should return false for something that doesn't exit" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('FileSystem directory?("flux_flog")').should == ioke.false
+    end
+
+    it "should return false for a file" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('FileSystem directory?("build.xml")').should == ioke.false
+    end
+
+    it "should return false for a file inside of a directory" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('FileSystem directory?("src/builtin/A1_defaultBehavior.ik")').should == ioke.false
+    end
+
+    it "should return true for a directory" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('FileSystem directory?("src")').should == ioke.true
+      ioke.evaluate_string('FileSystem directory?("src/")').should == ioke.true
+    end
+
+    it "should return true for a directory inside another directory" do 
+      ioke = IokeRuntime.get_runtime
+      ioke.evaluate_string('FileSystem directory?("src/builtin")').should == ioke.true
+    end
+  end
+  
   describe "'[]'" do 
     def setupTestDir
       @start = Dir.getwd
