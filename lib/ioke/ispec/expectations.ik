@@ -21,6 +21,31 @@ ISpec do(
       ;; these should save away the same line message
       error!(ISpec ExpectationNotMet, text: "expected #{realValue} #{msg code} to be true")))
 
+
+  ShouldContext == = method(value,
+    unless(realValue == value,
+      ;; these should save away the same line message
+      error!(ISpec ExpectationNotMet, text: "expected #{value inspect} to == #{realValue inspect}")))
+
+  ShouldContext signal = method(condition,
+    signalled = "none"
+    bind(
+      rescue(Condition, fn(c, signalled = c)),
+      realValue call)
+
+    unless(signalled mimics?(condition),
+      ;; these should save away the same line message
+      error!(ISpec ExpectationNotMet, text: "expected #{condition} to be signalled in #{realValue code} - got #{signalled}")))
+
+  ShouldContext mimic = method(value,
+    unless(realValue mimics?(value),
+      ;; these should save away the same line message
+      error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to mimic #{value kind}")))
+
+  ShouldContext not = method(
+    "inverts the expected matching",
+    ISpec NotShouldContext create(self))
+
   NotShouldContext pass = macro(
     realName = call message name
     msg = call message deepCopy
@@ -35,27 +60,23 @@ ISpec do(
     newSelf realValue = former realValue
     newSelf)
 
-  ShouldContext == = method(value,
-    unless(realValue == value,
-      ;; these should save away the same line message
-      error!(ISpec ExpectationNotMet, text: "expected #{value inspect} to == #{realValue inspect}")))
-
   NotShouldContext == = method(value,
     if(realValue == value,
       ;; these should save away the same line message
       error!(ISpec ExpectationNotMet, text: "expected #{value inspect} to not == #{realValue inspect}")))
 
-  ShouldContext mimic = method(value,
-    unless(realValue mimics?(value),
+  NotShouldContext signal = method(condition,
+    signalled = "none"
+    bind(
+      rescue(Condition, fn(c, signalled = c)),
+      realValue call)
+
+    if(signalled mimics?(condition),
       ;; these should save away the same line message
-      error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to mimic #{value kind}")))
+      error!(ISpec ExpectationNotMet, text: "expected #{condition} to not be signalled in #{realValue code} - got #{signalled}")))
 
   NotShouldContext mimic = method(value,
     if(realValue mimics?(value),
       ;; these should save away the same line message
       error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to not mimic #{value kind}")))
-
-  ShouldContext not = method(
-    "inverts the expected matching",
-    ISpec NotShouldContext create(self))
 )

@@ -168,8 +168,9 @@ describe(Number,
         (43 - x) should == 1
       )
       
-      it("should signal a condition if it can't be converted and there is no way of subtracting")
-        
+      it("should signal a condition if it can't be converted and there is no way of subtracting",
+        fn(1 - Origin mimic) should signal(Condition Error Type IncorrectType)
+      )
     )
 
     describe("+", 
@@ -221,7 +222,9 @@ describe(Number,
         (1 + x) should == 42
       )
       
-      it("should signal a condition if it can't be converted and there is no way of adding")
+      it("should signal a condition if it can't be converted and there is no way of adding",
+        fn(1 + Origin mimic) should signal(Condition Error Type IncorrectType)
+      )
     )
 
     describe("*", 
@@ -260,7 +263,9 @@ describe(Number,
         (2 * x) should == 42
       )
       
-      it("should signal a condition if it can't be converted and there is no way of multiplying")
+      it("should signal a condition if it can't be converted and there is no way of multiplying",
+        fn(1 * Origin mimic) should signal(Condition Error Type IncorrectType)
+      )
     )
   )
 )
