@@ -73,4 +73,632 @@ describe("assignment",
     m = parse("Ground .. = method()")
     m should == "Ground =(.., method)"
   )
+
+  describe("+=",
+    it("should parse correctly without receiver, with arguments",
+      m = parse("(1) += 12")
+      m should == "+=((1), 12)")
+    
+    it("should parse correctly with receiver without spaces and arguments", 
+      m = parse("foo(1) += 12")
+      m should == "+=(foo(1), 12)")
+
+    it("should parse correctly with receiver without even more spaces and arguments",
+      m = parse("foo(1)+=12")
+      m should == "+=(foo(1), 12)")
+
+    it("should parse correctly with receiver with spaces and arguments",
+      m = parse("foo (1) += 12")
+      m should == "+=(foo(1), 12)")
+    
+    it("should parse correctly with complicated expression on left hand side",
+      m = parse("foo(1) += 12+13+53+(x f(123))")
+      m should == "+=(foo(1), 12 +(13) +(53) +(x f(123)))")
+
+    it("should parse correctly with complicated expression on left hand side",
+      m = parse("foo(1) += 12+13+53+(x f(123))\n1")
+      m should == "+=(foo(1), 12 +(13) +(53) +(x f(123))) .\n1")
+  )
+
+  describe("-=",
+    it("should parse correctly without receiver, with arguments", 
+      m = parse("(1) -= 12")
+      m should == "-=((1), 12)")
+    
+    it("should parse correctly with receiver without spaces and arguments", 
+      m = parse("foo(1) -= 12")
+      m should == "-=(foo(1), 12)")
+
+    it("should parse correctly with receiver without even more spaces and arguments", 
+      m = parse("foo(1)-=12")
+      m should == "-=(foo(1), 12)")
+
+    it("should parse correctly with receiver with spaces and arguments", 
+      m = parse("foo (1) -= 12")
+      m should == "-=(foo(1), 12)")
+    
+    it("should parse correctly with complicated expression on left hand side", 
+      m = parse("foo(1) -= 12+13+53+(x f(123))")
+      m should == "-=(foo(1), 12 +(13) +(53) +(x f(123)))")
+
+    it("should parse correctly with complicated expression on left hand side", 
+      m = parse("foo(1) -= 12+13+53+(x f(123))\n1")
+      m should == "-=(foo(1), 12 +(13) +(53) +(x f(123))) .\n1")
+  )
+
+
+
+  describe("/=", 
+    it("should parse correctly without receiver, with arguments", 
+      m = parse("(1) /= 12")
+      m should == "/=((1), 12)"
+    )
+    
+    it("should parse correctly with receiver without spaces and arguments", 
+      m = parse("foo(1) /= 12")
+      m should == "/=(foo(1), 12)"
+    )
+
+    it("should parse correctly with receiver without even more spaces and arguments", 
+      m = parse("foo(1)/=12")
+      m should == "/=(foo(1), 12)"
+    )
+
+    it("should parse correctly with receiver with spaces and arguments", 
+      m = parse("foo (1) /= 12")
+      m should == "/=(foo(1), 12)"
+    )
+    
+    it("should parse correctly with complicated expression on left hand side", 
+      m = parse("foo(1) /= 12+13+53+(x f(123))")
+      m should == "/=(foo(1), 12 +(13) +(53) +(x f(123)))"
+    )
+
+    it("should parse correctly with complicated expression on left hand side", 
+      m = parse("foo(1) /= 12+13+53+(x f(123))\n1")
+      m should == "/=(foo(1), 12 +(13) +(53) +(x f(123))) .\n1"
+    )
+  )
+
+  describe("*=", 
+    it("should parse correctly without receiver, with arguments", 
+      m = parse("(1) *= 12")
+      m should == "*=((1), 12)"
+    )
+    
+    it("should parse correctly with receiver without spaces and arguments", 
+      m = parse("foo(1) *= 12")
+      m should == "*=(foo(1), 12)"
+    )
+
+    it("should parse correctly with receiver without even more spaces and arguments", 
+      m = parse("foo(1)*=12")
+      m should == "*=(foo(1), 12)"
+    )
+
+    it("should parse correctly with receiver with spaces and arguments", 
+      m = parse("foo (1) *= 12")
+      m should == "*=(foo(1), 12)"
+    )
+    
+    it("should parse correctly with complicated expression on left hand side", 
+      m = parse("foo(1) *= 12+13+53+(x f(123))")
+      m should == "*=(foo(1), 12 +(13) +(53) +(x f(123)))"
+    )
+
+    it("should parse correctly with complicated expression on left hand side", 
+      m = parse("foo(1) *= 12+13+53+(x f(123))\n1")
+      m should == "*=(foo(1), 12 +(13) +(53) +(x f(123))) .\n1"
+    )
+  )
+
+  describe("**=", 
+    it("should parse correctly without receiver, with arguments", 
+      m = parse("(1) **= 12")
+      m should == "**=((1), 12)"
+    )
+    
+    it("should parse correctly with receiver without spaces and arguments", 
+      m = parse("foo(1) **= 12")
+      m should == "**=(foo(1), 12)"
+    )
+
+    it("should parse correctly with receiver without even more spaces and arguments", 
+      m = parse("foo(1)**=12")
+      m should == "**=(foo(1), 12)"
+    )
+
+    it("should parse correctly with receiver with spaces and arguments", 
+      m = parse("foo (1) **= 12")
+      m should == "**=(foo(1), 12)"
+    )
+    
+    it("should parse correctly with complicated expression on left hand side", 
+      m = parse("foo(1) **= 12+13+53+(x f(123))")
+      m should == "**=(foo(1), 12 +(13) +(53) +(x f(123)))"
+    )
+
+    it("should parse correctly with complicated expression on left hand side", 
+      m = parse("foo(1) **= 12+13+53+(x f(123))\n1")
+      m should == "**=(foo(1), 12 +(13) +(53) +(x f(123))) .\n1"
+    )
+  )
+
+  describe("%=", 
+    it("should parse correctly without receiver, with arguments", 
+      m = parse("(1) %= 12")
+      m should == "%=((1), 12)"
+    )
+    
+    it("should parse correctly with receiver without spaces and arguments", 
+      m = parse("foo(1) %= 12")
+      m should == "%=(foo(1), 12)"
+    )
+
+    it("should parse correctly with receiver without even more spaces and arguments", 
+      m = parse("foo(1)%=12")
+      m should == "%=(foo(1), 12)"
+    )
+
+    it("should parse correctly with receiver with spaces and arguments", 
+      m = parse("foo (1) %= 12")
+      m should == "%=(foo(1), 12)"
+    )
+    
+    it("should parse correctly with complicated expression on left hand side", 
+      m = parse("foo(1) %= 12+13+53+(x f(123))")
+      m should == "%=(foo(1), 12 +(13) +(53) +(x f(123)))"
+    )
+
+    it("should parse correctly with complicated expression on left hand side", 
+      m = parse("foo(1) %= 12+13+53+(x f(123))\n1")
+      m should == "%=(foo(1), 12 +(13) +(53) +(x f(123))) .\n1"
+    )
+  )
+
+  describe("&=", 
+    it("should parse correctly without receiver, with arguments", 
+      m = parse("(1) &= 12")
+      m should == "&=((1), 12)"
+    )
+    
+    it("should parse correctly with receiver without spaces and arguments", 
+      m = parse("foo(1) &= 12")
+      m should == "&=(foo(1), 12)"
+    )
+
+    it("should parse correctly with receiver without even more spaces and arguments", 
+      m = parse("foo(1)&=12")
+      m should == "&=(foo(1), 12)"
+    )
+
+    it("should parse correctly with receiver with spaces and arguments", 
+      m = parse("foo (1) &= 12")
+      m should == "&=(foo(1), 12)"
+    )
+    
+    it("should parse correctly with complicated expression on left hand side", 
+      m = parse("foo(1) &= 12+13+53+(x f(123))")
+      m should == "&=(foo(1), 12 +(13) +(53) +(x f(123)))"
+    )
+
+    it("should parse correctly with complicated expression on left hand side", 
+      m = parse("foo(1) &= 12+13+53+(x f(123))\n1")
+      m should == "&=(foo(1), 12 +(13) +(53) +(x f(123))) .\n1"
+    )
+  )
+
+  describe("&&=", 
+    it("should parse correctly without receiver, with arguments", 
+      m = parse("(1) &&= 12")
+      m should == "&&=((1), 12)"
+    )
+    
+    it("should parse correctly with receiver without spaces and arguments", 
+      m = parse("foo(1) &&= 12")
+      m should == "&&=(foo(1), 12)"
+    )
+
+    it("should parse correctly with receiver without even more spaces and arguments", 
+      m = parse("foo(1)&&=12")
+      m should == "&&=(foo(1), 12)"
+    )
+
+    it("should parse correctly with receiver with spaces and arguments", 
+      m = parse("foo (1) &&= 12")
+      m should == "&&=(foo(1), 12)"
+    )
+    
+    it("should parse correctly with complicated expression on left hand side", 
+      m = parse("foo(1) &&= 12+13+53+(x f(123))")
+      m should == "&&=(foo(1), 12 +(13) +(53) +(x f(123)))"
+    )
+
+    it("should parse correctly with complicated expression on left hand side", 
+      m = parse("foo(1) &&= 12+13+53+(x f(123))\n1")
+      m should == "&&=(foo(1), 12 +(13) +(53) +(x f(123))) .\n1"
+    )
+  )
+
+  describe("|=", 
+    it("should parse correctly without receiver, with arguments", 
+      m = parse("(1) |= 12")
+      m should == "|=((1), 12)"
+    )
+    
+    it("should parse correctly with receiver without spaces and arguments", 
+      m = parse("foo(1) |= 12")
+      m should == "|=(foo(1), 12)"
+    )
+
+    it("should parse correctly with receiver without even more spaces and arguments", 
+      m = parse("foo(1)|=12")
+      m should == "|=(foo(1), 12)"
+    )
+
+    it("should parse correctly with receiver with spaces and arguments", 
+      m = parse("foo (1) |= 12")
+      m should == "|=(foo(1), 12)"
+    )
+    
+    it("should parse correctly with complicated expression on left hand side", 
+      m = parse("foo(1) |= 12+13+53+(x f(123))")
+      m should == "|=(foo(1), 12 +(13) +(53) +(x f(123)))"
+    )
+
+    it("should parse correctly with complicated expression on left hand side", 
+      m = parse("foo(1) |= 12+13+53+(x f(123))\n1")
+      m should == "|=(foo(1), 12 +(13) +(53) +(x f(123))) .\n1"
+    )
+  )
+
+  describe("||=", 
+    it("should parse correctly without receiver, with arguments", 
+      m = parse("(1) ||= 12")
+      m should == "||=((1), 12)"
+    )
+    
+    it("should parse correctly with receiver without spaces and arguments", 
+      m = parse("foo(1) ||= 12")
+      m should == "||=(foo(1), 12)"
+    )
+
+    it("should parse correctly with receiver without even more spaces and arguments", 
+      m = parse("foo(1)||=12")
+      m should == "||=(foo(1), 12)"
+    )
+
+    it("should parse correctly with receiver with spaces and arguments", 
+      m = parse("foo (1) ||= 12")
+      m should == "||=(foo(1), 12)"
+    )
+    
+    it("should parse correctly with complicated expression on left hand side", 
+      m = parse("foo(1) ||= 12+13+53+(x f(123))")
+      m should == "||=(foo(1), 12 +(13) +(53) +(x f(123)))"
+    )
+
+    it("should parse correctly with complicated expression on left hand side", 
+      m = parse("foo(1) ||= 12+13+53+(x f(123))\n1")
+      m should == "||=(foo(1), 12 +(13) +(53) +(x f(123))) .\n1"
+    )
+  )
+
+  describe("^=", 
+    it("should parse correctly without receiver, with arguments", 
+      m = parse("(1) ^= 12")
+      m should == "^=((1), 12)"
+    )
+    
+    it("should parse correctly with receiver without spaces and arguments", 
+      m = parse("foo(1) ^= 12")
+      m should == "^=(foo(1), 12)"
+    )
+
+    it("should parse correctly with receiver without even more spaces and arguments", 
+      m = parse("foo(1)^=12")
+      m should == "^=(foo(1), 12)"
+    )
+
+    it("should parse correctly with receiver with spaces and arguments", 
+      m = parse("foo (1) ^= 12")
+      m should == "^=(foo(1), 12)"
+    )
+    
+    it("should parse correctly with complicated expression on left hand side", 
+      m = parse("foo(1) ^= 12+13+53+(x f(123))")
+      m should == "^=(foo(1), 12 +(13) +(53) +(x f(123)))"
+    )
+
+    it("should parse correctly with complicated expression on left hand side", 
+      m = parse("foo(1) ^= 12+13+53+(x f(123))\n1")
+      m should == "^=(foo(1), 12 +(13) +(53) +(x f(123))) .\n1"
+    )
+  )
+
+  describe(">>=", 
+    it("should parse correctly without receiver, with arguments", 
+      m = parse("(1) >>= 12")
+      m should == ">>=((1), 12)"
+    )
+    
+    it("should parse correctly with receiver without spaces and arguments", 
+      m = parse("foo(1) >>= 12")
+      m should == ">>=(foo(1), 12)"
+    )
+
+    it("should parse correctly with receiver without even more spaces and arguments", 
+      m = parse("foo(1)>>=12")
+      m should == ">>=(foo(1), 12)"
+    )
+
+    it("should parse correctly with receiver with spaces and arguments", 
+      m = parse("foo (1) >>= 12")
+      m should == ">>=(foo(1), 12)"
+    )
+    
+    it("should parse correctly with complicated expression on left hand side", 
+      m = parse("foo(1) >>= 12+13+53+(x f(123))")
+      m should == ">>=(foo(1), 12 +(13) +(53) +(x f(123)))"
+    )
+
+    it("should parse correctly with complicated expression on left hand side", 
+      m = parse("foo(1) >>= 12+13+53+(x f(123))\n1")
+      m should == ">>=(foo(1), 12 +(13) +(53) +(x f(123))) .\n1"
+    )
+  )
+
+  describe("<<=", 
+    it("should parse correctly without receiver, with arguments", 
+      m = parse("(1) <<= 12")
+      m should == "<<=((1), 12)"
+    )
+    
+    it("should parse correctly with receiver without spaces and arguments", 
+      m = parse("foo(1) <<= 12")
+      m should == "<<=(foo(1), 12)"
+    )
+
+    it("should parse correctly with receiver without even more spaces and arguments", 
+      m = parse("foo(1)<<=12")
+      m should == "<<=(foo(1), 12)"
+    )
+
+    it("should parse correctly with receiver with spaces and arguments", 
+      m = parse("foo (1) <<= 12")
+      m should == "<<=(foo(1), 12)"
+    )
+    
+    it("should parse correctly with complicated expression on left hand side", 
+      m = parse("foo(1) <<= 12+13+53+(x f(123))")
+      m should == "<<=(foo(1), 12 +(13) +(53) +(x f(123)))"
+    )
+
+    it("should parse correctly with complicated expression on left hand side", 
+      m = parse("foo(1) <<= 12+13+53+(x f(123))\n1")
+      m should == "<<=(foo(1), 12 +(13) +(53) +(x f(123))) .\n1"
+    )
+  )
+  
+  describe("()=", 
+    it("should parse correctly without receiver, with arguments", 
+      m = parse("(1) = 12")
+      m should == "=((1), 12)"
+    )
+    
+    it("should parse correctly with receiver without spaces and arguments", 
+      m = parse("foo(1) = 12")
+      m should == "=(foo(1), 12)"
+    )
+
+    it("should parse correctly with receiver without even more spaces and arguments", 
+      m = parse("foo(1)=12")
+      m should == "=(foo(1), 12)"
+    )
+
+    it("should parse correctly with receiver with spaces and arguments", 
+      m = parse("foo (1) = 12")
+      m should == "=(foo(1), 12)"
+    )
+    
+    it("should parse correctly with complicated expression on left hand side", 
+      m = parse("foo(1) = 12+13+53+(x f(123))")
+      m should == "=(foo(1), 12 +(13) +(53) +(x f(123)))"
+    )
+
+    it("should parse correctly with complicated expression on left hand side", 
+      m = parse("foo(1) = 12+13+53+(x f(123))\n1")
+      m should == "=(foo(1), 12 +(13) +(53) +(x f(123))) .\n1"
+    )
+  )
+
+  describe("[]=", 
+    it("should parse correctly without receiver, with arguments", 
+      m = parse("[1] = 12")
+      m should == "=([](1), 12)"
+    )
+    
+    it("should parse correctly with receiver without spaces and arguments", 
+      m = parse("foo[1] = 12")
+      m should == "foo =([](1), 12)"
+    )
+
+    it("should parse correctly with receiver without even more spaces and arguments", 
+      m = parse("foo[1]=12")
+      m should == "foo =([](1), 12)"
+    )
+
+    it("should parse correctly with receiver with spaces and arguments", 
+      m = parse("foo [1] = 12")
+      m should == "foo =([](1), 12)"
+    )
+    
+    it("should parse correctly with complicated expression on left hand side", 
+      m = parse("foo[1] = 12+13+53+(x f(123))")
+      m should == "foo =([](1), 12 +(13) +(53) +(x f(123)))"
+    )
+
+    it("should parse correctly with complicated expression on left hand side", 
+      m = parse("foo[1] = 12+13+53+(x f(123))\n1")
+      m should == "foo =([](1), 12 +(13) +(53) +(x f(123))) .\n1"
+    )
+  )
+
+  describe("{}=", 
+    it("should parse correctly without receiver, with arguments", 
+      m = parse("{1} = 12")
+      m should == "=({}(1), 12)"
+    )
+    
+    it("should parse correctly with receiver without spaces and arguments", 
+      m = parse("foo{1} = 12")
+      m should == "foo =({}(1), 12)"
+    )
+
+    it("should parse correctly with receiver without even more spaces and arguments", 
+      m = parse("foo{1}=12")
+      m should == "foo =({}(1), 12)"
+    )
+
+    it("should parse correctly with receiver with spaces and arguments", 
+      m = parse("foo {1} = 12")
+      m should == "foo =({}(1), 12)"
+    )
+    
+    it("should parse correctly with complicated expression on left hand side", 
+      m = parse("foo{1} = 12+13+53+(x f(123))")
+      m should == "foo =({}(1), 12 +(13) +(53) +(x f(123)))"
+    )
+
+    it("should parse correctly with complicated expression on left hand side", 
+      m = parse("foo{1} = 12+13+53+(x f(123))\n1")
+      m should == "foo =({}(1), 12 +(13) +(53) +(x f(123))) .\n1"
+    )
+  )
+  
+  describe("'++'", 
+    it("should parse correctly in postfix without space", 
+      m = parse("a++")
+      m should == "++(a)"
+    )
+
+    it("should parse correctly with receiver in postfix without space", 
+      m = parse("foo a++")
+      m should == "foo ++(a)"
+    )
+
+    it("should parse correctly in method call in postfix without space", 
+      m = parse("foo(a++)")
+      m should == "foo(++(a))"
+    )
+    
+    it("should parse correctly in postfix with space", 
+      m = parse("a ++")
+      m should == "++(a)"
+    )
+
+    it("should parse correctly with receiver in postfix with space", 
+      m = parse("foo a ++")
+      m should == "foo ++(a)"
+    )
+
+    it("should parse correctly in method call in postfix with space", 
+      m = parse("foo(a ++)")
+      m should == "foo(++(a))"
+    )
+    
+    it("should parse correctly as message send", 
+      m = parse("++(a)")
+      m should == "++(a)"
+    )
+
+    it("should parse correctly with receiver as message send", 
+      m = parse("foo ++(a)")
+      m should == "foo ++(a)"
+    )
+
+    it("should parse correctly in method call as message send", 
+      m = parse("foo(++(a))")
+      m should == "foo(++(a))"
+    )
+    
+    it("should parse correctly when combined with assignment", 
+      m = parse("foo x = a++")
+      m should == "foo =(x, ++(a))"
+    )
+
+    it("should parse correctly when combined with assignment and receiver", 
+      m = parse("foo x = Foo a++")
+      m should == "foo =(x, Foo ++(a))"
+    )
+    
+    it("should increment number", 
+      x = 0
+      x++
+      x should == 1
+    )
+  )
+
+  describe("'--'", 
+    it("should parse correctly in postfix without space", 
+      m = parse("a--")
+      m should == "--(a)"
+    )
+
+    it("should parse correctly with receiver in postfix without space", 
+      m = parse("foo a--")
+      m should == "foo --(a)"
+    )
+
+    it("should parse correctly in method call in postfix without space", 
+      m = parse("foo(a--)")
+      m should == "foo(--(a))"
+    )
+    
+    it("should parse correctly in postfix with space", 
+      m = parse("a --")
+      m should == "--(a)"
+    )
+
+    it("should parse correctly with receiver in postfix with space", 
+      m = parse("foo a --")
+      m should == "foo --(a)"
+    )
+
+    it("should parse correctly in method call in postfix with space", 
+      m = parse("foo(a --)")
+      m should == "foo(--(a))"
+    )
+    
+    it("should parse correctly as message send", 
+      m = parse("--(a)")
+      m should == "--(a)"
+    )
+
+    it("should parse correctly with receiver as message send", 
+      m = parse("foo --(a)")
+      m should == "foo --(a)"
+    )
+
+    it("should parse correctly in method call as message send", 
+      m = parse("foo(--(a))")
+      m should == "foo(--(a))"
+    )
+    
+    it("should parse correctly when combined with assignment", 
+      m = parse("foo x = a--")
+      m should == "foo =(x, --(a))"
+    )
+
+    it("should parse correctly when combined with assignment and receiver", 
+      m = parse("foo x = Foo a--")
+      m should == "foo =(x, Foo --(a))"
+    )
+
+    it("should decrement number", 
+      x = 1
+      x--
+      x should == 0
+    )
+  )
 )
