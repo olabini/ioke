@@ -1,24 +1,6 @@
 include_class('ioke.lang.Runtime') { 'IokeRuntime' } unless defined?(IokeRuntime)
 
 describe "Base" do 
-  describe "'cells'" do 
-    it "should return the cells of this object by default" do 
-      ioke = IokeRuntime.get_runtime
-      ioke.evaluate_string("x = Origin mimic. x cells == {}").should == ioke.true
-      ioke.evaluate_string("x = Origin mimic. x f = 13. x cells == {f: 13}").should == ioke.true
-      ioke.evaluate_string("x = Origin mimic. x f = 13. x Why = 1. x cells == {f: 13, Why: 1}").should == ioke.true
-      ioke.evaluate_string("x = Origin mimic. x Why = 1. x f = 13. x cells == {f: 13, Why: 1}").should == ioke.true
-    end
-
-    it "should take a boolean, when given will make it return all cells in both this and it's parents objects" do 
-      ioke = IokeRuntime.get_runtime
-
-      ioke.evaluate_string("x = Base mimic. x cells(true) == {kind: Base cell(:kind), mimic: Base cell(:mimic), :\"=\" => Base cell(:\"=\"), cell: Base cell(:cell), cellNames: Base cell(:cellNames), cells: Base cell(:cells), :\"cell=\" => Base cell(:\"cell=\"), notice: \"Base\", :\"cell?\" => Base cell(\"cell?\")}").should == ioke.true
-
-      ioke.evaluate_string("x = Base mimic. x kind = \"blarg\". x cells(true) == {kind: \"blarg\", mimic: Base cell(:mimic), :\"=\" => Base cell(:\"=\"), cell: Base cell(:cell), cellNames: Base cell(:cellNames), cells: Base cell(:cells), :\"cell=\" => Base cell(:\"cell=\"), notice: \"Base\", :\"cell?\" => Base cell(\"cell?\")}").should == ioke.true
-    end
-  end
-
   describe "'cellNames'" do 
     it "should return the cell names of this object by default" do 
       ioke = IokeRuntime.get_runtime
