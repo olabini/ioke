@@ -740,7 +740,7 @@ describe(DefaultBehavior,
     )
   )
 
-  describe("'/='", 
+  describe("/=", 
     it("should call / and then assign the result of this call to the same name", 
       x = 12. x /= 2. x should == 6
       x = 150. x /= -2. x should == -75
@@ -751,7 +751,7 @@ describe(DefaultBehavior,
     )
   )
 
-  describe("'*='", 
+  describe("*=", 
     it("should call * and then assign the result of this call to the same name", 
       x = 12. x *= 2. x should == 24
       x = 150. x *= -2. x should == -300
@@ -762,7 +762,7 @@ describe(DefaultBehavior,
     )
   )
 
-  describe("'**='", 
+  describe("**=", 
     it("should call ** and then assign the result of this call to the same name", 
       x = 2. x **= 3. x should == 8
       x = 2. x **= 40. x should == 1099511627776
@@ -773,7 +773,7 @@ describe(DefaultBehavior,
     )
   )
 
-  describe("'%='", 
+  describe("%=", 
     it("should call % and then assign the result of this call to the same name", 
       x = 12. x %= 5. x should == 2
       x = 13. x %= 4. x should == 1
@@ -784,7 +784,7 @@ describe(DefaultBehavior,
     )
   )
 
-  describe("'&='", 
+  describe("&=", 
     it("should call & and then assign the result of this call to the same name", 
       x = 65535. x &= 1. x should == 1
       x = 8. x &= 8. x should == 8
@@ -795,7 +795,7 @@ describe(DefaultBehavior,
     )
   )
 
-  describe("'&&='", 
+  describe("&&=", 
     it("should not assign a cell if it(doesn't exist", 
       x &&= 42
       cell?(:x) should == false
@@ -821,7 +821,7 @@ describe(DefaultBehavior,
     )
   )
 
-  describe("'|='", 
+  describe("|=", 
     it("should call | and then assign the result of this call to the same name", 
       x = 5. x |= 6. x should == 7
       x = 5. x |= 4. x should == 5
@@ -829,6 +829,64 @@ describe(DefaultBehavior,
 
     it("should work with a place", 
       x = [5]. x[0] |= 6. x[0] should == 7
+    )
+  )
+
+  describe("||=", 
+    it("should assign a cell if it doesn't exist", 
+      x ||= 42. x should == 42
+    )
+
+    it("should assign a cell if it is nil", 
+      x = nil. x ||= 42. x should == 42
+    )
+
+    it("should assign a cell if it is false", 
+      x = false. x ||= 42. x should == 42
+    )
+
+    it("should not assign a cell that exist", 
+      x = 43. x ||= 42. x should == 43
+    )
+
+    it("should work with a place", 
+      x = [1, 3]. x[1] ||= 42.     x should == [1, 3]
+      x = [2, 3]. x[2] ||= 42.     x should == [2, 3, 42]
+      x = [3, nil]. x[1] ||= 42.   x should == [3, 42]
+      x = [4, false]. x[1] ||= 42. x should == [4, 42]
+    )
+  )
+
+  describe("^=", 
+    it("should call ^ and then assign the result of this call to the same name", 
+      x = 3. x ^= 5. x should == 6
+      x = -2. x ^= -255. x should == 255
+    )
+
+    it("should work with a place", 
+      x = [3]. x[0] ^= 5. x[0] should == 6
+    )
+  )
+
+  describe("<<=", 
+    it("should call << and then assign the result of this call to the same name", 
+      x = 7. x <<= 2. x should == 28
+      x = 9. x <<= 4. x should == 144
+    )
+
+    it("should work with a place", 
+      x = [9]. x[0] <<= 4. x[0] should == 144
+    )
+  )
+
+  describe(">>=", 
+    it("should call >> and then assign the result of this call to the same name", 
+      x = 7. x >>= 1. x should == 3
+      x = 4095. x >>= 3. x should == 511
+    )
+
+    it("should work with a place", 
+      x = [7]. x[0] >>= 1. x[0] should == 3
     )
   )
 )
