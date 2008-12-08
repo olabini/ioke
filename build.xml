@@ -63,11 +63,23 @@
     </copy>
   </target>
 
+  <target name="test.ispec" depends="compile" description="Runs all ISpec tests">
+    <java classname="ioke.lang.Main" fork="true">
+      <classpath refid="build.classpath"/>
+      <classpath path="${classes.dir}"/>
+
+      <arg line="bin/ispec test -fs"/>
+    </java>
+  </target>
+
   <taskdef name="jtestr" classname="org.jtestr.ant.JtestRAntRunner" classpath="lib/build/jtestr.jar"/>
   <taskdef name="jtestr-server" classname="org.jtestr.ant.JtestRAntServer" classpath="lib/build/jtestr.jar"/>
   
-  <target name="test" depends="compile" description="Runs all tests">
+  <target name="test.jtestr" depends="compile" description="Runs all JTestR tests">
     <jtestr port="20333"/>
+  </target>
+
+  <target name="test" depends="test.ispec, test.jtestr" description="Runs all tests">
   </target>
 
   <target name="test-server" description="Starts test server">
