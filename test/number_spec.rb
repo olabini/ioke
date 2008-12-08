@@ -8,54 +8,6 @@ import Java::java.lang.System unless defined?(System)
 
 describe "Number" do 
   describe "Rational" do 
-    describe "'-'" do 
-      it "should signal a condition if it can't be converted and there is no way of subtracting" do 
-        sw = StringWriter.new(20)
-        out = PrintWriter.new(sw)
-
-        ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
-
-        begin 
-          ioke.evaluate_string('1 - Origin mimic').should == ioke.nil
-          true.should be_false
-        rescue NativeException => cfe
-          cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Type IncorrectType"
-        end
-      end
-    end
-
-    describe "'+'" do 
-      it "should signal a condition if it can't be converted and there is no way of adding" do 
-        sw = StringWriter.new(20)
-        out = PrintWriter.new(sw)
-
-        ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
-
-        begin 
-          ioke.evaluate_string('1 + Origin mimic').should == ioke.nil
-          true.should be_false
-        rescue NativeException => cfe
-          cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Type IncorrectType"
-        end
-      end
-    end
-
-    describe "'*'" do 
-      it "should signal a condition if it can't be converted and there is no way of multiplying" do 
-        sw = StringWriter.new(20)
-        out = PrintWriter.new(sw)
-
-        ioke = IokeRuntime.get_runtime(out, InputStreamReader.new(System.in), out)
-
-        begin 
-          ioke.evaluate_string('1 * Origin mimic').should == ioke.nil
-          true.should be_false
-        rescue NativeException => cfe
-          cfe.cause.value.find_cell(nil, nil, "kind").data.text.should == "Condition Error Type IncorrectType"
-        end
-      end
-    end
-
     describe "'**'" do 
       it "should return 1 for raising to 0" do 
         ioke = IokeRuntime.get_runtime
