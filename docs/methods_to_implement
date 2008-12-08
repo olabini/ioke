@@ -1,4 +1,7 @@
 
+- first: 'FileSystem directory?(name)'
+- first: 'FileSystem file?(name)'
+
 - handle arguments to the ispec command
 - tie everything into the build process
 

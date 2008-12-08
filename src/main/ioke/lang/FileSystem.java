@@ -3,6 +3,8 @@
  */
 package ioke.lang;
 
+import java.io.File;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
@@ -35,6 +37,23 @@ public class FileSystem {
                         result.add(context.runtime.newText(s));
                     }
                     return context.runtime.newList(result);
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("Takes one string argument and returns true if it's the relative or absolute name of a directory, and false otherwise.", new JavaMethod("directory?") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    String name = Text.getText(args.get(0));
+                    File f = null;
+                    if(name.startsWith("/")) {
+                        f = new File(name);
+                    } else {
+                        f = new File(context.runtime.getCurrentWorkingDirectory(), name);
+                    }
+                    
+                    return f.isDirectory() ? context.runtime._true : context.runtime._false;
                 }
             }));
     }

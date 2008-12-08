@@ -65,5 +65,3 @@ describe(DefaultBehavior,
       (23+15-2 => 3332323+2) second should == 3332325)
   )
 )
-
-ISpec run

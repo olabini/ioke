@@ -298,7 +298,14 @@ public class IokeSystem extends IokeData {
                     DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
                     int val = 1;
                     if(args.size() > 0) {
-                        val = Number.extractInt(args.get(0), message, context);
+                        Object arg = args.get(0);
+                        if(arg == context.runtime._true) {
+                            val = 0;
+                        } else if(arg == context.runtime._false) {
+                            val = 1;
+                        } else {
+                            val = Number.extractInt(arg, message, context);
+                        }
                     }
                     throw new ControlFlow.Exit(val);
                 }
