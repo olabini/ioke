@@ -6,73 +6,7 @@ import Java::java.io.StringWriter unless defined?(StringWriter)
 import Java::java.io.InputStreamReader unless defined?(InputStreamReader)
 import Java::java.lang.System unless defined?(System)
 
-def test_int(str, expected)
-  ioke = IokeRuntime.get_runtime()
-  result = ioke.evaluate_stream(StringReader.new(str))
-  result.data.asJavaInteger.should == expected
-end
-
-def test_longer(str, expected = str)
-  ioke = IokeRuntime.get_runtime()
-  result = ioke.evaluate_stream(StringReader.new(str))
-  result.data.asJavaString.should == expected
-end
-
-describe "parsing" do 
-  describe "numbers" do 
-    it "should be possible to parse a 0" do 
-      test_int("0", 0)
-    end
-
-    it "should be possible to parse a 1" do 
-      test_int("1", 1)
-    end
-
-    it "should be possible to parse a longer number" do 
-      test_int("132342534", 132342534)
-    end
-
-    it "should be possible to parse a really long number" do 
-      test_longer("112142342353453453453453453475434574675674564756896765786781121213200000")
-    end
-  end
-  
-  describe "hexadecimal numbers" do 
-    it "should be possible to parse a 0" do 
-      test_int("0x0", 0)
-    end
-
-    it "should be possible to parse a 1" do 
-      test_int("0x1", 1)
-    end
-
-    it "should be possible to parse a larger number" do 
-      test_int("0xA", 10)
-      test_int("0xb", 11)
-      test_int("0xC", 12)
-      test_int("0xD", 13)
-      test_int("0xe", 14)
-      test_int("0xF", 15)
-      test_int("0xFA111CD", 262214093)
-    end
-
-    it "should be possible to parse a really large number" do 
-      test_longer("0xFAD23234235FFFFFF4434334534500000000000232345234FFDDDDDDD", "422632681289240890518030477270484810255193915833100047461304598650333")
-    end
-  end
-end
-
 describe "Number" do 
-  it "should have the correct kind" do 
-    ioke = IokeRuntime.get_runtime
-    ioke.evaluate_string('Number kind == "Number"').should == ioke.true
-  end
-
-  it "should mimic Comparing" do 
-    ioke = IokeRuntime.get_runtime()
-    ioke.number.get_mimics.should include(ioke.mixins.find_cell(nil, nil, "Comparing"))
-  end
-
   describe "'negation'" do 
     it "should return zero for zero" do 
       ioke = IokeRuntime.get_runtime
