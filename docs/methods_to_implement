@@ -1,7 +1,6 @@
 
-8.   work on "ispec"
-9.   work on "dokgen"
-???. work on "debug"
+- work on "dokgen"
+- work on "debug"
 
 implement a basic debugger -- in Ioke
 

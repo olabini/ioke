@@ -64,7 +64,7 @@
   </target>
 
   <target name="test.ispec" depends="compile" description="Runs all ISpec tests">
-    <java classname="ioke.lang.Main" fork="true">
+    <java classname="ioke.lang.Main" fork="true" failonerror="true">
       <classpath refid="build.classpath"/>
       <classpath path="${classes.dir}"/>
 
