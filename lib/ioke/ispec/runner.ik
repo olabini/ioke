@@ -91,7 +91,7 @@ ISpec do(
     bind(
       rescue(Ground Condition, 
         fn(c, executionError ||= c. "gah: got: #{c}")),
-      handle(ISpec Condition, 
+      handle(Ground Condition, 
         fn(c, c describeContext = newContext)),
       if(code, 
         ;; don't evaluate directly, instead send it to a macro on the newContext, which can give it a real back trace context

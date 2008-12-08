@@ -124,42 +124,42 @@ describe(Number,
 
     describe("-", 
       it("should return 0 for the difference between 0 and 0", 
-        0-0 should == 0
+        (0-0) should == 0
       )
       
       it("should return the difference between really large numbers", 
-        123435334645674745675675757-123435334645674745675675756 should == 1
-        123435334645674745675675757-1 should == "123435334645674745675675756"
-        123435334645674745675675757-24334534544345345345345 should == "123411000111130400330330412"
+        (123435334645674745675675757-123435334645674745675675756) should == 1
+        (123435334645674745675675757-1) should == 123435334645674745675675756
+        (123435334645674745675675757-24334534544345345345345) should == 123411000111130400330330412
       )
       
       it("should return the difference between smaller numbers", 
-        1-1 should == 0
-        0-1 should == -1
-        2-1 should == 1
-        10-5 should == 5
-        234-30 should == 204
-        30-35 should == -5
+        (1-1) should == 0
+        (0-1) should == -1
+        (2-1) should == 1
+        (10-5) should == 5
+        (234-30) should == 204
+        (30-35) should == -5
       )
       
       it("should return the difference between negative numbers", 
-        (0-1)-1 should == -2
-        (0-1)-5 should == -6
-        (0-1)-(0-5) should == 4
-        (0-10)-5 should == -15
-        (0-10)-(0-5) should == -5
-        (0-2545345345346547456756)-(0-2545345345346547456755) should == -1
+        ((0-1)-1) should == -2
+        ((0-1)-5) should == -6
+        ((0-1)-(0-5)) should == 4
+        ((0-10)-5) should == -15
+        ((0-10)-(0-5)) should == -5
+        ((0-2545345345346547456756)-(0-2545345345346547456755)) should == -1
       )
 
       it("should return the number when 0 is the argument", 
-        (0-1)-0 should == -1
-        10-0 should == 10
-        1325234534634564564576367-0 should == "1325234534634564564576367"
+        (-1-0) should == -1
+        (10-0) should == 10
+        (1325234534634564564576367-0) should == 1325234534634564564576367
       )
       
       it("should convert itself to a decimal if the argument is a decimal", 
-        1-0.6 should == 0.4
-        3-1.2 should == 1.8
+        (1-0.6) should == 0.4
+        (3-1.2) should == 1.8
       )
 
       it("should convert its argument to a rational if its not a number or a decimal", 
@@ -169,49 +169,50 @@ describe(Number,
       )
       
       it("should signal a condition if it can't be converted and there is no way of subtracting")
+        
     )
 
     describe("+", 
       it("should return 0 for the sum of 0 and 0", 
-        0+0 should == 0
+        (0+0) should == 0
       )
 
       it("should return the sum of really large numbers", 
-        234235345636345634567345675467+1 should == 234235345636345634567345675468
-        21342342342345345+778626453756754687567865785678 should == 778626453756776029910208131023
+        (234235345636345634567345675467+1) should == 234235345636345634567345675468
+        (21342342342345345+778626453756754687567865785678) should == 778626453756776029910208131023
         (234234+63456345745676574567571345456345645675674567878567856785678657856568768) should == 63456345745676574567571345456345645675674567878567856785678657856803002
       )
 
       it("should return the sum of smaller numbers", 
-        1+1 should == 2
-        10+1 should == 11
-        15+15 should == 30
-        16+15 should == 31
+        (1+1) should == 2
+        (10+1) should == 11
+        (15+15) should == 30
+        (16+15) should == 31
       )
 
       it("should return the sum of negative numbers", 
-        1+(0-1) should == 0
-        (0-1)+2 should == 1
-        (0-1)+(0-1) should == -2
+        (1+(0-1)) should == 0
+        ((0-1)+2) should == 1
+        ((0-1)+(0-1)) should == -2
       )
 
       it("should return the number when 0 is the receiver", 
-        0+1 should == 1
-        0+(0-1) should == -1
-        0+124423 should == 124423
-        0+34545636745678657856786786785678 should == 34545636745678657856786786785678
+        (0+1) should == 1
+        (0+(0-1)) should == -1
+        (0+124423) should == 124423
+        (0+34545636745678657856786786785678) should == 34545636745678657856786786785678
       )
 
       it("should return the number when 0 is the argument", 
-        1+0 should == 1
-        (0-1)+0 should == -1
-        124423+0 should == 124423
-        34545636745678657856786786785678+0 should == 34545636745678657856786786785678
+        (1+0) should == 1
+        ((0-1)+0) should == -1
+        (124423+0) should == 124423
+        (34545636745678657856786786785678+0) should == 34545636745678657856786786785678
       )
 
       it("should convert itself to a decimal if the argument is a decimal", 
-        1+0.6 should == 1.6
-        3+1.2 should == 4.2
+        (1+0.6) should == 1.6
+        (3+1.2) should == 4.2
       )
 
       it("should convert its argument to a rational if its not a number or a decimal", 
@@ -225,32 +226,32 @@ describe(Number,
 
     describe("*", 
       it("should multiply with 0", 
-        1*0 should == 0
-        34253453*0 should == 0
-        -1*0 should == 0
+        (1*0) should == 0
+        (34253453*0) should == 0
+        (-1*0) should == 0
       )
 
       it("should return the same number when multiplying with 1", 
-        1*1 should == 1
-        34253453*1 should == 34253453
-        -1*1 should == -1
+        (1*1) should == 1
+        (34253453*1) should == 34253453
+        (-1*1) should == -1
       )
 
       it("should return a really large number when multiplying large numbers", 
-        2345346456745722*12213212323899088545 should == 28644214249339912541248622627954490
+        (2345346456745722*12213212323899088545) should == 28644214249339912541248622627954490
       )
 
       it("should return a negative number when multiplying with one negative number", 
-        -21*2 should == -42
+        (-21*2) should == -42
       )
 
       it("should return a positive number when multiplying with two negative numbers", 
-        -21*-2 should == 42
+        (-21*-2) should == 42
       )
 
       it("should convert itself to a decimal if the argument is a decimal", 
-        1*0.6 should == 0.6
-        3*1.2 should == 3.6
+        (1*0.6) should == 0.6
+        (3*1.2) should == 3.6
       )
 
       it("should convert its argument to a rational if its not a number or a decimal", 
