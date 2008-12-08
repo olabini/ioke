@@ -1,10 +1,4 @@
 
-- first: 'FileSystem directory?(name)'
-- first: 'FileSystem file?(name)'
-
-- handle arguments to the ispec command
-- tie everything into the build process
-
 8.   work on "ispec"
 9.   work on "dokgen"
 ???. work on "debug"
