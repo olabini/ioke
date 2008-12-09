@@ -451,5 +451,284 @@ describe(Number,
       435345643563.56456456 should have kind("Number Decimal")
       10e6 should have kind("Number Decimal")
     )
+
+    describe("==", 
+      it("should return true for the same number", 
+        x = 1.0. x should == x
+        x = 10.0. x should == x
+        x = -20.0. x should == x
+      )
+
+      it("should not return true for unequal numbers", 
+        1.1 should not == 2.0
+        1.2 should not == 200000.0
+        1123223.3233223 should not == 65756756756.0
+        (-1.0) should not == 2.0
+      )
+      
+      it("should return true for the result of equal number calculations", 
+        (1.0+1.0) should == 2.0
+        (2.1+1.0) should == (1.1+2.0)
+      )
+
+      it("should work correctly when comparing zeroes", 
+        0.0 should == 0.0
+        1.0 should not == 0.0
+        0.0 should not == 1.0
+      )
+
+      it("should work correctly when comparing negative numbers", 
+        (-19.1) should == (-19.1)
+        (-19.0) should not == (-20.1)
+      )
+
+      it("should work correctly when comparing large positive numbers", 
+        123234534675676786789678985463456345.234234 should == 123234534675676786789678985463456345.234234
+        8888856676776.0101 should == 8888856676776.0101
+      )
+
+      it("should convert its argument to a decimal if it is a rational", 
+        2.0 should == 2
+        2.1 should not == 2
+      )
+
+      it("should return false for comparisons against unrelated objects", 
+        2.1 should not == "foo"
+        2.1 should not == :blarg
+      )
+    )
+    
+    describe("<=>", 
+      it("should return 0 for the same number", 
+        (0.0<=>0.0) should == 0
+        (1.0<=>1.0) should == 0
+        (10.0<=>10.0) should == 0
+        (12413423523452345345345.0<=>12413423523452345345345.0) should == 0
+        ((0.0-1.0)<=>(0.0-1.0)) should == 0
+        (1.2<=>1.2) should == 0
+      )
+
+      it("should return 1 when the left number is larger than the right", 
+        (1.0<=>0.0) should == 1
+        (2.0<=>1.0) should == 1
+        (10.0<=>9.0) should == 1
+        (12413423523452345345345.0<=>12413423523452345345344.0) should == 1
+        (0.0<=>(-1.0)) should == 1
+        (1.0<=>(-1.0)) should == 1
+        (0.001<=>0.0009) should == 1
+        (0.2<=>0.1) should == 1
+      )
+
+      it("should return -1 when the left number is smaller than the right", 
+        (0.0<=>1.0) should == -1
+        (1.0<=>2.0) should == -1
+        (9.0<=>10.0) should == -1
+        (12413423523452345345343.0<=>12413423523452345345344.0) should == -1
+        ((-1.0)<=>0.0) should == -1
+        ((-1.0)<=>1.0) should == -1
+        (0.0009<=>0.001) should == -1
+        (0.1<=>0.2) should == -1
+      )
+
+      it("should convert argument to a decimal if the argument is a rational", 
+        (1.0<=>1) should == 0
+        (1.1<=>1) should == 1
+        (0.9<=>1) should == -1
+      )
+
+      it("should convert its argument to a decimal if its not a rational or a decimal", 
+        x = Origin mimic
+        x asDecimal = method(42.0)
+        (42.0 <=> x) should == 0
+      )
+      
+      it("should return nil if it can't be converted and there is no way of comparing", 
+        (1.0 <=> Origin mimic) should == nil
+      )
+    )
+
+    describe("-", 
+      it("should return 0.0 for the difference between 0.0 and 0.0", 
+        (0.0-0.0) should == 0.0
+      )
+      
+      it("should return the difference between really large numbers", 
+        (123435334645674745675675757.1-123435334645674745675675756.1) should == 1.0
+        (123435334645674745675675757.2-1.1) should == 123435334645674745675675756.1
+        (123435334645674745675675757.0-24334534544345345345345.0) should == 123411000111130400330330412.0
+      )
+      
+      it("should return the difference between smaller numbers", 
+        (0.0-1.0) should == -1.0
+        (2.0-1.0) should == 1.0
+        (10.0-5.0) should == 5.0
+        (234.0-30.0) should == 204.0
+        (30.0-35.0) should == -5.0
+      )
+      
+      it("should return the difference between negative numbers", 
+        ((-1.0)-1.0) should == -2.0
+        ((-1.0)-5.0) should == -6.0
+        ((-1.0)-(-5.0)) should == 4.0
+        ((-10.0)-5.0) should == -15.0
+        ((-10.0)-(0.0-5.0)) should == -5.0
+        ((-2545345345346547456756.0)-(-2545345345346547456755.0)) should == -1.0
+      )
+
+      it("should return the number when 0 is the argument", 
+        ((-1.0)-0.0) should == -1.0
+        (10.0-0.0) should == 10.0
+        (1325234534634564564576367.0-0.0) should == 1325234534634564564576367.0
+      )
+
+      it("should convert its argument to a decimal if its not a decimal", 
+        (1.6-1) should == 0.6
+        (3.2-2) should == 1.2
+      )
+
+      it("should convert its argument to a decimal with asDecimal if its not a decimal and not a rational", 
+        x = Origin mimic
+        x asDecimal = method(42.0)
+        (43.4 - x) should == 1.4
+      )
+
+      it("should signal a condition if it isn't a number and can't be converted", 
+        fn(1 - Origin mimic) should signal(Condition Error Type IncorrectType)
+      )
+    )
+
+    describe("+", 
+      it("should return 0.0 for the sum of 0.0 and 0.0", 
+        (0.0+0.0) should == 0.0
+      )
+
+      it("should return the sum of really large numbers", 
+        (234235345636345634567345675467.1+1.2) should == 234235345636345634567345675468.3
+        (21342342342345345.0+778626453756754687567865785678.1) should == 778626453756776029910208131023.1
+        (234234.0+63456345745676574567571345456345645675674567878567856785678657856568768.0) should == 63456345745676574567571345456345645675674567878567856785678657856803002.0
+      )
+
+      it("should return the sum of smaller numbers", 
+        (1.0+1.1) should == 2.1
+        (10.0+1.0) should == 11.0
+        (15.5+15.0) should == 30.5
+        (16.0+15.0) should == 31.0
+      )
+
+      it("should return the sum of negative numbers", 
+        (1.0+(0.0-1.0)) should == 0.0
+        ((0.0-1.0)+2.0) should == 1.0
+        ((0.0-1.0)+(0.0-1.0)) should == -2.0
+      )
+
+      it("should return the number when 0.0 is the receiver", 
+        (0.0+1.0) should == 1.0
+        (0.0+(0.0-1.0)) should == -1.0
+        (0.0+124423.0) should == 124423.0
+        (0.0+34545636745678657856786786785678.1) should == 34545636745678657856786786785678.1
+      )
+
+      it("should return the number when 0.0 is the argument", 
+        (1.3+0.0) should == 1.3
+        ((0.0-1.0)+0.0) should == -1.0
+        (124423.0+0.0) should == 124423.0
+        (34545636745678657856786786785678.0+0.0) should == 34545636745678657856786786785678.0
+      )
+
+      it("should convert its argument to a decimal if its not a decimal", 
+        (0.6+1) should == 1.6
+        (1.2+3) should == 4.2
+      )
+
+      it("should convert its argument to a decimal with asDecimal if its not a decimal and not a rational", 
+        x = Origin mimic
+        x asDecimal = method(41.1)
+        (1.1 + x) should == 42.2
+      )
+      
+      it("should signal a condition if it isn't a decimal and can't be converted", 
+        fn(1.0 + Origin mimic) should signal(Condition Error Type IncorrectType)
+      )
+    )
+    
+    describe("*", 
+      it("should multiply with 0.0", 
+        (1.0*0.0) should == 0.0
+        (34253453.0*0.0) should == 0.0
+        (-1.0*0.0) should == 0.0
+      )
+
+      it("should return the same number when multiplying with 1.0", 
+        (1.0*1.0) should == 1.0
+        (34253453.1*1.0) should == 34253453.1
+        (-1.0*1.0) should == -1.0
+      )
+
+      it("should return a really large number when multiplying large numbers", 
+        (2345346456745722.0*12213212323899088545.0) should == 28644214249339912541248622627954490.0
+      )
+
+      it("should return a negative number when multiplying with one negative number", 
+        (-21.0*2.0) should == -42.0
+      )
+
+      it("should return a positive number when multiplying with two negative numbers", 
+        (-21.0*-2.0) should == 42.0
+      )
+
+      it("should convert its argument to a decimal if its not a decimal", 
+        (0.6*2) should == 1.2
+        (1.2*3) should == 3.6
+      )
+
+      it("should convert its argument to a decimal with asDecimal if its not a decimal and not a rational", 
+        x = Origin mimic
+        x asDecimal = method(21.2)
+        (2.0 * x) should == 42.4
+      )
+      
+      it("should signal a condition if it isn't a decimal and can't be converted", 
+        fn(1.0 * Origin mimic) should signal(Condition Error Type IncorrectType)
+      )
+    )
+    
+    describe("/", 
+      it("should cause a condition when dividing with 0.0", 
+        fn(10.0/0.0) should signal(Condition Error Arithmetic DivisionByZero)
+      )
+
+      it("should divide simple numbers", 
+        (2.0/1.0) should == 2.0
+        (4.2/2.0) should == 2.1
+        (200.0/5.0) should == 40.0
+      )
+
+      it("should divide negative numbers correctly", 
+        (-8200.0/10.0) should == -820.0
+      )
+
+      it("should divide with a negative dividend correctly", 
+        (8200.0/-10.0) should == -820.0
+      )
+
+      it("should divide a negative number with a negative dividend", 
+        (-8200.0/-10.0) should == 820.0
+      )
+
+      it("should convert its argument to a decimal if its not a decimal", 
+        (0.5/5) should == 0.1
+        (3.4/2) should == 1.7
+      )
+      
+      it("should convert its argument to a decimal with asDecimal if its not a decimal and not a rational", 
+        x = Origin mimic
+        x asDecimal = method(2.0)
+        (42.8 / x) should == 21.4
+      )
+
+      it("should signal a condition if it isn't a decimal and can't be converted", 
+        fn(1.0 / Origin mimic) should signal(Condition Error Type IncorrectType)
+      )
+    )
   )    
 )
