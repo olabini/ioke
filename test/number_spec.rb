@@ -8,26 +8,6 @@ import Java::java.lang.System unless defined?(System)
 
 describe "Number" do 
   describe "Decimal" do 
-    it "should have the correct kind" do 
-      ioke = IokeRuntime.get_runtime
-      ioke.evaluate_string('Number Decimal kind == "Number Decimal"').should == ioke.true
-    end
-
-    it "should mimic Real" do 
-      ioke = IokeRuntime.get_runtime
-      ioke.evaluate_string('Number Decimal mimics?(Number Real)').should == ioke.true
-    end
-
-    it "should be the kind of simple decimal numbers" do 
-      ioke = IokeRuntime.get_runtime
-      ioke.evaluate_string('0.0 kind == "Number Decimal"').should == ioke.true
-      ioke.evaluate_string('1.0 kind == "Number Decimal"').should == ioke.true
-      ioke.evaluate_string('424345.255 kind == "Number Decimal"').should == ioke.true
-      ioke.evaluate_string('-1.0 kind == "Number Decimal"').should == ioke.true
-      ioke.evaluate_string('435345643563.56456456 kind == "Number Decimal"').should == ioke.true
-      ioke.evaluate_string('10e6 kind == "Number Decimal"').should == ioke.true
-    end
-
     describe "'=='" do 
       it "should return true for the same number" do 
         ioke = IokeRuntime.get_runtime()
