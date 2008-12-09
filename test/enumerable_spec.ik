@@ -531,5 +531,295 @@ describe(Mixins,
         CustomEnumerable first(2) should == ["3first", "1second"]
       )
     )
+
+    describe("one?", 
+      it("should take zero arguments and just check if exactly one of the values are true, and then return true", 
+        [1,2,3] one? should == false
+        [nil,false,nil] one? should == false
+        [nil,false,true] one? should == true
+        CustomEnumerable one? should == false
+      )
+
+      it("should take one argument that is a predicate that is applied to each element in the enumeration", 
+        [1,2,3] one?(==2) should == true
+        [nil,false,nil] one?(nil?) should == false
+        [nil,false,true] one?(==2) should == false
+        CustomEnumerable one?(== "3first") should == true
+      )
+
+      it("should take two arguments that will be turned into a lexical block and applied", 
+        [1,2,3] one?(x, x==2) should == true
+        [nil,false,nil] one?(x, x nil?) should == false
+        [nil,false,true] one?(x, x==2) should == false
+        CustomEnumerable one?(x, x == "3first") should == true
+      )
+    )
+    
+    describe("findIndex", 
+      it("should take zero arguments and just check if any of the values are true, and then return the index of it", 
+        [1,2,3] findIndex should == 0
+        [nil,false,nil] findIndex should == nil
+        [nil,false,true] findIndex should == 2
+        CustomEnumerable findIndex should == 0
+      )
+
+      it("should take one argument that is a predicate that is applied to each element in the enumeration", 
+        [1,2,3] findIndex(==2) should == 1
+        [nil,false,nil] findIndex(nil?) should == 0
+        [nil,false,true] findIndex(==2) should == nil
+        CustomEnumerable findIndex(!= "foo") should == 0
+      )
+
+      it("should take two arguments that will be turned into a lexical block and applied", 
+        [1,2,3] findIndex(x, x==2) should == 1
+        [nil,false,nil] findIndex(x, x nil?) should == 0
+        [nil,false,true] findIndex(x, x==2) should == nil
+        CustomEnumerable findIndex(x, x != "foo") should == 0
+      )
+    )
+
+    describe("partition", 
+      it("should take zero arguments and just divide all the true and false values", 
+        [1,2,3] partition should == [[1,2,3],[]]
+        [nil,false,nil] partition should == [[], [nil, false, nil]]
+        [nil,false,true] partition should == [[true], [nil, false]]
+        CustomEnumerable partition should == [["3first", "1second", "2third"], []]
+      )
+
+      it("should take one argument that is a predicate that is applied to each element in the enumeration", 
+        [1,2,3] partition(==2) should == [[2], [1,3]]
+        [nil,false,nil] partition(nil?) should  == [[nil,nil], [false]]
+        [nil,false,true] partition(==2) should == [[], [nil, false, true]]
+        CustomEnumerable partition(!= "foo") should == [["3first", "1second", "2third"], []]
+      )
+
+      it("should take two arguments that will be turned into a lexical block and applied", 
+        [1,2,3] partition(x, x==2) should == [[2], [1,3]]
+        [nil,false,nil] partition(x, x nil?) should == [[nil,nil], [false]]
+        [nil,false,true] partition(x, x==2) should == [[], [nil, false, true]]
+        CustomEnumerable partition(x, x != "foo") should == [["3first", "1second", "2third"], []]
+      )
+    )
+
+    describe("include?", 
+      it("should return true if the element is in the enumeration", 
+        [1,2,3] include?(2) should == true
+        CustomEnumerable include?("1second") should == true
+      )
+
+      it("should return false if the element is not in the enumeration", 
+        [1,2,3] include?(0) should == false
+        CustomEnumerable include?("2second") should == false
+      )
+    )
+
+    describe("member?", 
+      it("should return true if the element is in the enumeration", 
+        [1,2,3] member?(2) should == true
+        CustomEnumerable member?("1second") should == true
+      )
+
+      it("should return false if the element is not in the enumeration", 
+        [1,2,3] member?(0) should == false
+        CustomEnumerable member?("2second") should == false
+      )
+    )
+
+    describe("take", 
+      it("should return a list with as many elements as requested", 
+        [1,2,3] take(0) should == []
+        [1,2,3] take(1) should == [1]
+        [1,2,3] take(2) should == [1,2]
+        [1,2,3] take(3) should == [1,2,3]
+        CustomEnumerable take(2) should == ["3first", "1second"]
+      )
+
+      it("should not take more elements than the length of the collection", 
+        [1,2,3] take(4) should == [1,2,3]
+        [1,2,3] take(10) should == [1,2,3]
+        CustomEnumerable take(200) should == ["3first", "1second", "2third"]
+      )
+    )
+
+    describe("takeWhile", 
+      it("should take zero arguments and return everything up until the point where a value is false", 
+        [1,2,3] takeWhile should == [1,2,3]
+        [1,2,nil,false] takeWhile should == [1,2]
+        [1,2,false,3,4,nil,false] takeWhile should == [1,2]
+        CustomEnumerable takeWhile should == ["3first", "1second", "2third"]
+      )
+      
+      it("should take one argument and apply it as a message chain, return a list with all elements until the block returns false", 
+        [1,2,3] takeWhile(<3) should == [1,2]
+        [1,2,3] takeWhile(!=2) should == [1]
+        CustomEnumerable takeWhile(!="2third") should == ["3first", "1second"]
+      )
+
+      it("should take two arguments and apply the lexical block created from it, and return a list with all elements until the block returns false", 
+        [1,2,3] takeWhile(x, x<3) should == [1,2]
+        [1,2,3] takeWhile(x, x != 2) should == [1]
+        CustomEnumerable takeWhile(x, x != "2third") should == ["3first", "1second"]
+      )
+    )
+
+    describe("drop", 
+      it("should return a list without as many elements as requested", 
+        [1,2,3] drop(0) should == [1,2,3]
+        [1,2,3] drop(1) should == [2,3]
+        [1,2,3] drop(2) should == [3]
+        [1,2,3] drop(3) should == []
+        CustomEnumerable drop(2) should == ["2third"]
+      )
+
+      it("should not drop more elements than the length of the collection", 
+        [1,2,3] drop(4) should == []
+        [1,2,3] drop(10) should == []
+        CustomEnumerable drop(200) should == []
+      )
+    )
+
+    describe("dropWhile", 
+      it("should take zero arguments and return everything after the point where a value is true", 
+        [1,2,3] dropWhile should == []
+        [1,2,nil,false] dropWhile should == [nil,false]
+        [1,2,false,3,4,nil,false] dropWhile should == [false,3,4,nil,false]
+        CustomEnumerable dropWhile should == []
+      )
+      
+      it("should take one argument and apply it as a message chain, return a list with all elements after the block returns false", 
+        [1,2,3] dropWhile(<3) should == [3]
+        [1,2,3] dropWhile(!=2) should == [2,3]
+        CustomEnumerable dropWhile(!="2third") should == ["2third"]
+      )
+
+      it("should take two arguments and apply the lexical block created from it, and return a list with all elements after the block returns false", 
+        [1,2,3] dropWhile(x, x<3) should == [3]
+        [1,2,3] dropWhile(x, x != 2) should == [2,3]
+        CustomEnumerable dropWhile(x, x != "2third") should == ["2third"]
+      )
+    )
+
+    describe("cycle", 
+      it("should not do anything for an empty collection", 
+        x = 1
+        [] cycle(_, x = 2) should == nil
+        x should == 1
+      )
+
+      it("should repeat until stopped", 
+        Ground res = []
+        m1 = method(
+          [1,2,3] cycle(x, 
+            if(Ground res length == 10, return)
+            Ground res << x))
+        m1
+        Ground res should == [1,2,3,1,2,3,1,2,3,1]
+      )
+
+      it("should only call each once", 
+        CustomEnumerable3 = Origin mimic
+        CustomEnumerable3 mimic!(Mixins Enumerable)
+        CustomEnumerable3 eachCalled = 0 
+        CustomEnumerable3 each = macro(
+          eachCalled++
+          len = call arguments length
+          
+          if(len == 1,
+            first = call arguments first
+            first evaluateOn(call ground, "3first")
+            first evaluateOn(call ground, "1second")
+            first evaluateOn(call ground, "2third"),
+            
+            lexical = LexicalBlock createFrom(call arguments, call ground)
+            lexical call("3first")
+            lexical call("1second")
+            lexical call("2third")))
+
+        m = method(
+          iter = 0
+          CustomEnumerable3 cycle(_, if(iter == 10, return). iter++))
+        m
+        CustomEnumerable3 eachCalled should == 1
+      )
+
+      it("should take one argument and apply it", 
+        Ground res = []
+        m1 = method(
+          [1,2,3] cycle(+1. if(Ground res length == 10, return). Ground res << "foo"))
+        m1
+      )
+
+      it("should take two arguments and turn it into a lexical block to apply", 
+        Ground res = []
+        m1 = method(
+          [1,2,3] cycle(x, if(Ground res length == 10, return). Ground res << x))
+        m1
+        Ground res should == [1,2,3,1,2,3,1,2,3,1]
+      )
+    )
+
+    describe("sortBy", 
+      it("should take one argument and apply that for sorting", 
+        {a: 3, b: 2, c: 1} sortBy(value) should == [:c => 1, :b => 2, :a => 3]
+      )
+      
+      it("should take two arguments and turn that into a lexical block and use that for sorting", 
+        {a: 3, b: 2, c: 1} sortBy(x, x value) should == [:c => 1, :b => 2, :a => 3]
+      )
+    )
+
+    describe("zip", 
+      it("should take zero arguments and just zip the elements", 
+        [1,2,3] zip should == [[1], [2], [3]]
+      )
+
+      it("should take one argument as a list and zip the elements together", 
+        [1,2,3] zip([5,6,7]) should == [[1, 5], [2, 6], [3, 7]]
+        [1,2,3] zip([5,6,7,8]) should == [[1, 5], [2, 6], [3, 7]]
+      )
+
+      it("should supply nils if the second list isn't long enough", 
+        [1,2,3] zip([5,6]) should == [[1, 5], [2, 6], [3, nil]]
+      )
+
+      it("should zip together several lists", 
+        [1,2,3] zip([5,6,7],[10,11,12],[15,16,17]) should == [[1,5,10,15], [2,6,11,16], [3,7,12,17]]
+      )
+
+      it("should take a fn as last argument and call that instead of returning a list", 
+        x = [] 
+
+        [1,2,3] zip([5,6,7], 
+          fn(arg, x << arg)) should == nil
+
+        x should == [[1,5],[2,6],[3,7]]
+      )
+    )
+
+    describe("grep", 
+      it("should take one argument and return everything that matches with ===", 
+        [1,2,3,4,5,6,7,8,9] grep(2..5) should == [2,3,4,5]
+
+        customObj = Origin mimic
+        customObj === = method(other, (other < 3) || (other > 5))
+        [1,2,3,4,5,6,7,8,9] grep(customObj) should == [1,2,6,7,8,9]
+      )
+      
+      it("should take two arguments where the second argument is a message chain and return the result of calling that chain on everything that matches with ===", 
+        [1,2,3,4,5,6,7,8,9] grep(2..5, + 1) should == [3,4,5,6]
+
+        customObj = Origin mimic
+        customObj === = method(other, (other < 3) || (other > 5))
+        [1,2,3,4,5,6,7,8,9] grep(customObj, + 1) should == [2,3,7,8,9,10]
+      )
+
+      it("should take three arguments where the second and third arguments gets turned into a lexical block to apply to all that matches with ===", 
+        [1,2,3,4,5,6,7,8,9] grep(2..5, x, (x + 1) asText) should == ["3","4","5","6"]
+
+        customObj = Origin mimic
+        customObj === = method(other, (other < 3) || (other > 5))
+        [1,2,3,4,5,6,7,8,9] grep(customObj, x, (x+1) asText) should == ["2","3","7","8","9","10"]
+      )
+    )
   )
 )
