@@ -731,4 +731,276 @@ describe(Number,
       )
     )
   )    
+
+  describe(Number Integer,
+    it("should have the correct kind",
+      Number Integer kind should == "Number Integer"
+    )
+
+    it("should mimic Rational",
+      Number Integer should mimic(Number Rational)
+    )
+
+    it("should be the kind of simple decimal numbers",
+      0 should have kind("Number Integer")
+      1 should have kind("Number Integer")
+      255 should have kind("Number Integer")
+      (-1) should have kind("Number Integer")
+      43534564356356456456 should have kind("Number Integer")
+      0xFFF should have kind("Number Integer")
+    )
+
+    describe("%", 
+      it("should return the number when taking the modulo of 0", 
+        (0%0) should == 0
+        (13%0) should == 13
+        (-10%0) should == -10
+      )
+      
+      it("should return the regular modulus", 
+        (13%4) should == 1
+        (4%13) should == 4
+        (1%2) should == 1
+      ) 
+
+      it("should return modulus for negative numbers", 
+        (-13%4) should == 3
+        (-13%-4) should == -1
+        (13%-4) should == -3
+      )
+
+      it("should convert its argument to a number if its not a number or a decimal", 
+        x = Origin mimic
+        x asRational = method(3)
+        (10 % x) should == 1
+      )
+
+      it("should signal a condition if it isn't a number and can't be converted", 
+        fn(1 % Origin mimic) should signal(Condition Error Type IncorrectType)
+      )
+    )
+    
+    describe("times", 
+      it("should not do anything for a negative number", 
+        x = 0. (-1) times(x++). x should == 0
+        x = 0. (-100) times(x++). x should == 0
+      )
+      
+      it("should not do anything for 0", 
+        x = 0. 0 times(x++). x should == 0
+      )
+
+      it("should execute the block one time for 1", 
+        x = 0. 1 times(x++). x should == 1
+      )
+
+      it("should execute the block the same number of times as the receiver", 
+        x = 0. 12 times(x++). x should == 12
+        x = 0. 343 times(x++). x should == 343
+      )
+    )
+
+    describe("&", 
+      it("should bitwise and two powers of 8", 
+        (256&16) should == 0
+      )
+
+      it("should bitwise and two zeroes", 
+        (0&0) should == 0
+      )
+
+      it("should bitwise and other numbers", 
+        (2010&5) should == 0
+        (65535&1) should == 1
+      )
+
+      it("should bitwise and large numbers", 
+        (-1 & 2**64) should == 18446744073709551616
+      )
+
+      it("should convert its argument to a number if its not a number or a decimal", 
+        x = Origin mimic
+        x asRational = method(3)
+        (10 & x) should == 2
+      )
+
+      it("should signal a condition if it isn't a number and can't be converted", 
+        fn(1 & Origin mimic) should signal(Condition Error Type IncorrectType)
+      )
+    )
+
+    describe("|", 
+      it("should bitwise or two zeroes", 
+        (0|0) should == 0
+      )
+
+      it("should bitwise or other numbers", 
+        (1|0) should == 1
+        (5|4) should == 5
+        (5|6) should == 7
+        (248|4096) should == 4344
+      )
+      
+      it("should bitwise or negative and large numbers", 
+        (-1|2**64) should == -1
+      )
+
+      it("should convert its argument to a number if its not a number or a decimal", 
+        x = Origin mimic
+        x asRational = method(3)
+        (10 | x) should == 11
+      )
+
+      it("should signal a condition if it isn't a number and can't be converted", 
+        fn(1 | Origin mimic) should signal(Condition Error Type IncorrectType)
+      )
+    )
+    
+    describe("^", 
+      it("should xor zeroes", 
+        (0^0) should == 0
+      )
+      
+      it("should xor regular numbers", 
+        (1^0) should == 1
+        (1^1) should == 0
+        (0^1) should == 1
+        (3^5) should == 6
+        (-2^-255) should == 255
+      )
+      
+      it("should xor large numbers", 
+        (-1 ^ 2**64) should == -18446744073709551617
+      )
+
+      it("should convert its argument to a number if its not a number or a decimal", 
+        x = Origin mimic
+        x asRational = method(3)
+        (10 ^ x) should == 9
+      )
+
+      it("should signal a condition if it isn't a number and can't be converted", 
+        fn(1 ^ Origin mimic) should signal(Condition Error Type IncorrectType)
+      )
+    )
+
+    describe(">>", 
+      it("returns self shifted the given amount of bits to the right",
+        (7 >> 1) should == 3
+        (4095 >> 3) should == 511
+        (9245278 >> 1) should == 4622639
+      )
+
+      it("performs a left-shift if given a negative value",
+        (7 >> -1) should == 7 << 1
+        (4095 >> -3) should == 4095 << 3
+      )
+      
+      it("performs a right-shift if given a negative value as receiver",
+        (-7 >> 1) should == -4
+        (-4095 >> 3) should == -512
+      )
+
+      it("should convert its argument to a number if its not a number or a decimal", 
+        x = Origin mimic
+        x asRational = method(1)
+        (7 >> x) should == 3
+      )
+
+      it("should signal a condition if it isn't a number and can't be converted", 
+        fn(1 >> Origin mimic) should signal(Condition Error Type IncorrectType)
+      )
+    )
+
+    describe("<<", 
+      it("returns self shifted the given amount of bits to the left", 
+        (7<<2) should == 28
+        (9<<4) should == 144
+      )
+      
+      it("performs a right shift if given a negative value", 
+        (7<<-2) should == 7>>2
+        (9<<-4) should == 9>>4
+      )
+      
+      it("should left shift a large number", 
+        (6<<255) should == 347376267711948586270712955026063723559809953996921692118372752023739388919808
+      )
+
+      it("should convert its argument to a number if its not a number or a decimal", 
+        x = Origin mimic
+        x asRational = method(2)
+        (7 << x) should == 28
+      )
+
+      it("should signal a condition if it isn't a number and can't be converted", 
+        fn(1 << Origin mimic) should signal(Condition Error Type IncorrectType)
+      )
+    )
+
+    describe("succ", 
+      it("should return the successor of 0", 
+        0 succ should == 1
+      )
+
+      it("should return the successor of a small positive number", 
+        1 succ should == 2
+        12 succ should == 13
+        41 succ should == 42
+        99 succ should == 100
+      )
+
+      it("should return the successor of a large positive number", 
+        465467257434567 succ should == 465467257434568
+        5999999999999999999 succ should == 6000000000000000000
+        65535 succ should == 65536
+        34565464575678567876852464563575468678567835678456865785678 succ should == 34565464575678567876852464563575468678567835678456865785679
+      )
+
+      it("should return the successor of a negative number", 
+        (-1) succ should == 0
+        (-2) succ should == -1
+        (-10) succ should == -9
+        (-23534634654367) succ should == -23534634654366
+      )
+    )
+
+    describe("pred", 
+      it("should return the predecessor of 0", 
+        0 pred should == -1
+      )
+
+      it("should return the predecessor of a small positive number", 
+        1 pred should == 0
+        2 pred should == 1
+        12 pred should == 11
+        41 pred should == 40
+        99 pred should == 98
+      )
+
+      it("should return the predecessor of a large positive number", 
+        465467257434567 pred should == 465467257434566
+        6000000000000000000 pred should == 5999999999999999999
+        65536 pred should == 65535
+        34565464575678567876852464563575468678567835678456865785678 pred should == 34565464575678567876852464563575468678567835678456865785677
+      )
+
+      it("should return the predecessor of a negative number", 
+        (-1) pred should == -2
+        (-2) pred should == -3
+        (-10) pred should == -11
+        (-23534634654367) pred should == -23534634654368
+      )
+    )
+  )
+
+  describe(Number Ratio,
+    it("should have the correct kind",
+      Number Ratio kind should == "Number Ratio"
+    )
+
+    it("should mimic Rational",
+      Number Ratio should mimic(Number Rational)
+    )
+  )
 )
