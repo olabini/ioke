@@ -221,8 +221,15 @@ public class Message extends IokeData {
         message.registerMethod(message.runtime.newJavaMethod("Takes one evaluated argument and sends this message to that argument", new JavaMethod("sendTo") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    IokeObject realReceiver = IokeObject.as(message.getEvaluatedArgument(0, context));
-                    return IokeObject.as(on).sendTo(realReceiver, realReceiver);
+                    List<Object> positionalArgs = new ArrayList<Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, positionalArgs, new HashMap<String, Object>());
+                    IokeObject realReceiver = IokeObject.as(positionalArgs.get(0));
+                    IokeObject realContext = realReceiver;
+                    if(positionalArgs.size() > 1) {
+                        realContext = IokeObject.as(positionalArgs.get(1));
+                    }
+
+                    return IokeObject.as(on).sendTo(realContext, realReceiver);
                 }
             }));
         message.registerMethod(message.runtime.newJavaMethod("evaluates the argument and adds it to the argument list of this message.", new JavaMethod("appendArgument") {

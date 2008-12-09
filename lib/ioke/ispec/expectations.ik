@@ -17,7 +17,7 @@ ISpec do(
     realName = call message name
     msg = call message deepCopy
     msg name = "#{realName}?"
-    unless(msg sendTo(self realValue),
+    unless(msg sendTo(self realValue, call ground),
       ;; these should save away the same line message
       error!(ISpec ExpectationNotMet, text: "expected #{realValue} #{msg code} to be true")))
 
@@ -51,7 +51,7 @@ ISpec do(
     realName = call message name
     msg = call message deepCopy
     msg name = "#{realName}?"
-    if(msg sendTo(self realValue),
+    if(msg sendTo(self realValue, call ground),
       ;; these should save away the same line message
       error!(ISpec ExpectationNotMet, text: "expected #{realValue} #{msg code} to be false")))
 
