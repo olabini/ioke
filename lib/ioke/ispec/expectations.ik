@@ -30,7 +30,8 @@ ISpec do(
   ShouldContext signal = method(condition,
     signalled = "none"
     bind(
-      rescue(Condition, fn(c, signalled = c)),
+      rescue(Ground Condition Error, fn(c, signalled = c)),
+      rescue(condition, fn(c, signalled = c)),
       realValue call)
 
     unless(signalled mimics?(condition),
@@ -68,7 +69,8 @@ ISpec do(
   NotShouldContext signal = method(condition,
     signalled = "none"
     bind(
-      rescue(Condition, fn(c, signalled = c)),
+      rescue(Ground Condition Error, fn(c, signalled = c)),
+      rescue(condition, fn(c, signalled = c)),
       realValue call)
 
     if(signalled mimics?(condition),
