@@ -433,4 +433,23 @@ describe(Number,
       )
     )
   )
+
+  describe(Number Decimal,
+    it("should have the correct kind",
+      Number Decimal kind should == "Number Decimal"
+    )
+
+    it("should mimic Real",
+      Number Decimal should mimic(Number Real)
+    )
+
+    it("should be the kind of simple decimal numbers",
+      0.0 should have kind("Number Decimal")
+      1.0 should have kind("Number Decimal")
+      424345.255 should have kind("Number Decimal")
+      (-1.0) should have kind("Number Decimal")
+      435345643563.56456456 should have kind("Number Decimal")
+      10e6 should have kind("Number Decimal")
+    )
+  )    
 )
