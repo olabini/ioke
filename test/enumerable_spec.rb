@@ -49,15 +49,6 @@ CODE
 
 describe "Mixins" do 
   describe "Enumerable" do 
-    describe "'sort'" do 
-      it "should return a sorted list based on all the entries" do  
-        ioke = IokeRuntime.get_runtime
-        ioke.evaluate_string(<<CODE).should == ioke.true
-set(4,4,2,1,4,23,6,4,7,21) sort == [1, 2, 4, 6, 7, 21, 23]
-CODE
-      end
-    end
-    
     describe "'asList'" do 
       it "should return a list from a list" do 
         ioke = IokeRuntime.get_runtime
