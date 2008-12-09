@@ -90,7 +90,7 @@ ISpec do(
 
     bind(
       rescue(Ground Condition, 
-        fn(c, executionError ||= c. "gah: got: #{c}")),
+        fn(c, executionError ||= c)),
       handle(Ground Condition, 
         fn(c, c describeContext = newContext)),
       if(code, 

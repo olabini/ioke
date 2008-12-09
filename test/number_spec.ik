@@ -267,5 +267,170 @@ describe(Number,
         fn(1 * Origin mimic) should signal(Condition Error Type IncorrectType)
       )
     )
+
+    describe("**", 
+      it("should return 1 for raising to 0",
+        (1**0) should == 1
+      )
+
+      it("should return the number when raising to 1",
+        (2**1) should == 2
+      )
+
+      it("should raise a number",
+        (2**2) should == 4
+        (2**3) should == 8
+      )
+
+      it("should raise a number to a large number",
+        (2 ** 40) should == 1099511627776
+      )
+
+      it("should convert its argument to a rational if its not a number or a decimal", 
+        x = Origin mimic
+        x asRational = method(3)
+        (2 ** x) should == 8
+      )
+
+      it("should signal a condition if it isn't a rational and can't be converted", 
+        fn(1 ** Origin mimic) should signal(Condition Error Type IncorrectType)
+      )
+    )
+    
+    describe("/", 
+      it("should cause a condition when dividing with 0", 
+        fn(10/0) should signal(Condition Error Arithmetic DivisionByZero)
+      )
+
+      it("should divide simple numbers", 
+        (2/1)   should == 2
+        (4/2)   should == 2
+        (200/5) should == 40
+      )
+
+      it("should return a rational when dividing uneven numbers", 
+        x = 8192/10
+        x should mimic(Number Ratio)
+        x should == (4096/5)
+
+        x = 3/2
+        x should mimic(Number Ratio)
+        x should not == 1
+        x should == (3/2)
+
+        x = 5/2
+        x should mimic(Number Ratio)
+        x should not == 2
+        x should == (5/2)
+
+        x = 1/2
+        x should mimic(Number Ratio)
+        x should not == 0
+        x should == (1/2)
+      )
+
+      it("should divide negative numbers correctly", 
+        (-8200/10) should == -820
+      )
+
+      it("should divide with a negative dividend correctly", 
+        (8200/-10) == -820
+      )
+
+      it("should divide a negative number with a negative dividend", 
+        (-8200/-10) == 820
+      )
+
+      it("should convert itself to a decimal if the argument is a decimal", 
+        (1/0.5) should == 2.0
+        (3/1.2) should == 2.5
+      )
+      
+      it("should convert its argument to a number if its not a number or a decimal", 
+        x = Origin mimic
+        x asRational = method(2)
+        (42 / x) should == 21
+      )
+
+      it("should signal a condition if it isn't a number and can't be converted", 
+        fn(1 / Origin mimic) should signal(Condition Error Type IncorrectType)
+      )
+    )
+
+    describe("==", 
+      it("should return true for the same number", 
+        x = 1. x should == x
+        x = 10. x should == x
+        x = (0-20). x should == x
+      )
+
+      it("should not return true for unequal numbers", 
+        1 should not == 2
+        1 should not == 200000
+        1123223 should not == 65756756756
+        (0-1) should not == 2
+      )
+      
+      it("should return true for the result of equal number calculations", 
+        (1+1) should == 2
+        (2+1) should == (1+2)
+      )
+      
+      it("should work correctly when comparing zeroes", 
+        0 should == 0
+        1 should not == 0
+        0 should not == 1
+      )
+
+      it("should work correctly when comparing negative numbers", 
+        (-19) should == -19
+        (-19) should not == -20
+      )
+
+      it("should work correctly when comparing large positive numbers", 
+        123234534675676786789678985463456345 should == 123234534675676786789678985463456345
+        8888856676776 should == 8888856676776
+      )
+
+      it("should convert itself to a decimal if the argument is a decimal", 
+        2 should == 2.0
+        2 should not == 2.1
+      )
+
+      it("should return false for unrelated objects", 
+        2 should not == "foo"
+        2 should not == :blarg
+      )
+    )
+    
+    describe("asText", 
+      it("should return a representation of 0", 
+        0 asText should == "0"
+      )
+
+      it("should return a representation of a Ratio", 
+        (1/3) asText should == "1/3"
+      )
+
+      it("should return a representation of a small positive number", 
+        1 asText should == "1"
+        12 asText should == "12"
+        9232423 asText should == "9232423"
+      )
+      
+      it("should return a representation of a large positive number", 
+        65535 asText should == "65535"
+        65536 asText should == "65536"
+        1235345341231298989793249879238543956783485384758333478526 asText should == "1235345341231298989793249879238543956783485384758333478526"
+        99999999999999999999999999 asText should == "99999999999999999999999999"
+      )
+
+      it("should return a representation of a negative number", 
+        (-65535) asText should == "-65535"
+        (-65536) asText should == "-65536"
+        (-1) asText should == "-1"
+        (-645654) asText should == "-645654"
+      )
+    )
   )
 )
