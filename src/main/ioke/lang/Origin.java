@@ -19,8 +19,7 @@ public class Origin {
         origin.registerMethod(runtime.newJavaMethod("Prints a text representation and a newline to standard output", new JavaMethod("println") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    runtime.getOut().println(runtime.asText.sendTo(context, on).toString());
-                    runtime.getOut().flush();
+                    runtime.printlnMessage.sendTo(context, runtime.outMessage.sendTo(context, runtime.system), on);
                     return runtime.getNil();
                 }
             }));
@@ -28,8 +27,7 @@ public class Origin {
         origin.registerMethod(runtime.newJavaMethod("Prints a text representation to standard output", new JavaMethod("print") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    runtime.getOut().print(runtime.asText.sendTo(context, on).toString());
-                    runtime.getOut().flush();
+                    runtime.printMessage.sendTo(context, runtime.outMessage.sendTo(context, runtime.system), on);
                     return runtime.getNil();
                 }
             }));
