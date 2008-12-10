@@ -102,6 +102,7 @@ public class Runtime {
     public IokeObject reportMessage = newMessage("report");
     public IokeObject printMessage = newMessage("print");
     public IokeObject printlnMessage = newMessage("println");
+    public IokeObject outMessage = newMessage("out");
     public IokeObject currentDebuggerMessage = newMessage("currentDebugger");
     public IokeObject invokeMessage = newMessage("invoke");
     public IokeObject errorMessage = newMessage("error!");
