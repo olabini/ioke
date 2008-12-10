@@ -89,9 +89,9 @@ ISpec do(
     reporter exampleStarted(newContext)
 
     bind(
-      rescue(Ground Condition, 
+      rescue(Ground Condition Error, 
         fn(c, executionError ||= c)),
-      handle(Ground Condition, 
+      handle(Ground Condition,  
         fn(c, c describeContext = newContext)),
       if(code, 
         ;; don't evaluate directly, instead send it to a macro on the newContext, which can give it a real back trace context
