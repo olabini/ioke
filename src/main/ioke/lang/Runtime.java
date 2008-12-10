@@ -40,42 +40,42 @@ public class Runtime {
     Reader in;
 
     // Core objects and origins
-    public IokeObject base = new IokeObject(this, "Base is the top of the inheritance structure. Most of the objects in the system is derived from this instance. Base should keep it's cells to the bare minimum needed for the system");
+    public IokeObject base = new IokeObject(this, "Base is the top of the inheritance structure. Most of the objects in the system are derived from this instance. Base should keep its cells to the bare minimum needed for the system.");
     public IokeObject ground = new IokeObject(this, "Ground is the default place code is evaluated in. This is where you can find most of the global objects defined.");
-    public IokeObject system = new IokeObject(this, "System defines things that represents the currently running system, such as load path.", new IokeSystem());
+    public IokeObject system = new IokeObject(this, "System defines things that represents the currently running system, such as the load path.", new IokeSystem());
     public IokeObject runtime = new IokeObject(this, "Runtime gives meta-circular access to the currently executing Ioke runtime.");
     public IokeObject defaultBehavior = new IokeObject(this, "DefaultBehavior is a mixin that provides most of the methods shared by most instances in the system.");
     public IokeObject origin = new IokeObject(this, "Any object created from scratch should usually be derived from Origin.");
-    public IokeObject nil = new IokeObject(this, "nil is an oddball object that always represents itself. It can not be mimicked and is one of the two false values.", IokeData.Nil);
+    public IokeObject nil = new IokeObject(this, "nil is an oddball object that always represents itself. It can not be mimicked and (alongside false) is one of the two false values.", IokeData.Nil);
     public IokeObject _true = new IokeObject(this, "true is an oddball object that always represents itself. It can not be mimicked and represents the a true value.", IokeData.True);
-    public IokeObject _false = new IokeObject(this, "false is an oddball object that always represents itself. It can not be mimicked and is one of the two false values.", IokeData.False);
-    public IokeObject text = new IokeObject(this, "Contains an immutable text.", new Text(""));
+    public IokeObject _false = new IokeObject(this, "false is an oddball object that always represents itself. It can not be mimicked and (alongside nil) is one of the two false values.", IokeData.False);
+    public IokeObject text = new IokeObject(this, "Contains an immutable piece of text.", new Text(""));
     public IokeObject symbol = new IokeObject(this, "Represents a symbol - an object that always represents itself.", new Symbol(""));
     public IokeObject number = new IokeObject(this, "Represents an exact number", new Number("0"));
     public IokeObject method = new IokeObject(this, "Method is the origin of all methods in the system, both default and Java..", new Method((String)null));
-    public IokeObject defaultMethod = new IokeObject(this, "DefaultMethod is the instance all methods in the system is derived from.", new DefaultMethod((String)null));
+    public IokeObject defaultMethod = new IokeObject(this, "DefaultMethod is the instance all methods in the system are derived from.", new DefaultMethod((String)null));
     public IokeObject javaMethod = new IokeObject(this, "JavaMethod is a derivation of Method that represents a primitive implemented in Java.", new JavaMethod((String)null));
     public IokeObject lexicalBlock = new IokeObject(this, "A lexical block allows you to delay a computation in a specific lexical context. See DefaultMethod#fn for detailed documentation.", new LexicalBlock(ground));
-    public IokeObject defaultMacro = new IokeObject(this, "DefaultMacro is the instance all macros in the system is derived from.", new DefaultMacro((String)null));
+    public IokeObject defaultMacro = new IokeObject(this, "DefaultMacro is the instance all macros in the system are derived from.", new DefaultMacro((String)null));
     public IokeObject mixins = new IokeObject(this, "Mixins is the name space for most mixins in the system. DefaultBehavior is the notable exception.");
-    public IokeObject message = new IokeObject(this, "A message is the basic code unit in Ioke.", new Message(this, "", Message.Type.EMPTY));
-    public IokeObject restart = new IokeObject(this, "A Restart is the actual object that contains restart information");
+    public IokeObject message = new IokeObject(this, "A Message is the basic code unit in Ioke.", new Message(this, "", Message.Type.EMPTY));
+    public IokeObject restart = new IokeObject(this, "A Restart is the actual object that contains restart information.");
     public IokeObject list = new IokeObject(this, "A list is a collection of objects that can change size", new IokeList());
     public IokeObject dict = new IokeObject(this, "A dictionary is a collection of mappings from one object to another object. The default Dict implementation will use hashing for this.", new Dict());
-    public IokeObject set = new IokeObject(this, "A set is an unordered collection of objects that contains no duplicates", new IokeSet());
+    public IokeObject set = new IokeObject(this, "A set is an unordered collection of objects that contains no duplicates.", new IokeSet());
     public IokeObject range = new IokeObject(this, "A range is a collection of two objects of the same kind. This Range can be either inclusive or exclusive.", new Range(nil, nil, false));
     public IokeObject pair = new IokeObject(this, "A pair is a collection of two objects of any kind. They are used among other things to represent Dict entries.", new Pair(nil, nil));
     public IokeObject call = new IokeObject(this, "A call is the runtime structure that includes the specific information for a call, that is available inside a DefaultMacro.", new Call());
     public LexicalContext lexicalContext = new LexicalContext(this, ground, "A lexical activation context.", null, ground);
     public IokeObject dateTime = new IokeObject(this, "A DateTime represents the current date and time in a particular time zone.", new DateTime(0));
 
-    public IokeObject locals = new IokeObject(this, "Contains all the locals for a specific invocation");
+    public IokeObject locals = new IokeObject(this, "Contains all the locals for a specific invocation.");
 
-    public IokeObject condition = new IokeObject(this, "The root mimic of all the conditions in the system");
+    public IokeObject condition = new IokeObject(this, "The root mimic of all the conditions in the system.");
     public IokeObject rescue = new IokeObject(this, "A Rescue contains handling information from rescuing a Condition.");
     public IokeObject handler = new IokeObject(this, "A Handler contains handling information for handling a condition without unwinding the stack.");
-    public IokeObject io = new IokeObject(this, "IO is the base for all input/output in Ioke", new IokeIO());
-    public IokeObject fileSystem = new IokeObject(this, "Gives access to things related to the file system");
+    public IokeObject io = new IokeObject(this, "IO is the base for all input/output in Ioke.", new IokeIO());
+    public IokeObject fileSystem = new IokeObject(this, "Gives access to things related to the file system.");
 
     public IokeObject integer = null;
     public IokeObject decimal = null;
