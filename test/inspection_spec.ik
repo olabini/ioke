@@ -1,7 +1,7 @@
 
 use("ispec")
 
-describe("DefaultBehavior", 
+describe(DefaultBehavior, 
   describe("cellDescriptionDict", 
     it("should return an empty dict for an object without cells", 
       Origin mimic cellDescriptionDict should == {}
@@ -59,7 +59,7 @@ describe("DefaultBehavior",
   )
 )
 
-describe("nil", 
+describe(nil, 
   describe("inspect", 
     it("should return 'nil", 
       nil inspect should == "nil"
@@ -73,7 +73,7 @@ describe("nil",
   )
 )
 
-describe("true", 
+describe(true, 
   describe("inspect", 
     it("should return 'true", 
       true inspect should == "true"
@@ -87,7 +87,7 @@ describe("true",
   )
 )
 
-describe("false", 
+describe(false, 
   describe("inspect", 
     it("should return 'false", 
       false inspect should == "false"
@@ -101,7 +101,7 @@ describe("false",
   )
 )
 
-describe("Ground", 
+describe(Ground, 
   describe("notice", 
     it("should return 'Ground", 
       Ground notice should == "Ground"
@@ -113,7 +113,7 @@ describe("Ground",
   )
 )
 
-describe("Origin", 
+describe(Origin, 
   describe("notice", 
     it("should return 'Origin", 
       Origin notice should == "Origin"
@@ -464,7 +464,7 @@ describe("Pair",
   )
 )
 
-describe("System", 
+describe(System, 
   describe("notice", 
     it("should return 'System", 
       System notice should == "System"
@@ -476,7 +476,7 @@ describe("System",
   )
 )
 
-describe("Runtime", 
+describe(Runtime, 
   describe("notice", 
     it("should return 'Runtime", 
       Runtime notice should == "Runtime"
