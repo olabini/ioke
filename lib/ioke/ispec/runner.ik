@@ -91,6 +91,8 @@ ISpec do(
     bind(
       rescue(Ground Condition Error, 
         fn(c, executionError ||= c)),
+      rescue(ISpec Condition, 
+        fn(c, executionError ||= c)),
       handle(Ground Condition,  
         fn(c, c describeContext = newContext)),
       if(code, 
