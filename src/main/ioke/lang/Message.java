@@ -772,7 +772,7 @@ public class Message extends IokeData {
 
             if(name.equals(".")) {
                 current = ctx;
-            } else if(name.length() > 0 && name.charAt(0) == ':') {
+            } else if(name.length() > 0 && m.getArguments().size() == 0 && name.charAt(0) == ':') {
                 current = self.runtime.getSymbol(name.substring(1));
                 lastReal = current;
             } else {
