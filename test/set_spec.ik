@@ -24,9 +24,9 @@ describe("Set",
     
     it("should be possible to just give it a message chain, that will be invoked on each object", 
       Ground y = []
-      Ground x = method(Ground y << self)
-      set(1,2,3) each(x)
-      y sort should == [1,2,3]
+      Ground x_set_spec1 = method(Ground y << self)
+      set(1,2,3) each(x_set_spec1)
+      Ground y sort should == [1,2,3]
 
       x = 0
       set(1,2,3) each(nil. x++)
