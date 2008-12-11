@@ -8,7 +8,9 @@ ISpec do(
       newSelf)
 
     stackTraceAsText = method(
-      "#{code filename}:#{code line}:#{code position}"
+      if(cell?(:shouldMessage),
+        "#{shouldMessage filename}:#{shouldMessage line}:#{shouldMessage position}",
+        "#{code filename}:#{code line}:#{code position}")
     )
 
     fullName = method(

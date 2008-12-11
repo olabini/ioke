@@ -98,9 +98,10 @@ public class Base {
                                 Map<String, Object> mso = current.getCells();
 
                                 for(String s : mso.keySet()) {
-                                    if(!visitedNames.contains(s)) {
-                                        visitedNames.add(s);
-                                        names.add(runtime.getSymbol(s));
+                                    Object x = runtime.getSymbol(s);
+                                    if(!visitedNames.contains(x)) {
+                                        visitedNames.add(x);
+                                        names.add(x);
                                     }
                                 }
                             }
