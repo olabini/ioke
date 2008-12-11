@@ -54,8 +54,10 @@ public abstract class Benchmark {
                         long time = after-before;
                         long secs = time/1000000000;
                         long rest = time%1000000000;
-                        context.runtime.getOut().println(String.format("%-32.32s %.6s.%09d", Message.thisCode(((IokeObject)message.getArguments().get(index))), secs, rest));
-                        context.runtime.getOut().flush();
+
+                        String theCode = Message.thisCode(((IokeObject)message.getArguments().get(index)));
+
+                        context.runtime.printlnMessage.sendTo(context, context.runtime.outMessage.sendTo(context, context.runtime.system), context.runtime.newText(String.format("%-32.32s %.6s.%09d", theCode, secs, rest)));
                     }
 
                     return context.runtime.nil;
