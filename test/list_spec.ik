@@ -409,8 +409,8 @@ describe(List,
     )
     
     it("should establish a lexical context when invoking the methods. this context will be the same for all invocations.", 
-      [1,2,3] each(x, blarg=32)
-      cell?(:x) should == false
+      [1,2,3] each(x_list, blarg=32)
+      cell?(:x_list) should == false
       cell?(:blarg) should == false
 
       x=14
