@@ -2712,4 +2712,104 @@ describe("operator",
       )
     )
   )
+
+  describe("<=>", 
+    it("should work for numbers", 
+      (0<=>0) should == 0
+      (0<=>1) should == -1
+      (1<=>1) should == 0
+      (2<=>1) should == 1
+      (1<=>2) should == -1
+      (2<=>2) should == 0
+      (3<=>2) should == 1
+      (3<=>223524534) should == -1
+      (223524534<=>223524534) should == 0
+      (223524534<=>2) should == 1
+    )
+  )
+
+  describe("<", 
+    it("should work for numbers", 
+      (0<0) should == false
+      (0<1) should == true
+      (1<1) should == false
+      (1<2) should == true
+      (2<2) should == false
+      (3<2) should == false
+      (3<223524534) should == true
+    )
+  )
+
+  describe("<=", 
+    it("should work for numbers", 
+      (0<=0) should == true
+      (0<=1) should == true
+      (1<=1) should == true
+      (1<=2) should == true
+      (2<=2) should == true
+      (3<=2) should == false
+      (3<=223524534) should == true
+      (223524534<=223524534) should == true
+    )
+  )
+  
+  describe(">", 
+    it("should work for numbers", 
+      (0>0) should == false
+      (0>1) should == false
+      (1>0) should == true
+      (1>1) should == false
+      (2>1) should == true
+      (2>2) should == false
+      (3>2) should == true
+      (3>223524534) should == false
+      (223524534>3) should == true
+      (223524534>223524534) should == false
+    )
+  )
+
+  describe(">=", 
+    it("should work for numbers", 
+      (0>=0) should == true
+      (0>=1) should == false
+      (1>=0) should == true
+      (1>=1) should == true
+      (2>=1) should == true
+      (2>=2) should == true
+      (3>=2) should == true
+      (3>=223524534) should == false
+      (223524534>=3) should == true
+      (223524534>=223524534) should == true
+    )
+  )
+
+  describe("==", 
+    it("should work for numbers", 
+      (0==0) should == true
+      (0==1) should == false
+      (1==0) should == false
+      (1==1) should == true
+      (2==1) should == false
+      (2==2) should == true
+      (3==2) should == false
+      (3==223524534) should == false
+      (223524534==3) should == false
+      (223524534==223524534) should == true
+    )
+  )
+
+  describe("!=", 
+    it("should work for numbers", 
+      (0!=0) should == false
+      (0!=1) should == true
+      (1!=0) should == true
+      (1!=1) should == false
+      (2!=1) should == true
+      (2!=2) should == false
+      (3!=2) should == true
+      (3!=223524534) should == true
+      (223524534!=3) should == true
+      (223524534!=223524534) should == false
+    )
+  )
 )
