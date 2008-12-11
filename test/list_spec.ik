@@ -640,6 +640,26 @@ describe(List,
       ([4,5,6] + x) should == [4,5,6,1,2,3]
     )
   )
+
+  describe("-",
+    it("should return the same list when given an empty list",
+      x = [1,2,3]
+      (x - []) should == x
+    )
+
+    it("should return an empty list when subtracting from an empty list",
+      x = [1,2,3]
+      ([] - x) should == []
+    )
+
+    it("should remove all elements that are the same from the first list",
+      x = [1,2,3]
+      y = [2,4,6,2]
+      
+      (x - y) should == [1,3]
+      (y - x) should == [4,6]
+    )
+  )      
   
   describe("<=>", 
     it("should sort based on the elements inside", 

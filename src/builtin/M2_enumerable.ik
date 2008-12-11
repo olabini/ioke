@@ -152,7 +152,7 @@ Mixins Enumerable inject = macro(
 
         ; len == 4
         sum = call argAt(0)
-        lexicalCode = LexicalBlock createFrom(call arguments[1..-1], call ground)
+        lexicalCode = LexicalBlock createFrom(call arguments[1..0-1], call ground)
         self each(n,
           sum = lexicalCode call(cell(:sum), cell(:n)))
         return(sum)
@@ -415,7 +415,7 @@ Mixins Enumerable zip = method(
   
   theFn = listsAndFns last
   if(cell(:theFn) && (cell(:theFn) mimics?(LexicalBlock)),
-    listsAndFns = listsAndFns[0..-2]
+    listsAndFns = listsAndFns[0..0-2]
     self each(ix, n,
       internal = list(cell(:n))
       listsAndFns each(n2, internal << cell(:n2)[ix])
@@ -458,7 +458,7 @@ Mixins Enumerable grep = macro(
         if(matchingAgainst === cell(:n),
           result << theCode evaluateOn(call ground, cell(:n)))),
 
-      lexicalCode = LexicalBlock createFrom(call arguments[1..-1], call ground)
+      lexicalCode = LexicalBlock createFrom(call arguments[1..0-1], call ground)
       self each(n,
         if(matchingAgainst === cell(:n),
           result << lexicalCode call(cell(:n))))))
