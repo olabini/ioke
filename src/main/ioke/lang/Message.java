@@ -464,7 +464,7 @@ public class Message extends IokeData {
             case iokeParser.RegexpLiteral: {
                 String s = tree.getText();
                 int lastIndex = s.lastIndexOf('/');
-                m = new Message(runtime, "internal:createPattern", s.substring(2, lastIndex));
+                m = new Message(runtime, "internal:createRegexp", s.substring(2, lastIndex));
                 m.arguments.add(s.substring(lastIndex+1));
                 m.setLine(tree.getLine());
                 m.setPosition(tree.getCharPositionInLine());
@@ -857,7 +857,7 @@ public class Message extends IokeData {
     private void currentCode(StringBuilder base) {
         if(this.name.equals("internal:createText") && (this.arguments.get(0) instanceof String)) {
             base.append('"').append(this.arguments.get(0)).append('"');
-        } else if(this.name.equals("internal:createPattern") && (this.arguments.get(0) instanceof String)) {
+        } else if(this.name.equals("internal:createRegexp") && (this.arguments.get(0) instanceof String)) {
             base.append("#/").append(this.arguments.get(0)).append('/').append(this.arguments.get(1));
         } else if(this.name.equals("internal:createNumber") && (this.arguments.get(0) instanceof String)) {
             base.append(this.arguments.get(0));
