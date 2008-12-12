@@ -145,23 +145,23 @@ public class Number extends IokeData {
         obj.setKind("Number");
         obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Comparing")), runtime.nul, runtime.nul);
 
-        IokeObject real = new IokeObject(runtime, "A real number can be either a rational number or a decimal number");
+        IokeObject real = new IokeObject(runtime, "A real number can be either a rational number or a decimal number", integer(0));
         real.mimicsWithoutCheck(number);
         real.setKind("Number Real");
         number.registerCell("Real", real);
 
-        IokeObject rational = new IokeObject(runtime, "A rational number is either an integer or a ratio");
+        IokeObject rational = new IokeObject(runtime, "A rational number is either an integer or a ratio", integer(0));
         rational.mimicsWithoutCheck(real);
         rational.setKind("Number Rational");
         number.registerCell("Rational", rational);
 
-        IokeObject integer = new IokeObject(runtime, "An integral number");
+        IokeObject integer = new IokeObject(runtime, "An integral number", integer(0));
         integer.mimicsWithoutCheck(rational);
         integer.setKind("Number Integer");
         number.registerCell("Integer", integer);
         runtime.integer = integer;
 
-        IokeObject ratio = new IokeObject(runtime, "A ratio of two integral numbers");
+        IokeObject ratio = new IokeObject(runtime, "A ratio of two integral numbers", ratio(new IntFraction(new IntNum(1),new IntNum(1))));
         ratio.mimicsWithoutCheck(rational);
         ratio.setKind("Number Ratio");
         number.registerCell("Ratio", ratio);
