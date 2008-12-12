@@ -554,7 +554,7 @@ public class DefaultBehavior {
                     Object o = Message.getArg1(message);
                     if(o instanceof String) {
                         String s = (String)o;
-                        return runtime.newRegexp(new StringUtils().replaceEscapes(s));
+                        return runtime.newRegexp(new StringUtils().replaceEscapes(s), context, message);
                     } else {
                         return IokeObject.convertToRegexp(message.getEvaluatedArgument(0, context), message, context);
                     }
