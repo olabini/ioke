@@ -316,7 +316,7 @@ public abstract class IokeData {
         condition.setCell("message", message);
         condition.setCell("context", context);
         condition.setCell("receiver", self);
-        condition.setCell("methodNAme", context.runtime.getSymbol(name));
+        condition.setCell("methodName", context.runtime.getSymbol(name));
         context.runtime.errorCondition(condition);
     }
 

@@ -168,7 +168,7 @@ describe("core",
 
   describe("Method", 
     it("should have the correct kind", 
-      cell(:Method) should have kind("Method")
+      cell(:Method) kind should == "Method"
     )
   )
 
@@ -186,7 +186,7 @@ describe("core",
   
   describe("JavaMethod", 
     it("should have the correct kind", 
-      cell(:JavaMethod) should have kind("JavaMethod")
+      cell(:JavaMethod) kind should == "JavaMethod"
     )
   )
 
