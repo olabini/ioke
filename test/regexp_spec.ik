@@ -22,6 +22,25 @@ describe(Regexp,
     )
   )
 
+  describe("=~",
+    it("should return a true value when matching",
+      (#/foo/ =~ "foo") true? should == true
+      (#/fo{1,2}/ =~ "foo") true? should == true
+      (#/foo/ =~ "x foo x") true? should == true
+      (#/^foo$/ =~ "foo") true? should == true
+      (#/^foo/ =~ "foo bar") true? should == true
+      (#/ foo$/ =~ "bar foo") true? should == true
+    )
+
+    it("should return nil when not matching",
+      (#/fo{3}/ =~ "foo") should == nil
+      (#/fox/ =~ "x foo x") should == nil
+      (#/^ foo$/ =~ "foo") should == nil
+      (#/foo$/ =~ "foo bar") should == nil
+      (#/^foo/ =~ "bar foo") should == nil
+    )
+  )
+  
   describe("inspect",
     it("should have tests")
   )

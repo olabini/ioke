@@ -24,7 +24,7 @@ ISpec do(
 
   ShouldContext == = method(value,
     unless(realValue == value,
-      error!(ISpec ExpectationNotMet, text: "expected #{value inspect} to == #{realValue inspect}", shouldMessage: self shouldMessage)))
+      error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to == #{value inspect}", shouldMessage: self shouldMessage)))
 
   ShouldContext signal = method(condition,
     signalled = "none"
@@ -60,7 +60,7 @@ ISpec do(
 
   NotShouldContext == = method(value,
     if(realValue == value,
-      error!(ISpec ExpectationNotMet, text: "expected #{value inspect} to not == #{realValue inspect}", shouldMessage: self shouldMessage)))
+      error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to not == #{value inspect}", shouldMessage: self shouldMessage)))
 
   NotShouldContext signal = method(condition,
     signalled = "none"
