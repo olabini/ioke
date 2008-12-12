@@ -548,15 +548,15 @@ public class DefaultBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("expects one 'strange' argument. creates a new instance of Pattern with the given Java String backing it.", new JavaMethod("internal:createPattern") {
+        obj.registerMethod(runtime.newJavaMethod("expects one 'strange' argument. creates a new mimic of Regexp with the given Java String backing it.", new JavaMethod("internal:createRegexp") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     Object o = Message.getArg1(message);
                     if(o instanceof String) {
                         String s = (String)o;
-                        return runtime.newPattern(new StringUtils().replaceEscapes(s));
+                        return runtime.newRegexp(new StringUtils().replaceEscapes(s));
                     } else {
-                        return IokeObject.convertToPattern(message.getEvaluatedArgument(0, context), message, context);
+                        return IokeObject.convertToRegexp(message.getEvaluatedArgument(0, context), message, context);
                     }
                 }
             }));

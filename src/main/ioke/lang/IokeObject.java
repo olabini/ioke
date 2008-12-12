@@ -506,8 +506,8 @@ public class IokeObject {
         return ((IokeObject)on).convertToSymbol(m, context);
     }
 
-    public static IokeObject convertToPattern(Object on, IokeObject m, IokeObject context) throws ControlFlow {
-        return ((IokeObject)on).convertToPattern(m, context);
+    public static IokeObject convertToRegexp(Object on, IokeObject m, IokeObject context) throws ControlFlow {
+        return ((IokeObject)on).convertToRegexp(m, context);
     }
 
     public static String inspect(Object on) throws ControlFlow {
@@ -534,8 +534,8 @@ public class IokeObject {
         return data.convertToSymbol(this, m, context);
     }
 
-    public IokeObject convertToPattern(IokeObject m, IokeObject context) throws ControlFlow {
-        return data.convertToPattern(this, m, context);
+    public IokeObject convertToRegexp(IokeObject m, IokeObject context) throws ControlFlow {
+        return data.convertToRegexp(this, m, context);
     }
 
     public Object getOrActivate(IokeObject context, IokeObject message, Object on) throws ControlFlow {
