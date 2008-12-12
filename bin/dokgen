@@ -1,0 +1,4 @@
+#!/usr/bin/env ioke
+
+use("dokgen")
+DokGen document(System programArguments)
