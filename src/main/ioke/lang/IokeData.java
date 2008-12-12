@@ -276,7 +276,7 @@ public abstract class IokeData {
 
         return IokeObject.convertToSymbol(newCell[0], m, context);
     }
-    public IokeObject convertToPattern(IokeObject self, IokeObject m, final IokeObject context) throws ControlFlow {
+    public IokeObject convertToRegexp(IokeObject self, IokeObject m, final IokeObject context) throws ControlFlow {
         final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
                                                                            m, 
                                                                            context, 
@@ -286,7 +286,7 @@ public abstract class IokeData {
         condition.setCell("message", m);
         condition.setCell("context", context);
         condition.setCell("receiver", self);
-        condition.setCell("expectedType", context.runtime.getSymbol("Pattern"));
+        condition.setCell("expectedType", context.runtime.getSymbol("Regexp"));
 
         final Object[] newCell = new Object[]{self};
 
@@ -303,7 +303,7 @@ public abstract class IokeData {
             }
             );
 
-        return IokeObject.convertToPattern(newCell[0], m, context);
+        return IokeObject.convertToRegexp(newCell[0], m, context);
     }
     
     private void report(Object self, IokeObject context, IokeObject message, String name) throws ControlFlow {
