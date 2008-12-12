@@ -1,5 +1,17 @@
 
 DokGen do(
+  Collected = [{},{},{}] mimic do(
+    from = method(files, kinds, cells, 
+      newObj = self mimic
+      newObj[0] = files
+      newObj[1] = kinds
+      newObj[2] = cells
+      newObj)
+
+    collectedFiles = method([0])
+    collectedKinds = method([1])
+    collectedCells = method([2]))
+
   document = method(
     "Takes a list of command line arguments, parses these and then builds up the documentation about all data in the system",
     arguments,
@@ -13,11 +25,11 @@ DokGen do(
     ; - then collect the test data if needed
     ; - then print everything out to html files
 
-    collectedFiles = {}
-    collectedKinds = {"Ground" => Ground}
-    collectedCells = {}
-    collect(Ground, collectedFiles, collectedKinds, collectedCells)
-    generate(outputDir, collectedFiles, collectedKinds, collectedCells)
+    collected = Collected from({}, {"Ground" => Ground}, {})
+
+    collect(Ground, collected)
+
+    generate(outputDir, collected)
 
 ;     collectedFiles keys sort each(println)
 ;     collectedKinds keys sort each(k, " #{k} => #{collectedKinds[k] notice}" println)

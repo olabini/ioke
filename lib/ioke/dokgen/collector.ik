@@ -1,7 +1,7 @@
 
 DokGen do(
   collect = method(
-    current, collectedFiles, collectedKinds, collectedCells, 
+    current, collected, 
     visited set withIdentitySemantics!, 
     idGenerator fn(current, fn(current++)) call(0),
 
@@ -9,16 +9,16 @@ DokGen do(
     cell(:current) cells each(c,
       unless((Base == c value) || visited include?(c value),
         if(kindName?(c key),
-          collectedKinds[c value kind] = c value,
+          collected collectedKinds[c value kind] = c value,
 
           id = idGenerator call
           if(code?(c value), 
             fname = c value message filename
-            (collectedFiles[fname] ||= []) << [cell(:current), c key, c value, id])
-          (collectedCells[c key asText] ||= []) << [cell(:current), c key, c value, id]
+            (collected collectedFiles[fname] ||= []) << [cell(:current), c key, c value, id])
+          (collected collectedCells[c key asText] ||= []) << [cell(:current), c key, c value, id]
         )
         
-        collect(c value, collectedFiles, collectedKinds, collectedCells, visited, idGenerator))))
+        collect(c value, collected, visited, idGenerator))))
         
   kindName? = method(name,
     if(#/^[A-Z]/ =~ name,
