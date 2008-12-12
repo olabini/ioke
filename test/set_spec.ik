@@ -101,6 +101,57 @@ describe("Set",
       set(1,2,3,4,5,6,7) should == set(1,2,3,5,4,6,7)
     )
   )
+
+  describe("<<",
+    it("should add an element that isn't part of the set already",
+      x = set(1)
+      x << 2
+      x should == set(1,2)
+    )
+
+    it("should not add an element that is part of the set already",
+      x = set(1,2,3)
+      x << 2
+      x should == set(1,2,3)
+    )
+
+    it("should return the set after adding",
+      x = set(1)
+      (x << 2) should be same(x)
+    )
+  )
+
+  describe("===", 
+    it("should match something in the set", 
+      (set(1) === 1) should == true
+      (set(1,2) === 2) should == true
+      (set(2,3,1) === 3) should == true
+      (set("foo", "bar") === "foo") should == true
+    )
+
+    it("should not match something not in the set", 
+      (set(1) === 2) should == false
+      (set(1,2) === 3) should == false
+      (set(2,3,1) === :bar) should == false
+      (set("foo", "bar") === :bar) should == false
+    )
+  )
+
+  describe("include?", 
+    it("should match something in the set", 
+      set(1) include?(1) should == true
+      set(1,2) include?(2) should == true
+      set(2,3,1) include?(3) should == true
+      set("foo", "bar") include?("foo") should == true
+    )
+
+    it("should not match something not in the set", 
+      set(1) include?(2) should == false
+      set(1,2) include?(3) should == false
+      set(2,3,1) include?(:bar) should == false
+      set("foo", "bar") include?(:bar) should == false
+    )
+  )
 )
 
 describe("DefaultBehavior", 

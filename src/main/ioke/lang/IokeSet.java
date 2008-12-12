@@ -3,6 +3,9 @@
  */
 package ioke.lang;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -43,6 +46,27 @@ public class IokeSet extends IokeData {
                     return method.runtime.newText(IokeSet.getNotice(on));
                 }
             }));
+
+        obj.registerMethod(obj.runtime.newJavaMethod("Adds the argument to this set, if it's not already in the set. Returns the set after adding the object.", new JavaMethod("<<") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    ((IokeSet)IokeObject.data(on)).set.add(args.get(0));
+                    return on;
+                }
+            }));
+
+        obj.registerMethod(obj.runtime.newJavaMethod("returns true if the receiver includes the evaluated argument, otherwise false", new JavaMethod("include?") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    return ((IokeSet)IokeObject.data(on)).getSet().contains(args.get(0)) ? context.runtime._true : context.runtime._false;
+                }
+            }));
+
+        obj.aliasMethod("include?", "===");
 
         obj.registerMethod(runtime.newJavaMethod("takes either one, two or three arguments. if one argument is given, it should be a message chain that will be sent to each object in the set. the result will be thrown away. if two arguments are given, the first is an unevaluated name that will be set to each of the values in the set in succession, and then the second argument will be evaluated in a scope with that argument in it. if three arguments is given, the first one is an unevaluated name that will be set to the index of each element, and the other two arguments are the name of the argument for the value, and the actual code. the code will evaluate in a lexical context, and if the argument name is available outside the context, it will be shadowed. the method will return the set. the iteration order is not defined.", new JavaMethod("each") {
                 @Override
