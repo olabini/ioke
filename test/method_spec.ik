@@ -24,9 +24,25 @@ describe(DefaultBehavior,
   )
 )    
 
+describe("Method",
+  it("should signal a condition if activating the kind",
+    fn(Method) should signal(Condition Error Invocation NotActivatable)
+  )
+)
+
+describe("JavaMethod",
+  it("should signal a condition if activating the kind",
+    fn(JavaMethod) should signal(Condition Error Invocation NotActivatable)
+  )
+)
+
 describe("DefaultMethod",
   it("should be possible to give it a documentation string", 
     method("foo is bar", nil) documentation should == "foo is bar"
+  )
+
+  it("should signal a condition if activating the kind",
+    fn(DefaultMethod) should signal(Condition Error Invocation NotActivatable)
   )
   
   it("should report arity failures with regular arguments", 

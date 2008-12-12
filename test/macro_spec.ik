@@ -30,6 +30,10 @@ describe("DefaultMacro",
     macro("foo is bar", nil) documentation should == "foo is bar"
   )
 
+  it("should signal a condition if activating the kind",
+    fn(DefaultMacro) should signal(Condition Error Invocation NotActivatable)
+  )
+
   it("should have @ return the receiving object inside of a macro", 
     obj = Origin mimic
     obj atSign = macro(@)
