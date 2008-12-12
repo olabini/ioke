@@ -171,5 +171,12 @@ public class Base {
                     return IokeObject.setCell(on, message, context, name, val);
                 }
             }));
+
+        base.registerMethod(base.runtime.newJavaMethod("returns true if the left hand side is equal to the right hand side. exactly what this means depend on the object. the default behavior of Ioke objects is to only be equal if they are the same instance.", new JavaMethod("==") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    return IokeObject.equals(on, message.getEvaluatedArgument(0, context)) ? context.runtime._true : context.runtime._false ;
+                }
+            }));
     }
 }// Base

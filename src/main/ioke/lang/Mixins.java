@@ -17,6 +17,7 @@ public class Mixins {
         mixins.setKind("Mixins");
 
         mixins.setCell("=",         mixins.runtime.base.getCells().get("="));
+        mixins.setCell("==",        mixins.runtime.base.getCells().get("=="));
         mixins.setCell("cell",      mixins.runtime.base.getCells().get("cell"));
         mixins.setCell("cell=",     mixins.runtime.base.getCells().get("cell="));
         mixins.setCell("cell?",     mixins.runtime.base.getCells().get("cell?"));

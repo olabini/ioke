@@ -58,7 +58,7 @@ public class Method extends IokeData implements Named, Inspectable {
         method.registerMethod(method.runtime.newJavaMethod("returns the full code of this method, as a Text", new JavaMethod("code") {
                 @Override
                 public Object activate(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on) throws ControlFlow {
-                    return dynamicContext.runtime.newText(((Method)IokeObject.data(on)).getCode());
+                    return dynamicContext.runtime.newText(((Method)IokeObject.data(on)).getCodeString());
                 }
             }));
     }
@@ -67,7 +67,7 @@ public class Method extends IokeData implements Named, Inspectable {
         return name;
     }
 
-    public String getCode() {
+    public String getCodeString() {
         return "method(nil)";
     }
 
@@ -102,7 +102,7 @@ public class Method extends IokeData implements Named, Inspectable {
     }
 
     public String inspect(Object self) {
-        return getCode();
+        return getCodeString();
     }
 
     public String notice(Object self) {
