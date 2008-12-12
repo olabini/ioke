@@ -13,7 +13,7 @@ import ioke.lang.exceptions.ControlFlow;
  *
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
-public class LexicalBlock extends IokeData {
+public class LexicalBlock extends IokeData implements AssociatedCode {
     private DefaultArgumentsDefinition arguments;
     private IokeObject context;
     private IokeObject message;
@@ -26,6 +26,11 @@ public class LexicalBlock extends IokeData {
 
     public LexicalBlock(IokeObject context) {
         this(context, DefaultArgumentsDefinition.empty(), context.runtime.nilMessage);
+    }
+
+    @Override
+    public IokeObject getCode() {
+        return message;
     }
 
     @Override
@@ -78,6 +83,12 @@ public class LexicalBlock extends IokeData {
                     }
 
                     return context.runtime.newList(keywords);
+                }
+            }));
+        lexicalBlock.registerMethod(lexicalBlock.runtime.newJavaMethod("returns the message chain for this block", new JavaMethod("message") {
+                @Override
+                public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    return ((AssociatedCode)IokeObject.data(on)).getCode();
                 }
             }));
         lexicalBlock.registerMethod(lexicalBlock.runtime.newJavaMethod("Returns a text inspection of the object", new JavaMethod("inspect") {

@@ -9,7 +9,7 @@ import ioke.lang.exceptions.ControlFlow;
  *
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
-public class DefaultMacro extends IokeData implements Named, Inspectable {
+public class DefaultMacro extends IokeData implements Named, Inspectable, AssociatedCode {
     String name;
     private IokeObject context;
     private IokeObject code;
@@ -23,6 +23,11 @@ public class DefaultMacro extends IokeData implements Named, Inspectable {
 
         this.context = context;
         this.code = code;
+    }
+
+    @Override
+    public IokeObject getCode() {
+        return code;
     }
     
     @Override
@@ -40,6 +45,12 @@ public class DefaultMacro extends IokeData implements Named, Inspectable {
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     return IokeObject.as(on).activate(context, message, context.getRealContext());
+                }
+            }));
+        macro.registerMethod(macro.runtime.newJavaMethod("returns the message chain for this macro", new JavaMethod("message") {
+                @Override
+                public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    return ((AssociatedCode)IokeObject.data(on)).getCode();
                 }
             }));
         macro.registerMethod(macro.runtime.newJavaMethod("Returns a text inspection of the object", new JavaMethod("inspect") {

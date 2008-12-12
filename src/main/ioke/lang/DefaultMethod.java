@@ -12,7 +12,7 @@ import ioke.lang.exceptions.ControlFlow;
  *
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
-public class DefaultMethod extends Method {
+public class DefaultMethod extends Method implements AssociatedCode {
     private DefaultArgumentsDefinition arguments;
     private IokeObject code;
 
@@ -24,6 +24,11 @@ public class DefaultMethod extends Method {
         super(context);
         this.arguments = arguments;
         this.code = code;
+    }
+
+    @Override
+    public IokeObject getCode() {
+        return code;
     }
 
     @Override
@@ -41,18 +46,23 @@ public class DefaultMethod extends Method {
                     return context.runtime.newList(keywords);
                 }
             }));
-
+        defaultMethod.registerMethod(defaultMethod.runtime.newJavaMethod("returns the message chain for this method", new JavaMethod("message") {
+                @Override
+                public Object activate(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on) throws ControlFlow {
+                    return ((AssociatedCode)IokeObject.data(on)).getCode();
+                }
+            }));
     }
 
     @Override
-    public String getCode() {
-        String args = arguments.getCode();
+    public String getCodeString() {
+        String args = arguments == null ? "" : arguments.getCode();
         return "method(" + args + Message.code(code) + ")";
     }
 
     @Override
     public String inspect(Object self) {
-        String args = arguments.getCode();
+        String args = arguments == null ? "" : arguments.getCode();
         if(name == null) {
             return "method(" + args + Message.code(code) + ")";
         } else {

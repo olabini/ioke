@@ -57,6 +57,7 @@ public class DefaultBehavior {
         obj.setKind("DefaultBehavior");
 
         obj.setCell("=",         runtime.base.getCells().get("="));
+        obj.setCell("==",        runtime.base.getCells().get("=="));
         obj.setCell("cell",      runtime.base.getCells().get("cell"));
         obj.setCell("cell=",     runtime.base.getCells().get("cell="));
         obj.setCell("cells",     runtime.base.getCells().get("cells"));
@@ -294,13 +295,6 @@ public class DefaultBehavior {
                         Object result = context.runtime.rshMessage.sendTo(context, val, Message.getArg2(message));
                         return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result))));
                     }
-                }
-            }));
-
-        obj.registerMethod(runtime.newJavaMethod("returns true if the left hand side is equal to the right hand side. exactly what this means depend on the object. the default behavior of Ioke objects is to only be equal if they are the same instance.", new JavaMethod("==") {
-                @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    return IokeObject.equals(on, message.getEvaluatedArgument(0, context)) ? context.runtime._true : context.runtime._false ;
                 }
             }));
 

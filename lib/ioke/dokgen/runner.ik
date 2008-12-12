@@ -5,6 +5,7 @@ DokGen do(
     arguments,
 
     outputDir = "dok"
+
     combineWithSpecs = false
     specsPattern = "test/**/*_spec.ik"
 
@@ -12,18 +13,14 @@ DokGen do(
     ; - then collect the test data if needed
     ; - then print everything out to html files
 
-    alreadyPrinted = set()
-    printObjects(" ", Ground, alreadyPrinted)
-  )
+    collectedFiles = {}
+    collectedKinds = {"Ground" => Ground}
+    collectedCells = {}
+    collect(Ground, collectedFiles, collectedKinds, collectedCells)
+    generate(outputDir, collectedFiles, collectedKinds, collectedCells)
 
-  printObjects = method(indent, obj, alreadyPrinted,
-    alreadyPrinted << cell(:obj)
-    cell(:obj) cells each(c,
-      unless(alreadyPrinted include?(c value),
-        "#{indent}#{c key} : #{c value notice}" println
-        printObjects(indent + " ", c value, alreadyPrinted))
-      if(Ground == cell(:obj),
-        "" println)
-    )
+;     collectedFiles keys sort each(println)
+;     collectedKinds keys sort each(k, " #{k} => #{collectedKinds[k] notice}" println)
+;     collectedCells keys sort each(k, collectedCells[k] sortBy(first kind) each(v, " #{k} (#{v first kind}) // #{v[3]}" println))
   )
 )

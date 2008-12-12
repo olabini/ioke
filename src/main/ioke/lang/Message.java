@@ -795,6 +795,9 @@ public class Message extends IokeData {
     }
 
     public static String code(IokeObject message) {
+        if(message == null) {
+            return "";
+        }
         return ((Message)message.data).code();
     }
 

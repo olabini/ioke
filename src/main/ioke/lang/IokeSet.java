@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import ioke.lang.exceptions.ControlFlow;
+import ioke.lang.util.IdentitySet;
 
 /**
  *
@@ -37,6 +38,15 @@ public class IokeSet extends IokeData {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     return method.runtime.newText(IokeSet.getInspect(on));
+                }
+            }));
+
+        obj.registerMethod(obj.runtime.newJavaMethod("Converts this set to use identity semantics, and then returns it.", new JavaMethod("withIdentitySemantics!") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    IokeSet set = (IokeSet)IokeObject.data(on);
+                    set.set = new IdentitySet<Object>(set.set);
+                    return on;
                 }
             }));
 
