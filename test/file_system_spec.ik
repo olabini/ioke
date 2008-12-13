@@ -6,6 +6,48 @@ describe(FileSystem,
     FileSystem should have kind("FileSystem")
   )
 
+  describe("exists?",
+    it("should return false for something that doesn't exit", 
+      FileSystem exists?("flux_flog") should == false
+      FileSystem exists?("src/flux_flog") should == false
+      FileSystem exists?("flux_flog/builtin") should == false
+    )
+
+    it("should return true for a file",
+      FileSystem exists?("build.xml") should == true
+      FileSystem exists?("src/builtin/A1_defaultBehavior.ik") should == true
+    )
+
+    it("should return true for a directory",
+      FileSystem exists?("src") should == true
+      FileSystem exists?("src/") should == true
+      FileSystem exists?("src/builtin") should == true
+    )
+  )
+
+  describe("file?",
+    it("should return false for something that doesn't exit", 
+      FileSystem file?("flux_flog") should == false
+    )
+
+    it("should return true for a file", 
+      FileSystem file?("build.xml") should == true
+    )
+
+    it("should return true for a file inside of a directory", 
+      FileSystem file?("src/builtin/A1_defaultBehavior.ik") should == true
+    )
+
+    it("should return false for a directory", 
+      FileSystem file?("src") should == false
+      FileSystem file?("src/") should == false
+    )
+
+    it("should return false for a directory inside another directory", 
+      FileSystem file?("src/builtin") should == false
+    )
+  )
+
   describe("directory?", 
     it("should return false for something that doesn't exit", 
       FileSystem directory?("flux_flog") should == false

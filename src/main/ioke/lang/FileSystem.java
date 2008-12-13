@@ -56,5 +56,39 @@ public class FileSystem {
                     return f.isDirectory() ? context.runtime._true : context.runtime._false;
                 }
             }));
+
+        obj.registerMethod(runtime.newJavaMethod("Takes one string argument and returns true if it's the relative or absolute name of a file, and false otherwise.", new JavaMethod("file?") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    String name = Text.getText(args.get(0));
+                    File f = null;
+                    if(name.startsWith("/")) {
+                        f = new File(name);
+                    } else {
+                        f = new File(context.runtime.getCurrentWorkingDirectory(), name);
+                    }
+                    
+                    return f.isFile() ? context.runtime._true : context.runtime._false;
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("Takes one string argument and returns true if it's the relative or absolute name of something that exists.", new JavaMethod("exists?") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    String name = Text.getText(args.get(0));
+                    File f = null;
+                    if(name.startsWith("/")) {
+                        f = new File(name);
+                    } else {
+                        f = new File(context.runtime.getCurrentWorkingDirectory(), name);
+                    }
+                    
+                    return f.exists() ? context.runtime._true : context.runtime._false;
+                }
+            }));
     }
 }// FileSystem
