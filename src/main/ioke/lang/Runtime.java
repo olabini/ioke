@@ -95,6 +95,7 @@ public class Runtime {
     public IokeObject nilMessage = newMessage("nil");
     public IokeObject name = newMessage("name");
     public IokeObject callMessage = newMessage("call");
+    public IokeObject closeMessage = newMessage("close");
     public IokeObject code = newMessage("code");
     public IokeObject each = newMessage("each");
     public IokeObject opShuffle = newMessage("shuffleOperators");
@@ -109,6 +110,7 @@ public class Runtime {
     public IokeObject invokeMessage = newMessage("invoke");
     public IokeObject errorMessage = newMessage("error!");
     public IokeObject ErrorMessage = newMessage("Error");
+    public IokeObject FileMessage = newMessage("File");
     public IokeObject inspectMessage = newMessage("inspect");
     public IokeObject noticeMessage = newMessage("notice");
 
@@ -659,6 +661,14 @@ public class Runtime {
         IokeObject obj = this.range.allocateCopy(null, null);
         obj.mimicsWithoutCheck(this.range);
         obj.data = new Range(from, to, inclusive);
+        return obj;
+    }
+
+    public IokeObject newFile(IokeObject context, File eff) throws ControlFlow {
+        IokeObject fileMimic = IokeObject.as(FileMessage.sendTo(context, this.fileSystem));
+        IokeObject obj = fileMimic.allocateCopy(null, null);
+        obj.mimicsWithoutCheck(fileMimic);
+        obj.data = new FileSystem.IokeFile(eff);
         return obj;
     }
 

@@ -27,9 +27,30 @@ public class FileSystem {
         return Dir.push_glob(runtime.getCurrentWorkingDirectory(), text, 0);
     }
 
-    public static void init(IokeObject obj) {
+    public static class IokeFile extends IokeData {
+        private File file;
+
+        public IokeFile(File file) {
+            this.file = file;
+        }
+
+    
+        @Override
+        public void init(IokeObject obj) {
+            final Runtime runtime = obj.runtime;
+
+            obj.setKind("FileSystem File");
+        }
+    }
+
+    public static void init(IokeObject obj) throws ControlFlow {
         Runtime runtime = obj.runtime;
         obj.setKind("FileSystem");
+
+        IokeObject file = new IokeObject(runtime, "represents a file in the file system", new IokeFile(null));
+        file.mimicsWithoutCheck(runtime.io);
+        file.init();
+        obj.registerCell("File", file);
 
         obj.registerMethod(runtime.newJavaMethod("Tries to interpret the given arguments as strings describing file globs, and returns an array containing the result of applying these globs.", new JavaMethod("[]") {
                 @Override
@@ -96,6 +117,39 @@ public class FileSystem {
                 }
             }));
 
+        obj.registerMethod(runtime.newJavaMethod("Takes a file name and a lexical block - opens the file, ensures that it exists and then yields the file to the block. Finally it closes the file after the block has finished executing, and then returns the result of the block.", new JavaMethod("withOpenFile") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    String name = Text.getText(args.get(0));
+                    File f = null;
+                    if(name.startsWith("/")) {
+                        f = new File(name);
+                    } else {
+                        f = new File(context.runtime.getCurrentWorkingDirectory(), name);
+                    }
+
+                    try {
+                        if(!f.exists()) {
+                            f.createNewFile();
+                        }
+                    } catch(IOException e) {
+                    }
+
+                    IokeObject ff = context.runtime.newFile(context, f);
+                    Object result = context.runtime.nil;
+
+                    try {
+                        result = context.runtime.callMessage.sendTo(context, args.get(1), ff);
+                    } finally {
+                        context.runtime.closeMessage.sendTo(context, ff);
+                    }
+
+                    return result;
+                }
+            }));
+
         obj.registerMethod(runtime.newJavaMethod("Copies a file. Takes two text arguments, where the first is the name of the file to copy and the second is the name of the destination. If the destination is a directory, the file will be copied with the same name, and if it's a filename, the file will get a new name", new JavaMethod("copyFile") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
@@ -123,7 +177,6 @@ public class FileSystem {
 
 
                     try {
-                        System.err.println("Copying from: " + f + " to " + f2);
                         if(!f2.exists()) {
                             f2.createNewFile();
                         }
@@ -135,7 +188,6 @@ public class FileSystem {
                         srcChannel.close();
                         dstChannel.close();
                     } catch (IOException e) {
-                        System.err.println("Had error: " + e);
                     }
 
                     return context.runtime.nil;
