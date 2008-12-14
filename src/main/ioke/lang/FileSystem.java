@@ -7,6 +7,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.BufferedReader;
+import java.io.Writer;
 
 import java.nio.channels.FileChannel;
 
@@ -29,17 +33,75 @@ public class FileSystem {
 
     public static class IokeFile extends IokeData {
         private File file;
+        private Writer writer;
 
         public IokeFile(File file) {
             this.file = file;
+
+            try {
+                if(file != null) {
+                    this.writer = new FileWriter(file);
+                }
+            } catch(IOException e) {
+            }
         }
 
-    
+        public static Writer getWriter(Object on){
+            return ((IokeFile)IokeObject.data(on)).writer;
+        }
+
         @Override
         public void init(IokeObject obj) {
             final Runtime runtime = obj.runtime;
 
             obj.setKind("FileSystem File");
+
+            obj.registerMethod(runtime.newJavaMethod("Closes any open stream to this file", new JavaMethod("close") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    try {
+                        IokeFile.getWriter(on).close();
+                    } catch(IOException e) {
+                    }
+                    return context.runtime.nil;
+                }
+            }));
+
+            obj.registerMethod(runtime.newJavaMethod("Prints a text representation of the argument to the current IO object", new JavaMethod("print") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    try {
+                        IokeFile.getWriter(on).write(context.runtime.asText.sendTo(context, args.get(0)).toString());
+                        IokeFile.getWriter(on).flush();
+                    } catch(IOException e) {
+                        final Runtime runtime = context.runtime;
+                        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
+                                                                                           message, 
+                                                                                           context, 
+                                                                                           "Error", 
+                                                                                           "IO")).mimic(message, context);
+                        condition.setCell("message", message);
+                        condition.setCell("context", context);
+                        condition.setCell("receiver", on);
+                        condition.setCell("exceptionMessage", runtime.newText(e.getMessage()));
+                        List<Object> ob = new ArrayList<Object>();
+                        for(StackTraceElement ste : e.getStackTrace()) {
+                            ob.add(runtime.newText(ste.toString()));
+                        }
+
+                        condition.setCell("exceptionStackTrace", runtime.newList(ob));
+
+                        runtime.withReturningRestart("ignore", context, new RunnableWithControlFlow() {
+                                public void run() throws ControlFlow {
+                                    runtime.errorCondition(condition);
+                                }});
+                    }
+
+                    return context.runtime.nil;
+                }
+            }));
         }
     }
 
@@ -80,6 +142,35 @@ public class FileSystem {
                     }
                     
                     return f.isDirectory() ? context.runtime._true : context.runtime._false;
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("Takes one string argument that should be a file name, and returns a text of the contents of this file.", new JavaMethod("readFully") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    String name = Text.getText(args.get(0));
+                    File f = null;
+                    if(name.startsWith("/")) {
+                        f = new File(name);
+                    } else {
+                        f = new File(context.runtime.getCurrentWorkingDirectory(), name);
+                    }
+                    StringBuilder sb = new StringBuilder();
+
+                    try {
+                        BufferedReader reader = new BufferedReader(new FileReader(f));
+                        char[] buf = new char[1024];
+                        int read = -1;
+                        while((read = reader.read(buf, 0, 1024)) != -1) {
+                            sb.append(buf, 0, read);
+                        }
+                        reader.close();
+                    } catch(IOException e) {
+                    }
+                    
+                    return context.runtime.newText(sb.toString());
                 }
             }));
 
