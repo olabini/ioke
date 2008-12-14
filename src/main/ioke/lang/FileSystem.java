@@ -4,7 +4,11 @@
 package ioke.lang;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+
+import java.nio.channels.FileChannel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,6 +93,52 @@ public class FileSystem {
                     }
                     
                     return f.exists() ? context.runtime._true : context.runtime._false;
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("Copies a file. Takes two text arguments, where the first is the name of the file to copy and the second is the name of the destination. If the destination is a directory, the file will be copied with the same name, and if it's a filename, the file will get a new name", new JavaMethod("copyFile") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    String name = Text.getText(args.get(0));
+                    File f = null;
+                    if(name.startsWith("/")) {
+                        f = new File(name);
+                    } else {
+                        f = new File(context.runtime.getCurrentWorkingDirectory(), name);
+                    }
+
+                    String name2 = Text.getText(args.get(1));
+                    File f2 = null;
+                    if(name2.startsWith("/")) {
+                        f2 = new File(name2);
+                    } else {
+                        f2 = new File(context.runtime.getCurrentWorkingDirectory(), name2);
+                    }
+
+                    if(f2.isDirectory()) {
+                        f2 = new File(f2, f.getName());
+                    }
+
+
+                    try {
+                        System.err.println("Copying from: " + f + " to " + f2);
+                        if(!f2.exists()) {
+                            f2.createNewFile();
+                        }
+
+                        FileChannel srcChannel = new FileInputStream(f).getChannel();
+                        FileChannel dstChannel = new FileOutputStream(f2).getChannel();
+
+                        dstChannel.transferFrom(srcChannel, 0, srcChannel.size());
+                        srcChannel.close();
+                        dstChannel.close();
+                    } catch (IOException e) {
+                        System.err.println("Had error: " + e);
+                    }
+
+                    return context.runtime.nil;
                 }
             }));
 
