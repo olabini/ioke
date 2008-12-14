@@ -70,6 +70,47 @@ describe(FileSystem,
       FileSystem directory?("src/builtin") should == true
     )
   )
+
+  describe("createDirectory!",
+    it("should signal an error if the directory already exists",
+      fn(FileSystem createDirectory!("src")) should signal(Condition Error IO)
+
+      bind(rescue(Condition, fn(c, nil)), ; ignore failures
+        FileSystem removeDirectory!("test/newly_created_dir"))
+    )
+
+    it("should signal an error if a file with the same name already exists",
+      fn(FileSystem createDirectory!("build.xml")) should signal(Condition Error IO)
+
+      bind(rescue(Condition, fn(c, nil)), ; ignore failures
+        FileSystem removeDirectory!("test/newly_created_dir"))
+    )
+
+    it("should create the directory",
+      FileSystem createDirectory!("test/newly_created_dir")
+      FileSystem should have directory("test/newly_created_dir")
+
+      bind(rescue(Condition, fn(c, nil)), ; ignore failures
+        FileSystem removeDirectory!("test/newly_created_dir"))
+    )
+  )
+
+  describe("removeDirectory!",
+    it("should signal an error if the directory doesn't exists",
+      fn(FileSystem removeDirectory!("non_existing_dir")) should signal(Condition Error IO)
+    )
+
+    it("should signal an error if a file with the same name exists",
+      fn(FileSystem removeDirectory!("build.xml")) should signal(Condition Error IO)
+    )
+
+    it("should remove the directory",
+      FileSystem createDirectory!("test/dir_to_remove") ; set up
+      FileSystem removeDirectory!("test/dir_to_remove")
+
+      FileSystem should not have directory("test/dir_to_remove")
+    )
+  )
   
   describe("[]", 
     it("should glob correctly", 
