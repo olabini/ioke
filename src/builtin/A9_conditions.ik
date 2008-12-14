@@ -32,13 +32,12 @@ Condition Error Type IncorrectType = Condition Error Type mimic
 
 Condition Error text = "condition reported"
 
-;; ALL REPORTS NEED TO ADD message stackTraceElement as first line. change context to do the same thing
-
 Condition report = method(
   "default implementation of reporting that only prints the name of the condition, and a stack trace",
   
   "#{self text} (#{self kind})
 
+#{message asStackTraceText}
 #{context stackTraceAsText}")
 
 
@@ -49,6 +48,7 @@ Condition Error JavaException report = method(
 
 #{self exceptionStackTrace}
 
+#{message asStackTraceText}
 #{context stackTraceAsText}")
 
 Condition Error Load report = method(
@@ -56,6 +56,7 @@ Condition Error Load report = method(
   
   "couldn't load module '#{moduleName}' (#{self kind})
 
+#{message asStackTraceText}
 #{context stackTraceAsText}")
 
 
@@ -64,7 +65,7 @@ Condition Error NoSuchCell report = method(
 
   "couldn't find cell '#{cellName}' on '#{receiver notice}' (#{self kind})
 
-#{message filename}:#{message line}:#{message position}
+#{message asStackTraceText}
 #{context stackTraceAsText}")
 
 
@@ -73,6 +74,7 @@ Condition Error Invocation MismatchedKeywords report = method(
 
   "didn't expect keyword arguments: #{extra notice} given to '#{message name}' (#{self kind})
 
+#{message asStackTraceText}
 #{context stackTraceAsText}")
 
 
@@ -81,6 +83,7 @@ Condition Error Invocation TooManyArguments report = method(
 
   "didn't expect these arguments: #{extra notice} given to '#{message name}' (#{self kind})
 
+#{message asStackTraceText}
 #{context stackTraceAsText}")
 
 
@@ -89,6 +92,7 @@ Condition Error Invocation TooFewArguments report = method(
 
   "didn't get enough arguments: #{missing} missing, to '#{message name}' (#{self kind})
 
+#{message asStackTraceText}
 #{context stackTraceAsText}")
 
 
@@ -97,6 +101,7 @@ Condition Error Invocation ArgumentWithoutDefaultValue report = method(
 
   "didn't get a default value to argument '#{argumentName}' at position #{index}, following an optional argument when defining a method (#{self kind})
 
+#{message asStackTraceText}
 #{context stackTraceAsText}")
 
 
@@ -105,8 +110,8 @@ Condition Error Invocation NotSpreadable report = method(
 
   "can't spread value '#{given notice}' given to method '#{message name}' (#{self kind})
 
+#{message asStackTraceText}
 #{context stackTraceAsText}")
-
 
 
 Condition Warning Default report = method(
