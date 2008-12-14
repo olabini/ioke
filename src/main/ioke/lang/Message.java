@@ -141,6 +141,26 @@ public class Message extends IokeData {
         ((Message)message.data).type = type;
     }
 
+    public static String getStackTraceText(Object _message) throws ControlFlow {
+        IokeObject message = IokeObject.as(_message);
+        IokeObject start = message;
+        
+        while(prev(start) != null && prev(start).getLine() == message.getLine()) {
+            start = prev(start);
+        }
+
+        String s1 = code(start);
+
+        int ix = s1.indexOf("\n");
+        if(ix > -1) {
+            ix--;
+        }
+        
+        return String.format(" %-48.48s %s", 
+                             (ix == -1 ? s1 : s1.substring(0,ix)),
+                             "[" + message.getFile() + ":" + message.getLine() + ":" + message.getPosition() + "]");
+    }
+
     @Override
     public void init(IokeObject message) {
         message.setKind("Message");
@@ -204,6 +224,12 @@ public class Message extends IokeData {
                     } else {
                         return prev;
                     }
+                }
+            }));
+        message.registerMethod(message.runtime.newJavaMethod("returns a string that describes this message as a stack trace elemtn", new JavaMethod("asStackTraceText") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    return context.runtime.newText(Message.getStackTraceText(on));
                 }
             }));
         message.registerMethod(message.runtime.newJavaMethod("returns a deep clone of this message chain, starting at the current point.", new JavaMethod("deepCopy") {
