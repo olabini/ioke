@@ -27,7 +27,7 @@ DokGen do(
       if(FileSystem exists?("README"),
 
         generateFromTemplate(Templates Readme, 
-          directory: "#{dir}/files", 
+          out: "#{dir}/files/README.html", 
           content: FileSystem readFully("README")),
 
         copyStationary("README.html", "#{dir}/files"))
@@ -35,6 +35,10 @@ DokGen do(
 
     copyStationary = method(file, dir,
       FileSystem copyFile("#{System currentDirectory}/htmlGenerator/stationary/#{file}", dir)
+    )
+    
+    generateFromTemplate = method(template, out:, content:,
+      FileSystem withOpenFile(out, fn(f, template generateIntoFile(f, content: content)))
     )
   )
 
