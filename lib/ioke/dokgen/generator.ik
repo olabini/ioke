@@ -28,7 +28,8 @@ DokGen do(
 
         generateFromTemplate(Templates Readme, 
           out: "#{dir}/files/README.html", 
-          content: FileSystem readFully("README")),
+          content: FileSystem readFully("README"),
+          basePath: "../"),
 
         copyStationary("README.html", "#{dir}/files"))
     )
@@ -37,8 +38,21 @@ DokGen do(
       FileSystem copyFile("#{System currentDirectory}/htmlGenerator/stationary/#{file}", dir)
     )
     
-    generateFromTemplate = method(template, out:, content:,
-      FileSystem withOpenFile(out, fn(f, template generateIntoFile(f, content: content)))
+    generateFromTemplate = method(template, out:, content:, basePath:,
+      FileSystem withOpenFile(out, fn(f, template generateIntoFile(f, content: content, basePath: basePath)))
+    )
+
+    generateFileFrame = method(dir, files,
+      names = (files keys sort - ["<init>"]) map(fname,
+        [if(#/ik$/ =~ fname,
+            "#{fname[0..-4]}.html",
+            "#{fname}.html"), fname])
+
+      content = "%*[<a href=\"files/%s\">%s</a><br />\n%]" format(names)
+
+      generateFromTemplate(Templates FileFrame, 
+        out: "#{dir}/fr_file_index.html", 
+        content: content),
     )
   )
 
