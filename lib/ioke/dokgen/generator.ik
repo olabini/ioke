@@ -17,7 +17,28 @@ DokGen do(
 
       generateCellFrame(directory, collection collectedKells)
     )
+
+    copyStationaryFiles = method(dir,
+      copyStationary("dokgen-style.css", dir)
+      copyStationary("index.html", dir)
+    )
+
+    copyReadmeIfAvailable = method(dir,
+      if(FileSystem exists?("README"),
+
+        generateFromTemplate(Templates Readme, 
+          directory: "#{dir}/files", 
+          content: FileSystem readFully("README")),
+
+        copyStationary("README.html", "#{dir}/files"))
+    )
+
+    copyStationary = method(file, dir,
+      FileSystem copyFile("#{System currentDirectory}/htmlGenerator/stationary/#{file}", dir)
+    )
   )
 
   generate = method(+args, HtmlGenerator generate(*args))
 )
+
+use("dokgen/htmlGenerator/templates")

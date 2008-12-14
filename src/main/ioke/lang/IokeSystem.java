@@ -291,6 +291,25 @@ public class IokeSystem extends IokeData {
                 }
             }));
 
+        obj.registerMethod(runtime.newJavaMethod("returns the current directory that the code is executing in", new JavaMethod("currentDirectory") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    String name = Message.file(message);
+                    File f = null;
+                    if(name.startsWith("/")) {
+                        f = new File(name);
+                    } else {
+                        f = new File(context.runtime.getCurrentWorkingDirectory(), name);
+                    }
+
+                    if(f.exists() && f.isFile()) {
+                        return context.runtime.newText(f.getParent());
+                    }
+
+                    return context.runtime.nil;
+                }
+            }));
+
         obj.registerMethod(runtime.newJavaMethod("forcibly exits the currently running interpreter. takes one optional argument that defaults to 1 - which is the value to return from the process, if the process is exited.", new JavaMethod("exit") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
