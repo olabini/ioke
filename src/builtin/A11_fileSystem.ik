@@ -6,9 +6,10 @@ FileSystem do(
 
     if(exists?(dir),
       if(file?(dir),
-        ;; TODO: signal condition
-        nil),
-      ;; TODO: create directory
+        bind(restart(ignore, fn()),
+          error!(Condition Error IO, text: "Can't create directory #{dir}, since it already exists and is a file"))),
+
+      createDirectory!(dir)
     )
   )
 )
