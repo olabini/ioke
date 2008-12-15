@@ -60,7 +60,10 @@ public class FileSystem {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     try {
-                        IokeFile.getWriter(on).close();
+                        Writer writer = IokeFile.getWriter(on);
+                        if(writer != null) {
+                            writer.close();
+                        }
                     } catch(IOException e) {
                     }
                     return context.runtime.nil;
@@ -208,6 +211,33 @@ public class FileSystem {
                 }
             }));
 
+        obj.registerMethod(runtime.newJavaMethod("Takes one string argument that should be the path of a file or directory, and returns the parent of it - or nil if there is no parent.", new JavaMethod("parentOf") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    String name = Text.getText(args.get(0));
+                    File f = null;
+                    if(name.startsWith("/")) {
+                        f = new File(name);
+                    } else {
+                        f = new File(context.runtime.getCurrentWorkingDirectory(), name);
+                    }
+                    
+                    String parent = f.getParent();
+                    if(parent == null) {
+                        return context.runtime.nil;
+                    }
+
+                    String cwd = context.runtime.getCurrentWorkingDirectory();
+                    if(parent.startsWith(cwd)) {
+                        parent = parent.substring(cwd.length()+1);
+                    }
+
+                    return context.runtime.newText(parent);
+                }
+            }));
+
         obj.registerMethod(runtime.newJavaMethod("Takes a file name and a lexical block - opens the file, ensures that it exists and then yields the file to the block. Finally it closes the file after the block has finished executing, and then returns the result of the block.", new JavaMethod("withOpenFile") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
@@ -285,7 +315,7 @@ public class FileSystem {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("Takes one string argument and creates a directory with that name. Will signal a condition if the directory already exists, or if there's a file with that name.", new JavaMethod("createDirectory!") {
+        obj.registerMethod(runtime.newJavaMethod("Takes one string argument and creates a directory with that name. It also takes an optional second argument. If it's true, will try to create all necessary directories inbetween. Default is false. Will signal a condition if the directory already exists, or if there's a file with that name.", new JavaMethod("createDirectory!") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> args = new ArrayList<Object>();
@@ -323,7 +353,11 @@ public class FileSystem {
                                 }});
                     }
 
-                    f.mkdir();
+                    if(args.size() > 1 && IokeObject.isTrue(args.get(1))) {
+                        f.mkdirs();
+                    } else {
+                        f.mkdir();
+                    }
 
                     return context.runtime.nil;
                 }

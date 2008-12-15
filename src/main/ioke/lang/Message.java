@@ -332,6 +332,16 @@ public class Message extends IokeData {
                     return Message.newFromStream(context.runtime, new StringReader(code), message, context);
                 }
             }));
+
+        message.registerMethod(message.runtime.newJavaMethod("Takes one evaluated argument and executes the contents of that text in the current context and returns the result of that.", new JavaMethod("doText") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    String code = Text.getText(args.get(0));
+                    return context.runtime.evaluateString(code, message, context);
+                }
+            }));
     }
 
     public static void setName(IokeObject message, String name) {

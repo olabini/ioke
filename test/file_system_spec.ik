@@ -140,6 +140,20 @@ describe(FileSystem,
     )
   )
 
+  describe("parentOf",
+    it("should return nil for the parent of something that doesn't have a parent",
+      FileSystem parentOf("/") should == nil
+    )
+
+    it("should return the parent of a relative directory", 
+      FileSystem parentOf("src/builtin") should == "src"
+    )
+
+    it("should return the parent of an absolute directory",
+      FileSystem parentOf("/usr/local") should == "/usr"
+    )
+  )
+
   describe(FileSystem File,
     it("should have the right kind",
       FileSystem File should have kind("FileSystem File"))
