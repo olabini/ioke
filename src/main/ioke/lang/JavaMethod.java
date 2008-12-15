@@ -25,6 +25,21 @@ public class JavaMethod extends Method {
                     return context.runtime.newList(new ArrayList<Object>());
                 }
             }));
+        javaMethod.registerMethod(javaMethod.runtime.newJavaMethod("returns the code for the argument definition", new JavaMethod("argumentsCode") {
+                @Override
+                public Object activate(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on) throws ControlFlow {
+                    IokeData data = IokeObject.data(on);
+                    if(data instanceof JavaMethod) {
+                        return dynamicContext.runtime.newText(((JavaMethod)data).getArgumentsCode());
+                    } else {
+                        return dynamicContext.runtime.newText(((AssociatedCode)data).getArgumentsCode());
+                    }
+                }
+            }));
+    }
+
+    public String getArgumentsCode() {
+        return "...";
     }
 
     @Override

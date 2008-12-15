@@ -52,6 +52,17 @@ public class DefaultMethod extends Method implements AssociatedCode {
                     return ((AssociatedCode)IokeObject.data(on)).getCode();
                 }
             }));
+        defaultMethod.registerMethod(defaultMethod.runtime.newJavaMethod("returns the code for the argument definition", new JavaMethod("argumentsCode") {
+                @Override
+                public Object activate(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on) throws ControlFlow {
+                    return dynamicContext.runtime.newText(((AssociatedCode)IokeObject.data(on)).getArgumentsCode());
+                }
+            }));
+    }
+
+    @Override
+    public String getArgumentsCode() {
+        return arguments.getCode(false);
     }
 
     @Override
