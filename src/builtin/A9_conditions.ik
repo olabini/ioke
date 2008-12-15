@@ -37,7 +37,6 @@ Condition report = method(
   
   "#{self text} (#{self kind})
 
-#{message asStackTraceText}
 #{context stackTraceAsText}")
 
 

@@ -48,6 +48,50 @@ public class Text extends IokeData {
                 }
             }));
 
+        obj.registerMethod(obj.runtime.newJavaMethod("Returns an array of texts split around the argument", new JavaMethod("split") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> positionalArgs = new ArrayList<Object>();
+                    Map<String, Object> keywordArgs = new HashMap<String, Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, positionalArgs, keywordArgs);
+                    String around = Text.getText(positionalArgs.get(0));
+                    String real = Text.getText(on);
+                    String[] results = real.split(around);
+                    List<Object> r = new ArrayList<Object>(results.length);
+                    for(String s : results) {
+                        r.add(context.runtime.newText(s));
+                    }
+
+                    return context.runtime.newList(r);
+                }
+            }));
+
+        obj.registerMethod(obj.runtime.newJavaMethod("Takes two text arguments where the first is the substring to replace, and the second is the replacement to insert. Will only replace the first match, if any is found, and return a new Text with the result.", new JavaMethod("replace") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> positionalArgs = new ArrayList<Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, positionalArgs, new HashMap<String, Object>());
+                    String pat = Text.getText(positionalArgs.get(0));
+                    String repl = Text.getText(positionalArgs.get(1));
+                    String initial = Text.getText(on);
+
+                    return context.runtime.newText(initial.replaceFirst(pat, repl));
+                }
+            }));
+
+        obj.registerMethod(obj.runtime.newJavaMethod("Takes two text arguments where the first is the substring to replace, and the second is the replacement to insert. Will replace all matches, if any is found, and return a new Text with the result.", new JavaMethod("replaceAll") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> positionalArgs = new ArrayList<Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, positionalArgs, new HashMap<String, Object>());
+                    String pat = Text.getText(positionalArgs.get(0));
+                    String repl = Text.getText(positionalArgs.get(1));
+                    String initial = Text.getText(on);
+
+                    return context.runtime.newText(initial.replaceAll(pat, repl));
+                }
+            }));
+
         obj.registerMethod(obj.runtime.newJavaMethod("Returns the length of this text", new JavaMethod("length") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {

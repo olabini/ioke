@@ -170,6 +170,80 @@ describe("Text",
     )
   )
   
+  describe("split",
+    it("should return the string if nothing to split on is available",
+      "foo" split("b") should == ["foo"]
+    )
+
+    it("should return each segment splitted on a string",
+      "foobquux" split("b") should == ["foo", "quux"]
+      "foo/bar/quux" split("/") should == ["foo", "bar", "quux"]
+    )
+  )
+
+  describe("*",
+    it("should return an empty string for 0",
+      ("foo" * 0) should == ""
+      ("bar\nfoo" * 0) should == ""
+    )
+
+    it("should return the string for 1",
+      ("foo" * 1) should == "foo"
+      ("bar\nfoo" * 1) should == "bar\nfoo"
+    )
+
+    it("should return the string repeated for 2",
+      ("foo" * 2) should == "foofoo"
+      ("bar\nfoo" * 2) should == "bar\nfoobar\nfoo"
+    )
+
+    it("should return a string repeated several times",
+      ("fx" * 7) should == "fxfxfxfxfxfxfx"
+    )
+  )
+  
+  describe("replace",
+    it("should return the same string when the thing to replace isn't there",
+      "x" replace("f", "b") should == "x"
+    )
+
+    it("should replace a single character", 
+      "xfx" replace("f", "b") should == "xbx"
+      "fxx" replace("f", "b") should == "bxx"
+      "xxf" replace("f", "b") should == "xxb"
+    )
+
+    it("should replace a larger thing with something else",
+      "xfoox" replace("foo", "bar") should == "xbarx"
+      "fooxx" replace("foo", "bar") should == "barxx"
+      "xxfoo" replace("foo", "bar") should == "xxbar"
+    )
+    it("should only replace the first match",
+      "xfooxfoox" replace("foo", "bar") should == "xbarxfoox"
+    )
+  )
+
+  describe("replaceAll",
+    it("should return the same string when the thing to replace isn't there",
+      "x" replaceAll("f", "b") should == "x"
+    )
+
+    it("should replace a single character", 
+      "xfx" replaceAll("f", "b") should == "xbx"
+      "fxx" replaceAll("f", "b") should == "bxx"
+      "xxf" replaceAll("f", "b") should == "xxb"
+    )
+
+    it("should replace a larger thing with something else",
+      "xfoox" replaceAll("foo", "bar") should == "xbarx"
+      "fooxx" replaceAll("foo", "bar") should == "barxx"
+      "xxfoo" replaceAll("foo", "bar") should == "xxbar"
+    )
+    it("should replace all matches",
+      "xfooxfooxfoox" replaceAll("foo", "bar") should == "xbarxbarxbarx"
+    )
+  )
+
   describe("interpolation", 
     it("should parse correctly with a simple number inside of it", 
       m = parse("\"foo \#{1} bar\"")

@@ -9,7 +9,7 @@ FileSystem do(
         bind(restart(ignore, fn()),
           error!(Condition Error IO, text: "Can't create directory #{dir}, since it already exists and is a file"))),
 
-      createDirectory!(dir)
+      createDirectory!(dir, true)
     )
   )
 )
