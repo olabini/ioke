@@ -13,9 +13,9 @@ DokGen do(
       generateFileFiles(directory, collection collectedFiles)
 
       generateKindFrame(directory, collection collectedKinds)
-      generateKindFiles(directory, collection collectedKinds, collection collectedKells)
+      generateKindFiles(directory, collection collectedKinds, collection collectedCells)
 
-      generateCellFrame(directory, collection collectedKells)
+      generateCellFrame(directory, collection collectedCells)
     )
 
     copyStationaryFiles = method(dir,
@@ -59,8 +59,8 @@ DokGen do(
         "#{name}.html"))
 
     generateFileFile = method(dir, sourceFileName, info,
-      segments = sourceFileName split("/") length
-      beforeLinks = "../" * (segments + 1)
+      segments = sourceFileName split("/")
+      beforeLinks = "../" * (segments length)
 
       htmlFile = "#{dir}/files/#{htmlizeName(sourceFileName)}"
       parent = FileSystem parentOf(htmlFile)
@@ -68,26 +68,23 @@ DokGen do(
       methods = []
       macros = []
       
-      "" println
-      "generating: " print
-      sourceFileName println
-      "----------------" println
-
-      info each(v,
+      ;; we need to sort on both the method name, the surrounding kind and the unique ID
+      ;; since we need to guarantee a ordering. 
+      ;; bad things will happen if the sort starts looking at the other elements in the list
+      info sortBy(x, [x[1], x[0] kind, x[3]]) each(v,
         if(v[2] kind?("DefaultMacro"), 
-          macros << [v[0] kind replaceAll(" ", "/"), v[3], v[1], v[0] kind],
+          macros << [v[0] kind replaceAll(" ", "/"), v[3], v[1] asText replaceAll("<", "&lt;") replaceAll(">", "&gt;"), v[0] kind],
           if(v[2] kind?("Method"), 
-            methods << [v[0] kind, v[3], v[1], v[0] kind])))
+            methods << [v[0] kind replaceAll(" ", "/"), v[3], v[1] asText replaceAll("<", "&lt;") replaceAll(">", "&gt;"), v[0] kind])))
 
-      methodContent = "%*[<a href=\"#{beforeLinks}kinds/%s.html#C00%s\">%s (%s)</a><br />\n%]" format(methods)
-      macroContent = "%*[<a href=\"#{beforeLinks}kinds/%s.html#C00%s\">%s (%s)</a><br />\n%]" format(macros)
-
-      methodContent println
-      "++++++++++++++++++++++" println
-      macroContent println
+      methodContent = "%*[<li><a href=\"#{beforeLinks}kinds/%s.html#C00%s\">%s (%s)</a><br /></li>\n%]" format(methods)
+      macroContent = "%*[<li><a href=\"#{beforeLinks}kinds/%s.html#C00%s\">%s (%s)</a><br /></li>\n%]" format(macros)
 
       generateFromTemplate(Templates FileFile,
         out: htmlFile,
+        filePath: sourceFileName,
+        simpleFileName: segments last,
+        fileDate: "---fluxie---",
         methodContent: methodContent,
         macroContent: macroContent,
         syntaxContent: "",
