@@ -10,12 +10,11 @@ DokGen do(
       copyReadmeIfAvailable(directory)
 
       generateFileFrame(directory, collection collectedFiles)
-      generateFileFiles(directory, collection collectedFiles)
-
       generateKindFrame(directory, collection collectedKinds)
-      generateKindFiles(directory, collection collectedKinds, collection collectedCells)
-
       generateCellFrame(directory, collection collectedCells)
+
+      generateFileFiles(directory, collection collectedFiles)
+      generateKindFiles(directory, collection collectedKinds, collection collectedCells)
     )
 
     copyStationaryFiles = method(dir,
@@ -57,6 +56,28 @@ DokGen do(
       if(#/ik$/ =~ name,
         "#{name[0..-4]}.html",
         "#{name}.html"))
+
+    generateKindFrame = method(dir, kinds,
+      allKinds = kinds keys sort map(x, [x replaceAll(" ", "/"), x])
+
+      content = "%*[<a href=\"kinds/%s.html\">%s</a><br />\n%]" format(allKinds)
+      generateFromTemplate(Templates KindFrame, 
+        out: "#{dir}/fr_kind_index.html", 
+        content: content)
+    )
+
+    generateCellFrame = method(dir, cells,
+      cellData = []
+      cells keys sort each(c, 
+        xx = cells[c] sortBy(cc, [cc[0] kind, cc[3]])
+        xx each(ccc,
+          cellData << [ccc[0] kind replaceAll(" ", "/"), ccc[3], c asText replaceAll("<", "&lt;") replaceAll(">", "&gt;"), ccc[0] kind]))
+
+      content = "%*[<a href=\"kinds/%s.html#C00%s\">%s (%s)</a><br />\n%]" format(cellData)
+      generateFromTemplate(Templates CellFrame, 
+        out: "#{dir}/fr_cell_index.html", 
+        content: content)
+    )
 
     generateFileFile = method(dir, sourceFileName, info,
       segments = sourceFileName split("/")
