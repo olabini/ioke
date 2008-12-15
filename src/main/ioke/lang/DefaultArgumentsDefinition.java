@@ -77,8 +77,14 @@ public class DefaultArgumentsDefinition {
     }
 
     public String getCode() {
+        return getCode(true);
+    }
+
+    public String getCode(boolean lastComma) {
+        boolean any = false;
         StringBuilder sb = new StringBuilder();
         for(Argument argument : arguments) {
+            any = true;
             if(!(argument instanceof KeywordArgument)) {
                 sb.append(argument.getName());
             } else {
@@ -97,11 +103,17 @@ public class DefaultArgumentsDefinition {
         }
 
         if(rest != null) {
+            any = true;
             sb.append("+").append(rest).append(", ");
         }
 
         if(krest != null) {
+            any = true;
             sb.append("+:").append(krest).append(", ");
+        }
+
+        if(!lastComma && any) {
+            sb.delete(sb.length() - 2, sb.length());
         }
 
         return sb.toString();

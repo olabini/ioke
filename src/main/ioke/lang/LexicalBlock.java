@@ -34,6 +34,11 @@ public class LexicalBlock extends IokeData implements AssociatedCode {
     }
 
     @Override
+    public String getArgumentsCode() {
+        return arguments.getCode(false);
+    }
+
+    @Override
     public void init(IokeObject lexicalBlock) {
         lexicalBlock.setKind("LexicalBlock");
 
@@ -70,6 +75,13 @@ public class LexicalBlock extends IokeData implements AssociatedCode {
                     
                     String args = ((LexicalBlock)IokeObject.data(on)).arguments.getCode();
                     return context.runtime.newText("fn" + x + "(" + args + Message.code(((LexicalBlock)IokeObject.data(on)).message) + ")");
+                }
+            }));
+
+        lexicalBlock.registerMethod(lexicalBlock.runtime.newJavaMethod("returns the code for the argument definition", new JavaMethod("argumentsCode") {
+                @Override
+                public Object activate(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on) throws ControlFlow {
+                    return dynamicContext.runtime.newText(((AssociatedCode)IokeObject.data(on)).getArgumentsCode());
                 }
             }));
 

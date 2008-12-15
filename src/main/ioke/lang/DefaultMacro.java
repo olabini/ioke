@@ -53,6 +53,12 @@ public class DefaultMacro extends IokeData implements Named, Inspectable, Associ
                     return ((AssociatedCode)IokeObject.data(on)).getCode();
                 }
             }));
+        macro.registerMethod(macro.runtime.newJavaMethod("returns the code for the argument definition", new JavaMethod("argumentsCode") {
+                @Override
+                public Object activate(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on) throws ControlFlow {
+                    return dynamicContext.runtime.newText(((AssociatedCode)IokeObject.data(on)).getArgumentsCode());
+                }
+            }));
         macro.registerMethod(macro.runtime.newJavaMethod("Returns a text inspection of the object", new JavaMethod("inspect") {
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) {
@@ -65,6 +71,11 @@ public class DefaultMacro extends IokeData implements Named, Inspectable, Associ
                     return context.runtime.newText(DefaultMacro.getNotice(on));
                 }
             }));
+    }
+
+    @Override
+    public String getArgumentsCode() {
+        return "...";
     }
 
     public String getName() {

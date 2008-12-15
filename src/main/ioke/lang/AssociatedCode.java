@@ -9,4 +9,5 @@ package ioke.lang;
  */
 public interface AssociatedCode {
     public IokeObject getCode();
+    public String getArgumentsCode();
 }// AssociatedCode

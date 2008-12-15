@@ -42,6 +42,14 @@ public class AliasMethod extends IokeData implements Named, Inspectable, Associa
     }
 
     @Override
+    public String getArgumentsCode() {
+        if(realMethod instanceof AssociatedCode) {
+            return ((AssociatedCode)realMethod).getArgumentsCode();
+        }
+        return "...";
+    }
+
+    @Override
     public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
         return realMethod.activate(realSelf, context, message, on);
     }

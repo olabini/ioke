@@ -107,19 +107,15 @@ DokGen do(
         if(cells[cc key asText],
           vex = cells[cc key asText] find(val, cell(:theKind) == val[0])
           if((cc value cell?(:activatable)) && (cc value cell(:activatable)),
-            activeCells << [cc key, cc value, vex],
+            activeCells << [cc key, cc value, vex, vex[2] argumentsCode],
             inactiveCells << [cc key, cc value, vex])))
 
       activeCells = activeCells sortBy(v, [v[0], v[2][3]])
       inactiveCells = inactiveCells sortBy(v, [v[0], v[2][3]])
 
       inactiveCellsSummary = "%*[<li><a href=\"#C00%s\">%s</a></li>\n%]" format(inactiveCells map(val, [val[2][3], val[0] asText replaceAll("<", "&lt;") replaceAll(">", "&gt;")]))
+      activeCellsSummary = "%*[<li><a href=\"#C00%s\">%s(%s)</a></li>\n%]" format(activeCells map(val, [val[2][3], val[0] asText replaceAll("<", "&lt;") replaceAll(">", "&gt;"), val[3] replaceAll("<", "&lt;") replaceAll(">", "&gt;")]))
 
-      ;; TODO: fix to use real function header
-      activeCellsSummary = "%*[<li><a href=\"#C00%s\">%s</a></li>\n%]" format(activeCells map(val, [val[2][3], val[0] asText replaceAll("<", "&lt;") replaceAll(">", "&gt;")]))
-
-      activeCellsSummary println
-        
 ;       "generateKindFile(#{kindName}) -> #{htmlFile}" println
 ;       "-=-=-=-=-=-" println
 ;       "active" println
