@@ -1,18 +1,19 @@
 
 DokGen do(
-  KindsToAvoid = [Base, DokGen]
+  KindsToAvoid = [DokGen]
 
   collect = method(
     current, collected, 
-    visited set withIdentitySemantics!, 
+    visited set,
     idGenerator fn(current, fn(current++)) call(0),
 
-    visited << cell(:current)
     cell(:current) cells each(c,
-      unless((KindsToAvoid include?(c value)) || visited include?(c value),
+      unless((KindsToAvoid include?(c value)),
         if(kindName?(c key),
-          collected collectedKinds[c value kind] = c value
-          collect(c value, collected, visited, idGenerator),
+          if(!(visited include?(c value kind)),
+            visited << c value kind
+            collected collectedKinds[c value kind] = c value
+            collect(c value, collected, visited, idGenerator)),
 
           id = idGenerator call
           if(code?(c value), 

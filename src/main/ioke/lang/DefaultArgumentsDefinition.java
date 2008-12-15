@@ -124,7 +124,7 @@ public class DefaultArgumentsDefinition {
                 } else if(IokeObject.data(result) instanceof Dict) {
                     Map<Object, Object> keys = Dict.getMap(result);
                     for(Map.Entry<Object, Object> me : keys.entrySet()) {
-                        String name = Text.getText(IokeObject.convertToText(me.getKey(), message, context));
+                        String name = Text.getText(IokeObject.convertToText(me.getKey(), message, context, true));
                         keyArgs.put(name, me.getValue());
                     }
                 } else {
@@ -175,7 +175,7 @@ public class DefaultArgumentsDefinition {
                 } else if(IokeObject.data(result) instanceof Dict) {
                     Map<Object, Object> keys = Dict.getMap(result);
                     for(Map.Entry<Object, Object> me : keys.entrySet()) {
-                        givenKeywords.put(Text.getText(IokeObject.convertToText(me.getKey(), message, context)) + ":", me.getValue());
+                        givenKeywords.put(Text.getText(IokeObject.convertToText(me.getKey(), message, context, true)) + ":", me.getValue());
                     }
                 } else {
                     final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 

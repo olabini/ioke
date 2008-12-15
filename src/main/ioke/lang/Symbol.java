@@ -49,7 +49,11 @@ public class Symbol extends IokeData {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     Object arg = message.getEvaluatedArgument(0, context);
                     if(!(IokeObject.data(arg) instanceof Symbol)) {
-                        arg = IokeObject.convertToSymbol(arg, message, context);
+                        arg = IokeObject.convertToSymbol(arg, message, context, false);
+                        if(!(IokeObject.data(arg) instanceof Symbol)) {
+                            // Can't compare, so bail out
+                            return context.runtime.nil;
+                        }
                     }
                     return context.runtime.newNumber(Symbol.getText(on).compareTo(Symbol.getText(arg)));
                 }
@@ -87,12 +91,12 @@ public class Symbol extends IokeData {
     }
     
     @Override
-    public IokeObject convertToSymbol(IokeObject self, IokeObject m, IokeObject context) {
+    public IokeObject convertToSymbol(IokeObject self, IokeObject m, IokeObject context, boolean signalCondition) {
         return self;
     }
 
     @Override
-    public IokeObject convertToText(IokeObject self, IokeObject m, IokeObject context) {
+    public IokeObject convertToText(IokeObject self, IokeObject m, IokeObject context, boolean signalCondition) {
         return self.runtime.newText(getText());
     }
 

@@ -22,6 +22,13 @@ import ioke.lang.exceptions.ControlFlow;
 public class Base {
     public static void init(IokeObject base) {
         base.setKind("Base");
+        base.registerMethod(base.runtime.newJavaMethod("returns the documentation text of the object called on. anything can have a documentation text and an object inherits it's documentation string text the object it mimcs - at mimic time.", new JavaMethod("documentation") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
+                    return context.runtime.newText(IokeObject.as(on).documentation);
+                }
+            }));
+
         base.registerMethod(base.runtime.newJavaMethod("will return a new derivation of the receiving object. Might throw exceptions if the object is an oddball object.", 
                                                        new JavaMethod("mimic") {
                                                            @Override

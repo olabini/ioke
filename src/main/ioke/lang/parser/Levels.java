@@ -239,6 +239,7 @@ public class Levels {
         IokeObject opTable = IokeObject.as(msg.findCell(_message, _context, "OperatorTable"));
         if(opTable == runtime.nul) {
             opTable = runtime.newFromOrigin();
+            opTable.setKind("Message OperatorTable");
             runtime.message.setCell("OperatorTable", opTable);
             opTable.setCell("precedenceLevelCount", runtime.newNumber(OP_LEVEL_MAX));
         }

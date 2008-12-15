@@ -494,16 +494,16 @@ public class IokeObject {
         return result;
     }
 
-    public static IokeObject convertToText(Object on, IokeObject m, IokeObject context) throws ControlFlow {
-        return ((IokeObject)on).convertToText(m, context);
+    public static IokeObject convertToText(Object on, IokeObject m, IokeObject context, boolean signalCondition) throws ControlFlow {
+        return ((IokeObject)on).convertToText(m, context, signalCondition);
     }
 
     public static IokeObject tryConvertToText(Object on, IokeObject m, IokeObject context) throws ControlFlow {
         return ((IokeObject)on).tryConvertToText(m, context);
     }
 
-    public static IokeObject convertToSymbol(Object on, IokeObject m, IokeObject context) throws ControlFlow {
-        return ((IokeObject)on).convertToSymbol(m, context);
+    public static IokeObject convertToSymbol(Object on, IokeObject m, IokeObject context, boolean signalCondition) throws ControlFlow {
+        return ((IokeObject)on).convertToSymbol(m, context, signalCondition);
     }
 
     public static IokeObject convertToRegexp(Object on, IokeObject m, IokeObject context) throws ControlFlow {
@@ -522,16 +522,36 @@ public class IokeObject {
         return Text.getText(runtime.noticeMessage.sendTo(ion, ion));
     }
 
-    public IokeObject convertToText(IokeObject m, IokeObject context) throws ControlFlow {
-        return data.convertToText(this, m, context);
+    public IokeObject convertToText(IokeObject m, IokeObject context, boolean signalCondition) throws ControlFlow {
+        IokeObject result = data.convertToText(this, m, context, false);
+        if(result == null) {
+            if(findCell(m, context, "asText") != context.runtime.nul) {
+                return IokeObject.as(context.runtime.asText.sendTo(context, this));
+            }
+            if(signalCondition) {
+                return data.convertToText(this, m, context, true);
+            }
+            return context.runtime.nil;
+        }
+        return result;
     }
 
     public IokeObject tryConvertToText(IokeObject m, IokeObject context) throws ControlFlow {
         return data.tryConvertToText(this, m, context);
     }
 
-    public IokeObject convertToSymbol(IokeObject m, IokeObject context) throws ControlFlow {
-        return data.convertToSymbol(this, m, context);
+    public IokeObject convertToSymbol(IokeObject m, IokeObject context, boolean signalCondition) throws ControlFlow {
+        IokeObject result = data.convertToSymbol(this, m, context, false);
+        if(result == null) {
+            if(findCell(m, context, "asSymbol") != context.runtime.nul) {
+                return IokeObject.as(context.runtime.asSymbol.sendTo(context, this));
+            }
+            if(signalCondition) {
+                return data.convertToSymbol(this, m, context, true);
+            }
+            return context.runtime.nil;
+        }
+        return result;
     }
 
     public IokeObject convertToRegexp(IokeObject m, IokeObject context) throws ControlFlow {

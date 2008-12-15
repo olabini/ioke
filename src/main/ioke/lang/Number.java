@@ -197,6 +197,20 @@ public class Number extends IokeData {
                 }
             }));
 
+        number.registerMethod(runtime.newJavaMethod("compares this against the argument. should be overridden - in this case only used to check for equivalent number kinds", new JavaMethod("==") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    Object arg = args.get(0);
+                    if(on == arg) {
+                        return context.runtime._true;
+                    } else {
+                        return context.runtime._false;
+                    }
+                }
+            }));
+
         rational.registerMethod(runtime.newJavaMethod("compares this number against the argument, true if this number is the same, otherwise false", new JavaMethod("==") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {

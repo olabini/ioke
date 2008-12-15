@@ -38,7 +38,7 @@ public class DateTime extends IokeData {
         final Runtime runtime = obj.runtime;
 
         obj.setKind("DateTime");
-        obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Comparing")), runtime.nul, runtime.nul);
+        //        obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Comparing")), runtime.nul, runtime.nul);
 
         obj.registerMethod(runtime.newJavaMethod("Returns a new DateTime representing the current instant in time in the default TimeZone.", new JavaMethod("now") {
                 @Override
