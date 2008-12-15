@@ -87,6 +87,7 @@ public class Runtime {
     public IokeObject asText = newMessage("asText");
     public IokeObject asRational = newMessage("asRational");
     public IokeObject asDecimal = newMessage("asDecimal");
+    public IokeObject asSymbol = newMessage("asSymbol");
     public IokeObject mimic = newMessage("mimic");
     public IokeObject spaceShip = newMessage("<=>");
     public IokeObject succ = newMessage("succ");

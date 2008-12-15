@@ -218,63 +218,69 @@ public abstract class IokeData {
     public IokeObject tryConvertToText(IokeObject self, IokeObject m, final IokeObject context) throws ControlFlow {
         return null;
     }
-    public IokeObject convertToText(IokeObject self, IokeObject m, final IokeObject context) throws ControlFlow {
-        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
-                                                                           m, 
-                                                                           context, 
-                                                                           "Error", 
-                                                                           "Type",
-                                                                           "IncorrectType")).mimic(m, context);
-        condition.setCell("message", m);
-        condition.setCell("context", context);
-        condition.setCell("receiver", self);
-        condition.setCell("expectedType", context.runtime.getSymbol("Text"));
+    public IokeObject convertToText(IokeObject self, IokeObject m, final IokeObject context, boolean signalCondition) throws ControlFlow {
+        if(signalCondition) {
+            final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
+                                                                               m, 
+                                                                               context, 
+                                                                               "Error", 
+                                                                               "Type",
+                                                                               "IncorrectType")).mimic(m, context);
+            condition.setCell("message", m);
+            condition.setCell("context", context);
+            condition.setCell("receiver", self);
+            condition.setCell("expectedType", context.runtime.getSymbol("Text"));
 
-        final Object[] newCell = new Object[]{self};
+            final Object[] newCell = new Object[]{self};
 
-        context.runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
-                public void run() throws ControlFlow {
-                    context.runtime.errorCondition(condition);
-                }}, 
-            context,
-            new Restart.ArgumentGivingRestart("useValue") { 
-                public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
-                    newCell[0] = arguments.get(0);
-                    return context.runtime.nil;
+            context.runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
+                    public void run() throws ControlFlow {
+                        context.runtime.errorCondition(condition);
+                    }}, 
+                context,
+                new Restart.ArgumentGivingRestart("useValue") { 
+                    public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
+                        newCell[0] = arguments.get(0);
+                        return context.runtime.nil;
+                    }
                 }
-            }
-            );
+                );
 
-        return IokeObject.convertToText(newCell[0], m, context);
+            return IokeObject.convertToText(newCell[0], m, context, signalCondition);
+        }
+        return null;
     }
-    public IokeObject convertToSymbol(IokeObject self, IokeObject m, final IokeObject context) throws ControlFlow {
-        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
-                                                                           m, 
-                                                                           context, 
-                                                                           "Error", 
-                                                                           "Type",
-                                                                           "IncorrectType")).mimic(m, context);
-        condition.setCell("message", m);
-        condition.setCell("context", context);
-        condition.setCell("receiver", self);
-        condition.setCell("expectedType", context.runtime.getSymbol("Symbol"));
+    public IokeObject convertToSymbol(IokeObject self, IokeObject m, final IokeObject context, final boolean signalCondition) throws ControlFlow {
+        if(signalCondition) {
+            final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
+                                                                               m, 
+                                                                               context, 
+                                                                               "Error", 
+                                                                               "Type",
+                                                                               "IncorrectType")).mimic(m, context);
+            condition.setCell("message", m);
+            condition.setCell("context", context);
+            condition.setCell("receiver", self);
+            condition.setCell("expectedType", context.runtime.getSymbol("Symbol"));
 
-        final Object[] newCell = new Object[]{self};
+            final Object[] newCell = new Object[]{self};
 
-        context.runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
-                public void run() throws ControlFlow {
-                    context.runtime.errorCondition(condition);
-                }}, 
-            context,
-            new Restart.ArgumentGivingRestart("useValue") { 
-                public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
-                    newCell[0] = arguments.get(0);
-                    return context.runtime.nil;
+            context.runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
+                    public void run() throws ControlFlow {
+                        context.runtime.errorCondition(condition);
+                    }}, 
+                context,
+                new Restart.ArgumentGivingRestart("useValue") { 
+                    public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
+                        newCell[0] = arguments.get(0);
+                        return context.runtime.nil;
+                    }
                 }
-            }
-            );
+                );
 
-        return IokeObject.convertToSymbol(newCell[0], m, context);
+            return IokeObject.convertToSymbol(newCell[0], m, context, signalCondition);
+        }
+        return null;
     }
     public IokeObject convertToRegexp(IokeObject self, IokeObject m, final IokeObject context) throws ControlFlow {
         final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 

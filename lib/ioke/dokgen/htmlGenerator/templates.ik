@@ -21,7 +21,10 @@ DokGen do(
       CellFrame data = Message doText("method(content:, basePath: \"./\", \"#{FileSystem readFully("#{System currentDirectory}/CellFrame.ik_template")}\")")
 
       FileFile = Template mimic
-      FileFile data = Message doText("method(simpleFileName:, filePath:, fileDate:, methodContent:, macroContent:, syntaxContent:, basePath:, \"#{FileSystem readFully("#{System currentDirectory}/Filefile.ik_template")}\")")
+      FileFile data = Message doText("method(simpleFileName:, filePath:, fileDate:, methodContent:, macroContent:, syntaxContent:, basePath:, \"#{FileSystem readFully("#{System currentDirectory}/FileFile.ik_template")}\")")
+
+      KindFile = Template mimic
+      KindFile data = Message doText("method(kindName:, kindDescription:, inactiveCellsSummary:, activeCellsSummary:, allMimics:, mainMimic:, basePath:, \"#{FileSystem readFully("#{System currentDirectory}/KindFile.ik_template")}\")")
     )
   )
 )

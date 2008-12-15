@@ -79,6 +79,69 @@ DokGen do(
         content: content)
     )
 
+    generateKindFile = method(dir, kindName, theKind, cells,
+      segments = kindName split(" ")
+      beforeLinks = "../" * (segments length)
+      htmlFile = "#{dir}/kinds/#{kindName replaceAll(" ", "/")}.html"
+
+      parent = FileSystem parentOf(htmlFile)
+      FileSystem ensureDirectory(parent)
+
+      mainMimicContent = "none"
+      allMimicsContent = "none"
+
+      unless(Base == cell(:theKind),
+        allMimics = cell(:theKind) mimics
+        mainMimic = cell(:theKind) mimics first
+
+        if(allMimics length > 0,
+          mainMimicContent = "<a href=\"#{beforeLinks}kinds/%s.html\">%s</a>" format(cell(:mainMimic) kind replaceAll(" ", "/"), cell(:mainMimic) kind)
+          allMimicsContent = "%*[<li><a href=\"#{beforeLinks}kinds/%s.html\">%s</a></li>%]" format(allMimics map(mm, [cell(:mm) kind replaceAll(" ", "/"), cell(:mm) kind]))
+        )
+      )
+      
+      inactiveCells = []
+      activeCells = []
+
+      cell(:theKind) cells each(cc,
+        if(cells[cc key asText],
+          vex = cells[cc key asText] find(val, cell(:theKind) == val[0])
+          if((cc value cell?(:activatable)) && (cc value cell(:activatable)),
+            activeCells << [cc key, cc value, vex],
+            inactiveCells << [cc key, cc value, vex])))
+
+      activeCells = activeCells sortBy(v, [v[0], v[2][3]])
+      inactiveCells = inactiveCells sortBy(v, [v[0], v[2][3]])
+
+      inactiveCellsSummary = "%*[<li><a href=\"#C00%s\">%s</a></li>\n%]" format(inactiveCells map(val, [val[2][3], val[0] asText replaceAll("<", "&lt;") replaceAll(">", "&gt;")]))
+
+      ;; TODO: fix to use real function header
+      activeCellsSummary = "%*[<li><a href=\"#C00%s\">%s</a></li>\n%]" format(activeCells map(val, [val[2][3], val[0] asText replaceAll("<", "&lt;") replaceAll(">", "&gt;")]))
+
+      activeCellsSummary println
+        
+;       "generateKindFile(#{kindName}) -> #{htmlFile}" println
+;       "-=-=-=-=-=-" println
+;       "active" println
+;       activeCells map(first) inspect println
+;       "inactive" println
+;       if(DefaultBehavior == cell(:theKind),
+;         activeCells map(x, [x first, x[2]]) inspect println)
+
+      generateFromTemplate(Templates KindFile,
+        out: htmlFile,
+        kindName: kindName,
+        kindDescription: cell(:theKind) documentation || "",
+        allMimics: allMimicsContent,
+        mainMimic: mainMimicContent,
+        inactiveCellsSummary: inactiveCellsSummary,
+        activeCellsSummary: activeCellsSummary,
+;        inactiveCells: inactiveCellsContent,
+;        activeCells: activeCellsContent,
+        basePath: beforeLinks
+      )
+    )
+
     generateFileFile = method(dir, sourceFileName, info,
       segments = sourceFileName split("/")
       beforeLinks = "../" * (segments length)
@@ -115,6 +178,10 @@ DokGen do(
 
     generateFileFiles = method(dir, files,
       files each(f, unless(f key == "<init>", generateFileFile(dir, f key, f value)))
+    )
+
+    generateKindFiles = method(dir, kinds, cells,
+      kinds each(k, generateKindFile(dir, k key, k value, cells))
     )
   )
 

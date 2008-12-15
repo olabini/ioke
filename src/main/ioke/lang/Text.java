@@ -118,7 +118,11 @@ public class Text extends IokeData {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     Object arg = message.getEvaluatedArgument(0, context);
                     if(!(IokeObject.data(arg) instanceof Text)) {
-                        arg = IokeObject.convertToText(arg, message, context);
+                        arg = IokeObject.convertToText(arg, message, context, false);
+                        if(!(IokeObject.data(arg) instanceof Text)) {
+                            // Can't compare, so bail out
+                            return context.runtime.nil;
+                        }
                     }
                     return context.runtime.newNumber(Text.getText(on).compareTo(Text.getText(arg)));
                 }
@@ -345,7 +349,7 @@ public class Text extends IokeData {
     }
     
     @Override
-    public IokeObject convertToText(IokeObject self, IokeObject m, IokeObject context) {
+    public IokeObject convertToText(IokeObject self, IokeObject m, IokeObject context, boolean signalCondition) {
         return self;
     }
 

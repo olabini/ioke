@@ -59,9 +59,11 @@ public class DefaultBehavior {
         obj.setCell("=",         runtime.base.getCells().get("="));
         obj.setCell("==",        runtime.base.getCells().get("=="));
         obj.setCell("cell",      runtime.base.getCells().get("cell"));
+        obj.setCell("cell?",     runtime.base.getCells().get("cell?"));
         obj.setCell("cell=",     runtime.base.getCells().get("cell="));
         obj.setCell("cells",     runtime.base.getCells().get("cells"));
         obj.setCell("cellNames", runtime.base.getCells().get("cellNames"));
+        obj.setCell("documentation", runtime.base.getCells().get("documentation"));
 
         obj.registerMethod(runtime.newJavaMethod("expects two arguments, the first unevaluated, the second evaluated. the first argument should be the name of a cell. if that cell doesn't exist or the value it contains is not true, that cell will be set to the second argument, otherwise nothing will happen. the second argument will NOT be evaluated if the place is not assigned. the result of the expression is the value of the cell. it will use = for this assignment. this method also work together with forms such as []=.", new JavaMethod("||=") {
                 @Override
@@ -537,7 +539,7 @@ public class DefaultBehavior {
                         String s = (String)o;
                         return runtime.newText(new StringUtils().replaceEscapes(s));
                     } else {
-                        return IokeObject.convertToText(message.getEvaluatedArgument(0, context), message, context);
+                        return IokeObject.convertToText(message.getEvaluatedArgument(0, context), message, context, true);
                     }
                 }
             }));
@@ -597,13 +599,6 @@ public class DefaultBehavior {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
                     return runtime.newText(on.toString());
-                }
-            }));
-
-        obj.registerMethod(runtime.newJavaMethod("returns the documentation text of the object called on. anything can have a documentation text and an object inherits it's documentation string text the object it mimcs - at mimic time.", new JavaMethod("documentation") {
-                @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
-                    return runtime.newText(IokeObject.as(on).documentation);
                 }
             }));
 
