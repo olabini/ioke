@@ -116,6 +116,9 @@ DokGen do(
       inactiveCellsSummary = "%*[<li><a href=\"#C00%s\">%s</a></li>\n%]" format(inactiveCells map(val, [val[2][3], val[0] asText replaceAll("<", "&lt;") replaceAll(">", "&gt;")]))
       activeCellsSummary = "%*[<li><a href=\"#C00%s\">%s(%s)</a></li>\n%]" format(activeCells map(val, [val[2][3], val[0] asText replaceAll("<", "&lt;") replaceAll(">", "&gt;"), val[3] replaceAll("<", "&lt;") replaceAll(">", "&gt;")]))
 
+      inactiveCellsContent = "%[%s\n%]" format(inactiveCells map(ic, Templates KindFile inactiveCellData(cellName: ic[0], cellValue: ic[1] notice, cellId: ic[2][3])))
+
+
 ;       "generateKindFile(#{kindName}) -> #{htmlFile}" println
 ;       "-=-=-=-=-=-" println
 ;       "active" println
@@ -132,8 +135,8 @@ DokGen do(
         mainMimic: mainMimicContent,
         inactiveCellsSummary: inactiveCellsSummary,
         activeCellsSummary: activeCellsSummary,
-;        inactiveCells: inactiveCellsContent,
-;        activeCells: activeCellsContent,
+        inactiveCellsContent: inactiveCellsContent,
+;        activeCellsContent: activeCellsContent,
         basePath: beforeLinks
       )
     )
