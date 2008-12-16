@@ -120,14 +120,6 @@ DokGen do(
       inactiveCellsContent = "%[%s\n%]" format(inactiveCells map(ic, Templates KindFile inactiveCellData(cellName: ic[0] asText replaceAll("<", "&lt;") replaceAll(">", "&gt;"), cellValue: ic[1] notice, cellId: ic[2][3])))
       activeCellsContent = "%[%s\n%]"   format(activeCells   map(ic, Templates KindFile activeCellData(cellName: ic[0] asText replaceAll("<", "&lt;") replaceAll(">", "&gt;"), cellDescription: ic[1] documentation, cellId: ic[2][3], cellArguments: ic[3] replaceAll("<", "&lt;") replaceAll(">", "&gt;"), cellSpecs: "%[<li>- %s</li>\n%]" format(ic[4]))))
 
-;       "generateKindFile(#{kindName}) -> #{htmlFile}" println
-;       "-=-=-=-=-=-" println
-;       "active" println
-;       activeCells map(first) inspect println
-;       "inactive" println
-;       if(DefaultBehavior == cell(:theKind),
-;         activeCells map(x, [x first, x[2]]) inspect println)
-
       generateFromTemplate(Templates KindFile,
         out: htmlFile,
         kindName: kindName,
