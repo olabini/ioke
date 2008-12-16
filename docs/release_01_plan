@@ -15,9 +15,9 @@ Ioke 0.1 should include:
 * Enumerable
 * squarebracket, curlybracket syntax
 * Program/script arguments
-- libraries
+* libraries
  * iik
- - dokgen
+ * dokgen
  * ispec
 
 Maybe:

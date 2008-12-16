@@ -2,10 +2,9 @@
  - add documentation= 
  - fix argument information for all JavaMethods
 
-- work on "dokgen"
 - work on "debug"
 
-implement a basic debugger -- in Ioke
+
 
 lower prio
 ----------
