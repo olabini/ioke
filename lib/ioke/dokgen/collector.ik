@@ -30,4 +30,25 @@ DokGen do(
     ((cell(:val) kind?("DefaultMethod")) || 
       (cell(:val) kind?("LexicalBlock")) ||
       (cell(:val) kind?("DefaultMacro"))))
+
+  collectSpecs = method(specsPattern, collectedSpecs,
+    use("ispec")
+
+    ISpec shouldRun? = false
+    ISpec shouldExit? = false
+
+    FileSystem[specsPattern] each(f, use(f))
+
+    ISpec specifications each(spec,
+      collectSpec(spec, collectedSpecs)
+    )
+  )
+
+  collectSpec = method(spec, collectedSpecs,
+    theList = (collectedSpecs[spec fullName] ||= [])
+
+    spec specs each(sp,
+      if(sp[0] == :description,
+        collectSpec(sp[1], collectedSpecs),
+        theList << sp[1])))
 )
