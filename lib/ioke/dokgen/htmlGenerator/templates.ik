@@ -24,7 +24,31 @@ DokGen do(
       FileFile data = Message doText("method(simpleFileName:, filePath:, fileDate:, methodContent:, macroContent:, syntaxContent:, basePath:, \"#{FileSystem readFully("#{System currentDirectory}/FileFile.ik_template")}\")")
 
       KindFile = Template mimic
-      KindFile data = Message doText("method(kindName:, kindDescription:, inactiveCellsSummary:, activeCellsSummary:, allMimics:, mainMimic:, basePath:, \"#{FileSystem readFully("#{System currentDirectory}/KindFile.ik_template")}\")")
+      KindFile data = Message doText("method(kindName:, kindDescription:, inactiveCellsSummary:, activeCellsSummary:, inactiveCellsContent:, allMimics:, mainMimic:, basePath:, \"#{FileSystem readFully("#{System currentDirectory}/KindFile.ik_template")}\")")
+
+      KindFile inactiveCellData = method(cellName:, cellValue:, cellId:,
+"        <div class=\"cell\">
+          <a name=\"C00#{cellId}\"></a>
+          <table border=\"0\" cellpadding=\"5\">
+            <tr valign=\"top\">
+              <td class=\"cell-name\">#{cellName}</td>
+              <td>=</td>
+              <td class=\"cell-value\">#{cellValue}</td>
+            </tr>
+          </table>
+        </div>")
+
+      KindFile activeCellData = method(cellName:, cellValue:, cellId:,
+"        <div class=\"cell\">
+          <a name=\"C00#{cellId}\"></a>
+          <table border=\"0\" cellpadding=\"5\">
+            <tr valign=\"top\">
+              <td class=\"cell-name\">#{cellName}</td>
+              <td>=</td>
+              <td class=\"cell-value\">#{cellValue}</td>
+            </tr>
+          </table>
+        </div>")
     )
   )
 )
