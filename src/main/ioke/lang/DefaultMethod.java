@@ -58,11 +58,23 @@ public class DefaultMethod extends Method implements AssociatedCode {
                     return dynamicContext.runtime.newText(((AssociatedCode)IokeObject.data(on)).getArgumentsCode());
                 }
             }));
+        defaultMethod.registerMethod(defaultMethod.runtime.newJavaMethod("returns idiomatically formatted code for this method", new JavaMethod("formattedCode") {
+                @Override
+                public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    return context.runtime.newText(((AssociatedCode)IokeObject.data(on)).getFormattedCode(self));
+                }
+            }));
     }
 
     @Override
     public String getArgumentsCode() {
         return arguments.getCode(false);
+    }
+
+    @Override
+    public String getFormattedCode(Object self) throws ControlFlow {
+        String args = arguments == null ? "" : arguments.getCode();
+        return "method(" + args + "\n  " + Message.formattedCode(code, 2) + ")";
     }
 
     @Override

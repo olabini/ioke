@@ -50,5 +50,7 @@ DokGen do(
     spec specs each(sp,
       if(sp[0] == :description,
         collectSpec(sp[1], collectedSpecs),
-        theList << sp[1])))
+        if(sp[0] == :test,
+          theList << [sp[1], sp[2]],
+          theList << [sp[1]]))))
 )

@@ -115,6 +115,12 @@ public class LexicalBlock extends IokeData implements AssociatedCode {
                     return context.runtime.newText(LexicalBlock.getNotice(on));
                 }
             }));
+        lexicalBlock.registerMethod(lexicalBlock.runtime.newJavaMethod("returns idiomatically formatted code for this lexical block", new JavaMethod("formattedCode") {
+                @Override
+                public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    return context.runtime.newText(((AssociatedCode)IokeObject.data(on)).getFormattedCode(self));
+                }
+            }));
     }
 
     @Override
@@ -132,6 +138,16 @@ public class LexicalBlock extends IokeData implements AssociatedCode {
 
     public static String getNotice(Object on) {
         return ((LexicalBlock)(IokeObject.data(on))).notice(on);
+    }
+
+    @Override
+    public String getFormattedCode(Object self) throws ControlFlow {
+        String args = arguments == null ? "" : arguments.getCode();
+        if(IokeObject.as(self).isActivatable()) {
+            return "fnx(" + args + "\n  " + Message.formattedCode(message, 2) + ")";
+        } else {
+            return "fn(" + args + "\n  " + Message.formattedCode(message, 2) + ")";
+        }
     }
 
     public String inspect(Object self) {

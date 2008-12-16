@@ -71,7 +71,7 @@ DokGen do(
       cells keys sort each(c, 
         xx = cells[c] sortBy(cc, [cc[0] kind, cc[3]])
         xx each(ccc,
-          cellData << [ccc[0] kind replaceAll(" ", "/"), ccc[3], c asText replaceAll("<", "&lt;") replaceAll(">", "&gt;"), ccc[0] kind]))
+          cellData << [ccc[0] kind replaceAll(" ", "/"), ccc[3], makeTextHtmlSafe(c asText), ccc[0] kind]))
 
       content = "%*[<a href=\"kinds/%s.html#C00%s\">%s (%s)</a><br />\n%]" format(cellData)
       generateFromTemplate(Templates CellFrame, 
@@ -114,11 +114,11 @@ DokGen do(
       activeCells = activeCells sortBy(v, [v[0], v[2][3]])
       inactiveCells = inactiveCells sortBy(v, [v[0], v[2][3]])
 
-      inactiveCellsSummary = "%*[<li><a href=\"#C00%s\">%s</a></li>\n%]" format(inactiveCells map(val, [val[2][3], val[0] asText replaceAll("<", "&lt;") replaceAll(">", "&gt;")]))
-      activeCellsSummary = "%*[<li><a href=\"#C00%s\">%s(%s)</a></li>\n%]" format(activeCells map(val, [val[2][3], val[0] asText replaceAll("<", "&lt;") replaceAll(">", "&gt;"), val[3] replaceAll("<", "&lt;") replaceAll(">", "&gt;")]))
+      inactiveCellsSummary = "%*[<li><a href=\"#C00%s\">%s</a></li>\n%]" format(inactiveCells map(val, [val[2][3], makeTextHtmlSafe(val[0] asText)]))
+      activeCellsSummary = "%*[<li><a href=\"#C00%s\">%s(%s)</a></li>\n%]" format(activeCells map(val, [val[2][3], makeTextHtmlSafe(val[0] asText), makeTextHtmlSafe(val[3])]))
 
-      inactiveCellsContent = "%[%s\n%]" format(inactiveCells map(ic, Templates KindFile inactiveCellData(cellName: ic[0] asText replaceAll("<", "&lt;") replaceAll(">", "&gt;"), cellValue: ic[1] notice, cellId: ic[2][3])))
-      activeCellsContent = "%[%s\n%]"   format(activeCells   map(ic, Templates KindFile activeCellData(cellName: ic[0] asText replaceAll("<", "&lt;") replaceAll(">", "&gt;"), cellDescription: ic[1] documentation, cellId: ic[2][3], cellArguments: ic[3] replaceAll("<", "&lt;") replaceAll(">", "&gt;"), cellSpecs: "%[<li>- %s</li>\n%]" format(ic[4]))))
+      inactiveCellsContent = "%[%s\n%]" format(inactiveCells map(ic, Templates KindFile inactiveCellData(cellName: makeTextHtmlSafe(ic[0] asText), cellValue: ic[1] notice, cellId: ic[2][3])))
+      activeCellsContent = "%[%s\n%]"   format(activeCells   map(ic, Templates KindFile activeCellData(cellName: makeTextHtmlSafe(ic[0] asText), cellDescription: ic[1] documentation, cellId: ic[2][3], cellArguments: makeTextHtmlSafe(ic[3]), cellSpecs: createCellSpecsFor(ic[2][3], ic, ic[4]), cellMessage: if(ic[2][2] cell?(:formattedCode), makeTextHtmlSafe(ic[2][2] formattedCode), nil))))
 
       generateFromTemplate(Templates KindFile,
         out: htmlFile,
@@ -133,6 +133,27 @@ DokGen do(
         basePath: beforeLinks
       )
     )
+
+    createCellSpecsFor = method(cellId, data, specData,
+      specIndex = 0
+      "%[<li>- %s</li>\n%]" format(specData map(sd,
+          if(sd length == 1,
+            sd[0],
+
+            result = "#{sd[0]} <span class=\"sourcecode\">
+            <span class=\"source-link\">[ <a href=\"javascript:toggleSource('C00#{cellId}S#{specIndex}_source')\" id=\"l_C00#{cellId}S#{specIndex}_source\">show source</a> ]</span>
+            <div id=\"C00#{cellId}S#{specIndex}_source\" class=\"dyn-source\">
+<pre>
+#{makeTextHtmlSafe(sd[1] formattedCode)}
+</pre>
+            </div>
+            </span>"
+            specIndex++
+            result
+    ))))
+
+    makeTextHtmlSafe = method(text,
+      text replaceAll("<", "&lt;") replaceAll(">", "&gt;"))
 
     generateFileFile = method(dir, sourceFileName, info,
       segments = sourceFileName split("/")
@@ -149,9 +170,9 @@ DokGen do(
       ;; bad things will happen if the sort starts looking at the other elements in the list
       info sortBy(x, [x[1], x[0] kind, x[3]]) each(v,
         if(v[2] kind?("DefaultMacro"), 
-          macros << [v[0] kind replaceAll(" ", "/"), v[3], v[1] asText replaceAll("<", "&lt;") replaceAll(">", "&gt;"), v[0] kind],
+          macros << [v[0] kind replaceAll(" ", "/"), v[3], makeTextHtmlSafe(v[1] asText), v[0] kind],
           if(v[2] kind?("Method"), 
-            methods << [v[0] kind replaceAll(" ", "/"), v[3], v[1] asText replaceAll("<", "&lt;") replaceAll(">", "&gt;"), v[0] kind])))
+            methods << [v[0] kind replaceAll(" ", "/"), v[3], makeTextHtmlSafe(v[1] asText), v[0] kind])))
 
       methodContent = "%*[<li><a href=\"#{beforeLinks}kinds/%s.html#C00%s\">%s (%s)</a><br /></li>\n%]" format(methods)
       macroContent = "%*[<li><a href=\"#{beforeLinks}kinds/%s.html#C00%s\">%s (%s)</a><br /></li>\n%]" format(macros)
