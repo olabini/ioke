@@ -38,7 +38,7 @@ DokGen do(
           </table>
         </div>")
 
-      KindFile activeCellData = method(cellName:, cellArguments:, cellDescription:, cellId:,
+      KindFile activeCellData = method(cellName:, cellArguments:, cellDescription:, cellId:, cellSpecs:,
 "        <div class=\"cell\">
           <div class=\"title\">
           <a name=\"C00#{cellId}\"></a><b>#{cellName}</b>(#{cellArguments})
@@ -50,6 +50,7 @@ DokGen do(
           </div>
           <div class=\"specs\">
             <ul style=\"list-style-type: none;\">
+              #{cellSpecs}
             </ul>
           </div>
         </div>")

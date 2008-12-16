@@ -14,7 +14,7 @@ DokGen do(
       generateCellFrame(directory, collection collectedCells)
 
       generateFileFiles(directory, collection collectedFiles)
-      generateKindFiles(directory, collection collectedKinds, collection collectedCells)
+      generateKindFiles(directory, collection collectedKinds, collection collectedCells, collection collectedSpecs)
     )
 
     copyStationaryFiles = method(dir,
@@ -79,7 +79,7 @@ DokGen do(
         content: content)
     )
 
-    generateKindFile = method(dir, kindName, theKind, cells,
+    generateKindFile = method(dir, kindName, theKind, cells, specs,
       segments = kindName split(" ")
       beforeLinks = "../" * (segments length)
       htmlFile = "#{dir}/kinds/#{kindName replaceAll(" ", "/")}.html"
@@ -107,7 +107,8 @@ DokGen do(
         if(cells[cc key asText],
           vex = cells[cc key asText] find(val, cell(:theKind) == val[0])
           if((cc value cell?(:activatable)) && (cc value cell(:activatable)),
-            activeCells << [cc key, cc value, vex, vex[2] argumentsCode],
+            theKey = "#{vex[0] kind} #{cc key}"
+            activeCells << [cc key, cc value, vex, vex[2] argumentsCode, specs[theKey] || []],
             inactiveCells << [cc key, cc value, vex])))
 
       activeCells = activeCells sortBy(v, [v[0], v[2][3]])
@@ -117,8 +118,7 @@ DokGen do(
       activeCellsSummary = "%*[<li><a href=\"#C00%s\">%s(%s)</a></li>\n%]" format(activeCells map(val, [val[2][3], val[0] asText replaceAll("<", "&lt;") replaceAll(">", "&gt;"), val[3] replaceAll("<", "&lt;") replaceAll(">", "&gt;")]))
 
       inactiveCellsContent = "%[%s\n%]" format(inactiveCells map(ic, Templates KindFile inactiveCellData(cellName: ic[0] asText replaceAll("<", "&lt;") replaceAll(">", "&gt;"), cellValue: ic[1] notice, cellId: ic[2][3])))
-      activeCellsContent = "%[%s\n%]"   format(activeCells   map(ic, Templates KindFile activeCellData(cellName: ic[0] asText replaceAll("<", "&lt;") replaceAll(">", "&gt;"), cellDescription: ic[1] documentation, cellId: ic[2][3], cellArguments: ic[3] replaceAll("<", "&lt;") replaceAll(">", "&gt;"))))
-
+      activeCellsContent = "%[%s\n%]"   format(activeCells   map(ic, Templates KindFile activeCellData(cellName: ic[0] asText replaceAll("<", "&lt;") replaceAll(">", "&gt;"), cellDescription: ic[1] documentation, cellId: ic[2][3], cellArguments: ic[3] replaceAll("<", "&lt;") replaceAll(">", "&gt;"), cellSpecs: "%[<li>- %s</li>\n%]" format(ic[4]))))
 
 ;       "generateKindFile(#{kindName}) -> #{htmlFile}" println
 ;       "-=-=-=-=-=-" println
@@ -180,8 +180,8 @@ DokGen do(
       files each(f, unless(f key == "<init>", generateFileFile(dir, f key, f value)))
     )
 
-    generateKindFiles = method(dir, kinds, cells,
-      kinds each(k, generateKindFile(dir, k key, k value, cells))
+    generateKindFiles = method(dir, kinds, cells, specs,
+      kinds each(k, generateKindFile(dir, k key, k value, cells, specs))
     )
   )
 

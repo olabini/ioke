@@ -43,7 +43,7 @@ ISpec do(
   Runner = Origin mimic do(
     registerAtExitHook = method(
       System atExit(
-        unless(ISpec didRun?,
+        unless((ISpec didRun?) || !(ISpec shouldRun?),
           success = ISpec run
           if(ISpec shouldExit?,
             System exit(success))))
@@ -107,6 +107,7 @@ ISpec do(
   )
 
   didRun? = false
+  shouldRun? = true
   shouldExit? = true
 
   run = method(
