@@ -1,4 +1,6 @@
 
+ - fix argument information for all JavaMethods
+
 - work on "dokgen"
 - work on "debug"
 

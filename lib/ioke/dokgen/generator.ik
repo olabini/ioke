@@ -116,7 +116,8 @@ DokGen do(
       inactiveCellsSummary = "%*[<li><a href=\"#C00%s\">%s</a></li>\n%]" format(inactiveCells map(val, [val[2][3], val[0] asText replaceAll("<", "&lt;") replaceAll(">", "&gt;")]))
       activeCellsSummary = "%*[<li><a href=\"#C00%s\">%s(%s)</a></li>\n%]" format(activeCells map(val, [val[2][3], val[0] asText replaceAll("<", "&lt;") replaceAll(">", "&gt;"), val[3] replaceAll("<", "&lt;") replaceAll(">", "&gt;")]))
 
-      inactiveCellsContent = "%[%s\n%]" format(inactiveCells map(ic, Templates KindFile inactiveCellData(cellName: ic[0], cellValue: ic[1] notice, cellId: ic[2][3])))
+      inactiveCellsContent = "%[%s\n%]" format(inactiveCells map(ic, Templates KindFile inactiveCellData(cellName: ic[0] asText replaceAll("<", "&lt;") replaceAll(">", "&gt;"), cellValue: ic[1] notice, cellId: ic[2][3])))
+      activeCellsContent = "%[%s\n%]"   format(activeCells   map(ic, Templates KindFile activeCellData(cellName: ic[0] asText replaceAll("<", "&lt;") replaceAll(">", "&gt;"), cellDescription: ic[1] documentation, cellId: ic[2][3], cellArguments: ic[3] replaceAll("<", "&lt;") replaceAll(">", "&gt;"))))
 
 
 ;       "generateKindFile(#{kindName}) -> #{htmlFile}" println
@@ -136,7 +137,7 @@ DokGen do(
         inactiveCellsSummary: inactiveCellsSummary,
         activeCellsSummary: activeCellsSummary,
         inactiveCellsContent: inactiveCellsContent,
-;        activeCellsContent: activeCellsContent,
+        activeCellsContent: activeCellsContent,
         basePath: beforeLinks
       )
     )
