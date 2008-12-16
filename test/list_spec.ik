@@ -43,34 +43,32 @@ describe(List,
     )
   )
 
-  describe("[number]", 
-    it("should return nil if empty list", 
+  describe("[]", 
+    it("should return nil if empty list when given a number", 
       list[0] should == nil
       list[10] should == nil
       list[(0-1)] should == nil
     )
 
-    it("should return nil if argument is over the size", 
+    it("should return nil if argument is over the size when given a number", 
       list(1)[1] should == nil
     )
 
-    it("should return from the front if the argument is zero or positive", 
+    it("should return from the front if the argument is zero or positive when given a number", 
       [1,2,3,4][0] should == 1
       [1,2,3,4][1] should == 2
       [1,2,3,4][2] should == 3
       [1,2,3,4][3] should == 4
     )
 
-    it("should return from the back if the argument is negative", 
+    it("should return from the back if the argument is negative when given a number", 
       [1,2,3,4][0-1] should == 4
       [1,2,3,4][0-2] should == 3
       [1,2,3,4][0-3] should == 2
       [1,2,3,4][0-4] should == 1
     )
-  )
 
-  describe("[range]", 
-    it("should return an empty list for any range given to an empty list", 
+    it("should return an empty list for any range given to an empty list when given a number", 
       [][0..0] should == []
       [][0...0] should == []
       [][0..-1] should == []
