@@ -58,7 +58,12 @@ public class Method extends IokeData implements Named, Inspectable {
         method.registerMethod(method.runtime.newJavaMethod("returns the full code of this method, as a Text", new JavaMethod("code") {
                 @Override
                 public Object activate(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on) throws ControlFlow {
-                    return dynamicContext.runtime.newText(((Method)IokeObject.data(on)).getCodeString());
+                    IokeData data = IokeObject.data(on);
+                    if(data instanceof Method) {
+                        return dynamicContext.runtime.newText(((Method)data).getCodeString());
+                    } else {
+                        return dynamicContext.runtime.newText(((AliasMethod)data).getCodeString());
+                    }
                 }
             }));
     }

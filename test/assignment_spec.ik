@@ -796,16 +796,16 @@ describe(DefaultBehavior,
   )
 
   describe("&&=", 
-    it("should not assign a cell if it(doesn't exist", 
+    it("should not assign a cell if it doesn't exist", 
       xblurg &&= 42
       cell?(:xblurg) should == false
     )
 
-    it("should not assign a cell if it(is nil", 
+    it("should not assign a cell if it is nil", 
       x = nil. x &&= 42. x should == nil
     )
 
-    it("should not assign a cell if it(is false", 
+    it("should not assign a cell if it is false", 
       x = false. x &&= 42. x should == false
     )
 

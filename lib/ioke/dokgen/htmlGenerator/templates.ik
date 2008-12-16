@@ -38,7 +38,7 @@ DokGen do(
           </table>
         </div>")
 
-      KindFile activeCellData = method(cellName:, cellArguments:, cellDescription:, cellId:, cellSpecs:,
+      KindFile activeCellData = method(cellName:, cellArguments:, cellDescription:, cellId:, cellSpecs:, cellMessage:,
 "        <div class=\"cell\">
           <div class=\"title\">
           <a name=\"C00#{cellId}\"></a><b>#{cellName}</b>(#{cellArguments})
@@ -48,6 +48,15 @@ DokGen do(
               #{cellDescription}
             </p>
           </div>
+          #{if(cellMessage,
+"          <div class=\"sourcecode\">
+          <p class=\"source-link\">[ <a href=\"javascript:toggleSource('C00#{cellId}_source')\" id=\"l_C00#{cellId}_source\">show source</a> ]</p>
+            <div id=\"C00#{cellId}_source\" class=\"dyn-source\">
+<pre>
+#{cellMessage}
+</pre>
+            </div>
+            </div>","")}
           <div class=\"specs\">
             <ul style=\"list-style-type: none;\">
               #{cellSpecs}

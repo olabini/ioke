@@ -29,6 +29,16 @@ public class DefaultMacro extends IokeData implements Named, Inspectable, Associ
     public IokeObject getCode() {
         return code;
     }
+
+    public String getCodeString() {
+        return "macro(" + Message.code(code) + ")";
+
+    }
+
+    @Override
+    public String getFormattedCode(Object self) throws ControlFlow {
+        return "macro(\n  " + Message.formattedCode(code, 2) + ")";
+    }
     
     @Override
     public void init(IokeObject macro) {
@@ -69,6 +79,23 @@ public class DefaultMacro extends IokeData implements Named, Inspectable, Associ
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) {
                     return context.runtime.newText(DefaultMacro.getNotice(on));
+                }
+            }));
+        macro.registerMethod(macro.runtime.newJavaMethod("returns the full code of this macro, as a Text", new JavaMethod("code") {
+                @Override
+                public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    IokeData data = IokeObject.data(on);
+                    if(data instanceof DefaultMacro) {
+                        return context.runtime.newText(((DefaultMacro)data).getCodeString());
+                    } else {
+                        return context.runtime.newText(((AliasMethod)data).getCodeString());
+                    }
+                }
+            }));
+        macro.registerMethod(macro.runtime.newJavaMethod("returns idiomatically formatted code for this macro", new JavaMethod("formattedCode") {
+                @Override
+                public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    return context.runtime.newText(((AssociatedCode)IokeObject.data(on)).getFormattedCode(self));
                 }
             }));
     }

@@ -170,6 +170,12 @@ public class Message extends IokeData {
                     return method.runtime.newText(((Message)IokeObject.data(on)).code());
                 }
             }));
+        message.registerMethod(message.runtime.newJavaMethod("Returns a formatted code representation of the object", new JavaMethod("formattedCode") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    return method.runtime.newText(Message.formattedCode(IokeObject.as(on), 0));
+                }
+            }));
         message.registerMethod(message.runtime.newJavaMethod("returns the name of this message", new JavaMethod("name") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
@@ -837,6 +843,13 @@ public class Message extends IokeData {
         return ((Message)message.data).code();
     }
 
+    public static String formattedCode(IokeObject message, int indent) throws ControlFlow {
+        if(message == null) {
+            return "";
+        }
+        return ((Message)message.data).formattedCode(indent);
+    }
+
     public String code() {
         StringBuilder base = new StringBuilder();
 
@@ -848,6 +861,22 @@ public class Message extends IokeData {
             }
 
             base.append(Message.code(next));
+        }
+
+        return base.toString();
+    }
+
+    public String formattedCode(int indent) throws ControlFlow {
+        StringBuilder base = new StringBuilder();
+
+        currentFormattedCode(base, indent);
+        
+        if(next != null) {
+            if(this.type != Type.TERMINATOR) {
+                base.append(" ");
+            }
+
+            base.append(Message.formattedCode(next, indent));
         }
 
         return base.toString();
@@ -911,6 +940,64 @@ public class Message extends IokeData {
                 String sep = "";
                 for(Object o : arguments) {
                     base.append(sep).append(Message.code((IokeObject)o));
+
+                    sep = ", ";
+                }
+                base.append(")");
+            }
+        }
+    }
+
+    private void currentFormattedCode(StringBuilder base, int indent) throws ControlFlow {
+        if(this.name.equals("internal:createText") && (this.arguments.get(0) instanceof String)) {
+            base.append('"').append(this.arguments.get(0)).append('"');
+        } else if(this.name.equals("internal:concatenateText")) {
+            base.append('"');
+            for(int i=0;i<this.arguments.size();i++) {
+                Object arg = this.arguments.get(i);
+                if(Message.name(arg).equals("internal:createText") && (Message.arguments(arg).get(0) instanceof String)) {
+                    base.append(Message.arguments(arg).get(0));
+                } else {
+                    base.append("#{");
+                    base.append(Message.formattedCode(IokeObject.as(arg), 0));
+                    base.append("}");
+                }
+            }
+            base.append('"');
+        } else if(this.name.equals("internal:createRegexp") && (this.arguments.get(0) instanceof String)) {
+            base.append("#/").append(this.arguments.get(0)).append('/').append(this.arguments.get(1));
+        } else if(this.name.equals("internal:createNumber") && (this.arguments.get(0) instanceof String)) {
+            base.append(this.arguments.get(0));
+        } else if(this.name.equals("internal:createDecimal") && (this.arguments.get(0) instanceof String)) {
+            base.append(this.arguments.get(0));
+        } else if(this.name.equals("=")) {
+            base.append(this.arguments.get(0));
+            base.append(" = ");
+            base.append(Message.formattedCode(IokeObject.as(this.arguments.get(1)), indent+2));
+        } else if(this.type == Type.TERMINATOR) {
+            base.append("\n");
+            for(int i=0;i<indent;i++) {
+                base.append(" ");
+            }
+        } else {
+            base.append(this.name);
+            int theLine = line;
+            if(arguments.size() > 0 || this.name.length() == 0) {
+                base.append("(");
+                String sep = "";
+                for(Object o : arguments) {
+                    base.append(sep);
+
+                    if(Message.line(o) != theLine) {
+                        int diff = Message.line(o) - theLine;
+                        theLine += diff;
+                        base.append("\n");
+                        for(int i=0;i<(indent+2);i++) {
+                            base.append(" ");
+                        }
+                    }
+
+                    base.append(Message.formattedCode(IokeObject.as(o), indent+2));
 
                     sep = ", ";
                 }
