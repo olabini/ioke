@@ -62,6 +62,8 @@ PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
         <div class=\"sectiontitle\">Inactive cells (details)</div>
         #{inactiveCellsContent}
 
+        <div class=\"sectiontitle\">Active cells (details)</div>
+        #{activeCellsContent}
 
       </div>
     </div>
