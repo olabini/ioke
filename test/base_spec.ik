@@ -29,6 +29,7 @@ describe("Base",
         :"=" => Base cell(:"="), 
         :"==" => Base cell(:"=="), 
         documentation: Base cell(:documentation),
+        :"documentation=" => Base cell(:"documentation="),
         cell: Base cell(:cell), 
         cellNames: Base cell(:cellNames), 
         cells: Base cell(:cells), 
@@ -44,6 +45,7 @@ describe("Base",
         :"=" => Base cell(:"="), 
         :"==" => Base cell(:"=="), 
         documentation: Base cell(:documentation),
+        :"documentation=" => Base cell(:"documentation="),
         cell: Base cell(:cell), 
         cellNames: Base cell(:cellNames), 
         cells: Base cell(:cells), 
@@ -213,6 +215,33 @@ describe("Base",
       two = one mimic
       two cell(:x) = 43
       two x should == 43
+    )
+  )
+
+  describe("documentation",
+    it("should return nil for a new object",
+      Origin mimic documentation should == nil
+    )
+    
+    it("should return the documentation string for an object that has documentation",
+      Origin documentation should == "Any object created from scratch should usually be derived from Origin."
+    )
+  )
+
+  describe("documentation=",
+    it("should set the documentation for an object",
+      x = Origin mimic
+      x cell(:documentation) kind should == "JavaMethod"
+
+      x documentation = "Wow, you didn't believe that, right?"
+
+      x cell(:documentation) kind should == "JavaMethod"
+
+      x documentation should == "Wow, you didn't believe that, right?"
+    )
+
+    it("should return the documentation string set",
+      (Origin mimic documentation = "something") should == "something"
     )
   )
 )

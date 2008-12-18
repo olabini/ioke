@@ -22,10 +22,26 @@ import ioke.lang.exceptions.ControlFlow;
 public class Base {
     public static void init(IokeObject base) {
         base.setKind("Base");
-        base.registerMethod(base.runtime.newJavaMethod("returns the documentation text of the object called on. anything can have a documentation text and an object inherits it's documentation string text the object it mimcs - at mimic time.", new JavaMethod("documentation") {
+        base.registerMethod(base.runtime.newJavaMethod("returns the documentation text of the object called on. anything can have a documentation text - this text will initially be nil.", new JavaMethod("documentation") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
-                    return context.runtime.newText(IokeObject.as(on).documentation);
+                    String docs = IokeObject.as(on).documentation;
+                    if(null == docs) {
+                        return context.runtime.nil;
+                    }
+                    return context.runtime.newText(docs);
+                }
+            }));
+
+        base.registerMethod(base.runtime.newJavaMethod("sets the documentation string for a specific object.", new JavaMethod("documentation=") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    Object arg = args.get(0);
+                    String s = Text.getText(arg);
+                    IokeObject.as(on).documentation = s;
+                    return arg;
                 }
             }));
 
