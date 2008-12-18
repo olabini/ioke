@@ -3,6 +3,8 @@
  - add documentation string possibility for fn and fnx
  - fix argument information for all JavaMethods
 
+ - change spec collection in dokgen and tag everything that's been claimed, and then collect the rest for outer scopes.
+
 - work on "debug"
 
 
