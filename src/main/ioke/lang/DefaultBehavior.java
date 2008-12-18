@@ -665,13 +665,13 @@ public class DefaultBehavior {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> args = message.getArguments();
                     if(args.isEmpty()) {
-                        return runtime.newLexicalBlock(runtime.lexicalBlock, new LexicalBlock(context, DefaultArgumentsDefinition.empty(), method.runtime.nilMessage));
+                        return runtime.newLexicalBlock(null, runtime.lexicalBlock, new LexicalBlock(context, DefaultArgumentsDefinition.empty(), method.runtime.nilMessage));
                     }
 
                     IokeObject code = IokeObject.as(args.get(args.size()-1));
 
                     DefaultArgumentsDefinition def = DefaultArgumentsDefinition.createFrom(args, 0, args.size()-1, message, on, context);
-                    return runtime.newLexicalBlock(runtime.lexicalBlock, new LexicalBlock(context, def, code));
+                    return runtime.newLexicalBlock(null, runtime.lexicalBlock, new LexicalBlock(context, def, code));
                 }
             }));
 
@@ -680,13 +680,23 @@ public class DefaultBehavior {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> args = message.getArguments();
                     if(args.isEmpty()) {
-                        return runtime.newLexicalBlock(runtime.lexicalBlock, new LexicalBlock(context, DefaultArgumentsDefinition.empty(), method.runtime.nilMessage));
+                        return runtime.newLexicalBlock(null, runtime.lexicalBlock, new LexicalBlock(context, DefaultArgumentsDefinition.empty(), method.runtime.nilMessage));
+                    }
+
+                    String doc = null;
+
+                    List<String> argNames = new ArrayList<String>(args.size()-1);
+                    int start = 0;
+                    if(args.size() > 1 && ((IokeObject)Message.getArg1(message)).getName().equals("internal:createText")) {
+                        start++;
+                        String s = ((String)((IokeObject)args.get(0)).getArguments().get(0));
+                        doc = s;
                     }
 
                     IokeObject code = IokeObject.as(args.get(args.size()-1));
 
-                    DefaultArgumentsDefinition def = DefaultArgumentsDefinition.createFrom(args, 0, args.size()-1, message, on, context);
-                    return runtime.newLexicalBlock(runtime.lexicalBlock, new LexicalBlock(context, def, code));
+                    DefaultArgumentsDefinition def = DefaultArgumentsDefinition.createFrom(args, start, args.size()-1, message, on, context);
+                    return runtime.newLexicalBlock(doc, runtime.lexicalBlock, new LexicalBlock(context, def, code));
                 }
             }));
 

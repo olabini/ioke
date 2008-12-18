@@ -13,6 +13,10 @@ describe(DefaultBehavior,
 ;   )
   
   describe("fnx", 
+    it("should be possible to give it a documentation string", 
+      fnx("foo is bar", nil) documentation should == "foo is bar"
+    )
+
     it("should return something that is activatable for empty list",
       fnx activatable should == true
     )
@@ -27,6 +31,10 @@ describe(DefaultBehavior,
   )
 
   describe("fn",
+    it("should be possible to give it a documentation string", 
+      fn("foo is bar", nil) documentation should == "foo is bar"
+    )
+
     it("should mimic LexicalBlock", 
       result = fn("hello" println)
       result should have kind("LexicalBlock")

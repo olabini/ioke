@@ -613,8 +613,9 @@ public class Runtime {
         return createMessage(mess);
     }
 
-    public IokeObject newLexicalBlock(IokeObject tp, LexicalBlock impl) {
+    public IokeObject newLexicalBlock(String doc, IokeObject tp, LexicalBlock impl) {
         IokeObject obj = tp.allocateCopy(null, null);
+        obj.documentation = doc;
         obj.mimicsWithoutCheck(tp);
         obj.data = impl;
         return obj;

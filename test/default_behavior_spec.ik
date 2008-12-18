@@ -746,7 +746,7 @@ describe(DefaultBehavior,
     )
 
     it("should generate a symbol", 
-      genSym should have kind kind("Symbol")
+      genSym should have kind("Symbol")
     )
   )
   
