@@ -260,12 +260,11 @@ describe(DefaultBehavior,
     )
   )
  
-; TODO: re-enable when regexen is in 
-;  describe("asText", 
-;    it("should call toString and return the text from that", 
-;      Origin mimic asText should match(#/^#<Origin:[0-9A-F]+>$/)
-;    )
-;  )
+  describe("asText", 
+    it("should call toString and return the text from that", 
+      Origin mimic asText should match(#/^#<Origin:[0-9A-F]+>$/)
+    )
+  )
 
   describe("do", 
     it("should execute a piece of code inside an object", 
