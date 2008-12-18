@@ -54,7 +54,7 @@ public class LexicalBlock extends IokeData implements AssociatedCode {
                     IokeObject code = IokeObject.as(args.get(args.size()-1));
 
                     DefaultArgumentsDefinition def = DefaultArgumentsDefinition.createFrom(args, 0, args.size()-1, message, on, dynamicContext);
-                    return runtime.newLexicalBlock(runtime.lexicalBlock, new LexicalBlock(ground, def, code));
+                    return runtime.newLexicalBlock(null, runtime.lexicalBlock, new LexicalBlock(ground, def, code));
                 }
             }));
 

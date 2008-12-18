@@ -66,4 +66,6 @@ DefaultBehavior in? = method(
   aList include?(self))
 
 DefaultBehavior genSym = method(n,
-  fnx(:"#<GS#{n++}>")) call(0)
+  fnx(
+    "returns a new, unique symbol every time called. The symbol will be quite unreadable, and uses a closure to generate a new number every time that is independent from external state.", 
+    :"#<GS#{n++}>")) call(0)
