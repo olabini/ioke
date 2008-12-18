@@ -59,7 +59,7 @@ public class IokeObject {
     }
 
     public IokeObject allocateCopy(IokeObject m, IokeObject context) {
-        return new IokeObject(runtime, documentation, data.cloneData(this, m, context));
+        return new IokeObject(runtime, null, data.cloneData(this, m, context));
     }
 
     public static Object findSuperCellOn(Object obj, IokeObject early, IokeObject message, IokeObject context, String name) {

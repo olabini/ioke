@@ -16,7 +16,7 @@ describe(DefaultBehavior,
     )
 
     it("should be correct for documentation", 
-      cell(:documentation) documentation should == "returns the documentation text of the object called on. anything can have a documentation text and an object inherits it's documentation string text the object it mimcs - at mimic time."
+      cell(:documentation) documentation should == "returns the documentation text of the object called on. anything can have a documentation text - this text will initially be nil."
     )
 
     it("should be correct for cell", 

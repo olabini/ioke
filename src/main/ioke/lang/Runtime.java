@@ -693,7 +693,7 @@ public class Runtime {
         synchronized(symbolTable) {
             IokeObject obj = symbolTable.get(name);
             if(obj == null) {
-                obj = new IokeObject(this, this.symbol.documentation, new Symbol(name));
+                obj = new IokeObject(this, null, new Symbol(name));
                 obj.mimicsWithoutCheck(this.symbol);
                 symbolTable.put(name, obj);
             }
