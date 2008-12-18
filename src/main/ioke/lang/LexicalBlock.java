@@ -28,12 +28,10 @@ public class LexicalBlock extends IokeData implements AssociatedCode {
         this(context, DefaultArgumentsDefinition.empty(), context.runtime.nilMessage);
     }
 
-    @Override
     public IokeObject getCode() {
         return message;
     }
 
-    @Override
     public String getArgumentsCode() {
         return arguments.getCode(false);
     }
@@ -140,7 +138,6 @@ public class LexicalBlock extends IokeData implements AssociatedCode {
         return ((LexicalBlock)(IokeObject.data(on))).notice(on);
     }
 
-    @Override
     public String getFormattedCode(Object self) throws ControlFlow {
         String args = arguments == null ? "" : arguments.getCode();
         if(IokeObject.as(self).isActivatable()) {
