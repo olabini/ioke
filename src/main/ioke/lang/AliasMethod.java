@@ -36,7 +36,6 @@ public class AliasMethod extends IokeData implements Named, Inspectable, Associa
         return ((Inspectable)realMethod).notice(realSelf);
     }
 
-    @Override
     public IokeObject getCode() {
         return ((AssociatedCode)realMethod).getCode();
     }
@@ -51,7 +50,6 @@ public class AliasMethod extends IokeData implements Named, Inspectable, Associa
         }
     }
     
-    @Override
     public String getArgumentsCode() {
         if(realMethod instanceof AssociatedCode) {
             return ((AssociatedCode)realMethod).getArgumentsCode();
@@ -59,7 +57,6 @@ public class AliasMethod extends IokeData implements Named, Inspectable, Associa
         return "...";
     }
 
-    @Override
     public String getFormattedCode(Object self) throws ControlFlow {
         if(realMethod instanceof AssociatedCode) {
             return ((AssociatedCode)realMethod).getFormattedCode(self);

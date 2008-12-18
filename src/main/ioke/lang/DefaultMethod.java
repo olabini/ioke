@@ -26,7 +26,6 @@ public class DefaultMethod extends Method implements AssociatedCode {
         this.code = code;
     }
 
-    @Override
     public IokeObject getCode() {
         return code;
     }
@@ -66,12 +65,10 @@ public class DefaultMethod extends Method implements AssociatedCode {
             }));
     }
 
-    @Override
     public String getArgumentsCode() {
         return arguments.getCode(false);
     }
 
-    @Override
     public String getFormattedCode(Object self) throws ControlFlow {
         String args = arguments == null ? "" : arguments.getCode();
         return "method(" + args + "\n  " + Message.formattedCode(code, 2) + ")";

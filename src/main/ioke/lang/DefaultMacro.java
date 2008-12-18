@@ -25,7 +25,6 @@ public class DefaultMacro extends IokeData implements Named, Inspectable, Associ
         this.code = code;
     }
 
-    @Override
     public IokeObject getCode() {
         return code;
     }
@@ -35,7 +34,6 @@ public class DefaultMacro extends IokeData implements Named, Inspectable, Associ
 
     }
 
-    @Override
     public String getFormattedCode(Object self) throws ControlFlow {
         return "macro(\n  " + Message.formattedCode(code, 2) + ")";
     }
@@ -100,7 +98,6 @@ public class DefaultMacro extends IokeData implements Named, Inspectable, Associ
             }));
     }
 
-    @Override
     public String getArgumentsCode() {
         return "...";
     }

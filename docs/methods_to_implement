@@ -1,5 +1,6 @@
 
  - add documentation= 
+ - add documentation string possibility for fn and fnx
  - fix argument information for all JavaMethods
 
 - work on "debug"
