@@ -280,7 +280,7 @@ public class IokeSystem extends IokeData {
         obj.registerMethod(runtime.newJavaMethod("returns the current file executing", new JavaMethod.WithNoArguments("currentFile") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return runtime.newText(((IokeSystem)IokeObject.data(on)).currentFile.get(0));
                 }
             }));
@@ -288,7 +288,7 @@ public class IokeSystem extends IokeData {
         obj.registerMethod(runtime.newJavaMethod("returns the current load path", new JavaMethod.WithNoArguments("loadPath") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return ((IokeSystem)IokeObject.data(on)).loadPath;
                 }
             }));
@@ -296,7 +296,7 @@ public class IokeSystem extends IokeData {
         obj.registerMethod(runtime.newJavaMethod("returns the current directory that the code is executing in", new JavaMethod.WithNoArguments("currentDirectory") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     String name = Message.file(message);
                     File f = null;
                     if(name.startsWith("/")) {

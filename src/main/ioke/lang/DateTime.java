@@ -43,7 +43,7 @@ public class DateTime extends IokeData {
         obj.registerMethod(runtime.newJavaMethod("Returns a new DateTime representing the current instant in time in the default TimeZone.", new JavaMethod.WithNoArguments("now") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
 
                     return method.runtime.newDateTime(new org.joda.time.DateTime());
                 }
@@ -73,7 +73,7 @@ public class DateTime extends IokeData {
         obj.registerMethod(runtime.newJavaMethod("Returns a text inspection of the object", new JavaMethod.WithNoArguments("inspect") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
 
                     return method.runtime.newText(DateTime.getInspect(on));
                 }
@@ -82,7 +82,7 @@ public class DateTime extends IokeData {
         obj.registerMethod(runtime.newJavaMethod("Returns a brief text inspection of the object", new JavaMethod.WithNoArguments("notice") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
 
                     return method.runtime.newText(DateTime.getNotice(on));
                 }

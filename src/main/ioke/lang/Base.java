@@ -25,7 +25,7 @@ public class Base {
         base.registerMethod(base.runtime.newJavaMethod("returns the documentation text of the object called on. anything can have a documentation text - this text will initially be nil.", new JavaMethod.WithNoArguments("documentation") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
 
                     String docs = IokeObject.as(on).documentation;
                     if(null == docs) {

@@ -3,6 +3,8 @@
  */
 package ioke.lang;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import ioke.lang.exceptions.ControlFlow;
@@ -33,7 +35,7 @@ public class Method extends IokeData implements Named, Inspectable {
         method.registerMethod(method.runtime.newJavaMethod("returns the name of the method", new JavaMethod.WithNoArguments("name") {
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
 
                     return context.runtime.newText(((Method)IokeObject.data(on)).name);
                 }
@@ -41,7 +43,7 @@ public class Method extends IokeData implements Named, Inspectable {
         method.registerMethod(method.runtime.newJavaMethod("Returns a text inspection of the object", new JavaMethod.WithNoArguments("inspect") {
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
 
                     return context.runtime.newText(Method.getInspect(on));
                 }
@@ -49,7 +51,7 @@ public class Method extends IokeData implements Named, Inspectable {
         method.registerMethod(method.runtime.newJavaMethod("Returns a brief text inspection of the object", new JavaMethod.WithNoArguments("notice") {
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
 
                     return context.runtime.newText(Method.getNotice(on));
                 }
@@ -74,7 +76,7 @@ public class Method extends IokeData implements Named, Inspectable {
         method.registerMethod(method.runtime.newJavaMethod("returns the full code of this method, as a Text", new JavaMethod.WithNoArguments("code") {
                 @Override
                 public Object activate(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(dynamicContext, message, on);
+                    getArguments().getEvaluatedArguments(dynamicContext, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
 
                     IokeData data = IokeObject.data(on);
                     if(data instanceof Method) {
