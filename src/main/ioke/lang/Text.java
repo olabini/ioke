@@ -27,34 +27,46 @@ public class Text extends IokeData {
         obj.setKind("Text");
         obj.mimics(IokeObject.as(obj.runtime.mixins.getCell(null, null, "Comparing")), obj.runtime.nul, obj.runtime.nul);
 
-        obj.registerMethod(obj.runtime.newJavaMethod("Returns a text representation of the object", new JavaMethod("asText") {
+        obj.registerMethod(obj.runtime.newJavaMethod("Returns a text representation of the object", new JavaMethod.WithNoArguments("asText") {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
                     return on;
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newJavaMethod("Returns a text inspection of the object", new JavaMethod("inspect") {
+        obj.registerMethod(obj.runtime.newJavaMethod("Returns a text inspection of the object", new JavaMethod.WithNoArguments("inspect") {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
                     return method.runtime.newText(Text.getInspect(on));
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newJavaMethod("Returns a brief text inspection of the object", new JavaMethod("notice") {
+        obj.registerMethod(obj.runtime.newJavaMethod("Returns a brief text inspection of the object", new JavaMethod.WithNoArguments("notice") {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
                     return method.runtime.newText(Text.getInspect(on));
                 }
             }));
 
         obj.registerMethod(obj.runtime.newJavaMethod("Returns an array of texts split around the argument", new JavaMethod("split") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("splitAround")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+                
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    List<Object> positionalArgs = new ArrayList<Object>();
-                    Map<String, Object> keywordArgs = new HashMap<String, Object>();
-                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, positionalArgs, keywordArgs);
-                    String around = Text.getText(positionalArgs.get(0));
+                    List<Object> args = new ArrayList<Object>();
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+                    String around = Text.getText(args.get(0));
                     String real = Text.getText(on);
                     String[] results = real.split(around);
                     List<Object> r = new ArrayList<Object>(results.length);
@@ -67,12 +79,23 @@ public class Text extends IokeData {
             }));
 
         obj.registerMethod(obj.runtime.newJavaMethod("Takes two text arguments where the first is the substring to replace, and the second is the replacement to insert. Will only replace the first match, if any is found, and return a new Text with the result.", new JavaMethod("replace") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("pattern")
+                    .withRequiredPositional("replacement")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+                
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    List<Object> positionalArgs = new ArrayList<Object>();
-                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, positionalArgs, new HashMap<String, Object>());
-                    String pat = Text.getText(positionalArgs.get(0));
-                    String repl = Text.getText(positionalArgs.get(1));
+                    List<Object> args = new ArrayList<Object>();
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+                    String pat = Text.getText(args.get(0));
+                    String repl = Text.getText(args.get(1));
                     String initial = Text.getText(on);
 
                     return context.runtime.newText(initial.replaceFirst(pat, repl));
@@ -80,43 +103,77 @@ public class Text extends IokeData {
             }));
 
         obj.registerMethod(obj.runtime.newJavaMethod("Takes two text arguments where the first is the substring to replace, and the second is the replacement to insert. Will replace all matches, if any is found, and return a new Text with the result.", new JavaMethod("replaceAll") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("pattern")
+                    .withRequiredPositional("replacement")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+                
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    List<Object> positionalArgs = new ArrayList<Object>();
-                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, positionalArgs, new HashMap<String, Object>());
-                    String pat = Text.getText(positionalArgs.get(0));
-                    String repl = Text.getText(positionalArgs.get(1));
+                    List<Object> args = new ArrayList<Object>();
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+                    String pat = Text.getText(args.get(0));
+                    String repl = Text.getText(args.get(1));
                     String initial = Text.getText(on);
 
                     return context.runtime.newText(initial.replaceAll(pat, repl));
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newJavaMethod("Returns the length of this text", new JavaMethod("length") {
+        obj.registerMethod(obj.runtime.newJavaMethod("Returns the length of this text", new JavaMethod.WithNoArguments("length") {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
                     return context.runtime.newNumber(getText(on).length());
                 }
             }));
 
         obj.registerMethod(obj.runtime.newJavaMethod("Takes any number of arguments, and expects the text receiver to contain format specifications. The currently supported specifications are only %s and %{, %}. These have several parameters that can be used. See the spec for more info about these. The format method will return a new text based on the content of the receiver, and the arguments given.", new JavaMethod("format") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRest("replacements")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+                
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    List<Object> positionalArgs = new ArrayList<Object>();
-                    Map<String, Object> keywordArgs = new HashMap<String, Object>();
-                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, positionalArgs, keywordArgs);
+                    List<Object> args = new ArrayList<Object>();
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
 
                     StringBuilder result = new StringBuilder();
-                    Text.format(on, message, context, positionalArgs, result);
+                    Text.format(on, message, context, args, result);
 
                     return context.runtime.newText(result.toString());
                 }
             }));
 
         obj.registerMethod(obj.runtime.newJavaMethod("compares this text against the argument, returning -1, 0 or 1 based on which one is lexically larger", new JavaMethod("<=>") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("other")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    Object arg = message.getEvaluatedArgument(0, context);
+                    List<Object> args = new ArrayList<Object>();
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+                    Object arg = args.get(0);
+
                     if(!(IokeObject.data(arg) instanceof Text)) {
                         arg = IokeObject.convertToText(arg, message, context, false);
                         if(!(IokeObject.data(arg) instanceof Text)) {
@@ -129,9 +186,21 @@ public class Text extends IokeData {
             }));
 
         obj.registerMethod(obj.runtime.newJavaMethod("takes one argument, that can be either an index or a range of two indicis. this slicing works the same as for Lists, so you can index from the end, both with the single index and with the range.", new JavaMethod("[]") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("index")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    Object arg = message.getEvaluatedArgument(0, context);
+                    List<Object> args = new ArrayList<Object>();
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+                    Object arg = args.get(0);
                     IokeData data = IokeObject.data(arg);
                     
                     if(data instanceof Range) {

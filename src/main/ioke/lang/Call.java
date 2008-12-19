@@ -3,6 +3,10 @@
  */
 package ioke.lang;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.HashMap;
+
 import ioke.lang.exceptions.ControlFlow;
 
 /**
@@ -31,39 +35,60 @@ public class Call extends IokeData {
 
         obj.setKind("Call");
 
-        obj.registerMethod(runtime.newJavaMethod("returns a list of all the unevaluated arguments", new JavaMethod("arguments") {
+        obj.registerMethod(runtime.newJavaMethod("returns a list of all the unevaluated arguments", new JavaMethod.WithNoArguments("arguments") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
+
                     return context.runtime.newList(((Call)IokeObject.data(on)).message.getArguments());
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns the ground of the place this call originated", new JavaMethod("ground") {
+        obj.registerMethod(runtime.newJavaMethod("returns the ground of the place this call originated", new JavaMethod.WithNoArguments("ground") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
+
                     return ((Call)IokeObject.data(on)).surroundingContext;
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns the message that started this call", new JavaMethod("message") {
+        obj.registerMethod(runtime.newJavaMethod("returns the message that started this call", new JavaMethod.WithNoArguments("message") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
+
                     return ((Call)IokeObject.data(on)).message;
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns a list of the result of evaluating all the arguments to this call", new JavaMethod("evaluatedArguments") {
+        obj.registerMethod(runtime.newJavaMethod("returns a list of the result of evaluating all the arguments to this call", new JavaMethod.WithNoArguments("evaluatedArguments") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
+
                     return context.runtime.newList(((Call)IokeObject.data(on)).message.getEvaluatedArguments(((Call)IokeObject.data(on)).surroundingContext));
                 }
             }));
 
         obj.registerMethod(runtime.newJavaMethod("takes one evaluated text or symbol argument and resends the current message to that method/macro on the current receiver.", new JavaMethod("resendToMethod") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("cellName")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject mess, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    getArguments().getEvaluatedArguments(context, mess, on, args, new HashMap<String, Object>());
+
                     Call c = (Call)IokeObject.data(on);
-                    String name = Text.getText(runtime.asText.sendTo(context, IokeObject.as(mess.getEvaluatedArgument(0, context))));
+                    String name = Text.getText(runtime.asText.sendTo(context, args.get(0)));
                     IokeObject m = Message.copy(c.message);
                     Message.setName(m, name);
                     return m.sendTo(c.surroundingContext, c.on);

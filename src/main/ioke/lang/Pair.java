@@ -42,44 +42,50 @@ public class Pair extends IokeData {
         obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Enumerable")), runtime.nul, runtime.nul);
         obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Comparing")), runtime.nul, runtime.nul);
 
-        obj.registerMethod(runtime.newJavaMethod("Returns the first value", new JavaMethod("first") {
+        obj.registerMethod(runtime.newJavaMethod("Returns the first value", new JavaMethod.WithNoArguments("first") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
                     return ((Pair)IokeObject.data(on)).first;
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("Returns the first value", new JavaMethod("key") {
+        obj.registerMethod(runtime.newJavaMethod("Returns the first value", new JavaMethod.WithNoArguments("key") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
                     return ((Pair)IokeObject.data(on)).first;
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("Returns the second value", new JavaMethod("second") {
+        obj.registerMethod(runtime.newJavaMethod("Returns the second value", new JavaMethod.WithNoArguments("second") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
                     return ((Pair)IokeObject.data(on)).second;
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("Returns the second value", new JavaMethod("value") {
+        obj.registerMethod(runtime.newJavaMethod("Returns the second value", new JavaMethod.WithNoArguments("value") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
                     return ((Pair)IokeObject.data(on)).second;
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("Returns a text inspection of the object", new JavaMethod("inspect") {
+        obj.registerMethod(runtime.newJavaMethod("Returns a text inspection of the object", new JavaMethod.WithNoArguments("inspect") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
                     return method.runtime.newText(Pair.getInspect(on));
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("Returns a brief text inspection of the object", new JavaMethod("notice") {
+        obj.registerMethod(runtime.newJavaMethod("Returns a brief text inspection of the object", new JavaMethod.WithNoArguments("notice") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
                     return method.runtime.newText(Pair.getNotice(on));
                 }
             }));

@@ -34,44 +34,67 @@ public class IokeSet extends IokeData {
         obj.setKind("Set");
         obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Enumerable")), runtime.nul, runtime.nul);
 
-        obj.registerMethod(obj.runtime.newJavaMethod("Returns a text inspection of the object", new JavaMethod("inspect") {
+        obj.registerMethod(obj.runtime.newJavaMethod("Returns a text inspection of the object", new JavaMethod.WithNoArguments("inspect") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
                     return method.runtime.newText(IokeSet.getInspect(on));
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newJavaMethod("Converts this set to use identity semantics, and then returns it.", new JavaMethod("withIdentitySemantics!") {
+        obj.registerMethod(obj.runtime.newJavaMethod("Converts this set to use identity semantics, and then returns it.", new JavaMethod.WithNoArguments("withIdentitySemantics!") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
                     IokeSet set = (IokeSet)IokeObject.data(on);
                     set.set = new IdentitySet<Object>(set.set);
                     return on;
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newJavaMethod("Returns a brief text inspection of the object", new JavaMethod("notice") {
+        obj.registerMethod(obj.runtime.newJavaMethod("Returns a brief text inspection of the object", new JavaMethod.WithNoArguments("notice") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
                     return method.runtime.newText(IokeSet.getNotice(on));
                 }
             }));
 
         obj.registerMethod(obj.runtime.newJavaMethod("Adds the argument to this set, if it's not already in the set. Returns the set after adding the object.", new JavaMethod("<<") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("value")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> args = new ArrayList<Object>();
-                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
                     ((IokeSet)IokeObject.data(on)).set.add(args.get(0));
                     return on;
                 }
             }));
 
         obj.registerMethod(obj.runtime.newJavaMethod("returns true if the receiver includes the evaluated argument, otherwise false", new JavaMethod("include?") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("object")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> args = new ArrayList<Object>();
-                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
                     return ((IokeSet)IokeObject.data(on)).getSet().contains(args.get(0)) ? context.runtime._true : context.runtime._false;
                 }
             }));
@@ -79,8 +102,22 @@ public class IokeSet extends IokeData {
         obj.aliasMethod("include?", "===");
 
         obj.registerMethod(runtime.newJavaMethod("takes either one, two or three arguments. if one argument is given, it should be a message chain that will be sent to each object in the set. the result will be thrown away. if two arguments are given, the first is an unevaluated name that will be set to each of the values in the set in succession, and then the second argument will be evaluated in a scope with that argument in it. if three arguments is given, the first one is an unevaluated name that will be set to the index of each element, and the other two arguments are the name of the argument for the value, and the actual code. the code will evaluate in a lexical context, and if the argument name is available outside the context, it will be shadowed. the method will return the set. the iteration order is not defined.", new JavaMethod("each") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositionalUnevaluated("indexOrArgOrCode")
+                    .withOptionalPositionalUnevaluated("argOrCode")
+                    .withOptionalPositionalUnevaluated("code")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
+
                     Set<Object> set = ((IokeSet)IokeObject.data(on)).set;
                     switch(message.getArgumentCount()) {
                     case 1: {

@@ -37,6 +37,16 @@ public class Locals {
 
         obj.registerMethod(obj.runtime.newJavaMethod("will pass along the call to the real self object of this context.", 
                                                        new JavaMethod("pass") {
+                                                           private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                                                               .builder()
+                                                               .withRestUnevaluated("arguments")
+                                                               .getArguments();
+
+                                                           @Override
+                                                           public DefaultArgumentsDefinition getArguments() {
+                                                               return ARGUMENTS;
+                                                           }
+
                                                            @Override
                                                            public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                                                                Object selfDelegate = IokeObject.as(on).getSelf();
@@ -49,9 +59,10 @@ public class Locals {
                                                            }}));
 
         obj.registerMethod(obj.runtime.newJavaMethod("will return a text representation of the current stack trace", 
-                                                       new JavaMethod("stackTraceAsText") {
+                                                       new JavaMethod.WithNoArguments("stackTraceAsText") {
                                                            @Override
                                                            public Object activate(IokeObject method, IokeObject context, IokeObject m, Object on) throws ControlFlow {
+                                                               getArguments().checkArgumentCount(context, m, on);
                                                                Runtime runtime = context.runtime;
                                                                StringBuilder sb = new StringBuilder();
 

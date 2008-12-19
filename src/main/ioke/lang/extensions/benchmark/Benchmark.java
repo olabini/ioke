@@ -8,6 +8,7 @@ import ioke.lang.IokeObject;
 import ioke.lang.JavaMethod;
 import ioke.lang.Message;
 import ioke.lang.Number;
+import ioke.lang.DefaultArgumentsDefinition;
 
 import ioke.lang.exceptions.ControlFlow;
 
@@ -30,8 +31,22 @@ public abstract class Benchmark {
         runtime.ground.setCell("Benchmark", bm);
         
         bm.registerMethod(runtime.newJavaMethod("expects two optional numbers, x (default 10) and y (default 1), and a block of code to run, and will run benchmark this block x times, while looping y times in each benchmark. after each loop will print the timings for this loop", new JavaMethod("report") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withOptionalPositional("repetitions", "10")
+                    .withOptionalPositional("loops", "1")
+                    .withRequiredPositionalUnevaluated("code")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
+
                     int count = message.getArgumentCount();
                     int bmRounds = 10;
                     long iterations = 1;

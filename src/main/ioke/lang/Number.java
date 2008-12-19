@@ -173,10 +173,20 @@ public class Number extends IokeData {
         number.registerCell("Decimal", decimal);
         
         rational.registerMethod(runtime.newJavaMethod("compares this number against the argument, returning -1, 0 or 1 based on which one is larger. if the argument is a decimal, the receiver will be converted into a form suitable for comparing against a decimal, and then compared - it's not specified whether this will actually call Decimal#<=> or not. if the argument is neither a Rational nor a Decimal, it tries to call asRational, and if that doesn't work it returns nil.", new JavaMethod("<=>") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("other")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> args = new ArrayList<Object>();
-                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
                     Object arg = args.get(0);
 
                     IokeData data = IokeObject.data(arg);
@@ -198,10 +208,21 @@ public class Number extends IokeData {
             }));
 
         number.registerMethod(runtime.newJavaMethod("compares this against the argument. should be overridden - in this case only used to check for equivalent number kinds", new JavaMethod("==") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("other")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> args = new ArrayList<Object>();
-                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+
                     Object arg = args.get(0);
                     if(on == arg) {
                         return context.runtime._true;
@@ -212,10 +233,21 @@ public class Number extends IokeData {
             }));
 
         rational.registerMethod(runtime.newJavaMethod("compares this number against the argument, true if this number is the same, otherwise false", new JavaMethod("==") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("other")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> args = new ArrayList<Object>();
-                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+
                     Object arg = args.get(0);
                     if(IokeObject.data(arg) instanceof Decimal) {
                         return (Number.value(on).asBigDecimal().compareTo(Decimal.value(arg)) == 0) ? context.runtime._true : context.runtime._false;
@@ -228,10 +260,20 @@ public class Number extends IokeData {
             }));
 
         rational.registerMethod(runtime.newJavaMethod("returns the difference between this number and the argument. if the argument is a decimal, the receiver will be converted into a form suitable for subtracting against a decimal, and then subtracted. if the argument is neither a Rational nor a Decimal, it tries to call asRational, and if that fails it signals a condition.", new JavaMethod("-") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("subtrahend")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> args = new ArrayList<Object>();
-                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
                     Object arg = args.get(0);
 
                     IokeData data = IokeObject.data(arg);
@@ -249,10 +291,20 @@ public class Number extends IokeData {
             }));
 
         rational.registerMethod(runtime.newJavaMethod("returns the addition of this number and the argument. if the argument is a decimal, the receiver will be converted into a form suitable for addition against a decimal, and then added. if the argument is neither a Rational nor a Decimal, it tries to call asRational, and if that fails it signals a condition.", new JavaMethod("+") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("addend")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> args = new ArrayList<Object>();
-                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
                     Object arg = args.get(0);
 
                     IokeData data = IokeObject.data(arg);
@@ -270,10 +322,20 @@ public class Number extends IokeData {
             }));
 
         rational.registerMethod(runtime.newJavaMethod("returns the product of this number and the argument. if the argument is a decimal, the receiver will be converted into a form suitable for multiplying against a decimal, and then multiplied. if the argument is neither a Rational nor a Decimal, it tries to call asRational, and if that fails it signals a condition.", new JavaMethod("*") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("multiplier")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> args = new ArrayList<Object>();
-                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
                     Object arg = args.get(0);
 
                     IokeData data = IokeObject.data(arg);
@@ -291,10 +353,20 @@ public class Number extends IokeData {
             }));
 
         rational.registerMethod(runtime.newJavaMethod("returns the quotient of this number and the argument. if the division is not exact, it will return a Ratio.", new JavaMethod("/") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("dividend")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject method, final IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> args = new ArrayList<Object>();
-                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
                     Object arg = args.get(0);
 
                     IokeData data = IokeObject.data(arg);
@@ -341,10 +413,20 @@ public class Number extends IokeData {
             }));
 
         integer.registerMethod(runtime.newJavaMethod("returns the modulo of this number and the argument", new JavaMethod("%") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("dividend")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> args = new ArrayList<Object>();
-                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
                     Object arg = args.get(0);
 
                     IokeData data = IokeObject.data(arg);
@@ -358,10 +440,20 @@ public class Number extends IokeData {
             }));
 
         rational.registerMethod(runtime.newJavaMethod("returns this number to the power of the argument", new JavaMethod("**") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("exponent")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> args = new ArrayList<Object>();
-                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
                     Object arg = args.get(0);
 
                     IokeData data = IokeObject.data(arg);
@@ -376,10 +468,20 @@ public class Number extends IokeData {
 
 
         integer.registerMethod(runtime.newJavaMethod("returns this number bitwise and the argument", new JavaMethod("&") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("other")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> args = new ArrayList<Object>();
-                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
                     Object arg = args.get(0);
 
                     IokeData data = IokeObject.data(arg);
@@ -393,10 +495,20 @@ public class Number extends IokeData {
             }));
 
         integer.registerMethod(runtime.newJavaMethod("returns this number bitwise or the argument", new JavaMethod("|") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("other")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> args = new ArrayList<Object>();
-                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
                     Object arg = args.get(0);
 
                     IokeData data = IokeObject.data(arg);
@@ -410,10 +522,20 @@ public class Number extends IokeData {
             }));
 
         integer.registerMethod(runtime.newJavaMethod("returns this number bitwise xor the argument", new JavaMethod("^") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("other")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> args = new ArrayList<Object>();
-                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
                     Object arg = args.get(0);
 
                     IokeData data = IokeObject.data(arg);
@@ -427,10 +549,20 @@ public class Number extends IokeData {
             }));
 
         integer.registerMethod(runtime.newJavaMethod("returns this number left shifted by the argument", new JavaMethod("<<") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("other")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> args = new ArrayList<Object>();
-                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
                     Object arg = args.get(0);
 
                     IokeData data = IokeObject.data(arg);
@@ -444,10 +576,20 @@ public class Number extends IokeData {
             }));
 
         integer.registerMethod(runtime.newJavaMethod("returns this number right shifted by the argument", new JavaMethod(">>") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("other")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> args = new ArrayList<Object>();
-                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
                     Object arg = args.get(0);
 
                     IokeData data = IokeObject.data(arg);
@@ -460,44 +602,62 @@ public class Number extends IokeData {
                 }
             }));
 
-        rational.registerMethod(runtime.newJavaMethod("Returns a text representation of the object", new JavaMethod("asText") {
+        rational.registerMethod(runtime.newJavaMethod("Returns a text representation of the object", new JavaMethod.WithNoArguments("asText") {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
                     return runtime.newText(on.toString());
                 }
             }));
 
-        rational.registerMethod(obj.runtime.newJavaMethod("Returns a text inspection of the object", new JavaMethod("inspect") {
+        rational.registerMethod(obj.runtime.newJavaMethod("Returns a text inspection of the object", new JavaMethod.WithNoArguments("inspect") {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
                     return method.runtime.newText(Number.getInspect(on));
                 }
             }));
 
-        rational.registerMethod(obj.runtime.newJavaMethod("Returns a brief text inspection of the object", new JavaMethod("notice") {
+        rational.registerMethod(obj.runtime.newJavaMethod("Returns a brief text inspection of the object", new JavaMethod.WithNoArguments("notice") {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
                     return method.runtime.newText(Number.getInspect(on));
                 }
             }));
 
-        integer.registerMethod(runtime.newJavaMethod("Returns the successor of this number", new JavaMethod("succ") {
+        integer.registerMethod(runtime.newJavaMethod("Returns the successor of this number", new JavaMethod.WithNoArguments("succ") {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
                     return runtime.newNumber(IntNum.add(Number.intValue(on),IntNum.one()));
                 }
             }));
 
-        integer.registerMethod(runtime.newJavaMethod("Returns the predecessor of this number", new JavaMethod("pred") {
+        integer.registerMethod(runtime.newJavaMethod("Returns the predecessor of this number", new JavaMethod.WithNoArguments("pred") {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
                     return runtime.newNumber(IntNum.sub(Number.intValue(on),IntNum.one()));
                 }
             }));
 
         integer.registerMethod(runtime.newJavaMethod("Expects one or two arguments. If one argument is given, executes it as many times as the value of the receiving number. If two arguments are given, the first will be an unevaluated name that will receive the current loop value on each repitition. the iteration length is limited to the positive maximum of a Java int", new JavaMethod("times") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositionalUnevaluated("argumentNameOrCode")
+                    .withOptionalPositionalUnevaluated("code")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
+
                     int num = Number.value(on).intValue();
                     switch(message.getArgumentCount()) {
                     case 0:

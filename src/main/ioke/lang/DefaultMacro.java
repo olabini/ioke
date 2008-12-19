@@ -43,45 +43,61 @@ public class DefaultMacro extends IokeData implements Named, Inspectable, Associ
         macro.setKind("DefaultMacro");
         macro.registerCell("activatable", macro.runtime._true);
 
-        macro.registerMethod(macro.runtime.newJavaMethod("returns the name of the macro", new JavaMethod("name") {
+        macro.registerMethod(macro.runtime.newJavaMethod("returns the name of the macro", new JavaMethod.WithNoArguments("name") {
                 @Override
-                public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) {
+                public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
                     return context.runtime.newText(((DefaultMacro)IokeObject.data(on)).name);
                 }
             }));
         macro.registerMethod(macro.runtime.newJavaMethod("activates this macro with the arguments given to call", new JavaMethod("call") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRestUnevaluated("arguments")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     return IokeObject.as(on).activate(context, message, context.getRealContext());
                 }
             }));
-        macro.registerMethod(macro.runtime.newJavaMethod("returns the message chain for this macro", new JavaMethod("message") {
+        macro.registerMethod(macro.runtime.newJavaMethod("returns the message chain for this macro", new JavaMethod.WithNoArguments("message") {
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
                     return ((AssociatedCode)IokeObject.data(on)).getCode();
                 }
             }));
-        macro.registerMethod(macro.runtime.newJavaMethod("returns the code for the argument definition", new JavaMethod("argumentsCode") {
+        macro.registerMethod(macro.runtime.newJavaMethod("returns the code for the argument definition", new JavaMethod.WithNoArguments("argumentsCode") {
                 @Override
                 public Object activate(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
                     return dynamicContext.runtime.newText(((AssociatedCode)IokeObject.data(on)).getArgumentsCode());
                 }
             }));
-        macro.registerMethod(macro.runtime.newJavaMethod("Returns a text inspection of the object", new JavaMethod("inspect") {
+        macro.registerMethod(macro.runtime.newJavaMethod("Returns a text inspection of the object", new JavaMethod.WithNoArguments("inspect") {
                 @Override
-                public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) {
+                public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
                     return context.runtime.newText(DefaultMacro.getInspect(on));
                 }
             }));
-        macro.registerMethod(macro.runtime.newJavaMethod("Returns a brief text inspection of the object", new JavaMethod("notice") {
+        macro.registerMethod(macro.runtime.newJavaMethod("Returns a brief text inspection of the object", new JavaMethod.WithNoArguments("notice") {
                 @Override
-                public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) {
+                public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
                     return context.runtime.newText(DefaultMacro.getNotice(on));
                 }
             }));
-        macro.registerMethod(macro.runtime.newJavaMethod("returns the full code of this macro, as a Text", new JavaMethod("code") {
+        macro.registerMethod(macro.runtime.newJavaMethod("returns the full code of this macro, as a Text", new JavaMethod.WithNoArguments("code") {
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
                     IokeData data = IokeObject.data(on);
                     if(data instanceof DefaultMacro) {
                         return context.runtime.newText(((DefaultMacro)data).getCodeString());
@@ -90,7 +106,7 @@ public class DefaultMacro extends IokeData implements Named, Inspectable, Associ
                     }
                 }
             }));
-        macro.registerMethod(macro.runtime.newJavaMethod("returns idiomatically formatted code for this macro", new JavaMethod("formattedCode") {
+        macro.registerMethod(macro.runtime.newJavaMethod("returns idiomatically formatted code for this macro", new JavaMethod.WithNoArguments("formattedCode") {
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     return context.runtime.newText(((AssociatedCode)IokeObject.data(on)).getFormattedCode(self));

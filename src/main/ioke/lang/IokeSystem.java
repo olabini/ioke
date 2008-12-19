@@ -277,23 +277,26 @@ public class IokeSystem extends IokeData {
 
         obj.registerCell("currentDebugger", runtime.nil);
 
-        obj.registerMethod(runtime.newJavaMethod("returns the current file executing", new JavaMethod("currentFile") {
+        obj.registerMethod(runtime.newJavaMethod("returns the current file executing", new JavaMethod.WithNoArguments("currentFile") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
                     return runtime.newText(((IokeSystem)IokeObject.data(on)).currentFile.get(0));
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns the current load path", new JavaMethod("loadPath") {
+        obj.registerMethod(runtime.newJavaMethod("returns the current load path", new JavaMethod.WithNoArguments("loadPath") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
                     return ((IokeSystem)IokeObject.data(on)).loadPath;
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns the current directory that the code is executing in", new JavaMethod("currentDirectory") {
+        obj.registerMethod(runtime.newJavaMethod("returns the current directory that the code is executing in", new JavaMethod.WithNoArguments("currentDirectory") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
                     String name = Message.file(message);
                     File f = null;
                     if(name.startsWith("/")) {
@@ -311,10 +314,20 @@ public class IokeSystem extends IokeData {
             }));
 
         obj.registerMethod(runtime.newJavaMethod("forcibly exits the currently running interpreter. takes one optional argument that defaults to 1 - which is the value to return from the process, if the process is exited.", new JavaMethod("exit") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withOptionalPositional("other", "1")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> args = new ArrayList<Object>();
-                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
                     int val = 1;
                     if(args.size() > 0) {
                         Object arg = args.get(0);
@@ -333,8 +346,19 @@ public class IokeSystem extends IokeData {
         obj.registerCell("programArguments", programArguments);
 
         obj.registerMethod(runtime.newJavaMethod("returns result of evaluating first argument", new JavaMethod("ifMain") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositionalUnevaluated("code")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
                     if(((IokeSystem)IokeObject.data(on)).currentProgram().equals(message.getFile())) {
                         return ((IokeObject)message.getArguments().get(0)).evaluateCompleteWith(context, context.getRealContext());
                     } else {
@@ -344,8 +368,19 @@ public class IokeSystem extends IokeData {
             }));
 
         obj.registerMethod(runtime.newJavaMethod("adds a new piece of code that should be executed on exit", new JavaMethod("atExit") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositionalUnevaluated("code")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
                     getAtExits(on).add(new AtExitInfo(context, IokeObject.as(message.getArguments().get(0))));
                     return context.runtime.nil;
                 }

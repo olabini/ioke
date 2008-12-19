@@ -22,9 +22,11 @@ import ioke.lang.exceptions.ControlFlow;
 public class Base {
     public static void init(IokeObject base) {
         base.setKind("Base");
-        base.registerMethod(base.runtime.newJavaMethod("returns the documentation text of the object called on. anything can have a documentation text - this text will initially be nil.", new JavaMethod("documentation") {
+        base.registerMethod(base.runtime.newJavaMethod("returns the documentation text of the object called on. anything can have a documentation text - this text will initially be nil.", new JavaMethod.WithNoArguments("documentation") {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
+
                     String docs = IokeObject.as(on).documentation;
                     if(null == docs) {
                         return context.runtime.nil;
@@ -34,10 +36,21 @@ public class Base {
             }));
 
         base.registerMethod(base.runtime.newJavaMethod("sets the documentation string for a specific object.", new JavaMethod("documentation=") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("text")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> args = new ArrayList<Object>();
-                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+
                     Object arg = args.get(0);
                     String s = Text.getText(arg);
                     IokeObject.as(on).documentation = s;
@@ -46,15 +59,30 @@ public class Base {
             }));
 
         base.registerMethod(base.runtime.newJavaMethod("will return a new derivation of the receiving object. Might throw exceptions if the object is an oddball object.", 
-                                                       new JavaMethod("mimic") {
+                                                       new JavaMethod.WithNoArguments("mimic") {
                                                            @Override
                                                            public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                                                               getArguments().checkArgumentCount(context, message, on);
+
                                                                return IokeObject.as(on).mimic(message, context);
                                                            }}));
 
         base.registerMethod(base.runtime.newJavaMethod("expects two arguments, the first unevaluated, the second evaluated. assigns the result of evaluating the second argument in the context of the caller, and assigns this result to the name provided by the first argument. the first argument remains unevaluated. the result of the assignment is the value assigned to the name. if the second argument is a method-like object and it's name is not set, that name will be set to the name of the cell. TODO: add setf documentation here.", new JavaMethod("=") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositionalUnevaluated("place")
+                    .withRequiredPositional("value")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
+
                     IokeObject m1 = IokeObject.as(Message.getArg1(message));
                     String name = m1.getName();
                     if(m1.getArguments().size() == 0) {
@@ -83,28 +111,64 @@ public class Base {
             }));
 
         base.registerMethod(base.runtime.newJavaMethod("expects one evaluated text or symbol argument and returns the cell that matches that name, without activating even if it's activatable.", new JavaMethod("cell") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("cellName")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    String name = Text.getText(context.runtime.asText.sendTo(context, IokeObject.as(message.getArguments().get(0)).evaluateCompleteWith(context, context.getRealContext())));
+                    List<Object> args = new ArrayList<Object>();
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+
+                    String name = Text.getText(context.runtime.asText.sendTo(context, args.get(0)));
                     return IokeObject.getCell(on, message, context, name);
                 }
             }));
 
         base.registerMethod(base.runtime.newJavaMethod("expects one evaluated text or symbol argument and returns a boolean indicating whether such a cell is reachable from this point.", new JavaMethod("cell?") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("cellName")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> args = new ArrayList<Object>();
-                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
-                    String name = Text.getText(context.runtime.asText.sendTo(context, args.get(0)));
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
 
+                    String name = Text.getText(context.runtime.asText.sendTo(context, args.get(0)));
                     return IokeObject.findCell(on, message, context, name) != context.runtime.nul ? context.runtime._true : context.runtime._false;
                 }
             }));
 
         base.registerMethod(base.runtime.newJavaMethod("takes one optional evaluated boolean argument, which defaults to false. if false, this method returns a list of the cell names of the receiver. if true, it returns the cell names of this object and all it's mimics recursively.", new JavaMethod("cellNames") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withOptionalPositional("includeMimics", "false")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    if(message.getArgumentCount() > 0 && IokeObject.isTrue(message.getEvaluatedArgument(0, context))) {
+                    List<Object> args = new ArrayList<Object>();
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+
+                    if(args.size() > 0 && IokeObject.isTrue(args.get(0))) {
                         IdentityHashMap<Object, Object> visited = new IdentityHashMap<Object, Object>();
                         List<Object> names = new ArrayList<Object>();
                         Set<Object> visitedNames = new HashSet<Object>();
@@ -147,12 +211,25 @@ public class Base {
 
 
         base.registerMethod(base.runtime.newJavaMethod("takes one optional evaluated boolean argument, which defaults to false. if false, this method returns a dict of the cell names and values of the receiver. if true, it returns the cell names and values of this object and all it's mimics recursively.", new JavaMethod("cells") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withOptionalPositional("includeMimics", "false")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     Map<Object, Object> cells = new LinkedHashMap<Object, Object>();
                     Runtime runtime = context.runtime;
 
-                    if(message.getArgumentCount() > 0 && IokeObject.isTrue(message.getEvaluatedArgument(0, context))) {
+                    List<Object> args = new ArrayList<Object>();
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+
+                    if(args.size() > 0 && IokeObject.isTrue(args.get(0))) {
                         IdentityHashMap<Object, Object> visited = new IdentityHashMap<Object, Object>();
 
                         List<Object> toVisit = new ArrayList<Object>();
@@ -187,18 +264,45 @@ public class Base {
 
 
         base.registerMethod(base.runtime.newJavaMethod("expects one evaluated text or symbol argument that names the cell to set, sets this cell to the result of evaluating the second argument, and returns the value set.", new JavaMethod("cell=") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("cellName")
+                    .withRequiredPositional("value")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    String name = Text.getText(context.runtime.asText.sendTo(context, IokeObject.as(message.getArguments().get(0)).evaluateCompleteWith(context, context.getRealContext())));
-                    Object val = message.getEvaluatedArgument(1, context);
+                    List<Object> args = new ArrayList<Object>();
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+
+                    String name = Text.getText(context.runtime.asText.sendTo(context, args.get(0)));
+                    Object val = args.get(1);
                     return IokeObject.setCell(on, message, context, name, val);
                 }
             }));
 
         base.registerMethod(base.runtime.newJavaMethod("returns true if the left hand side is equal to the right hand side. exactly what this means depend on the object. the default behavior of Ioke objects is to only be equal if they are the same instance.", new JavaMethod("==") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("other")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    return IokeObject.equals(on, message.getEvaluatedArgument(0, context)) ? context.runtime._true : context.runtime._false ;
+                    List<Object> args = new ArrayList<Object>();
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+
+                    return IokeObject.equals(on, args.get(0)) ? context.runtime._true : context.runtime._false;
                 }
             }));
     }
