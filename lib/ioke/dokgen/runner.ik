@@ -29,7 +29,7 @@ DokGen do(
     collect(Ground, collected)
 
     if(combineWithSpecs,
-      collectSpecs(specsPattern, collected collectedSpecs)
+      collectSpecs(specsPattern, collected collectedSpecs, collected)
     )
 
     generate(outputDir, collected)
