@@ -89,7 +89,7 @@ public class Decimal extends IokeData {
         decimal.registerMethod(runtime.newJavaMethod("Returns a text representation of the object", new JavaMethod.WithNoArguments("asText") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return runtime.newText(on.toString());
                 }
             }));
@@ -97,7 +97,7 @@ public class Decimal extends IokeData {
         decimal.registerMethod(obj.runtime.newJavaMethod("Returns a text inspection of the object", new JavaMethod.WithNoArguments("inspect") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return method.runtime.newText(Decimal.getInspect(on));
                 }
             }));
@@ -105,7 +105,7 @@ public class Decimal extends IokeData {
         decimal.registerMethod(obj.runtime.newJavaMethod("Returns a brief text inspection of the object", new JavaMethod.WithNoArguments("notice") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return method.runtime.newText(Decimal.getInspect(on));
                 }
             }));

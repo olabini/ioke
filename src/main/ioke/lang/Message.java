@@ -167,21 +167,21 @@ public class Message extends IokeData {
         message.registerMethod(message.runtime.newJavaMethod("Returns a code representation of the object", new JavaMethod.WithNoArguments("code") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return method.runtime.newText(((Message)IokeObject.data(on)).code());
                 }
             }));
         message.registerMethod(message.runtime.newJavaMethod("Returns a formatted code representation of the object", new JavaMethod.WithNoArguments("formattedCode") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return method.runtime.newText(Message.formattedCode(IokeObject.as(on), 0));
                 }
             }));
         message.registerMethod(message.runtime.newJavaMethod("returns the name of this message", new JavaMethod.WithNoArguments("name") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return method.runtime.getSymbol(((Message)IokeObject.data(on)).name);
                 }
             }));
@@ -209,28 +209,28 @@ public class Message extends IokeData {
         message.registerMethod(message.runtime.newJavaMethod("returns the file name where this message is written", new JavaMethod.WithNoArguments("filename") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return method.runtime.newText(((Message)IokeObject.data(on)).file);
                 }
             }));
         message.registerMethod(message.runtime.newJavaMethod("returns the line where this message is written", new JavaMethod.WithNoArguments("line") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return method.runtime.newNumber(((Message)IokeObject.data(on)).line);
                 }
             }));
         message.registerMethod(message.runtime.newJavaMethod("returns the position on the line where this message is written", new JavaMethod.WithNoArguments("position") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return method.runtime.newNumber(((Message)IokeObject.data(on)).pos);
                 }
             }));
         message.registerMethod(message.runtime.newJavaMethod("returns the next message in the chain, or nil", new JavaMethod.WithNoArguments("next") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     IokeObject next = ((Message)IokeObject.data(on)).next;
                     if(next == null) {
                         return context.runtime.nil;
@@ -242,7 +242,7 @@ public class Message extends IokeData {
         message.registerMethod(message.runtime.newJavaMethod("returns the previous message in the chain, or nil", new JavaMethod.WithNoArguments("prev") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     IokeObject prev = ((Message)IokeObject.data(on)).prev;
                     if(prev == null) {
                         return context.runtime.nil;
@@ -254,21 +254,21 @@ public class Message extends IokeData {
         message.registerMethod(message.runtime.newJavaMethod("returns a string that describes this message as a stack trace elemtn", new JavaMethod.WithNoArguments("asStackTraceText") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return context.runtime.newText(Message.getStackTraceText(on));
                 }
             }));
         message.registerMethod(message.runtime.newJavaMethod("returns a deep clone of this message chain, starting at the current point.", new JavaMethod.WithNoArguments("deepCopy") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return Message.deepCopy(on);
                 }
             }));
         message.registerMethod(message.runtime.newJavaMethod("returns true if this message is a keyword parameter or not", new JavaMethod.WithNoArguments("keyword?") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return ((Message)IokeObject.data(on)).isKeyword() ? context.runtime._true : context.runtime._false;
                 }
             }));

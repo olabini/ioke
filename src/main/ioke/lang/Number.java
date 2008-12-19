@@ -605,7 +605,7 @@ public class Number extends IokeData {
         rational.registerMethod(runtime.newJavaMethod("Returns a text representation of the object", new JavaMethod.WithNoArguments("asText") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return runtime.newText(on.toString());
                 }
             }));
@@ -613,7 +613,7 @@ public class Number extends IokeData {
         rational.registerMethod(obj.runtime.newJavaMethod("Returns a text inspection of the object", new JavaMethod.WithNoArguments("inspect") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return method.runtime.newText(Number.getInspect(on));
                 }
             }));
@@ -621,7 +621,7 @@ public class Number extends IokeData {
         rational.registerMethod(obj.runtime.newJavaMethod("Returns a brief text inspection of the object", new JavaMethod.WithNoArguments("notice") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return method.runtime.newText(Number.getInspect(on));
                 }
             }));
@@ -629,7 +629,7 @@ public class Number extends IokeData {
         integer.registerMethod(runtime.newJavaMethod("Returns the successor of this number", new JavaMethod.WithNoArguments("succ") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return runtime.newNumber(IntNum.add(Number.intValue(on),IntNum.one()));
                 }
             }));
@@ -637,7 +637,7 @@ public class Number extends IokeData {
         integer.registerMethod(runtime.newJavaMethod("Returns the predecessor of this number", new JavaMethod.WithNoArguments("pred") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return runtime.newNumber(IntNum.sub(Number.intValue(on),IntNum.one()));
                 }
             }));

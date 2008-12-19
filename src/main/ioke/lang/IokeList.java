@@ -39,7 +39,7 @@ public class IokeList extends IokeData {
         obj.registerMethod(obj.runtime.newJavaMethod("Returns a text inspection of the object", new JavaMethod.WithNoArguments("inspect") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return method.runtime.newText(IokeList.getInspect(on));
                 }
             }));
@@ -47,7 +47,7 @@ public class IokeList extends IokeData {
         obj.registerMethod(obj.runtime.newJavaMethod("Returns a brief text inspection of the object", new JavaMethod.WithNoArguments("notice") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return method.runtime.newText(IokeList.getNotice(on));
                 }
             }));
@@ -170,7 +170,7 @@ public class IokeList extends IokeData {
         obj.registerMethod(runtime.newJavaMethod("will remove all the entries from the list, and then returns the list", new JavaMethod.WithNoArguments("clear!") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     ((IokeList)IokeObject.data(on)).getList().clear();
                     return on;
                 }
@@ -179,7 +179,7 @@ public class IokeList extends IokeData {
         obj.registerMethod(runtime.newJavaMethod("returns true if this list is empty, false otherwise", new JavaMethod.WithNoArguments("empty?") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return ((IokeList)IokeObject.data(on)).getList().isEmpty() ? context.runtime._true : context.runtime._false;
                 }
             }));
@@ -250,7 +250,7 @@ public class IokeList extends IokeData {
         obj.registerMethod(runtime.newJavaMethod("returns a new sorted version of this list", new JavaMethod.WithNoArguments("sort") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     Object newList = IokeObject.mimic(on, message, context);
                     try {
                         Collections.sort(((IokeList)IokeObject.data(newList)).getList(), new SpaceshipComparator(context, message));
@@ -267,7 +267,7 @@ public class IokeList extends IokeData {
         obj.registerMethod(runtime.newJavaMethod("sorts this list in place and then returns it", new JavaMethod.WithNoArguments("sort!") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     try {
                         Collections.sort(((IokeList)IokeObject.data(on)).getList(), new SpaceshipComparator(context, message));
                     } catch(RuntimeException e) {
@@ -283,7 +283,7 @@ public class IokeList extends IokeData {
         obj.registerMethod(runtime.newJavaMethod("returns the size of this list", new JavaMethod.WithNoArguments("size") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return context.runtime.newNumber(((IokeList)IokeObject.data(on)).getList().size());
                 }
             }));

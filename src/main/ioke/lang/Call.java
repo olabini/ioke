@@ -38,7 +38,7 @@ public class Call extends IokeData {
         obj.registerMethod(runtime.newJavaMethod("returns a list of all the unevaluated arguments", new JavaMethod.WithNoArguments("arguments") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
 
                     return context.runtime.newList(((Call)IokeObject.data(on)).message.getArguments());
                 }
@@ -47,7 +47,7 @@ public class Call extends IokeData {
         obj.registerMethod(runtime.newJavaMethod("returns the ground of the place this call originated", new JavaMethod.WithNoArguments("ground") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
 
                     return ((Call)IokeObject.data(on)).surroundingContext;
                 }
@@ -56,7 +56,7 @@ public class Call extends IokeData {
         obj.registerMethod(runtime.newJavaMethod("returns the message that started this call", new JavaMethod.WithNoArguments("message") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
 
                     return ((Call)IokeObject.data(on)).message;
                 }
@@ -65,7 +65,7 @@ public class Call extends IokeData {
         obj.registerMethod(runtime.newJavaMethod("returns a list of the result of evaluating all the arguments to this call", new JavaMethod.WithNoArguments("evaluatedArguments") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
 
                     return context.runtime.newList(((Call)IokeObject.data(on)).message.getEvaluatedArguments(((Call)IokeObject.data(on)).surroundingContext));
                 }

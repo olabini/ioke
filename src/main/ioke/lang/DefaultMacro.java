@@ -3,6 +3,9 @@
  */
 package ioke.lang;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import ioke.lang.exceptions.ControlFlow;
 
 /**
@@ -46,7 +49,7 @@ public class DefaultMacro extends IokeData implements Named, Inspectable, Associ
         macro.registerMethod(macro.runtime.newJavaMethod("returns the name of the macro", new JavaMethod.WithNoArguments("name") {
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return context.runtime.newText(((DefaultMacro)IokeObject.data(on)).name);
                 }
             }));
@@ -69,35 +72,35 @@ public class DefaultMacro extends IokeData implements Named, Inspectable, Associ
         macro.registerMethod(macro.runtime.newJavaMethod("returns the message chain for this macro", new JavaMethod.WithNoArguments("message") {
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return ((AssociatedCode)IokeObject.data(on)).getCode();
                 }
             }));
         macro.registerMethod(macro.runtime.newJavaMethod("returns the code for the argument definition", new JavaMethod.WithNoArguments("argumentsCode") {
                 @Override
                 public Object activate(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(dynamicContext, message, on);
+                    getArguments().getEvaluatedArguments(dynamicContext, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return dynamicContext.runtime.newText(((AssociatedCode)IokeObject.data(on)).getArgumentsCode());
                 }
             }));
         macro.registerMethod(macro.runtime.newJavaMethod("Returns a text inspection of the object", new JavaMethod.WithNoArguments("inspect") {
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return context.runtime.newText(DefaultMacro.getInspect(on));
                 }
             }));
         macro.registerMethod(macro.runtime.newJavaMethod("Returns a brief text inspection of the object", new JavaMethod.WithNoArguments("notice") {
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return context.runtime.newText(DefaultMacro.getNotice(on));
                 }
             }));
         macro.registerMethod(macro.runtime.newJavaMethod("returns the full code of this macro, as a Text", new JavaMethod.WithNoArguments("code") {
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     IokeData data = IokeObject.data(on);
                     if(data instanceof DefaultMacro) {
                         return context.runtime.newText(((DefaultMacro)data).getCodeString());
@@ -109,6 +112,7 @@ public class DefaultMacro extends IokeData implements Named, Inspectable, Associ
         macro.registerMethod(macro.runtime.newJavaMethod("returns idiomatically formatted code for this macro", new JavaMethod.WithNoArguments("formattedCode") {
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return context.runtime.newText(((AssociatedCode)IokeObject.data(on)).getFormattedCode(self));
                 }
             }));

@@ -89,7 +89,7 @@ public class LexicalBlock extends IokeData implements AssociatedCode {
         lexicalBlock.registerMethod(lexicalBlock.runtime.newJavaMethod("returns the full code of this lexical block, as a Text", new JavaMethod.WithNoArguments("code") {
                 @Override
                 public Object activate(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(dynamicContext, message, on);
+                    getArguments().getEvaluatedArguments(dynamicContext, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     IokeObject obj = IokeObject.as(on);
                     String x = obj.isActivatable() ? "x" : "";
                     
@@ -101,7 +101,7 @@ public class LexicalBlock extends IokeData implements AssociatedCode {
         lexicalBlock.registerMethod(lexicalBlock.runtime.newJavaMethod("returns the code for the argument definition", new JavaMethod.WithNoArguments("argumentsCode") {
                 @Override
                 public Object activate(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(dynamicContext, message, on);
+                    getArguments().getEvaluatedArguments(dynamicContext, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return dynamicContext.runtime.newText(((AssociatedCode)IokeObject.data(on)).getArgumentsCode());
                 }
             }));
@@ -109,7 +109,7 @@ public class LexicalBlock extends IokeData implements AssociatedCode {
         lexicalBlock.registerMethod(lexicalBlock.runtime.newJavaMethod("returns a list of the keywords this block takes", new JavaMethod.WithNoArguments("keywords") {
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     List<Object> keywords = new ArrayList<Object>();
                     
                     for(String keyword : ((LexicalBlock)IokeObject.data(on)).arguments.getKeywords()) {
@@ -122,28 +122,28 @@ public class LexicalBlock extends IokeData implements AssociatedCode {
         lexicalBlock.registerMethod(lexicalBlock.runtime.newJavaMethod("returns the message chain for this block", new JavaMethod.WithNoArguments("message") {
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return ((AssociatedCode)IokeObject.data(on)).getCode();
                 }
             }));
         lexicalBlock.registerMethod(lexicalBlock.runtime.newJavaMethod("Returns a text inspection of the object", new JavaMethod.WithNoArguments("inspect") {
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return context.runtime.newText(LexicalBlock.getInspect(on));
                 }
             }));
         lexicalBlock.registerMethod(lexicalBlock.runtime.newJavaMethod("Returns a brief text inspection of the object", new JavaMethod.WithNoArguments("notice") {
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return context.runtime.newText(LexicalBlock.getNotice(on));
                 }
             }));
         lexicalBlock.registerMethod(lexicalBlock.runtime.newJavaMethod("returns idiomatically formatted code for this lexical block", new JavaMethod.WithNoArguments("formattedCode") {
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return context.runtime.newText(((AssociatedCode)IokeObject.data(on)).getFormattedCode(self));
                 }
             }));

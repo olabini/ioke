@@ -3,6 +3,9 @@
  */
 package ioke.lang;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import ioke.lang.exceptions.ControlFlow;
 
 /**
@@ -45,7 +48,7 @@ public class Pair extends IokeData {
         obj.registerMethod(runtime.newJavaMethod("Returns the first value", new JavaMethod.WithNoArguments("first") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return ((Pair)IokeObject.data(on)).first;
                 }
             }));
@@ -53,7 +56,7 @@ public class Pair extends IokeData {
         obj.registerMethod(runtime.newJavaMethod("Returns the first value", new JavaMethod.WithNoArguments("key") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return ((Pair)IokeObject.data(on)).first;
                 }
             }));
@@ -61,7 +64,7 @@ public class Pair extends IokeData {
         obj.registerMethod(runtime.newJavaMethod("Returns the second value", new JavaMethod.WithNoArguments("second") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return ((Pair)IokeObject.data(on)).second;
                 }
             }));
@@ -69,7 +72,7 @@ public class Pair extends IokeData {
         obj.registerMethod(runtime.newJavaMethod("Returns the second value", new JavaMethod.WithNoArguments("value") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return ((Pair)IokeObject.data(on)).second;
                 }
             }));
@@ -77,7 +80,7 @@ public class Pair extends IokeData {
         obj.registerMethod(runtime.newJavaMethod("Returns a text inspection of the object", new JavaMethod.WithNoArguments("inspect") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return method.runtime.newText(Pair.getInspect(on));
                 }
             }));
@@ -85,7 +88,7 @@ public class Pair extends IokeData {
         obj.registerMethod(runtime.newJavaMethod("Returns a brief text inspection of the object", new JavaMethod.WithNoArguments("notice") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return method.runtime.newText(Pair.getNotice(on));
                 }
             }));

@@ -59,7 +59,7 @@ public class FileSystem {
             obj.registerMethod(runtime.newJavaMethod("Closes any open stream to this file", new JavaMethod.WithNoArguments("close") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     try {
                         Writer writer = IokeFile.getWriter(on);
                         if(writer != null) {

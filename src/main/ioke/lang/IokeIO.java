@@ -163,7 +163,7 @@ public class IokeIO extends IokeData {
         obj.registerMethod(runtime.newJavaMethod("tries to read as much as possible and return a message chain representing what's been read", new JavaMethod.WithNoArguments("read") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     try {
                         String line = IokeIO.getReader(on).readLine();
                         return Message.newFromStream(context.runtime, new StringReader(line), message, context);

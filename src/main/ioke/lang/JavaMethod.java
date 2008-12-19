@@ -4,6 +4,7 @@
 package ioke.lang;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import ioke.lang.exceptions.ControlFlow;
 
@@ -35,7 +36,7 @@ public abstract class JavaMethod extends Method {
         javaMethod.registerMethod(javaMethod.runtime.newJavaMethod("returns a list of the keywords this method takes", new WithNoArguments("keywords") {
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
 
                     return context.runtime.newList(new ArrayList<Object>());
                 }
@@ -43,7 +44,7 @@ public abstract class JavaMethod extends Method {
         javaMethod.registerMethod(javaMethod.runtime.newJavaMethod("returns the code for the argument definition", new WithNoArguments("argumentsCode") {
                 @Override
                 public Object activate(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(dynamicContext, message, on);
+                    getArguments().getEvaluatedArguments(dynamicContext, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
 
                     IokeData data = IokeObject.data(on);
                     if(data instanceof JavaMethod) {

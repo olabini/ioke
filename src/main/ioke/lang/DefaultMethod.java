@@ -5,6 +5,7 @@ package ioke.lang;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
 
 import ioke.lang.exceptions.ControlFlow;
 
@@ -36,7 +37,7 @@ public class DefaultMethod extends Method implements AssociatedCode {
         defaultMethod.registerMethod(defaultMethod.runtime.newJavaMethod("returns a list of the keywords this method takes", new JavaMethod.WithNoArguments("keywords") {
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     List<Object> keywords = new ArrayList<Object>();
                     
                     for(String keyword : ((DefaultMethod)IokeObject.data(on)).arguments.getKeywords()) {
@@ -49,21 +50,21 @@ public class DefaultMethod extends Method implements AssociatedCode {
         defaultMethod.registerMethod(defaultMethod.runtime.newJavaMethod("returns the message chain for this method", new JavaMethod.WithNoArguments("message") {
                 @Override
                 public Object activate(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(dynamicContext, message, on);
+                    getArguments().getEvaluatedArguments(dynamicContext, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return ((AssociatedCode)IokeObject.data(on)).getCode();
                 }
             }));
         defaultMethod.registerMethod(defaultMethod.runtime.newJavaMethod("returns the code for the argument definition", new JavaMethod.WithNoArguments("argumentsCode") {
                 @Override
                 public Object activate(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(dynamicContext, message, on);
+                    getArguments().getEvaluatedArguments(dynamicContext, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return dynamicContext.runtime.newText(((AssociatedCode)IokeObject.data(on)).getArgumentsCode());
                 }
             }));
         defaultMethod.registerMethod(defaultMethod.runtime.newJavaMethod("returns idiomatically formatted code for this method", new JavaMethod.WithNoArguments("formattedCode") {
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return context.runtime.newText(((AssociatedCode)IokeObject.data(on)).getFormattedCode(self));
                 }
             }));
