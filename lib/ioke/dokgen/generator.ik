@@ -79,7 +79,7 @@ DokGen do(
         content: content)
     )
 
-    generateKindFile = method(dir, kindName, theKind, cells, specs,
+    generateKindFile = method(dir, kindName, theKind, cells, specs, kindSpecs,
       segments = kindName split(" ")
       beforeLinks = "../" * (segments length)
       htmlFile = "#{dir}/kinds/#{kindName replaceAll(" ", "/")}.html"
@@ -194,7 +194,7 @@ DokGen do(
     )
 
     generateKindFiles = method(dir, kinds, cells, specs,
-      kinds each(k, generateKindFile(dir, k key, k value, cells, specs))
+      kinds each(k, generateKindFile(dir, k key, k value first, cells, specs, k value second))
     )
   )
 
