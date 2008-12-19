@@ -50,9 +50,11 @@ public class Ground {
         ground.registerCell("Regexp", runtime.regexp);
 
         ground.registerMethod(runtime.newJavaMethod("will return a text representation of the current stack trace", 
-                                                    new JavaMethod("stackTraceAsText") {
+                                                    new JavaMethod.WithNoArguments("stackTraceAsText") {
                                                         @Override
                                                         public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                                                            getArguments().checkArgumentCount(context, message, on);
+
                                                             return context.runtime.newText("");
                                                         }}));
     }

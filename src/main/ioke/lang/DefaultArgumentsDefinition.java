@@ -30,46 +30,75 @@ public class DefaultArgumentsDefinition {
         }
     }
 
-    public static class OptionalArgument extends Argument {
-        private IokeObject defaultValue;
+    public static class UnevaluatedArgument extends Argument {
+        private boolean required;
+        public UnevaluatedArgument(String name, boolean required) {
+            super(name);
+            this.required = required;
+        }
+        public boolean isRequired() {
+            return required;
+        }
+    }
 
-        public OptionalArgument(String name, IokeObject defaultValue) {
+    public static class OptionalArgument extends Argument {
+        private Object defaultValue;
+
+        public OptionalArgument(String name, Object defaultValue) {
             super(name);
             this.defaultValue = defaultValue;
         }
 
-        public IokeObject getDefaultValue() {
+        public Object getDefaultValue() {
             return defaultValue;
         }
     }
 
     public static class KeywordArgument extends Argument {
-        private IokeObject defaultValue;
+        private Object defaultValue;
 
-        public KeywordArgument(String name, IokeObject defaultValue) {
+        public KeywordArgument(String name, Object defaultValue) {
             super(name);
             this.defaultValue = defaultValue;
         }
 
-        public IokeObject getDefaultValue() {
+        public Object getDefaultValue() {
             return defaultValue;
         }
     }
 
-    private int min;
-    private int max;
-    private List<Argument> arguments;
-    private Collection<String> keywords;
-    private String rest = null;
-    private String krest = null;
+    private final int min;
+    private final int max;
+    private final List<Argument> arguments;
+    private final Collection<String> keywords;
+    private final String rest;
+    private final String krest;
+    private final boolean restUneval;
 
-    private DefaultArgumentsDefinition(List<Argument> arguments, Collection<String> keywords, String rest, String krest, int min, int max) {
+    // unevaluated rest
+    //  they should print themselves
+    //  unevaluated: [foo]
+    //  unevaluated krest: +[foo]
+
+    private boolean hasUnevaluated = false;
+
+    private DefaultArgumentsDefinition(List<Argument> arguments, Collection<String> keywords, String rest, String krest, int min, int max, boolean restUneval) {
         this.arguments = arguments;
         this.keywords = keywords;
         this.rest = rest;
         this.krest = krest;
         this.min = min;
         this.max = max;
+        this.restUneval = restUneval;
+
+        hasUnevaluated = restUneval;
+
+        for(Argument arg : arguments) {
+            if(arg instanceof UnevaluatedArgument) {
+                hasUnevaluated = true;
+                break;
+            }
+        }
     }
 
     public Collection<String> getKeywords() {
@@ -86,17 +115,34 @@ public class DefaultArgumentsDefinition {
         for(Argument argument : arguments) {
             any = true;
             if(!(argument instanceof KeywordArgument)) {
-                sb.append(argument.getName());
+                if(argument instanceof UnevaluatedArgument) {
+                    sb.append("[").append(argument.getName()).append("]");
+                    if(!((UnevaluatedArgument)argument).isRequired()) {
+                        sb.append(" nil");
+                    }
+                } else {
+                    sb.append(argument.getName());
+                }
             } else {
                 sb.append(argument.getName()).append(":");
             }
 
             if((argument instanceof OptionalArgument) && ((OptionalArgument)argument).getDefaultValue() != null) {
                 sb.append(" ");
-                sb.append(Message.code(((OptionalArgument)argument).getDefaultValue()));
+                Object defValue = ((OptionalArgument)argument).getDefaultValue();
+                if(defValue instanceof String) {
+                    sb.append(defValue);
+                } else {
+                    sb.append(Message.code(IokeObject.as(defValue)));
+                }
             } else if((argument instanceof KeywordArgument) && ((KeywordArgument)argument).getDefaultValue() != null) {
                 sb.append(" ");
-                sb.append(Message.code(((KeywordArgument)argument).getDefaultValue()));
+                Object defValue = ((KeywordArgument)argument).getDefaultValue();
+                if(defValue instanceof String) {
+                    sb.append(defValue);
+                } else {
+                    sb.append(Message.code(IokeObject.as(defValue)));
+                }
             }
 
             sb.append(", ");
@@ -104,7 +150,11 @@ public class DefaultArgumentsDefinition {
 
         if(rest != null) {
             any = true;
-            sb.append("+").append(rest).append(", ");
+            if(restUneval) { 
+                sb.append("+[").append(rest).append("], ");
+            } else {
+                sb.append("+").append(rest).append(", ");
+            }
         }
 
         if(krest != null) {
@@ -119,62 +169,54 @@ public class DefaultArgumentsDefinition {
         return sb.toString();
     }
 
-    public static void getEvaluatedArguments(IokeObject message, IokeObject context, List<Object> posArgs, Map<String, Object> keyArgs) throws ControlFlow {
+    public int checkArgumentCount(final IokeObject context, final IokeObject message, final Object on) throws ControlFlow {
         final Runtime runtime = context.runtime;
-        List<Object> arguments = message.getArguments();
+        final List<Object> arguments = message.getArguments();
+        int argCount = arguments.size();
 
-        for(Object o : arguments) {
-            if(Message.isKeyword(o)) {
-                String name = IokeObject.as(o).getName();
+        if(argCount < min || (max != -1 && argCount > max)) {
+            final int finalArgCount = argCount;
+            if(argCount < min) {
+                final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
+                                                                             message, 
+                                                                             context, 
+                                                                             "Error", 
+                                                                             "Invocation", 
+                                                                             "TooFewArguments")).mimic(message, context);
+                condition.setCell("message", message);
+                condition.setCell("context", context);
+                condition.setCell("receiver", on);
+                condition.setCell("missing", runtime.newNumber(min-argCount));
 
-                keyArgs.put(name.substring(0, name.length()-1), Message.getEvaluatedArgument(((Message)IokeObject.data(o)).next, context));
-            } else if(Message.hasName(o, "*") && IokeObject.as(o).getArguments().size() == 1) { // Splat
-                Object result = Message.getEvaluatedArgument(IokeObject.as(o).getArguments().get(0), context);
-                if(IokeObject.data(result) instanceof IokeList) {
-                    List<Object> elements = IokeList.getList(result);
-                    posArgs.addAll(elements);
-                } else if(IokeObject.data(result) instanceof Dict) {
-                    Map<Object, Object> keys = Dict.getMap(result);
-                    for(Map.Entry<Object, Object> me : keys.entrySet()) {
-                        String name = Text.getText(IokeObject.convertToText(me.getKey(), message, context, true));
-                        keyArgs.put(name, me.getValue());
-                    }
-                } else {
-                    final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
-                                                                                       message, 
-                                                                                       context, 
-                                                                                       "Error", 
-                                                                                       "Invocation", 
-                                                                                       "NotSpreadable")).mimic(message, context);
-                    condition.setCell("message", message);
-                    condition.setCell("context", context);
-                    condition.setCell("receiver", context);
-                    condition.setCell("given", result);
-                
-                    List<Object> outp = IokeList.getList(runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
-                            public void run() throws ControlFlow {
-                                runtime.errorCondition(condition);
-                            }}, 
-                            context,
-                            new Restart.DefaultValuesGivingRestart("ignoreArgument", runtime.nil, 0),
-                            new Restart.DefaultValuesGivingRestart("takeArgumentAsIs", IokeObject.as(result), 1)
-                            ));
+                runtime.errorCondition(condition);
+             } else {
+                runtime.withReturningRestart("ignoreExtraArguments", context, new RunnableWithControlFlow() {
+                        public void run() throws ControlFlow {
+                            IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
+                                                                                         message, 
+                                                                                         context, 
+                                                                                         "Error", 
+                                                                                         "Invocation", 
+                                                                                         "TooManyArguments")).mimic(message, context);
+                            condition.setCell("message", message);
+                            condition.setCell("context", context);
+                            condition.setCell("receiver", on);
+                            condition.setCell("extra", runtime.newList(arguments.subList(max, finalArgCount)));
 
-                    posArgs.addAll(outp);
-                }
-            } else {
-                posArgs.add(Message.getEvaluatedArgument(o, context));
+                            runtime.errorCondition(condition);
+                        }});
+
+                argCount = max;
             }
         }
+        return argCount;
     }
 
-    public void assignArgumentValues(final IokeObject locals, final IokeObject context, final IokeObject message, final Object on) throws ControlFlow {
+    public int getEvaluatedArguments(final IokeObject context, final IokeObject message, final Object on, final List<Object> argumentsWithoutKeywords, final Map<String, Object> givenKeywords) throws ControlFlow {
         final Runtime runtime = context.runtime;
-        List<Object> arguments = message.getArguments();
-        final List<Object> argumentsWithoutKeywords = new ArrayList<Object>();
+        final List<Object> arguments = message.getArguments();
         int argCount = 0;
-        Map<String, Object> givenKeywords = new LinkedHashMap<String, Object>();
-        
+
         for(Object o : arguments) {
             if(Message.isKeyword(o)) {
                 givenKeywords.put(IokeObject.as(o).getName(), Message.getEvaluatedArgument(((Message)IokeObject.data(o)).next, context));
@@ -197,7 +239,7 @@ public class DefaultArgumentsDefinition {
                                                                                        "Invocation", 
                                                                                        "NotSpreadable")).mimic(message, context);
                     condition.setCell("message", message);
-                    condition.setCell("context", locals);
+                    condition.setCell("context", context);
                     condition.setCell("receiver", on);
                     condition.setCell("given", result);
                 
@@ -230,7 +272,7 @@ public class DefaultArgumentsDefinition {
                                                                              "Invocation", 
                                                                              "TooFewArguments")).mimic(message, context);
                 condition.setCell("message", message);
-                condition.setCell("context", locals);
+                condition.setCell("context", context);
                 condition.setCell("receiver", on);
                 condition.setCell("missing", runtime.newNumber(min-argCount));
                 
@@ -255,7 +297,7 @@ public class DefaultArgumentsDefinition {
                                                                                          "Invocation", 
                                                                                          "TooManyArguments")).mimic(message, context);
                             condition.setCell("message", message);
-                            condition.setCell("context", locals);
+                            condition.setCell("context", context);
                             condition.setCell("receiver", on);
                             condition.setCell("extra", runtime.newList(argumentsWithoutKeywords.subList(max, finalArgCount)));
 
@@ -278,7 +320,7 @@ public class DefaultArgumentsDefinition {
                                                                                      "Invocation", 
                                                                                      "MismatchedKeywords")).mimic(message, context);
                         condition.setCell("message", message);
-                        condition.setCell("context", locals);
+                        condition.setCell("context", context);
                         condition.setCell("receiver", on);
 
                         List<Object> expected = new ArrayList<Object>();
@@ -298,6 +340,18 @@ public class DefaultArgumentsDefinition {
                     }});
         }
 
+        return argCount;
+    }
+
+    public void assignArgumentValues(final IokeObject locals, final IokeObject context, final IokeObject message, final Object on) throws ControlFlow {
+        final Runtime runtime = context.runtime;
+        final List<Object> argumentsWithoutKeywords = new ArrayList<Object>();
+        final Map<String, Object> givenKeywords = new LinkedHashMap<String, Object>();
+        final int argCount = getEvaluatedArguments(context, message, on, argumentsWithoutKeywords, givenKeywords);
+
+        final Set<String> intersection = new LinkedHashSet<String>(givenKeywords.keySet());
+        intersection.removeAll(keywords);
+
         int ix = 0;
         for(int i=0, j=this.arguments.size();i<j;i++) {
             Argument a = this.arguments.get(i);
@@ -306,13 +360,20 @@ public class DefaultArgumentsDefinition {
                 Object given = givenKeywords.get(a.getName() + ":");
                 Object result = null;
                 if(given == null) {
-                    result = ((KeywordArgument)a).getDefaultValue().evaluateCompleteWithoutExplicitReceiver(locals, locals.getRealContext());
+                    Object defVal = ((KeywordArgument)a).getDefaultValue();
+                    if(!(defVal instanceof String)) {
+                        result = IokeObject.as(defVal).evaluateCompleteWithoutExplicitReceiver(locals, locals.getRealContext());
+                        locals.setCell(a.getName(), result);
+                    }
                 } else {
                     result = given;
+                    locals.setCell(a.getName(), result);
                 }
-                locals.setCell(a.getName(), result);
             } else if((a instanceof OptionalArgument) && ix>=argCount) {
-                locals.setCell(a.getName(), ((OptionalArgument)a).getDefaultValue().evaluateCompleteWithoutExplicitReceiver(locals, locals.getRealContext()));
+                Object defVal = ((OptionalArgument)a).getDefaultValue();
+                if(!(defVal instanceof String)) {
+                    locals.setCell(a.getName(), IokeObject.as(defVal).evaluateCompleteWithoutExplicitReceiver(locals, locals.getRealContext()));
+                }
             } else {
                 locals.setCell(a.getName(), argumentsWithoutKeywords.get(ix++));
             }
@@ -340,7 +401,7 @@ public class DefaultArgumentsDefinition {
     }
 
     public static DefaultArgumentsDefinition empty() {
-        return new DefaultArgumentsDefinition(new ArrayList<Argument>(), new ArrayList<String>(), null, null, 0, 0);
+        return new DefaultArgumentsDefinition(new ArrayList<Argument>(), new ArrayList<String>(), null, null, 0, 0, false);
     }
 
     public static DefaultArgumentsDefinition createFrom(List<Object> args, int start, int len, final IokeObject message, final Object on, final IokeObject context) throws ControlFlow {
@@ -420,6 +481,82 @@ public class DefaultArgumentsDefinition {
             }
         }
 
-        return new DefaultArgumentsDefinition(arguments, keywords, rest, krest, min, max);
+        return new DefaultArgumentsDefinition(arguments, keywords, rest, krest, min, max, false);
+    }
+
+    public static class Builder {
+        private int min = 0;
+        private int max = 0;
+        private List<Argument> arguments = new ArrayList<Argument>();
+        private Collection<String> keywords = new HashSet<String>();
+        private String rest = null;
+        private String krest = null;
+        private boolean restUneval = false;
+
+        public Builder withRequiredPositionalUnevaluated(String name) {
+            arguments.add(new UnevaluatedArgument(name, true));
+            min++;
+            max++;
+
+            return this;
+        }
+
+        public Builder withOptionalPositionalUnevaluated(String name) {
+            arguments.add(new UnevaluatedArgument(name, false));
+            max++;
+
+            return this;
+        }
+
+        public Builder withRestUnevaluated(String name) {
+            rest = name;
+            restUneval = true;
+            max = -1;
+
+            return this;
+        }
+
+        public Builder withRest(String name) {
+            rest = name;
+            max = -1;
+
+            return this;
+        }
+
+        public Builder withKeywordRest(String name) {
+            krest = name;
+
+            return this;
+        }
+
+        public Builder withRequiredPositional(String name) {
+            arguments.add(new Argument(name));
+            min++;
+            max++;
+
+            return this;
+        }
+
+        public Builder withKeyword(String name) {
+            arguments.add(new KeywordArgument(name, "nil"));
+            keywords.add(name + ":");
+
+            return this;
+        }
+
+        public Builder withOptionalPositional(String name, String defaultValue) {
+            arguments.add(new OptionalArgument(name, defaultValue));
+            max++;
+
+            return this;
+        }
+
+        public DefaultArgumentsDefinition getArguments() {
+            return new DefaultArgumentsDefinition(arguments, keywords, rest, krest, min, max, restUneval);
+        }
+    }
+
+    public static Builder builder() {
+        return new Builder();
     }
 }// DefaultArgumentsDefinition

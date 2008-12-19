@@ -54,7 +54,7 @@ public class Runtime {
     public IokeObject number = new IokeObject(this, "Represents an exact number", new Number("0"));
     public IokeObject method = new IokeObject(this, "Method is the origin of all methods in the system, both default and Java..", new Method((String)null));
     public IokeObject defaultMethod = new IokeObject(this, "DefaultMethod is the instance all methods in the system are derived from.", new DefaultMethod((String)null));
-    public IokeObject javaMethod = new IokeObject(this, "JavaMethod is a derivation of Method that represents a primitive implemented in Java.", new JavaMethod((String)null));
+    public IokeObject javaMethod = new IokeObject(this, "JavaMethod is a derivation of Method that represents a primitive implemented in Java.", new JavaMethod.WithNoArguments((String)null));
     public IokeObject lexicalBlock = new IokeObject(this, "A lexical block allows you to delay a computation in a specific lexical context. See DefaultMethod#fn for detailed documentation.", new LexicalBlock(ground));
     public IokeObject defaultMacro = new IokeObject(this, "DefaultMacro is the instance all macros in the system are derived from.", new DefaultMacro((String)null));
     public IokeObject mixins = new IokeObject(this, "Mixins is the name space for most mixins in the system. DefaultBehavior is the notable exception.");

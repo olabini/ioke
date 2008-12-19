@@ -33,9 +33,10 @@ public class DefaultMethod extends Method implements AssociatedCode {
     @Override
     public void init(IokeObject defaultMethod) {
         defaultMethod.setKind("DefaultMethod");
-        defaultMethod.registerMethod(defaultMethod.runtime.newJavaMethod("returns a list of the keywords this method takes", new JavaMethod("keywords") {
+        defaultMethod.registerMethod(defaultMethod.runtime.newJavaMethod("returns a list of the keywords this method takes", new JavaMethod.WithNoArguments("keywords") {
                 @Override
-                public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) {
+                public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
                     List<Object> keywords = new ArrayList<Object>();
                     
                     for(String keyword : ((DefaultMethod)IokeObject.data(on)).arguments.getKeywords()) {
@@ -45,21 +46,24 @@ public class DefaultMethod extends Method implements AssociatedCode {
                     return context.runtime.newList(keywords);
                 }
             }));
-        defaultMethod.registerMethod(defaultMethod.runtime.newJavaMethod("returns the message chain for this method", new JavaMethod("message") {
+        defaultMethod.registerMethod(defaultMethod.runtime.newJavaMethod("returns the message chain for this method", new JavaMethod.WithNoArguments("message") {
                 @Override
                 public Object activate(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(dynamicContext, message, on);
                     return ((AssociatedCode)IokeObject.data(on)).getCode();
                 }
             }));
-        defaultMethod.registerMethod(defaultMethod.runtime.newJavaMethod("returns the code for the argument definition", new JavaMethod("argumentsCode") {
+        defaultMethod.registerMethod(defaultMethod.runtime.newJavaMethod("returns the code for the argument definition", new JavaMethod.WithNoArguments("argumentsCode") {
                 @Override
                 public Object activate(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(dynamicContext, message, on);
                     return dynamicContext.runtime.newText(((AssociatedCode)IokeObject.data(on)).getArgumentsCode());
                 }
             }));
-        defaultMethod.registerMethod(defaultMethod.runtime.newJavaMethod("returns idiomatically formatted code for this method", new JavaMethod("formattedCode") {
+        defaultMethod.registerMethod(defaultMethod.runtime.newJavaMethod("returns idiomatically formatted code for this method", new JavaMethod.WithNoArguments("formattedCode") {
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
                     return context.runtime.newText(((AssociatedCode)IokeObject.data(on)).getFormattedCode(self));
                 }
             }));
@@ -92,6 +96,16 @@ public class DefaultMethod extends Method implements AssociatedCode {
 
     private IokeObject createSuperCallFor(final IokeObject out_self, final IokeObject out_context, final IokeObject out_message, final Object out_on, final Object out_superCell) {
         return out_context.runtime.newJavaMethod("will call the super method of the current message on the same receiver", new JavaMethod("super") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRestUnevaluated("arguments")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     if(IokeObject.data(out_superCell) instanceof Method) {

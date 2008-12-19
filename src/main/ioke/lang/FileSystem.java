@@ -56,9 +56,10 @@ public class FileSystem {
 
             obj.setKind("FileSystem File");
 
-            obj.registerMethod(runtime.newJavaMethod("Closes any open stream to this file", new JavaMethod("close") {
+            obj.registerMethod(runtime.newJavaMethod("Closes any open stream to this file", new JavaMethod.WithNoArguments("close") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
                     try {
                         Writer writer = IokeFile.getWriter(on);
                         if(writer != null) {
@@ -71,10 +72,20 @@ public class FileSystem {
             }));
 
             obj.registerMethod(runtime.newJavaMethod("Prints a text representation of the argument to the current IO object", new JavaMethod("print") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("object")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> args = new ArrayList<Object>();
-                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
                     try {
                         IokeFile.getWriter(on).write(context.runtime.asText.sendTo(context, args.get(0)).toString());
                         IokeFile.getWriter(on).flush();
@@ -118,10 +129,20 @@ public class FileSystem {
         obj.registerCell("File", file);
 
         obj.registerMethod(runtime.newJavaMethod("Tries to interpret the given arguments as strings describing file globs, and returns an array containing the result of applying these globs.", new JavaMethod("[]") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRest("globTexts")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> args = new ArrayList<Object>();
-                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
                     List<String> dirs = FileSystem.glob(context.runtime, Text.getText(args.get(0)));
                     List<Object> result = new ArrayList<Object>();
                     for(String s : dirs) {
@@ -132,10 +153,21 @@ public class FileSystem {
             }));
 
         obj.registerMethod(runtime.newJavaMethod("Takes one string argument and returns true if it's the relative or absolute name of a directory, and false otherwise.", new JavaMethod("directory?") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("directoryName")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> args = new ArrayList<Object>();
-                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+
                     String name = Text.getText(args.get(0));
                     File f = null;
                     if(name.startsWith("/")) {
@@ -149,10 +181,21 @@ public class FileSystem {
             }));
 
         obj.registerMethod(runtime.newJavaMethod("Takes one string argument that should be a file name, and returns a text of the contents of this file.", new JavaMethod("readFully") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("fileName")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> args = new ArrayList<Object>();
-                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+
                     String name = Text.getText(args.get(0));
                     File f = null;
                     if(name.startsWith("/")) {
@@ -178,10 +221,21 @@ public class FileSystem {
             }));
 
         obj.registerMethod(runtime.newJavaMethod("Takes one string argument and returns true if it's the relative or absolute name of a file, and false otherwise.", new JavaMethod("file?") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("fileName")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> args = new ArrayList<Object>();
-                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+
                     String name = Text.getText(args.get(0));
                     File f = null;
                     if(name.startsWith("/")) {
@@ -195,10 +249,21 @@ public class FileSystem {
             }));
 
         obj.registerMethod(runtime.newJavaMethod("Takes one string argument and returns true if it's the relative or absolute name of something that exists.", new JavaMethod("exists?") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("entryName")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> args = new ArrayList<Object>();
-                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+
                     String name = Text.getText(args.get(0));
                     File f = null;
                     if(name.startsWith("/")) {
@@ -212,10 +277,21 @@ public class FileSystem {
             }));
 
         obj.registerMethod(runtime.newJavaMethod("Takes one string argument that should be the path of a file or directory, and returns the parent of it - or nil if there is no parent.", new JavaMethod("parentOf") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("entryName")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> args = new ArrayList<Object>();
-                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+
                     String name = Text.getText(args.get(0));
                     File f = null;
                     if(name.startsWith("/")) {
@@ -239,10 +315,22 @@ public class FileSystem {
             }));
 
         obj.registerMethod(runtime.newJavaMethod("Takes a file name and a lexical block - opens the file, ensures that it exists and then yields the file to the block. Finally it closes the file after the block has finished executing, and then returns the result of the block.", new JavaMethod("withOpenFile") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("fileName")
+                    .withRequiredPositional("code")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> args = new ArrayList<Object>();
-                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+
                     String name = Text.getText(args.get(0));
                     File f = null;
                     if(name.startsWith("/")) {
@@ -272,10 +360,22 @@ public class FileSystem {
             }));
 
         obj.registerMethod(runtime.newJavaMethod("Copies a file. Takes two text arguments, where the first is the name of the file to copy and the second is the name of the destination. If the destination is a directory, the file will be copied with the same name, and if it's a filename, the file will get a new name", new JavaMethod("copyFile") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("fileName")
+                    .withRequiredPositional("destination")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> args = new ArrayList<Object>();
-                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+
                     String name = Text.getText(args.get(0));
                     File f = null;
                     if(name.startsWith("/")) {
@@ -316,10 +416,21 @@ public class FileSystem {
             }));
 
         obj.registerMethod(runtime.newJavaMethod("Takes one string argument and creates a directory with that name. It also takes an optional second argument. If it's true, will try to create all necessary directories inbetween. Default is false. Will signal a condition if the directory already exists, or if there's a file with that name.", new JavaMethod("createDirectory!") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("directoryName")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> args = new ArrayList<Object>();
-                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+
                     String name = Text.getText(args.get(0));
                     File f = null;
                     if(name.startsWith("/")) {
@@ -364,10 +475,21 @@ public class FileSystem {
             }));
 
         obj.registerMethod(runtime.newJavaMethod("Takes one string argument and removes a directory with that name. Will signal a condition if the directory doesn't exist, or if there's a file with that name.", new JavaMethod("removeDirectory!") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("directoryName")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> args = new ArrayList<Object>();
-                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+
                     String name = Text.getText(args.get(0));
                     File f = null;
                     if(name.startsWith("/")) {

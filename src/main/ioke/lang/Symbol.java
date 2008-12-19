@@ -3,6 +3,10 @@
  */
 package ioke.lang;
 
+import java.util.List;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import java.util.regex.Pattern;
 
 import ioke.lang.exceptions.ControlFlow;
@@ -23,31 +27,48 @@ public class Symbol extends IokeData {
         obj.setKind("Symbol");
         obj.mimics(IokeObject.as(obj.runtime.mixins.getCell(null, null, "Comparing")), obj.runtime.nul, obj.runtime.nul);
 
-        obj.registerMethod(obj.runtime.newJavaMethod("Returns a text representation of the object", new JavaMethod("asText") {
+        obj.registerMethod(obj.runtime.newJavaMethod("Returns a text representation of the object", new JavaMethod.WithNoArguments("asText") {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
                     return method.runtime.newText(Symbol.getText(on));
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newJavaMethod("Returns a text inspection of the object", new JavaMethod("inspect") {
+        obj.registerMethod(obj.runtime.newJavaMethod("Returns a text inspection of the object", new JavaMethod.WithNoArguments("inspect") {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
                     return method.runtime.newText(Symbol.getInspect(on));
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newJavaMethod("Returns a brief text inspection of the object", new JavaMethod("notice") {
+        obj.registerMethod(obj.runtime.newJavaMethod("Returns a brief text inspection of the object", new JavaMethod.WithNoArguments("notice") {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) {
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
                     return method.runtime.newText(Symbol.getInspect(on));
                 }
             }));
 
         obj.registerMethod(obj.runtime.newJavaMethod("compares this symbol against the argument, returning -1, 0 or 1 based on which one is lexically larger", new JavaMethod("<=>") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("other")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    Object arg = message.getEvaluatedArgument(0, context);
+                    List<Object> args = new ArrayList<Object>();
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+
+                    Object arg = args.get(0);
+
                     if(!(IokeObject.data(arg) instanceof Symbol)) {
                         arg = IokeObject.convertToSymbol(arg, message, context, false);
                         if(!(IokeObject.data(arg) instanceof Symbol)) {

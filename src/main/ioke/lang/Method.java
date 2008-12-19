@@ -30,34 +30,52 @@ public class Method extends IokeData implements Named, Inspectable {
         method.setKind("Method");
         method.registerCell("activatable", method.runtime._true);
 
-        method.registerMethod(method.runtime.newJavaMethod("returns the name of the method", new JavaMethod("name") {
+        method.registerMethod(method.runtime.newJavaMethod("returns the name of the method", new JavaMethod.WithNoArguments("name") {
                 @Override
-                public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) {
+                public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
+
                     return context.runtime.newText(((Method)IokeObject.data(on)).name);
                 }
             }));
-        method.registerMethod(method.runtime.newJavaMethod("Returns a text inspection of the object", new JavaMethod("inspect") {
+        method.registerMethod(method.runtime.newJavaMethod("Returns a text inspection of the object", new JavaMethod.WithNoArguments("inspect") {
                 @Override
-                public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) {
+                public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
+
                     return context.runtime.newText(Method.getInspect(on));
                 }
             }));
-        method.registerMethod(method.runtime.newJavaMethod("Returns a brief text inspection of the object", new JavaMethod("notice") {
+        method.registerMethod(method.runtime.newJavaMethod("Returns a brief text inspection of the object", new JavaMethod.WithNoArguments("notice") {
                 @Override
-                public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) {
+                public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
+
                     return context.runtime.newText(Method.getNotice(on));
                 }
             }));
         method.registerMethod(method.runtime.newJavaMethod("activates this method with the arguments given to call", new JavaMethod("call") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRestUnevaluated("arguments")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     return IokeObject.as(on).activate(context, message, context.getRealContext());
                 }
             }));
 
-        method.registerMethod(method.runtime.newJavaMethod("returns the full code of this method, as a Text", new JavaMethod("code") {
+        method.registerMethod(method.runtime.newJavaMethod("returns the full code of this method, as a Text", new JavaMethod.WithNoArguments("code") {
                 @Override
                 public Object activate(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(dynamicContext, message, on);
+
                     IokeData data = IokeObject.data(on);
                     if(data instanceof Method) {
                         return dynamicContext.runtime.newText(((Method)data).getCodeString());

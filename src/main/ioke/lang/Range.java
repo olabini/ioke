@@ -56,56 +56,98 @@ public class Range extends IokeData {
         obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Enumerable")), runtime.nul, runtime.nul);
 
         obj.registerMethod(runtime.newJavaMethod("will return a new inclusive Range based on the two arguments", new JavaMethod("inclusive") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("from")
+                    .withRequiredPositional("to")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    Object from = message.getEvaluatedArgument(0, context);
-                    Object to = message.getEvaluatedArgument(1, context);
+                    List<Object> args = new ArrayList<Object>();
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+
+                    Object from = args.get(0);
+                    Object to = args.get(1);
                     return runtime.newRange(IokeObject.as(from), IokeObject.as(to), true);
                 }
             }));
 
         obj.registerMethod(runtime.newJavaMethod("will return a new exclusive Range based on the two arguments", new JavaMethod("exclusive") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("from")
+                    .withRequiredPositional("to")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    Object from = message.getEvaluatedArgument(0, context);
-                    Object to = message.getEvaluatedArgument(1, context);
+                    List<Object> args = new ArrayList<Object>();
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+
+                    Object from = args.get(0);
+                    Object to = args.get(1);
                     return runtime.newRange(IokeObject.as(from), IokeObject.as(to), false);
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns true if the receiver is an exclusive range, false otherwise", new JavaMethod("exclusive?") {
+        obj.registerMethod(runtime.newJavaMethod("returns true if the receiver is an exclusive range, false otherwise", new JavaMethod.WithNoArguments("exclusive?") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
                     return ((Range)IokeObject.data(on)).inclusive ? context.runtime._false : context.runtime._true;
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns true if the receiver is an inclusive range, false otherwise", new JavaMethod("inclusive?") {
+        obj.registerMethod(runtime.newJavaMethod("returns true if the receiver is an inclusive range, false otherwise", new JavaMethod.WithNoArguments("inclusive?") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
                     return ((Range)IokeObject.data(on)).inclusive ? context.runtime._true : context.runtime._false;
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns the 'from' part of the range", new JavaMethod("from") {
+        obj.registerMethod(runtime.newJavaMethod("returns the 'from' part of the range", new JavaMethod.WithNoArguments("from") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
                     return ((Range)IokeObject.data(on)).from;
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns the 'to' part of the range", new JavaMethod("to") {
+        obj.registerMethod(runtime.newJavaMethod("returns the 'to' part of the range", new JavaMethod.WithNoArguments("to") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
                     return ((Range)IokeObject.data(on)).to;
                 }
             }));
 
         obj.registerMethod(runtime.newJavaMethod("returns true if the argument is within the confines of this range. how this comparison is done depends on if the object mimics Comparing. If it does, < and > will be used. If not, all the available entries in this range will be enumerated using 'succ' until either the end or the element we're looking for is found. in that case, comparison is done with '=='", new JavaMethod("===") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("other")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> args = new ArrayList<Object>();
-                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
                     Object other = args.get(0);
 
                     IokeObject from = IokeObject.as(((Range)IokeObject.data(on)).from);

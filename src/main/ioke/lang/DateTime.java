@@ -40,34 +40,50 @@ public class DateTime extends IokeData {
         obj.setKind("DateTime");
         //        obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Comparing")), runtime.nul, runtime.nul);
 
-        obj.registerMethod(runtime.newJavaMethod("Returns a new DateTime representing the current instant in time in the default TimeZone.", new JavaMethod("now") {
+        obj.registerMethod(runtime.newJavaMethod("Returns a new DateTime representing the current instant in time in the default TimeZone.", new JavaMethod.WithNoArguments("now") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
+
                     return method.runtime.newDateTime(new org.joda.time.DateTime());
                 }
             }));
 
         obj.registerMethod(runtime.newJavaMethod("Expects to get one DateTime as argument, and returns the difference between this instant and that instant, in milliseconds.", new JavaMethod("-") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("subtrahend")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> args = new ArrayList<Object>();
-                    DefaultArgumentsDefinition.getEvaluatedArguments(message, context, args, new HashMap<String, Object>());
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
 
                     long diff = getDateTime(on).getMillis() - getDateTime(args.get(0)).getMillis();
                     return context.runtime.newNumber(diff);
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("Returns a text inspection of the object", new JavaMethod("inspect") {
+        obj.registerMethod(runtime.newJavaMethod("Returns a text inspection of the object", new JavaMethod.WithNoArguments("inspect") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
+
                     return method.runtime.newText(DateTime.getInspect(on));
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("Returns a brief text inspection of the object", new JavaMethod("notice") {
+        obj.registerMethod(runtime.newJavaMethod("Returns a brief text inspection of the object", new JavaMethod.WithNoArguments("notice") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
+
                     return method.runtime.newText(DateTime.getNotice(on));
                 }
             }));

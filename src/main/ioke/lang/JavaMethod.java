@@ -11,7 +11,20 @@ import ioke.lang.exceptions.ControlFlow;
  *
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
-public class JavaMethod extends Method {
+public abstract class JavaMethod extends Method {
+    public static class WithNoArguments extends JavaMethod {
+        private final static DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition.empty();
+
+        public WithNoArguments(String name) {
+            super(name);
+        }
+
+        @Override
+        public DefaultArgumentsDefinition getArguments() {
+            return ARGUMENTS;
+        }
+    }
+
     public JavaMethod(String name) {
         super(name);
     }
@@ -19,15 +32,19 @@ public class JavaMethod extends Method {
     @Override
     public void init(IokeObject javaMethod) {
         javaMethod.setKind("JavaMethod");
-        javaMethod.registerMethod(javaMethod.runtime.newJavaMethod("returns a list of the keywords this method takes", new JavaMethod("keywords") {
+        javaMethod.registerMethod(javaMethod.runtime.newJavaMethod("returns a list of the keywords this method takes", new WithNoArguments("keywords") {
                 @Override
-                public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) {
+                public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
+
                     return context.runtime.newList(new ArrayList<Object>());
                 }
             }));
-        javaMethod.registerMethod(javaMethod.runtime.newJavaMethod("returns the code for the argument definition", new JavaMethod("argumentsCode") {
+        javaMethod.registerMethod(javaMethod.runtime.newJavaMethod("returns the code for the argument definition", new WithNoArguments("argumentsCode") {
                 @Override
                 public Object activate(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(dynamicContext, message, on);
+
                     IokeData data = IokeObject.data(on);
                     if(data instanceof JavaMethod) {
                         return dynamicContext.runtime.newText(((JavaMethod)data).getArgumentsCode());
@@ -38,8 +55,10 @@ public class JavaMethod extends Method {
             }));
     }
 
+    public abstract DefaultArgumentsDefinition getArguments();
+
     public String getArgumentsCode() {
-        return "...";
+        return getArguments().getCode(false);
     }
 
     @Override

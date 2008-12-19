@@ -11,6 +11,7 @@ import java.io.StringReader;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
 
 import ioke.lang.exceptions.ControlFlow;
 
@@ -60,12 +61,24 @@ public class IokeIO extends IokeData {
         obj.setKind("IO");
 
         obj.registerMethod(runtime.newJavaMethod("Prints a text representation of the argument and a newline to the current IO object", new JavaMethod("println") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withOptionalPositional("object", "nil")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
 
                     try {
-                        if(message.getArgumentCount() > 0) {
-                            Object arg = message.getEvaluatedArgument(0, context);
+                        if(args.size() > 0) {
+                            Object arg = args.get(0);
                             IokeIO.getWriter(on).write(context.runtime.asText.sendTo(context, arg).toString());
                         }
 
@@ -100,9 +113,22 @@ public class IokeIO extends IokeData {
             }));
 
         obj.registerMethod(runtime.newJavaMethod("Prints a text representation of the argument to the current IO object", new JavaMethod("print") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("object")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    Object arg = message.getEvaluatedArgument(0, context);
+                    List<Object> args = new ArrayList<Object>();
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+
+                    Object arg = args.get(0);
                     try {
                         IokeIO.getWriter(on).write(context.runtime.asText.sendTo(context, arg).toString());
                         IokeIO.getWriter(on).flush();
@@ -134,9 +160,10 @@ public class IokeIO extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("tries to read as much as possible and return a message chain representing what's been read", new JavaMethod("read") {
+        obj.registerMethod(runtime.newJavaMethod("tries to read as much as possible and return a message chain representing what's been read", new JavaMethod.WithNoArguments("read") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
                     try {
                         String line = IokeIO.getReader(on).readLine();
                         return Message.newFromStream(context.runtime, new StringReader(line), message, context);
