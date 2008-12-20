@@ -132,6 +132,8 @@ public class Runtime {
     public IokeObject gteMessage = newMessage(">=");
     public IokeObject eqMessage = newMessage("==");
 
+    public IokeObject testMessage = newMessage("test");
+
     // NOT TO BE EXPOSED TO Ioke - used for internal usage only
     public final NullObject nul = new NullObject(this);
 
@@ -898,6 +900,10 @@ public class Runtime {
         }
 
         return null;
+    }
+
+    public List<List<RestartInfo>> getActiveRestarts() {
+        return restarts.get();
     }
 
     public RestartInfo findActiveRestart(String name) {
