@@ -286,7 +286,7 @@ describe(DefaultBehavior,
       r = restart(fox, fn)
       Ground Cond1 = Condition mimic
       Ground calledRTest = false
-      r test = method(c, Ground calledRTest = true. c == Cond1)
+      r test = fn(c, Ground calledRTest = true. c == Cond1)
 
       bind(r,
         availableRestarts[0] should not == r)
@@ -297,7 +297,7 @@ describe(DefaultBehavior,
     it("should get the restarts applicable",
       r = restart(fox, fn)
       Ground Cond1 = Condition mimic
-      r test = method(c, c == Cond1)
+      r test = fn(c, c == Cond1)
 
       bind(r,
         availableRestarts(Cond1)[0] should == r)

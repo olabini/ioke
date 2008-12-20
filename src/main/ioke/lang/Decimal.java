@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.List;
 import java.util.ArrayList;
@@ -309,6 +310,10 @@ public class Decimal extends IokeData {
                                     }}, 
                                 context,
                                 new Restart.ArgumentGivingRestart("useValue") { 
+                                    public List<String> getArgumentNames() {
+                                        return new ArrayList<String>(Arrays.asList("newValue"));
+                                    }
+                                    
                                     public IokeObject invoke(IokeObject c2, List<Object> arguments) throws ControlFlow {
                                         newCell[0] = arguments.get(0);
                                         return c2.runtime.nil;

@@ -3,6 +3,8 @@
  */
 package ioke.lang;
 
+import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 import ioke.lang.exceptions.ControlFlow;
@@ -140,6 +142,10 @@ public abstract class IokeData {
                     }}, 
                 context,
                 new Restart.ArgumentGivingRestart("useValue") { 
+                    public List<String> getArgumentNames() {
+                        return new ArrayList<String>(Arrays.asList("newValue"));
+                    }
+                                    
                     public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
                         newCell[0] = arguments.get(0);
                         return context.runtime.nil;
@@ -174,6 +180,10 @@ public abstract class IokeData {
                     }}, 
                 context,
                 new Restart.ArgumentGivingRestart("useValue") { 
+                    public List<String> getArgumentNames() {
+                        return new ArrayList<String>(Arrays.asList("newValue"));
+                    }
+
                     public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
                         newCell[0] = arguments.get(0);
                         return context.runtime.nil;
@@ -206,6 +216,10 @@ public abstract class IokeData {
                 }}, 
             context,
             new Restart.ArgumentGivingRestart("useValue") { 
+                public List<String> getArgumentNames() {
+                    return new ArrayList<String>(Arrays.asList("newValue"));
+                }
+
                 public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
                     newCell[0] = arguments.get(0);
                     return context.runtime.nil;
@@ -239,6 +253,10 @@ public abstract class IokeData {
                     }}, 
                 context,
                 new Restart.ArgumentGivingRestart("useValue") { 
+                    public List<String> getArgumentNames() {
+                        return new ArrayList<String>(Arrays.asList("newValue"));
+                    }
+
                     public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
                         newCell[0] = arguments.get(0);
                         return context.runtime.nil;
@@ -271,6 +289,10 @@ public abstract class IokeData {
                     }}, 
                 context,
                 new Restart.ArgumentGivingRestart("useValue") { 
+                    public List<String> getArgumentNames() {
+                        return new ArrayList<String>(Arrays.asList("newValue"));
+                    }
+
                     public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
                         newCell[0] = arguments.get(0);
                         return context.runtime.nil;
@@ -302,6 +324,10 @@ public abstract class IokeData {
                 }}, 
             context,
             new Restart.ArgumentGivingRestart("useValue") { 
+                public List<String> getArgumentNames() {
+                    return new ArrayList<String>(Arrays.asList("newValue"));
+                }
+
                 public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
                     newCell[0] = arguments.get(0);
                     return context.runtime.nil;

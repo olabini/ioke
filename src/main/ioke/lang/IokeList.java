@@ -3,6 +3,7 @@
  */
 package ioke.lang;
 
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Collections;
@@ -410,6 +411,10 @@ public class IokeList extends IokeData {
                                 }}, 
                             context,
                             new Restart.ArgumentGivingRestart("useValue") { 
+                                public List<String> getArgumentNames() {
+                                    return new ArrayList<String>(Arrays.asList("newValue"));
+                                }
+
                                 public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
                                     newCell[0] = Number.extractInt(arguments.get(0), message, context);
                                     return context.runtime.nil;

@@ -712,6 +712,20 @@ public class Runtime {
             IokeObject rr = IokeObject.as(mimic.sendTo(context, restart));
             IokeObject.setCell(rr, "name", getSymbol(rjr.getName()));
 
+            List<Object> args = new ArrayList<Object>();
+            for(String argName : rjr.getArgumentNames()) {
+                args.add(getSymbol(argName));
+            }
+
+            IokeObject.setCell(rr, "name", getSymbol(rjr.getName()));
+            IokeObject.setCell(rr, "argumentNames", newList(args));
+            
+            String report = rjr.report();
+            if(report != null) {
+                IokeObject.setCell(rr, "report", evaluateString("fn(r, \"" + report + "\")", message, ground));
+            }
+
+
             rrs.add(0, new RestartInfo(rjr.getName(), rr, rrs, index, rjr));
             index = index.nextCol();
         }
@@ -737,6 +751,7 @@ public class Runtime {
     public void withReturningRestart(String name, IokeObject context, RunnableWithControlFlow code) throws ControlFlow {
         IokeObject rr = IokeObject.as(mimic.sendTo(context, restart));
         IokeObject.setCell(rr, "name", getSymbol(name));
+        IokeObject.setCell(rr, "argumentNames", newList(new ArrayList<Object>()));
 
         List<RestartInfo> rrs = new ArrayList<RestartInfo>();
         BindIndex index = getBindIndex();

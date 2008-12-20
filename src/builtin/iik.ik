@@ -17,21 +17,16 @@ IIk = Origin mimic do(
     "Runs the main loop of IIk, continously reading input from 'System in' until the interpreter is quitted in some of the standard ways",
 
 
-    debugger = Origin mimic
-    System currentDebugger = debugger
-    debugger invoke = method(
-      condition, context, 
-      invokeRestart(:abort)
-    )
-
     io = if(IIk cell?(:ReadlineInputMethod),
       ReadlineInputMethod new,
       StdioInputMethod new)
 
+    System currentDebugger = IokeDebugger with(io: io, out: out)
+
     bind(
       rescue(IIk Exit, fn(c, out println("Bye."))),
       restart(quit, fn()),
-    
+
       loop(
         bind(
           restart(abort, fn()),
@@ -42,5 +37,6 @@ IIk = Origin mimic do(
           out println)))))
 
 use("builtin/iik/inputMethod")
+use("debugger")
 
 System ifMain(IIk mainLoop)

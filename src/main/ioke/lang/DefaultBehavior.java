@@ -1418,6 +1418,10 @@ public class DefaultBehavior {
                                             }}, 
                                         context,
                                         new Restart.ArgumentGivingRestart("useValue") { 
+                                            public List<String> getArgumentNames() {
+                                                return new ArrayList<String>(Arrays.asList("newValue"));
+                                            }
+                                    
                                             public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
                                                 newCell[0] = arguments.get(0);
                                                 return runtime.nil;
@@ -1569,6 +1573,10 @@ public class DefaultBehavior {
                                 }}, 
                             context,
                             new Restart.ArgumentGivingRestart("useValue") { 
+                                public List<String> getArgumentNames() {
+                                    return new ArrayList<String>(Arrays.asList("newValue"));
+                                }
+                                    
                                 public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
                                     newCell[0] = arguments.get(0);
                                     return runtime.nil;
@@ -1619,7 +1627,7 @@ public class DefaultBehavior {
 
                     for(List<Runtime.RestartInfo> lri : activeRestarts) {
                         for(Runtime.RestartInfo rri : lri) {
-                            if(IokeObject.isTrue(runtime.testMessage.sendTo(context, rri.restart, toLookFor))) {
+                            if(IokeObject.isTrue(runtime.callMessage.sendTo(context, runtime.testMessage.sendTo(context, rri.restart), toLookFor))) {
                                 result.add(rri.restart);
                             }
                         }

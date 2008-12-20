@@ -3,6 +3,7 @@
  */
 package ioke.lang;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -255,12 +256,28 @@ public class IokeObject {
                     }}, 
                 context,
                 new Restart.ArgumentGivingRestart("useValue") { 
+                    public String report() {
+                        return "Use value for: " + outerName;
+                    }
+
+                    public List<String> getArgumentNames() {
+                        return new ArrayList<String>(Arrays.asList("newValue"));
+                    }
+
                     public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
                         newCell[0] = arguments.get(0);
                         return context.runtime.nil;
                     }
                 },
                 new Restart.ArgumentGivingRestart("storeValue") {
+                    public String report() {
+                        return "Store value for: " + outerName;
+                    }
+
+                    public List<String> getArgumentNames() {
+                        return new ArrayList<String>(Arrays.asList("newValue"));
+                    }
+
                     public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
                         newCell[0] = arguments.get(0);
                         setCell(outerName, newCell[0]);
@@ -318,12 +335,28 @@ public class IokeObject {
                     }}, 
                 ctx,
                 new Restart.ArgumentGivingRestart("useValue") { 
+                    public String report() {
+                        return "Use value for: " + outerName;
+                    }
+
+                    public List<String> getArgumentNames() {
+                        return new ArrayList<String>(Arrays.asList("newValue"));
+                    }
+
                     public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
                         newCell[0] = arguments.get(0);
                         return context.runtime.nil;
                     }
                 },
                 new Restart.ArgumentGivingRestart("storeValue") {
+                    public String report() {
+                        return "Store value for: " + outerName;
+                    }
+
+                    public List<String> getArgumentNames() {
+                        return new ArrayList<String>(Arrays.asList("newValue"));
+                    }
+
                     public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
                         newCell[0] = arguments.get(0);
                         setCell(outerName, newCell[0]);

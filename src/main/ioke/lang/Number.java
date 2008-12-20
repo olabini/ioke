@@ -5,6 +5,7 @@ package ioke.lang;
 
 import java.math.BigDecimal;
 
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
@@ -397,6 +398,10 @@ public class Number extends IokeData {
                                     }}, 
                                 context,
                                 new Restart.ArgumentGivingRestart("useValue") { 
+                                    public List<String> getArgumentNames() {
+                                        return new ArrayList<String>(Arrays.asList("newValue"));
+                                    }
+
                                     public IokeObject invoke(IokeObject c2, List<Object> arguments) throws ControlFlow {
                                         newCell[0] = arguments.get(0);
                                         return c2.runtime.nil;

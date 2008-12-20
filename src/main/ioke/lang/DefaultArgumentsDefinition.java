@@ -3,6 +3,7 @@
  */
 package ioke.lang;
 
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -174,7 +175,9 @@ public class DefaultArgumentsDefinition {
         final List<Object> arguments = message.getArguments();
         int argCount = arguments.size();
 
-        if(argCount < min || (max != -1 && argCount > max)) {
+        int keySize = keywords.size();
+
+        if(argCount < min || (max != -1 && argCount > (max+keySize))) {
             final int finalArgCount = argCount;
             if(argCount < min) {
                 final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
@@ -280,9 +283,17 @@ public class DefaultArgumentsDefinition {
                         public void run() throws ControlFlow {
                             runtime.errorCondition(condition);
                         }}, 
-                    context,
-                    new Restart.ArgumentGivingRestart("provideExtraArguments"),
-                    new Restart.DefaultValuesGivingRestart("substituteNilArguments", runtime.nil, min-argCount)
+                        context,
+                        new Restart.ArgumentGivingRestart("provideExtraArguments") {
+                            public List<String> getArgumentNames() {
+                                return new ArrayList<String>(Arrays.asList("newArgument"));
+                            }
+                        },
+                        new Restart.DefaultValuesGivingRestart("substituteNilArguments", runtime.nil, min-argCount) {
+                            public List<String> getArgumentNames() {
+                                return new ArrayList<String>();
+                            }
+                        }
                         ));
 
                 argCount += newArguments.size();
@@ -464,7 +475,11 @@ public class DefaultArgumentsDefinition {
                             }}, 
                         context,
                         // Maybe also provide an unevaluated message...
-                        new Restart.ArgumentGivingRestart("provideDefaultValue"),
+                            new Restart.ArgumentGivingRestart("provideDefaultValue") {
+                                public List<String> getArgumentNames() {
+                                    return new ArrayList<String>(Arrays.asList("defaultValue"));
+                                }
+                            },
                         new Restart.DefaultValuesGivingRestart("substituteNilDefault", runtime.nil, 1)
                             ));
 
