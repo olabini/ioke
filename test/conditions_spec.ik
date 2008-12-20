@@ -275,6 +275,35 @@ describe(DefaultBehavior,
     )
   )
 
+  describe("availableRestarts",
+    it("should return the available restarts",
+      r = restart(fox, fn)
+      bind(r,
+        availableRestarts[0] should == r)
+    )
+
+    it("should use the test of a restart to see if it's correct",
+      r = restart(fox, fn)
+      Ground Cond1 = Condition mimic
+      Ground calledRTest = false
+      r test = method(c, Ground calledRTest = true. c == Cond1)
+
+      bind(r,
+        availableRestarts[0] should not == r)
+
+      calledRTest should == true
+    )
+
+    it("should get the restarts applicable",
+      r = restart(fox, fn)
+      Ground Cond1 = Condition mimic
+      r test = method(c, c == Cond1)
+
+      bind(r,
+        availableRestarts(Cond1)[0] should == r)
+    )
+  )
+
   describe("findRestart", 
     it("should return nil if it can't find the named restart", 
       findRestart(:foo) should == nil

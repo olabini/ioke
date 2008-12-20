@@ -1592,6 +1592,43 @@ public class DefaultBehavior {
                 }
             }));
 
+        obj.registerMethod(runtime.newJavaMethod("takes an optional condition to specify - returns all restarts that are applicable to that condition. closer restarts will be first in the list", new JavaMethod("availableRestarts") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withOptionalPositional("condition", "Condition")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, final IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+                    final Runtime runtime = context.runtime;
+
+                    Object toLookFor = runtime.condition;
+                    if(args.size() > 0) {
+                        toLookFor = args.get(0);
+                    }
+
+                    List<Object> result = new ArrayList<Object>();
+                    List<List<Runtime.RestartInfo>> activeRestarts = runtime.getActiveRestarts();
+
+                    for(List<Runtime.RestartInfo> lri : activeRestarts) {
+                        for(Runtime.RestartInfo rri : lri) {
+                            if(IokeObject.isTrue(runtime.testMessage.sendTo(context, rri.restart, toLookFor))) {
+                                result.add(rri.restart);
+                            }
+                        }
+                    }
+
+                    return runtime.newList(result);
+                }
+            }));
+
         obj.registerMethod(runtime.newJavaMethod("takes one or more datums descibing the condition to signal. this datum can be either a mimic of a Condition, in which case it will be signalled directly, or it can be a mimic of a Condition with arguments, in which case it will first be mimicked and the arguments assigned in some way. finally, if the argument is a Text, a mimic of Condition Default will be signalled, with the provided text.", new JavaMethod("signal!") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
