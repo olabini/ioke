@@ -45,6 +45,8 @@ DokGen do(
 
     collectedSpecs each(cspec,
       unless(cspec value cell?(:dokgenSpecAlreadyCollected),
+        ;; also check cells in the sub thingy
+
         fixed = false
         segments = cspec key split(" ")
         kindName = "%[%s %]" format(segments[0..-2])[0..-2]
@@ -71,13 +73,27 @@ DokGen do(
 
         while(!fixed && (segments length > 0),
           kindName = "%[%s %]" format(segments)[0..-2]
+          kindNameX = "%[%s %]" format(segments[0..-2])[0..-2]
 
-          cellForKind = collected collectedKinds[kindName]
+          cellForSegment = collected collectedCells[segments[-1]]
+          if(cellForSegment,
+            place = cellForSegment find(x, (x[0] kind == kindNameX) || ((x[0] kind == "Ground") && kindNameX == ""))
 
-          if(cellForKind,
-            cellForKind[1][cspec key] = cspec value
-            cspec value dokgenSpecAlreadyCollected = true
-            fixed = true
+            if(place,
+              place[4][cspec key] = cspec value
+              cspec value dokgenSpecAlreadyCollected = true
+              fixed = true
+            )
+          )
+
+          unless(fixed,
+            cellForKind = collected collectedKinds[kindName]
+
+            if(cellForKind,
+              cellForKind[1][cspec key] = cspec value
+              cspec value dokgenSpecAlreadyCollected = true
+              fixed = true
+            )
           )
 
           segments = segments[0..-2]

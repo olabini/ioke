@@ -44,98 +44,102 @@ describe(List,
   )
 
   describe("[]", 
-    it("should return nil if empty list when given a number", 
-      list[0] should == nil
-      list[10] should == nil
-      list[(0-1)] should == nil
-    )
+    describe("with number argument",
+      it("should return nil if empty list when given a number", 
+        list[0] should == nil
+        list[10] should == nil
+        list[(0-1)] should == nil
+      )
 
-    it("should return nil if argument is over the size when given a number", 
-      list(1)[1] should == nil
-    )
+      it("should return nil if argument is over the size when given a number", 
+        list(1)[1] should == nil
+      )
 
-    it("should return from the front if the argument is zero or positive when given a number", 
-      [1,2,3,4][0] should == 1
-      [1,2,3,4][1] should == 2
-      [1,2,3,4][2] should == 3
-      [1,2,3,4][3] should == 4
-    )
+      it("should return from the front if the argument is zero or positive when given a number", 
+        [1,2,3,4][0] should == 1
+        [1,2,3,4][1] should == 2
+        [1,2,3,4][2] should == 3
+        [1,2,3,4][3] should == 4
+      )
 
-    it("should return from the back if the argument is negative when given a number", 
-      [1,2,3,4][0-1] should == 4
-      [1,2,3,4][0-2] should == 3
-      [1,2,3,4][0-3] should == 2
-      [1,2,3,4][0-4] should == 1
-    )
+      it("should return from the back if the argument is negative when given a number", 
+        [1,2,3,4][0-1] should == 4
+        [1,2,3,4][0-2] should == 3
+        [1,2,3,4][0-3] should == 2
+        [1,2,3,4][0-4] should == 1
+      )
 
-    it("should return an empty list for any range given to an empty list when given a number", 
-      [][0..0] should == []
-      [][0...0] should == []
-      [][0..-1] should == []
-      [][0...-1] should == []
-      [][10..20] should == []
-      [][10...20] should == []
-      [][-1..20] should == []
+      it("should return an empty list for any range given to an empty list when given a number", 
+        [][0..0] should == []
+        [][0...0] should == []
+        [][0..-1] should == []
+        [][0...-1] should == []
+        [][10..20] should == []
+        [][10...20] should == []
+        [][-1..20] should == []
+      )
     )
     
-    it("should return an equal list for 0..-1", 
-      [][0..-1] should == []
-      [1,2,3][0..-1] should == [1,2,3]
-      ["x", "y"][0..-1] should == ["x", "y"]
-    )
+    describe("with range argument",
+      it("should return an equal list for 0..-1", 
+        [][0..-1] should == []
+        [1,2,3][0..-1] should == [1,2,3]
+        ["x", "y"][0..-1] should == ["x", "y"]
+      )
 
-    it("should return all except the first element for 1..-1", 
-      [1][1..-1] should == []
-      [1,2,3][1..-1] should == [2,3]
-      ["x", "y"][1..-1] should == ["y"]
-    )
+      it("should return all except the first element for 1..-1", 
+        [1][1..-1] should == []
+        [1,2,3][1..-1] should == [2,3]
+        ["x", "y"][1..-1] should == ["y"]
+      )
 
-    it("should return all except for the first and last for 1...-1", 
-      [1,2][1...-1] should == []
-      [1,2,3][1...-1] should == [2]
-      ["x", "y", "zed", "bar"][1...-1] should == ["y", "zed"]
-    )
+      it("should return all except for the first and last for 1...-1", 
+        [1,2][1...-1] should == []
+        [1,2,3][1...-1] should == [2]
+        ["x", "y", "zed", "bar"][1...-1] should == ["y", "zed"]
+      )
 
-    it("should return an array with the first element for 0..0", 
-      [1][0..0] should == [1]
-      [1,2,3][0..0] should == [1]
-      ["x", "y"][0..0] should == ["x"]
-    )
+      it("should return an array with the first element for 0..0", 
+        [1][0..0] should == [1]
+        [1,2,3][0..0] should == [1]
+        ["x", "y"][0..0] should == ["x"]
+      )
 
-    it("should return an empty array for 0...0", 
-      [1][0...0] should == []
-      [1,2,3][0...0] should == []
-      ["x", "y"][0...0] should == []
-    )
+      it("should return an empty array for 0...0", 
+        [1][0...0] should == []
+        [1,2,3][0...0] should == []
+        ["x", "y"][0...0] should == []
+      )
 
-    it("should return a slice from a larger array", 
-      [1,2,3,4,5,6,7,8,9,10,11][3..5] should == [4,5,6]
-    )
+      it("should return a slice from a larger array", 
+        [1,2,3,4,5,6,7,8,9,10,11][3..5] should == [4,5,6]
+      )
 
-    it("should return a correct slice for an exclusive range", 
-      [1,2,3,4,5,6,7,8,9,10,11][3...6] should == [4,5,6]
-    )
+      it("should return a correct slice for an exclusive range", 
+        [1,2,3,4,5,6,7,8,9,10,11][3...6] should == [4,5,6]
+      )
 
-    it("should return a correct slice for a slice that ends in a negative index", 
-      [1,2,3,4,5,6,7,8,9,10,11][3..-3] should == [4,5,6,7,8,9]
-    )
+      it("should return a correct slice for a slice that ends in a negative index", 
+        [1,2,3,4,5,6,7,8,9,10,11][3..-3] should == [4,5,6,7,8,9]
+      )
 
-    it("should return a correct slice for an exclusive slice that ends in a negative index", 
-      [1,2,3,4,5,6,7,8,9,10,11][3...-3] should == [4,5,6,7,8]
-    )
+      it("should return a correct slice for an exclusive slice that ends in a negative index", 
+        [1,2,3,4,5,6,7,8,9,10,11][3...-3] should == [4,5,6,7,8]
+      )
 
-    it("should return all elements up to the end of the slice, if the end argument is way out there", 
-      [1,2,3,4,5,6,7,8,9,10,11][5..3443343] should == [6,7,8,9,10,11]
-      [1,2,3,4,5,6,7,8,9,10,11][5...3443343] should == [6,7,8,9,10,11]
-    )
+      it("should return all elements up to the end of the slice, if the end argument is way out there", 
+        [1,2,3,4,5,6,7,8,9,10,11][5..3443343] should == [6,7,8,9,10,11]
+        [1,2,3,4,5,6,7,8,9,10,11][5...3443343] should == [6,7,8,9,10,11]
+      )
 
-    it("should return an empty array for a totally messed up indexing", 
-      [1,2,3,4,5,6,7,8,9,10,11][-1..3] should == []
-      [1,2,3,4,5,6,7,8,9,10,11][-1..7557] should == []
-      [1,2,3,4,5,6,7,8,9,10,11][5..4] should == []
-      [1,2,3,4,5,6,7,8,9,10,11][-1...3] should == []
-      [1,2,3,4,5,6,7,8,9,10,11][-1...7557] should == []
-      [1,2,3,4,5,6,7,8,9,10,11][5...4] should == []
+      it("should return an empty array for a totally messed up indexing", 
+        [1,2,3,4,5,6,7,8,9,10,11][-1..3] should == []
+        [1,2,3,4,5,6,7,8,9,10,11][-1..7557] should == []
+        [1,2,3,4,5,6,7,8,9,10,11][5..4] should == []
+        [1,2,3,4,5,6,7,8,9,10,11][-1...3] should == []
+        [1,2,3,4,5,6,7,8,9,10,11][-1...7557] should == []
+        [1,2,3,4,5,6,7,8,9,10,11][5...4] should == []
+      )
     )
   )  
   

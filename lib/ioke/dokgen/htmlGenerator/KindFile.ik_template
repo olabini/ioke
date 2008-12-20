@@ -98,6 +98,11 @@ PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
           #{activeCellsSummary}
         </ul>
 
+        <div class=\"sectiontitle\">Specs</div>
+        <div class=\"specs\">
+          #{kindSpecs}
+        </div>
+
         <div class=\"sectiontitle\">Inactive cells (details)</div>
         #{inactiveCellsContent}
 

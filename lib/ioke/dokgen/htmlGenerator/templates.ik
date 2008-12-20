@@ -24,7 +24,7 @@ DokGen do(
       FileFile data = Message doText("method(simpleFileName:, filePath:, fileDate:, methodContent:, macroContent:, syntaxContent:, basePath:, \"#{FileSystem readFully("#{System currentDirectory}/FileFile.ik_template")}\")")
 
       KindFile = Template mimic
-      KindFile data = Message doText("method(kindName:, kindDescription:, inactiveCellsSummary:, activeCellsSummary:, inactiveCellsContent:, activeCellsContent:, allMimics:, mainMimic:, basePath:, \"#{FileSystem readFully("#{System currentDirectory}/KindFile.ik_template")}\")")
+      KindFile data = Message doText("method(kindName:, kindDescription:, kindSpecs:, inactiveCellsSummary:, activeCellsSummary:, inactiveCellsContent:, activeCellsContent:, allMimics:, mainMimic:, basePath:, \"#{FileSystem readFully("#{System currentDirectory}/KindFile.ik_template")}\")")
 
       KindFile inactiveCellData = method(cellName:, cellValue:, cellId:,
 "        <div class=\"cell\">
@@ -58,9 +58,7 @@ DokGen do(
             </div>
             </div>","")}
           <div class=\"specs\">
-            <ul style=\"list-style-type: none;\">
-              #{cellSpecs}
-            </ul>
+            #{cellSpecs}
           </div>
         </div>")
     )

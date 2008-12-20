@@ -99,7 +99,23 @@ DokGen do(
           allMimicsContent = "%*[<li><a href=\"#{beforeLinks}kinds/%s.html\">%s</a></li>%]" format(allMimics map(mm, [cell(:mm) kind replaceAll(" ", "/"), cell(:mm) kind]))
         )
       )
+
+
+      names = (kindSpecs keys sort) - [kindName]
+      mainSpecs = kindSpecs[kindName]
       
+      kindSpecsContent = ""
+      
+      specIndex = 0
+
+      if(mainSpecs,
+        kindSpecsContent = "<ul style=\"list-style-type: none;\">\n#{createCellSpecsOnlyFor("K0#{specIndex++}", nil, mainSpecs)}</ul>"
+      )
+
+      names each(name,
+        kindSpecsContent = "#{kindSpecsContent}\n<b>#{name}</b><br/>\n<ul style=\"list-style-type: none;\">\n#{createCellSpecsOnlyFor("K0#{specIndex++}", nil, kindSpecs[name])}</ul>"
+      )
+
       inactiveCells = []
       activeCells = []
 
@@ -108,7 +124,7 @@ DokGen do(
           vex = cells[cc key asText] find(val, cell(:theKind) == val[0])
           if((cc value cell?(:activatable)) && (cc value cell(:activatable)),
             theKey = "#{vex[0] kind} #{cc key}"
-            activeCells << [cc key, cc value, vex, vex[2] argumentsCode, specs[theKey] || []],
+            activeCells << [cc key, cc value, vex, vex[2] argumentsCode],
             inactiveCells << [cc key, cc value, vex])))
 
       activeCells = activeCells sortBy(v, [v[0], v[2][3]])
@@ -118,11 +134,12 @@ DokGen do(
       activeCellsSummary = "%*[<li><a href=\"#C00%s\">%s(%s)</a></li>\n%]" format(activeCells map(val, [val[2][3], makeTextHtmlSafe(val[0] asText), makeTextHtmlSafe(val[3])]))
 
       inactiveCellsContent = "%[%s\n%]" format(inactiveCells map(ic, Templates KindFile inactiveCellData(cellName: makeTextHtmlSafe(ic[0] asText), cellValue: ic[1] notice, cellId: ic[2][3])))
-      activeCellsContent = "%[%s\n%]"   format(activeCells   map(ic, Templates KindFile activeCellData(cellName: makeTextHtmlSafe(ic[0] asText), cellDescription: ic[1] documentation, cellId: ic[2][3], cellArguments: makeTextHtmlSafe(ic[3]), cellSpecs: createCellSpecsFor(ic[2][3], ic, ic[4]), cellMessage: if(ic[2][2] cell?(:formattedCode), makeTextHtmlSafe(ic[2][2] formattedCode), nil))))
+      activeCellsContent = "%[%s\n%]"   format(activeCells   map(ic, Templates KindFile activeCellData(cellName: makeTextHtmlSafe(ic[0] asText), cellDescription: ic[1] documentation, cellId: ic[2][3], cellArguments: makeTextHtmlSafe(ic[3]), cellSpecs: createCellSpecsFor(ic[2][3], ic, ic[2][4]), cellMessage: if(ic[2][2] cell?(:formattedCode), makeTextHtmlSafe(ic[2][2] formattedCode), nil))))
 
       generateFromTemplate(Templates KindFile,
         out: htmlFile,
         kindName: kindName,
+        kindSpecs: kindSpecsContent,
         kindDescription: cell(:theKind) documentation || "",
         allMimics: allMimicsContent,
         mainMimic: mainMimicContent,
@@ -135,6 +152,23 @@ DokGen do(
     )
 
     createCellSpecsFor = method(cellId, data, specData,
+      ks = specData keys sort
+      first = true
+      if(ks length > 0,
+        first = ks[0] split(" ")[-1] == data[0]
+      )
+
+      ix = 0
+
+      "%[%s\n%]" format(ks map(key,
+          if(first,
+            first = false
+            "<ul style=\"list-style-type: none;\">\n#{createCellSpecsOnlyFor("#{cellId}#{ix++}", nil, specData[key])}</ul>",
+            "<b>#{key}</b><br/>\n<ul style=\"list-style-type: none;\">\n#{createCellSpecsOnlyFor("#{cellId}#{ix++}", nil, specData[key])}</ul>"
+      )))
+    )
+
+    createCellSpecsOnlyFor = method(cellId, data, specData,
       specIndex = 0
       "%[<li>- %s</li>\n%]" format(specData map(sd,
           if(sd length == 1,
