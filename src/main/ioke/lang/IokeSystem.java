@@ -120,12 +120,20 @@ public class IokeSystem extends IokeData {
                             }}, 
                         context,
                         new Restart.ArgumentGivingRestart("continueLoadChain") { 
+                            public List<String> getArgumentNames() {
+                                return new ArrayList<String>();
+                            }
+
                             public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
                                 continueLoadChain[0] = true;
                                 return runtime.nil;
                             }
                         },
                         new Restart.ArgumentGivingRestart("ignoreLoadError") {
+                            public List<String> getArgumentNames() {
+                                return new ArrayList<String>();
+                            }
+
                             public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
                                 continueLoadChain[0] = false;
                                 return runtime.nil;
@@ -207,12 +215,20 @@ public class IokeSystem extends IokeData {
                             }}, 
                         context,
                         new Restart.ArgumentGivingRestart("continueLoadChain") { 
+                            public List<String> getArgumentNames() {
+                                return new ArrayList<String>();
+                            }
+
                             public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
                                 continueLoadChain[0] = true;
                                 return runtime.nil;
                             }
                         },
                         new Restart.ArgumentGivingRestart("ignoreLoadError") {
+                            public List<String> getArgumentNames() {
+                                return new ArrayList<String>();
+                            }
+
                             public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
                                 continueLoadChain[0] = false;
                                 return runtime.nil;

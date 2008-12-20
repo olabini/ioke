@@ -21,6 +21,7 @@ public class Restart {
         restart.registerCell("report", runtime.evaluateString("fn(r, \"restart: \" + r name)", runtime.message, runtime.ground));
         restart.registerCell("test", runtime.evaluateString("fn(c, true)", runtime.message, runtime.ground));
         restart.registerCell("code", runtime.evaluateString("fn()", runtime.message, runtime.ground));
+        restart.registerCell("argumentNames", runtime.evaluateString("method(self code argumentNames)", runtime.message, runtime.ground));
     }
 
 
@@ -30,10 +31,16 @@ public class Restart {
             return this.name;
         }
 
+        public abstract List<String> getArgumentNames();
+        
+        public String report() {
+            return null;
+        }
+
         public abstract IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow;
     }
 
-    public static class ArgumentGivingRestart extends JavaRestart {
+    public abstract static class ArgumentGivingRestart extends JavaRestart {
         public ArgumentGivingRestart(String name) {
             this.name = name;
         }
@@ -50,6 +57,10 @@ public class Restart {
             this.name = name;
             this.value = value;
             this.repeat = repeat;
+        }
+
+        public List<String> getArgumentNames() {
+            return new ArrayList<String>();
         }
 
         public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
