@@ -1,0 +1,496 @@
+<!DOCTYPE html 
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>Ioke &raquo; Programming Guide</title>
+    <link rel="stylesheet" href="style/ioke-style.css" type="text/css" media="screen" />
+  </head>
+  <body>
+    <div id="logo">
+      <a href="index.html">
+        <img src="img/IokeLogo.png" alt="Ioke Logo" width="118" height="115" border="0"/>
+      </a>
+    </div>
+
+    <div id="header">
+      Programming Guide
+    </div>
+
+    <div id="content">
+    <table cellpadding="0" cellspacing="0" border="0">
+      <tr>
+        <td valign="top">
+          <div id="menu">
+            <table cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td>
+                  <span class="menuItem">
+                    <a href="index.html" class="unselectedMenuItem">About Ioke</a>
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td style="height:.4em"></td>
+              </tr>
+
+              <tr>
+                <td>
+                  <span class="menuItem">
+                    <a href="guide.html" class="selectedMenuItem">Guide</a>
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td style="height:.4em"></td>
+              </tr>
+
+              <tr>
+                <td>
+                  <span class="menuItem">
+                    <a href="download.html" class="unselectedMenuItem">Download</a>
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td style="height:.4em"></td>
+              </tr>
+
+              <tr>
+                <td>
+                  <span class="menuItem">
+                    <a href="http://ioke.kenai.com" class="unselectedMenuItem">Project page</a>
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td style="height:.4em"></td>
+              </tr>
+
+              <tr>
+                <td>
+                  <span class="menuItem">
+                    <a href="dok/index.html" class="unselectedMenuItem">Reference</a>
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td style="height:.4em"></td>
+              </tr>
+            </table>
+          </div>
+        </td>
+        <td>
+          <table cellpadding="0" cellspacing="0" border="0" style="width:50em">
+            <tr>
+              <td style="width:10em"></td>
+              <td>
+                <ol>
+                  <li>
+                    <a href="#introduction">Introduction</a>
+                    <ol>
+                      <li>
+                        <a href="#vision">Vision</a>
+                      </li>
+                      <li>
+                        <a href="#gettingStarted">Getting started</a>
+                        <ol>
+                          <li>
+                            <a href="#runningScripts">Running scripts</a>
+                          </li>
+                          <li>
+                            <a href="#interactive">Interactive mode</a>
+                          </li>
+                        </ol>
+                      </li>
+                    </ol>
+                  </li>
+
+                  <li>
+                    <a href="#syntax">Syntax</a>
+                    <ol>
+                      <li>
+                        <a href="#literals">Literal values</a>
+                      </li>
+                      <li>
+                        <a href="#operatorShuffling">Operator shuffling</a>
+                      </li>
+                      <li>
+                        <a href="#assignmentShuffling">Assignment shuffling</a>
+                      </li>
+                    </ol>
+                  </li>
+
+                  <li>
+                    <a href="#executionModel">Execution model</a>
+                    <ol>
+                      <li>
+                        <a href="#pass">pass</a>
+                      </li>
+                    </ol>
+                  </li>
+
+                  <li>
+                    <a href="#objects">Objects</a>
+                    <ol>
+                      <li>
+                        <a href="#base">Base</a>
+                      </li>
+                      <li>
+                        <a href="#ground">Ground</a>
+                      </li>
+                      <li>
+                        <a href="#origin">Origin</a>
+                      </li>
+                      <li>
+                        <a href="#defaultBehavior">DefaultBehavior</a>
+                      </li>
+                      <li>
+                        <a href="#nilTrueFalse">nil, true, false</a>
+                      </li>
+                    </ol>
+                  </li>
+
+                  <li>
+                    <a href="#assignment">Assignment</a>
+                  </li>
+
+                  <li>
+                    <a href="#controlFlow">Control flow</a>
+                    <ol>
+                      <li>
+                        <a href="#comparison">Comparison</a>
+                      </li>
+                      <li>
+                        <a href="#conditionals">Conditionals</a>
+                      </li>
+                      <li>
+                        <a href="#iteration">Iteration</a>
+                      </li>
+                    </ol>
+                  </li>
+
+                  <li>
+                    <a href="#code">Code</a>
+                    <ol>
+                      <li>
+                        <a href="#methods">Methods</a>
+                      </li>
+                      <li>
+                        <a href="#macros">Macros</a>
+                      </li>
+                      <li>
+                        <a href="#blocks">Blocks</a>
+                      </li>
+                      <li>
+                        <a href="#messageChains">Message chains</a>
+                      </li>
+                    </ol>
+                  </li>
+
+                  <li>
+                    <a href="#introspection">Introspection and reflection</a>
+                  </li>
+
+                  <li>
+                    <a href="#importing">Importing</a>
+                  </li>
+
+                  <li>
+                    <a href="#coreKinds">Core kinds</a>
+                    <ol>
+                      <li>
+                        <a href="#conditions">Conditions</a>
+                      </li>
+                      <li>
+                        <a href="#text">Text</a>
+                      </li>
+                      <li>
+                        <a href="#symbols">Symbols</a>
+                      </li>
+                      <li>
+                        <a href="#numbers">Numbers</a>
+                      </li>
+                      <li>
+                        <a href="#lists">Lists</a>
+                      </li>
+                      <li>
+                        <a href="#dicts">Dicts</a>
+                      </li>
+                      <li>
+                        <a href="#rangesAndPairs">Ranges and Pairs</a>
+                      </li>
+                      <li>
+                        <a href="#enumerable">Enumerable</a>
+                      </li>
+                      <li>
+                        <a href="#regexps">Regexps</a>
+                      </li>
+                      <li>
+                        <a href="#filesystem">FileSystem</a>
+                      </li>
+                    </ol>
+                  </li>
+
+                  <li>
+                    <a href="#libraries">Libraries</a>
+                    <ol>
+                      <li>
+                        <a href="#iik">IIk</a>
+                      </li>
+                      <li>
+                        <a href="#ispec">ISpec</a>
+                      </li>
+                      <li>
+                        <a href="#dokgen">DokGen</a>
+                      </li>
+                    </ol>
+                  </li>
+                  <li>
+                    <a href="#missing">What is missing</a>
+                  </li>
+                  <li>
+                    <a href="#futurePlans">Future plans</a>
+                  </li>
+                </ol>
+
+                <hr/>
+
+                <div class="chapter">
+                  <h2><a name="introduction">Introduction</a></h2>
+                  <p>TODO: write content</p>
+
+                  <div class="section">
+                    <h3><a name="vision">Vision</a></h3>
+                    <p>TODO: write content</p>
+                  </div>
+
+                  <div class="section">
+                    <h3><a name="gettingStarted">Getting started</a></h3>
+                    <p>TODO: write content</p>
+
+                    <div class="section">
+                      <h4><a name="runningScripts">Running scripts</a></h4>
+                      <p>TODO: write content</p>
+                    </div>
+
+                    <div class="section">
+                      <h4><a name="interactive">Interactive mode</a></h4>
+                      <p>TODO: write content</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="chapter">
+                  <h2><a name="syntax">Syntax</a></h2>
+                  <p>TODO: write content</p>
+
+                  <div class="section">
+                    <h3><a name="literals">Literal values</a></h3>
+                    <p>TODO: write content</p>
+                  </div>
+
+                  <div class="section">
+                    <h3><a name="operatorShuffling">Operator shuffling</a></h3>
+                    <p>TODO: write content</p>
+                  </div>
+
+                  <div class="section">
+                    <h3><a name="assignmentShuffling">Assignment shuffling</a></h3>
+                    <p>TODO: write content</p>
+                  </div>
+                </div>
+
+                <div class="chapter">
+                  <h2><a name="executionModel">Execution model</a></h2>
+                  <p>TODO: write content</p>
+
+                  <div class="section">
+                    <h3><a name="pass">pass</a></h3>
+                    <p>TODO: write content</p>
+                  </div>
+                </div>
+
+                <div class="chapter">
+                  <h2><a name="objects">Objects</a></h2>
+                  <p>TODO: write content</p>
+
+                  <div class="section">
+                    <h3><a name="base">Base</a></h3>
+                    <p>TODO: write content</p>
+                  </div>
+
+                  <div class="section">
+                    <h3><a name="ground">Ground</a></h3>
+                    <p>TODO: write content</p>
+                  </div>
+
+                  <div class="section">
+                    <h3><a name="origin">Origin</a></h3>
+                    <p>TODO: write content</p>
+                  </div>
+
+                  <div class="section">
+                    <h3><a name="defaultBehavior">DefaultBehavior</a></h3>
+                    <p>TODO: write content</p>
+                  </div>
+
+                  <div class="section">
+                    <h3><a name="nilTrueFalse">nil, true, false</a></h3>
+                    <p>TODO: write content</p>
+                  </div>
+                </div>
+
+                <div class="chapter">
+                  <h2><a name="assignment">Assignment</a></h2>
+                  <p>TODO: write content</p>
+                </div>
+
+                <div class="chapter">
+                  <h2><a name="controlFlow">Control flow</a></h2>
+                  <p>TODO: write content</p>
+
+                  <div class="section">
+                    <h3><a name="comparison">Comparison</a></h3>
+                    <p>TODO: write content</p>
+                  </div>
+
+                  <div class="section">
+                    <h3><a name="conditionals">Conditionals</a></h3>
+                    <p>TODO: write content</p>
+                  </div>
+
+                  <div class="section">
+                    <h3><a name="iteration">Iteration</a></h3>
+                    <p>TODO: write content</p>
+                  </div>
+                </div>
+
+                <div class="chapter">
+                  <h2><a name="code">Code</a></h2>
+                  <p>TODO: write content</p>
+
+                  <div class="section">
+                    <h3><a name="methods">Methods</a></h3>
+                    <p>TODO: write content</p>
+                  </div>
+
+                  <div class="section">
+                    <h3><a name="macros">Macros</a></h3>
+                    <p>TODO: write content</p>
+                  </div>
+
+                  <div class="section">
+                    <h3><a name="blocks">Blocks</a></h3>
+                    <p>TODO: write content</p>
+                  </div>
+
+                  <div class="section">
+                    <h3><a name="messageChains">Message chains</a></h3>
+                    <p>TODO: write content</p>
+                  </div>
+                </div>
+
+                <div class="chapter">
+                  <h2><a name="introspection">Introspection and reflection</a></h2>
+                  <p>TODO: write content</p>
+                </div>
+
+                <div class="chapter">
+                  <h2><a name="importing">Importing</a></h2>
+                  <p>TODO: write content</p>
+                </div>
+
+                <div class="chapter">
+                  <h2><a name="coreKinds">Core kinds</a></h2>
+                  <p>TODO: write content</p>
+
+                  <div class="section">
+                    <h3><a name="conditions">Conditions</a></h3>
+                    <p>TODO: write content</p>
+                  </div>
+
+                  <div class="section">
+                    <h3><a name="text">Text</a></h3>
+                    <p>TODO: write content</p>
+                  </div>
+
+                  <div class="section">
+                    <h3><a name="symbols">Symbols</a></h3>
+                    <p>TODO: write content</p>
+                  </div>
+
+                  <div class="section">
+                    <h3><a name="numbers">Numbers</a></h3>
+                    <p>TODO: write content</p>
+                  </div>
+
+                  <div class="section">
+                    <h3><a name="lists">Lists</a></h3>
+                    <p>TODO: write content</p>
+                  </div>
+
+                  <div class="section">
+                    <h3><a name="dicts">Dicts</a></h3>
+                    <p>TODO: write content</p>
+                  </div>
+
+                  <div class="section">
+                    <h3><a name="rangesAndPairs">Ranges and Pairs</a></h3>
+                    <p>TODO: write content</p>
+                  </div>
+
+                  <div class="section">
+                    <h3><a name="enumerable">Enumerable</a></h3>
+                    <p>TODO: write content</p>
+                  </div>
+
+                  <div class="section">
+                    <h3><a name="regexps">Regexps</a></h3>
+                    <p>TODO: write content</p>
+                  </div>
+
+                  <div class="section">
+                    <h3><a name="filesystem">FileSystem</a></h3>
+                    <p>TODO: write content</p>
+                  </div>
+                </div>
+
+                <div class="chapter">
+                  <h2><a name="libraries">Libraries</a></h2>
+                  <p>TODO: write content</p>
+
+                  <div class="section">
+                    <h3><a name="iik">IIk</a></h3>
+                    <p>TODO: write content</p>
+                  </div>
+
+                  <div class="section">
+                    <h3><a name="ispec">ISpec</a></h3>
+                    <p>TODO: write content</p>
+                  </div>
+
+                  <div class="section">
+                    <h3><a name="dokgen">DokGen</a></h3>
+                    <p>TODO: write content</p>
+                  </div>
+                </div>
+
+                <div class="chapter">
+                  <h2><a name="missing">What is missing</a></h2>
+                  <p>TODO: write content</p>
+                </div>
+
+                <div class="chapter">
+                  <h2><a name="futurePlans">Future plans</a></h2>
+                  <p>TODO: write content</p>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+    </div>
+  </body>
+</html>

@@ -13,14 +13,14 @@ body, td, p {
   background: #fff;
 }
 
-a { 
+a[href] { 
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   color: #000;
   text-decoration: none;
   font-size: 1.1em;
 }
 
-a:hover { 
+a[href]:hover { 
   text-decoration: underline;
 }
 
@@ -35,4 +35,37 @@ a.unselectedMenuItem {
 #menu { 
   margin-top: 2em;
   margin-left: 1.3em;
+}
+
+#logo {
+  float: left;
+}
+
+#header {
+  float: left;
+  color: #000;
+  font-size: 2.5em;
+  margin-top: 1em;
+  margin-left: 4em;
+}
+
+#content { 
+  clear: both;
+}
+
+ol {
+  margin-bottom: 1em;
+}
+
+ol li ol { 
+  margin-left: -1em;
+}
+
+.chapter { 
+  margin-top: 10em;
+}
+
+.section { 
+  margin-left: 1em;
+  margin-top: 4em;
 }
