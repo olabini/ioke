@@ -1,0 +1,47 @@
+
+Guide to Ioke needs to cover this:
+----------------------------------
+
+- Intro
+ - Vision
+ - Getting started
+  - Running scripts
+  - Interactive mode
+- Syntax
+- Literal values
+- Message passing/underlying model
+ - Operator shuffling
+ - Assignment shuffling
+- Base structure
+ - Ground
+ - Origin
+ - DefaultBehavior
+ - nil, true, false
+ - pass
+- Assignment of places
+- Control flow
+- Code
+ - methods
+ - macros
+ - blocks
+ - message chains
+- Introspection
+- use
+- Important core kinds
+ - Conditions
+ - Text
+ - Symbols
+ - Numbers
+ - Lists
+ - Dicts
+ - Ranges and Pairs
+ - Enumerable
+ - Regexps
+ - FileSystem
+- Libraries
+ - iik
+ - ispec
+ - dokgen
+- What is currently missing
+- Future plans
+
