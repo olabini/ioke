@@ -419,6 +419,7 @@ public class FileSystem {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("directoryName")
+                    .withOptionalPositional("createPath", "false")
                     .getArguments();
 
                 @Override
