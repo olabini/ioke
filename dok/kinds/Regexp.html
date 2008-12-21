@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Kind: DefaultBehavior</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href=".././dokgen-style.css" type="text/css" media="screen" />
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=480,width=750" ).focus();
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+    <table border='0' cellpadding='0' cellspacing='0' width="100%" class='banner'>
+      <tr>
+        <td>
+          <table width="100%" border='0' cellpadding='0' cellspacing='0'>
+            <tr>
+              <td class="file-title" colspan="2">
+                <span class="file-title-prefix">Kind</span>
+                <br />
+                Regexp
+              </td>
+              <td align="right">
+                <table cellspacing="0" cellpadding="2">
+                  <tr>
+                    <td>Main mimic:</td>
+                    <td>
+                      <a href="../kinds/Origin.html">Origin</a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <div id="bodyContent">
+      <div id="content">
+        <div class="description">
+          <p>
+          A regular expression allows you to matching text against a pattern.
+          </p>
+        </div>
+
+        <div class="sectiontitle">Mimics</div>
+        <ul>
+          <li><a href="../kinds/Origin.html">Origin</a></li>
+        </ul>        
+
+        <div class="sectiontitle">Inactive cells</div>
+        <ul>
+          <li><a href="#C00479">kind</a></li>
+
+        </ul>        
+
+        <div class="sectiontitle">Active cells</div>
+        <ul>
+          <li><a href="#C00481">=~(other)</a></li>
+<li><a href="#C00480">pattern()</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Specs</div>
+        <div class="specs">
+          <ul style="list-style-type: none;">
+<li>- should have the correct kind <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S0_source')" id="l_C00K01S0_source">show source</a> ]</span>
+            <div id="C00K01S0_source" class="dyn-source">
+<pre>
+Regexp should have kind("Regexp") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be the kind of literal regular expression patterns <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S1_source')" id="l_C00K01S1_source">show source</a> ]</span>
+            <div id="C00K01S1_source" class="dyn-source">
+<pre>
+#/foo/ should not ==(nil) 
+#/foo/ should have kind("Regexp") 
+#/foo/ should mimic(Regexp) 
+#/foo/xs should not ==(nil) 
+#/foo/xs should have kind("Regexp") 
+#/foo/xs should mimic(Regexp) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b>Regexp inspect</b><br/>
+<ul style="list-style-type: none;">
+<li>- should have tests</li>
+</ul>
+<b>Regexp notice</b><br/>
+<ul style="list-style-type: none;">
+<li>- should have tests</li>
+</ul>
+        </div>
+
+        <div class="sectiontitle">Inactive cells (details)</div>
+                <div class="cell">
+          <a name="C00479"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">kind</td>
+              <td>=</td>
+              <td class="cell-value">"Regexp"</td>
+            </tr>
+          </table>
+        </div>
+
+
+        <div class="sectiontitle">Active cells (details)</div>
+                <div class="cell">
+          <div class="title">
+          <a name="C00481"></a><b>=~</b>(other)
+          </div>
+          <div class="description">
+            <p>
+              Takes one argument and tries to match that argument against the current pattern. Returns nil if no match can be done, or a Regexp Match object if a match succeeds
+            </p>
+          </div>
+          
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return a true value when matching <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004811S0_source')" id="l_C004811S0_source">show source</a> ]</span>
+            <div id="C004811S0_source" class="dyn-source">
+<pre>
+(#/foo/ =~("foo")) true? should ==(true) 
+(#/fo{1,2}/ =~("foo")) true? should ==(true) 
+(#/foo/ =~("x foo x")) true? should ==(true) 
+(#/^foo$/ =~("foo")) true? should ==(true) 
+(#/^foo/ =~("foo bar")) true? should ==(true) 
+(#/ foo$/ =~("bar foo")) true? should ==(true) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return nil when not matching <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004811S1_source')" id="l_C004811S1_source">show source</a> ]</span>
+            <div id="C004811S1_source" class="dyn-source">
+<pre>
+(#/fo{3}/ =~("foo")) should ==(nil) 
+(#/fox/ =~("x foo x")) should ==(nil) 
+(#/^ foo$/ =~("foo")) should ==(nil) 
+(#/foo$/ =~("foo bar")) should ==(nil) 
+(#/^foo/ =~("bar foo")) should ==(nil) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00480"></a><b>pattern</b>()
+          </div>
+          <div class="description">
+            <p>
+              Returns the pattern use for this regular expression
+            </p>
+          </div>
+          
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return a string containing the pattern used to create it <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004801S0_source')" id="l_C004801S0_source">show source</a> ]</span>
+            <div id="C004801S0_source" class="dyn-source">
+<pre>
+#/foo/ pattern should ==("foo") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </body>
+</html>

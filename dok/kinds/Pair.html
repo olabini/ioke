@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Kind: DefaultBehavior</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href=".././dokgen-style.css" type="text/css" media="screen" />
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=480,width=750" ).focus();
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+    <table border='0' cellpadding='0' cellspacing='0' width="100%" class='banner'>
+      <tr>
+        <td>
+          <table width="100%" border='0' cellpadding='0' cellspacing='0'>
+            <tr>
+              <td class="file-title" colspan="2">
+                <span class="file-title-prefix">Kind</span>
+                <br />
+                Pair
+              </td>
+              <td align="right">
+                <table cellspacing="0" cellpadding="2">
+                  <tr>
+                    <td>Main mimic:</td>
+                    <td>
+                      <a href="../kinds/Mixins/Enumerable.html">Mixins Enumerable</a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <div id="bodyContent">
+      <div id="content">
+        <div class="description">
+          <p>
+          A pair is a collection of two objects of any kind. They are used among other things to represent Dict entries.
+          </p>
+        </div>
+
+        <div class="sectiontitle">Mimics</div>
+        <ul>
+          <li><a href="../kinds/Mixins/Enumerable.html">Mixins Enumerable</a></li><li><a href="../kinds/Mixins/Comparing.html">Mixins Comparing</a></li><li><a href="../kinds/Origin.html">Origin</a></li>
+        </ul>        
+
+        <div class="sectiontitle">Inactive cells</div>
+        <ul>
+          <li><a href="#C00374">kind</a></li>
+
+        </ul>        
+
+        <div class="sectiontitle">Active cells</div>
+        <ul>
+          <li><a href="#C00381">&lt;=&gt;(other)</a></li>
+<li><a href="#C00375">first()</a></li>
+<li><a href="#C00379">inspect()</a></li>
+<li><a href="#C00376">key()</a></li>
+<li><a href="#C00380">notice()</a></li>
+<li><a href="#C00377">second()</a></li>
+<li><a href="#C00378">value()</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Specs</div>
+        <div class="specs">
+          <ul style="list-style-type: none;">
+<li>- should have the correct kind <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S0_source')" id="l_C00K01S0_source">show source</a> ]</span>
+            <div id="C00K01S0_source" class="dyn-source">
+<pre>
+Pair kind should ==("Pair")
+</pre>
+            </div>
+            </span></li>
+<li>- should have the wrong kind <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S1_source')" id="l_C00K01S1_source">show source</a> ]</span>
+            <div id="C00K01S1_source" class="dyn-source">
+<pre>
+Pair kind should not ==("Pairx")
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to mimic <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S2_source')" id="l_C00K01S2_source">show source</a> ]</span>
+            <div id="C00K01S2_source" class="dyn-source">
+<pre>
+x = Pair mimic 
+x should not be same(Pair) 
+x should mimic(Pair) 
+x should have kind("Pair")
+</pre>
+            </div>
+            </span></li>
+<li>- should mimic Enumerable <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S3_source')" id="l_C00K01S3_source">show source</a> ]</span>
+            <div id="C00K01S3_source" class="dyn-source">
+<pre>
+Pair should mimic(Mixins Enumerable)
+</pre>
+            </div>
+            </span></li>
+<li>- should mimic Comparing <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S4_source')" id="l_C00K01S4_source">show source</a> ]</span>
+            <div id="C00K01S4_source" class="dyn-source">
+<pre>
+Pair should mimic(Mixins Comparing)
+</pre>
+            </div>
+            </span></li>
+</ul>
+        </div>
+
+        <div class="sectiontitle">Inactive cells (details)</div>
+                <div class="cell">
+          <a name="C00374"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">kind</td>
+              <td>=</td>
+              <td class="cell-value">"Pair"</td>
+            </tr>
+          </table>
+        </div>
+
+
+        <div class="sectiontitle">Active cells (details)</div>
+                <div class="cell">
+          <div class="title">
+          <a name="C00381"></a><b>&lt;=&gt;</b>(other)
+          </div>
+          <div class="description">
+            <p>
+              compares this pair against the argument, returning -1, 0 or 1 based on which one is larger, first comparing the 'first', then comparing the 'second'
+            </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00381_source')" id="l_C00381_source">show source</a> ]</p>
+            <div id="C00381_source" class="dyn-source">
+<pre>
+method(other, 
+  result = self first &lt;=&gt;(other first) 
+  if(result ==(0), 
+    result = self second &lt;=&gt;(other second)) 
+  result)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should first compare the first value and return the result of that <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003811S0_source')" id="l_C003811S0_source">show source</a> ]</span>
+            <div id="C003811S0_source" class="dyn-source">
+<pre>
+((1 =&gt;(1)) &lt;=&gt;(2 =&gt;(1))) should ==((1 &lt;=&gt;(2))) 
+((4 =&gt;(1)) &lt;=&gt;(3 =&gt;(1))) should ==(4 &lt;=&gt;(3))
+</pre>
+            </div>
+            </span></li>
+<li>- should then compare the second value and return the result of that <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003811S1_source')" id="l_C003811S1_source">show source</a> ]</span>
+            <div id="C003811S1_source" class="dyn-source">
+<pre>
+((1 =&gt;(1)) &lt;=&gt;(1 =&gt;(2))) should ==((1 &lt;=&gt;(2))) 
+((1 =&gt;(4)) &lt;=&gt;(1 =&gt;(3))) should ==(4 &lt;=&gt;(3))
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00375"></a><b>first</b>()
+          </div>
+          <div class="description">
+            <p>
+              Returns the first value
+            </p>
+          </div>
+          
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return the first element <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003751S0_source')" id="l_C003751S0_source">show source</a> ]</span>
+            <div id="C003751S0_source" class="dyn-source">
+<pre>
+(1 =&gt;(2)) first should ==(1)
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00379"></a><b>inspect</b>()
+          </div>
+          <div class="description">
+            <p>
+              Returns a text inspection of the object
+            </p>
+          </div>
+          
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return it's two elements separated by =>  <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003791S0_source')" id="l_C003791S0_source">show source</a> ]</span>
+            <div id="C003791S0_source" class="dyn-source">
+<pre>
+(1 =&gt;(2)) inspect should ==("1 =&gt; 2") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should use inspect format for elements <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003791S1_source')" id="l_C003791S1_source">show source</a> ]</span>
+            <div id="C003791S1_source" class="dyn-source">
+<pre>
+(method(abc foo qux) =&gt;(2)) inspect should ==("method(abc foo qux) =&gt; 2") 
+(2 =&gt;(method(abc foo qux))) inspect should ==("2 =&gt; method(abc foo qux)") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00376"></a><b>key</b>()
+          </div>
+          <div class="description">
+            <p>
+              Returns the first value
+            </p>
+          </div>
+          
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return the first element <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003761S0_source')" id="l_C003761S0_source">show source</a> ]</span>
+            <div id="C003761S0_source" class="dyn-source">
+<pre>
+(1 =&gt;(2)) key should ==(1)
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00380"></a><b>notice</b>()
+          </div>
+          <div class="description">
+            <p>
+              Returns a brief text inspection of the object
+            </p>
+          </div>
+          
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return it's two elements separated by =>  <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003801S0_source')" id="l_C003801S0_source">show source</a> ]</span>
+            <div id="C003801S0_source" class="dyn-source">
+<pre>
+(1 =&gt;(2)) notice should ==("1 =&gt; 2") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should use notice format for elements <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003801S1_source')" id="l_C003801S1_source">show source</a> ]</span>
+            <div id="C003801S1_source" class="dyn-source">
+<pre>
+(method(abc foo qux) =&gt;(2)) notice should ==("method(...) =&gt; 2") 
+(2 =&gt;(method(abc foo qux))) notice should ==("2 =&gt; method(...)") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00377"></a><b>second</b>()
+          </div>
+          <div class="description">
+            <p>
+              Returns the second value
+            </p>
+          </div>
+          
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return the second element <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003771S0_source')" id="l_C003771S0_source">show source</a> ]</span>
+            <div id="C003771S0_source" class="dyn-source">
+<pre>
+(1 =&gt;(2)) second should ==(2)
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00378"></a><b>value</b>()
+          </div>
+          <div class="description">
+            <p>
+              Returns the second value
+            </p>
+          </div>
+          
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return the second element <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003781S0_source')" id="l_C003781S0_source">show source</a> ]</span>
+            <div id="C003781S0_source" class="dyn-source">
+<pre>
+(1 =&gt;(2)) value should ==(2)
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </body>
+</html>

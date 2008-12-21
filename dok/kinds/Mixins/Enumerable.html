@@ -1,0 +1,2642 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Kind: DefaultBehavior</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../.././dokgen-style.css" type="text/css" media="screen" />
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=480,width=750" ).focus();
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+    <table border='0' cellpadding='0' cellspacing='0' width="100%" class='banner'>
+      <tr>
+        <td>
+          <table width="100%" border='0' cellpadding='0' cellspacing='0'>
+            <tr>
+              <td class="file-title" colspan="2">
+                <span class="file-title-prefix">Kind</span>
+                <br />
+                Mixins Enumerable
+              </td>
+              <td align="right">
+                <table cellspacing="0" cellpadding="2">
+                  <tr>
+                    <td>Main mimic:</td>
+                    <td>
+                      <a href="../../kinds/Mixins.html">Mixins</a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <div id="bodyContent">
+      <div id="content">
+        <div class="description">
+          <p>
+          adds lots of helpful methods that can be done on enumerable methods. based on the 'each' method being available on the self.
+          </p>
+        </div>
+
+        <div class="sectiontitle">Mimics</div>
+        <ul>
+          <li><a href="../../kinds/Mixins.html">Mixins</a></li>
+        </ul>        
+
+        <div class="sectiontitle">Inactive cells</div>
+        <ul>
+          <li><a href="#C00282">kind</a></li>
+
+        </ul>        
+
+        <div class="sectiontitle">Active cells</div>
+        <ul>
+          <li><a href="#C00294">all?(...)</a></li>
+<li><a href="#C00287">any?(...)</a></li>
+<li><a href="#C00283">asList()</a></li>
+<li><a href="#C00310">collect(...)</a></li>
+<li><a href="#C00311">collectFn(+blocks)</a></li>
+<li><a href="#C00296">count(...)</a></li>
+<li><a href="#C00306">cycle(...)</a></li>
+<li><a href="#C00312">detect(...)</a></li>
+<li><a href="#C00304">drop(howMany)</a></li>
+<li><a href="#C00305">dropWhile(...)</a></li>
+<li><a href="#C00316">filter(...)</a></li>
+<li><a href="#C00290">find(...)</a></li>
+<li><a href="#C00315">findAll(...)</a></li>
+<li><a href="#C00299">findIndex(...)</a></li>
+<li><a href="#C00298">first(howMany nil)</a></li>
+<li><a href="#C00292">flatMap(...)</a></li>
+<li><a href="#C00314">fold(...)</a></li>
+<li><a href="#C00309">grep(...)</a></li>
+<li><a href="#C00301">include?(toFind)</a></li>
+<li><a href="#C00291">inject(...)</a></li>
+<li><a href="#C00285">map(...)</a></li>
+<li><a href="#C00286">mapFn(+blocks)</a></li>
+<li><a href="#C00317">member?(toFind)</a></li>
+<li><a href="#C00288">none?(...)</a></li>
+<li><a href="#C00295">one?(...)</a></li>
+<li><a href="#C00300">partition(...)</a></li>
+<li><a href="#C00313">reduce(...)</a></li>
+<li><a href="#C00297">reject(...)</a></li>
+<li><a href="#C00293">select(...)</a></li>
+<li><a href="#C00289">some(...)</a></li>
+<li><a href="#C00284">sort()</a></li>
+<li><a href="#C00308">sortBy(...)</a></li>
+<li><a href="#C00302">take(howMany)</a></li>
+<li><a href="#C00303">takeWhile(...)</a></li>
+<li><a href="#C00307">zip(+listsAndFns)</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Specs</div>
+        <div class="specs">
+          <ul style="list-style-type: none;">
+<li>- should have the correct kind <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S0_source')" id="l_C00K01S0_source">show source</a> ]</span>
+            <div id="C00K01S0_source" class="dyn-source">
+<pre>
+Mixins Enumerable kind should ==("Mixins Enumerable") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+        </div>
+
+        <div class="sectiontitle">Inactive cells (details)</div>
+                <div class="cell">
+          <a name="C00282"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">kind</td>
+              <td>=</td>
+              <td class="cell-value">"Mixins Enumerable"</td>
+            </tr>
+          </table>
+        </div>
+
+
+        <div class="sectiontitle">Active cells (details)</div>
+                <div class="cell">
+          <div class="title">
+          <a name="C00294"></a><b>all?</b>(...)
+          </div>
+          <div class="description">
+            <p>
+              takes zero, one or two arguments. if zero arguments, returns false if any of the elements yielded by each is false, otherwise true. if one argument, expects it to be a message chain. if that message chain, when applied to the current element returns a false value, the method returns false. finally, if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and tested against the values in this element. if it returns false for any element, this method returns false, otherwise true.
+            </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00294_source')" id="l_C00294_source">show source</a> ]</p>
+            <div id="C00294_source" class="dyn-source">
+<pre>
+macro(
+  len = call arguments length 
+  if(len ==(0), 
+    self each(n, unless(cell(:n), return(false))), 
+    if(len ==(1), 
+      theCode = call arguments first 
+      self each(n, unless(theCode evaluateOn(call ground, cell(:n)), return(false))), 
+      lexicalCode = LexicalBlock createFrom(call arguments, call ground) 
+      self each(n, unless(lexicalCode call(cell(:n)), return(false))))) 
+  true)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should take zero arguments and just check if all of the values are true <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002941S0_source')" id="l_C002941S0_source">show source</a> ]</span>
+            <div id="C002941S0_source" class="dyn-source">
+<pre>
+[](1, 2, 3) all? should ==(true) 
+[](nil, false, nil) all? should ==(false) 
+[](nil, false, true) all? should ==(false) 
+CustomEnumerable all? should ==(true) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take one argument that is a predicate that is applied to each element in the enumeration <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002941S1_source')" id="l_C002941S1_source">show source</a> ]</span>
+            <div id="C002941S1_source" class="dyn-source">
+<pre>
+[](1, 2, 3) all?(==(2)) should ==(false) 
+[](1, 2, 3) all?(&gt;(0)) should ==(true) 
+[](nil, false, nil) all?(nil?) should ==(false) 
+[](nil, false, true) all?(==(2)) should ==(false) 
+CustomEnumerable all?(!=("foo")) should ==(true) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take two arguments that will be turned into a lexical block and applied <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002941S2_source')" id="l_C002941S2_source">show source</a> ]</span>
+            <div id="C002941S2_source" class="dyn-source">
+<pre>
+[](1, 2, 3) all?(x, x ==(2)) should ==(false) 
+[](1, 2, 3) all?(x, x &lt;(4)) should ==(true) 
+[](nil, false, nil) all?(x, x nil?) should ==(false) 
+[](nil, nil, nil) all?(x, x nil?) should ==(true) 
+[](nil, false, true) all?(x, x ==(2)) should ==(false) 
+CustomEnumerable all?(x, x !=("foo")) should ==(true) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00287"></a><b>any?</b>(...)
+          </div>
+          <div class="description">
+            <p>
+              takes zero, one or two arguments. if zero arguments, returns true if any of the elements yielded by each is true, otherwise false. if one argument, expects it to be a message chain. if that message chain, when applied to the current element returns a true value, the method returns true. finally, if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and tested against the values in this element. if it returns true for any element, this method returns true, otherwise false.
+            </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00287_source')" id="l_C00287_source">show source</a> ]</p>
+            <div id="C00287_source" class="dyn-source">
+<pre>
+macro(
+  len = call arguments length 
+  if(len ==(0), 
+    self each(n, if(cell(:n), return(true))), 
+    if(len ==(1), 
+      theCode = call arguments first 
+      self each(n, if(theCode evaluateOn(call ground, cell(:n)), return(true))), 
+      lexicalCode = LexicalBlock createFrom(call arguments, call ground) 
+      self each(n, if(lexicalCode call(cell(:n)), return(true))))) 
+  false)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should take zero arguments and just check if any of the values are true <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002871S0_source')" id="l_C002871S0_source">show source</a> ]</span>
+            <div id="C002871S0_source" class="dyn-source">
+<pre>
+[](1, 2, 3) any? 
+[](nil, false, nil) any? should ==(false) 
+[](nil, false, true) any? should ==(true) 
+CustomEnumerable any? should ==(true) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take one argument that is a predicate that is applied to each element in the enumeration <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002871S1_source')" id="l_C002871S1_source">show source</a> ]</span>
+            <div id="C002871S1_source" class="dyn-source">
+<pre>
+[](1, 2, 3) any?(==(2)) should ==(true) 
+[](nil, false, nil) any?(nil?) should ==(true) 
+[](nil, false, true) any?(==(2)) should ==(false) 
+CustomEnumerable any?(!=("foo")) should ==(true) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take two arguments that will be turned into a lexical block and applied <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002871S2_source')" id="l_C002871S2_source">show source</a> ]</span>
+            <div id="C002871S2_source" class="dyn-source">
+<pre>
+[](1, 2, 3) any?(x, x ==(2)) should ==(true) 
+[](nil, false, nil) any?(x, x nil?) should ==(true) 
+[](nil, false, true) any?(x, x ==(2)) should = = false 
+CustomEnumerable any?(x, x !=("foo")) should ==(true) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00283"></a><b>asList</b>()
+          </div>
+          <div class="description">
+            <p>
+              will return a list created from calling each on the receiver until everything has been yielded. if a more efficient version is possible of this, the object should implement it, since other Enumerable methods will use this for some operations. note that asList is not required to return a new list
+            </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00283_source')" id="l_C00283_source">show source</a> ]</p>
+            <div id="C00283_source" class="dyn-source">
+<pre>
+method(
+  result = list 
+  self each(n, result &lt;&lt;(cell(:n))) 
+  result)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return a list from a list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002831S0_source')" id="l_C002831S0_source">show source</a> ]</span>
+            <div id="C002831S0_source" class="dyn-source">
+<pre>
+[](1, 2, 3) asList should ==([](1, 2, 3)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return a list based on all things yielded to each <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002831S1_source')" id="l_C002831S1_source">show source</a> ]</span>
+            <div id="C002831S1_source" class="dyn-source">
+<pre>
+CustomEnumerable asList should ==([]("3first", "1second", "2third")) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00310"></a><b>collect</b>(...)
+          </div>
+          <div class="description">
+            <p>
+              nil
+            </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00310_source')" id="l_C00310_source">show source</a> ]</p>
+            <div id="C00310_source" class="dyn-source">
+<pre>
+macro(
+  len = call arguments length 
+  
+  result = list 
+  if(len ==(1), 
+    theCode = call arguments first 
+    self each(n, result &lt;&lt;(theCode evaluateOn(call ground, cell(:n)))), 
+    lexicalCode = LexicalBlock createFrom(call arguments, call ground) 
+    self each(n, result &lt;&lt;(lexicalCode call(cell(:n))))) 
+  result)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return an empty list for an empty enumerable <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003101S0_source')" id="l_C003101S0_source">show source</a> ]</span>
+            <div id="C003101S0_source" class="dyn-source">
+<pre>
+[] collect(x, x +(2)) should ==(
+  []) 
+{} collect(x, x +(2)) should ==(
+  []) 
+set collect(x, x +(2)) should ==(
+  []) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the same list for something that only returns itself <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003101S1_source')" id="l_C003101S1_source">show source</a> ]</span>
+            <div id="C003101S1_source" class="dyn-source">
+<pre>
+[](1, 2, 3) collect(x, x) should ==([](1, 2, 3)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take one argument and apply the inside <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003101S2_source')" id="l_C003101S2_source">show source</a> ]</span>
+            <div id="C003101S2_source" class="dyn-source">
+<pre>
+[](1, 2, 3) collect(+(2)) should ==([](3, 4, 5)) 
+[](1, 2, 3) collect(1) should ==([](1, 1, 1)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take two arguments and apply the code with the argument name bound <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003101S3_source')" id="l_C003101S3_source">show source</a> ]</span>
+            <div id="C003101S3_source" class="dyn-source">
+<pre>
+[](1, 2, 3) collect(x, x +(3)) should ==([](4, 5, 6)) 
+[](1, 2, 3) collect(x, 1) should ==([](1, 1, 1)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00311"></a><b>collectFn</b>(+blocks)
+          </div>
+          <div class="description">
+            <p>
+              nil
+            </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00311_source')" id="l_C00311_source">show source</a> ]</p>
+            <div id="C00311_source" class="dyn-source">
+<pre>
+method(+blocks, 
+  result = list 
+  self each(n, 
+    current = cell(:n) 
+    blocks each(b, current = cell(:b) call(cell(:current))) 
+    result &lt;&lt;(current)) 
+  result)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should take zero arguments and just return the elements in a list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003111S0_source')" id="l_C003111S0_source">show source</a> ]</span>
+            <div id="C003111S0_source" class="dyn-source">
+<pre>
+[](1, 2, 3) collectFn should ==([](1, 2, 3)) 
+CustomEnumerable collectFn should ==([]("3first", "1second", "2third")) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take one lexical block argument and apply that to each element, and return the result in a list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003111S1_source')" id="l_C003111S1_source">show source</a> ]</span>
+            <div id="C003111S1_source" class="dyn-source">
+<pre>
+x = fn(arg, arg +(2)) 
+[](1, 2, 3) collectFn(x) should ==([](3, 4, 5)) 
+x = fn(arg, arg [](0 ..(2))) 
+CustomEnumerable collectFn(x) should ==([]("3fi", "1se", "2th")) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take several lexical blocks and chain them together <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003111S2_source')" id="l_C003111S2_source">show source</a> ]</span>
+            <div id="C003111S2_source" class="dyn-source">
+<pre>
+x = fn(arg, arg +(2)) 
+x2 = fn(arg, arg *(2)) 
+[](1, 2, 3) collectFn(x, x2) should ==([](6, 8, 10)) 
+x = fn(arg, arg [](0 ..(2))) 
+x2 = fn(arg, arg +("flurg")) 
+CustomEnumerable collectFn(x, x2) should ==([]("3fiflurg", "1seflurg", "2thflurg")) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00296"></a><b>count</b>(...)
+          </div>
+          <div class="description">
+            <p>
+              takes zero, one or two arguments. if zero arguments, returns the number of elements in the collection. if one argument, expects it to be a message chain. if that message chain, that will be used as a predicate. returns the number of elements where the predicate returns true. finally, if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and used as a predicate, and the result will be the number of elements matching the predicate.
+            </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00296_source')" id="l_C00296_source">show source</a> ]</p>
+            <div id="C00296_source" class="dyn-source">
+<pre>
+macro(
+  len = call arguments length 
+  result = 0 
+  if(len ==(0), 
+    self each(n, ++(result)), 
+    if(len ==(1), 
+      theCode = call arguments first 
+      self each(n, if(theCode evaluateOn(call ground, cell(:n)), ++(result))), 
+      lexicalCode = LexicalBlock createFrom(call arguments, call ground) 
+      self each(n, if(lexicalCode call(cell(:n)), ++(result))))) 
+  result)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should take zero arguments and return how many elements there are <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002961S0_source')" id="l_C002961S0_source">show source</a> ]</span>
+            <div id="C002961S0_source" class="dyn-source">
+<pre>
+[](1, 2, 3) count should ==(3) 
+[](nil, false) count should ==(2) 
+[](nil, false, true) count should ==(3) 
+CustomEnumerable count should ==(3) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take one element that is a predicate, and return how many matches it <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002961S1_source')" id="l_C002961S1_source">show source</a> ]</span>
+            <div id="C002961S1_source" class="dyn-source">
+<pre>
+[](1, 2, 3) count(&gt;(1)) should ==(2) 
+[](nil, false, nil) count(nil?) should ==(2) 
+[](nil, false, true) count(==(2)) should ==(0) 
+CustomEnumerable count([](0 ...(1)) !=("1")) should ==(2) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take two elements that turn into a lexical block and returns how many matches it <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002961S2_source')" id="l_C002961S2_source">show source</a> ]</span>
+            <div id="C002961S2_source" class="dyn-source">
+<pre>
+[](1, 2, 3) count(x, x &gt;(1)) should ==(2) 
+[](nil, false, nil) count(x, x nil?) should ==(2) 
+[](nil, false, true) count(x, x ==(2)) should ==(0) 
+CustomEnumerable count(x, x !=("2third")) should ==(2) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00306"></a><b>cycle</b>(...)
+          </div>
+          <div class="description">
+            <p>
+              takes one or two arguments and cycles over the elements of this collection. the cycling will be done by calling each once and collecting the result, and then using this to continue cycling. if one argument is given, it should be a message chain to apply. if two arguments are given, they will be turned into a lexical block and applied. if the collection is empty, returns nil.
+            </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00306_source')" id="l_C00306_source">show source</a> ]</p>
+            <div id="C00306_source" class="dyn-source">
+<pre>
+macro(
+  len = call arguments length 
+  internal = list 
+  if(len ==(1), 
+    theCode = call arguments first 
+    self each(n, 
+      internal &lt;&lt;(cell(:n)) 
+      theCode evaluateOn(call ground, cell(:n))) 
+    if(internal empty?, return(nil)) 
+    loop(internal each(x, theCode evaluateOn(call ground, cell(:x)))), 
+    lexicalCode = LexicalBlock createFrom(call arguments, call ground) 
+    self each(n, 
+      internal &lt;&lt;(cell(:n)) 
+      lexicalCode call(cell(:n))) 
+    if(internal empty?, return(nil)) 
+    loop(internal each(x, lexicalCode call(cell(:x))))))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should not do anything for an empty collection <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003061S0_source')" id="l_C003061S0_source">show source</a> ]</span>
+            <div id="C003061S0_source" class="dyn-source">
+<pre>
+x = 1 
+[] cycle(_, x = 2) should ==(nil) 
+x should ==(1) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should repeat until stopped <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003061S1_source')" id="l_C003061S1_source">show source</a> ]</span>
+            <div id="C003061S1_source" class="dyn-source">
+<pre>
+Ground res = [] 
+m1 = method(
+    [](1, 2, 3) cycle(x, 
+      if(Ground res length ==(10), return) 
+      Ground res &lt;&lt;(x))) 
+m1 
+Ground res should ==([](1, 2, 3, 1, 2, 3, 1, 2, 3, 1)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should only call each once <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003061S2_source')" id="l_C003061S2_source">show source</a> ]</span>
+            <div id="C003061S2_source" class="dyn-source">
+<pre>
+CustomEnumerable3 = Origin mimic 
+CustomEnumerable3 mimic!(Mixins Enumerable) 
+CustomEnumerable3 eachCalled = 0 
+CustomEnumerable3 each = macro(
+    ++(eachCalled) 
+    len = call arguments length 
+    
+    if(len ==(1), 
+      first = call arguments first 
+      first evaluateOn(call ground, "3first") 
+      first evaluateOn(call ground, "1second") 
+      first evaluateOn(call ground, "2third"), 
+      lexical = LexicalBlock createFrom(call arguments, call ground) 
+      lexical call("3first") 
+      lexical call("1second") 
+      lexical call("2third"))) 
+m = method(
+    iter = 0 
+    CustomEnumerable3 cycle(_, if(iter ==(10), return) 
+      ++(iter))) 
+m 
+CustomEnumerable3 eachCalled should ==(1) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take one argument and apply it <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003061S3_source')" id="l_C003061S3_source">show source</a> ]</span>
+            <div id="C003061S3_source" class="dyn-source">
+<pre>
+Ground res = [] 
+m1 = method(
+    [](1, 2, 3) cycle(+(1) 
+      if(Ground res length ==(10), return) 
+      Ground res &lt;&lt;("foo"))) 
+m1 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take two arguments and turn it into a lexical block to apply <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003061S4_source')" id="l_C003061S4_source">show source</a> ]</span>
+            <div id="C003061S4_source" class="dyn-source">
+<pre>
+Ground res = [] 
+m1 = method(
+    [](1, 2, 3) cycle(x, if(Ground res length ==(10), return) 
+      Ground res &lt;&lt;(x))) 
+m1 
+Ground res should ==([](1, 2, 3, 1, 2, 3, 1, 2, 3, 1)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00312"></a><b>detect</b>(...)
+          </div>
+          <div class="description">
+            <p>
+              nil
+            </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00312_source')" id="l_C00312_source">show source</a> ]</p>
+            <div id="C00312_source" class="dyn-source">
+<pre>
+macro(
+  len = call arguments length 
+  if(len ==(0), 
+    self each(n, if(cell(:n), return(it))), 
+    if(len ==(1), 
+      theCode = call arguments first 
+      self each(n, if(theCode evaluateOn(call ground, cell(:n)), return(cell(:n)))), 
+      lexicalCode = LexicalBlock createFrom(call arguments, call ground) 
+      self each(n, if(lexicalCode call(cell(:n)), return(cell(:n)))))) 
+  nil)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should take zero arguments and just check if any of the values are true, and then return it <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003121S0_source')" id="l_C003121S0_source">show source</a> ]</span>
+            <div id="C003121S0_source" class="dyn-source">
+<pre>
+[](1, 2, 3) detect should ==(1) 
+[](nil, false, nil) detect should ==(nil) 
+[](nil, false, true) detect should ==(true) 
+CustomEnumerable detect should ==("3first") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take one argument that is a predicate that is applied to each element in the enumeration <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003121S1_source')" id="l_C003121S1_source">show source</a> ]</span>
+            <div id="C003121S1_source" class="dyn-source">
+<pre>
+[](1, 2, 3) detect(==(2)) should ==(2) 
+[](nil, false, nil) detect(nil?) should ==(nil) 
+[](nil, false, true) detect(==(2)) should ==(nil) 
+CustomEnumerable detect(!=("foo")) should ==("3first") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take two arguments that will be turned into a lexical block and applied <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003121S2_source')" id="l_C003121S2_source">show source</a> ]</span>
+            <div id="C003121S2_source" class="dyn-source">
+<pre>
+[](1, 2, 3) detect(x, x ==(2)) should ==(2) 
+[](nil, false, nil) detect(x, x nil?) should ==(nil) 
+[](nil, false, true) detect(x, x ==(2)) should ==(nil) 
+CustomEnumerable detect(x, x !=("foo")) should ==("3first") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00304"></a><b>drop</b>(howMany)
+          </div>
+          <div class="description">
+            <p>
+              takes one argument and returns a list of all the elements in this object except for how many that should be avoided.
+            </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00304_source')" id="l_C00304_source">show source</a> ]</p>
+            <div id="C00304_source" class="dyn-source">
+<pre>
+method(howMany, 
+  result = list 
+  currentCount = howMany 
+  self each(n, 
+    if(currentCount &gt;(0), 
+      --(currentCount), 
+      result &lt;&lt;(cell(:n)))) 
+  result)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return a list without as many elements as requested <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003041S0_source')" id="l_C003041S0_source">show source</a> ]</span>
+            <div id="C003041S0_source" class="dyn-source">
+<pre>
+[](1, 2, 3) drop(0) should ==([](1, 2, 3)) 
+[](1, 2, 3) drop(1) should ==([](2, 3)) 
+[](1, 2, 3) drop(2) should ==([](3)) 
+[](1, 2, 3) drop(3) should ==(
+  []) 
+CustomEnumerable drop(2) should ==([]("2third")) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not drop more elements than the length of the collection <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003041S1_source')" id="l_C003041S1_source">show source</a> ]</span>
+            <div id="C003041S1_source" class="dyn-source">
+<pre>
+[](1, 2, 3) drop(4) should ==(
+  []) 
+[](1, 2, 3) drop(10) should ==(
+  []) 
+CustomEnumerable drop(200) should ==(
+  []) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00305"></a><b>dropWhile</b>(...)
+          </div>
+          <div class="description">
+            <p>
+              takes zero, one or two arguments. it will evaluate a predicate once for each element, and avoid all the elements until the predicate returns false for the first time, then it will start collecting data. if zero arguments, the predicate is the element itself. if one argument, expects it to be a message chain to apply as a predicate. if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and used as the predicate.
+            </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00305_source')" id="l_C00305_source">show source</a> ]</p>
+            <div id="C00305_source" class="dyn-source">
+<pre>
+macro(
+  len = call arguments length 
+  result = list 
+  collecting = false 
+  if(len ==(0), 
+    self each(n, 
+      if(collecting, 
+        result &lt;&lt;(cell(:n)), 
+        unless(cell(:n), 
+          collecting = true 
+          result &lt;&lt;(cell(:n))))), 
+    if(len ==(1), 
+      theCode = call arguments first 
+      self each(n, 
+        if(collecting, 
+          result &lt;&lt;(cell(:n)), 
+          unless(theCode evaluateOn(call ground, cell(:n)), 
+            collecting = true 
+            result &lt;&lt;(cell(:n))))), 
+      lexicalCode = LexicalBlock createFrom(call arguments, call ground) 
+      self each(n, 
+        if(collecting, 
+          result &lt;&lt;(cell(:n)), 
+          unless(lexicalCode call(cell(:n)), 
+            collecting = true 
+            result &lt;&lt;(cell(:n))))))) 
+  result)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should take zero arguments and return everything after the point where a value is true <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003051S0_source')" id="l_C003051S0_source">show source</a> ]</span>
+            <div id="C003051S0_source" class="dyn-source">
+<pre>
+[](1, 2, 3) dropWhile should ==(
+  []) 
+[](1, 2, nil, false) dropWhile should ==([](nil, false)) 
+[](1, 2, false, 3, 4, nil, false) dropWhile should ==([](false, 3, 4, nil, false)) 
+CustomEnumerable dropWhile should ==(
+  []) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take one argument and apply it as a message chain, return a list with all elements after the block returns false <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003051S1_source')" id="l_C003051S1_source">show source</a> ]</span>
+            <div id="C003051S1_source" class="dyn-source">
+<pre>
+[](1, 2, 3) dropWhile(&lt;(3)) should ==([](3)) 
+[](1, 2, 3) dropWhile(!=(2)) should ==([](2, 3)) 
+CustomEnumerable dropWhile(!=("2third")) should ==([]("2third")) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take two arguments and apply the lexical block created from it, and return a list with all elements after the block returns false <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003051S2_source')" id="l_C003051S2_source">show source</a> ]</span>
+            <div id="C003051S2_source" class="dyn-source">
+<pre>
+[](1, 2, 3) dropWhile(x, x &lt;(3)) should ==([](3)) 
+[](1, 2, 3) dropWhile(x, x !=(2)) should ==([](2, 3)) 
+CustomEnumerable dropWhile(x, x !=("2third")) should ==([]("2third")) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00316"></a><b>filter</b>(...)
+          </div>
+          <div class="description">
+            <p>
+              nil
+            </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00316_source')" id="l_C00316_source">show source</a> ]</p>
+            <div id="C00316_source" class="dyn-source">
+<pre>
+macro(
+  len = call arguments length 
+  result = list 
+  if(len ==(0), 
+    self each(n, if(cell(:n), result &lt;&lt;(cell(:n)))), 
+    if(len ==(1), 
+      theCode = call arguments first 
+      self each(n, if(theCode evaluateOn(call ground, cell(:n)), result &lt;&lt;(cell(:n)))), 
+      lexicalCode = LexicalBlock createFrom(call arguments, call ground) 
+      self each(n, if(lexicalCode call(cell(:n)), result &lt;&lt;(cell(:n)))))) 
+  result)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should take zero arguments and return a list with only the true values <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003161S0_source')" id="l_C003161S0_source">show source</a> ]</span>
+            <div id="C003161S0_source" class="dyn-source">
+<pre>
+[](1, 2, 3) filter should ==([](1, 2, 3)) 
+[](nil, false, nil) filter should ==(
+  []) 
+[](nil, false, true) filter should ==([](true)) 
+CustomEnumerable filter should ==(CustomEnumerable asList) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take one argument that ends up being a predicate and return a list of the values that is true <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003161S1_source')" id="l_C003161S1_source">show source</a> ]</span>
+            <div id="C003161S1_source" class="dyn-source">
+<pre>
+[](1, 2, 3) filter(&gt;(1)) should ==([](2, 3)) 
+[](nil, false, nil) filter(nil?) should ==([](nil, nil)) 
+[](nil, false, true) filter(==(2)) should ==(
+  []) 
+CustomEnumerable filter([](0 ...(1)) !=("1")) should ==([]("3first", "2third")) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take two arguments that ends up being a predicate and return a list of the values that is true <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003161S2_source')" id="l_C003161S2_source">show source</a> ]</span>
+            <div id="C003161S2_source" class="dyn-source">
+<pre>
+[](1, 2, 3) filter(x, x &gt;(1)) should ==([](2, 3)) 
+[](nil, false, nil) filter(x, x nil?) should ==([](nil, nil)) 
+[](nil, false, true) filter(x, x ==(2)) should ==(
+  []) 
+CustomEnumerable filter(x, x !=("2third")) should ==([]("3first", "1second")) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00290"></a><b>find</b>(...)
+          </div>
+          <div class="description">
+            <p>
+              takes zero, one or two arguments. if zero arguments, returns the first element that is true, otherwise nil. if one argument, expects it to be a message chain. if that message chain, when applied to the current element returns a true value, the corresponding element is returned. finally, if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and tested against the values in this element. if it returns true for any element, the element will be retuend, otherwise nil.
+            </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00290_source')" id="l_C00290_source">show source</a> ]</p>
+            <div id="C00290_source" class="dyn-source">
+<pre>
+macro(
+  len = call arguments length 
+  if(len ==(0), 
+    self each(n, if(cell(:n), return(it))), 
+    if(len ==(1), 
+      theCode = call arguments first 
+      self each(n, if(theCode evaluateOn(call ground, cell(:n)), return(cell(:n)))), 
+      lexicalCode = LexicalBlock createFrom(call arguments, call ground) 
+      self each(n, if(lexicalCode call(cell(:n)), return(cell(:n)))))) 
+  nil)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should take zero arguments and just check if any of the values are true, and then return it <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002901S0_source')" id="l_C002901S0_source">show source</a> ]</span>
+            <div id="C002901S0_source" class="dyn-source">
+<pre>
+[](1, 2, 3) find should ==(1) 
+[](nil, false, nil) find should ==(nil) 
+[](nil, false, true) find should ==(true) 
+CustomEnumerable find should ==("3first") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take one argument that is a predicate that is applied to each element in the enumeration <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002901S1_source')" id="l_C002901S1_source">show source</a> ]</span>
+            <div id="C002901S1_source" class="dyn-source">
+<pre>
+[](1, 2, 3) find(==(2)) should ==(2) 
+[](nil, false, nil) find(nil?) should ==(nil) 
+[](nil, false, true) find(==(2)) should ==(nil) 
+CustomEnumerable find(!=("foo")) should ==("3first") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take two arguments that will be turned into a lexical block and applied <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002901S2_source')" id="l_C002901S2_source">show source</a> ]</span>
+            <div id="C002901S2_source" class="dyn-source">
+<pre>
+[](1, 2, 3) find(x, x ==(2)) should ==(2) 
+[](nil, false, nil) find(x, x nil?) should ==(nil) 
+[](nil, false, true) find(x, x ==(2)) should ==(nil) 
+CustomEnumerable find(x, x !=("foo")) should ==("3first") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00315"></a><b>findAll</b>(...)
+          </div>
+          <div class="description">
+            <p>
+              nil
+            </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00315_source')" id="l_C00315_source">show source</a> ]</p>
+            <div id="C00315_source" class="dyn-source">
+<pre>
+macro(
+  len = call arguments length 
+  result = list 
+  if(len ==(0), 
+    self each(n, if(cell(:n), result &lt;&lt;(cell(:n)))), 
+    if(len ==(1), 
+      theCode = call arguments first 
+      self each(n, if(theCode evaluateOn(call ground, cell(:n)), result &lt;&lt;(cell(:n)))), 
+      lexicalCode = LexicalBlock createFrom(call arguments, call ground) 
+      self each(n, if(lexicalCode call(cell(:n)), result &lt;&lt;(cell(:n)))))) 
+  result)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should take zero arguments and return a list with only the true values <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003151S0_source')" id="l_C003151S0_source">show source</a> ]</span>
+            <div id="C003151S0_source" class="dyn-source">
+<pre>
+[](1, 2, 3) findAll should ==([](1, 2, 3)) 
+[](nil, false, nil) findAll should ==(
+  []) 
+[](nil, false, true) findAll should ==([](true)) 
+CustomEnumerable findAll should ==(CustomEnumerable asList) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take one argument that ends up being a predicate and return a list of the values that is true <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003151S1_source')" id="l_C003151S1_source">show source</a> ]</span>
+            <div id="C003151S1_source" class="dyn-source">
+<pre>
+[](1, 2, 3) findAll(&gt;(1)) should ==([](2, 3)) 
+[](nil, false, nil) findAll(nil?) should ==([](nil, nil)) 
+[](nil, false, true) findAll(==(2)) should ==(
+  []) 
+CustomEnumerable findAll([](0 ...(1)) !=("1")) should ==([]("3first", "2third")) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take two arguments that ends up being a predicate and return a list of the values that is true <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003151S2_source')" id="l_C003151S2_source">show source</a> ]</span>
+            <div id="C003151S2_source" class="dyn-source">
+<pre>
+[](1, 2, 3) findAll(x, x &gt;(1)) should ==([](2, 3)) 
+[](nil, false, nil) findAll(x, x nil?) should ==([](nil, nil)) 
+[](nil, false, true) findAll(x, x ==(2)) should ==(
+  []) 
+CustomEnumerable findAll(x, x !=("2third")) should ==([]("3first", "1second")) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00299"></a><b>findIndex</b>(...)
+          </div>
+          <div class="description">
+            <p>
+              takes zero, one or two arguments. if zero arguments, returns the index of the first element that is true, otherwise nil. if one argument, expects it to be a message chain. if that message chain, when applied to the current element returns a true value, the corresponding element index is returned. finally, if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and tested against the values in this element. if it returns true for any element, the element index will be returned, otherwise nil.
+            </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00299_source')" id="l_C00299_source">show source</a> ]</p>
+            <div id="C00299_source" class="dyn-source">
+<pre>
+macro(
+  len = call arguments length 
+  if(len ==(0), 
+    self each(ix, n, if(cell(:n), return(ix))), 
+    if(len ==(1), 
+      theCode = call arguments first 
+      self each(ix, n, if(theCode evaluateOn(call ground, cell(:n)), return(ix))), 
+      lexicalCode = LexicalBlock createFrom(call arguments, call ground) 
+      self each(ix, n, if(lexicalCode call(cell(:n)), return(ix))))) 
+  nil)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should take zero arguments and just check if any of the values are true, and then return the index of it <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002991S0_source')" id="l_C002991S0_source">show source</a> ]</span>
+            <div id="C002991S0_source" class="dyn-source">
+<pre>
+[](1, 2, 3) findIndex should ==(0) 
+[](nil, false, nil) findIndex should ==(nil) 
+[](nil, false, true) findIndex should ==(2) 
+CustomEnumerable findIndex should ==(0) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take one argument that is a predicate that is applied to each element in the enumeration <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002991S1_source')" id="l_C002991S1_source">show source</a> ]</span>
+            <div id="C002991S1_source" class="dyn-source">
+<pre>
+[](1, 2, 3) findIndex(==(2)) should ==(1) 
+[](nil, false, nil) findIndex(nil?) should ==(0) 
+[](nil, false, true) findIndex(==(2)) should ==(nil) 
+CustomEnumerable findIndex(!=("foo")) should ==(0) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take two arguments that will be turned into a lexical block and applied <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002991S2_source')" id="l_C002991S2_source">show source</a> ]</span>
+            <div id="C002991S2_source" class="dyn-source">
+<pre>
+[](1, 2, 3) findIndex(x, x ==(2)) should ==(1) 
+[](nil, false, nil) findIndex(x, x nil?) should ==(0) 
+[](nil, false, true) findIndex(x, x ==(2)) should ==(nil) 
+CustomEnumerable findIndex(x, x !=("foo")) should ==(0) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00298"></a><b>first</b>(howMany nil)
+          </div>
+          <div class="description">
+            <p>
+              takes one optional argument. if no argument is given, first will return the first element in the collection, or nil if no such element exists. if an argument is given, it should be a number describing how many elements to get. the return value will be a list in that case
+            </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00298_source')" id="l_C00298_source">show source</a> ]</p>
+            <div id="C00298_source" class="dyn-source">
+<pre>
+method(howMany nil, 
+  if(howMany, 
+    result = list 
+    self each(n, 
+      if(howMany ==(0), return(result)) 
+      --(howMany) 
+      result &lt;&lt;(cell(:n))) 
+    return(result), 
+    self each(n, return(cell(:n))) 
+    return(nil)))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return nil for an empty collection <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002981S0_source')" id="l_C002981S0_source">show source</a> ]</span>
+            <div id="C002981S0_source" class="dyn-source">
+<pre>
+set first should ==(nil) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take an optional argument of how many to return <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002981S1_source')" id="l_C002981S1_source">show source</a> ]</span>
+            <div id="C002981S1_source" class="dyn-source">
+<pre>
+set first(0) should ==(
+  []) 
+set first(1) should ==(
+  []) 
+set first(2) should ==(
+  []) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the first element for a non-empty collection <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002981S2_source')" id="l_C002981S2_source">show source</a> ]</span>
+            <div id="C002981S2_source" class="dyn-source">
+<pre>
+set(42) first should ==(42) 
+CustomEnumerable first should ==("3first") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the first n elements for a non-empty collection <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002981S3_source')" id="l_C002981S3_source">show source</a> ]</span>
+            <div id="C002981S3_source" class="dyn-source">
+<pre>
+set(42) first(0) should ==(
+  []) 
+set(42) first(1) should ==([](42)) 
+set(42) first(2) should ==([](42)) 
+[](42, 44, 46) first(2) should ==([](42, 44)) 
+set(42, 44, 46) first(3) sort should ==([](42, 44, 46)) 
+CustomEnumerable first(2) should ==([]("3first", "1second")) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00292"></a><b>flatMap</b>(...)
+          </div>
+          <div class="description">
+            <p>
+              expects to get the same kind of arguments as map, and that each map operation returns a list. these lists will then be folded into a single list.
+            </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00292_source')" id="l_C00292_source">show source</a> ]</p>
+            <div id="C00292_source" class="dyn-source">
+<pre>
+macro(
+  call resendToMethod("map") fold(+))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return a correct flattened map <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002921S0_source')" id="l_C002921S0_source">show source</a> ]</span>
+            <div id="C002921S0_source" class="dyn-source">
+<pre>
+[](1, 2, 3) flatMap(x, [](x)) should ==([](1, 2, 3)) 
+[](1, 2, 3) flatMap(x, [](x, x +(10), x +(20))) should ==([](1, 11, 21, 2, 12, 22, 3, 13, 23)) 
+[](4, 5, 6) flatMap(x, [](x +(20), x +(10), x)) should ==([](24, 14, 4, 25, 15, 5, 26, 16, 6)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00314"></a><b>fold</b>(...)
+          </div>
+          <div class="description">
+            <p>
+              nil
+            </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00314_source')" id="l_C00314_source">show source</a> ]</p>
+            <div id="C00314_source" class="dyn-source">
+<pre>
+macro(
+  len = call arguments length 
+  outsideGround = call ground 
+  if(len ==(1), 
+    elementName = genSym 
+    theCode = call arguments first deepCopy 
+    last = theCode 
+    while(last next, 
+      last = last next) 
+    last appendArgument(message(elementName)) 
+    sum = nil 
+    self each(i, n, 
+      if(i ==(0), 
+        sum = cell(:n), 
+        outsideGround cell(elementName) = cell(:n) 
+        sum = theCode evaluateOn(outsideGround, cell(:sum)))) 
+    return(sum), 
+    if(len ==(2), 
+      elementName = call arguments first name 
+      theCode = call arguments second 
+      sum = nil 
+      self each(i, n, 
+        if(i ==(0), 
+          sum = cell(:n), 
+          call ground cell(elementName) = cell(:n) 
+          sum = theCode evaluateOn(call ground, cell(:sum)))) 
+      return(sum), 
+      if(len ==(3), 
+        lexicalCode = LexicalBlock createFrom(call arguments, call ground) 
+        sum = nil 
+        self each(i, n, 
+          if(i ==(0), 
+            sum = cell(:n), 
+            sum = lexicalCode call(cell(:sum), cell(:n)))) 
+        return(sum), 
+        sum = call argAt(0) 
+        lexicalCode = LexicalBlock createFrom(call arguments [](1 ..(0 -(1))), call ground) 
+        self each(n, 
+          sum = lexicalCode call(cell(:sum), cell(:n))) 
+        return((sum)) 
+        ))) 
+  nil)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should take one argument that is a message chain and apply that on the sum, with the current arg as argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003141S0_source')" id="l_C003141S0_source">show source</a> ]</span>
+            <div id="C003141S0_source" class="dyn-source">
+<pre>
+[](1, 2, 3) fold(+) should ==(6) 
+[](1, 2, 3) fold(*((5)) -) should ==(12) 
+CustomEnumerable2 fold(-) should ==(9) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take two arguments that is an argument name and a message chain and apply that on the sum <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003141S1_source')" id="l_C003141S1_source">show source</a> ]</span>
+            <div id="C003141S1_source" class="dyn-source">
+<pre>
+[](1, 2, 3) fold(x, +(x *(2))) should ==(11) 
+[](1, 2, 3) fold(x, *((5)) -(x)) should ==(12) 
+CustomEnumerable2 fold(x, -(x)) should ==(9) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take three arguments that is the sum name, the argument name and code to apply <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003141S2_source')" id="l_C003141S2_source">show source</a> ]</span>
+            <div id="C003141S2_source" class="dyn-source">
+<pre>
+[](1, 2, 3) fold(sum, x, sum +(x *(2))) should ==(11) 
+[](1, 2, 3) fold(sum, x, sum *((5)) -(x)) should ==(12) 
+CustomEnumerable2 fold(sum, x, sum -(x)) should ==(9) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take four arguments that is the initial value, the sum name, the argument name and code to apply <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003141S3_source')" id="l_C003141S3_source">show source</a> ]</span>
+            <div id="C003141S3_source" class="dyn-source">
+<pre>
+[](1, 2, 3) fold(13, sum, x, sum +(x *(2))) should ==(25) 
+[](1, 2, 3) fold(1, sum, x, sum *((5)) -(x)) should ==(87) 
+CustomEnumerable2 fold(100, sum, x, sum -(x)) should ==(25) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00309"></a><b>grep</b>(...)
+          </div>
+          <div class="description">
+            <p>
+              takes one, two or three arguments. grep will first find any elements in the collection matching the first argument with '==='. if two or three arguments are given, these will be used to transform the matching object and then add the transformed version instead of the original element to the result list. the two argument version expects the second argument to be a message chain, and the three argument version expects it to be something that can be turned into a lexical block
+            </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00309_source')" id="l_C00309_source">show source</a> ]</p>
+            <div id="C00309_source" class="dyn-source">
+<pre>
+macro(
+  len = call arguments length 
+  result = list 
+  matchingAgainst = call argAt(0) 
+  if(len ==(1), 
+    self each(n, 
+      if(matchingAgainst ===(cell(:n)), 
+        result &lt;&lt;(cell(:n)))), 
+    if(len ==(2), 
+      theCode = call arguments second 
+      self each(n, 
+        if(matchingAgainst ===(cell(:n)), 
+          result &lt;&lt;(theCode evaluateOn(call ground, cell(:n))))), 
+      lexicalCode = LexicalBlock createFrom(call arguments [](1 ..(0 -(1))), call ground) 
+      self each(n, 
+        if(matchingAgainst ===(cell(:n)), 
+          result &lt;&lt;(lexicalCode call(cell(:n))))))) 
+  result)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should take one argument and return everything that matches with === <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003091S0_source')" id="l_C003091S0_source">show source</a> ]</span>
+            <div id="C003091S0_source" class="dyn-source">
+<pre>
+[](1, 2, 3, 4, 5, 6, 7, 8, 9) grep(2 ..(5)) should ==([](2, 3, 4, 5)) 
+customObj = Origin mimic 
+customObj === = method(other, (other &lt;(3)) ||(other &gt;(5))) 
+[](1, 2, 3, 4, 5, 6, 7, 8, 9) grep(customObj) should ==([](1, 2, 6, 7, 8, 9)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take two arguments where the second argument is a message chain and return the result of calling that chain on everything that matches with === <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003091S1_source')" id="l_C003091S1_source">show source</a> ]</span>
+            <div id="C003091S1_source" class="dyn-source">
+<pre>
+[](1, 2, 3, 4, 5, 6, 7, 8, 9) grep(2 ..(5), +(1)) should ==([](3, 4, 5, 6)) 
+customObj = Origin mimic 
+customObj === = method(other, (other &lt;(3)) ||(other &gt;(5))) 
+[](1, 2, 3, 4, 5, 6, 7, 8, 9) grep(customObj, +(1)) should ==([](2, 3, 7, 8, 9, 10)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take three arguments where the second and third arguments gets turned into a lexical block to apply to all that matches with === <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003091S2_source')" id="l_C003091S2_source">show source</a> ]</span>
+            <div id="C003091S2_source" class="dyn-source">
+<pre>
+[](1, 2, 3, 4, 5, 6, 7, 8, 9) grep(2 ..(5), x, (x +(1)) asText) should ==([]("3", "4", "5", "6")) 
+customObj = Origin mimic 
+customObj === = method(other, (other &lt;(3)) ||(other &gt;(5))) 
+[](1, 2, 3, 4, 5, 6, 7, 8, 9) grep(customObj, x, (x +(1)) asText) should ==([]("2", "3", "7", "8", "9", "10")) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00301"></a><b>include?</b>(toFind)
+          </div>
+          <div class="description">
+            <p>
+              takes one argument and returns true if this element is in the collection. comparisons is done with ==.
+            </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00301_source')" id="l_C00301_source">show source</a> ]</p>
+            <div id="C00301_source" class="dyn-source">
+<pre>
+method(toFind, 
+  self each(n, 
+    if(toFind ==(cell(:n)), 
+      return(true))) 
+  return(false))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return true if the element is in the enumeration <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003011S0_source')" id="l_C003011S0_source">show source</a> ]</span>
+            <div id="C003011S0_source" class="dyn-source">
+<pre>
+[](1, 2, 3) include?(2) should ==(true) 
+CustomEnumerable include?("1second") should ==(true) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return false if the element is not in the enumeration <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003011S1_source')" id="l_C003011S1_source">show source</a> ]</span>
+            <div id="C003011S1_source" class="dyn-source">
+<pre>
+[](1, 2, 3) include?(0) should ==(false) 
+CustomEnumerable include?("2second") should ==(false) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00291"></a><b>inject</b>(...)
+          </div>
+          <div class="description">
+            <p>
+              takes one, two, three or four arguments. all versions need an initial sum, code to execute, a place to put the current sum in the code, and a place to stick the current element of the enumerable. if one argument, it has to be a message chain. this message chain will be applied on the current sum. the element will be appended to the argument list of the last message send in the chain. the initial sum is the first element, and the code will be executed once less than the size of the enumerable due to this. if two arguments given, the first argument is the name of the variable to put the current element in, and the message will still be sent to the sum - and the initial sum works the same way as for one argument. when three arguments are given, the whole thing will be turned into a lexical closure, where the first argument is the name of the sum variable, the second argument is the name of the element variable, and the last argument is the code. when given four arguments, the only difference is that the first argument will be evaluated as the initial sum.
+            </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00291_source')" id="l_C00291_source">show source</a> ]</p>
+            <div id="C00291_source" class="dyn-source">
+<pre>
+macro(
+  len = call arguments length 
+  outsideGround = call ground 
+  if(len ==(1), 
+    elementName = genSym 
+    theCode = call arguments first deepCopy 
+    last = theCode 
+    while(last next, 
+      last = last next) 
+    last appendArgument(message(elementName)) 
+    sum = nil 
+    self each(i, n, 
+      if(i ==(0), 
+        sum = cell(:n), 
+        outsideGround cell(elementName) = cell(:n) 
+        sum = theCode evaluateOn(outsideGround, cell(:sum)))) 
+    return(sum), 
+    if(len ==(2), 
+      elementName = call arguments first name 
+      theCode = call arguments second 
+      sum = nil 
+      self each(i, n, 
+        if(i ==(0), 
+          sum = cell(:n), 
+          call ground cell(elementName) = cell(:n) 
+          sum = theCode evaluateOn(call ground, cell(:sum)))) 
+      return(sum), 
+      if(len ==(3), 
+        lexicalCode = LexicalBlock createFrom(call arguments, call ground) 
+        sum = nil 
+        self each(i, n, 
+          if(i ==(0), 
+            sum = cell(:n), 
+            sum = lexicalCode call(cell(:sum), cell(:n)))) 
+        return(sum), 
+        sum = call argAt(0) 
+        lexicalCode = LexicalBlock createFrom(call arguments [](1 ..(0 -(1))), call ground) 
+        self each(n, 
+          sum = lexicalCode call(cell(:sum), cell(:n))) 
+        return((sum)) 
+        ))) 
+  nil)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should take one argument that is a message chain and apply that on the sum, with the current arg as argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002911S0_source')" id="l_C002911S0_source">show source</a> ]</span>
+            <div id="C002911S0_source" class="dyn-source">
+<pre>
+[](1, 2, 3) inject(+) should ==(6) 
+[](1, 2, 3) inject(*((5)) -) should ==(12) 
+CustomEnumerable2 inject(-) should ==(9) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take two arguments that is an argument name and a message chain and apply that on the sum <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002911S1_source')" id="l_C002911S1_source">show source</a> ]</span>
+            <div id="C002911S1_source" class="dyn-source">
+<pre>
+[](1, 2, 3) inject(x, +(x *(2))) should ==(11) 
+[](1, 2, 3) inject(x, *((5)) -(x)) should ==(12) 
+CustomEnumerable2 inject(x, -(x)) should ==(9) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take three arguments that is the sum name, the argument name and code to apply <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002911S2_source')" id="l_C002911S2_source">show source</a> ]</span>
+            <div id="C002911S2_source" class="dyn-source">
+<pre>
+[](1, 2, 3) inject(sum, x, sum +(x *(2))) should ==(11) 
+[](1, 2, 3) inject(sum, x, sum *((5)) -(x)) should ==(12) 
+CustomEnumerable2 inject(sum, x, sum -(x)) should ==(9) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take four arguments that is the initial value, the sum name, the argument name and code to apply <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002911S3_source')" id="l_C002911S3_source">show source</a> ]</span>
+            <div id="C002911S3_source" class="dyn-source">
+<pre>
+[](1, 2, 3) inject(13, sum, x, sum +(x *(2))) should ==(25) 
+[](1, 2, 3) inject(1, sum, x, sum *((5)) -(x)) should ==(87) 
+CustomEnumerable2 inject(100, sum, x, sum -(x)) should ==(25) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00285"></a><b>map</b>(...)
+          </div>
+          <div class="description">
+            <p>
+              takes one or two arguments. if one argument is given, it will be evaluated as a message chain on each element in the enumerable, and then the result will be collected in a new List. if two arguments are given, the first one should be an unevaluated argument name, which will be bound inside the scope of executing the second piece of code. it's important to notice that the one argument form will establish no context, while the two argument form establishes a new lexical closure.
+            </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00285_source')" id="l_C00285_source">show source</a> ]</p>
+            <div id="C00285_source" class="dyn-source">
+<pre>
+macro(
+  len = call arguments length 
+  
+  result = list 
+  if(len ==(1), 
+    theCode = call arguments first 
+    self each(n, result &lt;&lt;(theCode evaluateOn(call ground, cell(:n)))), 
+    lexicalCode = LexicalBlock createFrom(call arguments, call ground) 
+    self each(n, result &lt;&lt;(lexicalCode call(cell(:n))))) 
+  result)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return an empty list for an empty enumerable <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002851S0_source')" id="l_C002851S0_source">show source</a> ]</span>
+            <div id="C002851S0_source" class="dyn-source">
+<pre>
+[] map(x, x +(2)) should ==(
+  []) 
+{} map(x, x +(2)) should ==(
+  []) 
+set map(x, x +(2)) should ==(
+  []) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the same list for something that only returns itself <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002851S1_source')" id="l_C002851S1_source">show source</a> ]</span>
+            <div id="C002851S1_source" class="dyn-source">
+<pre>
+[](1, 2, 3) map(x, x) should ==([](1, 2, 3)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take one argument and apply the inside <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002851S2_source')" id="l_C002851S2_source">show source</a> ]</span>
+            <div id="C002851S2_source" class="dyn-source">
+<pre>
+[](1, 2, 3) map(+(2)) should ==([](3, 4, 5)) 
+[](1, 2, 3) map(1) should ==([](1, 1, 1)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take two arguments and apply the code with the argument name bound <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002851S3_source')" id="l_C002851S3_source">show source</a> ]</span>
+            <div id="C002851S3_source" class="dyn-source">
+<pre>
+[](1, 2, 3) map(x, x +(3)) should ==([](4, 5, 6)) 
+[](1, 2, 3) map(x, 1) should ==([](1, 1, 1)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00286"></a><b>mapFn</b>(+blocks)
+          </div>
+          <div class="description">
+            <p>
+              takes zero or more arguments that evaluates to lexical blocks. these blocks should all take one argument. these blocks will be chained together and applied on each element in the receiver. the final result will be collected into a list. the evaluation happens left-to-right, meaning the first method invoked will be the first argument.
+            </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00286_source')" id="l_C00286_source">show source</a> ]</p>
+            <div id="C00286_source" class="dyn-source">
+<pre>
+method(+blocks, 
+  result = list 
+  self each(n, 
+    current = cell(:n) 
+    blocks each(b, current = cell(:b) call(cell(:current))) 
+    result &lt;&lt;(current)) 
+  result)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should take zero arguments and just return the elements in a list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002861S0_source')" id="l_C002861S0_source">show source</a> ]</span>
+            <div id="C002861S0_source" class="dyn-source">
+<pre>
+[](1, 2, 3) mapFn should ==([](1, 2, 3)) 
+CustomEnumerable mapFn should ==([]("3first", "1second", "2third")) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take one lexical block argument and apply that to each element, and return the result in a list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002861S1_source')" id="l_C002861S1_source">show source</a> ]</span>
+            <div id="C002861S1_source" class="dyn-source">
+<pre>
+x = fn(arg, arg +(2)) 
+[](1, 2, 3) mapFn(x) should ==([](3, 4, 5)) 
+x = fn(arg, arg [](0 ..(2))) 
+CustomEnumerable mapFn(x) should ==([]("3fi", "1se", "2th")) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take several lexical blocks and chain them together <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002861S2_source')" id="l_C002861S2_source">show source</a> ]</span>
+            <div id="C002861S2_source" class="dyn-source">
+<pre>
+x = fn(arg, arg +(2)) 
+x2 = fn(arg, arg *(2)) 
+[](1, 2, 3) mapFn(x, x2) should ==([](6, 8, 10)) 
+x = fn(arg, arg [](0 ..(2))) 
+x2 = fn(arg, arg +("flurg")) 
+CustomEnumerable mapFn(x, x2) should ==([]("3fiflurg", "1seflurg", "2thflurg")) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00317"></a><b>member?</b>(toFind)
+          </div>
+          <div class="description">
+            <p>
+              nil
+            </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00317_source')" id="l_C00317_source">show source</a> ]</p>
+            <div id="C00317_source" class="dyn-source">
+<pre>
+method(toFind, 
+  self each(n, 
+    if(toFind ==(cell(:n)), 
+      return(true))) 
+  return(false))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return true if the element is in the enumeration <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003171S0_source')" id="l_C003171S0_source">show source</a> ]</span>
+            <div id="C003171S0_source" class="dyn-source">
+<pre>
+[](1, 2, 3) member?(2) should ==(true) 
+CustomEnumerable member?("1second") should ==(true) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return false if the element is not in the enumeration <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003171S1_source')" id="l_C003171S1_source">show source</a> ]</span>
+            <div id="C003171S1_source" class="dyn-source">
+<pre>
+[](1, 2, 3) member?(0) should ==(false) 
+CustomEnumerable member?("2second") should ==(false) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00288"></a><b>none?</b>(...)
+          </div>
+          <div class="description">
+            <p>
+              takes zero, one or two arguments. if zero arguments, returns false if any of the elements yielded by each is true, otherwise true. if one argument, expects it to be a message chain. if that message chain, when applied to the current element returns a true value, the method returns false. finally, if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and tested against the values in this element. if it returns true for any element, this method returns false, otherwise true.
+            </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00288_source')" id="l_C00288_source">show source</a> ]</p>
+            <div id="C00288_source" class="dyn-source">
+<pre>
+macro(
+  len = call arguments length 
+  if(len ==(0), 
+    self each(n, if(cell(:n), return(false))), 
+    if(len ==(1), 
+      theCode = call arguments first 
+      self each(n, if(theCode evaluateOn(call ground, cell(:n)), return(false))), 
+      lexicalCode = LexicalBlock createFrom(call arguments, call ground) 
+      self each(n, if(lexicalCode call(cell(:n)), return(false))))) 
+  true)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should take zero arguments and just check if any of the values are true, and then return false <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002881S0_source')" id="l_C002881S0_source">show source</a> ]</span>
+            <div id="C002881S0_source" class="dyn-source">
+<pre>
+[](1, 2, 3) none? should ==(false) 
+[](nil, false, nil) none? should ==(true) 
+[](nil, false, true) none? should ==(false) 
+CustomEnumerable none? should ==(false) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take one argument that is a predicate that is applied to each element in the enumeration <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002881S1_source')" id="l_C002881S1_source">show source</a> ]</span>
+            <div id="C002881S1_source" class="dyn-source">
+<pre>
+[](1, 2, 3) none?(==(2)) should ==(false) 
+[](nil, false, nil) none?(nil?) should ==(false) 
+[](nil, false, true) none?(==(2)) should ==(true) 
+CustomEnumerable none?(!=("foo")) should ==(false) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take two arguments that will be turned into a lexical block and applied <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002881S2_source')" id="l_C002881S2_source">show source</a> ]</span>
+            <div id="C002881S2_source" class="dyn-source">
+<pre>
+[](1, 2, 3) none?(x, x ==(2)) should ==(false) 
+[](nil, false, nil) none?(x, x nil?) should ==(false) 
+[](nil, false, true) none?(x, x ==(2)) should ==(true) 
+CustomEnumerable none?(x, x !=("foo")) should ==(false) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00295"></a><b>one?</b>(...)
+          </div>
+          <div class="description">
+            <p>
+              takes zero, one or two arguments. if zero arguments, returns true if exactly one of the elements is true, otherwise false. if one argument, expects it to be a message chain that will be used as a predicate. if that predicate returns true for exactly one element, returns true, otherwise false. finally, if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and tested against the values in this element. if it returns true for exactly one element, returns true, otherwise false
+            </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00295_source')" id="l_C00295_source">show source</a> ]</p>
+            <div id="C00295_source" class="dyn-source">
+<pre>
+macro(
+  len = call arguments length 
+  result = false 
+  if(len ==(0), 
+    self each(n, 
+      if(cell(:n), 
+        if(result, 
+          return(false), 
+          result = true))), 
+    if(len ==(1), 
+      theCode = call arguments first 
+      self each(n, 
+        if(theCode evaluateOn(call ground, cell(:n)), 
+          if(result, 
+            return(false), 
+            result = true))), 
+      lexicalCode = LexicalBlock createFrom(call arguments, call ground) 
+      self each(n, 
+        if(lexicalCode call(cell(:n)), 
+          if(result, 
+            return(false), 
+            result = true))))) 
+  result)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should take zero arguments and just check if exactly one of the values are true, and then return true <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002951S0_source')" id="l_C002951S0_source">show source</a> ]</span>
+            <div id="C002951S0_source" class="dyn-source">
+<pre>
+[](1, 2, 3) one? should ==(false) 
+[](nil, false, nil) one? should ==(false) 
+[](nil, false, true) one? should ==(true) 
+CustomEnumerable one? should ==(false) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take one argument that is a predicate that is applied to each element in the enumeration <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002951S1_source')" id="l_C002951S1_source">show source</a> ]</span>
+            <div id="C002951S1_source" class="dyn-source">
+<pre>
+[](1, 2, 3) one?(==(2)) should ==(true) 
+[](nil, false, nil) one?(nil?) should ==(false) 
+[](nil, false, true) one?(==(2)) should ==(false) 
+CustomEnumerable one?(==("3first")) should ==(true) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take two arguments that will be turned into a lexical block and applied <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002951S2_source')" id="l_C002951S2_source">show source</a> ]</span>
+            <div id="C002951S2_source" class="dyn-source">
+<pre>
+[](1, 2, 3) one?(x, x ==(2)) should ==(true) 
+[](nil, false, nil) one?(x, x nil?) should ==(false) 
+[](nil, false, true) one?(x, x ==(2)) should ==(false) 
+CustomEnumerable one?(x, x ==("3first")) should ==(true) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00300"></a><b>partition</b>(...)
+          </div>
+          <div class="description">
+            <p>
+              takes zero, one or two arguments. if zero arguments, will return a list containing two list, where the first list contains all true values, and the second all the false values. if one argument is given, it will be used as a predicate message chain, and the return lists will be based on the result of this predicate. finally, if three arguments are given, they will be turned into a lexical block and used as a predicate to determine the result value.
+            </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00300_source')" id="l_C00300_source">show source</a> ]</p>
+            <div id="C00300_source" class="dyn-source">
+<pre>
+macro(
+  len = call arguments length 
+  resultTrue = list 
+  resultFalse = list 
+  if(len ==(0), 
+    self each(n, if(cell(:n), resultTrue, resultFalse) &lt;&lt;(cell(:n))), 
+    if(len ==(1), 
+      theCode = call arguments first 
+      self each(n, if(theCode evaluateOn(call ground, cell(:n)), resultTrue, resultFalse) &lt;&lt;(cell(:n))), 
+      lexicalCode = LexicalBlock createFrom(call arguments, call ground) 
+      self each(n, if(lexicalCode call(cell(:n)), resultTrue, resultFalse) &lt;&lt;(cell(:n))))) 
+  list(resultTrue, resultFalse))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should take zero arguments and just divide all the true and false values <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003001S0_source')" id="l_C003001S0_source">show source</a> ]</span>
+            <div id="C003001S0_source" class="dyn-source">
+<pre>
+[](1, 2, 3) partition should ==([]([](1, 2, 3), 
+    [])) 
+[](nil, false, nil) partition should ==(
+  []([], 
+    [](nil, false, nil))) 
+[](nil, false, true) partition should ==([]([](true), [](nil, false))) 
+CustomEnumerable partition should ==([]([]("3first", "1second", "2third"), 
+    [])) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take one argument that is a predicate that is applied to each element in the enumeration <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003001S1_source')" id="l_C003001S1_source">show source</a> ]</span>
+            <div id="C003001S1_source" class="dyn-source">
+<pre>
+[](1, 2, 3) partition(==(2)) should ==([]([](2), [](1, 3))) 
+[](nil, false, nil) partition(nil?) should ==([]([](nil, nil), [](false))) 
+[](nil, false, true) partition(==(2)) should ==(
+  []([], 
+    [](nil, false, true))) 
+CustomEnumerable partition(!=("foo")) should ==([]([]("3first", "1second", "2third"), 
+    [])) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take two arguments that will be turned into a lexical block and applied <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003001S2_source')" id="l_C003001S2_source">show source</a> ]</span>
+            <div id="C003001S2_source" class="dyn-source">
+<pre>
+[](1, 2, 3) partition(x, x ==(2)) should ==([]([](2), [](1, 3))) 
+[](nil, false, nil) partition(x, x nil?) should ==([]([](nil, nil), [](false))) 
+[](nil, false, true) partition(x, x ==(2)) should ==(
+  []([], 
+    [](nil, false, true))) 
+CustomEnumerable partition(x, x !=("foo")) should ==([]([]("3first", "1second", "2third"), 
+    [])) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00313"></a><b>reduce</b>(...)
+          </div>
+          <div class="description">
+            <p>
+              nil
+            </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00313_source')" id="l_C00313_source">show source</a> ]</p>
+            <div id="C00313_source" class="dyn-source">
+<pre>
+macro(
+  len = call arguments length 
+  outsideGround = call ground 
+  if(len ==(1), 
+    elementName = genSym 
+    theCode = call arguments first deepCopy 
+    last = theCode 
+    while(last next, 
+      last = last next) 
+    last appendArgument(message(elementName)) 
+    sum = nil 
+    self each(i, n, 
+      if(i ==(0), 
+        sum = cell(:n), 
+        outsideGround cell(elementName) = cell(:n) 
+        sum = theCode evaluateOn(outsideGround, cell(:sum)))) 
+    return(sum), 
+    if(len ==(2), 
+      elementName = call arguments first name 
+      theCode = call arguments second 
+      sum = nil 
+      self each(i, n, 
+        if(i ==(0), 
+          sum = cell(:n), 
+          call ground cell(elementName) = cell(:n) 
+          sum = theCode evaluateOn(call ground, cell(:sum)))) 
+      return(sum), 
+      if(len ==(3), 
+        lexicalCode = LexicalBlock createFrom(call arguments, call ground) 
+        sum = nil 
+        self each(i, n, 
+          if(i ==(0), 
+            sum = cell(:n), 
+            sum = lexicalCode call(cell(:sum), cell(:n)))) 
+        return(sum), 
+        sum = call argAt(0) 
+        lexicalCode = LexicalBlock createFrom(call arguments [](1 ..(0 -(1))), call ground) 
+        self each(n, 
+          sum = lexicalCode call(cell(:sum), cell(:n))) 
+        return((sum)) 
+        ))) 
+  nil)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should take one argument that is a message chain and apply that on the sum, with the current arg as argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003131S0_source')" id="l_C003131S0_source">show source</a> ]</span>
+            <div id="C003131S0_source" class="dyn-source">
+<pre>
+[](1, 2, 3) reduce(+) should ==(6) 
+[](1, 2, 3) reduce(*((5)) -) should ==(12) 
+CustomEnumerable2 reduce(-) should ==(9) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take two arguments that is an argument name and a message chain and apply that on the sum <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003131S1_source')" id="l_C003131S1_source">show source</a> ]</span>
+            <div id="C003131S1_source" class="dyn-source">
+<pre>
+[](1, 2, 3) reduce(x, +(x *(2))) should ==(11) 
+[](1, 2, 3) reduce(x, *((5)) -(x)) should ==(12) 
+CustomEnumerable2 reduce(x, -(x)) should ==(9) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take three arguments that is the sum name, the argument name and code to apply <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003131S2_source')" id="l_C003131S2_source">show source</a> ]</span>
+            <div id="C003131S2_source" class="dyn-source">
+<pre>
+[](1, 2, 3) reduce(sum, x, sum +(x *(2))) should ==(11) 
+[](1, 2, 3) reduce(sum, x, sum *((5)) -(x)) should ==(12) 
+CustomEnumerable2 reduce(sum, x, sum -(x)) should ==(9) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take four arguments that is the initial value, the sum name, the argument name and code to apply <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003131S3_source')" id="l_C003131S3_source">show source</a> ]</span>
+            <div id="C003131S3_source" class="dyn-source">
+<pre>
+[](1, 2, 3) reduce(13, sum, x, sum +(x *(2))) should ==(25) 
+[](1, 2, 3) reduce(1, sum, x, sum *((5)) -(x)) should ==(87) 
+CustomEnumerable2 reduce(100, sum, x, sum -(x)) should ==(25) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00297"></a><b>reject</b>(...)
+          </div>
+          <div class="description">
+            <p>
+              takes one or two arguments. if one argument is given, it will be applied as a message chain as a predicate. those elements that doesn't the predicate will be returned. if two arguments are given, they will be turned into a lexical block and used as a predicate to choose the elements that doesn't match.
+            </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00297_source')" id="l_C00297_source">show source</a> ]</p>
+            <div id="C00297_source" class="dyn-source">
+<pre>
+macro(
+  len = call arguments length 
+  result = list 
+  if(len ==(0), 
+    self each(n, unless(cell(:n), result &lt;&lt;(cell(:n)))), 
+    if(len ==(1), 
+      theCode = call arguments first 
+      self each(n, unless(theCode evaluateOn(call ground, cell(:n)), result &lt;&lt;(cell(:n)))), 
+      lexicalCode = LexicalBlock createFrom(call arguments, call ground) 
+      self each(n, unless(lexicalCode call(cell(:n)), result &lt;&lt;(cell(:n)))))) 
+  result)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should take one argument that ends up being a predicate and return a list of the values that is false <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002971S0_source')" id="l_C002971S0_source">show source</a> ]</span>
+            <div id="C002971S0_source" class="dyn-source">
+<pre>
+[](1, 2, 3) reject(&gt;(1)) should ==([](1)) 
+[](nil, false, nil) reject(nil?) should ==([](false)) 
+[](nil, false, true) reject(==(2)) should ==([](nil, false, true)) 
+CustomEnumerable reject([](0 ...(1)) ==("1")) should ==([]("3first", "2third")) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take two arguments that ends up being a predicate and return a list of the values that is false <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002971S1_source')" id="l_C002971S1_source">show source</a> ]</span>
+            <div id="C002971S1_source" class="dyn-source">
+<pre>
+[](1, 2, 3) reject(x, x &gt;(1)) should ==([](1)) 
+[](nil, false, nil) reject(x, x nil?) should ==([](false)) 
+[](nil, false, true) reject(x, x ==(2)) should ==([](nil, false, true)) 
+CustomEnumerable reject(x, x ==("2third")) should ==([]("3first", "1second")) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00293"></a><b>select</b>(...)
+          </div>
+          <div class="description">
+            <p>
+              takes zero, one or two arguments. if zero arguments, will return a list with all the values that are true in the original collection. if one argument is given, it will be applied as a message chain, that should be a predicate. those elements that match the predicate will be returned. if two arguments are given, they will be turned into a lexical block and used as a predicate to choose elements.
+            </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00293_source')" id="l_C00293_source">show source</a> ]</p>
+            <div id="C00293_source" class="dyn-source">
+<pre>
+macro(
+  len = call arguments length 
+  result = list 
+  if(len ==(0), 
+    self each(n, if(cell(:n), result &lt;&lt;(cell(:n)))), 
+    if(len ==(1), 
+      theCode = call arguments first 
+      self each(n, if(theCode evaluateOn(call ground, cell(:n)), result &lt;&lt;(cell(:n)))), 
+      lexicalCode = LexicalBlock createFrom(call arguments, call ground) 
+      self each(n, if(lexicalCode call(cell(:n)), result &lt;&lt;(cell(:n)))))) 
+  result)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should take zero arguments and return a list with only the true values <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002931S0_source')" id="l_C002931S0_source">show source</a> ]</span>
+            <div id="C002931S0_source" class="dyn-source">
+<pre>
+[](1, 2, 3) select should ==([](1, 2, 3)) 
+[](nil, false, nil) select should ==(
+  []) 
+[](nil, false, true) select should ==([](true)) 
+CustomEnumerable select should ==(CustomEnumerable asList) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take one argument that ends up being a predicate and return a list of the values that is true <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002931S1_source')" id="l_C002931S1_source">show source</a> ]</span>
+            <div id="C002931S1_source" class="dyn-source">
+<pre>
+[](1, 2, 3) select(&gt;(1)) should ==([](2, 3)) 
+[](nil, false, nil) select(nil?) should ==([](nil, nil)) 
+[](nil, false, true) select(==(2)) should ==(
+  []) 
+CustomEnumerable select([](0 ...(1)) !=("1")) should ==([]("3first", "2third")) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take two arguments that ends up being a predicate and return a list of the values that is true <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002931S2_source')" id="l_C002931S2_source">show source</a> ]</span>
+            <div id="C002931S2_source" class="dyn-source">
+<pre>
+[](1, 2, 3) select(x, x &gt;(1)) should ==([](2, 3)) 
+[](nil, false, nil) select(x, x nil?) should ==([](nil, nil)) 
+[](nil, false, true) select(x, x ==(2)) should ==(
+  []) 
+CustomEnumerable select(x, x !=("2third")) should ==([]("3first", "1second")) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00289"></a><b>some</b>(...)
+          </div>
+          <div class="description">
+            <p>
+              takes zero, one or two arguments. if zero arguments, returns the first element that is true, otherwise false. if one argument, expects it to be a message chain. if that message chain, when applied to the current element returns a true value, that value is return. finally, if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and tested against the values in this element. if it returns true for any element, that value will be returned, otherwise false.
+            </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00289_source')" id="l_C00289_source">show source</a> ]</p>
+            <div id="C00289_source" class="dyn-source">
+<pre>
+macro(
+  len = call arguments length 
+  if(len ==(0), 
+    self each(n, if(cell(:n), return(it))), 
+    if(len ==(1), 
+      theCode = call arguments first 
+      self each(n, if(theCode evaluateOn(call ground, cell(:n)), return(it))), 
+      lexicalCode = LexicalBlock createFrom(call arguments, call ground) 
+      self each(n, if(lexicalCode call(cell(:n)), return(it))))) 
+  false)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should take zero arguments and just check if any of the values are true, and then return it <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002891S0_source')" id="l_C002891S0_source">show source</a> ]</span>
+            <div id="C002891S0_source" class="dyn-source">
+<pre>
+[](1, 2, 3) some should ==(1) 
+[](nil, false, nil) some should ==(false) 
+[](nil, false, true) some should ==(true) 
+CustomEnumerable some should ==("3first") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take one argument that is a predicate that is applied to each element in the enumeration <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002891S1_source')" id="l_C002891S1_source">show source</a> ]</span>
+            <div id="C002891S1_source" class="dyn-source">
+<pre>
+[](1, 2, 3) some(==(2) &&(3)) should ==(3) 
+[](nil, false, nil) some(nil? &&(42)) should ==(42) 
+[](nil, false, true) some(==(2) &&(3)) should ==(false) 
+CustomEnumerable some(!=("foo") &&("blarg")) should ==("blarg") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take two arguments that will be turned into a lexical block and applied <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002891S2_source')" id="l_C002891S2_source">show source</a> ]</span>
+            <div id="C002891S2_source" class="dyn-source">
+<pre>
+[](1, 2, 3) some(x, x ==(2) &&(3)) should ==(3) 
+[](nil, false, nil) some(x, x nil? &&(42)) should ==(42) 
+[](nil, false, true) some(x, x ==(2) &&(3)) should ==(false) 
+CustomEnumerable some(x, x !=("foo") &&("blarg")) should ==("blarg") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00284"></a><b>sort</b>()
+          </div>
+          <div class="description">
+            <p>
+              will return a sorted list of all the entries of this enumerable object
+            </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00284_source')" id="l_C00284_source">show source</a> ]</p>
+            <div id="C00284_source" class="dyn-source">
+<pre>
+method(
+  self asList sort)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return a sorted list based on all the entries <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002841S0_source')" id="l_C002841S0_source">show source</a> ]</span>
+            <div id="C002841S0_source" class="dyn-source">
+<pre>
+set(4, 4, 2, 1, 4, 23, 6, 4, 7, 21) sort should ==([](1, 2, 4, 6, 7, 21, 23)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00308"></a><b>sortBy</b>(...)
+          </div>
+          <div class="description">
+            <p>
+              takes one or two arguments that are used to transform the objects into something that can be sorted, then sorts based on that. if one argument, that argument is handled as a message chain, and if two arguments it will be turned into a lexical block and used.
+            </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00308_source')" id="l_C00308_source">show source</a> ]</p>
+            <div id="C00308_source" class="dyn-source">
+<pre>
+macro(
+  len = call arguments length 
+  if(len ==(1), 
+    theCode = call arguments first 
+    map(x, list(theCode evaluateOn(call ground, cell(:x)), cell(:x))) sort map(second), 
+    lexicalCode = LexicalBlock createFrom(call arguments, call ground) 
+    map(x, list(lexicalCode call(cell(:x)), cell(:x))) sort map(second)))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should take one argument and apply that for sorting <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003081S0_source')" id="l_C003081S0_source">show source</a> ]</span>
+            <div id="C003081S0_source" class="dyn-source">
+<pre>
+{}(a: 3, b: 2, c: 1) sortBy(value) should ==([](:c =&gt;(1), :b =&gt;(2), :a =&gt;(3))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take two arguments and turn that into a lexical block and use that for sorting <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003081S1_source')" id="l_C003081S1_source">show source</a> ]</span>
+            <div id="C003081S1_source" class="dyn-source">
+<pre>
+{}(a: 3, b: 2, c: 1) sortBy(x, x value) should ==([](:c =&gt;(1), :b =&gt;(2), :a =&gt;(3))) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00302"></a><b>take</b>(howMany)
+          </div>
+          <div class="description">
+            <p>
+              takes one argument and returns a list with as many elements from the collection, or all elements if the requested number is larger than the size.
+            </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00302_source')" id="l_C00302_source">show source</a> ]</p>
+            <div id="C00302_source" class="dyn-source">
+<pre>
+method(howMany, 
+  self first(howMany))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return a list with as many elements as requested <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003021S0_source')" id="l_C003021S0_source">show source</a> ]</span>
+            <div id="C003021S0_source" class="dyn-source">
+<pre>
+[](1, 2, 3) take(0) should ==(
+  []) 
+[](1, 2, 3) take(1) should ==([](1)) 
+[](1, 2, 3) take(2) should ==([](1, 2)) 
+[](1, 2, 3) take(3) should ==([](1, 2, 3)) 
+CustomEnumerable take(2) should ==([]("3first", "1second")) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not take more elements than the length of the collection <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003021S1_source')" id="l_C003021S1_source">show source</a> ]</span>
+            <div id="C003021S1_source" class="dyn-source">
+<pre>
+[](1, 2, 3) take(4) should ==([](1, 2, 3)) 
+[](1, 2, 3) take(10) should ==([](1, 2, 3)) 
+CustomEnumerable take(200) should ==([]("3first", "1second", "2third")) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00303"></a><b>takeWhile</b>(...)
+          </div>
+          <div class="description">
+            <p>
+              takes zero, one or two arguments. it will evaluate a predicate once for each element, and collect all the elements until the predicate returns false for the first time. at that point the collected list will be returned. if zero arguments, the predicate is the element itself. if one argument, expects it to be a message chain to apply as a predicate. if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and used as the predicate.
+            </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00303_source')" id="l_C00303_source">show source</a> ]</p>
+            <div id="C00303_source" class="dyn-source">
+<pre>
+macro(
+  len = call arguments length 
+  result = list 
+  if(len ==(0), 
+    self each(n, 
+      if(cell(:n), 
+        result &lt;&lt;(cell(:n)), 
+        return(result))), 
+    if(len ==(1), 
+      theCode = call arguments first 
+      self each(n, 
+        if(theCode evaluateOn(call ground, cell(:n)), 
+          result &lt;&lt;(cell(:n)), 
+          return(result))), 
+      lexicalCode = LexicalBlock createFrom(call arguments, call ground) 
+      self each(n, 
+        if(lexicalCode call(cell(:n)), 
+          result &lt;&lt;(cell(:n)), 
+          return(result))))) 
+  result)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should take zero arguments and return everything up until the point where a value is false <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003031S0_source')" id="l_C003031S0_source">show source</a> ]</span>
+            <div id="C003031S0_source" class="dyn-source">
+<pre>
+[](1, 2, 3) takeWhile should ==([](1, 2, 3)) 
+[](1, 2, nil, false) takeWhile should ==([](1, 2)) 
+[](1, 2, false, 3, 4, nil, false) takeWhile should ==([](1, 2)) 
+CustomEnumerable takeWhile should ==([]("3first", "1second", "2third")) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take one argument and apply it as a message chain, return a list with all elements until the block returns false <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003031S1_source')" id="l_C003031S1_source">show source</a> ]</span>
+            <div id="C003031S1_source" class="dyn-source">
+<pre>
+[](1, 2, 3) takeWhile(&lt;(3)) should ==([](1, 2)) 
+[](1, 2, 3) takeWhile(!=(2)) should ==([](1)) 
+CustomEnumerable takeWhile(!=("2third")) should ==([]("3first", "1second")) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take two arguments and apply the lexical block created from it, and return a list with all elements until the block returns false <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003031S2_source')" id="l_C003031S2_source">show source</a> ]</span>
+            <div id="C003031S2_source" class="dyn-source">
+<pre>
+[](1, 2, 3) takeWhile(x, x &lt;(3)) should ==([](1, 2)) 
+[](1, 2, 3) takeWhile(x, x !=(2)) should ==([](1)) 
+CustomEnumerable takeWhile(x, x !=("2third")) should ==([]("3first", "1second")) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00307"></a><b>zip</b>(+listsAndFns)
+          </div>
+          <div class="description">
+            <p>
+              takes zero or more arguments, where all arguments should be a list, except that the last might also be a lexical block. zip will create a list of lists, where each internal list is a combination of the current element, and the corresponding elements from all the lists. if the lists are shorter than this collection, nils will be supplied. if a lexical block is provided, it will be called with each list created, and if that's the case nil will be returned from zip
+            </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00307_source')" id="l_C00307_source">show source</a> ]</p>
+            <div id="C00307_source" class="dyn-source">
+<pre>
+method(+listsAndFns, 
+  theFn = listsAndFns last 
+  if(cell(:theFn) &&(cell(:theFn) mimics?(LexicalBlock)), 
+    listsAndFns = listsAndFns [](0 ..(0 -(2))) 
+    self each(ix, n, 
+      internal = list(cell(:n)) 
+      listsAndFns each(n2, internal &lt;&lt;(cell(:n2) [](ix))) 
+      cell(:theFn) call(internal)) 
+    nil, 
+    result = list 
+    self each(ix, n, 
+      internal = list(cell(:n)) 
+      listsAndFns each(n2, internal &lt;&lt;(cell(:n2) [](ix))) 
+      result &lt;&lt;(internal)) 
+    result))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should take zero arguments and just zip the elements <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003071S0_source')" id="l_C003071S0_source">show source</a> ]</span>
+            <div id="C003071S0_source" class="dyn-source">
+<pre>
+[](1, 2, 3) zip should ==([]([](1), [](2), [](3))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take one argument as a list and zip the elements together <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003071S1_source')" id="l_C003071S1_source">show source</a> ]</span>
+            <div id="C003071S1_source" class="dyn-source">
+<pre>
+[](1, 2, 3) zip([](5, 6, 7)) should ==([]([](1, 5), [](2, 6), [](3, 7))) 
+[](1, 2, 3) zip([](5, 6, 7, 8)) should ==([]([](1, 5), [](2, 6), [](3, 7))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should supply nils if the second list isn't long enough <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003071S2_source')" id="l_C003071S2_source">show source</a> ]</span>
+            <div id="C003071S2_source" class="dyn-source">
+<pre>
+[](1, 2, 3) zip([](5, 6)) should ==([]([](1, 5), [](2, 6), [](3, nil))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should zip together several lists <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003071S3_source')" id="l_C003071S3_source">show source</a> ]</span>
+            <div id="C003071S3_source" class="dyn-source">
+<pre>
+[](1, 2, 3) zip([](5, 6, 7), [](10, 11, 12), [](15, 16, 17)) should ==([]([](1, 5, 10, 15), [](2, 6, 11, 16), [](3, 7, 12, 17))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take a fn as last argument and call that instead of returning a list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003071S4_source')" id="l_C003071S4_source">show source</a> ]</span>
+            <div id="C003071S4_source" class="dyn-source">
+<pre>
+x = [] 
+[](1, 2, 3) zip([](5, 6, 7), 
+  fn(arg, x &lt;&lt;(arg))) should ==(nil) 
+x should ==([]([](1, 5), [](2, 6), [](3, 7))) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </body>
+</html>

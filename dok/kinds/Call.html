@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Kind: DefaultBehavior</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href=".././dokgen-style.css" type="text/css" media="screen" />
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=480,width=750" ).focus();
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+    <table border='0' cellpadding='0' cellspacing='0' width="100%" class='banner'>
+      <tr>
+        <td>
+          <table width="100%" border='0' cellpadding='0' cellspacing='0'>
+            <tr>
+              <td class="file-title" colspan="2">
+                <span class="file-title-prefix">Kind</span>
+                <br />
+                Call
+              </td>
+              <td align="right">
+                <table cellspacing="0" cellpadding="2">
+                  <tr>
+                    <td>Main mimic:</td>
+                    <td>
+                      <a href="../kinds/Origin.html">Origin</a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <div id="bodyContent">
+      <div id="content">
+        <div class="description">
+          <p>
+          A call is the runtime structure that includes the specific information for a call, that is available inside a DefaultMacro.
+          </p>
+        </div>
+
+        <div class="sectiontitle">Mimics</div>
+        <ul>
+          <li><a href="../kinds/Origin.html">Origin</a></li>
+        </ul>        
+
+        <div class="sectiontitle">Inactive cells</div>
+        <ul>
+          <li><a href="#C00411">kind</a></li>
+
+        </ul>        
+
+        <div class="sectiontitle">Active cells</div>
+        <ul>
+          <li><a href="#C00417">argAt(n)</a></li>
+<li><a href="#C00412">arguments()</a></li>
+<li><a href="#C00415">evaluatedArguments()</a></li>
+<li><a href="#C00413">ground()</a></li>
+<li><a href="#C00414">message()</a></li>
+<li><a href="#C00416">resendToMethod(cellName)</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Specs</div>
+        <div class="specs">
+          <ul style="list-style-type: none;">
+<li>- should have the correct kind <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S0_source')" id="l_C00K01S0_source">show source</a> ]</span>
+            <div id="C00K01S0_source" class="dyn-source">
+<pre>
+Call should have kind("Call") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+        </div>
+
+        <div class="sectiontitle">Inactive cells (details)</div>
+                <div class="cell">
+          <a name="C00411"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">kind</td>
+              <td>=</td>
+              <td class="cell-value">"Call"</td>
+            </tr>
+          </table>
+        </div>
+
+
+        <div class="sectiontitle">Active cells (details)</div>
+                <div class="cell">
+          <div class="title">
+          <a name="C00417"></a><b>argAt</b>(n)
+          </div>
+          <div class="description">
+            <p>
+              evaluates and returns the argument at 'n'. this is just a short hand for 'call message evalArgAt(n, call ground)'
+            </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00417_source')" id="l_C00417_source">show source</a> ]</p>
+            <div id="C00417_source" class="dyn-source">
+<pre>
+method(n, 
+  message evalArgAt(n, ground))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should evaluate and return the argument at the specific place <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004171S0_source')" id="l_C004171S0_source">show source</a> ]</span>
+            <div id="C004171S0_source" class="dyn-source">
+<pre>
+x = macro(call argAt(0)) 
+x(23 +(44)) should ==(67) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00412"></a><b>arguments</b>()
+          </div>
+          <div class="description">
+            <p>
+              returns a list of all the unevaluated arguments
+            </p>
+          </div>
+          
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return all arguments in a list, unevaluated <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004121S0_source')" id="l_C004121S0_source">show source</a> ]</span>
+            <div id="C004121S0_source" class="dyn-source">
+<pre>
+x = macro(call arguments) 
+x(foo bar, x rrr) [](0) name should ==(:foo) 
+x(foo bar, x rrr) [](1) name should ==(:x) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00415"></a><b>evaluatedArguments</b>()
+          </div>
+          <div class="description">
+            <p>
+              returns a list of the result of evaluating all the arguments to this call
+            </p>
+          </div>
+          
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return a list of all the evaluated arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004151S0_source')" id="l_C004151S0_source">show source</a> ]</span>
+            <div id="C004151S0_source" class="dyn-source">
+<pre>
+x = macro(call evaluatedArguments) 
+x(13 +(55), 18 +(18), 3 -(2)) [](0) should ==(68) 
+x(13 +(55), 18 +(18), 3 -(2)) [](1) should ==(36) 
+x(13 +(55), 18 +(18), 3 -(2)) [](2) should ==(1) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00413"></a><b>ground</b>()
+          </div>
+          <div class="description">
+            <p>
+              returns the ground of the place this call originated
+            </p>
+          </div>
+          
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return the surrounding context of the call <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004131S0_source')" id="l_C004131S0_source">show source</a> ]</span>
+            <div id="C004131S0_source" class="dyn-source">
+<pre>
+x = macro(call ground) 
+should ==(x) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00414"></a><b>message</b>()
+          </div>
+          <div class="description">
+            <p>
+              returns the message that started this call
+            </p>
+          </div>
+          
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return the message used to invoke this call <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004141S0_source')" id="l_C004141S0_source">show source</a> ]</span>
+            <div id="C004141S0_source" class="dyn-source">
+<pre>
+x = macro(call message) 
+x name should ==(:x) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00416"></a><b>resendToMethod</b>(cellName)
+          </div>
+          <div class="description">
+            <p>
+              takes one evaluated text or symbol argument and resends the current message to that method/macro on the current receiver.
+            </p>
+          </div>
+          
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- it should resend the thing with the same arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004161S0_source')" id="l_C004161S0_source">show source</a> ]</span>
+            <div id="C004161S0_source" class="dyn-source">
+<pre>
+x = macro(call resendToMethod(:f)) 
+f = method(a, b, c, [](a, b, c)) 
+w = 13 
+
+x(1 +(w), w +(w), w +(3) +(w)) [](0) should ==(14) 
+x(1 +(w), w +(w), w +(3) +(w)) [](1) should ==(26) 
+x(1 +(w), w +(w), w +(3) +(w)) [](2) should ==(29) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </body>
+</html>

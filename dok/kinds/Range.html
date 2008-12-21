@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Kind: DefaultBehavior</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href=".././dokgen-style.css" type="text/css" media="screen" />
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=480,width=750" ).focus();
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+    <table border='0' cellpadding='0' cellspacing='0' width="100%" class='banner'>
+      <tr>
+        <td>
+          <table width="100%" border='0' cellpadding='0' cellspacing='0'>
+            <tr>
+              <td class="file-title" colspan="2">
+                <span class="file-title-prefix">Kind</span>
+                <br />
+                Range
+              </td>
+              <td align="right">
+                <table cellspacing="0" cellpadding="2">
+                  <tr>
+                    <td>Main mimic:</td>
+                    <td>
+                      <a href="../kinds/Mixins/Enumerable.html">Mixins Enumerable</a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <div id="bodyContent">
+      <div id="content">
+        <div class="description">
+          <p>
+          A range is a collection of two objects of the same kind. This Range can be either inclusive or exclusive.
+          </p>
+        </div>
+
+        <div class="sectiontitle">Mimics</div>
+        <ul>
+          <li><a href="../kinds/Mixins/Enumerable.html">Mixins Enumerable</a></li><li><a href="../kinds/Origin.html">Origin</a></li>
+        </ul>        
+
+        <div class="sectiontitle">Inactive cells</div>
+        <ul>
+          <li><a href="#C00366">kind</a></li>
+
+        </ul>        
+
+        <div class="sectiontitle">Active cells</div>
+        <ul>
+          <li><a href="#C00373">===(other)</a></li>
+<li><a href="#C00368">exclusive(from, to)</a></li>
+<li><a href="#C00369">exclusive?()</a></li>
+<li><a href="#C00371">from()</a></li>
+<li><a href="#C00367">inclusive(from, to)</a></li>
+<li><a href="#C00370">inclusive?()</a></li>
+<li><a href="#C00372">to()</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Specs</div>
+        <div class="specs">
+          <ul style="list-style-type: none;">
+<li>- should have the correct kind <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S0_source')" id="l_C00K01S0_source">show source</a> ]</span>
+            <div id="C00K01S0_source" class="dyn-source">
+<pre>
+Range should have kind("Range") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b>Range it</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return the to part of the range <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K02S0_source')" id="l_C00K02S0_source">show source</a> ]</span>
+            <div id="C00K02S0_source" class="dyn-source">
+<pre>
+(0 ..(13)) to should ==(13) 
+(0 ..(-(42))) to should ==(-(42)) 
+(0 ..(0)) to should ==(0) 
+(0 ...(13)) to should ==(13) 
+(0 ...(-(42))) to should ==(-(42)) 
+(0 ...(0)) to should ==(0) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+        </div>
+
+        <div class="sectiontitle">Inactive cells (details)</div>
+                <div class="cell">
+          <a name="C00366"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">kind</td>
+              <td>=</td>
+              <td class="cell-value">"Range"</td>
+            </tr>
+          </table>
+        </div>
+
+
+        <div class="sectiontitle">Active cells (details)</div>
+                <div class="cell">
+          <div class="title">
+          <a name="C00373"></a><b>===</b>(other)
+          </div>
+          <div class="description">
+            <p>
+              returns true if the argument is within the confines of this range. how this comparison is done depends on if the object mimics Comparing. If it does, < and > will be used. If not, all the available entries in this range will be enumerated using 'succ' until either the end or the element we're looking for is found. in that case, comparison is done with '=='
+            </p>
+          </div>
+          
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should match something inside the range <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003731S0_source')" id="l_C003731S0_source">show source</a> ]</span>
+            <div id="C003731S0_source" class="dyn-source">
+<pre>
+((1 ..(5)) ===(1)) should ==(true) 
+((1 ..(5)) ===(2)) should ==(true) 
+((1 ..(5)) ===(3)) should ==(true) 
+((1 ..(5)) ===(4)) should ==(true) 
+((1 ..(5)) ===(5)) should ==(true) 
+((1 ..(5)) ===(1.5)) should ==(true) 
+((1 ..(5)) ===(4.9999)) should ==(true) 
+((1 ...(5)) ===(4.9999)) should ==(true) 
+((1 ..(5)) ===(4 /(3))) should ==(true) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not match something outside the range <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003731S1_source')" id="l_C003731S1_source">show source</a> ]</span>
+            <div id="C003731S1_source" class="dyn-source">
+<pre>
+((1 ..(5)) ===(0)) should ==(false) 
+((1 ...(5)) ===(5)) should ==(false) 
+((1 ..(5)) ===(0.5)) should ==(false) 
+((1 ..(5)) ===(5.000001)) should ==(false) 
+((1 ...(5)) ===(5.0)) should ==(false) 
+((1 ..(5)) ===(1 /(3))) should ==(false) 
+((1 ..(5)) ===(:foo)) should ==(false) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00368"></a><b>exclusive</b>(from, to)
+          </div>
+          <div class="description">
+            <p>
+              will return a new exclusive Range based on the two arguments
+            </p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00369"></a><b>exclusive?</b>()
+          </div>
+          <div class="description">
+            <p>
+              returns true if the receiver is an exclusive range, false otherwise
+            </p>
+          </div>
+          
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return false for an inclusive range <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003691S0_source')" id="l_C003691S0_source">show source</a> ]</span>
+            <div id="C003691S0_source" class="dyn-source">
+<pre>
+(0 ..(13)) exclusive? should ==(false) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return true for an exclusive range <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003691S1_source')" id="l_C003691S1_source">show source</a> ]</span>
+            <div id="C003691S1_source" class="dyn-source">
+<pre>
+(0 ...(13)) exclusive? should ==(true) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00371"></a><b>from</b>()
+          </div>
+          <div class="description">
+            <p>
+              returns the 'from' part of the range
+            </p>
+          </div>
+          
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return the from part of the range <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003711S0_source')" id="l_C003711S0_source">show source</a> ]</span>
+            <div id="C003711S0_source" class="dyn-source">
+<pre>
+(13 ..(0)) from should ==(13) 
+(-(42) ..(0)) from should ==(-(42)) 
+(0 ..(0)) from should ==(0) 
+(13 ...(0)) from should ==(13) 
+(-(42) ...(0)) from should ==(-(42)) 
+(0 ...(0)) from should ==(0) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00367"></a><b>inclusive</b>(from, to)
+          </div>
+          <div class="description">
+            <p>
+              will return a new inclusive Range based on the two arguments
+            </p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00370"></a><b>inclusive?</b>()
+          </div>
+          <div class="description">
+            <p>
+              returns true if the receiver is an inclusive range, false otherwise
+            </p>
+          </div>
+          
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return true for an inclusive range <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003701S0_source')" id="l_C003701S0_source">show source</a> ]</span>
+            <div id="C003701S0_source" class="dyn-source">
+<pre>
+(0 ..(13)) inclusive? should ==(true) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return false for an exclusive range <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003701S1_source')" id="l_C003701S1_source">show source</a> ]</span>
+            <div id="C003701S1_source" class="dyn-source">
+<pre>
+(0 ...(13)) inclusive? should ==(false) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00372"></a><b>to</b>()
+          </div>
+          <div class="description">
+            <p>
+              returns the 'to' part of the range
+            </p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </body>
+</html>
