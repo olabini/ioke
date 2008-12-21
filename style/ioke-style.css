@@ -35,6 +35,11 @@ a.unselectedMenuItem {
 #menu { 
   margin-top: 2em;
   margin-left: 1.3em;
+  margin-right: 1.3em;
+}
+
+table#menu tr td { 
+  background: #E6EEEE;
 }
 
 #logo {
@@ -50,6 +55,7 @@ a.unselectedMenuItem {
 }
 
 #content { 
+  margin-left: -0.2em;
   clear: both;
 }
 
@@ -68,4 +74,16 @@ ol li ol {
 .section { 
   margin-left: 1em;
   margin-top: 4em;
+}
+
+pre.code {
+  display: block;
+  background-color: black;
+  color: white;
+  font-family: sans-serif;
+  margin:.75em 0;
+  border:1px dotted #ccc;
+  border-width:1px 0;
+  padding:5px 15px;
+  overflow:auto;
 }
