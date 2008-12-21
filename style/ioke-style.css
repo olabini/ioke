@@ -1,0 +1,38 @@
+body { 
+  padding:0; 
+  margin-left: 2.6em;	
+  margin-top: 1.8em;	
+  margin-bottom: 1em;	
+  margin-right: 1em;
+  font-size: .9em;
+}
+
+body, td, p {
+  color: #444;
+  font-family:Arial, Verdana, Sans-Serif;
+  background: #fff;
+}
+
+a { 
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  color: #000;
+  text-decoration: none;
+  font-size: 1.1em;
+}
+
+a:hover { 
+  text-decoration: underline;
+}
+
+a.selectedMenuItem { 
+  font-weight: bold;
+}
+
+a.unselectedMenuItem { 
+  font-weight:normal;
+}
+
+#menu { 
+  margin-top: 2em;
+  margin-left: 1.3em;
+}
