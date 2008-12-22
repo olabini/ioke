@@ -402,7 +402,17 @@ Bye.
     commated      ::=  expression+ ( "," expression+ )*
     brackets      ::=  ( "[" commated? "]" ) | ( "{" commated? "}" )
     literal       ::=  String | Regexp | Number | Decimal
+    terminator    ::=  "." | "\n"
+    comment       ::=  ";" .* "\n"
                   </pre>
+
+                  <p>All the types of literals are actually turned into a message to create that literal, so the canonical form of the message chain contains no literals, just a message to create that literal. Any message can have zero or more arguments given to it. Arguments are separated with comma. If there are no arguments to a message, the parenthesis can be left off, but they need to be there if there are arguments. Mostly any combination of characters can be used as an Identifier, with some exceptions.</p>
+
+                  <p>There is also a syntactic element called operators, which are handled a bit differently from regular messages. Specifically, through the use of operator shuffling, operators can be used in infix, including having different precedence rules. Assignment is a specific form of operator which gets its own kind of shuffling. These are both described below.</p>
+
+                  <p>The two forms of brackets will get turned into a canonical form. Surrounding comma-separated message chains with square brackets is the same as calling the method [], giving it those message chains as argument. So [foo, bar, quux] is exactly the same as [](foo, bar, quux). The same is true for curly brackets.</p>
+
+                  <p>Comments start with semicolon and end at the first newline. They can be used mostly anywhere, except inside of literal strings. Hash followed by exclamation mark is also a comment, to allow the shebang line in Unix scripts.</p>
 
                   <div class="section">
                     <h3><a name="literals">Literal values</a></h3>
