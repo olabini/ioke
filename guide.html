@@ -138,11 +138,6 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 
                   <li>
                     <a href="#executionModel">Execution model</a>
-                    <ol>
-                      <li>
-                        <a href="#pass">pass</a>
-                      </li>
-                    </ol>
                   </li>
 
                   <li>
@@ -709,12 +704,34 @@ flux<span style="color: #00bfff;">++</span>
 
                 <div class="chapter">
                   <h2><a name="executionModel">Execution model</a></h2>
-                  <p>TODO: write content</p>
+                  <p>The way an Ioke program work is very simple. Everything executes based on two things. The first is the context, or the ground, and the second is the receiver. The first message sent in each message chain will have the ground as receiver. The default ground in Ioke source files is an object called Ground. This object is in the mimic chain for most regular objects created in Ioke, which means that things defined at the top level will generally be available in most objects. Inside of methods and blocks, the ground will be different. Exactly in what way is defined by the type of code executing.</p>
 
-                  <div class="section">
-                    <h3><a name="pass">pass</a></h3>
-                    <p>TODO: write content</p>
-                  </div>
+                  <p>Every message in a chain will be sent to the receiver of that message. That receiver is the result of the last message, or the current ground if there was no previous message, or if that previous message was a terminator. So Ioke code like "foo bar(flux bar) quux" involves 5 different messages.</p>
+
+                  <ol>
+                    <li><p>The message "foo" is sent to Ground, which is the current ground and also the default receiver.</p></li>
+                    <li><p>The message "bar" is sent to the result of the "foo" message. The value returned will be activated.</p></li>
+                    <li><p>The cell "bar" contains a method in this case, and that method expects one argument, so that forces evaluation of the arguments.</p></li>
+                    <li><p>The message "flux" is sent to Ground, since it's the ground and there is no prior message inside of an argument list.</p></li>
+                    <li><p>The message "bar" is sent to the result of the "flux" message.</p></li>
+                    <li><p>The result of the "bar" message is used as the argument value given to the outside "bar" method.</p></li>
+                    <li><p>The message "quux" is sent to the result of the initial "bar" message.</p></li>
+                    <li><p>The result of the quux message is thrown away, unless this code is part of a larger piece of code.</p></li>
+                  </ol>
+
+                  <p>This description generally describes what happens in the case of this code. The more general control flow is this:</p>
+
+                  <ol>
+                    <li><p>A message is encountered</p></li>
+                    <li><p>If the message is a symbol message, the corresponding symbol will be returned.</p></li>
+                    <li><p>Otherwise the name of the message will be looked up in the receiver, or in the receivers mimics.</p></li>
+                    <li><p>If the name is found and is not activatable, the value of that name (the cell) is returned.</p></li>
+                    <li><p>If the name is found and is activatable, it will be activated, with the current ground, receiver and message sent to the activatable object.</p></li>
+                    <li><p>If the name is not found, a second search is done for the name "pass". If a pass is found, use that instead of the name of the original message, and go back to 4.</p></li>
+                    <li><p>If a pass is not found, signal a Condition Error NoSuchCell condition.</p></li>
+                  </ol>
+
+                  <p>Exactly what happens when an object is activated depends on what kind of code gets activated. It's really up to the method, block or macro to handle evaluation of arguments in any way it likes - including not evaluating them. For a description of the default models available, see the chapter on <a href="#code">code</a></p>
                 </div>
 
                 <div class="chapter">
