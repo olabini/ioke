@@ -109,6 +109,23 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
                     <ol>
                       <li>
                         <a href="#literals">Literal values</a>
+                        <ol>
+                          <li>
+                            <a href="#literalText">Text</a>
+                          </li>
+                          <li>
+                            <a href="#literalRegexps">Regular expressions</a>
+                          </li>
+                          <li>
+                            <a href="#literalIntegers">Integers</a>
+                          </li>
+                          <li>
+                            <a href="#literalDecimals">Decimals</a>
+                          </li>
+                          <li>
+                            <a href="#literalSymbols">Symbols</a>
+                          </li>
+                        </ol>
                       </li>
                       <li>
                         <a href="#operatorShuffling">Operator shuffling</a>
@@ -401,10 +418,12 @@ Bye.
     message       ::=  Identifier ( "(" commated? ")" )?
     commated      ::=  expression+ ( "," expression+ )*
     brackets      ::=  ( "[" commated? "]" ) | ( "{" commated? "}" )
-    literal       ::=  String | Regexp | Number | Decimal
+    literal       ::=  Text | Regexp | Number | Decimal
     terminator    ::=  "." | "\n"
     comment       ::=  ";" .* "\n"
                   </pre>
+
+                  <p>What isn't visible here is that all whitespace -- except for newlines -- will work only as separators of messages, and is otherwise ignored. That means that message sending does not use the dot, as in most other languages. A phrase such as "foo().bar(quux(42)).baaz()" would be expressed as "foo() bar(quux(42)) baaz()", or more succinctly "foo bar(quux(42)) baaz" in Ioke.</p>
 
                   <p>All the types of literals are actually turned into a message to create that literal, so the canonical form of the message chain contains no literals, just a message to create that literal. Any message can have zero or more arguments given to it. Arguments are separated with comma. If there are no arguments to a message, the parenthesis can be left off, but they need to be there if there are arguments. Mostly any combination of characters can be used as an Identifier, with some exceptions.</p>
 
@@ -412,11 +431,91 @@ Bye.
 
                   <p>The two forms of brackets will get turned into a canonical form. Surrounding comma-separated message chains with square brackets is the same as calling the method [], giving it those message chains as argument. So [foo, bar, quux] is exactly the same as [](foo, bar, quux). The same is true for curly brackets.</p>
 
-                  <p>Comments start with semicolon and end at the first newline. They can be used mostly anywhere, except inside of literal strings. Hash followed by exclamation mark is also a comment, to allow the shebang line in Unix scripts.</p>
+                  <p>Comments start with semicolon and end at the first newline. They can be used mostly anywhere, except inside of literal texts. The hash sign followed by an exclamation mark is also a comment, to allow the shebang line in Unix scripts.</p>
+
+                  <p>How and when the actual evaluation of messages happen depend on what kind the message type is. If it's inactive, the value reflecting that cell will be returned. If it's active, the cell will be activated and the result of that activation returned. How the activation depends on what kind of code the cell contains. The various kinds of code is described more closely in the chapter about <a href="#code">code</a>.</p>
 
                   <div class="section">
                     <h3><a name="literals">Literal values</a></h3>
-                    <p>TODO: write content</p>
+                    <p>Ioke currently contains four different kinds of literals. There is a fifth quasi literal, that isn't exactly parsed as a literal, but will be evaluated differently based on its name. These literals are texts, regular expressions, integers and decimal numbers. Symbols are actually parsed as regular identifiers, but they are handled a bit differently during evaluation.</p>
+
+                    <div class="section">
+                      <h4><a name="literalText">Text</a></h4>
+                      <p>A literal text in Ioke is what is generally called strings in most languages. As in most languages, text is written inside of double quotes. Any characters are valid inside of those double quotes. That includes newlines - so you can write a literal text that extends to several lines. There is no alternate syntax for text. As in most other languages, several escapes are valid inside of a text. Escapes are preceded by the backslash, and insert the character corresponding to the escape values. These escapes are:</p>
+
+                      <dl>
+                        <dt>\b</dt>
+                        <dd>Inserts the bell character, that is represented in ASCII by the decimal value 8.</dd>
+
+                        <dt>\e</dt>
+                        <dd>Inserts the character that is represented in ASCII by the decimal value 27. This value is used for sending escape values to the TTYs in some operating systems.</dd>
+
+                        <dt>\t</dt>
+                        <dd>Inserts the TAB character - ASCII decimal 9.</dd>
+
+                        <dt>\n</dt>
+                        <dd>Inserts the newline character - ASCII decimal 10.</dd>
+
+                        <dt>\f</dt>
+                        <dd>Inserts the form feed character - ASCII decimal 12.</dd>
+
+                        <dt>\r</dt>
+                        <dd>Inserts the carriage return character - ASCII decimal 13.</dd>
+
+                        <dt>\"</dt>
+                        <dd>Inserts the double quote character - ASCII decimal 34.</dd>
+
+                        <dt>\\</dt>
+                        <dd>Inserts the backslash character - ASCII decimal 92.</dd>
+
+                        <dt>\[newline]</dt>
+                        <dd>Inserts nothing at all. Used to escape necessary newlines, without having them show up in the output text.</dd>
+
+                        <dt>\#</dt>
+                        <dd>Inserts a literal hash character - ASCII decimal 35.</dd>
+
+                        <dt>\uABCD</dt>
+                        <dd>Inserts the Unicode codepoint corresponding to the hexadecimal value of the four characters following the "u". All four hexadecimal characters need to be specified.</dd>
+
+                        <dt>\7, \12, \316</dt>
+                        <dd>Inserts the Unicode codepoint corresponding to the octal value of the one, two or three octal characters. The maximum value allowed is \377, and the minimum is obviously \0.</dd>
+                      </dl>
+
+                      <p>The parsing of text will generate a message with name "internal:createText". This message will get one argument that is the raw Java String corresponding to the text.</p>
+
+                      <p>Ioke allows automatic interpolation of arbitrary values in the same manner as Ruby. It uses the same syntax for this, which is the #{} syntax inside a text. These can be nested in any way. The elements will be parsed and sent as arguments to the message with name "internal:concatenateText". So an Ioke text such as "foo bar#{flux} will #{1+2}" will generate the message internal:concatenateText("foo bar", flux, " will ", 1+(2), ""). As you can see, there is a small amount of waste in the way this is generated -- but the simple model makes it easy to understand. It's not guaranteed that this will remain the same, although the message will definitely remain.</p>
+                    </div>
+
+                    <div class="section">
+                      <h4><a name="literalRegexps">Regular expressions</a></h4>
+                      <p>The regular expression syntax of Ioke is currently quite primitive, although the literal syntax is there. A literal regular expression in Ioke starts with a hash sign, a slash, the expression, a slash, and possibly some flags. A few examples might be in order here:</p>
+                      <pre class="code">
+<span style="color: #ff1493;">#//</span>
+
+<span style="color: #ff1493;">#/foo/</span>
+
+<span style="color: #ff1493;">#/fo+/x</span>
+                      </pre>
+
+                      <p>The first example is an empty regular expression. The second is an expression matching the word "foo". The third expression matches an "f" followed with one or more "o". It also allows extended regular expression syntax, due to the x flag. The flags supported in Ioke are o, x, p, n, i, u, m and s. The meaning of these match the meaning of corresponding Ruby flags. Regular expressions allow most of the same escapes as Ioke text. Specifically, these escapes are supported: b, t, n, f, r, /, \ and newline. Unicode and octal escapes also work.</p>
+
+                      <p>Ioke regular expressions will be transformed into a call to internal:createRegexp. This message expects two Java strings, one with the actual pattern, and one with the flags.</p>
+                    </div>
+
+                    <div class="section">
+                      <h4><a name="literalIntegers">Integers</a></h4>
+                      <p></p>
+                    </div>
+
+                    <div class="section">
+                      <h4><a name="literalDecimals">Decimals</a></h4>
+                      <p></p>
+                    </div>
+
+                    <div class="section">
+                      <h4><a name="literalSymbols">Symbols</a></h4>
+                      <p></p>
+                    </div>
                   </div>
 
                   <div class="section">
