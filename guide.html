@@ -569,12 +569,141 @@ mux"</span>
 
                   <div class="section">
                     <h3><a name="operatorShuffling">Operator shuffling</a></h3>
-                    <p>TODO: write content</p>
+                    <p>One exception to the way message handling works in Ioke is operators. All the so called operators in this section is possible to call directly in message passing position too -- but to make it possible to use them in a more natural way, the parsing step will handle them a bit differently, and then do a shuffling step that actually takes operator precedence into account. So all the common operators will generally work as you expect them too -- although I recommend adding parenthesis when something is possibly unclear.</p>
+                    
+                    <p>Ioke has a slightly larger amount of operators than most other languages. Most of these are currently unused, but they are certainly available for use for any purpose the programmer wants to use it for. Many adherents of other languages (Java, I'm looking at you) claim that operator overloading is evil. I don't believe that is true, seeing as how it works so well in Ruby, so Ioke instead allow you quite large freedom with regards to operators.</p>
+
+                    <p>The precedence rules for regular operators can be found in the cell 'Message OperatorTable operators', which is a regular Dict that can be updated with new values. The new values will obviously not take effect until the current code has run, and a new parse is started.</p>
+
+                    <p>At the time of writing, the available operators are these:</p>
+
+                    <ul>
+                      <li>&lt;=&gt;</li>
+                      <li>&lt;=</li>
+                      <li>&gt;=</li>
+                      <li>&lt;</li>
+                      <li>&gt;</li>
+                      <li>===</li>
+                      <li>==</li>
+                      <li>!=</li>
+                      <li>=~</li>
+                      <li>!~</li>
+                      <li>-</li>
+                      <li>+</li>
+                      <li>**</li>
+                      <li>*</li>
+                      <li>/</li>
+                      <li>%</li>
+                      <li>&amp;&amp;</li>
+                      <li>&amp;</li>
+                      <li>||</li>
+                      <li>|</li>
+                      <li>^</li>
+                      <li>=&gt;</li>
+                      <li>=&gt;&gt;</li>
+                      <li>&lt;-&gt;</li>
+                      <li>-&gt;</li>
+                      <li>+&gt;</li>
+                      <li>!&gt;</li>
+                      <li>&lt;&gt;</li>
+                      <li>&amp;&gt;</li>
+                      <li>%&gt;</li>
+                      <li>#&gt;</li>
+                      <li>@&gt;</li>
+                      <li>/&gt;</li>
+                      <li>*&gt;</li>
+                      <li>?&gt;</li>
+                      <li>|&gt;</li>
+                      <li>^&gt;</li>
+                      <li>~&gt;</li>
+                      <li>**&gt;</li>
+                      <li>&amp;&amp;&gt;</li>
+                      <li>||&gt;</li>
+                      <li>$&gt;</li>
+                      <li>-&gt;&gt;</li>
+                      <li>+&gt;&gt;</li>
+                      <li>!&gt;&gt;</li>
+                      <li>&lt;&gt;&gt;</li>
+                      <li>&amp;&gt;&gt;</li>
+                      <li>%&gt;&gt;</li>
+                      <li>#&gt;&gt;</li>
+                      <li>@&gt;&gt;</li>
+                      <li>/&gt;&gt;</li>
+                      <li>*&gt;&gt;</li>
+                      <li>?&gt;&gt;</li>
+                      <li>&gt;&gt;</li>
+                      <li>^&gt;&gt;</li>
+                      <li>~&gt;&gt;</li>
+                      <li>**&gt;&gt;</li>
+                      <li>&amp;&amp;&gt;&gt;</li>
+                      <li>||&gt;&gt;</li>
+                      <li>$&gt;&gt;</li>
+                      <li>...</li>
+                      <li>..</li>
+                      <li>&lt;&lt;</li>
+                      <li>&gt;&gt;</li>
+                      <li>or</li>
+                      <li>nor</li>
+                      <li>xor</li>
+                      <li>and</li>
+                      <li>nand</li>
+                      <li>!</li>
+                      <li>~</li>
+                      <li>$</li>
+                    </ul>
+
+                    <p>And as mentioned above, all of these can be used for your own purpose, although some of them already have reserved meanings. This document will cover most of the used operators, while the rest can be found in the reference.</p>
+
+                    <p>Since this operator shuffling happens, that also means that an Ioke program has a canonical inner form that can differ from the source text. When you use introspection of any kind, you will get back that canonical form which might not look exactly like you expected. Similarily, if you ask some code to print itself, it will use the canonical form instead of the operator skin. Macros that modify message chains should work against the canonical form, and nothing else.</p>
+
+                    <p>What an operator does depends on the result of sending the message of that name to the receiver, just like regular messages. In fact, to Ioke there really isn't any difference, except that the parsing takes special notice about operators and assignment operators.</p>
                   </div>
 
                   <div class="section">
                     <h3><a name="assignmentShuffling">Assignment shuffling</a></h3>
-                    <p>TODO: write content</p>
+                    <p>Much like with regular operators, assignment operators are subject to a kind of shuffling. This shuffling differs from regular operator shuffling, in that it will shuffle around two things - the left hand side and the right hand side. This is true for every assignment operator except for the unary ones, which will only reshuffle one message.</p>
+
+                    <p>A few examples might make the translation easier to percieve. The first item is the readable form, while the second form is the canonical form:</p>
+                    <pre class="code">
+<span style="color: #b0c4de;">foo</span> <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">1</span> <span style="color: #00bfff;">+</span> <span style="color: #0050a0;">2</span>
+<span style="color: #00bfff;">=</span>(foo<span style="color: #006666;">,</span> <span style="color: #0050a0;">1</span> <span style="color: #00bfff;">+</span>(<span style="color: #0050a0;">2</span>))
+
+<span style="color: #8b0000;">Ground</span> <span style="color: #b0c4de;">foo</span> <span style="color: #00bfff;">*=</span> <span style="color: #0050a0;">"text"</span>
+<span style="color: #b0c4de;">Ground</span> <span style="color: #00bfff;">*=</span>(foo<span style="color: #006666;">,</span> <span style="color: #0050a0;">"text"</span>)
+
+bar foo(<span style="color: #0050a0;">123</span>) <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">42</span>
+<span style="color: #b0c4de;">bar</span> <span style="color: #00bfff;">=</span>(foo(<span style="color: #0050a0;">123</span>)<span style="color: #006666;">,</span> <span style="color: #0050a0;">42</span>)
+
+flux<span style="color: #00bfff;">++</span>
+<span style="color: #00bfff;">++</span>(flux)
+                    </pre>
+
+                    <p>These examples show some more advanced details -- specifically the fact that assignment operators generally work on "places", not on names or cells. This will be more explored in the chapter on <a href="#assignment">assignment</a>. The important thing to notice from the above examples is that for most assignments two things will be rearranged. For the unary operators only one thing will be moved.</p>
+
+                    <p>Just as with regular operators, the assignment operators have information in the 'Message OperatorTable' cell. The specific cell is 'Message OperatorTable assignOperators', and it matches an assignment operator to either the integer 1, or the integer 2. Everything with 1 will be matched as being unary assignment.</p>
+
+                    <p>The currently available assignment operators are:</p>
+
+                    <ul>
+                      <li>=</li>
+                      <li>++</li>
+                      <li>--</li>
+                      <li>+=</li>
+                      <li>-=</li>
+                      <li>/=</li>
+                      <li>**=</li>
+                      <li>*=</li>
+                      <li>%=</li>
+                      <li>&amp;=</li>
+                      <li>&amp;&amp;=</li>
+                      <li>|=</li>
+                      <li>||=</li>
+                      <li>^=</li>
+                      <li>&lt;&lt;=</li>
+                      <li>&gt;&gt;=</li>
+                    </ul>
+
+                    <p>Just as with regular operators, what an assignment operator does depend on what the result is from sending the message of that name to the receiver object, just like with any type of message.</p>
                   </div>
                 </div>
 
