@@ -119,6 +119,23 @@ public class LexicalBlock extends IokeData implements AssociatedCode {
                     return context.runtime.newList(keywords);
                 }
             }));
+
+        lexicalBlock.registerMethod(lexicalBlock.runtime.newJavaMethod("returns a list of the argument names the positional arguments this block takes", new JavaMethod.WithNoArguments("argumentNames") {
+                @Override
+                public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                    List<Object> names = new ArrayList<Object>();
+                    
+                    for(DefaultArgumentsDefinition.Argument arg :  ((LexicalBlock)IokeObject.data(on)).arguments.getArguments()) {
+                        if(!(arg instanceof DefaultArgumentsDefinition.KeywordArgument)) {
+                            names.add(context.runtime.getSymbol(arg.getName()));
+                        }
+                    }
+
+                    return context.runtime.newList(names);
+                }
+            }));
+
         lexicalBlock.registerMethod(lexicalBlock.runtime.newJavaMethod("returns the message chain for this block", new JavaMethod.WithNoArguments("message") {
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {

@@ -8,16 +8,16 @@ Guide to Ioke needs to cover this:
   - Running scripts
   - Interactive mode
 - Syntax
-- Literal values
-- Message passing/underlying model
+ - Literal values
  - Operator shuffling
  - Assignment shuffling
+- Execution model: Message passing/underlying model
+ - pass
 - Base structure
  - Ground
  - Origin
  - DefaultBehavior
  - nil, true, false
- - pass
 - Assignment of places
 - Control flow
 - Code
