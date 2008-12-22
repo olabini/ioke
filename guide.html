@@ -278,6 +278,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 
                   <p>This programming guide -- together with the reference for your current version -- should be the complete document needed to understand Ioke 0, how to program in it, how to understand the names and concepts used, and also to give an initial inkling on what I think is good taste.</p>
 
+                  <p>Note that I will use many names that aren't necessarily the same as the ones traditional programming languages use. These names will be made clear sooner or later in this document, but it might help some to jump forward to <a href="#objects">Objects</a>, skim that bit, and then start over once words like Origin, cell and mimic make sense.</p>
 
                   <div class="section">
                     <h3><a name="vision">Vision</a></h3>
@@ -736,31 +737,80 @@ flux<span style="color: #00bfff;">++</span>
 
                 <div class="chapter">
                   <h2><a name="objects">Objects</a></h2>
-                  <p>TODO: write content</p>
+                  <p>The object model of Ioke is quite simple. Everything in Ioke is an object that follow these same rules. An object is something with an identity. It can have zero or more mimics, and zero or more cells. An object can also have a documentation text. Some objects can have a native data component. This acts more or less like a hidden cell that contains information that can't be directly represented in Ioke - for example the actual text in a Text. Or the actual number in a Number. Or the actual regular expression in a Regexp. These objects are the core types that contain primitive information.</p>
+                  <p>A cell is the main way of representing data in Ioke. A cell has a name and a value. Every value in Ioke is a cell - every time you send a message, a cell is looked up for the value of that cell. Cells can contain any kind of data. In other languages, cells are generally called properties or slots. They are quite close to instance variables that also can contain methods. Cells can be added and removed at any time during runtime.</p>
+
+                  <p>A mimic could also be called the parent of the object. Ioke is a prototype based language, which means that there is no distinction between classes of objects, and the objects themselves. In fact, any object can be used as the class of a new object. The word for that is mimicking, since the word class loses it's meaning in this kind of language. It's most common for an object to mimic one other object, at least initially. It's impossible to create an object that doesn't mimic anything, but you can remove all mimics for an object after the fact. You can also add more mimics. This turns out to be useful to represent shared functionality in the manner of Ruby mixins, for example. The actual effect of a mimic is that when a cell can't be found in the current object, all mimics will be searched for that cell (depth-first). So all cells available in an objects mimic is available to the object too. This is the inheritance part of OOP.</p>
+
+                  <p>In many places you will find the word Kind used. A Kind is by convention an object that is used primarily to use as a mimic for other objects. The convention is that kinds are named with an initial upper case letter, while everything else starts with a lower case letter. The assignment process of Ioke also uses this convention to automatically set a cell called "kind" on any object that gets assigned to a name matching this convention.</p>
+
+                  <p>The rest of this chapter will discuss the kinds that are the basis of the object system.</p>
 
                   <div class="section">
                     <h3><a name="base">Base</a></h3>
-                    <p>TODO: write content</p>
+
+                    <p>The kind called Base is the top of the mimic chain. It's not generally useful in itself as it only defines the bare minimum of cells to make it possible to add new cells to it, mimic it, and so on. But if you want an object that is possible to use but not include most of the other stuff, Base is place to begin. Be careful when defining methods in Base, since it doesn't have access to most of the namespace. In fact, it doesn't even know about its own name. Base can act as a kind of blank slate, if needed, but it's probably easier to just create a regular object and remove all mimics from it after the fact.</p>
+
+                    <p>Base defines these cells:</p>
+                    <dl>
+                      <dt>kind</dt>
+                      <dd>returns the kind of the object, which is "Base".</dd>
+
+                      <dt>notice</dt>
+                      <dd>returns the short notice of the object, which is "Base". Refer to <a href="#introspection">Introspection</a> for more information about notice.</dd>
+
+                      <dt>=</dt>
+                      <dd>Takes two values, the first a place and the second a value, and assigns the place named to that value. Refer to <a href="#assignment">Assignment</a> for more information about it.</dd>
+
+                      <dt>==</dt>
+                      <dd>Compares this object against the argument. Returns true if they are the same, otherwise false.</dd>
+
+                      <dt>cell</dt>
+                      <dd>Takes one argument that should be the name of a cell that exists, and returns the value of the cell unactivated.</dd>
+
+                      <dt>cell=</dt>
+                      <dd>Sets a cell to a specific value. Used to set cells that can't be set using the regular assignment model. Refer to <a href="#assignment">Assignment</a> for more information about it.</dd>
+
+                      <dt>cell?</dt>
+                      <dd>Takes one argument that should be the name of a cell to check if it exists in this objects mimic chain.</dd>
+
+                      <dt>cellNames</dt>
+                      <dd>Returns a List containing the names of all cells this object contains.</dd>
+
+                      <dt>cells</dt>
+                      <dd>Returns a Dict with all cells this object contains. The key is the name and the value is the cell value.</dd>
+
+                      <dt>documentation</dt>
+                      <dd>Returns the documentation text for this object, or nil if no documentation exists for it.</dd>
+
+                      <dt>documentation=</dt>
+                      <dd>Sets the documentation text for this object.</dd>
+
+                      <dt>mimic</dt>
+                      <dd>Returns a newly created object that has the receiver as mimic. This is the magic way of creation new objects in Ioke. It is also the <em>ONLY</em> way to do it.</dd>
+                    </dl>
+
+                    <p>All of these methods are described further in the reference.</p>
                   </div>
 
                   <div class="section">
                     <h3><a name="ground">Ground</a></h3>
-                    <p>TODO: write content</p>
+                    <p>As mentioned above, Ground is the default ground/context for evaluation. Ground mimics Base and DefaultBehavior. Ground is also special in that this is the place where all top level kinds are defined. If you want to create a top level kind, you should put it in Ground. If you take a look in Ground, you will see that it contains cells for Text, Dict, List, Base, Origin, itself and many other. Ioke doesn't have any global state at all, but Ground is as close as it gets. Ground should in most cases not be mimicked directly.</p>
                   </div>
 
                   <div class="section">
                     <h3><a name="origin">Origin</a></h3>
-                    <p>TODO: write content</p>
+                    <p>Origin should be the place where most objects in Ioke start from. It is specifically created to be the origin of objects. As such it doesn't contain many cells for itself, but it mimics Ground and has access to everything from Base, DefaultBehavior and Ground in that way. When adding new more or less global functionality, Origin is probably the best place to put it. Currently, the only cells Origin contains is for purposes of printing itself.</p>
                   </div>
 
                   <div class="section">
                     <h3><a name="defaultBehavior">DefaultBehavior</a></h3>
-                    <p>TODO: write content</p>
+                    <p>DefaultBehavior is a mixin - meaning it should never be the sole mimic of an object. Mixins are generally not grounded in Base, and doesn't contain most of the things you would expect from an object. DefaultBehavior contain almost all the general methods you use when programming Ioke. It contains the internal methods to create values from literals, and most other functionality specified in this document. In short, DefaultBehavior is the work horse, and you should have a pretty good reason to not have it in the mimic chain of an object. Since Ground mimics DefaultBehavior, any object you create from Origin, will have DefaultBehavior in its mimic chain.</p>
                   </div>
 
                   <div class="section">
                     <h3><a name="nilTrueFalse">nil, true, false</a></h3>
-                    <p>TODO: write content</p>
+                    <p>The three values nil, true and false are the only values that are considered kinds, even though they start with lower case letters. They are not like the other kinds in the other important way either - these values can not be mimicked, and you will get a condition if you try it. The reason is that Ioke's basic boolean system revolves around these values. It is not entirely certrain that these values will forever be the only boolean values, but for now they are. nil should be used to represent the absence of a value, including the absence of a reasonable return value. false is the quintessential false value, and true is the quintessential true value. The value true isn't strictly necessary since any value except for nil and false are true. This notion of truthness mimics Ruby. The cells nil, true and false are defined in Ground, and they can actually be overridden or changed - but I don't recommend it. I can guarantee lots of chaos and non-working programs from doing it. More info on how these values interact can be found in the section on <a href="#comparison">Comparison</a>.</p>
                   </div>
                 </div>
 
