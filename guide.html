@@ -484,6 +484,16 @@ Bye.
                       <p>The parsing of text will generate a message with name "internal:createText". This message will get one argument that is the raw Java String corresponding to the text.</p>
 
                       <p>Ioke allows automatic interpolation of arbitrary values in the same manner as Ruby. It uses the same syntax for this, which is the #{} syntax inside a text. These can be nested in any way. The elements will be parsed and sent as arguments to the message with name "internal:concatenateText". So an Ioke text such as "foo bar#{flux} will #{1+2}" will generate the message internal:concatenateText("foo bar", flux, " will ", 1+(2), ""). As you can see, there is a small amount of waste in the way this is generated -- but the simple model makes it easy to understand. It's not guaranteed that this will remain the same, although the message will definitely remain.</p>
+
+                      <p>Some examples:</p>
+                      <pre class="code">
+<span style="color: #0050a0;">"foo"</span>
+
+<span style="color: #0050a0;">"flax \
+mux"</span>
+
+<span style="color: #0050a0;">"one two #{three} \b four"</span>
+                      </pre>
                     </div>
 
                     <div class="section">
@@ -504,17 +514,56 @@ Bye.
 
                     <div class="section">
                       <h4><a name="literalIntegers">Integers</a></h4>
-                      <p></p>
+                      <p>Ioke supports arbitrarily sized numbers. It also contains a numerical tower that can be more closely explored in the reference documentation. The numerical tower is based in Number. Number Real mimics Number. Number Rational mimics Number Real, and so does Number Decimal. Finally, Number Integer and Number Ratio both mimics Number Rational. The interesting parts of this tower is Number Integer, which corresponds to integers, Number Ratio, which is any ratio between two integers, and Number Decimal, which corresponds to decimal numbers. These are arbitrarily sized and exact. There are no floats or doubles in Ioke. There is also a potential place for Number Complex at the same layer as Number Real, although complex numbers are not currently implemented. There are also plans for implementing a unit system further down the line.</p>
+
+                      <p>Literal integers can be written using either decimal or hexadecimal notation. Hexadecimal notation begins with 0x or 0X and are then followed by one or more hexadecimal letters. They can be either upper or lower case. A decimal literal number is written using one or more decimal letters, but nothing else.</p>
+
+                      <p>There is no literal to create ratios - these can only be created by division of integers. Negative numbers have no literal syntax, but preceding a number with a minus sign will call the message - on the number and generate the negative value.</p>
+
+                      <p>A literal integer will be transformed into a call to internal:createNumber, which takes one native Java String from which to create the number.</p>
+
+                      <p>Some examples:</p>
+                      <pre class="code">
+<span style="color: #0050a0;">1234444444444444444444444444444444444444235234534534</span>
+
+<span style="color: #0050a0;">0</span>
+
+<span style="color: #0050a0;">0xFFFFF</span>
+                      </pre>
                     </div>
 
                     <div class="section">
                       <h4><a name="literalDecimals">Decimals</a></h4>
-                      <p></p>
+                      <p>Literal decimal values can be written either using exponential notation, or using a decimal dot. A decimal dot notation can be combined with exponential notation. Exponential notation starts with a number or a decimal number, followed by lower or upper case E, followed by an optional sign, and then followed by one or more decimal letters. </p>
+
+                      <p>A literal decimal will be transformed into a call to internal:createDecimal, which takes one native Java String from which to create the decimal.</p>
+
+                      <p>Some examples:</p>
+                      <pre class="code">
+<span style="color: #0050a0;">0.0</span>
+
+<span style="color: #0050a0;">1E6</span>
+
+<span style="color: #0050a0;">1E-32</span>
+
+<span style="color: #0050a0;">23.4445e10</span>
+                      </pre>
                     </div>
 
                     <div class="section">
                       <h4><a name="literalSymbols">Symbols</a></h4>
-                      <p></p>
+                      <p>Symbols aren't exactly syntax, but they aren't exactly messages either. Or rather, they are messages that will evaluate to the symbol that represent themselves. Symbol is a kind in Ioke. There are two kinds of symbols - the first one is simple symbols that can be parsed as is. The second is symbols that can't be parsed as is. Symbols are preceeded by a colon and then directly followed by the symbol text. If it can't be parsed correctly, the value should be surrounded by quotes, and this will be turned into a call to the method :, which takes the text as argument. That means that you can actually get dynamic symbols by calling the : method.</p>
+
+                      <p>Some examples:</p>
+                      <pre class="code">
+<span style="color: #7777d4;">:foo</span>
+
+<span style="color: #7777d4;">:flaxBarFoo</span>
+
+<span style="color: #7777d4;">:""</span>
+
+<span style="color: #7777d4;">:"mux mex mox \n ::::::::"</span>
+                      </pre>
                     </div>
                   </div>
 
