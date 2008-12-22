@@ -350,14 +350,59 @@ Goodbye world
 
                     <div class="section">
                       <h4><a name="interactive">Interactive mode</a></h4>
-                      <p>TODO: write content</p>
+
+                      <p>If no code to execute has been specified to the ioke script, IIk - Interactive Ioke - will start. This is a REPL that allow the execution of arbitrary code at a shell that immediately displays the result. The main difference between running Ioke from a file and interactively, is that the interactive prompt will show a notice of the result of the last operation, after each execution. IIk will also invoke a debugger when a condition is encountered. This debugger gives you the possibility to closer inspect what happened. The final difference with IIk is that it does not execute code directly in Ground - which the top level inside an Ioke script will do. This difference is crucial, when considering namespacing issues.</p>
+
+                      <p>IIk will try to use Readline through JLine if your platform supports it.</p>
+
+                      <p>IIk will be more closely described in the section on it, <a href="#iik">here</a>, but just to give a glimpse, this is how a small session could look like:</p>
+                      <pre class="code">
+iik> "hello world" println
+hello world
++> nil
+
+iik> 10 * 20
++> 200
+
+iik> 3/2
++> 3/2
+
+iik> 3/2 + 3/2
++> 3
+
+iik> 3/2 * 3    
++> 9/2
+
+iik> foo = "hello"
++> "hello"
+
+iik> foo
++> "hello"
+
+iik> exit
+Bye.
+                      </pre>
+
+                      <p>When you see the prompt "iik>", you know that IIk is waiting for input. The result of a computation is shown after the "+>" sigil. You can exit from IIk by calling either "exit" or "quit". There is also a restart named "quit" that can be invoked to quit IIk.</p>
                     </div>
                   </div>
                 </div>
 
                 <div class="chapter">
                   <h2><a name="syntax">Syntax</a></h2>
-                  <p>TODO: write content</p>
+
+                  <p>Ioke has no keywords or statements. Everything is an expression composed of a chain of messages. A piece of code is represented as a chain of messages that links to the next message. The result of one message will be the receiver of the next message, until a "." message is received. The "." message is a terminator that throws away the current receiver. A newline will serve as a "." message in the circumstances where it feels natural.</p>
+
+                  <p>An informal BNF description of Ioke looks like this:</p>
+                  <pre style="font-family: courier;">
+    program       ::=  messageChain*
+    messageChain  ::=  expression*
+    expression    ::=  message | brackets | operator | literal | terminator
+    message       ::=  Identifier ( "(" commated? ")" )?
+    commated      ::=  expression+ ( "," expression+ )*
+    brackets      ::=  ( "[" commated? "]" ) | ( "{" commated? "}" )
+    literal       ::=  String | Regexp | Number | Decimal
+                  </pre>
 
                   <div class="section">
                     <h3><a name="literals">Literal values</a></h3>
