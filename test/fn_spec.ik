@@ -463,6 +463,19 @@ describe(LexicalBlock,
     fn(m2(x:15)) should signal(Condition Error NoSuchCell)
   )
 
+  describe("argumentNames",
+    it("should return an empty list for a simple fn",
+      fn argumentNames should == []
+    )
+
+    it("should return an the argument names as symbols for a block",
+      fn(x, x) argumentNames should == [:x]
+      fn(x, y 12, x) argumentNames should == [:x, :y]
+      fn(x, y: 12, x) argumentNames should == [:x]
+      fn(y: 12, x, x) argumentNames should == [:x]
+    )
+  )
+
   describe("rest (+)", 
     it("should to give any length of arguments to a rest-only argument", 
       restm = fnx(+rest, rest)

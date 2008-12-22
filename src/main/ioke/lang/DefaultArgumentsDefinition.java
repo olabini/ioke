@@ -106,6 +106,10 @@ public class DefaultArgumentsDefinition {
         return keywords;
     }
 
+    public List<Argument> getArguments() {
+        return arguments;
+    }
+
     public String getCode() {
         return getCode(true);
     }
