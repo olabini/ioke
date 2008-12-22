@@ -256,11 +256,33 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 
                 <div class="chapter">
                   <h2><a name="introduction">Introduction</a></h2>
-                  <p>TODO: write content</p>
+                  <p>Ioke is a general purpose language. It is a strongly typed, extremely dynamic, prototype object oriented language. It is homoiconic and it's closest ancestors is Io, Smalltalk, Ruby and Lisp - but it's quite a distance from all of them. It looks a lot like Io, to a limit.</p>
+
+                  <p>Ioke is targeted at the Java Virtual Machine and is tightly integrated with the platform. Why the JVM? It's available everywhere, it gives severeal important features such as world class garbage collectors, capable thread schedulers and an amazing JIT compiler. All of these are things that server Ioke well, without requiring direct development resources from the Ioke team. Access to the Java platform also means access to all existing libraries and functionality, with all that entails. The JVM is just a very pragmatic choice.</p>
+
+                  <p>You're probably reading this guide at <a href="http://ioke.org/guide.html">ioke.org</a>. That is the official home of the project, although some of the project functionality is hosted at <a href="http://ioke.kenai.org">Kenai</a>, where such things as mailing lists and a bug tracker is available. The canonical source repository for Ioke exists at GitHub, at <a href="http://github.org/olabini/ioke/tree/master">http://github.org/olabini/ioke/tree/master</a>.</p>
+
+                  <p>The current version of Ioke is called Ioke 0. The naming of Ioke will change regularily with major revisions. There are two different versions in play here. Ioke 0 is the name and version of the language and core libraries. The initial implementation for Ioke 0 is called ikJVM 0.1.0, and the version numbers are not interdependent. The next major version of Ioke will be called Ioke S, and you can find information about it in the chapter on <a href="#futurePlans">future plans</a>.</p>
+
+                  <p>This programming guide -- together with the reference for your current version -- should be the complete document needed to understand Ioke 0, how to program in it, how to understand the names and concepts used, and also to give an initial inkling on what I think is good taste.</p>
+
 
                   <div class="section">
                     <h3><a name="vision">Vision</a></h3>
-                    <p>TODO: write content</p>
+
+                    <p>The evolution of programming languages is a steady progression of finding new ways to express abstractions naturally - in a way that doesn't stray to far away from the smaller details. A programming language have to make it possible to abstract a way common things, while making it easy to customize these abstractions in very detailed ways. A programming language should be able to do this well without sacrificing readability and understandability. This tension lies at the core of programming.</p>
+
+                    <p>How do you create a language that makes it easy to express powerful concepts in a succinct way, while still making it easy to maintain and work with after the fact, without turning it into a new compression mode? How do make it easy for a programmer to express high level abstractions that are abstractions of abstractions of abstractions?</p>
+
+                    <p>There are many open problems in programming language design. Concurrency is one of them, performance another. These are two areas Ioke does not address. Instead, Ioke is a remodeling of the core concepts and ideas embodied in other programming languages.</p>
+
+                    <p>Are still Lisp and Smalltalk the most powerful languages around, or are there ways of providing more expressiveness without sacrificing understandability? Is there a way to combine all the lessons learned from languages like Ruby and Python, and patch them back into a Lisp and Smalltalk core? Is it possible to do this while taking some of the benefits of Io? Can a language be both small, regular, homoiconic, reflective and easy to understand? I hope that Ioke is just that.</p>
+
+                    <p>Simplicity doesn't mean lack of power. Small, simple, orthogonal functionality can be more powerful than larger, complicated abstractions that doesn't fit together.</p>
+
+                    <p>Io explicitly states that the goal of the language is to refocus attention on expressiveness, and with Ioke I want to take that philosophy one step further.</p>
+
+                    <p>It's important to realize that an experiment like this doesn't necessarily have to mean the language can't be used for real projects. By wedding Ioke to the Java Virtual Machine, I make it easy to get access to good libraries and existing implementations on most platforms. In that way, Ioke can be used to create real systems, even though the ecosystem will initially be very small. And I think that this is necessary. How can you know if a language really is worthwhile or not, if you can't use it as a general purpose programming language? The Java platform makes this possible.</p>
                   </div>
 
                   <div class="section">
