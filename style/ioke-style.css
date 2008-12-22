@@ -80,10 +80,11 @@ pre.code {
   display: block;
   background-color: black;
   color: white;
-  font-family: sans-serif;
+  font-family: courier;
   margin:.75em 0;
   border:1px dotted #ccc;
   border-width:1px 0;
   padding:5px 15px;
   overflow:auto;
+  font-size:1.0em;
 }

@@ -287,11 +287,65 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 
                   <div class="section">
                     <h3><a name="gettingStarted">Getting started</a></h3>
-                    <p>TODO: write content</p>
+                    <p>Ioke is very easy to get started with. The first step is to download a package. Which one you choose depends on what platform you're on, and whether you want to build Ioke yourself, or just start using it. This guide will only cover using a prebuilt version. Go to the download page at <a href="http://ioke.org/download.html">http://ioke.org/download.html</a>, and download one of the distributions. At the time of writing the full version of Ioke is Ioke 0 ikJVM 0.1.0. Choose the latest download in the 0.1-series for this document to apply. In later revisions of the document, any major change will be noted inline.</p>
+
+                    <p>Once you have downloaded the distribution, you need to unpack it somewhere, and finally add the bin-directory to your PATH environment variable. There is also a jar-download that can be run directly. If you choose this option you don't get the benefits of having a home for Ioke, which in some cases be inconvenient. Ioke can be run directly from the jar-file, though.</p>
 
                     <div class="section">
                       <h4><a name="runningScripts">Running scripts</a></h4>
-                      <p>TODO: write content</p>
+                      <p>To run an Ioke script, you can generally just use the ioke-command:</p>
+                      <pre class="code">
+$ ioke helloWorld.ik
+Hello world
+                      </pre>
+
+                      <p>You can also execute snippets of code on the command line using the -e argument to the ioke-command. You can have several of these one the same line too:</p>
+
+                      <pre class="code">
+$ ioke -e'"Hello world" println' -e'"Goodbye world" println'
+Hello world
+Goodbye world
+                      </pre>
+
+                      <p>When using -e, be careful about what quoting style you use, since the shell sometimes can munge up your commands if you don't surround them correctly.</p>
+                      <p>The ioke command has several helpful command line options, that can change what happens during execution. These are:</p>
+                      <dl>
+                        <dt>-Cdirectory</dt>
+                        <dd>Switch to directory before executing any files and command line scripts. This will make the directory the initial current working directory for Ioke during the execution of the JVM.</dd>
+
+                        <dt>-d</dt>
+                        <dd>Enable debug output.</dd>
+
+                        <dt>-e script</dt>
+                        <dd>Execute script, as describe above. May occur more than once on a command line.</dd>
+
+                        <dt>-h</dt>
+                        <dt>--help</dt>
+                        <dd>Display help information, including descriptions of these command line options.</dd>
+
+                        <dt>-Idirectory</dt>
+                        <dd>Add directory to the load path of Ioke. May occur more than once on a command line.</dd>
+
+                        <dt>-JjvmOptions</dt>
+                        <dd>Pass on options to the JVM. This can be used to change any runtime parameters that your JVM takes. May occur more than once. The options are provided directly after the -J, so if you want to change the maximum amount of memory used, you can do that writing -J-Xmx128M. </dd>
+
+                        <dt>--copyright</dt>
+                        <dd>Print copyright information and exit.</dd>
+
+                        <dt>--version</dt>
+                        <dd>Print version information and exit</dd>
+
+                        <dt>--server</dt>
+                        <dd>Run the JVM in server Hotspot mode</dd>
+
+                        <dt>--client</dt>
+                        <dd>Run the JVM in client Hotspot mode (the default)</dd>
+
+                        <dt>--</dt>
+                        <dd>Mark the end of options to the ioke script, anything after this is options that will be sent to the code running.</dd>
+                      </dl>
+
+                      <p>If you provide the name of a script file on the command line, it should come after all the arguments to the ioke script. Everything after the script will be added as data to the 'System programArguments' cell. You can use both one-line scripts with -e and specify a script file. If so, the script file will be run after the one-line scripts.</p>
                     </div>
 
                     <div class="section">
