@@ -83,6 +83,16 @@ public class IokeSystem extends IokeData {
     private static final String[] SUFFIXES = {".ik"};
     private static final String[] SUFFIXES_WITH_BLANK = {"", ".ik"};
 
+    public final static boolean DOSISH = System.getProperty("os.name").indexOf("Windows") != -1;
+
+    public static boolean isAbsoluteFileName(String name) {
+        if(DOSISH) {
+            return name.length() > 2 && name.charAt(1) == ':' && name.charAt(2) == '\\';
+        } else {
+            return name.length() > 0 && name.charAt(0) == '/';
+        }
+    }
+
     public boolean use(IokeObject self, IokeObject context, IokeObject message, String name) throws ControlFlow {
         final Runtime runtime = context.runtime;
         Builtin b = context.runtime.getBuiltin(name);
@@ -174,7 +184,7 @@ public class IokeSystem extends IokeData {
                 try {
                     File f;
 
-                    if(currentS.startsWith("/")) {
+                    if(isAbsoluteFileName(currentS)) {
                         f = new File(currentS, name + suffix);
                     } else {
                         f = new File(new File(currentWorkingDirectory, currentS), name + suffix);
@@ -306,7 +316,7 @@ public class IokeSystem extends IokeData {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
 
-                    return (System.getProperty("os.name").indexOf("Windows") != -1) ? runtime._true : runtime._false;
+                    return DOSISH ? runtime._true : runtime._false;
                 }
             }));
 
@@ -324,7 +334,7 @@ public class IokeSystem extends IokeData {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     String name = Message.file(message);
                     File f = null;
-                    if(name.startsWith("/")) {
+                    if(isAbsoluteFileName(name)) {
                         f = new File(name);
                     } else {
                         f = new File(context.runtime.getCurrentWorkingDirectory(), name);

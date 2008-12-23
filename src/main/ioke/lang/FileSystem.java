@@ -170,7 +170,7 @@ public class FileSystem {
 
                     String name = Text.getText(args.get(0));
                     File f = null;
-                    if(name.startsWith("/")) {
+                    if(IokeSystem.isAbsoluteFileName(name)) {
                         f = new File(name);
                     } else {
                         f = new File(context.runtime.getCurrentWorkingDirectory(), name);
@@ -198,7 +198,7 @@ public class FileSystem {
 
                     String name = Text.getText(args.get(0));
                     File f = null;
-                    if(name.startsWith("/")) {
+                    if(IokeSystem.isAbsoluteFileName(name)) {
                         f = new File(name);
                     } else {
                         f = new File(context.runtime.getCurrentWorkingDirectory(), name);
@@ -238,7 +238,7 @@ public class FileSystem {
 
                     String name = Text.getText(args.get(0));
                     File f = null;
-                    if(name.startsWith("/")) {
+                    if(IokeSystem.isAbsoluteFileName(name)) {
                         f = new File(name);
                     } else {
                         f = new File(context.runtime.getCurrentWorkingDirectory(), name);
@@ -266,7 +266,7 @@ public class FileSystem {
 
                     String name = Text.getText(args.get(0));
                     File f = null;
-                    if(name.startsWith("/")) {
+                    if(IokeSystem.isAbsoluteFileName(name)) {
                         f = new File(name);
                     } else {
                         f = new File(context.runtime.getCurrentWorkingDirectory(), name);
@@ -294,7 +294,7 @@ public class FileSystem {
 
                     String name = Text.getText(args.get(0));
                     File f = null;
-                    if(name.startsWith("/")) {
+                    if(IokeSystem.isAbsoluteFileName(name)) {
                         f = new File(name);
                     } else {
                         f = new File(context.runtime.getCurrentWorkingDirectory(), name);
@@ -333,7 +333,7 @@ public class FileSystem {
 
                     String name = Text.getText(args.get(0));
                     File f = null;
-                    if(name.startsWith("/")) {
+                    if(IokeSystem.isAbsoluteFileName(name)) {
                         f = new File(name);
                     } else {
                         f = new File(context.runtime.getCurrentWorkingDirectory(), name);
@@ -378,7 +378,7 @@ public class FileSystem {
 
                     String name = Text.getText(args.get(0));
                     File f = null;
-                    if(name.startsWith("/")) {
+                    if(IokeSystem.isAbsoluteFileName(name)) {
                         f = new File(name);
                     } else {
                         f = new File(context.runtime.getCurrentWorkingDirectory(), name);
@@ -386,7 +386,7 @@ public class FileSystem {
 
                     String name2 = Text.getText(args.get(1));
                     File f2 = null;
-                    if(name2.startsWith("/")) {
+                    if(IokeSystem.isAbsoluteFileName(name2)) {
                         f2 = new File(name2);
                     } else {
                         f2 = new File(context.runtime.getCurrentWorkingDirectory(), name2);
@@ -434,7 +434,7 @@ public class FileSystem {
 
                     String name = Text.getText(args.get(0));
                     File f = null;
-                    if(name.startsWith("/")) {
+                    if(IokeSystem.isAbsoluteFileName(name)) {
                         f = new File(name);
                     } else {
                         f = new File(context.runtime.getCurrentWorkingDirectory(), name);
@@ -493,7 +493,7 @@ public class FileSystem {
 
                     String name = Text.getText(args.get(0));
                     File f = null;
-                    if(name.startsWith("/")) {
+                    if(IokeSystem.isAbsoluteFileName(name)) {
                         f = new File(name);
                     } else {
                         f = new File(context.runtime.getCurrentWorkingDirectory(), name);
