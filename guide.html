@@ -1568,7 +1568,92 @@ msg code <span style="color: #a52a2a;">;; "2 -(1)"</span></pre>
 
                   <div class="section">
                     <h3><a name="lists">Lists</a></h3>
-                    <p>TODO: write content</p>
+                    <p>Ioke has lists that expand to the size needed. These lists can be created using a simple literal syntax. They can contain any kind of element, including itself (although don't try to print such a list). Ioke lists mixin in the Enumerable mixin, which gives it quite powerful capabilities.</p>
+
+                    <p>A list can be created using the "list" or "[]" methods:</p>
+                    <pre class="code">
+<span style="color: #a52a2a;">;; an empty list
+</span>[]
+
+<span style="color: #a52a2a;">;; the same list created in two different ways
+</span><span style="color: #449900;">list</span>(<span style="color: #0050a0;">1</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">2</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">3</span>)
+[<span style="color: #0050a0;">1</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">2</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">3</span>]
+
+<span style="color: #a52a2a;">;; a list with different elements
+</span>[<span style="color: #0050a0;">1</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">"one"</span><span style="color: #006666;">,</span> <span style="color: #7777d4;">:one</span>]</pre>
+                    
+                    <p>Except for the Enumerable methods, List also defines many other methods that can be highly useful. Some examples are shown below:</p>
+                    <pre class="code">
+<span style="color: #b0c4de;">l</span> <span style="color: #00bfff;">=</span> [<span style="color: #0050a0;">1</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">2</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">3</span>]
+
+<span style="color: #a52a2a;">;; add two lists together
+</span>l <span style="color: #00bfff;">+</span> l <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> [1, 2, 3, 1, 2, 3]
+</span>
+<span style="color: #a52a2a;">;; return the difference of two lists
+</span>l <span style="color: #00bfff;">-</span> [<span style="color: #0050a0;">2</span>] <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> [1, 3]
+</span>
+<span style="color: #a52a2a;">;; add a new value to a list
+</span>l &lt;&lt; <span style="color: #0050a0;">42</span>
+l <span style="color: #00bfff;">==</span> [<span style="color: #0050a0;">1</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">2</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">3</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">42</span>] <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> true
+</span>
+<span style="color: #a52a2a;">;; get a specific element from the list
+</span>l[<span style="color: #0050a0;">0</span>]  <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> 1
+</span>
+<span style="color: #a52a2a;">;; -1 returns the last, -2 the next to last
+</span>l[<span style="color: #00bfff;">-</span><span style="color: #0050a0;">1</span>] <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> 42
+</span>
+<span style="color: #a52a2a;">;; an index outside the boundaries return nil
+</span>l[<span style="color: #0050a0;">10</span>] <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> nil
+</span>
+<span style="color: #a52a2a;">;; assign a new value
+</span>l[<span style="color: #0050a0;">3</span>] <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">40</span>
+l <span style="color: #00bfff;">==</span> [<span style="color: #0050a0;">1</span><span style="color: #006666;">,</span><span style="color: #0050a0;">2</span><span style="color: #006666;">,</span><span style="color: #0050a0;">3</span><span style="color: #006666;">,</span><span style="color: #0050a0;">40</span>] <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> true
+</span>
+l[<span style="color: #00bfff;">-</span><span style="color: #0050a0;">1</span>] <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">39</span>
+l <span style="color: #00bfff;">==</span> [<span style="color: #0050a0;">1</span><span style="color: #006666;">,</span><span style="color: #0050a0;">2</span><span style="color: #006666;">,</span><span style="color: #0050a0;">3</span><span style="color: #006666;">,</span><span style="color: #0050a0;">39</span>] <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> true
+</span>
+<span style="color: #a52a2a;">;; assign an out of bounds value
+</span>l[<span style="color: #0050a0;">10</span>] <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">13</span>
+l <span style="color: #00bfff;">==</span> [<span style="color: #0050a0;">1</span><span style="color: #006666;">,</span><span style="color: #0050a0;">2</span><span style="color: #006666;">,</span><span style="color: #0050a0;">3</span><span style="color: #006666;">,</span><span style="color: #0050a0;">39</span><span style="color: #006666;">,</span><span style="color: #6495ed;">nil</span><span style="color: #006666;">,</span><span style="color: #6495ed;">nil</span><span style="color: #006666;">,</span><span style="color: #6495ed;">nil</span><span style="color: #006666;">,</span><span style="color: #6495ed;">nil</span><span style="color: #006666;">,</span><span style="color: #6495ed;">nil</span><span style="color: #006666;">,</span><span style="color: #6495ed;">nil</span><span style="color: #006666;">,</span><span style="color: #0050a0;">13</span>]
+  <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> true
+</span>
+<span style="color: #a52a2a;">;; at and at= is the same as [] and []]
+</span>l at(<span style="color: #0050a0;">0</span>) <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> 1
+</span>
+<span style="color: #a52a2a;">;; empty the list
+</span>l clear!
+l <span style="color: #00bfff;">==</span> [] <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> true
+</span>
+<span style="color: #a52a2a;">;; follows the each protocol
+</span>l each(<span style="color: #449900;">println</span>)
+
+<span style="color: #a52a2a;">;; is empty?
+</span>l <span style="color: #449900;">empty?</span> <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> true
+</span>
+<span style="color: #a52a2a;">;; does it include an element?
+</span>l include?(<span style="color: #7777d4;">:foo</span>) <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> false
+</span>
+<span style="color: #a52a2a;">;; the last element
+</span>l last <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> nil
+</span>[<span style="color: #0050a0;">1</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">2</span>] last <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> 2
+</span>
+<span style="color: #a52a2a;">;; the length
+</span>[<span style="color: #0050a0;">1</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">2</span>] length <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> 2
+</span>
+<span style="color: #a52a2a;">;; first value
+</span>[<span style="color: #0050a0;">1</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">2</span>] first <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> 1
+</span>
+<span style="color: #a52a2a;">;; rest except for first
+</span>[<span style="color: #0050a0;">1</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">2</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">3</span>] rest <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> [2, 3]
+</span>
+<span style="color: #a52a2a;">;; returns a new sorted list
+</span>[<span style="color: #0050a0;">3</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">2</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">1</span>] sort <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> [1, 2, 3]
+</span>
+<span style="color: #a52a2a;">;; sorts in place
+</span><span style="color: #b0c4de;">l</span> <span style="color: #00bfff;">=</span> [<span style="color: #0050a0;">3</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">2</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">1</span>]
+l sort!
+l <span style="color: #00bfff;">==</span> [<span style="color: #0050a0;">1</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">2</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">3</span>] <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> true
+</span></pre>
                   </div>
 
                   <div class="section">
