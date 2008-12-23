@@ -47,50 +47,52 @@ public class Main {
 
             for(;!done && start<args.length;start++) {
                 String arg = args[start];
-                if(arg.charAt(0) != '-') {
-                    done = true;
-                    break;
-                } else {
-                    if(arg.equals("--")) {
+                if(arg.length() > 0) {
+                    if(arg.charAt(0) != '-') {
                         done = true;
-                    } else if(arg.equals("-d")) {
-                        debug = true;
-                        r.debug = true;
-                    } else if(arg.startsWith("-e")) {
-                        if(arg.length() == 2) {
-                            scripts.add(args[++start]);
-                        } else {
-                            scripts.add(arg.substring(2));
-                        }
-                    } else if(arg.startsWith("-I")) {
-                        if(arg.length() == 2) {
-                            loadDirs.add(args[++start]);
-                        } else {
-                            loadDirs.add(arg.substring(2));
-                        }
-                    } else if(arg.equals("-h") || arg.equals("--help")) {
-                        System.err.print(HELP);
-                        return;
-                    } else if(arg.equals("-")) {
-                        readStdin = true;
-                    } else if(arg.charAt(1) == 'C') {
-                        if(arg.length() == 2) {
-                            cwd = args[++start];
-                        } else {
-                            cwd = arg.substring(2);
-                        }
+                        break;
                     } else {
-                        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(r.condition, 
-                                                                                           message, 
-                                                                                           context, 
-                                                                                           "Error", 
-                                                                                           "CommandLine", 
-                                                                                           "DontUnderstandOption")).mimic(message, context);
-                        condition.setCell("message", message);
-                        condition.setCell("context", context);
-                        condition.setCell("receiver", context);
-                        condition.setCell("option", r.newText(arg));
-                        r.errorCondition(condition);
+                        if(arg.equals("--")) {
+                            done = true;
+                        } else if(arg.equals("-d")) {
+                            debug = true;
+                            r.debug = true;
+                        } else if(arg.startsWith("-e")) {
+                            if(arg.length() == 2) {
+                                scripts.add(args[++start]);
+                            } else {
+                                scripts.add(arg.substring(2));
+                            }
+                        } else if(arg.startsWith("-I")) {
+                            if(arg.length() == 2) {
+                                loadDirs.add(args[++start]);
+                            } else {
+                                loadDirs.add(arg.substring(2));
+                            }
+                        } else if(arg.equals("-h") || arg.equals("--help")) {
+                            System.err.print(HELP);
+                            return;
+                        } else if(arg.equals("-")) {
+                            readStdin = true;
+                        } else if(arg.charAt(1) == 'C') {
+                            if(arg.length() == 2) {
+                                cwd = args[++start];
+                            } else {
+                                cwd = arg.substring(2);
+                            }
+                        } else {
+                            final IokeObject condition = IokeObject.as(IokeObject.getCellChain(r.condition, 
+                                                                                               message, 
+                                                                                               context, 
+                                                                                               "Error", 
+                                                                                               "CommandLine", 
+                                                                                               "DontUnderstandOption")).mimic(message, context);
+                            condition.setCell("message", message);
+                            condition.setCell("context", context);
+                            condition.setCell("receiver", context);
+                            condition.setCell("option", r.newText(arg));
+                            r.errorCondition(condition);
+                        }
                     }
                 }
             }
