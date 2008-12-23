@@ -39,7 +39,7 @@
   }
 -->
     </style>
-    <base target=\"docwin\" href=\"index.html\"/>
+    <base target=\"docwin\"/>
   </head>
   <body>
     <div class=\"banner\">Cells</div>
