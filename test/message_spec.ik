@@ -44,6 +44,17 @@ describe("Message",
       Message fromText("foo(123, 321) bar") next name should == :bar
     )
   )
+
+  describe("prev", 
+    it("should return nil if there is no next", 
+      Message fromText("foo") prev should == nil
+    )
+
+    it("should return the prev pointer", 
+      Message fromText("foo bar") next prev name should == :foo
+      Message fromText("foo(123, 321) bar") next prev name should == :foo
+    )
+  )
   
   describe("keyword?", 
     it("should return true for a message that )s with a colon", 
@@ -94,6 +105,26 @@ describe("Message",
     it("should return a message from the text", 
       Message fromText("foo") name should == :foo
       Message fromText("foo bar") next name should == :bar
+    )
+  )
+
+  describe("next=",
+    it("should set the next pointer",
+      msg = Message fromText("foo bar")
+      val = msg cell(:next)
+      msg next = nil
+      msg next should == nil
+      (msg cell(:next) == cell(:val)) should == true
+    )
+  )
+
+  describe("prev=",
+    it("should set the prev pointer",
+      msg = Message fromText("foo bar")
+      val = msg next cell(:prev)
+      msg next prev = nil
+      msg next prev should == nil
+      (msg next cell(:prev) == cell(:val)) should == true
     )
   )
 )

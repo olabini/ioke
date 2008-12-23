@@ -206,6 +206,48 @@ public class Message extends IokeData {
                     return o;
                 }
             }));
+        message.registerMethod(message.runtime.newJavaMethod("sets the next pointer of the message and then returns that pointer", new JavaMethod("next=") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("newNext")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+
+                    Object o = args.get(0);
+                    Message.setNext(IokeObject.as(on), IokeObject.as(o));
+                    return o;
+                }
+            }));
+        message.registerMethod(message.runtime.newJavaMethod("sets the prev pointer of the message and then returns that pointer", new JavaMethod("prev=") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("newPrev")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+
+                    Object o = args.get(0);
+                    Message.setPrev(IokeObject.as(on), IokeObject.as(o));
+                    return o;
+                }
+            }));
         message.registerMethod(message.runtime.newJavaMethod("returns the file name where this message is written", new JavaMethod.WithNoArguments("filename") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
