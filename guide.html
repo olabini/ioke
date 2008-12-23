@@ -1939,12 +1939,28 @@ describe(<span style="color: #606060;">Foo</span><span style="color: #006666;">,
 
                 <div class="chapter">
                   <h2><a name="missing">What is missing</a></h2>
-                  <p>TODO: write content</p>
+                  <p>Sadly, Ioke 0 is not finished. Many, many, many things are missing before it's complete. The core mechanics of the language I'm feeling fairly confident in, but the core libraries are generally only partially implemented. I have implemented the pieces I've needed, but not much else. That means there are big holes all over the core. Regular expressions and IO are two examples of things that are mostly just not there yet.</p>
+
+                  <p>Another major part -- maybe even THE major part -- is Java integration. At the moment it is not possible to call or interact with Java libraries. That need to happen, but it will not happen for this release.</p>
+
+                  <p>I have not given any consideration at all to issues of concurrency. There doesn't exist any concurrency mechanisms in the language at the moment. That will also need to be looked at, at some point.</p>
                 </div>
 
                 <div class="chapter">
                   <h2><a name="futurePlans">Future plans</a></h2>
-                  <p>TODO: write content</p>
+                  <p>A have many plans for the future of Ioke. The next major versions of Ioke will be called Ioke S, Ioke E and Ioke P, respectively. Exactly what they will contain we'll have to see, but these are things I need to have, large and small:</p>
+                  <ul>
+                    <li>Alternative String syntax</li>
+                    <li>Interpolation in Regexp literals</li>
+                    <li>Aspects (before, after, around advice)</li>
+                    <li>Argument specifications for macros</li>
+                    <li>Syntax (this is code that modifies the message tree</li>
+                    <li>A case-when syntax. Maybe cond.</li>
+                    <li>Java integration</li>
+                    <li>Concurrency primitives of some kind</li>
+                  </ul>
+
+                  <p>This list is in no way exhaustive, but it is what currently comes to mind.</p>
                 </div>
               </td>
             </tr>
