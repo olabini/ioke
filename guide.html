@@ -1233,7 +1233,173 @@ y(<span style="color: #0050a0;">42</span>)</pre>
 
                 <div class="chapter">
                   <h2><a name="introspection">Introspection and reflection</a></h2>
-                  <p>TODO: write content</p>
+                  <p>Ioke supports quite fancy introspection and reflection capabilities. In Ioke, reflection includes the ability to change data dynamically, as well as introspect on it. Since the message based structure of a program is available at runtime, most things can be changed dynamically. The internal structure of a program is also very easy to inspect.</p>
+
+                  <p>All objects in Ioke have some core methods that are used to look at them. Some come from Base, and some come from DefaultBehavior. The rest of the reflection and metaprogramming capabilities belong to the Message kind.</p>
+                  
+                  <h4>kind</h4>
+                  <p>Should be a text that gives the full name of the kind this object is closest mimic to. Except for nil, true and false, this will return a text that starts with a capital letter.</p>
+                  <pre class="code">
+<span style="color: #0000cd;">Foo</span> <span style="color: #00bfff;">=</span> <span style="color: #8b0000;">Origin</span> <span style="color: #6495ed;">mimic</span>
+<span style="color: #606060;">Foo</span> <span style="color: #6495ed;">mimic</span> kind <span style="color: #449900;">println</span>
+
+<span style="color: #606060;">Foo</span> <span style="color: #0000cd;">Bar</span> <span style="color: #00bfff;">=</span> <span style="color: #8b0000;">Origin</span> <span style="color: #6495ed;">mimic</span>
+<span style="color: #606060;">Foo</span> <span style="color: #606060;">Bar</span> <span style="color: #6495ed;">mimic</span> kind <span style="color: #449900;">println</span></pre>
+
+                  <p>This code will first print "Foo", and then print "Foo Bar", since an object assigned to a cell with a capital initial letter will get a new kind value.</p>
+
+                  <h4>kind?</h4>
+                  <p>Takes one text argument and returns true if the object has that kind anywhere in it's mimic chain.</p>
+                  <pre class="code">
+<span style="color: #0000cd;">Foo</span> <span style="color: #00bfff;">=</span> <span style="color: #8b0000;">Origin</span> <span style="color: #6495ed;">mimic</span>
+<span style="color: #0000cd;">foo</span> <span style="color: #00bfff;">=</span> <span style="color: #606060;">Foo</span> <span style="color: #6495ed;">mimic</span>
+foo kind?(<span style="color: #0050a0;">"foo"</span>) <span style="color: #a52a2a;">;; false
+</span>foo kind?(<span style="color: #0050a0;">"Foo"</span>) <span style="color: #a52a2a;">;; true
+</span>foo kind?(<span style="color: #0050a0;">"Text"</span>) <span style="color: #a52a2a;">;; false
+</span>foo kind?(<span style="color: #0050a0;">"Origin"</span>) <span style="color: #a52a2a;">;; true
+</span>foo kind?(<span style="color: #0050a0;">"Ground"</span>) <span style="color: #a52a2a;">;; true
+</span>foo kind?(<span style="color: #0050a0;">"DefaultBehavior"</span>) <span style="color: #a52a2a;">;; true
+</span>foo kind?(<span style="color: #0050a0;">"Base"</span>) <span style="color: #a52a2a;">;; true</span></pre>
+
+                  <p>As you can see in this example, "kind?" can return true for several different texts.</p>
+
+                  <h4>notice</h4>
+                  <p>When looking at objects, there are two ways to get information about them, notice and inspect. If you want a brief description of an object where it's more important that it doesn't take up much space, notice should be used. If an exhaustive description is needed, inspect should be used instead. For some objects these both return the same thing, but for Origin mimics, the difference is large.</p>
+                  <pre class="code">
+<span style="color: #0000cd;">Foo</span> <span style="color: #00bfff;">=</span> <span style="color: #8b0000;">Origin</span> <span style="color: #6495ed;">mimic</span>
+<span style="color: #606060;">Foo</span> <span style="color: #b0c4de;">x</span> <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">"blarg"</span>
+<span style="color: #606060;">Foo</span> <span style="color: #b0c4de;">y</span> <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">42</span>
+<span style="color: #606060;">Foo</span> notice <span style="color: #a52a2a;">;; Foo_0x7CBDE6
+</span></pre>
+
+                  <p>The default notice for Origin mimics will combine the kind and the unique hex id for the object, and create a text of that. The "notice" method should be overridden to provide better information in most cases.</p>
+                  
+                  <h4>inspect</h4>
+                  <p>In contrast to notice, inspect is used to get exhaustive information. If a composite object is asked for its inspect, a quite large dump of information will often be shown. For a new object the output will be smaller, but usually still larger than the notice for it.</p>
+
+                  <pre class="code">
+<span style="color: #0000cd;">Foo</span> <span style="color: #00bfff;">=</span> <span style="color: #8b0000;">Origin</span> <span style="color: #6495ed;">mimic</span>
+<span style="color: #606060;">Foo</span> <span style="color: #b0c4de;">x</span> <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">"blarg"</span>
+<span style="color: #606060;">Foo</span> <span style="color: #b0c4de;">y</span> <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">42</span>
+<span style="color: #606060;">Foo</span> <span style="color: #449900;">inspect</span> <span style="color: #449900;">println</span></pre>
+
+                  <p>This will print:</p>
+                  <pre class="code">
+ Foo_0x7CBDE6:
+  kind                         = "Foo"
+  x                            = "blarg"
+  y                            = 42</pre>
+
+                  <p>If another representation makes more sense for inspection, "inspect" should definitely be overridden by custom objects.</p>
+
+                  <h4>uniqueHexId</h4>
+                  <p>This method is used to return a text that contains a unique hex identity for an object. This text is guaranteed to be unique within a virtual machine for any object, and is the mechanism that "inspect" and "notice" uses.</p>
+
+                  <h4>cellSummary</h4>
+                  <p>Calling "inspect" on any Origin mimic will dispatch to "cellSummary", which displays all the cell information about a specific object.</p>
+
+                  <h4>cell</h4>
+                  <p>The "cell" method can be used for two different things. The first one is to get access to a value without activating it, and the second is to get access to a cell based on a name that you don't know at the time you're writing the program. The "cell" method takes one argument that is the name of the cell to fetch. The fetching works the same as regular cell lookup, except that activation doesn't happen. This means that a condition will still be signalled if you try to get something that doesn't exist.</p>
+
+                  <pre class="code">
+<span style="color: #b0c4de;">x</span> <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">42</span>
+<span style="color: #449900;">cell</span>(<span style="color: #7777d4;">:x</span>) <span style="color: #a52a2a;">;; 42
+</span>
+<span style="color: #b0c4de;">x</span> <span style="color: #00bfff;">=</span> <span style="color: #6495ed;">method</span>()
+<span style="color: #449900;">cell</span>(<span style="color: #7777d4;">:x</span>) <span style="color: #a52a2a;">;; the method object
+</span>
+<span style="color: #b0c4de;">name</span> <span style="color: #00bfff;">=</span> <span style="color: #7777d4;">:foo</span>
+<span style="color: #449900;">cell</span>(name) <span style="color: #a52a2a;">;; the value of foo</span></pre>
+                  
+                  <h4>cell=</h4>
+                  <p>Just as with "cell", "cell=" can be used to set cells that you don't know the name of at the time of writing the program. As discussed in the chapter on assignment, cell= can also be used to set cells that can't be set in the regular way due to naming strangeness.</p>
+
+                  <h4>cell?</h4>
+                  <p>If you're not sure if a cell exists, using "cell?" is the way to find out. Give it a name and it returns true or false depending on if that cell exists.</p>
+
+                  <h4>cellNames</h4>
+                  <p>If you want to get the names of all the cells an object contains, you can get that with cellNames. By default, cellNames will only return the names of cells that belong to the receiver, but if an argument of true is sent to the call, the resulting list will contain the names of all cells of all mimics too.</p>
+
+                  <pre class="code">
+<span style="color: #0000cd;">x</span> <span style="color: #00bfff;">=</span> <span style="color: #8b0000;">Origin</span> <span style="color: #6495ed;">mimic</span>
+x <span style="color: #b0c4de;">f</span> <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">42</span>
+x cellNames <span style="color: #a52a2a;">;; return [:f]
+</span>
+x cellNames(<span style="color: #6495ed;">true</span>) <span style="color: #a52a2a;">;; return a long list, including :f</span></pre>
+
+                  <h4>cells</h4>
+                  <p>Just like cellNames return the names of all the cells, the "cells" method will return a Dict of all the cells with their values. And just like cellNames, cells take an optional boolean argument on whether to include the cells of mimics too.</p>
+
+                  <pre class="code">
+<span style="color: #0000cd;">x</span> <span style="color: #00bfff;">=</span> <span style="color: #8b0000;">Origin</span> <span style="color: #6495ed;">mimic</span>
+x <span style="color: #b0c4de;">f</span> <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">42</span>
+x cells <span style="color: #a52a2a;">;; return {f: 42}
+</span>
+x cells(<span style="color: #6495ed;">true</span>) <span style="color: #a52a2a;">;; return a large dict, including f: 42</span></pre>
+
+                  <h4>mimics</h4>
+                  <p>Returns a list of all direct mimics of the receiver.</p>
+
+                  <h4>mimics?</h4>
+                  <p>Takes one object as argument and returns true or false depending on if the argument is anywhere in the receiving objects mimic chain.</p>
+
+                  <h4>message</h4>
+                  <p>Takes one symbol argument and creates a new Message mimic with that argument as its name.</p>
+
+                  <h4>Message code</h4>
+                  <p>Returns a text that describes the code this message chain represents. It will hide some of the internal shuffling, but operators will be displayed using canonical form.</p>
+
+                  <h4>Message formattedCode</h4>
+                  <p>Returns a text that is formatted and indented in a canonical way. This method is used to generate the documentation code for DokGen, among other things.</p>
+
+                  <h4>Message evalArgAt</h4>
+                  <p>Takes the index of the argument to evaluate, and the ground to evaluate it on - returns the result of evaluating the argument.</p>
+
+                  <h4>Message fromText</h4>
+                  <p>Takes one text argument that should contain Ioke code, and returns the parsed message chain from that code, without evaluating it.</p>
+
+                  <h4>Message doText</h4>
+                  <p>Takes one text argument that should contain Ioke code, and returns the result of evaluating that code in the current context.</p>
+
+                  <h4>Message filename</h4>
+                  <p>Returns the filename where the receiving message was defined.</p>
+
+                  <h4>Message line</h4>
+                  <p>Returns the line number where the receiving message was defined.</p>
+
+                  <h4>Message position</h4>
+                  <p>Returns the position in the line where the receiving message was defined.</p>
+
+                  <h4>Message name</h4>
+                  <p>Returns the name of the message. The name of the message is what you generally talk about when saying you send a message. It can also be called the selector in other languages.</p>
+
+                  <h4>Message name=</h4>
+                  <p>Update the message with a new name. From this point on the message will only have that name, so doing this on a message that is part of an existing message chain will change the behavior of that code:</p>
+
+                  <pre class="code">
+<span style="color: #b0c4de;">msg</span> <span style="color: #00bfff;">=</span> <span style="color: #606060;">Message</span> fromText(<span style="color: #0050a0;">"2 + 1"</span>)
+msg next <span style="color: #b0c4de;">name</span> <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">"-"</span>
+msg code <span style="color: #a52a2a;">;; "2 -(1)"</span></pre>
+
+                  <h4>Message prev</h4>
+                  <p>Returns the prev pointer of this message, or nil if no prev pointer exists.</p>
+
+                  <h4>Message prev=</h4>
+                  <p>Sets the prev pointer of a message. The new value should be either nil or another message.</p>
+
+                  <h4>Message next</h4>
+                  <p>Returns the next pointer of this message, or nil if no next pointer exists.</p>
+
+                  <h4>Message next=</h4>
+                  <p>Sets the next pointer of a message. The new value should be either nil or another message.</p>
+
+                  <h4>Message sendTo</h4>
+                  <p>Sends a message to an object. It's important to realize that sendTo will not evaluate the whole message chain -- it will only send one message with arguments to an object.</p>
+                  
+                  <h4>Message keyword?</h4>
+                  <p>Returns true if this message is a keyword message, and false otherwise.</p>
+
+                  <p>There are many more methods that can be used to do interesting introspection and reflection in Ioke. The reference documentation includes them all. Most of the interesting stuff can be found on the Message kind.</p>
                 </div>
 
                 <div class="chapter">
