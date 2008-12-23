@@ -1186,17 +1186,86 @@ foo(<span style="color: #00bfff;">*</span>ls2<span style="color: #006666;">,</sp
 
                   <div class="section">
                     <h3><a name="macros">Macros</a></h3>
-                    <p>TODO: write content</p>
+                    <p>The main difference between a macro and a method in Ioke is that the arguments to a macro is not evaluated before they are sent to the macro. That means you have to use macros to send raw message chains in an invocation. In most languages, this kind of feature is generally called call-by-name. When a macro gets called, it will get access to a cell called "call" which is a mimic of the kind Call. This gives access to information about the call and makes it possible to evaluate the code sent as arguments, check how many arguments are supplied, and so on.</p>
+
+                    <p>A macro is created using the "macro" cell on DefaultBehavior. This will return a mimic of DefaultMacro. Since a macro can't define arguments, it's a bit easier to describe than mathods, but the things that can be done with macro is also a bit more interesting than what can be achieved by methods. One important thing to keep in mind is that most macros can not receive splatted arguments. In most cases keyword arguments aren't available either - but they could be faked if needed. Macros should generally be used to implement control structures and things that need to manipulate code in different ways.</p>
+
+                    <p>Just like a methods, a macro gets evaluated on a specific receiver. It also gets the same kind of method activation context, but the contents of it is a bit different. Specifically, the context for a macro contains cells named "self", "@", "currentMessage", "surroundingContext" and "call". It's the "call" cell that is most important. It is a mimic of Call, and Call defines several important methods for manipulating the call environment. These are:</p>
+                    <dl>
+                      <dt>arguments</dt>
+                      <dd>This method returns a list containing the unevaluated arguments given to this message. Any kind of manipulation can be done with these arguments.</dd>
+
+                      <dt>ground</dt>
+                      <dd>Returns the ground in which the call was initiated. This is necessary to evaluate arguments in their own environment.</dd>
+
+                      <dt>message</dt>
+                      <dd>The currently executing message. This is the same as the "currentMessage" cell in the macro activation context.</dd>
+
+                      <dt>evaluatedArguments</dt>
+                      <dd>Returns a list containing all arguments, evaluated according to the regular rules (but not handling splatting or keywords).</dd>
+
+                      <dt>resendToMethod</dt>
+                      <dd>Allows a specific message to be resent to another method, without manually copying lots of information.</dd>
+                    </dl>
+
+                    <p>These methods are a bit hard to understand, so I'll take some examples from the implementation of Ioke, and show how macros are used here.</p>
+
+                    <pre class="code">
+<span style="color: #8b0000;">Mixins</span> <span style="color: #606060;">Enumerable</span> <span style="color: #b0c4de;">map</span> <span style="color: #00bfff;">=</span> <span style="color: #6495ed;">macro</span>(
+  <span style="color: #0050a0;">"takes one or two arguments. if one argument is given,
+it will be evaluated as a message chain on each element
+in the enumerable, and then the result will be collected
+in a new List. if two arguments are given, the first one
+should be an unevaluated argument name, which will be
+bound inside the scope of executing the second piece of
+code. it's important to notice that the one argument
+form will establish no context, while the two argument form
+establishes a new lexical closure."</span><span style="color: #006666;">,</span>
+  
+  <span style="color: #b0c4de;">len</span> <span style="color: #00bfff;">=</span> <span style="color: #449900;">call</span> arguments length
+  <span style="color: #b0c4de;">result</span> <span style="color: #00bfff;">=</span> <span style="color: #449900;">list</span>()
+  <span style="color: #6495ed;">if</span>(len <span style="color: #00bfff;">==</span> <span style="color: #0050a0;">1</span><span style="color: #006666;">,</span>
+    <span style="color: #b0c4de;">code</span> <span style="color: #00bfff;">=</span> <span style="color: #449900;">call</span> arguments first
+    <span style="color: #6495ed;">self</span> each(n<span style="color: #006666;">,</span> result &lt;&lt; code evaluateOn(<span style="color: #449900;">call</span> ground<span style="color: #006666;">,</span> <span style="color: #449900;">cell</span>(<span style="color: #7777d4;">:n</span>)))<span style="color: #006666;">,</span>
+
+    <span style="color: #b0c4de;">code</span> <span style="color: #00bfff;">=</span> <span style="color: #606060;">LexicalBlock</span> createFrom(<span style="color: #449900;">call</span> arguments<span style="color: #006666;">,</span> <span style="color: #449900;">call</span> ground)
+    <span style="color: #6495ed;">self</span> each(n<span style="color: #006666;">,</span> result &lt;&lt; code <span style="color: #449900;">call</span>(<span style="color: #449900;">cell</span>(<span style="color: #7777d4;">:n</span>))))
+  result)
+                    </pre>
+
+                    <p>The code above implements map, one of the methods from Enumerable. The map method allows one collection to be mapped in a predefined way into something else. It can take either one or two arguments. If one argument is given, that is a message chain to apply, and then collect the results. If two arguments are given, the first is the argument name to use, and the second is the code to execute for each entry.</p>
+
+                    <p>The first step is to figure out how many arguments have been given. This is done by checking the length of the "call arguments" cell. If we have a length of one, we know that the first argument is a piece of code to apply, so we assign that argument to a cell called "code". Now, "code" will be a mimic of Message, and Message has a method called "evaluateOn", that can be used to fully evaluate a message chain. And that's exacty what we do for each element in the collection we are in. The result of evaluateOn is added to the result list. We use "call ground" to get the correct ground for the code to be evaluated in.</p>
+
+                    <p>If we get two arguments, it's possible to take a shortcut and generate a lexical block from those arguments, and then use that. So we call "LexicalBlock createFrom" and send in the arguments and the ground, and then call that piece of code once for each element in the collection.</p>
+
+                    <p>It is a bit tricky to figure out how macros work. I recommend looking at the implementations of some of the core Ioke methods/macros, since these use much of the functionality.</p>
                   </div>
 
                   <div class="section">
                     <h3><a name="blocks">Blocks</a></h3>
-                    <p>TODO: write content</p>
+                    <p>A lexical block allows the execution of a piece of code in the lexical context of other code, instead of in a dynamic object scope. A lexical block does not have a receiver. Instead it just established a new lexical context, and executes the code in that. Exactly what effect that has on assignments have been described earlier.</p>
+
+                    <p>A lexical block can be created using either the "fn" or the "fnx" methods of DefaultBehavior. The main difference is that a block created with "fnx" will be activatable, will something created with "fn" will not. Lexical blocks handle arguments exactly the same way as methods, so a lexical block can take optional arguments, keyword arguments, rest arguments and so on. Both "fn" and "fnx" also takes an optional documentation text.</p>
+
+                    <p>A block can be invoked by calling the "call" method. A block can also be activated just like methods, if it's activatable. The default is to use "fn" to create inactive blocks, though, since blocks are generally used to pass around pieces of code.</p>
+
+                    <pre class="code">
+<span style="color: #b0c4de;">x</span> <span style="color: #00bfff;">=</span> <span style="color: #6495ed;">fn</span>(z<span style="color: #006666;">,</span> z <span style="color: #449900;">println</span>)
+<span style="color: #b0c4de;">y</span> <span style="color: #00bfff;">=</span> <span style="color: #6495ed;">fnx</span>(z<span style="color: #006666;">,</span> z <span style="color: #449900;">println</span>)
+
+x <span style="color: #449900;">call</span>(<span style="color: #0050a0;">42</span>)
+y(<span style="color: #0050a0;">42</span>)
+                    </pre>
+
+                    <p>A lexical block is a regular kind of object that can be assigned to any cell, just like other objects. Lexical blocks mimic LexicalBlock, and blocks doesn't have names. In contrast to methods and macros, no extra cells will be added to the activation context for a lexical block.</p>
                   </div>
 
                   <div class="section">
                     <h3><a name="messageChains">Message chains</a></h3>
-                    <p>TODO: write content</p>
+                    <p>In many cases a macro will take code that is not wrapped up inside of a method, macro or block. These pieces of code is called message chains, since their representation will be to a raw Message mimic. The chains are quite flexible, since they can be taken apart, modified and put together again. They can also be unevaluated and used as data definitions of some kind. That's how the argument handling to methods are implemented, for example. Since the call to "method" can be seen as a regular call to a macro, the argument descriptions are actually just unevaluated message chains that are picked apart to tease out the argument names. The same technique is applicable in any macro usage.</p>
+
+                    <p>The term message chain fragment is also used to specifically mean a message chain that is meant to be put together with something and evaluated. Picture a daisy chain that gets added at the end of another chain and then executed. That's what happens if you execute something like "[1, 2, 3] map(*2)". In this case the call to "*" with the argument 2 will be a message chain fragment that will be put together with a new receiver before execution.</p>
                   </div>
                 </div>
 
