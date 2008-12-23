@@ -1,5 +1,5 @@
 /build
-lib/dist/ioke.jar
+lib/ioke.jar
 prj.el
 build.properties
 src/generated

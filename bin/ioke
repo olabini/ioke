@@ -56,7 +56,7 @@ fi
 CP_DELIMETER=":"
 
 # add jruby jars for command-line execution
-for j in "$IOKE_HOME"/lib/dist/ioke*.jar; do
+for j in "$IOKE_HOME"/lib/ioke*.jar; do
     if [ "$IOKE_CP" ]; then
         IOKE_CP="$IOKE_CP$CP_DELIMETER$j"
         else
