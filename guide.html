@@ -1658,12 +1658,106 @@ l <span style="color: #00bfff;">==</span> [<span style="color: #0050a0;">1</span
 
                   <div class="section">
                     <h3><a name="dicts">Dicts</a></h3>
-                    <p>TODO: write content</p>
+                    <p>A Dict is a dictionary of key-value mappings. The mappings are unordered, and there can only ever be one key with the same value. Any kind of Ioke object can be used as a key. There is no problem with having the value for different keys. The default implementation of Dict uses a hash-based implementation. That's not necessarily always true for all dicts. The iteration order is not necessarily stable either, so don't write code that depends on it.</p>
+
+                    <p>Creating a dict is done using either the "dict" or the "{}" methods. Both of these expect either keyword arguments or mimics of Pair. If keyword arguments, these keywords will be used as symbol keys. That's the most common thing, so it makes sense to have that happen automatically. Dicts also try to print themselves that way.</p>
+                    
+                    <pre class="code">
+<span style="color: #449900;">dict</span>(<span style="color: #b0c4de;">1</span> <span style="color: #00bfff;">=</span>&gt; <span style="color: #0050a0;">2</span><span style="color: #006666;">,</span> <span style="color: #b0c4de;">3</span> <span style="color: #00bfff;">=</span>&gt; <span style="color: #0050a0;">4</span>)
+
+<span style="color: #a52a2a;">;; these two are the same
+</span><span style="color: #449900;">dict</span>(<span style="color: #7777d4;">foo:</span> <span style="color: #0050a0;">"bar"</span><span style="color: #006666;">,</span> <span style="color: #7777d4;">baaz:</span> <span style="color: #0050a0;">"quux"</span>)
+<span style="color: #449900;">dict</span>(<span style="color: #b0c4de;">:foo</span> <span style="color: #00bfff;">=</span>&gt; <span style="color: #0050a0;">"bar"</span><span style="color: #006666;">,</span> <span style="color: #b0c4de;">:baaz</span> <span style="color: #00bfff;">=</span>&gt; <span style="color: #0050a0;">"quux"</span>)
+
+{<span style="color: #b0c4de;">1</span> <span style="color: #00bfff;">=</span>&gt; <span style="color: #0050a0;">2</span><span style="color: #006666;">,</span> <span style="color: #b0c4de;">3</span> <span style="color: #00bfff;">=</span>&gt; <span style="color: #0050a0;">4</span>}
+
+<span style="color: #a52a2a;">;; these two are the same
+</span>{<span style="color: #7777d4;">foo:</span> <span style="color: #0050a0;">"bar"</span><span style="color: #006666;">,</span> <span style="color: #7777d4;">baaz:</span> <span style="color: #0050a0;">"quux"</span>}
+{<span style="color: #b0c4de;">:foo</span> <span style="color: #00bfff;">=</span>&gt; <span style="color: #0050a0;">"bar"</span><span style="color: #006666;">,</span> <span style="color: #b0c4de;">:baaz</span> <span style="color: #00bfff;">=</span>&gt; <span style="color: #0050a0;">"quux"</span>}
+
+<span style="color: #a52a2a;">;; the formats can be combined:
+</span>{<span style="color: #b0c4de;">1</span> <span style="color: #00bfff;">=</span>&gt; <span style="color: #0050a0;">2</span><span style="color: #006666;">,</span> <span style="color: #7777d4;">foo:</span> <span style="color: #0050a0;">42</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">"bar"</span> <span style="color: #00bfff;">=</span>&gt; <span style="color: #0050a0;">"qux"</span>}</pre>
+
+                    <p>The literal Pair syntax (using =&gt;) will not necessarily instantiate real pairs for this.</p>
+
+                    <p>Dicts mixes in Enumable. When using each, what will be yielded is mimics of Pair, where the first value will be the key and the second will be value. Just like Lists, Dicts have several useful methods in themselves:</p>
+
+                    <pre class="code">
+<span style="color: #b0c4de;">d</span> <span style="color: #00bfff;">=</span> {<span style="color: #7777d4;">one:</span> <span style="color: #0050a0;">"two"</span><span style="color: #006666;">,</span> <span style="color: #b0c4de;">3</span> <span style="color: #00bfff;">=</span>&gt; <span style="color: #0050a0;">4</span>}
+
+<span style="color: #a52a2a;">;; lookup with [], "at" works the same
+</span>d[<span style="color: #7777d4;">:one</span>] <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> "two"
+</span>d[<span style="color: #7777d4;">:two</span>] <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> nil
+</span>d[<span style="color: #0050a0;">3</span>]    <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> 4
+</span>d[<span style="color: #0050a0;">4</span>]    <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> nil
+</span>
+<span style="color: #a52a2a;">;; assign values with []=
+</span>d[<span style="color: #7777d4;">:one</span>] <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">"three"</span>
+d[<span style="color: #7777d4;">:new</span>] <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">"wow!"</span>
+
+d <span style="color: #00bfff;">==</span> {<span style="color: #7777d4;">one:</span> <span style="color: #0050a0;">"three"</span><span style="color: #006666;">,</span> <span style="color: #b0c4de;">3</span> <span style="color: #00bfff;">=</span>&gt; <span style="color: #0050a0;">4</span><span style="color: #006666;">,</span> <span style="color: #7777d4;">new:</span> <span style="color: #0050a0;">"wow!"</span>}
+
+<span style="color: #a52a2a;">;; iterate over it
+</span>d each(value <span style="color: #449900;">println</span>)
+
+<span style="color: #a52a2a;">;; get all keys
+</span>d keys <span style="color: #00bfff;">==</span> set(<span style="color: #7777d4;">:one</span><span style="color: #006666;">,</span> <span style="color: #7777d4;">:new</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">3</span>)</pre>
+
                   </div>
 
                   <div class="section">
                     <h3><a name="rangesAndPairs">Ranges and Pairs</a></h3>
-                    <p>TODO: write content</p>
+                    <p>Both ranges and pairs tie two values together. They also have literal syntax to create them, since they are very useful in many circumstances.</p>
+
+                    <p>A Range defines two endpoints. A Range is Enumerable and you can also check for membership. It's also convenient to send Ranges to the "List []" method. A Range can be exclusive or inclusive. If it's inclusive it includes the end value, and if it is exclusive it doesn't.</p>
+                    
+                    <pre class="code">
+<span style="color: #a52a2a;">;; literal syntax for inclusive range
+</span><span style="color: #0050a0;">1..10</span>
+
+<span style="color: #a52a2a;">;; literal syntax for exclusive range
+</span><span style="color: #0050a0;">1...10</span>
+
+<span style="color: #a52a2a;">;; check for membership
+</span>(<span style="color: #0050a0;">1..10</span>) <span style="color: #00bfff;">===</span> <span style="color: #0050a0;">5</span> <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> true
+</span>(<span style="color: #0050a0;">1..10</span>) <span style="color: #00bfff;">===</span> <span style="color: #0050a0;">10</span> <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> true
+</span>(<span style="color: #0050a0;">1..10</span>) <span style="color: #00bfff;">===</span> <span style="color: #0050a0;">11</span> <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> false
+</span>
+(<span style="color: #0050a0;">1...10</span>) <span style="color: #00bfff;">===</span> <span style="color: #0050a0;">5</span> <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> true
+</span>(<span style="color: #0050a0;">1...10</span>) <span style="color: #00bfff;">===</span> <span style="color: #0050a0;">10</span> <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> false
+</span>(<span style="color: #0050a0;">1...10</span>) <span style="color: #00bfff;">===</span> <span style="color: #0050a0;">11</span> <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> false
+</span>
+<span style="color: #a52a2a;">;; get the from value
+</span>(<span style="color: #0050a0;">1..10</span>) from <span style="color: #00bfff;">==</span> <span style="color: #0050a0;">1</span> <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> true
+</span>(<span style="color: #0050a0;">1...10</span>) from <span style="color: #00bfff;">==</span> <span style="color: #0050a0;">1</span> <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> true
+</span>
+<span style="color: #a52a2a;">;; get the to value
+</span>(<span style="color: #0050a0;">1..10</span>) to <span style="color: #00bfff;">==</span> <span style="color: #0050a0;">10</span> <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> true
+</span>(<span style="color: #0050a0;">1...10</span>) to <span style="color: #00bfff;">==</span> <span style="color: #0050a0;">10</span> <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> true
+</span>
+<span style="color: #a52a2a;">;; is this range exclusive?
+</span>(<span style="color: #0050a0;">1..10</span>) exclusive? <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> false
+</span>(<span style="color: #0050a0;">1...10</span>) exclusive? <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> true
+</span>
+<span style="color: #a52a2a;">;; is this range inclusive?
+</span>(<span style="color: #0050a0;">1..10</span>) inclusive? <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> true
+</span>(<span style="color: #0050a0;">1...10</span>) inclusive? <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> false</span></pre>
+                    
+
+                    <p>A Pair represent a combination of two values. They doesn't have to be of the same kind. They can have any kind of relationship. Since Pair's are often used to represent Dicts, it is very useful to refer to the first value as the "key", and the second value as "value".</p>
+
+                    <pre class="code">
+<span style="color: #a52a2a;">;; literal syntax for a pair
+</span><span style="color: #0050a0;">"foo"</span> <span style="color: #00bfff;">=</span>&gt; <span style="color: #0050a0;">"bar"</span>
+
+<span style="color: #a52a2a;">;; getting the first value
+</span>(<span style="color: #0050a0;">"foo"</span> <span style="color: #00bfff;">=</span>&gt; <span style="color: #0050a0;">"bar"</span>) first <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> "foo"
+</span>(<span style="color: #0050a0;">"foo"</span> <span style="color: #00bfff;">=</span>&gt; <span style="color: #0050a0;">"bar"</span>) key <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> "foo"
+</span>
+<span style="color: #a52a2a;">;; getting the second value
+</span>(<span style="color: #0050a0;">"foo"</span> <span style="color: #00bfff;">=</span>&gt; <span style="color: #0050a0;">"bar"</span>) second <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> "bar"
+</span>(<span style="color: #0050a0;">"foo"</span> <span style="color: #00bfff;">=</span>&gt; <span style="color: #0050a0;">"bar"</span>) value <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> "bar"
+</span></pre>                    
                   </div>
 
                   <div class="section">
