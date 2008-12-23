@@ -37,6 +37,9 @@ IIk = Origin mimic do(
           out println)))))
 
 use("builtin/iik/inputMethod")
-use("debugger")
+
+bind(
+  rescue(Condition Error Load, fn(ignored, nil)),
+  use("debugger"))
 
 System ifMain(IIk mainLoop)
