@@ -125,8 +125,17 @@ public class Main {
                         r.addArgument(args[i]);
                     }
                 }
-                ((IokeSystem)r.system.data).setCurrentProgram(args[start]);
-                r.evaluateFile(args[start], message, context);
+                String file = args[start];
+                if(file.startsWith("\"")) {
+                    file = file.substring(1, file.length());
+                }
+
+                if(file.length() > 1 && file.charAt(file.length()-1) == '"') {
+                    file = file.substring(0, file.length()-1);
+                }
+
+                ((IokeSystem)r.system.data).setCurrentProgram(file);
+                r.evaluateFile(file, message, context);
             } else {
                 if(scripts.size() == 0) {
                     r.evaluateString("use(\"builtin/iik\"). IIk mainLoop", message, context);

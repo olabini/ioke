@@ -467,13 +467,11 @@ public class Runtime {
     public Object evaluateFile(String filename, IokeObject message, IokeObject context) throws ControlFlow {
         try {
             ((IokeSystem)system.data).pushCurrentFile(filename);
-            if(filename.startsWith("/") || (filename.length() > 2 && filename.charAt(1) == '\\')) {
+            if(IokeSystem.isAbsoluteFileName(filename)) {
                 return evaluateStream(new FileReader(new File(filename)), message, context);
             } else {
                 return evaluateStream(new FileReader(new File(((IokeSystem)system.data).getCurrentWorkingDirectory(), filename)), message, context);
             }
-
-
         } catch(Exception e) {
             reportJavaException(e, message, context);
             return null;
