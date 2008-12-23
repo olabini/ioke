@@ -309,16 +309,14 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
                       <p>To run an Ioke script, you can generally just use the ioke-command:</p>
                       <pre class="code">
 $ ioke helloWorld.ik
-Hello world
-                      </pre>
+Hello world</pre>
 
                       <p>You can also execute snippets of code on the command line using the -e argument to the ioke-command. You can have several of these one the same line too:</p>
 
                       <pre class="code">
 $ ioke -e'"Hello world" println' -e'"Goodbye world" println'
 Hello world
-Goodbye world
-                      </pre>
+Goodbye world</pre>
 
                       <p>When using -e, be careful about what quoting style you use, since the shell sometimes can munge up your commands if you don't surround them correctly.</p>
                       <p>The ioke command has several helpful command line options, that can change what happens during execution. These are:</p>
@@ -393,8 +391,7 @@ iik> foo
 +> "hello"
 
 iik> exit
-Bye.
-                      </pre>
+Bye.</pre>
 
                       <p>When you see the prompt "iik>", you know that IIk is waiting for input. The result of a computation is shown after the "+>" sigil. You can exit from IIk by calling either "exit" or "quit". There is also a restart named "quit" that can be invoked to quit IIk.</p>
                     </div>
@@ -416,8 +413,7 @@ Bye.
     brackets      ::=  ( "[" commated? "]" ) | ( "{" commated? "}" )
     literal       ::=  Text | Regexp | Number | Decimal
     terminator    ::=  "." | "\n"
-    comment       ::=  ";" .* "\n"
-                  </pre>
+    comment       ::=  ";" .* "\n"</pre>
 
                   <p>What isn't visible here is that all whitespace -- except for newlines -- will work only as separators of messages, and is otherwise ignored. That means that message sending does not use the dot, as in most other languages. A phrase such as "foo().bar(quux(42)).baaz()" would be expressed as "foo() bar(quux(42)) baaz()", or more succinctly "foo bar(quux(42)) baaz" in Ioke.</p>
 
@@ -488,8 +484,7 @@ Bye.
 <span style="color: #0050a0;">"flax \
 mux"</span>
 
-<span style="color: #0050a0;">"one two #{three} \b four"</span>
-                      </pre>
+<span style="color: #0050a0;">"one two #{three} \b four"</span></pre>
                     </div>
 
                     <div class="section">
@@ -500,8 +495,7 @@ mux"</span>
 
 <span style="color: #ff1493;">#/foo/</span>
 
-<span style="color: #ff1493;">#/fo+/x</span>
-                      </pre>
+<span style="color: #ff1493;">#/fo+/x</span></pre>
 
                       <p>The first example is an empty regular expression. The second is an expression matching the word "foo". The third expression matches an "f" followed with one or more "o". It also allows extended regular expression syntax, due to the x flag. The flags supported in Ioke are o, x, p, n, i, u, m and s. The meaning of these match the meaning of corresponding Ruby flags. Regular expressions allow most of the same escapes as Ioke text. Specifically, these escapes are supported: b, t, n, f, r, /, \ and newline. Unicode and octal escapes also work.</p>
 
@@ -524,8 +518,7 @@ mux"</span>
 
 <span style="color: #0050a0;">0</span>
 
-<span style="color: #0050a0;">0xFFFFF</span>
-                      </pre>
+<span style="color: #0050a0;">0xFFFFF</span></pre>
                     </div>
 
                     <div class="section">
@@ -542,8 +535,7 @@ mux"</span>
 
 <span style="color: #0050a0;">1E-32</span>
 
-<span style="color: #0050a0;">23.4445e10</span>
-                      </pre>
+<span style="color: #0050a0;">23.4445e10</span></pre>
                     </div>
 
                     <div class="section">
@@ -558,8 +550,7 @@ mux"</span>
 
 <span style="color: #7777d4;">:""</span>
 
-<span style="color: #7777d4;">:"mux mex mox \n ::::::::"</span>
-                      </pre>
+<span style="color: #7777d4;">:"mux mex mox \n ::::::::"</span></pre>
                     </div>
                   </div>
 
@@ -671,8 +662,7 @@ bar foo(<span style="color: #0050a0;">123</span>) <span style="color: #00bfff;">
 <span style="color: #b0c4de;">bar</span> <span style="color: #00bfff;">=</span>(foo(<span style="color: #0050a0;">123</span>)<span style="color: #006666;">,</span> <span style="color: #0050a0;">42</span>)
 
 flux<span style="color: #00bfff;">++</span>
-<span style="color: #00bfff;">++</span>(flux)
-                    </pre>
+<span style="color: #00bfff;">++</span>(flux)</pre>
 
                     <p>These examples show some more advanced details -- specifically the fact that assignment operators generally work on "places", not on names or cells. This will be more explored in the chapter on <a href="#assignment">assignment</a>. The important thing to notice from the above examples is that for most assignments two things will be rearranged. For the unary operators only one thing will be moved.</p>
 
@@ -825,8 +815,7 @@ flux<span style="color: #00bfff;">++</span>
 <span style="color: #0000cd;">foo</span> <span style="color: #00bfff;">=</span> <span style="color: #8b0000;">Origin</span> <span style="color: #6495ed;">mimic</span>
 foo <span style="color: #b0c4de;">x</span> <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">42</span>
 foo <span style="color: #b0c4de;">y</span> <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">13</span>
-foo <span style="color: #b0c4de;">x</span> <span style="color: #00bfff;">+=</span> <span style="color: #0050a0;">2</span>
-                  </pre>
+foo <span style="color: #b0c4de;">x</span> <span style="color: #00bfff;">+=</span> <span style="color: #0050a0;">2</span></pre>
 
                   <p>The first line creates a new Origin mimic, and then assigns that to the name foo. Since this code executes at the top level, "foo" will be a new cell created in Ground. The second line creates a new cell called "x" inside the "foo" object. It gets assigned the value 42. The third line creates a "y" cell, and the fourth line sends the += message, which will first call +, and then assign using =. So at the end of this program, "foo" will contain two cells: "x" with value 44, and "y" with value 13. As mentioned above, cells gets created the first time they are assigned to. If you need to create a cell in a specific object, just namespace it. For example, if you want to make sure that you create a cell in Ground, just do "Ground foo = 42".</p>
 
@@ -844,8 +833,7 @@ foo <span style="color: #b0c4de;">x</span> <span style="color: #00bfff;">+=</spa
 <span style="color: #606060;">Foo</span> <span style="color: #449900;">do</span>(
   <span style="color: #a52a2a;">;; this creates the cell foo inside of Foo
 </span>  <span style="color: #b0c4de;">foo</span> <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">42</span>
-)
-                  </pre>
+)</pre>
 
                   <p>Here you can see a method defined called x. This method will just create a new local cell, which means calling the method will not make any difference on its receiver at all. The call to "do" in contrast will immediately execute the code inside it, and this code will create the cell "foo" inside of "Foo".</p>
 
@@ -854,8 +842,7 @@ foo <span style="color: #b0c4de;">x</span> <span style="color: #00bfff;">+=</spa
 <span style="color: #b0c4de;">x</span> <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">42</span>
 <span style="color: #6495ed;">fn</span>(<span style="color: #b0c4de;">x</span> <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">43</span><span style="color: #006666;">.</span> <span style="color: #b0c4de;">y</span> <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">42</span>) <span style="color: #449900;">call</span>
 x <span style="color: #a52a2a;">;; =&gt; 42
-</span>y <span style="color: #a52a2a;">;; =&gt; Condition Error NoSuchCell</span>
-                  </pre>
+</span>y <span style="color: #a52a2a;">;; =&gt; Condition Error NoSuchCell</span></pre>
                   
                   <p>The "fn" message creates a new lexical block. The chapter on <a href="#code">code</a> will talk more about this. But as you can see, this block assigns 43 to the cell "x", and 42 to the cell "y". But since the cell "y" doesn't exist, it will only be created inside the lexical context, while "x" exists outside, and will be assigned a new value instead. The basic ideas is that code like this should behave like you expect it to behave.</p>
 
@@ -863,8 +850,7 @@ x <span style="color: #a52a2a;">;; =&gt; 42
                   
                   <p>All assignment operators take as their first argument the place to assign to. This place will be unevaluated. Only the second argument to an assignment will be evaluated. In most cases, a place is the same thing as a cell name, but it doesn't have to be. Let's look at the case of assigning a cell with a strange name. Say we want to assign the cell with the no name. We can do it like this:</p>
                   <pre class="code">
-<span style="color: #449900;">cell</span>(<span style="color: #0050a0;">""</span>) <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">42</span>
-                  </pre>
+<span style="color: #449900;">cell</span>(<span style="color: #0050a0;">""</span>) <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">42</span></pre>
 
                   <p>What happens here is a bit subtle. Since the left hand side of the assignment takes arguments, the "=" method figures out that the assignment is not to a simple cell name, but to a place. The parsing step will change "cell("") = 42" into "=(cell(""), 42)". Notice here that the argument comes along into the specification of the place. When this happens, the assignment operatoer will not try to create or assign a cell - instead it will in this case call the method cell=. So "cell("") = 42" will ultimately end up being the same as "cell=("", 42)". This way of transforming the name work the same for all cases, so you can have as many arguments as you want to the place on the left hand side. The equals sign will be added to the method name, and a message will be sent to that instead.</p>
                   <p>This makes assignment of places highly flexible, and the only thing you need to do is to implement methods with the right names. This feature is used extensively in Lists and Dicts to make it easy to assign to specifix indexes. So, say we have a list called x. Then this code: "x[13] = 42" will be transformed into "x =([](13), 42)" which will in turn be transformed into "x []=(13, 42)". Ioke lists also has an at= method, so you can do "x at(13) = 42" which will call at=, of course.</p>
@@ -892,8 +878,7 @@ iik&gt; 3 + 2 &lt; 4
 +&gt; false
 
 iik&gt; "foo" &lt;=&gt; "fop"
-+&gt; -1
-                    </pre>
++&gt; -1</pre>
                   </div>
 
                   <div class="section">
@@ -915,17 +900,16 @@ iik&gt; "foo" &lt;=&gt; "fop"
   <span style="color: #0050a0;">"we have some serious trouble"</span>) <span style="color: #449900;">println</span>
 
 <span style="color: #6495ed;">unless</span>(<span style="color: #0050a0;">42</span> &lt; <span style="color: #0050a0;">43</span><span style="color: #006666;">,</span>
-  <span style="color: #0050a0;">"convoluted math"</span> <span style="color: #449900;">println</span>)
-                    </pre>
+  <span style="color: #0050a0;">"convoluted math"</span> <span style="color: #449900;">println</span>)</pre>
 
                     <p>It is good style to not use "unless" with an else branch. It generally tends to not be so readable that way. Remember that "if" and "unless" return their values, which means they are expressions like everything else. The middle example show that you can just call println on the result of the if-call, instead of doing it twice inside. This is also good style. Assigning the result of an if-call is likewise not a problem.</p>
 
                     <p>In some languages you see a pattern such as "if(foo = someExpensiveMethodCall(), foo println)", where a variable is assigned in the condition evaluation so the value doesn't have to be evaluated twice. This works in Ioke too, but there is a more idiomatic way of doing it. Both "if" and "unless" establish a lexical context, where a variable called "it" is available. This variable will be bound to the result of the conditional. So the above idiom could instead be written "if(someExpensiveMethodCall(), it println)". This is the preferred way of handling regular expression matching.</p>
 
                     <p>The Smalltalk inspired way of doing conditionals rest on the methods called ifTrue and ifFalse. Both of these methods are only defined on true and false, which means they are not as general as the if and unless statements. They can also be chained together, so you can write:</p>
+
                     <pre class="code">
-(<span style="color: #0050a0;">42</span> &lt; <span style="color: #0050a0;">43</span>) ifTrue(<span style="color: #0050a0;">"wowsie!"</span> <span style="color: #449900;">println</span>) ifFalse(<span style="color: #0050a0;">"oh noes"</span> <span style="color: #449900;">println</span>)
-                    </pre>
+(<span style="color: #0050a0;">42</span> &lt; <span style="color: #0050a0;">43</span>) ifTrue(<span style="color: #0050a0;">"wowsie!"</span> <span style="color: #449900;">println</span>) ifFalse(<span style="color: #0050a0;">"oh noes"</span> <span style="color: #449900;">println</span>)</pre>
 
                     <p>As should be obvious from these examples, these conditionals can not return any value. They must only rely on side effects to achieve anything.</p>
 
@@ -946,8 +930,7 @@ iik&gt; "foo" &lt;=&gt; "fop"
 <span style="color: #449900;">loop</span>(
   <span style="color: #6495ed;">if</span>(x &gt; <span style="color: #0050a0;">10</span><span style="color: #006666;">,</span> <span style="color: #6495ed;">break</span>)
   x<span style="color: #00bfff;">++</span>
-)
-                    </pre>
+)</pre>
 
                     <p>The first example will loop forever, printing hello over and over again. The second example will increment a variable until it's larger then 10, and then it will break out of the loop.</p>
 
@@ -959,8 +942,7 @@ iik&gt; "foo" &lt;=&gt; "fop"
 <span style="color: #449900;">while</span>(x &lt; <span style="color: #0050a0;">10</span><span style="color: #006666;">,</span>
   x <span style="color: #449900;">println</span>
   x<span style="color: #00bfff;">++</span>
-)
-                    </pre>
+)</pre>
 
                     <h4>until</h4>
                     <p>The until-loop works the same as the while-loop, except it expects it's condition argument to evaluate to false. It will stop iterating when the conditional is true for the first time.</p>
@@ -970,8 +952,7 @@ iik&gt; "foo" &lt;=&gt; "fop"
 <span style="color: #449900;">until</span>(x <span style="color: #00bfff;">==</span> <span style="color: #0050a0;">10</span><span style="color: #006666;">,</span>
   x <span style="color: #449900;">println</span>
   x<span style="color: #00bfff;">++</span>
-)
-                    </pre>
+)</pre>
 
                     <h4>times</h4>
                     <p>A very common need is to iterate something a certain number of times. The Number Integer kind defines a method called "times" that does exactly this. It's got two forms - one with one argument and one with two arguments. With one argument, it will just run the argument code the specified number of times, and with two arguments the first argument should be the name of a cell to assign the current iteration value to and the second is the code to execute.</p>
@@ -980,8 +961,7 @@ iik&gt; "foo" &lt;=&gt; "fop"
 <span style="color: #0050a0;">3</span> times(<span style="color: #0050a0;">"hello"</span> <span style="color: #449900;">println</span>)
 
 <span style="color: #0050a0;">4</span> times(n<span style="color: #006666;">,</span>
-  <span style="color: #0050a0;">"#{n}: wow"</span> <span style="color: #449900;">println</span>)
-                    </pre>
+  <span style="color: #0050a0;">"#{n}: wow"</span> <span style="color: #449900;">println</span>)</pre>
                     
                     <p>The first example will print hello three times, while the second example will count up from 0 to 3, printing the number followed by "wow".</p>
 
@@ -997,30 +977,26 @@ iik&gt; "foo" &lt;=&gt; "fop"
 <span style="color: #a52a2a;">;; the above would execute:
 </span><span style="color: #7777d4;">:one</span> <span style="color: #449900;">inspect</span> <span style="color: #449900;">println</span>
 <span style="color: #7777d4;">:two</span> <span style="color: #449900;">inspect</span> <span style="color: #449900;">println</span>
-<span style="color: #7777d4;">:three</span> <span style="color: #449900;">inspect</span> <span style="color: #449900;">println</span>
-                    </pre>
+<span style="color: #7777d4;">:three</span> <span style="color: #449900;">inspect</span> <span style="color: #449900;">println</span></pre>
 
                     <p>Another way of saying it is that the message chain will be executed using each element of the collection as receiver, in turn. The return value will be thrown away in this case, so to achieve anything, the code need to mutate data somewhere.</p>
 
                     <p>The second -- and most common -- form, takes two arguments. The first argument should be the name of a cell to assign each element to, and the second argument should be the code to execute. Under the covers, this form will establish a new lexical context for the code to run in. As with the first version, each return value will be trown away.</p>
 
                     <pre class="code">
-[<span style="color: #0050a0;">2</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">4</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">6</span>] each(x<span style="color: #006666;">,</span> (x<span style="color: #00bfff;">*</span>x) <span style="color: #449900;">println</span>)
-                    </pre>
+[<span style="color: #0050a0;">2</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">4</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">6</span>] each(x<span style="color: #006666;">,</span> (x<span style="color: #00bfff;">*</span>x) <span style="color: #449900;">println</span>)</pre>
 
                     <p>Here, the name "x" will be used as the name of each element of the list in turn, while executing the code.</p>
 
                     <p>The final form of each takes three arguments, where the first is the name of a cell to assign the current index, and the other two arguments are the same as the above.</p>
                     <pre class="code">
-[<span style="color: #0050a0;">2</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">4</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">6</span>] each(i<span style="color: #006666;">,</span> x<span style="color: #006666;">,</span> <span style="color: #0050a0;">"#{i}: #{(x*x)}"</span> <span style="color: #449900;">println</span>)
-                    </pre>
+[<span style="color: #0050a0;">2</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">4</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">6</span>] each(i<span style="color: #006666;">,</span> x<span style="color: #006666;">,</span> <span style="color: #0050a0;">"#{i}: #{(x*x)}"</span> <span style="color: #449900;">println</span>)</pre>
 
                     <p>The above code would print:</p>
                     <pre class="code">
 0: 4
 1: 16
-2: 36
-                    </pre>
+2: 36</pre>
 
                     <h4>break, continue</h4>
                     <p>When executing loops it is sometimes important to be able to interrupt execution prematurely. In this cases the break and continue methods allow this for "loop", "while" and "until". Both break and continue work lexically, so if you send code to another method that uses these methods, they will generally jump out of a lexically visible loop, just like expected.</p>
@@ -1029,8 +1005,7 @@ iik&gt; "foo" &lt;=&gt; "fop"
 
                     <pre class="code">
 <span style="color: #449900;">while</span>(<span style="color: #6495ed;">true</span><span style="color: #006666;">,</span>
-  <span style="color: #6495ed;">break</span>(<span style="color: #0050a0;">42</span>))
-                    </pre>
+  <span style="color: #6495ed;">break</span>(<span style="color: #0050a0;">42</span>))</pre>
 
                     <p>This code will immediately return 42 from the while-loop, even though it should have iterated forever.</p>
 
@@ -1042,8 +1017,7 @@ iik&gt; "foo" &lt;=&gt; "fop"
     <span style="color: #b0c4de;">i</span> <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">7</span>
     continue)
   i<span style="color: #00bfff;">++</span>
-)
-                    </pre>
+)</pre>
 
                     <p>This code uses continue to jump over a specific number, so it will only print 0 to 5, and 7 to 9.</p>
                   </div>
@@ -1063,8 +1037,7 @@ iik&gt; "foo" &lt;=&gt; "fop"
                     <pre class="code">
 <span style="color: #b0c4de;">m</span> <span style="color: #00bfff;">=</span> <span style="color: #6495ed;">method</span>()
 m <span style="color: #a52a2a;">;; call the method
-</span>
-                    </pre>
+</span></pre>
 
                     <p>Since methods are activatable, when you name a cell that contains a method, that method will be invoked. To stop that behavior, use the "cell" method.</p>
 
@@ -1078,15 +1051,13 @@ m <span style="color: #a52a2a;">;; call the method
 
 <span style="color: #a52a2a;">;; a method that returns nil, but
 ;; has the documentation text "foo"
-</span><span style="color: #b0c4de;">m</span> <span style="color: #00bfff;">=</span> <span style="color: #6495ed;">method</span>(<span style="color: #0050a0;">"foo"</span><span style="color: #006666;">,</span> <span style="color: #6495ed;">nil</span>)
-                    </pre>
+</span><span style="color: #b0c4de;">m</span> <span style="color: #00bfff;">=</span> <span style="color: #6495ed;">method</span>(<span style="color: #0050a0;">"foo"</span><span style="color: #006666;">,</span> <span style="color: #6495ed;">nil</span>)</pre>
 
                     <p>A method can take any number of required positional arguments. These will be checked when a method is called, and if not enough -- or too many -- arguments are provided, an error will be signalled.</p>
                     <pre class="code">
 <span style="color: #b0c4de;">m</span> <span style="color: #00bfff;">=</span> <span style="color: #6495ed;">method</span>(x<span style="color: #006666;">,</span> x <span style="color: #449900;">println</span>)
 <span style="color: #b0c4de;">m</span> <span style="color: #00bfff;">=</span> <span style="color: #6495ed;">method</span>(x<span style="color: #006666;">,</span> y<span style="color: #006666;">,</span> z<span style="color: #006666;">,</span>
-  x <span style="color: #00bfff;">*</span> y <span style="color: #00bfff;">+</span> z)
-                    </pre>
+  x <span style="color: #00bfff;">*</span> y <span style="color: #00bfff;">+</span> z)</pre>
 
                     <p>The first method takes one argument and prints that argument. The second method takes three arguments and return the product of the two first added to the third.</p>
 
@@ -1098,8 +1069,7 @@ m <span style="color: #a52a2a;">;; call the method
 
 <span style="color: #a52a2a;">;; takes one to three arguments
 </span><span style="color: #b0c4de;">m</span> <span style="color: #00bfff;">=</span> <span style="color: #6495ed;">method</span>(x<span style="color: #006666;">,</span> y <span style="color: #0050a0;">42</span><span style="color: #006666;">,</span> z <span style="color: #0050a0;">25</span><span style="color: #006666;">,</span> 
-  x<span style="color: #00bfff;">*</span>y <span style="color: #00bfff;">+</span> z)
-                    </pre>
+  x<span style="color: #00bfff;">*</span>y <span style="color: #00bfff;">+</span> z)</pre>
 
                     <p>The syntax for optional arguments is to just write a space after the name of the argument, and then write the code to generate the default value after it.</p>
 
@@ -1111,8 +1081,7 @@ m <span style="color: #a52a2a;">;; call the method
 <span style="color: #b0c4de;">m</span> <span style="color: #00bfff;">=</span> <span style="color: #6495ed;">method</span>(<span style="color: #7777d4;">foo:</span><span style="color: #006666;">,</span> <span style="color: #7777d4;">bar:</span> <span style="color: #0050a0;">42</span><span style="color: #006666;">,</span>
   foo <span style="color: #449900;">println</span>
   bar <span style="color: #449900;">println</span>
-)
-                    </pre>
+)</pre>
 
                     <p>Just as with regular optional arguments, you supply the default value of the keyword argument after a space. The cells for the keyword arguments will be the same as their names, without the ending colon. The above code would print nil and 42 if no arguments were specified. It's important to remember that keyword arguments and positional arguments do not interact -- except for when calculating default values. When assigning values it's always possible to see what is positional and what is a keyword argument.</p>
 
@@ -1123,8 +1092,7 @@ m <span style="color: #a52a2a;">;; call the method
   rest <span style="color: #449900;">println</span>)
 
 <span style="color: #b0c4de;">m</span> <span style="color: #00bfff;">=</span> <span style="color: #6495ed;">method</span>(x<span style="color: #006666;">,</span> y <span style="color: #0050a0;">42</span><span style="color: #006666;">,</span> <span style="color: #00bfff;">+</span>rest<span style="color: #006666;">,</span>
-  rest <span style="color: #449900;">println</span>)
-                    </pre>
+  rest <span style="color: #449900;">println</span>)</pre>
 
                     <p>The above code defines one method that only takes one rest argument. That means the method can take any number of arguments and all of them will be collected into a list. The second method takes one required argument, one optional argument and any number of extra arguments. So if 4 arguments are given, the rest argument will contain two.</p>
 
@@ -1135,8 +1103,7 @@ m <span style="color: #a52a2a;">;; call the method
   krest <span style="color: #449900;">println</span>)
 
 <span style="color: #b0c4de;">m</span> <span style="color: #00bfff;">=</span> <span style="color: #6495ed;">method</span>(x<span style="color: #006666;">,</span> <span style="color: #7777d4;">y:</span><span style="color: #006666;">,</span> <span style="color: #00bfff;">+</span>rest<span style="color: #006666;">,</span> <span style="color: #00bfff;">+</span><span style="color: #7777d4;">:krest</span><span style="color: #006666;">,</span>
-  [x<span style="color: #006666;">,</span> y<span style="color: #006666;">,</span> rest<span style="color: #006666;">,</span> krest] <span style="color: #449900;">println</span>)
-                    </pre>
+  [x<span style="color: #006666;">,</span> y<span style="color: #006666;">,</span> rest<span style="color: #006666;">,</span> krest] <span style="color: #449900;">println</span>)</pre>
 
                     <p>The above code first creates a method that can take any number of keyword arguments but nothing else. The second method takes one required positional argument, one keyword argument, rest arguments and keyword rest arguments, and returns a new list containing all the arguments given to it.</p>
 
@@ -1144,8 +1111,7 @@ m <span style="color: #a52a2a;">;; call the method
                     <pre class="code">
 <span style="color: #b0c4de;">createNewCell</span> <span style="color: #00bfff;">=</span> <span style="color: #6495ed;">method</span>(
   <span style="color: #006666;">@</span><span style="color: #b0c4de;">foo</span> <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">42</span>
-)
-                    </pre>
+)</pre>
                     
                     <p>The method create above will create assign the value 42 to the cell "foo" on the object the method was called on.</p>
 
@@ -1156,8 +1122,7 @@ m <span style="color: #a52a2a;">;; call the method
 foo()
 foo(<span style="color: #0050a0;">1</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">2</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">3</span>)
 foo(<span style="color: #7777d4;">blarg:</span> <span style="color: #0050a0;">42</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">2</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">3</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">4</span>)
-foo(<span style="color: #7777d4;">quux:</span> <span style="color: #0050a0;">42</span><span style="color: #00bfff;">*</span><span style="color: #0050a0;">2</span>)
-                    </pre>
+foo(<span style="color: #7777d4;">quux:</span> <span style="color: #0050a0;">42</span><span style="color: #00bfff;">*</span><span style="color: #0050a0;">2</span>)</pre>
 
                     <p>To give a keyword argument, you just write it exactly like you define keyword arugments - a name followed by a colon.</p>
 
@@ -1178,8 +1143,7 @@ foo(<span style="color: #00bfff;">*</span>ls)
 
 foo(<span style="color: #00bfff;">*</span>ls2<span style="color: #006666;">,</span> <span style="color: #0050a0;">111</span><span style="color: #006666;">,</span> <span style="color: #00bfff;">*</span>dc<span style="color: #006666;">,</span> <span style="color: #00bfff;">*</span>ls)
 <span style="color: #a52a2a;">;; the same as:
-</span>foo(<span style="color: #0050a0;">42</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">43</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">44</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">111</span><span style="color: #006666;">,</span> <span style="color: #7777d4;">foo:</span> <span style="color: #0050a0;">42</span><span style="color: #006666;">,</span> <span style="color: #7777d4;">bar:</span> <span style="color: #0050a0;">13</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">1</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">2</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">3</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">4</span>)
-                    </pre>
+</span>foo(<span style="color: #0050a0;">42</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">43</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">44</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">111</span><span style="color: #006666;">,</span> <span style="color: #7777d4;">foo:</span> <span style="color: #0050a0;">42</span><span style="color: #006666;">,</span> <span style="color: #7777d4;">bar:</span> <span style="color: #0050a0;">13</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">1</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">2</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">3</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">4</span>)</pre>
 
                     <p>If you try to splat something that can't be splatted, a condition will be signalled.</p>
                   </div>
@@ -1230,8 +1194,7 @@ establishes a new lexical closure."</span><span style="color: #006666;">,</span>
 
     <span style="color: #b0c4de;">code</span> <span style="color: #00bfff;">=</span> <span style="color: #606060;">LexicalBlock</span> createFrom(<span style="color: #449900;">call</span> arguments<span style="color: #006666;">,</span> <span style="color: #449900;">call</span> ground)
     <span style="color: #6495ed;">self</span> each(n<span style="color: #006666;">,</span> result &lt;&lt; code <span style="color: #449900;">call</span>(<span style="color: #449900;">cell</span>(<span style="color: #7777d4;">:n</span>))))
-  result)
-                    </pre>
+  result)</pre>
 
                     <p>The code above implements map, one of the methods from Enumerable. The map method allows one collection to be mapped in a predefined way into something else. It can take either one or two arguments. If one argument is given, that is a message chain to apply, and then collect the results. If two arguments are given, the first is the argument name to use, and the second is the code to execute for each entry.</p>
 
@@ -1255,8 +1218,7 @@ establishes a new lexical closure."</span><span style="color: #006666;">,</span>
 <span style="color: #b0c4de;">y</span> <span style="color: #00bfff;">=</span> <span style="color: #6495ed;">fnx</span>(z<span style="color: #006666;">,</span> z <span style="color: #449900;">println</span>)
 
 x <span style="color: #449900;">call</span>(<span style="color: #0050a0;">42</span>)
-y(<span style="color: #0050a0;">42</span>)
-                    </pre>
+y(<span style="color: #0050a0;">42</span>)</pre>
 
                     <p>A lexical block is a regular kind of object that can be assigned to any cell, just like other objects. Lexical blocks mimic LexicalBlock, and blocks doesn't have names. In contrast to methods and macros, no extra cells will be added to the activation context for a lexical block.</p>
                   </div>
