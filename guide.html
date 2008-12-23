@@ -934,7 +934,118 @@ iik&gt; "foo" &lt;=&gt; "fop"
 
                   <div class="section">
                     <h3><a name="iteration">Iteration</a></h3>
-                    <p>TODO: write content</p>
+                    <p>Ioke supports most of the expected control flow operations for iteration. The one thing that is missing is the for-loop. Since the for-loop encourages low level stepping, and canbe replaced by other kinds of operations, I don't see any reason in having it in Ioke. In fact, the for-statement in Ruby is generally considered bad form too. And if someone really wants a for-loop it's really easy to implement. For now I'm reserving the name if I would like to add comprehensions at some point.</p>
+
+                    <h4>loop</h4>
+                    <p>For creating infinte loops, the "loop"-method is the thing. It will just take a piece of code and execute it over and over again until some non-local flow control rips the execution up. Using it is as simple as calling it:</p>
+
+                    <pre class="code">
+<span style="color: #449900;">loop</span>(<span style="color: #0050a0;">"hello"</span> <span style="color: #449900;">println</span>)
+
+<span style="color: #b0c4de;">x</span> <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">0</span>
+<span style="color: #449900;">loop</span>(
+  <span style="color: #6495ed;">if</span>(x &gt; <span style="color: #0050a0;">10</span><span style="color: #006666;">,</span> <span style="color: #6495ed;">break</span>)
+  x<span style="color: #00bfff;">++</span>
+)
+                    </pre>
+
+                    <p>The first example will loop forever, printing hello over and over again. The second example will increment a variable until it's larger then 10, and then it will break out of the loop.</p>
+
+                    <h4>while</h4>
+                    <p>The Ioke while loop works exactly like while-loops in other languages. It takes one argument that is a condition to reevaluate on each iteration, and another argument that is the code to evaluate each iteration. The result of the while-loop is the result of the last executed expression in the body.</p>
+
+                    <pre class="code">
+<span style="color: #b0c4de;">x</span> <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">0</span>
+<span style="color: #449900;">while</span>(x &lt; <span style="color: #0050a0;">10</span><span style="color: #006666;">,</span>
+  x <span style="color: #449900;">println</span>
+  x<span style="color: #00bfff;">++</span>
+)
+                    </pre>
+
+                    <h4>until</h4>
+                    <p>The until-loop works the same as the while-loop, except it expects it's condition argument to evaluate to false. It will stop iterating when the conditional is true for the first time.</p>
+                    
+                    <pre class="code">
+<span style="color: #b0c4de;">x</span> <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">0</span>
+<span style="color: #449900;">until</span>(x <span style="color: #00bfff;">==</span> <span style="color: #0050a0;">10</span><span style="color: #006666;">,</span>
+  x <span style="color: #449900;">println</span>
+  x<span style="color: #00bfff;">++</span>
+)
+                    </pre>
+
+                    <h4>times</h4>
+                    <p>A very common need is to iterate something a certain number of times. The Number Integer kind defines a method called "times" that does exactly this. It's got two forms - one with one argument and one with two arguments. With one argument, it will just run the argument code the specified number of times, and with two arguments the first argument should be the name of a cell to assign the current iteration value to and the second is the code to execute.</p>
+
+                    <pre class="code">
+<span style="color: #0050a0;">3</span> times(<span style="color: #0050a0;">"hello"</span> <span style="color: #449900;">println</span>)
+
+<span style="color: #0050a0;">4</span> times(n<span style="color: #006666;">,</span>
+  <span style="color: #0050a0;">"#{n}: wow"</span> <span style="color: #449900;">println</span>)
+                    </pre>
+                    
+                    <p>The first example will print hello three times, while the second example will count up from 0 to 3, printing the number followed by "wow".</p>
+
+                    <h4>each</h4>
+                    <p>For most iteration needs, you want to traverse a collection in some way. The standard way of doing this is with the "each"-method. It's defined on all central collection classes and is also the basis of the contract for Mixins Enumerable. The contract for each has three different forms, and all should be implemented if you decide to implement the each method.</p>
+
+                    <p>The each method should -- as the name implies -- do something for each entry in the collection it belongs to. So calling each on a set would do something with each entry, etc. Exactly what that is depends on how many arguments are given to "each".</p>
+                    
+                    <p>If one argument is given, it should be a message chain. This message chain will be applied to each element.</p>
+                    <pre class="code">
+[<span style="color: #7777d4;">:one</span><span style="color: #006666;">,</span> <span style="color: #7777d4;">:two</span><span style="color: #006666;">,</span> <span style="color: #7777d4;">:three</span>] each(<span style="color: #449900;">inspect</span> <span style="color: #449900;">println</span>)
+
+<span style="color: #a52a2a;">;; the above would execute:
+</span><span style="color: #7777d4;">:one</span> <span style="color: #449900;">inspect</span> <span style="color: #449900;">println</span>
+<span style="color: #7777d4;">:two</span> <span style="color: #449900;">inspect</span> <span style="color: #449900;">println</span>
+<span style="color: #7777d4;">:three</span> <span style="color: #449900;">inspect</span> <span style="color: #449900;">println</span>
+                    </pre>
+
+                    <p>Another way of saying it is that the message chain will be executed using each element of the collection as receiver, in turn. The return value will be thrown away in this case, so to achieve anything, the code need to mutate data somewhere.</p>
+
+                    <p>The second -- and most common -- form, takes two arguments. The first argument should be the name of a cell to assign each element to, and the second argument should be the code to execute. Under the covers, this form will establish a new lexical context for the code to run in. As with the first version, each return value will be trown away.</p>
+
+                    <pre class="code">
+[<span style="color: #0050a0;">2</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">4</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">6</span>] each(x<span style="color: #006666;">,</span> (x<span style="color: #00bfff;">*</span>x) <span style="color: #449900;">println</span>)
+                    </pre>
+
+                    <p>Here, the name "x" will be used as the name of each element of the list in turn, while executing the code.</p>
+
+                    <p>The final form of each takes three arguments, where the first is the name of a cell to assign the current index, and the other two arguments are the same as the above.</p>
+                    <pre class="code">
+[<span style="color: #0050a0;">2</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">4</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">6</span>] each(i<span style="color: #006666;">,</span> x<span style="color: #006666;">,</span> <span style="color: #0050a0;">"#{i}: #{(x*x)}"</span> <span style="color: #449900;">println</span>)
+                    </pre>
+
+                    <p>The above code would print:</p>
+                    <pre class="code">
+0: 4
+1: 16
+2: 36
+                    </pre>
+
+                    <h4>break, continue</h4>
+                    <p>When executing loops it is sometimes important to be able to interrupt execution prematurely. In this cases the break and continue methods allow this for "loop", "while" and "until". Both break and continue work lexically, so if you send code to another method that uses these methods, they will generally jump out of a lexically visible loop, just like expected.</p>
+
+                    <p>The break method takes an optional value to return. If no value is provided it will default to nil. When breaking out of a loop, that loop will return the value given to break. The continue method will not break out of the execution, but will instead jump to the beginning and reevaluate the condition once again.</p>
+
+                    <pre class="code">
+<span style="color: #449900;">while</span>(<span style="color: #6495ed;">true</span><span style="color: #006666;">,</span>
+  <span style="color: #6495ed;">break</span>(<span style="color: #0050a0;">42</span>))
+                    </pre>
+
+                    <p>This code will immediately return 42 from the while-loop, even though it should have iterated forever.</p>
+
+                    <pre class="code">
+<span style="color: #b0c4de;">i</span> <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">0</span>
+<span style="color: #449900;">while</span>(i &lt; <span style="color: #0050a0;">10</span><span style="color: #006666;">,</span>
+  i <span style="color: #449900;">println</span>
+  <span style="color: #6495ed;">if</span>(i <span style="color: #00bfff;">==</span> <span style="color: #0050a0;">5</span><span style="color: #006666;">,</span>
+    <span style="color: #b0c4de;">i</span> <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">7</span>
+    continue)
+  i<span style="color: #00bfff;">++</span>
+)
+                    </pre>
+
+                    <p>This code uses continue to jump over a specific number, so it will only print 0 to 5, and 7 to 9.</p>
                   </div>
                 </div>
 
