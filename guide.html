@@ -816,7 +816,62 @@ flux<span style="color: #00bfff;">++</span>
 
                 <div class="chapter">
                   <h2><a name="assignment">Assignment</a></h2>
-                  <p>TODO: write content</p>
+                  <p>Superficially, Ioke's assignment model is quite simple. But there exists some subtleties too. One of the main reasons for this is that assigning a cell that doesn't exist will create that cell. Where it gets created is different based on what kind of context the assignment happens in. The main difference here is between a method activation context, or a lexical block context.</p>
+
+                  <p>Ioke also supports assignment of places, which makes assigning much more flexible. A third feature of Ioke assignment is that it will check for the existence of an assignment method before assigning a specific name. This chapter will make all these things clear, and show some examples.</p>
+
+                  <p>Let's start with a small example of simple assignment:</p>
+                  <pre class="code">
+<span style="color: #0000cd;">foo</span> <span style="color: #00bfff;">=</span> <span style="color: #8b0000;">Origin</span> <span style="color: #6495ed;">mimic</span>
+foo <span style="color: #b0c4de;">x</span> <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">42</span>
+foo <span style="color: #b0c4de;">y</span> <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">13</span>
+foo <span style="color: #b0c4de;">x</span> <span style="color: #00bfff;">+=</span> <span style="color: #0050a0;">2</span>
+                  </pre>
+
+                  <p>The first line creates a new Origin mimic, and then assigns that to the name foo. Since this code executes at the top level, "foo" will be a new cell created in Ground. The second line creates a new cell called "x" inside the "foo" object. It gets assigned the value 42. The third line creates a "y" cell, and the fourth line sends the += message, which will first call +, and then assign using =. So at the end of this program, "foo" will contain two cells: "x" with value 44, and "y" with value 13. As mentioned above, cells gets created the first time they are assigned to. If you need to create a cell in a specific object, just namespace it. For example, if you want to make sure that you create a cell in Ground, just do "Ground foo = 42".</p>
+
+                  <p>Inside of a method, the situation is exactly the same. If you assign something, it will be assigned in the current context, which is the local activation context (meaning it's the place where local variables are available). There are two situations where this doesn't hold true. The first one is within the special method "do". This method will take any code as argument and execute that with the receiver of the "do" message as the ground/context of the code inside it. That means "do" is a good way to create new cells inside an object.</p>
+
+                  <p>This is a bit academic, so lets take a look at an example of this:</p>
+                  <pre class="code">
+<span style="color: #0000cd;">Foo</span> <span style="color: #00bfff;">=</span> <span style="color: #8b0000;">Origin</span> <span style="color: #6495ed;">mimic</span>
+<span style="color: #606060;">Foo</span> <span style="color: #b0c4de;">x</span> <span style="color: #00bfff;">=</span> <span style="color: #6495ed;">method</span>(
+  <span style="color: #a52a2a;">;; this creates a local variable in the method activation
+</span>  <span style="color: #b0c4de;">foo</span> <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">42</span>
+)
+
+<span style="color: #0000cd;">Foo</span> <span style="color: #00bfff;">=</span> <span style="color: #8b0000;">Origin</span> <span style="color: #6495ed;">mimic</span>
+<span style="color: #606060;">Foo</span> <span style="color: #449900;">do</span>(
+  <span style="color: #a52a2a;">;; this creates the cell foo inside of Foo
+</span>  <span style="color: #b0c4de;">foo</span> <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">42</span>
+)
+                  </pre>
+
+                  <p>Here you can see a method defined called x. This method will just create a new local cell, which means calling the method will not make any difference on its receiver at all. The call to "do" in contrast will immediately execute the code inside it, and this code will create the cell "foo" inside of "Foo".</p>
+
+                  <p>The second exception to the general rule is when executing inside of a lexical context. A lexical context is basically established inside of a block, but can also be created transparently when sending code to a method. A lexical block will try to not create new cells. When you assign a cell without a specific place to assign it, a lexical block will first see if there is any cell with that name further out, and if so it will make the assignment there instead. Only when no such cell exists, a new cell will be created in the lexical context. This code shows this in action:</p>
+                  <pre class="code">
+<span style="color: #b0c4de;">x</span> <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">42</span>
+<span style="color: #6495ed;">fn</span>(<span style="color: #b0c4de;">x</span> <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">43</span><span style="color: #006666;">.</span> <span style="color: #b0c4de;">y</span> <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">42</span>) <span style="color: #449900;">call</span>
+x <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> 42
+</span>y <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> Condition Error NoSuchCell</span>
+                  </pre>
+                  
+                  <p>The "fn" message creates a new lexical block. The chapter on <a href="#code">code</a> will talk more about this. But as you can see, this block assigns 43 to the cell "x", and 42 to the cell "y". But since the cell "y" doesn't exist, it will only be created inside the lexical context, while "x" exists outside, and will be assigned a new value instead. The basic ideas is that code like this should behave like you expect it to behave.</p>
+
+                  <p>The canonical form of assignment is a bit different from the way you usually code Ioke. The section on the syntax of assignments talked a bit about this. Specifically, something like "foo = 42" will get translated into "=(foo, 42)". That also means that assignment is just regular method call, that can be overridden or removed just like any other method. And that is exactly how both lexical context, and local method context make it possible to have different logic here. This is true for all assignment operators.</p>
+                  
+                  <p>All assignment operators take as their first argument the place to assign to. This place will be unevaluated. Only the second argument to an assignment will be evaluated. In most cases, a place is the same thing as a cell name, but it doesn't have to be. Let's look at the case of assigning a cell with a strange name. Say we want to assign the cell with the no name. We can do it like this:</p>
+                  <pre class="code">
+<span style="color: #449900;">cell</span>(<span style="color: #0050a0;">""</span>) <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">42</span>
+                  </pre>
+
+                  <p>What happens here is a bit subtle. Since the left hand side of the assignment takes arguments, the "=" method figures out that the assignment is not to a simple cell name, but to a place. The parsing step will change "cell("") = 42" into "=(cell(""), 42)". Notice here that the argument comes along into the specification of the place. When this happens, the assignment operatoer will not try to create or assign a cell - instead it will in this case call the method cell=. So "cell("") = 42" will ultimately end up being the same as "cell=("", 42)". This way of transforming the name work the same for all cases, so you can have as many arguments as you want to the place on the left hand side. The equals sign will be added to the method name, and a message will be sent to that instead.</p>
+                  <p>This makes assignment of places highly flexible, and the only thing you need to do is to implement methods with the right names. This feature is used extensively in Lists and Dicts to make it easy to assign to specifix indexes. So, say we have a list called x. Then this code: "x[13] = 42" will be transformed into "x =([](13), 42)" which will in turn be transformed into "x []=(13, 42)". Ioke lists also has an at= method, so you can do "x at(13) = 42" which will call at=, of course.</p>
+
+                  <p>The second transformation that might happen is that if you try to assign a cell that have an assigner, you will call that assigner instead of actually assigning a cell. So, for example, if you do "foo documentation = 42", this will not actually create or assign the cell "documentation". Instead it will find that Base has a cell called "documentation=", and instead send that message. So the prior code would actually be equivalent to "foo documentation=(42)".</p>
+
+                  <p>All of these assignment processes together make it really easy to take control over assignment, while still making it very obvious and natural in most cases.</p>
                 </div>
 
                 <div class="chapter">
