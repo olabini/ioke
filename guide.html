@@ -898,7 +898,38 @@ iik&gt; "foo" &lt;=&gt; "fop"
 
                   <div class="section">
                     <h3><a name="conditionals">Conditionals</a></h3>
-                    <p>TODO: write content</p>
+                    <p>Ioke has two different ways of doing conditionals. The first one is the default, and is also the traditional conditional from other languages. The second version looks more like Smalltalk conditionals.</p>
+
+                    <p>As with everything else, these conditionals are all methods, and can be overridden and changed if need be. They can also be polymorphic.</p>
+
+                    <p>The default conditionals are called "if" and "unless". They both take an initial evaluated argument that is used to check which branch should be taken. The "if" method will execute it's second argument if the first argument is true, and the third argument if the first argument is false. The "unless" method does the inverse -- executing the second argument if the first argument is false, and the third argument if the first argument is true. One or both of the branches can be left out from the statement. If no else-part is around and the conditional part evaluates to a false value, that false value will be returned.</p>
+
+                    <p>A few examples are in order:</p>
+                    <pre class="code">
+<span style="color: #6495ed;">if</span>(<span style="color: #0050a0;">42</span> &lt; <span style="color: #0050a0;">43</span><span style="color: #006666;">,</span>
+  <span style="color: #0050a0;">"wow, math comparison works"</span> <span style="color: #449900;">println</span><span style="color: #006666;">,</span>
+  <span style="color: #0050a0;">"we have some serious trouble"</span> <span style="color: #449900;">println</span>)
+
+<span style="color: #6495ed;">if</span>(<span style="color: #0050a0;">42</span> &lt; <span style="color: #0050a0;">43</span><span style="color: #006666;">,</span>
+  <span style="color: #0050a0;">"wow, math comparison works"</span><span style="color: #006666;">,</span>
+  <span style="color: #0050a0;">"we have some serious trouble"</span>) <span style="color: #449900;">println</span>
+
+<span style="color: #6495ed;">unless</span>(<span style="color: #0050a0;">42</span> &lt; <span style="color: #0050a0;">43</span><span style="color: #006666;">,</span>
+  <span style="color: #0050a0;">"convoluted math"</span> <span style="color: #449900;">println</span>)
+                    </pre>
+
+                    <p>It is good style to not use "unless" with an else branch. It generally tends to not be so readable that way. Remember that "if" and "unless" return their values, which means they are expressions like everything else. The middle example show that you can just call println on the result of the if-call, instead of doing it twice inside. This is also good style. Assigning the result of an if-call is likewise not a problem.</p>
+
+                    <p>In some languages you see a pattern such as "if(foo = someExpensiveMethodCall(), foo println)", where a variable is assigned in the condition evaluation so the value doesn't have to be evaluated twice. This works in Ioke too, but there is a more idiomatic way of doing it. Both "if" and "unless" establish a lexical context, where a variable called "it" is available. This variable will be bound to the result of the conditional. So the above idiom could instead be written "if(someExpensiveMethodCall(), it println)". This is the preferred way of handling regular expression matching.</p>
+
+                    <p>The Smalltalk inspired way of doing conditionals rest on the methods called ifTrue and ifFalse. Both of these methods are only defined on true and false, which means they are not as general as the if and unless statements. They can also be chained together, so you can write:</p>
+                    <pre class="code">
+(<span style="color: #0050a0;">42</span> &lt; <span style="color: #0050a0;">43</span>) ifTrue(<span style="color: #0050a0;">"wowsie!"</span> <span style="color: #449900;">println</span>) ifFalse(<span style="color: #0050a0;">"oh noes"</span> <span style="color: #449900;">println</span>)
+                    </pre>
+
+                    <p>As should be obvious from these examples, these conditionals can not return any value. They must only rely on side effects to achieve anything.</p>
+
+                    <p>Ioke also supports the expected short circuiting boolean evaluators. They are implemented as regular methods and are available on all objects. All of the expected combinators are available, including "and", "&amp;&amp;", "or", "||", "xor", "nor" and "nand".</p>
                   </div>
 
                   <div class="section">
