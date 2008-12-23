@@ -216,9 +216,6 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
                         <a href="#text">Text</a>
                       </li>
                       <li>
-                        <a href="#symbols">Symbols</a>
-                      </li>
-                      <li>
                         <a href="#numbers">Numbers</a>
                       </li>
                       <li>
@@ -1487,17 +1484,86 @@ msg code <span style="color: #a52a2a;">;; "2 -(1)"</span></pre>
 
                   <div class="section">
                     <h3><a name="text">Text</a></h3>
-                    <p>TODO: write content</p>
-                  </div>
+                    <p>In Ioke, the equivalent of Strings in other languages are called Text. This better describes the purpose of the type. Ioke Text is immutable. All operations that would change the text returns a new object instead. If you are used to Java strings or Ruby strings, then most operation available on Ioke Texts will not come as a surprise.</p>
 
-                  <div class="section">
-                    <h3><a name="symbols">Symbols</a></h3>
-                    <p>TODO: write content</p>
+                    <p>To create a new Text, you use the literal syntax as described in the syntax chapter. You can use interpolation to include dynamic data.</p>
+
+                    <p>You can do several things with Ioke text. These examples should show some of the methods:</p>
+                    <pre class="code">
+<span style="color: #a52a2a;">;; repeat a text several times
+</span><span style="color: #0050a0;">"foo"</span> <span style="color: #00bfff;">*</span> <span style="color: #0050a0;">3</span>  <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> "foofoofoo"
+</span>
+<span style="color: #a52a2a;">;; concatenate two texts
+</span><span style="color: #0050a0;">"foo"</span> <span style="color: #00bfff;">+</span> <span style="color: #0050a0;">"bar"</span>  <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> "foobar"
+</span>
+<span style="color: #a52a2a;">;; get the character at a specific index
+</span><span style="color: #0050a0;">"foo"</span>[<span style="color: #0050a0;">1</span>]  <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> 111
+</span>
+<span style="color: #a52a2a;">;; get a subset of text
+</span><span style="color: #0050a0;">"foo"</span>[<span style="color: #0050a0;">1..1</span>]  <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> "o"
+</span><span style="color: #0050a0;">"foo"</span>[<span style="color: #0050a0;">0..1</span>]  <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> "fo"
+</span><span style="color: #0050a0;">"foo"</span>[<span style="color: #0050a0;">0...1</span>]  <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> "f"
+</span>
+<span style="color: #0050a0;">"foxtrot"</span>[<span style="color: #0050a0;">1</span><span style="color: #00bfff;">..-</span><span style="color: #0050a0;">1</span>] <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> "oxtrot"
+</span><span style="color: #0050a0;">"foxtrot"</span>[<span style="color: #0050a0;">1</span><span style="color: #00bfff;">...-</span><span style="color: #0050a0;">1</span>] <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> "oxtro"
+</span>
+<span style="color: #a52a2a;">;; is a text empty?
+</span><span style="color: #0050a0;">"foo"</span> <span style="color: #449900;">empty?</span>  <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> false
+</span><span style="color: #0050a0;">""</span> <span style="color: #449900;">empty?</span>  <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> true
+</span>
+<span style="color: #a52a2a;">;; the length of the text
+</span><span style="color: #0050a0;">"foo"</span> length  <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> 3
+</span><span style="color: #0050a0;">""</span> length  <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> 0
+</span>
+<span style="color: #a52a2a;">;; replace the first occurance of something with something else
+</span><span style="color: #0050a0;">"hello fox fob folk"</span> replace(<span style="color: #0050a0;">"fo"</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">"ba"</span>)
+  <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> "hello bax fob folk"
+</span>
+<span style="color: #a52a2a;">;; replace all occurances of something with something else
+</span><span style="color: #0050a0;">"hello fox fob folk"</span> replaceAll(<span style="color: #0050a0;">"fo"</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">"ba"</span>)
+  <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> "hello bax bab balk"
+</span>
+<span style="color: #a52a2a;">;; split around a text
+</span><span style="color: #0050a0;">"foo bar bax"</span> split(<span style="color: #0050a0;">" "</span>)
+  <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> ["foo", "bar", "bax"]</span></pre>
+
+                    <p>The Text kind contains lots of useful functionality like this. The purpose is to make it really easy to massage text of any kind.</p>
+
+                    <p>One important tool for doing that is the "format" method. This is a mix between C printf and Common Lisp format. At the moment, it only contains a small amount of functionality, but it can still be very convenient. Specifically you can print each element in a list directly by using format, instead of concatenating text yourself.</p>
+
+                    <p>The "format" method takes format specifies that begin with %, and then inserts one of its arguments in different ways depending on what kind of format specifier is used.</p>
+
+                    <p>Some examples of format follows:</p>
+                    <pre class="code">
+<span style="color: #a52a2a;">;; insert simple value as text
+</span><span style="color: #0050a0;">"%s"</span> format(<span style="color: #0050a0;">123</span>) <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> "123"
+</span>
+<span style="color: #a52a2a;">;; insert value right justified by 6
+</span><span style="color: #0050a0;">"%6s"</span> format(<span style="color: #0050a0;">123</span>) <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> "   123"
+</span>
+<span style="color: #a52a2a;">;; insert value left justified by 6
+</span><span style="color: #0050a0;">"%-6s"</span> format(<span style="color: #0050a0;">123</span>) <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> "123   "
+</span>
+<span style="color: #a52a2a;">;; insert two values
+</span><span style="color: #0050a0;">"%s: %s"</span> format(<span style="color: #0050a0;">123</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">321</span>) <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> "123: 321"
+</span>
+<span style="color: #a52a2a;">;; insert a list of values formatted the same
+</span><span style="color: #0050a0;">"%[%s, %]\n"</span> format([<span style="color: #0050a0;">1</span><span style="color: #006666;">,</span><span style="color: #0050a0;">2</span><span style="color: #006666;">,</span><span style="color: #0050a0;">3</span>])
+  <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> "1, 2, 3, \n"
+</span>
+<span style="color: #a52a2a;">;; insert splatted values from a list
+</span><span style="color: #0050a0;">"wow: %*[%s: %s %]"</span> format([[<span style="color: #0050a0;">1</span><span style="color: #006666;">,</span><span style="color: #0050a0;">2</span>]<span style="color: #006666;">,</span>[<span style="color: #0050a0;">2</span><span style="color: #006666;">,</span><span style="color: #0050a0;">3</span>]<span style="color: #006666;">,</span>[<span style="color: #0050a0;">3</span><span style="color: #006666;">,</span><span style="color: #0050a0;">4</span>]])
+  <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> "wow: 1: 2 2: 3 3: 4 "</span></pre>
+
                   </div>
 
                   <div class="section">
                     <h3><a name="numbers">Numbers</a></h3>
-                    <p>TODO: write content</p>
+                    <p>As mentioned in the section on syntax, Ioke supports decimal numbers, integers and ratios. A Ratio will be created when two integeres can't be divided evenly. A Ratio will always use the GCD. In most cases Ratios, Decimals and Integers can interact with each other was would be expected. The one thing that might surprise people is that Ioke doesn't have any inexact floating point data type. Instead, decimals are exact and can have any size. The means they are well suited to represent such things as money, since operations will always have well defined results.</p>
+
+                    <p>All expected math works fine on Ioke numbers. The reference for numbers more closely specify what is possible. One thing to notice is that the % operator implements modulus, not remainder. This might be unintuitive for some developers. What that means is that it is not an error to ask for the modulus of 0: "13 % 0", since there is no division necessary in this operation.</p>
+
+                    <p>In addition to the above, Integers have the "times" method described earlier. It can also return the successor and predecessor of itself with the "pred" and "succ" methods.</p>
                   </div>
 
                   <div class="section">
