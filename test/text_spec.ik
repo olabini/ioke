@@ -276,6 +276,28 @@ describe("Text",
     )
   )
 
+  describe("<=>",
+    it("should return -1 when the receiver is less than the argument",
+      ("foo" <=> "fox") should == -1
+    )
+
+    it("should return -1 when the receiver is shorter than the argument",
+      ("fo" <=> "foo") should == -1
+    )
+
+    it("should return 0 when the receiver is the same as the argument",
+      ("foo" <=> "foo") should == 0
+    )
+
+    it("should return 1 when the receiver is greater than the argument",
+      ("fox" <=> "foo") should == 1
+    )
+
+    it("should return 1 when the receiver is longer than the argument",
+      ("fooo" <=> "foo") should == 1
+    )
+  )
+
   describe("format", 
     it("should create a text when no % is specified", 
       "abc foo bar quux \n men men" format() should == "abc foo bar quux \n men men"
