@@ -1,0 +1,153 @@
+<!DOCTYPE html 
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>Ioke &raquo; Download</title>
+    <link rel="stylesheet" href="style/ioke-style.css" type="text/css" media="screen" />
+  </head>
+  <body>
+    <div id="logo">
+      <a href="index.html">
+        <img src="img/IokeLogo.png" alt="Ioke Logo" width="118" height="115" border="0"/>
+      </a>
+    </div>
+
+    <div id="header">
+      Download
+    </div>
+
+    <div id="content">
+    <table cellpadding="0" cellspacing="0" border="0">
+      <tr>
+        <td valign="top" style="background: #E6EEEE;">
+            <table cellpadding="0" cellspacing="0" border="0" id="menu">
+              <tr>
+                <td>
+                  <span class="menuItem">
+                    <a href="index.html" class="unselectedMenuItem">About Ioke</a>
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td style="height:.4em"></td>
+              </tr>
+
+              <tr>
+                <td>
+                  <span class="menuItem">
+                    <a href="guide.html" class="unselectedMenuItem">Guide</a>
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td style="height:.4em"></td>
+              </tr>
+
+              <tr>
+                <td>
+                  <span class="menuItem">
+                    <a href="download.html" class="selectedMenuItem">Download</a>
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td style="height:.4em"></td>
+              </tr>
+
+              <tr>
+                <td>
+                  <span class="menuItem">
+                    <a href="http://ioke.kenai.com" class="unselectedMenuItem">Project page</a>
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td style="height:.4em"></td>
+              </tr>
+
+              <tr>
+                <td>
+                  <span class="menuItem">
+                    <a href="dok/index.html" class="unselectedMenuItem">Reference</a>
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td style="height:.4em"></td>
+              </tr>
+            </table>
+        </td>
+        <td>
+          <table cellpadding="0" cellspacing="0" border="0" style="width:50em">
+            <tr>
+              <td align="right" style="width:8em"><b style="color: #000;">git</b></td>
+              <td style="width:2em"></td>
+              <td>
+                <a href="http://github.com/olabini/ioke/tree/master">http://github.com/olabini/ioke/tree/master</a>
+              </td>
+            </tr>
+            <tr><td colspan="3" style="height:1em;"/></tr>
+            <tr>
+              <td align="right" style="width:8em"><b style="color: #000;">mercurial</b></td>
+              <td style="width:2em"></td>
+              <td>
+                <a href="https://kenai.com/hg/ioke~mercurial">https://kenai.com/hg/ioke~mercurial</a>
+              </td>
+            </tr>
+            <tr><td colspan="3" style="height:1em;"/></tr>
+            <tr>
+              <td align="right" style="width:8em"><b style="color: #000;">binary tar</b></td>
+              <td style="width:2em"></td>
+              <td>
+                <a href="dist/ioke-0-ikJVM-0.1.0.tar.gz">ioke-0-ikJVM-0.1.0.tar.gz</a>
+              </td>
+            </tr>
+            <tr><td colspan="3" style="height:1em;"/></tr>
+            <tr>
+              <td align="right" style="width:8em"><b style="color: #000;">binary zip</b></td>
+              <td style="width:2em"></td>
+              <td>
+                <a href="dist/ioke-0-ikJVM-0.1.0.zip">ioke-0-ikJVM-0.1.0.zip</a>
+              </td>
+            </tr>
+            <tr><td colspan="3" style="height:1em;"/></tr>
+            <tr>
+              <td align="right" style="width:8em"><b style="color: #000;">binary jar</b></td>
+              <td style="width:2em"></td>
+              <td>
+                <a href="dist/ioke-0-ikJVM-0.1.0.zip">ioke-0-ikJVM-0.1.0.jar</a>
+              </td>
+            </tr>
+            <tr><td colspan="3" style="height:3em;"/></tr>
+            <tr>
+              <td style="width:8em;"></td>
+              <td colspan="2">
+                <h2>Download instructions</h2>
+
+                <p>Depending on what system you're on, choose the appropriate download from above. If you want to build Ioke yourself you need at least the Java 5 SDK. If you download one of the binary versions, at least Java 5 JRE is required.</p>
+
+                <p>If you're on windows, the zip version is probably recommended. On a unix system the tar version is recommended.</p>
+
+                <p>The jar-version only includes the absolute minimum required for Ioke to function. Specifically, neither ISpec or DokGen is included, and neither is the debugger for IIk. But Ioke can be run directly from the jar, and it is possible to add ISpec and DokGen support to the jar-file. Doing so requires that you do it yourself, though...</p>
+
+                <h3>Mac and Linux</h3>
+                <p>Unpack the tar file and place it where you want it to love. It's possible to have IOKE_HOME be /usr/local if you're that way inclined. Once you've unpacked Ioke and put it where you want it, you can either run it by directly referring to scripts in the bin-directory, or add the bin-directory to your PATH.</p>
+
+
+                <h3>Windows</h3>
+                <p>It is possible to run Ioke under Windows but since the current development team is exclusively on Mac there are currently no guarantees that it will work correctly.</p>
+                <p>First, download the zip file and unpack it at the place you want ioke to live. It will make your life easier to set IOKE_HOME to the place where that directory is, but it's not exactly necessary. You need to have at least Java 5 installed, and it's necessary to have JAVA_HOME point at the directory where Java is installed.</p>
+                <p>When all of that is in place, you need to add %IOKE_HOME%\bin to your PATH. And that is all. You should be able to run ioke, ispec and dokgen now.</p>
+
+                <h3>Jar-file</h3>
+                <p>You can run Ioke directly from the jar-file above. To do that, just use the java -jar command and then give it the same options as you would the ioke script -- except for the -J, --server and --client options everything should work more or less the same. Hello world with an inline script: java -jar ioke.jar -e'"Hello World" println'.</p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+    </div>
+  </body>
+</html>
