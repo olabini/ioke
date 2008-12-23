@@ -63,10 +63,6 @@ ol {
   margin-bottom: 1em;
 }
 
-ol li ol { 
-  margin-left: -1em;
-}
-
 .chapter { 
   margin-top: 10em;
 }
