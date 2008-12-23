@@ -1823,11 +1823,59 @@ d <span style="color: #00bfff;">==</span> {<span style="color: #7777d4;">one:</s
 
                 <div class="chapter">
                   <h2><a name="libraries">Libraries</a></h2>
-                  <p>TODO: write content</p>
+                  <p>Ioke ships with several small libraries that are useful for different tasks. The main ones are IIk, ISpec and DokGen, and these will be documented a bit more in this chapter. All of them are considered a core part of Ioke since the functionality they provide is tied to the distribution.</p>
 
                   <div class="section">
                     <h3><a name="iik">IIk</a></h3>
-                    <p>TODO: write content</p>
+                    <p>IIk is the interactive Ioke prompt, which will run if you give no arguments to the ioke script. At the IIk prompt you can execute mostly all the same kind of code that could execute inside of an Ioke script file. The main difference is that this code will not be assigned to Ground, but instead will run in another context that is specific for the purposes of IIk.</p>
+
+                    <p>IIk provide the possibility to exit using either "exit" or "close". Both of these will in fact signal a condition of kind "IIk Exit".</p>
+
+                    <p>IIk will use readline if possible. That means that you can do the regular shell editing most other REPLs have support for, including using the up and down keys to scroll through earlier executed code.</p>
+
+                    <p>IIk has a simple debugger that will be invoked when a condition is not handled. This debugger allow you to execute any kind of code and also to invoke restarts. As an example, the code below refers to a cell that doesn't exist. A condition is signalled and the debugger invoked. I choose to invoke the restart named useValue and provide the value 42. That value is returned and I'm back at the IIk prompt. In the next line I do the same thing again with the same name. This time I choose the storeValue restart and provide the value 43. And after that there exists a cell with the name foo and the value 43.</p>
+
+                    <pre class="code">
+Iik&gt; foo
+*** - couldn't find cell 'foo' on 'Ground_0x26E9F9' (Condition Error NoSuchCell)
+
+ foo                                              [&lt;init&gt;:1:0]
+
+The following restarts are available:
+ 0: storeValue           (Store value for: foo)
+ 1: useValue             (Use value for: foo)
+ 2: abort                (restart: abort)
+ 3: quit                 (restart: quit)
+
+ dbg:&gt; 1
+  dbg::newValue&gt; 42
+  +&gt; 42
+
+
++&gt; 42
+
+iik&gt; foo
+*** - couldn't find cell 'foo' on 'Ground_0x26E9F9' (Condition Error NoSuchCell)
+
+ foo                                              [&lt;init&gt;:1:0]
+
+The following restarts are available:
+ 0: storeValue           (Store value for: foo)
+ 1: useValue             (Use value for: foo)
+ 2: abort                (restart: abort)
+ 3: quit                 (restart: quit)
+
+ dbg:&gt; 0
+  dbg::newValue&gt; 43
+  +&gt; 43
+
+
++&gt; 43
+
+iik&gt; foo
++&gt; 43</pre>
+
+                    <p>The Ioke debugger is quite powerful. If you were to execute any other Ioke code, that code will actually be executed in the context of the place where the condition was signalled. So it is possible to fix more complicated things in this manner too.</p>
                   </div>
 
                   <div class="section">
