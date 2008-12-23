@@ -1880,7 +1880,55 @@ iik&gt; foo
 
                   <div class="section">
                     <h3><a name="ispec">ISpec</a></h3>
-                    <p>TODO: write content</p>
+                    <p>ISpec is a minimal port of the Ruby RSpec framework for behavior-driven development. It supports the bare minimum to allow testing of Ioke itself. The current Ioke test suite is completely written in ISpec, and it seems to be a capable environment.</p>
+
+                    <p>The ispec command line tool takes one argument -- "-f" to specify which format to print in. The default is "p" for progress, which only shows one dot for each test run. The "s" alternative shows the longer spec format. To run all tests in a directory with spec format:</p>
+                    <pre class="code">
+ispec -fs test_dir</pre>
+                    
+                    <p>This command will find all files ending in _spec.ik and run the specs defined in them. If a single file is specified, only the tests in that file will run. If more than one directory or file is specified on the command line, all the tests will be run together. Provided the spec files all use the ispec module, the files can be run directly with the ioke-command too.</p>
+
+                    <p>A full test file utilizing most of the parts of ISpec looks like this:</p>
+                    <pre class="code">
+<span style="color: #6495ed;">use</span>(<span style="color: #0050a0;">"ispec"</span>)
+
+describe(<span style="color: #606060;">Foo</span><span style="color: #006666;">,</span>
+  <span style="color: #ffc0cb;">it</span>(<span style="color: #0050a0;">"should have the correct kind"</span><span style="color: #006666;">,</span>
+    <span style="color: #606060;">Foo</span> should have kind(<span style="color: #0050a0;">"Foo"</span>)
+    <span style="color: #606060;">Foo</span> kind should <span style="color: #00bfff;">==</span> <span style="color: #0050a0;">"Foo"</span>
+    <span style="color: #606060;">Foo</span> kind should match(<span style="color: #ff1493;">#/Fo+/</span>)
+  )
+
+  <span style="color: #ffc0cb;">it</span>(<span style="color: #0050a0;">"should be possible to mimic"</span><span style="color: #006666;">,</span>
+    <span style="color: #0000cd;">m</span> <span style="color: #00bfff;">=</span> <span style="color: #606060;">Foo</span> <span style="color: #6495ed;">mimic</span>
+    m should have kind(<span style="color: #0050a0;">"Foo"</span>)
+    m should not be same(<span style="color: #606060;">Foo</span>)
+    m should <span style="color: #6495ed;">mimic</span>(<span style="color: #606060;">Foo</span>)
+  )
+
+  describe(<span style="color: #0050a0;">"aMethod"</span><span style="color: #006666;">,</span>
+    <span style="color: #ffc0cb;">it</span>(<span style="color: #0050a0;">"should not return nil"</span><span style="color: #006666;">,</span>
+      <span style="color: #606060;">Foo</span> aMethod should not <span style="color: #00bfff;">==</span> <span style="color: #6495ed;">nil</span>
+    )
+
+    <span style="color: #ffc0cb;">it</span>(<span style="color: #0050a0;">"should return a number that can be multiplied"</span><span style="color: #006666;">,</span>
+      (<span style="color: #606060;">Foo</span> aMethod <span style="color: #00bfff;">*</span> <span style="color: #0050a0;">2</span>) should <span style="color: #00bfff;">==</span> <span style="color: #0050a0;">12</span>
+    )
+  )
+
+  describe(<span style="color: #0050a0;">"aBadMethod"</span><span style="color: #006666;">,</span>
+    <span style="color: #ffc0cb;">it</span>(<span style="color: #0050a0;">"should signal a condition"</span><span style="color: #006666;">,</span>
+      <span style="color: #606060;">Foo</span> aBadMethod should signal(<span style="color: #606060;">Condition</span> <span style="color: #606060;">Error</span> <span style="color: #606060;">BadBadBed</span>)
+    )
+  )
+)</pre>
+
+                     <p>This code first makes sure to use ISpec, then describes Foo. The describe method takes either kinds or texts describing what's under test. The can be nested arbitrarily deep. A test is defined with the "it" method, which takes a text describing the test first, and the implementation of the test as the second argument. If the second argument is left out, the test is considered pending.</p>
+
+                     <p>Assertions are done using the "should" method. This returns an expectation that can check several different things against the original receiver. Using == is the simplest expectation and checks that a value equals another. By adding the not method call inbetween, the expectation is inversed. There are some predefined expectations. Except for ==, these are mimic, match and signal. The signal expectation makes sure that a condition is signalled in the code. The match expectation will check a text value against a regular expression. The mimic expectation checks whether an object mimics another.</p>
+                     <p>The words "be" and "have" are ignored in the expectations. They are so called fluff words - that are only there to make it more readable.</p>
+
+                     <p>If an expectation receives a message it doesn't know about, it uses pass to check a dynamic property. For example, something like "foo should be same(x)" will end up calling "same?" with x as an argument. The same thing happens in the above code to check for kind. There exists no kind expectation. Instead the kind checking will go check for "kind?".</p>
                   </div>
 
                   <div class="section">
