@@ -181,7 +181,15 @@ public class Text extends IokeData {
                             return context.runtime.nil;
                         }
                     }
-                    return context.runtime.newNumber(Text.getText(on).compareTo(Text.getText(arg)));
+
+                    int result = Text.getText(on).compareTo(Text.getText(arg));
+                    if(result < 0) {
+                        result = -1;
+                    } else if(result > 0) {
+                        result = 1;
+                    }
+
+                    return context.runtime.newNumber(result);
                 }
             }));
 
