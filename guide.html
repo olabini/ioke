@@ -1762,17 +1762,62 @@ d <span style="color: #00bfff;">==</span> {<span style="color: #7777d4;">one:</s
 
                   <div class="section">
                     <h3><a name="enumerable">Enumerable</a></h3>
-                    <p>TODO: write content</p>
+                    <p>One of the most important mixins in Ioke is Mixins Enumerable - the place where most of the collection functionality is available. The contract for any kind that wants to be Enumerable is that it should implement each in the manner described earlier. If it does that it can mixin Enumerable and get access to all the methods defined in it. I'm not going to show all the available methods, but just a few useful examples here. Note that any method name that ends with Fn takes a block instead of a raw message chain.</p>
+
+                    <p>Almost all methods in Enumerable takes variable amounts of arguments and does different things depending on how many arguments are provided. The general rule is that if there is only one argument, it should be a message chain, and if there is two or more arguments the last one should be code, and the rest should be names of arguments to use in that code.</p>
+
+                    <p>Mapping a collection into a another collection can be done using map or mapFn. These are aliased as collect and collectFn too.</p>
+                    <pre class="code">
+<span style="color: #b0c4de;">l</span> <span style="color: #00bfff;">=</span> [<span style="color: #0050a0;">10</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">20</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">30</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">40</span>]
+
+<span style="color: #a52a2a;">;; mapping into text
+</span>l map(<span style="color: #449900;">asText</span>) <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> ["10", "20", "30", "40"]
+</span>l map(n<span style="color: #006666;">,</span> n <span style="color: #449900;">asText</span>) <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> ["10", "20", "30", "40"]
+</span>
+<span style="color: #a52a2a;">;; exponentiation
+</span>l map(<span style="color: #00bfff;">**</span><span style="color: #0050a0;">2</span>) <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> [100, 400, 900, 1600]
+</span>l map(n<span style="color: #006666;">,</span> n<span style="color: #00bfff;">*</span>n) <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> [100, 400, 900, 1600]</span></pre>
+
+                    <p>Filtering the contents of a collection can be done using select, which is aliased as filter and findAll.</p>
+                    <pre class="code">
+<span style="color: #a52a2a;">;; with no arguments, return all true things
+</span>[<span style="color: #6495ed;">nil</span><span style="color: #006666;">,</span> <span style="color: #6495ed;">false</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">13</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">42</span>] select <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> [13, 42]
+</span>
+<span style="color: #b0c4de;">l</span> <span style="color: #00bfff;">=</span> [<span style="color: #0050a0;">1</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">2</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">3</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">4</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">5</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">6</span>]
+
+<span style="color: #a52a2a;">;; all elements over 3
+</span>l select(&gt;<span style="color: #0050a0;">3</span>) <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> [4, 5, 6]
+</span>l select(n<span style="color: #006666;">,</span> n&gt;<span style="color: #0050a0;">3</span>) <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> [4, 5, 6]</span></pre>
+
+                    <p>A very common operation is create one object based on the contents of a collection. This operation has different names in different languages. In Ioke it is called inject, but it is aliased as reduce and fold.</p>
+                    <pre class="code">
+<span style="color: #b0c4de;">l</span> <span style="color: #00bfff;">=</span> [<span style="color: #0050a0;">1</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">2</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">3</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">4</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">5</span>]
+
+<span style="color: #a52a2a;">;; inject around a message chain
+</span>l inject(<span style="color: #00bfff;">+</span>) <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> 15
+</span>l inject(<span style="color: #00bfff;">*</span>) <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> 120
+</span>
+<span style="color: #a52a2a;">;; with one arg
+</span>l inject(n<span style="color: #006666;">,</span> <span style="color: #00bfff;">*</span>n) <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> 120
+</span>l inject(n<span style="color: #006666;">,</span> <span style="color: #00bfff;">+</span>n<span style="color: #00bfff;">*</span><span style="color: #0050a0;">2</span>) <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> 29
+</span>
+<span style="color: #a52a2a;">;; with two args
+</span>l inject(sum<span style="color: #006666;">,</span> n<span style="color: #006666;">,</span> sum<span style="color: #00bfff;">*</span>n) <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> 120
+</span>l inject(sum<span style="color: #006666;">,</span> n<span style="color: #006666;">,</span> sum<span style="color: #00bfff;">*</span><span style="color: #0050a0;">2</span> <span style="color: #00bfff;">+</span> n<span style="color: #00bfff;">*</span><span style="color: #0050a0;">3</span>) <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> 139
+</span>
+<span style="color: #a52a2a;">;; with four args
+</span>l inject(<span style="color: #0050a0;">1</span><span style="color: #006666;">,</span> sum<span style="color: #006666;">,</span> n<span style="color: #006666;">,</span> sum<span style="color: #00bfff;">*</span>n) <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> 120
+</span>l inject(<span style="color: #0050a0;">10</span><span style="color: #006666;">,</span> sum<span style="color: #006666;">,</span> n<span style="color: #006666;">,</span> sum<span style="color: #00bfff;">*</span>n) <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> 1200</span></pre>
                   </div>
 
                   <div class="section">
                     <h3><a name="regexps">Regexps</a></h3>
-                    <p>TODO: write content</p>
+                    <p>Regular expressions allow the matching of text against an abstract pattern. Ioke uses the JRegex engine to implement regular expressions. This means Ioke support quite advanced expressions. At the moment, Ioke only allows matching against an expression and getting a yes or no answer, though. This is done using the "~=" method. When the regular expression support has been expanded, this section will include information about everything that can be done using them.</p>
                   </div>
 
                   <div class="section">
                     <h3><a name="filesystem">FileSystem</a></h3>
-                    <p>TODO: write content</p>
+                    <p>The FileSystem kind allow access to functionality in the file system. It is the entry point to any manipulation of files and directories, and it can also be uesd to get listings of existing files. The reference includes good information about the existing methods in the FileSystem kind.</p>
                   </div>
                 </div>
 
