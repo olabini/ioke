@@ -1051,11 +1051,137 @@ iik&gt; "foo" &lt;=&gt; "fop"
 
                 <div class="chapter">
                   <h2><a name="code">Code</a></h2>
-                  <p>TODO: write content</p>
+                  <p>Many of the things you do in Ioke will directly manipulate code. Since the messages that make up code is really easy to get hold of, this manipulation comes easy too. Ioke takes the Lisp philosophy of "code is data" to heart. The basic unit of a piece of code is a Message. A Message has a name, a next and prev pointer, and any number of arguments. When you manipulate a message, the argument list will contain messages too - and if the next or prev pointers are not nil, they will point to other messages. It serves well to remember that except for the message itself, all code will be evaluated in the context of a receiver and a ground. The ground is necessary because arguments to be evaluated need to be run in some specific context, even though the current receiver is not the same as the ground.</p>
+
+                  <p>The current types of code can be divided into three different categories. These are methods, macros and blocks. Native methods are all of the kind JavaMethod, but can have any kind of semantics - including semantics that look like this macros. Most native methods do have the same semantics as regular methods, though.</p>
 
                   <div class="section">
                     <h3><a name="methods">Methods</a></h3>
-                    <p>TODO: write content</p>
+                    <p>A method in Ioke is executable code that is activatable. A method can take arguments of several different types. The arguments to a method will always be evaluated before the code in the method starts to execute. An Ioke method is defined using the "method" method. All Ioke methods have the kind DefaultMethod. This leaves the room open to define other kinds of methods, if need be. DefaultMethod's could be implemented using macros, but at this point they aren't. A DefaultMethod can have a name - and will get a name the first time it is assigned to a cell.</p>
+
+                    <p>It is really easy to define and use a simple method. The easiest case is to define a method that is empty. This method will just return nil:</p>
+                    <pre class="code">
+<span style="color: #b0c4de;">m</span> <span style="color: #00bfff;">=</span> <span style="color: #6495ed;">method</span>()
+m <span style="color: #a52a2a;">;; call the method
+</span>
+                    </pre>
+
+                    <p>Since methods are activatable, when you name a cell that contains a method, that method will be invoked. To stop that behavior, use the "cell" method.</p>
+
+                    <p>The definition of a method can take several different pieces. These are a documentation string, definitions of positional required arguments, definitions of positional optional arguments, definitions of keyword arguments, definition of a rest argument, definition of a keyword rest argument and the actual code of the method.</p>
+
+                    <p>Let's take these one by one. First, if the the first element of a call to "method" is a literal text, and there is a at least one more argument in the definition, then that text will be the documentation text for the method:</p>
+
+                    <pre class="code">
+<span style="color: #a52a2a;">;; a method that returns "foo"
+</span><span style="color: #b0c4de;">m</span> <span style="color: #00bfff;">=</span> <span style="color: #6495ed;">method</span>(<span style="color: #0050a0;">"foo"</span>) 
+
+<span style="color: #a52a2a;">;; a method that returns nil, but
+;; has the documentation text "foo"
+</span><span style="color: #b0c4de;">m</span> <span style="color: #00bfff;">=</span> <span style="color: #6495ed;">method</span>(<span style="color: #0050a0;">"foo"</span><span style="color: #006666;">,</span> <span style="color: #6495ed;">nil</span>)
+                    </pre>
+
+                    <p>A method can take any number of required positional arguments. These will be checked when a method is called, and if not enough -- or too many -- arguments are provided, an error will be signalled.</p>
+                    <pre class="code">
+<span style="color: #b0c4de;">m</span> <span style="color: #00bfff;">=</span> <span style="color: #6495ed;">method</span>(x<span style="color: #006666;">,</span> x <span style="color: #449900;">println</span>)
+<span style="color: #b0c4de;">m</span> <span style="color: #00bfff;">=</span> <span style="color: #6495ed;">method</span>(x<span style="color: #006666;">,</span> y<span style="color: #006666;">,</span> z<span style="color: #006666;">,</span>
+  x <span style="color: #00bfff;">*</span> y <span style="color: #00bfff;">+</span> z)
+                    </pre>
+
+                    <p>The first method takes one argument and prints that argument. The second method takes three arguments and return the product of the two first added to the third.</p>
+
+                    <p>A method can also have optional positional arguments. In that case the optional arguments must follow the required arguments. Optional arguments need to have a default value -- in fact, that is how you distinguish them from required arguments. The arity of method calls will still be checked, but using minimum and maximum values instead. The default value for an argument should be code that can be executed in the context of the running method, so a default value can refer to earlier positional arguments. A default value can also do quite complex things, if need be, although it's really not recommended.</p>
+
+                    <pre class="code">
+<span style="color: #a52a2a;">;; takes zero or one arguments
+</span><span style="color: #b0c4de;">m</span> <span style="color: #00bfff;">=</span> <span style="color: #6495ed;">method</span>(x <span style="color: #0050a0;">42</span><span style="color: #006666;">,</span> x <span style="color: #449900;">println</span>)
+
+<span style="color: #a52a2a;">;; takes one to three arguments
+</span><span style="color: #b0c4de;">m</span> <span style="color: #00bfff;">=</span> <span style="color: #6495ed;">method</span>(x<span style="color: #006666;">,</span> y <span style="color: #0050a0;">42</span><span style="color: #006666;">,</span> z <span style="color: #0050a0;">25</span><span style="color: #006666;">,</span> 
+  x<span style="color: #00bfff;">*</span>y <span style="color: #00bfff;">+</span> z)
+                    </pre>
+
+                    <p>The syntax for optional arguments is to just write a space after the name of the argument, and then write the code to generate the default value after it.</p>
+
+                    <p>A method can also have keyword arguments. Keyword arguments are checked, just like regular arguments, and you can't generally give keyword arguments to a method not expecting it. Nor can you give unexpected keyword arguments to a method that takes other keywords. Keyword arguments can never be required. They can have default values, which will default to nil if not provided. They can be defined anywhere among the arguments -- the only reason to reorder them is that default values of other optional arguments can use prior defined keyword arguments.</p>
+
+                    <p>A keyword argument is defined just like a regular argument, except that it ends in a colon.</p>
+
+                    <pre class="code">
+<span style="color: #b0c4de;">m</span> <span style="color: #00bfff;">=</span> <span style="color: #6495ed;">method</span>(<span style="color: #7777d4;">foo:</span><span style="color: #006666;">,</span> <span style="color: #7777d4;">bar:</span> <span style="color: #0050a0;">42</span><span style="color: #006666;">,</span>
+  foo <span style="color: #449900;">println</span>
+  bar <span style="color: #449900;">println</span>
+)
+                    </pre>
+
+                    <p>Just as with regular optional arguments, you supply the default value of the keyword argument after a space. The cells for the keyword arguments will be the same as their names, without the ending colon. The above code would print nil and 42 if no arguments were specified. It's important to remember that keyword arguments and positional arguments do not interact -- except for when calculating default values. When assigning values it's always possible to see what is positional and what is a keyword argument.</p>
+
+                    <p>Ioke methods can collect positional arguments into a list. This allow methods to take variable number of arguments. The rule is that all other positional arguments are first calculated, and the remaining positional arguments will be added to the rest argument. If no positional arguments are available, the rest argument will be empty. A rest argument is defined by preceding it with a plus sign in the argument definition. For clarity a rest argument should be defined last in the list, although it doesn't exactly matter anyway.</p>
+
+                    <pre class="code">
+<span style="color: #b0c4de;">m</span> <span style="color: #00bfff;">=</span> <span style="color: #6495ed;">method</span>(<span style="color: #00bfff;">+</span>rest<span style="color: #006666;">,</span>
+  rest <span style="color: #449900;">println</span>)
+
+<span style="color: #b0c4de;">m</span> <span style="color: #00bfff;">=</span> <span style="color: #6495ed;">method</span>(x<span style="color: #006666;">,</span> y <span style="color: #0050a0;">42</span><span style="color: #006666;">,</span> <span style="color: #00bfff;">+</span>rest<span style="color: #006666;">,</span>
+  rest <span style="color: #449900;">println</span>)
+                    </pre>
+
+                    <p>The above code defines one method that only takes one rest argument. That means the method can take any number of arguments and all of them will be collected into a list. The second method takes one required argument, one optional argument and any number of extra arguments. So if 4 arguments are given, the rest argument will contain two.</p>
+
+                    <p>The final type of argument is keyword rest arguments. Just like positional rest arguments, a keyword rest argument can collect all keywords given to a method, no matter what. If a keyword rest argument is used, no conditions will be signalled if an unknown keyword is given to a method. If other keywords are defined, these keywords will not show up in the keyword rest argument. The keyword rest argument is defined by preceding the name with a +: sigil, and the keyword rest argument will be a Dict instead of a list. The keys will be symbols but without the ending colon.</p>
+
+                    <pre class="code">
+<span style="color: #b0c4de;">m</span> <span style="color: #00bfff;">=</span> <span style="color: #6495ed;">method</span>(<span style="color: #00bfff;">+</span><span style="color: #7777d4;">:krest</span><span style="color: #006666;">,</span>
+  krest <span style="color: #449900;">println</span>)
+
+<span style="color: #b0c4de;">m</span> <span style="color: #00bfff;">=</span> <span style="color: #6495ed;">method</span>(x<span style="color: #006666;">,</span> <span style="color: #7777d4;">y:</span><span style="color: #006666;">,</span> <span style="color: #00bfff;">+</span>rest<span style="color: #006666;">,</span> <span style="color: #00bfff;">+</span><span style="color: #7777d4;">:krest</span><span style="color: #006666;">,</span>
+  [x<span style="color: #006666;">,</span> y<span style="color: #006666;">,</span> rest<span style="color: #006666;">,</span> krest] <span style="color: #449900;">println</span>)
+                    </pre>
+
+                    <p>The above code first creates a method that can take any number of keyword arguments but nothing else. The second method takes one required positional argument, one keyword argument, rest arguments and keyword rest arguments, and returns a new list containing all the arguments given to it.</p>
+
+                    <p>The final argument to the method method should always be the code to execute. This code will be executed in the context of a receiver, that is the object the method is activated on. A method execution also happens in the context of the method activation context, where local variables are stored. This activation context contain some predefined variables that can be used. These are "self", "@", "currentMessage" and "surroundingContext". Both "self" and "@" refer to the receiver of the method call. "currentMessage" returns the message that initiated the activation of the method, and "surroundingContext" returns the object that represents the context where this method was called from. Both "self" and "@" can be used to specify that something should be assigned to the receiver, for example.</p>
+                    <pre class="code">
+<span style="color: #b0c4de;">createNewCell</span> <span style="color: #00bfff;">=</span> <span style="color: #6495ed;">method</span>(
+  <span style="color: #006666;">@</span><span style="color: #b0c4de;">foo</span> <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">42</span>
+)
+                    </pre>
+                    
+                    <p>The method create above will create assign the value 42 to the cell "foo" on the object the method was called on.</p>
+
+                    <p>When calling a method, you specify positional arguments separated with commas. You can provide keyword arguments in any order, in any place inside the braces:</p>
+                    <pre class="code">
+<span style="color: #a52a2a;">;; the method foo takes any kind of argument
+</span>foo
+foo()
+foo(<span style="color: #0050a0;">1</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">2</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">3</span>)
+foo(<span style="color: #7777d4;">blarg:</span> <span style="color: #0050a0;">42</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">2</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">3</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">4</span>)
+foo(<span style="color: #7777d4;">quux:</span> <span style="color: #0050a0;">42</span><span style="color: #00bfff;">*</span><span style="color: #0050a0;">2</span>)
+                    </pre>
+
+                    <p>To give a keyword argument, you just write it exactly like you define keyword arugments - a name followed by a colon.</p>
+
+                    <p>Sometimes it can be useful to be able to take a list of values and give them as positional arguments. The same can be useful to do with a dict of names. You can do that using splatting. This is done by preceding a list or a dict with an asterisk. This will result in the method getting the values inside of it as if the arguments were given directly. You can splat several things to the same invocation.</p>
+
+                    <pre class="code">
+<span style="color: #b0c4de;">dc</span> <span style="color: #00bfff;">=</span> {<span style="color: #7777d4;">foo:</span> <span style="color: #0050a0;">42</span><span style="color: #006666;">,</span> <span style="color: #7777d4;">bar:</span> <span style="color: #0050a0;">13</span>}
+<span style="color: #b0c4de;">ls</span> <span style="color: #00bfff;">=</span> [<span style="color: #0050a0;">1</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">2</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">3</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">4</span>]
+<span style="color: #b0c4de;">ls2</span> <span style="color: #00bfff;">=</span> [<span style="color: #0050a0;">42</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">43</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">44</span>]
+
+foo(<span style="color: #00bfff;">*</span>dc)
+<span style="color: #a52a2a;">;; the same as:
+</span>foo(<span style="color: #7777d4;">foo:</span> <span style="color: #0050a0;">42</span><span style="color: #006666;">,</span> <span style="color: #7777d4;">bar:</span> <span style="color: #0050a0;">13</span>)
+
+foo(<span style="color: #00bfff;">*</span>ls)
+<span style="color: #a52a2a;">;; the same as:
+</span>foo(<span style="color: #0050a0;">1</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">2</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">3</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">4</span>)
+
+foo(<span style="color: #00bfff;">*</span>ls2<span style="color: #006666;">,</span> <span style="color: #0050a0;">111</span><span style="color: #006666;">,</span> <span style="color: #00bfff;">*</span>dc<span style="color: #006666;">,</span> <span style="color: #00bfff;">*</span>ls)
+<span style="color: #a52a2a;">;; the same as:
+</span>foo(<span style="color: #0050a0;">42</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">43</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">44</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">111</span><span style="color: #006666;">,</span> <span style="color: #7777d4;">foo:</span> <span style="color: #0050a0;">42</span><span style="color: #006666;">,</span> <span style="color: #7777d4;">bar:</span> <span style="color: #0050a0;">13</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">1</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">2</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">3</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">4</span>)
+                    </pre>
+
+                    <p>If you try to splat something that can't be splatted, a condition will be signalled.</p>
                   </div>
 
                   <div class="section">
