@@ -853,8 +853,8 @@ foo <span style="color: #b0c4de;">x</span> <span style="color: #00bfff;">+=</spa
                   <pre class="code">
 <span style="color: #b0c4de;">x</span> <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">42</span>
 <span style="color: #6495ed;">fn</span>(<span style="color: #b0c4de;">x</span> <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">43</span><span style="color: #006666;">.</span> <span style="color: #b0c4de;">y</span> <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">42</span>) <span style="color: #449900;">call</span>
-x <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> 42
-</span>y <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> Condition Error NoSuchCell</span>
+x <span style="color: #a52a2a;">;; =&gt; 42
+</span>y <span style="color: #a52a2a;">;; =&gt; Condition Error NoSuchCell</span>
                   </pre>
                   
                   <p>The "fn" message creates a new lexical block. The chapter on <a href="#code">code</a> will talk more about this. But as you can see, this block assigns 43 to the cell "x", and 42 to the cell "y". But since the cell "y" doesn't exist, it will only be created inside the lexical context, while "x" exists outside, and will be assigned a new value instead. The basic ideas is that code like this should behave like you expect it to behave.</p>
@@ -876,11 +876,24 @@ x <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> 42
 
                 <div class="chapter">
                   <h2><a name="controlFlow">Control flow</a></h2>
-                  <p>TODO: write content</p>
+                  <p>Ioke has some standard control flower operators, like most other languages. In Ioke, all of these are regular method calls, though, and they can usually be implemented in terms of Ioke. This chapter will chiefly talk about comparisons, conditionals and iteration constructs.</p>
 
                   <div class="section">
                     <h3><a name="comparison">Comparison</a></h3>
-                    <p>TODO: write content</p>
+                    <p>There are several comparison operators in Ioke, but the most important is called the spaceship operator. This operator is &lt;=&gt;. It takes one argument and returns -1, 0 or 1 depending on the ordering of the receiver and the argument. If the two objects can't be compared, it returns nil. If you implement this operator and mixin Mixins Comparing, you get the operators ==, !=, &lt;, &lt;=, &gt; and &gt;= implemented in terms of the spaceship operator. There are two other common operators in Ioke. The first ~=, which can also be called the match operator. It's only implemented for Regexp right now. The === operator also exists, but isn't implemented for most objects. This operator doesn't do much right now, but is planned to be the basis of a Ruby-like case-statement further down the line. The contract of comparison operators is that they should return a true value (not necessarily the true), if the comparison is true, and otherwise return either false or nil.</p>
+
+                    <p>The contract for === should be matching or not matching. It is among other things used in Ranges to see if something is included in that range or not.</p>
+
+                    <pre class="code">
+iik&gt; 1 + 2 &lt; 4
++&gt; true
+
+iik&gt; 3 + 2 &lt; 4
++&gt; false
+
+iik&gt; "foo" &lt;=&gt; "fop"
++&gt; -1
+                    </pre>
                   </div>
 
                   <div class="section">
