@@ -1404,16 +1404,85 @@ msg code <span style="color: #a52a2a;">;; "2 -(1)"</span></pre>
 
                 <div class="chapter">
                   <h2><a name="importing">Importing</a></h2>
-                  <p>TODO: write content</p>
+                  <p>To import new code into Ioke, the method "use" should be used. The terminology is that you give "use" a name of a module to include, and if that module has already been included it will not be evaluated again. If it has not been included, "use" will try to find the module using several different heuristics. It will add an ".ik" to the name and try to look up a file of that name - but it will also try to look it up without a ".ik", if a full file name has been given. Several different places will be searched, and the exact order and what will be searched can be found by calling the "System loadPath" method. This will return a list of all the places to search for modules. This list can be modified to add more directories to the load path.</p>
+                  
+                  <p>If a module of the specified name can't be found, a condition will be called.</p>
                 </div>
 
                 <div class="chapter">
                   <h2><a name="coreKinds">Core kinds</a></h2>
-                  <p>TODO: write content</p>
+                  <p>Ioke obviously contains lots of different data types, but there are some that are much more important than others. In this chapter I'll take a look at these and talk above how to work with them correctly.</p>
 
                   <div class="section">
                     <h3><a name="conditions">Conditions</a></h3>
-                    <p>TODO: write content</p>
+                    <p>One of the major parts of Ioke is the condition system. Unlike most other programming languages, Ioke doesn't have exceptions. Instead it has conditions, where errors is a specific kind of condition. The condition system comprises several different things. Specifically, the condition system uses the kinds Condition, Restart, Handler and Rescue. Restarts are mostly orthogonal to the rest of the system.</p>
+
+                    <p>The way the condition system work is this. When something happens, a program can elect to signal a condition. This can be done using "signal!", "warn!" or "error!". Both "warn!" and "error!" uses "signal!" under the covers, but do some other things as well. A condition will always be an instance of a condition. Each of these three methods can be called in three different ways. First, you can call them with a text argument. In that case the signalled condition will be the default for that type. (The default for "signal!" is Condition Default. The default for "warn!" is Condition Warning Default and the default for "error!" is Condition Error Default). A new mimic of the default condition will be created, and a cell called text will be set to the text argument. The second variation is to give an instance of an existing condition to one of the methods. In that case that condition will be signalled unmodified. Finally, the third version gives a condition mimic and one or more keyword arguments with data to set on that condition. In that case a mimic of the condition will be created, and then cells with data set based on the arguments.</p>
+
+                    <p>If a signal is not handled, nothing happens.</p>
+                    <p>If a warning is not handled, a message will be printed with the text of that warning.</p>
+                    <p>If an error is not handled, the debugger will be invoked - if a debugger is available. Otherwise the program will be terminated.</p>
+
+                    <p>A Rescue allow conditions to unwind the stack to the place where the rescue is established. Combining rescues and conditions looks a lot like regular exception handling in other programming languages.</p>
+
+                    <p>A Handler on the other hand will run code in the dynamic context of the place where the condition was signalled. A handler can invoke restarts to handle an error state at the place it happened, and as such doesn't have to actually unwind the stack anywhere. Any number of handlers can run - the last handler to run will be either the last handler, the handler that activates a restart, or the last handler before a valid rescue for that condition.</p>
+
+                    <p>A restart is a way to allow ways of getting back to a valid state. Take the example of referring to a cell that doesn't exist. Before signalling a condition, Ioke will set up restarts so you can provide a value to use in the case a cell doesn't exist. This restart will use that new value and continue execution at the point where it would otherwise have failed.</p>
+
+                    <p>A restart can have a name. If it doesn't have a name it can only be used interactively. You can use findRestart to get hold of the closest restart with a given name. You can invoke a given restart with invokeRestart, which takes either the name of a restart or a restart mimic. Finally, you can get all available restarts using availableRestarts.</p>
+
+                    <p>Both handlers, rescues and restarts are established inside a call to the bind macro. All arguments to this macro need to be either handlers, rescues or restarts, except for the last argument which should be the code to execute.</p>
+
+                    <p>You create a new handler by calling the method "handle". You create a new rescue by calling the method "rescue". You create a new restart by calling the method "restart". These all take funky arguments, so refer to the reference to understand more closely how they work.</p>
+
+                    <p>This small example doesn't necessarily show the power of conditions, but it can give an idea about how it works.</p>
+
+                    <pre class="code">
+<span style="color: #a52a2a;">;; to handle any problem
+</span><span style="color: #449900;">bind</span>(
+  rescue(<span style="color: #6495ed;">fn</span>(c<span style="color: #006666;">,</span> <span style="color: #6495ed;">nil</span>))<span style="color: #006666;">,</span> <span style="color: #a52a2a;">;; do nothing in the rescue
+</span>  
+  error!(<span style="color: #0050a0;">"This is bad!!"</span>)
+)
+
+<span style="color: #a52a2a;">;; to print all conditions happening, but not do anything
+</span><span style="color: #449900;">bind</span>(
+  handle(<span style="color: #6495ed;">fn</span>(c<span style="color: #006666;">,</span> c <span style="color: #449900;">println</span>))<span style="color: #006666;">,</span>
+  
+  signal!(<span style="color: #0050a0;">"something"</span>)
+  signal!(<span style="color: #0050a0;">"something more"</span>)
+
+  warn!(<span style="color: #0050a0;">"A warning!!"</span>)
+)
+
+<span style="color: #a52a2a;">;; rescue either of two conditions
+</span><span style="color: #b0c4de;">C1</span> <span style="color: #00bfff;">=</span> <span style="color: #606060;">Condition</span> <span style="color: #606060;">Error</span> <span style="color: #6495ed;">mimic</span>
+<span style="color: #b0c4de;">C2</span> <span style="color: #00bfff;">=</span> <span style="color: #606060;">Condition</span> <span style="color: #606060;">Error</span> <span style="color: #6495ed;">mimic</span>
+
+<span style="color: #449900;">bind</span>(
+  rescue(<span style="color: #606060;">C1</span><span style="color: #006666;">,</span> <span style="color: #606060;">C2</span><span style="color: #006666;">,</span> <span style="color: #6495ed;">fn</span>(c<span style="color: #006666;">,</span> <span style="color: #0050a0;">"got an error: #{c}"</span> <span style="color: #449900;">println</span>))<span style="color: #006666;">,</span>
+  
+  error!(<span style="color: #606060;">C1</span>)
+)
+
+
+<span style="color: #a52a2a;">;; invoke a restart when no such cell is signaled
+</span><span style="color: #449900;">bind</span>(
+  handle(<span style="color: #606060;">Condition</span> <span style="color: #606060;">Error</span> <span style="color: #606060;">NoSuchCell</span><span style="color: #006666;">,</span> <span style="color: #6495ed;">fn</span>(c<span style="color: #006666;">,</span> invokeRestart(<span style="color: #7777d4;">:useValue</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">42</span>)))<span style="color: #006666;">,</span>
+
+  blarg <span style="color: #449900;">println</span>) <span style="color: #a52a2a;">;; will print 42
+</span>
+
+<span style="color: #a52a2a;">;; establish a restart
+</span><span style="color: #449900;">bind</span>(
+  <span style="color: #449900;">restart</span>(something<span style="color: #006666;">,</span> <span style="color: #6495ed;">fn</span>(<span style="color: #00bfff;">+</span>args<span style="color: #006666;">,</span> args <span style="color: #449900;">println</span>))<span style="color: #006666;">,</span>
+  
+  invokeRestart(<span style="color: #7777d4;">:something</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">1</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">2</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">3</span>)
+)</pre>
+ 
+                    <p>The code above shows several different things you can do with the condition system. It is a very powerful system, so I recommend trying to understand it. It lies at the core of many things in Ioke, and some parts will not make sense without a deep understanding of conditions. For more information on what such a system is capable of, look for documentation about the Common Lisp condition system, which has been a heavy influence on Ioke. Also, the debugger in IIk uses the condition system to implement its functionality.</p>
+
+                    <p>There are many conditions defined in the core of Ioke, and they are used by the implementation to signal error conditions of different kinds. Refer to the reference to see which conditions are available.</p>
                   </div>
 
                   <div class="section">
