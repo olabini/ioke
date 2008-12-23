@@ -301,6 +301,15 @@ public class IokeSystem extends IokeData {
                 }
             }));
 
+        obj.registerMethod(runtime.newJavaMethod("returns true if running on windows, otherwise false", new JavaMethod.WithNoArguments("windows?") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+
+                    return (System.getProperty("os.name").indexOf("Windows") != -1) ? runtime._true : runtime._false;
+                }
+            }));
+
         obj.registerMethod(runtime.newJavaMethod("returns the current load path", new JavaMethod.WithNoArguments("loadPath") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {

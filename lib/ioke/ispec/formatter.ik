@@ -43,8 +43,10 @@ ISpec do(
       colour = method(
         "outputs text with colour if possible",
         text, colour_code,
-
-        "#{colour_code}#{text}\e[0m")
+        
+        if(System windows?,
+          text,
+          "#{colour_code}#{text}\e[0m"))
 
       green   = method(text, colour(text, "\e[32m"))
       red     = method(text, colour(text, "\e[31m"))
