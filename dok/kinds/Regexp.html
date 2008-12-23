@@ -90,14 +90,14 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 
         <div class="sectiontitle">Inactive cells</div>
         <ul>
-          <li><a href="#C00479">kind</a></li>
+          <li><a href="#C00483">kind</a></li>
 
         </ul>        
 
         <div class="sectiontitle">Active cells</div>
         <ul>
-          <li><a href="#C00481">=~(other)</a></li>
-<li><a href="#C00480">pattern()</a></li>
+          <li><a href="#C00485">=~(other)</a></li>
+<li><a href="#C00484">pattern()</a></li>
 
         </ul>
 
@@ -140,7 +140,7 @@ Regexp should have kind("Regexp")
 
         <div class="sectiontitle">Inactive cells (details)</div>
                 <div class="cell">
-          <a name="C00479"></a>
+          <a name="C00483"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">kind</td>
@@ -154,7 +154,7 @@ Regexp should have kind("Regexp")
         <div class="sectiontitle">Active cells (details)</div>
                 <div class="cell">
           <div class="title">
-          <a name="C00481"></a><b>=~</b>(other)
+          <a name="C00485"></a><b>=~</b>(other)
           </div>
           <div class="description">
             <p>
@@ -165,8 +165,8 @@ Regexp should have kind("Regexp")
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return a true value when matching <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004811S0_source')" id="l_C004811S0_source">show source</a> ]</span>
-            <div id="C004811S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004851S0_source')" id="l_C004851S0_source">show source</a> ]</span>
+            <div id="C004851S0_source" class="dyn-source">
 <pre>
 (#/foo/ =~("foo")) true? should ==(true) 
 (#/fo{1,2}/ =~("foo")) true? should ==(true) 
@@ -179,8 +179,8 @@ Regexp should have kind("Regexp")
             </div>
             </span></li>
 <li>- should return nil when not matching <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004811S1_source')" id="l_C004811S1_source">show source</a> ]</span>
-            <div id="C004811S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004851S1_source')" id="l_C004851S1_source">show source</a> ]</span>
+            <div id="C004851S1_source" class="dyn-source">
 <pre>
 (#/fo{3}/ =~("foo")) should ==(nil) 
 (#/fox/ =~("x foo x")) should ==(nil) 
@@ -197,7 +197,7 @@ Regexp should have kind("Regexp")
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00480"></a><b>pattern</b>()
+          <a name="C00484"></a><b>pattern</b>()
           </div>
           <div class="description">
             <p>
@@ -208,8 +208,8 @@ Regexp should have kind("Regexp")
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return a string containing the pattern used to create it <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004801S0_source')" id="l_C004801S0_source">show source</a> ]</span>
-            <div id="C004801S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004841S0_source')" id="l_C004841S0_source">show source</a> ]</span>
+            <div id="C004841S0_source" class="dyn-source">
 <pre>
 #/foo/ pattern should ==("foo") 
 

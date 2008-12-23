@@ -90,19 +90,19 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 
         <div class="sectiontitle">Inactive cells</div>
         <ul>
-          <li><a href="#C00366">kind</a></li>
+          <li><a href="#C00368">kind</a></li>
 
         </ul>        
 
         <div class="sectiontitle">Active cells</div>
         <ul>
-          <li><a href="#C00373">===(other)</a></li>
-<li><a href="#C00368">exclusive(from, to)</a></li>
-<li><a href="#C00369">exclusive?()</a></li>
-<li><a href="#C00371">from()</a></li>
-<li><a href="#C00367">inclusive(from, to)</a></li>
-<li><a href="#C00370">inclusive?()</a></li>
-<li><a href="#C00372">to()</a></li>
+          <li><a href="#C00375">===(other)</a></li>
+<li><a href="#C00370">exclusive(from, to)</a></li>
+<li><a href="#C00371">exclusive?()</a></li>
+<li><a href="#C00373">from()</a></li>
+<li><a href="#C00369">inclusive(from, to)</a></li>
+<li><a href="#C00372">inclusive?()</a></li>
+<li><a href="#C00374">to()</a></li>
 
         </ul>
 
@@ -140,7 +140,7 @@ Range should have kind("Range")
 
         <div class="sectiontitle">Inactive cells (details)</div>
                 <div class="cell">
-          <a name="C00366"></a>
+          <a name="C00368"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">kind</td>
@@ -154,7 +154,7 @@ Range should have kind("Range")
         <div class="sectiontitle">Active cells (details)</div>
                 <div class="cell">
           <div class="title">
-          <a name="C00373"></a><b>===</b>(other)
+          <a name="C00375"></a><b>===</b>(other)
           </div>
           <div class="description">
             <p>
@@ -165,8 +165,8 @@ Range should have kind("Range")
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should match something inside the range <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C003731S0_source')" id="l_C003731S0_source">show source</a> ]</span>
-            <div id="C003731S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003751S0_source')" id="l_C003751S0_source">show source</a> ]</span>
+            <div id="C003751S0_source" class="dyn-source">
 <pre>
 ((1 ..(5)) ===(1)) should ==(true) 
 ((1 ..(5)) ===(2)) should ==(true) 
@@ -182,8 +182,8 @@ Range should have kind("Range")
             </div>
             </span></li>
 <li>- should not match something outside the range <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C003731S1_source')" id="l_C003731S1_source">show source</a> ]</span>
-            <div id="C003731S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003751S1_source')" id="l_C003751S1_source">show source</a> ]</span>
+            <div id="C003751S1_source" class="dyn-source">
 <pre>
 ((1 ..(5)) ===(0)) should ==(false) 
 ((1 ...(5)) ===(5)) should ==(false) 
@@ -202,7 +202,7 @@ Range should have kind("Range")
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00368"></a><b>exclusive</b>(from, to)
+          <a name="C00370"></a><b>exclusive</b>(from, to)
           </div>
           <div class="description">
             <p>
@@ -216,7 +216,7 @@ Range should have kind("Range")
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00369"></a><b>exclusive?</b>()
+          <a name="C00371"></a><b>exclusive?</b>()
           </div>
           <div class="description">
             <p>
@@ -227,8 +227,8 @@ Range should have kind("Range")
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return false for an inclusive range <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C003691S0_source')" id="l_C003691S0_source">show source</a> ]</span>
-            <div id="C003691S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003711S0_source')" id="l_C003711S0_source">show source</a> ]</span>
+            <div id="C003711S0_source" class="dyn-source">
 <pre>
 (0 ..(13)) exclusive? should ==(false) 
 
@@ -236,8 +236,8 @@ Range should have kind("Range")
             </div>
             </span></li>
 <li>- should return true for an exclusive range <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C003691S1_source')" id="l_C003691S1_source">show source</a> ]</span>
-            <div id="C003691S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003711S1_source')" id="l_C003711S1_source">show source</a> ]</span>
+            <div id="C003711S1_source" class="dyn-source">
 <pre>
 (0 ...(13)) exclusive? should ==(true) 
 
@@ -250,7 +250,7 @@ Range should have kind("Range")
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00371"></a><b>from</b>()
+          <a name="C00373"></a><b>from</b>()
           </div>
           <div class="description">
             <p>
@@ -261,8 +261,8 @@ Range should have kind("Range")
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return the from part of the range <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C003711S0_source')" id="l_C003711S0_source">show source</a> ]</span>
-            <div id="C003711S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003731S0_source')" id="l_C003731S0_source">show source</a> ]</span>
+            <div id="C003731S0_source" class="dyn-source">
 <pre>
 (13 ..(0)) from should ==(13) 
 (-(42) ..(0)) from should ==(-(42)) 
@@ -280,7 +280,7 @@ Range should have kind("Range")
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00367"></a><b>inclusive</b>(from, to)
+          <a name="C00369"></a><b>inclusive</b>(from, to)
           </div>
           <div class="description">
             <p>
@@ -294,7 +294,7 @@ Range should have kind("Range")
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00370"></a><b>inclusive?</b>()
+          <a name="C00372"></a><b>inclusive?</b>()
           </div>
           <div class="description">
             <p>
@@ -305,8 +305,8 @@ Range should have kind("Range")
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return true for an inclusive range <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C003701S0_source')" id="l_C003701S0_source">show source</a> ]</span>
-            <div id="C003701S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003721S0_source')" id="l_C003721S0_source">show source</a> ]</span>
+            <div id="C003721S0_source" class="dyn-source">
 <pre>
 (0 ..(13)) inclusive? should ==(true) 
 
@@ -314,8 +314,8 @@ Range should have kind("Range")
             </div>
             </span></li>
 <li>- should return false for an exclusive range <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C003701S1_source')" id="l_C003701S1_source">show source</a> ]</span>
-            <div id="C003701S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003721S1_source')" id="l_C003721S1_source">show source</a> ]</span>
+            <div id="C003721S1_source" class="dyn-source">
 <pre>
 (0 ...(13)) inclusive? should ==(false) 
 
@@ -328,7 +328,7 @@ Range should have kind("Range")
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00372"></a><b>to</b>()
+          <a name="C00374"></a><b>to</b>()
           </div>
           <div class="description">
             <p>

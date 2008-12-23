@@ -90,21 +90,21 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 
         <div class="sectiontitle">Inactive cells</div>
         <ul>
-          <li><a href="#C00256">activatable</a></li>
-<li><a href="#C00255">kind</a></li>
+          <li><a href="#C00258">activatable</a></li>
+<li><a href="#C00257">kind</a></li>
 
         </ul>        
 
         <div class="sectiontitle">Active cells</div>
         <ul>
-          <li><a href="#C00260">argumentsCode()</a></li>
-<li><a href="#C00258">call(+[arguments])</a></li>
-<li><a href="#C00263">code()</a></li>
-<li><a href="#C00264">formattedCode()</a></li>
-<li><a href="#C00261">inspect()</a></li>
-<li><a href="#C00259">message()</a></li>
-<li><a href="#C00257">name()</a></li>
-<li><a href="#C00262">notice()</a></li>
+          <li><a href="#C00262">argumentsCode()</a></li>
+<li><a href="#C00260">call(+[arguments])</a></li>
+<li><a href="#C00265">code()</a></li>
+<li><a href="#C00266">formattedCode()</a></li>
+<li><a href="#C00263">inspect()</a></li>
+<li><a href="#C00261">message()</a></li>
+<li><a href="#C00259">name()</a></li>
+<li><a href="#C00264">notice()</a></li>
 
         </ul>
 
@@ -237,7 +237,7 @@ y should ==(42)
 
         <div class="sectiontitle">Inactive cells (details)</div>
                 <div class="cell">
-          <a name="C00256"></a>
+          <a name="C00258"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">activatable</td>
@@ -247,7 +247,7 @@ y should ==(42)
           </table>
         </div>
         <div class="cell">
-          <a name="C00255"></a>
+          <a name="C00257"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">kind</td>
@@ -261,7 +261,7 @@ y should ==(42)
         <div class="sectiontitle">Active cells (details)</div>
                 <div class="cell">
           <div class="title">
-          <a name="C00260"></a><b>argumentsCode</b>()
+          <a name="C00262"></a><b>argumentsCode</b>()
           </div>
           <div class="description">
             <p>
@@ -275,7 +275,7 @@ y should ==(42)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00258"></a><b>call</b>(+[arguments])
+          <a name="C00260"></a><b>call</b>(+[arguments])
           </div>
           <div class="description">
             <p>
@@ -289,7 +289,7 @@ y should ==(42)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00263"></a><b>code</b>()
+          <a name="C00265"></a><b>code</b>()
           </div>
           <div class="description">
             <p>
@@ -303,7 +303,7 @@ y should ==(42)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00264"></a><b>formattedCode</b>()
+          <a name="C00266"></a><b>formattedCode</b>()
           </div>
           <div class="description">
             <p>
@@ -317,7 +317,7 @@ y should ==(42)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00261"></a><b>inspect</b>()
+          <a name="C00263"></a><b>inspect</b>()
           </div>
           <div class="description">
             <p>
@@ -328,8 +328,8 @@ y should ==(42)
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return the code inside the macro <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C002611S0_source')" id="l_C002611S0_source">show source</a> ]</span>
-            <div id="C002611S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002631S0_source')" id="l_C002631S0_source">show source</a> ]</span>
+            <div id="C002631S0_source" class="dyn-source">
 <pre>
 macro(foo bar) inspect should ==("macro(foo bar)") 
 macro(123 +(444)) inspect should ==("macro(123 +(444))") 
@@ -338,8 +338,8 @@ macro(123 +(444)) inspect should ==("macro(123 +(444))")
             </div>
             </span></li>
 <li>- should prep) the name if it is available <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C002611S1_source')" id="l_C002611S1_source">show source</a> ]</span>
-            <div id="C002611S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002631S1_source')" id="l_C002631S1_source">show source</a> ]</span>
+            <div id="C002631S1_source" class="dyn-source">
 <pre>
 x = macro(foo bar) 
 cell(:x) inspect should ==("x:macro(foo bar)") 
@@ -355,7 +355,7 @@ cell(:x) inspect should ==("x:macro(123 +(444))")
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00259"></a><b>message</b>()
+          <a name="C00261"></a><b>message</b>()
           </div>
           <div class="description">
             <p>
@@ -369,7 +369,7 @@ cell(:x) inspect should ==("x:macro(123 +(444))")
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00257"></a><b>name</b>()
+          <a name="C00259"></a><b>name</b>()
           </div>
           <div class="description">
             <p>
@@ -383,7 +383,7 @@ cell(:x) inspect should ==("x:macro(123 +(444))")
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00262"></a><b>notice</b>()
+          <a name="C00264"></a><b>notice</b>()
           </div>
           <div class="description">
             <p>
@@ -394,8 +394,8 @@ cell(:x) inspect should ==("x:macro(123 +(444))")
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should just return a simple description without code <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C002621S0_source')" id="l_C002621S0_source">show source</a> ]</span>
-            <div id="C002621S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002641S0_source')" id="l_C002641S0_source">show source</a> ]</span>
+            <div id="C002641S0_source" class="dyn-source">
 <pre>
 macro notice should ==("macro(...)") 
 macro(nil) notice should ==("macro(...)") 
@@ -405,8 +405,8 @@ macro(foo bar xxxxxx) notice should ==("macro(...)")
             </div>
             </span></li>
 <li>- should prep) the name if there is a name available <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C002621S1_source')" id="l_C002621S1_source">show source</a> ]</span>
-            <div id="C002621S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002641S1_source')" id="l_C002641S1_source">show source</a> ]</span>
+            <div id="C002641S1_source" class="dyn-source">
 <pre>
 x = macro 
 cell(:x) notice should ==("x:macro(...)") 

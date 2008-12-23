@@ -90,14 +90,14 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 
         <div class="sectiontitle">Inactive cells</div>
         <ul>
-          <li><a href="#C00130">kind</a></li>
-<li><a href="#C00132">version</a></li>
+          <li><a href="#C00131">kind</a></li>
+<li><a href="#C00133">version</a></li>
 
         </ul>        
 
         <div class="sectiontitle">Active cells</div>
         <ul>
-          <li><a href="#C00131">notice()</a></li>
+          <li><a href="#C00132">notice()</a></li>
 
         </ul>
 
@@ -118,7 +118,7 @@ Runtime should have kind("Runtime")
 
         <div class="sectiontitle">Inactive cells (details)</div>
                 <div class="cell">
-          <a name="C00130"></a>
+          <a name="C00131"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">kind</td>
@@ -128,12 +128,12 @@ Runtime should have kind("Runtime")
           </table>
         </div>
         <div class="cell">
-          <a name="C00132"></a>
+          <a name="C00133"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">version</td>
               <td>=</td>
-              <td class="cell-value">Origin_0x5D9084</td>
+              <td class="cell-value">Origin_0xBAD8A8</td>
             </tr>
           </table>
         </div>
@@ -142,7 +142,7 @@ Runtime should have kind("Runtime")
         <div class="sectiontitle">Active cells (details)</div>
                 <div class="cell">
           <div class="title">
-          <a name="C00131"></a><b>notice</b>()
+          <a name="C00132"></a><b>notice</b>()
           </div>
           <div class="description">
             <p>
@@ -150,8 +150,8 @@ Runtime should have kind("Runtime")
             </p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00131_source')" id="l_C00131_source">show source</a> ]</p>
-            <div id="C00131_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00132_source')" id="l_C00132_source">show source</a> ]</p>
+            <div id="C00132_source" class="dyn-source">
 <pre>
 method(
   if(cell(:self) ==(Runtime), 
@@ -163,8 +163,8 @@ method(
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return 'Runtime <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001311S0_source')" id="l_C001311S0_source">show source</a> ]</span>
-            <div id="C001311S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001321S0_source')" id="l_C001321S0_source">show source</a> ]</span>
+            <div id="C001321S0_source" class="dyn-source">
 <pre>
 Runtime notice should ==("Runtime") 
 
@@ -172,8 +172,8 @@ Runtime notice should ==("Runtime")
             </div>
             </span></li>
 <li>- should not return 'Runtime' for a mimic <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001311S1_source')" id="l_C001311S1_source">show source</a> ]</span>
-            <div id="C001311S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001321S1_source')" id="l_C001321S1_source">show source</a> ]</span>
+            <div id="C001321S1_source" class="dyn-source">
 <pre>
 Runtime mimic notice should not ==("Runtime") 
 

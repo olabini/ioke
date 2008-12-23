@@ -90,25 +90,25 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 
         <div class="sectiontitle">Inactive cells</div>
         <ul>
-          <li><a href="#C00200">inspect</a></li>
-<li><a href="#C00188">kind</a></li>
-<li><a href="#C00201">notice</a></li>
+          <li><a href="#C00201">inspect</a></li>
+<li><a href="#C00189">kind</a></li>
+<li><a href="#C00202">notice</a></li>
 
         </ul>        
 
         <div class="sectiontitle">Active cells</div>
         <ul>
-          <li><a href="#C00194">&&(...)</a></li>
-<li><a href="#C00193">and(...)</a></li>
-<li><a href="#C00190">false?()</a></li>
-<li><a href="#C00199">nand(...)</a></li>
-<li><a href="#C00189">nil?()</a></li>
-<li><a href="#C00198">nor(...)</a></li>
-<li><a href="#C00192">not()</a></li>
-<li><a href="#C00195">or(...)</a></li>
-<li><a href="#C00191">true?()</a></li>
-<li><a href="#C00197">xor(...)</a></li>
-<li><a href="#C00196">||(...)</a></li>
+          <li><a href="#C00195">&&(...)</a></li>
+<li><a href="#C00194">and(...)</a></li>
+<li><a href="#C00191">false?()</a></li>
+<li><a href="#C00200">nand(...)</a></li>
+<li><a href="#C00190">nil?()</a></li>
+<li><a href="#C00199">nor(...)</a></li>
+<li><a href="#C00193">not()</a></li>
+<li><a href="#C00196">or(...)</a></li>
+<li><a href="#C00192">true?()</a></li>
+<li><a href="#C00198">xor(...)</a></li>
+<li><a href="#C00197">||(...)</a></li>
 
         </ul>
 
@@ -156,7 +156,7 @@ nil should ==(nil)
 
         <div class="sectiontitle">Inactive cells (details)</div>
                 <div class="cell">
-          <a name="C00200"></a>
+          <a name="C00201"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">inspect</td>
@@ -166,7 +166,7 @@ nil should ==(nil)
           </table>
         </div>
         <div class="cell">
-          <a name="C00188"></a>
+          <a name="C00189"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">kind</td>
@@ -176,7 +176,7 @@ nil should ==(nil)
           </table>
         </div>
         <div class="cell">
-          <a name="C00201"></a>
+          <a name="C00202"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">notice</td>
@@ -190,11 +190,64 @@ nil should ==(nil)
         <div class="sectiontitle">Active cells (details)</div>
                 <div class="cell">
           <div class="title">
-          <a name="C00194"></a><b>&&</b>(...)
+          <a name="C00195"></a><b>&&</b>(...)
           </div>
           <div class="description">
             <p>
               nil
+            </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00195_source')" id="l_C00195_source">show source</a> ]</p>
+            <div id="C00195_source" class="dyn-source">
+<pre>
+macro(
+  nil)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should not evaluate it's argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001951S0_source')" id="l_C001951S0_source">show source</a> ]</span>
+            <div id="C001951S0_source" class="dyn-source">
+<pre>
+x = 41 
+nil &&((x = 42)) 
+x should ==(41) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return nil <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001951S1_source')" id="l_C001951S1_source">show source</a> ]</span>
+            <div id="C001951S1_source" class="dyn-source">
+<pre>
+(nil &&(42)) should ==(nil) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be available in infix <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001951S2_source')" id="l_C001951S2_source">show source</a> ]</span>
+            <div id="C001951S2_source" class="dyn-source">
+<pre>
+(nil &&(43)) should ==(nil) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00194"></a><b>and</b>(...)
+          </div>
+          <div class="description">
+            <p>
+              Does not evaluate argument and returns nil
             </p>
           </div>
                     <div class="sourcecode">
@@ -213,7 +266,7 @@ macro(
             <div id="C001941S0_source" class="dyn-source">
 <pre>
 x = 41 
-nil &&((x = 42)) 
+nil and((x = 42)) 
 x should ==(41) 
 
 </pre>
@@ -223,7 +276,7 @@ x should ==(41)
             <span class="source-link">[ <a href="javascript:toggleSource('C001941S1_source')" id="l_C001941S1_source">show source</a> ]</span>
             <div id="C001941S1_source" class="dyn-source">
 <pre>
-(nil &&(42)) should ==(nil) 
+(nil and(42)) should ==(nil) 
 
 </pre>
             </div>
@@ -231,59 +284,6 @@ x should ==(41)
 <li>- should be available in infix <span class="sourcecode">
             <span class="source-link">[ <a href="javascript:toggleSource('C001941S2_source')" id="l_C001941S2_source">show source</a> ]</span>
             <div id="C001941S2_source" class="dyn-source">
-<pre>
-(nil &&(43)) should ==(nil) 
-
-</pre>
-            </div>
-            </span></li>
-</ul>
-
-          </div>
-        </div>
-        <div class="cell">
-          <div class="title">
-          <a name="C00193"></a><b>and</b>(...)
-          </div>
-          <div class="description">
-            <p>
-              Does not evaluate argument and returns nil
-            </p>
-          </div>
-                    <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00193_source')" id="l_C00193_source">show source</a> ]</p>
-            <div id="C00193_source" class="dyn-source">
-<pre>
-macro(
-  nil)
-</pre>
-            </div>
-            </div>
-          <div class="specs">
-            <ul style="list-style-type: none;">
-<li>- should not evaluate it's argument <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001931S0_source')" id="l_C001931S0_source">show source</a> ]</span>
-            <div id="C001931S0_source" class="dyn-source">
-<pre>
-x = 41 
-nil and((x = 42)) 
-x should ==(41) 
-
-</pre>
-            </div>
-            </span></li>
-<li>- should return nil <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001931S1_source')" id="l_C001931S1_source">show source</a> ]</span>
-            <div id="C001931S1_source" class="dyn-source">
-<pre>
-(nil and(42)) should ==(nil) 
-
-</pre>
-            </div>
-            </span></li>
-<li>- should be available in infix <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001931S2_source')" id="l_C001931S2_source">show source</a> ]</span>
-            <div id="C001931S2_source" class="dyn-source">
 <pre>
 (nil and(43)) should ==(nil) 
 
@@ -296,7 +296,98 @@ x should ==(41)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00190"></a><b>false?</b>()
+          <a name="C00191"></a><b>false?</b>()
+          </div>
+          <div class="description">
+            <p>
+              returns true.
+            </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00191_source')" id="l_C00191_source">show source</a> ]</p>
+            <div id="C00191_source" class="dyn-source">
+<pre>
+method(
+  true)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return true <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001911S0_source')" id="l_C001911S0_source">show source</a> ]</span>
+            <div id="C001911S0_source" class="dyn-source">
+<pre>
+nil false? should ==(true) 
+x = nil 
+x false? should ==(true) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00200"></a><b>nand</b>(...)
+          </div>
+          <div class="description">
+            <p>
+              Does not evaluate its argument and returns true
+            </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00200_source')" id="l_C00200_source">show source</a> ]</p>
+            <div id="C00200_source" class="dyn-source">
+<pre>
+macro(
+  true)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should not evaluate it's argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002001S0_source')" id="l_C002001S0_source">show source</a> ]</span>
+            <div id="C002001S0_source" class="dyn-source">
+<pre>
+x = 41 
+nil nand((x = 42)) 
+x should ==(41) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return true <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002001S1_source')" id="l_C002001S1_source">show source</a> ]</span>
+            <div id="C002001S1_source" class="dyn-source">
+<pre>
+(nil nand(42)) should ==(true) 
+(nil nand(false)) should ==(true) 
+(nil nand(nil)) should ==(true) 
+(nil nand(true)) should ==(true) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be available in infix <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002001S2_source')" id="l_C002001S2_source">show source</a> ]</span>
+            <div id="C002001S2_source" class="dyn-source">
+<pre>
+(nil nand(43)) should ==(true) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00190"></a><b>nil?</b>()
           </div>
           <div class="description">
             <p>
@@ -318,97 +409,6 @@ method(
             <span class="source-link">[ <a href="javascript:toggleSource('C001901S0_source')" id="l_C001901S0_source">show source</a> ]</span>
             <div id="C001901S0_source" class="dyn-source">
 <pre>
-nil false? should ==(true) 
-x = nil 
-x false? should ==(true) 
-
-</pre>
-            </div>
-            </span></li>
-</ul>
-
-          </div>
-        </div>
-        <div class="cell">
-          <div class="title">
-          <a name="C00199"></a><b>nand</b>(...)
-          </div>
-          <div class="description">
-            <p>
-              Does not evaluate its argument and returns true
-            </p>
-          </div>
-                    <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00199_source')" id="l_C00199_source">show source</a> ]</p>
-            <div id="C00199_source" class="dyn-source">
-<pre>
-macro(
-  true)
-</pre>
-            </div>
-            </div>
-          <div class="specs">
-            <ul style="list-style-type: none;">
-<li>- should not evaluate it's argument <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001991S0_source')" id="l_C001991S0_source">show source</a> ]</span>
-            <div id="C001991S0_source" class="dyn-source">
-<pre>
-x = 41 
-nil nand((x = 42)) 
-x should ==(41) 
-
-</pre>
-            </div>
-            </span></li>
-<li>- should return true <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001991S1_source')" id="l_C001991S1_source">show source</a> ]</span>
-            <div id="C001991S1_source" class="dyn-source">
-<pre>
-(nil nand(42)) should ==(true) 
-(nil nand(false)) should ==(true) 
-(nil nand(nil)) should ==(true) 
-(nil nand(true)) should ==(true) 
-
-</pre>
-            </div>
-            </span></li>
-<li>- should be available in infix <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001991S2_source')" id="l_C001991S2_source">show source</a> ]</span>
-            <div id="C001991S2_source" class="dyn-source">
-<pre>
-(nil nand(43)) should ==(true) 
-
-</pre>
-            </div>
-            </span></li>
-</ul>
-
-          </div>
-        </div>
-        <div class="cell">
-          <div class="title">
-          <a name="C00189"></a><b>nil?</b>()
-          </div>
-          <div class="description">
-            <p>
-              returns true.
-            </p>
-          </div>
-                    <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00189_source')" id="l_C00189_source">show source</a> ]</p>
-            <div id="C00189_source" class="dyn-source">
-<pre>
-method(
-  true)
-</pre>
-            </div>
-            </div>
-          <div class="specs">
-            <ul style="list-style-type: none;">
-<li>- should return true <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001891S0_source')" id="l_C001891S0_source">show source</a> ]</span>
-            <div id="C001891S0_source" class="dyn-source">
-<pre>
 nil nil? should ==(true) 
 x = nil 
 x nil? should ==(true) 
@@ -422,7 +422,7 @@ x nil? should ==(true)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00198"></a><b>nor</b>(...)
+          <a name="C00199"></a><b>nor</b>(...)
           </div>
           <div class="description">
             <p>
@@ -430,8 +430,8 @@ x nil? should ==(true)
             </p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00198_source')" id="l_C00198_source">show source</a> ]</p>
-            <div id="C00198_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00199_source')" id="l_C00199_source">show source</a> ]</p>
+            <div id="C00199_source" class="dyn-source">
 <pre>
 macro(
   if(call argAt(0), false, true))
@@ -441,8 +441,8 @@ macro(
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should evaluate it's argument <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001981S0_source')" id="l_C001981S0_source">show source</a> ]</span>
-            <div id="C001981S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001991S0_source')" id="l_C001991S0_source">show source</a> ]</span>
+            <div id="C001991S0_source" class="dyn-source">
 <pre>
 x = 41 
 nil nor((x = 42)) 
@@ -452,8 +452,8 @@ x should ==(42)
             </div>
             </span></li>
 <li>- should return false if the argument is true <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001981S1_source')" id="l_C001981S1_source">show source</a> ]</span>
-            <div id="C001981S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001991S1_source')" id="l_C001991S1_source">show source</a> ]</span>
+            <div id="C001991S1_source" class="dyn-source">
 <pre>
 (nil nor(42)) should ==(false) 
 
@@ -461,8 +461,8 @@ x should ==(42)
             </div>
             </span></li>
 <li>- should return false if the argument is false <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001981S2_source')" id="l_C001981S2_source">show source</a> ]</span>
-            <div id="C001981S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001991S2_source')" id="l_C001991S2_source">show source</a> ]</span>
+            <div id="C001991S2_source" class="dyn-source">
 <pre>
 (nil nor(false)) should ==(true) 
 
@@ -470,8 +470,8 @@ x should ==(42)
             </div>
             </span></li>
 <li>- should return false if the argument is nil <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001981S3_source')" id="l_C001981S3_source">show source</a> ]</span>
-            <div id="C001981S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001991S3_source')" id="l_C001991S3_source">show source</a> ]</span>
+            <div id="C001991S3_source" class="dyn-source">
 <pre>
 (nil nor(nil)) should ==(true) 
 
@@ -479,8 +479,8 @@ x should ==(42)
             </div>
             </span></li>
 <li>- should be available in infix <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001981S4_source')" id="l_C001981S4_source">show source</a> ]</span>
-            <div id="C001981S4_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001991S4_source')" id="l_C001991S4_source">show source</a> ]</span>
+            <div id="C001991S4_source" class="dyn-source">
 <pre>
 (nil nor(43)) should ==(false) 
 
@@ -493,7 +493,7 @@ x should ==(42)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00192"></a><b>not</b>()
+          <a name="C00193"></a><b>not</b>()
           </div>
           <div class="description">
             <p>
@@ -501,8 +501,8 @@ x should ==(42)
             </p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00192_source')" id="l_C00192_source">show source</a> ]</p>
-            <div id="C00192_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00193_source')" id="l_C00193_source">show source</a> ]</p>
+            <div id="C00193_source" class="dyn-source">
 <pre>
 method(
   true)
@@ -512,8 +512,8 @@ method(
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return true <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001921S0_source')" id="l_C001921S0_source">show source</a> ]</span>
-            <div id="C001921S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001931S0_source')" id="l_C001931S0_source">show source</a> ]</span>
+            <div id="C001931S0_source" class="dyn-source">
 <pre>
 nil not should ==(true) 
 x = nil 
@@ -528,170 +528,11 @@ x not should ==(true)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00195"></a><b>or</b>(...)
+          <a name="C00196"></a><b>or</b>(...)
           </div>
           <div class="description">
             <p>
               Evaluates the argument and returns the result
-            </p>
-          </div>
-                    <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00195_source')" id="l_C00195_source">show source</a> ]</p>
-            <div id="C00195_source" class="dyn-source">
-<pre>
-macro(
-  call argAt(0))
-</pre>
-            </div>
-            </div>
-          <div class="specs">
-            <ul style="list-style-type: none;">
-<li>- should evaluate it's argument <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001951S0_source')" id="l_C001951S0_source">show source</a> ]</span>
-            <div id="C001951S0_source" class="dyn-source">
-<pre>
-x = 41 
-nil or((x = 42)) 
-x should ==(42) 
-
-</pre>
-            </div>
-            </span></li>
-<li>- should return the result of the argument <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001951S1_source')" id="l_C001951S1_source">show source</a> ]</span>
-            <div id="C001951S1_source" class="dyn-source">
-<pre>
-(nil or(42)) should ==(42) 
-
-</pre>
-            </div>
-            </span></li>
-<li>- should be available in infix <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001951S2_source')" id="l_C001951S2_source">show source</a> ]</span>
-            <div id="C001951S2_source" class="dyn-source">
-<pre>
-(nil or(43)) should ==(43) 
-
-</pre>
-            </div>
-            </span></li>
-</ul>
-
-          </div>
-        </div>
-        <div class="cell">
-          <div class="title">
-          <a name="C00191"></a><b>true?</b>()
-          </div>
-          <div class="description">
-            <p>
-              returns false
-            </p>
-          </div>
-                    <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00191_source')" id="l_C00191_source">show source</a> ]</p>
-            <div id="C00191_source" class="dyn-source">
-<pre>
-method(
-  false)
-</pre>
-            </div>
-            </div>
-          <div class="specs">
-            <ul style="list-style-type: none;">
-<li>- should return false <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001911S0_source')" id="l_C001911S0_source">show source</a> ]</span>
-            <div id="C001911S0_source" class="dyn-source">
-<pre>
-nil true? should ==(false) 
-x = nil 
-x true? should ==(false) 
-
-</pre>
-            </div>
-            </span></li>
-</ul>
-
-          </div>
-        </div>
-        <div class="cell">
-          <div class="title">
-          <a name="C00197"></a><b>xor</b>(...)
-          </div>
-          <div class="description">
-            <p>
-              Evaluates the argument and returns the inverse of the inverse of the argument
-            </p>
-          </div>
-                    <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00197_source')" id="l_C00197_source">show source</a> ]</p>
-            <div id="C00197_source" class="dyn-source">
-<pre>
-macro(
-  if(call argAt(0), true, false))
-</pre>
-            </div>
-            </div>
-          <div class="specs">
-            <ul style="list-style-type: none;">
-<li>- should evaluate it's argument <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001971S0_source')" id="l_C001971S0_source">show source</a> ]</span>
-            <div id="C001971S0_source" class="dyn-source">
-<pre>
-x = 41 
-nil xor((x = 42)) 
-x should ==(42) 
-
-</pre>
-            </div>
-            </span></li>
-<li>- should return true if the argument is true <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001971S1_source')" id="l_C001971S1_source">show source</a> ]</span>
-            <div id="C001971S1_source" class="dyn-source">
-<pre>
-(nil xor(true)) should ==(true) 
-
-</pre>
-            </div>
-            </span></li>
-<li>- should return false if the argument is false <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001971S2_source')" id="l_C001971S2_source">show source</a> ]</span>
-            <div id="C001971S2_source" class="dyn-source">
-<pre>
-(nil xor(false)) should ==(false) 
-
-</pre>
-            </div>
-            </span></li>
-<li>- should return false if the argument is nil <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001971S3_source')" id="l_C001971S3_source">show source</a> ]</span>
-            <div id="C001971S3_source" class="dyn-source">
-<pre>
-(nil xor(nil)) should ==(false) 
-
-</pre>
-            </div>
-            </span></li>
-<li>- should be available in infix <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001971S4_source')" id="l_C001971S4_source">show source</a> ]</span>
-            <div id="C001971S4_source" class="dyn-source">
-<pre>
-(nil xor(43)) should ==(true) 
-
-</pre>
-            </div>
-            </span></li>
-</ul>
-
-          </div>
-        </div>
-        <div class="cell">
-          <div class="title">
-          <a name="C00196"></a><b>||</b>(...)
-          </div>
-          <div class="description">
-            <p>
-              nil
             </p>
           </div>
                     <div class="sourcecode">
@@ -710,7 +551,7 @@ macro(
             <div id="C001961S0_source" class="dyn-source">
 <pre>
 x = 41 
-nil ||((x = 42)) 
+nil or((x = 42)) 
 x should ==(42) 
 
 </pre>
@@ -720,7 +561,7 @@ x should ==(42)
             <span class="source-link">[ <a href="javascript:toggleSource('C001961S1_source')" id="l_C001961S1_source">show source</a> ]</span>
             <div id="C001961S1_source" class="dyn-source">
 <pre>
-(nil ||(42)) should ==(42) 
+(nil or(42)) should ==(42) 
 
 </pre>
             </div>
@@ -728,6 +569,165 @@ x should ==(42)
 <li>- should be available in infix <span class="sourcecode">
             <span class="source-link">[ <a href="javascript:toggleSource('C001961S2_source')" id="l_C001961S2_source">show source</a> ]</span>
             <div id="C001961S2_source" class="dyn-source">
+<pre>
+(nil or(43)) should ==(43) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00192"></a><b>true?</b>()
+          </div>
+          <div class="description">
+            <p>
+              returns false
+            </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00192_source')" id="l_C00192_source">show source</a> ]</p>
+            <div id="C00192_source" class="dyn-source">
+<pre>
+method(
+  false)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return false <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001921S0_source')" id="l_C001921S0_source">show source</a> ]</span>
+            <div id="C001921S0_source" class="dyn-source">
+<pre>
+nil true? should ==(false) 
+x = nil 
+x true? should ==(false) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00198"></a><b>xor</b>(...)
+          </div>
+          <div class="description">
+            <p>
+              Evaluates the argument and returns the inverse of the inverse of the argument
+            </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00198_source')" id="l_C00198_source">show source</a> ]</p>
+            <div id="C00198_source" class="dyn-source">
+<pre>
+macro(
+  if(call argAt(0), true, false))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should evaluate it's argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001981S0_source')" id="l_C001981S0_source">show source</a> ]</span>
+            <div id="C001981S0_source" class="dyn-source">
+<pre>
+x = 41 
+nil xor((x = 42)) 
+x should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return true if the argument is true <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001981S1_source')" id="l_C001981S1_source">show source</a> ]</span>
+            <div id="C001981S1_source" class="dyn-source">
+<pre>
+(nil xor(true)) should ==(true) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return false if the argument is false <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001981S2_source')" id="l_C001981S2_source">show source</a> ]</span>
+            <div id="C001981S2_source" class="dyn-source">
+<pre>
+(nil xor(false)) should ==(false) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return false if the argument is nil <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001981S3_source')" id="l_C001981S3_source">show source</a> ]</span>
+            <div id="C001981S3_source" class="dyn-source">
+<pre>
+(nil xor(nil)) should ==(false) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be available in infix <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001981S4_source')" id="l_C001981S4_source">show source</a> ]</span>
+            <div id="C001981S4_source" class="dyn-source">
+<pre>
+(nil xor(43)) should ==(true) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00197"></a><b>||</b>(...)
+          </div>
+          <div class="description">
+            <p>
+              nil
+            </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00197_source')" id="l_C00197_source">show source</a> ]</p>
+            <div id="C00197_source" class="dyn-source">
+<pre>
+macro(
+  call argAt(0))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should evaluate it's argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001971S0_source')" id="l_C001971S0_source">show source</a> ]</span>
+            <div id="C001971S0_source" class="dyn-source">
+<pre>
+x = 41 
+nil ||((x = 42)) 
+x should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the result of the argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001971S1_source')" id="l_C001971S1_source">show source</a> ]</span>
+            <div id="C001971S1_source" class="dyn-source">
+<pre>
+(nil ||(42)) should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be available in infix <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001971S2_source')" id="l_C001971S2_source">show source</a> ]</span>
+            <div id="C001971S2_source" class="dyn-source">
 <pre>
 (nil ||(43)) should ==(43) 
 

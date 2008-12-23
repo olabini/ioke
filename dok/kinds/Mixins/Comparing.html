@@ -90,19 +90,19 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 
         <div class="sectiontitle">Inactive cells</div>
         <ul>
-          <li><a href="#C00274">kind</a></li>
+          <li><a href="#C00276">kind</a></li>
 
         </ul>        
 
         <div class="sectiontitle">Active cells</div>
         <ul>
-          <li><a href="#C00281">!=(other)</a></li>
-<li><a href="#C00276">&lt;(other)</a></li>
-<li><a href="#C00277">&lt;=(other)</a></li>
-<li><a href="#C00275">&lt;=&gt;(other)</a></li>
-<li><a href="#C00280">==(other)</a></li>
-<li><a href="#C00278">&gt;(other)</a></li>
-<li><a href="#C00279">&gt;=(other)</a></li>
+          <li><a href="#C00283">!=(other)</a></li>
+<li><a href="#C00278">&lt;(other)</a></li>
+<li><a href="#C00279">&lt;=(other)</a></li>
+<li><a href="#C00277">&lt;=&gt;(other)</a></li>
+<li><a href="#C00282">==(other)</a></li>
+<li><a href="#C00280">&gt;(other)</a></li>
+<li><a href="#C00281">&gt;=(other)</a></li>
 
         </ul>
 
@@ -123,7 +123,7 @@ Mixins Comparing kind should ==("Mixins Comparing")
 
         <div class="sectiontitle">Inactive cells (details)</div>
                 <div class="cell">
-          <a name="C00274"></a>
+          <a name="C00276"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">kind</td>
@@ -137,7 +137,7 @@ Mixins Comparing kind should ==("Mixins Comparing")
         <div class="sectiontitle">Active cells (details)</div>
                 <div class="cell">
           <div class="title">
-          <a name="C00281"></a><b>!=</b>(other)
+          <a name="C00283"></a><b>!=</b>(other)
           </div>
           <div class="description">
             <p>
@@ -145,8 +145,8 @@ Mixins Comparing kind should ==("Mixins Comparing")
             </p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00281_source')" id="l_C00281_source">show source</a> ]</p>
-            <div id="C00281_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00283_source')" id="l_C00283_source">show source</a> ]</p>
+            <div id="C00283_source" class="dyn-source">
 <pre>
 method(other, 
   !((&lt;=&gt;(other)) ==(0)))
@@ -159,7 +159,7 @@ method(other,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00276"></a><b>&lt;</b>(other)
+          <a name="C00278"></a><b>&lt;</b>(other)
           </div>
           <div class="description">
             <p>
@@ -167,8 +167,8 @@ method(other,
             </p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00276_source')" id="l_C00276_source">show source</a> ]</p>
-            <div id="C00276_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00278_source')" id="l_C00278_source">show source</a> ]</p>
+            <div id="C00278_source" class="dyn-source">
 <pre>
 method(other, 
   (&lt;=&gt;(other)) ==(0 -(1)))
@@ -181,7 +181,7 @@ method(other,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00277"></a><b>&lt;=</b>(other)
+          <a name="C00279"></a><b>&lt;=</b>(other)
           </div>
           <div class="description">
             <p>
@@ -189,8 +189,8 @@ method(other,
             </p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00277_source')" id="l_C00277_source">show source</a> ]</p>
-            <div id="C00277_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00279_source')" id="l_C00279_source">show source</a> ]</p>
+            <div id="C00279_source" class="dyn-source">
 <pre>
 method(other, 
   result = (&lt;=&gt;(other)) 
@@ -204,7 +204,7 @@ method(other,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00275"></a><b>&lt;=&gt;</b>(other)
+          <a name="C00277"></a><b>&lt;=&gt;</b>(other)
           </div>
           <div class="description">
             <p>
@@ -212,8 +212,8 @@ method(other,
             </p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00275_source')" id="l_C00275_source">show source</a> ]</p>
-            <div id="C00275_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00277_source')" id="l_C00277_source">show source</a> ]</p>
+            <div id="C00277_source" class="dyn-source">
 <pre>
 method(other, 
   if(cell(:other) kind ==("Mixins Comparing"), 
@@ -228,7 +228,7 @@ method(other,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00280"></a><b>==</b>(other)
+          <a name="C00282"></a><b>==</b>(other)
           </div>
           <div class="description">
             <p>
@@ -236,8 +236,8 @@ method(other,
             </p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00280_source')" id="l_C00280_source">show source</a> ]</p>
-            <div id="C00280_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00282_source')" id="l_C00282_source">show source</a> ]</p>
+            <div id="C00282_source" class="dyn-source">
 <pre>
 method(other, 
   (&lt;=&gt;(cell(:other))) ==(0))
@@ -250,7 +250,7 @@ method(other,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00278"></a><b>&gt;</b>(other)
+          <a name="C00280"></a><b>&gt;</b>(other)
           </div>
           <div class="description">
             <p>
@@ -258,8 +258,8 @@ method(other,
             </p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00278_source')" id="l_C00278_source">show source</a> ]</p>
-            <div id="C00278_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00280_source')" id="l_C00280_source">show source</a> ]</p>
+            <div id="C00280_source" class="dyn-source">
 <pre>
 method(other, 
   (&lt;=&gt;(other)) ==(1))
@@ -272,7 +272,7 @@ method(other,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00279"></a><b>&gt;=</b>(other)
+          <a name="C00281"></a><b>&gt;=</b>(other)
           </div>
           <div class="description">
             <p>
@@ -280,8 +280,8 @@ method(other,
             </p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00279_source')" id="l_C00279_source">show source</a> ]</p>
-            <div id="C00279_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00281_source')" id="l_C00281_source">show source</a> ]</p>
+            <div id="C00281_source" class="dyn-source">
 <pre>
 method(other, 
   result = (&lt;=&gt;(other)) 

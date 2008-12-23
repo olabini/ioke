@@ -90,19 +90,19 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 
         <div class="sectiontitle">Inactive cells</div>
         <ul>
-          <li><a href="#C00374">kind</a></li>
+          <li><a href="#C00376">kind</a></li>
 
         </ul>        
 
         <div class="sectiontitle">Active cells</div>
         <ul>
-          <li><a href="#C00381">&lt;=&gt;(other)</a></li>
-<li><a href="#C00375">first()</a></li>
-<li><a href="#C00379">inspect()</a></li>
-<li><a href="#C00376">key()</a></li>
-<li><a href="#C00380">notice()</a></li>
-<li><a href="#C00377">second()</a></li>
-<li><a href="#C00378">value()</a></li>
+          <li><a href="#C00383">&lt;=&gt;(other)</a></li>
+<li><a href="#C00377">first()</a></li>
+<li><a href="#C00381">inspect()</a></li>
+<li><a href="#C00378">key()</a></li>
+<li><a href="#C00382">notice()</a></li>
+<li><a href="#C00379">second()</a></li>
+<li><a href="#C00380">value()</a></li>
 
         </ul>
 
@@ -157,7 +157,7 @@ Pair should mimic(Mixins Comparing)
 
         <div class="sectiontitle">Inactive cells (details)</div>
                 <div class="cell">
-          <a name="C00374"></a>
+          <a name="C00376"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">kind</td>
@@ -171,7 +171,7 @@ Pair should mimic(Mixins Comparing)
         <div class="sectiontitle">Active cells (details)</div>
                 <div class="cell">
           <div class="title">
-          <a name="C00381"></a><b>&lt;=&gt;</b>(other)
+          <a name="C00383"></a><b>&lt;=&gt;</b>(other)
           </div>
           <div class="description">
             <p>
@@ -179,8 +179,8 @@ Pair should mimic(Mixins Comparing)
             </p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00381_source')" id="l_C00381_source">show source</a> ]</p>
-            <div id="C00381_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00383_source')" id="l_C00383_source">show source</a> ]</p>
+            <div id="C00383_source" class="dyn-source">
 <pre>
 method(other, 
   result = self first &lt;=&gt;(other first) 
@@ -193,8 +193,8 @@ method(other,
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should first compare the first value and return the result of that <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C003811S0_source')" id="l_C003811S0_source">show source</a> ]</span>
-            <div id="C003811S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003831S0_source')" id="l_C003831S0_source">show source</a> ]</span>
+            <div id="C003831S0_source" class="dyn-source">
 <pre>
 ((1 =&gt;(1)) &lt;=&gt;(2 =&gt;(1))) should ==((1 &lt;=&gt;(2))) 
 ((4 =&gt;(1)) &lt;=&gt;(3 =&gt;(1))) should ==(4 &lt;=&gt;(3))
@@ -202,8 +202,8 @@ method(other,
             </div>
             </span></li>
 <li>- should then compare the second value and return the result of that <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C003811S1_source')" id="l_C003811S1_source">show source</a> ]</span>
-            <div id="C003811S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003831S1_source')" id="l_C003831S1_source">show source</a> ]</span>
+            <div id="C003831S1_source" class="dyn-source">
 <pre>
 ((1 =&gt;(1)) &lt;=&gt;(1 =&gt;(2))) should ==((1 &lt;=&gt;(2))) 
 ((1 =&gt;(4)) &lt;=&gt;(1 =&gt;(3))) should ==(4 &lt;=&gt;(3))
@@ -216,7 +216,7 @@ method(other,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00375"></a><b>first</b>()
+          <a name="C00377"></a><b>first</b>()
           </div>
           <div class="description">
             <p>
@@ -227,8 +227,8 @@ method(other,
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return the first element <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C003751S0_source')" id="l_C003751S0_source">show source</a> ]</span>
-            <div id="C003751S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003771S0_source')" id="l_C003771S0_source">show source</a> ]</span>
+            <div id="C003771S0_source" class="dyn-source">
 <pre>
 (1 =&gt;(2)) first should ==(1)
 </pre>
@@ -240,7 +240,7 @@ method(other,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00379"></a><b>inspect</b>()
+          <a name="C00381"></a><b>inspect</b>()
           </div>
           <div class="description">
             <p>
@@ -251,8 +251,8 @@ method(other,
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return it's two elements separated by =>  <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C003791S0_source')" id="l_C003791S0_source">show source</a> ]</span>
-            <div id="C003791S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003811S0_source')" id="l_C003811S0_source">show source</a> ]</span>
+            <div id="C003811S0_source" class="dyn-source">
 <pre>
 (1 =&gt;(2)) inspect should ==("1 =&gt; 2") 
 
@@ -260,8 +260,8 @@ method(other,
             </div>
             </span></li>
 <li>- should use inspect format for elements <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C003791S1_source')" id="l_C003791S1_source">show source</a> ]</span>
-            <div id="C003791S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003811S1_source')" id="l_C003811S1_source">show source</a> ]</span>
+            <div id="C003811S1_source" class="dyn-source">
 <pre>
 (method(abc foo qux) =&gt;(2)) inspect should ==("method(abc foo qux) =&gt; 2") 
 (2 =&gt;(method(abc foo qux))) inspect should ==("2 =&gt; method(abc foo qux)") 
@@ -275,7 +275,7 @@ method(other,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00376"></a><b>key</b>()
+          <a name="C00378"></a><b>key</b>()
           </div>
           <div class="description">
             <p>
@@ -286,8 +286,8 @@ method(other,
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return the first element <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C003761S0_source')" id="l_C003761S0_source">show source</a> ]</span>
-            <div id="C003761S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003781S0_source')" id="l_C003781S0_source">show source</a> ]</span>
+            <div id="C003781S0_source" class="dyn-source">
 <pre>
 (1 =&gt;(2)) key should ==(1)
 </pre>
@@ -299,7 +299,7 @@ method(other,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00380"></a><b>notice</b>()
+          <a name="C00382"></a><b>notice</b>()
           </div>
           <div class="description">
             <p>
@@ -310,8 +310,8 @@ method(other,
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return it's two elements separated by =>  <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C003801S0_source')" id="l_C003801S0_source">show source</a> ]</span>
-            <div id="C003801S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003821S0_source')" id="l_C003821S0_source">show source</a> ]</span>
+            <div id="C003821S0_source" class="dyn-source">
 <pre>
 (1 =&gt;(2)) notice should ==("1 =&gt; 2") 
 
@@ -319,8 +319,8 @@ method(other,
             </div>
             </span></li>
 <li>- should use notice format for elements <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C003801S1_source')" id="l_C003801S1_source">show source</a> ]</span>
-            <div id="C003801S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003821S1_source')" id="l_C003821S1_source">show source</a> ]</span>
+            <div id="C003821S1_source" class="dyn-source">
 <pre>
 (method(abc foo qux) =&gt;(2)) notice should ==("method(...) =&gt; 2") 
 (2 =&gt;(method(abc foo qux))) notice should ==("2 =&gt; method(...)") 
@@ -334,7 +334,7 @@ method(other,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00377"></a><b>second</b>()
+          <a name="C00379"></a><b>second</b>()
           </div>
           <div class="description">
             <p>
@@ -345,8 +345,8 @@ method(other,
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return the second element <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C003771S0_source')" id="l_C003771S0_source">show source</a> ]</span>
-            <div id="C003771S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003791S0_source')" id="l_C003791S0_source">show source</a> ]</span>
+            <div id="C003791S0_source" class="dyn-source">
 <pre>
 (1 =&gt;(2)) second should ==(2)
 </pre>
@@ -358,7 +358,7 @@ method(other,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00378"></a><b>value</b>()
+          <a name="C00380"></a><b>value</b>()
           </div>
           <div class="description">
             <p>
@@ -369,8 +369,8 @@ method(other,
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return the second element <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C003781S0_source')" id="l_C003781S0_source">show source</a> ]</span>
-            <div id="C003781S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003801S0_source')" id="l_C003801S0_source">show source</a> ]</span>
+            <div id="C003801S0_source" class="dyn-source">
 <pre>
 (1 =&gt;(2)) value should ==(2)
 </pre>

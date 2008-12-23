@@ -90,18 +90,18 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 
         <div class="sectiontitle">Inactive cells</div>
         <ul>
-          <li><a href="#C00411">kind</a></li>
+          <li><a href="#C00415">kind</a></li>
 
         </ul>        
 
         <div class="sectiontitle">Active cells</div>
         <ul>
-          <li><a href="#C00417">argAt(n)</a></li>
-<li><a href="#C00412">arguments()</a></li>
-<li><a href="#C00415">evaluatedArguments()</a></li>
-<li><a href="#C00413">ground()</a></li>
-<li><a href="#C00414">message()</a></li>
-<li><a href="#C00416">resendToMethod(cellName)</a></li>
+          <li><a href="#C00421">argAt(n)</a></li>
+<li><a href="#C00416">arguments()</a></li>
+<li><a href="#C00419">evaluatedArguments()</a></li>
+<li><a href="#C00417">ground()</a></li>
+<li><a href="#C00418">message()</a></li>
+<li><a href="#C00420">resendToMethod(cellName)</a></li>
 
         </ul>
 
@@ -122,7 +122,7 @@ Call should have kind("Call")
 
         <div class="sectiontitle">Inactive cells (details)</div>
                 <div class="cell">
-          <a name="C00411"></a>
+          <a name="C00415"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">kind</td>
@@ -136,7 +136,7 @@ Call should have kind("Call")
         <div class="sectiontitle">Active cells (details)</div>
                 <div class="cell">
           <div class="title">
-          <a name="C00417"></a><b>argAt</b>(n)
+          <a name="C00421"></a><b>argAt</b>(n)
           </div>
           <div class="description">
             <p>
@@ -144,8 +144,8 @@ Call should have kind("Call")
             </p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00417_source')" id="l_C00417_source">show source</a> ]</p>
-            <div id="C00417_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00421_source')" id="l_C00421_source">show source</a> ]</p>
+            <div id="C00421_source" class="dyn-source">
 <pre>
 method(n, 
   message evalArgAt(n, ground))
@@ -155,8 +155,8 @@ method(n,
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should evaluate and return the argument at the specific place <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004171S0_source')" id="l_C004171S0_source">show source</a> ]</span>
-            <div id="C004171S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004211S0_source')" id="l_C004211S0_source">show source</a> ]</span>
+            <div id="C004211S0_source" class="dyn-source">
 <pre>
 x = macro(call argAt(0)) 
 x(23 +(44)) should ==(67) 
@@ -170,7 +170,7 @@ x(23 +(44)) should ==(67)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00412"></a><b>arguments</b>()
+          <a name="C00416"></a><b>arguments</b>()
           </div>
           <div class="description">
             <p>
@@ -181,8 +181,8 @@ x(23 +(44)) should ==(67)
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return all arguments in a list, unevaluated <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004121S0_source')" id="l_C004121S0_source">show source</a> ]</span>
-            <div id="C004121S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004161S0_source')" id="l_C004161S0_source">show source</a> ]</span>
+            <div id="C004161S0_source" class="dyn-source">
 <pre>
 x = macro(call arguments) 
 x(foo bar, x rrr) [](0) name should ==(:foo) 
@@ -197,7 +197,7 @@ x(foo bar, x rrr) [](1) name should ==(:x)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00415"></a><b>evaluatedArguments</b>()
+          <a name="C00419"></a><b>evaluatedArguments</b>()
           </div>
           <div class="description">
             <p>
@@ -208,8 +208,8 @@ x(foo bar, x rrr) [](1) name should ==(:x)
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return a list of all the evaluated arguments <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004151S0_source')" id="l_C004151S0_source">show source</a> ]</span>
-            <div id="C004151S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004191S0_source')" id="l_C004191S0_source">show source</a> ]</span>
+            <div id="C004191S0_source" class="dyn-source">
 <pre>
 x = macro(call evaluatedArguments) 
 x(13 +(55), 18 +(18), 3 -(2)) [](0) should ==(68) 
@@ -225,7 +225,7 @@ x(13 +(55), 18 +(18), 3 -(2)) [](2) should ==(1)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00413"></a><b>ground</b>()
+          <a name="C00417"></a><b>ground</b>()
           </div>
           <div class="description">
             <p>
@@ -236,8 +236,8 @@ x(13 +(55), 18 +(18), 3 -(2)) [](2) should ==(1)
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return the surrounding context of the call <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004131S0_source')" id="l_C004131S0_source">show source</a> ]</span>
-            <div id="C004131S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004171S0_source')" id="l_C004171S0_source">show source</a> ]</span>
+            <div id="C004171S0_source" class="dyn-source">
 <pre>
 x = macro(call ground) 
 should ==(x) 
@@ -251,7 +251,7 @@ should ==(x)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00414"></a><b>message</b>()
+          <a name="C00418"></a><b>message</b>()
           </div>
           <div class="description">
             <p>
@@ -262,8 +262,8 @@ should ==(x)
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return the message used to invoke this call <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004141S0_source')" id="l_C004141S0_source">show source</a> ]</span>
-            <div id="C004141S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004181S0_source')" id="l_C004181S0_source">show source</a> ]</span>
+            <div id="C004181S0_source" class="dyn-source">
 <pre>
 x = macro(call message) 
 x name should ==(:x) 
@@ -277,7 +277,7 @@ x name should ==(:x)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00416"></a><b>resendToMethod</b>(cellName)
+          <a name="C00420"></a><b>resendToMethod</b>(cellName)
           </div>
           <div class="description">
             <p>
@@ -288,8 +288,8 @@ x name should ==(:x)
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- it should resend the thing with the same arguments <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004161S0_source')" id="l_C004161S0_source">show source</a> ]</span>
-            <div id="C004161S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004201S0_source')" id="l_C004201S0_source">show source</a> ]</span>
+            <div id="C004201S0_source" class="dyn-source">
 <pre>
 x = macro(call resendToMethod(:f)) 
 f = method(a, b, c, [](a, b, c)) 

@@ -95,19 +95,20 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 <li><a href="#C00120">in</a></li>
 <li><a href="#C00117">kind</a></li>
 <li><a href="#C00118">out</a></li>
-<li><a href="#C00126">programArguments</a></li>
+<li><a href="#C00127">programArguments</a></li>
 
         </ul>        
 
         <div class="sectiontitle">Active cells</div>
         <ul>
-          <li><a href="#C00128">atExit([code])</a></li>
-<li><a href="#C00124">currentDirectory()</a></li>
+          <li><a href="#C00129">atExit([code])</a></li>
+<li><a href="#C00125">currentDirectory()</a></li>
 <li><a href="#C00122">currentFile()</a></li>
-<li><a href="#C00125">exit(other 1)</a></li>
-<li><a href="#C00127">ifMain([code])</a></li>
-<li><a href="#C00123">loadPath()</a></li>
-<li><a href="#C00129">notice()</a></li>
+<li><a href="#C00126">exit(other 1)</a></li>
+<li><a href="#C00128">ifMain([code])</a></li>
+<li><a href="#C00124">loadPath()</a></li>
+<li><a href="#C00130">notice()</a></li>
+<li><a href="#C00123">windows?()</a></li>
 
         </ul>
 
@@ -161,7 +162,7 @@ System should have kind("System")
             <tr valign="top">
               <td class="cell-name">err</td>
               <td>=</td>
-              <td class="cell-value">IO_0x1768B0A</td>
+              <td class="cell-value">IO_0x1CE835B</td>
             </tr>
           </table>
         </div>
@@ -171,7 +172,7 @@ System should have kind("System")
             <tr valign="top">
               <td class="cell-name">in</td>
               <td>=</td>
-              <td class="cell-value">IO_0x943653</td>
+              <td class="cell-value">IO_0x1DD8664</td>
             </tr>
           </table>
         </div>
@@ -191,12 +192,12 @@ System should have kind("System")
             <tr valign="top">
               <td class="cell-name">out</td>
               <td>=</td>
-              <td class="cell-value">IO_0x12B72F4</td>
+              <td class="cell-value">IO_0xCF17C3</td>
             </tr>
           </table>
         </div>
         <div class="cell">
-          <a name="C00126"></a>
+          <a name="C00127"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">programArguments</td>
@@ -210,7 +211,7 @@ System should have kind("System")
         <div class="sectiontitle">Active cells (details)</div>
                 <div class="cell">
           <div class="title">
-          <a name="C00128"></a><b>atExit</b>([code])
+          <a name="C00129"></a><b>atExit</b>([code])
           </div>
           <div class="description">
             <p>
@@ -224,7 +225,7 @@ System should have kind("System")
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00124"></a><b>currentDirectory</b>()
+          <a name="C00125"></a><b>currentDirectory</b>()
           </div>
           <div class="description">
             <p>
@@ -252,7 +253,7 @@ System should have kind("System")
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00125"></a><b>exit</b>(other 1)
+          <a name="C00126"></a><b>exit</b>(other 1)
           </div>
           <div class="description">
             <p>
@@ -266,7 +267,7 @@ System should have kind("System")
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00127"></a><b>ifMain</b>([code])
+          <a name="C00128"></a><b>ifMain</b>([code])
           </div>
           <div class="description">
             <p>
@@ -280,7 +281,7 @@ System should have kind("System")
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00123"></a><b>loadPath</b>()
+          <a name="C00124"></a><b>loadPath</b>()
           </div>
           <div class="description">
             <p>
@@ -294,7 +295,7 @@ System should have kind("System")
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00129"></a><b>notice</b>()
+          <a name="C00130"></a><b>notice</b>()
           </div>
           <div class="description">
             <p>
@@ -302,8 +303,8 @@ System should have kind("System")
             </p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00129_source')" id="l_C00129_source">show source</a> ]</p>
-            <div id="C00129_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00130_source')" id="l_C00130_source">show source</a> ]</p>
+            <div id="C00130_source" class="dyn-source">
 <pre>
 method(
   if(cell(:self) ==(System), 
@@ -315,8 +316,8 @@ method(
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return 'System <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001291S0_source')" id="l_C001291S0_source">show source</a> ]</span>
-            <div id="C001291S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001301S0_source')" id="l_C001301S0_source">show source</a> ]</span>
+            <div id="C001301S0_source" class="dyn-source">
 <pre>
 System notice should ==("System") 
 
@@ -324,8 +325,8 @@ System notice should ==("System")
             </div>
             </span></li>
 <li>- should not return 'System' for a mimic <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001291S1_source')" id="l_C001291S1_source">show source</a> ]</span>
-            <div id="C001291S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001301S1_source')" id="l_C001301S1_source">show source</a> ]</span>
+            <div id="C001301S1_source" class="dyn-source">
 <pre>
 System mimic notice should not ==("System") 
 
@@ -334,6 +335,20 @@ System mimic notice should not ==("System")
             </span></li>
 </ul>
 
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00123"></a><b>windows?</b>()
+          </div>
+          <div class="description">
+            <p>
+              returns true if running on windows, otherwise false
+            </p>
+          </div>
+          
+          <div class="specs">
+            
           </div>
         </div>
 

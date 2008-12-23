@@ -90,19 +90,19 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 
         <div class="sectiontitle">Inactive cells</div>
         <ul>
-          <li><a href="#C00358">kind</a></li>
+          <li><a href="#C00360">kind</a></li>
 
         </ul>        
 
         <div class="sectiontitle">Active cells</div>
         <ul>
-          <li><a href="#C00362">&lt;&lt;(value)</a></li>
-<li><a href="#C00364">===(...)</a></li>
-<li><a href="#C00365">each([indexOrArgOrCode], [argOrCode] nil, [code] nil)</a></li>
-<li><a href="#C00363">include?(object)</a></li>
-<li><a href="#C00359">inspect()</a></li>
-<li><a href="#C00361">notice()</a></li>
-<li><a href="#C00360">withIdentitySemantics!()</a></li>
+          <li><a href="#C00364">&lt;&lt;(value)</a></li>
+<li><a href="#C00366">===(...)</a></li>
+<li><a href="#C00367">each([indexOrArgOrCode], [argOrCode] nil, [code] nil)</a></li>
+<li><a href="#C00365">include?(object)</a></li>
+<li><a href="#C00361">inspect()</a></li>
+<li><a href="#C00363">notice()</a></li>
+<li><a href="#C00362">withIdentitySemantics!()</a></li>
 
         </ul>
 
@@ -216,7 +216,7 @@ set(1, 2, 3, 4, 5, 6, 7) should ==(set(1, 2, 3, 5, 4, 6, 7))
 
         <div class="sectiontitle">Inactive cells (details)</div>
                 <div class="cell">
-          <a name="C00358"></a>
+          <a name="C00360"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">kind</td>
@@ -230,7 +230,7 @@ set(1, 2, 3, 4, 5, 6, 7) should ==(set(1, 2, 3, 5, 4, 6, 7))
         <div class="sectiontitle">Active cells (details)</div>
                 <div class="cell">
           <div class="title">
-          <a name="C00362"></a><b>&lt;&lt;</b>(value)
+          <a name="C00364"></a><b>&lt;&lt;</b>(value)
           </div>
           <div class="description">
             <p>
@@ -241,8 +241,8 @@ set(1, 2, 3, 4, 5, 6, 7) should ==(set(1, 2, 3, 5, 4, 6, 7))
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should add an element that isn't part of the set already <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C003621S0_source')" id="l_C003621S0_source">show source</a> ]</span>
-            <div id="C003621S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003641S0_source')" id="l_C003641S0_source">show source</a> ]</span>
+            <div id="C003641S0_source" class="dyn-source">
 <pre>
 x = set(1) 
 x &lt;&lt;(2) 
@@ -252,8 +252,8 @@ x should ==(set(1, 2))
             </div>
             </span></li>
 <li>- should not add an element that is part of the set already <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C003621S1_source')" id="l_C003621S1_source">show source</a> ]</span>
-            <div id="C003621S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003641S1_source')" id="l_C003641S1_source">show source</a> ]</span>
+            <div id="C003641S1_source" class="dyn-source">
 <pre>
 x = set(1, 2, 3) 
 x &lt;&lt;(2) 
@@ -263,8 +263,8 @@ x should ==(set(1, 2, 3))
             </div>
             </span></li>
 <li>- should return the set after adding <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C003621S2_source')" id="l_C003621S2_source">show source</a> ]</span>
-            <div id="C003621S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003641S2_source')" id="l_C003641S2_source">show source</a> ]</span>
+            <div id="C003641S2_source" class="dyn-source">
 <pre>
 x = set(1) 
 (x &lt;&lt;(2)) should be same(x) 
@@ -278,7 +278,7 @@ x = set(1)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00364"></a><b>===</b>(...)
+          <a name="C00366"></a><b>===</b>(...)
           </div>
           <div class="description">
             <p>
@@ -289,8 +289,8 @@ x = set(1)
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should match something in the set <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C003641S0_source')" id="l_C003641S0_source">show source</a> ]</span>
-            <div id="C003641S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003661S0_source')" id="l_C003661S0_source">show source</a> ]</span>
+            <div id="C003661S0_source" class="dyn-source">
 <pre>
 (set(1) ===(1)) should ==(true) 
 (set(1, 2) ===(2)) should ==(true) 
@@ -301,8 +301,8 @@ x = set(1)
             </div>
             </span></li>
 <li>- should not match something not in the set <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C003641S1_source')" id="l_C003641S1_source">show source</a> ]</span>
-            <div id="C003641S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003661S1_source')" id="l_C003661S1_source">show source</a> ]</span>
+            <div id="C003661S1_source" class="dyn-source">
 <pre>
 (set(1) ===(2)) should ==(false) 
 (set(1, 2) ===(3)) should ==(false) 
@@ -318,7 +318,7 @@ x = set(1)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00365"></a><b>each</b>([indexOrArgOrCode], [argOrCode] nil, [code] nil)
+          <a name="C00367"></a><b>each</b>([indexOrArgOrCode], [argOrCode] nil, [code] nil)
           </div>
           <div class="description">
             <p>
@@ -329,8 +329,8 @@ x = set(1)
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should not do anything for an empty set <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C003651S0_source')" id="l_C003651S0_source">show source</a> ]</span>
-            <div id="C003651S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003671S0_source')" id="l_C003671S0_source">show source</a> ]</span>
+            <div id="C003671S0_source" class="dyn-source">
 <pre>
 x = 0 
 set each(++(x)) 
@@ -340,8 +340,8 @@ x should ==(0)
             </div>
             </span></li>
 <li>- should be possible to just give it a message chain, that will be invoked on each object <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C003651S1_source')" id="l_C003651S1_source">show source</a> ]</span>
-            <div id="C003651S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003671S1_source')" id="l_C003671S1_source">show source</a> ]</span>
+            <div id="C003671S1_source" class="dyn-source">
 <pre>
 Ground y = [] 
 Ground x_set_spec1 = method(Ground y &lt;&lt;(self)) 
@@ -356,8 +356,8 @@ x should ==(3)
             </div>
             </span></li>
 <li>- should be possible to give it an argument name, and code <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C003651S2_source')" id="l_C003651S2_source">show source</a> ]</span>
-            <div id="C003651S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003671S2_source')" id="l_C003671S2_source">show source</a> ]</span>
+            <div id="C003671S2_source" class="dyn-source">
 <pre>
 y = [] 
 set(1, 2, 3) each(x, y &lt;&lt;(x)) 
@@ -367,8 +367,8 @@ y sort should ==([](1, 2, 3))
             </div>
             </span></li>
 <li>- should return the object <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C003651S3_source')" id="l_C003651S3_source">show source</a> ]</span>
-            <div id="C003651S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003671S3_source')" id="l_C003671S3_source">show source</a> ]</span>
+            <div id="C003671S3_source" class="dyn-source">
 <pre>
 y = set(1, 2, 3) 
 (y each(x, x)) should ==(y) 
@@ -377,8 +377,8 @@ y = set(1, 2, 3)
             </div>
             </span></li>
 <li>- should be possible to give it an extra argument to get the index <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C003651S4_source')" id="l_C003651S4_source">show source</a> ]</span>
-            <div id="C003651S4_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003671S4_source')" id="l_C003671S4_source">show source</a> ]</span>
+            <div id="C003671S4_source" class="dyn-source">
 <pre>
 y = [] 
 set(1, 2, 3, 4) each(i, x, y &lt;&lt;(i)) 
@@ -388,8 +388,8 @@ y should ==([](0, 1, 2, 3))
             </div>
             </span></li>
 <li>- should establish a lexical context when invoking the methods. this context will be the same for all invocations. <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C003651S5_source')" id="l_C003651S5_source">show source</a> ]</span>
-            <div id="C003651S5_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003671S5_source')" id="l_C003671S5_source">show source</a> ]</span>
+            <div id="C003671S5_source" class="dyn-source">
 <pre>
 set(1, 2, 3) each(x_set_spec, blarg_set_spec = 32) 
 cell?(:x_set_spec) should ==(false) 
@@ -407,7 +407,7 @@ x should ==(14)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00363"></a><b>include?</b>(object)
+          <a name="C00365"></a><b>include?</b>(object)
           </div>
           <div class="description">
             <p>
@@ -418,8 +418,8 @@ x should ==(14)
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should match something in the set <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C003631S0_source')" id="l_C003631S0_source">show source</a> ]</span>
-            <div id="C003631S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003651S0_source')" id="l_C003651S0_source">show source</a> ]</span>
+            <div id="C003651S0_source" class="dyn-source">
 <pre>
 set(1) include?(1) should ==(true) 
 set(1, 2) include?(2) should ==(true) 
@@ -430,8 +430,8 @@ set("foo", "bar") include?("foo") should ==(true)
             </div>
             </span></li>
 <li>- should not match something not in the set <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C003631S1_source')" id="l_C003631S1_source">show source</a> ]</span>
-            <div id="C003631S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003651S1_source')" id="l_C003651S1_source">show source</a> ]</span>
+            <div id="C003651S1_source" class="dyn-source">
 <pre>
 set(1) include?(2) should ==(false) 
 set(1, 2) include?(3) should ==(false) 
@@ -447,7 +447,7 @@ set("foo", "bar") include?(:bar) should ==(false)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00359"></a><b>inspect</b>()
+          <a name="C00361"></a><b>inspect</b>()
           </div>
           <div class="description">
             <p>
@@ -458,8 +458,8 @@ set("foo", "bar") include?(:bar) should ==(false)
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return something inside of a call to set <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C003591S0_source')" id="l_C003591S0_source">show source</a> ]</span>
-            <div id="C003591S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003611S0_source')" id="l_C003611S0_source">show source</a> ]</span>
+            <div id="C003611S0_source" class="dyn-source">
 <pre>
 set inspect should ==("set()") 
 set inspect should ==("set()") 
@@ -469,8 +469,8 @@ set(1) inspect should ==("set(1)")
             </div>
             </span></li>
 <li>- should use inspect format for things inside <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C003591S1_source')" id="l_C003591S1_source">show source</a> ]</span>
-            <div id="C003591S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003611S1_source')" id="l_C003611S1_source">show source</a> ]</span>
+            <div id="C003611S1_source" class="dyn-source">
 <pre>
 set(method(foo bar baz)) inspect should ==("set(method(foo bar baz))") 
 
@@ -478,8 +478,8 @@ set(method(foo bar baz)) inspect should ==("set(method(foo bar baz))")
             </div>
             </span></li>
 <li>- should return all the elements separated by commas <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C003591S2_source')" id="l_C003591S2_source">show source</a> ]</span>
-            <div id="C003591S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003611S2_source')" id="l_C003611S2_source">show source</a> ]</span>
+            <div id="C003611S2_source" class="dyn-source">
 <pre>
 val = set(1, 2, 2, 2) inspect 
 
@@ -494,7 +494,7 @@ val = set(1, 2, 2, 2) inspect
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00361"></a><b>notice</b>()
+          <a name="C00363"></a><b>notice</b>()
           </div>
           <div class="description">
             <p>
@@ -505,8 +505,8 @@ val = set(1, 2, 2, 2) inspect
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return something inside of a call to set <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C003611S0_source')" id="l_C003611S0_source">show source</a> ]</span>
-            <div id="C003611S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003631S0_source')" id="l_C003631S0_source">show source</a> ]</span>
+            <div id="C003631S0_source" class="dyn-source">
 <pre>
 set notice should ==("set()") 
 set notice should ==("set()") 
@@ -516,8 +516,8 @@ set(1) notice should ==("set(1)")
             </div>
             </span></li>
 <li>- should use notice format for things inside <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C003611S1_source')" id="l_C003611S1_source">show source</a> ]</span>
-            <div id="C003611S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003631S1_source')" id="l_C003631S1_source">show source</a> ]</span>
+            <div id="C003631S1_source" class="dyn-source">
 <pre>
 set(method(foo bar baz)) notice should ==("set(method(...))") 
 
@@ -525,8 +525,8 @@ set(method(foo bar baz)) notice should ==("set(method(...))")
             </div>
             </span></li>
 <li>- should return all the elements separated by commas <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C003611S2_source')" id="l_C003611S2_source">show source</a> ]</span>
-            <div id="C003611S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003631S2_source')" id="l_C003631S2_source">show source</a> ]</span>
+            <div id="C003631S2_source" class="dyn-source">
 <pre>
 val = set(1, 2, 2, 2) notice 
 (val ==("set(1, 2)")) ||((val ==("set(2, 1)")) should ==(true)) 
@@ -540,7 +540,7 @@ val = set(1, 2, 2, 2) notice
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00360"></a><b>withIdentitySemantics!</b>()
+          <a name="C00362"></a><b>withIdentitySemantics!</b>()
           </div>
           <div class="description">
             <p>

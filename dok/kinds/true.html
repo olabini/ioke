@@ -90,24 +90,24 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 
         <div class="sectiontitle">Inactive cells</div>
         <ul>
-          <li><a href="#C00213">inspect</a></li>
-<li><a href="#C00202">kind</a></li>
-<li><a href="#C00214">notice</a></li>
+          <li><a href="#C00214">inspect</a></li>
+<li><a href="#C00203">kind</a></li>
+<li><a href="#C00215">notice</a></li>
 
         </ul>        
 
         <div class="sectiontitle">Active cells</div>
         <ul>
-          <li><a href="#C00207">&&(...)</a></li>
-<li><a href="#C00206">and(...)</a></li>
-<li><a href="#C00204">ifFalse(...)</a></li>
-<li><a href="#C00203">ifTrue(...)</a></li>
-<li><a href="#C00212">nand(...)</a></li>
-<li><a href="#C00211">nor(...)</a></li>
-<li><a href="#C00205">not()</a></li>
-<li><a href="#C00208">or(...)</a></li>
-<li><a href="#C00210">xor(...)</a></li>
-<li><a href="#C00209">||(...)</a></li>
+          <li><a href="#C00208">&&(...)</a></li>
+<li><a href="#C00207">and(...)</a></li>
+<li><a href="#C00205">ifFalse(...)</a></li>
+<li><a href="#C00204">ifTrue(...)</a></li>
+<li><a href="#C00213">nand(...)</a></li>
+<li><a href="#C00212">nor(...)</a></li>
+<li><a href="#C00206">not()</a></li>
+<li><a href="#C00209">or(...)</a></li>
+<li><a href="#C00211">xor(...)</a></li>
+<li><a href="#C00210">||(...)</a></li>
 
         </ul>
 
@@ -183,7 +183,7 @@ x true? should ==(true)
 
         <div class="sectiontitle">Inactive cells (details)</div>
                 <div class="cell">
-          <a name="C00213"></a>
+          <a name="C00214"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">inspect</td>
@@ -193,7 +193,7 @@ x true? should ==(true)
           </table>
         </div>
         <div class="cell">
-          <a name="C00202"></a>
+          <a name="C00203"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">kind</td>
@@ -203,7 +203,7 @@ x true? should ==(true)
           </table>
         </div>
         <div class="cell">
-          <a name="C00214"></a>
+          <a name="C00215"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">notice</td>
@@ -217,11 +217,64 @@ x true? should ==(true)
         <div class="sectiontitle">Active cells (details)</div>
                 <div class="cell">
           <div class="title">
-          <a name="C00207"></a><b>&&</b>(...)
+          <a name="C00208"></a><b>&&</b>(...)
           </div>
           <div class="description">
             <p>
               nil
+            </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00208_source')" id="l_C00208_source">show source</a> ]</p>
+            <div id="C00208_source" class="dyn-source">
+<pre>
+macro(
+  call argAt(0))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should evaluate it's argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002081S0_source')" id="l_C002081S0_source">show source</a> ]</span>
+            <div id="C002081S0_source" class="dyn-source">
+<pre>
+x = 41 
+true &&((x = 42)) 
+x should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the result of the argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002081S1_source')" id="l_C002081S1_source">show source</a> ]</span>
+            <div id="C002081S1_source" class="dyn-source">
+<pre>
+(true &&(42)) should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be available in infix <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002081S2_source')" id="l_C002081S2_source">show source</a> ]</span>
+            <div id="C002081S2_source" class="dyn-source">
+<pre>
+(true &&(43)) should ==(43) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00207"></a><b>and</b>(...)
+          </div>
+          <div class="description">
+            <p>
+              Evaluates the argument and returns the result
             </p>
           </div>
                     <div class="sourcecode">
@@ -240,7 +293,7 @@ macro(
             <div id="C002071S0_source" class="dyn-source">
 <pre>
 x = 41 
-true &&((x = 42)) 
+true and((x = 42)) 
 x should ==(42) 
 
 </pre>
@@ -250,7 +303,7 @@ x should ==(42)
             <span class="source-link">[ <a href="javascript:toggleSource('C002071S1_source')" id="l_C002071S1_source">show source</a> ]</span>
             <div id="C002071S1_source" class="dyn-source">
 <pre>
-(true &&(42)) should ==(42) 
+(true and(42)) should ==(42) 
 
 </pre>
             </div>
@@ -258,59 +311,6 @@ x should ==(42)
 <li>- should be available in infix <span class="sourcecode">
             <span class="source-link">[ <a href="javascript:toggleSource('C002071S2_source')" id="l_C002071S2_source">show source</a> ]</span>
             <div id="C002071S2_source" class="dyn-source">
-<pre>
-(true &&(43)) should ==(43) 
-
-</pre>
-            </div>
-            </span></li>
-</ul>
-
-          </div>
-        </div>
-        <div class="cell">
-          <div class="title">
-          <a name="C00206"></a><b>and</b>(...)
-          </div>
-          <div class="description">
-            <p>
-              Evaluates the argument and returns the result
-            </p>
-          </div>
-                    <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00206_source')" id="l_C00206_source">show source</a> ]</p>
-            <div id="C00206_source" class="dyn-source">
-<pre>
-macro(
-  call argAt(0))
-</pre>
-            </div>
-            </div>
-          <div class="specs">
-            <ul style="list-style-type: none;">
-<li>- should evaluate it's argument <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C002061S0_source')" id="l_C002061S0_source">show source</a> ]</span>
-            <div id="C002061S0_source" class="dyn-source">
-<pre>
-x = 41 
-true and((x = 42)) 
-x should ==(42) 
-
-</pre>
-            </div>
-            </span></li>
-<li>- should return the result of the argument <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C002061S1_source')" id="l_C002061S1_source">show source</a> ]</span>
-            <div id="C002061S1_source" class="dyn-source">
-<pre>
-(true and(42)) should ==(42) 
-
-</pre>
-            </div>
-            </span></li>
-<li>- should be available in infix <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C002061S2_source')" id="l_C002061S2_source">show source</a> ]</span>
-            <div id="C002061S2_source" class="dyn-source">
 <pre>
 (true and(43)) should ==(43) 
 
@@ -323,7 +323,7 @@ x should ==(42)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00204"></a><b>ifFalse</b>(...)
+          <a name="C00205"></a><b>ifFalse</b>(...)
           </div>
           <div class="description">
             <p>
@@ -331,8 +331,8 @@ x should ==(42)
             </p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00204_source')" id="l_C00204_source">show source</a> ]</p>
-            <div id="C00204_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00205_source')" id="l_C00205_source">show source</a> ]</p>
+            <div id="C00205_source" class="dyn-source">
 <pre>
 macro(
   @)
@@ -342,8 +342,8 @@ macro(
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should not execute it's argument <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C002041S0_source')" id="l_C002041S0_source">show source</a> ]</span>
-            <div id="C002041S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002051S0_source')" id="l_C002051S0_source">show source</a> ]</span>
+            <div id="C002051S0_source" class="dyn-source">
 <pre>
 x = 41 
 true ifFalse(x = 42) 
@@ -353,8 +353,8 @@ x should ==(41)
             </div>
             </span></li>
 <li>- should return true <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C002041S1_source')" id="l_C002041S1_source">show source</a> ]</span>
-            <div id="C002041S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002051S1_source')" id="l_C002051S1_source">show source</a> ]</span>
+            <div id="C002051S1_source" class="dyn-source">
 <pre>
 true ifFalse(x = 42) should ==(true) 
 
@@ -367,7 +367,7 @@ true ifFalse(x = 42) should ==(true)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00203"></a><b>ifTrue</b>(...)
+          <a name="C00204"></a><b>ifTrue</b>(...)
           </div>
           <div class="description">
             <p>
@@ -375,8 +375,8 @@ true ifFalse(x = 42) should ==(true)
             </p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00203_source')" id="l_C00203_source">show source</a> ]</p>
-            <div id="C00203_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00204_source')" id="l_C00204_source">show source</a> ]</p>
+            <div id="C00204_source" class="dyn-source">
 <pre>
 macro(
   call argAt(0) 
@@ -387,8 +387,8 @@ macro(
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should execute it's argument <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C002031S0_source')" id="l_C002031S0_source">show source</a> ]</span>
-            <div id="C002031S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002041S0_source')" id="l_C002041S0_source">show source</a> ]</span>
+            <div id="C002041S0_source" class="dyn-source">
 <pre>
 x = 41 
 true ifTrue(x = 42) 
@@ -398,8 +398,8 @@ x should ==(42)
             </div>
             </span></li>
 <li>- should return true <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C002031S1_source')" id="l_C002031S1_source">show source</a> ]</span>
-            <div id="C002031S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002041S1_source')" id="l_C002041S1_source">show source</a> ]</span>
+            <div id="C002041S1_source" class="dyn-source">
 <pre>
 true ifTrue(x = 42) should ==(true) 
 
@@ -412,7 +412,7 @@ true ifTrue(x = 42) should ==(true)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00212"></a><b>nand</b>(...)
+          <a name="C00213"></a><b>nand</b>(...)
           </div>
           <div class="description">
             <p>
@@ -420,8 +420,8 @@ true ifTrue(x = 42) should ==(true)
             </p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00212_source')" id="l_C00212_source">show source</a> ]</p>
-            <div id="C00212_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00213_source')" id="l_C00213_source">show source</a> ]</p>
+            <div id="C00213_source" class="dyn-source">
 <pre>
 macro(
   if(call argAt(0), false, true))
@@ -431,8 +431,8 @@ macro(
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should evaluate it's argument <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C002121S0_source')" id="l_C002121S0_source">show source</a> ]</span>
-            <div id="C002121S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002131S0_source')" id="l_C002131S0_source">show source</a> ]</span>
+            <div id="C002131S0_source" class="dyn-source">
 <pre>
 x = 41 
 true nand((x = 42)) 
@@ -442,8 +442,8 @@ x should ==(42)
             </div>
             </span></li>
 <li>- should return false if the argument evaluates to true <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C002121S1_source')" id="l_C002121S1_source">show source</a> ]</span>
-            <div id="C002121S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002131S1_source')" id="l_C002131S1_source">show source</a> ]</span>
+            <div id="C002131S1_source" class="dyn-source">
 <pre>
 (true nand(42)) should ==(false) 
 
@@ -451,8 +451,8 @@ x should ==(42)
             </div>
             </span></li>
 <li>- should return true if the argument evaluates to false <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C002121S2_source')" id="l_C002121S2_source">show source</a> ]</span>
-            <div id="C002121S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002131S2_source')" id="l_C002131S2_source">show source</a> ]</span>
+            <div id="C002131S2_source" class="dyn-source">
 <pre>
 (true nand(false)) should ==(true) 
 
@@ -460,8 +460,8 @@ x should ==(42)
             </div>
             </span></li>
 <li>- should return true if the argument evaluates to nil <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C002121S3_source')" id="l_C002121S3_source">show source</a> ]</span>
-            <div id="C002121S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002131S3_source')" id="l_C002131S3_source">show source</a> ]</span>
+            <div id="C002131S3_source" class="dyn-source">
 <pre>
 (true nand(nil)) should ==(true) 
 
@@ -469,8 +469,8 @@ x should ==(42)
             </div>
             </span></li>
 <li>- should be available in infix <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C002121S4_source')" id="l_C002121S4_source">show source</a> ]</span>
-            <div id="C002121S4_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002131S4_source')" id="l_C002131S4_source">show source</a> ]</span>
+            <div id="C002131S4_source" class="dyn-source">
 <pre>
 (true nand(43)) should ==(false) 
 
@@ -483,7 +483,7 @@ x should ==(42)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00211"></a><b>nor</b>(...)
+          <a name="C00212"></a><b>nor</b>(...)
           </div>
           <div class="description">
             <p>
@@ -491,8 +491,8 @@ x should ==(42)
             </p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00211_source')" id="l_C00211_source">show source</a> ]</p>
-            <div id="C00211_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00212_source')" id="l_C00212_source">show source</a> ]</p>
+            <div id="C00212_source" class="dyn-source">
 <pre>
 macro(
   false)
@@ -502,8 +502,8 @@ macro(
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should not evaluate it's argument <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C002111S0_source')" id="l_C002111S0_source">show source</a> ]</span>
-            <div id="C002111S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002121S0_source')" id="l_C002121S0_source">show source</a> ]</span>
+            <div id="C002121S0_source" class="dyn-source">
 <pre>
 x = 41 
 true nor((x = 42)) 
@@ -513,8 +513,8 @@ x should ==(41)
             </div>
             </span></li>
 <li>- should return false <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C002111S1_source')" id="l_C002111S1_source">show source</a> ]</span>
-            <div id="C002111S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002121S1_source')" id="l_C002121S1_source">show source</a> ]</span>
+            <div id="C002121S1_source" class="dyn-source">
 <pre>
 (true nor(42)) should ==(false) 
 
@@ -522,8 +522,8 @@ x should ==(41)
             </div>
             </span></li>
 <li>- should be available in infix <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C002111S2_source')" id="l_C002111S2_source">show source</a> ]</span>
-            <div id="C002111S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002121S2_source')" id="l_C002121S2_source">show source</a> ]</span>
+            <div id="C002121S2_source" class="dyn-source">
 <pre>
 (true nor(43)) should ==(false) 
 
@@ -536,7 +536,7 @@ x should ==(41)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00205"></a><b>not</b>()
+          <a name="C00206"></a><b>not</b>()
           </div>
           <div class="description">
             <p>
@@ -544,8 +544,8 @@ x should ==(41)
             </p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00205_source')" id="l_C00205_source">show source</a> ]</p>
-            <div id="C00205_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00206_source')" id="l_C00206_source">show source</a> ]</p>
+            <div id="C00206_source" class="dyn-source">
 <pre>
 method(
   false)
@@ -555,8 +555,8 @@ method(
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return false <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C002051S0_source')" id="l_C002051S0_source">show source</a> ]</span>
-            <div id="C002051S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002061S0_source')" id="l_C002061S0_source">show source</a> ]</span>
+            <div id="C002061S0_source" class="dyn-source">
 <pre>
 true not should ==(false) 
 x = true 
@@ -571,135 +571,11 @@ x not should ==(false)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00208"></a><b>or</b>(...)
+          <a name="C00209"></a><b>or</b>(...)
           </div>
           <div class="description">
             <p>
               Does not evaluate argument and returns true
-            </p>
-          </div>
-                    <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00208_source')" id="l_C00208_source">show source</a> ]</p>
-            <div id="C00208_source" class="dyn-source">
-<pre>
-macro(
-  true)
-</pre>
-            </div>
-            </div>
-          <div class="specs">
-            <ul style="list-style-type: none;">
-<li>- should not evaluate it's argument <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C002081S0_source')" id="l_C002081S0_source">show source</a> ]</span>
-            <div id="C002081S0_source" class="dyn-source">
-<pre>
-x = 41 
-true or((x = 42)) 
-x should ==(41) 
-
-</pre>
-            </div>
-            </span></li>
-<li>- should return true <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C002081S1_source')" id="l_C002081S1_source">show source</a> ]</span>
-            <div id="C002081S1_source" class="dyn-source">
-<pre>
-(true or(42)) should ==(true) 
-
-</pre>
-            </div>
-            </span></li>
-<li>- should be available in infix <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C002081S2_source')" id="l_C002081S2_source">show source</a> ]</span>
-            <div id="C002081S2_source" class="dyn-source">
-<pre>
-(true or(43)) should ==(true) 
-
-</pre>
-            </div>
-            </span></li>
-</ul>
-
-          </div>
-        </div>
-        <div class="cell">
-          <div class="title">
-          <a name="C00210"></a><b>xor</b>(...)
-          </div>
-          <div class="description">
-            <p>
-              Evaluates the argument and returns the inverse of the argument
-            </p>
-          </div>
-                    <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00210_source')" id="l_C00210_source">show source</a> ]</p>
-            <div id="C00210_source" class="dyn-source">
-<pre>
-macro(
-  if(call argAt(0), false, true))
-</pre>
-            </div>
-            </div>
-          <div class="specs">
-            <ul style="list-style-type: none;">
-<li>- should evaluate it's argument <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C002101S0_source')" id="l_C002101S0_source">show source</a> ]</span>
-            <div id="C002101S0_source" class="dyn-source">
-<pre>
-x = 41 
-true xor((x = 42)) 
-x should ==(42) 
-
-</pre>
-            </div>
-            </span></li>
-<li>- should return false if the argument is true <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C002101S1_source')" id="l_C002101S1_source">show source</a> ]</span>
-            <div id="C002101S1_source" class="dyn-source">
-<pre>
-(true xor(true)) should ==(false) 
-
-</pre>
-            </div>
-            </span></li>
-<li>- should return true if the argument is false <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C002101S2_source')" id="l_C002101S2_source">show source</a> ]</span>
-            <div id="C002101S2_source" class="dyn-source">
-<pre>
-(true xor(false)) should ==(true) 
-
-</pre>
-            </div>
-            </span></li>
-<li>- should return true if the argument is nil <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C002101S3_source')" id="l_C002101S3_source">show source</a> ]</span>
-            <div id="C002101S3_source" class="dyn-source">
-<pre>
-(true xor(nil)) should ==(true) 
-
-</pre>
-            </div>
-            </span></li>
-<li>- should be available in infix <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C002101S4_source')" id="l_C002101S4_source">show source</a> ]</span>
-            <div id="C002101S4_source" class="dyn-source">
-<pre>
-(true xor(43)) should ==(false) 
-
-</pre>
-            </div>
-            </span></li>
-</ul>
-
-          </div>
-        </div>
-        <div class="cell">
-          <div class="title">
-          <a name="C00209"></a><b>||</b>(...)
-          </div>
-          <div class="description">
-            <p>
-              nil
             </p>
           </div>
                     <div class="sourcecode">
@@ -718,7 +594,7 @@ macro(
             <div id="C002091S0_source" class="dyn-source">
 <pre>
 x = 41 
-true ||((x = 42)) 
+true or((x = 42)) 
 x should ==(41) 
 
 </pre>
@@ -728,7 +604,7 @@ x should ==(41)
             <span class="source-link">[ <a href="javascript:toggleSource('C002091S1_source')" id="l_C002091S1_source">show source</a> ]</span>
             <div id="C002091S1_source" class="dyn-source">
 <pre>
-(true ||(42)) should ==(true) 
+(true or(42)) should ==(true) 
 
 </pre>
             </div>
@@ -736,6 +612,130 @@ x should ==(41)
 <li>- should be available in infix <span class="sourcecode">
             <span class="source-link">[ <a href="javascript:toggleSource('C002091S2_source')" id="l_C002091S2_source">show source</a> ]</span>
             <div id="C002091S2_source" class="dyn-source">
+<pre>
+(true or(43)) should ==(true) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00211"></a><b>xor</b>(...)
+          </div>
+          <div class="description">
+            <p>
+              Evaluates the argument and returns the inverse of the argument
+            </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00211_source')" id="l_C00211_source">show source</a> ]</p>
+            <div id="C00211_source" class="dyn-source">
+<pre>
+macro(
+  if(call argAt(0), false, true))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should evaluate it's argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002111S0_source')" id="l_C002111S0_source">show source</a> ]</span>
+            <div id="C002111S0_source" class="dyn-source">
+<pre>
+x = 41 
+true xor((x = 42)) 
+x should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return false if the argument is true <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002111S1_source')" id="l_C002111S1_source">show source</a> ]</span>
+            <div id="C002111S1_source" class="dyn-source">
+<pre>
+(true xor(true)) should ==(false) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return true if the argument is false <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002111S2_source')" id="l_C002111S2_source">show source</a> ]</span>
+            <div id="C002111S2_source" class="dyn-source">
+<pre>
+(true xor(false)) should ==(true) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return true if the argument is nil <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002111S3_source')" id="l_C002111S3_source">show source</a> ]</span>
+            <div id="C002111S3_source" class="dyn-source">
+<pre>
+(true xor(nil)) should ==(true) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be available in infix <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002111S4_source')" id="l_C002111S4_source">show source</a> ]</span>
+            <div id="C002111S4_source" class="dyn-source">
+<pre>
+(true xor(43)) should ==(false) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00210"></a><b>||</b>(...)
+          </div>
+          <div class="description">
+            <p>
+              nil
+            </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00210_source')" id="l_C00210_source">show source</a> ]</p>
+            <div id="C00210_source" class="dyn-source">
+<pre>
+macro(
+  true)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should not evaluate it's argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002101S0_source')" id="l_C002101S0_source">show source</a> ]</span>
+            <div id="C002101S0_source" class="dyn-source">
+<pre>
+x = 41 
+true ||((x = 42)) 
+x should ==(41) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return true <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002101S1_source')" id="l_C002101S1_source">show source</a> ]</span>
+            <div id="C002101S1_source" class="dyn-source">
+<pre>
+(true ||(42)) should ==(true) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be available in infix <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002101S2_source')" id="l_C002101S2_source">show source</a> ]</span>
+            <div id="C002101S2_source" class="dyn-source">
 <pre>
 (true ||(43)) should ==(true) 
 

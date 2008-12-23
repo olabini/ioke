@@ -90,23 +90,23 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 
         <div class="sectiontitle">Inactive cells</div>
         <ul>
-          <li><a href="#C00464">kind</a></li>
+          <li><a href="#C00468">kind</a></li>
 
         </ul>        
 
         <div class="sectiontitle">Active cells</div>
         <ul>
-          <li><a href="#C00468">[](+globTexts)</a></li>
-<li><a href="#C00475">copyFile(fileName, destination)</a></li>
-<li><a href="#C00476">createDirectory!(directoryName, createPath false)</a></li>
-<li><a href="#C00469">directory?(directoryName)</a></li>
-<li><a href="#C00478">ensureDirectory(dir)</a></li>
-<li><a href="#C00472">exists?(entryName)</a></li>
-<li><a href="#C00471">file?(fileName)</a></li>
-<li><a href="#C00473">parentOf(entryName)</a></li>
-<li><a href="#C00470">readFully(fileName)</a></li>
-<li><a href="#C00477">removeDirectory!(directoryName)</a></li>
-<li><a href="#C00474">withOpenFile(fileName, code)</a></li>
+          <li><a href="#C00472">[](+globTexts)</a></li>
+<li><a href="#C00479">copyFile(fileName, destination)</a></li>
+<li><a href="#C00480">createDirectory!(directoryName, createPath false)</a></li>
+<li><a href="#C00473">directory?(directoryName)</a></li>
+<li><a href="#C00482">ensureDirectory(dir)</a></li>
+<li><a href="#C00476">exists?(entryName)</a></li>
+<li><a href="#C00475">file?(fileName)</a></li>
+<li><a href="#C00477">parentOf(entryName)</a></li>
+<li><a href="#C00474">readFully(fileName)</a></li>
+<li><a href="#C00481">removeDirectory!(directoryName)</a></li>
+<li><a href="#C00478">withOpenFile(fileName, code)</a></li>
 
         </ul>
 
@@ -127,7 +127,7 @@ FileSystem should have kind("FileSystem")
 
         <div class="sectiontitle">Inactive cells (details)</div>
                 <div class="cell">
-          <a name="C00464"></a>
+          <a name="C00468"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">kind</td>
@@ -141,7 +141,7 @@ FileSystem should have kind("FileSystem")
         <div class="sectiontitle">Active cells (details)</div>
                 <div class="cell">
           <div class="title">
-          <a name="C00468"></a><b>[]</b>(+globTexts)
+          <a name="C00472"></a><b>[]</b>(+globTexts)
           </div>
           <div class="description">
             <p>
@@ -152,8 +152,8 @@ FileSystem should have kind("FileSystem")
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should glob correctly <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004681S0_source')" id="l_C004681S0_source">show source</a> ]</span>
-            <div id="C004681S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004721S0_source')" id="l_C004721S0_source">show source</a> ]</span>
+            <div id="C004721S0_source" class="dyn-source">
 <pre>
 [](
   []([]("test/_test"), "test/_test"), 
@@ -186,7 +186,7 @@ FileSystem should have kind("FileSystem")
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00475"></a><b>copyFile</b>(fileName, destination)
+          <a name="C00479"></a><b>copyFile</b>(fileName, destination)
           </div>
           <div class="description">
             <p>
@@ -200,7 +200,7 @@ FileSystem should have kind("FileSystem")
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00476"></a><b>createDirectory!</b>(directoryName, createPath false)
+          <a name="C00480"></a><b>createDirectory!</b>(directoryName, createPath false)
           </div>
           <div class="description">
             <p>
@@ -211,8 +211,8 @@ FileSystem should have kind("FileSystem")
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should signal an error if the directory already exists <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004761S0_source')" id="l_C004761S0_source">show source</a> ]</span>
-            <div id="C004761S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004801S0_source')" id="l_C004801S0_source">show source</a> ]</span>
+            <div id="C004801S0_source" class="dyn-source">
 <pre>
 fn(FileSystem createDirectory!("src")) should signal(Condition Error IO) 
 bind(rescue(Condition, fn(c, nil)), 
@@ -222,8 +222,8 @@ bind(rescue(Condition, fn(c, nil)),
             </div>
             </span></li>
 <li>- should signal an error if a file with the same name already exists <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004761S1_source')" id="l_C004761S1_source">show source</a> ]</span>
-            <div id="C004761S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004801S1_source')" id="l_C004801S1_source">show source</a> ]</span>
+            <div id="C004801S1_source" class="dyn-source">
 <pre>
 fn(FileSystem createDirectory!("build.xml")) should signal(Condition Error IO) 
 bind(rescue(Condition, fn(c, nil)), 
@@ -233,8 +233,8 @@ bind(rescue(Condition, fn(c, nil)),
             </div>
             </span></li>
 <li>- should create the directory <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004761S2_source')" id="l_C004761S2_source">show source</a> ]</span>
-            <div id="C004761S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004801S2_source')" id="l_C004801S2_source">show source</a> ]</span>
+            <div id="C004801S2_source" class="dyn-source">
 <pre>
 FileSystem createDirectory!("test/newly_created_dir") 
 FileSystem should have directory("test/newly_created_dir") 
@@ -250,7 +250,7 @@ bind(rescue(Condition, fn(c, nil)),
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00469"></a><b>directory?</b>(directoryName)
+          <a name="C00473"></a><b>directory?</b>(directoryName)
           </div>
           <div class="description">
             <p>
@@ -261,8 +261,8 @@ bind(rescue(Condition, fn(c, nil)),
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return false for something that doesn't exit <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004691S0_source')" id="l_C004691S0_source">show source</a> ]</span>
-            <div id="C004691S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004731S0_source')" id="l_C004731S0_source">show source</a> ]</span>
+            <div id="C004731S0_source" class="dyn-source">
 <pre>
 FileSystem directory?("flux_flog") should ==(false) 
 
@@ -270,8 +270,8 @@ FileSystem directory?("flux_flog") should ==(false)
             </div>
             </span></li>
 <li>- should return false for a file <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004691S1_source')" id="l_C004691S1_source">show source</a> ]</span>
-            <div id="C004691S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004731S1_source')" id="l_C004731S1_source">show source</a> ]</span>
+            <div id="C004731S1_source" class="dyn-source">
 <pre>
 FileSystem directory?("build.xml") should ==(false) 
 
@@ -279,8 +279,8 @@ FileSystem directory?("build.xml") should ==(false)
             </div>
             </span></li>
 <li>- should return false for a file inside of a directory <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004691S2_source')" id="l_C004691S2_source">show source</a> ]</span>
-            <div id="C004691S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004731S2_source')" id="l_C004731S2_source">show source</a> ]</span>
+            <div id="C004731S2_source" class="dyn-source">
 <pre>
 FileSystem directory?("src/builtin/A1_defaultBehavior.ik") should ==(false) 
 
@@ -288,8 +288,8 @@ FileSystem directory?("src/builtin/A1_defaultBehavior.ik") should ==(false)
             </div>
             </span></li>
 <li>- should return true for a directory <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004691S3_source')" id="l_C004691S3_source">show source</a> ]</span>
-            <div id="C004691S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004731S3_source')" id="l_C004731S3_source">show source</a> ]</span>
+            <div id="C004731S3_source" class="dyn-source">
 <pre>
 FileSystem directory?("src") should ==(true) 
 FileSystem directory?("src/") should ==(true) 
@@ -298,8 +298,8 @@ FileSystem directory?("src/") should ==(true)
             </div>
             </span></li>
 <li>- should return true for a directory inside another directory <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004691S4_source')" id="l_C004691S4_source">show source</a> ]</span>
-            <div id="C004691S4_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004731S4_source')" id="l_C004731S4_source">show source</a> ]</span>
+            <div id="C004731S4_source" class="dyn-source">
 <pre>
 FileSystem directory?("src/builtin") should ==(true) 
 
@@ -312,7 +312,7 @@ FileSystem directory?("src/builtin") should ==(true)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00478"></a><b>ensureDirectory</b>(dir)
+          <a name="C00482"></a><b>ensureDirectory</b>(dir)
           </div>
           <div class="description">
             <p>
@@ -320,8 +320,8 @@ FileSystem directory?("src/builtin") should ==(true)
             </p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00478_source')" id="l_C00478_source">show source</a> ]</p>
-            <div id="C00478_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00482_source')" id="l_C00482_source">show source</a> ]</p>
+            <div id="C00482_source" class="dyn-source">
 <pre>
 method(dir, 
   if(exists?(dir), 
@@ -340,7 +340,7 @@ method(dir,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00472"></a><b>exists?</b>(entryName)
+          <a name="C00476"></a><b>exists?</b>(entryName)
           </div>
           <div class="description">
             <p>
@@ -351,8 +351,8 @@ method(dir,
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return false for something that doesn't exit <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004721S0_source')" id="l_C004721S0_source">show source</a> ]</span>
-            <div id="C004721S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004761S0_source')" id="l_C004761S0_source">show source</a> ]</span>
+            <div id="C004761S0_source" class="dyn-source">
 <pre>
 FileSystem exists?("flux_flog") should ==(false) 
 FileSystem exists?("src/flux_flog") should ==(false) 
@@ -362,8 +362,8 @@ FileSystem exists?("flux_flog/builtin") should ==(false)
             </div>
             </span></li>
 <li>- should return true for a file <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004721S1_source')" id="l_C004721S1_source">show source</a> ]</span>
-            <div id="C004721S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004761S1_source')" id="l_C004761S1_source">show source</a> ]</span>
+            <div id="C004761S1_source" class="dyn-source">
 <pre>
 FileSystem exists?("build.xml") should ==(true) 
 FileSystem exists?("src/builtin/A1_defaultBehavior.ik") should ==(true) 
@@ -372,8 +372,8 @@ FileSystem exists?("src/builtin/A1_defaultBehavior.ik") should ==(true)
             </div>
             </span></li>
 <li>- should return true for a directory <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004721S2_source')" id="l_C004721S2_source">show source</a> ]</span>
-            <div id="C004721S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004761S2_source')" id="l_C004761S2_source">show source</a> ]</span>
+            <div id="C004761S2_source" class="dyn-source">
 <pre>
 FileSystem exists?("src") should ==(true) 
 FileSystem exists?("src/") should ==(true) 
@@ -388,7 +388,7 @@ FileSystem exists?("src/builtin") should ==(true)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00471"></a><b>file?</b>(fileName)
+          <a name="C00475"></a><b>file?</b>(fileName)
           </div>
           <div class="description">
             <p>
@@ -399,8 +399,8 @@ FileSystem exists?("src/builtin") should ==(true)
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return false for something that doesn't exit <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004711S0_source')" id="l_C004711S0_source">show source</a> ]</span>
-            <div id="C004711S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004751S0_source')" id="l_C004751S0_source">show source</a> ]</span>
+            <div id="C004751S0_source" class="dyn-source">
 <pre>
 FileSystem file?("flux_flog") should ==(false) 
 
@@ -408,8 +408,8 @@ FileSystem file?("flux_flog") should ==(false)
             </div>
             </span></li>
 <li>- should return true for a file <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004711S1_source')" id="l_C004711S1_source">show source</a> ]</span>
-            <div id="C004711S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004751S1_source')" id="l_C004751S1_source">show source</a> ]</span>
+            <div id="C004751S1_source" class="dyn-source">
 <pre>
 FileSystem file?("build.xml") should ==(true) 
 
@@ -417,8 +417,8 @@ FileSystem file?("build.xml") should ==(true)
             </div>
             </span></li>
 <li>- should return true for a file inside of a directory <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004711S2_source')" id="l_C004711S2_source">show source</a> ]</span>
-            <div id="C004711S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004751S2_source')" id="l_C004751S2_source">show source</a> ]</span>
+            <div id="C004751S2_source" class="dyn-source">
 <pre>
 FileSystem file?("src/builtin/A1_defaultBehavior.ik") should ==(true) 
 
@@ -426,8 +426,8 @@ FileSystem file?("src/builtin/A1_defaultBehavior.ik") should ==(true)
             </div>
             </span></li>
 <li>- should return false for a directory <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004711S3_source')" id="l_C004711S3_source">show source</a> ]</span>
-            <div id="C004711S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004751S3_source')" id="l_C004751S3_source">show source</a> ]</span>
+            <div id="C004751S3_source" class="dyn-source">
 <pre>
 FileSystem file?("src") should ==(false) 
 FileSystem file?("src/") should ==(false) 
@@ -436,8 +436,8 @@ FileSystem file?("src/") should ==(false)
             </div>
             </span></li>
 <li>- should return false for a directory inside another directory <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004711S4_source')" id="l_C004711S4_source">show source</a> ]</span>
-            <div id="C004711S4_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004751S4_source')" id="l_C004751S4_source">show source</a> ]</span>
+            <div id="C004751S4_source" class="dyn-source">
 <pre>
 FileSystem file?("src/builtin") should ==(false) 
 
@@ -450,7 +450,7 @@ FileSystem file?("src/builtin") should ==(false)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00473"></a><b>parentOf</b>(entryName)
+          <a name="C00477"></a><b>parentOf</b>(entryName)
           </div>
           <div class="description">
             <p>
@@ -461,8 +461,8 @@ FileSystem file?("src/builtin") should ==(false)
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return nil for the parent of something that doesn't have a parent <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004731S0_source')" id="l_C004731S0_source">show source</a> ]</span>
-            <div id="C004731S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004771S0_source')" id="l_C004771S0_source">show source</a> ]</span>
+            <div id="C004771S0_source" class="dyn-source">
 <pre>
 FileSystem parentOf("/") should ==(nil) 
 
@@ -470,8 +470,8 @@ FileSystem parentOf("/") should ==(nil)
             </div>
             </span></li>
 <li>- should return the parent of a relative directory <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004731S1_source')" id="l_C004731S1_source">show source</a> ]</span>
-            <div id="C004731S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004771S1_source')" id="l_C004771S1_source">show source</a> ]</span>
+            <div id="C004771S1_source" class="dyn-source">
 <pre>
 FileSystem parentOf("src/builtin") should ==("src") 
 
@@ -479,8 +479,8 @@ FileSystem parentOf("src/builtin") should ==("src")
             </div>
             </span></li>
 <li>- should return the parent of an absolute directory <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004731S2_source')" id="l_C004731S2_source">show source</a> ]</span>
-            <div id="C004731S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004771S2_source')" id="l_C004771S2_source">show source</a> ]</span>
+            <div id="C004771S2_source" class="dyn-source">
 <pre>
 FileSystem parentOf("/usr/local") should ==("/usr") 
 
@@ -493,7 +493,7 @@ FileSystem parentOf("/usr/local") should ==("/usr")
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00470"></a><b>readFully</b>(fileName)
+          <a name="C00474"></a><b>readFully</b>(fileName)
           </div>
           <div class="description">
             <p>
@@ -507,7 +507,7 @@ FileSystem parentOf("/usr/local") should ==("/usr")
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00477"></a><b>removeDirectory!</b>(directoryName)
+          <a name="C00481"></a><b>removeDirectory!</b>(directoryName)
           </div>
           <div class="description">
             <p>
@@ -518,8 +518,8 @@ FileSystem parentOf("/usr/local") should ==("/usr")
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should signal an error if the directory doesn't exists <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004771S0_source')" id="l_C004771S0_source">show source</a> ]</span>
-            <div id="C004771S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004811S0_source')" id="l_C004811S0_source">show source</a> ]</span>
+            <div id="C004811S0_source" class="dyn-source">
 <pre>
 fn(FileSystem removeDirectory!("non_existing_dir")) should signal(Condition Error IO) 
 
@@ -527,8 +527,8 @@ fn(FileSystem removeDirectory!("non_existing_dir")) should signal(Condition Erro
             </div>
             </span></li>
 <li>- should signal an error if a file with the same name exists <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004771S1_source')" id="l_C004771S1_source">show source</a> ]</span>
-            <div id="C004771S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004811S1_source')" id="l_C004811S1_source">show source</a> ]</span>
+            <div id="C004811S1_source" class="dyn-source">
 <pre>
 fn(FileSystem removeDirectory!("build.xml")) should signal(Condition Error IO) 
 
@@ -536,8 +536,8 @@ fn(FileSystem removeDirectory!("build.xml")) should signal(Condition Error IO)
             </div>
             </span></li>
 <li>- should remove the directory <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004771S2_source')" id="l_C004771S2_source">show source</a> ]</span>
-            <div id="C004771S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004811S2_source')" id="l_C004811S2_source">show source</a> ]</span>
+            <div id="C004811S2_source" class="dyn-source">
 <pre>
 FileSystem createDirectory!("test/dir_to_remove") 
 FileSystem removeDirectory!("test/dir_to_remove") 
@@ -552,7 +552,7 @@ FileSystem should not have directory("test/dir_to_remove")
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00474"></a><b>withOpenFile</b>(fileName, code)
+          <a name="C00478"></a><b>withOpenFile</b>(fileName, code)
           </div>
           <div class="description">
             <p>
