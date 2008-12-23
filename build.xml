@@ -25,7 +25,6 @@
     <mkdir dir="${coverage.dir}"/>
     <mkdir dir="${classes.dir}"/>
     <mkdir dir="${src.generated.dir}"/>
-    <mkdir dir="${lib.dist.dir}"/>
 
     <uptodate property="grammar.notUpdated" targetfile="${src.generated.dir}/iokeLexer.java" srcfile="${antlr.grammar.dir}/${antlr.grammar.file}"/>
   </target>
@@ -74,7 +73,7 @@
   </target>
 
   <target name="jar" depends="test" description="Create the ioke.jar file">
-    <jar destfile="${lib.dist.dir}/ioke.jar">
+    <jar destfile="${lib.dir}/ioke.jar">
       <fileset dir="${classes.dir}">
         <include name="**/*.class"/>
         <include name="**/*.ik"/>
@@ -91,7 +90,7 @@
   </target>
 
   <target name="jar-notest" depends="compile" description="Create the ioke.jar file">
-    <jar destfile="${lib.dist.dir}/ioke.jar">
+    <jar destfile="${lib.dir}/ioke.jar">
       <fileset dir="${classes.dir}">
         <include name="**/*.class"/>
         <include name="**/*.ik"/>
@@ -109,7 +108,7 @@
 
   <target name="clean" description="clean almost everything">
     <delete dir="${build.dir}"/>
-    <delete file="${lib.dist.dir}/ioke.jar" quiet="true"/>
+    <delete file="${lib.dir}/ioke.jar" quiet="true"/>
     <delete dir="${src.generated.dir}"/>
   </target>
 </project>
