@@ -1,0 +1,27 @@
+
+Ioke 0 released
+---------------
+
+Ioke is a dynamic language targeted at the Java Virtual Machine. It's been designed from scratch to be a highly flexible general purpose language. It is a prototype-based programming language that is inspired by Io, Smalltalk, Lisp and Ruby.
+
+
+Homepage: http://ioke.org
+Download: http://ioke.org/download.html
+Programming guide: http://ioke.org/guide.html
+
+
+Ioke 0 is the first release of Ioke, and as such is not production ready. I would appreciate if people tried it out and reported bugs, thoughts and ideas.
+
+Features:
+- Strong, dynamic typing
+- Prototype based object orientation
+- Homoiconic language
+- Simple syntax
+- Powerful macro facilities
+- Condition system
+- Developed using TDD
+- Documentation system that combines documentation with specs
+- Wedded to the JVM
+
+
+Ola Bini    - ola.bini@gmail.com
