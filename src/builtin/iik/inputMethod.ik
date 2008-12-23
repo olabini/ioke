@@ -20,7 +20,7 @@ IIk do(
       line[lineToGet]))
 
   bind(
-    rescue(Condition Error Load, fn(ignored, "ignoring condition error load" println. nil)),
+    rescue(Condition Error Load, fn(ignored, nil)),
     
     use("readline")
     ReadlineInputMethod = Origin mimic do(
