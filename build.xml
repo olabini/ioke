@@ -106,6 +106,44 @@
     </jar>
   </target>
 
+  <target name="dist-bin" depends="jar">
+    <tar destfile="${release.dir}/ioke-0-ikJVM-0.1.0.tar.gz" compression="gzip">
+      <tarfileset mode="755" dir="." prefix="ioke">
+        <include name="bin/**"/>
+      </tarfileset>
+
+      <tarfileset dir="." prefix="ioke">
+        <include name="lib/ioke*.jar"/>
+        <include name="lib/ioke/**"/>
+        <include name="dok/**"/>
+        <include name="share/**"/>
+        <include name="COPYING"/>
+        <include name="LICENSE"/>
+        <include name="LICENSE.kawa"/>
+        <include name="README"/>
+      </tarfileset>
+    </tar>
+
+    <zip destfile="${release.dir}/ioke-0-ikJVM-0.1.0.zip">
+      <zipfileset filemode="755" dir="." prefix="ioke">
+        <include name="bin/**"/>
+      </zipfileset>
+
+      <zipfileset dir="." prefix="ioke">
+        <include name="lib/ioke*.jar"/>
+        <include name="lib/ioke/**"/>
+        <include name="dok/**"/>
+        <include name="share/**"/>
+        <include name="COPYING"/>
+        <include name="LICENSE"/>
+        <include name="LICENSE.kawa"/>
+        <include name="README"/>
+      </zipfileset>
+    </zip>
+  </target>
+
+  <target name="dist" depends="dist-bin"/>
+
   <target name="clean" description="clean almost everything">
     <delete dir="${build.dir}"/>
     <delete file="${lib.dir}/ioke.jar" quiet="true"/>

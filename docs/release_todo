@@ -1,5 +1,8 @@
 
 - add scripts for windows and try them
+- check in "use" so that filename checking happens against windows too
+- implement a -S syntax
+- fix ispec to not output color on windows
 - package everything into a small ball
 - upload final version
 - upload ioke doks.
