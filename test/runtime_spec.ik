@@ -9,14 +9,14 @@ describe(Runtime,
     )
 
     describe("machine",
-      it("should contain ikJVM",
-        Runtime version machine should == "ikJVM"
+      it("should contain ijk",
+        Runtime version machine should == "ikj"
       )
     )
 
     describe("versionNumber",
       it("should be the correct version",
-        Runtime version versionNumber should == [0,1,0]
+        Runtime version versionNumber should == [0,1,1]
       )
     )
   )
