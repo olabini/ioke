@@ -1,4 +1,5 @@
 
+- fix version to not be snapshot
 - package everything into a small ball
 - upload final version
 - upload ioke doks.
@@ -9,4 +10,4 @@
  - jvm lang list
  - blog
  - TW internal lists
-
+- update version to be next snapshot version
