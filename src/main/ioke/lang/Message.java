@@ -1084,7 +1084,11 @@ public class Message extends IokeData {
                 base.append("(");
                 String sep = "";
                 for(Object o : arguments) {
-                    base.append(sep).append(Message.code((IokeObject)o));
+                    if(o instanceof String) {
+                        base.append(sep).append(o);
+                    } else {
+                        base.append(sep).append(Message.code((IokeObject)o));
+                    }
 
                     sep = ", ";
                 }
@@ -1133,16 +1137,20 @@ public class Message extends IokeData {
                 for(Object o : arguments) {
                     base.append(sep);
 
-                    if(Message.line(o) != theLine) {
-                        int diff = Message.line(o) - theLine;
-                        theLine += diff;
-                        base.append("\n");
-                        for(int i=0;i<(indent+2);i++) {
-                            base.append(" ");
+                    if(o instanceof String) {
+                        base.append(o);
+                    } else {
+                        if(Message.line(o) != theLine) {
+                            int diff = Message.line(o) - theLine;
+                            theLine += diff;
+                            base.append("\n");
+                            for(int i=0;i<(indent+2);i++) {
+                                base.append(" ");
+                            }
                         }
-                    }
 
-                    base.append(Message.formattedCode(IokeObject.as(o), indent+2));
+                        base.append(Message.formattedCode(IokeObject.as(o), indent+2));
+                    }
 
                     sep = ", ";
                 }

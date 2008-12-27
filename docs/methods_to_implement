@@ -1,7 +1,6 @@
 
-lower prio
-----------
-
+- lexical macros
+ 
 - java integration things
 
 - call initialization on creation
