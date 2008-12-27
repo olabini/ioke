@@ -293,6 +293,15 @@ public class Message extends IokeData {
                     }
                 }
             }));
+        
+        message.registerMethod(message.runtime.newJavaMethod("returns true when this message is a terminator, otherwise false", new JavaMethod.WithNoArguments("terminator?") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                    return Message.isTerminator(on) ? context.runtime._true : context.runtime._false;
+                }
+            }));
+        
         message.registerMethod(message.runtime.newJavaMethod("returns a string that describes this message as a stack trace elemtn", new JavaMethod.WithNoArguments("asStackTraceText") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
