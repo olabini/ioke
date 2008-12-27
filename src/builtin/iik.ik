@@ -31,9 +31,11 @@ IIk = Origin mimic do(
         bind(
           restart(abort, fn()),
 
-          if(io eof?, invokeRestart(:quit))
+          data = io gets
 
-          out println("+> #{Message fromText(io gets) evaluateOn(mainContext) inspect}")
+          if(!data || (io eof?), invokeRestart(:quit))
+
+          out println("+> #{Message fromText(data) evaluateOn(mainContext) inspect}")
           out println)))))
 
 use("builtin/iik/inputMethod")
