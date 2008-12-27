@@ -711,6 +711,10 @@ describe(Number,
         (8200.0/-10.0) should == -820.0
       )
 
+      it("should correctly handle a number that would generate an infinite expansion, by being inexact",
+        (2.0/3.0) should == 0.6666666666666666666666666666666667
+      )
+        
       it("should divide a negative number with a negative dividend", 
         (-8200.0/-10.0) should == 820.0
       )

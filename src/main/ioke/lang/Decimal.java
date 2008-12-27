@@ -324,7 +324,13 @@ public class Decimal extends IokeData {
                             arg = newCell[0];
                         }
 
-                        return context.runtime.newDecimal(Decimal.value(on).divide(Decimal.value(arg)).stripTrailingZeros());
+                        BigDecimal result = null;
+                        try {
+                            result = Decimal.value(on).divide(Decimal.value(arg));
+                        } catch(ArithmeticException e) {
+                            result = Decimal.value(on).divide(Decimal.value(arg), java.math.MathContext.DECIMAL128);
+                        }
+                        return context.runtime.newDecimal(result.stripTrailingZeros());
                     }
                 }
             }));
