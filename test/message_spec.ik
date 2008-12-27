@@ -130,10 +130,15 @@ describe("Message",
   
   describe("terminator?",
     it("should be true when it is a '.' message",
-      msg = Message fromText("foo.")
+      msg = Message fromText(".")
+      msg name should == :"."
+      msg terminator? should == true
+    )
+
+    it("should not be true when it is not a '.' message",
+      msg = Message fromText("foo bar")
       msg terminator? should == false
-      msg next name should == :"."
-      msg next terminator? should == true
+      msg next terminator? should == false
     )
   )
 )
