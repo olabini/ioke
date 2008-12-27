@@ -1,4 +1,0 @@
-- alt string syntax: #[]
- 
-- maybe string interpolation inside of regexps?
-- alt reg syntax: #r[]
