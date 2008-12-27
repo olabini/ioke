@@ -1462,6 +1462,40 @@ public class DefaultBehavior {
                 }
             }));
 
+        obj.registerMethod(runtime.newJavaMethod("will execute and return the value of the first argument. after the code has run, all the remaining blocks of code are guaranteed to run in order even if a non-local flow control happens inside the main code. if any code in the ensure blocks generate a new non-local flow control, the rest of the ensure blocks in that specific ensure invocation are not guaranteed to run.", new JavaMethod("ensure") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositionalUnevaluated("code")
+                    .withRestUnevaluated("ensureBlocks")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, final IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
+                    
+                    final Runtime runtime = context.runtime;
+                    List<Object> args = message.getArguments();
+                    int argCount = args.size();
+
+                    Object result = runtime.nil;
+
+                    try {
+                        result = IokeObject.as(args.get(0)).evaluateCompleteWithoutExplicitReceiver(context, context.getRealContext());
+                    } finally {
+                        for(Object o : args.subList(1, argCount)) {
+                            IokeObject.as(o).evaluateCompleteWithoutExplicitReceiver(context, context.getRealContext());
+                        }
+                    }
+
+                    return result;
+                }
+            }));
+
         obj.registerMethod(runtime.newJavaMethod("takes either a name (as a symbol) or a Restart instance. if the restart is active, will transfer control to it, supplying the rest of the given arguments to that restart.", new JavaMethod("invokeRestart") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()

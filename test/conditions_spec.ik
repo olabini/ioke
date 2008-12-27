@@ -2,6 +2,76 @@
 use("ispec")
 
 describe(DefaultBehavior,
+  describe("ensure",
+    it("should work with just main code",
+      ensure(10+10) should == 20
+    )
+
+    it("should execute all the ensure code after the main code",
+      Ground ensureResults = []
+      
+      ensure(
+        ensureResults << :mainCode,
+
+        ensureResults << :ensureBlock1,
+        
+        ensureResults << :ensureBlock2)
+
+      ensureResults should == [:mainCode, :ensureBlock1, :ensureBlock2]
+    )
+
+    it("should execute nested ensure blocks",
+      Ground ensureResults = []
+      
+      ensure(
+        ensure(
+          ensure(
+            ensureResults << :mainCode,
+            ensureResults << :ensureBlockInner),
+          ensureResults << :ensureBlockOuter),
+        ensureResults << :ensureBlockOutmost)
+
+      ensureResults should == [:mainCode, :ensureBlockInner, :ensureBlockOuter, :ensureBlockOutmost]
+    )      
+
+    it("should return the result of the main code even though there are ensure blocks",
+      ensure(
+        42,
+        43) should == 42
+
+      ensure(
+        ensure(
+          42,
+          44,
+          45),
+        43) should == 42
+    )
+
+    it("should execute the ensure code if a restart is invoked outside",
+      Ground ensureResults = []
+
+      bind(restart(outside, fn),
+        ensure(
+          invokeRestart(:outside),
+          
+          ensureResults << :invoked))
+
+      ensureResults should == [:invoked]
+    )
+
+    it("should execute the ensure code if a condition is rescued outside",
+      Ground ensureResults = []
+
+      bind(rescue(Condition, fn(c, nil)),
+        ensure(
+          signal!(Condition),
+          
+          ensureResults << :invoked))
+
+      ensureResults should == [:invoked]
+    )
+  )
+
   describe("error!", 
     it("should signal a Condition Error Default by default", 
       x = bind(
