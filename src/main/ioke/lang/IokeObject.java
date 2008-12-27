@@ -465,7 +465,11 @@ public class IokeObject {
     public IokeObject negate() {
         return data.negate(this);
     }
-    
+
+    public static Map<String, Object> getCells(Object on) {
+        return as(on).getCells();
+    }
+
     public Map<String, Object> getCells() {
         return cells;
     }

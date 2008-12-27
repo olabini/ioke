@@ -35,6 +35,22 @@ public class Text extends IokeData {
                 }
             }));
 
+        obj.registerMethod(obj.runtime.newJavaMethod("Converts the content of this text into a rational value", new JavaMethod.WithNoArguments("toRational") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                    return Text.toRational(on, context, message);
+                }
+            }));
+
+        obj.registerMethod(obj.runtime.newJavaMethod("Converts the content of this text into a decimal value", new JavaMethod.WithNoArguments("toDecimal") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                    return Text.toDecimal(on, context, message);
+                }
+            }));
+
         obj.registerMethod(obj.runtime.newJavaMethod("Returns a text inspection of the object", new JavaMethod.WithNoArguments("inspect") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
@@ -423,6 +439,193 @@ public class Text extends IokeData {
             }
         }
         return formatLength;
+    }
+
+    public static Object toRational(Object on, IokeObject context, IokeObject message) throws ControlFlow {
+        final String tvalue = getText(on);
+        try {
+            return context.runtime.newNumber(tvalue);
+        } catch(NumberFormatException e) {
+            final Runtime runtime = context.runtime;
+            final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
+                                                                               message, 
+                                                                               context, 
+                                                                               "Error", 
+                                                                               "Arithmetic",
+                                                                               "NotParseable")).mimic(message, context);
+            condition.setCell("message", message);
+            condition.setCell("context", context);
+            condition.setCell("receiver", on);
+            condition.setCell("text", on);
+
+            final Object[] newCell = new Object[]{null};
+
+            runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
+                    public void run() throws ControlFlow {
+                        runtime.errorCondition(condition);
+                    }}, 
+                context,
+                new Restart.ArgumentGivingRestart("useValue") { 
+                    public String report() {
+                        return "Use number instead of " + tvalue;
+                    }
+
+                    public List<String> getArgumentNames() {
+                        return new ArrayList<String>(Arrays.asList("newValue"));
+                    }
+
+                    public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
+                        newCell[0] = arguments.get(0);
+                        return context.runtime.nil;
+                    }
+                },
+                new Restart.ArgumentGivingRestart("takeLongest") { 
+                    public String report() {
+                        return "Parse the longest number possible from " + tvalue;
+                    }
+
+                    public List<String> getArgumentNames() {
+                        return new ArrayList<String>();
+                    }
+
+                    public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
+                        int ix = 0;
+                        int len = tvalue.length();
+                        outer: while(ix < len) {
+                            char c = tvalue.charAt(ix);
+                            switch(c) {
+                            case '-':
+                            case '+':
+                                if(ix != 0) {
+                                    break outer;
+                                }
+                                break;
+                            case '0':
+                            case '1':
+                            case '2':
+                            case '3':
+                            case '4':
+                            case '5':
+                            case '6':
+                            case '7':
+                            case '8':
+                            case '9':
+                                break;
+                            default:
+                                break outer;
+                            }
+                            ix++;
+                        }
+
+                        newCell[0] = context.runtime.newNumber(tvalue.substring(0, ix));
+                        return context.runtime.nil;
+                    }
+                }
+                );
+
+            return newCell[0];
+        }
+    }
+
+    public static Object toDecimal(Object on, IokeObject context, IokeObject message) throws ControlFlow {
+        final String tvalue = getText(on);
+        try {
+            return context.runtime.newDecimal(tvalue);
+        } catch(NumberFormatException e) {
+            final Runtime runtime = context.runtime;
+            final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
+                                                                               message, 
+                                                                               context, 
+                                                                               "Error", 
+                                                                               "Arithmetic",
+                                                                               "NotParseable")).mimic(message, context);
+            condition.setCell("message", message);
+            condition.setCell("context", context);
+            condition.setCell("receiver", on);
+            condition.setCell("text", on);
+
+            final Object[] newCell = new Object[]{null};
+
+            runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
+                    public void run() throws ControlFlow {
+                        runtime.errorCondition(condition);
+                    }}, 
+                context,
+                new Restart.ArgumentGivingRestart("useValue") { 
+                    public String report() {
+                        return "Use number instead of " + tvalue;
+                    }
+
+                    public List<String> getArgumentNames() {
+                        return new ArrayList<String>(Arrays.asList("newValue"));
+                    }
+
+                    public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
+                        newCell[0] = arguments.get(0);
+                        return context.runtime.nil;
+                    }
+                },
+                new Restart.ArgumentGivingRestart("takeLongest") { 
+                    public String report() {
+                        return "Parse the longest number possible from " + tvalue;
+                    }
+
+                    public List<String> getArgumentNames() {
+                        return new ArrayList<String>();
+                    }
+
+                    public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
+                        int ix = 0;
+                        int len = tvalue.length();
+                        boolean hadDot = false;
+                        boolean hadE = false;
+                        outer: while(ix < len) {
+                            char c = tvalue.charAt(ix);
+                            switch(c) {
+                            case '-':
+                            case '+':
+                                if(ix != 0 && tvalue.charAt(ix-1) != 'e' && tvalue.charAt(ix-1) != 'E') {
+                                    break outer;
+                                }
+                                break;
+                            case '0':
+                            case '1':
+                            case '2':
+                            case '3':
+                            case '4':
+                            case '5':
+                            case '6':
+                            case '7':
+                            case '8':
+                            case '9':
+                                break;
+                            case '.':
+                                if(hadDot || hadE) {
+                                    break outer;
+                                }
+                                hadDot = true;
+                                break;
+                            case 'e':
+                            case 'E':
+                                if(hadE) {
+                                    break outer;
+                                }
+                                hadE = true;
+                                break;
+                            default:
+                                break outer;
+                            }
+                            ix++;
+                        }
+
+                        newCell[0] = context.runtime.newDecimal(tvalue.substring(0, ix));
+                        return context.runtime.nil;
+                    }
+                }
+                );
+
+            return newCell[0];
+        }
     }
     
     @Override
