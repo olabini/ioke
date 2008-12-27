@@ -36,6 +36,11 @@ while [ -h "$PRG" ] ; do
 done
 
 IOKE_HOME_1=`dirname "$PRG"`           # the ./bin dir
+
+if [ "${IOKE_HOME_1}" = "." ]; then
+    IOKE_HOME_1=`pwd`
+fi
+
 IOKE_HOME=`dirname "$IOKE_HOME_1"`  # the . dir
 
 if [ -z "$IOKE_OPTS" ] ; then
