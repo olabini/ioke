@@ -107,6 +107,69 @@ describe("Range",
       (0...13) exclusive? should == true
     )
   )
+
+  describe("each",
+    it("should not do anything for an empty list", 
+      x = 0
+      (0...0) each(. x++)
+      x should == 0
+    )
+    
+    it("should be possible to just give it a message chain, that will be invoked on each object", 
+      Ground y = []
+      Ground xs = method(y << self)
+      (1..3) each(xs)
+      y should == [1,2,3]
+
+      Ground y = []
+      Ground xs = method(y << self)
+      (1...3) each(xs)
+      y should == [1,2]
+
+      x = 0
+      (1..3) each(nil. x++)
+      x should == 3
+
+      x = 0
+      (1...3) each(nil. x++)
+      x should == 2
+    )
+    
+    it("should be possible to give it an argument name, and code", 
+      y = []
+      (1..3) each(x, y << x)
+      y should == [1,2,3]
+
+      y = []
+      (1...3) each(x, y << x)
+      y should == [1,2]
+    )
+
+    it("should return the object", 
+      y = 1..3
+      (y each(x, x)) should == y
+    )
+    
+    it("should establish a lexical context when invoking the methods. this context will be the same for all invocations.", 
+      (1..3) each(x_list, blarg=32)
+      cell?(:x_list) should == false
+      cell?(:blarg) should == false
+
+      x=14
+      (1..3) each(x, blarg=32)
+      x should == 14
+    )
+
+    it("should be possible to give it an extra argument to get the index", 
+      y = []
+      (1..4) each(i, x, y << [i, x])
+      y should == [[0, 1], [1, 2], [2, 3], [3, 4]]
+
+      y = []
+      (1...4) each(i, x, y << [i, x])
+      y should == [[0, 1], [1, 2], [2, 3]]
+    )
+  )
   
   describe("===", 
     it("should match something inside the range", 
