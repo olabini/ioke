@@ -20,6 +20,7 @@ Condition Error Parser OpShuffle                       = Condition Error Parser 
 Condition Error CommandLine DontUnderstandOption       = Condition Error CommandLine mimic
 
 Condition Error Arithmetic DivisionByZero              = Condition Error Arithmetic mimic
+Condition Error Arithmetic NotParseable                = Condition Error Arithmetic mimic
 
 Condition Error Invocation NotActivatable              = Condition Error Invocation mimic
 Condition Error Invocation ArgumentWithoutDefaultValue = Condition Error Invocation mimic

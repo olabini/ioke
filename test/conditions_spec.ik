@@ -557,6 +557,12 @@ describe(Condition,
           Condition Error Arithmetic DivisionByZero should have kind("Condition Error Arithmetic DivisionByZero")
         )
       )
+
+      describe(Condition Error Arithmetic NotParseable, 
+        it("should have the right kind", 
+          Condition Error Arithmetic NotParseable should have kind("Condition Error Arithmetic NotParseable")
+        )
+      )
     )
     
     describe(Condition Error NoSuchCell, 

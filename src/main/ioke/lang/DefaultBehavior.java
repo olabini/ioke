@@ -475,7 +475,7 @@ public class DefaultBehavior {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
 
-                    return context.runtime.newText("0x" + Integer.toHexString(System.identityHashCode(on)).toUpperCase());
+                    return context.runtime.newText("0x" + Integer.toHexString(System.identityHashCode(IokeObject.getCells(on))).toUpperCase());
                 }
             }));
 

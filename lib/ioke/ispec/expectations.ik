@@ -40,6 +40,24 @@ ISpec do(
     unless(signalled mimics?(condition),
       error!(ISpec ExpectationNotMet, text: "expected #{condition} to be signalled in #{realValue code} - got #{signalled}", shouldMessage: self shouldMessage)))
 
+  ShouldContext offer = method(theRestart,
+    rst = nil
+    bind(
+      rescue(Ground Condition, fn(c, nil)),
+      handle(Ground Condition, fn(c, rst = findRestart(theRestart name))),
+      realValue call)
+
+    unless(rst name == theRestart name,
+      error!(ISpec ExpectationNotMet, text: "expected a restart with name #{theRestart name} to be offered", shouldMessage: self shouldMessage)))
+
+  ShouldContext returnFromRestart = method(+args,
+    retVal = bind(
+      handle(Ground Condition, fn(c, invokeRestart(*args))),
+      realValue call)
+    self realValue = retVal
+    self
+  )
+
   ShouldContext mimic = method(value,
     unless(realValue mimics?(value),
       error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to mimic #{value kind}", shouldMessage: self shouldMessage)))
@@ -83,4 +101,14 @@ ISpec do(
   NotShouldContext mimic = method(value,
     if(realValue mimics?(value),
       error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to not mimic #{value kind}", shouldMessage: self shouldMessage)))
+
+  NotShouldContext offer = method(theRestart,
+    rst = nil
+    bind(
+      rescue(Ground Condition, fn(c, nil)),
+      handle(Ground Condition, fn(c, rst = findRestart(theRestart name))),
+      realValue call)
+
+    if(rst && (rst name == theRestart name),
+      error!(ISpec ExpectationNotMet, text: "did not expect a restart with name #{theRestart name} to be offered", shouldMessage: self shouldMessage)))
 )

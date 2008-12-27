@@ -11,16 +11,9 @@ Add freeze/thaw methods
 
 Look seriously at "become"
 
-autoimporter in the style of Io Importer
-
-- something that allows stacking of ground. maybe just a simple "System ground" that is an array. This is used inside of the REPL for example.
-
  -- think about adding Clojure-style metadata
- -- think for real about pretty printer
 
 aspects:
  - before
  - after
  - surround
-
-resend

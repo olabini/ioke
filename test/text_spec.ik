@@ -201,6 +201,82 @@ describe("Text",
       ("fx" * 7) should == "fxfxfxfxfxfxfx"
     )
   )
+
+  describe("toRational",
+    it("should return a simple number",
+      "1" toRational should == 1
+      "0" toRational should == 0
+      "10" toRational should == 10
+      "9123" toRational should == 9123
+    )
+
+    it("should return a negative number",
+      "-0" toRational should == 0
+      "-1" toRational should == -1
+      "-9" toRational should == -9
+      "-3124" toRational should == -3124
+      "-666" toRational should == -666
+    )
+
+    it("should signal a condition if no number can be parsed",
+      fn("fox" toRational) should signal(Condition Error Arithmetic NotParseable)
+    )
+
+    it("should offer a restart to only take the part of the number found",
+      fn("1f" toRational) should offer(restart(takeLongest, fn))
+      fn("1f" toRational) should returnFromRestart(:takeLongest) == 1
+
+      fn("1fsdfgdg434234" toRational) should offer(restart(takeLongest, fn))
+      fn("1fsdfgdg434234" toRational) should returnFromRestart(:takeLongest) == 1
+
+      fn("123423423fsdfgdg434234" toRational) should returnFromRestart(:takeLongest) == 123423423
+    )
+
+    it("should offer a useValue restart if the number can't be parsed",
+      fn("1f" toRational) should offer(restart(useValue, fn))
+      fn("1f" toRational) should returnFromRestart(:useValue, 32) == 32
+    )
+  )
+
+  describe("toDecimal",
+    it("should return a simple decimal",
+      "0" toDecimal should == 0.0
+      "1.1" toDecimal should == 1.1
+      "0.000001" toDecimal should == 0.000001
+      "123435236467901923.2342345" toDecimal should == 123435236467901923.2342345
+    )
+
+    it("should return a negative decimal",
+      "-0" toDecimal should == -0.0
+      "-1.1" toDecimal should == -1.1
+      "-0.000001" toDecimal should == -0.000001
+      "-123435236467901923.2342345" toDecimal should == -123435236467901923.2342345
+    )
+
+    it("should return a decimal with only a exponential part",
+      "10e6" toDecimal should == 10e6
+      "1e-6" toDecimal should == 1e-6
+    )
+
+    it("should return a decimal with both exponential and decimal part",
+      "10.3e2" toDecimal should == 10.3e2
+      "0.000043e-22" toDecimal should == 0.000043e-22
+    )
+
+    it("should signal a condition if no decimal can be parsed",
+      fn("fox" toDecimal) should signal(Condition Error Arithmetic NotParseable)
+    )
+
+    it("should offer a restart to only take the part of the decimal found",
+      fn("1.0f" toDecimal) should offer(restart(takeLongest, fn))
+      fn("1.0f" toDecimal) should returnFromRestart(:takeLongest) == 1.0
+    )
+
+    it("should offer a useValue restart if the decimal can't be parsed",
+      fn("1.0f" toDecimal) should offer(restart(useValue, fn))
+      fn("1.0f" toDecimal) should returnFromRestart(:useValue, 32) == 32
+    )
+  )
   
   describe("replace",
     it("should return the same string when the thing to replace isn't there",
