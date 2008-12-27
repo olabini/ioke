@@ -127,4 +127,13 @@ describe("Message",
       (msg next cell(:prev) == cell(:val)) should == true
     )
   )
+  
+  describe("terminator?",
+    it("should be true when it is a '.' message",
+      msg = Message fromText("foo.")
+      msg terminator? should == false
+      msg next name should == :"."
+      msg next terminator? should == true
+    )
+  )
 )
