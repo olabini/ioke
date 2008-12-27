@@ -1,5 +1,6 @@
 
 Base notice = "Base"
+Base inspect = "Base"
 
 DefaultBehavior do(
   inspect = method(
