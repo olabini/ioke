@@ -838,7 +838,7 @@ foo <span style="color: #b0c4de;">x</span> <span style="color: #00bfff;">+=</spa
                   <pre class="code">
 <span style="color: #b0c4de;">x</span> <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">42</span>
 <span style="color: #6495ed;">fn</span>(<span style="color: #b0c4de;">x</span> <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">43</span><span style="color: #006666;">.</span> <span style="color: #b0c4de;">y</span> <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">42</span>) <span style="color: #449900;">call</span>
-x <span style="color: #a52a2a;">;; =&gt; 42
+x <span style="color: #a52a2a;">;; =&gt; 43
 </span>y <span style="color: #a52a2a;">;; =&gt; Condition Error NoSuchCell</span></pre>
                   
                   <p>The "fn" message creates a new lexical block. The chapter on <a href="#code">code</a> will talk more about this. But as you can see, this block assigns 43 to the cell "x", and 42 to the cell "y". But since the cell "y" doesn't exist, it will only be created inside the lexical context, while "x" exists outside, and will be assigned a new value instead. The basic ideas is that code like this should behave like you expect it to behave.</p>
