@@ -35,6 +35,7 @@ describe("Base",
         cells: Base cell(:cells), 
         :"cell=" => Base cell(:"cell="), 
         notice: "Base", 
+        inspect: "Base", 
         :"cell?" => Base cell("cell?")}
 
       x = Base mimic
@@ -51,6 +52,7 @@ describe("Base",
         cells: Base cell(:cells), 
         :"cell=" => Base cell(:"cell="), 
         notice: "Base", 
+        inspect: "Base", 
         :"cell?" => Base cell("cell?")}
     )
   )
