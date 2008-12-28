@@ -60,7 +60,7 @@ fi
 
 CP_DELIMETER=":"
 
-# add jruby jars for command-line execution
+# add ioke jars for command-line execution
 for j in "$IOKE_HOME"/lib/ioke*.jar; do
     if [ "$IOKE_CP" ]; then
         IOKE_CP="$IOKE_CP$CP_DELIMETER$j"
@@ -158,7 +158,7 @@ do
 done
 
 # Add a property to report memory max
-JAVA_OPTS="$JAVA_OPTS $JAVA_VM -Djruby.memory.max=${JAVA_MEM:4} -Djruby.stack.max=${JAVA_STACK:4}"
+JAVA_OPTS="$JAVA_OPTS $JAVA_VM -Dioke.memory.max=${JAVA_MEM:4} -Dioke.stack.max=${JAVA_STACK:4}"
 
 # Append the rest of the arguments
 ioke_args=("${ioke_args[@]}" "$@")
