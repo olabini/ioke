@@ -24,6 +24,12 @@ DefaultBehavior fnx = macro(
   call resendToMethod("fn") do(
     activatable = true))
 
+DefaultBehavior lecrox = macro(
+  "does the same things as lecro, but returns something that is not activatable.",
+
+  call resendToMethod("lecro") do(
+    activatable = false))
+
 DefaultBehavior derive = method(
   "calls mimic.", 
 

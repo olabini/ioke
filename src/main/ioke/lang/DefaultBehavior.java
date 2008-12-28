@@ -1066,6 +1066,47 @@ public class DefaultBehavior {
                 }
             }));
 
+        obj.registerMethod(runtime.newJavaMethod("expects one code argument, optionally preceeded by a documentation string. will create a new LexicalMacro based on the code and return it.", new JavaMethod("lecro") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withOptionalPositionalUnevaluated("documentation")
+                    .withOptionalPositionalUnevaluated("body")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
+
+                    List<Object> args = message.getArguments();
+
+                    if(args.size() == 0) {
+                        final Message mx = new Message(context.runtime, "nil", null, Message.Type.MESSAGE);
+                        mx.setFile(Message.file(message));
+                        mx.setLine(Message.line(message));
+                        mx.setPosition(Message.position(message));
+                        final IokeObject mmx = context.runtime.createMessage(mx);
+
+                        return runtime.newMacro(null, runtime.lexicalMacro, new LexicalMacro(context, mmx));
+                    }
+
+                    String doc = null;
+
+                    int start = 0;
+                    if(args.size() > 1 && ((IokeObject)Message.getArg1(message)).getName().equals("internal:createText")) {
+                        start++;
+                        String s = ((String)((IokeObject)args.get(0)).getArguments().get(0));
+                        doc = s;
+                    }
+
+                    return runtime.newMacro(doc, runtime.lexicalMacro, new LexicalMacro(context, (IokeObject)args.get(start)));
+                }
+            }));
+
         obj.registerMethod(runtime.newJavaMethod("creates a new lexical block that can be executed at will, while retaining a reference to the lexical closure it was created in. it will always update variables if they exist. there is currently no way of introducing shadowing variables in the local context. new variables can be created though, just like in a method. a lexical block mimics LexicalBlock, and can take arguments. at the moment these are restricted to required arguments, but support for the same argument types as DefaultMethod will come. same as fn()", new JavaMethod("ʎ") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
