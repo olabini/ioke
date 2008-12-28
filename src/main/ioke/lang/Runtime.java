@@ -56,7 +56,8 @@ public class Runtime {
     public IokeObject defaultMethod = new IokeObject(this, "DefaultMethod is the instance all methods in the system are derived from.", new DefaultMethod((String)null));
     public IokeObject javaMethod = new IokeObject(this, "JavaMethod is a derivation of Method that represents a primitive implemented in Java.", new JavaMethod.WithNoArguments((String)null));
     public IokeObject lexicalBlock = new IokeObject(this, "A lexical block allows you to delay a computation in a specific lexical context. See DefaultMethod#fn for detailed documentation.", new LexicalBlock(ground));
-    public IokeObject defaultMacro = new IokeObject(this, "DefaultMacro is the instance all macros in the system are derived from.", new DefaultMacro((String)null));
+    public IokeObject defaultMacro = new IokeObject(this, "DefaultMacro is the instance all non-lexical macros in the system are derived from.", new DefaultMacro((String)null));
+    public IokeObject lexicalMacro = new IokeObject(this, "LexicalMacro is the instance all lexical macros in the system are derived from.", new LexicalMacro((String)null));
     public IokeObject mixins = new IokeObject(this, "Mixins is the name space for most mixins in the system. DefaultBehavior is the notable exception.");
     public IokeObject message = new IokeObject(this, "A Message is the basic code unit in Ioke.", new Message(this, "", Message.Type.EMPTY));
     public IokeObject restart = new IokeObject(this, "A Restart is the actual object that contains restart information.");
@@ -247,12 +248,14 @@ public class Runtime {
         javaMethod.init();
         lexicalBlock.init();
         defaultMacro.init();
+        lexicalMacro.init();
         call.mimicsWithoutCheck(origin);
 
         method.mimicsWithoutCheck(origin);
         defaultMethod.mimicsWithoutCheck(method);
         javaMethod.mimicsWithoutCheck(method);
         defaultMacro.mimicsWithoutCheck(origin);
+        lexicalMacro.mimicsWithoutCheck(origin);
 
         lexicalBlock.mimicsWithoutCheck(origin);
 
@@ -581,7 +584,7 @@ public class Runtime {
         return obj;
     }
 
-    public IokeObject newMacro(String doc, IokeObject tp, DefaultMacro impl) {
+    public IokeObject newMacro(String doc, IokeObject tp, IokeData impl) {
         IokeObject obj = tp.allocateCopy(null, null);
         obj.documentation = doc;
         obj.mimicsWithoutCheck(tp);
