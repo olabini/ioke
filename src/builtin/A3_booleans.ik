@@ -1,7 +1,7 @@
 
 ;; ---- !
 
-DefaultBehavior ! = method(
+DefaultBehavior Boolean ! = method(
   "returns true if the argument is false, and false if it's true",
   arg,
   
@@ -9,7 +9,7 @@ DefaultBehavior ! = method(
 
 ;; ---- nil?
 
-DefaultBehavior nil? = method(
+DefaultBehavior Boolean nil? = method(
   "returns false.", 
 
   false)
@@ -21,7 +21,7 @@ nil nil? = method(
 
 ;; ---- false?
 
-DefaultBehavior false? = method(
+DefaultBehavior Boolean false? = method(
   "returns false.", 
 
   false)
@@ -38,7 +38,7 @@ nil false? = method(
 
 ;; ---- true?
 
-DefaultBehavior true? = method(
+DefaultBehavior Boolean true? = method(
   "returns true", 
 
   true)
@@ -81,7 +81,7 @@ false ifFalse = macro(
 
 ;; ---- not
 
-DefaultBehavior not = method(
+DefaultBehavior Boolean not = method(
   "Does not evaluate arguments and returns nil",
 
   nil)
@@ -103,7 +103,12 @@ nil not = method(
 
 ;; ---- and
 
-DefaultBehavior and = macro(
+DefaultBehavior Boolean and = macro(
+  "Evaluates the argument and returns the result",
+
+  call argAt(0))
+
+DefaultBehavior Boolean cell("&&") = macro(
   "Evaluates the argument and returns the result",
 
   call argAt(0))
@@ -125,14 +130,18 @@ nil and = macro(
 
 ;; ---- &&
 
-DefaultBehavior aliasMethod("and", "&&")
 true aliasMethod("and", "&&")
 false aliasMethod("and", "&&")
 nil aliasMethod("and", "&&")
 
 ;; ---- or
 
-DefaultBehavior or = macro(
+DefaultBehavior Boolean or = macro(
+  "Does not evaluate argument and returns self",
+
+  @)
+
+DefaultBehavior Boolean cell("||") = macro(
   "Does not evaluate argument and returns self",
 
   @)
@@ -154,14 +163,13 @@ nil or = macro(
 
 ;; ---- ||
 
-DefaultBehavior aliasMethod("or", "||")
 true aliasMethod("or", "||")
 false aliasMethod("or", "||")
 nil aliasMethod("or", "||")
 
 ;; ---- xor
 
-DefaultBehavior xor = macro(
+DefaultBehavior Boolean xor = macro(
   "Evaluates the argument and returns the inverse of the argument",
 
   if(call argAt(0), false, true))
@@ -183,7 +191,7 @@ nil xor = macro(
 
 ;; ---- nor
 
-DefaultBehavior nor = macro(
+DefaultBehavior Boolean nor = macro(
   "Does not evaluate its argument and returns false",
 
   false)
@@ -205,7 +213,7 @@ nil nor = macro(
 
 ;; ---- nand
 
-DefaultBehavior nand = macro(
+DefaultBehavior Boolean nand = macro(
   "Evaluates its argument and returns the inverse of it",
 
   if(call argAt(0), false, true))

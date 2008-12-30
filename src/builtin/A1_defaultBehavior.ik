@@ -1,12 +1,12 @@
 
-DefaultBehavior cell("") = method(
+DefaultBehavior FlowControl cell("") = method(
   "returns result of evaluating first argument", 
   n, 
 
   ; We need to use cell here, to not activate a method-like object
   cell(:n))
 
-DefaultBehavior - = method(
+DefaultBehavior Boolean - = method(
   "returns the negation of the argument", 
   obj, 
 
@@ -30,7 +30,7 @@ DefaultBehavior Definitions lecrox = macro(
   call resendToMethod("lecro") do(
     activatable = false))
 
-DefaultBehavior derive = method(
+DefaultBehavior Reflection derive = method(
   "calls mimic.", 
 
   mimic)
@@ -68,7 +68,7 @@ DefaultBehavior Conditions warn! = method(
     System err println("WARNING: #{result report}")
     result))
 
-DefaultBehavior in? = method(
+DefaultBehavior Reflection in? = method(
   "returns true if the receiver is included in the argument. sends 'include?' to the argument to find this out",
   aList,
   
