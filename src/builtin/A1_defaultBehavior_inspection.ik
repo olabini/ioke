@@ -2,15 +2,14 @@
 Base notice = "Base"
 Base inspect = "Base"
 
-DefaultBehavior do(
-  inspect = method(
+DefaultBehavior Reflection inspect = method(
     "returns a longer description of the receiver, in general including cell information",
     
     cellSummary)
 
 
 
-  notice = method(
+DefaultBehavior Reflection notice = method(
     "returns a short text description of the receiver",
 
     if(currentMessage Origin == cell(:self),
@@ -23,7 +22,7 @@ DefaultBehavior do(
 
 
 
-  cellDescriptionDict = method(
+DefaultBehavior Reflection cellDescriptionDict = method(
     "returns a dict containing each cell and it's corresponding description",
 
 	cellNames = cell(:self) cellNames sort
@@ -32,14 +31,15 @@ DefaultBehavior do(
 
 
 
-  cellSummary = method(
+DefaultBehavior Reflection cellSummary = method(
     "returns a representation of the current object that includes information about it's cells",
 
     cellDescriptions = cellDescriptionDict
     vals = cellDescriptions keys sort map(k, list(k, cellDescriptions[k]))
   " #{cell(:self) notice}:
 %*[  %-28s = %s\n%]" format(vals))
-)
+
+
 
 System notice = method(
   "returns a short text description of the receiver, the text System if this is the main System object, otherwise falls back to the super implementation",
