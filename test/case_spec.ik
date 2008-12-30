@@ -86,7 +86,33 @@ describe(DefaultBehavior,
     )
 
     describe("case:and",
-      it("should have tests")
+      it("should return an object that calls === on each argument and returns true if all are true",
+        Ground calledWith = []
+        x = Origin mimic
+        y = Origin mimic
+
+        x === = method(other,
+          Ground calledWith << [:x, other].
+          true)
+
+        y === = method(other,
+          Ground calledWith << [:y, other].
+          true)
+
+        (case:and(x, y) === 42) should == true
+        Ground calledWith should == [[:x, 42], [:y, 42]]
+
+        (case:and(1..5, 3..4) === 4) should == true
+
+        x === = method(other,
+          Ground calledWith << [:x, other].
+          false)
+
+        Ground calledWith = []
+
+        (case:and(x, y) === 43) should == false
+        Ground calledWith should == [[:x, 43]]
+      )
     )
 
     describe("case:or",
@@ -110,11 +136,27 @@ describe(DefaultBehavior,
     )
 
     describe("case:else",
-      it("should have tests")
-    )
+      it("should not take any arguments",
+        fn(case:else(1)) should signal(Condition Error Invocation TooManyArguments)
+      )
+
+      it("should return an object that returns true from ===",
+        (case:else() === :x) should == true
+        (case:else() === nil) should == true 
+        (case:else() === 42) should == true
+      )
+   )
 
     describe("case:otherwise",
-      it("should have tests")
+      it("should not take any arguments",
+        fn(case:otherwise(1)) should signal(Condition Error Invocation TooManyArguments)
+      )
+
+      it("should return an object that returns true from ===",
+        (case:otherwise() === :x) should == true
+        (case:otherwise() === nil) should == true 
+        (case:otherwise() === 42) should == true
+      )
     )
   )
 )
