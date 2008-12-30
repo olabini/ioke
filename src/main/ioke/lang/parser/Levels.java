@@ -3,10 +3,13 @@
  */
 package ioke.lang.parser;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.Set;
+import java.util.HashSet;
 
 import ioke.lang.IokeObject;
 import ioke.lang.Message;
@@ -102,6 +105,8 @@ public class Levels {
         public int precedence;
         public OpTable(String name, int precedence) { this.name = name; this.precedence = precedence; }
     }
+
+    public final static Set<String> DONT_SEPARATE_ARGUMENTS = new HashSet<String>(Arrays.asList("and", "nand", "or", "xor", "nor"));
 
     public static OpTable[] defaultOperators = new OpTable[]{
 		new OpTable("!",   0),
@@ -434,7 +439,7 @@ public class Levels {
             popDownTo(OP_LEVEL_MAX-1, expressions);
             attachAndReplace(currentLevel(), msg);
         } else if(precedence != -1 && !(messageName.equals("-") && Message.prev(msg) == null && msgArgCount > 0)) { // An operator
-            if(msgArgCount > 0) {
+            if(msgArgCount > 0 && !DONT_SEPARATE_ARGUMENTS.contains(messageName)) {
                 // move arguments off to their own message to make () after operators behave like Cs grouping ()
                 IokeObject brackets = runtime.newMessage("");
                 Message.copySourceLocation(msg, brackets);
