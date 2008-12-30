@@ -113,18 +113,113 @@ describe(DefaultBehavior,
         (case:and(x, y) === 43) should == false
         Ground calledWith should == [[:x, 43]]
       )
+
+      it("should be possible to use within a case-expression",
+        case(42, and(1..50, 40..45), :foo) should == :foo
+        case(42, and(and(40..43), 40..45), :foo) should == :foo
+        case(42, and(and(and(40..43, 10...12)), 40..45), :foo) should == nil
+      )
     )
 
     describe("case:or",
-      it("should have tests")
+      it("should return an object that calls === on each argument and returns true if at least one are true",
+        Ground calledWith = []
+        x = Origin mimic
+        y = Origin mimic
+
+        x === = method(other,
+          Ground calledWith << [:x, other].
+          true)
+
+        y === = method(other,
+          Ground calledWith << [:y, other].
+          true)
+
+        (case:or(x, y) === 42) should == true
+        Ground calledWith should == [[:x, 42]]
+
+        (case:or(1..3, 3..4) === 4) should == true
+
+        x === = method(other,
+          Ground calledWith << [:x, other].
+          false)
+
+        (case:or(x, x) === 43) should == false
+
+        Ground calledWith = []
+
+        (case:or(x, y) === 43) should == true
+        Ground calledWith should == [[:x, 43], [:y, 43]]
+      )
+
+      it("should be possible to use within a case-expression",
+        case(42, or(1..40, 40..45), :foo) should == :foo
+        case(42, or(or(50..53), 40..45), :foo) should == :foo
+        case(42, or(or(or(30..33, 10...12)), 40..41), :foo) should == nil
+      )
     )
 
     describe("case:not",
-      it("should have tests")
+      it("should take exactly one argument",
+        fn(case:not()) should signal(Condition Error Invocation TooFewArguments)
+        fn(case:not(1,2)) should signal(Condition Error Invocation TooManyArguments)
+      )
+
+      it("should return an object that when calling === on it will return the inverse of the argument to it",
+        (case:not(1..5) === 0) should == true
+        (case:not(1..5) === 1) should == false
+        (case:not(1..5) === 2) should == false
+        (case:not(1..5) === 3) should == false
+        (case:not(1..5) === 4) should == false
+        (case:not(1..5) === 5) should == false
+        (case:not(1..5) === 6) should == true
+
+        (case:not(1...5) === 0) should == true
+        (case:not(1...5) === 1) should == false
+        (case:not(1...5) === 2) should == false
+        (case:not(1...5) === 3) should == false
+        (case:not(1...5) === 4) should == false
+        (case:not(1...5) === 5) should == true
+        (case:not(1...5) === 6) should == true
+      )
+
+      it("should be possible to use within a case-expression",
+        case(42, not(1..30), :foo) should == :foo
+        case(42, not(not(not(30..33))), :foo) should == :foo
+        case(42, not(not(30..33)), :foo) should == nil
+      )
     )
 
     describe("case:nand",
-      it("should have tests")
+      it("should take at least one argument",
+        fn(case:nand()) should signal(Condition Error Invocation TooFewArguments)
+      )
+
+      it("should return an object that fulfills the nand protocal when called with ===",
+        (case:nand(1..5) === 2) should == false
+        (case:nand(1..5) === 6) should == true
+
+        (case:nand(1..5, 1...3) === 2) should == false
+        (case:nand(1..5, 1...2) === 6) should == true
+        (case:nand(1..5, 1..7)  === 6) should == true
+        (case:nand(1..7, 1..5)  === 6) should == true
+
+        (case:nand(1..5, 1...3, 2..3) === 2) should == false
+
+        (case:nand(1..5, 1...2, 1..3) === 6) should == true
+        (case:nand(1..5, 1..7, 1..3)  === 6) should == true
+        (case:nand(1..7, 1..5, 1..3)  === 6) should == true
+
+        (case:nand(1..5, 1...2, 1..100) === 6) should == true
+        (case:nand(1..5, 1..7, 1..100)  === 6) should == true
+        (case:nand(1..7, 1..5, 1..100)  === 6) should == true
+      )
+
+      it("should be possible to use within a case-expression",
+        case(42, nand(1..30), :foo) should == :foo
+        case(42, nand(nand(1..50, 43..50), 42..43), :foo) should == nil
+        case(42, nand(nand(1..50, 40..50), 43..44), :foo) should == :foo
+      )
     )
 
     describe("case:nor",
