@@ -78,7 +78,7 @@ public class Runtime {
     public IokeObject io = new IokeObject(this, "IO is the base for all input/output in Ioke.", new IokeIO());
     public IokeObject fileSystem = new IokeObject(this, "Gives access to things related to the file system.");
 
-    public IokeObject regexp = new IokeObject(this, "A regular expression allows you to matching text against a pattern.", Regexp.create(""));
+    public IokeObject regexp = new IokeObject(this, "A regular expression allows you to matching text against a pattern.", Regexp.create("", ""));
 
     public IokeObject integer = null;
     public IokeObject decimal = null;
@@ -513,10 +513,10 @@ public class Runtime {
         return obj;
     }
 
-    public IokeObject newRegexp(String pattern, IokeObject context, IokeObject message) throws ControlFlow {
+    public IokeObject newRegexp(String pattern, String flags, IokeObject context, IokeObject message) throws ControlFlow {
         IokeObject obj = this.regexp.allocateCopy(null, null);
         obj.mimicsWithoutCheck(this.regexp);
-        obj.data = Regexp.create(pattern, context, message);
+        obj.data = Regexp.create(pattern, flags, context, message);
         return obj;
     }
 
