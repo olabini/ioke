@@ -3,9 +3,6 @@
  */
 package ioke.lang;
 
-import ioke.lang.mixins.Comparing;
-import ioke.lang.mixins.Enumerable;
-
 import ioke.lang.exceptions.ControlFlow;
 
 /**
