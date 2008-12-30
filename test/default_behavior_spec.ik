@@ -346,10 +346,6 @@ describe(DefaultBehavior,
   )
 
   describe("mimics", 
-    it("should return an empty list for DefaultBehavior", 
-      DefaultBehavior mimics should == [ISpec ExtendedDefaultBehavior]
-    )
-
     it("should return a list with Origin for a simple mimic", 
       Origin mimic mimics should == [Origin]
     )

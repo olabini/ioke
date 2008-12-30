@@ -57,14 +57,20 @@ public class DefaultBehavior {
         final Runtime runtime = obj.runtime;
         obj.setKind("DefaultBehavior");
 
-        obj.setCell("=",         runtime.base.getCells().get("="));
-        obj.setCell("==",        runtime.base.getCells().get("=="));
-        obj.setCell("cell",      runtime.base.getCells().get("cell"));
-        obj.setCell("cell?",     runtime.base.getCells().get("cell?"));
-        obj.setCell("cell=",     runtime.base.getCells().get("cell="));
-        obj.setCell("cells",     runtime.base.getCells().get("cells"));
-        obj.setCell("cellNames", runtime.base.getCells().get("cellNames"));
-        obj.setCell("documentation", runtime.base.getCells().get("documentation"));
+        IokeObject baseBehavior = new IokeObject(runtime, "contains behavior copied from Base");
+        baseBehavior.setKind("DefaultBehavior BaseBehavior");
+
+        baseBehavior.setCell("=",         runtime.base.getCells().get("="));
+        baseBehavior.setCell("==",        runtime.base.getCells().get("=="));
+        baseBehavior.setCell("cell",      runtime.base.getCells().get("cell"));
+        baseBehavior.setCell("cell?",     runtime.base.getCells().get("cell?"));
+        baseBehavior.setCell("cell=",     runtime.base.getCells().get("cell="));
+        baseBehavior.setCell("cells",     runtime.base.getCells().get("cells"));
+        baseBehavior.setCell("cellNames", runtime.base.getCells().get("cellNames"));
+        baseBehavior.setCell("documentation", runtime.base.getCells().get("documentation"));
+
+        obj.mimicsWithoutCheck(baseBehavior);
+        obj.registerCell("BaseBehavior", baseBehavior);
 
         obj.registerMethod(runtime.newJavaMethod("expects two arguments, the first unevaluated, the second evaluated. the first argument should be the name of a cell. if that cell doesn't exist or the value it contains is not true, that cell will be set to the second argument, otherwise nothing will happen. the second argument will NOT be evaluated if the place is not assigned. the result of the expression is the value of the cell. it will use = for this assignment. this method also work together with forms such as []=.", new JavaMethod("||=") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
