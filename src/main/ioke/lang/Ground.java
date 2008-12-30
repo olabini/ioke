@@ -15,7 +15,7 @@ import ioke.lang.exceptions.ControlFlow;
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
 public class Ground {
-    public static void init(IokeObject ground) {
+    public static void init(IokeObject ground) throws ControlFlow {
         Runtime runtime = ground.runtime;
         ground.setKind("Ground");
         ground.registerCell("Base", runtime.base);

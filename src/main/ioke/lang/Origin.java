@@ -13,7 +13,7 @@ import ioke.lang.exceptions.ControlFlow;
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
 public class Origin {
-    public static void init(IokeObject origin) {
+    public static void init(IokeObject origin) throws ControlFlow {
         final Runtime runtime = origin.runtime;
 
         origin.setKind("Origin");

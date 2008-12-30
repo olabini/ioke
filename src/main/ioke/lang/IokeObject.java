@@ -24,6 +24,8 @@ public class IokeObject {
     
     private IokeData data;
 
+    private boolean frozen = false;
+
     public IokeObject(Runtime runtime, String documentation) {
         this(runtime, documentation, IokeData.None);
     }
@@ -38,19 +40,51 @@ public class IokeObject {
         return as(one).cells == as(two).cells;
     }
 
-    public void become(IokeObject other) {
+    private void checkFrozen(String modification, IokeObject message, IokeObject context) throws ControlFlow {
+        if(frozen) {
+            final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
+                                                                               message, 
+                                                                               context,
+                                                                               "Error", 
+                                                                               "ModifyOnFrozen")).mimic(message, context);
+            condition.setCell("message", message);
+            condition.setCell("context", context);
+            condition.setCell("receiver", this);
+            condition.setCell("modification", context.runtime.getSymbol(modification));
+            context.runtime.errorCondition(condition);
+        }
+    }
+
+    public void become(IokeObject other, IokeObject message, IokeObject context) throws ControlFlow {
+        checkFrozen("become!", message, context);
+
         this.runtime = other.runtime;
         this.documentation = other.documentation;
         this.cells = other.cells;
         this.mimics = other.mimics;
         this.data = other.data;
+        this.frozen = other.frozen;
     }
 
     public void init() throws ControlFlow {
         data.init(this);
     }
 
-    public void setDocumentation(String docs) {
+    public static boolean isFrozen(Object on) {
+        return as(on).frozen;
+    }
+
+    public static void freeze(Object on) {
+        as(on).frozen = true;
+    }
+
+    public static void thaw(Object on) {
+        as(on).frozen = false;
+    }
+
+    public void setDocumentation(String docs, IokeObject message, IokeObject context) throws ControlFlow {
+        checkFrozen("documentation=", message, context);
+
         this.documentation = docs;
     }
 
@@ -68,6 +102,16 @@ public class IokeObject {
 
     public static List<IokeObject> getMimics(Object on) {
         return as(on).mimics;
+    }
+
+    public static void removeMimic(Object on, Object other, IokeObject message, IokeObject context) throws ControlFlow {
+        as(on).checkFrozen("removeMimic!", message, context);
+        as(on).mimics.remove(other);
+    }
+
+    public static void removeAllMimics(Object on, IokeObject message, IokeObject context) throws ControlFlow {
+        as(on).checkFrozen("removeAllMimics!", message, context);
+        as(on).mimics.clear();
     }
 
     public static Object getRealContext(Object o) {
@@ -181,6 +225,8 @@ public class IokeObject {
     }
 
     public IokeObject mimic(IokeObject message, IokeObject context) throws ControlFlow {
+        checkFrozen("mimic!", message, context);
+
         IokeObject clone = allocateCopy(message, context);
         clone.mimics(this, message, context);
         return clone;
@@ -406,6 +452,8 @@ public class IokeObject {
     }
 
     public void assign(String name, Object value, IokeObject context, IokeObject message) throws ControlFlow {
+        checkFrozen("=", message, context);
+
         if(!Symbol.BAD_CHARS.matcher(name).find() && findCell(message, context, name + "=") != runtime.nul) {
             runtime.createMessage(new Message(runtime, name + "=", IokeObject.as(value))).sendTo(context, this);
         } else {
@@ -448,6 +496,8 @@ public class IokeObject {
     }
 
     public void mimics(IokeObject mimic, IokeObject message, IokeObject context) throws ControlFlow {
+        checkFrozen("mimic!", message, context);
+
         mimic.data.checkMimic(mimic, message, context);
         if(!this.mimics.contains(mimic)) {
             this.mimics.add(mimic);
@@ -455,6 +505,8 @@ public class IokeObject {
     }
 
     public void mimics(int index, IokeObject mimic, IokeObject message, IokeObject context) throws ControlFlow {
+        checkFrozen("prependMimic!", message, context);
+
         mimic.data.checkMimic(mimic, message, context);
         if(!this.mimics.contains(mimic)) {
             this.mimics.add(index, mimic);
@@ -465,7 +517,9 @@ public class IokeObject {
         cells.put(((Method)m.data).getName(), m);
     }
 
-    public void aliasMethod(String originalName, String newName) throws ControlFlow {
+    public void aliasMethod(String originalName, String newName, IokeObject message, IokeObject context) throws ControlFlow {
+        checkFrozen("aliasMethod", message, context);
+
         IokeObject io = as(findCell(null, null, originalName));
         IokeObject newObj = io.mimic(null, null);
         newObj.data = new AliasMethod(newName, io.data, io);

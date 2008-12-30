@@ -53,7 +53,7 @@ public class DefaultBehavior {
         return newCondition;
     }
 
-    public static void init(IokeObject obj) {
+    public static void init(IokeObject obj) throws ControlFlow {
         final Runtime runtime = obj.runtime;
         obj.setKind("DefaultBehavior");
 
@@ -1855,7 +1855,7 @@ public class DefaultBehavior {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
 
-                    IokeObject.getMimics(on).clear();
+                    IokeObject.removeAllMimics(on, message, context);
                     return on;
                 }
             }));
@@ -1876,7 +1876,7 @@ public class DefaultBehavior {
                     List<Object> args = new ArrayList<Object>();
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
 
-                    IokeObject.getMimics(on).remove(args.get(0));
+                    IokeObject.removeMimic(on, args.get(0), message, context);
                     return on;
                 }
             }));
@@ -1944,7 +1944,7 @@ public class DefaultBehavior {
 
                     String fromName = Text.getText(runtime.asText.sendTo(context, args.get(0)));
                     String toName = Text.getText(runtime.asText.sendTo(context, args.get(1)));
-                    IokeObject.as(on).aliasMethod(fromName, toName);
+                    IokeObject.as(on).aliasMethod(fromName, toName, message, context);
                     return on;
                 }
             }));
@@ -2087,8 +2087,36 @@ public class DefaultBehavior {
                         context.runtime.errorCondition(condition);
                     }
 
-                    me.become(other);
+                    me.become(other, message, context);
                     
+                    return on;
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("returns true if the receiver is frozen, otherwise false", new JavaMethod.WithNoArguments("frozen?") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                    return IokeObject.isFrozen(on) ? context.runtime._true : context.runtime._false;
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("ensures that the receiver is frozen", new JavaMethod.WithNoArguments("freeze!") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+
+                    IokeObject.freeze(on);
+                    return on;
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("ensures that the receiver is not frozen", new JavaMethod.WithNoArguments("thaw!") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+
+                    IokeObject.thaw(on);
                     return on;
                 }
             }));

@@ -19,13 +19,13 @@ import ioke.lang.exceptions.ControlFlow;
 public abstract class Benchmark {
     private Benchmark() {}
 
-    public static IokeObject create(Runtime runtime) {
+    public static IokeObject create(Runtime runtime) throws ControlFlow {
         IokeObject bm = new IokeObject(runtime, "Benchmark is a module that makes it easy to test the time code takes to run");
         Benchmark.init(bm);
         return bm;
     }
 
-    public static void init(IokeObject bm) {
+    public static void init(IokeObject bm) throws ControlFlow {
         Runtime runtime = bm.runtime;
         bm.setKind("Benchmark");
         runtime.ground.setCell("Benchmark", bm);

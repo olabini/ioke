@@ -31,7 +31,7 @@ public abstract class JavaMethod extends Method {
     }
 
     @Override
-    public void init(IokeObject javaMethod) {
+    public void init(IokeObject javaMethod) throws ControlFlow {
         javaMethod.setKind("JavaMethod");
         javaMethod.registerMethod(javaMethod.runtime.newJavaMethod("returns a list of the keywords this method takes", new WithNoArguments("keywords") {
                 @Override
