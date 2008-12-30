@@ -2075,6 +2075,18 @@ public class DefaultBehavior {
                     IokeObject me = IokeObject.as(on);
                     IokeObject other = IokeObject.as(args.get(0));
 
+                    if(on == context.runtime.nil || on == context.runtime._true || on == context.runtime._false) {
+                        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
+                                                                                           message, 
+                                                                                           context,
+                                                                                           "Error", 
+                                                                                           "CantMimicOddball")).mimic(message, context);
+                        condition.setCell("message", message);
+                        condition.setCell("context", context);
+                        condition.setCell("receiver", on);
+                        context.runtime.errorCondition(condition);
+                    }
+
                     me.become(other);
                     
                     return on;

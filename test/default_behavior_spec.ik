@@ -765,19 +765,75 @@ describe(DefaultBehavior,
   )
 
   describe("become!",
-    it("should not be possible to have nil become something")
-    it("should not be possible to have true become something")
-    it("should not be possible to have false become something")
+    it("should not be possible to have nil become something",
+      fn(nil become!(42)) should signal(Condition Error CantMimicOddball)
+    )
 
-    it("should be possible to have a number become something else")
-    it("should be possible to have something become a number")
+    it("should not be possible to have true become something",
+      fn(true become!(42)) should signal(Condition Error CantMimicOddball)
+    )
 
-    it("should be possible to have a text become something else")
-    it("should be possible to have something become a text")
+    it("should not be possible to have false become something",
+      fn(false become!(42)) should signal(Condition Error CantMimicOddball)
+    )
 
-    it("should return the receiver")
+    it("should be possible to have a number become something else",
+      x = Origin mimic
+      y = 321
 
-    it("should modify the reciever to have the same documentation")
+      y become!(x)
+
+      y should have kind("Origin")
+      y should not == 321
+    )
+
+    it("should be possible to have something become a number",
+      x = Origin mimic
+      y = 42
+
+      x become!(y)
+
+      x should have kind("Number")
+      x should == 42
+    )
+
+    it("should be possible to have a text become something else",
+      x = Origin mimic
+      y = "foobar"
+
+      y become!(x)
+
+      y should have kind("Origin")
+      y should not == "foobar"
+    )
+
+    it("should be possible to have something become a text",
+      x = Origin mimic
+      y = "foobar"
+
+      x become!(y)
+
+      x should have kind("Text")
+      x should == "foobar"
+    )
+
+    it("should return the receiver",
+      x = Origin mimic
+      y = Origin mimic
+
+      x become!(y) should be same(y)
+    )
+
+    it("should modify the reciever to have the same documentation",
+      x = Origin mimic
+      y = Origin mimic
+      x documentation = "foo"
+      y documentation = "quux"
+
+      x become!(y)
+
+      x documentation should == "quux"
+    )
 
     it("should give both objects the same uniqueHexId",
       x = Origin mimic
