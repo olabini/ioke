@@ -58,7 +58,31 @@ describe(DefaultBehavior,
         caseTests should == [88, 88]
       )
 
-      it("should transform the when part to call cond:name if it exists")
+      it("should transform the when part to call cond:name if it exists",
+        Ground blargCalled = []
+        blarg = method(Ground blargCalled << :true, 1..10)
+        case(5,
+          blarg, :foo) should == :foo
+        blargCalled should == [:true]
+
+        Ground wowserCalled = []
+        DefaultBehavior Case cell("case:caseTestWowser") = method(+args,
+          wowserCalled << :mix
+          1...10)
+
+        case(5,
+          caseTestWowser, :foo) should == :foo
+
+        case(5,
+          caseTestWowser(1,2,3), :foo) should == :foo
+
+        wowserCalled should == [:mix, :mix]
+
+        case(5,
+          caseTestWowser(1,caseTestWowser(44),3), :foo) should == :foo
+
+        wowserCalled should == [:mix, :mix, :mix, :mix]
+      )
     )
 
     describe("case:and",
