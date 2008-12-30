@@ -132,6 +132,7 @@ public class Runtime {
     public IokeObject gtMessage = newMessage(">");
     public IokeObject gteMessage = newMessage(">=");
     public IokeObject eqMessage = newMessage("==");
+    public IokeObject eqqMessage = newMessage("===");
 
     public IokeObject testMessage = newMessage("test");
 
