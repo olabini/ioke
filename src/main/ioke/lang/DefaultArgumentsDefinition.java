@@ -515,14 +515,18 @@ public class DefaultArgumentsDefinition {
         public Builder withRequiredPositionalUnevaluated(String name) {
             arguments.add(new UnevaluatedArgument(name, true));
             min++;
-            max++;
+            if(max != -1) {
+                max++;
+            }
 
             return this;
         }
 
         public Builder withOptionalPositionalUnevaluated(String name) {
             arguments.add(new UnevaluatedArgument(name, false));
-            max++;
+            if(max != -1) {
+                max++;
+            }
 
             return this;
         }
@@ -551,7 +555,9 @@ public class DefaultArgumentsDefinition {
         public Builder withRequiredPositional(String name) {
             arguments.add(new Argument(name));
             min++;
-            max++;
+            if(max != -1) {
+                max++;
+            }
 
             return this;
         }
@@ -565,7 +571,9 @@ public class DefaultArgumentsDefinition {
 
         public Builder withOptionalPositional(String name, String defaultValue) {
             arguments.add(new OptionalArgument(name, defaultValue));
-            max++;
+            if(max != -1) {
+                max++;
+            }
 
             return this;
         }
