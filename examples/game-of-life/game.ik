@@ -4,10 +4,10 @@ Cell = Origin mimic do(
 
 Grid = Origin mimic do(
   with = method(rows:, columns:,
-  
+
     newGrid = Grid mimic
     newGrid cells = (0...rows) map((0...columns) map(Cell mimic))
-  
+
     newGrid cells each(i, row,
       newGrid cells[i] each(j, cell,
         cell position = {x: i, y: j}
@@ -40,34 +40,34 @@ Grid = Origin mimic do(
         )
       )
     )
-    
+
     newGrid
   )
 )
 
 Game = Origin mimic do(
-  step = 0
+
   grid = Grid with(rows: 3, columns: 3)
+
   next = method(
-    step++
-    
+
     grid cells each(row,
       row each(cell,
         if(cell alive && (cell neighbours map(value) count(alive) < 2 || cell neighbours map(value) count(alive) > 3),
           cell queuedState = :dead
         )
-        
+
         if(cell alive && (cell neighbours map(value) count(alive) == 2 || cell neighbours map(value) count(alive) == 3),
           cell queuedState = :alive
         )
-        
+
         if(!cell alive && (cell neighbours map(value) count(alive) == 3),
           cell queuedState = :alive
         )
 
       )
     )
-    
+
     grid cells each(row,
       row each(cell,
         if(cell queuedState == :dead,
@@ -80,7 +80,7 @@ Game = Origin mimic do(
       )
     )
   )
-  
+
   reset = method(
     grid cells each(row,
       row each(cell,
@@ -88,7 +88,7 @@ Game = Origin mimic do(
         cell alive = false
       )
     )
-    
+
     self
   )
 )
