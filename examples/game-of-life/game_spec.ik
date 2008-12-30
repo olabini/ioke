@@ -4,7 +4,7 @@ use("game")
 describe("Game",
   describe("next",
     it("should allow to advance to the next step",
-      game = Game mimic
+      game = Game mimic reset
       game step should == 0
       game next
       game step should == 1
@@ -13,12 +13,12 @@ describe("Game",
   
   describe("evolution",
     it("should die when surrounded by fewer than two live neighbours",
-      game = Game mimic
+      game = Game mimic reset
       game grid cells[1][1] alive = true
       game next
       game grid cells[1][1] alive should == false
       
-      game = Game mimic
+      game = Game mimic reset
       game grid cells[0][1] alive = true
       game grid cells[1][1] alive = true
       game grid cells[2][1] alive = true
@@ -27,35 +27,46 @@ describe("Game",
     )
 
     it("should die when surrounded by more than three live neighbours",
-      game = Game mimic
-      
+      game = Game mimic reset
+
       game grid cells[0][1] alive = true
       game grid cells[1][1] alive = true
       game grid cells[2][1] alive = true
-      
+
       game grid cells[0][0] alive = true
       game grid cells[1][0] alive = true
       game grid cells[2][0] alive = true
-      
+
       game next
-      
+
       game grid cells[1][1] alive should == false    
     )
 
     it("should live when surrounded by two or three live neighbours",
-      game = Game mimic
-      
+      game = Game mimic reset
+
       game grid cells[0][1] alive = true
       game grid cells[1][1] alive = true
       game grid cells[2][1] alive = true      
       game grid cells[0][0] alive = true
-      
+
       game next
-      
+
       game grid cells[1][1] alive should == true
     )
 
-    it("should come to life when it is dead and has exactly three live neighbours")
+    it("should come to life when it is dead and has exactly three live neighbours",
+      game = Game mimic reset
+
+      game grid cells[0][1] alive = true
+      game grid cells[1][1] alive = false
+      game grid cells[2][1] alive = true      
+      game grid cells[0][0] alive = true
+
+      game next
+
+      game grid cells[1][1] alive should == true
+    )
   )
   
   describe("grid",
