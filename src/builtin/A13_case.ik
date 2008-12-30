@@ -39,7 +39,15 @@ DefaultBehavior Case case:nor = method(first, +args,
   DefaultBehavior Case NOrCombiner with(first: first, components: args))
 
 
+DefaultBehavior Case XOrCombiner = Origin with(first: nil, components: [])
+DefaultBehavior Case XOrCombiner === = method(other,
+  firstResult = (first === other)
+  if(firstResult,
+    components none?(=== other),
+    components one?(=== other)))
 
+DefaultBehavior Case case:xor = method(first, +args,
+  DefaultBehavior Case XOrCombiner with(first: first, components: args))
 
 
 DefaultBehavior Case Else = Origin mimic

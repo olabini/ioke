@@ -255,7 +255,35 @@ describe(DefaultBehavior,
     )
 
     describe("case:xor",
-      it("should have tests")
+      it("should take at least one argument",
+        fn(case:xor()) should signal(Condition Error Invocation TooFewArguments)
+      )
+
+      it("should return an object that fulfills the xor protocal when called with ===",
+        (case:xor(1..5) === 2) should == true
+        (case:xor(1..5) === 6) should == false
+
+        (case:xor(1..5, 1...3) === 2) should == false
+        (case:xor(1..5, 1...2) === 6) should == false
+        (case:xor(1..5, 1..7)  === 6) should == true
+        (case:xor(1..7, 1..5)  === 6) should == true
+
+        (case:xor(1..5, 1...3, 2..3) === 2) should == false
+
+        (case:xor(1..5, 1...2, 1..3) === 6) should == false
+        (case:xor(1..5, 1..7, 1..3)  === 6) should == true
+        (case:xor(1..7, 1..5, 1..3)  === 6) should == true
+
+        (case:xor(1..5, 1...2, 1..100) === 6) should == true
+        (case:xor(1..5, 1..7, 1..100)  === 6) should == false
+        (case:xor(1..7, 1..5, 1..100)  === 6) should == false
+      )
+
+      it("should be possible to use within a case-expression",
+        case(42, xor(1..50), :foo) should == :foo
+        case(42, xor(xor(1..50, 43..50), 42..43), :foo) should == nil
+        case(42, xor(xor(1..50, 40..50), 42..44), :foo) should == :foo
+      )
     )
 
     describe("case:else",
