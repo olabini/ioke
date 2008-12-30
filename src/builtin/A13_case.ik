@@ -31,6 +31,14 @@ DefaultBehavior Case case:nand = method(first, +args,
   DefaultBehavior Case NAndCombiner with(first: first, components: args))
 
 
+DefaultBehavior Case NOrCombiner = Origin with(first: nil, components: [])
+DefaultBehavior Case NOrCombiner === = method(other,
+  (!(first === other) && !(components any?(=== other))))
+
+DefaultBehavior Case case:nor = method(first, +args,
+  DefaultBehavior Case NOrCombiner with(first: first, components: args))
+
+
 
 
 

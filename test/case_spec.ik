@@ -223,7 +223,35 @@ describe(DefaultBehavior,
     )
 
     describe("case:nor",
-      it("should have tests")
+      it("should take at least one argument",
+        fn(case:nor()) should signal(Condition Error Invocation TooFewArguments)
+      )
+
+      it("should return an object that fulfills the nor protocal when called with ===",
+        (case:nor(1..5) === 2) should == false
+        (case:nor(1..5) === 6) should == true
+
+        (case:nor(1..5, 1...3) === 2) should == false
+        (case:nor(1..5, 1...2) === 6) should == true
+        (case:nor(1..5, 1..7)  === 6) should == false
+        (case:nor(1..7, 1..5)  === 6) should == false
+
+        (case:nor(1..5, 1...3, 2..3) === 2) should == false
+
+        (case:nor(1..5, 1...2, 1..3) === 6) should == true
+        (case:nor(1..5, 1..7, 1..3)  === 6) should == false
+        (case:nor(1..7, 1..5, 1..3)  === 6) should == false
+
+        (case:nor(1..5, 1...2, 1..100) === 6) should == false
+        (case:nor(1..5, 1..7, 1..100)  === 6) should == false
+        (case:nor(1..7, 1..5, 1..100)  === 6) should == false
+      )
+
+      it("should be possible to use within a case-expression",
+        case(42, nor(1..30), :foo) should == :foo
+        case(42, nor(nor(1..50, 43..50), 42..43), :foo) should == nil
+        case(42, nor(nor(1..50, 40..50), 43..44), :foo) should == :foo
+      )
     )
 
     describe("case:xor",
