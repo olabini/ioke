@@ -3,16 +3,8 @@ use("game")
 
 describe("Game",
   describe("next",
-    it("should allow to advance to the next step",
-      game = Game mimic reset
-      game step should == 0
-      game next
-      game step should == 1
-    )
-  )
   
-  describe("evolution",
-    it("should die when surrounded by fewer than two live neighbours",
+    it("should kill cells surrounded by fewer than two live neighbours",
       game = Game mimic reset
       game grid cells[1][1] alive = true
       game next
@@ -26,7 +18,7 @@ describe("Game",
       game grid cells[1][1] alive should == true
     )
 
-    it("should die when surrounded by more than three live neighbours",
+    it("should kill cells surrounded by more than three live neighbours",
       game = Game mimic reset
 
       game grid cells[0][1] alive = true
@@ -42,7 +34,7 @@ describe("Game",
       game grid cells[1][1] alive should == false    
     )
 
-    it("should live when surrounded by two or three live neighbours",
+    it("should make cells surrounded by two or three live neighbours survive",
       game = Game mimic reset
 
       game grid cells[0][1] alive = true
@@ -55,7 +47,7 @@ describe("Game",
       game grid cells[1][1] alive should == true
     )
 
-    it("should come to life when it is dead and has exactly three live neighbours",
+    it("should enliven cells when they have exactly three live neighbours",
       game = Game mimic reset
 
       game grid cells[0][1] alive = true
