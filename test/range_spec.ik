@@ -195,4 +195,12 @@ describe("Range",
       ((1..5) === :foo) should == false
     )
   )
+
+  describe("inspect",
+    it("should have tests")
+  )
+
+  describe("notice",
+    it("should have tests")
+  )
 )

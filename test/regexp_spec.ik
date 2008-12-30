@@ -42,10 +42,16 @@ describe(Regexp,
   )
   
   describe("inspect",
-    it("should have tests")
+    it("should inspect correctly for a simple regexp",
+      #/foo/ inspect should == "#/foo/"
+      #/foo/x inspect should == "#/foo/x"
+    )
   )
 
   describe("notice",
-    it("should have tests")
+    it("should notice correctly for a simple regexp",
+      #/foo/ notice should == "#/foo/"
+      #/foo/x notice should == "#/foo/x"
+    )
   )
 )
