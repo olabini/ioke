@@ -1191,7 +1191,7 @@ public class DefaultBehavior {
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
                     
                     String name = Text.getText(runtime.asText.sendTo(context, args.get(0)));
-                    if(((IokeSystem)runtime.system.data).use(IokeObject.as(on), context, message, name)) {
+                    if(((IokeSystem)IokeObject.data(runtime.system)).use(IokeObject.as(on), context, message, name)) {
                         return runtime._true;
                     } else {
                         return runtime._false;

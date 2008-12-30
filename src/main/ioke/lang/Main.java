@@ -109,13 +109,13 @@ public class Main {
                 r.setCurrentWorkingDirectory(cwd);
             }
 
-            ((IokeSystem)r.system.data).setCurrentProgram("-e");
+            ((IokeSystem)IokeObject.data(r.system)).setCurrentProgram("-e");
 
-            ((IokeSystem)r.system.data).addLoadPath(System.getProperty("ioke.lib", ".") + "/ioke");
-            ((IokeSystem)r.system.data).addLoadPath("lib/ioke");
+            ((IokeSystem)IokeObject.data(r.system)).addLoadPath(System.getProperty("ioke.lib", ".") + "/ioke");
+            ((IokeSystem)IokeObject.data(r.system)).addLoadPath("lib/ioke");
 
             for(String ss : loadDirs) {
-                ((IokeSystem)r.system.data).addLoadPath(ss);
+                ((IokeSystem)IokeObject.data(r.system)).addLoadPath(ss);
             }
 
             for(String script : scripts) {
@@ -123,7 +123,7 @@ public class Main {
             }
             
             if(readStdin) {
-                ((IokeSystem)r.system.data).setCurrentProgram("<stdin>");
+                ((IokeSystem)IokeObject.data(r.system)).setCurrentProgram("<stdin>");
                 r.evaluateStream("<stdin>", new InputStreamReader(System.in), message, context);
             }
 
@@ -142,7 +142,7 @@ public class Main {
                     file = file.substring(0, file.length()-1);
                 }
 
-                ((IokeSystem)r.system.data).setCurrentProgram(file);
+                ((IokeSystem)IokeObject.data(r.system)).setCurrentProgram(file);
                 r.evaluateFile(file, message, context);
             } else {
                 if(scripts.size() == 0 && !printedSomething) {

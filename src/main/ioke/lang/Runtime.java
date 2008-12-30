@@ -159,11 +159,11 @@ public class Runtime {
     }
 
     public void setCurrentWorkingDirectory(String cwd) {
-        ((IokeSystem)system.data).setCurrentWorkingDirectory(cwd);
+        ((IokeSystem)IokeObject.data(system)).setCurrentWorkingDirectory(cwd);
     }
 
     public String getCurrentWorkingDirectory() {
-        return ((IokeSystem)system.data).getCurrentWorkingDirectory();
+        return ((IokeSystem)IokeObject.data(system)).getCurrentWorkingDirectory();
     }
 
     public PrintWriter getOut() {
@@ -445,41 +445,41 @@ public class Runtime {
 
     public Object evaluateStream(String name, Reader reader, IokeObject message, IokeObject context) throws ControlFlow {
         try {
-            ((IokeSystem)system.data).pushCurrentFile(name);
+            ((IokeSystem)IokeObject.data(system)).pushCurrentFile(name);
             return evaluateStream(reader, message, context);
         } catch(Exception e) {
             reportJavaException(e, message, context);
             return null;
         } finally {
-            ((IokeSystem)system.data).popCurrentFile();
+            ((IokeSystem)IokeObject.data(system)).popCurrentFile();
         }
     }
 
     public Object evaluateFile(File f, IokeObject message, IokeObject context) throws ControlFlow {
         try {
-            ((IokeSystem)system.data).pushCurrentFile(f.getCanonicalPath());
+            ((IokeSystem)IokeObject.data(system)).pushCurrentFile(f.getCanonicalPath());
             return evaluateStream(new FileReader(f), message, context);
         } catch(Exception e) {
             reportJavaException(e, message, context);
             return null;
         } finally {
-            ((IokeSystem)system.data).popCurrentFile();
+            ((IokeSystem)IokeObject.data(system)).popCurrentFile();
         }
     }
 
     public Object evaluateFile(String filename, IokeObject message, IokeObject context) throws ControlFlow {
         try {
-            ((IokeSystem)system.data).pushCurrentFile(filename);
+            ((IokeSystem)IokeObject.data(system)).pushCurrentFile(filename);
             if(IokeSystem.isAbsoluteFileName(filename)) {
                 return evaluateStream(new FileReader(new File(filename)), message, context);
             } else {
-                return evaluateStream(new FileReader(new File(((IokeSystem)system.data).getCurrentWorkingDirectory(), filename)), message, context);
+                return evaluateStream(new FileReader(new File(((IokeSystem)IokeObject.data(system)).getCurrentWorkingDirectory(), filename)), message, context);
             }
         } catch(Exception e) {
             reportJavaException(e, message, context);
             return null;
         } finally {
-            ((IokeSystem)system.data).popCurrentFile();
+            ((IokeSystem)IokeObject.data(system)).popCurrentFile();
         }
     }
 
@@ -509,49 +509,49 @@ public class Runtime {
     public IokeObject newText(String text) {
         IokeObject obj = this.text.allocateCopy(null, null);
         obj.mimicsWithoutCheck(this.text);
-        obj.data = new Text(text);
+        obj.setData(new Text(text));
         return obj;
     }
 
     public IokeObject newRegexp(String pattern, String flags, IokeObject context, IokeObject message) throws ControlFlow {
         IokeObject obj = this.regexp.allocateCopy(null, null);
         obj.mimicsWithoutCheck(this.regexp);
-        obj.data = Regexp.create(pattern, flags, context, message);
+        obj.setData(Regexp.create(pattern, flags, context, message));
         return obj;
     }
 
     public IokeObject newDecimal(String number) throws ControlFlow {
         IokeObject obj = this.decimal.allocateCopy(null, null);
         obj.mimicsWithoutCheck(this.decimal);
-        obj.data = Decimal.decimal(number);
+        obj.setData(Decimal.decimal(number));
         return obj;
     }
 
     public IokeObject newDecimal(Number number) throws ControlFlow {
         IokeObject obj = this.decimal.allocateCopy(null, null);
         obj.mimicsWithoutCheck(this.decimal);
-        obj.data = Decimal.decimal(number.getValue());
+        obj.setData(Decimal.decimal(number.getValue()));
         return obj;
     }
 
     public IokeObject newDecimal(BigDecimal number) throws ControlFlow {
         IokeObject obj = this.decimal.allocateCopy(null, null);
         obj.mimicsWithoutCheck(this.decimal);
-        obj.data = Decimal.decimal(number);
+        obj.setData(Decimal.decimal(number));
         return obj;
     }
 
     public IokeObject newNumber(String number) throws ControlFlow {
         IokeObject obj = this.integer.allocateCopy(null, null);
         obj.mimicsWithoutCheck(this.integer);
-        obj.data = Number.integer(number);
+        obj.setData(Number.integer(number));
         return obj;
     }
 
     public IokeObject newNumber(IntNum number) {
         IokeObject obj = this.integer.allocateCopy(null, null);
         obj.mimicsWithoutCheck(this.integer);
-        obj.data = Number.integer(number);
+        obj.setData(Number.integer(number));
         return obj;
     }
 
@@ -559,12 +559,12 @@ public class Runtime {
         if(number instanceof IntNum) {
             IokeObject obj = this.integer.allocateCopy(null, null);
             obj.mimicsWithoutCheck(this.integer);
-            obj.data = Number.integer((IntNum)number);
+            obj.setData(Number.integer((IntNum)number));
             return obj;
         } else {
             IokeObject obj = this.ratio.allocateCopy(null, null);
             obj.mimicsWithoutCheck(this.ratio);
-            obj.data = Number.ratio((IntFraction)number);
+            obj.setData(Number.ratio((IntFraction)number));
             return obj;
         }
     }
@@ -572,23 +572,23 @@ public class Runtime {
     public IokeObject newNumber(long number) {
         IokeObject obj = this.integer.allocateCopy(null, null);
         obj.mimicsWithoutCheck(this.integer);
-        obj.data = Number.integer(number);
+        obj.setData(Number.integer(number));
         return obj;
     }
 
     public IokeObject newMethod(String doc, IokeObject tp, Method impl) {
         IokeObject obj = tp.allocateCopy(null, null);
-        obj.documentation = doc;
+        obj.setDocumentation(doc);
         obj.mimicsWithoutCheck(tp);
-        obj.data = impl;
+        obj.setData(impl);
         return obj;
     }
 
     public IokeObject newMacro(String doc, IokeObject tp, IokeData impl) {
         IokeObject obj = tp.allocateCopy(null, null);
-        obj.documentation = doc;
+        obj.setDocumentation(doc);
         obj.mimicsWithoutCheck(tp);
-        obj.data = impl;
+        obj.setData(impl);
         return obj;
     }
 
@@ -603,7 +603,7 @@ public class Runtime {
     public IokeObject createMessage(Message m) {
         IokeObject obj = this.message.allocateCopy(null, null);
         obj.mimicsWithoutCheck(this.message);
-        obj.data = m;
+        obj.setData(m);
         return obj;
     }
 
@@ -618,23 +618,23 @@ public class Runtime {
 
     public IokeObject newLexicalBlock(String doc, IokeObject tp, LexicalBlock impl) {
         IokeObject obj = tp.allocateCopy(null, null);
-        obj.documentation = doc;
+        obj.setDocumentation(doc);
         obj.mimicsWithoutCheck(tp);
-        obj.data = impl;
+        obj.setData(impl);
         return obj;
     }
 
     public IokeObject newDict(Map<Object, Object> map) {
         IokeObject obj = dict.allocateCopy(null, null);
         obj.mimicsWithoutCheck(dict);
-        obj.data = new Dict(map);
+        obj.setData(new Dict(map));
         return obj;
     }
 
     public IokeObject newSet(Collection<Object> objs) {
         IokeObject obj = this.set.allocateCopy(null, null);
         obj.mimicsWithoutCheck(this.set);
-        obj.data = new IokeSet(new HashSet<Object>(objs));
+        obj.setData(new IokeSet(new HashSet<Object>(objs)));
         return obj;
     }
 
@@ -645,28 +645,28 @@ public class Runtime {
     public IokeObject newList(List<Object> list) {
         IokeObject obj = this.list.allocateCopy(null, null);
         obj.mimicsWithoutCheck(this.list);
-        obj.data = new IokeList(list);
+        obj.setData(new IokeList(list));
         return obj;
     }
 
     public IokeObject newList(List<Object> list, IokeObject orig) {
         IokeObject obj = orig.allocateCopy(null, null);
         obj.mimicsWithoutCheck(orig);
-        obj.data = new IokeList(list);
+        obj.setData(new IokeList(list));
         return obj;
     }
 
     public IokeObject newCallFrom(IokeObject ctx, IokeObject message, IokeObject surroundingContext, IokeObject on) {
         IokeObject obj = this.call.allocateCopy(null, null);
         obj.mimicsWithoutCheck(this.call);
-        obj.data = new Call(ctx, message, surroundingContext, on);
+        obj.setData(new Call(ctx, message, surroundingContext, on));
         return obj;
     }
 
     public IokeObject newRange(IokeObject from, IokeObject to, boolean inclusive) {
         IokeObject obj = this.range.allocateCopy(null, null);
         obj.mimicsWithoutCheck(this.range);
-        obj.data = new Range(from, to, inclusive);
+        obj.setData(new Range(from, to, inclusive));
         return obj;
     }
 
@@ -674,21 +674,21 @@ public class Runtime {
         IokeObject fileMimic = IokeObject.as(FileMessage.sendTo(context, this.fileSystem));
         IokeObject obj = fileMimic.allocateCopy(null, null);
         obj.mimicsWithoutCheck(fileMimic);
-        obj.data = new FileSystem.IokeFile(eff);
+        obj.setData(new FileSystem.IokeFile(eff));
         return obj;
     }
 
     public IokeObject newPair(Object first, Object second) {
         IokeObject obj = this.pair.allocateCopy(null, null);
         obj.mimicsWithoutCheck(this.pair);
-        obj.data = new Pair(first, second);
+        obj.setData(new Pair(first, second));
         return obj;
     }
 
     public IokeObject newDateTime(org.joda.time.DateTime dt) {
         IokeObject obj = this.dateTime.allocateCopy(null, null);
         obj.mimicsWithoutCheck(this.dateTime);
-        obj.data = new DateTime(dt);
+        obj.setData(new DateTime(dt));
         return obj;
     }
 
