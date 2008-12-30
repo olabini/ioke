@@ -1,5 +1,6 @@
 
-DefaultBehavior aliasMethod("dict", "{}")
+DefaultBehavior Literals cell("{}") = macro(
+  call resendToMethod("dict"))
 
 Dict aliasMethod("at", "[]")
 
