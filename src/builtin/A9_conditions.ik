@@ -7,6 +7,7 @@ Condition Error Invocation       = Condition Error mimic
 Condition Error IO               = Condition Error mimic
 Condition Error Load             = Condition Error mimic
 Condition Error NoSuchCell       = Condition Error mimic
+Condition Error ModifyOnFrozen   = Condition Error mimic
 Condition Error Type             = Condition Error mimic
 Condition Error Index            = Condition Error mimic
 Condition Error RestartNotActive = Condition Error mimic

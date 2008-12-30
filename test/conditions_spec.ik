@@ -635,6 +635,12 @@ describe(Condition,
       )
     )
     
+    describe(Condition Error ModifyOnFrozen, 
+      it("should have the right kind", 
+        Condition Error ModifyOnFrozen should have kind("Condition Error ModifyOnFrozen")
+      )
+    )
+
     describe(Condition Error NoSuchCell, 
       it("should have the right kind", 
         Condition Error NoSuchCell should have kind("Condition Error NoSuchCell")

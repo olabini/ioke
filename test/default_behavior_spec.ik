@@ -888,4 +888,12 @@ describe(DefaultBehavior,
       y should have mimic(b)
     )
   )
+
+  describe("freeze!",
+    it("should have tests")
+  )
+
+  describe("thaw!",
+    it("should have tests")
+  )
 )
