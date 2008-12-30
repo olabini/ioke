@@ -32,7 +32,7 @@ public class DefaultMethod extends Method implements AssociatedCode {
     }
 
     @Override
-    public void init(IokeObject defaultMethod) {
+    public void init(IokeObject defaultMethod) throws ControlFlow {
         defaultMethod.setKind("DefaultMethod");
         defaultMethod.registerMethod(defaultMethod.runtime.newJavaMethod("returns a list of the keywords this method takes", new JavaMethod.WithNoArguments("keywords") {
                 @Override
@@ -95,7 +95,7 @@ public class DefaultMethod extends Method implements AssociatedCode {
         }
     }
 
-    private IokeObject createSuperCallFor(final IokeObject out_self, final IokeObject out_context, final IokeObject out_message, final Object out_on, final Object out_superCell) {
+    private IokeObject createSuperCallFor(final IokeObject out_self, final IokeObject out_context, final IokeObject out_message, final Object out_on, final Object out_superCell) throws ControlFlow {
         return out_context.runtime.newJavaMethod("will call the super method of the current message on the same receiver", new JavaMethod("super") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()

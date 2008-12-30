@@ -51,7 +51,7 @@ public class FileSystem {
         }
 
         @Override
-        public void init(IokeObject obj) {
+        public void init(IokeObject obj) throws ControlFlow {
             final Runtime runtime = obj.runtime;
 
             obj.setKind("FileSystem File");

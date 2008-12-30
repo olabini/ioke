@@ -37,7 +37,7 @@ public class LexicalBlock extends IokeData implements AssociatedCode {
     }
 
     @Override
-    public void init(IokeObject lexicalBlock) {
+    public void init(IokeObject lexicalBlock) throws ControlFlow {
         lexicalBlock.setKind("LexicalBlock");
 
         lexicalBlock.registerMethod(lexicalBlock.runtime.newJavaMethod("takes two evaluated arguments, where this first one is a list of messages which will be used as the arguments and the code, and the second is the context where this lexical scope should be created in", new JavaMethod("createFrom") {

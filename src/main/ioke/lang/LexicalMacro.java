@@ -48,7 +48,7 @@ public class LexicalMacro extends IokeData implements AssociatedCode, Named, Ins
     }
 
     @Override
-    public void init(IokeObject obj) {
+    public void init(IokeObject obj) throws ControlFlow {
         obj.setKind("LexicalMacro");
         obj.registerCell("activatable", obj.runtime._true);
 

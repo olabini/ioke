@@ -288,7 +288,7 @@ public class IokeList extends IokeData {
                     return context.runtime.newNumber(((IokeList)IokeObject.data(on)).getList().size());
                 }
             }));
-        obj.aliasMethod("size", "length");
+        obj.aliasMethod("size", "length", null, null);
 
         obj.registerMethod(runtime.newJavaMethod("takes one argument, the index of the element to be returned. can be negative, and will in that case return indexed from the back of the list. if the index is outside the bounds of the list, will return nil. the argument can also be a range, and will in that case interpret the first index as where to start, and the second the end. the end can be negative and will in that case be from the end. if the first argument is negative, or after the second, an empty list will be returned. if the end point is larger than the list, the size of the list will be used as the end point.", new JavaMethod("at") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
@@ -362,7 +362,7 @@ public class IokeList extends IokeData {
                 }
             }));
 
-        obj.aliasMethod("at", "[]");
+        obj.aliasMethod("at", "[]", null, null);
 
         obj.registerMethod(runtime.newJavaMethod("takes two arguments, the index of the element to set, and the value to set. the index can be negative and will in that case set indexed from the end of the list. if the index is larger than the current size, the list will be expanded with nils. an exception will be raised if a abs(negative index) is larger than the size.", new JavaMethod("at=") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
@@ -441,7 +441,7 @@ public class IokeList extends IokeData {
                 }
             }));
 
-        obj.aliasMethod("at=", "[]=");
+        obj.aliasMethod("at=", "[]=", null, null);
     }
 
     public void add(Object obj) {

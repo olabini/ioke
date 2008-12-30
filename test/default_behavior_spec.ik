@@ -889,11 +889,79 @@ describe(DefaultBehavior,
     )
   )
 
+  describe("frozen?",
+    it("should return false on something that isn't frozen",
+      x = Origin mimic
+      x should not be frozen
+      
+      x freeze!
+
+      x should be frozen
+    )
+  )
+
   describe("freeze!",
-    it("should have tests")
+    it("should be possible to call several times without effect",
+      x = Origin mimic
+      x freeze!
+      x freeze!
+    )
+
+    it("should not be possible to modify a frozen object",
+      x = Origin mimic
+      x existing = 43
+      x freeze!
+
+      ;; create new cell
+      fn(x y = 42) should signal(Condition Error ModifyOnFrozen)
+
+      ;; modify existing
+      fn(x existing = 42) should signal(Condition Error ModifyOnFrozen)
+
+      ;; add new mimic
+      fn(x mimic!(Origin mimic)) should signal(Condition Error ModifyOnFrozen)
+      fn(x prependMimic!(Origin mimic)) should signal(Condition Error ModifyOnFrozen)
+
+      ;; remove mimic
+      fn(x removeMimic!(Origin)) should signal(Condition Error ModifyOnFrozen)
+
+      ;; remove all mimics
+      fn(x removeAllMimics!) should signal(Condition Error ModifyOnFrozen)
+
+      ;; set documentation
+      fn(x documentation = "blarg") should signal(Condition Error ModifyOnFrozen)
+
+      ;; become something else
+      fn(x become!(42)) should signal(Condition Error ModifyOnFrozen)
+    )
+
+    it("should be copied when becoming",
+      x = Origin mimic
+      y = Origin mimic
+      x freeze!
+
+      y become!(x)
+      
+      y should be frozen
+    )
   )
 
   describe("thaw!",
-    it("should have tests")
+    it("should be possible to call several times without effect",
+      x = Origin mimic
+      x freeze!
+
+      x thaw!
+      x thaw!
+    )
+
+    it("should unfreeze an object",
+      x = Origin mimic
+      x freeze!
+
+      x thaw!
+
+      x should not be frozen
+    )
   )
 )

@@ -10,7 +10,7 @@ import ioke.lang.exceptions.ControlFlow;
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
 public class Locals {
-    public static void init(IokeObject obj) {
+    public static void init(IokeObject obj) throws ControlFlow {
         obj.setKind("Locals");
         obj.getMimics().clear();
 

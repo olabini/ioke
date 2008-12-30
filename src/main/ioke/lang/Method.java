@@ -28,7 +28,7 @@ public class Method extends IokeData implements Named, Inspectable {
     }
     
     @Override
-    public void init(IokeObject method) {
+    public void init(IokeObject method) throws ControlFlow {
         method.setKind("Method");
         method.registerCell("activatable", method.runtime._true);
 

@@ -162,7 +162,7 @@ public class Message extends IokeData {
     }
 
     @Override
-    public void init(IokeObject message) {
+    public void init(IokeObject message) throws ControlFlow {
         message.setKind("Message");
         message.registerMethod(message.runtime.newJavaMethod("Returns a code representation of the object", new JavaMethod.WithNoArguments("code") {
                 @Override

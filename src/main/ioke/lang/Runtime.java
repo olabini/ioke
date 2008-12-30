@@ -576,23 +576,23 @@ public class Runtime {
         return obj;
     }
 
-    public IokeObject newMethod(String doc, IokeObject tp, Method impl) {
+    public IokeObject newMethod(String doc, IokeObject tp, Method impl) throws ControlFlow {
         IokeObject obj = tp.allocateCopy(null, null);
-        obj.setDocumentation(doc);
+        obj.setDocumentation(doc, null, null);
         obj.mimicsWithoutCheck(tp);
         obj.setData(impl);
         return obj;
     }
 
-    public IokeObject newMacro(String doc, IokeObject tp, IokeData impl) {
+    public IokeObject newMacro(String doc, IokeObject tp, IokeData impl) throws ControlFlow {
         IokeObject obj = tp.allocateCopy(null, null);
-        obj.setDocumentation(doc);
+        obj.setDocumentation(doc, null, null);
         obj.mimicsWithoutCheck(tp);
         obj.setData(impl);
         return obj;
     }
 
-    public IokeObject newJavaMethod(String doc, JavaMethod impl) {
+    public IokeObject newJavaMethod(String doc, JavaMethod impl) throws ControlFlow {
         return newMethod(doc, this.javaMethod, impl);
     }
 
@@ -616,9 +616,9 @@ public class Runtime {
         return createMessage(mess);
     }
 
-    public IokeObject newLexicalBlock(String doc, IokeObject tp, LexicalBlock impl) {
+    public IokeObject newLexicalBlock(String doc, IokeObject tp, LexicalBlock impl) throws ControlFlow {
         IokeObject obj = tp.allocateCopy(null, null);
-        obj.setDocumentation(doc);
+        obj.setDocumentation(doc, null, null);
         obj.mimicsWithoutCheck(tp);
         obj.setData(impl);
         return obj;
