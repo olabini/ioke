@@ -3,6 +3,8 @@
  */
 package ioke.lang;
 
+import java.util.Map;
+
 import ioke.lang.exceptions.ControlFlow;
 
 /**
@@ -15,21 +17,22 @@ public class Locals {
         obj.getMimics().clear();
 
         obj.setCell("=",         obj.runtime.base.getCells().get("="));
-        obj.setCell("++",        obj.runtime.defaultBehavior.getCells().get("++"));
-        obj.setCell("--",        obj.runtime.defaultBehavior.getCells().get("--"));
-        obj.setCell("+=",        obj.runtime.defaultBehavior.getCells().get("+="));
-        obj.setCell("-=",        obj.runtime.defaultBehavior.getCells().get("-="));
-        obj.setCell("/=",        obj.runtime.defaultBehavior.getCells().get("/="));
-        obj.setCell("*=",        obj.runtime.defaultBehavior.getCells().get("*="));
-        obj.setCell("%=",        obj.runtime.defaultBehavior.getCells().get("%="));
-        obj.setCell("**=",        obj.runtime.defaultBehavior.getCells().get("**="));
-        obj.setCell("&=",        obj.runtime.defaultBehavior.getCells().get("&="));
-        obj.setCell("|=",        obj.runtime.defaultBehavior.getCells().get("|="));
-        obj.setCell("^=",        obj.runtime.defaultBehavior.getCells().get("^="));
-        obj.setCell("<<=",        obj.runtime.defaultBehavior.getCells().get("<<="));
-        obj.setCell(">>=",        obj.runtime.defaultBehavior.getCells().get(">>="));
-        obj.setCell("&&=",        obj.runtime.defaultBehavior.getCells().get("&&="));
-        obj.setCell("||=",        obj.runtime.defaultBehavior.getCells().get("||="));
+        Map<String, Object> assgn = IokeObject.as(obj.runtime.defaultBehavior.getCells().get("Assignment")).getCells();
+        obj.setCell("++",        assgn.get("++"));
+        obj.setCell("--",        assgn.get("--"));
+        obj.setCell("+=",        assgn.get("+="));
+        obj.setCell("-=",        assgn.get("-="));
+        obj.setCell("/=",        assgn.get("/="));
+        obj.setCell("*=",        assgn.get("*="));
+        obj.setCell("%=",        assgn.get("%="));
+        obj.setCell("**=",       assgn.get("**="));
+        obj.setCell("&=",        assgn.get("&="));
+        obj.setCell("|=",        assgn.get("|="));
+        obj.setCell("^=",        assgn.get("^="));
+        obj.setCell("<<=",       assgn.get("<<="));
+        obj.setCell(">>=",       assgn.get(">>="));
+        obj.setCell("&&=",       assgn.get("&&="));
+        obj.setCell("||=",       assgn.get("||="));
         obj.setCell("cell",      obj.runtime.base.getCells().get("cell"));
         obj.setCell("cell=",     obj.runtime.base.getCells().get("cell="));
         obj.setCell("cells",     obj.runtime.base.getCells().get("cells"));
