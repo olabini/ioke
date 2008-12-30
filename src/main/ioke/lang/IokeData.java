@@ -113,11 +113,11 @@ public abstract class IokeData {
     }
 
     public boolean isEqualTo(IokeObject self, Object other) {
-        return self == other;
+        return (other instanceof IokeObject) && (self.getCells() == IokeObject.as(other).getCells());
     }
 
     public int hashCode(IokeObject self) {
-        return System.identityHashCode(self);
+        return System.identityHashCode(self.getCells());
     }
 
     public IokeData cloneData(IokeObject obj, IokeObject m, IokeObject context) {return this;}

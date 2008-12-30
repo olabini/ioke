@@ -36,6 +36,19 @@ public class IokeObject {
         this.data = data;
     }
 
+    public static boolean same(Object one, Object two) throws ControlFlow {
+        return as(one).cells == as(two).cells;
+    }
+
+    public void become(IokeObject other) {
+        this.runtime = other.runtime;
+        this.documentation = other.documentation;
+        this.cells = other.cells;
+        this.mimics = other.mimics;
+        this.opaque = other.opaque;
+        this.data = other.data;
+    }
+
     public void init() throws ControlFlow {
         data.init(this);
     }
@@ -173,7 +186,7 @@ public class IokeObject {
     }
 
     public static boolean isMimic(Object on, IokeObject potentialMimic) {
-        return IokeObject.as(on).isMimic(potentialMimic, new IdentityHashMap<IokeObject, Object>());
+        return IokeObject.as(on).isMimic(potentialMimic, new IdentityHashMap<Map<String, Object>, Object>());
     }
 
     private boolean isKind(String kind, IdentityHashMap<IokeObject, Object> visited) {
@@ -196,16 +209,16 @@ public class IokeObject {
         return false;
     }
 
-    private boolean isMimic(IokeObject pot, IdentityHashMap<IokeObject, Object> visited) {
-        if(visited.containsKey(this)) {
+    private boolean isMimic(IokeObject pot, IdentityHashMap<Map<String, Object>, Object> visited) {
+        if(visited.containsKey(this.cells)) {
             return false;
         }
 
-        if(this == pot || mimics.contains(pot)) {
+        if(this.cells == pot.cells || mimics.contains(pot)) {
             return true;
         }
 
-        visited.put(this, null);
+        visited.put(this.cells, null);
             
         for(IokeObject mimic : mimics) {
             if(mimic.isMimic(pot, visited)) {
