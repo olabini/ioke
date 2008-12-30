@@ -49,6 +49,14 @@ describe(Pair,
       ((1=>1) <=> (1=>2)) should == (1<=>2)
       ((1=>4) <=> (1=>3)) should == (4<=>3))
   )
+  
+  describe("inspect",
+    it("should have tests")
+  )
+
+  describe("notice",
+    it("should have tests")
+  )
 )
 
 describe(DefaultBehavior,
