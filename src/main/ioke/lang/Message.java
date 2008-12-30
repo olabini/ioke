@@ -59,7 +59,7 @@ public class Message extends IokeData {
         this.type = type;
         this.name = name;
 
-        this.file = ((IokeSystem)runtime.system.data).currentFile();
+        this.file = ((IokeSystem)IokeObject.data(runtime.system)).currentFile();
 
         if(arg1 != null) {
             arguments.add(arg1);
@@ -126,19 +126,19 @@ public class Message extends IokeData {
     }
 
     public static Object getArg1(IokeObject message) {
-        return ((Message)message.data).arguments.get(0);
+        return ((Message)IokeObject.data(message)).arguments.get(0);
     }
 
     public static Object getArg2(IokeObject message) {
-        return ((Message)message.data).arguments.get(1);
+        return ((Message)IokeObject.data(message)).arguments.get(1);
     }
 
     public static Type type(IokeObject message) {
-        return ((Message)message.data).type;
+        return ((Message)IokeObject.data(message)).type;
     }
 
     public static void setType(IokeObject message, Type type) {
-        ((Message)message.data).type = type;
+        ((Message)IokeObject.data(message)).type = type;
     }
 
     public static String getStackTraceText(Object _message) throws ControlFlow {
@@ -496,23 +496,23 @@ public class Message extends IokeData {
     }
 
     public static void setName(IokeObject message, String name) {
-        ((Message)message.data).name = name;
+        ((Message)IokeObject.data(message)).name = name;
     }
 
     public static void setArguments(IokeObject message, List<Object> arguments) {
-        ((Message)message.data).arguments = arguments;
+        ((Message)IokeObject.data(message)).arguments = arguments;
     }
 
     public static void setFile(IokeObject message, String file) {
-        ((Message)message.data).file = file;
+        ((Message)IokeObject.data(message)).file = file;
     }
 
     public static void setLine(IokeObject message, int line) {
-        ((Message)message.data).line = line;
+        ((Message)IokeObject.data(message)).line = line;
     }
 
     public static void setPosition(IokeObject message, int position) {
-        ((Message)message.data).pos = position;
+        ((Message)IokeObject.data(message)).pos = position;
     }
 
     public static boolean isKeyword(Object message) {
@@ -603,8 +603,8 @@ public class Message extends IokeData {
     @Override
     public IokeData cloneData(IokeObject obj, IokeObject message, IokeObject context) {
         Message m = new Message(obj.runtime, name);
-        m.arguments = new ArrayList<Object>(((Message)obj.data).arguments);
-        m.type = ((Message)obj.data).type;
+        m.arguments = new ArrayList<Object>(((Message)IokeObject.data(obj)).arguments);
+        m.type = ((Message)IokeObject.data(obj)).type;
         return m;
     }
 
@@ -985,14 +985,14 @@ public class Message extends IokeData {
         if(message == null) {
             return "";
         }
-        return ((Message)message.data).code();
+        return ((Message)IokeObject.data(message)).code();
     }
 
     public static String formattedCode(IokeObject message, int indent) throws ControlFlow {
         if(message == null) {
             return "";
         }
-        return ((Message)message.data).formattedCode(indent);
+        return ((Message)IokeObject.data(message)).formattedCode(indent);
     }
 
     public String code() {
@@ -1036,27 +1036,27 @@ public class Message extends IokeData {
     }
 
     public static void setPrev(IokeObject message, IokeObject prev) {
-        ((Message)message.data).prev = prev;
+        ((Message)IokeObject.data(message)).prev = prev;
     }
 
     public static void setNext(IokeObject message, IokeObject next) {
-        ((Message)message.data).next = next;
+        ((Message)IokeObject.data(message)).next = next;
     }
 
     public static void setNextOfLast(IokeObject message, IokeObject next) {
         while(next(message) != null) {
             message = next(message);
         }
-        ((Message)message.data).next = next;
+        ((Message)IokeObject.data(message)).next = next;
     }
 
     public static String thisCode(IokeObject message) {
-        return ((Message)message.data).thisCode();
+        return ((Message)IokeObject.data(message)).thisCode();
     }
 
 
     public static String codeSequenceTo(IokeObject message, String name) throws ControlFlow {
-        return ((Message)message.data).codeSequenceTo(name);
+        return ((Message)IokeObject.data(message)).codeSequenceTo(name);
     }
 
     public String thisCode() {

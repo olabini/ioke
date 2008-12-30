@@ -18,13 +18,11 @@ import ioke.lang.exceptions.ControlFlow;
  */
 public class IokeObject {
     public Runtime runtime;
-    public String documentation;
-    public Map<String, Object> cells = new LinkedHashMap<String, Object>();
-    public List<IokeObject> mimics = new ArrayList<IokeObject>();
+    private String documentation;
+    private Map<String, Object> cells = new LinkedHashMap<String, Object>();
+    private List<IokeObject> mimics = new ArrayList<IokeObject>();
     
-    public Object opaque;
-
-    public IokeData data;
+    private IokeData data;
 
     public IokeObject(Runtime runtime, String documentation) {
         this(runtime, documentation, IokeData.None);
@@ -45,12 +43,23 @@ public class IokeObject {
         this.documentation = other.documentation;
         this.cells = other.cells;
         this.mimics = other.mimics;
-        this.opaque = other.opaque;
         this.data = other.data;
     }
 
     public void init() throws ControlFlow {
         data.init(this);
+    }
+
+    public void setDocumentation(String docs) {
+        this.documentation = docs;
+    }
+
+    public String getDocumentation() {
+        return this.documentation;
+    }
+
+    public void setData(IokeData data) {
+        this.data = data;
     }
 
     public void setKind(String kind) {

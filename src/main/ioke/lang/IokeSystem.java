@@ -290,15 +290,15 @@ public class IokeSystem extends IokeData {
         programArguments = runtime.newList(new ArrayList<Object>());
 
         IokeObject outx = runtime.io.mimic(null, null);
-        outx.data = new IokeIO(runtime.out);
+        outx.setData(new IokeIO(runtime.out));
         obj.registerCell("out", outx);
 
         IokeObject errx = runtime.io.mimic(null, null);
-        errx.data = new IokeIO(runtime.err);
+        errx.setData(new IokeIO(runtime.err));
         obj.registerCell("err", errx);
 
         IokeObject inx = runtime.io.mimic(null, null);
-        inx.data = new IokeIO(runtime.in);
+        inx.setData(new IokeIO(runtime.in));
         obj.registerCell("in", inx);
 
         obj.registerCell("currentDebugger", runtime.nil);

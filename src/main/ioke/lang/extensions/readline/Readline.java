@@ -65,9 +65,6 @@ public abstract class Readline {
         holder.history = new History();
         holder.currentCompletor = null;
 
-        rl.opaque = holder;
-
-
         IokeObject history = runtime.newFromOrigin();
         rl.setCell("HISTORY", history);
         

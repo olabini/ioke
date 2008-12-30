@@ -52,10 +52,10 @@ public abstract class Benchmark {
                     long iterations = 1;
                     int index = 0;
                     if(count > 1) {
-                        bmRounds = ((Number)IokeObject.convertToNumber(message.getEvaluatedArgument(index, context), message, context).data).asJavaInteger();
+                        bmRounds = ((Number)IokeObject.data(IokeObject.convertToNumber(message.getEvaluatedArgument(index, context), message, context))).asJavaInteger();
                         index++;
                         if(count > 2) {
-                            iterations = ((Number)IokeObject.convertToNumber(message.getEvaluatedArgument(index, context), message, context).data).asJavaLong();
+                            iterations = ((Number)IokeObject.data(IokeObject.convertToNumber(message.getEvaluatedArgument(index, context), message, context))).asJavaLong();
                             index++;
                         }
                     }

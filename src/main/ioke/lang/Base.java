@@ -27,7 +27,7 @@ public class Base {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
 
-                    String docs = IokeObject.as(on).documentation;
+                    String docs = IokeObject.as(on).getDocumentation();
                     if(null == docs) {
                         return context.runtime.nil;
                     }
@@ -53,7 +53,7 @@ public class Base {
 
                     Object arg = args.get(0);
                     String s = Text.getText(arg);
-                    IokeObject.as(on).documentation = s;
+                    IokeObject.as(on).setDocumentation(s);
                     return arg;
                 }
             }));
