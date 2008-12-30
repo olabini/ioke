@@ -268,9 +268,61 @@ public class Range extends IokeData {
                     }
                 }
             }));
+
+        obj.registerMethod(runtime.newJavaMethod("Returns a text inspection of the object", new JavaMethod.WithNoArguments("inspect") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                    return method.runtime.newText(Range.getInspect(on));
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("Returns a brief text inspection of the object", new JavaMethod.WithNoArguments("notice") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                    return method.runtime.newText(Range.getNotice(on));
+                }
+            }));
     }
     
     public IokeData cloneData(IokeObject obj, IokeObject m, IokeObject context) {
         return new Range(from, to, inclusive);
+    }
+
+    public static String getInspect(Object on) throws ControlFlow {
+        return ((Range)(IokeObject.data(on))).inspect(on);
+    }
+
+    public static String getNotice(Object on) throws ControlFlow {
+        return ((Range)(IokeObject.data(on))).notice(on);
+    }
+
+    public String inspect(Object obj) throws ControlFlow {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(IokeObject.inspect(from));
+        if(inclusive) {
+            sb.append("..");
+        } else {
+            sb.append("...");
+        }
+        sb.append(IokeObject.inspect(to));
+
+        return sb.toString();
+    }
+
+    public String notice(Object obj) throws ControlFlow {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(IokeObject.notice(from));
+        if(inclusive) {
+            sb.append("..");
+        } else {
+            sb.append("...");
+        }
+        sb.append(IokeObject.notice(to));
+
+        return sb.toString();
     }
 }// Range

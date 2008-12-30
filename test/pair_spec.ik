@@ -51,11 +51,23 @@ describe(Pair,
   )
   
   describe("inspect",
-    it("should have tests")
+    it("should return the inspect of something inside it",
+      ("foo" => method(blarg fux)) inspect should == "\"foo\" => method(blarg fux)"
+    )
+    
+    it("should return a simple string for something simple",
+      (1 => 2) inspect should == "1 => 2"
+    )
   )
 
   describe("notice",
-    it("should have tests")
+    it("should return the notice of something inside it",
+      ("foo" => method(blarg fux)) notice should == "\"foo\" => method(...)"
+    )
+
+    it("should return a simple string for something simple",
+      (1 => 2) notice should == "1 => 2"
+    )
   )
 )
 
