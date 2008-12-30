@@ -763,4 +763,73 @@ describe(DefaultBehavior,
       message(:foo) name should == :foo
     )
   )
+
+  describe("become!",
+    it("should not be possible to have nil become something")
+    it("should not be possible to have true become something")
+    it("should not be possible to have false become something")
+
+    it("should be possible to have a number become something else")
+    it("should be possible to have something become a number")
+
+    it("should be possible to have a text become something else")
+    it("should be possible to have something become a text")
+
+    it("should return the receiver")
+
+    it("should modify the reciever to have the same documentation")
+
+    it("should give both objects the same uniqueHexId",
+      x = Origin mimic
+      y = Origin mimic
+
+      x uniqueHexId should not == y uniqueHexId
+      y uniqueHexId should not == x uniqueHexId
+
+      x become!(y)
+      
+      x uniqueHexId should == y uniqueHexId
+      y uniqueHexId should == x uniqueHexId
+    )
+
+    it("should give objects that are the same",
+      x = Origin mimic
+      y = Origin mimic
+      x should not be same(y)
+      y should not be same(x)
+
+      x become!(y)
+      
+      x should be same(y)
+      y should be same(x)
+    )
+    
+    it("should give objects that mimic each other",
+      x = Origin mimic
+      y = Origin mimic
+
+      x become!(y)
+      
+      x should be mimic(y)
+      y should be mimic(x)
+    )
+    
+    it("should give objects that when modified will change each other",
+      x = Origin mimic
+      y = Origin mimic
+
+      x become!(y)
+
+      x z = 42
+      y z should == 42
+
+      y q = 35
+      x q should == 35
+
+      b = Origin mimic
+      x mimic!(b)
+
+      y should have mimic(b)
+    )
+  )
 )

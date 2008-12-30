@@ -494,7 +494,7 @@ public class DefaultBehavior {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> args = new ArrayList<Object>();
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
-                    return (on == args.get(0)) ? context.runtime._true : context.runtime._false;
+                    return IokeObject.same(on, args.get(0)) ? context.runtime._true : context.runtime._false;
                 }
             }));
 
@@ -2054,6 +2054,30 @@ public class DefaultBehavior {
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
 
                     return context.runtime.newSet(args);
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("modifies the receiver to be in all ways identical to the argument. if the receiver is nil, true or false, this method can't be used - but those are the only exceptions. it's generally not recommended to use it on kinds and objects that are important for the Ioke runtime, since the result might be highly unpredictable.", new JavaMethod("become!") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("objectToBecome")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+                    IokeObject me = IokeObject.as(on);
+                    IokeObject other = IokeObject.as(args.get(0));
+
+                    me.become(other);
+                    
+                    return on;
                 }
             }));
     }
