@@ -53,23 +53,43 @@ Game = Origin mimic do(
     
     grid cells each(row,
       row each(cell,
-        if(cell alive && cell neighbours map(value) count(alive) < 2 || cell neighbours map(value) count(alive) > 3,
+        if(cell alive && (cell neighbours map(value) count(alive) < 2 || cell neighbours map(value) count(alive) > 3),
           cell queuedState = :dead
         )
         
-        if(cell alive && cell neighbours map(value) count(alive) == 2 || cell neighbours map(value) count(alive) == 3,
+        if(cell alive && (cell neighbours map(value) count(alive) == 2 || cell neighbours map(value) count(alive) == 3),
           cell queuedState = :alive
         )
+        
+        if(!cell alive && (cell neighbours map(value) count(alive) == 3),
+          cell queuedState = :alive
+        )
+
       )
     )
     
     grid cells each(row,
       row each(cell,
-        if(cell queuedState == :dead,  cell alive = false)
-        if(cell queuedState == :alive, cell alive = true)
+        if(cell queuedState == :dead,
+          cell alive = false
+        )
+        if(cell queuedState == :alive,
+          cell alive = true
+        )
         cell queuedState = nil
       )
     )
+  )
+  
+  reset = method(
+    grid cells each(row,
+      row each(cell,
+        cell queuedState = nil
+        cell alive = false
+      )
+    )
+    
+    self
   )
 )
 
