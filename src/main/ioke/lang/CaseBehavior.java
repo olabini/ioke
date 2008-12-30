@@ -18,7 +18,30 @@ import ioke.lang.exceptions.ControlFlow;
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
 public class CaseBehavior {
-    public static void init(IokeObject obj) throws ControlFlow {
+    public static IokeObject transformWhenStatement(Object when, IokeObject context, IokeObject message, IokeObject caseMimic) throws ControlFlow {
+        String outerName = Message.name(when);
+
+        if(caseMimic.getCells().containsKey("case:" + outerName)) {
+            IokeObject cp = Message.deepCopy(when);
+            replaceAllCaseNames(cp, context, message, caseMimic);
+            return cp;
+        } 
+
+        return IokeObject.as(when);
+    }
+
+    private static void replaceAllCaseNames(IokeObject when, IokeObject context, IokeObject message, IokeObject caseMimic) throws ControlFlow {
+        String theName = "case:" + Message.name(when);
+        if(caseMimic.getCells().containsKey(theName)) {
+            Message.setName(when, theName);
+
+            for(Object arg : when.getArguments()) {
+                replaceAllCaseNames(IokeObject.as(arg), context, message, caseMimic);
+            }
+        }
+    }
+
+    public static void init(final IokeObject obj) throws ControlFlow {
         final Runtime runtime = obj.runtime;
         obj.setKind("DefaultBehavior Case");
 
@@ -47,7 +70,7 @@ public class CaseBehavior {
                     argCount--;
 
                     while(argCount > 1) {
-                        Object when = IokeObject.as(args.get(index++)).evaluateCompleteWithoutExplicitReceiver(context, context.getRealContext());
+                        Object when = transformWhenStatement(args.get(index++), context, message, obj).evaluateCompleteWithoutExplicitReceiver(context, context.getRealContext());
                         if(IokeObject.isTrue(runtime.eqqMessage.sendTo(context, when, value))) {
                             return IokeObject.as(args.get(index++)).evaluateCompleteWithoutExplicitReceiver(context, context.getRealContext());
                         } else {
