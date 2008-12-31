@@ -48,6 +48,9 @@ public class LiteralsBehavior {
 
                     Message m = new Message(context.runtime, name);
                     IokeObject ret = context.runtime.createMessage(m);
+                    if(".".equals(name)) {
+                        Message.setType(ret, Message.Type.TERMINATOR);
+                    }
                     Message.copySourceLocation(message, ret);
                     return ret;
                 }
