@@ -455,7 +455,7 @@ public class IokeObject {
         checkFrozen("=", message, context);
 
         if(!Symbol.BAD_CHARS.matcher(name).find() && findCell(message, context, name + "=") != runtime.nul) {
-            runtime.createMessage(new Message(runtime, name + "=", IokeObject.as(value))).sendTo(context, this);
+            runtime.createMessage(new Message(runtime, name + "=", runtime.createMessage(Message.wrap(IokeObject.as(value))))).sendTo(context, this);
         } else {
             cells.put(name, value);
         }

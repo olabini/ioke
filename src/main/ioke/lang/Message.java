@@ -230,7 +230,11 @@ public class Message extends IokeData {
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
 
                     Object o = args.get(0);
-                    Message.setNext(IokeObject.as(on), IokeObject.as(o));
+                    if(o == context.runtime.nil) {
+                        Message.setNext(IokeObject.as(on), null);
+                    } else {
+                        Message.setNext(IokeObject.as(on), IokeObject.as(o));
+                    }
                     return o;
                 }
             }));
@@ -251,7 +255,11 @@ public class Message extends IokeData {
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
 
                     Object o = args.get(0);
-                    Message.setPrev(IokeObject.as(on), IokeObject.as(o));
+                    if(o == context.runtime.nil) {
+                        Message.setPrev(IokeObject.as(on), null);
+                    } else {
+                        Message.setPrev(IokeObject.as(on), IokeObject.as(o));
+                    }
                     return o;
                 }
             }));
