@@ -80,6 +80,29 @@ public class IokeSet extends IokeData {
                 }
             }));
 
+        obj.registerMethod(runtime.newJavaMethod("returns a new set that contains the receivers elements and the elements of the set sent in as the argument.", new JavaMethod("+") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("otherSet")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+
+                    Set<Object> newSet = new HashSet<Object>();
+                    newSet.addAll(((IokeSet)IokeObject.data(on)).getSet());
+                    newSet.addAll(((IokeSet)IokeObject.data(args.get(0))).getSet());
+                    return context.runtime.newSet(newSet);
+                }
+            }));
+
         obj.registerMethod(obj.runtime.newJavaMethod("returns true if the receiver includes the evaluated argument, otherwise false", new JavaMethod("include?") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
@@ -173,6 +196,11 @@ public class IokeSet extends IokeData {
         return ((other instanceof IokeObject) && 
                 (IokeObject.data(other) instanceof IokeSet) 
                 && this.set.equals(((IokeSet)IokeObject.data(other)).set));
+    }
+
+    @Override
+    public int hashCode(IokeObject self) {
+        return this.set.hashCode();
     }
 
     @Override

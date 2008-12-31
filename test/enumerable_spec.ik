@@ -455,12 +455,28 @@ describe(Mixins,
     )
     
     describe("flatMap", 
-      it("should return a correct flattened map", 
+      it("should return a correct flattened list", 
         [1,2,3] flatMap(x, [x]) should == [1,2,3]
         [1,2,3] flatMap(x, [x, x+10, x+20]) should == [1,11,21,2,12,22,3,13,23]
         [4,5,6] flatMap(x, [x+20, x+10, x]) should == [24,14,4,25,15,5,26,16,6]
       )
     )
+
+    describe("flatMap:set", 
+      it("should return a correct flattened set", 
+        [1,2,3] flatMap:set(x, set(x)) should == set(1,2,3)
+        [1,2,3] flatMap:set(x, set(x, x+10, x+20)) should == set(1,11,21,2,12,22,3,13,23)
+        [4,5,6] flatMap:set(x, set(x+20, x+10, x)) should == set(24,14,4,25,15,5,26,16,6)
+      )
+    )
+
+;     describe("flatMap:dict", 
+;       it("should return a correct flattened dict", 
+;         [1,2,3] flatMap:dict(x, dict(x=>nil)) should == dict(1=>nil,2=>nil,3=>nil)
+;         [1,2,3] flatMap:dict(x, dict(x=>nil, (x+10)=>nil, (x+20)=>nil)) should == dict(1=>nil,11=>nil,21=>nil,2=>nil,12=>nil,22=>nil,3=>nil,13=>nil,23=>nil)
+;         [4,5,6] flatMap:dict(x, dict((x+20)=>nil, (x+10)=>nil, x=>nil)) should == dict(24=>nil,14=>nil,4=>nil,25=>nil,15=>nil,5=>nil,26=>nil,16=>nil,6=>nil)
+;       )
+;     )
     
     describe("select", 
       it("should take zero arguments and return a list with only the true values", 

@@ -476,6 +476,11 @@ public class IokeList extends IokeData {
     }
 
     @Override
+    public int hashCode(IokeObject self) {
+        return this.list.hashCode();
+    }
+
+    @Override
     public String toString() {
         return list.toString();
     }

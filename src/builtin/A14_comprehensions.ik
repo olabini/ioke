@@ -1,13 +1,18 @@
 
 DefaultBehavior FlowControl for = macro(
-  theCode = DefaultBehavior FlowControl cell(:for) transform(call arguments)
+  theCode = DefaultBehavior FlowControl cell(:for) transform(call arguments, "map", "flatMap")
+  theCode evaluateOn(call ground, self)
+)
+
+DefaultBehavior FlowControl for:set = macro(
+  theCode = DefaultBehavior FlowControl cell(:for) transform(call arguments, "map:set", "flatMap:set")
   theCode evaluateOn(call ground, self)
 )
 
 DefaultBehavior FlowControl cell(:for) generator? = method(msg,
   (msg next) && (msg next name == :"<-"))
 
-DefaultBehavior FlowControl cell(:for) transform = method(arguments,
+DefaultBehavior FlowControl cell(:for) transform = method(arguments, mapName, flatMapName,
   generatorCount = arguments count(msg, 
     DefaultBehavior FlowControl cell(:for) generator?(msg))
 
@@ -35,8 +40,8 @@ DefaultBehavior FlowControl cell(:for) transform = method(arguments,
 
       mapMessage = nil
       if(generatorCount == 0,
-        mapMessage = DefaultBehavior message("map"),
-        mapMessage = DefaultBehavior message("flatMap"))
+        mapMessage = DefaultBehavior message(mapName),
+        mapMessage = DefaultBehavior message(flatMapName))
 
       mapMessage appendArgument(generator)
       generatorLast next = mapMessage
