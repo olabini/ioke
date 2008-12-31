@@ -34,3 +34,9 @@ List butLast = method(
 List asList = method(
   "returns this list",
   self)
+
+List ifEmpty = macro(
+  "if this list is empty, returns the result of evaluating the argument, otherwise returns the list",
+  if(empty?,
+    call argAt(0),
+    self))
