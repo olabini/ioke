@@ -171,6 +171,13 @@ public class Message extends IokeData {
                     return method.runtime.newText(((Message)IokeObject.data(on)).code());
                 }
             }));
+        message.registerMethod(message.runtime.newJavaMethod("Returns the unevaluated arguments for this message", new JavaMethod.WithNoArguments("arguments") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                    return context.runtime.newList(((Message)IokeObject.data(on)).arguments);
+                }
+            }));
         message.registerMethod(message.runtime.newJavaMethod("Returns a formatted code representation of the object", new JavaMethod.WithNoArguments("formattedCode") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
