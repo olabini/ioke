@@ -184,6 +184,11 @@ public class Dict extends IokeData {
     }
 
     @Override
+    public int hashCode(IokeObject self) {
+        return this.dict.hashCode();
+    }
+
+    @Override
     public String toString() {
         return dict.toString();
     }

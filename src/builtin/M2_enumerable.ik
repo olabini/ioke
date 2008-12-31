@@ -200,6 +200,16 @@ Mixins Enumerable flatMap = macro(
 
   call resendToMethod("map") fold(+))
 
+Mixins Enumerable flatMap:set = macro(
+  "expects to get the same kind of arguments as map:set, and that each map operation returns a set. these sets will then be folded into a single set.",
+
+  call resendToMethod("map:set") fold(+))
+
+; Mixins Enumerable flatMap:dict = macro(
+;   "expects to get the same kind of arguments as map:dict, and that each map operation returns a dict for key. these dicts will then be folded into a single dict.",
+
+;   call resendToMethod("map:set") fold(+))
+
 Mixins Enumerable select = macro(
   "takes zero, one or two arguments. if zero arguments, will return a list with all the values that are true in the original collection. if one argument is given, it will be applied as a message chain, that should be a predicate. those elements that match the predicate will be returned. if two arguments are given, they will be turned into a lexical block and used as a predicate to choose elements.",
 
