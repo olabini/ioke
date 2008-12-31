@@ -84,6 +84,51 @@ describe(Mixins,
       )      
     )
 
+    describe("map:set",
+      it("should return an empty set for an empty enumerable",
+        [] map:set(x, x+2) should == set
+        {} map:set(x, x+2) should == set
+        set map:set(x, x+2) should == set
+      )
+      
+      it("should return the same set for something that only returns itself",
+        [1, 2, 3] map:set(x, x) should == set(1, 2, 3)
+      )
+
+      it("should take one argument and apply the inside",
+        [1, 2, 3] map:set(+2) should == set(3, 4, 5)
+        [1, 2, 3] map:set(. 1) should == set(1)
+      )
+
+      it("should take two arguments and apply the code with the argument name bound",
+        [1, 2, 3] map:set(x, x+3) should == set(4, 5, 6)
+        [1, 2, 3] map:set(x, 1) should == set(1)
+      )      
+    )
+
+    describe("map:dict",
+      it("should return an empty dict for an empty enumerable",
+        [] map:dict(x, x+2) should == dict
+        {} map:dict(x, x+2) should == dict
+        set map:dict(x, x+2) should == dict
+      )
+      
+      it("should return the same dict for something that only returns itself",
+        [1, 2, 3] map:dict(x, x=>x) should == dict(1=>1, 2=>2, 3=>3)
+      )
+
+      it("should take one argument and apply the inside",
+        [1, 2, 3] map:dict(=>2) should == dict(1=>2, 2=>2, 3=>2)
+        [1, 2, 3] map:dict(. 1=>1) should == dict(1=>1)
+      )
+
+      it("should take two arguments and apply the code with the argument name bound",
+        [1, 2, 3] map:dict(x, x=>x+3) should == dict(1=>4, 2=>5, 3=>6)
+        [1, 2, 3] map:dict(x, x=>1) should == dict(1=>1, 2=>1, 3=>1)
+        [1, 2, 3] map:dict(x, x) should == dict(1=>nil, 2=>nil, 3=>nil)
+      )      
+    )
+
     describe("mapFn", 
       it("should take zero arguments and just return the elements in a list", 
         [1, 2, 3] mapFn should == [1, 2, 3]
@@ -124,6 +169,51 @@ describe(Mixins,
         [1, 2, 3] collect(x, x+3) should == [4, 5, 6]
         [1, 2, 3] collect(x, 1) should == [1, 1, 1]
       )
+    )
+
+    describe("collect:set",
+      it("should return an empty set for an empty enumerable",
+        [] collect:set(x, x+2) should == set
+        {} collect:set(x, x+2) should == set
+        set collect:set(x, x+2) should == set
+      )
+      
+      it("should return the same set for something that only returns itself",
+        [1, 2, 3] collect:set(x, x) should == set(1, 2, 3)
+      )
+
+      it("should take one argument and apply the inside",
+        [1, 2, 3] collect:set(+2) should == set(3, 4, 5)
+        [1, 2, 3] collect:set(. 1) should == set(1)
+      )
+
+      it("should take two arguments and apply the code with the argument name bound",
+        [1, 2, 3] collect:set(x, x+3) should == set(4, 5, 6)
+        [1, 2, 3] collect:set(x, 1) should == set(1)
+      )      
+    )
+
+    describe("collect:dict",
+      it("should return an empty dict for an empty enumerable",
+        [] collect:dict(x, x+2) should == dict
+        {} collect:dict(x, x+2) should == dict
+        set collect:dict(x, x+2) should == dict
+      )
+      
+      it("should return the same dict for something that only returns itself",
+        [1, 2, 3] collect:dict(x, x=>x) should == dict(1=>1, 2=>2, 3=>3)
+      )
+
+      it("should take one argument and apply the inside",
+        [1, 2, 3] collect:dict(=>2) should == dict(1=>2, 2=>2, 3=>2)
+        [1, 2, 3] collect:dict(. 1=>1) should == dict(1=>1)
+      )
+
+      it("should take two arguments and apply the code with the argument name bound",
+        [1, 2, 3] collect:dict(x, x=>x+3) should == dict(1=>4, 2=>5, 3=>6)
+        [1, 2, 3] collect:dict(x, x=>1) should == dict(1=>1, 2=>1, 3=>1)
+        [1, 2, 3] collect:dict(x, x) should == dict(1=>nil, 2=>nil, 3=>nil)
+      )      
     )
 
     describe("collectFn", 

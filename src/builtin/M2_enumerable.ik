@@ -26,6 +26,42 @@ Mixins Enumerable map = macro(
     self each(n, result << lexicalCode call(cell(:n))))
   result)
 
+Mixins Enumerable map:set = macro(
+  "takes one or two arguments. if one argument is given, it will be evaluated as a message chain on each element in the enumerable, and then the result will be collected in a new Set. if two arguments are given, the first one should be an unevaluated argument name, which will be bound inside the scope of executing the second piece of code. it's important to notice that the one argument form will establish no context, while the two argument form establishes a new lexical closure.",
+  
+  len = call arguments length
+  ;; use this form instead of [], since we might be inside of a List or a Dict
+  result = set()
+  if(len == 1,
+    theCode = call arguments first
+    self each(n, result << theCode evaluateOn(call ground, cell(:n))),
+
+    lexicalCode = LexicalBlock createFrom(call arguments, call ground)
+    self each(n, result << lexicalCode call(cell(:n))))
+  result)
+
+Mixins Enumerable map:dict = macro(
+  "takes one or two arguments. if one argument is given, it will be evaluated as a message chain on each element in the enumerable, and then the result will be collected in a new Dict. if the message chain returns a pair, that pair will be used as key and value. if it's something else, that value will be the key, and the value for it will be nil. if two arguments are given, the first one should be an unevaluated argument name, which will be bound inside the scope of executing the second piece of code. it's important to notice that the one argument form will establish no context, while the two argument form establishes a new lexical closure.",
+  
+  len = call arguments length
+  ;; use this form instead of [], since we might be inside of a List or a Dict
+  result = dict()
+  if(len == 1,
+    theCode = call arguments first
+    self each(n, 
+      output = theCode evaluateOn(call ground, cell(:n))
+      if(cell(:output) kind == "Pair",
+        result[output key] = output value,
+        result[cell(:output)] = nil)),
+
+    lexicalCode = LexicalBlock createFrom(call arguments, call ground)
+    self each(n, 
+      output = lexicalCode call(cell(:n))
+      if(cell(:output) kind == "Pair",
+        result[output key] = output value,
+        result[cell(:output)] = nil)))
+  result)
+
 Mixins Enumerable mapFn = method(
   "takes zero or more arguments that evaluates to lexical blocks. these blocks should all take one argument. these blocks will be chained together and applied on each element in the receiver. the final result will be collected into a list. the evaluation happens left-to-right, meaning the first method invoked will be the first argument.",
   +blocks,
@@ -465,6 +501,9 @@ Mixins Enumerable grep = macro(
   result)
 
 Mixins Enumerable aliasMethod("map", "collect")
+Mixins Enumerable aliasMethod("map", "map:list")
+Mixins Enumerable aliasMethod("map:set", "collect:set")
+Mixins Enumerable aliasMethod("map:dict", "collect:dict")
 Mixins Enumerable aliasMethod("mapFn", "collectFn")
 Mixins Enumerable aliasMethod("find", "detect")
 Mixins Enumerable aliasMethod("inject", "reduce")
