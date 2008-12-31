@@ -1,7 +1,6 @@
 
 DefaultBehavior FlowControl for = macro(
   theCode = DefaultBehavior FlowControl cell(:for) transform(call arguments)
-;  theCode formattedCode println
   theCode evaluateOn(call ground, self)
 )
 
@@ -9,18 +8,6 @@ DefaultBehavior FlowControl cell(:for) generator? = method(msg,
   (msg next) && (msg next name == :"<-"))
 
 DefaultBehavior FlowControl cell(:for) transform = method(arguments,
-  ;;   x <- 1..5, x
-  ;; should be
-  ;;   1..5 map(x, x)
-
-  ;;   x <- 1..5, y <- 2..3, x+y
-  ;; should be
-  ;;   1..5 flatMap(x, for(y <- 2..3, x+y))
-
-  ;;   x <- 1..5, x<3, x
-  ;; should be
-  ;;   1..5 filter(x, x<3) map(x, x)
-
   generatorCount = arguments count(msg, 
     DefaultBehavior FlowControl cell(:for) generator?(msg))
 
@@ -28,6 +15,8 @@ DefaultBehavior FlowControl cell(:for) transform = method(arguments,
   current = nil
   lastGenerator = nil
   lastGeneratorVarName = nil
+  assignments = []
+
   arguments[0..-2] each(msg,
     if(DefaultBehavior FlowControl cell(:for) generator?(msg),
       generatorCount--
@@ -54,16 +43,62 @@ DefaultBehavior FlowControl cell(:for) transform = method(arguments,
       
       if(first == nil,
         first = generatorSource,
-        current appendArgument(generatorSource))
+
+        currentMessage = generatorSource
+        unless(assignments empty?,
+          currentMessage = assignments first deepCopy
+          assignments[1..-1] each(assgn,
+            ccc = assgn deepCopy
+            mm = DefaultBehavior message(".")
+            mm next = ccc
+            currentMessage next = mm
+            currentMessage = ccc)
+          assignments = []
+          mm = DefaultBehavior message(".")
+          mm next = generatorSource
+          currentMessage next = mm
+        )
+        current appendArgument(currentMessage))
       current = mapMessage,
       
-      filterMessage = DefaultBehavior message("filter")
-      filterMessage appendArgument(lastGeneratorVarName)
-      filterMessage appendArgument(msg)
-      filterMessage next = lastGenerator next
-      lastGenerator next = filterMessage
+      if(msg name == :"=",
+        assignments << msg,
+
+        filterMessage = DefaultBehavior message("filter")
+        filterMessage appendArgument(lastGeneratorVarName)
+        currentMessage = msg
+        unless(assignments empty?,
+          currentMessage = assignments first deepCopy
+          assignments[1..-1] each(assgn,
+            ccc = assgn deepCopy
+            mm = DefaultBehavior message(".")
+            mm next = ccc
+            currentMessage next = mm
+            currentMessage = ccc)
+          mm = DefaultBehavior message(".")
+          mm next = msg
+          currentMessage next = mm
+        )
+
+        filterMessage appendArgument(currentMessage)
+        filterMessage next = lastGenerator next
+        lastGenerator next = filterMessage)
     )
   )
-  current appendArgument(arguments[-1])
+
+  currentMessage = arguments[-1]
+  unless(assignments empty?,
+    currentMessage = assignments first deepCopy
+    assignments[1..-1] each(assgn,
+      ccc = assgn deepCopy
+      mm = DefaultBehavior message(".")
+      mm next = ccc
+      currentMessage next = mm
+      currentMessage = ccc)
+    mm = DefaultBehavior message(".")
+    mm next = arguments[-1]
+    currentMessage next = mm
+  )
+  current appendArgument(currentMessage)
   first
 )

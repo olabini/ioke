@@ -27,8 +27,14 @@ describe(DefaultBehavior,
         for(x <- 1..10, (x%2) == 0, x) should == [2,4,6,8,10]
       )
 
-      it("should be possible to do midlevel assignment")
-      it("should be possble to combine these parts into a larger comprehension")
+      it("should be possible to do midlevel assignment",
+        for(x <- 1..20, y = x*2, y<10, [x,y]) should == [[1,2],[2,4],[3,6],[4,8]]
+      )
+
+      it("should be possible to combine these parts into a larger comprehension",
+        for(x <- 0..10, x*x > 3, 2*x) should == [4, 6, 8, 10, 12, 14, 16, 18, 20]
+        for(x <- 1..6, y <- x..6, z <- y..6, (x**2 + y**2) == z**2, [x,y,z]) should == [[3,4,5]]
+      )
     )
   )
 )
