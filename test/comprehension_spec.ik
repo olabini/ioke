@@ -17,7 +17,10 @@ describe(DefaultBehavior,
         for(x <- 1...5, mex(x)) should == [3, 6, 9, 12]
       )
 
-      it("should be possible to combine two iterations")
+      it("should be possible to combine two or more iterations",
+        for(x <- [1,2,3], y <- [15,16,17], [x,y]) should == [[1,15],[1,16],[1,17],[2,15],[2,16],[2,17],[3,15],[3,16],[3,17]]
+      )
+
       it("should be possible to filter output by using 'if'")
       it("should be possible to do midlevel assignment")
       it("should be possble to combine these parts into a larger comprehension")
