@@ -381,6 +381,20 @@ describe(List,
     )
   )
   
+  describe("ifEmpty",
+    it("should just return itself if not empty",
+      [1] ifEmpty(x/0) should == [1]
+      [1,2,3] ifEmpty(x/0) should == [1,2,3]
+      x = [1,2]
+      x ifEmpty(blarg) should be same(x)
+    )
+
+    it("should return the result of evaluating the code if empty",
+      [] ifEmpty(42) should == 42
+      [] ifEmpty([1,2,3]) should == [1,2,3]
+    )
+  )
+
   describe("each", 
     it("should not do anything for an empty list", 
       x = 0
