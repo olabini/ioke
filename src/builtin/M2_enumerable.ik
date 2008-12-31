@@ -515,9 +515,11 @@ Mixins Enumerable grep = macro(
   result)
 
 Mixins Enumerable aliasMethod("map", "collect")
+Mixins Enumerable aliasMethod("map", "collect:list")
 Mixins Enumerable aliasMethod("map", "map:list")
 Mixins Enumerable aliasMethod("map:set", "collect:set")
 Mixins Enumerable aliasMethod("map:dict", "collect:dict")
+Mixins Enumerable aliasMethod("flatMap", "flatMap:list")
 Mixins Enumerable aliasMethod("mapFn", "collectFn")
 Mixins Enumerable aliasMethod("find", "detect")
 Mixins Enumerable aliasMethod("inject", "reduce")
