@@ -9,6 +9,11 @@ DefaultBehavior FlowControl for:set = macro(
   theCode evaluateOn(call ground, self)
 )
 
+DefaultBehavior FlowControl for:dict = macro(
+  theCode = DefaultBehavior FlowControl cell(:for) transform(call arguments, "map:dict", "flatMap:dict")
+  theCode evaluateOn(call ground, self)
+)
+
 DefaultBehavior FlowControl cell(:for) generator? = method(msg,
   (msg next) && (msg next name == :"<-"))
 
