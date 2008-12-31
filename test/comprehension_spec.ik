@@ -71,5 +71,18 @@ describe(DefaultBehavior,
         for:set(x <- 1..6, y <- x..6, z <- y..6, (x**2 + y**2) == z**2, [x,y,z]) should == set([3,4,5])
       )
     )
+
+    describe("for:dict",
+      it("should handle a simple iteration",
+        for:dict(x <- [1,2,3], x => x*x) should == dict(1=>1,2=>4,3=>9)
+        for:dict(x <- [1,2,3,1,2,3], x => x*x) should == dict(1=>1,2=>4,3=>9)
+        for:dict(x <- 1..10, x) should == dict(1=>nil,2=>nil,3=>nil,4=>nil,5=>nil,6=>nil,7=>nil,8=>nil,9=>nil,10=>nil)
+        for:dict(x <- set(:a, :b, :c), x => x asText) should == dict(a: "a", b: "b", c: "c")
+      )
+
+      it("should handle more than one generator",
+        for:dict(x <- [1,2,3], y <- [10,11,12], x*y => [x,y]) should == {10=>[1,10], 11=>[1,11], 12=>[1,12], 20=>[2,10], 22=>[2,11], 24=>[2,12], 30=>[3,10], 33=>[3,11], 36=>[3,12]}
+      )
+    )
   )
 )
