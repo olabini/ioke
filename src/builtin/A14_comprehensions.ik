@@ -1,56 +1,69 @@
 
-
-
 DefaultBehavior FlowControl for = macro(
-  theCode = DefaultBehavior FlowControl cell(:for) transform(call)
+  theCode = DefaultBehavior FlowControl cell(:for) transform(call arguments)
 ;  theCode formattedCode println
   theCode evaluateOn(call ground, self)
 )
 
-DefaultBehavior FlowControl cell(:for) transform = method(call,
-  len = call arguments length
-  if(len == 2,
-    generator = call arguments first deepCopy
+DefaultBehavior FlowControl cell(:for) generator? = method(msg,
+  (msg next) && (msg next name == :"<-"))
 
-    generatorSource = generator next arguments first
-    generator next = nil
-    
-    generatorLast = generatorSource
-    while(generatorLast next,
-      generatorLast = generatorLast next)
+DefaultBehavior FlowControl cell(:for) transform = method(arguments,
+  ;;   x <- 1..5, x
+  ;; should be
+  ;;   1..5 map(x, x)
 
-    mapMessage = DefaultBehavior message("map")
-    mapMessage appendArgument(generator)
-    mapMessage appendArgument(call arguments[1])
+  ;;   x <- 1..5, y <- 2..3, x+y
+  ;; should be
+  ;;   1..5 flatMap(x, for(y <- 2..3, x+y))
 
-    generatorLast next = mapMessage
-    
-    generatorSource,
+  ;;   x <- 1..5, x<3, x
+  ;; should be
+  ;;   1..5 filter(x, x<3) map(x, x)
 
-    ;;   x <- 1..5, y <- 2..3, x+y
-    ;; should be
-    ;; 1..5 flatMap(x, for(y <- 2..3, x+y))
+  generatorCount = arguments count(msg, 
+    DefaultBehavior FlowControl cell(:for) generator?(msg))
 
-    generator = call arguments first deepCopy
+  first = nil
+  current = nil
+  lastGenerator = nil
+  lastGeneratorVarName = nil
+  arguments[0..-2] each(msg,
+    if(DefaultBehavior FlowControl cell(:for) generator?(msg),
+      generatorCount--
 
-    generatorSource = generator next arguments first
-    generator next = nil
-    
-    generatorLast = generatorSource
-    while(generatorLast next,
-      generatorLast = generatorLast next)
+      generator = msg deepCopy
 
-    mapMessage = DefaultBehavior message("flatMap")
-    mapMessage appendArgument(generator)
+      generatorSource = generator next arguments first
+      generator next = nil
 
-    forMessage = DefaultBehavior message("for")
-    call arguments[1..-1] each(arg,
-      forMessage appendArgument(arg))
+      generatorLast = generatorSource
+      while(generatorLast next,
+        generatorLast = generatorLast next)
 
-    mapMessage appendArgument(forMessage)
+      lastGenerator = generatorLast
+      lastGeneratorVarName = generator
 
-    generatorLast next = mapMessage
-    
-    generatorSource
+      mapMessage = nil
+      if(generatorCount == 0,
+        mapMessage = DefaultBehavior message("map"),
+        mapMessage = DefaultBehavior message("flatMap"))
+
+      mapMessage appendArgument(generator)
+      generatorLast next = mapMessage
+      
+      if(first == nil,
+        first = generatorSource,
+        current appendArgument(generatorSource))
+      current = mapMessage,
+      
+      filterMessage = DefaultBehavior message("filter")
+      filterMessage appendArgument(lastGeneratorVarName)
+      filterMessage appendArgument(msg)
+      filterMessage next = lastGenerator next
+      lastGenerator next = filterMessage
+    )
   )
+  current appendArgument(arguments[-1])
+  first
 )

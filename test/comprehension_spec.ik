@@ -21,7 +21,12 @@ describe(DefaultBehavior,
         for(x <- [1,2,3], y <- [15,16,17], [x,y]) should == [[1,15],[1,16],[1,17],[2,15],[2,16],[2,17],[3,15],[3,16],[3,17]]
       )
 
-      it("should be possible to filter output")
+      it("should be possible to filter output",
+        for(x <- 1..100, x<5, x) should == [1,2,3,4]
+
+        for(x <- 1..10, (x%2) == 0, x) should == [2,4,6,8,10]
+      )
+
       it("should be possible to do midlevel assignment")
       it("should be possble to combine these parts into a larger comprehension")
     )
