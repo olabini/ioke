@@ -1,17 +1,17 @@
 
 DefaultBehavior FlowControl for = macro(
   theCode = DefaultBehavior FlowControl cell(:for) transform(call arguments, "map", "flatMap")
-  theCode evaluateOn(call ground, self)
+  theCode evaluateOn(call ground, call ground)
 )
 
 DefaultBehavior FlowControl for:set = macro(
   theCode = DefaultBehavior FlowControl cell(:for) transform(call arguments, "map:set", "flatMap:set")
-  theCode evaluateOn(call ground, self)
+  theCode evaluateOn(call ground, call ground)
 )
 
 DefaultBehavior FlowControl for:dict = macro(
   theCode = DefaultBehavior FlowControl cell(:for) transform(call arguments, "map:dict", "flatMap:dict")
-  theCode evaluateOn(call ground, self)
+  theCode evaluateOn(call ground, call ground)
 )
 
 DefaultBehavior FlowControl cell(:for) generator? = method(msg,
