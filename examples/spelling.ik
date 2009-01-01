@@ -3,7 +3,7 @@ words = method(text, #/[a-z]+/ allMatches(text lower))
 train = method(features,
   features fold({} withDefault(1), model, f, model[f] += 1. model))
 
-NWORDS = train(words(FileSystem readFully("simple.txt")))
+NWORDS = train(words(FileSystem readFully("small.txt")))
 
 alphabet = "abcdefghijklmnopqrstuvwxyz" split("")[1..-1]
 
@@ -21,7 +21,4 @@ known = method(words, for:set(w <- words, NWORDS key?(w), w))
 correct = method(word,
   candidates = known([word]) ifEmpty(known(edits1(word)) ifEmpty(knownEdits2(word) ifEmpty([word])))
   candidates sortBy(x, NWORDS[x]) last)
-
-correct("speling") inspect println
-correct("korrecter") inspect println
 
