@@ -17,9 +17,25 @@ DefaultBehavior FlowControl for:dict = macro(
 DefaultBehavior FlowControl cell(:for) generator? = method(msg,
   (msg next) && (msg next name == :"<-"))
 
+DefaultBehavior FlowControl cell(:for) withAssignments = method(assignments, msg,
+  currentMessage = msg
+  unless(assignments empty?,
+    currentMessage = assignments first deepCopy
+    assignments[1..-1] each(assgn,
+      ccc = assgn deepCopy
+      stop = DefaultBehavior message(".")
+      stop next = ccc
+      currentMessage next = stop
+      currentMessage = ccc)
+    stop = DefaultBehavior message(".")
+    stop next = msg
+    currentMessage next = stop
+  )
+  currentMessage
+)
+
 DefaultBehavior FlowControl cell(:for) transform = method(arguments, mapName, flatMapName,
-  generatorCount = arguments count(msg, 
-    DefaultBehavior FlowControl cell(:for) generator?(msg))
+  generatorCount = arguments count(msg, generator?(msg))
 
   first = nil
   current = nil
@@ -28,7 +44,7 @@ DefaultBehavior FlowControl cell(:for) transform = method(arguments, mapName, fl
   assignments = []
 
   arguments[0..-2] each(msg,
-    if(DefaultBehavior FlowControl cell(:for) generator?(msg),
+    if(generator?(msg),
       generatorCount--
 
       generator = msg deepCopy
@@ -54,21 +70,8 @@ DefaultBehavior FlowControl cell(:for) transform = method(arguments, mapName, fl
       if(first == nil,
         first = generatorSource,
 
-        currentMessage = generatorSource
-        unless(assignments empty?,
-          currentMessage = assignments first deepCopy
-          assignments[1..-1] each(assgn,
-            ccc = assgn deepCopy
-            mm = DefaultBehavior message(".")
-            mm next = ccc
-            currentMessage next = mm
-            currentMessage = ccc)
-          assignments = []
-          mm = DefaultBehavior message(".")
-          mm next = generatorSource
-          currentMessage next = mm
-        )
-        current appendArgument(currentMessage))
+        current appendArgument(withAssignments(assignments, generatorSource))
+        assignments = [])
       current = mapMessage,
       
       if(msg name == :"=",
@@ -76,39 +79,12 @@ DefaultBehavior FlowControl cell(:for) transform = method(arguments, mapName, fl
 
         filterMessage = DefaultBehavior message("filter")
         filterMessage appendArgument(lastGeneratorVarName)
-        currentMessage = msg
-        unless(assignments empty?,
-          currentMessage = assignments first deepCopy
-          assignments[1..-1] each(assgn,
-            ccc = assgn deepCopy
-            mm = DefaultBehavior message(".")
-            mm next = ccc
-            currentMessage next = mm
-            currentMessage = ccc)
-          mm = DefaultBehavior message(".")
-          mm next = msg
-          currentMessage next = mm
-        )
-
-        filterMessage appendArgument(currentMessage)
+        filterMessage appendArgument(withAssignments(assignments, msg))
         filterMessage next = lastGenerator next
         lastGenerator next = filterMessage)
     )
   )
 
-  currentMessage = arguments[-1]
-  unless(assignments empty?,
-    currentMessage = assignments first deepCopy
-    assignments[1..-1] each(assgn,
-      ccc = assgn deepCopy
-      mm = DefaultBehavior message(".")
-      mm next = ccc
-      currentMessage next = mm
-      currentMessage = ccc)
-    mm = DefaultBehavior message(".")
-    mm next = arguments[-1]
-    currentMessage next = mm
-  )
-  current appendArgument(currentMessage)
+  current appendArgument(withAssignments(assignments, arguments[-1]))
   first
 )
