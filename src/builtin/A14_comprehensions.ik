@@ -17,6 +17,9 @@ DefaultBehavior FlowControl for:dict = macro(
 DefaultBehavior FlowControl cell(:for) generator? = method(msg,
   (msg next) && (msg next name == :"<-"))
 
+DefaultBehavior FlowControl cell(:for) assignment? = method(msg,
+  msg name == :"=")
+
 DefaultBehavior FlowControl cell(:for) withAssignments = method(assignments, msg,
   currentMessage = msg
   unless(assignments empty?,
@@ -59,10 +62,7 @@ DefaultBehavior FlowControl cell(:for) transform = method(arguments, mapName, fl
       lastGenerator = generatorLast
       lastGeneratorVarName = generator
 
-      mapMessage = nil
-      if(generatorCount == 0,
-        mapMessage = DefaultBehavior message(mapName),
-        mapMessage = DefaultBehavior message(flatMapName))
+      mapMessage = DefaultBehavior message(if(generatorCount == 0, mapName, flatMapName))
 
       mapMessage appendArgument(generator)
       generatorLast next = mapMessage
@@ -74,7 +74,7 @@ DefaultBehavior FlowControl cell(:for) transform = method(arguments, mapName, fl
         assignments = [])
       current = mapMessage,
       
-      if(msg name == :"=",
+      if(assignment?(msg),
         assignments << msg,
 
         filterMessage = DefaultBehavior message("filter")
