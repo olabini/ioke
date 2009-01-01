@@ -92,6 +92,20 @@ describe("Dict",
     )
   )
 
+  describe("withDefault",
+    it("should return a new mimic",
+      x = {}
+      x withDefault(1) should not be same(x)
+      {foo: 13} withDefault(42)[:foo] should == 13
+    )
+    
+    it("should set the default value for that mimic",
+      x = {} withDefault(42)
+      x[:blarg] should == 42
+      x should == {}
+    )
+  )
+
   describe("[]", 
     it("should return nil if empty dict", 
       dict[:foo] should == nil
