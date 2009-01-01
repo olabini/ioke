@@ -60,6 +60,14 @@ public class IokeSet extends IokeData {
                 }
             }));
 
+        obj.registerMethod(obj.runtime.newJavaMethod("returns true if this set is empty, false otherwise", new JavaMethod.WithNoArguments("empty?") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                    return ((IokeSet)IokeObject.data(on)).getSet().isEmpty() ? context.runtime._true : context.runtime._false;
+                }
+            }));
+
         obj.registerMethod(obj.runtime.newJavaMethod("Adds the argument to this set, if it's not already in the set. Returns the set after adding the object.", new JavaMethod("<<") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()

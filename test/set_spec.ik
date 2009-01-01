@@ -17,6 +17,35 @@ describe("Set",
     Set should mimic(Mixins Enumerable)
   )
 
+  describe("empty?", 
+    it("should return true for an empty set", 
+      x = set
+      x empty? should == true
+    )
+    
+    it("should return false for an non empty set", 
+      x = set(1)
+      x empty? should == false
+
+      x = set("abc", "cde")
+      x empty? should == false
+    )
+  )
+
+  describe("ifEmpty",
+    it("should just return itself if not empty",
+      set(1) ifEmpty(x/0) should == set(1)
+      set(1,2,3) ifEmpty(x/0) should == set(1,2,3)
+      x = set(1,2)
+      x ifEmpty(blarg) should be same(x)
+    )
+
+    it("should return the result of evaluating the code if empty",
+      set ifEmpty(42) should == 42
+      set ifEmpty([1,2,3]) should == [1,2,3]
+    )
+  )
+
   describe("each", 
     it("should not do anything for an empty set", 
       x = 0. set() each(. x++). x should == 0
