@@ -17,6 +17,7 @@ import ioke.lang.exceptions.ControlFlow;
  */
 public class Dict extends IokeData {
     private Map<Object, Object> dict;
+    private IokeObject defaultValue;
 
     public Dict() {
         this(new HashMap<Object, Object>());
@@ -26,12 +27,47 @@ public class Dict extends IokeData {
         this.dict = d;
     }
 
+    public static IokeObject getDefaultValue(Object on, IokeObject context, IokeObject message) throws ControlFlow {
+        Dict dict = (Dict)IokeObject.data(on);
+        if(dict.defaultValue == null) {
+            return context.runtime.nil;
+        } else {
+            return dict.defaultValue;
+        }
+    }
+
+    public static void setDefaultValue(Object on, IokeObject defaultValue) throws ControlFlow {
+        Dict dict = (Dict)IokeObject.data(on);
+        dict.defaultValue = defaultValue;
+    }
+
     @Override
     public void init(IokeObject obj) throws ControlFlow {
         final Runtime runtime = obj.runtime;
 
         obj.setKind("Dict");
         obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Enumerable")), runtime.nul, runtime.nul);
+        obj.registerMethod(runtime.newJavaMethod("takes one argument, that should be a default value, and returns a new mimic of the receiver, with the default value for that new dict set to the argument", new JavaMethod("withDefault") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("defaultValue")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> positionalArgs = new ArrayList<Object>();
+                    getArguments().getEvaluatedArguments(context, message, on, positionalArgs, new HashMap<String, Object>());
+
+                    Object newDict = IokeObject.mimic(on, message, context);
+                    setDefaultValue(newDict, IokeObject.as(positionalArgs.get(0)));
+                    return newDict;
+                }}));
+
         obj.registerMethod(runtime.newJavaMethod("takes one argument, the key of the element to return. if the key doesn't map to anything in the dict, returns the default value", new JavaMethod("at") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
@@ -50,7 +86,7 @@ public class Dict extends IokeData {
 
                     Object result = Dict.getMap(on).get(positionalArgs.get(0));
                     if(result == null) {
-                        return context.runtime.nil;
+                        return getDefaultValue(on, context, message);
                     } else {
                         return result;
                     }
