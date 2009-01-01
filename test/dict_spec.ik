@@ -16,6 +16,18 @@ describe("Dict",
   it("should mimic Enumerable", 
     Dict should mimic(Mixins Enumerable)
   )
+
+  describe("key?",
+    it("should return false if there is no such key",
+      {} key?(:foo) should == false
+      {fox: 123} key?(:foo) should == false
+      {"foo" => 123} key?(:foo) should == false
+    )
+
+    it("should return true if the key is there",
+      {foo: 123} key?(:foo) should == true
+    )
+  )
   
   describe("==", 
     it("should return false when sent an argument that is not a dict", 
