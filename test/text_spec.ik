@@ -277,6 +277,20 @@ describe("Text",
       fn("1.0f" toDecimal) should returnFromRestart(:useValue, 32) == 32
     )
   )
+
+  describe("lower",
+    it("should return the same string if it's already lower case",
+      "foo" lower should == "foo"
+      "foo bar quux" lower should == "foo bar quux"
+    )
+
+    it("should make everything lower case and return a new string",
+      "FOP" lower should == "fop"
+      x = "FLuRg"
+      x lower should == "flurg"
+      x should == "FLuRg"
+    )
+  )
   
   describe("replace",
     it("should return the same string when the thing to replace isn't there",
