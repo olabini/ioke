@@ -6,27 +6,84 @@
 	<array>
 		<string>ik</string>
 	</array>
+	<key>firstLineMatch</key>
+	<string>^#!/.*\bioke\b</string>
 	<key>name</key>
 	<string>Ioke</string>
 	<key>patterns</key>
 	<array>
 		<dict>
-			<key>match</key>
-			<string>\b("Base|DefaultBehavior|Ground|Origin|System|Runtime|Text|Number|Method|DefaultMethod|JavaMethod|Mixins|Restart|List|Dict")\b</string>
+			<key>begin</key>
+			<string>;;</string>
+			<key>end</key>
+			<string>$\n?</string>
 			<key>name</key>
-			<string>keyword.prototype-names.ioke</string>
+			<string>comment.line.ioke</string>
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>\b("print|println|cell|documentation|while|until|asText|inspect|loop|bind|restart|do|true?|false?|nil?|call|list|dict|empty?|with")\b</string>
+			<string>\b[[:digit:]_.eE]+\b</string>
 			<key>name</key>
-			<string>keyword.cell-names.ioke</string>
+			<string>constant.numeric.ioke</string>
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>(\.\.\.|=&gt;|\+\+|\-\-|\*|/|%|\+|\-|&lt;&lt;|&gt;&gt;|&gt;|&lt;|&lt;=|&gt;=|&lt;=&gt;|==|!=|&amp;|\^|\||&amp;&amp;|\|\||\.\.|=|\+=|\-=|\*=|/=|%=|&amp;=|\^=|\|=|&lt;&lt;=|&gt;&gt;=|&lt;\-|&lt;\-&gt;|\-&gt;)</string>
+			<string>\b[A-Z][[:alnum:]!?_:-]*\b</string>
 			<key>name</key>
-			<string>keyword.operator.ioke</string>
+			<string>constant.kind.ioke</string>
+		</dict>
+		<dict>
+			<key>begin</key>
+			<string>\w+ = (?=.*mimic\w*($|\.))</string>
+			<key>end</key>
+			<string>(?=\.)|$</string>
+			<key>name</key>
+			<string>entity.object.mimic.face.ioke</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>match</key>
+					<string>\b(Base|DefaultBehavior|Ground|Origin|System|Runtime|Text|Number|Method|DefaultMethod|JavaMethod|Mixins|Restart|List|Dict)\b</string>
+					<key>name</key>
+					<string>entity.prototype-names.ioke</string>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>\b(return|break|self|use|if|unless|true|false|nil)\b</string>
+					<key>name</key>
+					<string>keyword.operator.names.ioke</string>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>\b[A-Z][[:alnum:]!?_:-]*\b</string>
+					<key>name</key>
+					<string>constant.kind.ioke</string>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>[[:alnum:]!?_:-]+?:</string>
+			<key>name</key>
+			<string>string.literal.keyword-argument.ioke</string>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>:[[:alnum:]!?_:-]+</string>
+			<key>name</key>
+			<string>string.literal.symbol.ioke</string>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>([[:alnum:]!?_:-]+)[[:space:]]*[+*/-]?=[^=]</string>
+			<key>name</key>
+			<string>variable.assignment.ioke</string>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>#/.*?/[oxpniums]*</string>
+			<key>name</key>
+			<string>string.regexp.ioke</string>
 		</dict>
 		<dict>
 			<key>begin</key>
@@ -34,16 +91,58 @@
 			<key>end</key>
 			<string>"</string>
 			<key>name</key>
-			<string>string.quoted.double.untitled</string>
+			<string>string.quoted.double.ioke</string>
 			<key>patterns</key>
 			<array>
 				<dict>
 					<key>match</key>
 					<string>\\.</string>
 					<key>name</key>
-					<string>constant.character.escape.untitled</string>
+					<string>constant.character.escape.ioke</string>
 				</dict>
 			</array>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>\b(fn|fnx|method|macro)\b</string>
+			<key>name</key>
+			<string>entity.name.function</string>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>\b(Base|DefaultBehavior|Ground|Origin|System|Runtime|Text|Number|Method|DefaultMethod|JavaMethod|Mixins|Restart|List|Dict)\b</string>
+			<key>name</key>
+			<string>entity.prototype-names.ioke</string>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>\b(print|println|cell|documentation|while|until|asText|inspect|loop|bind|restart|do|true\?|false\?|nil\?|call|list|dict|empty\?|with)\b</string>
+			<key>name</key>
+			<string>keyword.cell-names.ioke</string>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>\b(\.\.\.|=&gt;|\+\+|\-\-|\*|/|%|\+|\-|&lt;&lt;|&gt;&gt;|&gt;|&lt;|&lt;=|&gt;=|&lt;=&gt;|==|!=|&amp;|\^|\||&amp;&amp;|\|\||\.\.|=|\+=|\-=|\*=|/=|%=|&amp;=|\^=|\|=|&lt;&lt;=|&gt;&gt;=|&lt;\-|&lt;\-&gt;|\-&gt;)\b</string>
+			<key>name</key>
+			<string>source.operator.symbols.ioke</string>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>(\`|\.|\,|@|@@)</string>
+			<key>name</key>
+			<string>support.special-names.ioke</string>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>\bit\b</string>
+			<key>name</key>
+			<string>entity.standout-names.ioke</string>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>\b(return|break|mimic|self|use|if|unless|true|false|nil)\b</string>
+			<key>name</key>
+			<string>keyword.operator.names.ioke</string>
 		</dict>
 	</array>
 	<key>scopeName</key>
