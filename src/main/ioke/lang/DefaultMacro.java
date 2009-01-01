@@ -172,7 +172,6 @@ public class DefaultMacro extends IokeData implements Named, Inspectable, Associ
             return null;
         }
 
-
         IokeObject c = context.runtime.locals.mimic(message, context);
         c.setCell("self", on);
         c.setCell("@", on);
