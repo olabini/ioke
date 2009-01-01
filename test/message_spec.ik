@@ -71,6 +71,13 @@ describe("Message",
     )
   )
 
+  describe("from",
+    it("should return the things inside unevaluated",
+      Message from(+(200)) name should == :"+"
+      Message from(abc foo bar quux lux) name should == :abc
+    )
+  )
+  
   describe("sendTo", 
     it("should be possible to create a message from text, with arguments and send that to a number", 
       Message fromText("+(200)") sendTo(20) should == 220

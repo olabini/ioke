@@ -291,6 +291,7 @@ public class Runtime {
             evaluateString("use(\"builtin/A12_runtime\")", message, ground);
             evaluateString("use(\"builtin/A13_case\")", message, ground);
             evaluateString("use(\"builtin/A14_comprehensions\")", message, ground);
+            evaluateString("use(\"builtin/A15_message\")", message, ground);
 
             evaluateString("use(\"builtin/M1_comparing\")", message, ground);
             evaluateString("use(\"builtin/M2_enumerable\")", message, ground);
