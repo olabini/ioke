@@ -1,0 +1,17 @@
+syntax: regexp
+(.*/)?\#[^/]*\#$
+.*~$
+.*\.DS_Store$
+.*\.marks$
+
+syntax: glob
+build
+lib/ioke.jar
+prj.el
+build.properties
+src/generated
+spike
+version_data.properties
+dok
+rels
+lib/dist
