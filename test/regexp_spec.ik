@@ -40,6 +40,17 @@ describe(Regexp,
       (#/^foo/ =~ "bar foo") should == nil
     )
   )
+
+  describe("allMatches",
+    it("should return a list of all matches",
+      #/./ allMatches("abc") should == ["a","b","c"]
+      #/o+/ allMatches("foo baroooooooo qoxuoooo") should == ["oo", "oooooooo", "o", "oooo"]
+    )
+
+    it("should return an empty list for no matches",
+      #/foo/ allMatches("bar") should == []
+    )
+  )
   
   describe("inspect",
     it("should inspect correctly for a simple regexp",
