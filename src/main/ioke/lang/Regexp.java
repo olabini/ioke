@@ -9,6 +9,7 @@ import java.util.HashMap;
 
 import org.jregex.Matcher;
 import org.jregex.Pattern;
+import org.jregex.MatchIterator;
 
 import ioke.lang.exceptions.ControlFlow;
 
@@ -78,6 +79,36 @@ public class Regexp extends IokeData {
                     String arg = Text.getText(context.runtime.asText.sendTo(context, args.get(0)));
                     Matcher m = ((Regexp)IokeObject.data(on)).regexp.matcher(arg);
                     return m.find() ? context.runtime._true : context.runtime.nil;
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("Takes one argument and tries to match that argument against the current pattern. Returns a list of all the texts that were matched.", new JavaMethod("allMatches") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("other")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+
+                    String arg = Text.getText(context.runtime.asText.sendTo(context, args.get(0)));
+                    Matcher m = ((Regexp)IokeObject.data(on)).regexp.matcher(arg);
+
+                    List<Object> result = new ArrayList<Object>();
+                    MatchIterator iter = m.findAll();
+                    Runtime runtime = context.runtime;
+                    while(iter.hasMore()) {
+                        result.add(runtime.newText(iter.nextMatch().group(0)));
+                    }
+                    
+                    return runtime.newList(result);
                 }
             }));
 
