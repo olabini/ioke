@@ -149,7 +149,7 @@ Mixins Enumerable inject = macro(
     while(last next,
       last = last next)
 
-    last appendArgument(message(elementName))
+    last << message(elementName)
 
     sum = nil
 
