@@ -169,4 +169,60 @@ describe("Message",
       msg next terminator? should == false
     )
   )
+
+  describe("<<",
+    it("should add an argument at the end of the message argument list",
+      msg = '(foo(x))
+      msg << '(blarg mux)
+      msg code should == "foo(x, blarg mux)"
+    )
+
+    it("should return the original message",
+      msg = '(foo(x))
+      (msg << '(blarg mux)) should be same(msg)
+    )
+  )
+
+  describe(">>",
+    it("should add an argument at the beginning of the message argument list",
+      msg = '(foo(x))
+      msg >> '(blarg mux)
+      msg code should == "foo(blarg mux, x)"
+    )
+
+    it("should return the original message",
+      msg = '(foo(x))
+      (msg >> '(blarg mux)) should be same(msg)
+    )
+  )
+
+  describe("->",
+    it("should change the next pointer of the receiver to the argument",
+      one = 'foo
+      two = 'bar
+
+      one -> two
+      one next should be same(two)
+    )
+
+    it("should change the prev pointer of the argument to the receiver",
+      one = 'foo
+      two = 'bar
+
+      one -> two
+      two prev should be same(one)
+    )
+
+    it("should return the original message",
+      one = 'foo
+      (one -> 'bar) should be same(one)
+    )
+
+    it("should accept nil as an argument, and set the next pointer to nil in that case",
+      x = '(foo bar)
+
+      x -> nil
+      x next should == nil
+    )
+  )
 )
