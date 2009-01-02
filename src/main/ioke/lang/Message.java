@@ -489,6 +489,26 @@ public class Message extends IokeData {
                 }
             }));
 
+        message.registerMethod(message.runtime.newJavaMethod("Takes one evaluated argument and returns a message that wraps the value of that argument.", new JavaMethod("wrap") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("value")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+
+                    return context.runtime.createMessage(Message.wrap(IokeObject.as(args.get(0))));
+                }
+            }));
+
         message.registerMethod(message.runtime.newJavaMethod("Takes one evaluated argument and executes the contents of that text in the current context and returns the result of that.", new JavaMethod("doText") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
