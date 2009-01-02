@@ -57,6 +57,44 @@ public class InternalBehavior {
                 }
             }));
 
+        obj.registerMethod(runtime.newJavaMethod("takes one or more arguments. it expects the last argument to be a regular expression, where the rest should be text. will call asText on all of them and insert that text in a regular expression. the flags for the regular expression will come from the last argument.", new JavaMethod("internal:compositeRegexp") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRest("regexpSegments")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+
+                    StringBuilder sb = new StringBuilder();
+
+                    if(IokeObject.data(on) instanceof Text) {
+                        sb.append(Text.getText(on));
+                    }
+
+                    String flags = "";
+                    for(Object o : args) {
+                        if(IokeObject.data(o) instanceof Text) {
+                            sb.append(Text.getText(o));
+                        } else if(IokeObject.data(o) instanceof Regexp) {
+                            sb.append(Regexp.getPattern(o));
+                            flags = Regexp.getFlags(o);
+                        } else {
+                            sb.append(Text.getText(context.runtime.asText.sendTo(context, o)));
+                        }
+                    }
+
+                    return context.runtime.newRegexp(sb.toString(), flags, context, message);
+                }
+            }));
+
         obj.registerMethod(runtime.newJavaMethod("expects one 'strange' argument. creates a new instance of Text with the given Java String backing it.", new JavaMethod("internal:createText") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()

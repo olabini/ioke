@@ -58,6 +58,7 @@ package ioke.lang.parser;
 
   private final static Object IPOL_STRING = new Object();
   private final static Object IPOL_ALT_STRING = new Object();
+  private final static Object IPOL_REGEXP = new Object();
   private java.util.List<Object> interpolation = new java.util.LinkedList<Object>();
 
   public void startInterpolation() {
@@ -68,11 +69,19 @@ package ioke.lang.parser;
       interpolation.add(0, IPOL_ALT_STRING);
   }
 
+  public void startRegexpInterpolation() {
+      interpolation.add(0, IPOL_REGEXP);
+  }
+
   public void endInterpolation() {
       interpolation.remove(0);
   }
 
   public void endAltInterpolation() {
+      interpolation.remove(0);
+  }
+
+  public void endRegexpInterpolation() {
       interpolation.remove(0);
   }
 
@@ -82,6 +91,10 @@ package ioke.lang.parser;
 
   public boolean isAltInterpolating() {
       return interpolation.size() > 0 && interpolation.get(0) == IPOL_ALT_STRING;
+  }
+
+  public boolean isRegexpInterpolating() {
+      return interpolation.size() > 0 && interpolation.get(0) == IPOL_REGEXP;
   }
 }
 
@@ -196,7 +209,15 @@ StringLiteral
     ;
 
 RegexpLiteral
-    :  '#/' ( EscapeSequenceRegexp | ~('\\'|'/') )* '/' RegexpModifier
+    :  ('#/'
+            ( ({!(input.LA(1) == '#' && input.LA(2) == '{')}?=> ( EscapeSequenceRegexp | ~('\\'|'/')))* )
+            (
+                '#{' {startRegexpInterpolation(); }
+            |   '/' RegexpModifier))
+    | {isRegexpInterpolating()}?=> ('}' (({!(input.LA(1) == '#' && input.LA(2) == '{')}?=> (EscapeSequenceRegexp | ~('\\'|'/')))* ) 
+        (
+            '#{' {startRegexpInterpolation(); }
+        |   '/' RegexpModifier  {endRegexpInterpolation(); }))
     ;
 
 fragment
@@ -208,7 +229,7 @@ EscapeSequence
 
 fragment
 EscapeSequenceRegexp
-    :   '\\' ('b'|'t'|'n'|'f'|'r'|'/'|'\\'|'\n')
+    :   '\\' ('b'|'t'|'n'|'f'|'r'|'/'|'\\'|'\n'|'#')
     |   UnicodeEscape
     |   OctalEscape
     ;

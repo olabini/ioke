@@ -47,6 +47,10 @@ public class Regexp extends IokeData {
         return ((Regexp)IokeObject.data(on)).pattern;
     }
 
+    public static String getFlags(Object on) throws ControlFlow {
+        return ((Regexp)IokeObject.data(on)).flags;
+    }
+
     @Override
     public void init(IokeObject obj) throws ControlFlow {
         final Runtime runtime = obj.runtime;
@@ -143,5 +147,18 @@ public class Regexp extends IokeData {
 
     public String notice(Object obj) throws ControlFlow {
         return "#/" + pattern + "/" + flags;
+    }
+
+    @Override
+    public boolean isEqualTo(IokeObject self, Object other) {
+        return ((other instanceof IokeObject) && 
+                (IokeObject.data(other) instanceof Regexp) &&
+                this.pattern.equals(((Regexp)IokeObject.data(other)).pattern) &&
+                this.flags.equals(((Regexp)IokeObject.data(other)).flags));
+    }
+
+    @Override
+    public int hashCode(IokeObject self) {
+        return this.pattern.hashCode() + this.flags.hashCode();
     }
 }// Regexp

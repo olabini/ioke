@@ -1,6 +1,9 @@
 
 use("ispec")
 
+parse = method(str,
+  Message fromText(str) code)
+
 describe(Regexp,
   it("should have the correct kind",
     Regexp should have kind("Regexp")
@@ -64,5 +67,42 @@ describe(Regexp,
       #/foo/ notice should == "#/foo/"
       #/foo/x notice should == "#/foo/x"
     )
+  )
+
+  describe("interpolation",
+    it("should parse correctly with a simple number inside of it", 
+      m = parse("#/foo \#{1} bar/")
+      m should == "internal:compositeRegexp(\"foo \", 1, #/ bar/)"
+    )
+
+    it("should parse correctly with a complex expression", 
+      m = parse("#/foo \#{29*5+foo bar} bar/")
+      m should == "internal:compositeRegexp(\"foo \", 29 *(5) +(foo bar), #/ bar/)"
+    )
+
+    it("should parse correctly with interpolation at the beginning of the text", 
+      m = parse("#/\#{1} bar/")
+      m should == "internal:compositeRegexp(\"\", 1, #/ bar/)"
+    )
+
+    it("should parse correctly with interpolation at the end of the text", 
+      m = parse("#/foo \#{1}/")
+      m should == "internal:compositeRegexp(\"foo \", 1, #//)"
+    )
+
+    it("should parse correctly with more than one interpolation", 
+      m = parse("#/foo \#{1} bar \#{2} quux \#{3}/")
+      m should == "internal:compositeRegexp(\"foo \", 1, \" bar \", 2, \" quux \", 3, #//)"
+    )
+
+    it("should parse correctly with nested interpolations", 
+      m = parse("#/foo \#{#/fux \#{32} bar/ bletch} bar/")
+      m should == "internal:compositeRegexp(\"foo \", internal:compositeRegexp(\"fux \", 32, #/ bar/) bletch, #/ bar/)"
+    )
+
+    it("should add all the flags as the last argument",
+      m = parse("#/foo \#{1} bar/mx")
+      m should == "internal:compositeRegexp(\"foo \", 1, #/ bar/mx)"
+    )      
   )
 )
