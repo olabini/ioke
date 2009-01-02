@@ -841,6 +841,34 @@ public class Message extends IokeData {
                 m.setLine(tree.getLine());
                 m.setPosition(tree.getCharPositionInLine());
                 return runtime.createMessage(m);
+            case iokeParser.UnitLiteral: {
+                String text = tree.getText();
+                int ending = text.length()-1;
+                while(!Character.isDigit(text.charAt(ending))) {
+                    ending--;
+                }
+                Message mex = new Message(runtime, "internal:createNumber", text.substring(0, ending+1));
+                mex.setLine(tree.getLine());
+                mex.setPosition(tree.getCharPositionInLine());
+                m = new Message(runtime, "internal:createUnit", runtime.createMessage(mex));
+                m.setLine(tree.getLine());
+                m.setPosition(tree.getCharPositionInLine());
+                return runtime.createMessage(m);
+            }
+            case iokeParser.UnitDecimalLiteral: {
+                String text = tree.getText();
+                int ending = text.length()-1;
+                while(!Character.isDigit(text.charAt(ending))) {
+                    ending--;
+                }
+                Message mex = new Message(runtime, "internal:createDecimal", text.substring(0, ending+1));
+                mex.setLine(tree.getLine());
+                mex.setPosition(tree.getCharPositionInLine());
+                m = new Message(runtime, "internal:createUnit", mex);
+                m.setLine(tree.getLine());
+                m.setPosition(tree.getCharPositionInLine());
+                return runtime.createMessage(m);
+            }
             case iokeParser.Identifier:
                 m = new Message(runtime, tree.getText());
                 m.setLine(tree.getLine());

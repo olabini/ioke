@@ -144,6 +144,7 @@ expression
     |   RegexpLiteral
     |   NumberLiteral
     |   DecimalLiteral
+    |   UnitLiteral
     |   Terminator
     ;
 
@@ -186,16 +187,32 @@ DecimalLiteral
     :
     ;
 
+fragment
+UnitLiteral
+    :
+    ;
+
+fragment
+UnitDecimalLiteral
+    :
+    ;
+
 NumberLiteral
     :
 		'0'	('x'|'X') HexDigit+
     |   '0' (
             {(input.LA(2)>='0')&&(input.LA(2)<='9')}?=> (FloatWithLeadingDot) {$type=DecimalLiteral;}
         |
+        ) (
+            UnitSpecifier {if($type == DecimalLiteral) {$type=UnitDecimalLiteral;} else {$type=UnitLiteral;}}
+        |
         )
     |   NonZeroDecimal (
             {(input.LA(2)>='0')&&(input.LA(2)<='9')}?=> (FloatWithLeadingDot) {$type=DecimalLiteral;}
         | Exponent {$type=DecimalLiteral;}
+        |
+        ) (
+            UnitSpecifier {if($type == DecimalLiteral) {$type=UnitDecimalLiteral;} else {$type=UnitLiteral;}}
         |
         )
     ;
@@ -411,6 +428,12 @@ FloatWithLeadingDot
         :
             '.' Digit+ (Exponent)?
         ;
+
+fragment
+UnitSpecifier
+    :
+        ('a'..'w'|'A'..'W'|'y'|'Y'|'z'|'Z'|'_') ('a'..'z'|'A'..'Z'|'_')*
+    ;
 
 fragment
 Exponent
