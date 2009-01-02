@@ -230,7 +230,7 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
             }
             Message.setPrev(newObj, prev);
 
-            return message.sendTo(context, on);
+            return message.sendTo(context, context);
         }
     }
 }// DefaultSyntax
