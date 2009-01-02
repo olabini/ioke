@@ -110,7 +110,6 @@ public class Levels {
 
     public static OpTable[] defaultOperators = new OpTable[]{
 		new OpTable("!",   0),
-		new OpTable("'",   0),
 		new OpTable("$",   0),
 		new OpTable("~",   0),
 		new OpTable("#",   0),
@@ -351,7 +350,7 @@ public class Levels {
         // : "str" bar   becomes   :("str") bar
         // -foo bar      becomes   -(foo) bar
         */
-        if(msgArgCount == 0 && Message.next(msg) != null && ((messageName.equals(":")) || 
+        if(msgArgCount == 0 && Message.next(msg) != null && ((messageName.equals(":") || messageName.equals("`") || messageName.equals("'")) || 
                                                              (messageName.equals("-") && Message.prev(msg) == null))) {
             precedence = -1;
             Object arg = Message.next(msg);
