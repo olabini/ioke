@@ -15,6 +15,20 @@ describe(DefaultBehavior,
       internal:concatenateText([1,2,3], "foo") should == "[1, 2, 3]foo"
     )
   )
+
+  describe("internal:compositeRegexp",
+    it("should combine several strings and expects the last entry to be a regular expression",
+      internal:compositeRegexp("abc", "foo", #/bar/) should == #/abcfoobar/
+    )
+
+    it("should use the flags from the last regular expression",
+      internal:compositeRegexp("abc", #/ bar/mx) should == #/abc bar/mx
+    )
+
+    it("should work in a literal syntax too",
+      #/foo #{"bar"}/m should == #/foo bar/m
+    )
+  )
   
   describe("internal:createText", 
     it("should be possible to invoke from Ioke with a regular String", 

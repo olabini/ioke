@@ -28,7 +28,7 @@ import org.antlr.runtime.tree.Tree;
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
 public class Message extends IokeData {
-    public static enum Type {EMPTY, MESSAGE, BINARY, BINARY_ASSIGNMENT, UNARY_ASSIGNMENT, TERMINATOR, SEPARATOR, START_INTERPOLATION, END_INTERPOLATION, MIDDLE_INTERPOLATION};
+    public static enum Type {EMPTY, MESSAGE, BINARY, BINARY_ASSIGNMENT, UNARY_ASSIGNMENT, TERMINATOR, SEPARATOR, START_INTERPOLATION, START_RE_INTERPOLATION, END_INTERPOLATION, MIDDLE_INTERPOLATION};
 
     private String name;
     private String file;
@@ -755,13 +755,34 @@ public class Message extends IokeData {
             switch(tree.getType()) {
             case iokeParser.RegexpLiteral: {
                 String s = tree.getText();
-                int lastIndex = s.lastIndexOf('/');
-                m = new Message(runtime, "internal:createRegexp", s.substring(2, lastIndex));
-                m.arguments.add(s.substring(lastIndex+1));
-                m.setLine(tree.getLine());
-                m.setPosition(tree.getCharPositionInLine());
-                return runtime.createMessage(m);
+                char first = s.charAt(0);
+                char last = s.charAt(s.length()-1);
+                if(first == '#' && last != '{') {
+                    int lastIndex = s.lastIndexOf('/');
+                    m = new Message(runtime, "internal:createRegexp", s.substring(2, lastIndex));
+                    m.arguments.add(s.substring(lastIndex+1));
+                    m.setLine(tree.getLine());
+                    m.setPosition(tree.getCharPositionInLine());
+                    return runtime.createMessage(m);
+                } else if(first == '}' && last == '{') {
+                    m = new Message(runtime, "internal:createText", s.substring(1, s.length()-2), Type.MIDDLE_INTERPOLATION);
+                    m.setLine(tree.getLine());
+                    m.setPosition(tree.getCharPositionInLine());
+                    return runtime.createMessage(m);
+                } else if(first == '}') {
+                    int lastIndex = s.lastIndexOf('/');
+                    m = new Message(runtime, "internal:createRegexp", s.substring(1, lastIndex), Type.END_INTERPOLATION);
+                    m.arguments.add(s.substring(lastIndex+1));
+                    m.setLine(tree.getLine());
+                    m.setPosition(tree.getCharPositionInLine());
+                    return runtime.createMessage(m);
+                } else {
+                    m = new Message(runtime, "internal:createText", s.substring(2, s.length()-2), Type.START_RE_INTERPOLATION);
+                    m.setLine(tree.getLine());
+                    m.setPosition(tree.getCharPositionInLine());
+                    return runtime.createMessage(m);
                 }
+            }
             case iokeParser.StringLiteral: {
                 String s = tree.getText();
                 char first = s.charAt(0);
@@ -882,6 +903,21 @@ public class Message extends IokeData {
             switch(Message.type(created)) {
             case START_INTERPOLATION:{
                 Message mvv = new Message(runtime, "internal:concatenateText");
+                mvv.setLine(tree.getLine());
+                mvv.setPosition(tree.getCharPositionInLine());
+                oldCurrents.add(0, currents);
+                oldHeads.add(0, head);
+                oldMx.add(0, mx);
+
+                currents = new ArrayList<IokeObject>();
+                head = created;
+                mx = runtime.createMessage(mvv);
+
+                created = runtime.createMessage(new Message(runtime, ",", null, Type.SEPARATOR));
+                break;
+            }
+            case START_RE_INTERPOLATION:{
+                Message mvv = new Message(runtime, "internal:compositeRegexp");
                 mvv.setLine(tree.getLine());
                 mvv.setPosition(tree.getCharPositionInLine());
                 oldCurrents.add(0, currents);
