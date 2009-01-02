@@ -756,11 +756,18 @@ public class Message extends IokeData {
             case iokeParser.RegexpLiteral: {
                 String s = tree.getText();
                 char first = s.charAt(0);
+                char second = s.charAt(1);
                 char last = s.charAt(s.length()-1);
                 if(first == '#' && last != '{') {
-                    int lastIndex = s.lastIndexOf('/');
-                    m = new Message(runtime, "internal:createRegexp", s.substring(2, lastIndex));
-                    m.arguments.add(s.substring(lastIndex+1));
+                    if(second == 'r') {
+                        int lastIndex = s.lastIndexOf(']');
+                        m = new Message(runtime, "internal:createRegexp", s.substring(3, lastIndex));
+                        m.arguments.add(s.substring(lastIndex+1));
+                    } else {
+                        int lastIndex = s.lastIndexOf('/');
+                        m = new Message(runtime, "internal:createRegexp", s.substring(2, lastIndex));
+                        m.arguments.add(s.substring(lastIndex+1));
+                    }
                     m.setLine(tree.getLine());
                     m.setPosition(tree.getCharPositionInLine());
                     return runtime.createMessage(m);
@@ -771,6 +778,9 @@ public class Message extends IokeData {
                     return runtime.createMessage(m);
                 } else if(first == '}') {
                     int lastIndex = s.lastIndexOf('/');
+                    if(lastIndex == -1) {
+                        lastIndex = s.lastIndexOf(']');
+                    }
                     m = new Message(runtime, "internal:createRegexp", s.substring(1, lastIndex), Type.END_INTERPOLATION);
                     m.arguments.add(s.substring(lastIndex+1));
                     m.setLine(tree.getLine());

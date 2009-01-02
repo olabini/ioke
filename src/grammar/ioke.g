@@ -59,6 +59,7 @@ package ioke.lang.parser;
   private final static Object IPOL_STRING = new Object();
   private final static Object IPOL_ALT_STRING = new Object();
   private final static Object IPOL_REGEXP = new Object();
+  private final static Object IPOL_ALT_REGEXP = new Object();
   private java.util.List<Object> interpolation = new java.util.LinkedList<Object>();
 
   public void startInterpolation() {
@@ -70,6 +71,10 @@ package ioke.lang.parser;
   }
 
   public void startRegexpInterpolation() {
+      interpolation.add(0, IPOL_REGEXP);
+  }
+
+  public void startAltRegexpInterpolation() {
       interpolation.add(0, IPOL_REGEXP);
   }
 
@@ -85,6 +90,10 @@ package ioke.lang.parser;
       interpolation.remove(0);
   }
 
+  public void endAltRegexpInterpolation() {
+      interpolation.remove(0);
+  }
+
   public boolean isInterpolating() {
       return interpolation.size() > 0 && interpolation.get(0) == IPOL_STRING;
   }
@@ -95,6 +104,10 @@ package ioke.lang.parser;
 
   public boolean isRegexpInterpolating() {
       return interpolation.size() > 0 && interpolation.get(0) == IPOL_REGEXP;
+  }
+
+  public boolean isAltRegexpInterpolating() {
+      return interpolation.size() > 0 && interpolation.get(0) == IPOL_ALT_REGEXP;
   }
 }
 
@@ -214,10 +227,19 @@ RegexpLiteral
             (
                 '#{' {startRegexpInterpolation(); }
             |   '/' RegexpModifier))
+    |  ('#r[' 
+        ( ({!(input.LA(1) == '#' && input.LA(2) == '{')}?=> (EscapeSequenceRegexp | ~('\\'|']')))* ) 
+        (
+            '#{' {startAltRegexpInterpolation(); }
+        |   ']' RegexpModifier))
     | {isRegexpInterpolating()}?=> ('}' (({!(input.LA(1) == '#' && input.LA(2) == '{')}?=> (EscapeSequenceRegexp | ~('\\'|'/')))* ) 
         (
             '#{' {startRegexpInterpolation(); }
         |   '/' RegexpModifier  {endRegexpInterpolation(); }))
+    | {isAltRegexpInterpolating()}?=> ('}' ( ({!(input.LA(1) == '#' && input.LA(2) == '{')}?=> (EscapeSequenceRegexp | ~('\\'|']')))* ) 
+        (
+            '#{' {startAltRegexpInterpolation(); }
+        |   '/' RegexpModifier {endAltRegexpInterpolation(); }))
     ;
 
 fragment

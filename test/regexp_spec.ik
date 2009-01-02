@@ -69,6 +69,21 @@ describe(Regexp,
     )
   )
 
+  describe("alternative syntax",
+    it("should work for simple regexps",
+      #r[foo] should == #/foo/
+      #r[bar] should == #/bar/
+    )
+
+    it("should work with back slashes",
+      #r[///] pattern should == "///"
+    )
+
+    it("should work for regexps with flags",
+      #r[foo]x should == #/foo/x
+    )
+  )    
+
   describe("interpolation",
     it("should parse correctly with a simple number inside of it", 
       m = parse("#/foo \#{1} bar/")
