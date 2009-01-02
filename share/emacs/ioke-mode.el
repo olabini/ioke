@@ -332,6 +332,7 @@
     '("\\([[:alnum:]!?_:-]+\\)[[:space:]]*=[^=][[:space:]]*[[:alnum:]_:-]+[[:space:]]+mimic" 1 ioke-font-lock-object-mimic-face)
     '("\\([[:alnum:]!?_:-]+\\)[[:space:]]*[+*/-]?=[^=]" 1 ioke-font-lock-object-assign-face)
     '("#/.*?/[oxpniums]*" 0 ioke-font-lock-regexp-face)
+    '("#r\\[.*?\\][oxpniums]*" 0 ioke-font-lock-regexp-face)
     '("#\\[" 0 ioke-font-lock-string-face t)
     '("\\([^\\\\]\\|\\\\\\\\\\)\\(#{[^}]*}\\)" 2 ioke-font-lock-expression-face t)
     `(,(regexp-opt ioke-prototype-names 'words) . ioke-font-lock-known-kind-face)
