@@ -4,6 +4,12 @@
 <dict>
 	<key>name</key>
 	<string>Ioke</string>
+	<key>ordering</key>
+	<array>
+		<string>26C50C17-4F6E-4515-9E8F-CFCC8832E5A7</string>
+		<string>472A0098-B102-4F33-89EF-784D1746FF25</string>
+		<string>EC751C80-9E93-44B4-AFF3-EF4FF8346C90</string>
+	</array>
 	<key>uuid</key>
 	<string>5D8B5BC7-A504-4C49-B07B-59794FBB95AA</string>
 </dict>
