@@ -77,6 +77,27 @@ describe("Message",
       Message from(abc foo bar quux lux) name should == :abc
     )
   )
+
+  describe("wrap",
+    it("should return something with an empty name",
+      Message wrap(42) name should == :""
+    )
+
+    it("should evaluate its argument",
+      Message wrap(Ground flurg = 444)
+      flurg should == 444
+    )
+
+    it("should return a message",
+      Message wrap(42) should have kind("Message")
+    )
+
+    it("should return something that when evaluated yields the value sent to the wrap method",
+      x = 55
+      m = Message wrap(x)
+      m evaluateOn(Ground, Ground) should be same(x)
+    )
+  )
   
   describe("sendTo", 
     it("should be possible to create a message from text, with arguments and send that to a number", 
@@ -88,7 +109,7 @@ describe("Message",
       Message fromText("f") sendTo(42) should == "42"
     )
     
-    it("should only send one message nad not follow the next pointer", 
+    it("should only send one message and not follow the next pointer", 
       Message fromText("+(200) +(10) -(5)") sendTo(20) should == 220
     )
   )
