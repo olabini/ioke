@@ -148,6 +148,17 @@
   :group 'ioke-font-lock-faces)
 
 (defconst ioke-font-lock-regexp-face 'ioke-font-lock-regexp-face)
+(defconst ioke-font-lock-string-face 'font-lock-string-face)
+
+(defface ioke-font-lock-expression-face
+  '((((class grayscale) (background light)) (:foreground "DimGray"))
+    (((class grayscale) (background dark)) (:foreground "LightGray"))
+    (((class color) (background light)) (:foreground "dark goldenrod"))
+    (((class color) (background dark)) (:foreground "light goldenrod")))
+  "Font Lock mode face used to highlight expressions inside of texts."
+  :group 'ioke-font-lock-faces)
+
+(defconst ioke-font-lock-expression-face 'ioke-font-lock-expression-face)
 
 (defconst ioke-prototype-names '(
                                  "Base"
@@ -321,14 +332,15 @@
     '("\\([[:alnum:]!?_:-]+\\)[[:space:]]*=[^=][[:space:]]*[[:alnum:]_:-]+[[:space:]]+mimic" 1 ioke-font-lock-object-mimic-face)
     '("\\([[:alnum:]!?_:-]+\\)[[:space:]]*[+*/-]?=[^=]" 1 ioke-font-lock-object-assign-face)
     '("#/.*?/[oxpniums]*" 0 ioke-font-lock-regexp-face)
+    '("#\\[" 0 ioke-font-lock-string-face t)
+    '("\\([^\\\\]\\|\\\\\\\\\\)\\(#{[^}]*}\\)" 2 ioke-font-lock-expression-face t)
     `(,(regexp-opt ioke-prototype-names 'words) . ioke-font-lock-known-kind-face)
     `(,(regexp-opt ioke-standout-names 'words) . font-lock-warning-face)
     '("\\<[A-Z][[:alnum:]!?_:-]*\\>" 0 ioke-font-lock-kind-face)
     '("\\<[[:alnum:]!?_:-]*?:\\>" 0 ioke-font-lock-keyword-argument-face)
     '("\\<:[[:alnum:]!?_:-]*\\>" 0 ioke-font-lock-symbol-face)
+    '("\\<:\"[[:alnum:]!?_:-]*\"" 0 ioke-font-lock-symbol-face t)
     '("\\<[[:digit:]_\\.eE]+\\>" 0 ioke-font-lock-number-face)
-;    '("\\<%r[.*?][oxpniums]*\\>" 0 ioke-font-lock-regexp-face)
-;    '("\\<%[.*?]\\>" 0 ioke-font-lock-string-face)
     `(,(regexp-opt ioke-operator-names 'words) . ioke-font-lock-operator-name-face)
     `(,(regexp-opt ioke-operator-symbols t) . ioke-font-lock-operator-symbol-face)
     `(,(regexp-opt ioke-special-names t) . ioke-font-lock-special-face)
@@ -339,12 +351,21 @@
 
 (defvar ioke-syntax-table
   (let ((st (make-syntax-table)))
+    (modify-syntax-entry ?\( "()" st)
+    (modify-syntax-entry ?\) ")(" st)
+    (modify-syntax-entry ?\[ "(]" st)
+    (modify-syntax-entry ?\] ")[" st)
+    (modify-syntax-entry ?\{ "(}" st)
+    (modify-syntax-entry ?\} "){" st)
     (modify-syntax-entry ?\; "<" st)
     (modify-syntax-entry ?? "w" st)
     (modify-syntax-entry ?! "w" st)
     (modify-syntax-entry ?: "w" st)
     (modify-syntax-entry ?, "." st)
     (modify-syntax-entry ?. "." st)
+    (modify-syntax-entry ?\' "'" st)
+    (modify-syntax-entry ?\` "'" st)
+    (modify-syntax-entry ?\" "\"" st)
     (modify-syntax-entry ?\n ">" st)
     st)
   "ioke mode syntax table")
@@ -458,22 +479,33 @@
     (set-marker marker nil))
   (blink-matching-open))
 
-
-
 (defun ioke-comment-region (beg end &optional arg)
   "Comment region for Io."
   (interactive "r\nP")
   (let ((comment-start ioke-region-comment-prefix))
     (comment-region beg end arg)))
 
+(defconst ioke-font-lock-syntactic-keywords
+      '(
+        ("#\\(\\[\\)\\([^]\\\\]\\|\\\\\\]\\|\\\\\\\\\\)*\\(\\]\\)" (1 "|" t) (3 "|" t))
+        ))
+
 (defun ioke-mode ()
-  "ioke (testing) mode"
+  "ioke mode"
   (interactive)
   (kill-all-local-variables)
   (set-syntax-table ioke-syntax-table)
   (use-local-map ioke-keymap)
+
   (make-local-variable 'font-lock-defaults)
-  (setq font-lock-defaults '(ioke-font-lock-keywords nil nil nil))
+  (setq font-lock-defaults '(ioke-font-lock-keywords nil nil))
+
+  (make-local-variable 'font-lock-syntax-table)
+  (setq font-lock-syntax-table ioke-syntax-table)
+
+  (make-local-variable 'font-lock-syntactic-keywords)
+  (setq font-lock-syntactic-keywords ioke-font-lock-syntactic-keywords)
+
   (set (make-local-variable 'indent-line-function) 'ioke-indent-line)
   (set (make-local-variable 'comment-start) "; ")
   (setq major-mode 'ioke-mode)
