@@ -82,8 +82,8 @@ public class Levels {
                             message.getArguments().clear();
                             message.getArguments().addAll(arg.getArguments());
                             arg.getArguments().clear();
-
-
+                        } else if(arg.getName().equals(".") && Message.next(arg) == null) {
+                            message.getArguments().clear();
                         }
                     }
                 }
