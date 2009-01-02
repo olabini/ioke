@@ -944,29 +944,13 @@ public class Message extends IokeData {
 
     @Override
     public Object evaluateCompleteWith(IokeObject self, IokeObject ctx, Object ground) throws ControlFlow {
-        Object current = ctx;
-        Object lastReal = self.runtime.getNil();
-        IokeObject m = self;
-        while(m != null) {
-            String name = m.getName();
-
-            if(name.equals(".")) {
-                current = ctx;
-            } else if(name.length() > 1 && m.getArguments().size() == 0 && name.charAt(0) == ':') {
-                current = self.runtime.getSymbol(name.substring(1));
-                lastReal = current;
-            } else {
-                current = m.sendTo(ctx, current);
-                lastReal = current;
-            }
-            m = Message.next(m);
-        }
-        return lastReal;
+        return evaluateCompleteWithReceiver(self, ctx, ground, ctx);
     }
 
     @Override
     public Object evaluateCompleteWithReceiver(IokeObject self, IokeObject ctx, Object ground, Object receiver) throws ControlFlow {
         Object current = receiver;
+        Object tmp = null;
         Object lastReal = self.runtime.getNil();
         IokeObject m = self;
         while(m != null) {
@@ -978,8 +962,11 @@ public class Message extends IokeData {
                 current = self.runtime.getSymbol(name.substring(1));
                 lastReal = current;
             } else {
-                current = m.sendTo(ctx, current);
-                lastReal = current;
+                tmp = m.sendTo(ctx, current);
+                if(tmp != null) {
+                    current = tmp;
+                    lastReal = current;
+                }
             }
             m = Message.next(m);
         }
@@ -1068,7 +1055,6 @@ public class Message extends IokeData {
     public static String thisCode(IokeObject message) {
         return ((Message)IokeObject.data(message)).thisCode();
     }
-
 
     public static String codeSequenceTo(IokeObject message, String name) throws ControlFlow {
         return ((Message)IokeObject.data(message)).codeSequenceTo(name);
