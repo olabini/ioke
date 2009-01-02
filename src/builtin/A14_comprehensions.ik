@@ -1,17 +1,14 @@
 
 DefaultBehavior FlowControl for = syntax(
-  theCode = DefaultBehavior FlowControl cell(:for) transform(call arguments, "map", "flatMap")
-  theCode
+  DefaultBehavior FlowControl cell(:for) transform(call arguments, "map", "flatMap")
 )
 
 DefaultBehavior FlowControl for:set = syntax(
-  theCode = DefaultBehavior FlowControl cell(:for) transform(call arguments, "map:set", "flatMap:set")
-  theCode
+  DefaultBehavior FlowControl cell(:for) transform(call arguments, "map:set", "flatMap:set")
 )
 
 DefaultBehavior FlowControl for:dict = syntax(
-  theCode = DefaultBehavior FlowControl cell(:for) transform(call arguments, "map:dict", "flatMap:dict")
-  theCode
+  DefaultBehavior FlowControl cell(:for) transform(call arguments, "map:dict", "flatMap:dict")
 )
 
 DefaultBehavior FlowControl cell(:for) generator? = method(msg,
@@ -26,13 +23,9 @@ DefaultBehavior FlowControl cell(:for) withAssignments = method(assignments, msg
     currentMessage = assignments first deepCopy
     assignments[1..-1] each(assgn,
       ccc = assgn deepCopy
-      stop = DefaultBehavior message(".")
-      stop next = ccc
-      currentMessage next = stop
+      currentMessage -> ('. -> ccc)
       currentMessage = ccc)
-    stop = DefaultBehavior message(".")
-    stop next = msg
-    currentMessage next = stop
+    currentMessage -> ('. -> msg)
   )
   currentMessage
 )
@@ -53,7 +46,7 @@ DefaultBehavior FlowControl cell(:for) transform = method(arguments, mapName, fl
       generator = msg deepCopy
 
       generatorSource = generator next arguments first
-      generator next = nil
+      generator -> nil
 
       generatorLast = generatorSource
       while(generatorLast next,
@@ -64,27 +57,25 @@ DefaultBehavior FlowControl cell(:for) transform = method(arguments, mapName, fl
 
       mapMessage = DefaultBehavior message(if(generatorCount == 0, mapName, flatMapName))
 
-      mapMessage appendArgument(generator)
+      mapMessage << generator
       generatorLast next = mapMessage
       
       if(first == nil,
         first = generatorSource,
 
-        current appendArgument(withAssignments(assignments, generatorSource))
+        current << withAssignments(assignments, generatorSource)
         assignments = [])
       current = mapMessage,
       
       if(assignment?(msg),
         assignments << msg,
 
-        filterMessage = DefaultBehavior message("filter")
-        filterMessage appendArgument(lastGeneratorVarName)
-        filterMessage appendArgument(withAssignments(assignments, msg))
-        filterMessage next = lastGenerator next
-        lastGenerator next = filterMessage)
+        filterMessage = ('filter << lastGeneratorVarName) << withAssignments(assignments, msg)
+        filterMessage -> lastGenerator next
+        lastGenerator -> filterMessage)
     )
   )
 
-  current appendArgument(withAssignments(assignments, arguments[-1]))
+  current << withAssignments(assignments, arguments[-1])
   first
 )
