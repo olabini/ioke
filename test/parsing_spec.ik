@@ -252,4 +252,35 @@ bar" should == "foobar"
       m should == "f:o:o:b:a:r"
     )
   )
+
+  describe("shuffling",
+    it("should shuffle a ` without arguments",
+      Message fromText("`foo") code should == "`(foo)"
+      Message fromText("`42") code should == "`(42)"
+      Message fromText("`") code should == "`"
+    )
+
+    it("should shuffle a : without arguments",
+      Message fromText(":\"42\"") code should == ":(\"42\")"
+      Message fromText(": \"42\" 43") code should == ":(\"42\") 43"
+    )
+
+    it("should shuffle a ' without arguments",
+      Message fromText("'foo") code should == "'(foo)"
+      Message fromText("'42") code should == "'(42)"
+      Message fromText("'") code should == "'"
+    )
+
+    it("should not shuffle a ` with arguments",
+      Message fromText("`(foo bar) quux") code should == "`(foo bar) quux"
+    )
+
+    it("should not shuffle a : with arguments",
+      Message fromText(":(foo)") code should == ":(foo)"
+    )
+
+    it("should not shuffle a ' with arguments",
+      Message fromText("'(foo bar) quux") code should == "'(foo bar) quux"
+    )
+  )
 )

@@ -967,4 +967,26 @@ describe(DefaultBehavior,
       '(abc foo bar quux lux) name should == :abc
     )
   )
+
+
+  describe("`",
+    it("should return something with an empty name",
+      `(42) name should == :""
+    )
+
+    it("should evaluate its argument",
+      `(Ground flurg = 444)
+      flurg should == 444
+    )
+
+    it("should return a message",
+      `(42) should have kind("Message")
+    )
+
+    it("should return something that when evaluated yields the value sent to the wrap method",
+      x = 55
+      m = `(x)
+      m evaluateOn(Ground, Ground) should be same(x)
+    )
+  )
 )

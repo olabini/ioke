@@ -40,6 +40,12 @@ DefaultBehavior Literals cell(:"'") = macro(
 
   call arguments first deepCopy)
 
+DefaultBehavior Literals cell(:"`") = method(
+  "Takes one argument and returns a message that wraps the value of that argument. The message has no name and will be printed empty. The message is guaranteed to be created from scratch",
+  value,
+
+  Message wrap(value))
+
 DefaultBehavior Literals list = macro(
   "Takes zero or more arguments and returns a newly created list containing the result of evaluating these arguments",
 
