@@ -106,6 +106,47 @@ public class DefinitionsBehavior {
                 }
             }));
 
+        obj.registerMethod(runtime.newJavaMethod("expects one code argument, optionally preceeded by a documentation string. will create a new DefaultSyntax based on the code and return it.", new JavaMethod("syntax") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withOptionalPositionalUnevaluated("documentation")
+                    .withOptionalPositionalUnevaluated("body")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
+
+                    List<Object> args = message.getArguments();
+
+                    if(args.size() == 0) {
+                        final Message mx = new Message(context.runtime, "nil", null, Message.Type.MESSAGE);
+                        mx.setFile(Message.file(message));
+                        mx.setLine(Message.line(message));
+                        mx.setPosition(Message.position(message));
+                        final IokeObject mmx = context.runtime.createMessage(mx);
+
+                        return runtime.newMacro(null, runtime.defaultSyntax, new DefaultSyntax(context, mmx));
+                    }
+
+                    String doc = null;
+
+                    int start = 0;
+                    if(args.size() > 1 && ((IokeObject)Message.getArg1(message)).getName().equals("internal:createText")) {
+                        start++;
+                        String s = ((String)((IokeObject)args.get(0)).getArguments().get(0));
+                        doc = s;
+                    }
+
+                    return runtime.newMacro(doc, runtime.defaultSyntax, new DefaultSyntax(context, (IokeObject)args.get(start)));
+                }
+            }));
+
         obj.registerMethod(runtime.newJavaMethod("expects one code argument, optionally preceeded by a documentation string. will create a new LexicalMacro based on the code and return it.", new JavaMethod("lecro") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
