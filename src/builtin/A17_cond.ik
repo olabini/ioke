@@ -6,13 +6,13 @@ DefaultBehavior FlowControl cond = syntax(
 
 DefaultBehavior FlowControl cell(:cond) createNestedIfStatements = method(args,
   if(args length == 0,
-    `nil,
+    'nil,
     if(args length == 1,
       ; an else part
       args[0],
 
       ; a condition, then part
-      'if appendArgument(args[0]) appendArgument(args[1]) appendArgument(createNestedIfStatements(args[2..-1]))
+      'if <<(args[0]) <<(args[1]) << createNestedIfStatements(args[2..-1])
     )
   )
 )
