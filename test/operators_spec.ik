@@ -484,6 +484,12 @@ describe("operator",
         m = parse("2 + 1")
         m should == "2 +(1)"
       )
+
+      it("should work correctly when given as an argument with newlines",
+        m = parse("[1,2] fold(
++
+)") should == "[](1, 2) fold(+)"
+      )
     )
 
     describe("*", 
