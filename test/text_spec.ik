@@ -484,7 +484,7 @@ describe("Text",
       "%*[%s=%s%]" format([["one", "1", "ignored"], ["two", "2", "ignored"], ["three", "3", "ignored"]]) should == "one=1two=2three=3"
     )
   )
-  
+
   describe("escapes", 
     describe("\\b", 
       it("should be replaced when it's the only thing in the text", 
@@ -790,4 +790,334 @@ fert\
       )
     )
   )
+
+  describe("alternative syntax",
+    it("should parse correctly",
+      #[foo] should == "foo"
+      #["fluxie] should == "\"fluxie"
+    )
+
+    describe("interpolation",
+      it("should parse correctly with a simple number inside of it", 
+        m = parse("#[foo \#{1} bar]")
+        m should == "internal:concatenateText(\"foo \", 1, \" bar\")"
+      )
+
+      it("should parse correctly with a complex expression", 
+        m = parse("#[foo \#{29*5+foo bar} bar]")
+        m should == "internal:concatenateText(\"foo \", 29 *(5) +(foo bar), \" bar\")"
+      )
+
+      it("should parse correctly with interpolation at the beginning of the text", 
+        m = parse("#[\#{1} bar]")
+        m should == "internal:concatenateText(\"\", 1, \" bar\")"
+      )
+
+      it("should parse correctly with interpolation at the end of the text", 
+        m = parse("#[foo \#{1}]")
+        m should == "internal:concatenateText(\"foo \", 1, \"\")"
+      )
+
+      it("should parse correctly with more than one interpolation", 
+        m = parse("#[foo \#{1} bar \#{2} quux \#{3}]")
+        m should == "internal:concatenateText(\"foo \", 1, \" bar \", 2, \" quux \", 3, \"\")"
+      )
+
+      it("should parse correctly with nested interpolations", 
+        m = parse("#[foo \#{\"fux \#{32} bar\" bletch} bar]")
+        m should == "internal:concatenateText(\"foo \", internal:concatenateText(\"fux \", 32, \" bar\") bletch, \" bar\")"
+
+        m = parse("#[foo \#{#[fux \#{32} bar] bletch} bar]")
+        m should == "internal:concatenateText(\"foo \", internal:concatenateText(\"fux \", 32, \" bar\") bletch, \" bar\")"
+
+        m = parse("\"foo \#{#[fux \#{32} bar] bletch} bar\"")
+        m should == "internal:concatenateText(\"foo \", internal:concatenateText(\"fux \", 32, \" bar\") bletch, \" bar\")"
+      )
+    )
+
+    describe("escapes", 
+      describe("\\b", 
+        it("should be replaced when it's the only thing in the text", 
+          #[\b] should == "\b"
+        )
+
+        it("should be replaced when it's at the start of the text", 
+          #[\b ] should == "\b "
+          #[\barfoo] should == "\barfoo"
+        )
+
+        it("should be replaced when it's at the end of the text", 
+          #[ \b] should == " \b"
+          #[arfoo\b] should == "arfoo\b"
+        )
+
+        it("should be replaced when it's in the middle of the text", 
+          #[ \b ] should == " \b "
+          #[ar\bfoo] should == "ar\bfoo"
+        )
+
+        it("should be replaced when there are several in a string", 
+          #[\b \b adsf\bgtr\brsergfg\b\b\bfert\b] should == "\b \b adsf\bgtr\brsergfg\b\b\bfert\b"
+        )
+      )
+
+      describe("\\t", 
+        it("should be replaced when it's the only thing in the text", 
+          #[\t] should == "\t"
+        )
+
+        it("should be replaced when it's at the start of the text", 
+          #[\t ] should == "\t "
+          #[\tarfoo] should == "\tarfoo"
+        )
+
+        it("should be replaced when it's at the end of the text", 
+          #[ \t] should == " \t"
+          #[arfoo\t] should == "arfoo\t"
+        )
+
+        it("should be replaced when it's in the middle of the text", 
+          #[ \t ] should == " \t "
+          #[ar\tfoo] should == "ar\tfoo"
+        )
+
+        it("should be replaced when there are several in a string", 
+          #[\t \t adsf\tgtr\trsergfg\t\t\tfert\t] should == "\t \t adsf\tgtr\trsergfg\t\t\tfert\t"
+        )
+      )
+
+      describe("\\n", 
+        it("should be replaced when it's the only thing in the text", 
+          #[\n] should == "\n"
+        )
+
+        it("should be replaced when it's at the start of the text", 
+          #[\n ] should == "\n "
+          #[\narfoo] should == "\narfoo"
+        )
+
+        it("should be replaced when it's at the end of the text", 
+          #[ \n] should == " \n"
+          #[arfoo\n] should == "arfoo\n"
+        )
+
+        it("should be replaced when it's in the middle of the text", 
+          #[ \n ] should == " \n "
+          #[ar\nfoo] should == "ar\nfoo"
+        )
+
+        it("should be replaced when there are several in a string", 
+          #[\n \n adsf\ngtr\nrsergfg\n\n\nfert\n] should == "\n \n adsf\ngtr\nrsergfg\n\n\nfert\n"
+        )
+      )
+
+      describe("\\f", 
+        it("should be replaced when it's the only thing in the text", 
+          #[\f] should == "\f"
+        )
+
+        it("should be replaced when it's at the start of the text", 
+          #[\f ] should == "\f "
+          #[\farfoo] should == "\farfoo"
+        )
+
+        it("should be replaced when it's at the end of the text", 
+          #[ \f] should == " \f"
+          #[arfoo\f] should == "arfoo\f"
+        )
+
+        it("should be replaced when it's in the middle of the text", 
+          #[ \f ] should == " \f "
+          #[ar\ffoo] should == "ar\ffoo"
+        )
+
+        it("should be replaced when there are several in a string", 
+          #[\f \f adsf\fgtr\frsergfg\f\f\ffert\f] should == "\f \f adsf\fgtr\frsergfg\f\f\ffert\f"
+        )
+      )
+
+      describe("\\r", 
+        it("should be replaced when it's the only thing in the text", 
+          #[\r] should == "\r"
+        )
+
+        it("should be replaced when it's at the start of the text", 
+          #[\r ] should == "\r "
+          #[\rarfoo] should == "\rarfoo"
+        )
+
+        it("should be replaced when it's at the end of the text", 
+          #[ \r] should == " \r"
+          #[arfoo\r] should == "arfoo\r"
+        )
+
+        it("should be replaced when it's in the middle of the text", 
+          #[ \r ] should == " \r "
+          #[ar\rfoo] should == "ar\rfoo"
+        )
+
+        it("should be replaced when there are several in a string", 
+          #[\r \r adsf\rgtr\rrsergfg\r\r\rfert\r] should == "\r \r adsf\rgtr\rrsergfg\r\r\rfert\r"
+        )
+      )
+
+      describe("\"", 
+        it("should be replaced when it's the only thing in the text", 
+          #[\"] should == "\""
+        )
+
+        it("should be replaced when it's at the start of the text", 
+          #[\" ] should == "\" "
+          #[\"arfoo] should == "\"arfoo"
+        )
+
+        it("should be replaced when it's at the end of the text", 
+          #[ \"] should == " \""
+          #[arfoo\"] should == "arfoo\""
+        )
+
+        it("should be replaced when it's in the middle of the text", 
+          #[ \" ] should == " \" "
+          #[ar\"foo] should == "ar\"foo"
+        )
+
+        it("should be replaced when there are several in a string", 
+          #[\" \" adsf\"gtr\"rsergfg\"\"\"fert\"] should == "\" \" adsf\"gtr\"rsergfg\"\"\"fert\""
+        )
+      )
+
+      describe("\\#", 
+        it("should be replaced when it's the only thing in the text", 
+          #[\#] should == "\#"
+        )
+
+        it("should be replaced when it's at the start of the text", 
+          #[\# ] should == "\# "
+          #[\#arfoo] should == "\#arfoo"
+        )
+
+        it("should be replaced when it's at the end of the text", 
+          #[ \#] should == " \#"
+          #[arfoo\#] should == "arfoo\#"
+        )
+
+        it("should be replaced when it's in the middle of the text", 
+          #[ \# ] should == " \# "
+          #[ar\#foo] should == "ar\#foo"
+        )
+
+        it("should be replaced when there are several in a string", 
+          #[\# \# adsf\#gtr\#rsergfg\#\#\#fert\#] should == "\# \# adsf\#gtr\#rsergfg\#\#\#fert\#"
+        )
+      )
+
+      describe("\\\\", 
+        it("should be replaced when it's the only thing in the text", 
+          #[\\] should == "\\"
+        )
+
+        it("should be replaced when it's at the start of the text", 
+          #[\\ ] should == "\\ "
+          #[\\arfoo] should == "\\arfoo"
+        )
+
+        it("should be replaced when it's at the end of the text", 
+          #[ \\] should == " \\"
+          #[arfoo\\] should == "arfoo\\"
+        )
+
+        it("should be replaced when it's in the middle of the text", 
+          #[ \\ ] should == " \\ "
+          #[ar\\foo] should == "ar\\foo"
+        )
+
+        it("should be replaced when there are several in a string", 
+          #[\\ \\ adsf\\gtr\\rsergfg\\\\\\fert\\] should == "\\ \\ adsf\\gtr\\rsergfg\\\\\\fert\\"
+        )
+      )
+
+      describe("\\\\n", 
+        it("should be replaced when it's the only thing in the text", 
+          #[\
+] should == ""
+        )
+
+        it("should be replaced when it's at the start of the text", 
+          #[\
+ ] should == " "
+        #[\
+arfoo] should == "arfoo"
+        )
+
+        it("should be replaced when it's at the end of the text", 
+          #[ \
+] should == " "
+        #[arfoo\
+] should == "arfoo"
+        )
+
+        it("should be replaced when it's in the middle of the text", 
+          #[ \
+ ] should == "  "
+        #[ar\
+foo] should == "arfoo"
+        )
+
+        it("should be replaced when there are several in a string", 
+          #[\
+ \
+ adsf\
+gtr\
+rsergfg\
+\
+\
+fert\
+] should == "  adsfgtrrsergfgfert"
+        )
+      )
+
+      describe("unicode", 
+        it("should replace any unicode letter in a string with only it", 
+          #[\uAAAA] length should == 1
+          #[\uAAAA][0] should == 0xAAAA
+        )
+
+        it("should replace a unicode letter at the beginning of a string", 
+          #[\u000a foo bar x][0] should == 0xA
+          #[\u000a foo bar x][1..-1] should == " foo bar x"
+        )
+
+        it("should replace a unicode letter at the end of a string", 
+          #[blarg ucrg ma\u3332][-1] should == 0x3332
+          #[blarg ucrg ma\u3332][0..-2] should == "blarg ucrg ma"
+        )
+      )
+
+      describe("octal", 
+        it("should handle an octal letter of one letter", 
+          #[blarg \0xxx][6] should == 0
+          #[blarg \1xxx][6] should == 1
+          #[blarg \2xxx][6] should == 2
+          #[blarg \3xxx][6] should == 3
+          #[blarg \4xxx][6] should == 4
+          #[blarg \5xxx][6] should == 5
+          #[blarg \6xxx][6] should == 6
+          #[blarg \7xxx][6] should == 7
+        )
+
+        it("should handle an octal letter of two letters", 
+          #[blarg \00xxx][6] should == 0
+          #[blarg \01xxx][6] should == 1
+          #[blarg \02xxx][6] should == 2
+          #[blarg \03xxx][6] should == 3
+          #[blarg \04xxx][6] should == 4
+          #[blarg \05xxx][6] should == 5
+          #[blarg \06xxx][6] should == 6
+          #[blarg \07xxx][6] should == 7
+          #[blarg \34xxx][6] should == 28
+          #[blarg \12xxx][6] should == 10
+        )
+      )
+    )
+  )  
 )

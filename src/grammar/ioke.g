@@ -56,18 +56,32 @@ package ioke.lang.parser;
     throw new RuntimeException(e);
   }
 
-  private int interpolating = 0;
+  private final static Object IPOL_STRING = new Object();
+  private final static Object IPOL_ALT_STRING = new Object();
+  private java.util.List<Object> interpolation = new java.util.LinkedList<Object>();
 
   public void startInterpolation() {
-      interpolating++;
+      interpolation.add(0, IPOL_STRING);
+  }
+
+  public void startAltInterpolation() {
+      interpolation.add(0, IPOL_ALT_STRING);
   }
 
   public void endInterpolation() {
-      interpolating--;
+      interpolation.remove(0);
+  }
+
+  public void endAltInterpolation() {
+      interpolation.remove(0);
   }
 
   public boolean isInterpolating() {
-      return interpolating > 0;
+      return interpolation.size() > 0 && interpolation.get(0) == IPOL_STRING;
+  }
+
+  public boolean isAltInterpolating() {
+      return interpolation.size() > 0 && interpolation.get(0) == IPOL_ALT_STRING;
   }
 }
 
@@ -166,11 +180,19 @@ StringLiteral
         (
             '#{' {startInterpolation(); }
         |   '"'))
+    |  ('#[' 
+        ( ({!(input.LA(1) == '#' && input.LA(2) == '{')}?=> (EscapeSequence | ~('\\'|']')))* ) 
+        (
+            '#{' {startAltInterpolation(); }
+        |   ']'))
     | {isInterpolating()}?=> ('}' ( ({!(input.LA(1) == '#' && input.LA(2) == '{')}?=> (EscapeSequence | ~('\\'|'"')))* ) 
         (
             '#{' {startInterpolation(); }
         |   '"'  {endInterpolation(); }))
-
+    | {isAltInterpolating()}?=> ('}' ( ({!(input.LA(1) == '#' && input.LA(2) == '{')}?=> (EscapeSequence | ~('\\'|']')))* ) 
+        (
+            '#{' {startAltInterpolation(); }
+        |   ']'  {endAltInterpolation(); }))
     ;
 
 RegexpLiteral
@@ -179,11 +201,10 @@ RegexpLiteral
 
 fragment
 EscapeSequence
-    :   '\\' ('b'|'t'|'n'|'f'|'r'|'\"'|'\\'|'\n'|'#'|'e')
+    :   '\\' ('b'|'t'|'n'|'f'|'r'|'\"'|']'|'\\'|'\n'|'#'|'e')
     |   UnicodeEscape
     |   OctalEscape
     ;
-
 
 fragment
 EscapeSequenceRegexp
