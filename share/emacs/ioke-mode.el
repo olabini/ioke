@@ -345,7 +345,7 @@
     `(,(regexp-opt ioke-operator-symbols t) . ioke-font-lock-operator-symbol-face)
     `(,(regexp-opt ioke-special-names t) . ioke-font-lock-special-face)
     `(,(regexp-opt ioke-cell-names 'words) . ioke-font-lock-api-cell-face)
-    '("[](){}[]+" 0 ioke-font-lock-braces-face)
+    '("[](){}[]" 0 ioke-font-lock-braces-face)
    )
   "ioke mode font lock keywords")
 
@@ -487,7 +487,7 @@
 
 (defconst ioke-font-lock-syntactic-keywords
       '(
-        ("#\\(\\[\\)\\([^]\\\\]\\|\\\\\\]\\|\\\\\\\\\\)*\\(\\]\\)" (1 "|" t) (3 "|" t))
+        ("#\\(\\[\\)\\([^]\\\\]\\|\\\\\\]\\|\\\\[]\\\\u01234567ntfreb#\"\n]\\)*\\(\\]\\)" (1 "|" t) (3 "|" t))
         ))
 
 (defun ioke-mode ()

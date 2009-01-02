@@ -51,6 +51,9 @@ public class StringUtils {
                 case '"':
                     result.append('"');
                     break;
+                case ']':
+                    result.append(']');
+                    break;
                 case '#':
                     result.append('#');
                     break;

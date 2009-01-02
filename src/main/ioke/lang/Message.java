@@ -771,14 +771,24 @@ public class Message extends IokeData {
                     m.setLine(tree.getLine());
                     m.setPosition(tree.getCharPositionInLine());
                     return runtime.createMessage(m);
+                } else if(first == '#' && last == ']') {
+                    m = new Message(runtime, "internal:createText", s.substring(2, s.length()-1));
+                    m.setLine(tree.getLine());
+                    m.setPosition(tree.getCharPositionInLine());
+                    return runtime.createMessage(m);
                 } else {
-                    if(first == '}' && last == '"') { // This is an ending
+                    if(first == '}' && (last == '"' || last == ']')) { // This is an ending
                         m = new Message(runtime, "internal:createText", s.substring(1, s.length()-1), Type.END_INTERPOLATION);
                         m.setLine(tree.getLine());
                         m.setPosition(tree.getCharPositionInLine());
                         return runtime.createMessage(m);
                     } else if(first == '"') { // This is a beginning
                         m = new Message(runtime, "internal:createText", s.substring(1, s.length()-2), Type.START_INTERPOLATION);
+                        m.setLine(tree.getLine());
+                        m.setPosition(tree.getCharPositionInLine());
+                        return runtime.createMessage(m);
+                    } else if(first == '#') { // This is a beginning
+                        m = new Message(runtime, "internal:createText", s.substring(2, s.length()-2), Type.START_INTERPOLATION);
                         m.setLine(tree.getLine());
                         m.setPosition(tree.getCharPositionInLine());
                         return runtime.createMessage(m);
