@@ -960,4 +960,11 @@ describe(DefaultBehavior,
       x should not be frozen
     )
   )
+
+  describe("'",
+    it("should return the things inside unevaluated",
+      '(+(200)) name should == :"+"
+      '(abc foo bar quux lux) name should == :abc
+    )
+  )
 )

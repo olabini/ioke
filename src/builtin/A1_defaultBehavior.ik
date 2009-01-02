@@ -35,6 +35,11 @@ DefaultBehavior Reflection derive = method(
 
   mimic)
 
+DefaultBehavior Literals cell(:"'") = macro(
+  "Takes one code argument and returns the message chain corresponding to this code argument. The code is copied, so it is safe to modify the resulting chain.",
+
+  call arguments first deepCopy)
+
 DefaultBehavior Literals list = macro(
   "Takes zero or more arguments and returns a newly created list containing the result of evaluating these arguments",
 
