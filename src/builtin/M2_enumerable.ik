@@ -458,25 +458,25 @@ Mixins Enumerable dropWhile = dmacro(
         result << cell(:n))))
   result)
 
-Mixins Enumerable cycle = macro(
+Mixins Enumerable cycle = dmacro(
   "takes one or two arguments and cycles over the elements of this collection. the cycling will be done by calling each once and collecting the result, and then using this to continue cycling. if one argument is given, it should be a message chain to apply. if two arguments are given, they will be turned into a lexical block and applied. if the collection is empty, returns nil.",
 
-  len = call arguments length
+  [theCode]
   internal = list()
-  if(len == 1,
-    theCode = call arguments first
-    self each(n,
-      internal << cell(:n)
-      theCode evaluateOn(call ground, cell(:n)))
-    if(internal empty?, return(nil))
-    loop(internal each(x, theCode evaluateOn(call ground, cell(:x)))),
+  self each(n,
+    internal << cell(:n)
+    theCode evaluateOn(call ground, cell(:n)))
+  if(internal empty?, return(nil))
+  loop(internal each(x, theCode evaluateOn(call ground, cell(:x)))),
 
-    lexicalCode = LexicalBlock createFrom(call arguments, call ground)
-    self each(n,
-      internal << cell(:n)
-      lexicalCode call(cell(:n)))
-    if(internal empty?, return(nil))
-    loop(internal each(x, lexicalCode call(cell(:x))))))
+  [argName, theCode]
+  internal = list()
+  lexicalCode = LexicalBlock createFrom(list(argName, theCode), call ground)
+  self each(n,
+    internal << cell(:n)
+    lexicalCode call(cell(:n)))
+  if(internal empty?, return(nil))
+  loop(internal each(x, lexicalCode call(cell(:x)))))
     
 Mixins Enumerable zip = method(
   "takes zero or more arguments, where all arguments should be a list, except that the last might also be a lexical block. zip will create a list of lists, where each internal list is a combination of the current element, and the corresponding elements from all the lists. if the lists are shorter than this collection, nils will be supplied. if a lexical block is provided, it will be called with each list created, and if that's the case nil will be returned from zip",
@@ -498,39 +498,40 @@ Mixins Enumerable zip = method(
       result << internal)
     result))
 
-Mixins Enumerable sortBy = macro(
+Mixins Enumerable sortBy = dmacro(
   "takes one or two arguments that are used to transform the objects into something that can be sorted, then sorts based on that. if one argument, that argument is handled as a message chain, and if two arguments it will be turned into a lexical block and used.",
   
-  len = call arguments length
+  [theCode]
+  map(x, list(theCode evaluateOn(call ground, cell(:x)), cell(:x))) sort map(second),
 
-  if(len == 1,
-    theCode = call arguments first
-    map(x, list(theCode evaluateOn(call ground, cell(:x)), cell(:x))) sort map(second),
-    
-    lexicalCode = LexicalBlock createFrom(call arguments, call ground)
-    map(x, list(lexicalCode call(cell(:x)), cell(:x))) sort map(second)))
+  [argName, theCode]
+  lexicalCode = LexicalBlock createFrom(list(argName, theCode), call ground)
+  map(x, list(lexicalCode call(cell(:x)), cell(:x))) sort map(second))
 
 
-Mixins Enumerable grep = macro(
+Mixins Enumerable grep = dmacro(
   "takes one, two or three arguments. grep will first find any elements in the collection matching the first argument with '==='. if two or three arguments are given, these will be used to transform the matching object and then add the transformed version instead of the original element to the result list. the two argument version expects the second argument to be a message chain, and the three argument version expects it to be something that can be turned into a lexical block",
   
-  len = call arguments length
+  [>matchingAgainst]
   result = list()
-  matchingAgainst = call argAt(0)
-  if(len == 1,
-    self each(n,
-      if(matchingAgainst === cell(:n),
-        result << cell(:n))),
-    if(len == 2,
-      theCode = call arguments second
-      self each(n,
-        if(matchingAgainst === cell(:n),
-          result << theCode evaluateOn(call ground, cell(:n)))),
+  self each(n,
+    if(matchingAgainst === cell(:n),
+      result << cell(:n)))
+  result,
 
-      lexicalCode = LexicalBlock createFrom(call arguments[1..0-1], call ground)
-      self each(n,
-        if(matchingAgainst === cell(:n),
-          result << lexicalCode call(cell(:n))))))
+  [>matchingAgainst, theCode]
+  result = list()
+  self each(n,
+    if(matchingAgainst === cell(:n),
+      result << theCode evaluateOn(call ground, cell(:n))))
+  result,
+
+  [>matchingAgainst, argName, theCode]
+  result = list()
+  lexicalCode = LexicalBlock createFrom(list(argName, theCode), call ground)
+  self each(n,
+    if(matchingAgainst === cell(:n),
+      result << lexicalCode call(cell(:n))))
   result)
 
 Mixins Enumerable aliasMethod("map", "collect")
