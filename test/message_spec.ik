@@ -79,8 +79,8 @@ describe("Message",
   )
 
   describe("wrap",
-    it("should return something with an empty name",
-      Message wrap(42) name should == :""
+    it("should return something with a name of cachedResult",
+      Message wrap(42) name should == :cachedResult
     )
 
     it("should evaluate its argument",

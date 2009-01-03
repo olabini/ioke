@@ -53,6 +53,15 @@ public class Call extends IokeData {
                 }
             }));
 
+        obj.registerMethod(runtime.newJavaMethod("returns the currently executing context", new JavaMethod.WithNoArguments("currentContext") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+
+                    return ((Call)IokeObject.data(on)).ctx;
+                }
+            }));
+
         obj.registerMethod(runtime.newJavaMethod("returns the message that started this call", new JavaMethod.WithNoArguments("message") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {

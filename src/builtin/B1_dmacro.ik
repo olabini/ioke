@@ -102,6 +102,8 @@ value 4."
     assigns -> arg next
   )
 
+  inner << '(error!(Condition Error Invocation NoMatch, message: call message, context: call currentContext))
+
   m = 'macro
   if(docstring, m << docstring)
   m << val
@@ -194,8 +196,8 @@ DefaultBehavior Definitions cell(:dmacro) generateAssigns = method(thePattern, w
           '(call arguments []))
         assgnPart last << `(index)
         theTest << assgnPart
-        assgn << theTest
-        , 
+        assgn << theTest,
+ 
         assgnPart = if(evaluateArg,
           '(call argAt),
           '(call arguments []))
