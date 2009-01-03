@@ -1,5 +1,6 @@
 
-Message from = macro(
+Message from = dmacro(
   "returns the message chain for the argument given",
   
-  call arguments first deepCopy)
+  [code]
+  code deepCopy)
