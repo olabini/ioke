@@ -138,8 +138,8 @@ DefaultBehavior Definitions cell(:dmacro) patternMinAndMax = method(pattern,
     if((p name == :"+") || (p name == :"+>"),
       max = -1,
       max++
-      optional = ((p name == :">") && (p arguments first next)) || p next
-      unless(((p name == :">") && (p arguments first next)) || p next,
+      optional = ((p name == :">") && (p arguments[0] next)) || p next
+      unless(((p name == :">") && (p arguments[0] next)) || p next,
         min++)))
   min => max
 )
@@ -158,14 +158,14 @@ DefaultBehavior Definitions cell(:dmacro) generateAssigns = method(thePattern, w
     if(arg arguments length > 0,
       if(name == :">",
         evaluateArg = true
-        if(arg arguments first next,
+        if(arg arguments[0] next,
           optional = it),
         if(name == :"+",
           restArg = true,
 
           evaluateArg = true
           restArg = true))
-      name = arg arguments first name,
+      name = arg arguments[0] name,
       if(arg next,
         optional = it))
     

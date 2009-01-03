@@ -140,62 +140,55 @@ Mixins Enumerable find = dmacro(
   self each(n, if(lexicalCode call(cell(:n)), return(cell(:n))))
   nil)
 
-Mixins Enumerable inject = macro(
+Mixins Enumerable inject = dmacro(
   "takes one, two, three or four arguments. all versions need an initial sum, code to execute, a place to put the current sum in the code, and a place to stick the current element of the enumerable. if one argument, it has to be a message chain. this message chain will be applied on the current sum. the element will be appended to the argument list of the last message send in the chain. the initial sum is the first element, and the code will be executed once less than the size of the enumerable due to this. if two arguments given, the first argument is the name of the variable to put the current element in, and the message will still be sent to the sum - and the initial sum works the same way as for one argument. when three arguments are given, the whole thing will be turned into a lexical closure, where the first argument is the name of the sum variable, the second argument is the name of the element variable, and the last argument is the code. when given four arguments, the only difference is that the first argument will be evaluated as the initial sum.",
 
-  len = call arguments length
-  outsideGround = call ground
+  [theCode]
+  theCode = theCode deepCopy
+  elementName = genSym
+  theCode last << message(elementName)
 
-  if(len == 1,
-    elementName = genSym
-    theCode = call arguments first deepCopy
-    last = theCode last
+  sum = nil
 
-    last << message(elementName)
-
-    sum = nil
-
-    self each(i, n,
-      if(i == 0,
-        sum = cell(:n),
+  self each(i, n,
+    if(i == 0,
+      sum = cell(:n),
         
-        outsideGround cell(elementName) = cell(:n)
-        sum = theCode evaluateOn(outsideGround, cell(:sum))))
+      call ground cell(elementName) = cell(:n)
+      sum = theCode evaluateOn(call ground, cell(:sum))))
+  return(sum),
 
-    return(sum),
 
-    if(len == 2,
-      elementName = call arguments first name
-      theCode = call arguments second
+  [argName, theCode]
+  elementName = argName name
+  sum = nil
 
-      sum = nil
-
-      self each(i, n,
-        if(i == 0,
-          sum = cell(:n),
+  self each(i, n,
+    if(i == 0,
+      sum = cell(:n),
         
-          call ground cell(elementName) = cell(:n)
-          sum = theCode evaluateOn(call ground, cell(:sum))))
+      call ground cell(elementName) = cell(:n)
+      sum = theCode evaluateOn(call ground, cell(:sum))))
 
-      return(sum),
+  return(sum),
 
-      if(len == 3,
-        lexicalCode = LexicalBlock createFrom(call arguments, call ground)
-        sum = nil
-        self each(i, n,
-          if(i == 0,
-            sum = cell(:n),
-            sum = lexicalCode call(cell(:sum), cell(:n))))
-        return(sum),
 
-        ; len == 4
-        sum = call argAt(0)
-        lexicalCode = LexicalBlock createFrom(call arguments[1..0-1], call ground)
-        self each(n,
-          sum = lexicalCode call(cell(:sum), cell(:n)))
-        return(sum)
-      )))
-  nil) 
+  [sumArgName, argName, theCode]
+  lexicalCode = LexicalBlock createFrom(list(sumArgName, argName, theCode), call ground)
+  sum = nil
+  self each(i, n,
+    if(i == 0,
+      sum = cell(:n),
+      sum = lexicalCode call(cell(:sum), cell(:n))))
+
+  return(sum),
+
+
+  [>sum, sumArgName, argName, theCode]
+  lexicalCode = LexicalBlock createFrom(list(sumArgName, argName, theCode), call ground)
+  self each(n,
+    sum = lexicalCode call(cell(:sum), cell(:n)))
+  return(sum))
 
 Mixins Enumerable flatMap = macro(
   "expects to get the same kind of arguments as map, and that each map operation returns a list. these lists will then be folded into a single list.",
