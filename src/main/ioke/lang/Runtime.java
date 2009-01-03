@@ -279,28 +279,29 @@ public class Runtime {
             });
         
         try {
-            evaluateString("use(\"builtin/A9_conditions\")", message, ground);
-            evaluateString("use(\"builtin/A1_defaultBehavior\")", message, ground);
-            evaluateString("use(\"builtin/B1_dmacro\")", message, ground);
-            evaluateString("use(\"builtin/M1_comparing\")", message, ground);
-            evaluateString("use(\"builtin/A1_defaultBehavior_inspection\")", message, ground);
-            evaluateString("use(\"builtin/A2_number\")", message, ground);
-            evaluateString("use(\"builtin/A5_call\")", message, ground);
-            evaluateString("use(\"builtin/A4_range\")", message, ground);
-            evaluateString("use(\"builtin/A3_booleans\")", message, ground);
-            evaluateString("use(\"builtin/A6_list\")", message, ground);
-            evaluateString("use(\"builtin/A7_dict\")", message, ground);
-            evaluateString("use(\"builtin/A8_pair\")", message, ground);
-            evaluateString("use(\"builtin/A10_text\")", message, ground);
-            evaluateString("use(\"builtin/A11_fileSystem\")", message, ground);
-            evaluateString("use(\"builtin/A12_runtime\")", message, ground);
-            evaluateString("use(\"builtin/A13_case\")", message, ground);
-            evaluateString("use(\"builtin/A14_comprehensions\")", message, ground);
-            evaluateString("use(\"builtin/A15_message\")", message, ground);
-            evaluateString("use(\"builtin/A16_set\")", message, ground);
-            evaluateString("use(\"builtin/A17_cond\")", message, ground);
+            evaluateString("use(\"builtin/A05_conditions\")", message, ground);
+            evaluateString("use(\"builtin/A10_defaultBehavior\")", message, ground);
+            evaluateString("use(\"builtin/A15_dmacro\")", message, ground);
+            evaluateString("use(\"builtin/A20_comparing\")", message, ground);
+            evaluateString("use(\"builtin/A25_defaultBehavior_inspection\")", message, ground);
 
-            evaluateString("use(\"builtin/M2_enumerable\")", message, ground);
+            evaluateString("use(\"builtin/D05_number\")", message, ground);
+            evaluateString("use(\"builtin/D10_call\")", message, ground);
+            evaluateString("use(\"builtin/D15_range\")", message, ground);
+            evaluateString("use(\"builtin/D20_booleans\")", message, ground);
+            evaluateString("use(\"builtin/D25_list\")", message, ground);
+            evaluateString("use(\"builtin/D30_dict\")", message, ground);
+            evaluateString("use(\"builtin/D35_pair\")", message, ground);
+            evaluateString("use(\"builtin/D40_text\")", message, ground);
+            evaluateString("use(\"builtin/D45_fileSystem\")", message, ground);
+            evaluateString("use(\"builtin/D50_runtime\")", message, ground);
+
+            evaluateString("use(\"builtin/F05_case\")", message, ground);
+            evaluateString("use(\"builtin/F10_comprehensions\")", message, ground);
+            evaluateString("use(\"builtin/F15_message\")", message, ground);
+            evaluateString("use(\"builtin/F20_set\")", message, ground);
+            evaluateString("use(\"builtin/F25_cond\")", message, ground);
+            evaluateString("use(\"builtin/F30_enumerable\")", message, ground);
         } catch(ControlFlow cf) {
         }
     }

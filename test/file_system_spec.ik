@@ -15,7 +15,7 @@ describe(FileSystem,
 
     it("should return true for a file",
       FileSystem exists?("build.xml") should == true
-      FileSystem exists?("src/builtin/A1_defaultBehavior.ik") should == true
+      FileSystem exists?("src/builtin/A10_defaultBehavior.ik") should == true
     )
 
     it("should return true for a directory",
@@ -35,7 +35,7 @@ describe(FileSystem,
     )
 
     it("should return true for a file inside of a directory", 
-      FileSystem file?("src/builtin/A1_defaultBehavior.ik") should == true
+      FileSystem file?("src/builtin/A10_defaultBehavior.ik") should == true
     )
 
     it("should return false for a directory", 
@@ -58,7 +58,7 @@ describe(FileSystem,
     )
 
     it("should return false for a file inside of a directory", 
-      FileSystem directory?("src/builtin/A1_defaultBehavior.ik") should == false
+      FileSystem directory?("src/builtin/A10_defaultBehavior.ik") should == false
     )
 
     it("should return true for a directory", 
