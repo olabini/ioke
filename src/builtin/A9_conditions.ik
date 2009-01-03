@@ -29,6 +29,7 @@ Condition Error Invocation TooFewArguments             = Condition Error Invocat
 Condition Error Invocation TooManyArguments            = Condition Error Invocation mimic
 Condition Error Invocation MismatchedKeywords          = Condition Error Invocation mimic
 Condition Error Invocation NotSpreadable               = Condition Error Invocation mimic
+Condition Error Invocation NoMatch                     = Condition Error Invocation mimic
 
 Condition Error Type IncorrectType = Condition Error Type mimic
 
@@ -114,6 +115,13 @@ Condition Error Invocation NotSpreadable report = method(
 #{message asStackTraceText}
 #{context stackTraceAsText}")
 
+Condition Error Invocation NoMatch report = method(
+  "returns a representation of this error",
+
+  "couldn't match arguments to '#{message name}' (#{self kind})
+
+#{message asStackTraceText}
+#{context stackTraceAsText}")
 
 Condition Warning Default report = method(
   "returns a representation of this warning. by default returns the 'text' cell",

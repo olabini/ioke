@@ -687,6 +687,12 @@ describe(Condition,
           Condition Error Invocation NotSpreadable should have kind("Condition Error Invocation NotSpreadable")
         )
       )
+
+      describe(Condition Error Invocation NoMatch, 
+        it("should have the right kind", 
+          Condition Error Invocation NoMatch should have kind("Condition Error Invocation NoMatch")
+        )
+      )
     )
     
     describe(Condition Error CantMimicOddball, 

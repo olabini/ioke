@@ -984,8 +984,8 @@ describe(DefaultBehavior,
 
 
   describe("`",
-    it("should return something with an empty name",
-      `(42) name should == :""
+    it("should return something with a name of cachedResult",
+      `(42) name should == :cachedResult
     )
 
     it("should evaluate its argument",
