@@ -440,19 +440,29 @@ public class Levels {
             popDownTo(OP_LEVEL_MAX-1, expressions);
             attachAndReplace(currentLevel(), msg);
         } else if(precedence != -1 && !(messageName.equals("-") && Message.prev(msg) == null && msgArgCount > 0)) { // An operator
-            if(msgArgCount > 0 && !DONT_SEPARATE_ARGUMENTS.contains(messageName)) {
-                // move arguments off to their own message to make () after operators behave like Cs grouping ()
-                IokeObject brackets = runtime.newMessage("");
-                Message.copySourceLocation(msg, brackets);
-                brackets.getArguments().addAll(msg.getArguments());
-                msg.getArguments().clear();
+            if(DONT_SEPARATE_ARGUMENTS.contains(messageName)) {
+                if(msgArgCount > 0) {
+                    attachAndReplace(currentLevel(), msg);
+                } else {
+                    popDownTo(precedence, expressions);
+                    attachToTopAndPush(msg, precedence);
+                }
+            } else {
+                if(msgArgCount > 0) {
+                    // move arguments off to their own message to make () after operators behave like Cs grouping ()
+                    IokeObject brackets = runtime.newMessage("");
+                    Message.copySourceLocation(msg, brackets);
+                    brackets.getArguments().addAll(msg.getArguments());
+                    msg.getArguments().clear();
 
-                // Insert the brackets message between msg and its next message
-                Message.setNext(brackets, Message.next(msg));
-                Message.setNext(msg, brackets);
+                    // Insert the brackets message between msg and its next message
+                    Message.setNext(brackets, Message.next(msg));
+                    Message.setNext(msg, brackets);
+                }
+
+                popDownTo(precedence, expressions);
+                attachToTopAndPush(msg, precedence);
             }
-            popDownTo(precedence, expressions);
-            attachToTopAndPush(msg, precedence);
         } else {
             attachAndReplace(currentLevel(), msg);
         }
