@@ -148,8 +148,7 @@ DefaultBehavior Definitions destructuring patternMinAndMax = method(pattern,
 )
 
 DefaultBehavior Definitions destructuring generateAssigns = method(thePattern, where,
-  DB = DefaultBehavior
-  head = DB message(".")
+  head = message(".")
   where << head
   current = head
   index = 0
@@ -172,8 +171,8 @@ DefaultBehavior Definitions destructuring generateAssigns = method(thePattern, w
       if(arg next,
         optional = it))
     
-    assgn = DB message(:"=")
-    assgn << DB message(name)
+    assgn = message(:"=")
+    assgn << message(name)
     if(restArg,
       assgnPart = '(call arguments [])
       ix = `index
@@ -191,7 +190,7 @@ DefaultBehavior Definitions destructuring generateAssigns = method(thePattern, w
 
         assgnPart = if(evaluateArg,
           optional,
-          DB message(:"'") << optional)
+          message(:"'") << optional)
         theTest << assgnPart
 
         assgnPart = if(evaluateArg,

@@ -285,9 +285,9 @@ public class Runtime {
             evaluateString("use(\"builtin/M1_comparing\")", message, ground);
             evaluateString("use(\"builtin/A1_defaultBehavior_inspection\")", message, ground);
             evaluateString("use(\"builtin/A2_number\")", message, ground);
-            evaluateString("use(\"builtin/A3_booleans\")", message, ground);
-            evaluateString("use(\"builtin/A4_range\")", message, ground);
             evaluateString("use(\"builtin/A5_call\")", message, ground);
+            evaluateString("use(\"builtin/A4_range\")", message, ground);
+            evaluateString("use(\"builtin/A3_booleans\")", message, ground);
             evaluateString("use(\"builtin/A6_list\")", message, ground);
             evaluateString("use(\"builtin/A7_dict\")", message, ground);
             evaluateString("use(\"builtin/A8_pair\")", message, ground);
