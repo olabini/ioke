@@ -179,6 +179,7 @@ Identifier
         '@'
     |   '@@'
     |   '\''
+    |   '\'\''
     |   '`'
     |   (Letter|':') (Letter|IDDigit|StrangeChars)*
     ;

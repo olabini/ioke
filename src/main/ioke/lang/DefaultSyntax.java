@@ -69,6 +69,22 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
                     return IokeObject.as(on).activate(context, message, context.getRealContext());
                 }
             }));
+        syntax.registerMethod(syntax.runtime.newJavaMethod("returns the result of activating this syntax without actually doing the replacement or execution part.", new JavaMethod("expand") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRestUnevaluated("arguments")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    return ((DefaultSyntax)IokeObject.data(on)).expand(IokeObject.as(on), context, message, context.getRealContext());
+                }
+            }));
         syntax.registerMethod(syntax.runtime.newJavaMethod("returns the message chain for this syntax", new JavaMethod.WithNoArguments("message") {
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
@@ -154,8 +170,7 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
         }
     }
 
-    @Override
-    public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+    private Object expand(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
         if(code == null) {
             IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
                                                                          message, 
@@ -190,6 +205,13 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
                 throw e;
             }
         }
+
+        return result;
+    }
+
+    @Override
+    public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+        Object result = expand(self, context, message, on);
 
         if(result == context.runtime.nil) {
             // Remove chain completely
