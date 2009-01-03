@@ -209,21 +209,23 @@ Mixins Enumerable flatMap:dict = macro(
     sum)
 )
 
-Mixins Enumerable select = macro(
+Mixins Enumerable select = dmacro(
   "takes zero, one or two arguments. if zero arguments, will return a list with all the values that are true in the original collection. if one argument is given, it will be applied as a message chain, that should be a predicate. those elements that match the predicate will be returned. if two arguments are given, they will be turned into a lexical block and used as a predicate to choose elements.",
 
-  len = call arguments length
+  []
   result = list()
-  if(len == 0,
-    self each(n, if(cell(:n), result << cell(:n))),
+  self each(n, if(cell(:n), result << cell(:n)))
+  result,
 
-    if(len == 1,
-      theCode = call arguments first
-      self each(n, if(theCode evaluateOn(call ground, cell(:n)), result << cell(:n))),
-      
-      lexicalCode = LexicalBlock createFrom(call arguments, call ground)
-      self each(n, if(lexicalCode call(cell(:n)), result << cell(:n)))))
+  [theCode]
+  result = list()
+  self each(n, if(theCode evaluateOn(call ground, cell(:n)), result << cell(:n)))
+  result,
 
+  [argName, theCode]
+  result = list()
+  lexicalCode = LexicalBlock createFrom(list(argName, theCode), call ground)
+  self each(n, if(lexicalCode call(cell(:n)), result << cell(:n)))
   result)
 
 Mixins Enumerable all? = macro(
