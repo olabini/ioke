@@ -1,14 +1,5 @@
 ;; ---- and
 
-DefaultBehavior Boolean and = macro(
-  "Evaluates the argument and returns the result",
-
-  call argAt(0))
-
-DefaultBehavior Boolean cell("&&") = macro(
-  "Evaluates the argument and returns the result",
-
-  call argAt(0))
 
 true and = macro(
   "Evaluates the argument and returns the result",
@@ -63,6 +54,18 @@ nil or = macro(
 true aliasMethod("or", "||")
 false aliasMethod("or", "||")
 nil aliasMethod("or", "||")
+
+DefaultBehavior Boolean and = dmacro(
+  "Evaluates the argument and returns the result",
+
+  [>then]
+  then)
+
+DefaultBehavior Boolean cell("&&") = dmacro(
+  "Evaluates the argument and returns the result",
+
+  [>then]
+  then)
 
 
 ;; ---- !
