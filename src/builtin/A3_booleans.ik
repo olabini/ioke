@@ -1,59 +1,54 @@
-;; ---- and
 
+;; ---- and
 
 true and = macro(
   "Evaluates the argument and returns the result",
 
   call argAt(0))
+true aliasMethod("and", "&&")
 
 false and = macro(
   "Does not evaluate argument and returns false",
 
   false)
-
-nil and = macro(
-  "Does not evaluate argument and returns nil",
-
-  nil)
-
-;; ---- &&
-
-true aliasMethod("and", "&&")
 false aliasMethod("and", "&&")
-nil aliasMethod("and", "&&")
-
-;; ---- or
-
-DefaultBehavior Boolean or = macro(
-  "Does not evaluate argument and returns self",
-
-  @)
-
-DefaultBehavior Boolean cell("||") = macro(
-  "Does not evaluate argument and returns self",
-
-  @)
 
 true or = macro(
   "Does not evaluate argument and returns true",
 
   true)
+true aliasMethod("or", "||")
 
 false or = macro(
   "Evaluates the argument and returns the result",
 
   call argAt(0))
+false aliasMethod("or", "||")
 
 nil or = macro(
   "Evaluates the argument and returns the result",
 
   call argAt(0))
-
-;; ---- ||
-
-true aliasMethod("or", "||")
-false aliasMethod("or", "||")
 nil aliasMethod("or", "||")
+
+nil and = dmacro(
+  "Does not evaluate argument and returns nil",
+  
+  [then]
+  nil)
+nil aliasMethod("and", "&&")
+
+DefaultBehavior Boolean or = dmacro(
+  "Does not evaluate argument and returns self",
+
+  [then]
+  @)
+
+DefaultBehavior Boolean cell("||") = dmacro(
+  "Does not evaluate argument and returns self",
+
+  [then]
+  @)
 
 DefaultBehavior Boolean and = dmacro(
   "Evaluates the argument and returns the result",
@@ -130,22 +125,24 @@ true ifTrue = dmacro(
   [>then]
   @)
 
-false ifTrue = macro(
+false ifTrue = dmacro(
   "Does not evaluate argument and returns false",
 
+  [then]
   @)
 
 ;; ---- ifFalse
 
-true ifFalse = macro(
+true ifFalse = dmacro(
   "Does not evaluate argument and returns true",
 
+  [then]
   @)
 
-false ifFalse = macro(
+false ifFalse = dmacro(
   "Evaluates the argument and returns false",
 
-  call argAt(0)
+  [>then]
   @)
 
 ;; ---- not
@@ -173,68 +170,80 @@ nil not = method(
 
 ;; ---- xor
 
-DefaultBehavior Boolean xor = macro(
+DefaultBehavior Boolean xor = dmacro(
   "Evaluates the argument and returns the inverse of the argument",
 
-  if(call argAt(0), false, true))
+  [>then]
+  if(then, false, true))
 
-true xor = macro(
+true xor = dmacro(
   "Evaluates the argument and returns the inverse of the argument",
 
-  if(call argAt(0), false, true))
+  [>then]
+  if(then, false, true))
 
-false xor = macro(
+false xor = dmacro(
   "Evaluates the argument and returns the inverse of the inverse of the argument",
 
-  if(call argAt(0), true, false))
+  [>then]
+  if(then, true, false))
 
-nil xor = macro(
+nil xor = dmacro(
   "Evaluates the argument and returns the inverse of the inverse of the argument",
 
-  if(call argAt(0), true, false))
+  [>then]
+  if(then, true, false))
 
 ;; ---- nor
 
-DefaultBehavior Boolean nor = macro(
+DefaultBehavior Boolean nor = dmacro(
   "Does not evaluate its argument and returns false",
 
+  [other]
   false)
 
-true nor = macro(
+true nor = dmacro(
   "Does not evaluate its argument and returns false",
 
+  [other]
   false)
 
-false nor = macro(
+false nor = dmacro(
   "Evaluates its argument and returns the inverse of it",
 
-  if(call argAt(0), false, true))
+  [>other]
+  if(other, false, true))
 
-nil nor = macro(
+nil nor = dmacro(
   "Evaluates its argument and returns the inverse of it",
 
-  if(call argAt(0), false, true))
+  [>other]
+  if(other, false, true))
 
 ;; ---- nand
 
-DefaultBehavior Boolean nand = macro(
+DefaultBehavior Boolean nand = dmacro(
+  "Evaluates its argument and returns the inverse of it",
+  
+  [>other]
+  if(other, false, true))
+
+true nand = dmacro(
   "Evaluates its argument and returns the inverse of it",
 
-  if(call argAt(0), false, true))
+  [>other]
+  if(other, false, true))
 
-true nand = macro(
-  "Evaluates its argument and returns the inverse of it",
-
-  if(call argAt(0), false, true))
-
-false nand = macro(
+false nand = dmacro(
   "Does not evaluate its argument and returns true",
 
+  [other]
   true)
 
-nil nand = macro(
+nil nand = dmacro(
   "Does not evaluate its argument and returns true",
 
+  [other]
   true)
 
 
