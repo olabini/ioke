@@ -35,8 +35,10 @@ List asList = method(
   "returns this list",
   self)
 
-List ifEmpty = macro(
+List ifEmpty = dmacro(
   "if this list is empty, returns the result of evaluating the argument, otherwise returns the list",
+
+  [then]
   if(empty?,
     call argAt(0),
     self))
