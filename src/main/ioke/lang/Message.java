@@ -296,6 +296,17 @@ public class Message extends IokeData {
                     }
                 }
             }));
+        message.registerMethod(message.runtime.newJavaMethod("returns the last message in the chain", new JavaMethod.WithNoArguments("last") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                    IokeObject current = IokeObject.as(on);
+                    while(next(current) != null) {
+                        current = next(current);
+                    }
+                    return current;
+                }
+            }));
         message.registerMethod(message.runtime.newJavaMethod("returns the previous message in the chain, or nil", new JavaMethod.WithNoArguments("prev") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
@@ -451,7 +462,7 @@ public class Message extends IokeData {
                         Message.setNext(IokeObject.as(on), IokeObject.as(arg));
                         Message.setPrev(IokeObject.as(arg), IokeObject.as(on));
                     }
-                    return on;
+                    return arg;
                 }
             }));
 
