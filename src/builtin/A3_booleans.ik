@@ -1,106 +1,3 @@
-
-;; ---- !
-
-DefaultBehavior Boolean ! = method(
-  "returns true if the argument is false, and false if it's true",
-  arg,
-  
-  arg not)
-
-;; ---- nil?
-
-DefaultBehavior Boolean nil? = method(
-  "returns false.", 
-
-  false)
-
-nil nil? = method(
-  "returns true.", 
-
-  true)
-
-;; ---- false?
-
-DefaultBehavior Boolean false? = method(
-  "returns false.", 
-
-  false)
-
-false false? = method(
-  "returns true.", 
-
-  true)
-
-nil false? = method(
-  "returns true.", 
-
-  true)
-
-;; ---- true?
-
-DefaultBehavior Boolean true? = method(
-  "returns true", 
-
-  true)
-
-false true? = method(
-  "returns false", 
-
-  false)
-
-nil true? = method(
-  "returns false", 
-
-  false)
-
-;; ---- ifTrue
-
-true ifTrue = macro(
-  "Evaluates the argument and returns true",
-
-  call argAt(0)
-  @)
-
-false ifTrue = macro(
-  "Does not evaluate argument and returns false",
-
-  @)
-
-;; ---- ifFalse
-
-true ifFalse = macro(
-  "Does not evaluate argument and returns true",
-
-  @)
-
-false ifFalse = macro(
-  "Evaluates the argument and returns false",
-
-  call argAt(0)
-  @)
-
-;; ---- not
-
-DefaultBehavior Boolean not = method(
-  "Does not evaluate arguments and returns nil",
-
-  nil)
-
-true not = method(
-  "Does not evaluate arguments and returns false",
-
-  false)
-
-false not = method(
-  "Does not evaluate arguments and returns true",
-
-  true)
-
-nil not = method(
-  "Does not evaluate arguments and returns true",
-
-  true)
-
 ;; ---- and
 
 DefaultBehavior Boolean and = macro(
@@ -166,6 +63,110 @@ nil or = macro(
 true aliasMethod("or", "||")
 false aliasMethod("or", "||")
 nil aliasMethod("or", "||")
+
+
+;; ---- !
+
+DefaultBehavior Boolean ! = method(
+  "returns true if the argument is false, and false if it's true",
+  arg,
+  
+  arg not)
+
+;; ---- nil?
+
+DefaultBehavior Boolean nil? = method(
+  "returns false.", 
+
+  false)
+
+nil nil? = method(
+  "returns true.", 
+
+  true)
+
+;; ---- false?
+
+DefaultBehavior Boolean false? = method(
+  "returns false.", 
+
+  false)
+
+false false? = method(
+  "returns true.", 
+
+  true)
+
+nil false? = method(
+  "returns true.", 
+
+  true)
+
+;; ---- true?
+
+DefaultBehavior Boolean true? = method(
+  "returns true", 
+
+  true)
+
+false true? = method(
+  "returns false", 
+
+  false)
+
+nil true? = method(
+  "returns false", 
+
+  false)
+
+;; ---- ifTrue
+
+true ifTrue = dmacro(
+  "Evaluates the argument and returns true",
+
+  [>then]
+  @)
+
+false ifTrue = macro(
+  "Does not evaluate argument and returns false",
+
+  @)
+
+;; ---- ifFalse
+
+true ifFalse = macro(
+  "Does not evaluate argument and returns true",
+
+  @)
+
+false ifFalse = macro(
+  "Evaluates the argument and returns false",
+
+  call argAt(0)
+  @)
+
+;; ---- not
+
+DefaultBehavior Boolean not = method(
+  "Does not evaluate arguments and returns nil",
+
+  nil)
+
+true not = method(
+  "Does not evaluate arguments and returns false",
+
+  false)
+
+false not = method(
+  "Does not evaluate arguments and returns true",
+
+  true)
+
+nil not = method(
+  "Does not evaluate arguments and returns true",
+
+  true)
+
 
 ;; ---- xor
 
