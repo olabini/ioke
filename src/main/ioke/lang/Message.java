@@ -67,7 +67,7 @@ public class Message extends IokeData {
     }
 
     public static Message wrap(IokeObject cachedResult) {
-        return wrap("", cachedResult);
+        return wrap("cachedResult", cachedResult);
     }
 
     public static Message wrap(String name, IokeObject cachedResult) {
@@ -1262,6 +1262,8 @@ public class Message extends IokeData {
             base.append(this.arguments.get(0));
         } else if(this.name.equals("internal:createDecimal") && (this.arguments.get(0) instanceof String)) {
             base.append(this.arguments.get(0));
+        } else if(cached != null && this.name.equals("cachedResult")) {
+            base.append(cached);
         } else if(this.type == Type.TERMINATOR) {
             base.append(".\n");
         } else {
@@ -1305,6 +1307,8 @@ public class Message extends IokeData {
             base.append(this.arguments.get(0));
         } else if(this.name.equals("internal:createDecimal") && (this.arguments.get(0) instanceof String)) {
             base.append(this.arguments.get(0));
+        } else if(cached != null && this.name.equals("cachedResult")) {
+            base.append(cached);
         } else if(this.name.equals("=")) {
             base.append(this.arguments.get(0));
             base.append(" = ");

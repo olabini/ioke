@@ -298,6 +298,8 @@ public class Runtime {
             evaluateString("use(\"builtin/A16_set\")", message, ground);
             evaluateString("use(\"builtin/A17_cond\")", message, ground);
 
+            evaluateString("use(\"builtin/B1_dmacro\")", message, ground);
+
             evaluateString("use(\"builtin/M1_comparing\")", message, ground);
             evaluateString("use(\"builtin/M2_enumerable\")", message, ground);
         } catch(ControlFlow cf) {
