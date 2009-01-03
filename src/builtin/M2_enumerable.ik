@@ -12,18 +12,18 @@ Mixins Enumerable sort = method(
   "will return a sorted list of all the entries of this enumerable object",
   self asList sort)
 
-Mixins Enumerable map = macro(
+Mixins Enumerable map = dmacro(
   "takes one or two arguments. if one argument is given, it will be evaluated as a message chain on each element in the enumerable, and then the result will be collected in a new List. if two arguments are given, the first one should be an unevaluated argument name, which will be bound inside the scope of executing the second piece of code. it's important to notice that the one argument form will establish no context, while the two argument form establishes a new lexical closure.",
   
-  len = call arguments length
-  ;; use this form instead of [], since we might be inside of a List or a Dict
+  [theCode]
   result = list()
-  if(len == 1,
-    theCode = call arguments first
-    self each(n, result << theCode evaluateOn(call ground, cell(:n))),
-
-    lexicalCode = LexicalBlock createFrom(call arguments, call ground)
-    self each(n, result << lexicalCode call(cell(:n))))
+  self each(n, result << theCode evaluateOn(call ground, cell(:n)))
+  result,
+  
+  [argName, theCode]  
+  result = list()
+  lexicalCode = LexicalBlock createFrom(list(argName, theCode), call ground)
+  self each(n, result << lexicalCode call(cell(:n)))
   result)
 
 Mixins Enumerable map:set = macro(

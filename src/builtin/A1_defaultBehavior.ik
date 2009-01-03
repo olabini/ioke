@@ -38,7 +38,7 @@ DefaultBehavior Reflection derive = method(
 DefaultBehavior Literals cell(:"'") = macro(
   "Takes one code argument and returns the message chain corresponding to this code argument. The code is copied, so it is safe to modify the resulting chain.",
 
-  call arguments first deepCopy)
+  call arguments[0] deepCopy)
 
 DefaultBehavior Literals cell(:"`") = method(
   "Takes one argument and returns a message that wraps the value of that argument. The message has no name and will be printed empty. The message is guaranteed to be created from scratch",

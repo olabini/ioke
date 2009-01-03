@@ -118,6 +118,20 @@ describe(DefaultBehavior,
         
         fn(foo(1)) should signal(Condition Error Invocation NoMatch)
       )
+
+      it("should handle some extra newlines",
+        foo = dmacro(
+          [one]
+
+          :one,
+
+          [two, three]
+
+          :two)
+
+        foo(1) should == :one
+        foo(1,2) should == :two
+      )
     )
   )
 )
