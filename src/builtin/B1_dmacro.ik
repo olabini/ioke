@@ -1,3 +1,30 @@
+DefaultBehavior Definitions destructuring = Origin mimic
+DefaultBehavior Definitions destructuring doFor = method(defName, theCall,
+  docstring = nil
+  args = theCall arguments
+  if((args length > 1) && (args[0] name == :"internal:createText"),
+    docstring = args[0]
+    args = args[1..-1])
+
+  min = 0
+  max = 0
+
+  val = '(argCount = call arguments length)
+  inner = 'cond
+  (val last -> '.) -> inner
+
+  args each(arg,
+    generatePatternMatch(arg arguments, inner)
+    assigns = generateAssigns(arg arguments, inner)
+    assigns -> arg next
+  )
+
+  inner << '(error!(Condition Error Invocation NoMatch, message: call message, context: call currentContext))
+
+  m = defName
+  if(docstring, m << docstring)
+  m << val
+)
 
 DefaultBehavior Definitions dmacro = syntax(
 "takes one optional documentation string, and one or more
@@ -80,36 +107,12 @@ values:
 
 will match an empty argument list, and in that case give arg1 the 
 message chain corresponding to 2+2, while arg2 will be set to the
-value 4."
+value 4.",
 
-  docstring = nil
-  args = call arguments
-  if((args length > 1) && (args[0] name == :"internal:createText"),
-    docstring = args[0]
-    args = args[1..-1])
-
-  min = 0
-  max = 0
-
-  val = '(argCount = call arguments length)
-  inner = 'cond
-  (val last -> '.) -> inner
-
-  defs = DefaultBehavior Definitions
-  args each(arg,
-    defs cell(:dmacro) generatePatternMatch(arg arguments, inner)
-    assigns = defs cell(:dmacro) generateAssigns(arg arguments, inner)
-    assigns -> arg next
-  )
-
-  inner << '(error!(Condition Error Invocation NoMatch, message: call message, context: call currentContext))
-
-  m = 'macro
-  if(docstring, m << docstring)
-  m << val
+  DefaultBehavior Definitions destructuring doFor('macro, call)
 )
 
-DefaultBehavior Definitions cell(:dmacro) generatePatternMatch = method(thePattern, where,
+DefaultBehavior Definitions destructuring generatePatternMatch = method(thePattern, where,
   minAndMax = patternMinAndMax(thePattern)
 
   if(minAndMax first == minAndMax second,
@@ -131,7 +134,7 @@ DefaultBehavior Definitions cell(:dmacro) generatePatternMatch = method(thePatte
       (first last -> '(&&)) << second
       where << first)))
 
-DefaultBehavior Definitions cell(:dmacro) patternMinAndMax = method(pattern,
+DefaultBehavior Definitions destructuring patternMinAndMax = method(pattern,
   min = 0
   max = 0
   pattern each(p,
@@ -144,7 +147,7 @@ DefaultBehavior Definitions cell(:dmacro) patternMinAndMax = method(pattern,
   min => max
 )
 
-DefaultBehavior Definitions cell(:dmacro) generateAssigns = method(thePattern, where,
+DefaultBehavior Definitions destructuring generateAssigns = method(thePattern, where,
   DB = DefaultBehavior
   head = DB message(".")
   where << head
