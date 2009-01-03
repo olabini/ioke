@@ -40,26 +40,26 @@ Mixins Enumerable map:set = dmacro(
   self each(n, result << lexicalCode call(cell(:n)))
   result)
 
-Mixins Enumerable map:dict = macro(
+Mixins Enumerable map:dict = dmacro(
   "takes one or two arguments. if one argument is given, it will be evaluated as a message chain on each element in the enumerable, and then the result will be collected in a new Dict. if the message chain returns a pair, that pair will be used as key and value. if it's something else, that value will be the key, and the value for it will be nil. if two arguments are given, the first one should be an unevaluated argument name, which will be bound inside the scope of executing the second piece of code. it's important to notice that the one argument form will establish no context, while the two argument form establishes a new lexical closure.",
-  
-  len = call arguments length
-  ;; use this form instead of [], since we might be inside of a List or a Dict
-  result = dict()
-  if(len == 1,
-    theCode = call arguments first
-    self each(n, 
-      output = theCode evaluateOn(call ground, cell(:n))
-      if(cell(:output) kind == "Pair",
-        result[output key] = output value,
-        result[cell(:output)] = nil)),
 
-    lexicalCode = LexicalBlock createFrom(call arguments, call ground)
-    self each(n, 
-      output = lexicalCode call(cell(:n))
-      if(cell(:output) kind == "Pair",
-        result[output key] = output value,
-        result[cell(:output)] = nil)))
+  [theCode]
+  result = dict()
+  self each(n, 
+    output = theCode evaluateOn(call ground, cell(:n))
+    if(cell(:output) kind == "Pair",
+      result[output key] = output value,
+      result[cell(:output)] = nil))
+  result,
+
+  [argName, theCode]
+  result = dict()
+  lexicalCode = LexicalBlock createFrom(list(argName, theCode), call ground)
+  self each(n, 
+    output = lexicalCode call(cell(:n))
+    if(cell(:output) kind == "Pair",
+      result[output key] = output value,
+      result[cell(:output)] = nil))
   result)
 
 Mixins Enumerable mapFn = method(
