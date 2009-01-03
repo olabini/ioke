@@ -228,80 +228,89 @@ Mixins Enumerable select = dmacro(
   self each(n, if(lexicalCode call(cell(:n)), result << cell(:n)))
   result)
 
-Mixins Enumerable all? = macro(
+Mixins Enumerable all? = dmacro(
   "takes zero, one or two arguments. if zero arguments, returns false if any of the elements yielded by each is false, otherwise true. if one argument, expects it to be a message chain. if that message chain, when applied to the current element returns a false value, the method returns false. finally, if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and tested against the values in this element. if it returns false for any element, this method returns false, otherwise true.",
-  
-  len = call arguments length
-  if(len == 0,
-    self each(n, unless(cell(:n), return(false))),
 
-    if(len == 1,
-      theCode = call arguments first
-      self each(n, unless(theCode evaluateOn(call ground, cell(:n)), return(false))),
-      
-      lexicalCode = LexicalBlock createFrom(call arguments, call ground)
-      self each(n, unless(lexicalCode call(cell(:n)), return(false)))))
+  []
+  self each(n, unless(cell(:n), return(false)))
+  true,
+
+  [theCode]
+  self each(n, unless(theCode evaluateOn(call ground, cell(:n)), return(false)))
+  true,
+
+  [argName, theCode]
+  lexicalCode = LexicalBlock createFrom(list(argName, theCode), call ground)
+  self each(n, unless(lexicalCode call(cell(:n)), return(false)))
   true)
 
-Mixins Enumerable one? = macro(
+Mixins Enumerable one? = dmacro(
   "takes zero, one or two arguments. if zero arguments, returns true if exactly one of the elements is true, otherwise false. if one argument, expects it to be a message chain that will be used as a predicate. if that predicate returns true for exactly one element, returns true, otherwise false. finally, if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and tested against the values in this element. if it returns true for exactly one element, returns true, otherwise false",
   
-  len = call arguments length
+  []
   result = false
-  if(len == 0,
-    self each(n, 
-      if(cell(:n),
-        if(result,
-          return(false),
-          result = true))),
+  self each(n, 
+    if(cell(:n),
+      if(result,
+        return(false),
+        result = true)))
+  result,
 
-    if(len == 1,
-      theCode = call arguments first
-      self each(n, 
-        if(theCode evaluateOn(call ground, cell(:n)),
-          if(result,
-            return(false),
-            result = true))),
-      
-      lexicalCode = LexicalBlock createFrom(call arguments, call ground)
-      self each(n,
-        if(lexicalCode call(cell(:n)),
-          if(result,
-            return(false),
-            result = true)))))
+  [theCode]
+  result = false
+  self each(n, 
+    if(theCode evaluateOn(call ground, cell(:n)),
+      if(result,
+        return(false),
+        result = true)))
+  result,
+
+  [argName, theCode]
+  result = false
+  lexicalCode = LexicalBlock createFrom(list(argName, theCode), call ground)
+  self each(n,
+    if(lexicalCode call(cell(:n)),
+      if(result,
+        return(false),
+        result = true)))
   result)
 
-Mixins Enumerable count = macro(
+Mixins Enumerable count = dmacro(
   "takes zero, one or two arguments. if zero arguments, returns the number of elements in the collection. if one argument, expects it to be a message chain. if that message chain, that will be used as a predicate. returns the number of elements where the predicate returns true. finally, if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and used as a predicate, and the result will be the number of elements matching the predicate.",
   
-  len = call arguments length
+  []
   result = 0
-  if(len == 0,
-    self each(n, result++),
+  self each(n, result++)
+  result,
 
-    if(len == 1,
-      theCode = call arguments first
-      self each(n, if(theCode evaluateOn(call ground, cell(:n)), result++)),
-      
-      lexicalCode = LexicalBlock createFrom(call arguments, call ground)
-      self each(n, if(lexicalCode call(cell(:n)), result++))))
+  [theCode]
+  result = 0
+  self each(n, if(theCode evaluateOn(call ground, cell(:n)), result++))
+  result,
+  
+  [argName, theCode]
+  result = 0
+  lexicalCode = LexicalBlock createFrom(list(argName, theCode), call ground)
+  self each(n, if(lexicalCode call(cell(:n)), result++))
   result)
 
-Mixins Enumerable reject = macro(
+Mixins Enumerable reject = dmacro(
   "takes one or two arguments. if one argument is given, it will be applied as a message chain as a predicate. those elements that doesn't the predicate will be returned. if two arguments are given, they will be turned into a lexical block and used as a predicate to choose the elements that doesn't match.",
 
-  len = call arguments length
+  []
   result = list()
-  if(len == 0,
-    self each(n, unless(cell(:n), result << cell(:n))),
+  self each(n, unless(cell(:n), result << cell(:n)))
+  result,
 
-    if(len == 1,
-      theCode = call arguments first
-      self each(n, unless(theCode evaluateOn(call ground, cell(:n)), result << cell(:n))),
-      
-      lexicalCode = LexicalBlock createFrom(call arguments, call ground)
-      self each(n, unless(lexicalCode call(cell(:n)), result << cell(:n)))))
-
+  [theCode]
+  result = list()
+  self each(n, unless(theCode evaluateOn(call ground, cell(:n)), result << cell(:n)))
+  result,
+  
+  [argName, theCode]
+  result = list()
+  lexicalCode = LexicalBlock createFrom(list(argName, theCode), call ground)
+  self each(n, unless(lexicalCode call(cell(:n)), result << cell(:n)))
   result)
 
 Mixins Enumerable first = method(
