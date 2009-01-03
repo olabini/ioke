@@ -4,7 +4,14 @@ use("ispec")
 describe(DefaultBehavior,
   describe("Definitions",
     describe("dmacro",
-      it("should pass on a possible documentation string")
+      it("should pass on a possible documentation string",
+        foo = dmacro(
+          "docstring42",
+
+          [a] a code)
+
+        cell(:foo) documentation should == "docstring42"
+      )
 
       it("should destructure a simple argument list",
         foo = dmacro(

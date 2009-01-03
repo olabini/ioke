@@ -82,7 +82,12 @@ will match an empty argument list, and in that case give arg1 the
 message chain corresponding to 2+2, while arg2 will be set to the
 value 4."
 
+  docstring = nil
   args = call arguments
+  if((args length > 1) && (args[0] name == :"internal:createText"),
+    docstring = args[0]
+    args = args[1..-1])
+
   min = 0
   max = 0
 
@@ -98,6 +103,7 @@ value 4."
   )
 
   m = 'macro
+  if(docstring, m << docstring)
   m << val
 )
 
