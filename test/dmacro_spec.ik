@@ -3,6 +3,60 @@ use("ispec")
 
 describe(DefaultBehavior,
   describe("Definitions",
+    describe("dlecro",
+      it("should return a LexicalMacro that is activatable",
+        foo = dlecro(
+          [] nil)
+
+        cell(:foo) kind should == "LexicalMacro"
+        cell(:foo) activatable should == true
+      )
+
+      it("should pass on a possible documentation string",
+        foo = dlecro(
+          "docstring42",
+
+          [a] a code)
+
+        cell(:foo) documentation should == "docstring42"
+      )
+
+      it("should destructure a simple argument list",
+        foo = dlecro(
+          [a] a code)
+
+        foo(abc foo bar) should == "abc foo bar"
+        foo(10*20) should == "10 *(20)"
+      )
+    )
+
+    describe("dlecrox",
+      it("should return a LexicalMacro that is not activatable",
+        foo = dlecrox(
+          [] nil)
+
+        cell(:foo) kind should == "LexicalMacro"
+        cell(:foo) activatable should == false
+      )
+
+      it("should pass on a possible documentation string",
+        foo = dlecrox(
+          "docstring42",
+
+          [a] a code)
+
+        cell(:foo) documentation should == "docstring42"
+      )
+
+      it("should destructure a simple argument list",
+        foo = dlecrox(
+          [a] a code)
+
+        foo call(abc foo bar) should == "abc foo bar"
+        foo call(10*20) should == "10 *(20)"
+      )
+    )
+
     describe("dmacro",
       it("should pass on a possible documentation string",
         foo = dmacro(

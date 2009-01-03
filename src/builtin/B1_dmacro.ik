@@ -112,6 +112,14 @@ value 4.",
   DefaultBehavior Definitions destructuring doFor('macro, call)
 )
 
+DefaultBehavior Definitions dlecro = syntax("works exactly the same as dmacro, but returns an activatable LexicalMacro instead",
+  DefaultBehavior Definitions destructuring doFor('lecro, call)
+)
+
+DefaultBehavior Definitions dlecrox = syntax("works exactly the same as dmacro, but returns an inactive LexicalMacro instead",
+  DefaultBehavior Definitions destructuring doFor('lecrox, call)
+)
+
 DefaultBehavior Definitions destructuring generatePatternMatch = method(thePattern, where,
   minAndMax = patternMinAndMax(thePattern)
 
