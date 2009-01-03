@@ -213,9 +213,9 @@ describe("Message",
       two prev should be same(one)
     )
 
-    it("should return the original message",
+    it("should return the argument message",
       one = 'foo
-      (one -> 'bar) should be same(one)
+      ('bar -> one) should be same(one)
     )
 
     it("should accept nil as an argument, and set the next pointer to nil in that case",

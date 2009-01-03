@@ -23,9 +23,9 @@ DefaultBehavior FlowControl cell(:for) withAssignments = method(assignments, msg
     currentMessage = assignments first deepCopy
     assignments[1..-1] each(assgn,
       ccc = assgn deepCopy
-      currentMessage -> ('. -> ccc)
+      (currentMessage -> '.) -> ccc
       currentMessage = ccc)
-    currentMessage -> ('. -> msg)
+    (currentMessage -> '.) -> msg
   )
   currentMessage
 )
