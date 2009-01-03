@@ -2,13 +2,22 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>deleted</key>
+	<array>
+		<string>472A0098-B102-4F33-89EF-784D1746FF25</string>
+	</array>
 	<key>name</key>
 	<string>Ioke</string>
 	<key>ordering</key>
 	<array>
 		<string>26C50C17-4F6E-4515-9E8F-CFCC8832E5A7</string>
-		<string>472A0098-B102-4F33-89EF-784D1746FF25</string>
 		<string>EC751C80-9E93-44B4-AFF3-EF4FF8346C90</string>
+		<string>BC0C1CA8-D655-4F56-873B-194EE414BBE3</string>
+		<string>85C7867B-48C1-47DB-B6C4-80BA61E27B55</string>
+		<string>D3AF893E-328A-43AB-85A1-4AAFCBF7FAB6</string>
+		<string>676BBEEC-2BDB-4E8C-9ACD-06B9EE1528F4</string>
+		<string>118DC0C5-0C8B-4E64-85CB-45307B71BFC3</string>
+		<string>7C33CB2C-CD28-4203-863F-EF2DD6E50E9B</string>
 	</array>
 	<key>uuid</key>
 	<string>5D8B5BC7-A504-4C49-B07B-59794FBB95AA</string>

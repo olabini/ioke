@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>content</key>
+	<string>${1:fn_name} = fn(${3:"${2:The unactivated function $1 does...}", }${4:params,}
+  $0
+)</string>
+	<key>name</key>
+	<string>assign fn</string>
+	<key>scope</key>
+	<string>source.ioke</string>
+	<key>tabTrigger</key>
+	<string>fn</string>
+	<key>uuid</key>
+	<string>676BBEEC-2BDB-4E8C-9ACD-06B9EE1528F4</string>
+</dict>
+</plist>

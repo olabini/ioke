@@ -3,14 +3,16 @@
 <plist version="1.0">
 <dict>
 	<key>content</key>
-	<string>#/${1:$TM_SELECTED_TEXT}/</string>
-	<key>keyEquivalent</key>
-	<string>#</string>
+	<string>${1:fnx_name} = fnx(${3:"${2:The activated function $1 does...}",} ${4:params,}
+  $0
+)</string>
 	<key>name</key>
-	<string>Regular Expression Literal — #{…} copy</string>
+	<string>assign fnx</string>
 	<key>scope</key>
 	<string>source.ioke</string>
+	<key>tabTrigger</key>
+	<string>fnx</string>
 	<key>uuid</key>
-	<string>472A0098-B102-4F33-89EF-784D1746FF25</string>
+	<string>118DC0C5-0C8B-4E64-85CB-45307B71BFC3</string>
 </dict>
 </plist>

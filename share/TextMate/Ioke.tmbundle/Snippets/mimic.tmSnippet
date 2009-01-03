@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>content</key>
+	<string>${1:variable_name} = ${2:KindToMimic} mimic
+$0</string>
+	<key>name</key>
+	<string>mimic</string>
+	<key>scope</key>
+	<string>source.ioke</string>
+	<key>tabTrigger</key>
+	<string>mim</string>
+	<key>uuid</key>
+	<string>7C33CB2C-CD28-4203-863F-EF2DD6E50E9B</string>
+</dict>
+</plist>
