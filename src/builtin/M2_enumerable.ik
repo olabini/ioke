@@ -381,29 +381,32 @@ Mixins Enumerable take = method(
 
   self first(howMany))
 
-Mixins Enumerable takeWhile = macro(
+Mixins Enumerable takeWhile = dmacro(
   "takes zero, one or two arguments. it will evaluate a predicate once for each element, and collect all the elements until the predicate returns false for the first time. at that point the collected list will be returned. if zero arguments, the predicate is the element itself. if one argument, expects it to be a message chain to apply as a predicate. if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and used as the predicate.",
   
-  len = call arguments length
+  []
   result = list()
-  if(len == 0,
-    self each(n, 
-      if(cell(:n), 
-        result << cell(:n),
-        return(result))),
+  self each(n, 
+    if(cell(:n), 
+      result << cell(:n),
+      return(result)))
+  result,
 
-    if(len == 1,
-      theCode = call arguments first
-      self each(n, 
-        if(theCode evaluateOn(call ground, cell(:n)), 
-          result << cell(:n),
-          return(result))),
-      
-      lexicalCode = LexicalBlock createFrom(call arguments, call ground)
-      self each(n, 
-        if(lexicalCode call(cell(:n)), 
-          result << cell(:n),
-          return(result)))))
+  [theCode]
+  result = list()
+  self each(n, 
+    if(theCode evaluateOn(call ground, cell(:n)), 
+      result << cell(:n),
+      return(result)))
+  result,
+
+  [argName, theCode]
+  result = list()
+  lexicalCode = LexicalBlock createFrom(list(argName, theCode), call ground)
+  self each(n, 
+    if(lexicalCode call(cell(:n)), 
+      result << cell(:n),
+      return(result)))
   result)
 
 Mixins Enumerable drop = method(
@@ -418,36 +421,41 @@ Mixins Enumerable drop = method(
       result << cell(:n)))
   result)
 
-Mixins Enumerable dropWhile = macro(
+Mixins Enumerable dropWhile = dmacro(
   "takes zero, one or two arguments. it will evaluate a predicate once for each element, and avoid all the elements until the predicate returns false for the first time, then it will start collecting data. if zero arguments, the predicate is the element itself. if one argument, expects it to be a message chain to apply as a predicate. if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and used as the predicate.",
-  
-  len = call arguments length
+
+  []
   result = list()
   collecting = false
-  if(len == 0,
-    self each(n, 
-      if(collecting, 
-        result << cell(:n),
-        unless(cell(:n),
-          collecting = true
-          result << cell(:n)))),
+  self each(n, 
+    if(collecting, 
+      result << cell(:n),
+      unless(cell(:n),
+        collecting = true
+        result << cell(:n))))
+  result,
 
-    if(len == 1,
-      theCode = call arguments first
-      self each(n, 
-        if(collecting, 
-          result << cell(:n),
-          unless(theCode evaluateOn(call ground, cell(:n)),
-            collecting = true
-            result << cell(:n)))),
-      
-      lexicalCode = LexicalBlock createFrom(call arguments, call ground)
-      self each(n, 
-        if(collecting, 
-          result << cell(:n),
-          unless(lexicalCode call(cell(:n)),
-            collecting = true
-            result << cell(:n))))))
+  [theCode]
+  result = list()
+  collecting = false
+  self each(n, 
+    if(collecting, 
+      result << cell(:n),
+      unless(theCode evaluateOn(call ground, cell(:n)),
+        collecting = true
+        result << cell(:n))))
+  result,
+
+  [argName, theCode]
+  result = list()
+  collecting = false
+  lexicalCode = LexicalBlock createFrom(list(argName, theCode), call ground)
+  self each(n, 
+    if(collecting, 
+      result << cell(:n),
+      unless(lexicalCode call(cell(:n)),
+        collecting = true
+        result << cell(:n))))
   result)
 
 Mixins Enumerable cycle = macro(
