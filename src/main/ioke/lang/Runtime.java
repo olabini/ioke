@@ -280,6 +280,9 @@ public class Runtime {
         
         try {
             evaluateString("use(\"builtin/A1_defaultBehavior\")", message, ground);
+
+            evaluateString("use(\"builtin/B1_dmacro\")", message, ground);
+
             evaluateString("use(\"builtin/A1_defaultBehavior_inspection\")", message, ground);
             evaluateString("use(\"builtin/A2_number\")", message, ground);
             evaluateString("use(\"builtin/A3_booleans\")", message, ground);
@@ -297,8 +300,6 @@ public class Runtime {
             evaluateString("use(\"builtin/A15_message\")", message, ground);
             evaluateString("use(\"builtin/A16_set\")", message, ground);
             evaluateString("use(\"builtin/A17_cond\")", message, ground);
-
-            evaluateString("use(\"builtin/B1_dmacro\")", message, ground);
 
             evaluateString("use(\"builtin/M1_comparing\")", message, ground);
             evaluateString("use(\"builtin/M2_enumerable\")", message, ground);
