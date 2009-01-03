@@ -48,9 +48,7 @@ DefaultBehavior FlowControl cell(:for) transform = method(arguments, mapName, fl
       generatorSource = generator next arguments first
       generator -> nil
 
-      generatorLast = generatorSource
-      while(generatorLast next,
-        generatorLast = generatorLast next)
+      generatorLast = generatorSource last
 
       lastGenerator = generatorLast
       lastGeneratorVarName = generator

@@ -145,9 +145,7 @@ Mixins Enumerable inject = macro(
   if(len == 1,
     elementName = genSym
     theCode = call arguments first deepCopy
-    last = theCode
-    while(last next,
-      last = last next)
+    last = theCode last
 
     last << message(elementName)
 
