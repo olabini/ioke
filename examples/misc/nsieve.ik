@@ -18,10 +18,9 @@ nsieve = method(n,
 System ifMain(
   if(System programArguments size != 1,
     error!("usage: nsieve.ik <exponent>")
-    return
   )
   
-  exponent = Message doText(System programArguments first)
+  exponent = System programArguments first toRational
   (0..exponent) sortBy(n, -n) each(n,
     nsieve((2 ** n) * 10000)
   )

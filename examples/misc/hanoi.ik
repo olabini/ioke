@@ -16,7 +16,7 @@ System ifMain(
   if(System programArguments size == 1,
   
     ; TODO figure out a way of parsing the integer more safely
-    hanoi(Message doText(System programArguments first)),
+    hanoi(System programArguments first toRational),
     
     "usage: hanoi n, where 0 < n <= 10" println    
   )
