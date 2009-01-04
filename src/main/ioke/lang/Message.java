@@ -80,6 +80,10 @@ public class Message extends IokeData {
         return ((Message)IokeObject.data(message)).type == Type.TERMINATOR;
     }
 
+    public static void cacheValue(Object message, Object cachedValue) throws ControlFlow {
+        ((Message)IokeObject.data(message)).cached = IokeObject.as(cachedValue);
+    }
+
     public static void addArg(Object message, Object arg) throws ControlFlow {
         IokeObject.as(message).getArguments().add(arg);
     }
@@ -1145,6 +1149,7 @@ public class Message extends IokeData {
                 current = ctx;
             } else if(name.length() > 0 && m.getArguments().size() == 0 && name.charAt(0) == ':') {
                 current = self.runtime.getSymbol(name.substring(1));
+                Message.cacheValue(m, current);
                 lastReal = current;
             } else {
                 tmp = m.sendTo(ctx, current);

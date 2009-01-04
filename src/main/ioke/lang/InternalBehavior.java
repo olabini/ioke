@@ -113,7 +113,9 @@ public class InternalBehavior {
                     Object o = Message.getArg1(message);
                     if(o instanceof String) {
                         String s = (String)o;
-                        return runtime.newText(new StringUtils().replaceEscapes(s));
+                        Object value = runtime.newText(new StringUtils().replaceEscapes(s));
+                        Message.cacheValue(message, value);
+                        return value;
                     } else {
                         return IokeObject.convertToText(message.getEvaluatedArgument(0, context), message, context, true);
                     }
@@ -162,7 +164,9 @@ public class InternalBehavior {
                     getArguments().checkArgumentCount(context, message, on);
 
                     String s = (String)Message.getArg1(message);
-                    return runtime.newNumber(s);
+                    Object value = runtime.newNumber(s);
+                    Message.cacheValue(message, value);
+                    return value;
                 }
             }));
 
@@ -182,7 +186,9 @@ public class InternalBehavior {
                     getArguments().checkArgumentCount(context, message, on);
 
                     String s = (String)Message.getArg1(message);
-                    return runtime.newDecimal(s);
+                    Object value = runtime.newDecimal(s);
+                    Message.cacheValue(message, value);
+                    return value;
                 }
             }));
     }
