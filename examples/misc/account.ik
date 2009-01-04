@@ -1,7 +1,9 @@
-Account = Origin mimic
-Account balance = 0.0
-Account deposit = method(v, self balance = self balance + v)
-Account show = method("Account balance: $#{balance}" println)
+
+Account = Origin mimic do(
+  balance = 0.0
+  deposit = method(v, self balance += v)
+  show = method("Account balance: $#{balance}" println)
+)
 
 "Inital: " print
 Account show

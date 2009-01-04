@@ -1,5 +1,5 @@
 recursiveFib = method(n,
-  if([0, 1] include?(n), 
+  if((0..1) include?(n), 
     n,
     recursiveFib(n - 1) + recursiveFib(n - 2)
   )
@@ -30,10 +30,9 @@ generativeFib = method(
 System ifMain(
   if(System programArguments size != 1,
     error!("usage: fibonacci.ik <iterations>")
-    return
   )
 
-  iterations = Message doText(System programArguments first)
+  iterations = System programArguments first toRational
 
   "Recursive: #{(0..iterations) map(n, recursiveFib(n))}" println
   "Iterative: #{(0..iterations) map(n, iterativeFib(n))}" println
