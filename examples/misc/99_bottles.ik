@@ -4,7 +4,8 @@ bottle = method(i,
   return "#{i} bottles of beer"
 )
 
-(1..99) sortBy(p, 100 - p) each(i,
+; TODO List reverse instead of sortBy
+(1..99) sortBy(p, -p) each(i,
   "#{bottle(i)} on the wall, " println
   "take one down, pass it around," println
   "#{bottle(i - 1)} on the wall.\n" println
