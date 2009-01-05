@@ -203,9 +203,8 @@ DefaultBehavior Definitions destructuring generateAssigns = method(thePattern, w
         assgn << theTest,
  
         assgnPart = if(evaluateArg,
-          '(call argAt),
-          '(call arguments []))
-        assgnPart last << `(index)
+          ''(call argAt(`index)),
+          ''(call arguments[`index]))
         assgn << assgnPart))
 
     current = ((current -> assgn) -> '.)
