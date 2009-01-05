@@ -44,6 +44,35 @@ describe(Regexp,
     )
   )
 
+  describe("===",
+    it("should check for mimicness if receiver is Regexp",
+      Regexp should === Regexp
+      Regexp should === #//
+      Regexp should === #/foo/
+      Regexp should === #r[bar]mx
+      Regexp should not === 123
+      Regexp should not === "foo"
+      Regexp should not === (#/foo/..#/bar/)
+    )
+    
+    it("should check for match if receiver is not Regexp",
+      #/foo/ should === "foo"
+      #/fo{1,2}/ should === "foo"
+      #/foo/ should === "x foo x"
+      #/^foo$/ should === "foo"
+      #/^foo/ should === "foo bar"
+      #/ foo$/ should === "bar foo"
+
+      #/foo/ should not === 123
+
+      #/fo{3}/ should not === "foo"
+      #/fox/ should not === "x foo x"
+      #/^ foo$/ should not === "foo"
+      #/foo$/ should not === "foo bar"
+      #/^foo/ should not === "bar foo"
+    )
+  )
+
   describe("allMatches",
     it("should return a list of all matches",
       #/./ allMatches("abc") should == ["a","b","c"]

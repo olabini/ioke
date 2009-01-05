@@ -153,8 +153,9 @@ public class Regexp extends IokeData {
     public boolean isEqualTo(IokeObject self, Object other) {
         return ((other instanceof IokeObject) && 
                 (IokeObject.data(other) instanceof Regexp) &&
-                this.pattern.equals(((Regexp)IokeObject.data(other)).pattern) &&
-                this.flags.equals(((Regexp)IokeObject.data(other)).flags));
+                ((self == self.runtime.regexp || other == self.runtime.regexp) ? self == other :
+                 (this.pattern.equals(((Regexp)IokeObject.data(other)).pattern) &&
+                  this.flags.equals(((Regexp)IokeObject.data(other)).flags))));
     }
 
     @Override

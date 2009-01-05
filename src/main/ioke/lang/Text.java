@@ -206,6 +206,13 @@ public class Text extends IokeData {
                         }
                     }
 
+                    if(on == context.runtime.text || arg == context.runtime.text) {
+                        if(on == arg) {
+                            return context.runtime.newNumber(0);
+                        }
+                        return context.runtime.nil;
+                    }
+
                     int result = Text.getText(on).compareTo(Text.getText(arg));
                     if(result < 0) {
                         result = -1;
@@ -650,7 +657,8 @@ public class Text extends IokeData {
     public boolean isEqualTo(IokeObject self, Object other) {
         return ((other instanceof IokeObject) && 
                 (IokeObject.data(other) instanceof Text) 
-                && this.text.equals(((Text)IokeObject.data(other)).text));
+                && ((self == self.runtime.text || other == self.runtime.text) ? self == other :
+                    this.text.equals(((Text)IokeObject.data(other)).text)));
     }
 
     @Override
