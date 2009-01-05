@@ -1,5 +1,5 @@
 H = method(n, f, u, t,
-  if (n < 2,
+  if(n < 2,
     "#{f} --> #{t}" println,
 
     H(n - 1, f, t, u)
@@ -14,8 +14,6 @@ hanoi = method(n,
 
 System ifMain(
   if(System programArguments size == 1,
-  
-    ; TODO figure out a way of parsing the integer more safely
     hanoi(System programArguments first toRational),
     
     "usage: hanoi n, where 0 < n <= 10" println    
