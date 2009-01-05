@@ -182,19 +182,14 @@ DefaultBehavior Definitions destructuring generateAssigns = method(thePattern, w
     assgn = message(:"=")
     assgn << message(name)
     if(restArg,
-      assgnPart = '(call arguments [])
-      ix = `index
-      ix -> '(..(-1))
-      assgnPart last << ix
+      assgnPart = ''(call arguments [`index..(-1)])
       if(evaluateArg,
         assgnPart last -> '(map(evaluateOn(call ground, call ground))))
       assgn << assgnPart,
 
       if(optional,
-        useOpt = '(argCount <=)
-        useOpt last << `index
-        theTest = 'if
-        theTest << useOpt
+        useOpt = ''(argCount <=(`index))
+        theTest = ''(if(`useOpt))
 
         assgnPart = if(evaluateArg,
           optional,
@@ -202,9 +197,8 @@ DefaultBehavior Definitions destructuring generateAssigns = method(thePattern, w
         theTest << assgnPart
 
         assgnPart = if(evaluateArg,
-          '(call argAt),
-          '(call arguments []))
-        assgnPart last << `(index)
+          ''(call argAt(`index)),
+          ''(call arguments[`index]))
         theTest << assgnPart
         assgn << theTest,
  
