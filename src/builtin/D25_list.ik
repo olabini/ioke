@@ -42,3 +42,5 @@ List ifEmpty = dmacro(
   if(empty?,
     call argAt(0),
     self))
+
+List do(=== = generateMatchMethod(==))

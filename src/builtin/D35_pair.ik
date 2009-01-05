@@ -10,3 +10,5 @@ Pair <=> = method(
 
   result)
 
+Pair do(=== = generateMatchMethod(==))
+
