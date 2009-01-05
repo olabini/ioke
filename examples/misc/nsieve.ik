@@ -21,7 +21,7 @@ System ifMain(
   )
   
   exponent = System programArguments first toRational
-  (0..exponent) sortBy(n, -n) each(n,
+  (exponent..0) each(n,
     nsieve((2 ** n) * 10000)
   )
 )
