@@ -114,6 +114,16 @@ describe("Range",
       (0...0) each(. x++)
       x should == 0
     )
+
+    it("should be possible to iterate the wrong way with it",
+      Ground y = []
+      (10..0) each(xx, y << xx)
+      y should == [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
+
+      Ground y = []
+      (10...0) each(xx, y << xx)
+      y should == [10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
+    )
     
     it("should be possible to just give it a message chain, that will be invoked on each object", 
       Ground y = []
@@ -182,6 +192,22 @@ describe("Range",
       ((1..5) === 4.9999) should == true
       ((1...5) === 4.9999) should == true
       ((1..5) === 4/3) should == true
+    )
+
+    it("should match even when using inverted ranges",
+      (5..1) should === 5
+      (5..1) should === 4
+      (5..1) should === 3
+      (5..1) should === 2
+      (5..1) should === 1
+      (5..1) should not === 0
+      (5..1) should not === 6
+      (5...1) should not === 1
+      (5...1) should === 2
+      (5...1) should === 3
+      (5...1) should === 4
+      (5...1) should === 5
+      (5...1) should not === 6
     )
 
     it("should not match something outside the range", 

@@ -87,6 +87,7 @@ public class Locals {
 
                                                                    sb.append(String.format(" %-48.48s %s\n", (ix == -1 ? s1 : s1.substring(0,ix)),"[" + message.getFile() + ":" + message.getLine() + ":" + message.getPosition()  + getContextMessageName(IokeObject.as(current.getCells().get("surroundingContext"))) + "]"));
 
+
                                                                    current = IokeObject.as(IokeObject.findCell(current, m, context, "surroundingContext"));
                                                                }
 

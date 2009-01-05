@@ -1277,7 +1277,7 @@ public class Message extends IokeData {
                 base.append("(");
                 String sep = "";
                 for(Object o : arguments) {
-                    if(o instanceof String) {
+                    if(!(o instanceof IokeObject) || !(IokeObject.data(o) instanceof Message)) {
                         base.append(sep).append(o);
                     } else {
                         base.append(sep).append(Message.code((IokeObject)o));
