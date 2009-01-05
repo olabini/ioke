@@ -150,22 +150,6 @@ describe("Set",
     )
   )
 
-  describe("===", 
-    it("should match something in the set", 
-      (set(1) === 1) should == true
-      (set(1,2) === 2) should == true
-      (set(2,3,1) === 3) should == true
-      (set("foo", "bar") === "foo") should == true
-    )
-
-    it("should not match something not in the set", 
-      (set(1) === 2) should == false
-      (set(1,2) === 3) should == false
-      (set(2,3,1) === :bar) should == false
-      (set("foo", "bar") === :bar) should == false
-    )
-  )
-
   describe("include?", 
     it("should match something in the set", 
       set(1) include?(1) should == true

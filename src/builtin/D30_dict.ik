@@ -12,3 +12,5 @@ Dict addKeysAndValues = method(
     self[k] = values[i])
 
   self)
+
+Dict do(=== = generateMatchMethod(==))

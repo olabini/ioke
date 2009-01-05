@@ -6,3 +6,5 @@ Set ifEmpty = dmacro(
   if(empty?,
     call argAt(0),
     self))
+
+Set do(=== = generateMatchMethod(==))

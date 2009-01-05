@@ -4,3 +4,5 @@ Message from = dmacro(
   
   [code]
   code deepCopy)
+
+Message do(=== = generateMatchMethod(==))
