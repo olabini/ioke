@@ -9,9 +9,10 @@ DefaultBehavior Definitions destructuring doFor = method(defName, theCall,
   min = 0
   max = 0
 
-  val = '(argCount = call arguments length)
   inner = 'cond
-  (val last -> '.) -> inner
+  val = ''(argCount = call arguments length
+`inner
+)
 
   args each(arg,
     generatePatternMatch(arg arguments, inner)
@@ -129,17 +130,8 @@ DefaultBehavior Definitions destructuring generatePatternMatch = method(thePatte
     if(minAndMax second == -1,
       if(minAndMax first == 0,
         where << 'true,
-
-        first = '(argCount >=)
-        first last << `(minAndMax first)
-        where << first),
-
-      first = '(argCount >=) 
-      first last << `(minAndMax first)
-      second = '(argCount <=)
-      second last << `(minAndMax second)
-      (first last -> '(&&)) << second
-      where << first)))
+        where << ''(argCount >= `(minAndMax first))),
+      where << ''((argCount >= `(minAndMax first)) && (argCount <= `(minAndMax second))))))
 
 DefaultBehavior Definitions destructuring patternMinAndMax = method(pattern,
   min = 0
