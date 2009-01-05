@@ -65,7 +65,7 @@ public class Runtime {
     public IokeObject list = new IokeObject(this, "A list is a collection of objects that can change size", new IokeList());
     public IokeObject dict = new IokeObject(this, "A dictionary is a collection of mappings from one object to another object. The default Dict implementation will use hashing for this.", new Dict());
     public IokeObject set = new IokeObject(this, "A set is an unordered collection of objects that contains no duplicates.", new IokeSet());
-    public IokeObject range = new IokeObject(this, "A range is a collection of two objects of the same kind. This Range can be either inclusive or exclusive.", new Range(nil, nil, false));
+    public IokeObject range = new IokeObject(this, "A range is a collection of two objects of the same kind. This Range can be either inclusive or exclusive.", new Range(nil, nil, false, false));
     public IokeObject pair = new IokeObject(this, "A pair is a collection of two objects of any kind. They are used among other things to represent Dict entries.", new Pair(nil, nil));
     public IokeObject call = new IokeObject(this, "A call is the runtime structure that includes the specific information for a call, that is available inside a DefaultMacro.", new Call());
     public LexicalContext lexicalContext = new LexicalContext(this, ground, "A lexical activation context.", null, ground);
@@ -675,10 +675,10 @@ public class Runtime {
         return obj;
     }
 
-    public IokeObject newRange(IokeObject from, IokeObject to, boolean inclusive) {
+    public IokeObject newRange(IokeObject from, IokeObject to, boolean inclusive, boolean inverted) {
         IokeObject obj = this.range.allocateCopy(null, null);
         obj.mimicsWithoutCheck(this.range);
-        obj.setData(new Range(from, to, inclusive));
+        obj.setData(new Range(from, to, inclusive, inverted));
         return obj;
     }
 

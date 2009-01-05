@@ -17,11 +17,13 @@ public class Range extends IokeData {
     private IokeObject from;
     private IokeObject to;
     private boolean inclusive;
+    private boolean inverted = false;
 
-    public Range(IokeObject from, IokeObject to, boolean inclusive) {
+    public Range(IokeObject from, IokeObject to, boolean inclusive, boolean inverted) {
         this.from = from;
         this.to = to;
         this.inclusive = inclusive;
+        this.inverted = inverted;
     }
 
     public static IokeObject getFrom(Object range) {
@@ -74,7 +76,18 @@ public class Range extends IokeData {
 
                     Object from = args.get(0);
                     Object to = args.get(1);
-                    return runtime.newRange(IokeObject.as(from), IokeObject.as(to), true);
+
+                    boolean comparing = IokeObject.isMimic(from, IokeObject.as(context.runtime.mixins.getCells().get("Comparing")));
+                    boolean inverted = false;
+
+                    if(comparing) {
+                        Object result = context.runtime.spaceShip.sendTo(context, from, to);
+                        if(result != context.runtime.nil && Number.extractInt(result, message, context) == 1) {
+                            inverted = true;
+                        }
+                    }
+
+                    return runtime.newRange(IokeObject.as(from), IokeObject.as(to), true, inverted);
                 }
             }));
 
@@ -97,7 +110,17 @@ public class Range extends IokeData {
 
                     Object from = args.get(0);
                     Object to = args.get(1);
-                    return runtime.newRange(IokeObject.as(from), IokeObject.as(to), false);
+
+                    boolean comparing = IokeObject.isMimic(from, IokeObject.as(context.runtime.mixins.getCells().get("Comparing")));
+                    boolean inverted = false;
+                    if(comparing) {
+                        Object result = context.runtime.spaceShip.sendTo(context, from, to);
+                        if(result != context.runtime.nil && Number.extractInt(result, message, context) == 1) {
+                            inverted = true;
+                        }
+                    }
+
+                    return runtime.newRange(IokeObject.as(from), IokeObject.as(to), false, inverted);
                 }
             }));
 
@@ -156,6 +179,11 @@ public class Range extends IokeData {
                     IokeObject to = IokeObject.as(((Range)IokeObject.data(on)).to);
                     boolean inclusive = ((Range)IokeObject.data(on)).inclusive;
 
+                    IokeObject messageToSend = context.runtime.succ;
+                    if(((Range)IokeObject.data(on)).inverted) {
+                        messageToSend = context.runtime.pred;
+                    }
+
                     switch(message.getArgumentCount()) {
                     case 1: {
                         IokeObject code = IokeObject.as(message.getArguments().get(0));
@@ -164,7 +192,7 @@ public class Range extends IokeData {
 
                         while(!IokeObject.isTrue(context.runtime.eqMessage.sendTo(context, current, to))) {
                             code.evaluateCompleteWithReceiver(context, context.getRealContext(), current);
-                            current = context.runtime.succ.sendTo(context, current);
+                            current = messageToSend.sendTo(context, current);
                         }
                         if(inclusive) {
                             code.evaluateCompleteWithReceiver(context, context.getRealContext(), current);
@@ -182,7 +210,7 @@ public class Range extends IokeData {
                         while(!IokeObject.isTrue(context.runtime.eqMessage.sendTo(context, current, to))) {
                             c.setCell(name, current);
                             code.evaluateCompleteWithoutExplicitReceiver(c, c.getRealContext());
-                            current = context.runtime.succ.sendTo(context, current);
+                            current = messageToSend.sendTo(context, current);
                         }
                         if(inclusive) {
                             c.setCell(name, current);
@@ -205,7 +233,7 @@ public class Range extends IokeData {
                             c.setCell(name, current);
                             c.setCell(iname, runtime.newNumber(index++));
                             code.evaluateCompleteWithoutExplicitReceiver(c, c.getRealContext());
-                            current = context.runtime.succ.sendTo(context, current);
+                            current = messageToSend.sendTo(context, current);
                         }
                         if(inclusive) {
                             c.setCell(name, current);
@@ -220,7 +248,7 @@ public class Range extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns true if the argument is within the confines of this range. how this comparison is done depends on if the object mimics Comparing. If it does, < and > will be used. If not, all the available entries in this range will be enumerated using 'succ' until either the end or the element we're looking for is found. in that case, comparison is done with '=='", new JavaMethod("===") {
+        obj.registerMethod(runtime.newJavaMethod("returns true if the argument is within the confines of this range. how this comparison is done depends on if the object mimics Comparing. If it does, < and > will be used. If not, all the available entries in this range will be enumerated using 'succ'/'pred' until either the end or the element we're looking for is found. in that case, comparison is done with '=='", new JavaMethod("===") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("other")
@@ -243,22 +271,37 @@ public class Range extends IokeData {
                     boolean inclusive = ((Range)IokeObject.data(on)).inclusive;
 
                     if(comparing) {
-                        if(IokeObject.isTrue(context.runtime.lteMessage.sendTo(context, from, other)) &&
+                        IokeObject firstMessage = context.runtime.lteMessage;
+                        IokeObject secondMessageInclusive = context.runtime.gteMessage;
+                        IokeObject secondMessageExclusive = context.runtime.gtMessage;
+
+                        if(((Range)IokeObject.data(on)).inverted) {
+                            firstMessage = context.runtime.gteMessage;
+                            secondMessageInclusive = context.runtime.lteMessage;
+                            secondMessageExclusive = context.runtime.ltMessage;
+                        }
+
+                        if(IokeObject.isTrue(firstMessage.sendTo(context, from, other)) &&
                            ((inclusive &&
-                             IokeObject.isTrue(context.runtime.gteMessage.sendTo(context, to, other))) ||
-                            IokeObject.isTrue(context.runtime.gtMessage.sendTo(context, to, other)))) {
+                             IokeObject.isTrue(secondMessageInclusive.sendTo(context, to, other))) ||
+                            IokeObject.isTrue(secondMessageExclusive.sendTo(context, to, other)))) {
                             return context.runtime._true;
                         } else {
                             return context.runtime._false;
                         }
                     } else {
+                        IokeObject messageToSend = context.runtime.succ;
+                        if(((Range)IokeObject.data(on)).inverted) {
+                            messageToSend = context.runtime.pred;
+                        }
+
                         Object current = from;
 
                         while(!IokeObject.isTrue(context.runtime.eqMessage.sendTo(context, current, to))) {
                             if(IokeObject.isTrue(context.runtime.eqMessage.sendTo(context, current, other))) {
                                 return context.runtime._true;
                             }
-                            current = context.runtime.succ.sendTo(context, current);
+                            current = messageToSend.sendTo(context, current);
                         }
 
                         if(inclusive && IokeObject.isTrue(context.runtime.eqMessage.sendTo(context, to, other))) {
@@ -287,7 +330,7 @@ public class Range extends IokeData {
     }
     
     public IokeData cloneData(IokeObject obj, IokeObject m, IokeObject context) {
-        return new Range(from, to, inclusive);
+        return new Range(from, to, inclusive, inverted);
     }
 
     public static String getInspect(Object on) throws ControlFlow {
