@@ -63,12 +63,38 @@ describe(Number,
       353654645676451123345674 negation should == -353654645676451123345674)
   )
 
+  describe("===",
+    it("should check for mimicness if receiver is Number",
+      Number should === Number
+      Number should === Number Rational
+      Number should === Number Decimal
+      Number should === 123
+      Number should === 123.3
+      Number should === (1/3)
+      Number should not === Ground
+      Number should not === Origin
+    )
+  )
+
   describe(Number Real,
     it("should have the correct kind",
       Number Real should have kind("Number Real"))
 
     it("should mimic Number",
       Number Real should mimic(Number))
+
+    describe("===",
+      it("should check for mimicness if receiver is Number Real",
+        Number Real should === Number Real
+        Number Real should === Number Rational
+        Number Real should === Number Decimal
+        Number Real should === 123
+        Number Real should === 123.3
+        Number Real should === (1/3)
+        Number Real should not === Number
+        Number Real should not === Origin
+      )
+    )
   )
 
   describe(Number Rational,
@@ -77,6 +103,26 @@ describe(Number,
 
     it("should mimic Number Real",
       Number Rational should mimic(Number Real))
+
+    describe("===",
+      it("should check for mimicness if receiver is Number Rational",
+        Number Rational should === Number Rational
+        Number Rational should === 123
+        Number Rational should === (1/3)
+        Number Rational should not === Number
+        Number Rational should not === Number Real
+        Number Rational should not === Origin
+      )
+      
+      it("should check for equalness if receiver is not Number Rational",
+        0 should === 0
+        0 should === 0.0
+        0 should not === 1
+        (-234) should === -234
+        12434 should not === 0.0
+        12434 should === 12434
+      )
+    )
 
     describe("<=>",
       it("should return 0 for the same number",
@@ -441,6 +487,27 @@ describe(Number,
 
     it("should mimic Real",
       Number Decimal should mimic(Number Real)
+    )
+
+    describe("===",
+      it("should check for mimicness if receiver is Number Decimal",
+        Number Decimal should === Number Decimal
+        Number Decimal should === 123.3
+        Number Decimal should not === 123
+        Number Decimal should not === (1/3)
+        Number Decimal should not === Number
+        Number Decimal should not === Number Real
+        Number Decimal should not === Number Rational
+        Number Decimal should not === Origin
+      )
+      
+      it("should check for equalness if receiver is not Number Decimal",
+        0.0 should === 0.0
+        0.0 should not === 1.0
+        (-234.3) should === -234.3
+        12434 should not === 0.0
+        12434.1 should === 12434.1
+      )
     )
 
     it("should be the kind of simple decimal numbers",

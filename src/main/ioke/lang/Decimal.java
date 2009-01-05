@@ -167,6 +167,13 @@ public class Decimal extends IokeData {
                             }
                         }
 
+                        if(on == context.runtime.decimal || arg == context.runtime.decimal) {
+                            if(arg == on) {
+                                return context.runtime.newNumber(0);
+                            }
+                            return context.runtime.nil;
+                        }
+
                         return context.runtime.newNumber(Decimal.value(on).compareTo(Decimal.value(arg)));
                     }
                 }

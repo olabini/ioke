@@ -23,6 +23,7 @@ import ioke.lang.exceptions.ControlFlow;
  */
 public class Number extends IokeData {
     private final RatNum value;
+    private final boolean kind;
 
     public Number(String textRepresentation) {
         if(textRepresentation.startsWith("0x") || textRepresentation.startsWith("0X")) {
@@ -30,14 +31,22 @@ public class Number extends IokeData {
         } else {
             value = IntNum.valueOf(textRepresentation);
         }
+        kind = false;
     }
 
     public Number(long javaNumber) {
         value = IntNum.make(javaNumber);
+        kind = false;
     }
 
     public Number(RatNum value) {
         this.value = value;
+        kind = false;
+    }
+
+    private Number() {
+        this.value = IntNum.make(0);
+        kind = true;
     }
     
     public static Number integer(String val) {
@@ -130,7 +139,8 @@ public class Number extends IokeData {
     public boolean isEqualTo(IokeObject self, Object other) {
         return ((other instanceof IokeObject) && 
                 (IokeObject.data(other) instanceof Number) 
-                && this.value.equals(((Number)IokeObject.data(other)).value));
+                && (((kind || ((Number)IokeObject.data(other)).kind) ? self == other :
+                     this.value.equals(((Number)IokeObject.data(other)).value))));
     }
 
     @Override
@@ -146,23 +156,23 @@ public class Number extends IokeData {
         obj.setKind("Number");
         obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Comparing")), runtime.nul, runtime.nul);
 
-        IokeObject real = new IokeObject(runtime, "A real number can be either a rational number or a decimal number", integer(0));
+        IokeObject real = new IokeObject(runtime, "A real number can be either a rational number or a decimal number", new Number());
         real.mimicsWithoutCheck(number);
         real.setKind("Number Real");
         number.registerCell("Real", real);
 
-        IokeObject rational = new IokeObject(runtime, "A rational number is either an integer or a ratio", integer(0));
+        final IokeObject rational = new IokeObject(runtime, "A rational number is either an integer or a ratio", new Number());
         rational.mimicsWithoutCheck(real);
         rational.setKind("Number Rational");
         number.registerCell("Rational", rational);
 
-        IokeObject integer = new IokeObject(runtime, "An integral number", integer(0));
+        final IokeObject integer = new IokeObject(runtime, "An integral number", new Number());
         integer.mimicsWithoutCheck(rational);
         integer.setKind("Number Integer");
         number.registerCell("Integer", integer);
         runtime.integer = integer;
 
-        IokeObject ratio = new IokeObject(runtime, "A ratio of two integral numbers", ratio(new IntFraction(new IntNum(1),new IntNum(1))));
+        final IokeObject ratio = new IokeObject(runtime, "A ratio of two integral numbers", new Number());
         ratio.mimicsWithoutCheck(rational);
         ratio.setKind("Number Ratio");
         number.registerCell("Ratio", ratio);
@@ -201,6 +211,13 @@ public class Number extends IokeData {
                                 // Can't compare, so bail out
                                 return context.runtime.nil;
                             }
+                        }
+
+                        if(on == rational || arg == rational || on == integer || arg == integer || on == ratio || arg == ratio) {
+                            if(arg == on) {
+                                return context.runtime.newNumber(0);
+                            }
+                            return context.runtime.nil;
                         }
 
                         return context.runtime.newNumber(IntNum.compare(Number.value(on),Number.value(arg)));
@@ -250,6 +267,12 @@ public class Number extends IokeData {
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
 
                     Object arg = args.get(0);
+                    if(on == rational || arg == rational || on == integer || arg == integer || on == ratio || arg == ratio) {
+                        if(arg == on) {
+                            return context.runtime._true;
+                        }
+                        return context.runtime._false;
+                    }
                     if(IokeObject.data(arg) instanceof Decimal) {
                         return (Number.value(on).asBigDecimal().compareTo(Decimal.value(arg)) == 0) ? context.runtime._true : context.runtime._false;
                     } else if(IokeObject.data(arg) instanceof Number) {
