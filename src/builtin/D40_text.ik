@@ -14,4 +14,6 @@ Text cell("*") = method(
   counted = 0
   times times(result += self)
   result)
+
+Text do(=== = generateMatchMethod(==))
   

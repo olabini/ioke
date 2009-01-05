@@ -29,6 +29,26 @@ describe("Text",
     )
   )
 
+  describe("===",
+    it("should check for mimicness if receiver is Text",
+      Text should === Text
+      Text should === "foo"
+      Text should === ""
+      Text should === #[bar]
+      Text should not === 123
+      Text should not === #/foo/
+      Text should not === ("foo".."bar")
+    )
+    
+    it("should check for equalness if receiver is not Text",
+      "" should === ""
+      "foo" should === "foo"
+      "bar" should === "bar"
+      "foo" should not === "bar"
+      "foo" should not === ""
+    )
+  )
+
   describe("!=", 
     it("should return false for the same text", 
       x = "foo". (x != x) should == false

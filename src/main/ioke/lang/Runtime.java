@@ -293,6 +293,7 @@ public class Runtime {
             evaluateString("use(\"builtin/D30_dict\")", message, ground);
             evaluateString("use(\"builtin/D35_pair\")", message, ground);
             evaluateString("use(\"builtin/D40_text\")", message, ground);
+            evaluateString("use(\"builtin/D43_regexp\")", message, ground);
             evaluateString("use(\"builtin/D45_fileSystem\")", message, ground);
             evaluateString("use(\"builtin/D50_runtime\")", message, ground);
 

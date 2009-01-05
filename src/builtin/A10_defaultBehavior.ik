@@ -148,7 +148,7 @@ DefaultBehavior Definitions generateMatchMethod = syntax(
 if the match method is called 'matchFoo' and the receiver is called Foo, will generate a method that looks like this:
 
 method(other,
-  if(self == Foo,
+  if(self same?(Foo),
     other mimics?(Foo),
     self matchFoo(other)))
 ",
@@ -157,6 +157,7 @@ method(other,
   ''(method(other, 
       if(self same?(`self), 
         other mimics?(`self),
-        self `(otherMethod) (other)))))
+        bind(rescue(Condition Error, fn(c, false)),
+          self `(otherMethod) (other))))))
 
 Origin do(=== = generateMatchMethod(==))
