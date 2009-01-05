@@ -124,9 +124,8 @@ DefaultBehavior Definitions destructuring generatePatternMatch = method(thePatte
   minAndMax = patternMinAndMax(thePattern)
 
   if(minAndMax first == minAndMax second,
-    first = '(argCount ==)
-    first last << `(minAndMax first)
-    where << first,
+    where << ''(argCount == `(minAndMax first)),
+
     if(minAndMax second == -1,
       if(minAndMax first == 0,
         where << 'true,
