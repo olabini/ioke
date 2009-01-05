@@ -89,3 +89,41 @@ DefaultBehavior genSym = method(n,
   fnx(
     "returns a new, unique symbol every time called. The symbol will be quite unreadable, and uses a closure to generate a new number every time that is independent from external state.", 
     :"#<GS#{n++}>")) call(0)
+
+DefaultBehavior Definitions generateMatchMethod = syntax(
+  "takes one argument that should be the name of the match method to use. need to be called with the kind as direct receiver, either in a do-block or directly.
+if the match method is called 'matchFoo' and the receiver is called Foo, will generate a method that looks like this:
+
+method(other,
+  if(self == Foo,
+    other mimics?(Foo),
+    self matchFoo(other)))
+",
+  otherMethod = call arguments[0]
+
+;   ''(method(other, 
+;       if(self == `self, 
+;         other mimics?(`self),
+;         self `otherMethod (other)))))
+
+
+  selfMessage = `self
+  comparisonMessage = '(self ==())
+  comparisonMessage last << selfMessage
+  mimicsMessage = '(other mimics?)
+  mimicsMessage last << selfMessage
+
+  ifMessage = 'if
+  (ifMessage << comparisonMessage) << mimicsMessage
+
+  otherComparison = 'self
+  (otherComparison -> otherMethod) << 'other
+  
+  ifMessage << otherComparison
+
+  methodMessage = '(method(other))
+  methodMessage << ifMessage
+  methodMessage
+)
+
+Origin do(=== = generateMatchMethod(==))

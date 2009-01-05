@@ -29,5 +29,30 @@ describe(Origin,
       expected should == "foobarz"
     )
   )
+
+  describe("===",
+    it("should check for mimicness if receiver is Origin",
+      Origin should === Origin
+      Origin should === Origin mimic
+      Origin should === "foo"
+      Origin should not === Ground
+    )
+
+    it("should check for equalness if receiver is not Origin",
+      x = Origin mimic
+      y = Origin mimic
+
+      z = Origin mimic
+      z == = fnx(other, other same?(x))
+
+      x should === x
+      x should not === y
+      x should not === Origin
+      x should not === z
+      
+      z should not === z
+      z should === x
+    )
+  )
 )
   

@@ -26,6 +26,10 @@ ISpec do(
     unless(realValue == value,
       error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to == #{value inspect}", shouldMessage: self shouldMessage)))
 
+  ShouldContext === = method(value,
+    unless(realValue === value,
+      error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to === #{value inspect}", shouldMessage: self shouldMessage)))
+
   ShouldContext match = method(regex,
     unless(regex =~ realValue,
       error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to match #{regex inspect}", shouldMessage: self shouldMessage)))
@@ -83,6 +87,10 @@ ISpec do(
   NotShouldContext == = method(value,
     if(realValue == value,
       error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to not == #{value inspect}", shouldMessage: self shouldMessage)))
+
+  NotShouldContext === = method(value,
+    if(realValue === value,
+      error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to not === #{value inspect}", shouldMessage: self shouldMessage)))
 
   NotShouldContext match = method(regex,
     if(regex =~ realValue,
