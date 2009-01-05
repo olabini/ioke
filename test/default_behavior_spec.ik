@@ -982,7 +982,6 @@ describe(DefaultBehavior,
     )
   )
 
-
   describe("`",
     it("should return something with a name of cachedResult",
       `(42) name should == :cachedResult
@@ -1001,6 +1000,39 @@ describe(DefaultBehavior,
       x = 55
       m = `(x)
       m evaluateOn(Ground, Ground) should be same(x)
+    )
+  )
+
+  describe("''",
+    it("should work exactly like ' for anything not containing a `",
+      ''(+(200)) name should == :"+"
+      ''(abc foo bar quux lux) name should == :abc
+
+      ''(foo(bar + quux(123))) code should == "foo(bar +(quux(123)))"
+    )
+
+    it("should splice a message that is the result of a ` form",
+      ''(mux `('foo)) code should == "mux foo"
+      ''(mux(`('foo))) code should == "mux(foo)"
+
+      xx = '(foo bar(if(true)))
+      ''(max `xx) code should == "max foo bar(if(true))"
+    )
+
+    it("should resplize an argument list to a spliced message without arguments",
+      ''(mux `('one) (123, 456)) code should == "mux one(123, 456)"
+    )
+
+    it("should wrap a cached result if the result from a ` form is not a message",
+      ''(mux(`123)) code should == "mux(123)"
+      ''(mux(`(123))) code should == "mux(123)"
+      flarg = 123
+      ''(mux(`flarg)) code should == "mux(123)"
+      ''(mux(`(flarg))) code should == "mux(123)"
+    )
+
+    it("should should insert a literal ` if a `` message is encountered",
+      ''(mux ``(abc)) code should == "mux `(abc)"
     )
   )
 )

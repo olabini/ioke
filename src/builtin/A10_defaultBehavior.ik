@@ -46,6 +46,59 @@ DefaultBehavior Literals cell(:"`") = method(
 
   Message wrap(value))
 
+DefaultBehavior Literals cell(:"''") = macro(
+  "Takes one code argument and returns the message chain corresponding to this code argument, except that any occurrance of ` and `` will be expanded in some way, based on a set of simple rules:
+the argument to ` will be evaluated and what happens will depend on what the result of this evaluation is
+ - if it returns a message chain, that message chain will be spliced in at the point of the ` message.
+ - if it is not a message chain, the literal value will be cached, exactly like the Message#wrap method does.
+if a ` form is followed by an empty message with arguments, that empty message will be deleted and the arguments to it will be added to the result of the ` form.
+
+if a `` is encountered, a literal ` message will be inserted at that point.
+
+all code evaluations will happen in the ground of the caller.",
+
+  DefaultBehavior Literals cell(:"''") translate(call arguments[0] deepCopy, call ground)
+)
+
+DefaultBehavior Literals cell(:"''") avoidArgsFor? = method(msgName,
+  ;; acrobatics necessary since && is not defined yet.
+  if(msgName == :"internal:createText",
+    return(true))
+  if(msgName == :"internal:createNumber",
+    return(true))
+  if(msgName == :"internal:createDecimal",
+    return(true))
+  if(msgName == :"internal:createRegexp",
+    return(true))
+  false
+)
+
+DefaultBehavior Literals cell(:"''") translate = method(msg, outside,
+  realNext = msg next
+  if(msg name == :"`",
+    toSplice = msg evalArgAt(0, outside)
+    unless(toSplice mimics?(Message),
+      toSplice = `toSplice
+    )
+    thePrev = msg prev
+    msg become!(toSplice)
+    msg prev = thePrev
+    lastM = msg last
+    lastM -> realNext
+    if(realNext,
+      if(lastM arguments length == 0,
+        if(realNext name == :"",
+          realNext arguments each(args, lastM << args)
+          lastM -> realNext next))),
+
+    if(msg name == :"``",
+      msg name = :"`"))
+  unless(avoidArgsFor?(msg name),
+    msg arguments each(arg, translate(arg, outside)))
+  if(msg next, translate(msg next, outside))
+  msg
+)
+
 DefaultBehavior Literals list = macro(
   "Takes zero or more arguments and returns a newly created list containing the result of evaluating these arguments",
 
@@ -101,29 +154,9 @@ method(other,
 ",
   otherMethod = call arguments[0]
 
-;   ''(method(other, 
-;       if(self == `self, 
-;         other mimics?(`self),
-;         self `otherMethod (other)))))
-
-
-  selfMessage = `self
-  comparisonMessage = '(self ==())
-  comparisonMessage last << selfMessage
-  mimicsMessage = '(other mimics?)
-  mimicsMessage last << selfMessage
-
-  ifMessage = 'if
-  (ifMessage << comparisonMessage) << mimicsMessage
-
-  otherComparison = 'self
-  (otherComparison -> otherMethod) << 'other
-  
-  ifMessage << otherComparison
-
-  methodMessage = '(method(other))
-  methodMessage << ifMessage
-  methodMessage
-)
+  ''(method(other, 
+      if(self == `self, 
+        other mimics?(`self),
+        self `(otherMethod) (other)))))
 
 Origin do(=== = generateMatchMethod(==))
