@@ -19,6 +19,12 @@ describe(Regexp,
     #/foo/xs should mimic(Regexp)
   )
 
+  describe(Regexp Match,
+    it("should have the correct kind",
+      Regexp Match should have kind("Regexp Match")
+    )
+  )
+
   describe("pattern",
     it("should return a string containing the pattern used to create it",
       #/foo/ pattern should == "foo"
@@ -47,6 +53,10 @@ describe(Regexp,
       (#/ foo$/ =~ "bar foo") true? should == true
     )
 
+    it("should return an instance of Regexp Match",
+      (#/foo/ =~ "foo") kind should == "Regexp Match"
+    )
+
     it("should return nil when not matching",
       (#/fo{3}/ =~ "foo") should == nil
       (#/fox/ =~ "x foo x") should == nil
@@ -64,6 +74,10 @@ describe(Regexp,
       (#/^foo$/ match("foo")) true? should == true
       (#/^foo/ match("foo bar")) true? should == true
       (#/ foo$/ match("bar foo")) true? should == true
+    )
+
+    it("should return an instance of Regexp Match",
+      #/foo/ match("foo") kind should == "Regexp Match"
     )
 
     it("should return nil when not matching",

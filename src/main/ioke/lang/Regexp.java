@@ -61,6 +61,11 @@ public class Regexp extends IokeData {
         final Runtime runtime = obj.runtime;
         obj.setKind("Regexp");
 
+        final IokeObject regexpMatch  = new IokeObject(runtime, "contains behavior related to assignment", new RegexpMatch(obj, null));
+        regexpMatch.mimicsWithoutCheck(runtime.origin);
+        regexpMatch.init();
+        obj.registerCell("Match", regexpMatch);
+
         obj.registerMethod(runtime.newJavaMethod("Returns the pattern use for this regular expression", new JavaMethod.WithNoArguments("pattern") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
@@ -87,7 +92,15 @@ public class Regexp extends IokeData {
 
                     String arg = Text.getText(context.runtime.asText.sendTo(context, args.get(0)));
                     Matcher m = ((Regexp)IokeObject.data(on)).regexp.matcher(arg);
-                    return m.find() ? context.runtime._true : context.runtime.nil;
+                    
+                    if(m.find()) {
+                        IokeObject match = regexpMatch.allocateCopy(message, context);
+                        match.mimicsWithoutCheck(regexpMatch);
+                        match.setData(new RegexpMatch(IokeObject.as(on), m));
+                        return match;
+                    } else {
+                        return context.runtime.nil;
+                    }
                 }
             }));
 
