@@ -25,6 +25,18 @@ describe(Regexp,
     )
   )
 
+  describe("from",
+    it("should create a new regular expression",
+      Regexp from("foo") should == #/foo/
+      Regexp from("foo bar") should == #/foo bar/
+    )
+
+    it("should take an optional argument for the flags",
+      Regexp from("foo", "xs") should == #/foo/xs
+      Regexp from("foo bar", "xs") should == #/foo bar/xs
+    )
+  )
+
   describe("=~",
     it("should return a true value when matching",
       (#/foo/ =~ "foo") true? should == true
