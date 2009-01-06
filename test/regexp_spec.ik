@@ -248,6 +248,20 @@ describe(Regexp,
         )
       )
     )
+
+    describe("pass",
+      it("should signal an error if calling a group that isn't defined",
+        fn((#/foo/ =~ "foo") testingPassOnRegexp) should signal(Condition Error NoSuchCell)
+      )
+
+      it("should return the string matching a named group if it's matched",
+        (#/foo({mux}..)bar/ =~ "fooQqbar") mux should == "Qq"
+      )
+
+      it("should return nil for a defined group that isn't matched",
+        (#/foo({mux}..)?/ =~ "foob") mux should == nil
+      )
+    )
   )
 
   describe("pattern",
