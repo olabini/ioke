@@ -33,6 +33,10 @@ public class RegexpMatch extends IokeData {
         return ((RegexpMatch)IokeObject.data(on)).target;
     }
 
+    public static Object getRegexp(Object on) throws ControlFlow {
+        return ((RegexpMatch)IokeObject.data(on)).regexp;
+    }
+
     @Override
     public void init(IokeObject obj) throws ControlFlow {
         final Runtime runtime = obj.runtime;
@@ -43,6 +47,20 @@ public class RegexpMatch extends IokeData {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return getTarget(on);
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("returns a list of all the named groups in the regular expression used to create this match", new JavaMethod.WithNoArguments("names") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+
+                    Set names = Regexp.getRegexp(getRegexp(on)).getGroupNames();
+                    List<Object> theNames = new ArrayList<Object>();
+                    for(Object name : names) {
+                        theNames.add(context.runtime.getSymbol(((String)name)));
+                    }
+                    return context.runtime.newList(theNames);
                 }
             }));
     }
