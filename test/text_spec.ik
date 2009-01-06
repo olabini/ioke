@@ -199,6 +199,10 @@ describe("Text",
       "foobquux" split("b") should == ["foo", "quux"]
       "foo/bar/quux" split("/") should == ["foo", "bar", "quux"]
     )
+
+    it("should split on something that looks like a regexp as a text",
+      "fooo o+ fooo o+ xxx" split("o+") should == ["fooo ", " fooo ", " xxx"]
+    )
   )
 
   describe("*",
@@ -328,9 +332,18 @@ describe("Text",
       "fooxx" replace("foo", "bar") should == "barxx"
       "xxfoo" replace("foo", "bar") should == "xxbar"
     )
+
     it("should only replace the first match",
       "xfooxfoox" replace("foo", "bar") should == "xbarxfoox"
     )
+
+    it("should replace something that looks like a regexp match",
+      "oooo+oooo+" replace("o+", "bar") should == "ooobaroooo+"
+    )
+
+
+    ; should be able to give regexps
+    ; should be able to replace with matched groups
   )
 
   describe("replaceAll",
@@ -349,9 +362,17 @@ describe("Text",
       "fooxx" replaceAll("foo", "bar") should == "barxx"
       "xxfoo" replaceAll("foo", "bar") should == "xxbar"
     )
+
     it("should replace all matches",
       "xfooxfooxfoox" replaceAll("foo", "bar") should == "xbarxbarxbarx"
     )
+
+    it("should replace something that looks like a regexp match",
+      "oooo+oooo+" replaceAll("o+", "bar") should == "ooobarooobar"
+    )
+
+    ; should be able to give regexps
+    ; should be able to replace with matched groups
   )
 
   describe("interpolation", 

@@ -47,6 +47,10 @@ public class Regexp extends IokeData {
         return ((Regexp)IokeObject.data(on)).pattern;
     }
 
+    public static Pattern getRegexp(Object on) throws ControlFlow {
+        return ((Regexp)IokeObject.data(on)).regexp;
+    }
+
     public static String getFlags(Object on) throws ControlFlow {
         return ((Regexp)IokeObject.data(on)).flags;
     }
