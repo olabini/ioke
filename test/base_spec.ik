@@ -8,6 +8,37 @@ describe("Base",
     )
   )
 
+  describe("removeCell!",
+    it("should remove the cell",
+      x = Origin mimic
+      x flurgus_cell_test = 123
+      x removeCell!(:flurgus_cell_test)
+      x cell?(:flurgus_cell_test) should == false
+    )
+
+    it("should signal a condition if no such cell exists",
+      fn(Origin mimic removeCell!(:foo)) should signal(Condition Error NoSuchCell)
+    )
+
+    it("should offer an ignore restart if the cell can't be found",
+      x = Origin mimic
+      fn(x removeCell!(:foo)) should offer(restart(ignore, fn))
+      fn(x removeCell!(:foo)) should returnFromRestart(:ignore) == x
+    )
+
+    it("should only remove a cell on the current object",
+      x = Origin mimic
+      y = x mimic
+    
+      x foo = "blurg"
+      y foo = "blarg"
+
+      y removeCell!(:foo)
+      y cell?(:foo) should == true
+      y foo should == "blurg"
+    )
+  )
+
   describe("cells",
     it("should return the cells of this object by default",
       x = Origin mimic
@@ -44,6 +75,7 @@ describe("Base",
         :"cell=" => Base cell(:"cell="), 
         notice: "Base", 
         inspect: "Base", 
+        :"removeCell!" => Base cell(:"removeCell!"),
         :"cell?" => Base cell("cell?")}
 
       x = Base mimic
@@ -62,6 +94,7 @@ describe("Base",
         :"cell=" => Base cell(:"cell="), 
         notice: "Base", 
         inspect: "Base", 
+        :"removeCell!" => Base cell(:"removeCell!"),
         :"cell?" => Base cell("cell?")}
     )
   )

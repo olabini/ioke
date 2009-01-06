@@ -37,6 +37,7 @@ public class Locals {
         obj.setCell("cell=",     obj.runtime.base.getCells().get("cell="));
         obj.setCell("cells",     obj.runtime.base.getCells().get("cells"));
         obj.setCell("cellNames", obj.runtime.base.getCells().get("cellNames"));
+        obj.setCell("removeCell!", obj.runtime.base.getCells().get("removeCell!"));
         obj.setCell("identity",  obj.runtime.base.getCells().get("identity"));
 
         obj.registerMethod(obj.runtime.newJavaMethod("will pass along the call to the real self object of this context.", 

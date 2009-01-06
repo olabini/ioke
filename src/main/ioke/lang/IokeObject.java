@@ -301,6 +301,10 @@ public class IokeObject {
         return value;
     }
 
+    public static void removeCell(Object on, IokeObject m, IokeObject context, String name) throws ControlFlow {
+        ((IokeObject)on).removeCell(m, context, name);
+    }
+
     public Object getCell(IokeObject m, IokeObject context, String name) throws ControlFlow {
         final String outerName = name;
         Object cell = this.findCell(m, context, name);
@@ -358,6 +362,28 @@ public class IokeObject {
         }
 
         return cell;
+    }
+
+    public void removeCell(IokeObject m, IokeObject context, String name) throws ControlFlow {
+        final String outerName = name;
+        if(cells.containsKey(name)) {
+            cells.remove(name);
+        } else {
+            final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
+                                                                               m, 
+                                                                               context, 
+                                                                               "Error", 
+                                                                               "NoSuchCell")).mimic(m, context);
+            condition.setCell("message", m);
+            condition.setCell("context", context);
+            condition.setCell("receiver", this);
+            condition.setCell("cellName", runtime.getSymbol(name));
+
+            runtime.withReturningRestart("ignore", context, new RunnableWithControlFlow() {
+                    public void run() throws ControlFlow {
+                        runtime.errorCondition(condition);
+                    }});
+        }
     }
 
     public String getKind() {
