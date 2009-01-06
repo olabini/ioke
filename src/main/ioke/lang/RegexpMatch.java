@@ -21,15 +21,29 @@ import ioke.lang.exceptions.ControlFlow;
 public class RegexpMatch extends IokeData {
     private IokeObject regexp;
     private MatchResult mr;
+    private IokeObject target;
 
-    public RegexpMatch(IokeObject regexp, MatchResult mr) {
+    public RegexpMatch(IokeObject regexp, MatchResult mr, IokeObject target) {
         this.regexp = regexp;
         this.mr = mr;
+        this.target = target;
+    }
+    
+    public static Object getTarget(Object on) throws ControlFlow {
+        return ((RegexpMatch)IokeObject.data(on)).target;
     }
 
     @Override
     public void init(IokeObject obj) throws ControlFlow {
         final Runtime runtime = obj.runtime;
         obj.setKind("Regexp Match");
+
+        obj.registerMethod(runtime.newJavaMethod("Returns the target that this match was created against", new JavaMethod.WithNoArguments("target") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                    return getTarget(on);
+                }
+            }));
     }
 }

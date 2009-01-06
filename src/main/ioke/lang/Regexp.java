@@ -61,7 +61,7 @@ public class Regexp extends IokeData {
         final Runtime runtime = obj.runtime;
         obj.setKind("Regexp");
 
-        final IokeObject regexpMatch  = new IokeObject(runtime, "contains behavior related to assignment", new RegexpMatch(obj, null));
+        final IokeObject regexpMatch  = new IokeObject(runtime, "contains behavior related to assignment", new RegexpMatch(obj, null, null));
         regexpMatch.mimicsWithoutCheck(runtime.origin);
         regexpMatch.init();
         obj.registerCell("Match", regexpMatch);
@@ -90,13 +90,14 @@ public class Regexp extends IokeData {
                     List<Object> args = new ArrayList<Object>();
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
 
-                    String arg = Text.getText(context.runtime.asText.sendTo(context, args.get(0)));
+                    IokeObject target = IokeObject.as(context.runtime.asText.sendTo(context, args.get(0)));
+                    String arg = Text.getText(target);
                     Matcher m = ((Regexp)IokeObject.data(on)).regexp.matcher(arg);
                     
                     if(m.find()) {
                         IokeObject match = regexpMatch.allocateCopy(message, context);
                         match.mimicsWithoutCheck(regexpMatch);
-                        match.setData(new RegexpMatch(IokeObject.as(on), m));
+                        match.setData(new RegexpMatch(IokeObject.as(on), m, target));
                         return match;
                     } else {
                         return context.runtime.nil;
