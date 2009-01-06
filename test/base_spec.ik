@@ -39,6 +39,107 @@ describe("Base",
     )
   )
 
+  describe("undefineCell!",
+    it("should remove the cell",
+      x = Origin mimic
+      x flurgus_cell_test = 123
+      x undefineCell!(:flurgus_cell_test)
+      x cell?(:flurgus_cell_test) should == false
+    )
+
+    it("should not signal a condition if no such cell exists",
+      Origin mimic undefineCell!(:test_undefine_cell)
+    )
+
+    it("should make the cell inaccessible",
+      x = Origin mimic
+      y = x mimic
+    
+      x foo = "blurg"
+      y foo = "blarg"
+
+      y undefineCell!(:foo)
+      x cell?(:foo) should == true
+      y cell?(:foo) should == false
+      fn(y foo) should signal(Condition Error NoSuchCell)
+      fn(y mimic foo) should signal(Condition Error NoSuchCell)
+    )
+
+    it("should stop the cell from showing up in cellNames",
+      x = Origin mimic
+      y = x mimic
+    
+      x foo = "blurg"
+      y foo = "blarg"
+
+      y undefineCell!(:foo)
+
+      x cellNames should == [:foo]
+      y cellNames should == []
+
+      x cellNames(true) should include(:foo)
+      y cellNames(true) should not include(:foo)
+      y mimic cellNames(true) should not include(:foo)
+
+      z = y mimic
+      z foo = 123
+      z cellNames(true) should include(:foo)
+    )
+
+    it("should stop the cell from showing up in cells",
+      x = Origin mimic
+      y = x mimic
+    
+      x foo = "blurg"
+      y foo = "blarg"
+
+      y undefineCell!(:foo)
+
+      x cells should == {foo: "blurg"}
+      y cells should == {}
+
+      x cells(true) keys should include(:foo)
+      y cells(true) keys should not include(:foo)
+      y mimic cells(true) keys should not include(:foo)
+
+      z = y mimic
+      z foo = 123
+      z cells(true) keys should include(:foo)
+    )
+
+    it("should stop the cell from being able to get with cell",
+      x = Origin mimic
+      y = x mimic
+    
+      x foo = "blurg"
+      y foo = "blarg"
+
+      y undefineCell!(:foo)
+      
+      x cell(:foo) should == "blurg"
+      fn(y cell(:foo)) should signal(Condition Error NoSuchCell)
+
+      z = y mimic
+      z foo = 123
+      z foo should == 123
+    )
+
+    it("should stop the cell from showing up with cellOwner")
+    it("should stop the cell from showing up with cellOwner?")
+
+    it("should be possible to remove the undefine with removeCell!",
+      x = Origin mimic
+      y = x mimic
+    
+      x foo = "blurg"
+      y foo = "blarg"
+
+      y undefineCell!(:foo)
+      y removeCell!(:foo)
+      y foo should == "blurg"
+    )
+  )
+
   describe("cells",
     it("should return the cells of this object by default",
       x = Origin mimic
@@ -76,6 +177,7 @@ describe("Base",
         notice: "Base", 
         inspect: "Base", 
         :"removeCell!" => Base cell(:"removeCell!"),
+        :"undefineCell!" => Base cell(:"undefineCell!"),
         :"cell?" => Base cell("cell?")}
 
       x = Base mimic
@@ -95,6 +197,7 @@ describe("Base",
         notice: "Base", 
         inspect: "Base", 
         :"removeCell!" => Base cell(:"removeCell!"),
+        :"undefineCell!" => Base cell(:"undefineCell!"),
         :"cell?" => Base cell("cell?")}
     )
   )

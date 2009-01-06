@@ -182,6 +182,28 @@ public class Base {
                 }
             }));
 
+        base.registerMethod(base.runtime.newJavaMethod("expects one evaluated text or symbol argument and makes that cell undefined in the current receiver. what that means is that from now on it will look like this cell doesn't exist in the receiver or any of its mimics. the cell will not show up if you call cellNames on the receiver or any of the receivers mimics. the undefined status can be removed by doing removeCell! on the correct cell name. a cell name that doesn't exist can still be undefined. the method returns the receiver.", new JavaMethod("undefineCell!") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("cellName")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+
+                    String name = Text.getText(context.runtime.asText.sendTo(context, args.get(0)));
+                    IokeObject.undefineCell(on, message, context, name);
+                    return on;
+                }
+            }));
+
         base.registerMethod(base.runtime.newJavaMethod("takes one optional evaluated boolean argument, which defaults to false. if false, this method returns a list of the cell names of the receiver. if true, it returns the cell names of this object and all it's mimics recursively.", new JavaMethod("cellNames") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
@@ -202,6 +224,7 @@ public class Base {
                         IdentityHashMap<Object, Object> visited = new IdentityHashMap<Object, Object>();
                         List<Object> names = new ArrayList<Object>();
                         Set<Object> visitedNames = new HashSet<Object>();
+                        Set<String> undefined = new HashSet<String>();
                         Runtime runtime = context.runtime;
                         List<Object> toVisit = new ArrayList<Object>();
                         toVisit.add(on);
@@ -215,10 +238,16 @@ public class Base {
                                 Map<String, Object> mso = current.getCells();
 
                                 for(String s : mso.keySet()) {
-                                    Object x = runtime.getSymbol(s);
-                                    if(!visitedNames.contains(x)) {
-                                        visitedNames.add(x);
-                                        names.add(x);
+                                    if(!undefined.contains(s)) {
+                                        if(mso.get(s) == runtime.nul) {
+                                            undefined.add(s);
+                                        } else {
+                                            Object x = runtime.getSymbol(s);
+                                            if(!visitedNames.contains(x)) {
+                                                visitedNames.add(x);
+                                                names.add(x);
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -231,7 +260,9 @@ public class Base {
                         Runtime runtime = context.runtime;
 
                         for(String s : mso.keySet()) {
-                            names.add(runtime.getSymbol(s));
+                            if(mso.get(s) != runtime.nul) {
+                                names.add(runtime.getSymbol(s));
+                            }
                         }
 
                         return runtime.newList(names);
@@ -261,6 +292,7 @@ public class Base {
 
                     if(args.size() > 0 && IokeObject.isTrue(args.get(0))) {
                         IdentityHashMap<Object, Object> visited = new IdentityHashMap<Object, Object>();
+                        Set<String> undefined = new HashSet<String>();
 
                         List<Object> toVisit = new ArrayList<Object>();
                         toVisit.add(on);
@@ -274,9 +306,16 @@ public class Base {
                                 Map<String, Object> mso = current.getCells();
 
                                 for(String s : mso.keySet()) {
-                                    Object x = runtime.getSymbol(s);
-                                    if(!cells.containsKey(x)) {
-                                        cells.put(x, mso.get(s));
+                                    if(!undefined.contains(s)) {
+                                        Object val = mso.get(s);
+                                        if(val == runtime.nul) {
+                                            undefined.add(s);
+                                        } else {
+                                            Object x = runtime.getSymbol(s);
+                                            if(!cells.containsKey(x)) {
+                                                cells.put(x, val);
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -285,7 +324,10 @@ public class Base {
                         Map<String, Object> mso = IokeObject.as(on).getCells();
 
                         for(String s : mso.keySet()) {
-                            cells.put(runtime.getSymbol(s), mso.get(s));
+                            Object val = mso.get(s);
+                            if(val != runtime.nul) {
+                                cells.put(runtime.getSymbol(s), val);
+                            }
                         }
                     }
                     return runtime.newDict(cells);
