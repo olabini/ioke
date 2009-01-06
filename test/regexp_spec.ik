@@ -95,6 +95,32 @@ describe(Regexp,
         (#/({no}..)(({way}..))?/ =~ "ab") end(:blarg) should == -1
       )
     )
+
+    describe("offset",
+      it("should return the offset of group zero, which is the whole group",
+        (#/foo/ =~ "foobar") offset should == (0 => 3)
+        (#/foo/ =~ "abcfoobar") offset should == (3 => 6)
+
+        (#/foo/ =~ "foobar") offset(0) should == (0 => 3)
+        (#/foo/ =~ "abcfoobar") offset(0) should == (3 => 6)
+      )
+
+      it("should return the offset of another group",
+        (#/(..) (..) (..)/ =~ "fooab cd efbar") offset(2) should == (6 => 8)
+      )
+
+      it("should return the offset from the name of a named group",
+        (#/({one}..) ({two}..) ({three}..)/ =~ "fooab cd efbar") offset(:two) should == (6 => 8)
+      )
+
+      it("should return nil for a group that wasn't matched",
+        (#/(..)((..))?/ =~ "ab") offset(2) should == nil
+        (#/({no}..)(({way}..))?/ =~ "ab") offset(:way) should == nil
+
+        (#/(..)((..))?/ =~ "ab") offset(10) should == nil
+        (#/({no}..)(({way}..))?/ =~ "ab") offset(:blarg) should == nil
+      )
+    )
   )
 
   describe("pattern",

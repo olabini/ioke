@@ -147,5 +147,45 @@ public class RegexpMatch extends IokeData {
                     }
                 }
             }));
+
+        obj.registerMethod(runtime.newJavaMethod("Takes one optional argument that should be either a number or a symbol. this should be the name or index of a group to return the start and end index for. if no index is supplied, 0 is the default. if the group in question wasn't matched, returns nil, otherwise a pair of the start and end indices.", new JavaMethod("offset") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withOptionalPositional("index", "0")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+                    int index = 0;
+                    
+                    if(args.size() > 0) {
+                        Object arg = args.get(0);
+                        if(IokeObject.data(arg) instanceof Number) {
+                            index = Number.extractInt(arg, message, context);
+                        } else {
+                            String namedIndex = Symbol.getText(arg);
+                            Integer ix = Regexp.getRegexp(getRegexp(on)).groupId(namedIndex);
+                            if(ix == null) {
+                                return context.runtime.nil;
+                            }
+                            
+                            index = ix;
+                        }
+                    }
+                    MatchResult mr = getMatchResult(on);
+                    if(index < mr.groupCount() && mr.isCaptured(index)) {
+                        return context.runtime.newPair(context.runtime.newNumber(mr.start(index)), context.runtime.newNumber(mr.end(index)));
+                    } else {
+                        return context.runtime.nil;
+                    }
+                }
+            }));
     }
 }
