@@ -354,5 +354,51 @@ public class RegexpMatch extends IokeData {
                     }
                 }
             }));
+
+        obj.registerMethod(runtime.newJavaMethod("will get the named group corresponding to the name of the message, or nil if the named group hasn't been matched. will signal a condition if no such group is defined.", new JavaMethod("pass") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .getArguments();
+                
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+                
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                    
+                    MatchResult mr = getMatchResult(on);
+                    String name = Message.name(message);
+                    
+                    Integer ix = Regexp.getRegexp(getRegexp(on)).groupId(name);
+                    if(ix == null) {
+                        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(message.runtime.condition, 
+                                                                                           message, 
+                                                                                           context, 
+                                                                                           "Error", 
+                                                                                           "NoSuchCell")).mimic(message, context);
+                        condition.setCell("message", message);
+                        condition.setCell("context", context);
+                        condition.setCell("receiver", on);
+                        condition.setCell("cellName", message.runtime.getSymbol(name));
+
+                        message.runtime.withReturningRestart("ignore", context, new RunnableWithControlFlow() {
+                                public void run() throws ControlFlow {
+                                    condition.runtime.errorCondition(condition);
+                                }});
+
+                        return context.runtime.nil;
+                    }
+
+                    if(mr.isCaptured(ix)) {
+                        return context.runtime.newText(mr.group(ix));
+                    } else {
+                        return context.runtime.nil;
+                    }
+                }
+            }));
+        
     }
 }
