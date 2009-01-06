@@ -32,6 +32,7 @@ public class DefaultBehavior {
         baseBehavior.setCell("cells",     runtime.base.getCells().get("cells"));
         baseBehavior.setCell("cellNames", runtime.base.getCells().get("cellNames"));
         baseBehavior.setCell("documentation", runtime.base.getCells().get("documentation"));
+        baseBehavior.setCell("identity", runtime.base.getCells().get("identity"));
         obj.mimicsWithoutCheck(baseBehavior);
         obj.registerCell("BaseBehavior", baseBehavior);
 

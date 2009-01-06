@@ -35,6 +35,14 @@ public class Base {
                 }
             }));
 
+        base.registerMethod(base.runtime.newJavaMethod("returns this object", new JavaMethod.WithNoArguments("identity") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                    return on;
+                }
+            }));
+
         base.registerMethod(base.runtime.newJavaMethod("sets the documentation string for a specific object.", new JavaMethod("documentation=") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()

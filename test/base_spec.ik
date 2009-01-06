@@ -1,6 +1,13 @@
 use("ispec")
 
 describe("Base",
+  describe("identity",
+    it("should return a newly created Origin",
+      x = Origin mimic
+      x identity should be same(x)
+    )
+  )
+
   describe("cells",
     it("should return the cells of this object by default",
       x = Origin mimic
@@ -31,6 +38,7 @@ describe("Base",
         documentation: Base cell(:documentation),
         :"documentation=" => Base cell(:"documentation="),
         cell: Base cell(:cell), 
+        identity: Base cell(:identity), 
         cellNames: Base cell(:cellNames), 
         cells: Base cell(:cells), 
         :"cell=" => Base cell(:"cell="), 
@@ -48,6 +56,7 @@ describe("Base",
         documentation: Base cell(:documentation),
         :"documentation=" => Base cell(:"documentation="),
         cell: Base cell(:cell), 
+        identity: Base cell(:identity), 
         cellNames: Base cell(:cellNames), 
         cells: Base cell(:cells), 
         :"cell=" => Base cell(:"cell="), 
