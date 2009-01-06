@@ -42,7 +42,59 @@ describe(Regexp,
         #/({foo}bar)({quux}.)/ match("bar1") names should == [:foo, :quux]
         #/({foo}({bleg}.))({quux}.)/ match("ab") names should == [:foo, :bleg, :quux]
       )
-    )      
+    )
+
+    describe("start",
+      it("should return the start index of group zero, which is the whole group",
+        (#/foo/ =~ "foobar") start should == 0
+        (#/foo/ =~ "abcfoobar") start should == 3
+
+        (#/foo/ =~ "foobar") start(0) should == 0
+        (#/foo/ =~ "abcfoobar") start(0) should == 3
+      )
+
+      it("should return the start index of another group",
+        (#/(..) (..) (..)/ =~ "fooab cd efbar") start(2) should == 6
+      )
+
+      it("should return the start index from the name of a named group",
+        (#/({one}..) ({two}..) ({three}..)/ =~ "fooab cd efbar") start(:two) should == 6
+      )
+
+      it("should return -1 for a group that wasn't matched",
+        (#/(..)((..))?/ =~ "ab") start(2) should == -1
+        (#/({no}..)(({way}..))?/ =~ "ab") start(:way) should == -1
+
+        (#/(..)((..))?/ =~ "ab") start(10) should == -1
+        (#/({no}..)(({way}..))?/ =~ "ab") start(:blarg) should == -1
+      )
+    )
+
+    describe("end",
+      it("should return the end index of group zero, which is the whole group",
+        (#/foo/ =~ "foobar") end should == 3
+        (#/foo/ =~ "abcfoobar") end should == 6
+
+        (#/foo/ =~ "foobar") end(0) should == 3
+        (#/foo/ =~ "abcfoobar") end(0) should == 6
+      )
+
+      it("should return the end index of another group",
+        (#/(..) (..) (..)/ =~ "fooab cd efbar") end(2) should == 8
+      )
+
+      it("should return the end index from the name of a named group",
+        (#/({one}..) ({two}..) ({three}..)/ =~ "fooab cd efbar") end(:two) should == 8
+      )
+
+      it("should return -1 for a group that wasn't matched",
+        (#/(..)((..))?/ =~ "ab") end(2) should == -1
+        (#/({no}..)(({way}..))?/ =~ "ab") end(:way) should == -1
+
+        (#/(..)((..))?/ =~ "ab") end(10) should == -1
+        (#/({no}..)(({way}..))?/ =~ "ab") end(:blarg) should == -1
+      )
+    )
   )
 
   describe("pattern",
