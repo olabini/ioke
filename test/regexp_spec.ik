@@ -23,6 +23,13 @@ describe(Regexp,
     it("should have the correct kind",
       Regexp Match should have kind("Regexp Match")
     )
+
+    describe("target",
+      it("should return the original string matched against",
+        x = "foobar"
+        #/oo/ match(x) target should be same(x)
+      )
+    )
   )
 
   describe("pattern",
