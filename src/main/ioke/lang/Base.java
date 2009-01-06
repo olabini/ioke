@@ -160,6 +160,52 @@ public class Base {
                 }
             }));
 
+        base.registerMethod(base.runtime.newJavaMethod("expects one evaluated text or symbol argument and returns a boolean indicating whether this cell is owned by the receiver or not. the assumption is that the cell should exist. if it doesn't exist, a NoSuchCell condition will be signalled.", new JavaMethod("cellOwner?") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("cellName")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+
+                    String name = Text.getText(context.runtime.asText.sendTo(context, args.get(0)));
+                    return (IokeObject.findPlace(on, message, context, name) == on) ? context.runtime._true : context.runtime._false;
+                }
+            }));
+
+        base.registerMethod(base.runtime.newJavaMethod("expects one evaluated text or symbol argument and returns the closest object that defines such a cell. if it doesn't exist, a NoSuchCell condition will be signalled.", new JavaMethod("cellOwner") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("cellName")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+
+                    String name = Text.getText(context.runtime.asText.sendTo(context, args.get(0)));
+                    Object result = IokeObject.findPlace(on, message, context, name);
+                    if(result == context.runtime.nul) {
+                        return context.runtime.nil;
+                    }
+                    return result;
+                }
+            }));
+
         base.registerMethod(base.runtime.newJavaMethod("expects one evaluated text or symbol argument and removes that cell from the current receiver. if the current receiver has no such object, signals a condition. note that if another cell with that name is available in the mimic chain, it will still be accessible after calling this method. the method returns the receiver.", new JavaMethod("removeCell!") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()

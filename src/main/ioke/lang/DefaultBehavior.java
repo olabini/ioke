@@ -31,6 +31,10 @@ public class DefaultBehavior {
         baseBehavior.setCell("cell=",     runtime.base.getCells().get("cell="));
         baseBehavior.setCell("cells",     runtime.base.getCells().get("cells"));
         baseBehavior.setCell("cellNames", runtime.base.getCells().get("cellNames"));
+        baseBehavior.setCell("removeCell!", runtime.base.getCells().get("removeCell!"));
+        baseBehavior.setCell("undefineCell!", runtime.base.getCells().get("undefineCell!"));
+        baseBehavior.setCell("cellOwner?", runtime.base.getCells().get("cellOwner?"));
+        baseBehavior.setCell("cellOwner", runtime.base.getCells().get("cellOwner"));
         baseBehavior.setCell("documentation", runtime.base.getCells().get("documentation"));
         baseBehavior.setCell("identity", runtime.base.getCells().get("identity"));
         obj.mimicsWithoutCheck(baseBehavior);
