@@ -1,42 +1,38 @@
 
 Pattern = Origin mimic do(
   from = dmacro(
-
     [pattern]
     Pattern with(pattern: pattern))
 
-  variable? = method(current,
-    current mimics?(Symbol) && current asText[0..0] == ":")
+  variable? = method(current, current symbol?)
+  varName = method(msg, :(msg name asText[1..-1]))
 
   matchVariable = method(var, input, bindings,
-    binding = bindings[var]
+    binding = bindings[varName(var)]
     case(binding,
-
-      nil, bindings merge(var => input asText),
-    
-      input asText, bindings,
-
-      nil))
+      nil,
+        bindings merge(varName(var) => input name asText),
+      input name asText, 
+        bindings,
+        nil))
 
   doMatch = method(pat, input, bindings,
     cond(
-      bindings == nil, nil,
+      bindings == nil,
+        nil,
+
+      pat == nil || input == nil,
+        if(pat == input, bindings, nil),
       
-      variable?(pat), matchVariable(pat, input, bindings),
+      variable?(pat), 
+        doMatch(pat next, input next, matchVariable(pat, input, bindings)),
 
-      pat == input, bindings,
-
-      pat mimics?(Message) && pat next && input next, 
-      doMatch(pat next, input next, doMatch(pat name, input name, bindings)),
-
-      pat mimics?(Message), 
-      doMatch(pat name, input name, bindings),
+      pat name == input name,
+        doMatch(pat next, input next, bindings),
     
-      nil))
+        nil))
 
-  match = dmacro(
-    "does pattern match input? a variable can match anything.",
-
+  match = dmacro("Does pattern match input? A variable in the form of a symbol message can match anything.",
     [input, >bindings {}]
     doMatch(self pattern, input, bindings))
 )
