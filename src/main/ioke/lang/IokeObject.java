@@ -305,6 +305,10 @@ public class IokeObject {
         ((IokeObject)on).removeCell(m, context, name);
     }
 
+    public static void undefineCell(Object on, IokeObject m, IokeObject context, String name) throws ControlFlow {
+        ((IokeObject)on).undefineCell(m, context, name);
+    }
+
     public Object getCell(IokeObject m, IokeObject context, String name) throws ControlFlow {
         final String outerName = name;
         Object cell = this.findCell(m, context, name);
@@ -365,7 +369,6 @@ public class IokeObject {
     }
 
     public void removeCell(IokeObject m, IokeObject context, String name) throws ControlFlow {
-        final String outerName = name;
         if(cells.containsKey(name)) {
             cells.remove(name);
         } else {
@@ -384,6 +387,10 @@ public class IokeObject {
                         runtime.errorCondition(condition);
                     }});
         }
+    }
+
+    public void undefineCell(IokeObject m, IokeObject context, String name) throws ControlFlow {
+        cells.put(name, runtime.nul);
     }
 
     public String getKind() {
