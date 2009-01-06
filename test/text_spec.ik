@@ -203,6 +203,10 @@ describe("Text",
     it("should split on something that looks like a regexp as a text",
       "fooo o+ fooo o+ xxx" split("o+") should == ["fooo ", " fooo ", " xxx"]
     )
+
+    it("should split on a regexp",
+      "x oooo y o fofblooooooooooooo" split(#/o+/) should == ["x ", " y ", " f", "fbl", ""]
+    )
   )
 
   describe("*",
