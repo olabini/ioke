@@ -68,6 +68,35 @@ public class RegexpMatch extends IokeData {
                 }
             }));
 
+        obj.registerMethod(runtime.newJavaMethod("returns the part of the target before the text that matched", new JavaMethod.WithNoArguments("beforeMatch") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+
+                    return context.runtime.newText(getMatchResult(on).prefix());
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("returns the part of the target after the text that matched", new JavaMethod.WithNoArguments("afterMatch") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+
+                    return context.runtime.newText(getMatchResult(on).suffix());
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("returns the text that matched", new JavaMethod.WithNoArguments("match") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+
+                    return context.runtime.newText(getMatchResult(on).group(0));
+                }
+            }));
+
+        obj.aliasMethod("match", "asText", null, null);
+
         obj.registerMethod(runtime.newJavaMethod("Takes one optional argument that should be either a number or a symbol. this should be the name or index of a group to return the start index for. if no index is supplied, 0 is the default. if the group in question wasn't matched, returns -1.", new JavaMethod("start") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()

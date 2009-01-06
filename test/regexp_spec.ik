@@ -121,6 +121,30 @@ describe(Regexp,
         (#/({no}..)(({way}..))?/ =~ "ab") offset(:blarg) should == nil
       )
     )
+
+    describe("match",
+      it("should return the fully matched text",
+        (#/.. / =~ "foobar ") match should == "ar "
+      )
+    )
+
+    describe("beforeMatch",
+      it("should return the part before the string that matched",
+        (#/.. / =~ "foobar ") beforeMatch should == "foob"
+      )
+    )
+
+    describe("afterMatch",
+      it("should return the part before the string that matched",
+        (#/.. / =~ "foobar blargus") afterMatch should == "blargus"
+      )
+    )
+
+    describe("asText",
+      it("should return the fully matched text",
+        (#/.. / =~ "foobar ") asText should == "ar "
+      )
+    )
   )
 
   describe("pattern",
