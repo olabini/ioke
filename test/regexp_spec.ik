@@ -30,6 +30,19 @@ describe(Regexp,
         #/oo/ match(x) target should be same(x)
       )
     )
+
+    describe("names",
+      it("should return an empty list for a pattern that doesn't have any named groups",
+        #/foo/ match("foo") names should == []
+        #/f(o)o/ match("foo") names should == []
+      )
+    
+      it("should return a list of all the names, ordered from beginning parenthesis",
+        #/({foo}bar)/ match("bar") names should == [:foo]
+        #/({foo}bar)({quux}.)/ match("bar1") names should == [:foo, :quux]
+        #/({foo}({bleg}.))({quux}.)/ match("ab") names should == [:foo, :bleg, :quux]
+      )
+    )      
   )
 
   describe("pattern",
