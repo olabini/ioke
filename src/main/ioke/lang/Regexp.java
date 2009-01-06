@@ -110,6 +110,32 @@ public class Regexp extends IokeData {
                 }
             }));
 
+        obj.registerMethod(runtime.newJavaMethod("Takes one or two text arguments that describes the regular expression to create. the first text is the pattern and the second is the flags.", new JavaMethod("from") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("pattern")
+                    .withOptionalPositional("flags", "")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+                    String pattern = Text.getText(context.runtime.asText.sendTo(context, args.get(0)));
+                    String flags = "";
+                    if(args.size() > 1) {
+                        flags = Text.getText(context.runtime.asText.sendTo(context, args.get(1)));
+                    }
+
+                    return context.runtime.newRegexp(pattern, flags, context, message);
+                }
+            }));
+
         obj.registerMethod(runtime.newJavaMethod("Takes one argument and tries to match that argument against the current pattern. Returns a list of all the texts that were matched.", new JavaMethod("allMatches") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
