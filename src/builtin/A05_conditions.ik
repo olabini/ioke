@@ -62,10 +62,16 @@ Condition Error Load report = method(
 #{context stackTraceAsText}")
 
 
+Condition Error noticeFor = method(obj,
+  bind(rescue(Condition Error, fn(c, obj kind)),
+    if(obj cell?(:notice),
+      obj notice,
+      obj kind)))
+
 Condition Error NoSuchCell report = method(
   "returns a representation of this error, showing the name of the missing cell and the object that didn't have it",
 
-  "couldn't find cell '#{cellName}' on '#{receiver notice}' (#{self kind})
+  "couldn't find cell '#{cellName}' on '#{noticeFor(receiver)}' (#{self kind})
 
 #{message asStackTraceText}
 #{context stackTraceAsText}")
@@ -74,7 +80,7 @@ Condition Error NoSuchCell report = method(
 Condition Error Invocation MismatchedKeywords report = method(
   "returns a representation of this error, printing the given keywords that wasn't expected",
 
-  "didn't expect keyword arguments: #{extra notice} given to '#{message name}' (#{self kind})
+  "didn't expect keyword arguments: #{noticeFor(extra)} given to '#{message name}' (#{self kind})
 
 #{message asStackTraceText}
 #{context stackTraceAsText}")
@@ -83,7 +89,7 @@ Condition Error Invocation MismatchedKeywords report = method(
 Condition Error Invocation TooManyArguments report = method(
   "returns a representation of this error, printing the given argument values that wasn't expected",
 
-  "didn't expect these arguments: #{extra notice} given to '#{message name}' (#{self kind})
+  "didn't expect these arguments: #{noticeFor(extra)} given to '#{message name}' (#{self kind})
 
 #{message asStackTraceText}
 #{context stackTraceAsText}")
@@ -110,7 +116,7 @@ Condition Error Invocation ArgumentWithoutDefaultValue report = method(
 Condition Error Invocation NotSpreadable report = method(
   "returns a representation of this error, printing the object that couldn't be spread",
 
-  "can't spread value '#{given notice}' given to method '#{message name}' (#{self kind})
+  "can't spread value '#{noticeFor(given)}' given to method '#{message name}' (#{self kind})
 
 #{message asStackTraceText}
 #{context stackTraceAsText}")
