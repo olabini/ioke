@@ -7,6 +7,8 @@ Pattern = Origin mimic do(
   variable? = method(current, current symbol?)
   varName = method(msg, :(msg name asText[1..-1]))
 
+  noMatch! = method(invokeRestart(:noMatch))
+
   matchVariable = method(var, input, bindings,
     binding = bindings[varName(var)]
     case(binding,
@@ -14,15 +16,12 @@ Pattern = Origin mimic do(
         bindings merge(varName(var) => input name asText),
       input name asText, 
         bindings,
-        nil))
+        noMatch!))
 
   doMatch = method(pat, input, bindings,
     cond(
-      bindings == nil,
-        nil,
-
       pat == nil || input == nil,
-        if(pat == input, bindings, nil),
+        if(pat == input, bindings, noMatch!),
       
       variable?(pat), 
         doMatch(pat next, input next, matchVariable(pat, input, bindings)),
@@ -30,11 +29,12 @@ Pattern = Origin mimic do(
       pat name == input name,
         doMatch(pat next, input next, bindings),
     
-        nil))
+        noMatch!))
 
   match = dmacro("Does pattern match input? A variable in the form of a symbol message can match anything.",
     [input, >bindings {}]
-    doMatch(self pattern, input, bindings))
+    bind(restart(noMatch, fn(nil)),
+      doMatch(self pattern, input, bindings)))
 )
 
 System ifMain(
