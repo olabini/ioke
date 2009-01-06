@@ -353,6 +353,13 @@ public class Message extends IokeData {
                     return ((Message)IokeObject.data(on)).isKeyword() ? context.runtime._true : context.runtime._false;
                 }
             }));
+        message.registerMethod(message.runtime.newJavaMethod("returns true if this message is a symbol message or not", new JavaMethod.WithNoArguments("symbol?") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                    return ((Message)IokeObject.data(on)).isSymbol() ? context.runtime._true : context.runtime._false;
+                }
+            }));
         message.registerMethod(message.runtime.newJavaMethod("Takes one evaluated argument and sends this message to that argument", new JavaMethod("sendTo") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
@@ -643,6 +650,14 @@ public class Message extends IokeData {
         }
     }
 
+    public static boolean isSymbol(Object message) {
+        if((message instanceof IokeObject) && (IokeObject.data(message) instanceof Message)) {
+            return ((Message)IokeObject.data(message)).isSymbol();
+        } else {
+            return false;
+        }
+    }
+
     public static boolean hasName(Object message, String name) {
         if((message instanceof IokeObject) && (IokeObject.data(message) instanceof Message)) {
             return Message.name(message).equals(name);
@@ -653,6 +668,10 @@ public class Message extends IokeData {
 
     public boolean isKeyword() {
         return name.length() > 1 && arguments.size() == 0 && name.charAt(name.length()-1) == ':';
+    }
+
+    public boolean isSymbol() {
+        return name.length() > 1 && name.charAt(0) == ':';
     }
 
     @Override

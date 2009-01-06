@@ -57,7 +57,7 @@ describe("Message",
   )
   
   describe("keyword?", 
-    it("should return true for a message that )s with a colon", 
+    it("should return true for a message that ends with a colon", 
       Message fromText("foo:") keyword? should == true
       Message fromText("bar::::") keyword? should == true
     )
@@ -68,6 +68,21 @@ describe("Message",
 
     it("should return false for the empty message", 
       Message fromText("()") keyword? should == false
+    )
+  )
+
+  describe("symbol", 
+    it("should return true for a message that starts with a colon", 
+      Message fromText(":foo") symbol? should == true
+      Message fromText("::::bar") symbol? should == true
+    )
+
+    it("should return false for something simple", 
+      Message fromText("foo") symbol? should == false
+    )
+
+    it("should return false for the empty message", 
+      Message fromText("()") symbol? should == false
     )
   )
 
