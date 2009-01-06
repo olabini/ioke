@@ -98,6 +98,16 @@ describe(Regexp,
     )
   )
 
+  describe("quote",
+    it("should return the same text if it doesn't contain any meta characters",
+      Regexp quote("foobar") should == "foobar"
+    )
+
+    it("should quote metacharacters",
+      Regexp quote("+?{}[]().* ") should == "\\+\\?\\{\\}\\[\\]\\(\\)\\.\\*\\ "
+    )
+  )
+
   describe("alternative syntax",
     it("should work for simple regexps",
       #r[foo] should == #/foo/

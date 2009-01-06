@@ -90,6 +90,26 @@ public class Regexp extends IokeData {
                 }
             }));
 
+        obj.registerMethod(runtime.newJavaMethod("Takes one argument that should be a text and returns a text that has all regexp meta characters quoted", new JavaMethod("quote") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("text")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+
+                    return context.runtime.newText(Pattern.quote(Text.getText(context.runtime.asText.sendTo(context, args.get(0)))));
+                }
+            }));
+
         obj.registerMethod(runtime.newJavaMethod("Takes one argument and tries to match that argument against the current pattern. Returns a list of all the texts that were matched.", new JavaMethod("allMatches") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
