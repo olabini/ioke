@@ -97,6 +97,53 @@ public class RegexpMatch extends IokeData {
 
         obj.aliasMethod("match", "asText", null, null);
 
+        obj.registerMethod(runtime.newJavaMethod("returns the number of groups available in this match", new JavaMethod.WithNoArguments("length") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+
+                    return context.runtime.newNumber(getMatchResult(on).groupCount());
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("returns a list of all groups captured in this match. if a group is not matched it will be nil in the list. the actual match text is not included in this list.", new JavaMethod.WithNoArguments("captures") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                    List<Object> groups = new ArrayList<Object>();
+                    MatchResult mr = getMatchResult(on);
+                    int len = mr.groupCount();
+                    for(int i=1;i<len;i++) {
+                        if(mr.isCaptured(i)) {
+                            groups.add(context.runtime.newText(mr.group(i)));
+                        } else {
+                            groups.add(context.runtime.nil);
+                        }
+                    }
+
+                    return context.runtime.newList(groups);
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("returns a list of all groups captured in this match. if a group is not matched it will be nil in the list. the actual match text is the first element in the list.", new JavaMethod.WithNoArguments("asList") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                    List<Object> groups = new ArrayList<Object>();
+                    MatchResult mr = getMatchResult(on);
+                    int len = mr.groupCount();
+                    for(int i=0;i<len;i++) {
+                        if(mr.isCaptured(i)) {
+                            groups.add(context.runtime.newText(mr.group(i)));
+                        } else {
+                            groups.add(context.runtime.nil);
+                        }
+                    }
+
+                    return context.runtime.newList(groups);
+                }
+            }));
+
         obj.registerMethod(runtime.newJavaMethod("Takes one optional argument that should be either a number or a symbol. this should be the name or index of a group to return the start index for. if no index is supplied, 0 is the default. if the group in question wasn't matched, returns -1.", new JavaMethod("start") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()

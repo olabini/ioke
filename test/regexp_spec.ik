@@ -145,6 +145,42 @@ describe(Regexp,
         (#/.. / =~ "foobar ") asText should == "ar "
       )
     )
+
+    describe("length",
+      it("should return the number of groups in the regexp, including the whole match",
+        (#/foo/ =~ "foo") length should == 1
+        (#/f(o)(o)/ =~ "foo") length should == 3
+        (#/f(o)(o)(x)?/ =~ "foo") length should == 4
+      )
+    )
+
+    describe("asList",
+      it("should return the match itself",
+        (#/foo/ =~ "foo") asList should == ["foo"]
+      )
+
+      it("should return all matches in the regexp",
+        (#/f(.)(.)/ =~ "foo") asList should == ["foo", "o", "o"]
+      )
+
+      it("should return unmatched groups as nil",
+        (#/f(.)(.)(.)?/ =~ "foo") asList should == ["foo", "o", "o", nil]
+      )
+    )
+
+    describe("captures",
+      it("should not return the match itself",
+        (#/foo/ =~ "foo") captures should == []
+      )
+
+      it("should return all matches in the regexp",
+        (#/f(.)(.)/ =~ "foo") captures should == ["o", "o"]
+      )
+
+      it("should return unmatched groups as nil",
+        (#/f(.)(.)(.)?/ =~ "foo") captures should == ["o", "o", nil]
+      )
+    )
   )
 
   describe("pattern",
