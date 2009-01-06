@@ -68,6 +68,50 @@ public class Dict extends IokeData {
                     return newDict;
                 }}));
 
+        obj.registerMethod(runtime.newJavaMethod("creates a new Dict from the arguments provided, combined with the values in the receiver. the arguments provided will override those in the receiver. the rules for arguments are the same as for dict, except that dicts can also be provided. all positional arguments will be added before the keyword arguments.", new JavaMethod("merge") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRest("pairsAndDicts")
+                    .withKeywordRest("keywordPairs")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> posArgs = new ArrayList<Object>();
+                    Map<String, Object> keyArgs = new HashMap<String, Object>();
+                    getArguments().getEvaluatedArguments(context, message, on, posArgs, keyArgs);
+                    
+                    Map<Object, Object> newMap = new HashMap<Object, Object>();
+                    newMap.putAll(getMap(on));
+
+                    for(Object o : posArgs) {
+                        if(IokeObject.data(o) instanceof Dict) {
+                            newMap.putAll(getMap(o));
+                        } else if(IokeObject.data(o) instanceof Pair) {
+                            newMap.put(Pair.getFirst(o), Pair.getSecond(o));
+                        } else {
+                            newMap.put(o, context.runtime.nil);
+                        }
+                    }
+                    for(Map.Entry<String, Object> entry : keyArgs.entrySet()) {
+                        String s = entry.getKey();
+                        Object key = context.runtime.getSymbol(s.substring(0, s.length()-1));
+                        Object value = entry.getValue();
+                        if(value == null) {
+                            value = context.runtime.nil;
+                        }
+                        newMap.put(key, value);
+                    }
+
+                    return context.runtime.newDict(newMap);
+                }
+            }));
+
         obj.registerMethod(runtime.newJavaMethod("takes one argument, the key of the element to return. if the key doesn't map to anything in the dict, returns the default value", new JavaMethod("at") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
