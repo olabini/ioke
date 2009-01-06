@@ -345,9 +345,17 @@ describe("Text",
       "oooo+oooo+" replace("o+", "bar") should == "ooobaroooo+"
     )
 
+    it("should replace a regexp match",
+      "oooo+oooo+" replace(#/o+/, "bar") should == "bar+oooo+"
+    )
+      
+    it("should replace a match group with numbers",
+      "abcdefg" replace(#/(.)d(.)/, "{{$2$2d$1$1}}") should == "ab{{eedcc}}fg"
+    )
 
-    ; should be able to give regexps
-    ; should be able to replace with matched groups
+    it("should replace a match group with names",
+      "abcdefg" replace(#/({one}.)d({two}.)/, "{{${two}${two}d${one}${one}}}") should == "ab{{eedcc}}fg"
+    )
   )
 
   describe("replaceAll",
@@ -375,8 +383,17 @@ describe("Text",
       "oooo+oooo+" replaceAll("o+", "bar") should == "ooobarooobar"
     )
 
-    ; should be able to give regexps
-    ; should be able to replace with matched groups
+    it("should replace a regexp match",
+      "oooo+oooo+" replaceAll(#/o+/, "bar") should == "bar+bar+"
+    )
+      
+    it("should replace a match group with numbers",
+      "abcdefgxxdy" replaceAll(#/(.)d(.)/, "{{$2$2d$1$1}}") should == "ab{{eedcc}}fgx{{yydxx}}"
+    )
+
+    it("should replace a match group with names",
+      "abcdefgxxdy" replaceAll(#/({one}.)d({two}.)/, "{{${two}${two}d${one}${one}}}") should == "ab{{eedcc}}fgx{{yydxx}}"
+    )
   )
 
   describe("interpolation", 
