@@ -166,7 +166,7 @@ public class RegexpMatch extends IokeData {
                         if(IokeObject.data(arg) instanceof Number) {
                             index = Number.extractInt(arg, message, context);
                         } else {
-                            String namedIndex = Symbol.getText(arg);
+                            String namedIndex = Text.getText(context.runtime.asText.sendTo(context, arg));
                             Integer ix = Regexp.getRegexp(getRegexp(on)).groupId(namedIndex);
                             if(ix == null) {
                                 return context.runtime.newNumber(-1);
@@ -206,7 +206,7 @@ public class RegexpMatch extends IokeData {
                         if(IokeObject.data(arg) instanceof Number) {
                             index = Number.extractInt(arg, message, context);
                         } else {
-                            String namedIndex = Symbol.getText(arg);
+                            String namedIndex = Text.getText(context.runtime.asText.sendTo(context, arg));
                             Integer ix = Regexp.getRegexp(getRegexp(on)).groupId(namedIndex);
                             if(ix == null) {
                                 return context.runtime.newNumber(-1);
@@ -246,7 +246,7 @@ public class RegexpMatch extends IokeData {
                         if(IokeObject.data(arg) instanceof Number) {
                             index = Number.extractInt(arg, message, context);
                         } else {
-                            String namedIndex = Symbol.getText(arg);
+                            String namedIndex = Text.getText(context.runtime.asText.sendTo(context, arg));
                             Integer ix = Regexp.getRegexp(getRegexp(on)).groupId(namedIndex);
                             if(ix == null) {
                                 return context.runtime.nil;
@@ -260,6 +260,97 @@ public class RegexpMatch extends IokeData {
                         return context.runtime.newPair(context.runtime.newNumber(mr.start(index)), context.runtime.newNumber(mr.end(index)));
                     } else {
                         return context.runtime.nil;
+                    }
+                }
+            }));
+
+
+        obj.registerMethod(runtime.newJavaMethod("Takes one indexing argument that should be either a number, a range, a text or a symbol. if it's a number or a range of numbers, these will specify the index of the capture to return. 0 is the whole match. negative indices are interpreted in the usual way. if the range is out of range it will only use as many groups as there are. if it's a text or a sym it will be interpreted as a the name of a named group to return. if an index isn't correct or wasn't matched, it returns nil in those places.", new JavaMethod("[]") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("index")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+                    
+                    Object arg = args.get(0);
+
+                    MatchResult mr = getMatchResult(on);
+
+                    if((IokeObject.data(arg) instanceof Symbol) || (IokeObject.data(arg) instanceof Text)) {
+                        String namedIndex = Text.getText(context.runtime.asText.sendTo(context, arg));
+                        Integer ix = Regexp.getRegexp(getRegexp(on)).groupId(namedIndex);
+                        if(ix == null || !mr.isCaptured(ix)) {
+                            return context.runtime.nil;
+                        }
+                        return context.runtime.newText(mr.group(ix));
+                    } else {
+                        int size = mr.groupCount();
+
+                        if(IokeObject.data(arg) instanceof Range) {
+                            int first = Number.extractInt(Range.getFrom(arg), message, context); 
+                        
+                            if(first < 0) {
+                                return context.runtime.newList(new ArrayList<Object>());
+                            }
+
+                            int last = Number.extractInt(Range.getTo(arg), message, context);
+                            boolean inclusive = Range.isInclusive(arg);
+
+
+                            if(last < 0) {
+                                last = size + last;
+                            }
+
+                            if(last < 0) {
+                                return context.runtime.newList(new ArrayList<Object>());
+                            }
+
+                            if(last >= size) {
+                                last = inclusive ? size-1 : size;
+                            }
+
+                            if(first > last || (!inclusive && first == last)) {
+                                return context.runtime.newList(new ArrayList<Object>());
+                            }
+                        
+                            if(!inclusive) {
+                                last--;
+                            }
+                        
+                            List<Object> result = new ArrayList<Object>();
+                            for(int i = first; i < last+1; i++) {
+                                if(!mr.isCaptured(i)) {
+                                    result.add(context.runtime.nil);
+                                } else {
+                                    result.add(context.runtime.newText(mr.group(i)));
+                                }
+                            }
+
+                            return context.runtime.newList(result);
+                        }
+                        
+                        if(!(IokeObject.data(arg) instanceof Number)) {
+                            arg = IokeObject.convertToNumber(arg, message, context);
+                        }
+                        int index = ((Number)IokeObject.data(arg)).asJavaInteger();
+                        if(index < 0) {
+                            index = size + index;
+                        }
+
+                        if(index >= 0 && index < size && mr.isCaptured(index)) {
+                            return context.runtime.newText(mr.group(index));
+                        } else {
+                            return context.runtime.nil;
+                        }
                     }
                 }
             }));

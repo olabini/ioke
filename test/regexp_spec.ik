@@ -181,6 +181,73 @@ describe(Regexp,
         (#/f(.)(.)(.)?/ =~ "foo") captures should == ["o", "o", nil]
       )
     )
+
+    describe("[]",
+      describe("number",
+        it("should return the full match when given 0",
+          (#/foo/ =~ "foo")[0] should == "foo"
+          (#/..../ =~ "foo bbb")[0] should == "foo "
+        )
+
+        it("should return nil if given an index out of bounds",
+          (#/foo/ =~ "foo")[1] should == nil
+        )
+
+        it("should return nil if given a group that didn't match",
+          (#/f(.)(.)(.)?/ =~ "foo")[3] should == nil
+        )
+
+        it("should return the match at the index given",
+          (#/f(..)(..)(..)?/ =~ "fabcdef")[1] should == "ab"
+          (#/f(..)(..)(..)?/ =~ "fabcdef")[2] should == "cd"
+        )
+
+        it("should take a negative index to index from the end",
+          (#/f(..)(..)(..)?/ =~ "fabcdef")[-1] should == "ef"
+          (#/f(..)(..)(..)?/ =~ "fabcdef")[-2] should == "cd"
+          (#/f(..)(..)(..)?/ =~ "fabcdef")[-3] should == "ab"
+          (#/f(..)(..)(..)?/ =~ "fabcdef")[-4] should == "fabcdef"
+        )
+      )
+
+      describe("range",
+        it("should return all the matches indexed over",
+          (#/f(..)(..)(..)(..)(..)/ =~ "xxfabcdefghijxx")[2..3] should == ["cd", "ef"]
+          (#/f(..)(..)(..)(..)(..)/ =~ "xxfabcdefghijxx")[2...4] should == ["cd", "ef"]
+        )
+
+        it("should return nil for those that aren't matched",
+          (#/f(..)(..)(..)?(xx)/ =~ "fabcdxx")[2..4] should == ["cd", nil, "xx"]
+        )
+
+        it("should allow negative indices",
+          (#/f(..)(..)(..)(..)(..)/ =~ "xxfabcdefghijxx")[2..-2] should == ["cd", "ef", "gh"]
+        )
+
+        it("should allow indexing outside of length and don't do anything for that",
+          (#/f(..)(..)/ =~ "xxfabcdxx")[1..10] should == ["ab", "cd"]
+        )
+      )
+
+      describe("symbol",
+        it("should return nil if given a name that isn't valid",
+          (#/foo/ =~ "foo")[:foo] should == nil
+        )
+
+        it("should return nil if given a group that didn't match",
+          (#/f(..)(..)({mux}..)?/ =~ "fabcd")[:mux] should == nil
+        )
+
+        it("should return the match at the symbol given",
+          (#/f({mix}..)({max}..)({mux}..)?/ =~ "fabcdef")[:mix] should == "ab"
+          (#/f({mix}..)({max}..)({mux}..)?/ =~ "fabcdef")["mix"] should == "ab"
+          (#/f({mix}..)({max}..)({mux}..)?/ =~ "fabcdef")[:max] should == "cd"
+          (#/f({mix}..)({max}..)({mux}..)?/ =~ "fabcdef")["max"] should == "cd"
+          (#/f({mix}..)({max}..)({mux}..)?/ =~ "fabcdef")[:mux] should == "ef"
+          (#/f({mix}..)({max}..)({mux}..)?/ =~ "fabcdef")["mux"] should == "ef"
+        )
+      )
+    )
   )
 
   describe("pattern",
