@@ -75,6 +75,19 @@ describe(Regexp,
     )
   )
 
+  describe("names",
+    it("should return an empty list for a pattern that doesn't have any named groups",
+      #/foo/ names should == []
+      #/f(o)o/ names should == []
+    )
+    
+    it("should return a list of all the names, ordered from beginning parenthesis",
+      #/({foo}bar)/ names should == [:foo]
+      #/({foo}bar)({quux}.)/ names should == [:foo, :quux]
+      #/({foo}({bleg}.))({quux}.)/ names should == [:foo, :bleg, :quux]
+    )
+  )
+
   describe("===",
     it("should check for mimicness if receiver is Regexp",
       Regexp should === Regexp

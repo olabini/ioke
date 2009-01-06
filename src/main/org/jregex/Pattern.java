@@ -93,7 +93,7 @@ public class Pattern implements Serializable,REFlags{
    // number of lookahead groups
    int lookaheads;
    
-   Hashtable namedGroupMap;
+   Map namedGroupMap;
    
    protected Pattern() throws PatternSyntaxException{}
    
@@ -106,6 +106,10 @@ public class Pattern implements Serializable,REFlags{
    */
    public Pattern(String regex) throws PatternSyntaxException{
       this(regex,DEFAULT);
+   }
+
+   public Set getGroupNames() {
+      return namedGroupMap.keySet();
    }
       
   /**
