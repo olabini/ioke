@@ -56,6 +56,25 @@ describe(Regexp,
     )
   )
 
+  describe("match",
+    it("should return a true value when matching",
+      (#/foo/ match("foo")) true? should == true
+      (#/fo{1,2}/ match("foo")) true? should == true
+      (#/foo/ match("x foo x")) true? should == true
+      (#/^foo$/ match("foo")) true? should == true
+      (#/^foo/ match("foo bar")) true? should == true
+      (#/ foo$/ match("bar foo")) true? should == true
+    )
+
+    it("should return nil when not matching",
+      (#/fo{3}/ match("foo")) should == nil
+      (#/fox/ match("x foo x")) should == nil
+      (#/^ foo$/ match("foo")) should == nil
+      (#/foo$/ match("foo bar")) should == nil
+      (#/^foo/ match("bar foo")) should == nil
+    )
+  )
+
   describe("===",
     it("should check for mimicness if receiver is Regexp",
       Regexp should === Regexp

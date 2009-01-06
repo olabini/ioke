@@ -68,7 +68,7 @@ public class Regexp extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("Takes one argument and tries to match that argument against the current pattern. Returns nil if no match can be done, or a Regexp Match object if a match succeeds", new JavaMethod("=~") {
+        obj.registerMethod(runtime.newJavaMethod("Takes one argument and tries to match that argument against the current pattern. Returns nil if no match can be done, or a Regexp Match object if a match succeeds", new JavaMethod("match") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("other")
@@ -89,6 +89,8 @@ public class Regexp extends IokeData {
                     return m.find() ? context.runtime._true : context.runtime.nil;
                 }
             }));
+
+        obj.aliasMethod("match", "=~", null, null);
 
         obj.registerMethod(runtime.newJavaMethod("Takes one argument that should be a text and returns a text that has all regexp meta characters quoted", new JavaMethod("quote") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
