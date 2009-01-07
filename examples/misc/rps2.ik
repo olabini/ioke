@@ -11,6 +11,12 @@ RPS = Origin mimic do(
     field plays << (self name => call message next name)
     call message -> call message next next
   )
+  
+  win = method(p,
+    scores[p key] += 1
+    "#{p key} wins" println)
+
+  draw = method("Draw" println)
 
   play = macro(
     field = Field with(plays: [])
@@ -19,21 +25,13 @@ RPS = Origin mimic do(
     p2 = field plays[1]
 
     case([p1 value, p2 value],
-      or(
-        [:paper, :rock],
-        [:rock, :scissors],
-        [:scissors, :paper]),
-      scores[p1 key] += 1
-      "#{p1 key} wins" println,
-
-      or(
-        [:rock, :paper],
-        [:paper, :scissors],
-        [:scissors, :rock]),
-      scores[p2 key] += 1
-      "#{p2 key} wins" println,
-
-      "Draw" println)
+      [:paper, :rock], win(p1),
+      [:rock, :scissors], win(p1),
+      [:scissors, :paper], win(p1),
+      [:rock, :paper], win(p2),
+      [:paper, :scissors], win(p2),
+      [:scissors, :rock], win(p2),
+      else, draw)
     
     field
   )
@@ -60,6 +58,6 @@ System ifMain(
     Ola throws scissors
   )
 
-  "\nScores:\n%*[%s: %s\n]" format(RPS scores map(x, [x key, x value])) println
+  "\nScores:\n%:[%s: %s\n%]" format(RPS scores) print
 )
 

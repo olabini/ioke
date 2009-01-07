@@ -541,6 +541,11 @@ describe("Text",
       "%[%s%]" format(CustomEnumerable) should == "3first1second2third"
     )
 
+    it("should splat a pair when using %:[ and %]",
+      "foo%:[ %s => %s %]" format(["one" => 42, "two" => 55]) should == "foo one => 42  two => 55 "
+      "foo%:[ %s => %s %]" format({one: 42}) should == "foo one => 42 "
+    )
+
     it("should splat all inner elements when using %*[ and %]", 
       "foo %*[%s = %s - %]quux" format([["one", "1", "ignored"], ["two", "2", "ignored"], ["three", "3", "ignored"]]) should == "foo one = 1 - two = 2 - three = 3 - quux"
       "%*[%s=%s%]" format([["one", "1", "ignored"], ["two", "2", "ignored"], ["three", "3", "ignored"]]) should == "one=1two=2three=3"
