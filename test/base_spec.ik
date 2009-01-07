@@ -1,6 +1,218 @@
 use("ispec")
 
 describe("Base",
+  describe("identity",
+    it("should return a newly created Origin",
+      x = Origin mimic
+      x identity should be same(x)
+    )
+  )
+
+  describe("removeCell!",
+    it("should remove the cell",
+      x = Origin mimic
+      x flurgus_cell_test = 123
+      x removeCell!(:flurgus_cell_test)
+      x cell?(:flurgus_cell_test) should == false
+    )
+
+    it("should signal a condition if no such cell exists",
+      fn(Origin mimic removeCell!(:foo)) should signal(Condition Error NoSuchCell)
+    )
+
+    it("should offer an ignore restart if the cell can't be found",
+      x = Origin mimic
+      fn(x removeCell!(:foo)) should offer(restart(ignore, fn))
+      fn(x removeCell!(:foo)) should returnFromRestart(:ignore) == x
+    )
+
+    it("should only remove a cell on the current object",
+      x = Origin mimic
+      y = x mimic
+    
+      x foo = "blurg"
+      y foo = "blarg"
+
+      y removeCell!(:foo)
+      y cell?(:foo) should == true
+      y foo should == "blurg"
+    )
+  )
+
+  describe("undefineCell!",
+    it("should remove the cell",
+      x = Origin mimic
+      x flurgus_cell_test = 123
+      x undefineCell!(:flurgus_cell_test)
+      x cell?(:flurgus_cell_test) should == false
+    )
+
+    it("should not signal a condition if no such cell exists",
+      Origin mimic undefineCell!(:test_undefine_cell)
+    )
+
+    it("should make the cell inaccessible",
+      x = Origin mimic
+      y = x mimic
+    
+      x foo = "blurg"
+      y foo = "blarg"
+
+      y undefineCell!(:foo)
+      x cell?(:foo) should == true
+      y cell?(:foo) should == false
+      fn(y foo) should signal(Condition Error NoSuchCell)
+      fn(y mimic foo) should signal(Condition Error NoSuchCell)
+    )
+
+    it("should stop the cell from showing up in cellNames",
+      x = Origin mimic
+      y = x mimic
+    
+      x foo = "blurg"
+      y foo = "blarg"
+
+      y undefineCell!(:foo)
+
+      x cellNames should == [:foo]
+      y cellNames should == []
+
+      x cellNames(true) should include(:foo)
+      y cellNames(true) should not include(:foo)
+      y mimic cellNames(true) should not include(:foo)
+
+      z = y mimic
+      z foo = 123
+      z cellNames(true) should include(:foo)
+    )
+
+    it("should stop the cell from showing up in cells",
+      x = Origin mimic
+      y = x mimic
+    
+      x foo = "blurg"
+      y foo = "blarg"
+
+      y undefineCell!(:foo)
+
+      x cells should == {foo: "blurg"}
+      y cells should == {}
+
+      x cells(true) keys should include(:foo)
+      y cells(true) keys should not include(:foo)
+      y mimic cells(true) keys should not include(:foo)
+
+      z = y mimic
+      z foo = 123
+      z cells(true) keys should include(:foo)
+    )
+
+    it("should stop the cell from being able to get with cell",
+      x = Origin mimic
+      y = x mimic
+    
+      x foo = "blurg"
+      y foo = "blarg"
+
+      y undefineCell!(:foo)
+      
+      x cell(:foo) should == "blurg"
+      fn(y cell(:foo)) should signal(Condition Error NoSuchCell)
+
+      z = y mimic
+      z foo = 123
+      z foo should == 123
+    )
+
+    it("should stop the cell from showing up with cellOwner",
+      x = Origin mimic
+      y = x mimic
+    
+      x foo = "blurg"
+      y foo = "blarg"
+
+      y undefineCell!(:foo)
+      fn(y cellOwner(:foo)) should signal(Condition Error NoSuchCell)
+    )
+
+    it("should stop the cell from showing up with cellOwner?",
+      x = Origin mimic
+      y = x mimic
+    
+      x foo = "blurg"
+      y foo = "blarg"
+
+      y undefineCell!(:foo)
+      fn(y cellOwner?(:foo)) should signal(Condition Error NoSuchCell)
+    )
+
+    it("should be possible to remove the undefine with removeCell!",
+      x = Origin mimic
+      y = x mimic
+    
+      x foo = "blurg"
+      y foo = "blarg"
+
+      y undefineCell!(:foo)
+      y removeCell!(:foo)
+      y foo should == "blurg"
+    )
+  )
+
+  describe("cellOwner?",
+    it("should return true if the cell name is owned by this object",
+      x = Origin mimic
+      y = x mimic
+
+      x foo = 123
+      y foo = "bar"
+
+      x cellOwner?(:foo) should == true
+      y cellOwner?(:foo) should == true
+    )
+
+    it("should return false if the cell name is owned by another object",
+      x = Origin mimic
+      y = x mimic
+
+      x foo = 123
+
+      y cellOwner?(:foo) should == false
+    )
+
+    it("should signal a condition if there is no such cell",
+      fn(Origin cellOwner?(:test_cell_owner)) should signal(Condition Error NoSuchCell)
+    )
+
+    it("should offer an ignore restart if the cell can't be found",
+      fn(Origin cellOwner?(:test_cell_owner)) should offer(restart(ignore, fn))
+      fn(Origin cellOwner?(:test_cell_owner)) should returnFromRestart(:ignore) == false
+    )
+  )
+
+  describe("cellOwner",
+    it("should return the closest owner of a cell",
+      x = Origin mimic
+      y = x mimic
+
+      x foo = 123
+      y foo = "bar"
+
+      x cellOwner(:foo) should be same(x)
+      y cellOwner(:foo) should be same(y)
+      x mimic cellOwner(:foo) should be same(x)
+    )
+
+    it("should signal a condition if there is no such cell",
+      fn(Origin cellOwner(:test_cell_owner)) should signal(Condition Error NoSuchCell)
+    )
+
+    it("should offer an ignore restart if the cell can't be found",
+      fn(Origin cellOwner(:test_cell_owner)) should offer(restart(ignore, fn))
+      fn(Origin cellOwner(:test_cell_owner)) should returnFromRestart(:ignore) == nil
+    )
+  )
+
   describe("cells",
     it("should return the cells of this object by default",
       x = Origin mimic
@@ -31,11 +243,16 @@ describe("Base",
         documentation: Base cell(:documentation),
         :"documentation=" => Base cell(:"documentation="),
         cell: Base cell(:cell), 
+        identity: Base cell(:identity), 
         cellNames: Base cell(:cellNames), 
         cells: Base cell(:cells), 
         :"cell=" => Base cell(:"cell="), 
         notice: "Base", 
         inspect: "Base", 
+        :"removeCell!" => Base cell(:"removeCell!"),
+        :"undefineCell!" => Base cell(:"undefineCell!"),
+        :"cellOwner?" => Base cell(:"cellOwner?"),
+        :"cellOwner" => Base cell(:"cellOwner"),
         :"cell?" => Base cell("cell?")}
 
       x = Base mimic
@@ -48,11 +265,16 @@ describe("Base",
         documentation: Base cell(:documentation),
         :"documentation=" => Base cell(:"documentation="),
         cell: Base cell(:cell), 
+        identity: Base cell(:identity), 
         cellNames: Base cell(:cellNames), 
         cells: Base cell(:cells), 
         :"cell=" => Base cell(:"cell="), 
         notice: "Base", 
         inspect: "Base", 
+        :"removeCell!" => Base cell(:"removeCell!"),
+        :"undefineCell!" => Base cell(:"undefineCell!"),
+        :"cellOwner?" => Base cell(:"cellOwner?"),
+        :"cellOwner" => Base cell(:"cellOwner"),
         :"cell?" => Base cell("cell?")}
     )
   )

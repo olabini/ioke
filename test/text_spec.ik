@@ -219,6 +219,14 @@ describe("Text",
       "foobquux" split("b") should == ["foo", "quux"]
       "foo/bar/quux" split("/") should == ["foo", "bar", "quux"]
     )
+
+    it("should split on something that looks like a regexp as a text",
+      "fooo o+ fooo o+ xxx" split("o+") should == ["fooo ", " fooo ", " xxx"]
+    )
+
+    it("should split on a regexp",
+      "x oooo y o fofblooooooooooooo" split(#/o+/) should == ["x ", " y ", " f", "fbl", ""]
+    )
   )
 
 	describe("chars",
@@ -376,8 +384,25 @@ describe("Text",
       "fooxx" replace("foo", "bar") should == "barxx"
       "xxfoo" replace("foo", "bar") should == "xxbar"
     )
+
     it("should only replace the first match",
       "xfooxfoox" replace("foo", "bar") should == "xbarxfoox"
+    )
+
+    it("should replace something that looks like a regexp match",
+      "oooo+oooo+" replace("o+", "bar") should == "ooobaroooo+"
+    )
+
+    it("should replace a regexp match",
+      "oooo+oooo+" replace(#/o+/, "bar") should == "bar+oooo+"
+    )
+      
+    it("should replace a match group with numbers",
+      "abcdefg" replace(#/(.)d(.)/, "{{$2$2d$1$1}}") should == "ab{{eedcc}}fg"
+    )
+
+    it("should replace a match group with names",
+      "abcdefg" replace(#/({one}.)d({two}.)/, "{{${two}${two}d${one}${one}}}") should == "ab{{eedcc}}fg"
     )
   )
 
@@ -397,8 +422,25 @@ describe("Text",
       "fooxx" replaceAll("foo", "bar") should == "barxx"
       "xxfoo" replaceAll("foo", "bar") should == "xxbar"
     )
+
     it("should replace all matches",
       "xfooxfooxfoox" replaceAll("foo", "bar") should == "xbarxbarxbarx"
+    )
+
+    it("should replace something that looks like a regexp match",
+      "oooo+oooo+" replaceAll("o+", "bar") should == "ooobarooobar"
+    )
+
+    it("should replace a regexp match",
+      "oooo+oooo+" replaceAll(#/o+/, "bar") should == "bar+bar+"
+    )
+      
+    it("should replace a match group with numbers",
+      "abcdefgxxdy" replaceAll(#/(.)d(.)/, "{{$2$2d$1$1}}") should == "ab{{eedcc}}fgx{{yydxx}}"
+    )
+
+    it("should replace a match group with names",
+      "abcdefgxxdy" replaceAll(#/({one}.)d({two}.)/, "{{${two}${two}d${one}${one}}}") should == "ab{{eedcc}}fgx{{yydxx}}"
     )
   )
 
