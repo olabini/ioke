@@ -78,8 +78,7 @@ DefaultBehavior Literals cell(:"''") translate = method(msg, outside,
   if(msg name == :"`",
     toSplice = msg evalArgAt(0, outside)
     unless(toSplice mimics?(Message),
-      toSplice = `toSplice
-    )
+      toSplice = `toSplice)
     thePrev = msg prev
     msg become!(toSplice)
     msg prev = thePrev
@@ -91,8 +90,26 @@ DefaultBehavior Literals cell(:"''") translate = method(msg, outside,
           realNext arguments each(args, lastM << args)
           lastM -> realNext next))),
 
-    if(msg name == :"``",
-      msg name = :"`"))
+    if(msg name == :"'",
+      toSplice = msg evalArgAt(0, outside)
+      toSplice = if(toSplice mimics?(Message),
+        toSplice deepCopy,
+        toSplice = `toSplice)
+      thePrev = msg prev
+      msg become!(toSplice)
+      msg prev = thePrev
+      lastM = msg last
+      lastM -> realNext
+      if(realNext,
+        if(lastM arguments length == 0,
+          if(realNext name == :"",
+            realNext arguments each(args, lastM << args)
+            lastM -> realNext next))),
+    
+      if(msg name == :"``",
+        msg name = :"`",
+        if(msg name == :"''",
+          msg name = :"'"))))
   unless(avoidArgsFor?(msg name),
     msg arguments each(arg, translate(arg, outside)))
   if(msg next, translate(msg next, outside))

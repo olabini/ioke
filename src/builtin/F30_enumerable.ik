@@ -12,55 +12,51 @@ Mixins Enumerable sort = method(
   "will return a sorted list of all the entries of this enumerable object",
   self asList sort)
 
-Mixins Enumerable map = dmacro(
-  "takes one or two arguments. if one argument is given, it will be evaluated as a message chain on each element in the enumerable, and then the result will be collected in a new List. if two arguments are given, the first one should be an unevaluated argument name, which will be bound inside the scope of executing the second piece of code. it's important to notice that the one argument form will establish no context, while the two argument form establishes a new lexical closure.",
-  
-  [theCode]
-  result = list()
-  self each(n, result << theCode evaluateOn(call ground, cell(:n)))
-  result,
-  
-  [argName, theCode]  
-  result = list()
-  lexicalCode = LexicalBlock createFrom(list(argName, theCode), call ground)
-  self each(n, result << lexicalCode call(cell(:n)))
-  result)
 
-Mixins Enumerable map:set = dmacro(
-  "takes one or two arguments. if one argument is given, it will be evaluated as a message chain on each element in the enumerable, and then the result will be collected in a new Set. if two arguments are given, the first one should be an unevaluated argument name, which will be bound inside the scope of executing the second piece of code. it's important to notice that the one argument form will establish no context, while the two argument form establishes a new lexical closure.",
-  
-  [theCode]
-  result = set()
-  self each(n, result << theCode evaluateOn(call ground, cell(:n)))
-  result,
+let(enumerableMapMethod, 
+  syntax(
+    docstr = call arguments[0]
+    initCode = call arguments[1]
+    assignName = call arguments[2]
+    updateCode = call arguments[3]
+    returnCode = call arguments[4]
 
-  [argName, theCode]  
-  result = set()
-  lexicalCode = LexicalBlock createFrom(list(argName, theCode), call ground)
-  self each(n, result << lexicalCode call(cell(:n)))
-  result)
+    ''(dmacro(`docstr,
+      [theCode]
+      'initCode
+      self each(n,
+        '(assignName) = theCode evaluateOn(call ground, cell(:n))
+        'updateCode)
+      'returnCode,
 
-Mixins Enumerable map:dict = dmacro(
-  "takes one or two arguments. if one argument is given, it will be evaluated as a message chain on each element in the enumerable, and then the result will be collected in a new Dict. if the message chain returns a pair, that pair will be used as key and value. if it's something else, that value will be the key, and the value for it will be nil. if two arguments are given, the first one should be an unevaluated argument name, which will be bound inside the scope of executing the second piece of code. it's important to notice that the one argument form will establish no context, while the two argument form establishes a new lexical closure.",
+      [argName, theCode]  
+      'initCode
+      lexicalCode = LexicalBlock createFrom(list(argName, theCode), call ground)
+      self each(n,
+        '(assignName) = lexicalCode call(cell(:n))
+        'updateCode)
+      'returnCode))),
 
-  [theCode]
-  result = dict()
-  self each(n, 
-    output = theCode evaluateOn(call ground, cell(:n))
-    if(cell(:output) kind == "Pair",
-      result[output key] = output value,
-      result[cell(:output)] = nil))
-  result,
+  Mixins Enumerable map = enumerableMapMethod("takes one or two arguments. if one argument is given, it will be evaluated as a message chain on each element in the enumerable, and then the result will be collected in a new List. if two arguments are given, the first one should be an unevaluated argument name, which will be bound inside the scope of executing the second piece of code. it's important to notice that the one argument form will establish no context, while the two argument form establishes a new lexical closure.", 
+    result = list(), 
+    x, 
+    result << cell(:x), 
+    result)
 
-  [argName, theCode]
-  result = dict()
-  lexicalCode = LexicalBlock createFrom(list(argName, theCode), call ground)
-  self each(n, 
-    output = lexicalCode call(cell(:n))
-    if(cell(:output) kind == "Pair",
-      result[output key] = output value,
-      result[cell(:output)] = nil))
-  result)
+  Mixins Enumerable map:set = enumerableMapMethod("takes one or two arguments. if one argument is given, it will be evaluated as a message chain on each element in the enumerable, and then the result will be collected in a new Set. if two arguments are given, the first one should be an unevaluated argument name, which will be bound inside the scope of executing the second piece of code. it's important to notice that the one argument form will establish no context, while the two argument form establishes a new lexical closure.", 
+    result = set(), 
+    x, 
+    result << cell(:x), 
+    result)
+
+  Mixins Enumerable map:dict = enumerableMapMethod("takes one or two arguments. if one argument is given, it will be evaluated as a message chain on each element in the enumerable, and then the result will be collected in a new Dict. if the message chain returns a pair, that pair will be used as key and value. if it's something else, that value will be the key, and the value for it will be nil. if two arguments are given, the first one should be an unevaluated argument name, which will be bound inside the scope of executing the second piece of code. it's important to notice that the one argument form will establish no context, while the two argument form establishes a new lexical closure.", 
+    result = dict(), 
+    x, 
+    if(cell(:x) kind == "Pair", 
+      result[x key] = x value, 
+      result[cell(:x)] = nil), 
+    result)
+)
 
 Mixins Enumerable mapFn = method(
   "takes zero or more arguments that evaluates to lexical blocks. these blocks should all take one argument. these blocks will be chained together and applied on each element in the receiver. the final result will be collected into a list. the evaluation happens left-to-right, meaning the first method invoked will be the first argument.",
