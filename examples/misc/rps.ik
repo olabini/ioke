@@ -26,10 +26,10 @@ RPS = Origin mimic do(
   )
 
   play = macro(
-    Message OperatorTable assignOperators[:throws] ||= 14
-    instance = RPS with(p1: nil, p2: nil)
-    instance winner = call arguments first shuffleOperators evaluateOn(instance)
-    instance
+    Message OperatorTable withAssignOperator(:throws, 14,
+      instance = RPS with(p1: nil, p2: nil)
+      instance winner = call arguments first shuffleOperators evaluateOn(instance)
+      instance)
   )
 )
 
