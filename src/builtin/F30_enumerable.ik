@@ -133,43 +133,18 @@ let(enumerableDefaultMethod,
         result = true)),
     result)
 
-Mixins Enumerable count = dmacro(
-  "takes zero, one or two arguments. if zero arguments, returns the number of elements in the collection. if one argument, expects it to be a message chain. if that message chain, that will be used as a predicate. returns the number of elements where the predicate returns true. finally, if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and used as a predicate, and the result will be the number of elements matching the predicate.",
-  
-  []
-  result = 0
-  self each(n, result++)
-  result,
+  Mixins Enumerable count = enumerableDefaultMethod("takes zero, one or two arguments. if zero arguments, returns the number of elements in the collection. if one argument, expects it to be a message chain. if that message chain, that will be used as a predicate. returns the number of elements where the predicate returns true. finally, if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and used as a predicate, and the result will be the number of elements matching the predicate.",
+    result = 0
+    argLength = call arguments length,
+    if(cell(:x) || argLength == 0,
+      result++),
+    result)
 
-  [theCode]
-  result = 0
-  self each(n, if(theCode evaluateOn(call ground, cell(:n)), result++))
-  result,
-  
-  [argName, theCode]
-  result = 0
-  lexicalCode = LexicalBlock createFrom(list(argName, theCode), call ground)
-  self each(n, if(lexicalCode call(cell(:n)), result++))
-  result)
-
-Mixins Enumerable reject = dmacro(
-  "takes one or two arguments. if one argument is given, it will be applied as a message chain as a predicate. those elements that doesn't the predicate will be returned. if two arguments are given, they will be turned into a lexical block and used as a predicate to choose the elements that doesn't match.",
-
-  []
-  result = list()
-  self each(n, unless(cell(:n), result << cell(:n)))
-  result,
-
-  [theCode]
-  result = list()
-  self each(n, unless(theCode evaluateOn(call ground, cell(:n)), result << cell(:n)))
-  result,
-  
-  [argName, theCode]
-  result = list()
-  lexicalCode = LexicalBlock createFrom(list(argName, theCode), call ground)
-  self each(n, unless(lexicalCode call(cell(:n)), result << cell(:n)))
-  result)
+  Mixins Enumerable reject = enumerableDefaultMethod("takes one or two arguments. if one argument is given, it will be applied as a message chain as a predicate. those elements that doesn't the predicate will be returned. if two arguments are given, they will be turned into a lexical block and used as a predicate to choose the elements that doesn't match.",
+    result = list(),
+    unless(cell(:x), 
+      result << cell(:n)),
+    result)
 
 Mixins Enumerable findIndex = dmacro(
   "takes zero, one or two arguments. if zero arguments, returns the index of the first element that is true, otherwise nil. if one argument, expects it to be a message chain. if that message chain, when applied to the current element returns a true value, the corresponding element index is returned. finally, if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and tested against the values in this element. if it returns true for any element, the element index will be returned, otherwise nil.",
