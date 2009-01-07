@@ -124,23 +124,13 @@ let(enumerableDefaultMethod,
     if(cell(:x),
       result << cell(:n)),
     result)
+
+  Mixins Enumerable all? = enumerableDefaultMethod("takes zero, one or two arguments. if zero arguments, returns false if any of the elements yielded by each is false, otherwise true. if one argument, expects it to be a message chain. if that message chain, when applied to the current element returns a false value, the method returns false. finally, if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and tested against the values in this element. if it returns false for any element, this method returns false, otherwise true.",
+    .,
+    unless(cell(:x), 
+      return(false)),
+    true)
 )
-
-Mixins Enumerable all? = dmacro(
-  "takes zero, one or two arguments. if zero arguments, returns false if any of the elements yielded by each is false, otherwise true. if one argument, expects it to be a message chain. if that message chain, when applied to the current element returns a false value, the method returns false. finally, if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and tested against the values in this element. if it returns false for any element, this method returns false, otherwise true.",
-
-  []
-  self each(n, unless(cell(:n), return(false)))
-  true,
-
-  [theCode]
-  self each(n, unless(theCode evaluateOn(call ground, cell(:n)), return(false)))
-  true,
-
-  [argName, theCode]
-  lexicalCode = LexicalBlock createFrom(list(argName, theCode), call ground)
-  self each(n, unless(lexicalCode call(cell(:n)), return(false)))
-  true)
 
 Mixins Enumerable one? = dmacro(
   "takes zero, one or two arguments. if zero arguments, returns true if exactly one of the elements is true, otherwise false. if one argument, expects it to be a message chain that will be used as a predicate. if that predicate returns true for exactly one element, returns true, otherwise false. finally, if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and tested against the values in this element. if it returns true for exactly one element, returns true, otherwise false",
