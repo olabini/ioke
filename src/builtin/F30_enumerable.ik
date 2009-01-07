@@ -14,12 +14,8 @@ Mixins Enumerable sort = method(
 
 
 let(enumerableMapMethod, 
-  syntax(
-    docstr = call arguments[0]
-    initCode = call arguments[1]
-    assignName = call arguments[2]
-    updateCode = call arguments[3]
-    returnCode = call arguments[4]
+  dsyntax(
+    [docstr, initCode, assignName, updateCode, returnCode]
 
     ''(dmacro(`docstr,
       [theCode]
@@ -71,6 +67,16 @@ Mixins Enumerable mapFn = method(
     result << current)
 
   result)
+
+; let(enumerableDefaultMethod, 
+;   syntax(
+    
+;     ),
+
+;   Mixins Enumerable any? = enumerableDefaultMethod("str", ., x, if(cell(:x), return(true)), false)
+;   Mixins Enumerable none? = enumerableDefaultMethod("str", ., x, if(cell(:x), return(false)), true)
+;   Mixins Enumerable some = enumerableDefaultMethod("str", ., x, if(cell(:x), return(it)), false)
+; )
 
 Mixins Enumerable any? = dmacro(
   "takes zero, one or two arguments. if zero arguments, returns true if any of the elements yielded by each is true, otherwise false. if one argument, expects it to be a message chain. if that message chain, when applied to the current element returns a true value, the method returns true. finally, if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and tested against the values in this element. if it returns true for any element, this method returns true, otherwise false.",
