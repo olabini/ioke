@@ -189,6 +189,26 @@ describe("Text",
       "1234567891011"[5...4] should == ""
     )
   )
+
+	describe("trim",
+		it("should return the string if nothing needs to be trimmed",
+			"foo" trim should == "foo"
+			"foo bar quux" trim should == "foo bar quux"
+		)
+		
+		it("should return a new string with leading and trailing whitespace removed",
+			"foo  " trim should == "foo"
+			"  foo" trim should == "foo"
+			" foo " trim should == "foo"
+			"  foo bar quux  " trim should == "foo bar quux"
+		)
+		
+		it("should return a new string with leading and trailing newlines removed",
+			"foo\n" trim should == "foo"
+			"\nfoo" trim should == "foo"
+			"\nfoo\n" trim should == "foo"
+		)
+	)
   
   describe("split",
     it("should return the string if nothing to split on is available",
@@ -208,6 +228,20 @@ describe("Text",
       "x oooo y o fofblooooooooooooo" split(#/o+/) should == ["x ", " y ", " f", "fbl", ""]
     )
   )
+
+	describe("chars",
+		it("should return an empty list on an empty string",
+			"" chars should == []
+		)
+		
+		it("should return a list of three individual strings on a three-character string",
+			"foo" chars should == ["f", "o", "o"]
+		)
+		
+		it("should include whitespace",
+			"foo bar\n" chars should == ["f", "o", "o", " ", "b", "a", "r", "\n"]
+		)
+	)
 
   describe("*",
     it("should return an empty string for 0",
@@ -319,6 +353,20 @@ describe("Text",
       x should == "FLuRg"
     )
   )
+
+	describe("upper",
+		it("should return the same string if it's already upper case",
+			"FOO" upper should == "FOO"
+			"FOO BAR QUUX" upper should == "FOO BAR QUUX"
+		)
+		
+		it("should make everything upper case and return a new string",
+			"fop" upper should == "FOP"
+      x = "FLuRg"
+      x upper should == "FLURG"
+      x should == "FLuRg"
+		)
+	)
   
   describe("replace",
     it("should return the same string when the thing to replace isn't there",
