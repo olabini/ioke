@@ -20,6 +20,24 @@ describe("Message",
         Message OperatorTable operators[:"+"] should == 3
       )
     )
+
+    describe("withAssignOperator",
+      it("should temporarily add a new assign operator to the table, but then remove it",
+        Message OperatorTable withAssignOperator("+++++", 42,
+          Message OperatorTable assignOperators[:"+++++"] should == 42
+        )
+        
+        Message OperatorTable assignOperators[:"+++++"] should == nil
+      )
+
+      it("should reassign the associativity of an existing operator",
+        Message OperatorTable withAssignOperator("+=", 42,
+          Message OperatorTable assignOperators[:"+="] should == 42
+        )
+
+        Message OperatorTable assignOperators[:"+="] should == 2
+      )
+    )
   )
 
   describe("code", 
