@@ -145,7 +145,7 @@ public class Main {
                 ((IokeSystem)IokeObject.data(r.system)).setCurrentProgram(file);
                 r.evaluateFile(file, message, context);
             } else {
-                if(scripts.size() == 0 && !printedSomething) {
+                if(!readStdin && scripts.size() == 0 && !printedSomething) {
                     r.evaluateString("use(\"builtin/iik\"). IIk mainLoop", message, context);
                 }
             }
