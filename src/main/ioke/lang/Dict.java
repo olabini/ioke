@@ -112,6 +112,8 @@ public class Dict extends IokeData {
                 }
             }));
 
+        obj.aliasMethod("merge", "+", null, null);
+
         obj.registerMethod(runtime.newJavaMethod("takes one argument, the key of the element to return. if the key doesn't map to anything in the dict, returns the default value", new JavaMethod("at") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
