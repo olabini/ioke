@@ -1004,7 +1004,7 @@ describe(DefaultBehavior,
   )
 
   describe("''",
-    it("should work exactly like ' for anything not containing a `",
+    it("should work exactly like ' for anything not containing a ` or '",
       ''(+(200)) name should == :"+"
       ''(abc foo bar quux lux) name should == :abc
 
@@ -1017,6 +1017,19 @@ describe(DefaultBehavior,
 
       xx = '(foo bar(if(true)))
       ''(max `xx) code should == "max foo bar(if(true))"
+
+      mux = 'message
+      out = ''(mux `mux)
+      mux << 'foo
+      out code should == "mux message(foo)"
+    )
+
+    it("should splice a message that is a deep copy of a ' form",
+      mux = 'message
+      ''(mux 'mux) code should == "mux message"
+      out = ''(mux 'mux)
+      mux << 'foo
+      out code should == "mux message"
     )
 
     it("should resplize an argument list to a spliced message without arguments",
@@ -1033,6 +1046,10 @@ describe(DefaultBehavior,
 
     it("should should insert a literal ` if a `` message is encountered",
       ''(mux ``(abc)) code should == "mux `(abc)"
+    )
+
+    it("should should insert a literal ' if a '' message is encountered",
+      ''(mux ''(abc)) code should == "mux '(abc)"
     )
   )
 )
