@@ -6,6 +6,8 @@ build.properties
 src/generated
 spike
 version_data.properties
+.classpath
+.project
 /dok
 /rels
 /lib/dist

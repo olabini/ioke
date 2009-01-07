@@ -79,6 +79,22 @@ public class Text extends IokeData {
                 }
             }));
 
+        obj.registerMethod(obj.runtime.newJavaMethod("Returns an upper case version of this text", new JavaMethod.WithNoArguments("upper") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                    return method.runtime.newText(Text.getText(on).toUpperCase());
+                }
+            }));
+        
+        obj.registerMethod(obj.runtime.newJavaMethod("Returns a version of this text with leading and trailing whitespace removed", new JavaMethod.WithNoArguments("trim") {
+        		@Override
+        		public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+        			getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+        			return method.runtime.newText(Text.getText(on).trim());
+        		}
+        	}));
+
         obj.registerMethod(obj.runtime.newJavaMethod("Returns an array of texts split around the argument", new JavaMethod("split") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
