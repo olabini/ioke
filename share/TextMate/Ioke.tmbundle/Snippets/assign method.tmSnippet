@@ -11,7 +11,7 @@
 	<key>scope</key>
 	<string>source.ioke</string>
 	<key>tabTrigger</key>
-	<string>met</string>
+	<string>method</string>
 	<key>uuid</key>
 	<string>D3AF893E-328A-43AB-85A1-4AAFCBF7FAB6</string>
 </dict>

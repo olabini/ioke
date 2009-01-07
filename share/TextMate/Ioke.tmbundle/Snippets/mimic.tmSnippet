@@ -10,7 +10,7 @@ $0</string>
 	<key>scope</key>
 	<string>source.ioke</string>
 	<key>tabTrigger</key>
-	<string>mim</string>
+	<string>mimic</string>
 	<key>uuid</key>
 	<string>7C33CB2C-CD28-4203-863F-EF2DD6E50E9B</string>
 </dict>
