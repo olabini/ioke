@@ -5,7 +5,7 @@ train = method(features,
 
 NWORDS = train(words(FileSystem readFully("small.txt")))
 
-alphabet = "abcdefghijklmnopqrstuvwxyz" split("")[1..-1]
+alphabet = "abcdefghijklmnopqrstuvwxyz" chars
 
 edits1 = method(word,
   s = for(i <- 0..(word length + 1), [word[0...i], word[i..-1]])
