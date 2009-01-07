@@ -20,5 +20,5 @@ Text do(=== = generateMatchMethod(==))
 Text chars = method(
 	"returns a list of each character in this text",
 	
-	split("") rest)
+	self split("")[0..-2])
   
