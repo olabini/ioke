@@ -927,5 +927,45 @@ describe(Mixins,
         [1,2,3,4,5,6,7,8,9] grep(customObj, x, (x+1) asText) should == ["2","3","7","8","9","10"]
       )
     )
+
+    describe("max",
+      it("should return the maximum using the <=> operator if no arguments are given",
+        [1,2,3,4] max should == 4
+        set(5,6,7,153,1) max should == 153
+        ["a","b","c"] max should == "c"
+      )
+
+      it("should accept a message chain, and use that to create the comparison criteria",
+        [1,2,3,4] max(*(-1)) should == 1
+        set(5,6,7,153,1) max(*(-1)) should == 1
+        ["abc","bfooo","cc"] max(length) should == "bfooo"
+      )
+
+      it("should accept a variable name and code, and use that to create the comparison criteria",
+        [1,2,3,4] max(x, 10-x) should == 1
+        set(5,6,7,153,1) max(x, if(x > 100, -x, x)) should == 7
+        ["abc","bfooo","cc"] max(x, x[1]) should == "bfooo"
+      )
+    )
+
+    describe("min",
+      it("should return the minimum using the <=> operator if no arguments are given",
+        [1,2,3,4] min should == 1
+        set(5,6,7,153,1) min should == 1
+        ["a","b","c"] min should == "a"
+      )
+
+      it("should accept a message chain, and use that to create the comparison criteria",
+        [1,2,3,4] min(*(-1)) should == 4
+        set(5,6,7,153,1) min(*(-1)) should == 153
+        ["abc","bfooo","cc"] min(length) should == "cc"
+      )
+
+      it("should accept a variable name and code, and use that to create the comparison criteria",
+        [1,2,3,4] min(x, 10-x) should == 4
+        set(5,6,7,153,1) min(x, if(x > 100, -x, x)) should == 153
+        ["abc","bfooo","cc"] min(x, x[1]) should == "abc"
+      )
+    )
   )
 )

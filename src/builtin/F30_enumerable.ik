@@ -140,6 +140,30 @@ let(enumerableDefaultMethod,
       result++),
     result)
 
+  Mixins Enumerable max = enumerableDefaultMethod("takes zero, one or two arguments. if zero arguments, returns the maximum elemnt ackording to the <=> ordering. if one argument, expects it to be a message chain. if that message chain, that will be used as a transform to create the element to compare with. finally, if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and used as the transformer for comparison. the result will always be an element from the collection, or nil if the collection is empty.",
+    theMax = nil
+    theMaxVal = nil,
+
+    if(theMax nil?,
+      theMax = cell(:n)
+      theMaxVal = cell(:x),
+      if(theMaxVal < cell(:x),
+        theMax = cell(:n)
+        theMaxVal = cell(:x))),
+    theMax)
+
+  Mixins Enumerable min = enumerableDefaultMethod("takes zero, one or two arguments. if zero arguments, returns the minimum elemnt ackording to the <=> ordering. if one argument, expects it to be a message chain. if that message chain, that will be used as a transform to create the element to compare with. finally, if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and used as the transformer for comparison. the result will always be an element from the collection, or nil if the collection is empty.",
+    theMin = nil
+    theMinVal = nil,
+
+    if(theMin nil?,
+      theMin = cell(:n)
+      theMinVal = cell(:x),
+      if(theMinVal > cell(:x),
+        theMin = cell(:n)
+        theMinVal = cell(:x))),
+    theMin)
+
   Mixins Enumerable reject = enumerableDefaultMethod("takes one or two arguments. if one argument is given, it will be applied as a message chain as a predicate. those elements that doesn't the predicate will be returned. if two arguments are given, they will be turned into a lexical block and used as a predicate to choose the elements that doesn't match.",
     result = list(),
     unless(cell(:x), 
