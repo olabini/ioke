@@ -1,7 +1,7 @@
 words = method(text, #/[a-z]+/ allMatches(text lower))
 
 train = method(features,
-  features fold({} withDefault(1), model, f, model[f] += 1. model))
+  features fold({} withDefault(1), model, f, model[f] ++. model))
 
 NWORDS = train(words(FileSystem readFully("small.txt")))
 
