@@ -362,6 +362,7 @@ public class Text extends IokeData {
         int formatIndex = index;
         int justify = 0;
         boolean splat = false;
+        boolean splatPairs = false;
         boolean negativeJustify = false;
         boolean doAgain = false;
         int argCount = positionalArgs.size();
@@ -386,6 +387,10 @@ public class Text extends IokeData {
                             splat = true;
                             doAgain = true;
                             break;
+                        case ':':
+                            splatPairs = true;
+                            doAgain = true;
+                            break;
                         case ']':
                             return formatIndex;
                         case '[':
@@ -393,12 +398,16 @@ public class Text extends IokeData {
                             final int startLoop = formatIndex;
                             final int[] endLoop = new int[]{-1};
                             final boolean doSplat = splat;
+                            final boolean doSplatPairs = splatPairs;
                             splat = false;
+                            splatPairs = false;
                             context.runtime.each.sendTo(context, arg, context.runtime.createMessage(new Message(context.runtime, "internal:collectDataForText#format") { 
                                     private Object doEvaluation(IokeObject ctx, Object ground, Object receiver) throws ControlFlow {
                                         List<Object> args = null;
                                         if(doSplat) {
                                             args = IokeList.getList(receiver);
+                                        } else if(doSplatPairs) {
+                                            args = Arrays.asList(Pair.getFirst(receiver), Pair.getSecond(receiver));
                                         } else {
                                             args = Arrays.asList(receiver);
                                         }
