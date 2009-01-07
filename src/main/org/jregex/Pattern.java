@@ -93,7 +93,7 @@ public class Pattern implements Serializable,REFlags{
    // number of lookahead groups
    int lookaheads;
    
-   Hashtable namedGroupMap;
+   Map namedGroupMap;
    
    protected Pattern() throws PatternSyntaxException{}
    
@@ -106,6 +106,10 @@ public class Pattern implements Serializable,REFlags{
    */
    public Pattern(String regex) throws PatternSyntaxException{
       this(regex,DEFAULT);
+   }
+
+   public Set getGroupNames() {
+      return namedGroupMap.keySet();
    }
       
   /**
@@ -441,4 +445,48 @@ public class Pattern implements Serializable,REFlags{
       }
       throw new PatternSyntaxException("unknown flag: "+c);
    }
+
+    public static String quote(String input) {
+        int p = 0;
+        char[] entries = input.toCharArray();
+        int end = entries.length;
+
+        metaFound: do {
+            for(; p < end; p++) {
+                char c = entries[p];
+                switch (c) {
+                case '[': case ']': case '{': case '}':
+                case '(': case ')': case '|': case '-':
+                case '*': case '.': case '\\':
+                case '?': case '+': case '^': case '$':
+                case ' ': case '#':
+                case '\t': case '\f': case '\n': case '\r':
+                    break metaFound;
+                }
+            }
+            return input;
+        } while (false);
+
+        StringBuilder result = new StringBuilder();
+        result.append(entries, 0, p);
+
+        for(; p < end; p++) {
+            char c = entries[p];
+            switch (c) {
+            case '[': case ']': case '{': case '}':
+            case '(': case ')': case '|': case '-':
+            case '*': case '.': case '\\':
+            case '?': case '+': case '^': case '$':
+            case '#': result.append('\\'); break;
+            case ' ': result.append("\\ "); continue;
+            case '\t':result.append("\\t"); continue;
+            case '\n':result.append("\\n"); continue;
+            case '\r':result.append("\\r"); continue;
+            case '\f':result.append("\\f"); continue;
+            }
+            result.append(c);
+        }
+
+        return result.toString();
+    }
 }

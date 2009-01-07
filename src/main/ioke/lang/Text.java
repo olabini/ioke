@@ -11,6 +11,10 @@ import java.util.Arrays;
 
 import ioke.lang.exceptions.ControlFlow;
 
+import org.jregex.Pattern;
+import org.jregex.RETokenizer;
+import org.jregex.Replacer;
+
 /**
  *
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
@@ -106,12 +110,22 @@ public class Text extends IokeData {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> args = new ArrayList<Object>();
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
-                    String around = Text.getText(args.get(0));
                     String real = Text.getText(on);
-                    String[] results = real.split(around);
-                    List<Object> r = new ArrayList<Object>(results.length);
-                    for(String s : results) {
-                        r.add(context.runtime.newText(s));
+                    Object arg = args.get(0);
+
+                    List<Object> r = new ArrayList<Object>();
+                    Pattern p = null;
+                    if(IokeObject.data(arg) instanceof Regexp) {
+                        p = Regexp.getRegexp(arg);
+                    } else {
+                        String around = Text.getText(arg);
+                        p = new Pattern(Pattern.quote(around));
+                    }
+
+                    RETokenizer tok = new RETokenizer(p, real);
+                    tok.setEmptyEnabled(true);
+                    while(tok.hasMore()) {
+                        r.add(context.runtime.newText(tok.nextToken()));
                     }
 
                     return context.runtime.newList(r);
@@ -134,11 +148,23 @@ public class Text extends IokeData {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> args = new ArrayList<Object>();
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
-                    String pat = Text.getText(args.get(0));
-                    String repl = Text.getText(args.get(1));
                     String initial = Text.getText(on);
+                    String repl = Text.getText(args.get(1));
 
-                    return context.runtime.newText(initial.replaceFirst(pat, repl));
+                    Object arg = args.get(0);
+
+                    Pattern pat = null;
+                    if(IokeObject.data(arg) instanceof Regexp) {
+                        pat = Regexp.getRegexp(arg);
+                    } else {
+                        String around = Text.getText(arg);
+                        pat = new Pattern(Pattern.quote(around));
+                    }
+
+                    Replacer r = pat.replacer(repl);
+                    String result = r.replaceFirst(initial);
+
+                    return context.runtime.newText(result);
                 }
             }));
 
@@ -158,11 +184,23 @@ public class Text extends IokeData {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> args = new ArrayList<Object>();
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
-                    String pat = Text.getText(args.get(0));
-                    String repl = Text.getText(args.get(1));
                     String initial = Text.getText(on);
+                    String repl = Text.getText(args.get(1));
 
-                    return context.runtime.newText(initial.replaceAll(pat, repl));
+                    Object arg = args.get(0);
+
+                    Pattern pat = null;
+                    if(IokeObject.data(arg) instanceof Regexp) {
+                        pat = Regexp.getRegexp(arg);
+                    } else {
+                        String around = Text.getText(arg);
+                        pat = new Pattern(Pattern.quote(around));
+                    }
+
+                    Replacer r = pat.replacer(repl);
+                    String result = r.replace(initial);
+
+                    return context.runtime.newText(result);
                 }
             }));
 

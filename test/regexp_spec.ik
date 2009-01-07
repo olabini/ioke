@@ -19,9 +19,266 @@ describe(Regexp,
     #/foo/xs should mimic(Regexp)
   )
 
+  describe(Regexp Match,
+    it("should have the correct kind",
+      Regexp Match should have kind("Regexp Match")
+    )
+
+    describe("target",
+      it("should return the original string matched against",
+        x = "foobar"
+        #/oo/ match(x) target should be same(x)
+      )
+    )
+
+    describe("names",
+      it("should return an empty list for a pattern that doesn't have any named groups",
+        #/foo/ match("foo") names should == []
+        #/f(o)o/ match("foo") names should == []
+      )
+    
+      it("should return a list of all the names, ordered from beginning parenthesis",
+        #/({foo}bar)/ match("bar") names should == [:foo]
+        #/({foo}bar)({quux}.)/ match("bar1") names should == [:foo, :quux]
+        #/({foo}({bleg}.))({quux}.)/ match("ab") names should == [:foo, :bleg, :quux]
+      )
+    )
+
+    describe("start",
+      it("should return the start index of group zero, which is the whole group",
+        (#/foo/ =~ "foobar") start should == 0
+        (#/foo/ =~ "abcfoobar") start should == 3
+
+        (#/foo/ =~ "foobar") start(0) should == 0
+        (#/foo/ =~ "abcfoobar") start(0) should == 3
+      )
+
+      it("should return the start index of another group",
+        (#/(..) (..) (..)/ =~ "fooab cd efbar") start(2) should == 6
+      )
+
+      it("should return the start index from the name of a named group",
+        (#/({one}..) ({two}..) ({three}..)/ =~ "fooab cd efbar") start(:two) should == 6
+      )
+
+      it("should return -1 for a group that wasn't matched",
+        (#/(..)((..))?/ =~ "ab") start(2) should == -1
+        (#/({no}..)(({way}..))?/ =~ "ab") start(:way) should == -1
+
+        (#/(..)((..))?/ =~ "ab") start(10) should == -1
+        (#/({no}..)(({way}..))?/ =~ "ab") start(:blarg) should == -1
+      )
+    )
+
+    describe("end",
+      it("should return the end index of group zero, which is the whole group",
+        (#/foo/ =~ "foobar") end should == 3
+        (#/foo/ =~ "abcfoobar") end should == 6
+
+        (#/foo/ =~ "foobar") end(0) should == 3
+        (#/foo/ =~ "abcfoobar") end(0) should == 6
+      )
+
+      it("should return the end index of another group",
+        (#/(..) (..) (..)/ =~ "fooab cd efbar") end(2) should == 8
+      )
+
+      it("should return the end index from the name of a named group",
+        (#/({one}..) ({two}..) ({three}..)/ =~ "fooab cd efbar") end(:two) should == 8
+      )
+
+      it("should return -1 for a group that wasn't matched",
+        (#/(..)((..))?/ =~ "ab") end(2) should == -1
+        (#/({no}..)(({way}..))?/ =~ "ab") end(:way) should == -1
+
+        (#/(..)((..))?/ =~ "ab") end(10) should == -1
+        (#/({no}..)(({way}..))?/ =~ "ab") end(:blarg) should == -1
+      )
+    )
+
+    describe("offset",
+      it("should return the offset of group zero, which is the whole group",
+        (#/foo/ =~ "foobar") offset should == (0 => 3)
+        (#/foo/ =~ "abcfoobar") offset should == (3 => 6)
+
+        (#/foo/ =~ "foobar") offset(0) should == (0 => 3)
+        (#/foo/ =~ "abcfoobar") offset(0) should == (3 => 6)
+      )
+
+      it("should return the offset of another group",
+        (#/(..) (..) (..)/ =~ "fooab cd efbar") offset(2) should == (6 => 8)
+      )
+
+      it("should return the offset from the name of a named group",
+        (#/({one}..) ({two}..) ({three}..)/ =~ "fooab cd efbar") offset(:two) should == (6 => 8)
+      )
+
+      it("should return nil for a group that wasn't matched",
+        (#/(..)((..))?/ =~ "ab") offset(2) should == nil
+        (#/({no}..)(({way}..))?/ =~ "ab") offset(:way) should == nil
+
+        (#/(..)((..))?/ =~ "ab") offset(10) should == nil
+        (#/({no}..)(({way}..))?/ =~ "ab") offset(:blarg) should == nil
+      )
+    )
+
+    describe("match",
+      it("should return the fully matched text",
+        (#/.. / =~ "foobar ") match should == "ar "
+      )
+    )
+
+    describe("beforeMatch",
+      it("should return the part before the string that matched",
+        (#/.. / =~ "foobar ") beforeMatch should == "foob"
+      )
+    )
+
+    describe("afterMatch",
+      it("should return the part before the string that matched",
+        (#/.. / =~ "foobar blargus") afterMatch should == "blargus"
+      )
+    )
+
+    describe("asText",
+      it("should return the fully matched text",
+        (#/.. / =~ "foobar ") asText should == "ar "
+      )
+    )
+
+    describe("length",
+      it("should return the number of groups in the regexp, including the whole match",
+        (#/foo/ =~ "foo") length should == 1
+        (#/f(o)(o)/ =~ "foo") length should == 3
+        (#/f(o)(o)(x)?/ =~ "foo") length should == 4
+      )
+    )
+
+    describe("asList",
+      it("should return the match itself",
+        (#/foo/ =~ "foo") asList should == ["foo"]
+      )
+
+      it("should return all matches in the regexp",
+        (#/f(.)(.)/ =~ "foo") asList should == ["foo", "o", "o"]
+      )
+
+      it("should return unmatched groups as nil",
+        (#/f(.)(.)(.)?/ =~ "foo") asList should == ["foo", "o", "o", nil]
+      )
+    )
+
+    describe("captures",
+      it("should not return the match itself",
+        (#/foo/ =~ "foo") captures should == []
+      )
+
+      it("should return all matches in the regexp",
+        (#/f(.)(.)/ =~ "foo") captures should == ["o", "o"]
+      )
+
+      it("should return unmatched groups as nil",
+        (#/f(.)(.)(.)?/ =~ "foo") captures should == ["o", "o", nil]
+      )
+    )
+
+    describe("[]",
+      describe("number",
+        it("should return the full match when given 0",
+          (#/foo/ =~ "foo")[0] should == "foo"
+          (#/..../ =~ "foo bbb")[0] should == "foo "
+        )
+
+        it("should return nil if given an index out of bounds",
+          (#/foo/ =~ "foo")[1] should == nil
+        )
+
+        it("should return nil if given a group that didn't match",
+          (#/f(.)(.)(.)?/ =~ "foo")[3] should == nil
+        )
+
+        it("should return the match at the index given",
+          (#/f(..)(..)(..)?/ =~ "fabcdef")[1] should == "ab"
+          (#/f(..)(..)(..)?/ =~ "fabcdef")[2] should == "cd"
+        )
+
+        it("should take a negative index to index from the end",
+          (#/f(..)(..)(..)?/ =~ "fabcdef")[-1] should == "ef"
+          (#/f(..)(..)(..)?/ =~ "fabcdef")[-2] should == "cd"
+          (#/f(..)(..)(..)?/ =~ "fabcdef")[-3] should == "ab"
+          (#/f(..)(..)(..)?/ =~ "fabcdef")[-4] should == "fabcdef"
+        )
+      )
+
+      describe("range",
+        it("should return all the matches indexed over",
+          (#/f(..)(..)(..)(..)(..)/ =~ "xxfabcdefghijxx")[2..3] should == ["cd", "ef"]
+          (#/f(..)(..)(..)(..)(..)/ =~ "xxfabcdefghijxx")[2...4] should == ["cd", "ef"]
+        )
+
+        it("should return nil for those that aren't matched",
+          (#/f(..)(..)(..)?(xx)/ =~ "fabcdxx")[2..4] should == ["cd", nil, "xx"]
+        )
+
+        it("should allow negative indices",
+          (#/f(..)(..)(..)(..)(..)/ =~ "xxfabcdefghijxx")[2..-2] should == ["cd", "ef", "gh"]
+        )
+
+        it("should allow indexing outside of length and don't do anything for that",
+          (#/f(..)(..)/ =~ "xxfabcdxx")[1..10] should == ["ab", "cd"]
+        )
+      )
+
+      describe("symbol",
+        it("should return nil if given a name that isn't valid",
+          (#/foo/ =~ "foo")[:foo] should == nil
+        )
+
+        it("should return nil if given a group that didn't match",
+          (#/f(..)(..)({mux}..)?/ =~ "fabcd")[:mux] should == nil
+        )
+
+        it("should return the match at the symbol given",
+          (#/f({mix}..)({max}..)({mux}..)?/ =~ "fabcdef")[:mix] should == "ab"
+          (#/f({mix}..)({max}..)({mux}..)?/ =~ "fabcdef")["mix"] should == "ab"
+          (#/f({mix}..)({max}..)({mux}..)?/ =~ "fabcdef")[:max] should == "cd"
+          (#/f({mix}..)({max}..)({mux}..)?/ =~ "fabcdef")["max"] should == "cd"
+          (#/f({mix}..)({max}..)({mux}..)?/ =~ "fabcdef")[:mux] should == "ef"
+          (#/f({mix}..)({max}..)({mux}..)?/ =~ "fabcdef")["mux"] should == "ef"
+        )
+      )
+    )
+
+    describe("pass",
+      it("should signal an error if calling a group that isn't defined",
+        fn((#/foo/ =~ "foo") testingPassOnRegexp) should signal(Condition Error NoSuchCell)
+      )
+
+      it("should return the string matching a named group if it's matched",
+        (#/foo({mux}..)bar/ =~ "fooQqbar") mux should == "Qq"
+      )
+
+      it("should return nil for a defined group that isn't matched",
+        (#/foo({mux}..)?/ =~ "foob") mux should == nil
+      )
+    )
+  )
+
   describe("pattern",
     it("should return a string containing the pattern used to create it",
       #/foo/ pattern should == "foo"
+    )
+  )
+
+  describe("from",
+    it("should create a new regular expression",
+      Regexp from("foo") should == #/foo/
+      Regexp from("foo bar") should == #/foo bar/
+    )
+
+    it("should take an optional argument for the flags",
+      Regexp from("foo", "xs") should == #/foo/xs
+      Regexp from("foo bar", "xs") should == #/foo bar/xs
     )
   )
 
@@ -35,12 +292,52 @@ describe(Regexp,
       (#/ foo$/ =~ "bar foo") true? should == true
     )
 
+    it("should return an instance of Regexp Match",
+      (#/foo/ =~ "foo") kind should == "Regexp Match"
+    )
+
     it("should return nil when not matching",
       (#/fo{3}/ =~ "foo") should == nil
       (#/fox/ =~ "x foo x") should == nil
       (#/^ foo$/ =~ "foo") should == nil
       (#/foo$/ =~ "foo bar") should == nil
       (#/^foo/ =~ "bar foo") should == nil
+    )
+  )
+
+  describe("match",
+    it("should return a true value when matching",
+      (#/foo/ match("foo")) true? should == true
+      (#/fo{1,2}/ match("foo")) true? should == true
+      (#/foo/ match("x foo x")) true? should == true
+      (#/^foo$/ match("foo")) true? should == true
+      (#/^foo/ match("foo bar")) true? should == true
+      (#/ foo$/ match("bar foo")) true? should == true
+    )
+
+    it("should return an instance of Regexp Match",
+      #/foo/ match("foo") kind should == "Regexp Match"
+    )
+
+    it("should return nil when not matching",
+      (#/fo{3}/ match("foo")) should == nil
+      (#/fox/ match("x foo x")) should == nil
+      (#/^ foo$/ match("foo")) should == nil
+      (#/foo$/ match("foo bar")) should == nil
+      (#/^foo/ match("bar foo")) should == nil
+    )
+  )
+
+  describe("names",
+    it("should return an empty list for a pattern that doesn't have any named groups",
+      #/foo/ names should == []
+      #/f(o)o/ names should == []
+    )
+    
+    it("should return a list of all the names, ordered from beginning parenthesis",
+      #/({foo}bar)/ names should == [:foo]
+      #/({foo}bar)({quux}.)/ names should == [:foo, :quux]
+      #/({foo}({bleg}.))({quux}.)/ names should == [:foo, :bleg, :quux]
     )
   )
 
@@ -95,6 +392,16 @@ describe(Regexp,
     it("should notice correctly for a simple regexp",
       #/foo/ notice should == "#/foo/"
       #/foo/x notice should == "#/foo/x"
+    )
+  )
+
+  describe("quote",
+    it("should return the same text if it doesn't contain any meta characters",
+      Regexp quote("foobar") should == "foobar"
+    )
+
+    it("should quote metacharacters",
+      Regexp quote("+?{}[]().* ") should == "\\+\\?\\{\\}\\[\\]\\(\\)\\.\\*\\ "
     )
   )
 

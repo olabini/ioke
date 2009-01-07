@@ -103,6 +103,32 @@ describe("Dict",
       {foo: 123, 321 => "foo", "bax" => 42} at("bax") should == 42
     )
   )
+  
+  describe("merge",
+    it("should return an equal dict if given an empty dict",
+      {foo: "bar"} merge({}) should == {foo: "bar"}
+    )
+
+    it("should return a new dict that contains both of the keys and values",
+      {foo: "bar"} merge({qux: 42}) should == {foo: "bar", qux: 42}
+    )
+
+    it("should return a new dict that has overwritten the values with the same key",
+      {foo: "bar", qux: 16} merge({qux: 42}) should == {foo: "bar", qux: 42}
+    )
+
+    it("should take zero or more pairs and add them to the returned dict",
+      {foo: "bar", qux: 16} merge(:qux => 42) should == {foo: "bar", qux: 42}
+      {foo: "bar", qux: 16} merge(:qux => 42, {abc: 15}) should == {foo: "bar", qux: 42, abc: 15}
+      {foo: "bar", qux: 16} merge({abc: 15}, :qux => 42) should == {foo: "bar", qux: 42, abc: 15}
+    )
+
+    it("should take zero or more keyword arguments and add them to the returned dict",
+      {foo: "bar", qux: 16} merge(qux: 42) should == {foo: "bar", qux: 42}
+      {foo: "bar", qux: 16} merge(qux: 42, {abc: 15}) should == {foo: "bar", qux: 42, abc: 15}
+      {foo: "bar", qux: 16} merge({abc: 15}, qux: 42) should == {foo: "bar", qux: 42, abc: 15}
+    )
+  )
 
   describe("withDefault",
     it("should return a new mimic",

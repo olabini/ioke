@@ -97,12 +97,28 @@ public class Replacer{
       replace(pattern.matcher(text),substitution,tb);
       return tb.toString();
    }
+
+  /**
+   */
+   public String replaceFirst(String text){
+      TextBuffer tb=wrap(new StringBuffer(text.length()));
+      replaceFirst(pattern.matcher(text),substitution,tb);
+      return tb.toString();
+   }
    
   /**
    */
    public String replace(char[] chars,int off,int len){
       TextBuffer tb=wrap(new StringBuffer(len));
       replace(pattern.matcher(chars,off,len),substitution,tb);
+      return tb.toString();
+   }
+
+  /**
+   */
+   public String replaceFirst(char[] chars,int off,int len){
+      TextBuffer tb=wrap(new StringBuffer(len));
+      replaceFirst(pattern.matcher(chars,off,len),substitution,tb);
       return tb.toString();
    }
    
@@ -113,6 +129,14 @@ public class Replacer{
       replace(pattern.matcher(res,group),substitution,tb);
       return tb.toString();
    }
+
+  /**
+   */
+   public String replaceFirst(MatchResult res,int group){
+      TextBuffer tb=wrap(new StringBuffer());
+      replaceFirst(pattern.matcher(res,group),substitution,tb);
+      return tb.toString();
+   }
    
   /**
    */
@@ -121,11 +145,25 @@ public class Replacer{
       replace(pattern.matcher(text,length),substitution,tb);
       return tb.toString();
    }
+
+  /**
+   */
+   public String replaceFirst(Reader text,int length)throws IOException{
+      TextBuffer tb=wrap(new StringBuffer(length>=0? length: 0));
+      replaceFirst(pattern.matcher(text,length),substitution,tb);
+      return tb.toString();
+   }
    
   /**
    */
    public int replace(String text,StringBuffer sb){
       return replace(pattern.matcher(text),substitution,wrap(sb));
+   }
+
+  /**
+   */
+   public int replaceFirst(String text,StringBuffer sb){
+      return replaceFirst(pattern.matcher(text),substitution,wrap(sb));
    }
    
   /**
@@ -133,11 +171,23 @@ public class Replacer{
    public int replace(char[] chars,int off,int len,StringBuffer sb){
       return replace(chars,off,len,wrap(sb));
    }
+
+  /**
+   */
+   public int replaceFirst(char[] chars,int off,int len,StringBuffer sb){
+      return replaceFirst(chars,off,len,wrap(sb));
+   }
    
   /**
    */
    public int replace(MatchResult res,int group,StringBuffer sb){
       return replace(res,group,wrap(sb));
+   }
+
+  /**
+   */
+   public int replaceFirst(MatchResult res,int group,StringBuffer sb){
+      return replaceFirst(res,group,wrap(sb));
    }
    
   /**
@@ -145,9 +195,19 @@ public class Replacer{
    public int replace(MatchResult res,String groupName,StringBuffer sb){
       return replace(res,groupName,wrap(sb));
    }
+
+  /**
+   */
+   public int replaceFirst(MatchResult res,String groupName,StringBuffer sb){
+      return replaceFirst(res,groupName,wrap(sb));
+   }
    
    public int replace(Reader text,int length,StringBuffer sb)throws IOException{
       return replace(text,length,wrap(sb));
+   }
+
+   public int replaceFirst(Reader text,int length,StringBuffer sb)throws IOException{
+      return replaceFirst(text,length,wrap(sb));
    }
    
   /**
@@ -155,11 +215,23 @@ public class Replacer{
    public int replace(String text,TextBuffer dest){
       return replace(pattern.matcher(text),substitution,dest);
    }
+
+  /**
+   */
+   public int replaceFirst(String text,TextBuffer dest){
+      return replaceFirst(pattern.matcher(text),substitution,dest);
+   }
    
   /**
    */
    public int replace(char[] chars,int off,int len,TextBuffer dest){
       return replace(pattern.matcher(chars,off,len),substitution,dest);
+   }
+
+  /**
+   */
+   public int replaceFirst(char[] chars,int off,int len,TextBuffer dest){
+      return replaceFirst(pattern.matcher(chars,off,len),substitution,dest);
    }
    
   /**
@@ -170,12 +242,28 @@ public class Replacer{
    
   /**
    */
+   public int replaceFirst(MatchResult res,int group,TextBuffer dest){
+      return replaceFirst(pattern.matcher(res,group),substitution,dest);
+   }
+
+  /**
+   */
    public int replace(MatchResult res,String groupName,TextBuffer dest){
       return replace(pattern.matcher(res,groupName),substitution,dest);
+   }
+
+  /**
+   */
+   public int replaceFirst(MatchResult res,String groupName,TextBuffer dest){
+      return replaceFirst(pattern.matcher(res,groupName),substitution,dest);
    }
    
    public int replace(Reader text,int length,TextBuffer dest)throws IOException{
       return replace(pattern.matcher(text,length),substitution,dest);
+   }
+
+   public int replaceFirst(Reader text,int length,TextBuffer dest)throws IOException{
+      return replaceFirst(pattern.matcher(text,length),substitution,dest);
    }
    
   /**
@@ -198,10 +286,37 @@ public class Replacer{
       m.getGroup(MatchResult.TARGET,dest);
       return c;
    }
+
+  /**
+   * Replaces first occurences of a matcher's pattern in a matcher's target
+   * by a given substitution appending the result to a buffer.<br>
+   * The substitution starts from current matcher's position, current match
+   * not included.
+   */
+   public static int replaceFirst(Matcher m,Substitution substitution,TextBuffer dest){
+      int c=0;
+      if(m.find()){
+         if(m.start()>0) m.getGroup(MatchResult.PREFIX,dest);
+         substitution.appendSubstitution(m,dest);
+         c++;
+         m.setTarget(m,MatchResult.SUFFIX);
+      }
+      m.getGroup(MatchResult.TARGET,dest);
+      return c;
+   }
    
    public static int replace(Matcher m,Substitution substitution,Writer out) throws IOException{
       try{
          return replace(m,substitution,wrap(out));
+      }
+      catch(WriteException e){
+         throw e.reason;
+      }
+   }
+
+   public static int replaceFirst(Matcher m,Substitution substitution,Writer out) throws IOException{
+      try{
+         return replaceFirst(m,substitution,wrap(out));
       }
       catch(WriteException e){
          throw e.reason;
@@ -216,10 +331,22 @@ public class Replacer{
    
   /**
    */
+   public void replaceFirst(String text,Writer out) throws IOException{
+      replaceFirst(pattern.matcher(text),substitution,out);
+   }
+
+  /**
+   */
    public void replace(char[] chars,int off,int len,Writer out) throws IOException{
       replace(pattern.matcher(chars,off,len),substitution,out);
    }
    
+  /**
+   */
+   public void replaceFirst(char[] chars,int off,int len,Writer out) throws IOException{
+      replaceFirst(pattern.matcher(chars,off,len),substitution,out);
+   }
+
   /**
    */
    public void replace(MatchResult res,int group,Writer out) throws IOException{
@@ -228,12 +355,28 @@ public class Replacer{
    
   /**
    */
+   public void replaceFirst(MatchResult res,int group,Writer out) throws IOException{
+      replaceFirst(pattern.matcher(res,group),substitution,out);
+   }
+
+  /**
+   */
    public void replace(MatchResult res,String groupName,Writer out) throws IOException{
       replace(pattern.matcher(res,groupName),substitution,out);
    }
    
+  /**
+   */
+   public void replaceFirst(MatchResult res,String groupName,Writer out) throws IOException{
+      replaceFirst(pattern.matcher(res,groupName),substitution,out);
+   }
+
    public void replace(Reader in,int length,Writer out)throws IOException{
       replace(pattern.matcher(in,length),substitution,out);
+   }
+   
+   public void replaceFirst(Reader in,int length,Writer out)throws IOException{
+      replaceFirst(pattern.matcher(in,length),substitution,out);
    }
    
    private static class DummySubstitution implements Substitution{

@@ -167,8 +167,8 @@ class Term implements REFlags{
       int[] vars={1,0,0,0}; //don't use counters[0]
       
       //collect iterators for subsequent optimization
-      Vector iterators=new Vector();
-      Hashtable groupNames=new Hashtable();
+      List iterators=new ArrayList();
+      Map groupNames=new LinkedHashMap();
       
       Pretokenizer t=new Pretokenizer(data,offset,end);
       Term term=makeTree(t,data,vars,flags,new Group(),iterators,groupNames);
@@ -187,9 +187,9 @@ class Term implements REFlags{
       Optimizer opt=Optimizer.find(first);
       if(opt!=null) optimized=opt.makeFirst(first);
       
-      Enumeration en=iterators.elements();
-      while(en.hasMoreElements()){
-         Iterator i=(Iterator)en.nextElement();
+      java.util.Iterator en=iterators.iterator();
+      while(en.hasNext()){
+         Iterator i=(Iterator)en.next();
          i.optimize();
       }
       // ===
@@ -203,7 +203,7 @@ class Term implements REFlags{
    }
 
    private static Term makeTree(Pretokenizer t,char[] data,int[] vars,
-         int flags,Term term,Vector iterators,Hashtable groupNames) throws PatternSyntaxException{
+         int flags,Term term,List iterators,Map groupNames) throws PatternSyntaxException{
 //System.out.println("Term.makeTree(): flags="+flags);
       if(vars.length!=VARS_LENGTH) throw new IllegalArgumentException("vars.length should be "+VARS_LENGTH+", not "+vars.length);
       //Term term=new Term(isMemReg? vars[MEMREG_COUNT]: -1);
@@ -239,7 +239,7 @@ class Term implements REFlags{
                   catch(NumberFormatException e){
                      throw new PatternSyntaxException("group name starts with digit but is not a number");
                   }
-                  if(groupNames.contains(new Integer(id))){
+                  if(groupNames.containsValue(new Integer(id))){
                      if(t.groupDeclared) throw new PatternSyntaxException("group redeclaration: "+gname+"; use ({=id}...) for multiple group assignments");
                   }
                   if(vars[MEMREG_COUNT]<=id)vars[MEMREG_COUNT]=id+1;
@@ -355,7 +355,7 @@ class Term implements REFlags{
    }
    
    protected void append(int offset,int end,char[] data,
-         int[] vars,int flags,Vector iterators,Hashtable gmap) throws PatternSyntaxException{
+         int[] vars,int flags,List iterators,Map gmap) throws PatternSyntaxException{
 //System.out.println("append("+new String(data,offset,end-offset)+")");
 //System.out.println("current="+this.current);
       int[] limits=new int[3];
@@ -514,7 +514,7 @@ class Term implements REFlags{
    }
    
    
-   private static int parseGroupId(char[] data, int i, int end, Term term, Hashtable gmap) throws PatternSyntaxException{
+   private static int parseGroupId(char[] data, int i, int end, Term term, Map gmap) throws PatternSyntaxException{
       int id;
       int nstart=i;
       if(Character.isDigit(data[i])){
@@ -671,7 +671,7 @@ class Term implements REFlags{
 //System.out.println();
    }
 
-   private final static Term makeGreedyStar(int[] vars,Term term,Vector iterators) throws PatternSyntaxException{
+   private final static Term makeGreedyStar(int[] vars,Term term,List iterators) throws PatternSyntaxException{
       //vars[STACK_SIZE]++;
       switch(term.type){
          case REPEAT_0_INF:
@@ -734,7 +734,7 @@ class Term implements REFlags{
       }
    }
 
-   private final static Term makeGreedyPlus(int[] vars,Term term,Vector iterators) throws PatternSyntaxException{
+   private final static Term makeGreedyPlus(int[] vars,Term term,List iterators) throws PatternSyntaxException{
       //vars[STACK_SIZE]++;
       switch(term.type){
          case REPEAT_0_INF:
@@ -870,7 +870,7 @@ class Term implements REFlags{
       }
    }
 
-   private final static Term makeGreedyLimits(int[] vars,Term term,int[] limits,Vector iterators) throws PatternSyntaxException{
+   private final static Term makeGreedyLimits(int[] vars,Term term,int[] limits,List iterators) throws PatternSyntaxException{
       //vars[STACK_SIZE]++;
       int m=limits[0];
       int n=limits[1];
@@ -2106,8 +2106,8 @@ class Lookbehind extends Term{
 
 class Iterator extends Term{
    
-   Iterator(Term term,int min,int max,Vector collection) throws PatternSyntaxException{
-      collection.addElement(this);
+   Iterator(Term term,int min,int max,List collection) throws PatternSyntaxException{
+      collection.add(this);
       switch(term.type){
          case CHAR:
          case ANY_CHAR:

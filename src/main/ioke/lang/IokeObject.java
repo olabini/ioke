@@ -171,6 +171,28 @@ public class IokeObject {
         return as(obj).findPlace(name, visited);
     }
 
+    public static Object findPlace(Object obj, IokeObject m, IokeObject context, String name) throws ControlFlow {
+        Object result = findPlace(obj, name, new IdentityHashMap<IokeObject, Object>());
+        if(result == m.runtime.nul) {
+            final IokeObject condition = IokeObject.as(IokeObject.getCellChain(m.runtime.condition, 
+                                                                               m, 
+                                                                               context, 
+                                                                               "Error", 
+                                                                               "NoSuchCell")).mimic(m, context);
+            condition.setCell("message", m);
+            condition.setCell("context", context);
+            condition.setCell("receiver", obj);
+            condition.setCell("cellName", m.runtime.getSymbol(name));
+
+            m.runtime.withReturningRestart("ignore", context, new RunnableWithControlFlow() {
+                    public void run() throws ControlFlow {
+                        condition.runtime.errorCondition(condition);
+                    }});
+            
+        }
+        return result;
+    }
+
     /**
      * Finds the first object in the chain where name is available as a cell, or nul if nothing can be found.
      * findPlace is cycle aware and will not loop in an infinite chain. subclasses should copy this behavior.
@@ -184,6 +206,9 @@ public class IokeObject {
             return runtime.nul;
         }
         if(cells.containsKey(name)) {
+            if(cells.get(name) == runtime.nul) {
+                return runtime.nul;
+            }
             return this;
         } else {
             visited.put(this, null);
@@ -301,6 +326,14 @@ public class IokeObject {
         return value;
     }
 
+    public static void removeCell(Object on, IokeObject m, IokeObject context, String name) throws ControlFlow {
+        ((IokeObject)on).removeCell(m, context, name);
+    }
+
+    public static void undefineCell(Object on, IokeObject m, IokeObject context, String name) throws ControlFlow {
+        ((IokeObject)on).undefineCell(m, context, name);
+    }
+
     public Object getCell(IokeObject m, IokeObject context, String name) throws ControlFlow {
         final String outerName = name;
         Object cell = this.findCell(m, context, name);
@@ -358,6 +391,31 @@ public class IokeObject {
         }
 
         return cell;
+    }
+
+    public void removeCell(IokeObject m, IokeObject context, String name) throws ControlFlow {
+        if(cells.containsKey(name)) {
+            cells.remove(name);
+        } else {
+            final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
+                                                                               m, 
+                                                                               context, 
+                                                                               "Error", 
+                                                                               "NoSuchCell")).mimic(m, context);
+            condition.setCell("message", m);
+            condition.setCell("context", context);
+            condition.setCell("receiver", this);
+            condition.setCell("cellName", runtime.getSymbol(name));
+
+            runtime.withReturningRestart("ignore", context, new RunnableWithControlFlow() {
+                    public void run() throws ControlFlow {
+                        runtime.errorCondition(condition);
+                    }});
+        }
+    }
+
+    public void undefineCell(IokeObject m, IokeObject context, String name) throws ControlFlow {
+        cells.put(name, runtime.nul);
     }
 
     public String getKind() {

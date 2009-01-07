@@ -41,6 +41,10 @@ describe("DefaultMethod",
     method("foo is bar", nil) documentation should == "foo is bar"
   )
 
+  it("should be possible to use identity inside of it",
+    method(identity) call kind should == "Locals"
+  )
+
   it("should signal a condition if activating the kind",
     fn(DefaultMethod) should signal(Condition Error Invocation NotActivatable)
   )

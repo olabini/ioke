@@ -6,6 +6,7 @@ package ioke.lang;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 import org.jregex.Matcher;
 import org.jregex.Pattern;
@@ -47,6 +48,10 @@ public class Regexp extends IokeData {
         return ((Regexp)IokeObject.data(on)).pattern;
     }
 
+    public static Pattern getRegexp(Object on) throws ControlFlow {
+        return ((Regexp)IokeObject.data(on)).regexp;
+    }
+
     public static String getFlags(Object on) throws ControlFlow {
         return ((Regexp)IokeObject.data(on)).flags;
     }
@@ -56,6 +61,11 @@ public class Regexp extends IokeData {
         final Runtime runtime = obj.runtime;
         obj.setKind("Regexp");
 
+        final IokeObject regexpMatch  = new IokeObject(runtime, "contains behavior related to assignment", new RegexpMatch(obj, null, null));
+        regexpMatch.mimicsWithoutCheck(runtime.origin);
+        regexpMatch.init();
+        obj.registerCell("Match", regexpMatch);
+
         obj.registerMethod(runtime.newJavaMethod("Returns the pattern use for this regular expression", new JavaMethod.WithNoArguments("pattern") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
@@ -64,7 +74,7 @@ public class Regexp extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("Takes one argument and tries to match that argument against the current pattern. Returns nil if no match can be done, or a Regexp Match object if a match succeeds", new JavaMethod("=~") {
+        obj.registerMethod(runtime.newJavaMethod("Takes one argument and tries to match that argument against the current pattern. Returns nil if no match can be done, or a Regexp Match object if a match succeeds", new JavaMethod("match") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("other")
@@ -80,9 +90,66 @@ public class Regexp extends IokeData {
                     List<Object> args = new ArrayList<Object>();
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
 
-                    String arg = Text.getText(context.runtime.asText.sendTo(context, args.get(0)));
+                    IokeObject target = IokeObject.as(context.runtime.asText.sendTo(context, args.get(0)));
+                    String arg = Text.getText(target);
                     Matcher m = ((Regexp)IokeObject.data(on)).regexp.matcher(arg);
-                    return m.find() ? context.runtime._true : context.runtime.nil;
+                    
+                    if(m.find()) {
+                        IokeObject match = regexpMatch.allocateCopy(message, context);
+                        match.mimicsWithoutCheck(regexpMatch);
+                        match.setData(new RegexpMatch(IokeObject.as(on), m, target));
+                        return match;
+                    } else {
+                        return context.runtime.nil;
+                    }
+                }
+            }));
+
+        obj.aliasMethod("match", "=~", null, null);
+
+        obj.registerMethod(runtime.newJavaMethod("Takes one argument that should be a text and returns a text that has all regexp meta characters quoted", new JavaMethod("quote") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("text")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+
+                    return context.runtime.newText(Pattern.quote(Text.getText(context.runtime.asText.sendTo(context, args.get(0)))));
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("Takes one or two text arguments that describes the regular expression to create. the first text is the pattern and the second is the flags.", new JavaMethod("from") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("pattern")
+                    .withOptionalPositional("flags", "")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+                    String pattern = Text.getText(context.runtime.asText.sendTo(context, args.get(0)));
+                    String flags = "";
+                    if(args.size() > 1) {
+                        flags = Text.getText(context.runtime.asText.sendTo(context, args.get(1)));
+                    }
+
+                    return context.runtime.newRegexp(pattern, flags, context, message);
                 }
             }));
 
@@ -129,6 +196,20 @@ public class Regexp extends IokeData {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return method.runtime.newText(Regexp.getNotice(on));
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("returns a list of all the named groups in this regular expression", new JavaMethod.WithNoArguments("names") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+
+                    Set names = getRegexp(on).getGroupNames();
+                    List<Object> theNames = new ArrayList<Object>();
+                    for(Object name : names) {
+                        theNames.add(context.runtime.getSymbol(((String)name)));
+                    }
+                    return context.runtime.newList(theNames);
                 }
             }));
     }
