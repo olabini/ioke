@@ -121,6 +121,10 @@ DefaultBehavior Definitions dlecrox = syntax("works exactly the same as dmacro, 
   DefaultBehavior Definitions destructuring doFor('lecrox, call)
 )
 
+DefaultBehavior Definitions dsyntax = syntax("works exactly the same as dmacro, but returns a DefaultSyntax instead",
+  DefaultBehavior Definitions destructuring doFor('syntax, call)
+)
+
 DefaultBehavior Definitions destructuring generatePatternMatch = method(thePattern, where,
   minAndMax = patternMinAndMax(thePattern)
 
