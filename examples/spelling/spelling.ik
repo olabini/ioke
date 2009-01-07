@@ -20,5 +20,5 @@ known = method(words, for:set(w <- words, NWORDS key?(w), w))
 
 correct = method(word,
   candidates = known([word]) ifEmpty(known(edits1(word)) ifEmpty(knownEdits2(word) ifEmpty([word])))
-  candidates sortBy(x, NWORDS[x]) last)
+  candidates max(x, NWORDS[x]))
 
