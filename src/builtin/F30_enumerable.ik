@@ -68,63 +68,55 @@ Mixins Enumerable mapFn = method(
 
   result)
 
-; let(enumerableDefaultMethod, 
-;   syntax(
-    
-;     ),
+let(enumerableDefaultMethod, 
+  dsyntax(
+    [docstr, initCode, argName, repCode, returnCode]
 
-;   Mixins Enumerable any? = enumerableDefaultMethod("str", ., x, if(cell(:x), return(true)), false)
-;   Mixins Enumerable none? = enumerableDefaultMethod("str", ., x, if(cell(:x), return(false)), true)
-;   Mixins Enumerable some = enumerableDefaultMethod("str", ., x, if(cell(:x), return(it)), false)
-; )
+    ''(dmacro(`docstr,
+        []
+        'initCode
+        self each(n,
+          '(argName) = cell(:n)
+          'repCode)
+        'returnCode,
 
-Mixins Enumerable any? = dmacro(
-  "takes zero, one or two arguments. if zero arguments, returns true if any of the elements yielded by each is true, otherwise false. if one argument, expects it to be a message chain. if that message chain, when applied to the current element returns a true value, the method returns true. finally, if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and tested against the values in this element. if it returns true for any element, this method returns true, otherwise false.",
+        [theCode]
+        'initCode
+        self each(n, 
+          '(argName) = theCode evaluateOn(call ground, cell(:n))
+          'repCode)
+        'returnCode,
 
-  []
-  self each(n, if(cell(:n), return(true)))
-  false,
+        [argName, theCode]
+        'initCode
+        lexicalCode = LexicalBlock createFrom(list(argName, theCode), call ground)
+        self each(n, 
+          '(argName) = lexicalCode call(cell(:n))
+          'repCode)
+        'returnCode))),
 
-  [theCode]
-  self each(n, if(theCode evaluateOn(call ground, cell(:n)), return(true)))
-  false,
+  Mixins Enumerable any? = enumerableDefaultMethod("takes zero, one or two arguments. if zero arguments, returns true if any of the elements yielded by each is true, otherwise false. if one argument, expects it to be a message chain. if that message chain, when applied to the current element returns a true value, the method returns true. finally, if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and tested against the values in this element. if it returns true for any element, this method returns true, otherwise false.",
+    ., 
+    x, 
+    if(cell(:x), 
+      return(true)), 
+    false)
 
-  [argName, theCode]
-  lexicalCode = LexicalBlock createFrom(list(argName, theCode), call ground)
-  self each(n, if(lexicalCode call(cell(:n)), return(true)))
-  false)
+  Mixins Enumerable none? = enumerableDefaultMethod("takes zero, one or two arguments. if zero arguments, returns false if any of the elements yielded by each is true, otherwise true. if one argument, expects it to be a message chain. if that message chain, when applied to the current element returns a true value, the method returns false. finally, if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and tested against the values in this element. if it returns true for any element, this method returns false, otherwise true.", 
+    ., 
+    x, 
+    if(cell(:x), 
+      return(false)), 
+    true)
 
-Mixins Enumerable none? = dmacro(
-  "takes zero, one or two arguments. if zero arguments, returns false if any of the elements yielded by each is true, otherwise true. if one argument, expects it to be a message chain. if that message chain, when applied to the current element returns a true value, the method returns false. finally, if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and tested against the values in this element. if it returns true for any element, this method returns false, otherwise true.",
+  Mixins Enumerable some = enumerableDefaultMethod("takes zero, one or two arguments. if zero arguments, returns the first element that is true, otherwise false. if one argument, expects it to be a message chain. if that message chain, when applied to the current element returns a true value, that value is return. finally, if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and tested against the values in this element. if it returns true for any element, that value will be returned, otherwise false.", 
+    ., 
+    x, 
+    if(cell(:x),
+      return(it)), 
+    false)
+)
 
-  []
-  self each(n, if(cell(:n), return(false)))
-  true,
-
-  [theCode]
-  self each(n, if(theCode evaluateOn(call ground, cell(:n)), return(false)))
-  true,
-
-  [argName, theCode]
-  lexicalCode = LexicalBlock createFrom(list(argName,theCode), call ground)
-  self each(n, if(lexicalCode call(cell(:n)), return(false)))
-  true)
-
-Mixins Enumerable some = dmacro(
-  "takes zero, one or two arguments. if zero arguments, returns the first element that is true, otherwise false. if one argument, expects it to be a message chain. if that message chain, when applied to the current element returns a true value, that value is return. finally, if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and tested against the values in this element. if it returns true for any element, that value will be returned, otherwise false.",
-  
-  []
-  self each(n, if(cell(:n), return(it)))
-  false,
-
-  [theCode]
-  self each(n, if(theCode evaluateOn(call ground, cell(:n)), return(it)))
-  false,
-
-  [argName, theCode]
-  lexicalCode = LexicalBlock createFrom(list(argName, theCode), call ground)
-  self each(n, if(lexicalCode call(cell(:n)), return(it)))
-  false)
 
 Mixins Enumerable find = dmacro(
   "takes zero, one or two arguments. if zero arguments, returns the first element that is true, otherwise nil. if one argument, expects it to be a message chain. if that message chain, when applied to the current element returns a true value, the corresponding element is returned. finally, if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and tested against the values in this element. if it returns true for any element, the element will be retuend, otherwise nil.",
