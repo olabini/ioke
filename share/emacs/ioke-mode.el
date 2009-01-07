@@ -1,6 +1,6 @@
-;;; ioke-mode2.el --- Major mode for the ioke language
+;;; ioke-mode.el --- Major mode for the ioke language
 
-;; Copyright (C) 2008  Ola Bini
+;; Copyright (C) 2008-2009  Ola Bini
 
 ;; Author: Ola Bini <ola.bini@gmail.com>
 ;; Keywords: 
@@ -373,7 +373,7 @@
 
 (defun ioke-eval-buffer () (interactive)
        "Evaluate the buffer with ioke."
-       (shell-command-on-region (point-min) (point-max) "ioke"))
+       (shell-command-on-region (point-min) (point-max) "ioke -"))
 
 (defun ioke-indent-line ()
   "ioke mode indent line"
