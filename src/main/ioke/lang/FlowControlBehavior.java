@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.HashSet;
 
@@ -21,6 +22,90 @@ public class FlowControlBehavior {
     public static void init(IokeObject obj) throws ControlFlow {
         final Runtime runtime = obj.runtime;
         obj.setKind("DefaultBehavior FlowControl");
+
+        obj.registerMethod(runtime.newJavaMethod("takes zero or more place and value pairs and one code argument, establishes a new lexical scope and binds the places to the values given. if the place is a simple name, it will just be created as a new binding in the lexical scope. if it is a place specification, that place will be temporarily changed - but guaranteed to be changed back after the lexical scope is finished. the let-form returns the final result of the code argument.", new JavaMethod("let") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRestUnevaluated("placesAndValues")
+                    .withRequiredPositionalUnevaluated("code")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
+                    List<Object> args = message.getArguments();
+                    LexicalContext lc = new LexicalContext(context.runtime, context.getRealContext(), "Let lexical activation context", message, context);
+                    int ix = 0;
+                    int end = args.size()-1;
+                    List<Object[]> valuesToUnbind = new LinkedList<Object[]>();
+                    try {
+                        while(ix < end) {
+                            IokeObject place = IokeObject.as(args.get(ix++));
+
+                            if(Message.next(place) == null && place.getArguments().size() == 0) {
+                                Object value = message.getEvaluatedArgument(ix++, context);
+                                lc.setCell(Message.name(place), value);
+                            } else {
+                                place = Message.deepCopy(place);
+                                IokeObject realPlace = place;
+                                while(Message.next(realPlace) != null) {
+                                    if(Message.next(Message.next(realPlace)) == null) {
+                                        IokeObject temp = Message.next(realPlace);
+                                        Message.setNext(realPlace, null);
+                                        realPlace = temp;
+                                    } else {
+                                        realPlace = Message.next(realPlace);
+                                    }
+                                }
+
+                                Object wherePlace = context.getRealContext();
+                                if(place != realPlace) {
+                                    wherePlace = Message.getEvaluatedArgument(place, context);
+                                }
+
+                                Object originalValue = realPlace.sendTo(context, wherePlace);
+                            
+                                if(realPlace.getArguments().size() != 0) {
+                                    String newName = realPlace.getName() + "=";
+                                    List<Object> arguments = new ArrayList<Object>(realPlace.getArguments());
+                                    arguments.add(args.get(ix++));
+                                    context.runtime.newMessageFrom(realPlace, newName, arguments).sendTo(context, wherePlace);
+                                    valuesToUnbind.add(0, new Object[]{wherePlace, originalValue, realPlace});
+                                } else {
+                                    Object value = message.getEvaluatedArgument(ix++, context);
+                                    IokeObject.assign(wherePlace, realPlace.getName(), value, context, message);
+                                    valuesToUnbind.add(0, new Object[]{wherePlace, originalValue, realPlace});
+                                }
+                            }
+                        }
+
+                        return message.getEvaluatedArgument(end, lc);
+                    } finally {
+                        while(!valuesToUnbind.isEmpty()) {
+                            try {
+                                Object[] vals = valuesToUnbind.remove(0);
+                                IokeObject wherePlace = IokeObject.as(vals[0]);
+                                Object value = vals[1];
+                                IokeObject realPlace = IokeObject.as(vals[2]);
+
+                                if(realPlace.getArguments().size() != 0) {
+                                    String newName = realPlace.getName() + "=";
+                                    List<Object> arguments = new ArrayList<Object>(realPlace.getArguments());
+                                    arguments.add(context.runtime.createMessage(Message.wrap(IokeObject.as(value))));
+                                    context.runtime.newMessageFrom(realPlace, newName, arguments).sendTo(context, wherePlace);
+                                } else {
+                                    IokeObject.assign(wherePlace, realPlace.getName(), value, context, message);
+                                }
+                            } catch(Throwable e) {}
+                        }
+                    }
+                }
+            }));
 
         obj.registerMethod(runtime.newJavaMethod("breaks out of the enclosing context. if an argument is supplied, this will be returned as the result of the object breaking out of", new JavaMethod("break") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
