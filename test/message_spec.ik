@@ -2,6 +2,26 @@
 use("ispec")
 
 describe("Message", 
+  describe("OperatorTable",
+    describe("withOperator",
+      it("should temporarily add a new operator to the table, but then remove it",
+        Message OperatorTable withOperator("+++++", 42,
+          Message OperatorTable operators[:"+++++"] should == 42
+        )
+        
+        Message OperatorTable operators[:"+++++"] should == nil
+      )
+
+      it("should reassign the associativity of an existing operator",
+        Message OperatorTable withOperator("+", 42,
+          Message OperatorTable operators[:"+"] should == 42
+        )
+
+        Message OperatorTable operators[:"+"] should == 3
+      )
+    )
+  )
+
   describe("code", 
     it("should return a text representation of itself", 
       Message fromText("foo") code should == "foo"
