@@ -267,11 +267,11 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
                   <h2><a name="introduction">Introduction</a></h2>
                   <p>Ioke is a general purpose language. It is a strongly typed, extremely dynamic, prototype object oriented language. It is homoiconic and it's closest ancestors is Io, Smalltalk, Ruby and Lisp - but it's quite a distance from all of them. It looks a lot like Io, to a limit.</p>
 
-                  <p>Ioke is targeted at the Java Virtual Machine and is tightly integrated with the platform. Why the JVM? It's available everywhere, it gives severeal important features such as world class garbage collectors, capable thread schedulers and an amazing JIT compiler. All of these are things that server Ioke well, without requiring direct development resources from the Ioke team. Access to the Java platform also means access to all existing libraries and functionality, with all that entails. The JVM is just a very pragmatic choice.</p>
+                  <p>Ioke is targeted at the Java Virtual Machine and is tightly integrated with the platform. Why the JVM? It's available everywhere, it gives several important features such as world class garbage collectors, capable thread schedulers and an amazing JIT compiler. All of these are things that server Ioke well, without requiring direct development resources from the Ioke team. Access to the Java platform also means access to all existing libraries and functionality, with all that entails. The JVM is just a very pragmatic choice.</p>
 
                   <p>You're probably reading this guide at <a href="http://ioke.org/guide.html">ioke.org</a>. That is the official home of the project, although some of the project functionality is hosted at <a href="http://ioke.kenai.org">Kenai</a>, where such things as mailing lists and a bug tracker is available. The canonical source repository for Ioke exists at GitHub, at <a href="http://github.org/olabini/ioke/tree/master">http://github.org/olabini/ioke/tree/master</a>.</p>
 
-                  <p>The current version of Ioke is called Ioke 0. The naming of Ioke will change regularily with major revisions. There are two different versions in play here. Ioke 0 is the name and version of the language and core libraries. The initial implementation for Ioke 0 is called ikJVM 0.1.0, and the version numbers are not interdependent. The next major version of Ioke will be called Ioke S, and you can find information about it in the chapter on <a href="#futurePlans">future plans</a>.</p>
+                  <p>The current version of Ioke is called Ioke 0. The naming of Ioke will change regularly with major revisions. There are two different versions in play here. Ioke 0 is the name and version of the language and core libraries. The initial implementation for Ioke 0 is called ikJVM 0.1.0, and the version numbers are not interdependent. The next major version of Ioke will be called Ioke S, and you can find information about it in the chapter on <a href="#futurePlans">future plans</a>.</p>
 
                   <p>This programming guide -- together with the reference for your current version -- should be the complete document needed to understand Ioke 0, how to program in it, how to understand the names and concepts used, and also to give an initial inkling on what I think is good taste.</p>
 
@@ -537,7 +537,7 @@ mux"</span>
 
                     <div class="section">
                       <h4><a name="literalSymbols">Symbols</a></h4>
-                      <p>Symbols aren't exactly syntax, but they aren't exactly messages either. Or rather, they are messages that will evaluate to the symbol that represent themselves. Symbol is a kind in Ioke. There are two kinds of symbols - the first one is simple symbols that can be parsed as is. The second is symbols that can't be parsed as is. Symbols are preceeded by a colon and then directly followed by the symbol text. If it can't be parsed correctly, the value should be surrounded by quotes, and this will be turned into a call to the method :, which takes the text as argument. That means that you can actually get dynamic symbols by calling the : method.</p>
+                      <p>Symbols aren't exactly syntax, but they aren't exactly messages either. Or rather, they are messages that will evaluate to the symbol that represent themselves. Symbol is a kind in Ioke. There are two kinds of symbols - the first one is simple symbols that can be parsed as is. The second is symbols that can't be parsed as is. Symbols are preceded by a colon and then directly followed by the symbol text. If it can't be parsed correctly, the value should be surrounded by quotes, and this will be turned into a call to the method :, which takes the text as argument. That means that you can actually get dynamic symbols by calling the : method.</p>
 
                       <p>Some examples:</p>
                       <pre class="code">
@@ -638,7 +638,7 @@ mux"</span>
 
                     <p>And as mentioned above, all of these can be used for your own purpose, although some of them already have reserved meanings. This document will cover most of the used operators, while the rest can be found in the reference.</p>
 
-                    <p>Since this operator shuffling happens, that also means that an Ioke program has a canonical inner form that can differ from the source text. When you use introspection of any kind, you will get back that canonical form which might not look exactly like you expected. Similarily, if you ask some code to print itself, it will use the canonical form instead of the operator skin. Macros that modify message chains should work against the canonical form, and nothing else.</p>
+                    <p>Since this operator shuffling happens, that also means that an Ioke program has a canonical inner form that can differ from the source text. When you use introspection of any kind, you will get back that canonical form which might not look exactly like you expected. Similarly, if you ask some code to print itself, it will use the canonical form instead of the operator skin. Macros that modify message chains should work against the canonical form, and nothing else.</p>
 
                     <p>What an operator does depends on the result of sending the message of that name to the receiver, just like regular messages. In fact, to Ioke there really isn't any difference, except that the parsing takes special notice about operators and assignment operators.</p>
                   </div>
@@ -647,7 +647,7 @@ mux"</span>
                     <h3><a name="assignmentShuffling">Assignment shuffling</a></h3>
                     <p>Much like with regular operators, assignment operators are subject to a kind of shuffling. This shuffling differs from regular operator shuffling, in that it will shuffle around two things - the left hand side and the right hand side. This is true for every assignment operator except for the unary ones, which will only reshuffle one message.</p>
 
-                    <p>A few examples might make the translation easier to percieve. The first item is the readable form, while the second form is the canonical form:</p>
+                    <p>A few examples might make the translation easier to perceive. The first item is the readable form, while the second form is the canonical form:</p>
                     <pre class="code">
 <span style="color: #b0c4de;">foo</span> <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">1</span> <span style="color: #00bfff;">+</span> <span style="color: #0050a0;">2</span>
 <span style="color: #00bfff;">=</span>(foo<span style="color: #006666;">,</span> <span style="color: #0050a0;">1</span> <span style="color: #00bfff;">+</span>(<span style="color: #0050a0;">2</span>))
@@ -1024,7 +1024,7 @@ iik&gt; "foo" &lt;=&gt; "fop"
                   <h2><a name="code">Code</a></h2>
                   <p>Many of the things you do in Ioke will directly manipulate code. Since the messages that make up code is really easy to get hold of, this manipulation comes easy too. Ioke takes the Lisp philosophy of "code is data" to heart. The basic unit of a piece of code is a Message. A Message has a name, a next and prev pointer, and any number of arguments. When you manipulate a message, the argument list will contain messages too - and if the next or prev pointers are not nil, they will point to other messages. It serves well to remember that except for the message itself, all code will be evaluated in the context of a receiver and a ground. The ground is necessary because arguments to be evaluated need to be run in some specific context, even though the current receiver is not the same as the ground.</p>
 
-                  <p>The current types of code can be divided into three different categories. These are methods, macros and blocks. Native methods are all of the kind JavaMethod, but can have any kind of semantics - including semantics that look like this macros. Most native methods do have the same semantics as regular methods, though.</p>
+                  <p>The current types of code can be divided into three different categories. These are methods, macros and blocks. Native methods are all of the kind JavaMethod, but can have any kind of semantics - including semantics that look like macros. Most native methods do have the same semantics as regular methods, however.</p>
 
                   <div class="section">
                     <h3><a name="methods">Methods</a></h3>
@@ -1040,7 +1040,7 @@ m <span style="color: #a52a2a;">;; call the method
 
                     <p>The definition of a method can take several different pieces. These are a documentation string, definitions of positional required arguments, definitions of positional optional arguments, definitions of keyword arguments, definition of a rest argument, definition of a keyword rest argument and the actual code of the method.</p>
 
-                    <p>Let's take these one by one. First, if the the first element of a call to "method" is a literal text, and there is a at least one more argument in the definition, then that text will be the documentation text for the method:</p>
+                    <p>Let's take these one by one. First, if the the first element of a call to "method" is a literal text, and there is at least one more argument in the definition, then that text will be the documentation text for the method:</p>
 
                     <pre class="code">
 <span style="color: #a52a2a;">;; a method that returns "foo"
@@ -1058,7 +1058,7 @@ m <span style="color: #a52a2a;">;; call the method
 
                     <p>The first method takes one argument and prints that argument. The second method takes three arguments and return the product of the two first added to the third.</p>
 
-                    <p>A method can also have optional positional arguments. In that case the optional arguments must follow the required arguments. Optional arguments need to have a default value -- in fact, that is how you distinguish them from required arguments. The arity of method calls will still be checked, but using minimum and maximum values instead. The default value for an argument should be code that can be executed in the context of the running method, so a default value can refer to earlier positional arguments. A default value can also do quite complex things, if need be, although it's really not recommended.</p>
+                    <p>A method can also have optional positional arguments. In that case the optional arguments must follow the required arguments. Optional arguments need to have a default value -- in fact, that is how you distinguish them from required arguments. The arity of method calls will still be checked, but using minimum and maximum values instead. The default value for an argument should be code that can be executed in the context of the running method, so a default value can refer to earlier positional arguments. A default value can also do quite complex things, if need be, although it's not really recommended.</p>
 
                     <pre class="code">
 <span style="color: #a52a2a;">;; takes zero or one arguments
@@ -1091,7 +1091,7 @@ m <span style="color: #a52a2a;">;; call the method
 <span style="color: #b0c4de;">m</span> <span style="color: #00bfff;">=</span> <span style="color: #6495ed;">method</span>(x<span style="color: #006666;">,</span> y <span style="color: #0050a0;">42</span><span style="color: #006666;">,</span> <span style="color: #00bfff;">+</span>rest<span style="color: #006666;">,</span>
   rest <span style="color: #449900;">println</span>)</pre>
 
-                    <p>The above code defines one method that only takes one rest argument. That means the method can take any number of arguments and all of them will be collected into a list. The second method takes one required argument, one optional argument and any number of extra arguments. So if 4 arguments are given, the rest argument will contain two.</p>
+                    <p>The above code defines one method that only takes one rest argument. That means the method can take any number of arguments and all of them will be collected into a list. The second method takes one required argument, one optional argument and any number of extra arguments. So if four arguments are given, the rest argument will contain two.</p>
 
                     <p>The final type of argument is keyword rest arguments. Just like positional rest arguments, a keyword rest argument can collect all keywords given to a method, no matter what. If a keyword rest argument is used, no conditions will be signalled if an unknown keyword is given to a method. If other keywords are defined, these keywords will not show up in the keyword rest argument. The keyword rest argument is defined by preceding the name with a +: sigil, and the keyword rest argument will be a Dict instead of a list. The keys will be symbols but without the ending colon.</p>
 
@@ -1100,7 +1100,7 @@ m <span style="color: #a52a2a;">;; call the method
   krest <span style="color: #449900;">println</span>)
 
 <span style="color: #b0c4de;">m</span> <span style="color: #00bfff;">=</span> <span style="color: #6495ed;">method</span>(x<span style="color: #006666;">,</span> <span style="color: #7777d4;">y:</span><span style="color: #006666;">,</span> <span style="color: #00bfff;">+</span>rest<span style="color: #006666;">,</span> <span style="color: #00bfff;">+</span><span style="color: #7777d4;">:krest</span><span style="color: #006666;">,</span>
-  [x<span style="color: #006666;">,</span> y<span style="color: #006666;">,</span> rest<span style="color: #006666;">,</span> krest] <span style="color: #449900;">println</span>)</pre>
+  [x<span style="color: #006666;">,</span> y<span style="color: #006666;">,</span> rest<span style="color: #006666;">,</span> krest])</pre>
 
                     <p>The above code first creates a method that can take any number of keyword arguments but nothing else. The second method takes one required positional argument, one keyword argument, rest arguments and keyword rest arguments, and returns a new list containing all the arguments given to it.</p>
 
@@ -1149,9 +1149,9 @@ foo(<span style="color: #00bfff;">*</span>ls2<span style="color: #006666;">,</sp
                     <h3><a name="macros">Macros</a></h3>
                     <p>The main difference between a macro and a method in Ioke is that the arguments to a macro is not evaluated before they are sent to the macro. That means you have to use macros to send raw message chains in an invocation. In most languages, this kind of feature is generally called call-by-name. When a macro gets called, it will get access to a cell called "call" which is a mimic of the kind Call. This gives access to information about the call and makes it possible to evaluate the code sent as arguments, check how many arguments are supplied, and so on.</p>
 
-                    <p>A macro is created using the "macro" cell on DefaultBehavior. This will return a mimic of DefaultMacro. Since a macro can't define arguments, it's a bit easier to describe than mathods, but the things that can be done with macro is also a bit more interesting than what can be achieved by methods. One important thing to keep in mind is that most macros can not receive splatted arguments. In most cases keyword arguments aren't available either - but they could be faked if needed. Macros should generally be used to implement control structures and things that need to manipulate code in different ways.</p>
+                    <p>A macro is created using the "macro" cell on DefaultBehavior. This will return a mimic of DefaultMacro. Since macros can't define arguments, it's a bit easier to describe than mathods, but the things that can be done with macros is also a bit more interesting than what can be achieved with methods. One important thing to keep in mind is that most macros can not receive splatted arguments. In most cases keyword arguments aren't available either - but they could be faked if needed. Macros should generally be used to implement control structures and things that need to manipulate code in different ways.</p>
 
-                    <p>Just like a methods, a macro gets evaluated on a specific receiver. It also gets the same kind of method activation context, but the contents of it is a bit different. Specifically, the context for a macro contains cells named "self", "@", "currentMessage", "surroundingContext" and "call". It's the "call" cell that is most important. It is a mimic of Call, and Call defines several important methods for manipulating the call environment. These are:</p>
+                    <p>Just like a method, a macro gets evaluated on a specific receiver. It also gets the same kind of method activation context, but the contents of it is a bit different. Specifically, the context for a macro contains cells named "self", "@", "currentMessage", "surroundingContext" and "call". It's the "call" cell that is most important. It is a mimic of Call, and Call defines several important methods for manipulating the call environment. These are:</p>
                     <dl>
                       <dt>arguments</dt>
                       <dd>This method returns a list containing the unevaluated arguments given to this message. Any kind of manipulation can be done with these arguments.</dd>
@@ -1217,7 +1217,7 @@ establishes a new lexical closure."</span><span style="color: #006666;">,</span>
 x <span style="color: #449900;">call</span>(<span style="color: #0050a0;">42</span>)
 y(<span style="color: #0050a0;">42</span>)</pre>
 
-                    <p>A lexical block is a regular kind of object that can be assigned to any cell, just like other objects. Lexical blocks mimic LexicalBlock, and blocks doesn't have names. In contrast to methods and macros, no extra cells will be added to the activation context for a lexical block.</p>
+                    <p>A lexical block is a regular kind of object that can be assigned to any cell, just like other objects. Lexical blocks mimic LexicalBlock, and blocks don't have names. In contrast to methods and macros, no extra cells will be added to the activation context for a lexical block.</p>
                   </div>
 
                   <div class="section">
@@ -1246,7 +1246,7 @@ y(<span style="color: #0050a0;">42</span>)</pre>
                   <p>This code will first print "Foo", and then print "Foo Bar", since an object assigned to a cell with a capital initial letter will get a new kind value.</p>
 
                   <h4>kind?</h4>
-                  <p>Takes one text argument and returns true if the object has that kind anywhere in it's mimic chain.</p>
+                  <p>Takes one text argument and returns true if the object has that kind anywhere in its mimic chain.</p>
                   <pre class="code">
 <span style="color: #0000cd;">Foo</span> <span style="color: #00bfff;">=</span> <span style="color: #8b0000;">Origin</span> <span style="color: #6495ed;">mimic</span>
 <span style="color: #0000cd;">foo</span> <span style="color: #00bfff;">=</span> <span style="color: #606060;">Foo</span> <span style="color: #6495ed;">mimic</span>
@@ -1261,7 +1261,7 @@ foo kind?(<span style="color: #0050a0;">"foo"</span>) <span style="color: #a52a2
                   <p>As you can see in this example, "kind?" can return true for several different texts.</p>
 
                   <h4>notice</h4>
-                  <p>When looking at objects, there are two ways to get information about them, notice and inspect. If you want a brief description of an object where it's more important that it doesn't take up much space, notice should be used. If an exhaustive description is needed, inspect should be used instead. For some objects these both return the same thing, but for Origin mimics, the difference is large.</p>
+                  <p>When looking at objects, there are two ways to get information about them, notice and inspect. If you want a brief description of an object where it's important that the description doesn't take up much space, notice should be used. If an exhaustive description is needed, inspect should be used instead. For some objects these both return the same thing, but for Origin mimics, the difference is large.</p>
                   <pre class="code">
 <span style="color: #0000cd;">Foo</span> <span style="color: #00bfff;">=</span> <span style="color: #8b0000;">Origin</span> <span style="color: #6495ed;">mimic</span>
 <span style="color: #606060;">Foo</span> <span style="color: #b0c4de;">x</span> <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">"blarg"</span>
@@ -1408,19 +1408,19 @@ msg code <span style="color: #a52a2a;">;; "2 -(1)"</span></pre>
 
                 <div class="chapter">
                   <h2><a name="coreKinds">Core kinds</a></h2>
-                  <p>Ioke obviously contains lots of different data types, but there are some that are much more important than others. In this chapter I'll take a look at these and talk above how to work with them correctly.</p>
+                  <p>Ioke obviously contains lots of different data types, but there are some that are much more important than others. In this chapter I'll take a look at these and talk about how to work with them correctly.</p>
 
                   <div class="section">
                     <h3><a name="conditions">Conditions</a></h3>
-                    <p>One of the major parts of Ioke is the condition system. Unlike most other programming languages, Ioke doesn't have exceptions. Instead it has conditions, where errors is a specific kind of condition. The condition system comprises several different things. Specifically, the condition system uses the kinds Condition, Restart, Handler and Rescue. Restarts are mostly orthogonal to the rest of the system.</p>
+                    <p>One of the major parts of Ioke is the condition system. Unlike most other programming languages, Ioke doesn't have exceptions. Instead it has conditions, where errors are a specific kind of condition. The condition system comprises several different things. Specifically, the condition system uses the kinds Condition, Restart, Handler and Rescue. Restarts are mostly orthogonal to the rest of the system.</p>
 
-                    <p>The way the condition system work is this. When something happens, a program can elect to signal a condition. This can be done using "signal!", "warn!" or "error!". Both "warn!" and "error!" uses "signal!" under the covers, but do some other things as well. A condition will always be an instance of a condition. Each of these three methods can be called in three different ways. First, you can call them with a text argument. In that case the signalled condition will be the default for that type. (The default for "signal!" is Condition Default. The default for "warn!" is Condition Warning Default and the default for "error!" is Condition Error Default). A new mimic of the default condition will be created, and a cell called text will be set to the text argument. The second variation is to give an instance of an existing condition to one of the methods. In that case that condition will be signalled unmodified. Finally, the third version gives a condition mimic and one or more keyword arguments with data to set on that condition. In that case a mimic of the condition will be created, and then cells with data set based on the arguments.</p>
+                    <p>The way the condition system works is this. When something happens, a program can elect to signal a condition. This can be done using "signal!", "warn!" or "error!". Both "warn!" and "error!" uses "signal!" under the covers, but do some other things as well. A condition will always mimic Condition. Each of these three methods can be called in three different ways. First, you can call them with a text argument. In that case the signalled condition will be the default for that type. (The default for "signal!" is Condition Default. The default for "warn!" is Condition Warning Default and the default for "error!" is Condition Error Default). A new mimic of the default condition will be created, and a cell called text will be set to the text argument. The second variation is to give an instance of an existing condition to one of the methods. In that case that condition will be signalled unmodified. Finally, the third version gives a condition mimic and one or more keyword arguments with data to set on that condition. In that case a mimic of the condition will be created, and then cells with data set based on the arguments.</p>
 
                     <p>If a signal is not handled, nothing happens.</p>
                     <p>If a warning is not handled, a message will be printed with the text of that warning.</p>
                     <p>If an error is not handled, the debugger will be invoked - if a debugger is available. Otherwise the program will be terminated.</p>
 
-                    <p>A Rescue allow conditions to unwind the stack to the place where the rescue is established. Combining rescues and conditions looks a lot like regular exception handling in other programming languages.</p>
+                    <p>A Rescue allows conditions to unwind the stack to the place where the rescue is established. Combining rescues and conditions looks a lot like regular exception handling in other programming languages.</p>
 
                     <p>A Handler on the other hand will run code in the dynamic context of the place where the condition was signalled. A handler can invoke restarts to handle an error state at the place it happened, and as such doesn't have to actually unwind the stack anywhere. Any number of handlers can run - the last handler to run will be either the last handler, the handler that activates a restart, or the last handler before a valid rescue for that condition.</p>
 
@@ -1430,7 +1430,7 @@ msg code <span style="color: #a52a2a;">;; "2 -(1)"</span></pre>
 
                     <p>Both handlers, rescues and restarts are established inside a call to the bind macro. All arguments to this macro need to be either handlers, rescues or restarts, except for the last argument which should be the code to execute.</p>
 
-                    <p>You create a new handler by calling the method "handle". You create a new rescue by calling the method "rescue". You create a new restart by calling the method "restart". These all take funky arguments, so refer to the reference to understand more closely how they work.</p>
+                    <p>You create a new handler by calling the method "handle". You create a new rescue by calling the method "rescue". You create a new restart by calling the method "restart". These all take funky arguments, so refer to the reference to better understand how they work.</p>
 
                     <p>This small example doesn't necessarily show the power of conditions, but it can give an idea about how it works.</p>
 
@@ -1515,11 +1515,11 @@ msg code <span style="color: #a52a2a;">;; "2 -(1)"</span></pre>
 </span><span style="color: #0050a0;">"foo"</span> length  <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> 3
 </span><span style="color: #0050a0;">""</span> length  <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> 0
 </span>
-<span style="color: #a52a2a;">;; replace the first occurance of something with something else
+<span style="color: #a52a2a;">;; replace the first occurrence of something with something else
 </span><span style="color: #0050a0;">"hello fox fob folk"</span> replace(<span style="color: #0050a0;">"fo"</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">"ba"</span>)
   <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> "hello bax fob folk"
 </span>
-<span style="color: #a52a2a;">;; replace all occurances of something with something else
+<span style="color: #a52a2a;">;; replace all occurrences of something with something else
 </span><span style="color: #0050a0;">"hello fox fob folk"</span> replaceAll(<span style="color: #0050a0;">"fo"</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">"ba"</span>)
   <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> "hello bax bab balk"
 </span>
@@ -1531,9 +1531,9 @@ msg code <span style="color: #a52a2a;">;; "2 -(1)"</span></pre>
 
                     <p>One important tool for doing that is the "format" method. This is a mix between C printf and Common Lisp format. At the moment, it only contains a small amount of functionality, but it can still be very convenient. Specifically you can print each element in a list directly by using format, instead of concatenating text yourself.</p>
 
-                    <p>The "format" method takes format specifies that begin with %, and then inserts one of its arguments in different ways depending on what kind of format specifier is used.</p>
+                    <p>The "format" method takes format specifiers that begin with %, and then inserts one of its arguments in different ways depending on what kind of format specifier is used.</p>
 
-                    <p>Some examples of format follows:</p>
+                    <p>Some examples of format follow:</p>
                     <pre class="code">
 <span style="color: #a52a2a;">;; insert simple value as text
 </span><span style="color: #0050a0;">"%s"</span> format(<span style="color: #0050a0;">123</span>) <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> "123"
@@ -1559,7 +1559,7 @@ msg code <span style="color: #a52a2a;">;; "2 -(1)"</span></pre>
 
                   <div class="section">
                     <h3><a name="numbers">Numbers</a></h3>
-                    <p>As mentioned in the section on syntax, Ioke supports decimal numbers, integers and ratios. A Ratio will be created when two integeres can't be divided evenly. A Ratio will always use the GCD. In most cases Ratios, Decimals and Integers can interact with each other was would be expected. The one thing that might surprise people is that Ioke doesn't have any inexact floating point data type. Instead, decimals are exact and can have any size. The means they are well suited to represent such things as money, since operations will always have well defined results.</p>
+                    <p>As mentioned in the section on syntax, Ioke supports decimal numbers, integers and ratios. A Ratio will be created when two integers can't be divided evenly. A Ratio will always use the GCD. In most cases Ratios, Decimals and Integers can interact with each other as would be expected. The one thing that might surprise people is that Ioke doesn't have any inexact floating point data type. Instead, decimals are exact and can have any size. This means they are well suited to represent such things as money, since operations will always have well defined results.</p>
 
                     <p>All expected math works fine on Ioke numbers. The reference for numbers more closely specify what is possible. One thing to notice is that the % operator implements modulus, not remainder. This might be unintuitive for some developers. What that means is that it is not an error to ask for the modulus of 0: "13 % 0", since there is no division necessary in this operation.</p>
 
@@ -1568,7 +1568,7 @@ msg code <span style="color: #a52a2a;">;; "2 -(1)"</span></pre>
 
                   <div class="section">
                     <h3><a name="lists">Lists</a></h3>
-                    <p>Ioke has lists that expand to the size needed. These lists can be created using a simple literal syntax. They can contain any kind of element, including itself (although don't try to print such a list). Ioke lists mixin in the Enumerable mixin, which gives it quite powerful capabilities.</p>
+                    <p>Ioke has lists that expand to the size needed. These lists can be created using a simple literal syntax. They can contain any kind of element, including itself (although don't try to print such a list). Ioke lists mix in the Enumerable mixin, which gives it quite powerful capabilities.</p>
 
                     <p>A list can be created using the "list" or "[]" methods:</p>
                     <pre class="code">
@@ -1617,7 +1617,7 @@ l <span style="color: #00bfff;">==</span> [<span style="color: #0050a0;">1</span
 l <span style="color: #00bfff;">==</span> [<span style="color: #0050a0;">1</span><span style="color: #006666;">,</span><span style="color: #0050a0;">2</span><span style="color: #006666;">,</span><span style="color: #0050a0;">3</span><span style="color: #006666;">,</span><span style="color: #0050a0;">39</span><span style="color: #006666;">,</span><span style="color: #6495ed;">nil</span><span style="color: #006666;">,</span><span style="color: #6495ed;">nil</span><span style="color: #006666;">,</span><span style="color: #6495ed;">nil</span><span style="color: #006666;">,</span><span style="color: #6495ed;">nil</span><span style="color: #006666;">,</span><span style="color: #6495ed;">nil</span><span style="color: #006666;">,</span><span style="color: #6495ed;">nil</span><span style="color: #006666;">,</span><span style="color: #0050a0;">13</span>]
   <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> true
 </span>
-<span style="color: #a52a2a;">;; at and at= is the same as [] and []]
+<span style="color: #a52a2a;">;; at and at= is the same as [] and []=
 </span>l at(<span style="color: #0050a0;">0</span>) <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> 1
 </span>
 <span style="color: #a52a2a;">;; empty the list
@@ -1658,7 +1658,7 @@ l <span style="color: #00bfff;">==</span> [<span style="color: #0050a0;">1</span
 
                   <div class="section">
                     <h3><a name="dicts">Dicts</a></h3>
-                    <p>A Dict is a dictionary of key-value mappings. The mappings are unordered, and there can only ever be one key with the same value. Any kind of Ioke object can be used as a key. There is no problem with having the value for different keys. The default implementation of Dict uses a hash-based implementation. That's not necessarily always true for all dicts. The iteration order is not necessarily stable either, so don't write code that depends on it.</p>
+                    <p>A Dict is a dictionary of key-value mappings. The mappings are unordered, and there can only ever be one key with the same value. Any kind of Ioke object can be used as a key. There is no problem with having the same value for different keys. The default implementation of Dict uses a hash-based implementation. That's not necessarily always true for all dicts. The iteration order is not necessarily stable either, so don't write code that depends on it.</p>
 
                     <p>Creating a dict is done using either the "dict" or the "{}" methods. Both of these expect either keyword arguments or mimics of Pair. If keyword arguments, these keywords will be used as symbol keys. That's the most common thing, so it makes sense to have that happen automatically. Dicts also try to print themselves that way.</p>
                     
@@ -1680,7 +1680,7 @@ l <span style="color: #00bfff;">==</span> [<span style="color: #0050a0;">1</span
 
                     <p>The literal Pair syntax (using =&gt;) will not necessarily instantiate real pairs for this.</p>
 
-                    <p>Dicts mixes in Enumable. When using each, what will be yielded is mimics of Pair, where the first value will be the key and the second will be value. Just like Lists, Dicts have several useful methods in themselves:</p>
+                    <p>Dicts mix in Enumerable. When using each, what will be yielded are mimics of Pair, where the first value will be the key and the second will be value. Just like Lists, Dicts have several useful methods in themselves:</p>
 
                     <pre class="code">
 <span style="color: #b0c4de;">d</span> <span style="color: #00bfff;">=</span> {<span style="color: #7777d4;">one:</span> <span style="color: #0050a0;">"two"</span><span style="color: #006666;">,</span> <span style="color: #b0c4de;">3</span> <span style="color: #00bfff;">=</span>&gt; <span style="color: #0050a0;">4</span>}
@@ -1744,7 +1744,7 @@ d <span style="color: #00bfff;">==</span> {<span style="color: #7777d4;">one:</s
 </span>(<span style="color: #0050a0;">1...10</span>) inclusive? <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> false</span></pre>
                     
 
-                    <p>A Pair represent a combination of two values. They doesn't have to be of the same kind. They can have any kind of relationship. Since Pair's are often used to represent Dicts, it is very useful to refer to the first value as the "key", and the second value as "value".</p>
+                    <p>A Pair represent a combination of two values. They don't have to be of the same kind. They can have any kind of relationship. Since Pairs are often used to represent Dicts, it is very useful to refer to the first value as the "key", and the second value as "value".</p>
 
                     <pre class="code">
 <span style="color: #a52a2a;">;; literal syntax for a pair
@@ -1764,7 +1764,7 @@ d <span style="color: #00bfff;">==</span> {<span style="color: #7777d4;">one:</s
                     <h3><a name="enumerable">Enumerable</a></h3>
                     <p>One of the most important mixins in Ioke is Mixins Enumerable - the place where most of the collection functionality is available. The contract for any kind that wants to be Enumerable is that it should implement each in the manner described earlier. If it does that it can mixin Enumerable and get access to all the methods defined in it. I'm not going to show all the available methods, but just a few useful examples here. Note that any method name that ends with Fn takes a block instead of a raw message chain.</p>
 
-                    <p>Almost all methods in Enumerable takes variable amounts of arguments and does different things depending on how many arguments are provided. The general rule is that if there is only one argument, it should be a message chain, and if there is two or more arguments the last one should be code, and the rest should be names of arguments to use in that code.</p>
+                    <p>Almost all methods in Enumerable take variable amounts of arguments and do different things depending on how many arguments are provided. The general rule is that if there is only one argument, it should be a message chain, and if there are two or more arguments the last one should be code, and the rest should be names of arguments to use in that code.</p>
 
                     <p>Mapping a collection into a another collection can be done using map or mapFn. These are aliased as collect and collectFn too.</p>
                     <pre class="code">
@@ -1789,7 +1789,7 @@ d <span style="color: #00bfff;">==</span> {<span style="color: #7777d4;">one:</s
 </span>l select(&gt;<span style="color: #0050a0;">3</span>) <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> [4, 5, 6]
 </span>l select(n<span style="color: #006666;">,</span> n&gt;<span style="color: #0050a0;">3</span>) <span style="color: #a52a2a;">;; =</span>&gt;<span style="color: #a52a2a;"> [4, 5, 6]</span></pre>
 
-                    <p>A very common operation is create one object based on the contents of a collection. This operation has different names in different languages. In Ioke it is called inject, but it is aliased as reduce and fold.</p>
+                    <p>A very common operation is to create one object based on the contents of a collection. This operation has different names in different languages. In Ioke it is called inject, but it is aliased as reduce and fold.</p>
                     <pre class="code">
 <span style="color: #b0c4de;">l</span> <span style="color: #00bfff;">=</span> [<span style="color: #0050a0;">1</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">2</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">3</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">4</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">5</span>]
 
@@ -1812,12 +1812,12 @@ d <span style="color: #00bfff;">==</span> {<span style="color: #7777d4;">one:</s
 
                   <div class="section">
                     <h3><a name="regexps">Regexps</a></h3>
-                    <p>Regular expressions allow the matching of text against an abstract pattern. Ioke uses the JRegex engine to implement regular expressions. This means Ioke support quite advanced expressions. At the moment, Ioke only allows matching against an expression and getting a yes or no answer, though. This is done using the "~=" method. When the regular expression support has been expanded, this section will include information about everything that can be done using them.</p>
+                    <p>Regular expressions allow the matching of text against an abstract pattern. Ioke uses the JRegex engine to implement regular expressions. This means Ioke supports quite advanced expressions. At the moment, Ioke only allows matching against an expression and getting a yes or no answer, though. This is done using the "~=" method. When the regular expression support has been expanded, this section will include information about everything that can be done using them.</p>
                   </div>
 
                   <div class="section">
                     <h3><a name="filesystem">FileSystem</a></h3>
-                    <p>The FileSystem kind allow access to functionality in the file system. It is the entry point to any manipulation of files and directories, and it can also be uesd to get listings of existing files. The reference includes good information about the existing methods in the FileSystem kind.</p>
+                    <p>The FileSystem kind allows access to functionality in the file system. It is the entry point to any manipulation of files and directories, and it can also be used to get listings of existing files. The reference includes good information about the existing methods in the FileSystem kind.</p>
                   </div>
                 </div>
 
@@ -1829,11 +1829,11 @@ d <span style="color: #00bfff;">==</span> {<span style="color: #7777d4;">one:</s
                     <h3><a name="iik">IIk</a></h3>
                     <p>IIk is the interactive Ioke prompt, which will run if you give no arguments to the ioke script. At the IIk prompt you can execute mostly all the same kind of code that could execute inside of an Ioke script file. The main difference is that this code will not be assigned to Ground, but instead will run in another context that is specific for the purposes of IIk.</p>
 
-                    <p>IIk provide the possibility to exit using either "exit" or "close". Both of these will in fact signal a condition of kind "IIk Exit".</p>
+                    <p>IIk provides the possibility to exit using either "exit" or "close". Both of these will in fact signal a condition of kind "IIk Exit".</p>
 
                     <p>IIk will use readline if possible. That means that you can do the regular shell editing most other REPLs have support for, including using the up and down keys to scroll through earlier executed code.</p>
 
-                    <p>IIk has a simple debugger that will be invoked when a condition is not handled. This debugger allow you to execute any kind of code and also to invoke restarts. As an example, the code below refers to a cell that doesn't exist. A condition is signalled and the debugger invoked. I choose to invoke the restart named useValue and provide the value 42. That value is returned and I'm back at the IIk prompt. In the next line I do the same thing again with the same name. This time I choose the storeValue restart and provide the value 43. And after that there exists a cell with the name foo and the value 43.</p>
+                    <p>IIk has a simple debugger that will be invoked when a condition is not handled. This debugger allows you to execute any kind of code and also to invoke restarts. As an example, the code below refers to a cell that doesn't exist. A condition is signalled and the debugger invoked. I choose to invoke the restart named useValue and provide the value 42. That value is returned and I'm back at the IIk prompt. In the next line I do the same thing again with the same name. This time I choose the storeValue restart and provide the value 43. And after that there exists a cell with the name foo and the value 43.</p>
 
                     <pre class="code">
 Iik&gt; foo
@@ -1923,7 +1923,7 @@ describe(<span style="color: #606060;">Foo</span><span style="color: #006666;">,
   )
 )</pre>
 
-                     <p>This code first makes sure to use ISpec, then describes Foo. The describe method takes either kinds or texts describing what's under test. The can be nested arbitrarily deep. A test is defined with the "it" method, which takes a text describing the test first, and the implementation of the test as the second argument. If the second argument is left out, the test is considered pending.</p>
+                     <p>This code first makes sure to use ISpec, then describes Foo. The describe method takes either kinds or texts describing what's under test. This can be nested arbitrarily deep. A test is defined with the "it" method, which takes a text describing the test first, and the implementation of the test as the second argument. If the second argument is left out, the test is considered pending.</p>
 
                      <p>Assertions are done using the "should" method. This returns an expectation that can check several different things against the original receiver. Using == is the simplest expectation and checks that a value equals another. By adding the not method call inbetween, the expectation is inversed. There are some predefined expectations. Except for ==, these are mimic, match and signal. The signal expectation makes sure that a condition is signalled in the code. The match expectation will check a text value against a regular expression. The mimic expectation checks whether an object mimics another.</p>
                      <p>The words "be" and "have" are ignored in the expectations. They are so called fluff words - that are only there to make it more readable.</p>
@@ -1943,18 +1943,18 @@ describe(<span style="color: #606060;">Foo</span><span style="color: #006666;">,
 
                   <p>Another major part -- maybe even THE major part -- is Java integration. At the moment it is not possible to call or interact with Java libraries. That need to happen, but it will not happen for this release.</p>
 
-                  <p>I have not given any consideration at all to issues of concurrency. There doesn't exist any concurrency mechanisms in the language at the moment. That will also need to be looked at, at some point.</p>
+                  <p>I have not given any consideration at all to issues of concurrency. There are no concurrency mechanisms in the language at the moment. That will also need to be looked at, at some point.</p>
                 </div>
 
                 <div class="chapter">
                   <h2><a name="futurePlans">Future plans</a></h2>
-                  <p>A have many plans for the future of Ioke. The next major versions of Ioke will be called Ioke S, Ioke E and Ioke P, respectively. Exactly what they will contain we'll have to see, but these are things I need to have, large and small:</p>
+                  <p>I have many plans for the future of Ioke. The next major versions of Ioke will be called Ioke S, Ioke E and Ioke P, respectively. Exactly what they will contain we'll have to see, but these are things I need to have, large and small:</p>
                   <ul>
                     <li>Alternative String syntax</li>
                     <li>Interpolation in Regexp literals</li>
                     <li>Aspects (before, after, around advice)</li>
                     <li>Argument specifications for macros</li>
-                    <li>Syntax (this is code that modifies the message tree</li>
+                    <li>Syntax (this is code that modifies the message tree)</li>
                     <li>A case-when syntax. Maybe cond.</li>
                     <li>Java integration</li>
                     <li>Concurrency primitives of some kind</li>
