@@ -93,13 +93,13 @@
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>[[:alnum:]!?_:-]+?:</string>
+			<string>[[:alnum:]!?_:-]+?:\s</string>
 			<key>name</key>
 			<string>string.literal.keyword-argument.ioke</string>
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>:[[:alnum:]!?_:-]+</string>
+			<string>[^[:alnum:]!?_:-]:[[:alnum:]!?_:-]+</string>
 			<key>name</key>
 			<string>string.literal.symbol.ioke</string>
 		</dict>
@@ -261,7 +261,7 @@
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>\b(print|println|cell|documentation|while|until|asText|inspect|loop|bind|restart|do|true\?|false\?|nil\?|call|list|dict|empty\?|with)\b</string>
+			<string>\b(print|println|cell|documentation|while|until|asText|inspect|loop|bind|restart|do|true\?|false\?|nil\?|call|list|dict|empty\?|with|set)\b</string>
 			<key>name</key>
 			<string>keyword.cell-names.ioke</string>
 		</dict>
