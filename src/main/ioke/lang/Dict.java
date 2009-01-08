@@ -138,6 +138,14 @@ public class Dict extends IokeData {
                     }
                 }}));
 
+        obj.registerMethod(runtime.newJavaMethod("returns true if this dict is empty, false otherwise", new JavaMethod.WithNoArguments("empty?") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                    return Dict.getMap(on).isEmpty() ? context.runtime._true : context.runtime._false;
+                }
+            }));
+
         obj.registerMethod(runtime.newJavaMethod("takes one argument, the key to check if it is in the dict.", new JavaMethod("key?") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()

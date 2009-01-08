@@ -239,6 +239,35 @@ describe("Dict",
       y should == [0,1,2,3]
     )
   )
+
+
+  describe("?|",
+    it("should just return itself if not empty",
+      dict(foo: 1) ?|(x/0) should == dict(foo: 1)
+      dict(foo: 1,bar: 2,quux: 3) ?|(x/0) should == dict(foo: 1,bar: 2,quux: 3)
+      x = dict(foo: 1,bar: 3)
+      x ?|(blarg) should be same(x)
+    )
+
+    it("should return the result of evaluating the code if empty",
+      dict ?|(42) should == 42
+      dict ?|([1,2,3]) should == [1,2,3]
+    )
+  )
+
+  describe("?&",
+    it("should just return itself if empty",
+      (dict ?& 42) should == dict
+      (dict ?& [1,2,3]) should == dict
+    )
+
+    it("should return the result of evaluating the code if non-empty",
+      dict(foo: 1) ?&(10) should == 10
+      dict(foo: 1,bar: 2,quux: 3) ?&(20) should == 20
+      x = dict(foo: 1,bar: 3)
+      x ?&([1,2,3]) should == [1,2,3]
+    )
+  )
 )
 
 describe(DefaultBehavior, 

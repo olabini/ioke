@@ -653,6 +653,22 @@ describe(DefaultBehavior,
       ("flurg" && 43) should == 43
     )
   )
+
+  describe("?&", 
+    it("should evaluate it's argument", 
+      x=41
+      13 ?&(x=42)
+      x should == 42
+    )
+
+    it("should return the result of the argument", 
+      5353 ?&(42) should == 42
+    )
+
+    it("should be available in infix", 
+      ("flurg" ?& 43) should == 43
+    )
+  )
   
   describe("or", 
     it("should not evaluate it's argument", 
@@ -683,6 +699,22 @@ describe(DefaultBehavior,
 
     it("should be available in infix", 
       (444 || 43) should == 444
+    )
+  )
+
+  describe("?|", 
+    it("should not evaluate it's argument", 
+      x=41
+      123 ?|(x=42)
+      x should == 41
+    )
+
+    it("should return the receiver", 
+      "murg" ?|(42) should == "murg"
+    )
+
+    it("should be available in infix", 
+      (444 ?| 43) should == 444
     )
   )
   

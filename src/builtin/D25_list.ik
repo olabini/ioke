@@ -43,4 +43,20 @@ List ifEmpty = dmacro(
     call argAt(0),
     self))
 
+List ?| = dmacro(
+  "if this list is empty, returns the result of evaluating the argument, otherwise returns the list",
+
+  [then]
+  if(empty?,
+    call argAt(0),
+    self))
+
+List ?& = dmacro(
+  "if this list is not empty, returns the result of evaluating the argument, otherwise returns the list",
+
+  [then]
+  unless(empty?,
+    call argAt(0),
+    self))
+
 List do(=== = generateMatchMethod(==))

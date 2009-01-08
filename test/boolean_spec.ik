@@ -60,10 +60,6 @@ describe(true,
       x=41. true &&(x=42). x should == 42
     )
 
-;     it("should complain if no argument is given", 
-;       fn(true &&()) should signal(Condition Warning)
-;     )
-
     it("should return the result of the argument", 
       (true &&(42)) should == 42
     )
@@ -84,6 +80,34 @@ describe(true,
 
     it("should be available in infix", 
       (true || 43) should == true
+    )
+  )
+
+  describe("?&", 
+    it("should evaluate it's argument", 
+      x=41. true ?&(x=42). x should == 42
+    )
+
+    it("should return the result of the argument", 
+      (true ?&(42)) should == 42
+    )
+
+    it("should be available in infix", 
+      (true ?& 43) should == 43
+    )
+  )
+
+  describe("?|", 
+    it("should not evaluate it's argument", 
+      x=41. true ?|(x=42). x should == 41
+    )
+
+    it("should return true", 
+      (true ?|(42)) should == true
+    )
+
+    it("should be available in infix", 
+      (true ?| 43) should == true
     )
   )
   
@@ -223,6 +247,20 @@ describe(false,
       (false && 43) should == false
     )
   )
+
+  describe("?&", 
+    it("should not evaluate it's argument", 
+      x=41. false ?&(x=42). x should == 41
+    )
+
+    it("should return false", 
+      (false ?&(42)) should == false
+    )
+
+    it("should be available in infix", 
+      (false ?& 43) should == false
+    )
+  )
   
   describe("xor", 
     it("should evaluate it's argument", 
@@ -272,10 +310,6 @@ describe(false,
       x=41. false or(x=42). x should == 42
     )
 
-;     it("should complain if no argument is given", 
-;       fn(false or()) should signal(Condition Warning)
-;     )
-
     it("should return the result of the argument", 
       (false or(42)) should == 42
     )
@@ -290,16 +324,26 @@ describe(false,
       x=41. false ||(x=42). x should == 42
     )
 
-;     it("should complain if no argument is given", 
-;       fn(false ||()) should signal(Condition Warning)
-;     )
-
     it("should return the result of the argument", 
       (false ||(42)) should == 42
     )
 
     it("should be available in infix", 
       (false || 43) should == 43
+    )
+  )
+
+  describe("?|", 
+    it("should evaluate it's argument", 
+      x=41. false ?|(x=42). x should == 42
+    )
+
+    it("should return the result of the argument", 
+      (false ?|(42)) should == 42
+    )
+
+    it("should be available in infix", 
+      (false ?| 43) should == 43
     )
   )
   

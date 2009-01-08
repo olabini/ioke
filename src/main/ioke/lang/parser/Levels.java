@@ -147,8 +147,10 @@ public class Levels {
 		new OpTable("|",   9),
 
 		new OpTable("&&",  10),
+		new OpTable("?&",  10),
 
 		new OpTable("||",  11),
+		new OpTable("?|",  11),
 
 		new OpTable("..",  12),
 		new OpTable("...",  12),

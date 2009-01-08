@@ -57,6 +57,20 @@ describe("nil",
       (nil && 43) should == nil
     )
   )
+
+  describe("?&", 
+    it("should not evaluate it's argument", 
+      x=41. nil ?&(x=42). x should == 41
+    )
+
+    it("should return nil", 
+      (nil ?&(42)) should == nil
+    )
+
+    it("should be available in infix", 
+      (nil ?& 43) should == nil
+    )
+  )
   
   describe("or", 
     it("should evaluate it's argument", 
@@ -81,16 +95,26 @@ describe("nil",
       x=41. nil ||(x=42). x should == 42
     )
 
-;     it("should complain if no argument is given", 
-;       fn(nil ||()) should signal(Condition Error JavaException)
-;     )
-
     it("should return the result of the argument", 
       (nil ||(42)) should == 42
     )
 
     it("should be available in infix", 
       (nil || 43) should == 43
+    )
+  )
+
+  describe("?|", 
+    it("should evaluate it's argument", 
+      x=41. nil ?|(x=42). x should == 42
+    )
+
+    it("should return the result of the argument", 
+      (nil ?|(42)) should == 42
+    )
+
+    it("should be available in infix", 
+      (nil ?| 43) should == 43
     )
   )
   

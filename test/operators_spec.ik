@@ -974,6 +974,86 @@ describe("operator",
       )
     )
 
+    describe("?&", 
+      it("should be correctly translated in infix", 
+        m = parse("2?&1")
+        m should == "2 ?&(1)"
+
+        m = parse("\"foo\"?&\"bar\"")
+        m should == "\"foo\" ?&(\"bar\")"
+      )
+
+      it("should be translated correctly with parenthesis", 
+        m = parse("2?&(1)")
+        m should == "2 ?&(1)"
+
+        m = parse("2 ?&(1)")
+        m should == "2 ?&(1)"
+
+        m = parse("\"foo\"?&(\"bar\")")
+        m should == "\"foo\" ?&(\"bar\")"
+
+        m = parse("\"foo\" ?&(\"bar\")")
+        m should == "\"foo\" ?&(\"bar\")"
+      )
+
+      it("should be translated correctly with spaces", 
+        m = parse("2 ?& 1")
+        m should == "2 ?&(1)"
+
+        m = parse("\"foo\" ?& \"bar\"")
+        m should == "\"foo\" ?&(\"bar\")"
+      )
+
+      it("should be translated correctly when chained", 
+        m = parse("2 ?& 1 ?& 0")
+        m should == "2 ?&(1) ?&(0)"
+
+        m = parse("\"foo\" ?& \"bar\" ?& \"quux\"")
+        m should == "\"foo\" ?&(\"bar\") ?&(\"quux\")"
+      )
+    )
+
+    describe("?|", 
+      it("should be correctly translated in infix", 
+        m = parse("2?|1")
+        m should == "2 ?|(1)"
+
+        m = parse("\"foo\"?|\"bar\"")
+        m should == "\"foo\" ?|(\"bar\")"
+      )
+
+      it("should be translated correctly with parenthesis", 
+        m = parse("2?|(1)")
+        m should == "2 ?|(1)"
+
+        m = parse("2 ?|(1)")
+        m should == "2 ?|(1)"
+
+        m = parse("\"foo\"?|(\"bar\")")
+        m should == "\"foo\" ?|(\"bar\")"
+
+        m = parse("\"foo\" ?|(\"bar\")")
+        m should == "\"foo\" ?|(\"bar\")"
+      )
+
+      it("should be translated correctly with spaces", 
+        m = parse("2 ?| 1")
+        m should == "2 ?|(1)"
+
+        m = parse("\"foo\" ?| \"bar\"")
+        m should == "\"foo\" ?|(\"bar\")"
+      )
+
+      it("should be translated correctly when chained", 
+        m = parse("2 ?| 1 ?| 0")
+        m should == "2 ?|(1) ?|(0)"
+
+        m = parse("\"foo\" ?| \"bar\" ?| \"quux\"")
+        m should == "\"foo\" ?|(\"bar\") ?|(\"quux\")"
+      )
+    )
+
     describe("or", 
       it("should be translated correctly with parenthesis", 
         m = parse("2 or(1)")
