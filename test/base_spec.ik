@@ -378,8 +378,8 @@ describe("Base",
     )
 
     it("should report an error if trying to get a cell that doesn't exist in that object", 
-      fn(cell(:flurg)) should signal(Condition Error NoSuchCell)
-      fn(cell("flurg")) should signal(Condition Error NoSuchCell)
+      fn(cell(:clurg)) should signal(Condition Error NoSuchCell)
+      fn(cell("clurg")) should signal(Condition Error NoSuchCell)
     )
   )
 
