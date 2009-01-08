@@ -282,14 +282,14 @@ describe(DefaultBehavior,
 
   describe("do", 
     it("should execute a piece of code inside an object", 
-      x = Origin mimic
-      x do(
-        y = 42
-        z = "str"
+      r = Origin mimic
+      r do(
+        s = 42
+        t = "str"
       )
-      cell?(:y) should == false
-      x y should == 42
-      x z should == "str"
+      cell?(:s) should == false
+      r s should == 42
+      r t should == "str"
     )
   )
   
