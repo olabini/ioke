@@ -255,19 +255,19 @@
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>\b(Base|DefaultBehavior|Ground|Origin|System|Runtime|Text|Number|Method|DefaultMethod|JavaMethod|Mixins|Restart|List|Dict)\b</string>
+			<string>\b(Base|Call|Condition|DateTime|DefaultBehavior|DefaultMacro|DefaultMethod|DefaultSyntax|Dict|FileSystem|Ground|Handler|IO|JavaMethod|LexicalBlock|LexicalMacro|List|Message|Method|Mixins|Number|Number Decimal|Number Integer|Number Rational|Number Real|Origin|Pair|Range|Regexp|Rescue|Restart|Runtime|Set|Symbol|System|Text)\b</string>
 			<key>name</key>
 			<string>entity.prototype-names.ioke</string>
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>\b(print|println|cell|documentation|while|until|asText|inspect|loop|bind|restart|do|true\?|false\?|nil\?|call|list|dict|empty\?|with|set)\b</string>
+			<string>\b(print|println|cell|cell\?|documentation|if|unless|while|until|loop|for|for:set|for:dict|bind|rescue|handle|restart|asText|inspect|notice|do|call|list|dict|set|with|kind)\b</string>
 			<key>name</key>
 			<string>keyword.cell-names.ioke</string>
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>(\`|\.|\,|@|@@|\(|\))</string>
+			<string>(\`\`|\`|''|'|\.|\,|@|@@|\(|\))</string>
 			<key>name</key>
 			<string>punctuation.ioke</string>
 		</dict>
@@ -279,7 +279,7 @@
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>\b(return|break|mimic|self|use|if|unless|true|false|nil)\b</string>
+			<string>\b(return|break|continue|mimic|self|use|fn|fnx|method|macro|lecro|lecrox|syntax|dmacro|dlecro|dlecrox|dysntax|unless|true|false|nil)\b</string>
 			<key>name</key>
 			<string>keyword.operator.names.ioke</string>
 		</dict>
@@ -347,7 +347,7 @@
 			<array>
 				<dict>
 					<key>match</key>
-					<string>(=~|!~|\.\.\.|=&gt;|\+\+|\-\-|\*|\/|%|\+|\-|&lt;&lt;|&gt;&gt;|&gt;|&lt;|&lt;=|&gt;=|&lt;=&gt;|==|!=|&amp;|\^|\||&amp;&amp;|\|\||\.\.|=|\+=|\-=|\*=|\/=|%=|&amp;=|\^=|\|=|&lt;&lt;=|&gt;&gt;=|&lt;\-|&lt;\-&gt;|\-&gt;)</string>
+					<string>[^.=*&amp;|&gt;!&lt;%#@/\\+?$~^-](\.\.\.|===|\*\*&gt;|&amp;&amp;&gt;|\|\|&gt;|\-&gt;&gt;|\+&gt;&gt;|!&gt;&gt;|&lt;&gt;&gt;&gt;|&amp;&gt;&gt;|%&gt;&gt;|#&gt;&gt;|@&gt;&gt;|/&gt;&gt;|\*&gt;&gt;|\?&gt;&gt;|\|&gt;&gt;|\^&gt;&gt;|~&gt;&gt;|\$&gt;&gt;|&lt;&lt;=|&gt;&gt;=|&lt;=&gt;|&lt;\-&gt;|=~|!~|=&gt;|\+\+|\-\-|&lt;=|&gt;=|==|!=|&amp;&amp;|\.\.|\+=|\-=|\*=|\/=|%=|&amp;=|\^=|\|=|&lt;\-|\+&gt;|!&gt;|&lt;&gt;|&amp;&gt;|%&gt;|#&gt;|@&gt;|\/&gt;|\*&gt;|\?&gt;|\|&gt;|\^&gt;|~&gt;|\$&gt;|&lt;\-&gt;|\-&gt;|&lt;&lt;|&gt;&gt;|\?\||\?&amp;|\|\||&gt;|&lt;|\*|\/|%|\+|\-|&amp;|\^|\||=|\$)[^.=*&amp;|&gt;!&lt;%#@/\\+?$~^-]</string>
 					<key>name</key>
 					<string>entity.operator.symbols.ioke</string>
 				</dict>
