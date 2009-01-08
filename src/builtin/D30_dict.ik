@@ -13,4 +13,20 @@ Dict addKeysAndValues = method(
 
   self)
 
+Dict ?| = dmacro(
+  "if this dict is empty, returns the result of evaluating the argument, otherwise returns the dict",
+
+  [theCode]
+  if(empty?,
+    call argAt(0),
+    self))
+
+Dict ?& = dmacro(
+  "if this dict is non-empty, returns the result of evaluating the argument, otherwise returns the dict",
+
+  [theCode]
+  unless(empty?,
+    call argAt(0),
+    self))
+
 Dict do(=== = generateMatchMethod(==))

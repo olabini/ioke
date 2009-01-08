@@ -395,6 +395,34 @@ describe(List,
     )
   )
 
+  describe("?|",
+    it("should just return itself if not empty",
+      [1] ?|(x/0) should == [1]
+      [1,2,3] ?|(x/0) should == [1,2,3]
+      x = [1,2]
+      x ?|(blarg) should be same(x)
+    )
+
+    it("should return the result of evaluating the code if empty",
+      ([] ?| 42) should == 42
+      ([] ?| [1,2,3]) should == [1,2,3]
+    )
+  )
+
+  describe("?&",
+    it("should just return itself if empty",
+      ([] ?& 42) should == []
+      ([] ?& [1,2,3]) should == []
+    )
+
+    it("should return the result of evaluating the code if non-empty",
+      [1] ?&(10) should == 10
+      [1,2,3] ?&(20) should == 20
+      x = [1,2]
+      x ?&([1,2,3]) should == [1,2,3]
+    )
+  )
+
   describe("each", 
     it("should not do anything for an empty list", 
       x = 0

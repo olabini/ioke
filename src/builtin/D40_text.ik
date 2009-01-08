@@ -21,4 +21,20 @@ Text chars = method(
 	"returns a list of each character in this text",
 	
 	self split("")[0..-2])
+
+Text ?| = dmacro(
+  "if this text is empty, returns the result of evaluating the argument, otherwise returns the text",
+
+  [theCode]
+  if(empty?,
+    call argAt(0),
+    self))
+
+Text ?& = dmacro(
+  "if this text is non-empty, returns the result of evaluating the argument, otherwise returns the text",
+
+  [theCode]
+  unless(empty?,
+    call argAt(0),
+    self))
   

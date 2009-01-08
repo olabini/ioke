@@ -46,6 +46,34 @@ describe("Set",
     )
   )
 
+  describe("?|",
+    it("should just return itself if not empty",
+      set(1) ?|(x/0) should == set(1)
+      set(1,2,3) ?|(x/0) should == set(1,2,3)
+      x = set(1,2)
+      x ?|(blarg) should be same(x)
+    )
+
+    it("should return the result of evaluating the code if empty",
+      set ?|(42) should == 42
+      set ?|([1,2,3]) should == [1,2,3]
+    )
+  )
+
+  describe("?&",
+    it("should just return itself if empty",
+      (set ?& 42) should == set
+      (set ?& [1,2,3]) should == set
+    )
+
+    it("should return the result of evaluating the code if non-empty",
+      set(1) ?&(10) should == 10
+      set(1,2,3) ?&(20) should == 20
+      x = set(1,2)
+      x ?&([1,2,3]) should == [1,2,3]
+    )
+  )
+
   describe("each", 
     it("should not do anything for an empty set", 
       x = 0. set() each(. x++). x should == 0

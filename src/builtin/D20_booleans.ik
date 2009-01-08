@@ -6,30 +6,35 @@ true and = macro(
 
   call argAt(0))
 true aliasMethod("and", "&&")
+true aliasMethod("and", "?&")
 
 false and = macro(
   "Does not evaluate argument and returns false",
 
   false)
 false aliasMethod("and", "&&")
+false aliasMethod("and", "?&")
 
 true or = macro(
   "Does not evaluate argument and returns true",
 
   true)
 true aliasMethod("or", "||")
+true aliasMethod("or", "?|")
 
 false or = macro(
   "Evaluates the argument and returns the result",
 
   call argAt(0))
 false aliasMethod("or", "||")
+false aliasMethod("or", "?|")
 
 nil or = macro(
   "Evaluates the argument and returns the result",
 
   call argAt(0))
 nil aliasMethod("or", "||")
+nil aliasMethod("or", "?|")
 
 nil and = dmacro(
   "Does not evaluate argument and returns nil",
@@ -37,6 +42,7 @@ nil and = dmacro(
   [then]
   nil)
 nil aliasMethod("and", "&&")
+nil aliasMethod("and", "?&")
 
 DefaultBehavior Boolean or = dmacro(
   "Does not evaluate argument and returns self",
@@ -50,6 +56,12 @@ DefaultBehavior Boolean cell("||") = dmacro(
   [then]
   @)
 
+DefaultBehavior Boolean cell("?|") = dmacro(
+  "Does not evaluate argument and returns self",
+
+  [then]
+  @)
+
 DefaultBehavior Boolean and = dmacro(
   "Evaluates the argument and returns the result",
 
@@ -57,6 +69,12 @@ DefaultBehavior Boolean and = dmacro(
   then)
 
 DefaultBehavior Boolean cell("&&") = dmacro(
+  "Evaluates the argument and returns the result",
+
+  [>then]
+  then)
+
+DefaultBehavior Boolean cell("?&") = dmacro(
   "Evaluates the argument and returns the result",
 
   [>then]
