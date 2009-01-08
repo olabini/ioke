@@ -19,6 +19,6 @@ knownEdits2 = method(word, for:set(e1 <- edits1(word), e2 <- edits1(e1), NWORDS 
 known = method(words, for:set(w <- words, NWORDS key?(w), w))
 
 correct = method(word,
-  candidates = known([word]) ifEmpty(known(edits1(word)) ifEmpty(knownEdits2(word) ifEmpty([word])))
+  candidates = known([word]) ?| known(edits1(word)) ?| knownEdits2(word) ?| [word]
   candidates max(x, NWORDS[x]))
 
