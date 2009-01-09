@@ -29,7 +29,9 @@ DokGen do(
   code? = method(val,
     ((cell(:val) kind?("DefaultMethod")) || 
       (cell(:val) kind?("LexicalBlock")) ||
-      (cell(:val) kind?("DefaultMacro"))))
+      (cell(:val) kind?("DefaultMacro")) ||
+      (cell(:val) kind?("LexicalMacro")) ||
+      (cell(:val) kind?("DefaultSyntax"))))
 
   collectSpecs = method(specsPattern, collectedSpecs, collected,
     use("ispec")

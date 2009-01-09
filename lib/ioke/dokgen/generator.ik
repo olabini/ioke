@@ -91,8 +91,12 @@ DokGen do(
       allMimicsContent = "none"
 
       unless(Base == cell(:theKind),
-        allMimics = cell(:theKind) mimics
-        mainMimic = cell(:theKind) mimics first
+        allMimics = if(cell(:theKind) cell?(:mimic),
+          cell(:theKind) mimics,
+          [])
+        mainMimic = if(cell(:theKind) cell?(:mimic),
+          cell(:theKind) mimics first,
+          nil)
 
         if(allMimics length > 0,
           mainMimicContent = "<a href=\"#{beforeLinks}kinds/%s.html\">%s</a>" format(cell(:mainMimic) kind replaceAll(" ", "/"), cell(:mainMimic) kind)
