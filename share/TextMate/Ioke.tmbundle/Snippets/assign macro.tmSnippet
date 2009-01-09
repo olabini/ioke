@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>content</key>
+	<string>${1:macro_name} = macro(${3:"${2:The macro $1 does...}",} ${4:params,}
+  $0
+)</string>
+	<key>name</key>
+	<string>assign macro</string>
+	<key>scope</key>
+	<string>source.ioke</string>
+	<key>tabTrigger</key>
+	<string>macro</string>
+	<key>uuid</key>
+	<string>600BA948-582C-408C-8D46-401D2F43E9FA</string>
+</dict>
+</plist>
