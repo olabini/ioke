@@ -170,7 +170,7 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
         }
     }
 
-    private Object expand(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+    private Object expand(final IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
         if(code == null) {
             IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
                                                                          message, 
@@ -190,6 +190,13 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
         IokeObject c = context.runtime.locals.mimic(message, context);
         c.setCell("self", on);
         c.setCell("@", on);
+        c.registerMethod(c.runtime.newJavaMethod("will return the currently executing syntax receiver", new JavaMethod.WithNoArguments("@@") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                    return self;
+                }
+            }));
         c.setCell("currentMessage", message);
         c.setCell("surroundingContext", context);
         c.setCell("call", context.runtime.newCallFrom(c, message, context, IokeObject.as(on)));

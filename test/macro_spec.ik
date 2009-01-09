@@ -42,6 +42,14 @@ describe("DefaultMacro",
     obj2 atSign should == obj2
   )
 
+  it("should have @@ return the executing macro inside of a macro", 
+    obj = Origin mimic
+    obj atAtSign = macro(@@)
+    obj2 = obj mimic
+    obj atAtSign should == obj cell(:atAtSign)
+    obj2 atAtSign should == obj2 cell(:atAtSign)
+  )
+
   it("should have 'self' return the receiving object inside of a macro", 
     obj = Origin mimic
     obj selfMacro = macro(self)
