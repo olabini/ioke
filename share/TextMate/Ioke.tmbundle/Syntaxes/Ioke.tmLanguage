@@ -17,6 +17,12 @@
 	<key>patterns</key>
 	<array>
 		<dict>
+			<key>match</key>
+			<string>\b(Base|Call|Condition|DateTime|DefaultBehavior|DefaultMacro|DefaultMethod|DefaultSyntax|Dict|FileSystem|Ground|Handler|IO|JavaMethod|LexicalBlock|LexicalMacro|List|Message|Method|Mixins|Number|Number Decimal|Number Integer|Number Rational|Number Real|Origin|Pair|Range|Regexp|Rescue|Restart|Runtime|Set|Symbol|System|Text)\b</string>
+			<key>name</key>
+			<string>entity.prototype-names.ioke</string>
+		</dict>
+		<dict>
 			<key>begin</key>
 			<string>[[:alnum:]!?_:-]+(?=[[:space:]]*=.*mimic(?=\b).*($|\.))</string>
 			<key>end</key>
@@ -309,12 +315,6 @@
 			<string>\b(fn|fnx|method|macro)\b</string>
 			<key>name</key>
 			<string>entity.name.function</string>
-		</dict>
-		<dict>
-			<key>match</key>
-			<string>\b(Base|Call|Condition|DateTime|DefaultBehavior|DefaultMacro|DefaultMethod|DefaultSyntax|Dict|FileSystem|Ground|Handler|IO|JavaMethod|LexicalBlock|LexicalMacro|List|Message|Method|Mixins|Number|Number Decimal|Number Integer|Number Rational|Number Real|Origin|Pair|Range|Regexp|Rescue|Restart|Runtime|Set|Symbol|System|Text)\b</string>
-			<key>name</key>
-			<string>entity.prototype-names.ioke</string>
 		</dict>
 		<dict>
 			<key>match</key>
