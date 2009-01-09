@@ -119,7 +119,7 @@ public class DefaultMethod extends Method implements AssociatedCode {
     }
 
     @Override
-    public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+    public Object activate(final IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
         if(code == null) {
             IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
                                                                          message, 
@@ -140,6 +140,15 @@ public class DefaultMethod extends Method implements AssociatedCode {
         IokeObject c = context.runtime.locals.mimic(message, context);
         c.setCell("self", on);
         c.setCell("@", on);
+
+        c.registerMethod(c.runtime.newJavaMethod("will return the currently executing method receiver", new JavaMethod.WithNoArguments("@@") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                    return self;
+                }
+            }));
+
         c.setCell("currentMessage", message);
         c.setCell("surroundingContext", context);
 

@@ -155,7 +155,7 @@ public class DefaultMacro extends IokeData implements Named, Inspectable, Associ
     }
 
     @Override
-    public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+    public Object activate(final IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
         if(code == null) {
             IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
                                                                          message, 
@@ -175,6 +175,13 @@ public class DefaultMacro extends IokeData implements Named, Inspectable, Associ
         IokeObject c = context.runtime.locals.mimic(message, context);
         c.setCell("self", on);
         c.setCell("@", on);
+        c.registerMethod(c.runtime.newJavaMethod("will return the currently executing macro receiver", new JavaMethod.WithNoArguments("@@") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                    return self;
+                }
+            }));
         c.setCell("currentMessage", message);
         c.setCell("surroundingContext", context);
         c.setCell("call", context.runtime.newCallFrom(c, message, context, IokeObject.as(on)));

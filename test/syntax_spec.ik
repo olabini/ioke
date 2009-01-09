@@ -75,6 +75,16 @@ describe("DefaultSyntax",
     syntaxTest should == [obj, obj2]
   )
 
+  it("should have @@ return the executing syntax inside of a syntax", 
+    Ground syntaxTest = []
+    obj = Origin mimic
+    obj atAtSign = syntax(syntaxTest << @@. nil)
+    obj2 = obj mimic
+    obj atAtSign
+    obj2 atAtSign
+    syntaxTest should == [obj cell(:atAtSign), obj2 cell(:atAtSign)]
+  )
+
   it("should have 'self' return the receiving object inside of a macro", 
     Ground syntaxTest = []
     obj = Origin mimic

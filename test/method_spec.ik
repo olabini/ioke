@@ -346,6 +346,14 @@ describe("DefaultMethod",
     obj2 atSign should == obj2
   )
 
+  it("should have @@ return the executing method inside of a method", 
+    obj = Origin mimic
+    obj atAtSign = method(@@)
+    obj2 = obj mimic
+    obj atAtSign should == obj cell(:atAtSign)
+    obj2 atAtSign should == obj2 cell(:atAtSign)
+  )
+
   it("should have 'self' return the receiving object inside of a method", 
     obj = Origin mimic
     obj selfMethod = method(self)
