@@ -18,7 +18,7 @@
 	<array>
 		<dict>
 			<key>begin</key>
-			<string>[[:alnum:]!?_:-]+(?=[[:space:]]*=.*mimic.*($|\.))</string>
+			<string>[[:alnum:]!?_:-]+(?=[[:space:]]*=.*mimic(?=\b).*($|\.))</string>
 			<key>end</key>
 			<string>(?=\.)|$</string>
 			<key>name</key>
@@ -392,7 +392,7 @@
 			<array>
 				<dict>
 					<key>match</key>
-					<string>\b(return|break|mimic|self|use|if|unless|true|false|nil)\b</string>
+					<string>\b(return|break|continue|mimic|self|use|fn|fnx|method|macro|lecro|lecrox|syntax|dmacro|dlecro|dlecrox|dsyntax|unless|true|false|nil)\b</string>
 					<key>name</key>
 					<string>keyword.operator.names.ioke</string>
 				</dict>
@@ -404,7 +404,7 @@
 			<array>
 				<dict>
 					<key>match</key>
-					<string>[^.=*&amp;|&gt;!&lt;%#@/\\+?$~^-](\.\.\.|===|\*\*&gt;|&amp;&amp;&gt;|\|\|&gt;|\-&gt;&gt;|\+&gt;&gt;|!&gt;&gt;|&lt;&gt;&gt;&gt;|&amp;&gt;&gt;|%&gt;&gt;|#&gt;&gt;|@&gt;&gt;|/&gt;&gt;|\*&gt;&gt;|\?&gt;&gt;|\|&gt;&gt;|\^&gt;&gt;|~&gt;&gt;|\$&gt;&gt;|&lt;&lt;=|&gt;&gt;=|&lt;=&gt;|&lt;\-&gt;|=~|!~|=&gt;|\+\+|\-\-|&lt;=|&gt;=|==|!=|&amp;&amp;|\.\.|\+=|\-=|\*=|\/=|%=|&amp;=|\^=|\|=|&lt;\-|\+&gt;|!&gt;|&lt;&gt;|&amp;&gt;|%&gt;|#&gt;|@&gt;|\/&gt;|\*&gt;|\?&gt;|\|&gt;|\^&gt;|~&gt;|\$&gt;|&lt;\-&gt;|\-&gt;|&lt;&lt;|&gt;&gt;|\?\||\?&amp;|\|\||&gt;|&lt;|\*|\/|%|\+|\-|&amp;|\^|\||=|\$)[^.=*&amp;|&gt;!&lt;%#@/\\+?$~^-]</string>
+					<string>(\.\.\.|===|\*\*&gt;|&amp;&amp;&gt;|\|\|&gt;|\-&gt;&gt;|\+&gt;&gt;|!&gt;&gt;|&lt;&gt;&gt;&gt;|&amp;&gt;&gt;|%&gt;&gt;|#&gt;&gt;|@&gt;&gt;|/&gt;&gt;|\*&gt;&gt;|\?&gt;&gt;|\|&gt;&gt;|\^&gt;&gt;|~&gt;&gt;|\$&gt;&gt;|&lt;&lt;=|&gt;&gt;=|&lt;=&gt;|&lt;\-&gt;|=~|!~|=&gt;|\+\+|\-\-|&lt;=|&gt;=|==|!=|&amp;&amp;|\.\.|\+=|\-=|\*=|\/=|%=|&amp;=|\^=|\|=|&lt;\-|\+&gt;|!&gt;|&lt;&gt;|&amp;&gt;|%&gt;|#&gt;|@&gt;|\/&gt;|\*&gt;|\?&gt;|\|&gt;|\^&gt;|~&gt;|\$&gt;|&lt;\-&gt;|\-&gt;|&lt;&lt;|&gt;&gt;|\?\||\?&amp;|\|\||&gt;|&lt;|\*|\/|%|\+|\-|&amp;|\^|\||=|\$)(?![.=*&amp;|&gt;!&lt;%#@/\\+?$~^-])</string>
 					<key>name</key>
 					<string>entity.operator.symbols.ioke</string>
 				</dict>
@@ -416,7 +416,7 @@
 			<array>
 				<dict>
 					<key>match</key>
-					<string>\b(Base|DefaultBehavior|Ground|Origin|System|Runtime|Text|Number|Method|DefaultMethod|JavaMethod|Mixins|Restart|List|Dict)\b</string>
+					<string>\b(Base|Call|Condition|DateTime|DefaultBehavior|DefaultMacro|DefaultMethod|DefaultSyntax|Dict|FileSystem|Ground|Handler|IO|JavaMethod|LexicalBlock|LexicalMacro|List|Message|Method|Mixins|Number|Number Decimal|Number Integer|Number Rational|Number Real|Origin|Pair|Range|Regexp|Rescue|Restart|Runtime|Set|Symbol|System|Text)\b</string>
 					<key>name</key>
 					<string>entity.prototype-names.ioke</string>
 				</dict>
