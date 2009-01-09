@@ -336,7 +336,7 @@
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>\b(return|break|continue|mimic|self|use|fn|fnx|method|macro|lecro|lecrox|syntax|dmacro|dlecro|dlecrox|dysntax|unless|true|false|nil)\b</string>
+			<string>\b(return|break|continue|mimic|self|use|fn|fnx|method|macro|lecro|lecrox|syntax|dmacro|dlecro|dlecrox|dsyntax|unless|true|false|nil)\b</string>
 			<key>name</key>
 			<string>keyword.operator.names.ioke</string>
 		</dict>
