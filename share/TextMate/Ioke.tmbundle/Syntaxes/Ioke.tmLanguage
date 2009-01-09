@@ -318,7 +318,7 @@
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>\b(print|println|cell|cell\?|documentation|if|unless|while|until|loop|for|for:set|for:dict|bind|rescue|handle|restart|asText|inspect|notice|do|call|list|dict|set|with|kind)\b</string>
+			<string>(print|println|cell\?|cell|documentation|if|unless|while|until|loop|for|for:set|for:dict|bind|rescue|handle|restart|asText|inspect|notice|do|call|list|dict|set|with|kind)</string>
 			<key>name</key>
 			<string>keyword.cell-names.ioke</string>
 		</dict>
