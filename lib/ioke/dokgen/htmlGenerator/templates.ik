@@ -44,9 +44,7 @@ DokGen do(
           <a name=\"C00#{cellId}\"></a><b>#{cellName}</b>(#{cellArguments})
           </div>
           <div class=\"description\">
-            <p>
-              #{cellDescription}
-            </p>
+            <p>#{cellDescription}</p>
           </div>
           #{if(cellMessage,
 "          <div class=\"sourcecode\">
