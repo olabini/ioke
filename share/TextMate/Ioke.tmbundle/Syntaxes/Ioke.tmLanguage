@@ -33,6 +33,10 @@
 			<array>
 				<dict>
 					<key>include</key>
+					<string>#prototype_names</string>
+				</dict>
+				<dict>
+					<key>include</key>
 					<string>#operator_symbols</string>
 				</dict>
 				<dict>
@@ -43,11 +47,11 @@
 					<key>include</key>
 					<string>#kinds</string>
 				</dict>
-				<dict>
-					<key>include</key>
-					<string>#prototype_names</string>
-				</dict>
 			</array>
+		</dict>
+		<dict>
+			<key>include</key>
+			<string>#prototype_names</string>
 		</dict>
 		<dict>
 			<key>include</key>
@@ -60,10 +64,6 @@
 		<dict>
 			<key>include</key>
 			<string>#kinds</string>
-		</dict>
-		<dict>
-			<key>include</key>
-			<string>#prototype_names</string>
 		</dict>
 		<dict>
 			<key>begin</key>
