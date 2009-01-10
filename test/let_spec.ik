@@ -52,6 +52,22 @@ describe(DefaultBehavior,
             error!("non-local yay!")))
         Text fluxie2 wowsie should == 13
       )
+
+      it("should bind a new place temporarily, and then remove it",
+        X = Origin mimic
+        let(X testOfLetMethod, method(42),
+          X testOfLetMethod should == 42
+        )
+        X cellNames should not include(:testOfLetMethod)
+      )
+
+      it("should bind a new place with cell temporarily, and then remove it",
+        X = Origin mimic
+        let(X cell(:testOfLetMethod2), method(42),
+          X testOfLetMethod2 should == 42
+        )
+        X cellNames should not include(:testOfLetMethod2)
+      )
     )
   )
 )
