@@ -117,6 +117,8 @@ public class Runtime {
     public IokeObject inspectMessage = newMessage("inspect");
     public IokeObject noticeMessage = newMessage("notice");
 
+    public IokeObject removeCellMessage = newMessage("removeCell!");
+
     public IokeObject plusMessage = newMessage("+");
     public IokeObject minusMessage = newMessage("-");
     public IokeObject multMessage = newMessage("*");

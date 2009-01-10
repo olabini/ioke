@@ -68,7 +68,12 @@ public class FlowControlBehavior {
                                     wherePlace = Message.getEvaluatedArgument(place, context);
                                 }
 
-                                Object originalValue = realPlace.sendTo(context, wherePlace);
+                                Object originalValue = null;
+                                try {
+                                    originalValue = realPlace.sendTo(context, wherePlace);
+                                } catch(Throwable e) {
+                                    originalValue = null;
+                                }
                             
                                 if(realPlace.getArguments().size() != 0) {
                                     String newName = realPlace.getName() + "=";
@@ -96,10 +101,24 @@ public class FlowControlBehavior {
                                 if(realPlace.getArguments().size() != 0) {
                                     String newName = realPlace.getName() + "=";
                                     List<Object> arguments = new ArrayList<Object>(realPlace.getArguments());
-                                    arguments.add(context.runtime.createMessage(Message.wrap(IokeObject.as(value))));
-                                    context.runtime.newMessageFrom(realPlace, newName, arguments).sendTo(context, wherePlace);
+
+                                    if(value == null) {
+                                        if(newName.equals("cell=")) {
+                                            context.runtime.removeCellMessage.sendTo(context, wherePlace, new ArrayList<Object>(realPlace.getArguments()));
+                                        } else {
+                                            arguments.add(context.runtime.createMessage(Message.wrap(context.runtime.nil)));
+                                            context.runtime.newMessageFrom(realPlace, newName, arguments).sendTo(context, wherePlace);
+                                        }
+                                    } else {
+                                        arguments.add(context.runtime.createMessage(Message.wrap(IokeObject.as(value))));
+                                        context.runtime.newMessageFrom(realPlace, newName, arguments).sendTo(context, wherePlace);
+                                    }
                                 } else {
-                                    IokeObject.assign(wherePlace, realPlace.getName(), value, context, message);
+                                    if(value == null) {
+                                        IokeObject.removeCell(wherePlace, context, message, realPlace.getName());
+                                    } else {
+                                        IokeObject.assign(wherePlace, realPlace.getName(), value, context, message);
+                                    }
                                 }
                             } catch(Throwable e) {}
                         }
