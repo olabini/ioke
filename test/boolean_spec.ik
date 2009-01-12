@@ -11,8 +11,8 @@ describe(true,
 
   describe("true?", 
     it("should return true", 
-      true true? should == true
-      x = true. x true? should == true
+      true true? should be true
+      x = true. x true? should be true
     )
   )
 
@@ -47,11 +47,11 @@ describe(true,
     )
 
     it("should return true", 
-      (true or(42)) should == true
+      (true or(42)) should be true
     )
 
     it("should be available in infix", 
-      (true or 43) should == true
+      (true or 43) should be true
     )
   )
 
@@ -75,11 +75,11 @@ describe(true,
     )
 
     it("should return true", 
-      (true ||(42)) should == true
+      (true ||(42)) should be true
     )
 
     it("should be available in infix", 
-      (true || 43) should == true
+      (true || 43) should be true
     )
   )
 
@@ -103,11 +103,11 @@ describe(true,
     )
 
     it("should return true", 
-      (true ?|(42)) should == true
+      (true ?|(42)) should be true
     )
 
     it("should be available in infix", 
-      (true ?| 43) should == true
+      (true ?| 43) should be true
     )
   )
   
@@ -125,11 +125,11 @@ describe(true,
     )
 
     it("should return true if the argument is false", 
-      (true xor(false)) should == true
+      (true xor(false)) should be true
     )
 
     it("should return true if the argument is nil", 
-      (true xor(nil)) should == true
+      (true xor(nil)) should be true
     )
     
     it("should be available in infix", 
@@ -165,11 +165,11 @@ describe(true,
     )
     
     it("should return true if the argument evaluates to false", 
-      (true nand(false)) should == true
+      (true nand(false)) should be true
     )
     
     it("should return true if the argument evaluates to nil", 
-      (true nand(nil)) should == true
+      (true nand(nil)) should be true
     )
 
     it("should be available in infix", 
@@ -183,7 +183,7 @@ describe(true,
     )
 
     it("should return true", 
-      true ifTrue(x=42) should == true
+      true ifTrue(x=42) should be true
     )
   )
 
@@ -193,7 +193,7 @@ describe(true,
     )
 
     it("should return true", 
-      true ifFalse(x=42) should == true
+      true ifFalse(x=42) should be true
     )
   )
 )
@@ -201,8 +201,8 @@ describe(true,
 describe(false, 
   describe("false?", 
     it("should return true", 
-      false false? should == true
-      x = false. x false? should == true
+      false false? should be true
+      x = false. x false? should be true
     )
   )
 
@@ -215,8 +215,8 @@ describe(false,
 
   describe("not", 
     it("should return true", 
-      false not should == true
-      x = false. x not should == true
+      false not should be true
+      x = false. x not should be true
     )
   )
 
@@ -272,7 +272,7 @@ describe(false,
 ;     )
 
     it("should return true if the argument is true", 
-      (false xor(true)) should == true
+      (false xor(true)) should be true
     )
 
     it("should return false if the argument is false", 
@@ -284,7 +284,7 @@ describe(false,
     )
     
     it("should be available in infix", 
-      (false xor 43) should == true
+      (false xor 43) should be true
     )
   )
 
@@ -294,14 +294,14 @@ describe(false,
     )
 
     it("should return true", 
-      (false nand(42)) should == true
-      (false nand(false)) should == true
-      (false nand(nil)) should == true
-      (false nand(true)) should == true
+      (false nand(42)) should be true
+      (false nand(false)) should be true
+      (false nand(nil)) should be true
+      (false nand(true)) should be true
     )
     
     it("should be available in infix", 
-      (false nand 43) should == true
+      (false nand 43) should be true
     )
   )
 
@@ -361,11 +361,11 @@ describe(false,
     )
 
     it("should return false if the argument is false", 
-      (false nor(false)) should == true
+      (false nor(false)) should be true
     )
 
     it("should return false if the argument is nil", 
-      (false nor(nil)) should == true
+      (false nor(nil)) should be true
     )
 
     it("should be available in infix", 

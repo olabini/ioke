@@ -34,7 +34,7 @@ describe("Base",
       y foo = "blarg"
 
       y removeCell!(:foo)
-      y cell?(:foo) should == true
+      y cell?(:foo) should be true
       y foo should == "blurg"
     )
   )
@@ -59,8 +59,8 @@ describe("Base",
       y foo = "blarg"
 
       y undefineCell!(:foo)
-      x cell?(:foo) should == true
-      y cell?(:foo) should == false
+      x cell?(:foo) should be true
+      y cell?(:foo) should be false
       fn(y foo) should signal(Condition Error NoSuchCell)
       fn(y mimic foo) should signal(Condition Error NoSuchCell)
     )
@@ -167,8 +167,8 @@ describe("Base",
       x foo = 123
       y foo = "bar"
 
-      x cellOwner?(:foo) should == true
-      y cellOwner?(:foo) should == true
+      x cellOwner?(:foo) should be true
+      y cellOwner?(:foo) should be true
     )
 
     it("should return false if the cell name is owned by another object",
@@ -177,7 +177,7 @@ describe("Base",
 
       x foo = 123
 
-      y cellOwner?(:foo) should == false
+      y cellOwner?(:foo) should be false
     )
 
     it("should signal a condition if there is no such cell",
@@ -335,24 +335,24 @@ describe("Base",
   describe("cell?",
     it("should be possible to check for the existance of a cell using a text argument", 
       x = 42
-      cell?("x") should == true
+      cell?("x") should be true
     )
 
     it("should be possible to check for the existance of a cell using a symbol argument", 
       x = 42
-      cell?(:x) should == true
+      cell?(:x) should be true
     )
 
     it("should be possible to check for the existance of a cell with an empty name", 
-      cell?("") should == true
+      cell?("") should be true
     )
 
     it("should be possible to check for the existance of a cell that doesn't exist", 
-      cell?(:murg) should == false
+      cell?(:murg) should be false
     )
 
     it("should be possible to check for the existance of a cell that does exist", 
-      cell?(:Ground) should == true
+      cell?(:Ground) should be true
     )
   )
   
