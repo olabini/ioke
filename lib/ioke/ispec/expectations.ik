@@ -45,9 +45,9 @@ ISpec do(
       error!(ISpec ExpectationNotMet, text: "expected #{condition} to be signalled in #{realValue code} - got #{signalled}", shouldMessage: self shouldMessage)))
 
   ShouldContext offer = method(theRestart,
-    rst = nil
+    rst = Ground nil
     bind(
-      rescue(Ground Condition, fn(c, nil)),
+      rescue(Ground Condition, fn(c, Ground nil)),
       handle(Ground Condition, fn(c, rst = findRestart(theRestart name))),
       realValue call)
 
@@ -65,6 +65,22 @@ ISpec do(
   ShouldContext mimic = method(value,
     unless(realValue mimics?(value),
       error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to mimic #{value kind}", shouldMessage: self shouldMessage)))
+
+  ShouldContext kind = method(value,
+    unless(realValue kind?(value),
+      error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to be kind #{value kind}", shouldMessage: self shouldMessage)))
+
+  ShouldContext true = method(
+    unless(Ground true == realValue,
+      error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to be true", shouldMessage: self shouldMessage)))
+
+  ShouldContext false = method(
+    unless(Ground false == realValue,
+      error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to be false", shouldMessage: self shouldMessage)))
+
+  ShouldContext nil = method(
+    unless(Ground nil == realValue,
+      error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to be nil", shouldMessage: self shouldMessage)))
 
   ShouldContext not = method(
     "inverts the expected matching",
@@ -110,10 +126,26 @@ ISpec do(
     if(realValue mimics?(value),
       error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to not mimic #{value kind}", shouldMessage: self shouldMessage)))
 
+  NotShouldContext kind = method(value,
+    if(realValue kind?(value),
+      error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to not have kind #{value kind}", shouldMessage: self shouldMessage)))
+
+  NotShouldContext true = method(
+    if(Ground true == realValue,
+      error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to not be true", shouldMessage: self shouldMessage)))
+
+  NotShouldContext false = method(
+    if(Ground false == realValue,
+      error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to not be false", shouldMessage: self shouldMessage)))
+
+  NotShouldContext nil = method(
+    if(Ground nil == realValue,
+      error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to not be nil", shouldMessage: self shouldMessage)))
+
   NotShouldContext offer = method(theRestart,
-    rst = nil
+    rst = Ground nil
     bind(
-      rescue(Ground Condition, fn(c, nil)),
+      rescue(Ground Condition, fn(c, Ground nil)),
       handle(Ground Condition, fn(c, rst = findRestart(theRestart name))),
       realValue call)
 
