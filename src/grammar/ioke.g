@@ -148,15 +148,20 @@ expression
     |   '[' ']'                          -> ^(MESSAGE_SEND_SQUARE)
     |   '{}'                             -> ^(MESSAGE_SEND_CURLY)
     |   '{' '}'                          -> ^(MESSAGE_SEND_CURLY)
-    |   '[' commatedExpression ']'   -> ^(MESSAGE_SEND_SQUARE commatedExpression)
-    |   '{' commatedExpression '}'   -> ^(MESSAGE_SEND_CURLY commatedExpression)
+    |   '[' commatedExpression ']'       -> ^(MESSAGE_SEND_SQUARE commatedExpression)
+    |   '{' commatedExpression '}'       -> ^(MESSAGE_SEND_CURLY commatedExpression)
     |   binaryOperator
-    |   StringLiteral
+    |   literals
+    |   Terminator
+    ;
+
+literals
+    :
+        StringLiteral
     |   RegexpLiteral
     |   NumberLiteral
     |   DecimalLiteral
     |   UnitLiteral
-    |   Terminator
     ;
 
 OpenParen
@@ -184,12 +189,9 @@ binaryOperator
 
 Identifier
     :
-        '@'
-    |   '@@'
-    |   '\''
-    |   '\'\''
-    |   '`'
-    |   '``'
+        ('@')+
+    |   ('\'')+
+    |   ('`')+
     |   (Letter|':') (Letter|IDDigit|StrangeChars)*
     ;
 
