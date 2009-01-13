@@ -1101,6 +1101,7 @@ public class Message extends IokeData {
         }
 
         IokeObject m = self.allocateCopy(self, context);
+        m.mimicsWithoutCheck(context.runtime.message);
         m.getArguments().clear();
         m.getArguments().add(argument);
         return IokeObject.perform(recv, context, m);
