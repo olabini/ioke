@@ -366,7 +366,7 @@ describe("Dict",
 
     it("should try to use the keyword syntax if possible", 
       result = {foo: "bar", "bar" => :foo} notice
-      ((result == "{foo: \"bar\", \"bar\" => :foo}") || (result == "{\"bar\" => :foo, foo: \"bar\"}")) should == true
+      ((result == "{foo: \"bar\", \"bar\" => :foo}") || (result == "{\"bar\" => :foo, foo: \"bar\"}")) should be true
       {:foo => :bar} notice should == "{foo: :bar}"
     )
 
@@ -388,7 +388,7 @@ describe("Dict",
 
     it("should try to use the keyword syntax if possible", 
       result = {foo: "bar", "bar" => :foo} inspect
-      (result == "{foo: \"bar\", \"bar\" => :foo}") || (result == "{\"bar\" => :foo, foo: \"bar\"}") should == true
+      (result == "{foo: \"bar\", \"bar\" => :foo}") || (result == "{\"bar\" => :foo, foo: \"bar\"}") should be true
       {:foo => :bar} inspect should == "{foo: :bar}"
     )
 
@@ -418,7 +418,7 @@ describe("Set",
 
     it("should return all the elements separated by commas", 
       val = set(1, 2, 2, 2) notice
-      (val == "set(1, 2)") || (val == "set(2, 1)") should == true
+      (val == "set(1, 2)") || (val == "set(2, 1)") should be true
     )
   )
   
@@ -435,7 +435,7 @@ describe("Set",
 
     it("should return all the elements separated by commas", 
       val = set(1, 2, 2, 2) inspect. 
-      (val == "set(1, 2)") || (val == "set(2, 1)") should == true
+      (val == "set(1, 2)") || (val == "set(2, 1)") should be true
     )
   )
 )

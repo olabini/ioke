@@ -5,7 +5,7 @@ describe(DefaultBehavior,
   describe("FlowControl",
     describe("cond",
       it("should return nil for an empty statement",
-        cond should == nil
+        cond should be nil
       )
 
       it("should evaluate and return the result of one statement",
@@ -14,7 +14,7 @@ describe(DefaultBehavior,
 
       it("should evaluate a condition and not do it's then part if it's false",
         Ground condTests = []
-        cond(false, condTests << :ran) should == nil
+        cond(false, condTests << :ran) should be nil
         condTests should == []
       )
 

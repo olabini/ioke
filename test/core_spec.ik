@@ -15,7 +15,7 @@ describe("nil",
   )
   
   it("should be nil", 
-    nil should == nil
+    nil should be nil
   )
 )
 
@@ -33,7 +33,7 @@ describe("false",
   )
 
   it("should not be nil", 
-    false should not == nil
+    false should not be nil
   )
 )
 
@@ -51,7 +51,7 @@ describe("true",
   )
 
   it("should not be nil", 
-    true should not == nil
+    true should not be nil
   )
 )
 
@@ -61,7 +61,7 @@ describe("Base",
   )
 
   it("should have a 'mimic' cell", 
-    Base cell?(:mimic) should == true
+    Base cell?(:mimic) should be true
   )
 )
 
@@ -201,11 +201,11 @@ describe("Mixins",
   )
 
   it("should have Comparing defined", 
-    Mixins cell?(:Comparing) should == true
+    Mixins cell?(:Comparing) should be true
   )
 
   it("should have Enumerable defined", 
-    Mixins cell?(:Enumerable) should == true
+    Mixins cell?(:Enumerable) should be true
   )
 
   describe("Enumerable", 

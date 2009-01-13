@@ -134,7 +134,7 @@ describe(DefaultBehavior,
           rescue(fn(c, gah)),
           handle(fn(c, gah = findRestart(:ignore))),
           
-          warn!("something")) should not == nil
+          warn!("something")) should not be nil
       )
     )
 
@@ -332,7 +332,7 @@ describe(DefaultBehavior,
 
     describe("bind", 
       it("should evaluate it's last argument and return the result of that", 
-        bind() should == nil
+        bind() should be nil
         bind(42) should == 42
 
         bind(
@@ -364,7 +364,7 @@ describe(DefaultBehavior,
         bind(r,
           availableRestarts[0] should not == r)
 
-        calledRTest should == true
+        calledRTest should be true
       )
 
       it("should get the restarts applicable",
@@ -379,17 +379,17 @@ describe(DefaultBehavior,
 
     describe("findRestart", 
       it("should return nil if it can't find the named restart", 
-        findRestart(:foo) should == nil
+        findRestart(:foo) should be nil
 
         bind(
           restart(bar, fn),
-          findRestart(:foo)) should == nil
+          findRestart(:foo)) should be nil
       )
 
       it("should return the restart if found", 
         bind(
           restart(foo, fn),
-          findRestart(:foo)) should not == nil
+          findRestart(:foo)) should not be nil
 
         re = restart(foo, fn)
         bind(
@@ -452,7 +452,7 @@ describe(DefaultBehavior,
           restart(foo, fn),
           bind(
             restart(foo, fn),
-            findRestart(re))) should == nil
+            findRestart(re))) should be nil
       )
     )
 
@@ -555,7 +555,7 @@ describe(DefaultBehavior,
 
 describe(Restart, 
   it("should have a name", 
-    Restart name should == nil
+    Restart name should be nil
   )
   
   it("should have a report cell", 

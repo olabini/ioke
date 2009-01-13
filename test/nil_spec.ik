@@ -4,29 +4,29 @@ use("ispec")
 describe("nil", 
   describe("nil?", 
     it("should return true", 
-      nil nil? should == true
-      x = nil. x nil? should == true
+      nil nil? should be true
+      x = nil. x nil? should be true
     )
   )
 
   describe("false?", 
     it("should return true", 
-      nil false? should == true
-      x = nil. x false? should == true
+      nil false? should be true
+      x = nil. x false? should be true
     )
   )
 
   describe("true?", 
     it("should return false", 
-      nil true? should == false
-      x = nil. x true? should == false
+      nil true? should be false
+      x = nil. x true? should be false
     )
   )
 
   describe("not", 
     it("should return true", 
-      nil not should == true
-      x = nil. x not should == true
+      nil not should be true
+      x = nil. x not should be true
     )
   )
 
@@ -36,11 +36,11 @@ describe("nil",
     )
 
     it("should return nil", 
-      (nil and(42)) should == nil
+      (nil and(42)) should be nil
     )
 
     it("should be available in infix", 
-      (nil and 43) should == nil
+      (nil and 43) should be nil
     )
   )
 
@@ -50,11 +50,11 @@ describe("nil",
     )
 
     it("should return nil", 
-      (nil &&(42)) should == nil
+      (nil &&(42)) should be nil
     )
 
     it("should be available in infix", 
-      (nil && 43) should == nil
+      (nil && 43) should be nil
     )
   )
 
@@ -64,11 +64,11 @@ describe("nil",
     )
 
     it("should return nil", 
-      (nil ?&(42)) should == nil
+      (nil ?&(42)) should be nil
     )
 
     it("should be available in infix", 
-      (nil ?& 43) should == nil
+      (nil ?& 43) should be nil
     )
   )
   
@@ -128,19 +128,19 @@ describe("nil",
 ;     )
 
     it("should return true if the argument is true", 
-      (nil xor(true)) should == true
+      (nil xor(true)) should be true
     )
 
     it("should return false if the argument is false", 
-      (nil xor(false)) should == false
+      (nil xor(false)) should be false
     )
 
     it("should return false if the argument is nil", 
-      (nil xor(nil)) should == false
+      (nil xor(nil)) should be false
     )
     
     it("should be available in infix", 
-      (nil xor 43) should == true
+      (nil xor 43) should be true
     )
   )
 
@@ -154,19 +154,19 @@ describe("nil",
 ;     )
 
     it("should return false if the argument is true", 
-      (nil nor(42)) should == false
+      (nil nor(42)) should be false
     )
 
     it("should return false if the argument is false", 
-      (nil nor(false)) should == true
+      (nil nor(false)) should be true
     )
 
     it("should return false if the argument is nil", 
-      (nil nor(nil)) should == true
+      (nil nor(nil)) should be true
     )
 
     it("should be available in infix", 
-      (nil nor 43) should == false
+      (nil nor 43) should be false
     )
   )
 
@@ -176,14 +176,14 @@ describe("nil",
     )
 
     it("should return true", 
-      (nil nand(42)) should == true
-      (nil nand(false)) should == true
-      (nil nand(nil)) should == true
-      (nil nand(true)) should == true
+      (nil nand(42)) should be true
+      (nil nand(false)) should be true
+      (nil nand(nil)) should be true
+      (nil nand(true)) should be true
     )
     
     it("should be available in infix", 
-      (nil nand 43) should == true
+      (nil nand 43) should be true
     )
   )
 )

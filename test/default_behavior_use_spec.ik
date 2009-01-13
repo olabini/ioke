@@ -5,20 +5,20 @@ describe(DefaultBehavior,
   describe("use",
     it("should load a file in the same directory", 
       result = use("test/load1")
-      result should == true
+      result should be true
       val should == 42
     )
 
     it("should load a file in the same directory when explicitly have suffix", 
       result = use("test/load2.ik")
-      result should == true
+      result should be true
       val2 should == 42
     )
     
     it("should not load something that's already been loaded", 
       Ground vex = 13
-      use("test/load3") should == true
-      use("test/load3") should == false
+      use("test/load3") should be true
+      use("test/load3") should be false
       vex should == 14
     )
 

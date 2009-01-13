@@ -4,8 +4,8 @@ use("ispec")
 describe(DefaultBehavior, 
   describe("macro", 
     it("should return a macro that returns nil when called with no arguments", 
-      macro call should == nil
-      macro() call should == nil
+      macro call should be nil
+      macro() call should be nil
     )
     
     it("should name itself after the slot it's assigned to if it has no name", 
@@ -71,7 +71,7 @@ describe("DefaultMacro",
 
   it("should take any kinds of arguments", 
     x = macro(nil)
-    x(13, 42, foo: 42*13) should == nil
+    x(13, 42, foo: 42*13) should be nil
   )
 
   it("should return the last value in the macro", 

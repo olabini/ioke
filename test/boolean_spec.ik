@@ -4,8 +4,8 @@ use("ispec")
 describe(true, 
   describe("false?", 
     it("should return false", 
-      true false? should == false
-      x = true. x false? should == false
+      true false? should be false
+      x = true. x false? should be false
     )
   )
 
@@ -18,8 +18,8 @@ describe(true,
 
   describe("not", 
     it("should return false", 
-      true not should == false
-      x = true. x not should == false
+      true not should be false
+      x = true. x not should be false
     )
   )
 
@@ -121,7 +121,7 @@ describe(true,
 ;     )
 
     it("should return false if the argument is true", 
-      (true xor(true)) should == false
+      (true xor(true)) should be false
     )
 
     it("should return true if the argument is false", 
@@ -133,7 +133,7 @@ describe(true,
     )
     
     it("should be available in infix", 
-      (true xor 43) should == false
+      (true xor 43) should be false
     )
   )
 
@@ -143,11 +143,11 @@ describe(true,
     )
 
     it("should return false", 
-      (true nor(42)) should == false
+      (true nor(42)) should be false
     )
 
     it("should be available in infix", 
-      (true nor 43) should == false
+      (true nor 43) should be false
     )
   )
 
@@ -161,7 +161,7 @@ describe(true,
 ;     )
 
     it("should return false if the argument evaluates to true", 
-      (true nand(42)) should == false
+      (true nand(42)) should be false
     )
     
     it("should return true if the argument evaluates to false", 
@@ -173,7 +173,7 @@ describe(true,
     )
 
     it("should be available in infix", 
-      (true nand 43) should == false
+      (true nand 43) should be false
     )
   )
   
@@ -208,8 +208,8 @@ describe(false,
 
   describe("true?", 
     it("should return false", 
-      false true? should == false
-      x = false. x true? should == false
+      false true? should be false
+      x = false. x true? should be false
     )
   )
 
@@ -226,11 +226,11 @@ describe(false,
     )
 
     it("should return false", 
-      (false and(42)) should == false
+      (false and(42)) should be false
     )
 
     it("should be available in infix", 
-      (false and 43) should == false
+      (false and 43) should be false
     )
   )
 
@@ -240,11 +240,11 @@ describe(false,
     )
 
     it("should return false", 
-      (false &&(42)) should == false
+      (false &&(42)) should be false
     )
 
     it("should be available in infix", 
-      (false && 43) should == false
+      (false && 43) should be false
     )
   )
 
@@ -254,11 +254,11 @@ describe(false,
     )
 
     it("should return false", 
-      (false ?&(42)) should == false
+      (false ?&(42)) should be false
     )
 
     it("should be available in infix", 
-      (false ?& 43) should == false
+      (false ?& 43) should be false
     )
   )
   
@@ -276,11 +276,11 @@ describe(false,
     )
 
     it("should return false if the argument is false", 
-      (false xor(false)) should == false
+      (false xor(false)) should be false
     )
 
     it("should return false if the argument is nil", 
-      (false xor(nil)) should == false
+      (false xor(nil)) should be false
     )
     
     it("should be available in infix", 
@@ -357,7 +357,7 @@ describe(false,
 ;     )
 
     it("should return false if the argument is true", 
-      (false nor(42)) should == false
+      (false nor(42)) should be false
     )
 
     it("should return false if the argument is false", 
@@ -369,7 +369,7 @@ describe(false,
     )
 
     it("should be available in infix", 
-      (false nor 43) should == false
+      (false nor 43) should be false
     )
   )
   
@@ -379,7 +379,7 @@ describe(false,
     )
 
     it("should return false", 
-      false ifTrue(x=42) should == false
+      false ifTrue(x=42) should be false
     )
   )
 
@@ -389,7 +389,7 @@ describe(false,
     )
 
     it("should return false", 
-      false ifFalse(x=42) should == false
+      false ifFalse(x=42) should be false
     )
   )
 )

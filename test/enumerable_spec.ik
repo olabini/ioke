@@ -239,68 +239,68 @@ describe(Mixins,
     describe("any?", 
       it("should take zero arguments and just check if any of the values are true", 
         [1,2,3] any?
-        [nil,false,nil] any? should == false
-        [nil,false,true] any? should == true
-        CustomEnumerable any? should == true
+        [nil,false,nil] any? should be false
+        [nil,false,true] any? should be true
+        CustomEnumerable any? should be true
       )
 
       it("should take one argument that is a predicate that is applied to each element in the enumeration", 
-        [1,2,3] any?(==2) should == true
-        [nil,false,nil] any?(nil?) should == true
-        [nil,false,true] any?(==2) should == false
-        CustomEnumerable any?(!= "foo") should == true
+        [1,2,3] any?(==2) should be true
+        [nil,false,nil] any?(nil?) should be true
+        [nil,false,true] any?(==2) should be false
+        CustomEnumerable any?(!= "foo") should be true
       )
 
       it("should take two arguments that will be turned into a lexical block and applied", 
-        [1,2,3] any?(x, x==2) should == true
-        [nil,false,nil] any?(x, x nil?) should == true
+        [1,2,3] any?(x, x==2) should be true
+        [nil,false,nil] any?(x, x nil?) should be true
         [nil,false,true] any?(x, x==2) should = =false
-        CustomEnumerable any?(x, x != "foo") should == true
+        CustomEnumerable any?(x, x != "foo") should be true
       )
     )
 
     describe("none?", 
       it("should take zero arguments and just check if any of the values are true, and then return false", 
-        [1,2,3] none? should == false
-        [nil,false,nil] none? should == true
-        [nil,false,true] none? should == false
-        CustomEnumerable none? should == false
+        [1,2,3] none? should be false
+        [nil,false,nil] none? should be true
+        [nil,false,true] none? should be false
+        CustomEnumerable none? should be false
       )
 
       it("should take one argument that is a predicate that is applied to each element in the enumeration", 
-        [1,2,3] none?(==2) should == false
-        [nil,false,nil] none?(nil?) should == false
-        [nil,false,true] none?(==2) should == true
-        CustomEnumerable none?(!= "foo") should == false
+        [1,2,3] none?(==2) should be false
+        [nil,false,nil] none?(nil?) should be false
+        [nil,false,true] none?(==2) should be true
+        CustomEnumerable none?(!= "foo") should be false
       )
 
       it("should take two arguments that will be turned into a lexical block and applied", 
-        [1,2,3] none?(x, x==2) should == false
-        [nil,false,nil] none?(x, x nil?) should == false
-        [nil,false,true] none?(x, x==2) should == true
-        CustomEnumerable none?(x, x != "foo") should == false
+        [1,2,3] none?(x, x==2) should be false
+        [nil,false,nil] none?(x, x nil?) should be false
+        [nil,false,true] none?(x, x==2) should be true
+        CustomEnumerable none?(x, x != "foo") should be false
       )
     )
 
     describe("some", 
       it("should take zero arguments and just check if any of the values are true, and then return it", 
         [1,2,3] some should == 1
-        [nil,false,nil] some should == false
-        [nil,false,true] some should == true
+        [nil,false,nil] some should be false
+        [nil,false,true] some should be true
         CustomEnumerable some should == "3first"
       )
 
       it("should take one argument that is a predicate that is applied to each element in the enumeration", 
         [1,2,3] some(==2 && 3) should == 3
         [nil,false,nil] some(nil? && 42) should == 42
-        [nil,false,true] some(==2 && 3) should == false
+        [nil,false,true] some(==2 && 3) should be false
         CustomEnumerable some(!= "foo" && "blarg") should == "blarg"
       )
 
       it("should take two arguments that will be turned into a lexical block and applied", 
         [1,2,3] some(x, x==2 && 3) should == 3
         [nil,false,nil] some(x, x nil? && 42) should == 42
-        [nil,false,true] some(x, x==2 && 3) should == false
+        [nil,false,true] some(x, x==2 && 3) should be false
         CustomEnumerable some(x, x != "foo" && "blarg") should == "blarg"
       )
     )
@@ -308,22 +308,22 @@ describe(Mixins,
     describe("find", 
       it("should take zero arguments and just check if any of the values are true, and then return it", 
         [1,2,3] find should == 1
-        [nil,false,nil] find should == nil
-        [nil,false,true] find should == true
+        [nil,false,nil] find should be nil
+        [nil,false,true] find should be true
         CustomEnumerable find should == "3first"
       )
 
       it("should take one argument that is a predicate that is applied to each element in the enumeration", 
         [1,2,3] find(==2) should == 2
-        [nil,false,nil] find(nil?) should == nil
-        [nil,false,true] find(==2) should == nil
+        [nil,false,nil] find(nil?) should be nil
+        [nil,false,true] find(==2) should be nil
         CustomEnumerable find(!= "foo") should == "3first"
       )
 
       it("should take two arguments that will be turned into a lexical block and applied", 
         [1,2,3] find(x, x==2) should == 2
-        [nil,false,nil] find(x, x nil?) should == nil
-        [nil,false,true] find(x, x==2) should == nil
+        [nil,false,nil] find(x, x nil?) should be nil
+        [nil,false,true] find(x, x==2) should be nil
         CustomEnumerable find(x, x != "foo") should == "3first"
       )
     )
@@ -331,22 +331,22 @@ describe(Mixins,
     describe("detect", 
       it("should take zero arguments and just check if any of the values are true, and then return it", 
         [1,2,3] detect should == 1
-        [nil,false,nil] detect should == nil
-        [nil,false,true] detect should == true
+        [nil,false,nil] detect should be nil
+        [nil,false,true] detect should be true
         CustomEnumerable detect should == "3first"
       )
 
       it("should take one argument that is a predicate that is applied to each element in the enumeration", 
         [1,2,3] detect(==2) should == 2
-        [nil,false,nil] detect(nil?) should == nil
-        [nil,false,true] detect(==2) should == nil
+        [nil,false,nil] detect(nil?) should be nil
+        [nil,false,true] detect(==2) should be nil
         CustomEnumerable detect(!= "foo") should == "3first"
       )
 
       it("should take two arguments that will be turned into a lexical block and applied", 
         [1,2,3] detect(x, x==2) should == 2
-        [nil,false,nil] detect(x, x nil?) should == nil
-        [nil,false,true] detect(x, x==2) should == nil
+        [nil,false,nil] detect(x, x nil?) should be nil
+        [nil,false,true] detect(x, x==2) should be nil
         CustomEnumerable detect(x, x != "foo") should == "3first"
       )
     )
@@ -549,27 +549,27 @@ describe(Mixins,
     
     describe("all?", 
       it("should take zero arguments and just check if all of the values are true", 
-        [1,2,3] all? should == true
-        [nil,false,nil] all? should == false
-        [nil,false,true] all? should == false
-        CustomEnumerable all? should == true
+        [1,2,3] all? should be true
+        [nil,false,nil] all? should be false
+        [nil,false,true] all? should be false
+        CustomEnumerable all? should be true
       )
 
       it("should take one argument that is a predicate that is applied to each element in the enumeration", 
-        [1,2,3] all?(==2) should == false
-        [1,2,3] all?(>0) should == true
-        [nil,false,nil] all?(nil?) should == false
-        [nil,false,true] all?(==2) should == false
-        CustomEnumerable all?(!= "foo") should == true
+        [1,2,3] all?(==2) should be false
+        [1,2,3] all?(>0) should be true
+        [nil,false,nil] all?(nil?) should be false
+        [nil,false,true] all?(==2) should be false
+        CustomEnumerable all?(!= "foo") should be true
       )
 
       it("should take two arguments that will be turned into a lexical block and applied", 
-        [1,2,3] all?(x, x==2) should == false
-        [1,2,3] all?(x, x<4) should == true
-        [nil,false,nil] all?(x, x nil?) should == false
-        [nil,nil,nil] all?(x, x nil?) should == true
-        [nil,false,true] all?(x, x==2) should == false
-        CustomEnumerable all?(x, x != "foo") should == true
+        [1,2,3] all?(x, x==2) should be false
+        [1,2,3] all?(x, x<4) should be true
+        [nil,false,nil] all?(x, x nil?) should be false
+        [nil,nil,nil] all?(x, x nil?) should be true
+        [nil,false,true] all?(x, x==2) should be false
+        CustomEnumerable all?(x, x != "foo") should be true
       )
     )
     
@@ -614,7 +614,7 @@ describe(Mixins,
     
     describe("first", 
       it("should return nil for an empty collection", 
-        set first should == nil
+        set first should be nil
       )
 
       it("should take an optional argument of how many to return", 
@@ -640,31 +640,31 @@ describe(Mixins,
 
     describe("one?", 
       it("should take zero arguments and just check if exactly one of the values are true, and then return true", 
-        [1,2,3] one? should == false
-        [nil,false,nil] one? should == false
-        [nil,false,true] one? should == true
-        CustomEnumerable one? should == false
+        [1,2,3] one? should be false
+        [nil,false,nil] one? should be false
+        [nil,false,true] one? should be true
+        CustomEnumerable one? should be false
       )
 
       it("should take one argument that is a predicate that is applied to each element in the enumeration", 
-        [1,2,3] one?(==2) should == true
-        [nil,false,nil] one?(nil?) should == false
-        [nil,false,true] one?(==2) should == false
-        CustomEnumerable one?(== "3first") should == true
+        [1,2,3] one?(==2) should be true
+        [nil,false,nil] one?(nil?) should be false
+        [nil,false,true] one?(==2) should be false
+        CustomEnumerable one?(== "3first") should be true
       )
 
       it("should take two arguments that will be turned into a lexical block and applied", 
-        [1,2,3] one?(x, x==2) should == true
-        [nil,false,nil] one?(x, x nil?) should == false
-        [nil,false,true] one?(x, x==2) should == false
-        CustomEnumerable one?(x, x == "3first") should == true
+        [1,2,3] one?(x, x==2) should be true
+        [nil,false,nil] one?(x, x nil?) should be false
+        [nil,false,true] one?(x, x==2) should be false
+        CustomEnumerable one?(x, x == "3first") should be true
       )
     )
     
     describe("findIndex", 
       it("should take zero arguments and just check if any of the values are true, and then return the index of it", 
         [1,2,3] findIndex should == 0
-        [nil,false,nil] findIndex should == nil
+        [nil,false,nil] findIndex should be nil
         [nil,false,true] findIndex should == 2
         CustomEnumerable findIndex should == 0
       )
@@ -672,14 +672,14 @@ describe(Mixins,
       it("should take one argument that is a predicate that is applied to each element in the enumeration", 
         [1,2,3] findIndex(==2) should == 1
         [nil,false,nil] findIndex(nil?) should == 0
-        [nil,false,true] findIndex(==2) should == nil
+        [nil,false,true] findIndex(==2) should be nil
         CustomEnumerable findIndex(!= "foo") should == 0
       )
 
       it("should take two arguments that will be turned into a lexical block and applied", 
         [1,2,3] findIndex(x, x==2) should == 1
         [nil,false,nil] findIndex(x, x nil?) should == 0
-        [nil,false,true] findIndex(x, x==2) should == nil
+        [nil,false,true] findIndex(x, x==2) should be nil
         CustomEnumerable findIndex(x, x != "foo") should == 0
       )
     )
@@ -709,25 +709,25 @@ describe(Mixins,
 
     describe("include?", 
       it("should return true if the element is in the enumeration", 
-        [1,2,3] include?(2) should == true
-        CustomEnumerable include?("1second") should == true
+        [1,2,3] include?(2) should be true
+        CustomEnumerable include?("1second") should be true
       )
 
       it("should return false if the element is not in the enumeration", 
-        [1,2,3] include?(0) should == false
-        CustomEnumerable include?("2second") should == false
+        [1,2,3] include?(0) should be false
+        CustomEnumerable include?("2second") should be false
       )
     )
 
     describe("member?", 
       it("should return true if the element is in the enumeration", 
-        [1,2,3] member?(2) should == true
-        CustomEnumerable member?("1second") should == true
+        [1,2,3] member?(2) should be true
+        CustomEnumerable member?("1second") should be true
       )
 
       it("should return false if the element is not in the enumeration", 
-        [1,2,3] member?(0) should == false
-        CustomEnumerable member?("2second") should == false
+        [1,2,3] member?(0) should be false
+        CustomEnumerable member?("2second") should be false
       )
     )
 
@@ -808,7 +808,7 @@ describe(Mixins,
     describe("cycle", 
       it("should not do anything for an empty collection", 
         x = 1
-        [] cycle(_, x = 2) should == nil
+        [] cycle(_, x = 2) should be nil
         x should == 1
       )
 
@@ -896,7 +896,7 @@ describe(Mixins,
         x = [] 
 
         [1,2,3] zip([5,6,7], 
-          fn(arg, x << arg)) should == nil
+          fn(arg, x << arg)) should be nil
 
         x should == [[1,5],[2,6],[3,7]]
       )

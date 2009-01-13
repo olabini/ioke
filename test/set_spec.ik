@@ -20,15 +20,15 @@ describe("Set",
   describe("empty?", 
     it("should return true for an empty set", 
       x = set
-      x empty? should == true
+      x empty? should be true
     )
     
     it("should return false for an non empty set", 
       x = set(1)
-      x empty? should == false
+      x empty? should be false
 
       x = set("abc", "cde")
-      x empty? should == false
+      x empty? should be false
     )
   )
 
@@ -109,8 +109,8 @@ describe("Set",
 
     it("should establish a lexical context when invoking the methods. this context will be the same for all invocations.", 
       set(1,2,3) each(x_set_spec, blarg_set_spec=32)
-      cell?(:x_set_spec) should == false
-      cell?(:blarg_set_spec) should == false
+      cell?(:x_set_spec) should be false
+      cell?(:blarg_set_spec) should be false
 
       x=14
       set(1,2,3) each(x, blarg=32)
@@ -180,17 +180,17 @@ describe("Set",
 
   describe("include?", 
     it("should match something in the set", 
-      set(1) include?(1) should == true
-      set(1,2) include?(2) should == true
-      set(2,3,1) include?(3) should == true
-      set("foo", "bar") include?("foo") should == true
+      set(1) include?(1) should be true
+      set(1,2) include?(2) should be true
+      set(2,3,1) include?(3) should be true
+      set("foo", "bar") include?("foo") should be true
     )
 
     it("should not match something not in the set", 
-      set(1) include?(2) should == false
-      set(1,2) include?(3) should == false
-      set(2,3,1) include?(:bar) should == false
-      set("foo", "bar") include?(:bar) should == false
+      set(1) include?(2) should be false
+      set(1,2) include?(3) should be false
+      set(2,3,1) include?(:bar) should be false
+      set("foo", "bar") include?(:bar) should be false
     )
   )
 )

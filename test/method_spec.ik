@@ -4,8 +4,8 @@ use("ispec")
 describe(DefaultBehavior,
   describe("method",
     it("should return a method that returns nil when called with no arguments",
-      method call should == nil
-      method() call should == nil
+      method call should be nil
+      method() call should be nil
     )
     
     it("should name itself after the slot it's assigned to if it has no name",
@@ -147,8 +147,8 @@ describe("DefaultMethod",
   it("should give nil as default value to keyword argument", 
     first = method(x:, x)
     
-    first should == nil
-    first() should == nil
+    first should be nil
+    first() should be nil
   )
 
   it("should be possible to call with keyword argument", 
@@ -167,11 +167,11 @@ describe("DefaultMethod",
     first = method(x:, y:, x)
     second = method(x:, y:, y)
     
-    first should == nil
-    second should == nil
+    first should be nil
+    second should be nil
 
     first(x: 42) should == 42
-    second(x: 42) should == nil
+    second(x: 42) should be nil
 
     first(x: 42,y: 33) should == 42
     second(x: 42, y: 33) should == 33
@@ -189,8 +189,8 @@ describe("DefaultMethod",
     second(12) should == 12
     fourth(13) should == 13
 
-    first(12) should == nil
-    third(13) should == nil
+    first(12) should be nil
+    third(13) should be nil
 
     second(x: 321, 12) should == 12
     fourth(x: 321, 13) should == 13
@@ -208,8 +208,8 @@ describe("DefaultMethod",
     second(12) should == 12
     fourth(13) should == 13
 
-    first(12) should == nil
-    third(13) should == nil
+    first(12) should be nil
+    third(13) should be nil
 
     second(12, x: 321) should == 12
     fourth(13, x: 321) should == 13
@@ -231,23 +231,23 @@ describe("DefaultMethod",
 
     m1(42) should == 42
     m2(42) should == 12
-    m3(42) should == nil
+    m3(42) should be nil
     m4(42) should == 42
     m5(42) should == 12
-    m6(42) should == nil
+    m6(42) should be nil
     m7(42) should == 42
     m8(42) should == 12
-    m9(42) should == nil
+    m9(42) should be nil
 
     m1(42, 13) should == 42
     m2(42, 13) should == 13
-    m3(42, 13) should == nil
+    m3(42, 13) should be nil
     m4(42, 13) should == 42
     m5(42, 13) should == 13
-    m6(42, 13) should == nil
+    m6(42, 13) should be nil
     m7(42, 13) should == 42
     m8(42, 13) should == 13
-    m9(42, 13) should == nil
+    m9(42, 13) should be nil
 
     m1(z: 1, 42) should == 42
     m2(z: 1, 42) should == 12
