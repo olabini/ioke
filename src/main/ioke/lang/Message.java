@@ -28,7 +28,7 @@ import org.antlr.runtime.tree.Tree;
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
 public class Message extends IokeData {
-    public static enum Type {EMPTY, MESSAGE, BINARY, BINARY_ASSIGNMENT, UNARY_ASSIGNMENT, TERMINATOR, SEPARATOR, START_INTERPOLATION, START_RE_INTERPOLATION, END_INTERPOLATION, MIDDLE_INTERPOLATION};
+    public static enum Type {EMPTY, MESSAGE, BINARY, BINARY_DETACH, BINARY_ASSIGNMENT, UNARY_ASSIGNMENT, TERMINATOR, SEPARATOR, START_INTERPOLATION, START_RE_INTERPOLATION, END_INTERPOLATION, MIDDLE_INTERPOLATION};
 
     private String name;
     private String file;
@@ -759,8 +759,9 @@ public class Message extends IokeData {
     public static IokeObject newFromStream(Runtime runtime, Reader reader, IokeObject message, IokeObject context) throws ControlFlow {
         try {
             iokeParser parser = new iokeParser(new CommonTokenStream(new iokeLexer(new ANTLRReaderStream(reader))));
+//             System.err.println("parseFully ...");
             Tree t = parser.parseFully();
-//                        System.err.println("t: " + t.toStringTree());
+//                         System.err.println("t: " + t.toStringTree());
             if(t == null) {
                 Message m = new Message(runtime, ".", null, Type.TERMINATOR);
                 m.setLine(0);
@@ -769,13 +770,16 @@ public class Message extends IokeData {
             }
 
             IokeObject m = fromTree(runtime, t);
-//                        System.err.println("m: " + m);
-//                         System.err.println("m1: " + m);
+//                         System.err.println("m: " + m);
+//                          System.err.println("m1: " + m);
             opShuffle(m);
-//                         System.err.println("m2: " + m);
+//                          System.err.println("m2: " + m);
             return m;
         } catch(Exception e) {
-            runtime.reportJavaException(e, message, context);
+//             System.err.println(e);
+//             System.err.println(e.getMessage());
+//             e.printStackTrace();
+                       runtime.reportJavaException(e, message, context);
             return null;
         }
     }
@@ -951,6 +955,15 @@ public class Message extends IokeData {
                 m = new Message(runtime, tree.getChild(0).getText());
                 argStart = 1;
                 break;
+            case iokeParser.MESSAGE_SEND_OP: {
+                m = new Message(runtime, tree.getChild(0).getText(), null, Type.BINARY);
+                int diff = tree.getChild(1).getCharPositionInLine() - (tree.getChild(0).getCharPositionInLine()+tree.getChild(0).getText().length());
+                if(diff != 0) {
+                    m.type = Type.BINARY_DETACH;
+                }
+                argStart = 2;
+                break;
+            }
             default:
                 java.lang.System.err.println("NOOOO: Can't handle " + tree + " : " + tree.getType());
                 return null;

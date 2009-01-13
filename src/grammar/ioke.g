@@ -8,6 +8,7 @@ options {
 
 tokens {
     MESSAGE_SEND;
+    MESSAGE_SEND_OP;
     MESSAGE_SEND_EMPTY;
     MESSAGE_SEND_SQUARE;
     MESSAGE_SEND_CURLY;
@@ -34,6 +35,17 @@ package ioke.lang.parser;
   public Tree parseFully() throws RecognitionException {
       messageChain_return result = messageChain();
       return result == null ? (Tree)null : (Tree)(result.getTree());
+  }
+
+  public boolean print(String s) {
+      System.err.println(s);
+      return true;
+  }
+
+  public boolean afterNextIsHidden() {
+      CommonTokenStream cts = (CommonTokenStream)input;
+      int ix = cts.index()+1;
+      return cts.size() > ix && cts.get(ix).getChannel() == HIDDEN;
   }
 }
 
@@ -128,16 +140,16 @@ twoExpressions
 
 expression
     :
-        Identifier ('(' commatedExpression? ')')? -> ^(MESSAGE_SEND Identifier commatedExpression?)
-    |   operator '(' commatedExpression? ')' -> ^(MESSAGE_SEND operator commatedExpression?)
-    |   trinaryOperator '(' twoExpressions ')'  -> ^(MESSAGE_SEND trinaryOperator twoExpressions)
-    |   '(' commatedExpression? ')'  -> ^(MESSAGE_SEND_EMPTY commatedExpression?)
-    |   '[]'                            -> ^(MESSAGE_SEND_SQUARE)
-    |   '[' ']'                         -> ^(MESSAGE_SEND_SQUARE)
-    |   '{}'                            -> ^(MESSAGE_SEND_CURLY)
-    |   '{' '}'                         -> ^(MESSAGE_SEND_CURLY)
-    |   '[' commatedExpression ']'  -> ^(MESSAGE_SEND_SQUARE commatedExpression)
-    |   '{' commatedExpression '}'  -> ^(MESSAGE_SEND_CURLY commatedExpression)
+        Identifier (OpenParen commatedExpression? CloseParen)? -> ^(MESSAGE_SEND Identifier commatedExpression?)
+    |   operator OpenParen commatedExpression? CloseParen -> ^(MESSAGE_SEND_OP operator OpenParen commatedExpression?)
+    |   trinaryOperator OpenParen twoExpressions CloseParen -> ^(MESSAGE_SEND trinaryOperator twoExpressions)
+    |   OpenParen commatedExpression? CloseParen -> ^(MESSAGE_SEND_EMPTY commatedExpression?)
+    |   '[]'                             -> ^(MESSAGE_SEND_SQUARE)
+    |   '[' ']'                          -> ^(MESSAGE_SEND_SQUARE)
+    |   '{}'                             -> ^(MESSAGE_SEND_CURLY)
+    |   '{' '}'                          -> ^(MESSAGE_SEND_CURLY)
+    |   '[' commatedExpression ']'   -> ^(MESSAGE_SEND_SQUARE commatedExpression)
+    |   '{' commatedExpression '}'   -> ^(MESSAGE_SEND_CURLY commatedExpression)
     |   binaryOperator
     |   unaryOperator
     |   StringLiteral
@@ -146,6 +158,16 @@ expression
     |   DecimalLiteral
     |   UnitLiteral
     |   Terminator
+    ;
+
+OpenParen
+    :
+        '('
+    ;
+
+CloseParen
+    :
+        ')'
     ;
 
 operator
@@ -254,6 +276,7 @@ RegexpLiteral
     | {isRegexpInterpolating()}?=> ('}' (({!(input.LA(1) == '#' && input.LA(2) == '{')}?=> (EscapeSequenceRegexp | ~('\\'|'/')))* ) 
         (
             '#{' {startRegexpInterpolation(); }
+
         |   '/' RegexpModifier  {endRegexpInterpolation(); }))
     | {isAltRegexpInterpolating()}?=> ('}' ( ({!(input.LA(1) == '#' && input.LA(2) == '{')}?=> (EscapeSequenceRegexp | ~('\\'|']')))* ) 
         (
@@ -371,6 +394,7 @@ RegularBinaryOperator
     |   'and'
     |   'nand'
     |   '!'
+    |   '?'
     |   '~'
     |   '$'
     |   '+='

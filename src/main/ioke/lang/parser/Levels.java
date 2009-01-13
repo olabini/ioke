@@ -110,6 +110,7 @@ public class Levels {
 
     public static OpTable[] defaultOperators = new OpTable[]{
 		new OpTable("!",   0),
+		new OpTable("?",   0),
 		new OpTable("$",   0),
 		new OpTable("~",   0),
 		new OpTable("#",   0),
@@ -441,17 +442,12 @@ public class Levels {
         } else if(Message.isTerminator(msg)) {
             popDownTo(OP_LEVEL_MAX-1, expressions);
             attachAndReplace(currentLevel(), msg);
-        } else if(precedence != -1 && !(messageName.equals("-") && Message.prev(msg) == null && msgArgCount > 0)) { // An operator
-            if(DONT_SEPARATE_ARGUMENTS.contains(messageName)) {
-                if(msgArgCount > 0) {
-                    attachAndReplace(currentLevel(), msg);
-                } else {
-                    popDownTo(precedence, expressions);
-                    attachToTopAndPush(msg, precedence);
-                }
+        } else if(precedence != -1) { // An operator
+            if(msgArgCount == 0) {
+                popDownTo(precedence, expressions);
+                attachToTopAndPush(msg, precedence);
             } else {
-                if(msgArgCount > 0) {
-                    // move arguments off to their own message to make () after operators behave like Cs grouping ()
+                if(Message.type(msg) == Message.Type.BINARY_DETACH) {
                     IokeObject brackets = runtime.newMessage("");
                     Message.copySourceLocation(msg, brackets);
                     brackets.getArguments().addAll(msg.getArguments());
@@ -460,10 +456,12 @@ public class Levels {
                     // Insert the brackets message between msg and its next message
                     Message.setNext(brackets, Message.next(msg));
                     Message.setNext(msg, brackets);
-                }
 
-                popDownTo(precedence, expressions);
-                attachToTopAndPush(msg, precedence);
+                    popDownTo(precedence, expressions);
+                    attachToTopAndPush(msg, precedence);
+                } else {
+                    attachAndReplace(currentLevel(), msg);
+                }
             }
         } else {
             attachAndReplace(currentLevel(), msg);

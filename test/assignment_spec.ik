@@ -93,11 +93,11 @@ describe("assignment",
     
     it("should parse correctly with complicated expression on left hand side",
       m = parse("foo(1) += 12+13+53+(x f(123))")
-      m should == "+=(foo(1), 12 +(13) +(53) +(x f(123)))")
+      m should == "+=(foo(1), 12 +(13) +(53 +(x f(123))))")
 
     it("should parse correctly with complicated expression on left hand side",
       m = parse("foo(1) += 12+13+53+(x f(123))\n1")
-      m should == "+=(foo(1), 12 +(13) +(53) +(x f(123))) .\n1")
+      m should == "+=(foo(1), 12 +(13) +(53 +(x f(123)))) .\n1")
   )
 
   describe("-=",
@@ -119,11 +119,11 @@ describe("assignment",
     
     it("should parse correctly with complicated expression on left hand side", 
       m = parse("foo(1) -= 12+13+53+(x f(123))")
-      m should == "-=(foo(1), 12 +(13) +(53) +(x f(123)))")
+      m should == "-=(foo(1), 12 +(13) +(53 +(x f(123))))")
 
     it("should parse correctly with complicated expression on left hand side", 
       m = parse("foo(1) -= 12+13+53+(x f(123))\n1")
-      m should == "-=(foo(1), 12 +(13) +(53) +(x f(123))) .\n1")
+      m should == "-=(foo(1), 12 +(13) +(53 +(x f(123)))) .\n1")
   )
 
 
@@ -151,12 +151,12 @@ describe("assignment",
     
     it("should parse correctly with complicated expression on left hand side", 
       m = parse("foo(1) /= 12+13+53+(x f(123))")
-      m should == "/=(foo(1), 12 +(13) +(53) +(x f(123)))"
+      m should == "/=(foo(1), 12 +(13) +(53 +(x f(123))))"
     )
 
     it("should parse correctly with complicated expression on left hand side", 
       m = parse("foo(1) /= 12+13+53+(x f(123))\n1")
-      m should == "/=(foo(1), 12 +(13) +(53) +(x f(123))) .\n1"
+      m should == "/=(foo(1), 12 +(13) +(53 +(x f(123)))) .\n1"
     )
   )
 
@@ -183,12 +183,12 @@ describe("assignment",
     
     it("should parse correctly with complicated expression on left hand side", 
       m = parse("foo(1) *= 12+13+53+(x f(123))")
-      m should == "*=(foo(1), 12 +(13) +(53) +(x f(123)))"
+      m should == "*=(foo(1), 12 +(13) +(53 +(x f(123))))"
     )
 
     it("should parse correctly with complicated expression on left hand side", 
       m = parse("foo(1) *= 12+13+53+(x f(123))\n1")
-      m should == "*=(foo(1), 12 +(13) +(53) +(x f(123))) .\n1"
+      m should == "*=(foo(1), 12 +(13) +(53 +(x f(123)))) .\n1"
     )
   )
 
@@ -215,12 +215,12 @@ describe("assignment",
     
     it("should parse correctly with complicated expression on left hand side", 
       m = parse("foo(1) **= 12+13+53+(x f(123))")
-      m should == "**=(foo(1), 12 +(13) +(53) +(x f(123)))"
+      m should == "**=(foo(1), 12 +(13) +(53 +(x f(123))))"
     )
 
     it("should parse correctly with complicated expression on left hand side", 
       m = parse("foo(1) **= 12+13+53+(x f(123))\n1")
-      m should == "**=(foo(1), 12 +(13) +(53) +(x f(123))) .\n1"
+      m should == "**=(foo(1), 12 +(13) +(53 +(x f(123)))) .\n1"
     )
   )
 
@@ -247,12 +247,12 @@ describe("assignment",
     
     it("should parse correctly with complicated expression on left hand side", 
       m = parse("foo(1) %= 12+13+53+(x f(123))")
-      m should == "%=(foo(1), 12 +(13) +(53) +(x f(123)))"
+      m should == "%=(foo(1), 12 +(13) +(53 +(x f(123))))"
     )
 
     it("should parse correctly with complicated expression on left hand side", 
       m = parse("foo(1) %= 12+13+53+(x f(123))\n1")
-      m should == "%=(foo(1), 12 +(13) +(53) +(x f(123))) .\n1"
+      m should == "%=(foo(1), 12 +(13) +(53 +(x f(123)))) .\n1"
     )
   )
 
@@ -279,12 +279,12 @@ describe("assignment",
     
     it("should parse correctly with complicated expression on left hand side", 
       m = parse("foo(1) &= 12+13+53+(x f(123))")
-      m should == "&=(foo(1), 12 +(13) +(53) +(x f(123)))"
+      m should == "&=(foo(1), 12 +(13) +(53 +(x f(123))))"
     )
 
     it("should parse correctly with complicated expression on left hand side", 
       m = parse("foo(1) &= 12+13+53+(x f(123))\n1")
-      m should == "&=(foo(1), 12 +(13) +(53) +(x f(123))) .\n1"
+      m should == "&=(foo(1), 12 +(13) +(53 +(x f(123)))) .\n1"
     )
   )
 
@@ -311,12 +311,12 @@ describe("assignment",
     
     it("should parse correctly with complicated expression on left hand side", 
       m = parse("foo(1) &&= 12+13+53+(x f(123))")
-      m should == "&&=(foo(1), 12 +(13) +(53) +(x f(123)))"
+      m should == "&&=(foo(1), 12 +(13) +(53 +(x f(123))))"
     )
 
     it("should parse correctly with complicated expression on left hand side", 
       m = parse("foo(1) &&= 12+13+53+(x f(123))\n1")
-      m should == "&&=(foo(1), 12 +(13) +(53) +(x f(123))) .\n1"
+      m should == "&&=(foo(1), 12 +(13) +(53 +(x f(123)))) .\n1"
     )
   )
 
@@ -343,12 +343,12 @@ describe("assignment",
     
     it("should parse correctly with complicated expression on left hand side", 
       m = parse("foo(1) |= 12+13+53+(x f(123))")
-      m should == "|=(foo(1), 12 +(13) +(53) +(x f(123)))"
+      m should == "|=(foo(1), 12 +(13) +(53 +(x f(123))))"
     )
 
     it("should parse correctly with complicated expression on left hand side", 
       m = parse("foo(1) |= 12+13+53+(x f(123))\n1")
-      m should == "|=(foo(1), 12 +(13) +(53) +(x f(123))) .\n1"
+      m should == "|=(foo(1), 12 +(13) +(53 +(x f(123)))) .\n1"
     )
   )
 
@@ -375,12 +375,12 @@ describe("assignment",
     
     it("should parse correctly with complicated expression on left hand side", 
       m = parse("foo(1) ||= 12+13+53+(x f(123))")
-      m should == "||=(foo(1), 12 +(13) +(53) +(x f(123)))"
+      m should == "||=(foo(1), 12 +(13) +(53 +(x f(123))))"
     )
 
     it("should parse correctly with complicated expression on left hand side", 
       m = parse("foo(1) ||= 12+13+53+(x f(123))\n1")
-      m should == "||=(foo(1), 12 +(13) +(53) +(x f(123))) .\n1"
+      m should == "||=(foo(1), 12 +(13) +(53 +(x f(123)))) .\n1"
     )
   )
 
@@ -407,12 +407,12 @@ describe("assignment",
     
     it("should parse correctly with complicated expression on left hand side", 
       m = parse("foo(1) ^= 12+13+53+(x f(123))")
-      m should == "^=(foo(1), 12 +(13) +(53) +(x f(123)))"
+      m should == "^=(foo(1), 12 +(13) +(53 +(x f(123))))"
     )
 
     it("should parse correctly with complicated expression on left hand side", 
       m = parse("foo(1) ^= 12+13+53+(x f(123))\n1")
-      m should == "^=(foo(1), 12 +(13) +(53) +(x f(123))) .\n1"
+      m should == "^=(foo(1), 12 +(13) +(53 +(x f(123)))) .\n1"
     )
   )
 
@@ -439,12 +439,12 @@ describe("assignment",
     
     it("should parse correctly with complicated expression on left hand side", 
       m = parse("foo(1) >>= 12+13+53+(x f(123))")
-      m should == ">>=(foo(1), 12 +(13) +(53) +(x f(123)))"
+      m should == ">>=(foo(1), 12 +(13) +(53 +(x f(123))))"
     )
 
     it("should parse correctly with complicated expression on left hand side", 
       m = parse("foo(1) >>= 12+13+53+(x f(123))\n1")
-      m should == ">>=(foo(1), 12 +(13) +(53) +(x f(123))) .\n1"
+      m should == ">>=(foo(1), 12 +(13) +(53 +(x f(123)))) .\n1"
     )
   )
 
@@ -471,12 +471,12 @@ describe("assignment",
     
     it("should parse correctly with complicated expression on left hand side", 
       m = parse("foo(1) <<= 12+13+53+(x f(123))")
-      m should == "<<=(foo(1), 12 +(13) +(53) +(x f(123)))"
+      m should == "<<=(foo(1), 12 +(13) +(53 +(x f(123))))"
     )
 
     it("should parse correctly with complicated expression on left hand side", 
       m = parse("foo(1) <<= 12+13+53+(x f(123))\n1")
-      m should == "<<=(foo(1), 12 +(13) +(53) +(x f(123))) .\n1"
+      m should == "<<=(foo(1), 12 +(13) +(53 +(x f(123)))) .\n1"
     )
   )
   
@@ -503,12 +503,12 @@ describe("assignment",
     
     it("should parse correctly with complicated expression on left hand side", 
       m = parse("foo(1) = 12+13+53+(x f(123))")
-      m should == "=(foo(1), 12 +(13) +(53) +(x f(123)))"
+      m should == "=(foo(1), 12 +(13) +(53 +(x f(123))))"
     )
 
     it("should parse correctly with complicated expression on left hand side", 
       m = parse("foo(1) = 12+13+53+(x f(123))\n1")
-      m should == "=(foo(1), 12 +(13) +(53) +(x f(123))) .\n1"
+      m should == "=(foo(1), 12 +(13) +(53 +(x f(123)))) .\n1"
     )
   )
 
@@ -535,12 +535,12 @@ describe("assignment",
     
     it("should parse correctly with complicated expression on left hand side", 
       m = parse("foo[1] = 12+13+53+(x f(123))")
-      m should == "foo =([](1), 12 +(13) +(53) +(x f(123)))"
+      m should == "foo =([](1), 12 +(13) +(53 +(x f(123))))"
     )
 
     it("should parse correctly with complicated expression on left hand side", 
       m = parse("foo[1] = 12+13+53+(x f(123))\n1")
-      m should == "foo =([](1), 12 +(13) +(53) +(x f(123))) .\n1"
+      m should == "foo =([](1), 12 +(13) +(53 +(x f(123)))) .\n1"
     )
   )
 
@@ -567,12 +567,12 @@ describe("assignment",
     
     it("should parse correctly with complicated expression on left hand side", 
       m = parse("foo{1} = 12+13+53+(x f(123))")
-      m should == "foo =({}(1), 12 +(13) +(53) +(x f(123)))"
+      m should == "foo =({}(1), 12 +(13) +(53 +(x f(123))))"
     )
 
     it("should parse correctly with complicated expression on left hand side", 
       m = parse("foo{1} = 12+13+53+(x f(123))\n1")
-      m should == "foo =({}(1), 12 +(13) +(53) +(x f(123))) .\n1"
+      m should == "foo =({}(1), 12 +(13) +(53 +(x f(123)))) .\n1"
     )
   )
   
