@@ -142,7 +142,7 @@ expression
     :
         Identifier (OpenParen commatedExpression? CloseParen)? -> ^(MESSAGE_SEND Identifier commatedExpression?)
     |   operator OpenParen commatedExpression? CloseParen -> ^(MESSAGE_SEND_OP operator OpenParen commatedExpression?)
-    |   trinaryOperator OpenParen twoExpressions CloseParen -> ^(MESSAGE_SEND trinaryOperator twoExpressions)
+    |   Equals OpenParen twoExpressions CloseParen -> ^(MESSAGE_SEND Equals twoExpressions)
     |   OpenParen commatedExpression? CloseParen -> ^(MESSAGE_SEND_EMPTY commatedExpression?)
     |   '[]'                             -> ^(MESSAGE_SEND_SQUARE)
     |   '[' ']'                          -> ^(MESSAGE_SEND_SQUARE)
@@ -151,7 +151,6 @@ expression
     |   '[' commatedExpression ']'   -> ^(MESSAGE_SEND_SQUARE commatedExpression)
     |   '{' commatedExpression '}'   -> ^(MESSAGE_SEND_CURLY commatedExpression)
     |   binaryOperator
-    |   unaryOperator
     |   StringLiteral
     |   RegexpLiteral
     |   NumberLiteral
@@ -172,28 +171,15 @@ CloseParen
 
 operator
     :
-        ComparisonOperator
-    |   RegularBinaryOperator
-    |   IncDec
+        BinaryOperator
     |   SquareBrackets
     |   CurlyBrackets
     ;
 
-trinaryOperator
-    :
-        Equals
-    ;
-
 binaryOperator
     :
-        ComparisonOperator
-    |   RegularBinaryOperator
+        BinaryOperator
     |   Equals
-    ;
-
-unaryOperator
-    :
-        IncDec
     ;
 
 Identifier
@@ -315,9 +301,11 @@ LineComment
     | '#!' ~('\n'|'\r')* {$channel=HIDDEN;}
     ;
 
-ComparisonOperator
+BinaryOperator
     :
-        '<=>'
+        '++'
+    |   '--'
+    |   '<=>'
     |   '<='
     |   '>='
     |   '<'
@@ -327,11 +315,7 @@ ComparisonOperator
     |   '!='
     |   '=~'
     |   '!~'
-    ;
-
-RegularBinaryOperator
-    :
-        '-'
+    |   '-'
     |   '+'
     |   '**'
     |   '*'
@@ -415,12 +399,6 @@ RegularBinaryOperator
 Equals
     :
         '='
-    ;
-
-IncDec
-    :
-        '++'
-    |   '--'
     ;
 
 SquareBrackets
