@@ -116,5 +116,5 @@ System ifMain(
   Pattern from(I :X need a :Y) match(I would need a vacation) should == {X: "would", Y: "vacation"}
   Pattern subst({:":X" => 'vacation}, '(what would it mean to you if you got a :X ?)) code should == "what would it mean to you if you got a vacation ?"
 
-  Pattern from(*:p need *:x) match(Mr Hulot and I need a vacation) should == {p: "Mr Hulot and I", x: "a vacation"}
+  Pattern from(*(:p) need *(:x)) match(Mr Hulot and I need a vacation) should == {p: "Mr Hulot and I", x: "a vacation"}
 )

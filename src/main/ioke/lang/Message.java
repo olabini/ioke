@@ -922,22 +922,12 @@ public class Message extends IokeData {
                 m.setLine(tree.getLine());
                 m.setPosition(tree.getCharPositionInLine());
                 return runtime.createMessage(m);
-            case iokeParser.IncDec:
-                m = new Message(runtime, tree.getText(), null, Type.UNARY_ASSIGNMENT);
-                m.setLine(tree.getLine());
-                m.setPosition(tree.getCharPositionInLine());
-                return runtime.createMessage(m);
             case iokeParser.Comma:
                 m = new Message(runtime, ",", null, Type.SEPARATOR);
                 m.setLine(tree.getLine());
                 m.setPosition(tree.getCharPositionInLine());
                 return runtime.createMessage(m);
-            case iokeParser.ComparisonOperator:
-                m = new Message(runtime, tree.getText(), null, Type.BINARY);
-                m.setLine(tree.getLine());
-                m.setPosition(tree.getCharPositionInLine());
-                return runtime.createMessage(m);
-            case iokeParser.RegularBinaryOperator:
+            case iokeParser.BinaryOperator:
                 m = new Message(runtime, tree.getText(), null, Type.BINARY);
                 m.setLine(tree.getLine());
                 m.setPosition(tree.getCharPositionInLine());
