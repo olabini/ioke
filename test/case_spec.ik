@@ -33,10 +33,10 @@ describe(DefaultBehavior,
       )
 
       it("should return nil if no part matches",
-        case(42) should == nil
+        case(42) should be nil
 
         case(42,
-          1..10 , :one) should == nil
+          1..10 , :one) should be nil
       )
 
       it("should execute the last statement if there is no when part for it",
@@ -99,10 +99,10 @@ describe(DefaultBehavior,
           Ground calledWith << [:y, other].
           true)
 
-        (case:and(x, y) === 42) should == true
+        case:and(x, y) should === 42
         Ground calledWith should == [[:x, 42], [:y, 42]]
 
-        (case:and(1..5, 3..4) === 4) should == true
+        case:and(1..5, 3..4) should === 4
 
         x === = method(other,
           Ground calledWith << [:x, other].
@@ -110,14 +110,14 @@ describe(DefaultBehavior,
 
         Ground calledWith = []
 
-        (case:and(x, y) === 43) should == false
+        (case:and(x, y) === 43) should be false
         Ground calledWith should == [[:x, 43]]
       )
 
       it("should be possible to use within a case-expression",
         case(42, and(1..50, 40..45), :foo) should == :foo
         case(42, and(and(40..43), 40..45), :foo) should == :foo
-        case(42, and(and(and(40..43, 10...12)), 40..45), :foo) should == nil
+        case(42, and(and(and(40..43, 10...12)), 40..45), :foo) should be nil
       )
     )
 
@@ -135,27 +135,27 @@ describe(DefaultBehavior,
           Ground calledWith << [:y, other].
           true)
 
-        (case:or(x, y) === 42) should == true
+        (case:or(x, y) === 42) should be true
         Ground calledWith should == [[:x, 42]]
 
-        (case:or(1..3, 3..4) === 4) should == true
+        (case:or(1..3, 3..4) === 4) should be true
 
         x === = method(other,
           Ground calledWith << [:x, other].
           false)
 
-        (case:or(x, x) === 43) should == false
+        (case:or(x, x) === 43) should be false
 
         Ground calledWith = []
 
-        (case:or(x, y) === 43) should == true
+        (case:or(x, y) === 43) should be true
         Ground calledWith should == [[:x, 43], [:y, 43]]
       )
 
       it("should be possible to use within a case-expression",
         case(42, or(1..40, 40..45), :foo) should == :foo
         case(42, or(or(50..53), 40..45), :foo) should == :foo
-        case(42, or(or(or(30..33, 10...12)), 40..41), :foo) should == nil
+        case(42, or(or(or(30..33, 10...12)), 40..41), :foo) should be nil
       )
     )
 
@@ -166,27 +166,27 @@ describe(DefaultBehavior,
       )
 
       it("should return an object that when calling === on it will return the inverse of the argument to it",
-        (case:not(1..5) === 0) should == true
-        (case:not(1..5) === 1) should == false
-        (case:not(1..5) === 2) should == false
-        (case:not(1..5) === 3) should == false
-        (case:not(1..5) === 4) should == false
-        (case:not(1..5) === 5) should == false
-        (case:not(1..5) === 6) should == true
+        (case:not(1..5) === 0) should be true
+        (case:not(1..5) === 1) should be false
+        (case:not(1..5) === 2) should be false
+        (case:not(1..5) === 3) should be false
+        (case:not(1..5) === 4) should be false
+        (case:not(1..5) === 5) should be false
+        (case:not(1..5) === 6) should be true
 
-        (case:not(1...5) === 0) should == true
-        (case:not(1...5) === 1) should == false
-        (case:not(1...5) === 2) should == false
-        (case:not(1...5) === 3) should == false
-        (case:not(1...5) === 4) should == false
-        (case:not(1...5) === 5) should == true
-        (case:not(1...5) === 6) should == true
+        (case:not(1...5) === 0) should be true
+        (case:not(1...5) === 1) should be false
+        (case:not(1...5) === 2) should be false
+        (case:not(1...5) === 3) should be false
+        (case:not(1...5) === 4) should be false
+        (case:not(1...5) === 5) should be true
+        (case:not(1...5) === 6) should be true
       )
 
       it("should be possible to use within a case-expression",
         case(42, not(1..30), :foo) should == :foo
         case(42, not(not(not(30..33))), :foo) should == :foo
-        case(42, not(not(30..33)), :foo) should == nil
+        case(42, not(not(30..33)), :foo) should be nil
       )
     )
 
@@ -196,28 +196,28 @@ describe(DefaultBehavior,
       )
 
       it("should return an object that fulfills the nand protocal when called with ===",
-        (case:nand(1..5) === 2) should == false
-        (case:nand(1..5) === 6) should == true
+        (case:nand(1..5) === 2) should be false
+        (case:nand(1..5) === 6) should be true
 
-        (case:nand(1..5, 1...3) === 2) should == false
-        (case:nand(1..5, 1...2) === 6) should == true
-        (case:nand(1..5, 1..7)  === 6) should == true
-        (case:nand(1..7, 1..5)  === 6) should == true
+        (case:nand(1..5, 1...3) === 2) should be false
+        (case:nand(1..5, 1...2) === 6) should be true
+        (case:nand(1..5, 1..7)  === 6) should be true
+        (case:nand(1..7, 1..5)  === 6) should be true
 
-        (case:nand(1..5, 1...3, 2..3) === 2) should == false
+        (case:nand(1..5, 1...3, 2..3) === 2) should be false
 
-        (case:nand(1..5, 1...2, 1..3) === 6) should == true
-        (case:nand(1..5, 1..7, 1..3)  === 6) should == true
-        (case:nand(1..7, 1..5, 1..3)  === 6) should == true
+        (case:nand(1..5, 1...2, 1..3) === 6) should be true
+        (case:nand(1..5, 1..7, 1..3)  === 6) should be true
+        (case:nand(1..7, 1..5, 1..3)  === 6) should be true
 
-        (case:nand(1..5, 1...2, 1..100) === 6) should == true
-        (case:nand(1..5, 1..7, 1..100)  === 6) should == true
-        (case:nand(1..7, 1..5, 1..100)  === 6) should == true
+        (case:nand(1..5, 1...2, 1..100) === 6) should be true
+        (case:nand(1..5, 1..7, 1..100)  === 6) should be true
+        (case:nand(1..7, 1..5, 1..100)  === 6) should be true
       )
 
       it("should be possible to use within a case-expression",
         case(42, nand(1..30), :foo) should == :foo
-        case(42, nand(nand(1..50, 43..50), 42..43), :foo) should == nil
+        case(42, nand(nand(1..50, 43..50), 42..43), :foo) should be nil
         case(42, nand(nand(1..50, 40..50), 43..44), :foo) should == :foo
       )
     )
@@ -228,28 +228,28 @@ describe(DefaultBehavior,
       )
 
       it("should return an object that fulfills the nor protocal when called with ===",
-        (case:nor(1..5) === 2) should == false
-        (case:nor(1..5) === 6) should == true
+        (case:nor(1..5) === 2) should be false
+        (case:nor(1..5) === 6) should be true
 
-        (case:nor(1..5, 1...3) === 2) should == false
-        (case:nor(1..5, 1...2) === 6) should == true
-        (case:nor(1..5, 1..7)  === 6) should == false
-        (case:nor(1..7, 1..5)  === 6) should == false
+        (case:nor(1..5, 1...3) === 2) should be false
+        (case:nor(1..5, 1...2) === 6) should be true
+        (case:nor(1..5, 1..7)  === 6) should be false
+        (case:nor(1..7, 1..5)  === 6) should be false
 
-        (case:nor(1..5, 1...3, 2..3) === 2) should == false
+        (case:nor(1..5, 1...3, 2..3) === 2) should be false
 
-        (case:nor(1..5, 1...2, 1..3) === 6) should == true
-        (case:nor(1..5, 1..7, 1..3)  === 6) should == false
-        (case:nor(1..7, 1..5, 1..3)  === 6) should == false
+        (case:nor(1..5, 1...2, 1..3) === 6) should be true
+        (case:nor(1..5, 1..7, 1..3)  === 6) should be false
+        (case:nor(1..7, 1..5, 1..3)  === 6) should be false
 
-        (case:nor(1..5, 1...2, 1..100) === 6) should == false
-        (case:nor(1..5, 1..7, 1..100)  === 6) should == false
-        (case:nor(1..7, 1..5, 1..100)  === 6) should == false
+        (case:nor(1..5, 1...2, 1..100) === 6) should be false
+        (case:nor(1..5, 1..7, 1..100)  === 6) should be false
+        (case:nor(1..7, 1..5, 1..100)  === 6) should be false
       )
 
       it("should be possible to use within a case-expression",
         case(42, nor(1..30), :foo) should == :foo
-        case(42, nor(nor(1..50, 43..50), 42..43), :foo) should == nil
+        case(42, nor(nor(1..50, 43..50), 42..43), :foo) should be nil
         case(42, nor(nor(1..50, 40..50), 43..44), :foo) should == :foo
       )
     )
@@ -260,28 +260,28 @@ describe(DefaultBehavior,
       )
 
       it("should return an object that fulfills the xor protocal when called with ===",
-        (case:xor(1..5) === 2) should == true
-        (case:xor(1..5) === 6) should == false
+        (case:xor(1..5) === 2) should be true
+        (case:xor(1..5) === 6) should be false
 
-        (case:xor(1..5, 1...3) === 2) should == false
-        (case:xor(1..5, 1...2) === 6) should == false
-        (case:xor(1..5, 1..7)  === 6) should == true
-        (case:xor(1..7, 1..5)  === 6) should == true
+        (case:xor(1..5, 1...3) === 2) should be false
+        (case:xor(1..5, 1...2) === 6) should be false
+        (case:xor(1..5, 1..7)  === 6) should be true
+        (case:xor(1..7, 1..5)  === 6) should be true
 
-        (case:xor(1..5, 1...3, 2..3) === 2) should == false
+        (case:xor(1..5, 1...3, 2..3) === 2) should be false
 
-        (case:xor(1..5, 1...2, 1..3) === 6) should == false
-        (case:xor(1..5, 1..7, 1..3)  === 6) should == true
-        (case:xor(1..7, 1..5, 1..3)  === 6) should == true
+        (case:xor(1..5, 1...2, 1..3) === 6) should be false
+        (case:xor(1..5, 1..7, 1..3)  === 6) should be true
+        (case:xor(1..7, 1..5, 1..3)  === 6) should be true
 
-        (case:xor(1..5, 1...2, 1..100) === 6) should == true
-        (case:xor(1..5, 1..7, 1..100)  === 6) should == false
-        (case:xor(1..7, 1..5, 1..100)  === 6) should == false
+        (case:xor(1..5, 1...2, 1..100) === 6) should be true
+        (case:xor(1..5, 1..7, 1..100)  === 6) should be false
+        (case:xor(1..7, 1..5, 1..100)  === 6) should be false
       )
 
       it("should be possible to use within a case-expression",
         case(42, xor(1..50), :foo) should == :foo
-        case(42, xor(xor(1..50, 43..50), 42..43), :foo) should == nil
+        case(42, xor(xor(1..50, 43..50), 42..43), :foo) should be nil
         case(42, xor(xor(1..50, 40..50), 42..44), :foo) should == :foo
       )
     )
@@ -292,9 +292,9 @@ describe(DefaultBehavior,
       )
 
       it("should return an object that returns true from ===",
-        (case:else() === :x) should == true
-        (case:else() === nil) should == true 
-        (case:else() === 42) should == true
+        (case:else() === :x) should be true
+        (case:else() === nil) should be true 
+        (case:else() === 42) should be true
       )
    )
 
@@ -304,9 +304,9 @@ describe(DefaultBehavior,
       )
 
       it("should return an object that returns true from ===",
-        (case:otherwise() === :x) should == true
-        (case:otherwise() === nil) should == true 
-        (case:otherwise() === 42) should == true
+        (case:otherwise() === :x) should be true
+        (case:otherwise() === nil) should be true 
+        (case:otherwise() === 42) should be true
       )
     )
   )

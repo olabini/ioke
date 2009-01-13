@@ -19,13 +19,13 @@ describe("Dict",
 
   describe("key?",
     it("should return false if there is no such key",
-      {} key?(:foo) should == false
-      {fox: 123} key?(:foo) should == false
-      {"foo" => 123} key?(:foo) should == false
+      {} key?(:foo) should be false
+      {fox: 123} key?(:foo) should be false
+      {"foo" => 123} key?(:foo) should be false
     )
 
     it("should return true if the key is there",
-      {foo: 123} key?(:foo) should == true
+      {foo: 123} key?(:foo) should be true
     )
   )
   
@@ -88,13 +88,13 @@ describe("Dict",
   
   describe("at", 
     it("should return nil if empty dict", 
-      dict at(:foo) should == nil
-      dict at("bar") should == nil
-      dict at(42) should == nil
+      dict at(:foo) should be nil
+      dict at("bar") should be nil
+      dict at(42) should be nil
     )
 
     it("should return nil if argument is over the size", 
-      dict(bar: 42) at(:foo) should == nil
+      dict(bar: 42) at(:foo) should be nil
     )
 
     it("should an element if it's in the dict", 
@@ -146,13 +146,13 @@ describe("Dict",
 
   describe("[]", 
     it("should return nil if empty dict", 
-      dict[:foo] should == nil
-      dict["bar"] should == nil
-      dict[42] should == nil
+      dict[:foo] should be nil
+      dict["bar"] should be nil
+      dict[42] should be nil
     )
 
     it("should return nil if argument is over the size", 
-      dict(bar: 42)[:foo] should == nil
+      dict(bar: 42)[:foo] should be nil
     )
 
     it("should an element if it's in the dict", 
@@ -225,8 +225,8 @@ describe("Dict",
     
     it("should establish a lexical context when invoking the methods. this context will be the same for all invocations.", 
       {one: 1, two: 2, three: 3} each(xxxx, blargus42=32)
-      cell?(:xxxx) should == false
-      cell?(:blargus42) should == false
+      cell?(:xxxx) should be false
+      cell?(:blargus42) should be false
 
       x=14
       {one: 1, two: 2, three: 3} each(x, blarg=32)

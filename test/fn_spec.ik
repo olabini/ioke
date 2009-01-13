@@ -4,7 +4,7 @@ use("ispec")
 describe(DefaultBehavior,
 ;   describe("ʎ", 
 ;     it("should be possible to create a new LexicalBlock with it",
-;       ʎ call should == nil
+;       ʎ call should be nil
 ;     )
 
 ;     it("should be possible to create a new LexicalBlock with it that returns a value",
@@ -18,15 +18,15 @@ describe(DefaultBehavior,
     )
 
     it("should return something that is activatable for empty list",
-      fnx activatable should == true
+      fnx activatable should be true
     )
 
     it("should return something that is activatable for code",
-      fnx("hello") activatable should == true
+      fnx("hello") activatable should be true
     )
 
     it("should return something that is activatable for code with arguments",
-      fnx(x, y, x+y) activatable should == true
+      fnx(x, y, x+y) activatable should be true
     )
   )
 
@@ -42,7 +42,7 @@ describe(DefaultBehavior,
     )
     
     it("should return nil when invoking 'call' on an empty block", 
-      fn call should == nil
+      fn call should be nil
     )
     
     it("should be possible to execute it by invoking 'call' on it", 
@@ -130,7 +130,7 @@ describe(DefaultBehavior,
     
     it("should create a new variable when assigning something that doesn't exist", 
       fn(blarg = 42. blarg) call should == 42
-      cell?(:blarg) should == false
+      cell?(:blarg) should be false
     )
     
     it("should be possible to get the code for the block by calling 'code' on it", 
@@ -271,8 +271,8 @@ describe(LexicalBlock,
   it("should give nil as default value to keyword argument", 
     first = fnx(x:, x)
     
-    first should == nil
-    first() should == nil
+    first should be nil
+    first() should be nil
   )
 
   it("should be possible to call with keyword argument", 
@@ -292,11 +292,11 @@ describe(LexicalBlock,
     first = fnx(x:, y:, x)
     second = fnx(x:, y:, y)
     
-    first should == nil
-    second should == nil
+    first should be nil
+    second should be nil
 
     first(x: 42) should == 42
-    second(x: 42) should == nil
+    second(x: 42) should be nil
 
     first(x: 42,y: 33) should == 42
     second(x: 42, y: 33) should == 33
@@ -314,8 +314,8 @@ describe(LexicalBlock,
     second(12) should == 12
     fourth(13) should == 13
 
-    first(12) should == nil
-    third(13) should == nil
+    first(12) should be nil
+    third(13) should be nil
 
     second(x: 321, 12) should == 12
     fourth(x: 321, 13) should == 13
@@ -333,8 +333,8 @@ describe(LexicalBlock,
     second(12) should == 12
     fourth(13) should == 13
 
-    first(12) should == nil
-    third(13) should == nil
+    first(12) should be nil
+    third(13) should be nil
 
     second(12, x: 321) should == 12
     fourth(13, x: 321) should == 13
@@ -356,23 +356,23 @@ describe(LexicalBlock,
 
     m1(42) should == 42
     m2(42) should == 12
-    m3(42) should == nil
+    m3(42) should be nil
     m4(42) should == 42
     m5(42) should == 12
-    m6(42) should == nil
+    m6(42) should be nil
     m7(42) should == 42
     m8(42) should == 12
-    m9(42) should == nil
+    m9(42) should be nil
 
     m1(42, 13) should == 42
     m2(42, 13) should == 13
-    m3(42, 13) should == nil
+    m3(42, 13) should be nil
     m4(42, 13) should == 42
     m5(42, 13) should == 13
-    m6(42, 13) should == nil
+    m6(42, 13) should be nil
     m7(42, 13) should == 42
     m8(42, 13) should == 13
-    m9(42, 13) should == nil
+    m9(42, 13) should be nil
 
     m1(z: 1, 42) should == 42
     m2(z: 1, 42) should == 12

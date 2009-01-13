@@ -19,13 +19,13 @@ describe(List,
   
   describe("at", 
     it("should return nil if empty list", 
-      list at(0) should == nil
-      list at(10) should == nil
-      list at(0-1) should == nil
+      list at(0) should be nil
+      list at(10) should be nil
+      list at(0-1) should be nil
     )
 
     it("should return nil if argument is over the size", 
-      list(1) at(1) should == nil
+      list(1) at(1) should be nil
     )
 
     it("should return from the front if the argument is zero or positive", 
@@ -46,13 +46,13 @@ describe(List,
   describe("[]", 
     describe("with number argument",
       it("should return nil if empty list when given a number", 
-        list[0] should == nil
-        list[10] should == nil
-        list[(0-1)] should == nil
+        list[0] should be nil
+        list[10] should be nil
+        list[(0-1)] should be nil
       )
 
       it("should return nil if argument is over the size when given a number", 
-        list(1)[1] should == nil
+        list(1)[1] should be nil
       )
 
       it("should return from the front if the argument is zero or positive when given a number", 
@@ -164,14 +164,14 @@ describe(List,
       x length should == 11
       x[0] should == 40
       x[1] should == 42
-      x[2] should == nil
-      x[3] should == nil
-      x[4] should == nil
-      x[5] should == nil
-      x[6] should == nil
-      x[7] should == nil
-      x[8] should == nil
-      x[9] should == nil
+      x[2] should be nil
+      x[3] should be nil
+      x[4] should be nil
+      x[5] should be nil
+      x[6] should be nil
+      x[7] should be nil
+      x[8] should be nil
+      x[9] should be nil
       x[10] should == 45
     )
     
@@ -215,14 +215,14 @@ describe(List,
       x length should == 11
       x[0] should == 40
       x[1] should == 42
-      x[2] should == nil
-      x[3] should == nil
-      x[4] should == nil
-      x[5] should == nil
-      x[6] should == nil
-      x[7] should == nil
-      x[8] should == nil
-      x[9] should == nil
+      x[2] should be nil
+      x[3] should be nil
+      x[4] should be nil
+      x[5] should be nil
+      x[6] should be nil
+      x[7] should be nil
+      x[8] should be nil
+      x[9] should be nil
       x[10] should == 45
     )
     
@@ -355,29 +355,29 @@ describe(List,
   describe("empty?", 
     it("should return true for an empty list", 
       x = []
-      x empty? should == true
+      x empty? should be true
     )
     
     it("should return false for an non empty list", 
       x = [1]
-      x empty? should == false
+      x empty? should be false
 
       x = ["abc", "cde"]
-      x empty? should == false
+      x empty? should be false
     )
   )
 
   describe("include?", 
     it("should return false for something not in the list", 
-      [] include?(:foo) should == false
-      [1] include?(2) should == false
-      [1, :foo, "bar"] include?(2) should == false
+      [] include?(:foo) should be false
+      [1] include?(2) should be false
+      [1, :foo, "bar"] include?(2) should be false
     )
 
     it("should return true for something in the list", 
-      [:foo] include?(:foo) should == true
-      [1, 2] include?(2) should == true
-      [2, 1, :foo, "bar"] include?(2) should == true
+      [:foo] include?(:foo) should be true
+      [1, 2] include?(2) should be true
+      [2, 1, :foo, "bar"] include?(2) should be true
     )
   )
   
@@ -454,8 +454,8 @@ describe(List,
     
     it("should establish a lexical context when invoking the methods. this context will be the same for all invocations.", 
       [1,2,3] each(x_list, blarg=32)
-      cell?(:x_list) should == false
-      cell?(:blarg) should == false
+      cell?(:x_list) should be false
+      cell?(:blarg) should be false
 
       x=14
       [1,2,3] each(x, blarg=32)
@@ -489,7 +489,7 @@ describe(List,
   
   describe("first", 
     it("should return nil for an empty list", 
-      [] first should == nil
+      [] first should be nil
     )
 
     it("should return the first element for a non-empty list", 
@@ -499,11 +499,11 @@ describe(List,
 
   describe("second", 
     it("should return nil for an empty list", 
-      [] second should == nil
+      [] second should be nil
     )
 
     it("should return nil for a list with one element", 
-      [33] second should == nil
+      [33] second should be nil
     )
 
     it("should return the second element for a list with more than one element", 
@@ -513,15 +513,15 @@ describe(List,
 
   describe("third", 
     it("should return nil for an empty list", 
-      [] third should == nil
+      [] third should be nil
     )
 
     it("should return nil for a list with one element", 
-      [33] third should == nil
+      [33] third should be nil
     )
 
     it("should return nil for a list with two elements", 
-      [33, 15] third should == nil
+      [33, 15] third should be nil
     )
 
     it("should return the third element for a list with more than two elements", 
@@ -531,7 +531,7 @@ describe(List,
 
   describe("last", 
     it("should return nil for an empty list", 
-      [] last should == nil
+      [] last should be nil
     )
 
     it("should return the only entry for a list with one element", 

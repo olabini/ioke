@@ -51,56 +51,56 @@ describe("Text",
 
   describe("!=", 
     it("should return false for the same text", 
-      x = "foo". (x != x) should == false
-      x = "". (x != x) should == false
-      x = "34tertsegdf\ndfgsdfgd". (x != x) should == false
+      x = "foo". (x != x) should be false
+      x = "". (x != x) should be false
+      x = "34tertsegdf\ndfgsdfgd". (x != x) should be false
     )
 
     it("should return true for unequal texts", 
-      ("foo" != "bar") should == true
-      ("foo" != "sdfsdgdfgsgf\nadsfgdsfgsdfgdfg\nsdfgdsfgsdfg") should == true
+      ("foo" != "bar") should be true
+      ("foo" != "sdfsdgdfgsgf\nadsfgdsfgsdfgdfg\nsdfgdsfgsdfg") should be true
     )
 
     it("should return false for equal texts", 
-      ("foo" != "foo") should == false
-      ("sdfsdgdfgsgf\nadsfgdsfgsdfgdfg\nsdfgdsfgsdfg" != "sdfsdgdfgsgf\nadsfgdsfgsdfgdfg\nsdfgdsfgsdfg") should == false
+      ("foo" != "foo") should be false
+      ("sdfsdgdfgsgf\nadsfgdsfgsdfgdfg\nsdfgdsfgsdfg" != "sdfsdgdfgsgf\nadsfgdsfgsdfgdfg\nsdfgdsfgsdfg") should be false
     )
     
     it("should work correctly when comparing empty text", 
-      ("" != "") should == false
-      ("a" != "") should == true
-      ("" != "a") should == true
+      ("" != "") should be false
+      ("a" != "") should be true
+      ("" != "a") should be true
     )
   )
 
   describe("empty?", 
     it("should return true for an empty text", 
-      "" empty? should == true
+      "" empty? should be true
     )
 
     it("should not return true for a non-empty text", 
-      "a b c" empty? should == false
+      "a b c" empty? should be false
     )
 
     it("should not return true for a text with only spaces", 
-      " " empty? should == false
-      "  " empty? should == false
+      " " empty? should be false
+      "  " empty? should be false
     )
 
     it("should not return true for a text with only a newline", 
-      "\n" empty? should == false
+      "\n" empty? should be false
     )
   )
   
   describe("[number]", 
     it("should return nil if empty text", 
-      ""[0] should == nil
-      ""[10] should == nil
-      ""[(0-1)] should == nil
+      ""[0] should be nil
+      ""[10] should be nil
+      ""[(0-1)] should be nil
     )
 
     it("should return nil if argument is over the size", 
-      "abc"[10] should == nil
+      "abc"[10] should be nil
     )
 
     it("should return from the front if the argument is zero or positive", 

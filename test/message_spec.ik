@@ -9,7 +9,7 @@ describe("Message",
           Message OperatorTable operators[:"+++++"] should == 42
         )
         
-        Message OperatorTable operators[:"+++++"] should == nil
+        Message OperatorTable operators[:"+++++"] should be nil
       )
 
       it("should reassign the associativity of an existing operator",
@@ -27,7 +27,7 @@ describe("Message",
           Message OperatorTable assignOperators[:"+++++"] should == 42
         )
         
-        Message OperatorTable assignOperators[:"+++++"] should == nil
+        Message OperatorTable assignOperators[:"+++++"] should be nil
       )
 
       it("should reassign the associativity of an existing operator",
@@ -74,7 +74,7 @@ describe("Message",
 
   describe("next", 
     it("should return nil if there is no next", 
-      Message fromText("foo") next should == nil
+      Message fromText("foo") next should be nil
     )
 
     it("should return the next pointer", 
@@ -85,7 +85,7 @@ describe("Message",
 
   describe("prev", 
     it("should return nil if there is no next", 
-      Message fromText("foo") prev should == nil
+      Message fromText("foo") prev should be nil
     )
 
     it("should return the prev pointer", 
@@ -96,31 +96,31 @@ describe("Message",
   
   describe("keyword?", 
     it("should return true for a message that ends with a colon", 
-      Message fromText("foo:") keyword? should == true
-      Message fromText("bar::::") keyword? should == true
+      Message fromText("foo:") keyword? should be true
+      Message fromText("bar::::") keyword? should be true
     )
 
     it("should return false for something simple", 
-      Message fromText("foo") keyword? should == false
+      Message fromText("foo") keyword? should be false
     )
 
     it("should return false for the empty message", 
-      Message fromText("()") keyword? should == false
+      Message fromText("()") keyword? should be false
     )
   )
 
   describe("symbol", 
     it("should return true for a message that starts with a colon", 
-      Message fromText(":foo") symbol? should == true
-      Message fromText("::::bar") symbol? should == true
+      Message fromText(":foo") symbol? should be true
+      Message fromText("::::bar") symbol? should be true
     )
 
     it("should return false for something simple", 
-      Message fromText("foo") symbol? should == false
+      Message fromText("foo") symbol? should be false
     )
 
     it("should return false for the empty message", 
-      Message fromText("()") symbol? should == false
+      Message fromText("()") symbol? should be false
     )
   )
 
@@ -194,8 +194,8 @@ describe("Message",
       msg = Message fromText("foo bar")
       val = msg cell(:next)
       msg next = nil
-      msg next should == nil
-      (msg cell(:next) == cell(:val)) should == true
+      msg next should be nil
+      (msg cell(:next) == cell(:val)) should be true
     )
   )
 
@@ -204,8 +204,8 @@ describe("Message",
       msg = Message fromText("foo bar")
       val = msg next cell(:prev)
       msg next prev = nil
-      msg next prev should == nil
-      (msg next cell(:prev) == cell(:val)) should == true
+      msg next prev should be nil
+      (msg next cell(:prev) == cell(:val)) should be true
     )
   )
   
@@ -213,13 +213,13 @@ describe("Message",
     it("should be true when it is a '.' message",
       msg = Message fromText(".")
       msg name should == :"."
-      msg terminator? should == true
+      msg terminator? should be true
     )
 
     it("should not be true when it is not a '.' message",
       msg = Message fromText("foo bar")
-      msg terminator? should == false
-      msg next terminator? should == false
+      msg terminator? should be false
+      msg next terminator? should be false
     )
   )
 
@@ -275,7 +275,7 @@ describe("Message",
       x = '(foo bar)
 
       x -> nil
-      x next should == nil
+      x next should be nil
     )
   )
 )

@@ -10,7 +10,7 @@ describe(DefaultBehavior,
 
       it("should establish a new lexical scope inside",
         let(non_existing_let_binding = 42)
-        cell?(:non_existing_let_binding) should == false
+        cell?(:non_existing_let_binding) should be false
       )
 
       it("should take zero or more name-value pairs",

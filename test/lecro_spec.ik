@@ -4,8 +4,8 @@ use("ispec")
 describe(DefaultBehavior, 
   describe("lecro", 
     it("should return a lecro that returns nil when called with no arguments", 
-      lecro call should == nil
-      lecro() call should == nil
+      lecro call should be nil
+      lecro() call should be nil
     )
     
     it("should name itself after the slot it's assigned to if it has no name", 
@@ -24,14 +24,14 @@ describe(DefaultBehavior,
     )
 
     it("should be activatable",
-      lecro activatable should == true
+      lecro activatable should be true
     )
   )
 
   describe("lecrox", 
     it("should return a lecro that returns nil when called with no arguments", 
-      lecrox call should == nil
-      lecrox() call should == nil
+      lecrox call should be nil
+      lecrox() call should be nil
     )
     
     it("should name itself after the slot it's assigned to if it has no name", 
@@ -50,7 +50,7 @@ describe(DefaultBehavior,
     )
 
     it("should not be activatable",
-      lecrox activatable should == false
+      lecrox activatable should be false
     )
   )
 )
@@ -77,7 +77,7 @@ describe("LexicalMacro",
 
   it("should take any kinds of arguments", 
     x = lecro(nil)
-    x(13, 42, foo: 42*13) should == nil
+    x(13, 42, foo: 42*13) should be nil
   )
 
   it("should return the last value in the macro", 
@@ -150,7 +150,7 @@ describe("LexicalMacro",
 
   it("should create a new variable when assigning something that doesn't exist",
     lecro(lecro_blarg = 42. lecro_blarg) call should == 42
-    cell?(:lecro_blarg) should == false
+    cell?(:lecro_blarg) should be false
   )
 
   it("should be possible to get the code for the lecro by calling 'code' on it",

@@ -8,66 +8,66 @@ describe(FileSystem,
 
   describe("exists?",
     it("should return false for something that doesn't exit", 
-      FileSystem exists?("flux_flog") should == false
-      FileSystem exists?("src/flux_flog") should == false
-      FileSystem exists?("flux_flog/builtin") should == false
+      FileSystem exists?("flux_flog") should be false
+      FileSystem exists?("src/flux_flog") should be false
+      FileSystem exists?("flux_flog/builtin") should be false
     )
 
     it("should return true for a file",
-      FileSystem exists?("build.xml") should == true
-      FileSystem exists?("src/builtin/A10_defaultBehavior.ik") should == true
+      FileSystem exists?("build.xml") should be true
+      FileSystem exists?("src/builtin/A10_defaultBehavior.ik") should be true
     )
 
     it("should return true for a directory",
-      FileSystem exists?("src") should == true
-      FileSystem exists?("src/") should == true
-      FileSystem exists?("src/builtin") should == true
+      FileSystem exists?("src") should be true
+      FileSystem exists?("src/") should be true
+      FileSystem exists?("src/builtin") should be true
     )
   )
 
   describe("file?",
     it("should return false for something that doesn't exit", 
-      FileSystem file?("flux_flog") should == false
+      FileSystem file?("flux_flog") should be false
     )
 
     it("should return true for a file", 
-      FileSystem file?("build.xml") should == true
+      FileSystem file?("build.xml") should be true
     )
 
     it("should return true for a file inside of a directory", 
-      FileSystem file?("src/builtin/A10_defaultBehavior.ik") should == true
+      FileSystem file?("src/builtin/A10_defaultBehavior.ik") should be true
     )
 
     it("should return false for a directory", 
-      FileSystem file?("src") should == false
-      FileSystem file?("src/") should == false
+      FileSystem file?("src") should be false
+      FileSystem file?("src/") should be false
     )
 
     it("should return false for a directory inside another directory", 
-      FileSystem file?("src/builtin") should == false
+      FileSystem file?("src/builtin") should be false
     )
   )
 
   describe("directory?", 
     it("should return false for something that doesn't exit", 
-      FileSystem directory?("flux_flog") should == false
+      FileSystem directory?("flux_flog") should be false
     )
 
     it("should return false for a file", 
-      FileSystem directory?("build.xml") should == false
+      FileSystem directory?("build.xml") should be false
     )
 
     it("should return false for a file inside of a directory", 
-      FileSystem directory?("src/builtin/A10_defaultBehavior.ik") should == false
+      FileSystem directory?("src/builtin/A10_defaultBehavior.ik") should be false
     )
 
     it("should return true for a directory", 
-      FileSystem directory?("src") should == true
-      FileSystem directory?("src/") should == true
+      FileSystem directory?("src") should be true
+      FileSystem directory?("src/") should be true
     )
 
     it("should return true for a directory inside another directory", 
-      FileSystem directory?("src/builtin") should == true
+      FileSystem directory?("src/builtin") should be true
     )
   )
 
@@ -142,7 +142,7 @@ describe(FileSystem,
 
   describe("parentOf",
     it("should return nil for the parent of something that doesn't have a parent",
-      FileSystem parentOf("/") should == nil
+      FileSystem parentOf("/") should be nil
     )
 
     it("should return the parent of a relative directory", 

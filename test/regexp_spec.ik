@@ -10,11 +10,11 @@ describe(Regexp,
   )
 
   it("should be the kind of literal regular expression patterns",
-    #/foo/ should not == nil
+    #/foo/ should not be nil
     #/foo/ should have kind("Regexp")
     #/foo/ should mimic(Regexp)
 
-    #/foo/xs should not == nil
+    #/foo/xs should not be nil
     #/foo/xs should have kind("Regexp")
     #/foo/xs should mimic(Regexp)
   )
@@ -114,11 +114,11 @@ describe(Regexp,
       )
 
       it("should return nil for a group that wasn't matched",
-        (#/(..)((..))?/ =~ "ab") offset(2) should == nil
-        (#/({no}..)(({way}..))?/ =~ "ab") offset(:way) should == nil
+        (#/(..)((..))?/ =~ "ab") offset(2) should be nil
+        (#/({no}..)(({way}..))?/ =~ "ab") offset(:way) should be nil
 
-        (#/(..)((..))?/ =~ "ab") offset(10) should == nil
-        (#/({no}..)(({way}..))?/ =~ "ab") offset(:blarg) should == nil
+        (#/(..)((..))?/ =~ "ab") offset(10) should be nil
+        (#/({no}..)(({way}..))?/ =~ "ab") offset(:blarg) should be nil
       )
     )
 
@@ -190,11 +190,11 @@ describe(Regexp,
         )
 
         it("should return nil if given an index out of bounds",
-          (#/foo/ =~ "foo")[1] should == nil
+          (#/foo/ =~ "foo")[1] should be nil
         )
 
         it("should return nil if given a group that didn't match",
-          (#/f(.)(.)(.)?/ =~ "foo")[3] should == nil
+          (#/f(.)(.)(.)?/ =~ "foo")[3] should be nil
         )
 
         it("should return the match at the index given",
@@ -231,11 +231,11 @@ describe(Regexp,
 
       describe("symbol",
         it("should return nil if given a name that isn't valid",
-          (#/foo/ =~ "foo")[:foo] should == nil
+          (#/foo/ =~ "foo")[:foo] should be nil
         )
 
         it("should return nil if given a group that didn't match",
-          (#/f(..)(..)({mux}..)?/ =~ "fabcd")[:mux] should == nil
+          (#/f(..)(..)({mux}..)?/ =~ "fabcd")[:mux] should be nil
         )
 
         it("should return the match at the symbol given",
@@ -259,7 +259,7 @@ describe(Regexp,
       )
 
       it("should return nil for a defined group that isn't matched",
-        (#/foo({mux}..)?/ =~ "foob") mux should == nil
+        (#/foo({mux}..)?/ =~ "foob") mux should be nil
       )
     )
   )
@@ -284,12 +284,12 @@ describe(Regexp,
 
   describe("=~",
     it("should return a true value when matching",
-      (#/foo/ =~ "foo") true? should == true
-      (#/fo{1,2}/ =~ "foo") true? should == true
-      (#/foo/ =~ "x foo x") true? should == true
-      (#/^foo$/ =~ "foo") true? should == true
-      (#/^foo/ =~ "foo bar") true? should == true
-      (#/ foo$/ =~ "bar foo") true? should == true
+      (#/foo/ =~ "foo") true? should be true
+      (#/fo{1,2}/ =~ "foo") true? should be true
+      (#/foo/ =~ "x foo x") true? should be true
+      (#/^foo$/ =~ "foo") true? should be true
+      (#/^foo/ =~ "foo bar") true? should be true
+      (#/ foo$/ =~ "bar foo") true? should be true
     )
 
     it("should return an instance of Regexp Match",
@@ -297,22 +297,22 @@ describe(Regexp,
     )
 
     it("should return nil when not matching",
-      (#/fo{3}/ =~ "foo") should == nil
-      (#/fox/ =~ "x foo x") should == nil
-      (#/^ foo$/ =~ "foo") should == nil
-      (#/foo$/ =~ "foo bar") should == nil
-      (#/^foo/ =~ "bar foo") should == nil
+      (#/fo{3}/ =~ "foo") should be nil
+      (#/fox/ =~ "x foo x") should be nil
+      (#/^ foo$/ =~ "foo") should be nil
+      (#/foo$/ =~ "foo bar") should be nil
+      (#/^foo/ =~ "bar foo") should be nil
     )
   )
 
   describe("match",
     it("should return a true value when matching",
-      (#/foo/ match("foo")) true? should == true
-      (#/fo{1,2}/ match("foo")) true? should == true
-      (#/foo/ match("x foo x")) true? should == true
-      (#/^foo$/ match("foo")) true? should == true
-      (#/^foo/ match("foo bar")) true? should == true
-      (#/ foo$/ match("bar foo")) true? should == true
+      (#/foo/ match("foo")) true? should be true
+      (#/fo{1,2}/ match("foo")) true? should be true
+      (#/foo/ match("x foo x")) true? should be true
+      (#/^foo$/ match("foo")) true? should be true
+      (#/^foo/ match("foo bar")) true? should be true
+      (#/ foo$/ match("bar foo")) true? should be true
     )
 
     it("should return an instance of Regexp Match",
@@ -320,11 +320,11 @@ describe(Regexp,
     )
 
     it("should return nil when not matching",
-      (#/fo{3}/ match("foo")) should == nil
-      (#/fox/ match("x foo x")) should == nil
-      (#/^ foo$/ match("foo")) should == nil
-      (#/foo$/ match("foo bar")) should == nil
-      (#/^foo/ match("bar foo")) should == nil
+      (#/fo{3}/ match("foo")) should be nil
+      (#/fox/ match("x foo x")) should be nil
+      (#/^ foo$/ match("foo")) should be nil
+      (#/foo$/ match("foo bar")) should be nil
+      (#/^foo/ match("bar foo")) should be nil
     )
   )
 

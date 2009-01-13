@@ -13,7 +13,7 @@ describe("Base",
       x = Origin mimic
       x flurgus_cell_test = 123
       x removeCell!(:flurgus_cell_test)
-      x cell?(:flurgus_cell_test) should == false
+      x cell?(:flurgus_cell_test) should be false
     )
 
     it("should signal a condition if no such cell exists",
@@ -44,7 +44,7 @@ describe("Base",
       x = Origin mimic
       x flurgus_cell_test = 123
       x undefineCell!(:flurgus_cell_test)
-      x cell?(:flurgus_cell_test) should == false
+      x cell?(:flurgus_cell_test) should be false
     )
 
     it("should not signal a condition if no such cell exists",
@@ -444,7 +444,7 @@ describe("Base",
 
   describe("documentation",
     it("should return nil for a new object",
-      Origin mimic documentation should == nil
+      Origin mimic documentation should be nil
     )
     
     it("should return the documentation string for an object that has documentation",

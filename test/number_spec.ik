@@ -164,7 +164,7 @@ describe(Number,
       )
 
       it("should return nil if it can't be converted and there is no way of comparing",
-        (1 <=> Origin mimic) should == nil
+        (1 <=> Origin mimic) should be nil
       )
     )
 
@@ -610,7 +610,7 @@ describe(Number,
       )
       
       it("should return nil if it can't be converted and there is no way of comparing", 
-        (1.0 <=> Origin mimic) should == nil
+        (1.0 <=> Origin mimic) should be nil
       )
     )
 

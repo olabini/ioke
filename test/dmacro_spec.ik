@@ -9,7 +9,7 @@ describe(DefaultBehavior,
           [] nil)
 
         cell(:foo) kind should == "LexicalMacro"
-        cell(:foo) activatable should == true
+        cell(:foo) activatable should be true
       )
 
       it("should pass on a possible documentation string",
@@ -36,7 +36,7 @@ describe(DefaultBehavior,
           [] nil)
 
         cell(:foo) kind should == "LexicalMacro"
-        cell(:foo) activatable should == false
+        cell(:foo) activatable should be false
       )
 
       it("should pass on a possible documentation string",

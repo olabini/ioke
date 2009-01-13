@@ -58,7 +58,7 @@ describe(DefaultBehavior,
     )
 
     it("should create an inclusive range", 
-      (0...0) inclusive? should == false
+      (0...0) inclusive? should be false
     )
   )
 )
@@ -90,21 +90,21 @@ describe("Range",
 
   describe("inclusive?", 
     it("should return true for an inclusive range", 
-      (0..13) inclusive? should == true
+      (0..13) inclusive? should be true
     )
 
     it("should return false for an exclusive range", 
-      (0...13) inclusive? should == false
+      (0...13) inclusive? should be false
     )
   )
 
   describe("exclusive?", 
     it("should return false for an inclusive range", 
-      (0..13) exclusive? should == false
+      (0..13) exclusive? should be false
     )
 
     it("should return true for an exclusive range", 
-      (0...13) exclusive? should == true
+      (0...13) exclusive? should be true
     )
   )
 
@@ -162,8 +162,8 @@ describe("Range",
     
     it("should establish a lexical context when invoking the methods. this context will be the same for all invocations.", 
       (1..3) each(x_list, blarg=32)
-      cell?(:x_list) should == false
-      cell?(:blarg) should == false
+      cell?(:x_list) should be false
+      cell?(:blarg) should be false
 
       x=14
       (1..3) each(x, blarg=32)
@@ -183,15 +183,15 @@ describe("Range",
   
   describe("===", 
     it("should match something inside the range", 
-      ((1..5) === 1) should == true
-      ((1..5) === 2) should == true
-      ((1..5) === 3) should == true
-      ((1..5) === 4) should == true
-      ((1..5) === 5) should == true
-      ((1..5) === 1.5) should == true
-      ((1..5) === 4.9999) should == true
-      ((1...5) === 4.9999) should == true
-      ((1..5) === 4/3) should == true
+      ((1..5) === 1) should be true
+      ((1..5) === 2) should be true
+      ((1..5) === 3) should be true
+      ((1..5) === 4) should be true
+      ((1..5) === 5) should be true
+      ((1..5) === 1.5) should be true
+      ((1..5) === 4.9999) should be true
+      ((1...5) === 4.9999) should be true
+      ((1..5) === 4/3) should be true
     )
 
     it("should match even when using inverted ranges",
@@ -211,14 +211,14 @@ describe("Range",
     )
 
     it("should not match something outside the range", 
-      ((1..5) === 0) should == false
-      ((1...5) === 5) should == false
-      ((1..5) === 0.5) should == false
-      ((1..5) === 5.000001) should == false
-      ((1...5) === 5.0) should == false
-      ((1..5) === 1/3) should == false
+      ((1..5) === 0) should be false
+      ((1...5) === 5) should be false
+      ((1..5) === 0.5) should be false
+      ((1..5) === 5.000001) should be false
+      ((1...5) === 5.0) should be false
+      ((1..5) === 1/3) should be false
 
-      ((1..5) === :foo) should == false
+      ((1..5) === :foo) should be false
     )
   )
 
