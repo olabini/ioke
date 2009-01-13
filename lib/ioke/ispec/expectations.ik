@@ -24,7 +24,9 @@ ISpec do(
 
   ShouldContext == = method(value,
     unless(realValue == value,
-      error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to == #{value inspect}", shouldMessage: self shouldMessage)))
+      if(realValue kind == "List" && value kind == "List",
+        error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to == #{value inspect}. difference: #{(realValue - value) inspect}. #{realValue length} vs #{value length}", shouldMessage: self shouldMessage),
+        error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to == #{value inspect}", shouldMessage: self shouldMessage))))
 
   ShouldContext === = method(value,
     unless(realValue === value,
