@@ -6,8 +6,7 @@ options {
 }
 
 tokens {
-    MESSAGE_SEND;
-    MESSAGE_SEND_SIMPLE;
+    MESSAGE;
 }
 
 @lexer::header {
@@ -137,10 +136,10 @@ commatedExpression
 
 expression
     :
-        Identifier (OpenParen commatedExpression? CloseParen)? -> ^(MESSAGE_SEND Identifier OpenParen? commatedExpression?)
-    |   '(' commatedExpression? ')'                            -> ^(MESSAGE_SEND_SIMPLE Identifier[""] commatedExpression?)
-    |   '[' commatedExpression? ']'                            -> ^(MESSAGE_SEND_SIMPLE Identifier["[]"] commatedExpression?)
-    |   '{' commatedExpression? '}'                            -> ^(MESSAGE_SEND_SIMPLE Identifier["{}"] commatedExpression?)
+        Identifier ('(' commatedExpression? ')')? -> ^(MESSAGE Identifier       '('? commatedExpression?)
+    |   '(' commatedExpression? ')'               -> ^(MESSAGE Identifier[""]   '('  commatedExpression?)
+    |   '[' commatedExpression? ']'               -> ^(MESSAGE Identifier["[]"] '['  commatedExpression?)
+    |   '{' commatedExpression? '}'               -> ^(MESSAGE Identifier["{}"] '{'  commatedExpression?)
     |   literals
     |   Terminator
     ;
@@ -154,24 +153,22 @@ literals
     |   UnitLiteral
     ;
 
-OpenParen
-    :
-        '('
-    ;
-
-CloseParen
-    :
-        ')'
+fragment
+OperatorChar
+    : 
+        '+' | '-' | '<'  | '>' | '!' | '~' | '*'
+    |   '%' | '&'  | '|' | '?' | '^' | '$'
+    |   '=' | '@' | '\'' | '`'
     ;
 
 Identifier
     :
-        ('\'')+
-    |   ('`')+
-    |   '[]'
+        '[]'
     |   '{}'
-    |   BinaryOperator
-    |   (Letter|':') (Letter|IDDigit|StrangeChars)*
+    |   (OperatorChar | '/') (OperatorChar | '#' | '/')*
+    |   '#' (OperatorChar | '#')+
+    |   '.' '.'+
+    |   Letter (Letter|IDDigit|'!'|'?')*
     ;
 
 DecimalLiteral
@@ -282,41 +279,10 @@ LineComment
     | '#!' ~('\n'|'\r')* {$channel=HIDDEN;}
     ;
 
-fragment
-OperatorChar
-    : 
-        '+'
-    |   '-'
-    |   '<'
-    |   '>'
-    |   '!'
-    |   '~'
-    |   '*'
-    |   '/'
-    |   '%'
-    |   '&'
-    |   '|'
-    |   '?'
-    |   '^'
-    |   '$'
-    |   '='
-    |   '@'
-    ;
-
-fragment
-BinaryOperator
-    :
-        OperatorChar+
-    |   '#>'
-    |   '#>>'
-    |   '.' '.'+
-    ;
-
 Comma
     :
         ','
     ;
-
 
 fragment
 OctalEscape
@@ -364,15 +330,6 @@ fragment
 Separator : (' ' | '\u000c' | '\u0009' | '\u000b' | '\\' '\u000a' )+ ;
 
 fragment
-StrangeChars
-    :
-        '_' |
-        '!' |
-        '?' |
-        ':'
-    ;
-
-fragment
 IDDigit
     :  '\u0030'..'\u0039' |
        '\u0660'..'\u0669' |
@@ -394,6 +351,7 @@ IDDigit
 fragment
 Letter
     :  
+       ':'                |
        '\u0041'..'\u005a' |
        '\u005f'           |
        '\u0061'..'\u007a' |

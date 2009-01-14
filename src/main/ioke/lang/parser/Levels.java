@@ -370,8 +370,8 @@ public class Levels {
         // =      msg
         // b c    Message.next(msg)
         */
-        if(isAssignOperator(messageSymbol) && (msgArgCount == 0 || Message.type(msg) == Message.Type.BINARY_DETACH) && !((Message.next(msg) != null) && Message.name(Message.next(msg)).equals("="))) {
-            if(Message.type(msg) == Message.Type.BINARY_DETACH) {
+        if(isAssignOperator(messageSymbol) && (msgArgCount == 0 || Message.type(msg) == Message.Type.DETACH) && !((Message.next(msg) != null) && Message.name(Message.next(msg)).equals("="))) {
+            if(Message.type(msg) == Message.Type.DETACH) {
                 IokeObject brackets = runtime.newMessage("");
                 Message.copySourceLocation(msg, brackets);
                 brackets.getArguments().addAll(msg.getArguments());
@@ -459,7 +459,7 @@ public class Levels {
                 popDownTo(precedence, expressions);
                 attachToTopAndPush(msg, precedence);
             } else {
-                if(Message.type(msg) == Message.Type.BINARY_DETACH) {
+                if(Message.type(msg) == Message.Type.DETACH) {
                     IokeObject brackets = runtime.newMessage("");
                     Message.copySourceLocation(msg, brackets);
                     brackets.getArguments().addAll(msg.getArguments());
