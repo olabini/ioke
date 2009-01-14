@@ -41,12 +41,6 @@ package ioke.lang.parser;
       System.err.println(s);
       return true;
   }
-
-  public boolean afterNextIsHidden() {
-      CommonTokenStream cts = (CommonTokenStream)input;
-      int ix = cts.index()+1;
-      return cts.size() > ix && cts.get(ix).getChannel() == HIDDEN;
-  }
 }
 
 @rulecatch {
@@ -303,99 +297,44 @@ LineComment
     | '#!' ~('\n'|'\r')* {$channel=HIDDEN;}
     ;
 
-BinaryOperator
-    :
-        '++'
-    |   '--'
-    |   '<=>'
-    |   '<='
-    |   '>='
+fragment
+OperatorChar
+    : 
+        '+'
+    |   '-'
     |   '<'
     |   '>'
-    |   '==='
-    |   '=='
-    |   '!='
-    |   '=~'
-    |   '!~'
-    |   '-'
-    |   '+'
-    |   '**'
+    |   '!'
+    |   '~'
     |   '*'
     |   '/'
     |   '%'
-    |   '&&'
     |   '&'
-    |   '||'
     |   '|'
-    |   '?|'
-    |   '?&'
+    |   '?'
     |   '^'
-    |   '=>'
-    |   '=>>'
-    |   '<->'
-    |   '->'
-    |   '<-'
-    |   '+>'
-    |   '!>'
-    |   '<>'
-    |   '&>'
-    |   '%>'
-    |   '#>'
-    |   '@>'
-    |   '/>'
-    |   '*>'
-    |   '?>'
-    |   '|>'
-    |   '^>'
-    |   '~>'
-    |   '**>'
-    |   '&&>'
-    |   '||>'
-    |   '$>'
-    |   '->>'
-    |   '+>>'
-    |   '!>>'
-    |   '<>>'
-    |   '&>>'
-    |   '%>>'
-    |   '#>>'
-    |   '@>>'
-    |   '/>>'
-    |   '*>>'
-    |   '?>>'
-    |   '|>>'
-    |   '^>>'
-    |   '~>>'
-    |   '**>>'
-    |   '&&>>'
-    |   '||>>'
-    |   '$>>'
-    |   '...'
-    |   '..'
-    |   '<<'
-    |   '>>'
+    |   '$'
+    ;
+
+fragment
+AtLeastOneOperatorChar
+    :
+        '@'
+    |   '#'
+    |   '='
+    ;
+
+BinaryOperator
+    :
+        OperatorChar+
+    |   AtLeastOneOperatorChar (OperatorChar | AtLeastOneOperatorChar)+
+    |   OperatorChar+ AtLeastOneOperatorChar (OperatorChar | AtLeastOneOperatorChar)*
+    |   '.' '.'+
     |   'or'
     |   'nor'
     |   'xor'
     |   'and'
     |   'nand'
-    |   '!'
-    |   '?'
-    |   '~'
-    |   '$'
-    |   '+='
-    |   '-='
-    |   '/='
-    |   '**='
-    |   '*='
-    |   '%='
-    |   '&='
-    |   '&&='
-    |   '|='
-    |   '||='
-    |   '^='
-    |   '<<='
-    |   '>>='
     ;
 
 Equals
