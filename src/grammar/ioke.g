@@ -9,8 +9,6 @@ tokens {
     MESSAGE_SEND;
     MESSAGE_SEND_OP;
     MESSAGE_SEND_EMPTY;
-    MESSAGE_SEND_SQUARE;
-    MESSAGE_SEND_CURLY;
 }
 
 @lexer::header {
@@ -131,10 +129,10 @@ expression
         Identifier (OpenParen commatedExpression? CloseParen)? -> ^(MESSAGE_SEND Identifier commatedExpression?)
     |   operator OpenParen commatedExpression? CloseParen -> ^(MESSAGE_SEND_OP operator OpenParen commatedExpression?)
     |   OpenParen commatedExpression? CloseParen -> ^(MESSAGE_SEND_EMPTY commatedExpression?)
-    |   '[' ']'                          -> ^(MESSAGE_SEND_SQUARE)
-    |   '{' '}'                          -> ^(MESSAGE_SEND_CURLY)
-    |   '[' commatedExpression ']'       -> ^(MESSAGE_SEND_SQUARE commatedExpression)
-    |   '{' commatedExpression '}'       -> ^(MESSAGE_SEND_CURLY commatedExpression)
+    |   '[' ']'                          -> ^(MESSAGE_SEND Identifier["[]"])
+    |   '{' '}'                          -> ^(MESSAGE_SEND Identifier["{}"])
+    |   '[' commatedExpression ']'       -> ^(MESSAGE_SEND Identifier["[]"] commatedExpression)
+    |   '{' commatedExpression '}'       -> ^(MESSAGE_SEND Identifier["{}"] commatedExpression)
     |   operator
     |   literals
     |   Terminator
