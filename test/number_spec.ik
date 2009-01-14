@@ -130,7 +130,7 @@ describe(Number,
         (1<=>1) should == 0
         (10<=>10) should == 0
         (12413423523452345345345<=>12413423523452345345345) should == 0
-        (-1<=>-1) should == 0
+        (-1<=> -1) should == 0
       )
 
       it("should return 1 when the left number is larger than the right",
@@ -295,7 +295,7 @@ describe(Number,
       )
 
       it("should return a positive number when multiplying with two negative numbers", 
-        (-21*-2) should == 42
+        (-21* -2) should == 42
       )
 
       it("should convert itself to a decimal if the argument is a decimal", 
@@ -380,11 +380,11 @@ describe(Number,
       )
 
       it("should divide with a negative dividend correctly", 
-        (8200/-10) == -820
+        (8200/ -10) == -820
       )
 
       it("should divide a negative number with a negative dividend", 
-        (-8200/-10) == 820
+        (-8200/ -10) == 820
       )
 
       it("should convert itself to a decimal if the argument is a decimal", 
@@ -740,7 +740,7 @@ describe(Number,
       )
 
       it("should return a positive number when multiplying with two negative numbers", 
-        (-21.0*-2.0) should == 42.0
+        (-21.0* -2.0) should == 42.0
       )
 
       it("should convert its argument to a decimal if its not a decimal", 
@@ -775,7 +775,7 @@ describe(Number,
       )
 
       it("should divide with a negative dividend correctly", 
-        (8200.0/-10.0) should == -820.0
+        (8200.0/ -10.0) should == -820.0
       )
 
       it("should correctly handle a number that would generate an infinite expansion, by being inexact",
@@ -783,7 +783,7 @@ describe(Number,
       )
         
       it("should divide a negative number with a negative dividend", 
-        (-8200.0/-10.0) should == 820.0
+        (-8200.0/ -10.0) should == 820.0
       )
 
       it("should convert its argument to a decimal if its not a decimal", 
@@ -836,8 +836,8 @@ describe(Number,
 
       it("should return modulus for negative numbers", 
         (-13%4) should == 3
-        (-13%-4) should == -1
-        (13%-4) should == -3
+        (-13% -4) should == -1
+        (13% -4) should == -3
       )
 
       it("should convert its argument to a number if its not a number or a decimal", 
@@ -937,7 +937,7 @@ describe(Number,
         (1^1) should == 0
         (0^1) should == 1
         (3^5) should == 6
-        (-2^-255) should == 255
+        (-2^ -255) should == 255
       )
       
       it("should xor large numbers", 
@@ -990,8 +990,8 @@ describe(Number,
       )
       
       it("performs a right shift if given a negative value", 
-        (7<<-2) should == 7>>2
-        (9<<-4) should == 9>>4
+        (7<< -2) should == 7>>2
+        (9<< -4) should == 9>>4
       )
       
       it("should left shift a large number", 
