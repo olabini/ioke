@@ -156,6 +156,8 @@ public class Levels {
 		new OpTable("..",  12),
 		new OpTable("...",  12),
 		new OpTable("=>",  12),
+		new OpTable("::",  12),
+		new OpTable(":::",  12),
 		new OpTable("<->",  12),
 		new OpTable("->",  12),
 		new OpTable("+>",  12),
@@ -288,6 +290,36 @@ public class Levels {
     public int levelForOp(String messageName, IokeObject messageSymbol, IokeObject msg) {
         Object value = operatorTable.get(messageSymbol);
         if(value == null) {
+            if(messageName.length() > 0) {
+                char first = messageName.charAt(0);
+                switch(first) {
+                case '|':
+                    return 9;
+                case '^':
+                    return 8;
+                case '&':
+                    return 7;
+                case '<':
+                case '>':
+                    return 5;
+                case '=':
+                case '!':
+                case '?':
+                case '~':
+                case '$':
+                    return 6;
+                case '+':
+                case '-':
+                    return 3;
+                case '*':
+                case '/':
+                case '%':
+                    return 2;
+                default:
+                    return -1;
+                }
+            }
+            
             return -1;
         }
 
