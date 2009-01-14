@@ -135,7 +135,7 @@ expression
     |   '{' '}'                          -> ^(MESSAGE_SEND_CURLY)
     |   '[' commatedExpression ']'       -> ^(MESSAGE_SEND_SQUARE commatedExpression)
     |   '{' commatedExpression '}'       -> ^(MESSAGE_SEND_CURLY commatedExpression)
-    |   binaryOperator
+    |   operator
     |   literals
     |   Terminator
     ;
@@ -162,13 +162,6 @@ CloseParen
 operator
     :
         BinaryOperator
-    |   Equals
-    ;
-
-binaryOperator
-    :
-        BinaryOperator
-    |   Equals
     ;
 
 Identifier
@@ -306,6 +299,7 @@ OperatorChar
     |   '?'
     |   '^'
     |   '$'
+    |   '='
     ;
 
 fragment
@@ -313,7 +307,6 @@ AtLeastOneOperatorChar
     :
         '@'
     |   '#'
-    |   '='
     ;
 
 BinaryOperator
@@ -327,11 +320,6 @@ BinaryOperator
     |   'xor'
     |   'and'
     |   'nand'
-    ;
-
-Equals
-    :
-        '='
     ;
 
 Comma
