@@ -917,11 +917,11 @@ public class Message extends IokeData {
                 m.setLine(tree.getLine());
                 m.setPosition(tree.getCharPositionInLine());
                 return runtime.createMessage(m);
-            case iokeParser.Equals:
-                m = new Message(runtime, "=", null, Type.BINARY_ASSIGNMENT);
-                m.setLine(tree.getLine());
-                m.setPosition(tree.getCharPositionInLine());
-                return runtime.createMessage(m);
+//             case iokeParser.Equals:
+//                 m = new Message(runtime, "=", null, Type.BINARY_ASSIGNMENT);
+//                 m.setLine(tree.getLine());
+//                 m.setPosition(tree.getCharPositionInLine());
+//                 return runtime.createMessage(m);
             case iokeParser.Comma:
                 m = new Message(runtime, ",", null, Type.SEPARATOR);
                 m.setLine(tree.getLine());
