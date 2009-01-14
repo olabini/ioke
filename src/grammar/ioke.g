@@ -125,6 +125,18 @@ package ioke.lang.parser;
   public boolean isNum(int c) {
       return c>='0' && c<='9';
   }
+
+  public int unitType(int type) {
+      if(type == DecimalLiteral) {
+          return UnitDecimalLiteral;
+      } else {
+          return UnitLiteral;
+      }
+  }
+
+  public boolean lookingAtInterpolation() {
+      return input.LA(1) == '#' && input.LA(2) == '{';
+  }
 }
 
 fullProgram
@@ -218,7 +230,7 @@ NumberLiteral
             {isNum(input.LA(2))}?=> (FloatWithLeadingDot) {$type=DecimalLiteral;}
         |
         ) (
-            UnitSpecifier {if($type == DecimalLiteral) {$type=UnitDecimalLiteral;} else {$type=UnitLiteral;}}
+            UnitSpecifier {$type = unitType($type);}
         |
         )
     |   NonZeroDecimal (
@@ -226,27 +238,27 @@ NumberLiteral
         | Exponent {$type=DecimalLiteral;}
         |
         ) (
-            UnitSpecifier {if($type == DecimalLiteral) {$type=UnitDecimalLiteral;} else {$type=UnitLiteral;}}
+            UnitSpecifier {$type = unitType($type);}
         |
         )
     ;
 
 StringLiteral
     :  ('"' 
-        ( ({!(input.LA(1) == '#' && input.LA(2) == '{')}?=> (EscapeSequence | ~('\\'|'"')))* ) 
+        ( ({!lookingAtInterpolation()}?=> (EscapeSequence | ~('\\'|'"')))* ) 
         (
             '#{' {startInterpolation(); }
         |   '"'))
     |  ('#[' 
-        ( ({!(input.LA(1) == '#' && input.LA(2) == '{')}?=> (EscapeSequence | ~('\\'|']')))* ) 
+        ( ({!lookingAtInterpolation()}?=> (EscapeSequence | ~('\\'|']')))* ) 
         (
             '#{' {startAltInterpolation(); }
         |   ']'))
-    | {isInterpolating()}?=> ('}' ( ({!(input.LA(1) == '#' && input.LA(2) == '{')}?=> (EscapeSequence | ~('\\'|'"')))* ) 
+    | {isInterpolating()}?=> ('}' ( ({!lookingAtInterpolation()}?=> (EscapeSequence | ~('\\'|'"')))* ) 
         (
             '#{' {startInterpolation(); }
         |   '"'  {endInterpolation(); }))
-    | {isAltInterpolating()}?=> ('}' ( ({!(input.LA(1) == '#' && input.LA(2) == '{')}?=> (EscapeSequence | ~('\\'|']')))* ) 
+    | {isAltInterpolating()}?=> ('}' ( ({!lookingAtInterpolation()}?=> (EscapeSequence | ~('\\'|']')))* ) 
         (
             '#{' {startAltInterpolation(); }
         |   ']'  {endAltInterpolation(); }))
@@ -254,21 +266,21 @@ StringLiteral
 
 RegexpLiteral
     :  ('#/'
-            ( ({!(input.LA(1) == '#' && input.LA(2) == '{')}?=> ( EscapeSequenceRegexp | ~('\\'|'/')))* )
+            ( ({!lookingAtInterpolation()}?=> ( EscapeSequenceRegexp | ~('\\'|'/')))* )
             (
                 '#{' {startRegexpInterpolation(); }
             |   '/' RegexpModifier))
     |  ('#r[' 
-        ( ({!(input.LA(1) == '#' && input.LA(2) == '{')}?=> (EscapeSequenceRegexp | ~('\\'|']')))* ) 
+        ( ({!lookingAtInterpolation()}?=> (EscapeSequenceRegexp | ~('\\'|']')))* ) 
         (
             '#{' {startAltRegexpInterpolation(); }
         |   ']' RegexpModifier))
-    | {isRegexpInterpolating()}?=> ('}' (({!(input.LA(1) == '#' && input.LA(2) == '{')}?=> (EscapeSequenceRegexp | ~('\\'|'/')))* ) 
+    | {isRegexpInterpolating()}?=> ('}' (({!lookingAtInterpolation()}?=> (EscapeSequenceRegexp | ~('\\'|'/')))* ) 
         (
             '#{' {startRegexpInterpolation(); }
 
         |   '/' RegexpModifier  {endRegexpInterpolation(); }))
-    | {isAltRegexpInterpolating()}?=> ('}' ( ({!(input.LA(1) == '#' && input.LA(2) == '{')}?=> (EscapeSequenceRegexp | ~('\\'|']')))* ) 
+    | {isAltRegexpInterpolating()}?=> ('}' ( ({!lookingAtInterpolation()}?=> (EscapeSequenceRegexp | ~('\\'|']')))* ) 
         (
             '#{' {startAltRegexpInterpolation(); }
         |   '/' RegexpModifier {endAltRegexpInterpolation(); }))
