@@ -121,6 +121,10 @@ package ioke.lang.parser;
   public boolean isAltRegexpInterpolating() {
       return interpolation.size() > 0 && interpolation.get(0) == IPOL_ALT_REGEXP;
   }
+
+  public boolean isNum(int c) {
+      return c>='0' && c<='9';
+  }
 }
 
 fullProgram
@@ -209,14 +213,14 @@ NumberLiteral
     :
 		'0'	('x'|'X') HexDigit+
     |   '0' (
-            {(input.LA(2)>='0')&&(input.LA(2)<='9')}?=> (FloatWithLeadingDot) {$type=DecimalLiteral;}
+            {isNum(input.LA(2))}?=> (FloatWithLeadingDot) {$type=DecimalLiteral;}
         |
         ) (
             UnitSpecifier {if($type == DecimalLiteral) {$type=UnitDecimalLiteral;} else {$type=UnitLiteral;}}
         |
         )
     |   NonZeroDecimal (
-            {(input.LA(2)>='0')&&(input.LA(2)<='9')}?=> (FloatWithLeadingDot) {$type=DecimalLiteral;}
+            {isNum(input.LA(2))}?=> (FloatWithLeadingDot) {$type=DecimalLiteral;}
         | Exponent {$type=DecimalLiteral;}
         |
         ) (
