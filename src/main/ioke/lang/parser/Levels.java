@@ -370,7 +370,19 @@ public class Levels {
         // =      msg
         // b c    Message.next(msg)
         */
-        if(isAssignOperator(messageSymbol) && msgArgCount == 0 && !((Message.next(msg) != null) && Message.name(Message.next(msg)).equals("="))) {
+        if(isAssignOperator(messageSymbol) && (msgArgCount == 0 || Message.type(msg) == Message.Type.BINARY_DETACH) && !((Message.next(msg) != null) && Message.name(Message.next(msg)).equals("="))) {
+            if(Message.type(msg) == Message.Type.BINARY_DETACH) {
+                IokeObject brackets = runtime.newMessage("");
+                Message.copySourceLocation(msg, brackets);
+                brackets.getArguments().addAll(msg.getArguments());
+                msg.getArguments().clear();
+
+                // Insert the brackets message between msg and its next message
+                Message.setNext(brackets, Message.next(msg));
+                Message.setNext(msg, brackets);
+                msgArgCount = 0;
+            }
+
             Level currentLevel = currentLevel();
             IokeObject attaching = currentLevel.message;
             String setCellName;
