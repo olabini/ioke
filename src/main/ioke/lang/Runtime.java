@@ -799,6 +799,10 @@ public class Runtime {
             this.token = token;
             this.index = index;
         }
+
+        public String toString() {
+            return "rescueInfo(" + index + ")";
+        }
     }
 
     public static class HandlerInfo {
@@ -891,6 +895,10 @@ public class Runtime {
         public boolean greaterThan(BindIndex other) {
             return this.row > other.row || 
                 (this.row == other.row && this.col > other.col);
+        }
+
+        public String toString() {
+            return "ix[" + row + "," + col + "]";
         }
     }
 
