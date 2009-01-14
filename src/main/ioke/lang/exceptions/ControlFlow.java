@@ -88,6 +88,10 @@ public class ControlFlow extends Throwable {
         public IokeObject getCondition() {
             return this.condition;
         }
+
+        public String toString() {
+            return "rescue: " + getValue().toString();
+        }
     }
 
     private Object value;

@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.HashMap;
+import java.util.Random;
 
 import ioke.lang.exceptions.ControlFlow;
 
@@ -39,6 +40,8 @@ public class IokeSystem extends IokeData {
 
     private IokeObject loadPath;
     private IokeObject programArguments;
+
+    private Random random = new Random();
 
     public void pushCurrentFile(String filename) {
         currentFile.add(0, filename);
@@ -325,6 +328,15 @@ public class IokeSystem extends IokeData {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return ((IokeSystem)IokeObject.data(on)).loadPath;
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("returns a random number", new JavaMethod.WithNoArguments("randomNumber") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+
+                    return context.runtime.newNumber(((IokeSystem)IokeObject.data(on)).random.nextInt());
                 }
             }));
 

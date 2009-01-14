@@ -271,6 +271,8 @@ public class ConditionsBehavior {
 
                     Runtime.BindIndex index = context.runtime.getBindIndex();
 
+                    boolean doUnregister = true;
+
                     try {
                         for(Object o : args.subList(0, argCount-1)) {
                             IokeObject bindable = IokeObject.as(IokeObject.as(o).evaluateCompleteWithoutExplicitReceiver(context, context.getRealContext()));
@@ -340,7 +342,10 @@ public class ConditionsBehavior {
                     } catch(ControlFlow.Restart e) {
                         Runtime.RestartInfo ri = null;
                         if((ri = e.getRestart()).token == restarts) {
-                            // Might need to unregister restarts before doing this...
+                            runtime.unregisterHandlers(handlers);
+                            runtime.unregisterRescues(rescues);
+                            runtime.unregisterRestarts(restarts); 
+                            doUnregister = false;
                             return runtime.callMessage.sendTo(context, runtime.code.sendTo(context, ri.restart), e.getArguments());
                         } else {
                             throw e;
@@ -348,14 +353,20 @@ public class ConditionsBehavior {
                     } catch(ControlFlow.Rescue e) {
                         Runtime.RescueInfo ri = null;
                         if((ri = e.getRescue()).token == rescues) {
+                            runtime.unregisterHandlers(handlers);
+                            runtime.unregisterRescues(rescues);
+                            runtime.unregisterRestarts(restarts); 
+                            doUnregister = false;
                             return runtime.callMessage.sendTo(context, runtime.handlerMessage.sendTo(context, ri.rescue), e.getCondition());
                         } else {
                             throw e;
                         }
                    } finally {
-                        runtime.unregisterHandlers(handlers);
-                        runtime.unregisterRescues(rescues);
-                        runtime.unregisterRestarts(restarts); 
+                        if(doUnregister) {
+                            runtime.unregisterHandlers(handlers);
+                            runtime.unregisterRescues(rescues);
+                            runtime.unregisterRestarts(restarts); 
+                        }
                    }
                 }
             }));
