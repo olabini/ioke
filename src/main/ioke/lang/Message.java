@@ -922,25 +922,23 @@ public class Message extends IokeData {
                 m.setLine(tree.getLine());
                 m.setPosition(tree.getCharPositionInLine());
                 return runtime.createMessage(m);
-            case iokeParser.BinaryOperator:
-                m = new Message(runtime, tree.getText(), null, Type.BINARY);
-                m.setLine(tree.getLine());
-                m.setPosition(tree.getCharPositionInLine());
-                return runtime.createMessage(m);
-            case iokeParser.MESSAGE_SEND_EMPTY:
-                m = new Message(runtime, "");
+            case iokeParser.MESSAGE_SEND: {
+                m = new Message(runtime, tree.getChild(0).getText());
+                int count = tree.getChildCount();
+                argStart = 1;
+                if(count > 1) {
+                    int diff = tree.getChild(1).getCharPositionInLine() - (tree.getChild(0).getCharPositionInLine()+tree.getChild(0).getText().length());
+                    if(diff != 0) {
+                        m.type = Type.BINARY_DETACH;
+                    }
+                    argStart = 2;
+                }
+
                 break;
-            case iokeParser.MESSAGE_SEND:
+            }
+            case iokeParser.MESSAGE_SEND_SIMPLE: {
                 m = new Message(runtime, tree.getChild(0).getText());
                 argStart = 1;
-                break;
-            case iokeParser.MESSAGE_SEND_OP: {
-                m = new Message(runtime, tree.getChild(0).getText(), null, Type.BINARY);
-                int diff = tree.getChild(1).getCharPositionInLine() - (tree.getChild(0).getCharPositionInLine()+tree.getChild(0).getText().length());
-                if(diff != 0) {
-                    m.type = Type.BINARY_DETACH;
-                }
-                argStart = 2;
                 break;
             }
             default:
