@@ -18,6 +18,15 @@ Pattern = Origin mimic do(
       msg,
       messageFrom(msg next, pos - 1)))
 
+  chainCopy = method(msg, start, end,
+    if(start > 0,
+      chainCopy(msg next, start-1, end-1),
+      result = msg deepCopy
+      current = result
+      while(end-- > 0, current = current next)
+      current next = nil
+      result))
+
   positionOf = method(name, msgChain, start: 0,
     pos = start
     while(start > 0,
@@ -33,29 +42,28 @@ Pattern = Origin mimic do(
     nil
   )
 
-  matchVariable = method(var, input, bindings,
+  matchVariable = method(var, input, bindings, part,
     binding = bindings[varName(var)]
     case(binding,
       nil,
-        bindings merge(varName(var) => input name asText),
-      input name asText, 
+        bindings merge(varName(var) => part call(input) ),
+      part call(input),
         bindings,
         noMatch!))
 
   matchSegment = method(pattern, input, bindings, start 0,
-    "matchSegment(#{pattern})" println
     var = pattern arguments[0]
     pat = pattern next
     if(pat nil?,
-      matchVariable(var, input, bindings),
+      matchVariable(var, input, bindings, fn(i, i code)),
       pos = positionOf(pat name, input, start: start)
       if(pos nil?,
         noMatch!,
         b2 = bind(restart(noMatch, fn(nil)),
           doMatch(pat, messageFrom(input, pos), bindings))
         if(b2,
-          matchVariable(var, input, b2),
-          matchSegment(patern, input, bindings, pos+1)
+          matchVariable(var, chainCopy(input, 0, pos), b2, fn(i, i code)),
+          matchSegment(pattern, input, bindings, pos+1)
         )
       )
     )
@@ -67,7 +75,7 @@ Pattern = Origin mimic do(
         if(pat == input, bindings, noMatch!),
       
       variable?(pat), 
-        doMatch(pat next, input next, matchVariable(pat, input, bindings)),
+        doMatch(pat next, input next, matchVariable(pat, input, bindings, fn(i, i name asText))),
 
       segmentPattern?(pat),
         matchSegment(pat, input, bindings),
@@ -77,10 +85,24 @@ Pattern = Origin mimic do(
     
         noMatch!))
 
+  flatten = method("Takes a message chain and modifies it to be flattened. this means all the arguments will be spliced into it instead",
+    msgChain,
+    
+    msgChain each(m,
+      if(m arguments length > 0,
+        res = m arguments fold(sum, a, sum last -> a. sum)
+        m arguments clear!
+        nx = m next
+        m -> res
+        res last -> nx
+      )
+    )
+  )
+
   match = dmacro("Does pattern match input? A variable in the form of a symbol message can match anything.",
     [input, >bindings {}]
     bind(restart(noMatch, fn(nil)),
-      doMatch(self pattern, input, bindings)))
+      doMatch(self pattern, flatten(input), bindings)))
 
   ; more or less an equivalent of common lisp sublis
   subst = method("Takes one dict of replacements, where the key should be the name of the message to replace, and the value a new message chain to insert instead of it. Returns a new copy without modifying any of the chains given",
