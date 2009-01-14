@@ -7,8 +7,7 @@ options {
 
 tokens {
     MESSAGE_SEND;
-    MESSAGE_SEND_OP;
-    MESSAGE_SEND_EMPTY;
+    MESSAGE_SEND_SIMPLE;
 }
 
 @lexer::header {
@@ -25,7 +24,7 @@ package ioke.lang.parser;
   }
 
   public Object recoverFromMismatchedSet(IntStream input, RecognitionException e, BitSet follow) throws RecognitionException {
-			reportError(e);
+//			reportError(e);
     throw e;
   }
 
@@ -37,6 +36,17 @@ package ioke.lang.parser;
   public boolean print(String s) {
       System.err.println(s);
       return true;
+  }
+
+    @Override
+  public void reportError(RecognitionException e) {
+//    displayRecognitionError(this.getTokenNames(), e);
+    if ( state.errorRecovery ) {
+  	  return;
+    }
+	state.syntaxErrors++; // don't count spurious
+	state.errorRecovery = true;
+    throw new RuntimeException(e);
   }
 }
 
@@ -54,8 +64,9 @@ package ioke.lang.parser;
     }
 
 
+    @Override
   public void reportError(RecognitionException e) {
-    displayRecognitionError(this.getTokenNames(), e);
+//    displayRecognitionError(this.getTokenNames(), e);
     throw new RuntimeException(e);
   }
 
@@ -126,14 +137,10 @@ commatedExpression
 
 expression
     :
-        Identifier (OpenParen commatedExpression? CloseParen)? -> ^(MESSAGE_SEND Identifier commatedExpression?)
-    |   operator OpenParen commatedExpression? CloseParen -> ^(MESSAGE_SEND_OP operator OpenParen commatedExpression?)
-    |   OpenParen commatedExpression? CloseParen -> ^(MESSAGE_SEND_EMPTY commatedExpression?)
-    |   '[' ']'                          -> ^(MESSAGE_SEND Identifier["[]"])
-    |   '{' '}'                          -> ^(MESSAGE_SEND Identifier["{}"])
-    |   '[' commatedExpression ']'       -> ^(MESSAGE_SEND Identifier["[]"] commatedExpression)
-    |   '{' commatedExpression '}'       -> ^(MESSAGE_SEND Identifier["{}"] commatedExpression)
-    |   operator
+        Identifier (OpenParen commatedExpression? CloseParen)? -> ^(MESSAGE_SEND Identifier OpenParen? commatedExpression?)
+    |   '(' commatedExpression? ')'                            -> ^(MESSAGE_SEND_SIMPLE Identifier[""] commatedExpression?)
+    |   '[' commatedExpression? ']'                            -> ^(MESSAGE_SEND_SIMPLE Identifier["[]"] commatedExpression?)
+    |   '{' commatedExpression? '}'                            -> ^(MESSAGE_SEND_SIMPLE Identifier["{}"] commatedExpression?)
     |   literals
     |   Terminator
     ;
@@ -157,18 +164,13 @@ CloseParen
         ')'
     ;
 
-operator
-    :
-        BinaryOperator
-    ;
-
 Identifier
     :
-        ('@')+
-    |   ('\'')+
+        ('\'')+
     |   ('`')+
     |   '[]'
     |   '{}'
+    |   BinaryOperator
     |   (Letter|':') (Letter|IDDigit|StrangeChars)*
     ;
 
@@ -298,26 +300,16 @@ OperatorChar
     |   '^'
     |   '$'
     |   '='
+    |   '@'
     ;
 
 fragment
-AtLeastOneOperatorChar
-    :
-        '@'
-    |   '#'
-    ;
-
 BinaryOperator
     :
         OperatorChar+
-    |   AtLeastOneOperatorChar (OperatorChar | AtLeastOneOperatorChar)+
-    |   OperatorChar+ AtLeastOneOperatorChar (OperatorChar | AtLeastOneOperatorChar)*
+    |   '#>'
+    |   '#>>'
     |   '.' '.'+
-    |   'or'
-    |   'nor'
-    |   'xor'
-    |   'and'
-    |   'nand'
     ;
 
 Comma

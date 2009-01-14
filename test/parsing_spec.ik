@@ -144,7 +144,7 @@ bar" should == "foobar"
       m should == "foo([](1, 2))"
     )
 
-    it("should not parse correctly when mismatched",  
+    it("should not parse correctly when mismatched",
       fn(parse("foo([1, 2)]")) should signal(Condition Error JavaException)
     )
 
