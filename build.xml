@@ -32,6 +32,7 @@
   <target name="generate.antlr" depends="prepare" description="Generates source files from the ANTLR definitions" unless="grammar.notUpdated">
     <java classname="org.antlr.Tool" fork="true" dir="${antlr.grammar.dir}" classpathref="build.classpath">
       <arg line="-o ${src.generated.dir.relative} ${antlr.grammar.file}"/>
+<!--      <arg line="-report -o ${src.generated.dir.relative} ${antlr.grammar.file}"/> -->
     </java>
   </target>
 

@@ -2,7 +2,6 @@ grammar ioke;
 
 options { 
     output = AST; 
-    backtrack = true;
 }
 
 tokens {
@@ -28,7 +27,7 @@ package ioke.lang.parser;
   }
 
   public Tree parseFully() throws RecognitionException {
-      messageChain_return result = messageChain();
+      fullProgram_return result = fullProgram();
       return result == null ? (Tree)null : (Tree)(result.getTree());
   }
 
@@ -124,22 +123,29 @@ package ioke.lang.parser;
   }
 }
 
-messageChain
+fullProgram
     :
-        expression* EOF!
+        expressionChain? EOF!
     ;
 
 commatedExpression
     :
-        expression+ (Comma expression+)*
+        expressionChain (Comma expressionChain)*
+    ;
+
+expressionChain
+    :
+        expression+
     ;
 
 expression
     :
-        Identifier ('(' commatedExpression? ')')? -> ^(MESSAGE Identifier       '('? commatedExpression?)
-    |   '(' commatedExpression? ')'               -> ^(MESSAGE Identifier[""]   '('  commatedExpression?)
-    |   '[' commatedExpression? ']'               -> ^(MESSAGE Identifier["[]"] '['  commatedExpression?)
-    |   '{' commatedExpression? '}'               -> ^(MESSAGE Identifier["{}"] '{'  commatedExpression?)
+        {!"(".equals(input.LT(2).getText())}?=> 
+        Identifier                               -> ^(MESSAGE Identifier)
+    |   Identifier '(' commatedExpression? ')'   -> ^(MESSAGE Identifier       '('  commatedExpression?)
+    |   '(' commatedExpression? ')'              -> ^(MESSAGE Identifier[""]   '('  commatedExpression?)
+    |   '[' commatedExpression? ']'              -> ^(MESSAGE Identifier["[]"] '['  commatedExpression?)
+    |   '{' commatedExpression? '}'              -> ^(MESSAGE Identifier["{}"] '{'  commatedExpression?)
     |   literals
     |   Terminator
     ;
@@ -156,9 +162,23 @@ literals
 fragment
 OperatorChar
     : 
-        '+' | '-' | '<'  | '>' | '!' | '~' | '*'
-    |   '%' | '&'  | '|' | '?' | '^' | '$'
-    |   '=' | '@' | '\'' | '`'
+        '+' 
+    |   '-' 
+    |   '*'
+    |   '%' 
+    |   '<'  
+    |   '>' 
+    |   '!' 
+    |   '?' 
+    |   '~' 
+    |   '&'  
+    |   '|' 
+    |   '^' 
+    |   '$'
+    |   '=' 
+    |   '@' 
+    |   '\'' 
+    |   '`'
     ;
 
 Identifier
