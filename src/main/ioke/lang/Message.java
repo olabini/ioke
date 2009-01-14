@@ -28,7 +28,7 @@ import org.antlr.runtime.tree.Tree;
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
 public class Message extends IokeData {
-    public static enum Type {EMPTY, MESSAGE, BINARY, BINARY_DETACH, BINARY_ASSIGNMENT, UNARY_ASSIGNMENT, TERMINATOR, SEPARATOR, START_INTERPOLATION, START_RE_INTERPOLATION, END_INTERPOLATION, MIDDLE_INTERPOLATION};
+    public static enum Type {MESSAGE, DETACH, TERMINATOR, SEPARATOR, START_INTERPOLATION, START_RE_INTERPOLATION, END_INTERPOLATION, MIDDLE_INTERPOLATION};
 
     private String name;
     private String file;
@@ -922,23 +922,19 @@ public class Message extends IokeData {
                 m.setLine(tree.getLine());
                 m.setPosition(tree.getCharPositionInLine());
                 return runtime.createMessage(m);
-            case iokeParser.MESSAGE_SEND: {
-                m = new Message(runtime, tree.getChild(0).getText());
+            case iokeParser.MESSAGE: {
+                String text = tree.getChild(0).getText();
+                m = new Message(runtime, text);
                 int count = tree.getChildCount();
                 argStart = 1;
                 if(count > 1) {
-                    int diff = tree.getChild(1).getCharPositionInLine() - (tree.getChild(0).getCharPositionInLine()+tree.getChild(0).getText().length());
+                    int diff = tree.getChild(1).getCharPositionInLine() - (tree.getCharPositionInLine()+text.length());
                     if(diff != 0) {
-                        m.type = Type.BINARY_DETACH;
+                        m.type = Type.DETACH;
                     }
                     argStart = 2;
                 }
 
-                break;
-            }
-            case iokeParser.MESSAGE_SEND_SIMPLE: {
-                m = new Message(runtime, tree.getChild(0).getText());
-                argStart = 1;
                 break;
             }
             default:
