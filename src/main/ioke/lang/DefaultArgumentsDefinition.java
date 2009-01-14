@@ -432,15 +432,16 @@ public class DefaultArgumentsDefinition {
 
         for(Object obj : args.subList(start, args.size()-1)) {
             Message m = (Message)IokeObject.data(obj);
-            if(m.isKeyword()) {
-                String name = m.getName(null);
+            String mname = m.getName(null);
+            if(!"+:".equals(mname) && m.isKeyword()) {
+                String name = mname;
                 IokeObject dValue = context.runtime.nilMessage;
                 if(m.next != null) {
                     dValue = m.next;
                 }
                 arguments.add(new KeywordArgument(name.substring(0, name.length()-1), dValue));
                 keywords.add(name);
-            } else if(m.getName(null).equals("+")) {
+            } else if(mname.equals("+")) {
                 String name = Message.name(m.getArguments(null).get(0));
                 if(name.startsWith(":")) {
                     krest = name.substring(1);
@@ -449,8 +450,12 @@ public class DefaultArgumentsDefinition {
                     max = -1;
                 }
                 hadOptional = true;
+            } else if(mname.equals("+:")) {
+                String name = m.next != null ? Message.name(m.next) : Message.name(m.getArguments(null).get(0));
+                krest = name;
+                hadOptional = true;
             } else if(m.next != null) {
-                String name = m.getName(null);
+                String name = mname;
                 hadOptional = true;
                 if(max != -1) {
                     max++;
