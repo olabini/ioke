@@ -29,7 +29,7 @@ public class Levels {
     private Runtime runtime;
 
     private Map<Object, Object> operatorTable;
-    private Map<Object, Object> assignOperatorTable;
+    private Map<Object, Object> trinaryOperatorTable;
 
     public static class Level {
         IokeObject message;
@@ -219,7 +219,7 @@ public class Levels {
 		new OpTable("return", 14)
     };
 
-    public static OpTable[] defaultAssignOperators = new OpTable[]{
+    public static OpTable[] defaultTrinaryOperators = new OpTable[]{
 		new OpTable("=", 2),
 		new OpTable("+=", 2),
 		new OpTable("-=", 2),
@@ -263,10 +263,10 @@ public class Levels {
                     return table;
                 }
             });
-        this.assignOperatorTable = getOpTable(opTable, "assignOperators", new OpTableCreator() {
+        this.trinaryOperatorTable = getOpTable(opTable, "trinaryOperators", new OpTableCreator() {
                 public Map<Object, Object> create(Runtime runtime) {
                     Map<Object, Object> table = new HashMap<Object, Object>();
-                    for(OpTable ot : defaultAssignOperators) {
+                    for(OpTable ot : defaultTrinaryOperators) {
                         table.put(runtime.getSymbol(ot.name), runtime.newNumber(ot.precedence));
                     }
                     return table;
@@ -326,8 +326,8 @@ public class Levels {
         return Number.value(value).intValue();
     }
 
-    public int assignLevelForOp(String messageName, IokeObject messageSymbol, IokeObject msg) {
-        Object value = assignOperatorTable.get(messageSymbol);
+    public int argCountForOp(String messageName, IokeObject messageSymbol, IokeObject msg) {
+        Object value = trinaryOperatorTable.get(messageSymbol);
         if(value == null) {
             return -1;
         }
@@ -368,7 +368,7 @@ public class Levels {
         String messageName = Message.name(msg);
         IokeObject messageSymbol = runtime.getSymbol(messageName);
         int precedence = levelForOp(messageName, messageSymbol, msg);
-        int assignPrecedence = assignLevelForOp(messageName, messageSymbol, msg);
+        int argCountForOp = argCountForOp(messageName, messageSymbol, msg);
         
         int msgArgCount = msg.getArgumentCount();
         
@@ -393,7 +393,7 @@ public class Levels {
         // =      msg
         // b c    Message.next(msg)
         */
-        if(assignPrecedence != -1 && (msgArgCount == 0 || Message.type(msg) == Message.Type.DETACH) && !((Message.next(msg) != null) && Message.name(Message.next(msg)).equals("="))) {
+        if(argCountForOp != -1 && (msgArgCount == 0 || Message.type(msg) == Message.Type.DETACH) && !((Message.next(msg) != null) && Message.name(Message.next(msg)).equals("="))) {
             if(Message.type(msg) == Message.Type.DETACH) {
                 IokeObject brackets = runtime.newMessage("");
                 Message.copySourceLocation(msg, brackets);
@@ -420,7 +420,7 @@ public class Levels {
                 condition.setCell("message", _message);
                 condition.setCell("context", _context);
                 condition.setCell("receiver", _context);
-                condition.setCell("text", runtime.newText("Can't create assignment expression without lvalue"));
+                condition.setCell("text", runtime.newText("Can't create trinary expression without lvalue"));
                 runtime.errorCondition(condition);
             }
 
@@ -436,7 +436,7 @@ public class Levels {
             Message.addArg(attaching, copyOfMessage);
             
             setCellName = messageName;
-            int expectedArgs = assignPrecedence;
+            int expectedArgs = argCountForOp;
 
             // a(a) = b .  ->  =(a) = b .
             Message.setName(attaching, setCellName);
