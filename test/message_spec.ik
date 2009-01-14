@@ -1,7 +1,15 @@
 
 use("ispec")
 
-describe("Message", 
+describe(Message, 
+  it("should have the correct kind", 
+    Message should have kind("Message")
+  )
+
+  it("should mimic Enumerable", 
+    Message should mimic(Mixins Enumerable)
+  )
+
   describe("OperatorTable",
     describe("withOperator",
       it("should temporarily add a new operator to the table, but then remove it",
@@ -294,6 +302,58 @@ describe("Message",
 
       x -> nil
       x next should be nil
+    )
+  )
+
+  describe("each",
+    it("should always execute for itself", 
+      Ground x = 0
+      'foo each(. Ground x++)
+      Ground x should == 1
+    )
+
+    it("should execute once for each message in the chain",
+      result = []
+      '(foo bar quux) each(m, result << m name)
+      result should == [:foo, :bar, :quux]
+    )
+    
+    it("should be possible to just give it a message chain, that will be invoked on each object", 
+      Ground y = []
+      Ground xs = method(y << self name)
+      '(foo bar quux) each(xs)
+      y should == [:foo, :bar, :quux]
+
+      x = 0
+      '(foo bar quux) each(nil. x++)
+      x should == 3
+    )
+    
+    it("should be possible to give it an argument name, and code", 
+      y = []
+      '(foo bar quux) each(x, y << x name)
+      y should == [:foo, :bar, :quux]
+    )
+
+    it("should return the object", 
+      y = '(foo bar quux)
+      (y each(x, x)) should be same(y)
+    )
+    
+    it("should establish a lexical context when invoking the methods. this context will be the same for all invocations.", 
+      '(foo bar quux) each(x_list, blarg=32)
+      cell?(:x_list) should be false
+      cell?(:blarg) should be false
+
+      x=14
+      '(foo bar quux) each(x, blarg=32)
+      x should == 14
+    )
+
+    it("should be possible to give it an extra argument to get the index", 
+      y = []
+      '(foo bar baz quux) each(i, x, y << [i, x name])
+      y should == [[0, :foo], [1, :bar], [2, :baz], [3, :quux]]
     )
   )
 )

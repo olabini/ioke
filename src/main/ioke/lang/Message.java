@@ -168,6 +168,8 @@ public class Message extends IokeData {
     @Override
     public void init(IokeObject message) throws ControlFlow {
         message.setKind("Message");
+        message.mimics(IokeObject.as(message.runtime.mixins.getCell(null, null, "Enumerable")), message.runtime.nul, message.runtime.nul);
+
         message.registerMethod(message.runtime.newJavaMethod("Returns a code representation of the object", new JavaMethod.WithNoArguments("code") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
@@ -196,6 +198,70 @@ public class Message extends IokeData {
                     return method.runtime.getSymbol(((Message)IokeObject.data(on)).name);
                 }
             }));
+        
+        message.registerMethod(message.runtime.newJavaMethod("takes either one or two or three arguments. if one argument is given, it should be a message chain that will be sent to each message in the chain. the result will be thrown away. if two arguments are given, the first is an unevaluated name that will be set to each of the messages in the chain in succession, and then the second argument will be evaluated in a scope with that argument in it. if three arguments is given, the first one is an unevaluated name that will be set to the index of each message, and the other two arguments are the name of the argument for the value, and the actual code. the code will evaluate in a lexical context, and if the argument name is available outside the context, it will be shadowed. the method will return the original message.", new JavaMethod("each") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositionalUnevaluated("indexOrArgOrCode")
+                    .withOptionalPositionalUnevaluated("argOrCode")
+                    .withOptionalPositionalUnevaluated("code")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
+
+                    Runtime runtime = context.runtime;
+                    switch(message.getArgumentCount()) {
+                    case 1: {
+                        IokeObject code = IokeObject.as(message.getArguments().get(0));
+                        Object o = on;
+                        while(o != null) {
+                            code.evaluateCompleteWithReceiver(context, context.getRealContext(), o);
+                            o = next(o);
+                        }
+
+                        break;
+                    }
+                    case 2: {
+                        LexicalContext c = new LexicalContext(context.runtime, context, "Lexical activation context for List#each", message, context);
+                        String name = IokeObject.as(message.getArguments().get(0)).getName();
+                        IokeObject code = IokeObject.as(message.getArguments().get(1));
+
+                        Object o = on;
+                        while(o != null) {
+                            c.setCell(name, o);
+                            code.evaluateCompleteWithoutExplicitReceiver(c, c.getRealContext());
+                            o = next(o);
+                        }
+                        break;
+                    }
+                    case 3: {
+                        LexicalContext c = new LexicalContext(context.runtime, context, "Lexical activation context for List#each", message, context);
+                        String iname = IokeObject.as(message.getArguments().get(0)).getName();
+                        String name = IokeObject.as(message.getArguments().get(1)).getName();
+                        IokeObject code = IokeObject.as(message.getArguments().get(2));
+
+                        int index = 0;
+                        Object o = on;
+                        while(o != null) {
+                            c.setCell(name, o);
+                            c.setCell(iname, runtime.newNumber(index++));
+                            code.evaluateCompleteWithoutExplicitReceiver(c, c.getRealContext());
+                            o = next(o);
+                        }
+                        break;
+                    }
+                    }
+                    return on;
+                }
+            }));
+
         message.registerMethod(message.runtime.newJavaMethod("sets the name of the message and then returns that name", new JavaMethod("name=") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
