@@ -5,7 +5,6 @@ options {
     backtrack = true;
 }
 
-
 tokens {
     MESSAGE_SEND;
     MESSAGE_SEND_OP;
@@ -127,20 +126,12 @@ commatedExpression
         expression+ (Comma expression+)*
     ;
 
-twoExpressions
-    :
-        expression+ Comma expression+
-    ;
-
 expression
     :
         Identifier (OpenParen commatedExpression? CloseParen)? -> ^(MESSAGE_SEND Identifier commatedExpression?)
     |   operator OpenParen commatedExpression? CloseParen -> ^(MESSAGE_SEND_OP operator OpenParen commatedExpression?)
-    |   Equals OpenParen twoExpressions CloseParen -> ^(MESSAGE_SEND Equals twoExpressions)
     |   OpenParen commatedExpression? CloseParen -> ^(MESSAGE_SEND_EMPTY commatedExpression?)
-    |   '[]'                             -> ^(MESSAGE_SEND_SQUARE)
     |   '[' ']'                          -> ^(MESSAGE_SEND_SQUARE)
-    |   '{}'                             -> ^(MESSAGE_SEND_CURLY)
     |   '{' '}'                          -> ^(MESSAGE_SEND_CURLY)
     |   '[' commatedExpression ']'       -> ^(MESSAGE_SEND_SQUARE commatedExpression)
     |   '{' commatedExpression '}'       -> ^(MESSAGE_SEND_CURLY commatedExpression)
@@ -171,8 +162,7 @@ CloseParen
 operator
     :
         BinaryOperator
-    |   SquareBrackets
-    |   CurlyBrackets
+    |   Equals
     ;
 
 binaryOperator
@@ -186,6 +176,8 @@ Identifier
         ('@')+
     |   ('\'')+
     |   ('`')+
+    |   '[]'
+    |   '{}'
     |   (Letter|':') (Letter|IDDigit|StrangeChars)*
     ;
 
@@ -340,16 +332,6 @@ BinaryOperator
 Equals
     :
         '='
-    ;
-
-SquareBrackets
-    : 
-        '[]'
-    ;
-
-CurlyBrackets
-    : 
-        '{}'
     ;
 
 Comma
