@@ -30,6 +30,7 @@ public class Levels {
 
     private Map<Object, Object> operatorTable;
     private Map<Object, Object> trinaryOperatorTable;
+    private Map<Object, Object> invertedOperatorTable;
 
     public static class Level {
         IokeObject message;
@@ -156,8 +157,6 @@ public class Levels {
 		new OpTable("..",  12),
 		new OpTable("...",  12),
 		new OpTable("=>",  12),
-		new OpTable("::",  12),
-		new OpTable(":::",  12),
 		new OpTable("<->",  12),
 		new OpTable("->",  12),
 		new OpTable("+>",  12),
@@ -237,6 +236,11 @@ public class Levels {
 		new OpTable("++", 1),
 		new OpTable("--", 1)
     };
+
+    public static OpTable[] defaultInvertedOperators = new OpTable[]{
+		new OpTable("::",  12),
+		new OpTable(":::",  12)
+    };
     
     public static interface OpTableCreator {
         Map<Object, Object> create(Runtime runtime);
@@ -272,6 +276,15 @@ public class Levels {
                     return table;
                 }
             });
+        this.invertedOperatorTable = getOpTable(opTable, "invertedOperators", new OpTableCreator() {
+                public Map<Object, Object> create(Runtime runtime) {
+                    Map<Object, Object> table = new HashMap<Object, Object>();
+                    for(OpTable ot : defaultInvertedOperators) {
+                        table.put(runtime.getSymbol(ot.name), runtime.newNumber(ot.precedence));
+                    }
+                    return table;
+                }
+            });
         this.stack = new ArrayList<Level>();
         this.reset();
     }
@@ -287,8 +300,15 @@ public class Levels {
         }
     }
 
+    public boolean isInverted(IokeObject messageSymbol) {
+        return invertedOperatorTable.containsKey(messageSymbol);
+    }
+
     public int levelForOp(String messageName, IokeObject messageSymbol, IokeObject msg) {
         Object value = operatorTable.get(messageSymbol);
+        if(value == null) {
+            value = invertedOperatorTable.get(messageSymbol);
+        }
         if(value == null) {
             if(messageName.length() > 0) {
                 char first = messageName.charAt(0);
@@ -362,6 +382,17 @@ public class Levels {
         stack.add(0, level);
     }
     
+    private void detach(IokeObject msg) throws ControlFlow {
+        IokeObject brackets = runtime.newMessage("");
+        Message.copySourceLocation(msg, brackets);
+        brackets.getArguments().addAll(msg.getArguments());
+        msg.getArguments().clear();
+        
+        // Insert the brackets message between msg and its next message
+        Message.setNext(brackets, Message.next(msg));
+        Message.setNext(msg, brackets);
+    }
+
     public void attach(IokeObject msg, List<IokeObject> expressions) throws ControlFlow {
         // TODO: fix all places with setNext to do setPrev too!!!
 
@@ -371,6 +402,8 @@ public class Levels {
         int argCountForOp = argCountForOp(messageName, messageSymbol, msg);
         
         int msgArgCount = msg.getArgumentCount();
+
+        boolean inverted = isInverted(messageSymbol);
         
         /*
         // : "str" bar   becomes   :("str") bar
@@ -386,6 +419,45 @@ public class Levels {
             msgArgCount++;
         }
 
+
+        if(inverted && (msgArgCount == 0 || Message.type(msg) == Message.Type.DETACH)) {
+            if(Message.type(msg) == Message.Type.DETACH) {
+                detach(msg);
+                msgArgCount = 0;
+            }
+
+            IokeObject head = msg;
+            while(Message.prev(head) != null && !Message.isTerminator(Message.prev(head))) {
+                head = Message.prev(head);
+            }
+            
+            IokeObject argPart = Message.deepCopy(head);
+            
+            if(Message.prev(msg) != null) {
+                Message.setNext(Message.prev(msg), null);
+            }
+            Message.setPrev(msg, null);
+
+            IokeObject beforeHead = Message.prev(head);
+            msg.getArguments().add(argPart);
+
+            IokeObject next = Message.next(msg);
+
+            IokeObject last = next;
+            while(Message.next(last) != null && !Message.isTerminator(Message.next(last))) {
+                last = Message.next(last);
+            }
+            IokeObject cont = Message.next(last);
+            Message.setNext(msg, cont);
+            if(cont != null) {
+                Message.setPrev(cont, msg);
+            }
+            Message.setNext(last, msg);
+            Message.setPrev(msg, last);
+            
+            head.become(next, null, null);
+        }
+
         /*
         // o a = b c . d  becomes  o =(a, b c) . d
         //
@@ -394,15 +466,8 @@ public class Levels {
         // b c    Message.next(msg)
         */
         if(argCountForOp != -1 && (msgArgCount == 0 || Message.type(msg) == Message.Type.DETACH) && !((Message.next(msg) != null) && Message.name(Message.next(msg)).equals("="))) {
-            if(Message.type(msg) == Message.Type.DETACH) {
-                IokeObject brackets = runtime.newMessage("");
-                Message.copySourceLocation(msg, brackets);
-                brackets.getArguments().addAll(msg.getArguments());
-                msg.getArguments().clear();
-
-                // Insert the brackets message between msg and its next message
-                Message.setNext(brackets, Message.next(msg));
-                Message.setNext(msg, brackets);
+            if(msgArgCount != 0 && Message.type(msg) == Message.Type.DETACH) {
+                detach(msg);
                 msgArgCount = 0;
             }
 
@@ -483,15 +548,7 @@ public class Levels {
                 attachToTopAndPush(msg, precedence);
             } else {
                 if(Message.type(msg) == Message.Type.DETACH) {
-                    IokeObject brackets = runtime.newMessage("");
-                    Message.copySourceLocation(msg, brackets);
-                    brackets.getArguments().addAll(msg.getArguments());
-                    msg.getArguments().clear();
-
-                    // Insert the brackets message between msg and its next message
-                    Message.setNext(brackets, Message.next(msg));
-                    Message.setNext(msg, brackets);
-
+                    detach(msg);
                     popDownTo(precedence, expressions);
                     attachToTopAndPush(msg, precedence);
                 } else {

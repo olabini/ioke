@@ -22,7 +22,7 @@ describe("Message",
     )
 
     describe("withTrinaryOperator",
-      it("should temporarily add a new assign operator to the table, but then remove it",
+      it("should temporarily add a new trinary operator to the table, but then remove it",
         Message OperatorTable withTrinaryOperator("+++++", 42,
           Message OperatorTable trinaryOperators[:"+++++"] should == 42
         )
@@ -36,6 +36,24 @@ describe("Message",
         )
 
         Message OperatorTable trinaryOperators[:"+="] should == 2
+      )
+    )
+
+    describe("withInvertedOperator",
+      it("should temporarily add a new inverted operator to the table, but then remove it",
+        Message OperatorTable withInvertedOperator(":-:", 42,
+          Message OperatorTable invertedOperators[:":-:"] should == 42
+        )
+        
+        Message OperatorTable invertedOperators[:":-:"] should be nil
+      )
+
+      it("should reassign the associativity of an existing operator",
+        Message OperatorTable withInvertedOperator("::", 42,
+          Message OperatorTable invertedOperators[:"::"] should == 42
+        )
+
+        Message OperatorTable invertedOperators[:"::"] should == 12
       )
     )
   )
