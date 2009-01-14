@@ -145,11 +145,11 @@ expressionChain
 expression
     :
         {!"(".equals(input.LT(2).getText())}?=> 
-        Identifier                               -> ^(MESSAGE Identifier)
-    |   Identifier '(' commatedExpression? ')'   -> ^(MESSAGE Identifier       '('  commatedExpression?)
-    |   '(' commatedExpression? ')'              -> ^(MESSAGE Identifier[""]   '('  commatedExpression?)
-    |   '[' commatedExpression? ']'              -> ^(MESSAGE Identifier["[]"] '['  commatedExpression?)
-    |   '{' commatedExpression? '}'              -> ^(MESSAGE Identifier["{}"] '{'  commatedExpression?)
+        v=Identifier                               -> ^(MESSAGE[$v] Identifier)
+    |   v=Identifier '(' commatedExpression? ')'   -> ^(MESSAGE[$v] Identifier       '('  commatedExpression?)
+    |   v='(' commatedExpression? ')'              -> ^(MESSAGE[$v] Identifier[""]   '('  commatedExpression?)
+    |   v='[' commatedExpression? ']'              -> ^(MESSAGE[$v] Identifier["[]"] '['  commatedExpression?)
+    |   v='{' commatedExpression? '}'              -> ^(MESSAGE[$v] Identifier["{}"] '{'  commatedExpression?)
     |   literals
     |   Terminator
     ;
@@ -183,6 +183,7 @@ OperatorChar
     |   '@' 
     |   '\'' 
     |   '`'
+    |   ':'
     ;
 
 Identifier
@@ -192,7 +193,8 @@ Identifier
     |   (OperatorChar | '/') (OperatorChar | '#' | '/')*
     |   '#' (OperatorChar | '#')+
     |   '.' '.'+
-    |   Letter (Letter|IDDigit|'!'|'?')*
+    |   Letter (Letter|IDDigit|':'|'!'|'?')*
+    |   ':' (Letter|IDDigit) (Letter|IDDigit|':'|'!'|'?')*
     ;
 
 DecimalLiteral
@@ -375,7 +377,6 @@ IDDigit
 fragment
 Letter
     :  
-       ':'                |
        '\u0041'..'\u005a' |
        '\u005f'           |
        '\u0061'..'\u007a' |

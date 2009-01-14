@@ -185,7 +185,7 @@ describe("Dict",
 
     it("should return the one key in an dict with one element", 
       {foo: 1} keys should == set(:foo)
-      {1=>:foo} keys should == set(1)
+      {1 => :foo} keys should == set(1)
       {"str" => :bar} keys should == set("str")
     )
 
