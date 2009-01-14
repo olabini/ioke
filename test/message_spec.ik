@@ -21,21 +21,21 @@ describe("Message",
       )
     )
 
-    describe("withAssignOperator",
+    describe("withTrinaryOperator",
       it("should temporarily add a new assign operator to the table, but then remove it",
-        Message OperatorTable withAssignOperator("+++++", 42,
-          Message OperatorTable assignOperators[:"+++++"] should == 42
+        Message OperatorTable withTrinaryOperator("+++++", 42,
+          Message OperatorTable trinaryOperators[:"+++++"] should == 42
         )
         
-        Message OperatorTable assignOperators[:"+++++"] should be nil
+        Message OperatorTable trinaryOperators[:"+++++"] should be nil
       )
 
       it("should reassign the associativity of an existing operator",
-        Message OperatorTable withAssignOperator("+=", 42,
-          Message OperatorTable assignOperators[:"+="] should == 42
+        Message OperatorTable withTrinaryOperator("+=", 42,
+          Message OperatorTable trinaryOperators[:"+="] should == 42
         )
 
-        Message OperatorTable assignOperators[:"+="] should == 2
+        Message OperatorTable trinaryOperators[:"+="] should == 2
       )
     )
   )
