@@ -274,8 +274,6 @@ public class Levels {
         this.reset();
     }
 
-
-
     public Map<Object, Object> getOpTable(IokeObject opTable, String name, OpTableCreator creator) throws ControlFlow {
         IokeObject operators = IokeObject.as(opTable.findCell(_message, _context, name));
         if(operators != runtime.nul && (IokeObject.data(operators) instanceof Dict)) {
@@ -296,6 +294,15 @@ public class Levels {
         return Number.value(value).intValue();
     }
 
+    public int assignLevelForOp(String messageName, IokeObject messageSymbol, IokeObject msg) {
+        Object value = assignOperatorTable.get(messageSymbol);
+        if(value == null) {
+            return -1;
+        }
+
+        return Number.value(value).intValue();
+    }
+
     public void popDownTo(int targetLevel, List<IokeObject> expressions) throws ControlFlow {
         Level level = null;
         while((level = stack.get(0)) != null && level.precedence <= targetLevel && level.type != Level.Type.Arg) {
@@ -308,23 +315,6 @@ public class Levels {
         return stack.get(0);
     }
 
-    public boolean isAssignOperator(IokeObject messageSymbol) {
-        return assignOperatorTable.containsKey(messageSymbol);
-    }
-
-    public int argsForAssignOperator(IokeObject messageSymbol) {
-        Object value = assignOperatorTable.get(messageSymbol);
-        if(value == null) {
-            return 2;
-        }
-
-        return Number.value(value).intValue();
-    }
-
-    public String nameForAssignOperator(IokeObject messageSymbol) throws ControlFlow {
-        return Symbol.getText(assignOperatorTable.get(messageSymbol));
-    }
-    
     public void attachAndReplace(Level self, IokeObject msg) throws ControlFlow {
         self.attach(msg);
         self.type = Level.Type.Attach;
@@ -346,6 +336,7 @@ public class Levels {
         String messageName = Message.name(msg);
         IokeObject messageSymbol = runtime.getSymbol(messageName);
         int precedence = levelForOp(messageName, messageSymbol, msg);
+        int assignPrecedence = assignLevelForOp(messageName, messageSymbol, msg);
         
         int msgArgCount = msg.getArgumentCount();
         
@@ -370,7 +361,7 @@ public class Levels {
         // =      msg
         // b c    Message.next(msg)
         */
-        if(isAssignOperator(messageSymbol) && (msgArgCount == 0 || Message.type(msg) == Message.Type.DETACH) && !((Message.next(msg) != null) && Message.name(Message.next(msg)).equals("="))) {
+        if(assignPrecedence != -1 && (msgArgCount == 0 || Message.type(msg) == Message.Type.DETACH) && !((Message.next(msg) != null) && Message.name(Message.next(msg)).equals("="))) {
             if(Message.type(msg) == Message.Type.DETACH) {
                 IokeObject brackets = runtime.newMessage("");
                 Message.copySourceLocation(msg, brackets);
@@ -413,7 +404,7 @@ public class Levels {
             Message.addArg(attaching, copyOfMessage);
             
             setCellName = messageName;
-            int expectedArgs = argsForAssignOperator(messageSymbol);
+            int expectedArgs = assignPrecedence;
 
             // a(a) = b .  ->  =(a) = b .
             Message.setName(attaching, setCellName);
