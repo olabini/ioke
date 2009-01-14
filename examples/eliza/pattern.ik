@@ -33,13 +33,9 @@ Pattern = Origin mimic do(
       if(msgChain next nil?, return(nil))
       msgChain = msgChain next
       start--)
-    while(msgChain,
-      if(msgChain name == name,
-        return(pos))
-      pos++
-      msgChain = msgChain next
-    )
-    nil
+
+    ix = msgChain findIndex(name asText lower == name asText lower )
+    ix && ix + pos
   )
 
   matchVariable = method(var, input, bindings, part,
@@ -59,18 +55,17 @@ Pattern = Origin mimic do(
       pos = positionOf(pat name, input, start: start)
       if(pos nil?,
         noMatch!,
-        b2 = bind(restart(noMatch, fn(nil)),
-          doMatch(pat, messageFrom(input, pos), bindings))
-        if(b2,
-          matchVariable(var, chainCopy(input, 0, pos), b2, fn(i, i code)),
-          matchSegment(pattern, input, bindings, pos+1)
-        )
+        bind(restart(noMatch, fn(matchSegment(pattern, input, bindings, pos+1))),
+          doMatch(pat, messageFrom(input, pos), matchVariable(var, chainCopy(input, 0, pos), bindings, fn(i, i code))))
       )
     )
   )
 
   doMatch = method(pat, input, bindings,
     cond(
+      pat != nil && input == nil && segmentPattern?(pat) && pat next == nil,
+        matchVariable(pat arguments[0], input, bindings, fn(i, "")),
+
       pat == nil || input == nil,
         if(pat == input, bindings, noMatch!),
       
@@ -80,7 +75,7 @@ Pattern = Origin mimic do(
       segmentPattern?(pat),
         matchSegment(pat, input, bindings),
         
-      pat name == input name,
+      pat name asText lower == input name asText lower,
         doMatch(pat next, input next, bindings),
     
         noMatch!))
@@ -88,35 +83,38 @@ Pattern = Origin mimic do(
   flatten = method("Takes a message chain and modifies it to be flattened. this means all the arguments will be spliced into it instead",
     msgChain,
     
-    msgChain each(m,
-      if(m arguments length > 0,
-        res = m arguments fold(sum, a, sum last -> a. sum)
-        m arguments clear!
-        nx = m next
-        m -> res
-        res last -> nx
+    if(msgChain,
+      msgChain each(m,
+        if(m arguments length > 0 && !(#/^internal:/ =~ m name),
+          res = m arguments fold(sum, a, sum last -> a. sum)
+          m arguments clear!
+          nx = m next
+          m -> res
+          res last -> nx
+        )
       )
     )
+    msgChain
   )
 
   match = dmacro("Does pattern match input? A variable in the form of a symbol message can match anything.",
     [input, >bindings {}]
+    matchSimple(input, bindings))
+
+  matchSimple = method(input, bindings {},
     bind(restart(noMatch, fn(nil)),
       doMatch(self pattern, flatten(input), bindings)))
+    
 
   ; more or less an equivalent of common lisp sublis
   subst = method("Takes one dict of replacements, where the key should be the name of the message to replace, and the value a new message chain to insert instead of it. Returns a new copy without modifying any of the chains given",
     replacements, messages,
     msg = messages deepCopy
     head = msg
-    while(msg next,
-      if(replacements key?(msg name),
-        insertChain(msg, replacements[msg name] deepCopy)
+    msg each(m,
+      if(replacements key?(m name),
+        insertChain(m, replacements[m name] deepCopy)
       )
-      msg = msg next
-    )
-    if(replacements key?(msg name),
-      insertChain(msg, replacements[msg name] deepCopy)
     )
     head
   )
@@ -125,7 +123,7 @@ Pattern = Origin mimic do(
     nx = main next
     prv = main prev
     main become!(insert)
-    main last next = nx
+    main last -> nx
     main prev = prv
   )
 )
