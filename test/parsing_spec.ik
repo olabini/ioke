@@ -282,5 +282,9 @@ bar" should == "foobar"
     it("should not shuffle a ' with arguments",
       Message fromText("'(foo bar) quux") code should == "'(foo bar) quux"
     )
+
+    it("should shuffle the arguments to an inverted operator around",
+      Message fromText("foo bar quux :: blarg mux") code should == "blarg mux ::(foo bar quux)"
+    )
   )
 )

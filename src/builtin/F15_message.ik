@@ -25,3 +25,12 @@ Message OperatorTable withTrinaryOperator = dmacro(
   let(Message OperatorTable trinaryOperators, Message OperatorTable trinaryOperators merge(name => assoc),
     code evaluateOn(call ground, call ground)))
 
+Message OperatorTable withInvertedOperator = dmacro(
+  "temporarily adds a new inverted operator with the specified associativity, and then removes it again. if the operator is already in there, changes the associativity temporarily",
+
+  [>name, >assoc, code]
+  if(name mimics?(Text),
+    name = :(name))
+  let(Message OperatorTable invertedOperators, Message OperatorTable invertedOperators merge(name => assoc),
+    code evaluateOn(call ground, call ground)))
+
