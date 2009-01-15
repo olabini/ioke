@@ -143,5 +143,5 @@ IParse Parser(
   primary = "(" expr ")" | number | id
   term    = primary ("*" | "/") term | primary
   expr    = term    ("+" | "-") expr | term
-  and     = (expr "and" expr) | expr
+  and     = expr "and" expr | expr
 )
