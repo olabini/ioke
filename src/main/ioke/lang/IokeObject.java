@@ -628,6 +628,13 @@ public class IokeObject {
         return data.convertToNumber(this, m, context);
     }
 
+    public static Object convertTo(String kind, Object on, boolean signalCondition, String conversionMethod, IokeObject message, IokeObject context) throws ControlFlow {
+        return ((IokeObject)on).convertTo(kind, signalCondition, conversionMethod, message, context);
+    }
+
+    public static Object convertTo(Object mimic, Object on, boolean signalCondition, String conversionMethod, IokeObject message, IokeObject context) throws ControlFlow {
+        return ((IokeObject)on).convertTo(mimic, signalCondition, conversionMethod, message, context);
+    }
 
     public static IokeObject convertToRational(Object on, IokeObject m, IokeObject context, boolean signalCondition) throws ControlFlow {
         return ((IokeObject)on).convertToRational(m, context, signalCondition);
@@ -635,6 +642,34 @@ public class IokeObject {
 
     public static IokeObject convertToDecimal(Object on, IokeObject m, IokeObject context, boolean signalCondition) throws ControlFlow {
         return ((IokeObject)on).convertToDecimal(m, context, signalCondition);
+    }
+
+    public Object convertTo(String kind, boolean signalCondition, String conversionMethod, IokeObject message, IokeObject context) throws ControlFlow {
+        Object result = data.convertTo(this, kind, false, conversionMethod, message, context);
+        if(result == null) {
+            if(conversionMethod != null && findCell(message, context, conversionMethod) != context.runtime.nul) {
+                return context.runtime.newMessage(conversionMethod).sendTo(context, this);
+            }
+            if(signalCondition) {
+                return data.convertTo(this, kind, true, conversionMethod, message, context);
+            }
+            return context.runtime.nil;
+        }
+        return result;
+    }
+
+    public Object convertTo(Object mimic, boolean signalCondition, String conversionMethod, IokeObject message, IokeObject context) throws ControlFlow {
+        Object result = data.convertTo(this, mimic, false, conversionMethod, message, context);
+        if(result == null) {
+            if(conversionMethod != null && findCell(message, context, conversionMethod) != context.runtime.nul) {
+                return context.runtime.newMessage(conversionMethod).sendTo(context, this);
+            }
+            if(signalCondition) {
+                return data.convertTo(this, mimic, true, conversionMethod, message, context);
+            }
+            return context.runtime.nil;
+        }
+        return result;
     }
 
     public IokeObject convertToRational(IokeObject m, IokeObject context, boolean signalCondition) throws ControlFlow {
