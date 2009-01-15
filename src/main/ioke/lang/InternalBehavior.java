@@ -46,10 +46,14 @@ public class InternalBehavior {
                     }
 
                     for(Object o : args) {
-                        if(IokeObject.data(o) instanceof Text) {
-                            sb.append(Text.getText(o));
+                        if(o instanceof IokeObject) {
+                            if(IokeObject.data(o) instanceof Text) {
+                                sb.append(Text.getText(o));
+                            } else {
+                                sb.append(Text.getText(context.runtime.asText.sendTo(context, o)));
+                            }
                         } else {
-                            sb.append(Text.getText(context.runtime.asText.sendTo(context, o)));
+                            sb.append(o);
                         }
                     }
 
@@ -111,18 +115,25 @@ public class InternalBehavior {
                     getArguments().checkArgumentCount(context, message, on);
 
                     Object o = Message.getArg1(message);
+                    boolean cache = true;
+                    if(o instanceof IokeObject) {
+                        cache = false;
+                        o = Message.getEvaluatedArgument(o, context);
+                    }
                     if(o instanceof String) {
                         String s = (String)o;
                         Object value = runtime.newText(new StringUtils().replaceEscapes(s));
-                        Message.cacheValue(message, value);
+                        if(cache) {
+                            Message.cacheValue(message, value);
+                        }
                         return value;
                     } else {
-                        return IokeObject.convertToText(message.getEvaluatedArgument(0, context), message, context, true);
+                        return IokeObject.convertToText(o, message, context, true);
                     }
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("expects one 'strange' argument. creates a new mimic of Regexp with the given Java String backing it.", new JavaMethod("internal:createRegexp") {
+        obj.registerMethod(runtime.newJavaMethod("expects two 'strange' arguments. creates a new mimic of Regexp with the given Java String backing it.", new JavaMethod("internal:createRegexp") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositionalUnevaluated("regexp")
@@ -139,11 +150,18 @@ public class InternalBehavior {
                     getArguments().checkArgumentCount(context, message, on);
 
                     Object o = Message.getArg1(message);
+                    Object o2 = Message.getArg2(message);
+                    if(o instanceof IokeObject) {
+                        o = Message.getEvaluatedArgument(o, context);
+                    }
+                    if(o2 instanceof IokeObject) {
+                        o2 = Message.getEvaluatedArgument(o2, context);
+                    }
                     if(o instanceof String) {
                         String s = (String)o;
-                        return runtime.newRegexp(new StringUtils().replaceEscapes(s), (String)Message.getArg2(message), context, message);
+                        return runtime.newRegexp(new StringUtils().replaceEscapes(s), (String)o2, context, message);
                     } else {
-                        return IokeObject.convertToRegexp(message.getEvaluatedArgument(0, context), message, context);
+                        return IokeObject.convertToRegexp(o, message, context);
                     }
                 }
             }));
@@ -163,9 +181,17 @@ public class InternalBehavior {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().checkArgumentCount(context, message, on);
 
-                    String s = (String)Message.getArg1(message);
-                    Object value = runtime.newNumber(s);
-                    Message.cacheValue(message, value);
+                    Object o = Message.getArg1(message);
+                    boolean cache = true;
+                    if(o instanceof IokeObject) {
+                        cache = false;
+                        o = Message.getEvaluatedArgument(o, context);
+                    }
+
+                    Object value = runtime.newNumber((String)o);
+                    if(cache) {
+                        Message.cacheValue(message, value);
+                    }
                     return value;
                 }
             }));
@@ -185,9 +211,16 @@ public class InternalBehavior {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().checkArgumentCount(context, message, on);
 
-                    String s = (String)Message.getArg1(message);
-                    Object value = runtime.newDecimal(s);
-                    Message.cacheValue(message, value);
+                    Object o = Message.getArg1(message);
+                    boolean cache = true;
+                    if(o instanceof IokeObject) {
+                        cache = false;
+                        o = Message.getEvaluatedArgument(o, context);
+                    }
+                    Object value = runtime.newDecimal((String)o);
+                    if(cache) {
+                        Message.cacheValue(message, value);
+                    }
                     return value;
                 }
             }));

@@ -153,6 +153,10 @@ public class DefaultMethod extends Method implements AssociatedCode {
         c.setCell("surroundingContext", context);
 
         Object superCell = IokeObject.findSuperCellOn(on, self, message, context, name);
+        if(superCell == context.runtime.nul) {
+            superCell = IokeObject.findSuperCellOn(on, self, message, context, Message.name(message));
+        }
+
         if(superCell != context.runtime.nul) {
             c.setCell("super", createSuperCallFor(self, context, message, on, superCell));
         }

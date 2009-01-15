@@ -58,6 +58,16 @@ public class LexicalContext extends IokeObject {
     }
 
     @Override
+    public Object findSuperCell(IokeObject early, IokeObject message, IokeObject context, String name, boolean[] found, IdentityHashMap<IokeObject, Object> visited) {
+        Object nn = super.findSuperCell(early, message, context, name, found, visited);
+        if(nn == runtime.nul) {
+            return IokeObject.findSuperCellOn(surroundingContext, early, message, context, name);
+        } else {
+            return nn;
+        }
+    }
+
+    @Override
     public Object findCell(IokeObject m, IokeObject context, String name, IdentityHashMap<IokeObject, Object> visited) {
         Object nn = super.findCell(m, context, name, visited);
         
