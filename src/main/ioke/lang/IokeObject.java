@@ -427,7 +427,11 @@ public class IokeObject {
     }
 
     public static Object getOrActivate(Object obj, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-        return as(obj).getOrActivate(context, message, on);
+        if(obj instanceof IokeObject) {
+            return as(obj).getOrActivate(context, message, on);
+        } else {
+            return obj;
+        }
     }
 
     public static Object perform(Object obj, IokeObject ctx, IokeObject message) throws ControlFlow {

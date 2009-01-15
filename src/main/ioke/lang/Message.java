@@ -1129,6 +1129,10 @@ public class Message extends IokeData {
     }
 
     public static Object getEvaluatedArgument(Object argument, IokeObject context) throws ControlFlow {
+        if(!(argument instanceof IokeObject)) {
+            return argument;
+        }
+
         IokeObject o = IokeObject.as(argument);
         if(!o.isMessage()) {
             return o;

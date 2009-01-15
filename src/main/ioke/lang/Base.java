@@ -400,6 +400,17 @@ public class Base {
 
                     String name = Text.getText(context.runtime.asText.sendTo(context, args.get(0)));
                     Object val = args.get(1);
+
+                    if((IokeObject.data(val) instanceof Named) && ((Named)IokeObject.data(val)).getName() == null) {
+                        ((Named)IokeObject.data(val)).setName(name);
+                    } else if(name.length() > 0 && Character.isUpperCase(name.charAt(0)) && !IokeObject.as(val).hasKind()) {
+                        if(on == context.runtime.ground) {
+                            IokeObject.as(val).setKind(name);
+                        } else {
+                            IokeObject.as(val).setKind(IokeObject.as(on).getKind() + " " + name);
+                        }
+                    }
+
                     return IokeObject.setCell(on, message, context, name, val);
                 }
             }));
