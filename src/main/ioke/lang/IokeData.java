@@ -197,7 +197,7 @@ public abstract class IokeData {
                 }
                 );
 
-            return IokeObject.convertTo(newCell[0], mimic, signalCondition, conversionMethod, message, context);
+            return IokeObject.convertTo(mimic, newCell[0], signalCondition, conversionMethod, message, context);
         }
         return null;
     }
