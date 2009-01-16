@@ -31,11 +31,11 @@ public class FileSystem {
         return Dir.push_glob(runtime.getCurrentWorkingDirectory(), text, 0);
     }
 
-    public static class IokeFile extends IokeData {
+    public static class IokeFile extends IokeIO {
         private File file;
-        private Writer writer;
 
         public IokeFile(File file) {
+            super(null, null);
             this.file = file;
 
             try {
@@ -44,10 +44,6 @@ public class FileSystem {
                 }
             } catch(IOException e) {
             }
-        }
-
-        public static Writer getWriter(Object on){
-            return ((IokeFile)IokeObject.data(on)).writer;
         }
 
         @Override
@@ -63,56 +59,10 @@ public class FileSystem {
                     try {
                         Writer writer = IokeFile.getWriter(on);
                         if(writer != null) {
-                            writer.close();
+                             writer.close();
                         }
                     } catch(IOException e) {
                     }
-                    return context.runtime.nil;
-                }
-            }));
-
-            obj.registerMethod(runtime.newJavaMethod("Prints a text representation of the argument to the current IO object", new JavaMethod("print") {
-                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
-                    .builder()
-                    .withRequiredPositional("object")
-                    .getArguments();
-
-                @Override
-                public DefaultArgumentsDefinition getArguments() {
-                    return ARGUMENTS;
-                }
-
-                @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    List<Object> args = new ArrayList<Object>();
-                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
-                    try {
-                        IokeFile.getWriter(on).write(context.runtime.asText.sendTo(context, args.get(0)).toString());
-                        IokeFile.getWriter(on).flush();
-                    } catch(IOException e) {
-                        final Runtime runtime = context.runtime;
-                        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
-                                                                                           message, 
-                                                                                           context, 
-                                                                                           "Error", 
-                                                                                           "IO")).mimic(message, context);
-                        condition.setCell("message", message);
-                        condition.setCell("context", context);
-                        condition.setCell("receiver", on);
-                        condition.setCell("exceptionMessage", runtime.newText(e.getMessage()));
-                        List<Object> ob = new ArrayList<Object>();
-                        for(StackTraceElement ste : e.getStackTrace()) {
-                            ob.add(runtime.newText(ste.toString()));
-                        }
-
-                        condition.setCell("exceptionStackTrace", runtime.newList(ob));
-
-                        runtime.withReturningRestart("ignore", context, new RunnableWithControlFlow() {
-                                public void run() throws ControlFlow {
-                                    runtime.errorCondition(condition);
-                                }});
-                    }
-
                     return context.runtime.nil;
                 }
             }));

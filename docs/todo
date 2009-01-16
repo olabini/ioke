@@ -1,7 +1,5 @@
 
-make IokeFile a subclass of IokeIO, and fix all things related to that.
-
-- parser combinator example?
+- parser combinator example
 - think about aspects
 - think about Java integration
 - think about concurrency

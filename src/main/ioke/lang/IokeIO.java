@@ -20,8 +20,8 @@ import ioke.lang.exceptions.ControlFlow;
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
 public class IokeIO extends IokeData {
-    private Writer writer;
-    private BufferedReader reader;
+    protected Writer writer;
+    protected BufferedReader reader;
 
     public IokeIO() {
         this(null, null);
