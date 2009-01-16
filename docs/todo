@@ -1,0 +1,44 @@
+
+make IokeFile a subclass of IokeIO, and fix all things related to that.
+
+- parser combinator example?
+- think about aspects
+- think about Java integration
+- think about concurrency
+  futures with agents, like Io, agents are a thread pool, futures become the real value when needed. agents can be spun off too. use some other syntax since @ is taken.
+  lazy operator is a lexical kinda thing that just does the operations inside it when it's needed. 
+  a future implemented in terms of aspects:
+   Future before(:any, except: [:become, :forceResult], 
+                   self become(self forceResult))
+
+
+
+
+
+
+
+aspects:
+
+ before, around, after will return an Aspect Pointcut
+
+Foo before(:something) << method(x, something)
+Foo before(:something, :get) << method(x, something)
+Foo before(:something, :activate) << method(x, something)
+Foo before(:something, :remove) << method(x, something)
+Foo before(:something, :update) << method(x, something)
+Foo before(:something, [:update, :update]) << method(x, something)
+Foo before([:something, :another], :update) << method(x, something)
+Foo before(matching: :any, :update) << method(x, something)
+Foo before(matching: #/foo/, :update) << method(x, something)
+Foo before(matching: :any, except: [:foo, :bar], :update) << method(x, something)
+Foo before(matching: :any_existing, except: [:foo, :bar], :update) << method(x, something)
+Foo before(matching: fn(s, s == :bar), :update) << method(x, something)
+
+Foo after(:something) << fn(x, something)
+Foo around(:something) << fn(x, something)
+
+-- figure out:
+ what should be sent to before, after and around
+ how should around call the next method?
+ how should they combine?
+
