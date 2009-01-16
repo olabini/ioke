@@ -1,5 +1,4 @@
 
-- parser combinator example
 - think about aspects
 - think about Java integration
 - think about concurrency
@@ -8,8 +7,6 @@
   a future implemented in terms of aspects:
    Future before(:any, except: [:become, :forceResult], 
                    self become(self forceResult))
-
-
 
 
 
