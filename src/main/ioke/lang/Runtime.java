@@ -305,6 +305,8 @@ public class Runtime {
             evaluateString("use(\"builtin/F20_set\")", message, ground);
             evaluateString("use(\"builtin/F25_cond\")", message, ground);
             evaluateString("use(\"builtin/F30_enumerable\")", message, ground);
+
+            evaluateString("use(\"builtin/G05_aspects\")", message, ground);
         } catch(ControlFlow cf) {
         }
     }
