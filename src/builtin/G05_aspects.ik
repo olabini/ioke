@@ -11,9 +11,11 @@ DefaultBehavior Aspects Pointcut cell("<<") = method(advice,
 
   case(type,
     :before,
-    self cell(:receiver) cell(cellName) = lecro(
+    theLecro = lecro(
       call activateValue(cell(:advice))
-      call resendToValue(cell(:originalValue))),
+      call resendToValue(cell(:originalValue)))
+    cell(:theLecro) pointCut = self
+    self cell(:receiver) cell(cellName) = cell(:theLecro)
   )
   
   self
