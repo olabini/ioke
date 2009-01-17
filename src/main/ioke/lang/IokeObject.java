@@ -676,6 +676,18 @@ public class IokeObject {
         return result;
     }
 
+    public Object convertToThis(Object on, IokeObject message, IokeObject context) throws ControlFlow {
+    	return convertToThis(on, true, message, context);
+    }
+    
+    public Object convertToThis(Object on, boolean signalCondition, IokeObject message, IokeObject context) throws ControlFlow {
+    	if(IokeObject.data(on).getClass().equals(data.getClass())) {
+    		return on;
+    	} else {
+    		return IokeObject.convertTo(this, on, signalCondition, IokeObject.data(on).getConvertMethod(), message, context);
+    	}
+    }
+
     public IokeObject convertToRational(IokeObject m, IokeObject context, boolean signalCondition) throws ControlFlow {
         IokeObject result = data.convertToRational(this, m, context, false);
         if(result == null) {
