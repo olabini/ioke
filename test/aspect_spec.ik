@@ -179,8 +179,40 @@ describe(DefaultBehavior,
           accesses should == [:quux]
         )
 
-        it("should take a regular expression and use that to choose which cells to handle")
-        it("should take a block and use that to choose which cells to handle")
+        it("should take a regular expression and use that to choose which cells to handle",
+          X = Origin mimic
+          x = X mimic
+          X match_aspect_abc = 555
+          X mutch_aspect_abc = 555
+          X match_aspect_aaa = 5345
+          x match_aspect_hmm = 1111
+
+          Ground accesses = []
+          x before(matching: #/match_aspect_/) << macro(accesses << call message name)
+          x match_aspect_abc
+          x mutch_aspect_abc
+          x match_aspect_aaa
+          x match_aspect_hmm
+          accesses should == [:match_aspect_abc, :match_aspect_aaa, :match_aspect_hmm]
+        )
+
+        it("should take a block and use that to choose which cells to handle",
+          X = Origin mimic
+          x = X mimic
+          X match_aspect_abc = 555
+          X mutch_aspect_abc = 555
+          X match_aspect_aaa = 5345
+          x match_aspect_hmm = 1111
+
+          Ground accesses = []
+          x before(matching: fn(arg, #/match_aspect_/ =~ arg)) << macro(accesses << call message name)
+          x match_aspect_abc
+          x mutch_aspect_abc
+          x match_aspect_aaa
+          x match_aspect_hmm
+          accesses should == [:match_aspect_abc, :match_aspect_aaa, :match_aspect_hmm]
+        )
+
         it("should take a list of specifiers to use for matching")
       )
 
