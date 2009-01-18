@@ -83,7 +83,7 @@ public class DefaultArgumentsDefinition {
 
     private boolean hasUnevaluated = false;
 
-    private DefaultArgumentsDefinition(List<Argument> arguments, Collection<String> keywords, String rest, String krest, int min, int max, boolean restUneval) {
+    protected DefaultArgumentsDefinition(List<Argument> arguments, Collection<String> keywords, String rest, String krest, int min, int max, boolean restUneval) {
         this.arguments = arguments;
         this.keywords = keywords;
         this.rest = rest;
@@ -509,13 +509,13 @@ public class DefaultArgumentsDefinition {
     }
 
     public static class Builder {
-        private int min = 0;
-        private int max = 0;
-        private List<Argument> arguments = new ArrayList<Argument>();
-        private Collection<String> keywords = new HashSet<String>();
-        private String rest = null;
-        private String krest = null;
-        private boolean restUneval = false;
+        protected int min = 0;
+        protected int max = 0;
+        protected List<Argument> arguments = new ArrayList<Argument>();
+        protected Collection<String> keywords = new HashSet<String>();
+        protected String rest = null;
+        protected String krest = null;
+        protected boolean restUneval = false;
 
         public Builder withRequiredPositionalUnevaluated(String name) {
             arguments.add(new UnevaluatedArgument(name, true));
