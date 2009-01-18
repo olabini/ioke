@@ -1493,6 +1493,20 @@ describe(DefaultBehavior,
           accesses should == [[:one, :bar], [:two, :bar], [:three, :bar]]
         )
       )
+
+      it("should provide the result of the result of the original call inside a method",
+        x = Origin mimic do(
+          foo = method(14*14))
+        Ground accesses = []
+        x after(:foo) << method(accesses << aspectResult)
+        x foo
+        accesses should == [196]
+      )
+
+      it("should provide the result of the result of the original call inside a lecro")
+      it("should provide the result of the result of the original call inside a macro")
+      it("should provide the result of the result of the original call inside a syntax")
+      it("should provide the result of the result of the original call inside a block")
     )
 
     describe("around",

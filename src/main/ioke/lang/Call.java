@@ -143,6 +143,7 @@ public class Call extends IokeData {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("value")
+                    .withKeywordRest("valuesToAdd")
                     .getArguments();
 
                 @Override
@@ -153,7 +154,8 @@ public class Call extends IokeData {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject mess, Object on) throws ControlFlow {
                     List<Object> args = new ArrayList<Object>();
-                    getArguments().getEvaluatedArguments(context, mess, on, args, new HashMap<String, Object>());
+                    Map<String, Object> keys = new HashMap<String, Object>();
+                    getArguments().getEvaluatedArguments(context, mess, on, args, keys);
 
                     Call c = (Call)IokeObject.data(on);
 
@@ -165,6 +167,7 @@ public class Call extends IokeData {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("value")
+                    .withKeywordRest("valuesToAdd")
                     .getArguments();
 
                 @Override
@@ -175,10 +178,11 @@ public class Call extends IokeData {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject mess, Object on) throws ControlFlow {
                     List<Object> args = new ArrayList<Object>();
-                    getArguments().getEvaluatedArguments(context, mess, on, args, new HashMap<String, Object>());
+                    Map<String, Object> keys = new HashMap<String, Object>();
+                    getArguments().getEvaluatedArguments(context, mess, on, args, keys);
 
                     Call c = (Call)IokeObject.data(on);
-                    return IokeObject.as(args.get(0)).activateWithCall(c.surroundingContext, c.message, c.on, on);
+                    return IokeObject.as(args.get(0)).activateWithCallAndData(c.surroundingContext, c.message, c.on, on, keys);
                 }
             }));
 
