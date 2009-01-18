@@ -24,7 +24,9 @@ DefaultBehavior Aspects Pointcut cell("<<") = method(advice,
     :any,
     self cell(:receiver) cellNames(true, Origin) each(cn, joins << cn),
     :anyFromSelf,
-    self cell(:receiver) cellNames(false) each(cn, joins << cn)
+    self cell(:receiver) cellNames(false) each(cn, joins << cn),
+    or(Regexp, LexicalBlock),
+    self cell(:receiver) cellNames(true, Origin) grep(matching, cn, joins << cn),
   )
 
   joins each(cellName,
