@@ -18,16 +18,22 @@ DefaultBehavior Aspects Pointcut cacheCall? = method(obj,
     false)
 )
 
-DefaultBehavior Aspects Pointcut cell("<<") = method(advice,
-  joins = set(*joinPoints)
-  case(matching,
+DefaultBehavior Aspects Pointcut addToJoins = method(matches, joins,
+  case(matches,
     :any,
     self cell(:receiver) cellNames(true, Origin) each(cn, joins << cn),
     :anyFromSelf,
     self cell(:receiver) cellNames(false) each(cn, joins << cn),
     or(Regexp, LexicalBlock),
-    self cell(:receiver) cellNames(true, Origin) grep(matching, cn, joins << cn),
+    self cell(:receiver) cellNames(true, Origin) grep(matches, cn, joins << cn),
+    List,
+    matches each(m, addToJoins(m, joins))
   )
+)
+
+DefaultBehavior Aspects Pointcut cell("<<") = method(advice,
+  joins = set(*joinPoints)
+  addToJoins(matching, joins)
 
   joins each(cellName,
     primary = if(self cell(:receiver) cell?(cellName), 
