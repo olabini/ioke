@@ -159,7 +159,7 @@ public class Call extends IokeData {
 
                     Call c = (Call)IokeObject.data(on);
 
-                    return IokeObject.as(args.get(0)).activate(c.surroundingContext, c.message, c.on);
+                    return IokeObject.as(args.get(0)).activateWithData(c.surroundingContext, c.message, c.on, keys);
                 }
             }));
 

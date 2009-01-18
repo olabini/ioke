@@ -1503,10 +1503,53 @@ describe(DefaultBehavior,
         accesses should == [196]
       )
 
-      it("should provide the result of the result of the original call inside a lecro")
-      it("should provide the result of the result of the original call inside a macro")
-      it("should provide the result of the result of the original call inside a syntax")
-      it("should provide the result of the result of the original call inside a block")
+      it("should provide the result of the result of the original call inside a lecro",
+        x = Origin mimic do(
+          foo = method(14*14))
+        Ground accesses = []
+        x after(:foo) << lecro(accesses << aspectResult)
+        x foo
+        accesses should == [196]
+      )
+
+      it("should provide the result of the result of the original call inside a macro",
+        x = Origin mimic do(
+          foo = method(14*14))
+        Ground accesses = []
+        x after(:foo) << macro(accesses << aspectResult)
+        x foo
+        accesses should == [196]
+      )
+
+      it("should provide the result of the result of the original call inside a syntax",
+        x = Origin mimic do(
+          foo = method(14*14))
+        Ground accesses = []
+        x after(:foo) << syntax(accesses << aspectResult)
+        x foo
+        accesses should == [196]
+      )
+
+      it("should provide the result of the result of the original call inside a block",
+        x = Origin mimic do(
+          foo = method(14*14))
+        Ground accesses = []
+        x after(:foo) << fn(accesses << aspectResult)
+        x foo
+        accesses should == [196]
+      )
+
+      it("should allow several after advices to have access to the result",
+        x = Origin mimic do(
+          foo = method(14*14))
+        Ground accesses = []
+        x after(:foo) << fn(accesses << [:fn, aspectResult])
+        x after(:foo) << method(accesses << [:method, aspectResult])
+        x after(:foo) << fn(accesses << [:fn2, aspectResult])
+        x after(:foo) << macro(accesses << [:macro, aspectResult])
+        x foo
+        accesses should == [[:fn, 196], [:method, 196], [:fn2, 196], [:macro, 196]]
+      )
     )
 
     describe("around",

@@ -325,7 +325,8 @@ public class DefaultMethod extends Method implements AssociatedCode {
         c.setCell("currentMessage", message);
         c.setCell("surroundingContext", context);
         for(Map.Entry<String, Object> d : data.entrySet()) {
-            c.setCell(d.getKey(), d.getValue());
+            String s = d.getKey();
+            c.setCell(s.substring(0, s.length()-1), d.getValue());
         }
 
         Object superCell = IokeObject.findSuperCellOn(on, self, message, context, name);

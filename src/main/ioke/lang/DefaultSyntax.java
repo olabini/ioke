@@ -83,7 +83,7 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
 
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    return ((DefaultSyntax)IokeObject.data(on)).expand(IokeObject.as(on), context, message, context.getRealContext());
+                    return ((DefaultSyntax)IokeObject.data(on)).expand(IokeObject.as(on), context, message, context.getRealContext(), null);
                 }
             }));
         syntax.registerMethod(syntax.runtime.newJavaMethod("returns the message chain for this syntax", new JavaMethod.WithNoArguments("message") {
@@ -171,7 +171,7 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
         }
     }
 
-    private Object expand(final IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+    private Object expand(final IokeObject self, IokeObject context, IokeObject message, Object on, Map<String, Object> data) throws ControlFlow {
         if(code == null) {
             IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
                                                                          message, 
@@ -201,6 +201,12 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
         c.setCell("currentMessage", message);
         c.setCell("surroundingContext", context);
         c.setCell("call", context.runtime.newCallFrom(c, message, context, IokeObject.as(on)));
+        if(data != null) {
+            for(Map.Entry<String, Object> d : data.entrySet()) {
+                String s = d.getKey();
+                c.setCell(s.substring(0, s.length()-1), d.getValue());
+            }
+        }
 
         Object result = null;
 
@@ -217,7 +223,7 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
         return result;
     }
 
-    private Object expandWithCall(final IokeObject self, IokeObject context, IokeObject message, Object on, Object call) throws ControlFlow {
+    private Object expandWithCall(final IokeObject self, IokeObject context, IokeObject message, Object on, Object call, Map<String, Object> data) throws ControlFlow {
         if(code == null) {
             IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
                                                                          message, 
@@ -247,6 +253,12 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
         c.setCell("currentMessage", message);
         c.setCell("surroundingContext", context);
         c.setCell("call", call);
+        if(data != null) {
+            for(Map.Entry<String, Object> d : data.entrySet()) {
+                String s = d.getKey();
+                c.setCell(s.substring(0, s.length()-1), d.getValue());
+            }
+        }
 
         Object result = null;
 
@@ -265,12 +277,7 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
 
     @Override
     public Object activateWithCallAndData(final IokeObject self, IokeObject context, IokeObject message, Object on, Object call, Map<String, Object> data) throws ControlFlow {
-        return activateWithCall(self, context, message, on, call);
-    }
-
-    @Override
-    public Object activateWithCall(final IokeObject self, IokeObject context, IokeObject message, Object on, Object call) throws ControlFlow {
-        Object result = expandWithCall(self, context, message, on, call);
+        Object result = expandWithCall(self, context, message, on, call, data);
 
         if(result == context.runtime.nil) {
             // Remove chain completely
@@ -316,8 +323,19 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
     }
 
     @Override
+    public Object activateWithCall(final IokeObject self, IokeObject context, IokeObject message, Object on, Object call) throws ControlFlow {
+        return activateWithCallAndData(self, context, message, on, call, null);
+    }
+
+    @Override
     public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-        Object result = expand(self, context, message, on);
+        return activateWithData(self, context, message, on, null);
+    }
+
+
+    @Override
+    public Object activateWithData(IokeObject self, IokeObject context, IokeObject message, Object on, Map<String, Object> data) throws ControlFlow {
+        Object result = expand(self, context, message, on, data);
 
         if(result == context.runtime.nil) {
             // Remove chain completely
