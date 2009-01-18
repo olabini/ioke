@@ -438,6 +438,10 @@ public abstract class IokeData {
         return context.runtime.nil;
     }
 
+    public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on, Object c) throws ControlFlow {
+        return activate(self, context, message, on);
+    }
+
     public Object getEvaluatedArgument(IokeObject message, int index, IokeObject context) throws ControlFlow {
         report(context, context, message, "getEvaluatedArgument(" + index + ")");
         return context.runtime.nil;

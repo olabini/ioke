@@ -788,6 +788,10 @@ public class IokeObject {
         return data.activate(this, context, message, on);
     }
 
+    public Object activateWithCall(IokeObject context, IokeObject message, Object on, Object c) throws ControlFlow {
+        return data.activate(this, context, message, on, c);
+    }
+
     @Override
     public boolean equals(Object other) {
         return isEqualTo(other);

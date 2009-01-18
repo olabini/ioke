@@ -6,6 +6,7 @@ package ioke.lang;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
+import java.util.Map;
 
 import ioke.lang.exceptions.ControlFlow;
 
@@ -18,6 +19,9 @@ public class Call extends IokeData {
     private IokeObject message;
     private IokeObject surroundingContext;
     private IokeObject on;
+    List<Object> cachedPositional;
+    Map<String, Object> cachedKeywords;
+    int cachedArgCount;
 
     public Call() {
     }
@@ -154,6 +158,27 @@ public class Call extends IokeData {
                     Call c = (Call)IokeObject.data(on);
 
                     return IokeObject.as(args.get(0)).activate(c.surroundingContext, c.message, c.on);
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("I really ought to write documentation for these methods, but I don't know how to describe what they do.", new JavaMethod("activateValueWithCachedArguments") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("value")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject mess, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    getArguments().getEvaluatedArguments(context, mess, on, args, new HashMap<String, Object>());
+
+                    Call c = (Call)IokeObject.data(on);
+                    return IokeObject.as(args.get(0)).activateWithCall(c.surroundingContext, c.message, c.on, on);
                 }
             }));
 

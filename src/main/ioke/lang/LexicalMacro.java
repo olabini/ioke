@@ -178,6 +178,32 @@ public class LexicalMacro extends IokeData implements AssociatedCode, Named, Ins
     }
 
     @Override
+    public Object activate(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on, Object call) throws ControlFlow {
+        if(code == null) {
+            IokeObject condition = IokeObject.as(IokeObject.getCellChain(dynamicContext.runtime.condition, 
+                                                                         message, 
+                                                                         dynamicContext, 
+                                                                         "Error", 
+                                                                         "Invocation",
+                                                                         "NotActivatable")).mimic(message, dynamicContext);
+            condition.setCell("message", message);
+            condition.setCell("context", dynamicContext);
+            condition.setCell("receiver", on);
+            condition.setCell("method", self);
+            condition.setCell("report", dynamicContext.runtime.newText("You tried to activate a method without any code - did you by any chance activate the LexicalMacro kind by referring to it without wrapping it inside a call to cell?"));
+            dynamicContext.runtime.errorCondition(condition);
+            return null;
+        }
+
+        LexicalContext c = new LexicalContext(self.runtime, on, "Lexical macro activation context", message, this.context);
+
+        c.setCell("outerScope", context);
+        c.setCell("call", call);
+
+        return this.code.evaluateCompleteWith(c, on);
+    }
+
+    @Override
     public Object activate(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on) throws ControlFlow {
         if(code == null) {
             IokeObject condition = IokeObject.as(IokeObject.getCellChain(dynamicContext.runtime.condition, 

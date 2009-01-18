@@ -167,6 +167,15 @@ public class LexicalBlock extends IokeData implements AssociatedCode {
     }
 
     @Override
+    public Object activate(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on, Object call) throws ControlFlow {
+        LexicalContext c = new LexicalContext(self.runtime, on, "Lexical activation context", message, this.context);
+
+        arguments.assignArgumentValues(c, dynamicContext, message, on, ((Call)IokeObject.data(call)));
+
+        return this.message.evaluateCompleteWith(c, on);
+    }
+
+    @Override
     public Object activate(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on) throws ControlFlow {
         LexicalContext c = new LexicalContext(self.runtime, on, "Lexical activation context", message, this.context);
 
