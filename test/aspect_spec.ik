@@ -1553,7 +1553,55 @@ describe(DefaultBehavior,
     )
 
     describe("around",
-      it("should have specs")
+      it("should return an Aspect Pointcut",
+        Origin mimic around(:foo) should have kind("DefaultBehavior Aspects Pointcut")
+      )
+      
+      it("should execute a block instead of a cell access",
+        x = Origin mimic do(
+          foo = 42)
+        
+        accesses = []
+        x around(:foo) << fn(accesses << :called)
+
+        x foo
+        x foo
+        accesses should == [:called, :called]
+      )
+
+      it("should execute a method instead of a cell access",
+        x = Origin mimic do(
+          foo = 42)
+        
+        Ground accesses = []
+        x around(:foo) << method(accesses << :called)
+
+        x foo
+        x foo
+        accesses should == [:called, :called]
+      )
+
+      it("should execute a method instead of a cell access with the current receiver",
+        x = Origin mimic do(
+          foo = 42)
+        
+        Ground accesses = []
+        x around(:foo) << method(accesses << self)
+
+        x foo
+        x foo
+        accesses[0] should be same(x)
+        accesses[1] should be same(x)
+      )
+
+      it("should be possible to define an around advice for a non-existing cell")
+      it("should signal a nosuchcell exception for a non-existing cell, after invoking the around advice")
+      it("should be possible to invoke the next value")
+      it("should be possible to invoke the next value several times")
+      it("should return the value of the around advice")
+      it("should pass on the arguments given inside the around-invocation")
+      it("should be possible to add a named around advice")
+      it("should be possible to remove a named around advice")
     )
   )
 )

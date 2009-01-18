@@ -5,6 +5,9 @@ DefaultBehavior Aspects before = method(+joinPoints, matching:, except:,
 DefaultBehavior Aspects after = method(+joinPoints, matching:, except:, 
   Pointcut with(receiver: self, joinPoints: joinPoints, matching: cell(:matching), except: except, type: :after))
 
+DefaultBehavior Aspects around = method(+joinPoints, matching:, except:, 
+  Pointcut with(receiver: self, joinPoints: joinPoints, matching: cell(:matching), except: except, type: :around))
+
 DefaultBehavior Aspects Pointcut = Origin mimic
 
 DefaultBehavior Aspects Pointcut advice? = method(obj,
@@ -95,8 +98,22 @@ DefaultBehavior Aspects Pointcut addAdviceOnCell = method(cellName, advice, advi
         macro(
           result = call resendToValue(@@ cell(:primary))
           call activateValue(@@ cell(:advice), aspectResult: result)
-          result
-    )))
+          result))),
+    :around,
+    theMacro = if(cacheCall?(cell(:advice)),
+      if(cacheCall?(cell(:primary)),
+        macro(
+          call activateValueWithCachedArguments(@@ cell(:advice), aspectCall: lecro(call activateValueWithCachedArguments(outerScope @@ cell(:primary))))
+          ),
+        macro(
+          call activateValueWithCachedArguments(@@ cell(:advice), aspectCall: lecro(call resendToValue(outerScope @@ cell(:primary))))
+          )),
+      if(cacheCall?(cell(:primary)),
+        macro(
+          call activateValue(@@ cell(:advice), aspectCall: lecro(call activateValueWithCachedArguments(outerScope @@ cell(:primary))))
+          ),
+        macro(
+          call activateValue(@@ cell(:advice), aspectCall: lecro(call resendToValue(outerScope @@ cell(:primary)))))))
   )
 
   cell(:theMacro) pointcut = self
