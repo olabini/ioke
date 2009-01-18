@@ -179,8 +179,33 @@ public class LexicalMacro extends IokeData implements AssociatedCode, Named, Ins
     }
 
     @Override
-    public Object activateWithCallAndData(final IokeObject self, IokeObject context, IokeObject message, Object on, Object call, Map<String, Object> data) throws ControlFlow {
-        return activateWithCall(self, context, message, on, call);
+    public Object activateWithCallAndData(final IokeObject self, IokeObject dynamicContext, IokeObject message, Object on, Object call, Map<String, Object> data) throws ControlFlow {
+        if(code == null) {
+            IokeObject condition = IokeObject.as(IokeObject.getCellChain(dynamicContext.runtime.condition, 
+                                                                         message, 
+                                                                         dynamicContext, 
+                                                                         "Error", 
+                                                                         "Invocation",
+                                                                         "NotActivatable")).mimic(message, dynamicContext);
+            condition.setCell("message", message);
+            condition.setCell("context", dynamicContext);
+            condition.setCell("receiver", on);
+            condition.setCell("method", self);
+            condition.setCell("report", dynamicContext.runtime.newText("You tried to activate a method without any code - did you by any chance activate the LexicalMacro kind by referring to it without wrapping it inside a call to cell?"));
+            dynamicContext.runtime.errorCondition(condition);
+            return null;
+        }
+
+        LexicalContext c = new LexicalContext(self.runtime, on, "Lexical macro activation context", message, this.context);
+
+        c.setCell("outerScope", context);
+        c.setCell("call", call);
+        for(Map.Entry<String, Object> d : data.entrySet()) {
+            String s = d.getKey();
+            c.setCell(s.substring(0, s.length()-1), d.getValue());
+        }
+
+        return this.code.evaluateCompleteWith(c, on);
     }
 
     @Override
@@ -231,6 +256,36 @@ public class LexicalMacro extends IokeData implements AssociatedCode, Named, Ins
 
         c.setCell("outerScope", context);
         c.setCell("call", dynamicContext.runtime.newCallFrom(c, message, dynamicContext, IokeObject.as(on)));
+
+        return this.code.evaluateCompleteWith(c, on);
+    }
+
+    @Override
+    public Object activateWithData(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on, Map<String, Object> data) throws ControlFlow {
+        if(code == null) {
+            IokeObject condition = IokeObject.as(IokeObject.getCellChain(dynamicContext.runtime.condition, 
+                                                                         message, 
+                                                                         dynamicContext, 
+                                                                         "Error", 
+                                                                         "Invocation",
+                                                                         "NotActivatable")).mimic(message, dynamicContext);
+            condition.setCell("message", message);
+            condition.setCell("context", dynamicContext);
+            condition.setCell("receiver", on);
+            condition.setCell("method", self);
+            condition.setCell("report", dynamicContext.runtime.newText("You tried to activate a method without any code - did you by any chance activate the LexicalMacro kind by referring to it without wrapping it inside a call to cell?"));
+            dynamicContext.runtime.errorCondition(condition);
+            return null;
+        }
+
+        LexicalContext c = new LexicalContext(self.runtime, on, "Lexical macro activation context", message, this.context);
+
+        c.setCell("outerScope", context);
+        c.setCell("call", dynamicContext.runtime.newCallFrom(c, message, dynamicContext, IokeObject.as(on)));
+        for(Map.Entry<String, Object> d : data.entrySet()) {
+            String s = d.getKey();
+            c.setCell(s.substring(0, s.length()-1), d.getValue());
+        }
 
         return this.code.evaluateCompleteWith(c, on);
     }

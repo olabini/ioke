@@ -168,8 +168,16 @@ public class LexicalBlock extends IokeData implements AssociatedCode {
     }
 
     @Override
-    public Object activateWithCallAndData(final IokeObject self, IokeObject context, IokeObject message, Object on, Object call, Map<String, Object> data) throws ControlFlow {
-        return activateWithCall(self, context, message, on, call);
+    public Object activateWithCallAndData(final IokeObject self, IokeObject dynamicContext, IokeObject message, Object on, Object call, Map<String, Object> data) throws ControlFlow {
+        LexicalContext c = new LexicalContext(self.runtime, on, "Lexical activation context", message, this.context);
+
+        for(Map.Entry<String, Object> d : data.entrySet()) {
+            String s = d.getKey();
+            c.setCell(s.substring(0, s.length()-1), d.getValue());
+        }
+        arguments.assignArgumentValues(c, dynamicContext, message, on, ((Call)IokeObject.data(call)));
+
+        return this.message.evaluateCompleteWith(c, on);
     }
 
     @Override
@@ -184,6 +192,20 @@ public class LexicalBlock extends IokeData implements AssociatedCode {
     @Override
     public Object activate(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on) throws ControlFlow {
         LexicalContext c = new LexicalContext(self.runtime, on, "Lexical activation context", message, this.context);
+
+        arguments.assignArgumentValues(c, dynamicContext, message, on);
+
+        return this.message.evaluateCompleteWith(c, on);
+    }
+
+    @Override
+    public Object activateWithData(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on, Map<String, Object> data) throws ControlFlow {
+        LexicalContext c = new LexicalContext(self.runtime, on, "Lexical activation context", message, this.context);
+
+        for(Map.Entry<String, Object> d : data.entrySet()) {
+            String s = d.getKey();
+            c.setCell(s.substring(0, s.length()-1), d.getValue());
+        }
 
         arguments.assignArgumentValues(c, dynamicContext, message, on);
 
