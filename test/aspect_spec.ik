@@ -1594,14 +1594,90 @@ describe(DefaultBehavior,
         accesses[1] should be same(x)
       )
 
-      it("should be possible to define an around advice for a non-existing cell")
-      it("should signal a nosuchcell exception for a non-existing cell, after invoking the around advice")
-      it("should be possible to invoke the next value")
-      it("should be possible to invoke the next value several times")
-      it("should return the value of the around advice")
-      it("should pass on the arguments given inside the around-invocation")
-      it("should be possible to add a named around advice")
-      it("should be possible to remove a named around advice")
+      it("should be possible to define an around advice for a non-existing cell",
+        x = Origin mimic
+        accesses = []
+        x around(:foo) << fn(accesses << :called)
+
+        x foo
+        x foo
+        accesses should == [:called, :called]
+      )
+
+      it("should signal a nosuchcell exception for a non-existing cell, after invoking the around advice",
+        x = Origin mimic
+        accesses = []
+        x around(:foo) << fn(accesses << :called. aspectCall())
+        fn(x foo) should signal(Condition Error NoSuchCell)
+        accesses should == [:called]
+      )
+
+      it("should be possible to invoke the next value",
+        Ground accesses = []
+        x = Origin mimic do(
+          foo = method(val, accesses << [:realMethodInvoked, val]. 18))
+        x around(:foo) << method(var, 
+          accesses << [:aroundBefore, var]
+          xx = aspectCall(42)
+          accesses << [:aroundAfter, xx]
+          39)
+        x foo(500) should == 39
+        accesses should == [[:aroundBefore, 500], [:realMethodInvoked, 42], [:aroundAfter, 18]]
+      )
+
+      it("should be possible to invoke the next value several times",
+        Ground accesses = []
+        x = Origin mimic do(
+          foo = method(val, accesses << [:realMethodInvoked, val]. 18))
+        x around(:foo) << method(var, 
+          accesses << [:aroundBefore, var]
+          xx = aspectCall(42)
+          accesses << [:aroundAfter, xx]
+          aspectCall(43)
+          aspectCall(44)
+          aspectCall(45)
+          39)
+        x foo(500) should == 39
+        accesses should == [[:aroundBefore, 500], [:realMethodInvoked, 42], [:aroundAfter, 18], [:realMethodInvoked, 43], [:realMethodInvoked, 44], [:realMethodInvoked, 45]]
+      )
+
+      it("should return the value of the around advice",
+        x = Origin mimic
+        x around(:foo) << fn(4100)
+        x foo should == 4100
+      )
+
+      it("should be possible to add a named around advice",
+        x = Origin mimic
+        x around(:foo) add(:something, fn(4100))
+        x foo should == 4100
+      )
+
+      it("should be possible to remove a named around advice",
+        x = Origin mimic do(
+          foo = 42)
+        x around(:foo) add(:something, fn(4100))
+        x around(:foo) remove(:something)
+        x foo should == 42
+      )
+    )
+
+    it("should be possible to combine the different types of advice",
+      Ground accesses = []
+      x = Origin mimic do(
+        foo = method(arg,
+          accesses << [:realMethod, arg]
+          18
+      ))
+
+      x around(:foo) << fn(arg1, arg2, accesses << [:around1, arg1, arg2]. aspectCall(arg2)*2)
+      x before(:foo) << method(+args, accesses << [:before1, args])
+      x after(:foo) << method(+args, accesses << [:after1, args, aspectResult])
+      x around(:foo) << method(+args, accesses << [:around2, args]. aspectCall(*(args map(*2))))
+
+      x foo(1,2) should == 36
+
+      accesses should == [[:around2, [1,2]], [:before1, [2,4]], [:around1,2,4], [:realMethod,4], [:after1,[2,4],36]]
     )
   )
 )
