@@ -5,7 +5,7 @@ DefaultBehavior Aspects before = method(+joinPoints, matching:, except:,
 DefaultBehavior Aspects Pointcut = Origin mimic
 
 DefaultBehavior Aspects Pointcut advice? = method(obj,
-  cell(:obj) cell?(:kind?) && (cell(:obj) kind?("LexicalMacro") && cell(:obj) cell?(:advice))
+  cell(:obj) cell?(:kind?) && (cell(:obj) kind?("DefaultMacro") && cell(:obj) cell?(:advice))
 )
 
 DefaultBehavior Aspects Pointcut cacheCall? = method(obj,
@@ -52,32 +52,33 @@ DefaultBehavior Aspects Pointcut addAdviceOnCell = method(cellName, advice, advi
     )
   )
 
-  theLecro = nil
+  theMacro = nil
   case(type,
     :before,
-    theLecro = if(cacheCall?(cell(:advice)),
+    theMacro = if(cacheCall?(cell(:advice)),
       if(cacheCall?(cell(:primary)),
-        lecro(
-          call activateValueWithCachedArguments(cell(:advice))
-          call activateValueWithCachedArguments(cell(:primary))),
-        lecro(
-          call activateValueWithCachedArguments(cell(:advice))
-          call resendToValue(cell(:primary)))),
+        macro(
+          call activateValueWithCachedArguments(@@ cell(:advice))
+          call activateValueWithCachedArguments(@@ cell(:primary))),
+        macro(
+          call activateValueWithCachedArguments(@@ cell(:advice))
+          call resendToValue(@@ cell(:primary)))),
       if(cacheCall?(cell(:primary)),
-        lecro(
-          call activateValue(cell(:advice))
-          call activateValueWithCachedArguments(cell(:primary))),
-        lecro(
-          call activateValue(cell(:advice))
-          call resendToValue(cell(:primary)))))
+        macro(
+          call activateValue(@@ cell(:advice))
+          call activateValueWithCachedArguments(@@ cell(:primary))),
+        macro(
+          call activateValue(@@ cell(:advice))
+          call resendToValue(@@ cell(:primary)))))
   )
 
-  cell(:theLecro) pointCut = self
-  cell(:theLecro) primary = cell(:primary)
-  cell(:theLecro) documentation = cell(:primary) documentation
-  if(adviceName, cell(:theLecro) adviceName = adviceName)
-  if(advice?(cell(:primary)), cell(:primary) outerAdvice = cell(:theLecro))
-  self cell(:receiver) cell(cellName) = cell(:theLecro)
+  cell(:theMacro) pointCut = self
+  cell(:theMacro) advice = cell(:advice)
+  cell(:theMacro) primary = cell(:primary)
+  cell(:theMacro) documentation = cell(:primary) documentation
+  if(adviceName, cell(:theMacro) adviceName = adviceName)
+  if(advice?(cell(:primary)), cell(:primary) outerAdvice = cell(:theMacro))
+  self cell(:receiver) cell(cellName) = cell(:theMacro)
 )
 
 DefaultBehavior Aspects Pointcut cell("<<") = method(advice,
@@ -86,7 +87,7 @@ DefaultBehavior Aspects Pointcut cell("<<") = method(advice,
   removeFromJoins(self cell(:except), joins)
   joins remove!(:kind)
 
-  joins each(cellName, addAdviceOnCell(cell(:cellName), cell(:advice)))
+  joins each(cellName, addAdviceOnCell(cellName, cell(:advice)))
   self
 )
 
@@ -96,6 +97,34 @@ DefaultBehavior Aspects Pointcut add = method(name, advice,
   removeFromJoins(self cell(:except), joins)
   joins remove!(:kind)
 
-  joins each(cellName, addAdviceOnCell(cell(:cellName), cell(:advice), name))
+  joins each(cellName, addAdviceOnCell(cellName, cell(:advice), name))
+  self
+)
+
+DefaultBehavior Aspects Pointcut removeFirstNamedAdvice = method(cellName, name, 
+  currVal = self cell(:receiver) cell(cellName)
+  while(advice?(cell(:currVal)),
+    if(cell(:currVal) cell?(:adviceName) && cell(:currVal) adviceName == name,
+      if(cell(:currVal) cell?(:outerAdvice),
+        outer = cell(:currVal) cell(:outerAdvice)
+        cell(:outer) primary = cell(:currVal) cell(:primary)
+        if(advice?(cell(:currVal) cell(:primary)),
+          cell(:currVal) cell(:primary) outerAdvice = cell(:outer)),
+        self cell(:receiver) cell(cellName) = cell(:currVal) cell(:primary)
+      )
+      return
+    )
+    
+    currVal = cell(:currVal) cell(:primary)
+  )
+)
+
+DefaultBehavior Aspects Pointcut remove = method(name, 
+  joins = set(*joinPoints)
+  addToJoins(self cell(:matching), joins)
+  removeFromJoins(self cell(:except), joins)
+  joins remove!(:kind)
+
+  joins each(cellName, removeFirstNamedAdvice(cellName, name))
   self
 )

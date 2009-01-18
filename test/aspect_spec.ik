@@ -611,10 +611,60 @@ describe(DefaultBehavior,
       )
 
       describe("removing named advice",
-        it("should only remove the outermost advice with the name")
+        it("should only remove the outermost advice with the name",
+          x = Origin mimic do(
+            foo = 14)
+          accesses = []
+          x before(:foo) add(:someone, fn(accesses << :one))
+          x before(:foo) add(:someone, fn(accesses << :two))
+          x before(:foo) add(:someone, fn(accesses << :three))
+
+          x before(:foo) remove(:someone)
+
+          x foo
+          accesses should == [:two, :one]
+        )
+
         it("should signal a condition if no such advice could be found")
-        it("should have specs")
+
+        it("should not touch unnamed advice",
+          x = Origin mimic do(
+            foo = 14)
+          accesses = []
+          x before(:foo) << fn(accesses << :one)
+          x before(:foo) add(:someone, fn(accesses << :two))
+          x before(:foo) << fn(accesses << :three)
+
+          x before(:foo) remove(:someone)
+
+          x foo
+          accesses should == [:three, :one]
+        )
+
+        it("should not touch advice with other names",
+          x = Origin mimic do(
+            foo = 14)
+          accesses = []
+          x before(:foo) add(:buck, fn(accesses << :one))
+          x before(:foo) add(:someone, fn(accesses << :two))
+          x before(:foo) add(:blarg, fn(accesses << :three))
+
+          x before(:foo) remove(:someone)
+
+          x foo
+          accesses should == [:three, :one]
+        )
+
+        it("should only remove the named advice from the specific point cut")
       )
+    )
+
+    describe("removing all named advice",
+      it("should have specs")
+    )
+
+    describe("clearing all advice",
+      it("should have specs")
     )
 
     describe("after",
