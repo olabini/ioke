@@ -1,5 +1,4 @@
 
-- think about aspects
 - think about Java integration
 - think about concurrency
   futures with agents, like Io, agents are a thread pool, futures become the real value when needed. agents can be spun off too. use some other syntax since @ is taken.
@@ -7,25 +6,4 @@
   a future implemented in terms of aspects:
    Future before(:any, except: [:become, :forceResult], 
                    self become(self forceResult))
-
-
-
-
-
-aspects:
-
-Foo before(:something) << method(x, something)
-Foo before(:something, :another) << method(x, something)
-Foo before(matching: :any) << method(x, something)
-Foo before(matching: #/foo/) << method(x, something)
-Foo before(matching: :any, except: [:foo, :bar]) << method(x, something)
-Foo before(matching: fn(s, s == :bar)) << method(x, something)
-
-Foo after(:something) << fn(x, something)
-Foo around(:something) << fn(x, something)
-
--- figure out:
- what should be sent to before, after and around
- how should around call the next method?
- how should they combine?
 
