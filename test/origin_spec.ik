@@ -54,5 +54,27 @@ describe(Origin,
       z should === x
     )
   )
+
+  describe("around mimic",
+    it("should ignore arguments sent to mimic",
+      fn(Origin mimic(1,2,3,4,5)) should not signal(Condition Error)
+    )
+
+    it("should call initalize if such a cell exists",
+      X = Origin mimic
+      Ground argumentsGiven = []
+      X initialize = method(+rest, +:krest, argumentsGiven << [rest, krest])
+      X mimic(12, foo: 42, 555+2)
+      argumentsGiven should == [[[12, 557],{foo: 42}]]
+
+    )
+
+    it("should return a new mimic of the object",
+      X = Origin mimic
+      x = X mimic
+      x should not be same(X)
+      x should be mimic(X)
+    )
+  )
 )
   

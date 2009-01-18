@@ -75,7 +75,6 @@ public class Base {
                                                            @Override
                                                            public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                                                                getArguments().checkArgumentCount(context, message, on);
-
                                                                return IokeObject.as(on).mimic(message, context);
                                                            }}));
 
