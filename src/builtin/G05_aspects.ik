@@ -8,6 +8,16 @@ DefaultBehavior Aspects Pointcut advice? = method(obj,
   cell(:obj) kind?("LexicalMacro") && cell(:obj) cell?(:advice)
 )
 
+DefaultBehavior Aspects Pointcut cacheCall? = method(obj,
+  case(cell(:obj) kind,
+    "DefaultMethod", true,
+    "LexicalBlock", true,
+    "LexicalMacro", true,
+    "DefaultMacro", true,
+    "DefaultSyntax", true,
+    false)
+)
+
 DefaultBehavior Aspects Pointcut cell("<<") = method(advice,
   primary = if(self cell(:receiver) cell?(cellName), 
     self cell(:receiver) cell(cellName), 
@@ -17,16 +27,30 @@ DefaultBehavior Aspects Pointcut cell("<<") = method(advice,
     )
   )
 
+  theLecro = nil
   case(type,
     :before,
-    theLecro = lecro(
-      call activateValue(cell(:advice))
-      call resendToValue(cell(:primary)))
-    cell(:theLecro) pointCut = self
-    cell(:theLecro) primary = cell(:primary)
-    if(advice?(cell(:primary)), cell(:primary) outerAdvice = theLecro)
-    self cell(:receiver) cell(cellName) = cell(:theLecro)
+    theLecro = if(cacheCall?(cell(:advice)),
+      if(cacheCall?(cell(:primary)),
+        lecro(
+          call activateValueWithCachedArguments(cell(:advice))
+          call activateValueWithCachedArguments(cell(:primary))),
+        lecro(
+          call activateValueWithCachedArguments(cell(:advice))
+          call resendToValue(cell(:primary)))),
+      if(cacheCall?(cell(:primary)),
+        lecro(
+          call activateValue(cell(:advice))
+          call activateValueWithCachedArguments(cell(:primary))),
+        lecro(
+          call activateValue(cell(:advice))
+          call resendToValue(cell(:primary)))))
   )
+
+  cell(:theLecro) pointCut = self
+  cell(:theLecro) primary = cell(:primary)
+  if(advice?(cell(:primary)), cell(:primary) outerAdvice = theLecro)
+  self cell(:receiver) cell(cellName) = cell(:theLecro)
   
   self
 )

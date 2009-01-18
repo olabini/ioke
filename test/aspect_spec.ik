@@ -101,7 +101,16 @@ describe(DefaultBehavior,
           accesses[1] should be same(x)
         )
 
-        it("should only evaluate arguments once")
+        it("should only evaluate arguments once",
+          x = Origin mimic do(
+            foo = method(arg, 42))
+          Ground accesses = []
+          x before(:foo) << method(arg, accesses << [:method, arg])
+          x before(:foo) << macro(accesses << [:macro, call arguments[0] code])
+          x before(:foo) << fn(arg, accesses << [:fn, arg])
+          x foo(accesses << :arg_evaled. 42 + 14)
+          accesses should == [:arg_evaled, [:fn, 56], [:macro, "accesses <<(:arg_evaled) .\n42 +(14)"], [:method, 56]]
+        )
 
         it("should evaluate advice in inverse order",
           x = Origin mimic do(
@@ -113,6 +122,8 @@ describe(DefaultBehavior,
           x foo
           accesses should == [:three, :two, :one]
         )
+
+        it("should retain the original documentation")
       )
 
       describe("with :get specifier",
