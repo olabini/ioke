@@ -5,6 +5,7 @@ package ioke.lang;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import ioke.lang.exceptions.ControlFlow;
 
@@ -216,7 +217,7 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
         return result;
     }
 
-    private Object expand(final IokeObject self, IokeObject context, IokeObject message, Object on, Object call) throws ControlFlow {
+    private Object expandWithCall(final IokeObject self, IokeObject context, IokeObject message, Object on, Object call) throws ControlFlow {
         if(code == null) {
             IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
                                                                          message, 
@@ -263,8 +264,13 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
     }
 
     @Override
-    public Object activate(final IokeObject self, IokeObject context, IokeObject message, Object on, Object call) throws ControlFlow {
-        Object result = expand(self, context, message, on, call);
+    public Object activateWithCallAndData(final IokeObject self, IokeObject context, IokeObject message, Object on, Object call, Map<String, Object> data) throws ControlFlow {
+        return activateWithCall(self, context, message, on, call);
+    }
+
+    @Override
+    public Object activateWithCall(final IokeObject self, IokeObject context, IokeObject message, Object on, Object call) throws ControlFlow {
+        Object result = expandWithCall(self, context, message, on, call);
 
         if(result == context.runtime.nil) {
             // Remove chain completely

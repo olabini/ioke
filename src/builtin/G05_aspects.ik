@@ -78,23 +78,23 @@ DefaultBehavior Aspects Pointcut addAdviceOnCell = method(cellName, advice, advi
       if(cacheCall?(cell(:primary)),
         macro(
           result = call activateValueWithCachedArguments(@@ cell(:primary))
-          call activateValueWithCachedArguments(@@ cell(:advice))
+          call activateValueWithCachedArguments(@@ cell(:advice), aspectResult: result)
           result
           ),
         macro(
           result = call resendToValue(@@ cell(:primary))
-          call activateValueWithCachedArguments(@@ cell(:advice))
+          call activateValueWithCachedArguments(@@ cell(:advice), aspectResult: result)
           result
           )),
       if(cacheCall?(cell(:primary)),
         macro(
           result = call activateValueWithCachedArguments(@@ cell(:primary))
-          call activateValue(@@ cell(:advice))
+          call activateValue(@@ cell(:advice), aspectResult: result)
           result
           ),
         macro(
           result = call resendToValue(@@ cell(:primary))
-          call activateValue(@@ cell(:advice))
+          call activateValue(@@ cell(:advice), aspectResult: result)
           result
     )))
   )

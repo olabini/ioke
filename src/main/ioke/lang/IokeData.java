@@ -6,6 +6,7 @@ package ioke.lang;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import ioke.lang.exceptions.ControlFlow;
 
@@ -438,7 +439,15 @@ public abstract class IokeData {
         return context.runtime.nil;
     }
 
-    public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on, Object c) throws ControlFlow {
+    public Object activateWithData(IokeObject self, IokeObject context, IokeObject message, Object on, Map<String, Object> c) throws ControlFlow {
+        return activate(self, context, message, on);
+    }
+
+    public Object activateWithCall(IokeObject self, IokeObject context, IokeObject message, Object on, Object c) throws ControlFlow {
+        return activate(self, context, message, on);
+    }
+
+    public Object activateWithCallAndData(IokeObject self, IokeObject context, IokeObject message, Object on, Object c, Map<String, Object> data) throws ControlFlow {
         return activate(self, context, message, on);
     }
 

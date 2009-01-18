@@ -6,6 +6,7 @@ package ioke.lang;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import ioke.lang.exceptions.ControlFlow;
 
@@ -167,7 +168,12 @@ public class LexicalBlock extends IokeData implements AssociatedCode {
     }
 
     @Override
-    public Object activate(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on, Object call) throws ControlFlow {
+    public Object activateWithCallAndData(final IokeObject self, IokeObject context, IokeObject message, Object on, Object call, Map<String, Object> data) throws ControlFlow {
+        return activateWithCall(self, context, message, on, call);
+    }
+
+    @Override
+    public Object activateWithCall(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on, Object call) throws ControlFlow {
         LexicalContext c = new LexicalContext(self.runtime, on, "Lexical activation context", message, this.context);
 
         arguments.assignArgumentValues(c, dynamicContext, message, on, ((Call)IokeObject.data(call)));
