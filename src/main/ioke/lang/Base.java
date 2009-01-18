@@ -60,8 +60,12 @@ public class Base {
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
 
                     Object arg = args.get(0);
-                    String s = Text.getText(arg);
-                    IokeObject.as(on).setDocumentation(s, message, context);
+                    if(arg == context.runtime.nil) {
+                        IokeObject.as(on).setDocumentation(null, message, context);
+                    } else {
+                        String s = Text.getText(arg);
+                        IokeObject.as(on).setDocumentation(s, message, context);
+                    }
                     return arg;
                 }
             }));
