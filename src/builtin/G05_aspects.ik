@@ -1,11 +1,11 @@
 
-DefaultBehavior Aspects before = method(+joinPoints, 
-  Pointcut with(receiver: self, joinPoints: joinPoints, type: :before))
+DefaultBehavior Aspects before = method(+joinPoints, matching:, 
+  Pointcut with(receiver: self, joinPoints: joinPoints, matching: matching, type: :before))
 
 DefaultBehavior Aspects Pointcut = Origin mimic
 
 DefaultBehavior Aspects Pointcut advice? = method(obj,
-  cell(:obj) kind?("LexicalMacro") && cell(:obj) cell?(:advice)
+  cell(:obj) cell?(:kind?) && (cell(:obj) kind?("LexicalMacro") && cell(:obj) cell?(:advice))
 )
 
 DefaultBehavior Aspects Pointcut cacheCall? = method(obj,
@@ -19,7 +19,15 @@ DefaultBehavior Aspects Pointcut cacheCall? = method(obj,
 )
 
 DefaultBehavior Aspects Pointcut cell("<<") = method(advice,
-  joinPoints each(cellName,
+  joins = set(*joinPoints)
+  case(matching,
+    :any,
+    self cell(:receiver) cellNames(true, Origin) each(cn, joins << cn),
+    :anyFromSelf,
+    self cell(:receiver) cellNames(false) each(cn, joins << cn)
+  )
+
+  joins each(cellName,
     primary = if(self cell(:receiver) cell?(cellName), 
       self cell(:receiver) cell(cellName), 
       macro(
