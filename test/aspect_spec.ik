@@ -123,7 +123,12 @@ describe(DefaultBehavior,
           accesses should == [:three, :two, :one]
         )
 
-        it("should retain the original documentation")
+        it("should retain the original documentation",
+          x = Origin mimic do(
+            foo = method("Does something very interesting", 42))
+          x before(:foo) << fn("blarg", 42)
+          x cell(:foo) documentation should == "Does something very interesting"
+        )
       )
 
       describe("with :get specifier",

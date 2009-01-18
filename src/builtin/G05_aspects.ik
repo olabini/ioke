@@ -49,6 +49,7 @@ DefaultBehavior Aspects Pointcut cell("<<") = method(advice,
 
   cell(:theLecro) pointCut = self
   cell(:theLecro) primary = cell(:primary)
+  cell(:theLecro) documentation = cell(:primary) documentation
   if(advice?(cell(:primary)), cell(:primary) outerAdvice = theLecro)
   self cell(:receiver) cell(cellName) = cell(:theLecro)
   
