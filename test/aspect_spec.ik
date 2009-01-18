@@ -683,7 +683,70 @@ describe(DefaultBehavior,
     )
 
     describe("removing all named advice",
-      it("should have specs")
+      it("should remove all advice with the name",
+          x = Origin mimic do(
+            foo = 14)
+          accesses = []
+          x before(:foo) add(:someone, fn(accesses << :one))
+          x before(:foo) add(:someone, fn(accesses << :two))
+          x before(:foo) add(:someone, fn(accesses << :three))
+
+          x before(:foo) removeAll(:someone)
+
+          x foo should == 14
+          accesses should == []
+        )
+
+        it("should signal a condition if no such advice could be found",
+          x = Origin mimic do(
+            foo = 14)
+          x before(:foo) removeAll(:someone)
+        )
+
+        it("should not touch unnamed advice",
+          x = Origin mimic do(
+            foo = 14)
+          accesses = []
+          x before(:foo) << fn(accesses << :one)
+          x before(:foo) add(:someone, fn(accesses << :two))
+          x before(:foo) << fn(accesses << :three)
+
+          x before(:foo) removeAll(:someone)
+
+          x foo
+          accesses should == [:three, :one]
+        )
+
+        it("should not touch advice with other names",
+          x = Origin mimic do(
+            foo = 14)
+          accesses = []
+          x before(:foo) add(:buck, fn(accesses << :one))
+          x before(:foo) add(:someone, fn(accesses << :two))
+          x before(:foo) add(:blarg, fn(accesses << :three))
+
+          x before(:foo) removeAll(:someone)
+
+          x foo
+          accesses should == [:three, :one]
+        )
+
+        it("should only remove the named advice from the specific point cut",
+          x = Origin mimic do(
+            foo = 14
+            bar = 13)
+          accesses = []
+          x before(:foo, :bar) add(:someone, lecro(accesses << [:one, call message name]))
+          x before(:foo, :bar) add(:someone, lecro(accesses << [:two, call message name]))
+          x before(:foo, :bar) add(:someone, lecro(accesses << [:three, call message name]))
+
+          x before(:foo) removeAll(:someone)
+
+          x foo
+          x bar
+
+          accesses should == [[:three, :bar], [:two, :bar], [:one, :bar]]
+        )
     )
 
     describe("clearing all advice",
