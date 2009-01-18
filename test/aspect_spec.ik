@@ -8,7 +8,7 @@ describe(DefaultBehavior,
         Origin mimic before(:foo) should have kind("DefaultBehavior Aspects Pointcut")
       )
 
-      describe("with no specifier",
+      describe("with one cell name",
         it("should execute a block before a cell is accessed in any way",
           x = Origin mimic do(
             foo = 42)
@@ -131,24 +131,19 @@ describe(DefaultBehavior,
         )
       )
 
-      describe("with :get specifier",
-        it("should have specs")
-      )
-
-      describe("with :activate specifier",
-        it("should have specs")
-      )
-
-      describe("with :remove specifier",
-        it("should have specs")
-      )
-
-      describe("with :update specifier",
-        it("should have specs")
-      )
-
-      describe("with combined specifier",
-        it("should have specs")
+      describe("with more than one cell name",
+        it("should add the advice to both the cells",
+          x = Origin mimic do(
+            foo = 42
+            bar = 62
+          )
+          Ground accesses = []
+          x before(:foo, :bar) << macro(accesses << call message name)
+          x foo
+          x bar
+          x foo
+          accesses should == [:foo, :bar, :foo]
+        )
       )
 
       describe("with matching: keyword",
@@ -156,6 +151,10 @@ describe(DefaultBehavior,
       )
 
       describe("with except: keyword",
+        it("should have specs")
+      )
+
+      describe("removing advice",
         it("should have specs")
       )
     )

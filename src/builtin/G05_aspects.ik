@@ -1,6 +1,6 @@
 
-DefaultBehavior Aspects before = method(cellName, 
-  Pointcut with(receiver: self, cellName: cellName, type: :before))
+DefaultBehavior Aspects before = method(+joinPoints, 
+  Pointcut with(receiver: self, joinPoints: joinPoints, type: :before))
 
 DefaultBehavior Aspects Pointcut = Origin mimic
 
@@ -19,39 +19,40 @@ DefaultBehavior Aspects Pointcut cacheCall? = method(obj,
 )
 
 DefaultBehavior Aspects Pointcut cell("<<") = method(advice,
-  primary = if(self cell(:receiver) cell?(cellName), 
-    self cell(:receiver) cell(cellName), 
-    macro(
-      bind(restart(useValue, fn(newValue, newValue)),
-        error!(Condition Error NoSuchCell, message: call message, context: call ground, receiver: call receiver, cellName: call message name))
+  joinPoints each(cellName,
+    primary = if(self cell(:receiver) cell?(cellName), 
+      self cell(:receiver) cell(cellName), 
+      macro(
+        bind(restart(useValue, fn(newValue, newValue)),
+          error!(Condition Error NoSuchCell, message: call message, context: call ground, receiver: call receiver, cellName: call message name))
+      )
     )
-  )
 
-  theLecro = nil
-  case(type,
-    :before,
-    theLecro = if(cacheCall?(cell(:advice)),
-      if(cacheCall?(cell(:primary)),
-        lecro(
-          call activateValueWithCachedArguments(cell(:advice))
-          call activateValueWithCachedArguments(cell(:primary))),
-        lecro(
-          call activateValueWithCachedArguments(cell(:advice))
-          call resendToValue(cell(:primary)))),
-      if(cacheCall?(cell(:primary)),
-        lecro(
-          call activateValue(cell(:advice))
-          call activateValueWithCachedArguments(cell(:primary))),
-        lecro(
-          call activateValue(cell(:advice))
-          call resendToValue(cell(:primary)))))
-  )
+    theLecro = nil
+    case(type,
+      :before,
+      theLecro = if(cacheCall?(cell(:advice)),
+        if(cacheCall?(cell(:primary)),
+          lecro(
+            call activateValueWithCachedArguments(cell(:advice))
+            call activateValueWithCachedArguments(cell(:primary))),
+          lecro(
+            call activateValueWithCachedArguments(cell(:advice))
+            call resendToValue(cell(:primary)))),
+        if(cacheCall?(cell(:primary)),
+          lecro(
+            call activateValue(cell(:advice))
+            call activateValueWithCachedArguments(cell(:primary))),
+          lecro(
+            call activateValue(cell(:advice))
+            call resendToValue(cell(:primary)))))
+    )
 
-  cell(:theLecro) pointCut = self
-  cell(:theLecro) primary = cell(:primary)
-  cell(:theLecro) documentation = cell(:primary) documentation
-  if(advice?(cell(:primary)), cell(:primary) outerAdvice = theLecro)
-  self cell(:receiver) cell(cellName) = cell(:theLecro)
-  
+    cell(:theLecro) pointCut = self
+    cell(:theLecro) primary = cell(:primary)
+    cell(:theLecro) documentation = cell(:primary) documentation
+    if(advice?(cell(:primary)), cell(:primary) outerAdvice = theLecro)
+    self cell(:receiver) cell(cellName) = cell(:theLecro)
+  )  
   self
 )
