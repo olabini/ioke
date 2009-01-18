@@ -2,6 +2,9 @@
 DefaultBehavior Aspects before = method(+joinPoints, matching:, except:, 
   Pointcut with(receiver: self, joinPoints: joinPoints, matching: cell(:matching), except: except, type: :before))
 
+DefaultBehavior Aspects after = method(+joinPoints, matching:, except:, 
+  Pointcut with(receiver: self, joinPoints: joinPoints, matching: cell(:matching), except: except, type: :after))
+
 DefaultBehavior Aspects Pointcut = Origin mimic
 
 DefaultBehavior Aspects Pointcut advice? = method(obj,
@@ -69,7 +72,31 @@ DefaultBehavior Aspects Pointcut addAdviceOnCell = method(cellName, advice, advi
           call activateValueWithCachedArguments(@@ cell(:primary))),
         macro(
           call activateValue(@@ cell(:advice))
-          call resendToValue(@@ cell(:primary)))))
+          call resendToValue(@@ cell(:primary))))),
+    :after,
+    theMacro = if(cacheCall?(cell(:advice)),
+      if(cacheCall?(cell(:primary)),
+        macro(
+          result = call activateValueWithCachedArguments(@@ cell(:primary))
+          call activateValueWithCachedArguments(@@ cell(:advice))
+          result
+          ),
+        macro(
+          result = call resendToValue(@@ cell(:primary))
+          call activateValueWithCachedArguments(@@ cell(:advice))
+          result
+          )),
+      if(cacheCall?(cell(:primary)),
+        macro(
+          result = call activateValueWithCachedArguments(@@ cell(:primary))
+          call activateValue(@@ cell(:advice))
+          result
+          ),
+        macro(
+          result = call resendToValue(@@ cell(:primary))
+          call activateValue(@@ cell(:advice))
+          result
+    )))
   )
 
   cell(:theMacro) pointcut = self
