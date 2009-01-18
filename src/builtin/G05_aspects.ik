@@ -11,7 +11,10 @@ DefaultBehavior Aspects Pointcut advice? = method(obj,
 DefaultBehavior Aspects Pointcut cell("<<") = method(advice,
   primary = if(self cell(:receiver) cell?(cellName), 
     self cell(:receiver) cell(cellName), 
-    nil ;; this should really an fn that throws a no such cell thingy
+    macro(
+      bind(restart(useValue, fn(newValue, newValue)),
+        error!(Condition Error NoSuchCell, message: call message, context: call ground, receiver: call receiver, cellName: call message name))
+    )
   )
 
   case(type,

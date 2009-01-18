@@ -60,11 +60,35 @@ describe(DefaultBehavior,
           accesses should == [:foox, :foox]
         )
 
-        it("should be possible to signal an error from inside the before method")
+        it("should be possible to signal a condition from inside the before method",
+          x = Origin mimic do(
+            foo = method(42))
+          accesses = []
+          x before(:foo) << fn(accesses << :one)
+          x before(:foo) << fn(accesses << :two)
+          x before(:foo) << fn(accesses << :three)
+          x before(:foo) << fn(accesses << :four. error!("this doesn't work..."))
+          x before(:foo) << fn(accesses << :five)
+          x before(:foo) << fn(accesses << :six)
+          fn(x foo) should signal(Condition Error Default)
+          accesses should == [:six, :five, :four]
+          
+        )
 
-        it("should be possible to specify for a cell that doesn't exist")
+        it("should be possible to specify for a cell that doesn't exist",
+          x = Origin mimic
+          accesses = []
+          x before(:unexisting_aspect_before_cell) << fn(accesses << :wow)
+          bind(rescue(Condition Error NoSuchCell, fn(c, nil)),
+            x unexisting_aspect_before_cell)
+          accesses should == [:wow]
+        )
 
-        it("should still raise a nosuchcell after the before advice have run for a non-existing cell")
+        it("should still raise a nosuchcell after the before advice have run for a non-existing cell",
+          x = Origin mimic
+          x before(:unexisting_aspect_before_cell) << fn(nil)
+          fn(x unexisting_aspect_before_cell) should signal(Condition Error NoSuchCell)
+        )
 
         it("should set the self of a method to the same self as the receiver",
           x = Origin mimic do(
