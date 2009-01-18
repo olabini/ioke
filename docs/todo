@@ -19,7 +19,6 @@ Foo before(:something, :another) << method(x, something)
 Foo before(matching: :any) << method(x, something)
 Foo before(matching: #/foo/) << method(x, something)
 Foo before(matching: :any, except: [:foo, :bar]) << method(x, something)
-Foo before(matching: :any_existing, except: [:foo, :bar]) << method(x, something)
 Foo before(matching: fn(s, s == :bar)) << method(x, something)
 
 Foo after(:something) << fn(x, something)

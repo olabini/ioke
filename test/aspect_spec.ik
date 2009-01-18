@@ -147,7 +147,41 @@ describe(DefaultBehavior,
       )
 
       describe("with matching: keyword",
-        it("should have specs")
+        it("should take :any and add it to all existing cells for that object and mimics, up to Origin",
+          X = Origin mimic
+          Y = X mimic
+          Y foo = 42
+          X bar = 13
+          y = Y mimic
+          Origin mucus = 777
+          Ground accesses = []
+          y before(matching: :any) << macro(accesses << call message name)
+          y foo
+          y bar
+          y mucus
+          y kind
+          accesses should == [:foo, :bar, :mucus, :kind]
+        )
+
+        it("should take :anyFromSelf and add it to all existing cells for that object only",
+          X = Origin mimic
+          Y = X mimic
+          Y foo = 42
+          X bar = 13
+          y = Y mimic
+          y quux = 555
+          Ground accesses = []
+          y before(matching: :anyFromSelf) << macro(accesses << call message name)
+          y foo
+          y bar
+          y kind
+          y quux
+          accesses should == [:quux]
+        )
+
+        it("should take a regular expression and use that to choose which cells to handle")
+        it("should take a block and use that to choose which cells to handle")
+        it("should take a list of specifiers to use for matching")
       )
 
       describe("with except: keyword",
