@@ -14,20 +14,12 @@
 
 aspects:
 
- before, around, after will return an Aspect Pointcut
-
 Foo before(:something) << method(x, something)
-Foo before(:something, :get) << method(x, something)
-Foo before(:something, :activate) << method(x, something)
-Foo before(:something, :remove) << method(x, something)
-Foo before(:something, :update) << method(x, something)
-Foo before(:something, [:update, :update]) << method(x, something)
-Foo before([:something, :another], :update) << method(x, something)
-Foo before(matching: :any, :update) << method(x, something)
-Foo before(matching: #/foo/, :update) << method(x, something)
-Foo before(matching: :any, except: [:foo, :bar], :update) << method(x, something)
-Foo before(matching: :any_existing, except: [:foo, :bar], :update) << method(x, something)
-Foo before(matching: fn(s, s == :bar), :update) << method(x, something)
+Foo before(:something, :another) << method(x, something)
+Foo before(matching: :any) << method(x, something)
+Foo before(matching: #/foo/) << method(x, something)
+Foo before(matching: :any, except: [:foo, :bar]) << method(x, something)
+Foo before(matching: fn(s, s == :bar)) << method(x, something)
 
 Foo after(:something) << fn(x, something)
 Foo around(:something) << fn(x, something)

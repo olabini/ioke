@@ -358,11 +358,29 @@ public class DefaultArgumentsDefinition {
         return argCount;
     }
 
+    public void assignArgumentValues(final IokeObject locals, final IokeObject context, final IokeObject message, final Object on, final Call call) throws ControlFlow {
+        if(call.cachedPositional != null) {
+            assignArgumentValues(locals, context, message, on, call.cachedPositional, call.cachedKeywords, call.cachedArgCount);
+        } else {
+            final List<Object> argumentsWithoutKeywords = new ArrayList<Object>();
+            final Map<String, Object> givenKeywords = new LinkedHashMap<String, Object>();
+            final int argCount = getEvaluatedArguments(context, message, on, argumentsWithoutKeywords, givenKeywords);
+            call.cachedPositional = argumentsWithoutKeywords;
+            call.cachedKeywords = givenKeywords;
+            call.cachedArgCount = argCount;
+            assignArgumentValues(locals, context, message, on, argumentsWithoutKeywords, givenKeywords, argCount);
+        }
+    }
+
     public void assignArgumentValues(final IokeObject locals, final IokeObject context, final IokeObject message, final Object on) throws ControlFlow {
-        final Runtime runtime = context.runtime;
         final List<Object> argumentsWithoutKeywords = new ArrayList<Object>();
         final Map<String, Object> givenKeywords = new LinkedHashMap<String, Object>();
         final int argCount = getEvaluatedArguments(context, message, on, argumentsWithoutKeywords, givenKeywords);
+        assignArgumentValues(locals, context, message, on, argumentsWithoutKeywords, givenKeywords, argCount);
+    }
+
+    private void assignArgumentValues(final IokeObject locals, final IokeObject context, final IokeObject message, final Object on, final List<Object> argumentsWithoutKeywords, final Map<String, Object> givenKeywords, final int argCount) throws ControlFlow {
+        final Runtime runtime = context.runtime;
 
         final Set<String> intersection = new LinkedHashSet<String>(givenKeywords.keySet());
         intersection.removeAll(keywords);
