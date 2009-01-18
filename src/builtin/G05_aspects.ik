@@ -21,6 +21,7 @@ DefaultBehavior Aspects Pointcut cacheCall? = method(obj,
     "LexicalMacro", true,
     "DefaultMacro", true,
     "DefaultSyntax", true,
+    "JavaMethod", true,
     false)
 )
 
@@ -103,17 +104,25 @@ DefaultBehavior Aspects Pointcut addAdviceOnCell = method(cellName, advice, advi
     theMacro = if(cacheCall?(cell(:advice)),
       if(cacheCall?(cell(:primary)),
         macro(
-          call activateValueWithCachedArguments(@@ cell(:advice), aspectCall: lecro(call activateValueWithCachedArguments(outerScope @@ cell(:primary))))
+          aspectCall = macro(ss = if(@ kind == "Locals", @self, @). call activateValueWithCachedArguments(@@ cell(:primary), ss))
+          cell(:aspectCall) primary = @@ cell(:primary)
+          call activateValueWithCachedArguments(@@ cell(:advice), self, aspectCall: cell(:aspectCall))
           ),
         macro(
-          call activateValueWithCachedArguments(@@ cell(:advice), aspectCall: lecro(call resendToValue(outerScope @@ cell(:primary))))
+          aspectCall = macro(ss = if(@ kind == "Locals", @self, @). call resendToValue(@@ cell(:primary), ss))
+          cell(:aspectCall) primary = @@ cell(:primary)
+          call activateValueWithCachedArguments(@@ cell(:advice), self, aspectCall: cell(:aspectCall))
           )),
       if(cacheCall?(cell(:primary)),
         macro(
-          call activateValue(@@ cell(:advice), aspectCall: lecro(call activateValueWithCachedArguments(outerScope @@ cell(:primary))))
+          aspectCall = macro(ss = if(@ kind == "Locals", @self, @). call activateValueWithCachedArguments(@@ cell(:primary), ss))
+          cell(:aspectCall) primary = @@ cell(:primary)
+          call activateValue(@@ cell(:advice), self, aspectCall: cell(:aspectCall))
           ),
         macro(
-          call activateValue(@@ cell(:advice), aspectCall: lecro(call resendToValue(outerScope @@ cell(:primary)))))))
+          aspectCall = macro(ss = if(@ kind == "Locals", @self, @). call resendToValue(@@ cell(:primary), ss))
+          cell(:aspectCall) primary = @@ cell(:primary)
+          call activateValue(@@ cell(:advice), self, aspectCall: cell(:aspectCall)))))
   )
 
   cell(:theMacro) pointcut = self

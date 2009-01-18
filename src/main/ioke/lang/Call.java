@@ -121,6 +121,7 @@ public class Call extends IokeData {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("value")
+                    .withOptionalPositional("newSelf", "nil")
                     .getArguments();
 
                 @Override
@@ -134,8 +135,12 @@ public class Call extends IokeData {
                     getArguments().getEvaluatedArguments(context, mess, on, args, new HashMap<String, Object>());
 
                     Call c = (Call)IokeObject.data(on);
+                    Object self = c.on;
+                    if(args.size() > 1) {
+                        self = args.get(1);
+                    }
 
-                    return IokeObject.getOrActivate(args.get(0), c.surroundingContext, c.message, c.on);
+                    return IokeObject.getOrActivate(args.get(0), c.surroundingContext, c.message, self);
                 }
             }));
 
@@ -143,6 +148,7 @@ public class Call extends IokeData {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("value")
+                    .withOptionalPositional("newSelf", "nil")
                     .withKeywordRest("valuesToAdd")
                     .getArguments();
 
@@ -158,8 +164,12 @@ public class Call extends IokeData {
                     getArguments().getEvaluatedArguments(context, mess, on, args, keys);
 
                     Call c = (Call)IokeObject.data(on);
+                    Object self = c.on;
+                    if(args.size() > 1) {
+                        self = args.get(1);
+                    }
 
-                    return IokeObject.as(args.get(0)).activateWithData(c.surroundingContext, c.message, c.on, keys);
+                    return IokeObject.as(args.get(0)).activateWithData(c.surroundingContext, c.message, self, keys);
                 }
             }));
 
@@ -167,6 +177,7 @@ public class Call extends IokeData {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("value")
+                    .withOptionalPositional("newSelf", "nil")
                     .withKeywordRest("valuesToAdd")
                     .getArguments();
 
@@ -180,9 +191,14 @@ public class Call extends IokeData {
                     List<Object> args = new ArrayList<Object>();
                     Map<String, Object> keys = new HashMap<String, Object>();
                     getArguments().getEvaluatedArguments(context, mess, on, args, keys);
-
+                    
                     Call c = (Call)IokeObject.data(on);
-                    return IokeObject.as(args.get(0)).activateWithCallAndData(c.surroundingContext, c.message, c.on, on, keys);
+                    Object self = c.on;
+                    if(args.size() > 1) {
+                        self = args.get(1);
+                    }
+
+                    return IokeObject.as(args.get(0)).activateWithCallAndData(c.surroundingContext, c.message, self, on, keys);
                 }
             }));
 
