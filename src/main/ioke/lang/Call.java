@@ -6,6 +6,7 @@ package ioke.lang;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
+import java.util.Map;
 
 import ioke.lang.exceptions.ControlFlow;
 
@@ -18,6 +19,9 @@ public class Call extends IokeData {
     private IokeObject message;
     private IokeObject surroundingContext;
     private IokeObject on;
+    List<Object> cachedPositional;
+    Map<String, Object> cachedKeywords;
+    int cachedArgCount;
 
     public Call() {
     }
@@ -50,6 +54,15 @@ public class Call extends IokeData {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
 
                     return ((Call)IokeObject.data(on)).surroundingContext;
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("returns the receiver of the call", new JavaMethod.WithNoArguments("receiver") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+
+                    return ((Call)IokeObject.data(on)).on;
                 }
             }));
 
@@ -101,6 +114,75 @@ public class Call extends IokeData {
                     IokeObject m = Message.copy(c.message);
                     Message.setName(m, name);
                     return m.sendTo(c.surroundingContext, c.on);
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("uhm. this is a strange one. really.", new JavaMethod("resendToValue") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("value")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject mess, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    getArguments().getEvaluatedArguments(context, mess, on, args, new HashMap<String, Object>());
+
+                    Call c = (Call)IokeObject.data(on);
+
+                    return IokeObject.getOrActivate(args.get(0), c.surroundingContext, c.message, c.on);
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("uhm. this one isn't too bad.", new JavaMethod("activateValue") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("value")
+                    .withKeywordRest("valuesToAdd")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject mess, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    Map<String, Object> keys = new HashMap<String, Object>();
+                    getArguments().getEvaluatedArguments(context, mess, on, args, keys);
+
+                    Call c = (Call)IokeObject.data(on);
+
+                    return IokeObject.as(args.get(0)).activateWithData(c.surroundingContext, c.message, c.on, keys);
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("I really ought to write documentation for these methods, but I don't know how to describe what they do.", new JavaMethod("activateValueWithCachedArguments") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("value")
+                    .withKeywordRest("valuesToAdd")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject mess, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    Map<String, Object> keys = new HashMap<String, Object>();
+                    getArguments().getEvaluatedArguments(context, mess, on, args, keys);
+
+                    Call c = (Call)IokeObject.data(on);
+                    return IokeObject.as(args.get(0)).activateWithCallAndData(c.surroundingContext, c.message, c.on, on, keys);
                 }
             }));
 

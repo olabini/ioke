@@ -178,3 +178,5 @@ method(other,
           self `(otherMethod) (other))))))
 
 Origin do(=== = generateMatchMethod(==))
+cell(:LexicalBlock) do(=== = generateMatchMethod(call))
+Symbol do(=== = generateMatchMethod(==))

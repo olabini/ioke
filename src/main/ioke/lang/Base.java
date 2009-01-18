@@ -60,8 +60,12 @@ public class Base {
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
 
                     Object arg = args.get(0);
-                    String s = Text.getText(arg);
-                    IokeObject.as(on).setDocumentation(s, message, context);
+                    if(arg == context.runtime.nil) {
+                        IokeObject.as(on).setDocumentation(null, message, context);
+                    } else {
+                        String s = Text.getText(arg);
+                        IokeObject.as(on).setDocumentation(s, message, context);
+                    }
                     return arg;
                 }
             }));
@@ -254,6 +258,7 @@ public class Base {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withOptionalPositional("includeMimics", "false")
+                    .withOptionalPositional("cutoff", "nil")
                     .getArguments();
 
                 @Override
@@ -267,6 +272,11 @@ public class Base {
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
 
                     if(args.size() > 0 && IokeObject.isTrue(args.get(0))) {
+                        Object cutoff = null;
+                        if(args.size() > 1) {
+                            cutoff = args.get(1);
+                        }
+
                         IdentityHashMap<Object, Object> visited = new IdentityHashMap<Object, Object>();
                         List<Object> names = new ArrayList<Object>();
                         Set<Object> visitedNames = new HashSet<Object>();
@@ -279,7 +289,9 @@ public class Base {
                             IokeObject current = IokeObject.as(toVisit.remove(0));
                             if(!visited.containsKey(current)) {
                                 visited.put(current, null);
-                                toVisit.addAll(current.getMimics());
+                                if(cutoff != current) {
+                                    toVisit.addAll(current.getMimics());
+                                }
                                 
                                 Map<String, Object> mso = current.getCells();
 

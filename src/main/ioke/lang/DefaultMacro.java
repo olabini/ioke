@@ -5,6 +5,7 @@ package ioke.lang;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import ioke.lang.exceptions.ControlFlow;
 
@@ -155,6 +156,96 @@ public class DefaultMacro extends IokeData implements Named, Inspectable, Associ
     }
 
     @Override
+    public Object activateWithCallAndData(final IokeObject self, IokeObject context, IokeObject message, Object on, Object call, Map<String, Object> data) throws ControlFlow {
+        if(code == null) {
+            IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
+                                                                         message, 
+                                                                         context, 
+                                                                         "Error", 
+                                                                         "Invocation",
+                                                                         "NotActivatable")).mimic(message, context);
+            condition.setCell("message", message);
+            condition.setCell("context", context);
+            condition.setCell("receiver", on);
+            condition.setCell("method", self);
+            condition.setCell("report", context.runtime.newText("You tried to activate a method without any code - did you by any chance activate the DefaultMacro kind by referring to it without wrapping it inside a call to cell?"));
+            context.runtime.errorCondition(condition);
+            return null;
+        }
+
+        IokeObject c = context.runtime.locals.mimic(message, context);
+        c.setCell("self", on);
+        c.setCell("@", on);
+        c.registerMethod(c.runtime.newJavaMethod("will return the currently executing macro receiver", new JavaMethod.WithNoArguments("@@") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                    return self;
+                }
+            }));
+        c.setCell("currentMessage", message);
+        c.setCell("surroundingContext", context);
+        c.setCell("call", call);
+        for(Map.Entry<String, Object> d : data.entrySet()) {
+            String s = d.getKey();
+            c.setCell(s.substring(0, s.length()-1), d.getValue());
+        }
+
+        try {
+            return code.evaluateCompleteWith(c, on);
+        } catch(ControlFlow.Return e) {
+            if(e.context == c) {
+                return e.getValue();
+            } else {
+                throw e;
+            }
+        }
+    }
+
+    @Override
+    public Object activateWithCall(final IokeObject self, IokeObject context, IokeObject message, Object on, Object call) throws ControlFlow {
+        if(code == null) {
+            IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
+                                                                         message, 
+                                                                         context, 
+                                                                         "Error", 
+                                                                         "Invocation",
+                                                                         "NotActivatable")).mimic(message, context);
+            condition.setCell("message", message);
+            condition.setCell("context", context);
+            condition.setCell("receiver", on);
+            condition.setCell("method", self);
+            condition.setCell("report", context.runtime.newText("You tried to activate a method without any code - did you by any chance activate the DefaultMacro kind by referring to it without wrapping it inside a call to cell?"));
+            context.runtime.errorCondition(condition);
+            return null;
+        }
+
+        IokeObject c = context.runtime.locals.mimic(message, context);
+        c.setCell("self", on);
+        c.setCell("@", on);
+        c.registerMethod(c.runtime.newJavaMethod("will return the currently executing macro receiver", new JavaMethod.WithNoArguments("@@") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                    return self;
+                }
+            }));
+        c.setCell("currentMessage", message);
+        c.setCell("surroundingContext", context);
+        c.setCell("call", call);
+
+        try {
+            return code.evaluateCompleteWith(c, on);
+        } catch(ControlFlow.Return e) {
+            if(e.context == c) {
+                return e.getValue();
+            } else {
+                throw e;
+            }
+        }
+    }
+
+    @Override
     public Object activate(final IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
         if(code == null) {
             IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
@@ -185,6 +276,53 @@ public class DefaultMacro extends IokeData implements Named, Inspectable, Associ
         c.setCell("currentMessage", message);
         c.setCell("surroundingContext", context);
         c.setCell("call", context.runtime.newCallFrom(c, message, context, IokeObject.as(on)));
+
+        try {
+            return code.evaluateCompleteWith(c, on);
+        } catch(ControlFlow.Return e) {
+            if(e.context == c) {
+                return e.getValue();
+            } else {
+                throw e;
+            }
+        }
+    }
+
+    @Override
+    public Object activateWithData(final IokeObject self, IokeObject context, IokeObject message, Object on, Map<String, Object> data) throws ControlFlow {
+        if(code == null) {
+            IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
+                                                                         message, 
+                                                                         context, 
+                                                                         "Error", 
+                                                                         "Invocation",
+                                                                         "NotActivatable")).mimic(message, context);
+            condition.setCell("message", message);
+            condition.setCell("context", context);
+            condition.setCell("receiver", on);
+            condition.setCell("method", self);
+            condition.setCell("report", context.runtime.newText("You tried to activate a method without any code - did you by any chance activate the DefaultMacro kind by referring to it without wrapping it inside a call to cell?"));
+            context.runtime.errorCondition(condition);
+            return null;
+        }
+
+        IokeObject c = context.runtime.locals.mimic(message, context);
+        c.setCell("self", on);
+        c.setCell("@", on);
+        c.registerMethod(c.runtime.newJavaMethod("will return the currently executing macro receiver", new JavaMethod.WithNoArguments("@@") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                    return self;
+                }
+            }));
+        c.setCell("currentMessage", message);
+        c.setCell("surroundingContext", context);
+        c.setCell("call", context.runtime.newCallFrom(c, message, context, IokeObject.as(on)));
+        for(Map.Entry<String, Object> d : data.entrySet()) {
+            String s = d.getKey();
+            c.setCell(s.substring(0, s.length()-1), d.getValue());
+        }
 
         try {
             return code.evaluateCompleteWith(c, on);

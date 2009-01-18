@@ -800,6 +800,18 @@ public class IokeObject {
         return data.activate(this, context, message, on);
     }
 
+    public Object activateWithData(IokeObject context, IokeObject message, Object on, Map<String, Object> d1) throws ControlFlow {
+        return data.activateWithData(this, context, message, on, d1);
+    }
+
+    public Object activateWithCall(IokeObject context, IokeObject message, Object on, Object c) throws ControlFlow {
+        return data.activateWithCall(this, context, message, on, c);
+    }
+
+    public Object activateWithCallAndData(IokeObject context, IokeObject message, Object on, Object c, Map<String, Object> d1) throws ControlFlow {
+        return data.activateWithCallAndData(this, context, message, on, c, d1);
+    }
+
     @Override
     public boolean equals(Object other) {
         return isEqualTo(other);
