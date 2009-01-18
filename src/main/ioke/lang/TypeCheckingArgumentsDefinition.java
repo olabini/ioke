@@ -62,6 +62,14 @@ public class TypeCheckingArgumentsDefinition extends DefaultArgumentsDefinition 
         return convertToMimic(receiverMustMimic, on, message, context);
     }
 
+    public static TypeCheckingArgumentsDefinition empty() {
+        return emptyButReceiverMustMimic(null);
+    }
+
+    public static TypeCheckingArgumentsDefinition emptyButReceiverMustMimic(Object mimic) {
+        return new TypeCheckingArgumentsDefinition(new ArrayList<Argument>(), new ArrayList<String>(), null, null, 0, 0, false, new ArrayList<Object>(), mimic);
+    }
+    
     public static class Builder extends DefaultArgumentsDefinition.Builder {
         private List<Object> mustMimic = new ArrayList<Object>();
         private Object receiverMustMimic;
