@@ -625,7 +625,15 @@ describe(DefaultBehavior,
           accesses should == [:two, :one]
         )
 
-        it("should signal a condition if no such advice could be found")
+        it("should signal a condition if no such advice could be found",
+          x = Origin mimic do(
+            foo = 14)
+          fn(x before(:foo) remove(:someone)) should signal(Condition Error NoSuchAdvice)
+          x before(:foo) << fn()
+          fn(x before(:foo) remove(:someone)) should signal(Condition Error NoSuchAdvice)
+          x before(:foo) add(:anotherName, fn)
+          fn(x before(:foo) remove(:someone)) should signal(Condition Error NoSuchAdvice)
+        )
 
         it("should not touch unnamed advice",
           x = Origin mimic do(
@@ -655,7 +663,22 @@ describe(DefaultBehavior,
           accesses should == [:three, :one]
         )
 
-        it("should only remove the named advice from the specific point cut")
+        it("should only remove the named advice from the specific point cut",
+          x = Origin mimic do(
+            foo = 14
+            bar = 13)
+          accesses = []
+          x before(:foo, :bar) add(:someone, lecro(accesses << [:one, call message name]))
+          x before(:foo, :bar) add(:someone, lecro(accesses << [:two, call message name]))
+          x before(:foo, :bar) add(:someone, lecro(accesses << [:three, call message name]))
+
+          x before(:foo) remove(:someone)
+
+          x foo
+          x bar
+
+          accesses should == [[:two, :foo], [:one, :foo], [:three, :bar], [:two, :bar], [:one, :bar]]
+        )
       )
     )
 

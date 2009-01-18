@@ -72,7 +72,7 @@ DefaultBehavior Aspects Pointcut addAdviceOnCell = method(cellName, advice, advi
           call resendToValue(@@ cell(:primary)))))
   )
 
-  cell(:theMacro) pointCut = self
+  cell(:theMacro) pointcut = self
   cell(:theMacro) advice = cell(:advice)
   cell(:theMacro) primary = cell(:primary)
   cell(:theMacro) documentation = cell(:primary) documentation
@@ -101,10 +101,12 @@ DefaultBehavior Aspects Pointcut add = method(name, advice,
   self
 )
 
+Condition Error NoSuchAdvice = Condition Error mimic
+
 DefaultBehavior Aspects Pointcut removeFirstNamedAdvice = method(cellName, name, 
   currVal = self cell(:receiver) cell(cellName)
   while(advice?(cell(:currVal)),
-    if(cell(:currVal) cell?(:adviceName) && cell(:currVal) adviceName == name,
+    if(cell(:currVal) cell?(:adviceName) && cell(:currVal) adviceName == name && cell(:currVal) pointcut type == self type,
       if(cell(:currVal) cell?(:outerAdvice),
         outer = cell(:currVal) cell(:outerAdvice)
         cell(:outer) primary = cell(:currVal) cell(:primary)
@@ -117,6 +119,9 @@ DefaultBehavior Aspects Pointcut removeFirstNamedAdvice = method(cellName, name,
     
     currVal = cell(:currVal) cell(:primary)
   )
+
+  bind(restart(ignore, fn),
+    error!(Condition Error NoSuchAdvice, cellName: cellName, adviceName: name))
 )
 
 DefaultBehavior Aspects Pointcut remove = method(name, 
