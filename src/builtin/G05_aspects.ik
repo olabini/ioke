@@ -113,6 +113,8 @@ DefaultBehavior Aspects Pointcut removeFirstNamedAdvice = method(cellName, name,
         if(advice?(cell(:currVal) cell(:primary)),
           cell(:currVal) cell(:primary) outerAdvice = cell(:outer)),
         self cell(:receiver) cell(cellName) = cell(:currVal) cell(:primary)
+        if(advice?(cell(:currVal) cell(:primary)),
+          cell(:currVal) cell(:primary) removeCell!(:outerAdvice))
       )
       return
     )
@@ -124,6 +126,25 @@ DefaultBehavior Aspects Pointcut removeFirstNamedAdvice = method(cellName, name,
     error!(Condition Error NoSuchAdvice, cellName: cellName, adviceName: name))
 )
 
+DefaultBehavior Aspects Pointcut removeAllNamedAdvice = method(cellName, name, 
+  currVal = self cell(:receiver) cell(cellName)
+  while(advice?(cell(:currVal)),
+    if(cell(:currVal) cell?(:adviceName) && cell(:currVal) adviceName == name && cell(:currVal) pointcut type == self type,
+      if(cell(:currVal) cell?(:outerAdvice),
+        outer = cell(:currVal) cell(:outerAdvice)
+        cell(:outer) primary = cell(:currVal) cell(:primary)
+        if(advice?(cell(:currVal) cell(:primary)),
+          cell(:currVal) cell(:primary) outerAdvice = cell(:outer)),
+        self cell(:receiver) cell(cellName) = cell(:currVal) cell(:primary)
+        if(advice?(cell(:currVal) cell(:primary)),
+          cell(:currVal) cell(:primary) removeCell!(:outerAdvice))
+      )
+    )
+    
+    currVal = cell(:currVal) cell(:primary)
+  )
+)
+
 DefaultBehavior Aspects Pointcut remove = method(name, 
   joins = set(*joinPoints)
   addToJoins(self cell(:matching), joins)
@@ -131,5 +152,15 @@ DefaultBehavior Aspects Pointcut remove = method(name,
   joins remove!(:kind)
 
   joins each(cellName, removeFirstNamedAdvice(cellName, name))
+  self
+)
+
+DefaultBehavior Aspects Pointcut removeAll = method(name, 
+  joins = set(*joinPoints)
+  addToJoins(self cell(:matching), joins)
+  removeFromJoins(self cell(:except), joins)
+  joins remove!(:kind)
+
+  joins each(cellName, removeAllNamedAdvice(cellName, name))
   self
 )
