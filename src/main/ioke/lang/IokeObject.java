@@ -781,7 +781,7 @@ public class IokeObject {
     }
 
     public Object getOrActivate(IokeObject context, IokeObject message, Object on) throws ControlFlow {
-        if(isActivatable()) {
+        if(isActivatable() || ((data instanceof AssociatedCode) && message.getArguments().size() > 0)) {
             return activate(context, message, on);
         } else {
             return this;
