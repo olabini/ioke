@@ -1,7 +1,11 @@
 
-- make stuff really activatable
-- fn should be activatable if given arguments
 - look at linked maps for internal representation
+
+things to do before release
+- update guide about:
+- generate new doks
+
+
 
 - think about Java integration
 - think about concurrency

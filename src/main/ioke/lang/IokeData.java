@@ -435,8 +435,18 @@ public abstract class IokeData {
     }
 
     public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-        report(self, context, message, "activate");
-        return context.runtime.nil;
+        Object cell = self.findCell(message, context, "activate");
+        if(cell == context.runtime.nul) {
+            report(self, context, message, "activate");
+            return context.runtime.nil;
+        } else {
+            IokeObject newMessage = Message.deepCopy(message);
+            newMessage.getArguments().clear();
+            newMessage.getArguments().add(context.runtime.createMessage(Message.wrap(context)));
+            newMessage.getArguments().add(context.runtime.createMessage(Message.wrap(message)));
+            newMessage.getArguments().add(context.runtime.createMessage(Message.wrap(IokeObject.as(on))));
+            return IokeObject.getOrActivate(cell, context, newMessage, self);
+        }
     }
 
     public Object activateWithData(IokeObject self, IokeObject context, IokeObject message, Object on, Map<String, Object> c) throws ControlFlow {
