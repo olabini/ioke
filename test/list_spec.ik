@@ -683,6 +683,16 @@ describe(List,
       x = [1,2,3]
       ([4,5,6] + x) should == [4,5,6,1,2,3]
     )
+
+    it("should validate type of receiver",
+      x = Origin mimic
+      x cell("+") = List cell("+")
+      fn(x + [3]) should signal(Condition Error Type IncorrectType)
+    )
+
+    it("should validate type of argument",
+      fn([1,2,3] + 3) should signal(Condition Error Type IncorrectType)
+    )
   )
 
   describe("-",

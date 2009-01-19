@@ -5,6 +5,8 @@ package ioke.lang;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import ioke.lang.exceptions.ControlFlow;
 
@@ -64,12 +66,18 @@ public abstract class JavaMethod extends Method {
 
     @Override
     public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+        return activate(self, on, null, null, context, message);
+    }
+
+    public Object activate(IokeObject self, Object on, List<Object> args,
+            Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
         IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
-                                                                     message, 
-                                                                     context, 
-                                                                     "Error", 
-                                                                     "Invocation",
-                                                                     "NotActivatable")).mimic(message, context);
+                message, 
+                context, 
+                "Error", 
+                "Invocation",
+                "NotActivatable")).mimic(message, context);
+        
         condition.setCell("message", message);
         condition.setCell("context", context);
         condition.setCell("receiver", on);
@@ -79,7 +87,7 @@ public abstract class JavaMethod extends Method {
 
         return self.runtime.nil;
     }
-
+    
     private String getDominantClassName() {
         String name = getClass().getName();
         int dollar = name.indexOf("$");
