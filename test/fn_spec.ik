@@ -189,6 +189,11 @@ describe(LexicalBlock,
     fn(twoargs(1,2,3)) should signal(Condition Error Invocation TooManyArguments)
   )
 
+  it("should execute a non-activatable block if given arguments",
+    x = fn(x, x+42+4)
+    x(10) should == 56
+  )
+
   it("should report arity failures with optional arguments", 
     oneopt       = fnx(x 1, nil)
     twoopt       = fnx(x 1, y 2, nil)
