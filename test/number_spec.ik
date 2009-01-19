@@ -166,6 +166,12 @@ describe(Number,
       it("should return nil if it can't be converted and there is no way of comparing",
         (1 <=> Origin mimic) should be nil
       )
+
+      it("should validate type of receiver",
+        x = Origin mimic
+        x cell("<=>") = Number Rational cell("<=>")
+        fn(x <=> 4) should signal(Condition Error Type IncorrectType)
+      )
     )
 
     describe("-", 
@@ -216,6 +222,12 @@ describe(Number,
       
       it("should signal a condition if it can't be converted and there is no way of subtracting",
         fn(1 - Origin mimic) should signal(Condition Error Type IncorrectType)
+      )
+
+      it("should validate type of receiver",
+        x = Origin mimic
+        x cell("-") = Number Rational cell("-")
+        fn(x - 4) should signal(Condition Error Type IncorrectType)
       )
     )
 
@@ -271,6 +283,12 @@ describe(Number,
       it("should signal a condition if it can't be converted and there is no way of adding",
         fn(1 + Origin mimic) should signal(Condition Error Type IncorrectType)
       )
+
+      it("should validate type of receiver",
+        x = Origin mimic
+        x cell("+") = Number Rational cell("+")
+        fn(x + 4) should signal(Condition Error Type IncorrectType)
+      )
     )
 
     describe("*", 
@@ -312,6 +330,12 @@ describe(Number,
       it("should signal a condition if it can't be converted and there is no way of multiplying",
         fn(1 * Origin mimic) should signal(Condition Error Type IncorrectType)
       )
+
+      it("should validate type of receiver",
+        x = Origin mimic
+        x cell("*") = Number Rational cell("*")
+        fn(x * 4) should signal(Condition Error Type IncorrectType)
+      )
     )
 
     describe("**", 
@@ -340,6 +364,12 @@ describe(Number,
 
       it("should signal a condition if it isn't a rational and can't be converted", 
         fn(1 ** Origin mimic) should signal(Condition Error Type IncorrectType)
+      )
+
+      it("should validate type of receiver",
+        x = Origin mimic
+        x cell("**") = Number Rational cell("**")
+        fn(x ** 4) should signal(Condition Error Type IncorrectType)
       )
     )
     
@@ -401,6 +431,12 @@ describe(Number,
       it("should signal a condition if it isn't a number and can't be converted", 
         fn(1 / Origin mimic) should signal(Condition Error Type IncorrectType)
       )
+
+      it("should validate type of receiver",
+        x = Origin mimic
+        x cell("/") = Number Rational cell("/")
+        fn(x / 4) should signal(Condition Error Type IncorrectType)
+      )
     )
 
     describe("==", 
@@ -447,6 +483,12 @@ describe(Number,
         2 should not == "foo"
         2 should not == :blarg
       )
+
+      it("should validate type of receiver",
+        x = Origin mimic
+        x cell("==") = Number Rational cell("==")
+        fn(x == 4) should signal(Condition Error Type IncorrectType)
+      )
     )
     
     describe("asText", 
@@ -476,6 +518,22 @@ describe(Number,
         (-65536) asText should == "-65536"
         (-1) asText should == "-1"
         (-645654) asText should == "-645654"
+      )
+    )
+
+    describe("inspect",
+      it("should validate type of receiver",
+        x = Origin mimic
+        x cell("inspect") = Number Rational cell("inspect")
+        fn(x inspect) should signal(Condition Error Type IncorrectType)
+      )
+    )
+
+    describe("notice",
+      it("should validate type of receiver",
+        x = Origin mimic
+        x cell("notice") = Number Rational cell("notice")
+        fn(x notice) should signal(Condition Error Type IncorrectType)
       )
     )
   )
@@ -563,6 +621,12 @@ describe(Number,
         2.1 should not == "foo"
         2.1 should not == :blarg
       )
+
+      it("should validate type of receiver",
+        x = Origin mimic
+        x cell("==") = Number Decimal cell("==")
+        fn(x == 2) should signal(Condition Error Type IncorrectType)
+      )
     )
     
     describe("<=>", 
@@ -611,6 +675,12 @@ describe(Number,
       
       it("should return nil if it can't be converted and there is no way of comparing", 
         (1.0 <=> Origin mimic) should be nil
+      )
+
+      it("should validate type of receiver",
+        x = Origin mimic
+        x cell("<=>") = Number Decimal cell("<=>")
+        fn(x <=> 4) should signal(Condition Error Type IncorrectType)
       )
     )
 
@@ -661,6 +731,12 @@ describe(Number,
 
       it("should signal a condition if it isn't a number and can't be converted", 
         fn(1 - Origin mimic) should signal(Condition Error Type IncorrectType)
+      )
+
+      it("should validate type of receiver",
+        x = Origin mimic
+        x cell("-") = Number Decimal cell("-")
+        fn(x - 4) should signal(Condition Error Type IncorrectType)
       )
     )
 
@@ -716,6 +792,12 @@ describe(Number,
       it("should signal a condition if it isn't a decimal and can't be converted", 
         fn(1.0 + Origin mimic) should signal(Condition Error Type IncorrectType)
       )
+
+      it("should validate type of receiver",
+        x = Origin mimic
+        x cell("+") = Number Decimal cell("+")
+        fn(x + 4) should signal(Condition Error Type IncorrectType)
+      )
     )
     
     describe("*", 
@@ -756,6 +838,12 @@ describe(Number,
       
       it("should signal a condition if it isn't a decimal and can't be converted", 
         fn(1.0 * Origin mimic) should signal(Condition Error Type IncorrectType)
+      )
+
+      it("should validate type of receiver",
+        x = Origin mimic
+        x cell("*") = Number Decimal cell("*")
+        fn(x * 4) should signal(Condition Error Type IncorrectType)
       )
     )
     
@@ -799,6 +887,12 @@ describe(Number,
 
       it("should signal a condition if it isn't a decimal and can't be converted", 
         fn(1.0 / Origin mimic) should signal(Condition Error Type IncorrectType)
+      )
+
+      it("should validate type of receiver",
+        x = Origin mimic
+        x cell("/") = Number Decimal cell("/")
+        fn(x / 4) should signal(Condition Error Type IncorrectType)
       )
     )
   )    
@@ -849,6 +943,12 @@ describe(Number,
       it("should signal a condition if it isn't a number and can't be converted", 
         fn(1 % Origin mimic) should signal(Condition Error Type IncorrectType)
       )
+
+      it("should validate type of receiver",
+        x = Origin mimic
+        x cell("%") = Number Integer cell("%")
+        fn(x % 4) should signal(Condition Error Type IncorrectType)
+      )
     )
     
     describe("times", 
@@ -868,6 +968,12 @@ describe(Number,
       it("should execute the block the same number of times as the receiver", 
         x = 0. 12 times(x++). x should == 12
         x = 0. 343 times(x++). x should == 343
+      )
+
+      it("should validate type of receiver",
+        x = Origin mimic
+        x cell("times") = Number Integer cell("times")
+        fn(x times("foo")) should signal(Condition Error Type IncorrectType)
       )
     )
 
@@ -898,6 +1004,12 @@ describe(Number,
       it("should signal a condition if it isn't a number and can't be converted", 
         fn(1 & Origin mimic) should signal(Condition Error Type IncorrectType)
       )
+
+      it("should validate type of receiver",
+        x = Origin mimic
+        x cell("&") = Number Integer cell("&")
+        fn(x & 4) should signal(Condition Error Type IncorrectType)
+      )
     )
 
     describe("|", 
@@ -924,6 +1036,12 @@ describe(Number,
 
       it("should signal a condition if it isn't a number and can't be converted", 
         fn(1 | Origin mimic) should signal(Condition Error Type IncorrectType)
+      )
+
+      it("should validate type of receiver",
+        x = Origin mimic
+        x cell("|") = Number Integer cell("|")
+        fn(x | 4) should signal(Condition Error Type IncorrectType)
       )
     )
     
@@ -953,6 +1071,12 @@ describe(Number,
       it("should signal a condition if it isn't a number and can't be converted", 
         fn(1 ^ Origin mimic) should signal(Condition Error Type IncorrectType)
       )
+
+      it("should validate type of receiver",
+        x = Origin mimic
+        x cell("^") = Number Integer cell("^")
+        fn(x ^ 4) should signal(Condition Error Type IncorrectType)
+      )
     )
 
     describe(">>", 
@@ -981,6 +1105,12 @@ describe(Number,
       it("should signal a condition if it isn't a number and can't be converted", 
         fn(1 >> Origin mimic) should signal(Condition Error Type IncorrectType)
       )
+
+      it("should validate type of receiver",
+        x = Origin mimic
+        x cell(">>") = Number Integer cell(">>")
+        fn(x >> 4) should signal(Condition Error Type IncorrectType)
+      )
     )
 
     describe("<<", 
@@ -1006,6 +1136,12 @@ describe(Number,
 
       it("should signal a condition if it isn't a number and can't be converted", 
         fn(1 << Origin mimic) should signal(Condition Error Type IncorrectType)
+      )
+
+      it("should validate type of receiver",
+        x = Origin mimic
+        x cell("<<") = Number Integer cell("<<")
+        fn(x << 4) should signal(Condition Error Type IncorrectType)
       )
     )
 
@@ -1034,6 +1170,12 @@ describe(Number,
         (-10) succ should == -9
         (-23534634654367) succ should == -23534634654366
       )
+
+      it("should validate type of receiver",
+        x = Origin mimic
+        x cell("succ") = Number Integer cell("succ")
+        fn(x succ) should signal(Condition Error Type IncorrectType)
+      )
     )
 
     describe("pred", 
@@ -1061,6 +1203,28 @@ describe(Number,
         (-2) pred should == -3
         (-10) pred should == -11
         (-23534634654367) pred should == -23534634654368
+      )
+
+      it("should validate type of receiver",
+        x = Origin mimic
+        x cell("pred") = Number Integer cell("pred")
+        fn(x pred) should signal(Condition Error Type IncorrectType)
+      )
+    )
+
+    describe("inspect",
+      it("should validate type of receiver",
+        x = Origin mimic
+        x cell("inspect") = Number Decimal cell("inspect")
+        fn(x inspect) should signal(Condition Error Type IncorrectType)
+      )
+    )
+
+    describe("notice",
+      it("should validate type of receiver",
+        x = Origin mimic
+        x cell("notice") = Number Decimal cell("notice")
+        fn(x notice) should signal(Condition Error Type IncorrectType)
       )
     )
   )
