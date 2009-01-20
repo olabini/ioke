@@ -27,6 +27,10 @@ describe("Dict",
     it("should return true if the key is there",
       {foo: 123} key?(:foo) should be true
     )
+
+    it("should validate type of receiver",
+      Dict should checkReceiverTypeOn(:key?, :foo)
+    )
   )
   
   describe("==", 
@@ -102,6 +106,10 @@ describe("Dict",
       {foo: 123, 321 => "foo", "bax" => 42} at(321) should == "foo"
       {foo: 123, 321 => "foo", "bax" => 42} at("bax") should == 42
     )
+
+    it("should validate type of receiver",
+      Dict should checkReceiverTypeOn(:at, :foo)
+    )
   )
   
   describe("merge",
@@ -128,6 +136,10 @@ describe("Dict",
       {foo: "bar", qux: 16} merge(qux: 42, {abc: 15}) should == {foo: "bar", qux: 42, abc: 15}
       {foo: "bar", qux: 16} merge({abc: 15}, qux: 42) should == {foo: "bar", qux: 42, abc: 15}
     )
+
+    it("should validate type of receiver",
+      Dict should checkReceiverTypeOn(:merge, {})
+    )
   )
 
   describe("withDefault",
@@ -141,6 +153,10 @@ describe("Dict",
       x = {} withDefault(42)
       x[:blarg] should == 42
       x should == {}
+    )
+
+    it("should validate type of receiver",
+      Dict should checkReceiverTypeOn(:withDefault, 42)
     )
   )
 
@@ -160,6 +176,10 @@ describe("Dict",
       {foo: 123, 321 => "foo", "bax" => 42}[321] should == "foo"
       {foo: 123, 321 => "foo", "bax" => 42}["bax"] should == 42
     )
+
+    it("should validate type of receiver",
+      Dict should checkReceiverTypeOn(:"[]", :foo)
+    )
   )
   
   describe("[]=", 
@@ -176,6 +196,10 @@ describe("Dict",
     it("should return the value set", 
       ({foo: 6666}[42] = :bar) should == :bar
     )
+
+    it("should validate type of receiver",
+      Dict should checkReceiverTypeOn(:"[]=", :foo, :bar)
+    )
   )
   
   describe("keys", 
@@ -191,6 +215,10 @@ describe("Dict",
 
     it("should return all the keys", 
       {foo: 1, bar: 2, 3 => :quux} keys should == set(:foo, :bar, 3)
+    )
+
+    it("should validate type of receiver",
+      Dict should checkReceiverTypeOn(:keys)
     )
   )
 
@@ -237,6 +265,10 @@ describe("Dict",
       y = []
       {one: 1, two: 2, three: 3, four: 4} each(i, x, y << i)
       y should == [0,1,2,3]
+    )
+
+    it("should validate type of receiver",
+      Dict should checkReceiverTypeOn(:each, "foo")
     )
   )
 
