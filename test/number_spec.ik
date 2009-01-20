@@ -168,9 +168,7 @@ describe(Number,
       )
 
       it("should validate type of receiver",
-        x = Origin mimic
-        x cell("<=>") = Number Rational cell("<=>")
-        fn(x <=> 4) should signal(Condition Error Type IncorrectType)
+        Number Rational should checkReceiverTypeOn(:"<=>", 4)
       )
     )
 
@@ -225,9 +223,7 @@ describe(Number,
       )
 
       it("should validate type of receiver",
-        x = Origin mimic
-        x cell("-") = Number Rational cell("-")
-        fn(x - 4) should signal(Condition Error Type IncorrectType)
+        Number Rational should checkReceiverTypeOn(:"-", 4)
       )
     )
 
@@ -285,9 +281,7 @@ describe(Number,
       )
 
       it("should validate type of receiver",
-        x = Origin mimic
-        x cell("+") = Number Rational cell("+")
-        fn(x + 4) should signal(Condition Error Type IncorrectType)
+        Number Rational should checkReceiverTypeOn(:"+", 4)
       )
     )
 
@@ -332,9 +326,7 @@ describe(Number,
       )
 
       it("should validate type of receiver",
-        x = Origin mimic
-        x cell("*") = Number Rational cell("*")
-        fn(x * 4) should signal(Condition Error Type IncorrectType)
+        Number Rational should checkReceiverTypeOn(:"*", 4)
       )
     )
 
@@ -367,9 +359,7 @@ describe(Number,
       )
 
       it("should validate type of receiver",
-        x = Origin mimic
-        x cell("**") = Number Rational cell("**")
-        fn(x ** 4) should signal(Condition Error Type IncorrectType)
+        Number Rational should checkReceiverTypeOn(:"**", 4)
       )
     )
     
@@ -433,9 +423,7 @@ describe(Number,
       )
 
       it("should validate type of receiver",
-        x = Origin mimic
-        x cell("/") = Number Rational cell("/")
-        fn(x / 4) should signal(Condition Error Type IncorrectType)
+        Number Rational should checkReceiverTypeOn(:"/", 4)
       )
     )
 
@@ -485,9 +473,7 @@ describe(Number,
       )
 
       it("should validate type of receiver",
-        x = Origin mimic
-        x cell("==") = Number Rational cell("==")
-        fn(x == 4) should signal(Condition Error Type IncorrectType)
+        Number Rational should checkReceiverTypeOn(:"==", 4)
       )
     )
     
@@ -523,6 +509,7 @@ describe(Number,
 
     describe("inspect",
       it("should validate type of receiver",
+        Number Rational should checkReceiverTypeOn(:"inspect")
         x = Origin mimic
         x cell("inspect") = Number Rational cell("inspect")
         fn(x inspect) should signal(Condition Error Type IncorrectType)
@@ -531,9 +518,7 @@ describe(Number,
 
     describe("notice",
       it("should validate type of receiver",
-        x = Origin mimic
-        x cell("notice") = Number Rational cell("notice")
-        fn(x notice) should signal(Condition Error Type IncorrectType)
+        Number Rational should checkReceiverTypeOn(:"notice")
       )
     )
   )
@@ -623,9 +608,7 @@ describe(Number,
       )
 
       it("should validate type of receiver",
-        x = Origin mimic
-        x cell("==") = Number Decimal cell("==")
-        fn(x == 2) should signal(Condition Error Type IncorrectType)
+        Number Decimal should checkReceiverTypeOn(:"==", 2)
       )
     )
     
@@ -678,9 +661,7 @@ describe(Number,
       )
 
       it("should validate type of receiver",
-        x = Origin mimic
-        x cell("<=>") = Number Decimal cell("<=>")
-        fn(x <=> 4) should signal(Condition Error Type IncorrectType)
+        Number Decimal should checkReceiverTypeOn(:"<=>", 2)
       )
     )
 
@@ -734,9 +715,7 @@ describe(Number,
       )
 
       it("should validate type of receiver",
-        x = Origin mimic
-        x cell("-") = Number Decimal cell("-")
-        fn(x - 4) should signal(Condition Error Type IncorrectType)
+        Number Decimal should checkReceiverTypeOn(:"-", 2)
       )
     )
 
@@ -794,9 +773,7 @@ describe(Number,
       )
 
       it("should validate type of receiver",
-        x = Origin mimic
-        x cell("+") = Number Decimal cell("+")
-        fn(x + 4) should signal(Condition Error Type IncorrectType)
+        Number Decimal should checkReceiverTypeOn(:"+", 2)
       )
     )
     
@@ -841,9 +818,7 @@ describe(Number,
       )
 
       it("should validate type of receiver",
-        x = Origin mimic
-        x cell("*") = Number Decimal cell("*")
-        fn(x * 4) should signal(Condition Error Type IncorrectType)
+        Number Decimal should checkReceiverTypeOn(:"*", 2)
       )
     )
     
@@ -890,9 +865,7 @@ describe(Number,
       )
 
       it("should validate type of receiver",
-        x = Origin mimic
-        x cell("/") = Number Decimal cell("/")
-        fn(x / 4) should signal(Condition Error Type IncorrectType)
+        Number Decimal should checkReceiverTypeOn(:"/", 2)
       )
     )
   )    
@@ -945,9 +918,7 @@ describe(Number,
       )
 
       it("should validate type of receiver",
-        x = Origin mimic
-        x cell("%") = Number Integer cell("%")
-        fn(x % 4) should signal(Condition Error Type IncorrectType)
+        Number Integer should checkReceiverTypeOn(:"%", 2)
       )
     )
     
@@ -971,9 +942,7 @@ describe(Number,
       )
 
       it("should validate type of receiver",
-        x = Origin mimic
-        x cell("times") = Number Integer cell("times")
-        fn(x times("foo")) should signal(Condition Error Type IncorrectType)
+        Number Integer should checkReceiverTypeOn(:"times", "foo")
       )
     )
 
@@ -1006,9 +975,7 @@ describe(Number,
       )
 
       it("should validate type of receiver",
-        x = Origin mimic
-        x cell("&") = Number Integer cell("&")
-        fn(x & 4) should signal(Condition Error Type IncorrectType)
+        Number Integer should checkReceiverTypeOn(:"&", 4)
       )
     )
 
@@ -1039,9 +1006,7 @@ describe(Number,
       )
 
       it("should validate type of receiver",
-        x = Origin mimic
-        x cell("|") = Number Integer cell("|")
-        fn(x | 4) should signal(Condition Error Type IncorrectType)
+        Number Integer should checkReceiverTypeOn(:"|", 4)
       )
     )
     
@@ -1073,9 +1038,7 @@ describe(Number,
       )
 
       it("should validate type of receiver",
-        x = Origin mimic
-        x cell("^") = Number Integer cell("^")
-        fn(x ^ 4) should signal(Condition Error Type IncorrectType)
+        Number Integer should checkReceiverTypeOn(:"^", 4)
       )
     )
 
@@ -1107,9 +1070,7 @@ describe(Number,
       )
 
       it("should validate type of receiver",
-        x = Origin mimic
-        x cell(">>") = Number Integer cell(">>")
-        fn(x >> 4) should signal(Condition Error Type IncorrectType)
+        Number Integer should checkReceiverTypeOn(:">>", 4)
       )
     )
 
@@ -1139,9 +1100,7 @@ describe(Number,
       )
 
       it("should validate type of receiver",
-        x = Origin mimic
-        x cell("<<") = Number Integer cell("<<")
-        fn(x << 4) should signal(Condition Error Type IncorrectType)
+        Number Integer should checkReceiverTypeOn(:"<<", 4)
       )
     )
 
@@ -1172,9 +1131,7 @@ describe(Number,
       )
 
       it("should validate type of receiver",
-        x = Origin mimic
-        x cell("succ") = Number Integer cell("succ")
-        fn(x succ) should signal(Condition Error Type IncorrectType)
+        Number Integer should checkReceiverTypeOn(:"succ")
       )
     )
 
@@ -1206,25 +1163,19 @@ describe(Number,
       )
 
       it("should validate type of receiver",
-        x = Origin mimic
-        x cell("pred") = Number Integer cell("pred")
-        fn(x pred) should signal(Condition Error Type IncorrectType)
+        Number Integer should checkReceiverTypeOn(:"pred")
       )
     )
 
     describe("inspect",
       it("should validate type of receiver",
-        x = Origin mimic
-        x cell("inspect") = Number Decimal cell("inspect")
-        fn(x inspect) should signal(Condition Error Type IncorrectType)
+        Number Integer should checkReceiverTypeOn(:inspect)
       )
     )
 
     describe("notice",
       it("should validate type of receiver",
-        x = Origin mimic
-        x cell("notice") = Number Decimal cell("notice")
-        fn(x notice) should signal(Condition Error Type IncorrectType)
+        Number Integer should checkReceiverTypeOn(:notice)
       )
     )
   )
