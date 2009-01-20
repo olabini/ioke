@@ -50,6 +50,33 @@ public class ReflectionBehavior {
                 }
             }));
 
+        obj.registerMethod(runtime.newJavaMethod("takes the name of a message to send, and the arguments to give it. send should generally behave exactly as if you had sent the message itself - except that you can give a variable containing the name.", new JavaMethod("send") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("messageName")
+                    .withRestUnevaluated("arguments")
+                    .withKeywordRestUnevaluated("keywordArguments")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
+                    final Runtime runtime = context.runtime;
+                    Object _name = message.getEvaluatedArgument(0, context);
+                    String name = Text.getText(runtime.asText.sendTo(context, _name));
+
+                    IokeObject newMessage = Message.deepCopy(message);
+                    newMessage.getArguments().remove(0);
+                    Message.setName(newMessage, name);
+                    return newMessage.sendTo(context, on);
+                }
+            }));
+
         obj.registerMethod(runtime.newJavaMethod("returns false if the left hand side is equal to the right hand side. exactly what this means depend on the object. the default behavior of Ioke objects is to only be equal if they are the same instance.", new JavaMethod("!=") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
