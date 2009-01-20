@@ -1006,6 +1006,28 @@ describe(DefaultBehavior,
       x should not be frozen
     )
   )
+  
+  describe("send",
+    it("should invoke the method named",
+      x = Origin mimic do(
+        foo = method(self called = true))
+      x send(:foo)
+      x called should be true
+    )
+
+    it("should pass along the arguments sent",
+      x = Origin mimic do(
+        foo = method(+args, +:kargs, self called = [args, kargs]))
+      x send(:foo, 1, blah: :foo, "123", :foo, max: 32+15)
+      x called should == [[1, "123", :foo], {blah: :foo, max: 47}]
+    )
+
+    it("should return the result of the call",
+      x = Origin mimic do(
+        foo = method(42*3))
+      x send(:foo) should == 126
+    )
+  )
 
   describe("'",
     it("should return the things inside unevaluated",

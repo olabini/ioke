@@ -575,6 +575,13 @@ public class DefaultArgumentsDefinition {
             return this;
         }
 
+        public Builder withKeywordRestUnevaluated(String name) {
+            krest = name;
+            restUneval = true;
+
+            return this;
+        }
+
         public Builder withRequiredPositional(String name) {
             arguments.add(new Argument(name));
             min++;
