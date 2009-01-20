@@ -66,7 +66,10 @@ public abstract class JavaMethod extends Method {
 
     @Override
     public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-        return activate(self, on, null, null, context, message);
+        List<Object> args = new ArrayList<Object>();
+        Map<String, Object> keywords = new HashMap<String, Object>();
+        getArguments().getEvaluatedArguments(context, message, on, args, keywords);
+        return activate(self, on, args, keywords, context, message);
     }
 
     public Object activate(IokeObject self, Object on, List<Object> args,
