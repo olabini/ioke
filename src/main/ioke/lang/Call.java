@@ -46,9 +46,9 @@ public class Call extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns the ground of the place this call originated", new JavaMethod.WithNoArguments("ground") {
+        obj.registerMethod(runtime.newJavaMethod("returns the ground of the place this call originated", new TypeCheckingJavaMethod.WithNoArguments("ground", runtime.call) {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
 
                     return ((Call)IokeObject.data(on)).surroundingContext;
@@ -73,40 +73,38 @@ public class Call extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns the message that started this call", new JavaMethod.WithNoArguments("message") {
+        obj.registerMethod(runtime.newJavaMethod("returns the message that started this call", new TypeCheckingJavaMethod.WithNoArguments("message", runtime.call) {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
 
                     return ((Call)IokeObject.data(on)).message;
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns a list of the result of evaluating all the arguments to this call", new JavaMethod.WithNoArguments("evaluatedArguments") {
+        obj.registerMethod(runtime.newJavaMethod("returns a list of the result of evaluating all the arguments to this call", new TypeCheckingJavaMethod.WithNoArguments("evaluatedArguments", runtime.call) {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
 
                     return context.runtime.newList(((Call)IokeObject.data(on)).message.getEvaluatedArguments(((Call)IokeObject.data(on)).surroundingContext));
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("takes one evaluated text or symbol argument and resends the current message to that method/macro on the current receiver.", new JavaMethod("resendToMethod") {
-                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+        obj.registerMethod(runtime.newJavaMethod("takes one evaluated text or symbol argument and resends the current message to that method/macro on the current receiver.", new TypeCheckingJavaMethod("resendToMethod") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
+                    .receiverMustMimic(runtime.call)
                     .withRequiredPositional("cellName")
                     .getArguments();
 
                 @Override
-                public DefaultArgumentsDefinition getArguments() {
+                public TypeCheckingArgumentsDefinition getArguments() {
                     return ARGUMENTS;
                 }
 
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject mess, Object on) throws ControlFlow {
-                    List<Object> args = new ArrayList<Object>();
-                    getArguments().getEvaluatedArguments(context, mess, on, args, new HashMap<String, Object>());
-
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     Call c = (Call)IokeObject.data(on);
                     String name = Text.getText(runtime.asText.sendTo(context, args.get(0)));
                     IokeObject m = Message.copy(c.message);

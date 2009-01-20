@@ -7,12 +7,20 @@ describe(Call,
       x = macro(call ground)
       should == x
     )
+
+    it("should check the receiver type and signal an appropriate condition",
+      Call should checkReceiverTypeOn(:ground)
+    )
   )
 
   describe("message", 
     it("should return the message used to invoke this call", 
       x = macro(call message)
       x name should == :x
+    )
+
+    it("should check the receiver type and signal an appropriate condition",
+      Call should checkReceiverTypeOn(:message)
     )
   )
 
@@ -49,6 +57,10 @@ describe(Call,
       x(13+55, 18+18, 3-2)[1] should == 36
       x(13+55, 18+18, 3-2)[2] should == 1
     )
+
+    it("should check the receiver type and signal an appropriate condition",
+      Call should checkReceiverTypeOn(:evaluatedArguments)
+    )
   )
 
   describe("resendToMethod",  
@@ -60,6 +72,10 @@ describe(Call,
       x(1+w, w+w, w+3+w)[0] should == 14
       x(1+w, w+w, w+3+w)[1] should == 26
       x(1+w, w+w, w+3+w)[2] should == 29
+    )
+
+    it("should check the receiver type and signal an appropriate condition",
+      Call should checkReceiverTypeOn(:resendToMethod, :f)
     )
   )
 )
