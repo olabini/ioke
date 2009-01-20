@@ -3,8 +3,8 @@
  */
 package ioke.lang;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import ioke.lang.exceptions.ControlFlow;
 
@@ -45,50 +45,44 @@ public class Pair extends IokeData {
         obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Enumerable")), runtime.nul, runtime.nul);
         obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Comparing")), runtime.nul, runtime.nul);
 
-        obj.registerMethod(runtime.newJavaMethod("Returns the first value", new JavaMethod.WithNoArguments("first") {
+        obj.registerMethod(runtime.newJavaMethod("Returns the first value", new TypeCheckingJavaMethod.WithNoArguments("first", runtime.pair) {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return ((Pair)IokeObject.data(on)).first;
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("Returns the first value", new JavaMethod.WithNoArguments("key") {
+        obj.registerMethod(runtime.newJavaMethod("Returns the first value", new TypeCheckingJavaMethod.WithNoArguments("key", runtime.pair) {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return ((Pair)IokeObject.data(on)).first;
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("Returns the second value", new JavaMethod.WithNoArguments("second") {
+        obj.registerMethod(runtime.newJavaMethod("Returns the second value", new TypeCheckingJavaMethod.WithNoArguments("second", runtime.pair) {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return ((Pair)IokeObject.data(on)).second;
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("Returns the second value", new JavaMethod.WithNoArguments("value") {
+        obj.registerMethod(runtime.newJavaMethod("Returns the second value", new TypeCheckingJavaMethod.WithNoArguments("value", runtime.pair) {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return ((Pair)IokeObject.data(on)).second;
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("Returns a text inspection of the object", new JavaMethod.WithNoArguments("inspect") {
+        obj.registerMethod(runtime.newJavaMethod("Returns a text inspection of the object", new TypeCheckingJavaMethod.WithNoArguments("inspect", runtime.pair) {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return method.runtime.newText(Pair.getInspect(on));
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("Returns a brief text inspection of the object", new JavaMethod.WithNoArguments("notice") {
+        obj.registerMethod(runtime.newJavaMethod("Returns a brief text inspection of the object", new TypeCheckingJavaMethod.WithNoArguments("notice", runtime.pair) {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return method.runtime.newText(Pair.getNotice(on));
                 }
             }));
