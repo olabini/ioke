@@ -74,6 +74,12 @@ describe("Range",
       (-42...0) from should == -42
       (0...0) from should == 0
     )
+
+    it("should validate the type of receiver",
+      x = Origin mimic
+      x cell("from") = (0..0) cell("from")
+      fn(x from) should signal(Condition Error Type IncorrectType)
+    )
   )
 
   describe("it", 
