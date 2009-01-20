@@ -29,6 +29,10 @@ describe(Regexp,
         x = "foobar"
         #/oo/ match(x) target should be same(x)
       )
+
+      it("should validate type of receiver",
+        Regexp Match should checkReceiverTypeOn(:target)
+      )
     )
 
     describe("names",
@@ -41,6 +45,10 @@ describe(Regexp,
         #/({foo}bar)/ match("bar") names should == [:foo]
         #/({foo}bar)({quux}.)/ match("bar1") names should == [:foo, :quux]
         #/({foo}({bleg}.))({quux}.)/ match("ab") names should == [:foo, :bleg, :quux]
+      )
+
+      it("should validate type of receiver",
+        Regexp Match should checkReceiverTypeOn(:names)
       )
     )
 
@@ -68,6 +76,10 @@ describe(Regexp,
         (#/(..)((..))?/ =~ "ab") start(10) should == -1
         (#/({no}..)(({way}..))?/ =~ "ab") start(:blarg) should == -1
       )
+
+      it("should validate type of receiver",
+        Regexp Match should checkReceiverTypeOn(:start)
+      )
     )
 
     describe("end",
@@ -93,6 +105,10 @@ describe(Regexp,
 
         (#/(..)((..))?/ =~ "ab") end(10) should == -1
         (#/({no}..)(({way}..))?/ =~ "ab") end(:blarg) should == -1
+      )
+
+      it("should validate type of receiver",
+        Regexp Match should checkReceiverTypeOn(:end)
       )
     )
 
@@ -120,11 +136,19 @@ describe(Regexp,
         (#/(..)((..))?/ =~ "ab") offset(10) should be nil
         (#/({no}..)(({way}..))?/ =~ "ab") offset(:blarg) should be nil
       )
+
+      it("should validate type of receiver",
+        Regexp Match should checkReceiverTypeOn(:offset)
+      )
     )
 
     describe("match",
       it("should return the fully matched text",
         (#/.. / =~ "foobar ") match should == "ar "
+      )
+
+      it("should validate type of receiver",
+        Regexp Match should checkReceiverTypeOn(:match)
       )
     )
 
@@ -132,17 +156,29 @@ describe(Regexp,
       it("should return the part before the string that matched",
         (#/.. / =~ "foobar ") beforeMatch should == "foob"
       )
+
+      it("should validate type of receiver",
+        Regexp Match should checkReceiverTypeOn(:beforeMatch)
+      )
     )
 
     describe("afterMatch",
       it("should return the part before the string that matched",
         (#/.. / =~ "foobar blargus") afterMatch should == "blargus"
       )
+
+      it("should validate type of receiver",
+        Regexp Match should checkReceiverTypeOn(:afterMatch)
+      )
     )
 
     describe("asText",
       it("should return the fully matched text",
         (#/.. / =~ "foobar ") asText should == "ar "
+      )
+
+      it("should validate type of receiver",
+        Regexp Match should checkReceiverTypeOn(:asText)
       )
     )
 
@@ -151,6 +187,10 @@ describe(Regexp,
         (#/foo/ =~ "foo") length should == 1
         (#/f(o)(o)/ =~ "foo") length should == 3
         (#/f(o)(o)(x)?/ =~ "foo") length should == 4
+      )
+
+      it("should validate type of receiver",
+        Regexp Match should checkReceiverTypeOn(:length)
       )
     )
 
@@ -166,6 +206,10 @@ describe(Regexp,
       it("should return unmatched groups as nil",
         (#/f(.)(.)(.)?/ =~ "foo") asList should == ["foo", "o", "o", nil]
       )
+
+      it("should validate type of receiver",
+        Regexp Match should checkReceiverTypeOn(:asList)
+      )
     )
 
     describe("captures",
@@ -180,9 +224,17 @@ describe(Regexp,
       it("should return unmatched groups as nil",
         (#/f(.)(.)(.)?/ =~ "foo") captures should == ["o", "o", nil]
       )
+
+      it("should validate type of receiver",
+        Regexp Match should checkReceiverTypeOn(:captures)
+      )
     )
 
     describe("[]",
+      it("should validate type of receiver",
+        Regexp Match should checkReceiverTypeOn(:"[]", 1)
+      )
+
       describe("number",
         it("should return the full match when given 0",
           (#/foo/ =~ "foo")[0] should == "foo"
@@ -260,6 +312,10 @@ describe(Regexp,
 
       it("should return nil for a defined group that isn't matched",
         (#/foo({mux}..)?/ =~ "foob") mux should be nil
+      )
+
+      it("should validate type of receiver",
+        Regexp Match should checkReceiverTypeOn(:pass)
       )
     )
   )

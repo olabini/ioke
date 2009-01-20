@@ -5,12 +5,9 @@ package ioke.lang;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
-import org.jregex.Matcher;
-import org.jregex.Pattern;
-import org.jregex.MatchIterator;
 import org.jregex.MatchResult;
 
 import ioke.lang.exceptions.ControlFlow;
@@ -42,23 +39,20 @@ public class RegexpMatch extends IokeData {
     }
 
     @Override
-    public void init(IokeObject obj) throws ControlFlow {
+    public void init(final IokeObject obj) throws ControlFlow {
         final Runtime runtime = obj.runtime;
         obj.setKind("Regexp Match");
 
-        obj.registerMethod(runtime.newJavaMethod("Returns the target that this match was created against", new JavaMethod.WithNoArguments("target") {
+        obj.registerMethod(runtime.newJavaMethod("Returns the target that this match was created against", new TypeCheckingJavaMethod.WithNoArguments("target", obj) {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return getTarget(on);
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns a list of all the named groups in the regular expression used to create this match", new JavaMethod.WithNoArguments("names") {
+        obj.registerMethod(runtime.newJavaMethod("returns a list of all the named groups in the regular expression used to create this match", new TypeCheckingJavaMethod.WithNoArguments("names", obj) {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
-
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     Set names = Regexp.getRegexp(getRegexp(on)).getGroupNames();
                     List<Object> theNames = new ArrayList<Object>();
                     for(Object name : names) {
@@ -68,48 +62,39 @@ public class RegexpMatch extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns the part of the target before the text that matched", new JavaMethod.WithNoArguments("beforeMatch") {
+        obj.registerMethod(runtime.newJavaMethod("returns the part of the target before the text that matched", new TypeCheckingJavaMethod.WithNoArguments("beforeMatch", obj) {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
-
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return context.runtime.newText(getMatchResult(on).prefix());
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns the part of the target after the text that matched", new JavaMethod.WithNoArguments("afterMatch") {
+        obj.registerMethod(runtime.newJavaMethod("returns the part of the target after the text that matched", new TypeCheckingJavaMethod.WithNoArguments("afterMatch", obj) {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
-
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return context.runtime.newText(getMatchResult(on).suffix());
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns the text that matched", new JavaMethod.WithNoArguments("match") {
+        obj.registerMethod(runtime.newJavaMethod("returns the text that matched", new TypeCheckingJavaMethod.WithNoArguments("match", obj) {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
-
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return context.runtime.newText(getMatchResult(on).group(0));
                 }
             }));
 
         obj.aliasMethod("match", "asText", null, null);
 
-        obj.registerMethod(runtime.newJavaMethod("returns the number of groups available in this match", new JavaMethod.WithNoArguments("length") {
+        obj.registerMethod(runtime.newJavaMethod("returns the number of groups available in this match", new TypeCheckingJavaMethod.WithNoArguments("length", obj) {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
-
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return context.runtime.newNumber(getMatchResult(on).groupCount());
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns a list of all groups captured in this match. if a group is not matched it will be nil in the list. the actual match text is not included in this list.", new JavaMethod.WithNoArguments("captures") {
+        obj.registerMethod(runtime.newJavaMethod("returns a list of all groups captured in this match. if a group is not matched it will be nil in the list. the actual match text is not included in this list.", new TypeCheckingJavaMethod.WithNoArguments("captures", obj) {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     List<Object> groups = new ArrayList<Object>();
                     MatchResult mr = getMatchResult(on);
                     int len = mr.groupCount();
@@ -125,10 +110,9 @@ public class RegexpMatch extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns a list of all groups captured in this match. if a group is not matched it will be nil in the list. the actual match text is the first element in the list.", new JavaMethod.WithNoArguments("asList") {
+        obj.registerMethod(runtime.newJavaMethod("returns a list of all groups captured in this match. if a group is not matched it will be nil in the list. the actual match text is the first element in the list.", new TypeCheckingJavaMethod.WithNoArguments("asList", obj) {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     List<Object> groups = new ArrayList<Object>();
                     MatchResult mr = getMatchResult(on);
                     int len = mr.groupCount();
@@ -144,21 +128,20 @@ public class RegexpMatch extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("Takes one optional argument that should be either a number or a symbol. this should be the name or index of a group to return the start index for. if no index is supplied, 0 is the default. if the group in question wasn't matched, returns -1.", new JavaMethod("start") {
-                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+        obj.registerMethod(runtime.newJavaMethod("Takes one optional argument that should be either a number or a symbol. this should be the name or index of a group to return the start index for. if no index is supplied, 0 is the default. if the group in question wasn't matched, returns -1.", new TypeCheckingJavaMethod("start") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
+                    .receiverMustMimic(obj)
                     .withOptionalPositional("index", "0")
                     .getArguments();
 
                 @Override
-                public DefaultArgumentsDefinition getArguments() {
+                public TypeCheckingArgumentsDefinition getArguments() {
                     return ARGUMENTS;
                 }
 
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    List<Object> args = new ArrayList<Object>();
-                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     int index = 0;
                     
                     if(args.size() > 0) {
@@ -184,21 +167,20 @@ public class RegexpMatch extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("Takes one optional argument that should be either a number or a symbol. this should be the name or index of a group to return the end index for. if no index is supplied, 0 is the default. if the group in question wasn't matched, returns -1.", new JavaMethod("end") {
-                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+        obj.registerMethod(runtime.newJavaMethod("Takes one optional argument that should be either a number or a symbol. this should be the name or index of a group to return the end index for. if no index is supplied, 0 is the default. if the group in question wasn't matched, returns -1.", new TypeCheckingJavaMethod("end") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
+                    .receiverMustMimic(obj)
                     .withOptionalPositional("index", "0")
                     .getArguments();
 
                 @Override
-                public DefaultArgumentsDefinition getArguments() {
+                public TypeCheckingArgumentsDefinition getArguments() {
                     return ARGUMENTS;
                 }
 
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    List<Object> args = new ArrayList<Object>();
-                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     int index = 0;
                     
                     if(args.size() > 0) {
@@ -224,21 +206,20 @@ public class RegexpMatch extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("Takes one optional argument that should be either a number or a symbol. this should be the name or index of a group to return the start and end index for. if no index is supplied, 0 is the default. if the group in question wasn't matched, returns nil, otherwise a pair of the start and end indices.", new JavaMethod("offset") {
-                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+        obj.registerMethod(runtime.newJavaMethod("Takes one optional argument that should be either a number or a symbol. this should be the name or index of a group to return the start and end index for. if no index is supplied, 0 is the default. if the group in question wasn't matched, returns nil, otherwise a pair of the start and end indices.", new TypeCheckingJavaMethod("offset") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
+                    .receiverMustMimic(obj)
                     .withOptionalPositional("index", "0")
                     .getArguments();
 
                 @Override
-                public DefaultArgumentsDefinition getArguments() {
+                public TypeCheckingArgumentsDefinition getArguments() {
                     return ARGUMENTS;
                 }
 
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    List<Object> args = new ArrayList<Object>();
-                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     int index = 0;
                     
                     if(args.size() > 0) {
@@ -265,22 +246,20 @@ public class RegexpMatch extends IokeData {
             }));
 
 
-        obj.registerMethod(runtime.newJavaMethod("Takes one indexing argument that should be either a number, a range, a text or a symbol. if it's a number or a range of numbers, these will specify the index of the capture to return. 0 is the whole match. negative indices are interpreted in the usual way. if the range is out of range it will only use as many groups as there are. if it's a text or a sym it will be interpreted as a the name of a named group to return. if an index isn't correct or wasn't matched, it returns nil in those places.", new JavaMethod("[]") {
-                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+        obj.registerMethod(runtime.newJavaMethod("Takes one indexing argument that should be either a number, a range, a text or a symbol. if it's a number or a range of numbers, these will specify the index of the capture to return. 0 is the whole match. negative indices are interpreted in the usual way. if the range is out of range it will only use as many groups as there are. if it's a text or a sym it will be interpreted as a the name of a named group to return. if an index isn't correct or wasn't matched, it returns nil in those places.", new TypeCheckingJavaMethod("[]") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
+                    .receiverMustMimic(obj)
                     .withRequiredPositional("index")
                     .getArguments();
 
                 @Override
-                public DefaultArgumentsDefinition getArguments() {
+                public TypeCheckingArgumentsDefinition getArguments() {
                     return ARGUMENTS;
                 }
 
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    List<Object> args = new ArrayList<Object>();
-                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
-                    
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     Object arg = args.get(0);
 
                     MatchResult mr = getMatchResult(on);
@@ -355,20 +334,19 @@ public class RegexpMatch extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("will get the named group corresponding to the name of the message, or nil if the named group hasn't been matched. will signal a condition if no such group is defined.", new JavaMethod("pass") {
-                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+        obj.registerMethod(runtime.newJavaMethod("will get the named group corresponding to the name of the message, or nil if the named group hasn't been matched. will signal a condition if no such group is defined.", new TypeCheckingJavaMethod("pass") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
+                    .receiverMustMimic(obj)
                     .getArguments();
                 
                 @Override
-                public DefaultArgumentsDefinition getArguments() {
+                public TypeCheckingArgumentsDefinition getArguments() {
                     return ARGUMENTS;
                 }
                 
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
-                    
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     MatchResult mr = getMatchResult(on);
                     String name = Message.name(message);
                     
