@@ -19,17 +19,13 @@ describe(List,
   
   describe("inspect",
     it("should validate type of receiver",
-      x = Origin mimic
-      x cell("inspect") = List cell("inspect")
-      fn(x inspect) should signal(Condition Error Type IncorrectType)
+      List should checkReceiverTypeOn(:"inspect")
     )
   )
   
   describe("notice",
     it("should validate type of receiver",
-      x = Origin mimic
-      x cell("notice") = List cell("notice")
-      fn(x notice) should signal(Condition Error Type IncorrectType)
+      List should checkReceiverTypeOn(:"notice")
     )
   )
   
@@ -283,6 +279,10 @@ describe(List,
       x = []
       (x << 42) should == x
     )
+    
+    it("should validate type of receiver",
+      List should checkReceiverTypeOn(:"<<", 1)
+    )
   )
   
   describe("==", 
@@ -342,6 +342,10 @@ describe(List,
       x = [1,2,3,4]
       x clear! should == x
     )
+    
+    it("should validate type of receiver",
+      List should checkReceiverTypeOn(:"clear!")
+    )
   )
 
   describe("size", 
@@ -381,6 +385,10 @@ describe(List,
       x = ["abc", "cde"]
       x empty? should be false
     )
+    
+    it("should validate type of receiver",
+      List should checkReceiverTypeOn(:"empty?")
+    )
   )
 
   describe("include?", 
@@ -395,6 +403,12 @@ describe(List,
       [1, 2] include?(2) should be true
       [2, 1, :foo, "bar"] include?(2) should be true
     )
+    
+    it("should validate type of receiver",
+      List should checkReceiverTypeOn(:"include?", "Richard Richard")
+    )
+    
+    
   )
   
   describe("ifEmpty",
@@ -491,9 +505,7 @@ describe(List,
     )
     
     it("should validate type of receiver",
-      x = Origin mimic
-      x cell("each") = List cell("each")
-      fn(x each(println)) should signal(Condition Error Type IncorrectType)
+      List should checkReceiverTypeOn(:"each", println)
     )
   )
 
@@ -707,9 +719,9 @@ describe(List,
     )
 
     it("should validate type of receiver",
-      List should checkReceiverTypeOn(:"+", 3)
+      List should checkReceiverTypeOn(:"+", [])
     )
-
+    
     it("should validate type of argument",
       fn([1,2,3] + 3) should signal(Condition Error Type IncorrectType)
     )
@@ -733,6 +745,14 @@ describe(List,
       (x - y) should == [1,3]
       (y - x) should == [4,6]
     )
+    
+    it("should validate type of receiver",
+      List should checkReceiverTypeOn(:"-", [])
+    )
+    
+    it("should validate type of argument",
+      fn([1,2,3] - 3) should signal(Condition Error Type IncorrectType)
+    )
   )      
   
   describe("<=>", 
@@ -748,9 +768,7 @@ describe(List,
     )
     
     it("should validate type of receiver",
-      x = Origin mimic
-      x cell("<=>") = List cell("<=>")
-      fn(x <=> []) should signal(Condition Error Type IncorrectType)
+      List should checkReceiverTypeOn(:"<=>", [])
     )
     
     it("should validate type of argument",

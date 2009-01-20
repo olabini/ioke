@@ -153,63 +153,59 @@ public class IokeList extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("takes one argument and adds it at the end of the list, and then returns the list", new JavaMethod("<<") {
-                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+        obj.registerMethod(runtime.newJavaMethod("takes one argument and adds it at the end of the list, and then returns the list", new TypeCheckingJavaMethod("<<") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
+                    .receiverMustMimic(runtime.list)
                     .withRequiredPositional("value")
                     .getArguments();
 
                 @Override
-                public DefaultArgumentsDefinition getArguments() {
+                public TypeCheckingArgumentsDefinition getArguments() {
                     return ARGUMENTS;
                 }
 
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    List<Object> args = new ArrayList<Object>();
-                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+                public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     IokeList.add(on, args.get(0));
                     return on;
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("will remove all the entries from the list, and then returns the list", new JavaMethod.WithNoArguments("clear!") {
+        obj.registerMethod(runtime.newJavaMethod("will remove all the entries from the list, and then returns the list", new TypeCheckingJavaMethod.WithNoArguments("clear!", runtime.list) {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     ((IokeList)IokeObject.data(on)).getList().clear();
                     return on;
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns true if this list is empty, false otherwise", new JavaMethod.WithNoArguments("empty?") {
+        obj.registerMethod(runtime.newJavaMethod("returns true if this list is empty, false otherwise", new TypeCheckingJavaMethod.WithNoArguments("empty?", runtime.list) {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return ((IokeList)IokeObject.data(on)).getList().isEmpty() ? context.runtime._true : context.runtime._false;
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns true if the receiver includes the evaluated argument, otherwise false", new JavaMethod("include?") {
-                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+        obj.registerMethod(runtime.newJavaMethod("returns true if the receiver includes the evaluated argument, otherwise false", new TypeCheckingJavaMethod("include?") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
+                    .receiverMustMimic(runtime.list)
                     .withRequiredPositional("object")
                     .getArguments();
 
                 @Override
-                public DefaultArgumentsDefinition getArguments() {
+                public TypeCheckingArgumentsDefinition getArguments() {
                     return ARGUMENTS;
                 }
 
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    List<Object> args = new ArrayList<Object>();
-                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return ((IokeList)IokeObject.data(on)).getList().contains(args.get(0)) ? context.runtime._true : context.runtime._false;
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns a new list that contains the receivers elements and the elements of the list sent in as the argument.", new JavaMethod("+") {
+        obj.registerMethod(runtime.newJavaMethod("returns a new list that contains the receivers elements and the elements of the list sent in as the argument.", new TypeCheckingJavaMethod("+") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(runtime.list)
@@ -217,36 +213,33 @@ public class IokeList extends IokeData {
                     .getArguments();
 
                 @Override
-                public DefaultArgumentsDefinition getArguments() {
+                public TypeCheckingArgumentsDefinition getArguments() {
                     return ARGUMENTS;
                 }
 
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    List<Object> args = new ArrayList<Object>();
-                    Object receiver = ARGUMENTS.getValidatedArgumentsAndReceiver(context, message, on, args, new HashMap<String, Object>());
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     List<Object> newList = new ArrayList<Object>();
-                    newList.addAll(((IokeList)IokeObject.data(receiver)).getList());
+                    newList.addAll(((IokeList)IokeObject.data(on)).getList());
                     newList.addAll(((IokeList)IokeObject.data(args.get(0))).getList());
-                    return context.runtime.newList(newList, IokeObject.as(receiver));
+                    return context.runtime.newList(newList, IokeObject.as(on));
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns a new list that contains all the elements from the receivers list, except for those that are in the argument list", new JavaMethod("-") {
-                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+        obj.registerMethod(runtime.newJavaMethod("returns a new list that contains all the elements from the receivers list, except for those that are in the argument list", new TypeCheckingJavaMethod("-") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
-                    .withRequiredPositional("otherList")
+                    .receiverMustMimic(runtime.list)
+                    .withRequiredPositional("otherList").whichMustMimic(runtime.list)
                     .getArguments();
 
                 @Override
-                public DefaultArgumentsDefinition getArguments() {
+                public TypeCheckingArgumentsDefinition getArguments() {
                     return ARGUMENTS;
                 }
 
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    List<Object> args = new ArrayList<Object>();
-                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     List<Object> newList = new ArrayList<Object>();
                     newList.addAll(((IokeList)IokeObject.data(on)).getList());
                     newList.removeAll(((IokeList)IokeObject.data(args.get(0))).getList());
