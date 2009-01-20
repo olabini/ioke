@@ -35,6 +35,10 @@ describe(Call,
       x(foo bar, x rrr)[0] name should == :foo
       x(foo bar, x rrr)[1] name should == :x
     )
+
+    it("should check the receiver type and signal an appropriate condition",
+      Call should checkReceiverTypeOn(:arguments)
+    )
   )
 
   describe("evaluatedArguments", 

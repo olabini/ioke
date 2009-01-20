@@ -36,6 +36,12 @@ ISpec do(
     unless(regex =~ realValue,
       error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to match #{regex inspect}", shouldMessage: self shouldMessage)))
 
+  ShouldContext checkReceiverTypeOn = method(name, +args, +:keywordArgs,
+    x = Origin mimic
+    x cell(name) = self cell(:realValue) cell(name)
+    fn(x send(name, *args, *keywordArgs)) should signal(Condition Error Type IncorrectType)
+  )
+
   ShouldContext signal = method(condition,
     signalled = "none"
     bind(
@@ -143,6 +149,12 @@ ISpec do(
   NotShouldContext nil = method(
     if(Ground nil == realValue,
       error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to not be nil", shouldMessage: self shouldMessage)))
+
+  NotShouldContext checkReceiverTypeOn = method(name, +args, +:keywordArgs,
+    x = Origin mimic
+    x cell(name) = self cell(:realValue) cell(name)
+    fn(x send(name, *args, *keywordArgs)) should not signal(Condition Error Type IncorrectType)
+  )
 
   NotShouldContext offer = method(theRestart,
     rst = Ground nil

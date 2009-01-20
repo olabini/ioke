@@ -1,10 +1,7 @@
 
-- look at linked maps for internal representation
-
 things to do before release
 - update guide about:
 - generate new doks
-
 
 - think about Java integration
 - think about concurrency
@@ -14,3 +11,4 @@ things to do before release
    Future before(:any, except: [:become, :forceResult], 
                    self become(self forceResult))
 
+- look at linked maps for internal representation

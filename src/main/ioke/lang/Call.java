@@ -39,11 +39,9 @@ public class Call extends IokeData {
 
         obj.setKind("Call");
 
-        obj.registerMethod(runtime.newJavaMethod("returns a list of all the unevaluated arguments", new JavaMethod.WithNoArguments("arguments") {
+        obj.registerMethod(runtime.newJavaMethod("returns a list of all the unevaluated arguments", new TypeCheckingJavaMethod.WithNoArguments("arguments", runtime.call) {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
-
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return context.runtime.newList(((Call)IokeObject.data(on)).message.getArguments());
                 }
             }));
