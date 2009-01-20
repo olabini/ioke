@@ -685,9 +685,7 @@ describe(List,
     )
 
     it("should validate type of receiver",
-      x = Origin mimic
-      x cell("+") = List cell("+")
-      fn(x + [3]) should signal(Condition Error Type IncorrectType)
+      List should checkReceiverTypeOn(:"+", 3)
     )
 
     it("should validate type of argument",
