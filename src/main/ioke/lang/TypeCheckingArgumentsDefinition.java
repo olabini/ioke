@@ -52,10 +52,12 @@ public class TypeCheckingArgumentsDefinition extends DefaultArgumentsDefinition 
                             mustMimic.get(i), given, message, context));
                 }
             } else {
-                argumentsWithoutKeywords.set(ix, convertToMimic(mustMimic.get(i),
-                        argumentsWithoutKeywords.get(ix), message,
-                        context));
-                ix++;
+                if(ix < argumentsWithoutKeywords.size()) {
+                    argumentsWithoutKeywords.set(ix, convertToMimic(mustMimic.get(i),
+                                                                    argumentsWithoutKeywords.get(ix), message,
+                                                                    context));
+                    ix++;
+                }
             }
         }
 
@@ -77,14 +79,15 @@ public class TypeCheckingArgumentsDefinition extends DefaultArgumentsDefinition 
         private boolean setMimic = true;
 
         private void next() {
-            if (!setMimic)
+            if (!setMimic) {
                 mustMimic.add(null);
-            else
-                setMimic = false;
+            }
+            setMimic = false;
         }
 
         public Builder whichMustMimic(Object mimic) {
             mustMimic.add(mimic);
+            setMimic = true;
             return this;
         }
 
@@ -95,63 +98,63 @@ public class TypeCheckingArgumentsDefinition extends DefaultArgumentsDefinition 
 
         @Override
         public Builder withKeyword(String name) {
-            super.withKeyword(name);
             next();
+            super.withKeyword(name);
             return this;
         }
 
         @Override
         public Builder withKeywordRest(String name) {
-            super.withKeywordRest(name);
             next();
+            super.withKeywordRest(name);
             return this;
         }
 
         @Override
         public Builder withOptionalPositional(String name, String defaultValue) {
-            super.withOptionalPositional(name, defaultValue);
             next();
+            super.withOptionalPositional(name, defaultValue);
             return this;
         }
 
         @Override
         public Builder withOptionalPositionalUnevaluated(String name) {
-            super.withOptionalPositionalUnevaluated(name);
             next();
+            super.withOptionalPositionalUnevaluated(name);
             return this;
         }
 
         @Override
         public Builder withRequiredPositional(String name) {
-            super.withRequiredPositional(name);
             next();
+            super.withRequiredPositional(name);
             return this;
         }
 
         @Override
         public Builder withRequiredPositionalUnevaluated(String name) {
-            super.withRequiredPositionalUnevaluated(name);
             next();
+            super.withRequiredPositionalUnevaluated(name);
             return this;
         }
 
         @Override
         public Builder withRest(String name) {
-            super.withRest(name);
             next();
+            super.withRest(name);
             return this;
         }
 
         @Override
         public Builder withRestUnevaluated(String name) {
-            super.withRestUnevaluated(name);
             next();
+            super.withRestUnevaluated(name);
             return this;
         }
 
         @Override
         public TypeCheckingArgumentsDefinition getArguments() {
-            next();
+            next(); 
             return new TypeCheckingArgumentsDefinition(arguments, keywords,
                     rest, krest, min, max, restUneval, mustMimic,
                     receiverMustMimic);

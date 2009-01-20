@@ -55,18 +55,18 @@ public class Call extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns the receiver of the call", new JavaMethod.WithNoArguments("receiver") {
+        obj.registerMethod(runtime.newJavaMethod("returns the receiver of the call", new TypeCheckingJavaMethod.WithNoArguments("receiver", runtime.call) {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
 
                     return ((Call)IokeObject.data(on)).on;
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns the currently executing context", new JavaMethod.WithNoArguments("currentContext") {
+        obj.registerMethod(runtime.newJavaMethod("returns the currently executing context", new TypeCheckingJavaMethod.WithNoArguments("currentContext", runtime.call) {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
 
                     return ((Call)IokeObject.data(on)).ctx;
@@ -113,23 +113,21 @@ public class Call extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("uhm. this is a strange one. really.", new JavaMethod("resendToValue") {
-                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+        obj.registerMethod(runtime.newJavaMethod("uhm. this is a strange one. really.", new TypeCheckingJavaMethod("resendToValue") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
+                    .receiverMustMimic(runtime.call)
                     .withRequiredPositional("value")
                     .withOptionalPositional("newSelf", "nil")
                     .getArguments();
 
                 @Override
-                public DefaultArgumentsDefinition getArguments() {
+                public TypeCheckingArgumentsDefinition getArguments() {
                     return ARGUMENTS;
                 }
 
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject mess, Object on) throws ControlFlow {
-                    List<Object> args = new ArrayList<Object>();
-                    getArguments().getEvaluatedArguments(context, mess, on, args, new HashMap<String, Object>());
-
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     Call c = (Call)IokeObject.data(on);
                     Object self = c.on;
                     if(args.size() > 1) {
@@ -140,25 +138,22 @@ public class Call extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("uhm. this one isn't too bad.", new JavaMethod("activateValue") {
-                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+        obj.registerMethod(runtime.newJavaMethod("uhm. this one isn't too bad.", new TypeCheckingJavaMethod("activateValue") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
+                    .receiverMustMimic(runtime.call)
                     .withRequiredPositional("value")
                     .withOptionalPositional("newSelf", "nil")
                     .withKeywordRest("valuesToAdd")
                     .getArguments();
 
                 @Override
-                public DefaultArgumentsDefinition getArguments() {
+                public TypeCheckingArgumentsDefinition getArguments() {
                     return ARGUMENTS;
                 }
 
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject mess, Object on) throws ControlFlow {
-                    List<Object> args = new ArrayList<Object>();
-                    Map<String, Object> keys = new HashMap<String, Object>();
-                    getArguments().getEvaluatedArguments(context, mess, on, args, keys);
-
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keys, IokeObject context, IokeObject message) throws ControlFlow {
                     Call c = (Call)IokeObject.data(on);
                     Object self = c.on;
                     if(args.size() > 1) {
@@ -169,25 +164,22 @@ public class Call extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("I really ought to write documentation for these methods, but I don't know how to describe what they do.", new JavaMethod("activateValueWithCachedArguments") {
-                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+        obj.registerMethod(runtime.newJavaMethod("I really ought to write documentation for these methods, but I don't know how to describe what they do.", new TypeCheckingJavaMethod("activateValueWithCachedArguments") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
+                    .receiverMustMimic(runtime.call)
                     .withRequiredPositional("value")
                     .withOptionalPositional("newSelf", "nil")
                     .withKeywordRest("valuesToAdd")
                     .getArguments();
 
                 @Override
-                public DefaultArgumentsDefinition getArguments() {
+                public TypeCheckingArgumentsDefinition getArguments() {
                     return ARGUMENTS;
                 }
 
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject mess, Object on) throws ControlFlow {
-                    List<Object> args = new ArrayList<Object>();
-                    Map<String, Object> keys = new HashMap<String, Object>();
-                    getArguments().getEvaluatedArguments(context, mess, on, args, keys);
-                    
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keys, IokeObject context, IokeObject message) throws ControlFlow {
                     Call c = (Call)IokeObject.data(on);
                     Object self = c.on;
                     if(args.size() > 1) {
