@@ -9,7 +9,7 @@ import java.util.Map;
 
 public abstract class TypeCheckingJavaMethod extends JavaMethod {
     public static class WithNoArguments extends TypeCheckingJavaMethod {
-        private static TypeCheckingArgumentsDefinition ARGUMENTS;
+        private TypeCheckingArgumentsDefinition ARGUMENTS;
 
         public WithNoArguments(String name) {
             super(name);
