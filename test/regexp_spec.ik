@@ -268,6 +268,10 @@ describe(Regexp,
     it("should return a string containing the pattern used to create it",
       #/foo/ pattern should == "foo"
     )
+
+    it("should validate type of receiver",
+      Regexp should checkReceiverTypeOn(:pattern)
+    )
   )
 
   describe("from",
@@ -303,6 +307,10 @@ describe(Regexp,
       (#/foo$/ =~ "foo bar") should be nil
       (#/^foo/ =~ "bar foo") should be nil
     )
+
+    it("should validate type of receiver",
+      Regexp should checkReceiverTypeOn(:"=~", "foo")
+    )
   )
 
   describe("match",
@@ -326,6 +334,10 @@ describe(Regexp,
       (#/foo$/ match("foo bar")) should be nil
       (#/^foo/ match("bar foo")) should be nil
     )
+
+    it("should validate type of receiver",
+      Regexp should checkReceiverTypeOn(:match, "foo")
+    )
   )
 
   describe("names",
@@ -338,6 +350,10 @@ describe(Regexp,
       #/({foo}bar)/ names should == [:foo]
       #/({foo}bar)({quux}.)/ names should == [:foo, :quux]
       #/({foo}({bleg}.))({quux}.)/ names should == [:foo, :bleg, :quux]
+    )
+
+    it("should validate type of receiver",
+      Regexp should checkReceiverTypeOn(:names)
     )
   )
 
@@ -379,6 +395,10 @@ describe(Regexp,
     it("should return an empty list for no matches",
       #/foo/ allMatches("bar") should == []
     )
+
+    it("should validate type of receiver",
+      Regexp should checkReceiverTypeOn(:allMatches, "foo")
+    )
   )
   
   describe("inspect",
@@ -386,12 +406,20 @@ describe(Regexp,
       #/foo/ inspect should == "#/foo/"
       #/foo/x inspect should == "#/foo/x"
     )
+
+    it("should validate type of receiver",
+      Regexp should checkReceiverTypeOn(:inspect)
+    )
   )
 
   describe("notice",
     it("should notice correctly for a simple regexp",
       #/foo/ notice should == "#/foo/"
       #/foo/x notice should == "#/foo/x"
+    )
+
+    it("should validate type of receiver",
+      Regexp should checkReceiverTypeOn(:notice)
     )
   )
 
