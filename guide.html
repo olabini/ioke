@@ -163,6 +163,11 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 
                   <li>
                     <a href="#assignment">Assignment</a>
+                    <ol>
+                      <li>
+                        <a href="#let">Let</a>
+                      </li>
+                    </ol>
                   </li>
 
                   <li>
@@ -173,9 +178,22 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
                       </li>
                       <li>
                         <a href="#conditionals">Conditionals</a>
+                        <ol>
+                          <li>
+                            <a href="#cond">cond</a>
+                          </li>
+                          <li>
+                            <a href="#case">case</a>
+                          </li>
+                        </ol>
                       </li>
                       <li>
                         <a href="#iteration">Iteration</a>
+                        <ol>
+                          <li>
+                            <a href="#comprehensions">Comprehensions</a>
+                          </li>
+                        </ol>
                       </li>
                     </ol>
                   </li>
@@ -193,6 +211,15 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
                         <a href="#blocks">Blocks</a>
                       </li>
                       <li>
+                        <a href="#lecros">Lecros</a>
+                      </li>
+                      <li>
+                        <a href="#syntax">Syntax</a>
+                      </li>
+                      <li>
+                        <a href="#destructuring">Destructuring</a>
+                      </li>
+                      <li>
                         <a href="#messageChains">Message chains</a>
                       </li>
                     </ol>
@@ -200,6 +227,10 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 
                   <li>
                     <a href="#introspection">Introspection and reflection</a>
+                  </li>
+
+                  <li>
+                    <a href="#aspects">Aspects</a>
                   </li>
 
                   <li>
@@ -225,6 +256,9 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
                         <a href="#dicts">Dicts</a>
                       </li>
                       <li>
+                        <a href="#sets">Sets</a>
+                      </li>
+                      <li>
                         <a href="#rangesAndPairs">Ranges and Pairs</a>
                       </li>
                       <li>
@@ -235,6 +269,9 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
                       </li>
                       <li>
                         <a href="#filesystem">FileSystem</a>
+                      </li>
+                      <li>
+                        <a href="#other_things">Other things</a>
                       </li>
                     </ol>
                   </li>
@@ -265,9 +302,9 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 
                 <div class="chapter">
                   <h2><a name="introduction">Introduction</a></h2>
-                  <p>Ioke is a general purpose language. It is a strongly typed, extremely dynamic, prototype object oriented language. It is homoiconic and it's closest ancestors is Io, Smalltalk, Ruby and Lisp - but it's quite a distance from all of them. It looks a lot like Io, to a limit.</p>
+                  <p>Ioke is a general purpose language. It is a strongly typed, extremely dynamic, prototype object oriented language. It is homoiconic and its closest ancestors are Io, Smalltalk, Ruby and Lisp - but it's quite a distance from all of them. It looks a lot like Io, to a limit.</p>
 
-                  <p>Ioke is targeted at the Java Virtual Machine and is tightly integrated with the platform. Why the JVM? It's available everywhere, it gives several important features such as world class garbage collectors, capable thread schedulers and an amazing JIT compiler. All of these are things that server Ioke well, without requiring direct development resources from the Ioke team. Access to the Java platform also means access to all existing libraries and functionality, with all that entails. The JVM is just a very pragmatic choice.</p>
+                  <p>Ioke is targeted at the Java Virtual Machine and is tightly integrated with the platform. Why the JVM? It's available everywhere, it gives several important features such as world class garbage collectors, capable thread schedulers and an amazing JIT compiler. All of these are things that serves Ioke well, without requiring direct development resources from the Ioke team. Access to the Java platform also means access to all existing libraries and functionality, with all that entails. The JVM is just a very pragmatic choice.</p>
 
                   <p>You're probably reading this guide at <a href="http://ioke.org/guide.html">ioke.org</a>. That is the official home of the project, although some of the project functionality is hosted at <a href="http://ioke.kenai.org">Kenai</a>, where such things as mailing lists and a bug tracker is available. The canonical source repository for Ioke exists at GitHub, at <a href="http://github.org/olabini/ioke/tree/master">http://github.org/olabini/ioke/tree/master</a>.</p>
 
@@ -280,9 +317,9 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
                   <div class="section">
                     <h3><a name="vision">Vision</a></h3>
 
-                    <p>The evolution of programming languages is a steady progression of finding new ways to express abstractions naturally - in a way that doesn't stray to far away from the smaller details. A programming language have to make it possible to abstract a way common things, while making it easy to customize these abstractions in very detailed ways. A programming language should be able to do this well without sacrificing readability and understandability. This tension lies at the core of programming.</p>
+                    <p>The evolution of programming languages is a steady progression of finding new ways to express abstractions naturally - in a way that doesn't stray to far away from the smaller details. A programming language have to make it possible to abstract away common things, while making it easy to customize these abstractions in very detailed ways. A programming language should be able to do this well without sacrificing readability and understandability. This tension lies at the core of programming.</p>
 
-                    <p>How do you create a language that makes it easy to express powerful concepts in a succinct way, while still making it easy to maintain and work with after the fact, without turning it into a new compression mode? How do make it easy for a programmer to express high level abstractions that are abstractions of abstractions of abstractions?</p>
+                    <p>How do you create a language that makes it easy to express powerful concepts in a succinct way, while still making it easy to maintain and work with after the fact, without turning it into a new compression mode? How do you make it easy for a programmer to express high level abstractions that are abstractions of abstractions of abstractions?</p>
 
                     <p>There are many open problems in programming language design. Concurrency is one of them, performance another. These are two areas Ioke does not address. Instead, Ioke is a remodeling of the core concepts and ideas embodied in other programming languages.</p>
 
@@ -401,6 +438,7 @@ Bye.</pre>
                   <p>Ioke has no keywords or statements. Everything is an expression composed of a chain of messages. A piece of code is represented as a chain of messages that links to the next message. The result of one message will be the receiver of the next message, until a "." message is received. The "." message is a terminator that throws away the current receiver. A newline will serve as a "." message in the circumstances where it feels natural.</p>
 
                   <p>An informal BNF description of Ioke looks like this:</p>
+                  <p>TODO: update to match new grammar, talk about all the new operators!!!</p>
                   <pre style="font-family: courier;">
     program       ::=  messageChain*
     messageChain  ::=  expression*
@@ -474,6 +512,8 @@ Bye.</pre>
 
                       <p>Ioke allows automatic interpolation of arbitrary values in the same manner as Ruby. It uses the same syntax for this, which is the #{} syntax inside a text. These can be nested in any way. The elements will be parsed and sent as arguments to the message with name "internal:concatenateText". So an Ioke text such as "foo bar#{flux} will #{1+2}" will generate the message internal:concatenateText("foo bar", flux, " will ", 1+(2), ""). As you can see, there is a small amount of waste in the way this is generated -- but the simple model makes it easy to understand. It's not guaranteed that this will remain the same, although the message will definitely remain.</p>
 
+                      <p>TODO: add info about alternative syntax and examples for it</p>
+
                       <p>Some examples:</p>
                       <pre class="code">
 <span style="color: #0050a0;">"foo"</span>
@@ -495,6 +535,8 @@ mux"</span>
 <span style="color: #ff1493;">#/fo+/x</span></pre>
 
                       <p>The first example is an empty regular expression. The second is an expression matching the word "foo". The third expression matches an "f" followed with one or more "o". It also allows extended regular expression syntax, due to the x flag. The flags supported in Ioke are o, x, p, n, i, u, m and s. The meaning of these match the meaning of corresponding Ruby flags. Regular expressions allow most of the same escapes as Ioke text. Specifically, these escapes are supported: b, t, n, f, r, /, \ and newline. Unicode and octal escapes also work.</p>
+
+                      <p>TODO: add info about alternative syntax and examples for it</p>
 
                       <p>Ioke regular expressions will be transformed into a call to internal:createRegexp. This message expects two Java strings, one with the actual pattern, and one with the flags.</p>
                     </div>
@@ -777,6 +819,8 @@ flux<span style="color: #00bfff;">++</span>
                       <dd>Returns a newly created object that has the receiver as mimic. This is the magic way of creation new objects in Ioke. It is also the <em>ONLY</em> way to do it.</dd>
                     </dl>
 
+                    <p>TODO: add information about cell ownership and removing cells</p>
+
                     <p>All of these methods are described further in the reference.</p>
                   </div>
 
@@ -788,6 +832,8 @@ flux<span style="color: #00bfff;">++</span>
                   <div class="section">
                     <h3><a name="origin">Origin</a></h3>
                     <p>Origin should be the place where most objects in Ioke start from. It is specifically created to be the origin of objects. As such it doesn't contain many cells for itself, but it mimics Ground and has access to everything from Base, DefaultBehavior and Ground in that way. When adding new more or less global functionality, Origin is probably the best place to put it. Currently, the only cells Origin contains is for purposes of printing itself.</p>
+
+                    <p>TODO: add information about initialization</p>
                   </div>
 
                   <div class="section">
@@ -855,6 +901,11 @@ x <span style="color: #a52a2a;">;; =&gt; 43
                   <p>The second transformation that might happen is that if you try to assign a cell that has an assigner, you will call that assigner instead of actually assigning a cell. So, for example, if you do "foo documentation = 42", this will not actually create or assign the cell "documentation". Instead it will find that Base has a cell called "documentation=", and instead send that message. So the prior code would actually be equivalent to "foo documentation=(42)".</p>
 
                   <p>All of these assignment processes together make it really easy to take control over assignment, while still making it very obvious and natural in most cases.</p>
+
+                  <div class="section">
+                    <h3><a name="let">Let</a></h3>
+                    <p>TODO: add information about let</p>
+                  </div>
                 </div>
 
                 <div class="chapter">
@@ -911,6 +962,16 @@ iik&gt; "foo" &lt;=&gt; "fop"
                     <p>As should be obvious from these examples, these conditionals can not return any value. They must only rely on side effects to achieve anything.</p>
 
                     <p>Ioke also supports the expected short circuiting boolean evaluators. They are implemented as regular methods and are available on all objects. All of the expected combinators are available, including "and", "&amp;&amp;", "or", "||", "xor", "nor" and "nand".</p>
+                    
+                    <div class="section">
+                      <h3><a name="cond">cond</a></h3>
+                      <p>TODO: add information about cond</p>
+                    </div>
+                    
+                    <div class="section">
+                      <h3><a name="case">case</a></h3>
+                      <p>TODO: add information about case</p>
+                    </div>
                   </div>
 
                   <div class="section">
@@ -1017,6 +1078,11 @@ iik&gt; "foo" &lt;=&gt; "fop"
 )</pre>
 
                     <p>This code uses continue to jump over a specific number, so it will only print 0 to 5, and 7 to 9.</p>
+
+                    <div class="section">
+                      <h3><a name="comprehensions">Comprehensions</a></h3>
+                      <p>TODO: add information about comprehensions</p>
+                    </div>
                   </div>
                 </div>
 
@@ -1221,6 +1287,21 @@ y(<span style="color: #0050a0;">42</span>)</pre>
                   </div>
 
                   <div class="section">
+                    <h3><a name="lecros">Lecros</a></h3>
+                    <p>TODO: Write about lecros</p>
+                  </div>
+
+                  <div class="section">
+                    <h3><a name="syntax">Syntax</a></h3>
+                    <p>TODO: Write about syntax</p>
+                  </div>
+
+                  <div class="section">
+                    <h3><a name="destructuring">Destructuring</a></h3>
+                    <p>TODO: Write about destructuring</p>
+                  </div>
+
+                  <div class="section">
                     <h3><a name="messageChains">Message chains</a></h3>
                     <p>In many cases a macro will take code that is not wrapped up inside of a method, macro or block. These pieces of code is called message chains, since their representation will be to a raw Message mimic. The chains are quite flexible, since they can be taken apart, modified and put together again. They can also be unevaluated and used as data definitions of some kind. That's how the argument handling to methods are implemented, for example. Since the call to "method" can be seen as a regular call to a macro, the argument descriptions are actually just unevaluated message chains that are picked apart to tease out the argument names. The same technique is applicable in any macro usage.</p>
 
@@ -1397,6 +1478,13 @@ msg code <span style="color: #a52a2a;">;; "2 -(1)"</span></pre>
                   <p>Returns true if this message is a keyword message, and false otherwise.</p>
 
                   <p>There are many more methods that can be used to do interesting introspection and reflection in Ioke. The reference documentation includes them all. Most of the interesting stuff can be found on the Message kind.</p>
+
+                  <p>TODO: add information about send</p>
+                </div>
+
+                <div class="chapter">
+                  <h2><a name="aspects">Aspects</a></h2>
+                  <p>TODO: add information about aspects</p>
                 </div>
 
                 <div class="chapter">
@@ -1480,6 +1568,8 @@ msg code <span style="color: #a52a2a;">;; "2 -(1)"</span></pre>
                     <p>The code above shows several different things you can do with the condition system. It is a very powerful system, so I recommend trying to understand it. It lies at the core of many things in Ioke, and some parts will not make sense without a deep understanding of conditions. For more information on what such a system is capable of, look for documentation about the Common Lisp condition system, which has been a heavy influence on Ioke. Also, the debugger in IIk uses the condition system to implement its functionality.</p>
 
                     <p>There are many conditions defined in the core of Ioke, and they are used by the implementation to signal error conditions of different kinds. Refer to the reference to see which conditions are available.</p>
+
+                    <p>TODO: add info about ensure here</p>
                   </div>
 
                   <div class="section">
@@ -1706,11 +1796,18 @@ d <span style="color: #00bfff;">==</span> {<span style="color: #7777d4;">one:</s
                   </div>
 
                   <div class="section">
+                    <h3><a name="sets">Sets</a></h3>
+                    <p>TODO: add information about sets</p>
+                  </div>
+
+                  <div class="section">
                     <h3><a name="rangesAndPairs">Ranges and Pairs</a></h3>
                     <p>Both ranges and pairs tie two values together. They also have literal syntax to create them, since they are very useful in many circumstances.</p>
 
                     <p>A Range defines two endpoints. A Range is Enumerable and you can also check for membership. It's also convenient to send Ranges to the "List []" method. A Range can be exclusive or inclusive. If it's inclusive it includes the end value, and if it is exclusive it doesn't.</p>
-                    
+
+                    <p>TODO: add information about inverted ranges</p>
+
                     <pre class="code">
 <span style="color: #a52a2a;">;; literal syntax for inclusive range
 </span><span style="color: #0050a0;">1..10</span>
@@ -1813,11 +1910,19 @@ d <span style="color: #00bfff;">==</span> {<span style="color: #7777d4;">one:</s
                   <div class="section">
                     <h3><a name="regexps">Regexps</a></h3>
                     <p>Regular expressions allow the matching of text against an abstract pattern. Ioke uses the JRegex engine to implement regular expressions. This means Ioke supports quite advanced expressions. At the moment, Ioke only allows matching against an expression and getting a yes or no answer, though. This is done using the "=~" method. When the regular expression support has been expanded, this section will include information about everything that can be done using them.</p>
+
+                    <p>TODO: complete section with new information</p>
                   </div>
 
                   <div class="section">
                     <h3><a name="filesystem">FileSystem</a></h3>
                     <p>The FileSystem kind allows access to functionality in the file system. It is the entry point to any manipulation of files and directories, and it can also be used to get listings of existing files. The reference includes good information about the existing methods in the FileSystem kind.</p>
+                  </div>
+
+                  <div class="section">
+                    <h3><a name="other_things">Other things</a></h3>
+                    <p>TODO: write about become!</p>
+                    <p>TODO: write about freeze! and thaw!</p>
                   </div>
                 </div>
 
@@ -1918,7 +2023,7 @@ describe(<span style="color: #606060;">Foo</span><span style="color: #006666;">,
 
   describe(<span style="color: #0050a0;">"aBadMethod"</span><span style="color: #006666;">,</span>
     <span style="color: #ffc0cb;">it</span>(<span style="color: #0050a0;">"should signal a condition"</span><span style="color: #006666;">,</span>
-      <span style="color: #606060;">Foo</span> aBadMethod should signal(<span style="color: #606060;">Condition</span> <span style="color: #606060;">Error</span> <span style="color: #606060;">BadBadBed</span>)
+      fn(<span style="color: #606060;">Foo</span> aBadMethod) should signal(<span style="color: #606060;">Condition</span> <span style="color: #606060;">Error</span> <span style="color: #606060;">BadBadBed</span>)
     )
   )
 )</pre>
