@@ -17,6 +17,22 @@ describe(List,
     List should mimic(Mixins Enumerable)
   )
   
+  describe("inspect",
+    it("should validate type of receiver",
+      x = Origin mimic
+      x cell("inspect") = List cell("inspect")
+      fn(x inspect) should signal(Condition Error Type IncorrectType)
+    )
+  )
+  
+  describe("notice",
+    it("should validate type of receiver",
+      x = Origin mimic
+      x cell("notice") = List cell("notice")
+      fn(x notice) should signal(Condition Error Type IncorrectType)
+    )
+  )
+  
   describe("at", 
     it("should return nil if empty list", 
       list at(0) should be nil
@@ -473,6 +489,12 @@ describe(List,
       [[1],[2],[3]] each(x, y << x)
       y should == [[1],[2],[3]]
     )
+    
+    it("should validate type of receiver",
+      x = Origin mimic
+      x cell("each") = List cell("each")
+      fn(x each(println)) should signal(Condition Error Type IncorrectType)
+    )
   )
 
 ;   describe("remove!", 
@@ -723,6 +745,16 @@ describe(List,
       ([1] <=> [1,2]) should == -1
       ([1,2] <=> [1,3]) should == -1
       ([1,3] <=> [1,2]) should == 1
+    )
+    
+    it("should validate type of receiver",
+      x = Origin mimic
+      x cell("<=>") = List cell("<=>")
+      fn(x <=> []) should signal(Condition Error Type IncorrectType)
+    )
+    
+    it("should validate type of argument",
+      fn([1,2,3] <=> 3) should signal(Condition Error Type IncorrectType)
     )
   )
 )
