@@ -23,21 +23,37 @@ describe(Pair,
   describe("first",
     it("should return the first element",
       (1 => 2) first should == 1)
+
+    it("should validate type of receiver",
+      Pair should checkReceiverTypeOn(:first)
+    )
   )
 
   describe("key",
     it("should return the first element",
       (1 => 2) key should == 1)
+
+    it("should validate type of receiver",
+      Pair should checkReceiverTypeOn(:key)
+    )
   )
 
   describe("second",
     it("should return the second element",
       (1 => 2) second should == 2)
+
+    it("should validate type of receiver",
+      Pair should checkReceiverTypeOn(:second)
+    )
   )
 
   describe("value",
     it("should return the second element",
       (1 => 2) value should == 2)
+
+    it("should validate type of receiver",
+      Pair should checkReceiverTypeOn(:value)
+    )
   )
 
   describe("<=>",
@@ -58,6 +74,10 @@ describe(Pair,
     it("should return a simple string for something simple",
       (1 => 2) inspect should == "1 => 2"
     )
+
+    it("should validate type of receiver",
+      Pair should checkReceiverTypeOn(:inspect)
+    )
   )
 
   describe("notice",
@@ -67,6 +87,10 @@ describe(Pair,
 
     it("should return a simple string for something simple",
       (1 => 2) notice should == "1 => 2"
+    )
+
+    it("should validate type of receiver",
+      Pair should checkReceiverTypeOn(:notice)
     )
   )
 )
