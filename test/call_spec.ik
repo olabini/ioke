@@ -78,4 +78,34 @@ describe(Call,
       Call should checkReceiverTypeOn(:resendToMethod, :f)
     )
   )
+
+  describe("receiver", 
+    it("should check the receiver type and signal an appropriate condition",
+      Call should checkReceiverTypeOn(:receiver)
+    )
+  )
+
+  describe("currentContext", 
+    it("should check the receiver type and signal an appropriate condition",
+      Call should checkReceiverTypeOn(:currentContext)
+    )
+  )
+
+  describe("resendToValue", 
+    it("should check the receiver type and signal an appropriate condition",
+      Call should checkReceiverTypeOn(:resendToValue, method())
+    )
+  )
+
+  describe("activateValue", 
+    it("should check the receiver type and signal an appropriate condition",
+      Call should checkReceiverTypeOn(:activateValue, method())
+    )
+  )
+
+  describe("activateValueWithCachedArguments", 
+    it("should check the receiver type and signal an appropriate condition",
+      Call should checkReceiverTypeOn(:activateValueWithCachedArguments, method())
+    )
+  )
 )
