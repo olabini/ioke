@@ -247,10 +247,9 @@ public class IokeList extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns a new sorted version of this list", new JavaMethod.WithNoArguments("sort") {
+        obj.registerMethod(runtime.newJavaMethod("returns a new sorted version of this list", new TypeCheckingJavaMethod.WithNoArguments("sort", runtime.list) {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     Object newList = IokeObject.mimic(on, message, context);
                     try {
                         Collections.sort(((IokeList)IokeObject.data(newList)).getList(), new SpaceshipComparator(context, message));
@@ -264,10 +263,9 @@ public class IokeList extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("sorts this list in place and then returns it", new JavaMethod.WithNoArguments("sort!") {
+        obj.registerMethod(runtime.newJavaMethod("sorts this list in place and then returns it", new TypeCheckingJavaMethod.WithNoArguments("sort!", runtime.list) {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     try {
                         Collections.sort(((IokeList)IokeObject.data(on)).getList(), new SpaceshipComparator(context, message));
                     } catch(RuntimeException e) {
@@ -280,32 +278,29 @@ public class IokeList extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns the size of this list", new JavaMethod.WithNoArguments("size") {
+        obj.registerMethod(runtime.newJavaMethod("returns the size of this list", new TypeCheckingJavaMethod.WithNoArguments("size", runtime.list) {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return context.runtime.newNumber(((IokeList)IokeObject.data(on)).getList().size());
                 }
             }));
         obj.aliasMethod("size", "length", null, null);
 
-        obj.registerMethod(runtime.newJavaMethod("takes one argument, the index of the element to be returned. can be negative, and will in that case return indexed from the back of the list. if the index is outside the bounds of the list, will return nil. the argument can also be a range, and will in that case interpret the first index as where to start, and the second the end. the end can be negative and will in that case be from the end. if the first argument is negative, or after the second, an empty list will be returned. if the end point is larger than the list, the size of the list will be used as the end point.", new JavaMethod("at") {
-                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+        obj.registerMethod(runtime.newJavaMethod("takes one argument, the index of the element to be returned. can be negative, and will in that case return indexed from the back of the list. if the index is outside the bounds of the list, will return nil. the argument can also be a range, and will in that case interpret the first index as where to start, and the second the end. the end can be negative and will in that case be from the end. if the first argument is negative, or after the second, an empty list will be returned. if the end point is larger than the list, the size of the list will be used as the end point.", new TypeCheckingJavaMethod("at") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
+                    .receiverMustMimic(runtime.list)
                     .withRequiredPositional("index")
                     .getArguments();
 
                 @Override
-                public DefaultArgumentsDefinition getArguments() {
+                public TypeCheckingArgumentsDefinition getArguments() {
                     return ARGUMENTS;
                 }
 
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    List<Object> args = new ArrayList<Object>();
-                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
-
-                    Object arg = args.get(0);
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                      Object arg = args.get(0);
 
                     if(IokeObject.data(arg) instanceof Range) {
                         int first = Number.extractInt(Range.getFrom(arg), message, context); 
@@ -363,22 +358,21 @@ public class IokeList extends IokeData {
 
         obj.aliasMethod("at", "[]", null, null);
 
-        obj.registerMethod(runtime.newJavaMethod("takes two arguments, the index of the element to set, and the value to set. the index can be negative and will in that case set indexed from the end of the list. if the index is larger than the current size, the list will be expanded with nils. an exception will be raised if a abs(negative index) is larger than the size.", new JavaMethod("at=") {
-                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+        obj.registerMethod(runtime.newJavaMethod("takes two arguments, the index of the element to set, and the value to set. the index can be negative and will in that case set indexed from the end of the list. if the index is larger than the current size, the list will be expanded with nils. an exception will be raised if a abs(negative index) is larger than the size.", new TypeCheckingJavaMethod("at=") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
+                    .receiverMustMimic(runtime.list)
                     .withRequiredPositional("index")
                     .withRequiredPositional("value")
                     .getArguments();
 
                 @Override
-                public DefaultArgumentsDefinition getArguments() {
+                public TypeCheckingArgumentsDefinition getArguments() {
                     return ARGUMENTS;
                 }
 
                 @Override
-                public Object activate(IokeObject method, final IokeObject context, final IokeObject message, Object on) throws ControlFlow {
-                    List<Object> args = new ArrayList<Object>();
-                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, final IokeObject context, final IokeObject message) throws ControlFlow {
 
                     Object arg = args.get(0);
                     Object value = args.get(1);
