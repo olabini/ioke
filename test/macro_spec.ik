@@ -93,4 +93,53 @@ describe("DefaultMacro",
       43)
     y should == 42
   )
+
+  describe("name",
+    it("should validate type of receiver",
+      x = Origin mimic do( y = Ground cell("DefaultMacro") cell("name") )
+      fn(x y) should signal(Condition Error Type IncorrectType)
+    )
+  )
+
+  describe("message",
+    it("should validate type of receiver",
+      x = Origin mimic do( y = Ground cell("DefaultMacro") cell("message") )
+      fn(x y) should signal(Condition Error Type IncorrectType)
+    )
+  )
+
+  describe("argumentsCode",
+    it("should validate type of receiver",
+      x = Origin mimic do( y = Ground cell("DefaultMacro") cell("argumentsCode") )
+      fn(x y) should signal(Condition Error Type IncorrectType)
+    )
+  )
+
+  describe("inspect",
+    it("should validate type of receiver",
+      x = Origin mimic do( y = Ground cell("DefaultMacro") cell("inspect") )
+      fn(x y) should signal(Condition Error Type IncorrectType)
+    )
+  )
+
+  describe("notice",
+    it("should validate type of receiver",
+      x = Origin mimic do( y = Ground cell("DefaultMacro") cell("notice") )
+      fn(x y) should signal(Condition Error Type IncorrectType)
+    )
+  )
+
+  describe("code",
+    it("should validate type of receiver",
+      x = Origin mimic do( y = Ground cell("DefaultMacro") cell("code") )
+      fn(x y) should signal(Condition Error Type IncorrectType)
+    )
+  )
+
+  describe("formattedCode",
+    it("should validate type of receiver",
+      x = Origin mimic do( y = Ground cell("DefaultMacro") cell("formattedCode") )
+      fn(x y) should signal(Condition Error Type IncorrectType)
+    )
+  )
 )
