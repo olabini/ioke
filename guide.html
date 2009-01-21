@@ -874,6 +874,18 @@ flux<span style="color: #00bfff;">++</span>
                       <dt>cells</dt>
                       <dd>Returns a Dict with all cells this object contains. The key is the name and the value is the cell value.</dd>
 
+                      <dt>cellOwner</dt>
+                      <dd>Returns the closest mimic that has a cell with the name given as argument to the message. A condition will be signalled if you try to find the owner of a cell that doesn't exist in this mimic tree. This method will only return the closest cell owner for the named cell. It will not use "pass", so it's the responsibility of pass-implementers to make it return a correct result for those names.</dd>
+
+                      <dt>cellOwner?</dt>
+                      <dd>Takes the name of a cell and returns true if the receiver of the message defines a cell by that name, otherwise false. Note that there can be more than one cell owner in a message chain. This just returns true if the current receiver is the closest one.</dd>
+
+                      <dt>removeCell!</dt>
+                      <dd>Removes the named cell from the current object. This means that if the current cell shadowed cells in mimics, those can be called again. It only removes a cell if the receiver is the owner of that cell. Otherwise it is an error to call this method.</dd>
+
+                      <dt>undefineCell!</dt>
+                      <dd>Makes it impossible to find a cell from the receiver. In all ways it looks like this cell doesn't exist in the mimic chain at all, even if mimics define several implementations of it. The use of undefining can make an object conceptually totally clean from cells, although it might be hard to use the objec after that. An interesting side-effect of the way these methods work is that removeCell! can be used to remove the undefine. So if you call removeCell! with a cell name and a receiver that has been called with undefine earlier, that undefine-status will be removed, and access to mimic versions of the cell will be possible again. Look at the specs for a better understanding.</dd>
+
                       <dt>documentation</dt>
                       <dd>Returns the documentation text for this object, or nil if no documentation exists for it.</dd>
 
@@ -883,8 +895,6 @@ flux<span style="color: #00bfff;">++</span>
                       <dt>mimic</dt>
                       <dd>Returns a newly created object that has the receiver as mimic. This is the magic way of creation new objects in Ioke. It is also the <em>ONLY</em> way to do it.</dd>
                     </dl>
-
-                    <p>TODO: add information about cell ownership and removing cells</p>
 
                     <p>All of these methods are described further in the reference.</p>
                   </div>

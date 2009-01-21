@@ -32,6 +32,11 @@ a.unselectedMenuItem {
   font-weight:normal;
 }
 
+dt, .code { 
+  font-family: courier;
+  color: black;
+}
+
 #menu { 
   margin-top: 2em;
   margin-left: 1.3em;
