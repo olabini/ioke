@@ -2105,7 +2105,22 @@ d <span style="color: #00bfff;">==</span> {<span style="color: #7777d4;">one:</s
 
                   <div class="section">
                     <h3><a name="sets">Sets</a></h3>
-                    <p>TODO: add information about sets</p>
+                    <p>If you want an object that work like a mathematical set, Ioke provides such a kind for you. There is no support for literal syntax for sets, but you can create new with the <span class="code">set</span> method. A set can be iterated over and it is Enumerable. You can add and remove elements, and check for membership.</p>
+
+                    <pre class="code">
+<span style="color: #b0c4de;">x</span> <span style="color: #00bfff;">=</span> <span style="color: #449900;">set</span>(<span style="color: #0050a0;">1</span><span style="color: #006666;">,</span><span style="color: #0050a0;">2</span><span style="color: #006666;">,</span><span style="color: #0050a0;">3</span><span style="color: #006666;">,</span><span style="color: #0050a0;">3</span><span style="color: #006666;">,</span><span style="color: #0050a0;">2</span><span style="color: #006666;">,</span><span style="color: #0050a0;">1</span>)
+
+x map(<span style="color: #00bfff;">*</span><span style="color: #0050a0;">2</span>) sort <span style="color: #a52a2a;">; =</span>&gt;<span style="color: #a52a2a;"> [2, 4, 6]
+</span>
+x <span style="color: #00bfff;">===</span> <span style="color: #0050a0;">1</span> <span style="color: #a52a2a;">; =</span>&gt;<span style="color: #a52a2a;"> true
+</span>x <span style="color: #00bfff;">===</span> <span style="color: #0050a0;">0</span> <span style="color: #a52a2a;">; =</span>&gt;<span style="color: #a52a2a;"> false
+</span>
+x remove!(<span style="color: #0050a0;">2</span>)
+x <span style="color: #00bfff;">===</span> <span style="color: #0050a0;">2</span> <span style="color: #a52a2a;">; =</span>&gt;<span style="color: #a52a2a;"> false
+</span>
+x &lt;&lt; <span style="color: #0050a0;">4</span>
+x <span style="color: #00bfff;">===</span> <span style="color: #0050a0;">4</span> <span style="color: #a52a2a;">; =</span>&gt;<span style="color: #a52a2a;"> true
+</span></pre>
                   </div>
 
                   <div class="section">
@@ -2114,7 +2129,7 @@ d <span style="color: #00bfff;">==</span> {<span style="color: #7777d4;">one:</s
 
                     <p>A Range defines two endpoints. A Range is Enumerable and you can also check for membership. It's also convenient to send Ranges to the "List []" method. A Range can be exclusive or inclusive. If it's inclusive it includes the end value, and if it is exclusive it doesn't.</p>
 
-                    <p>TODO: add information about inverted ranges</p>
+                    <p>An addition to Ioke S is the possibility of inverted ranges. If the first value is larger than the second value, then the range is inverted. This puts slightly different demands on the objects inside of it. Specifically, if you want to iterate over the elements, the kind you're using need to have a method called 'pred' for predecessor, instead of 'succ' for successor. Membership can still be tested, as long as &lt;=> is defined. So you can do something like this: ("foo".."aoo") === "boo". It's mostly useful for iterating in the opposite direction, like with 10..1, for example.</p>
 
                     <pre class="code">
 <span style="color: #a52a2a;">;; literal syntax for inclusive range
