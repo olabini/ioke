@@ -96,50 +96,43 @@ describe("DefaultMacro",
 
   describe("name",
     it("should validate type of receiver",
-      x = Origin mimic do( y = Ground cell("DefaultMacro") cell("name") )
-      fn(x y) should signal(Condition Error Type IncorrectType)
+      cell("DefaultMacro") should checkReceiverTypeOn(:name)
     )
   )
 
   describe("message",
     it("should validate type of receiver",
-      x = Origin mimic do( y = Ground cell("DefaultMacro") cell("message") )
-      fn(x y) should signal(Condition Error Type IncorrectType)
+      cell("DefaultMacro") should checkReceiverTypeOn(:message)
     )
   )
 
   describe("argumentsCode",
     it("should validate type of receiver",
-      x = Origin mimic do( y = Ground cell("DefaultMacro") cell("argumentsCode") )
-      fn(x y) should signal(Condition Error Type IncorrectType)
+      cell("DefaultMacro") should checkReceiverTypeOn(:argumentsCode)
     )
   )
 
   describe("inspect",
     it("should validate type of receiver",
-      x = Origin mimic do( y = Ground cell("DefaultMacro") cell("inspect") )
-      fn(x y) should signal(Condition Error Type IncorrectType)
+      cell("DefaultMacro") should checkReceiverTypeOn(:inspect)
     )
   )
 
   describe("notice",
     it("should validate type of receiver",
-      x = Origin mimic do( y = Ground cell("DefaultMacro") cell("notice") )
-      fn(x y) should signal(Condition Error Type IncorrectType)
+      cell("DefaultMacro") should checkReceiverTypeOn(:notice)
     )
   )
 
   describe("code",
     it("should validate type of receiver",
-      x = Origin mimic do( y = Ground cell("DefaultMacro") cell("code") )
-      fn(x y) should signal(Condition Error Type IncorrectType)
+      cell("DefaultMacro") should checkReceiverTypeOn(:code)
     )
   )
 
   describe("formattedCode",
     it("should validate type of receiver",
-      x = Origin mimic do( y = Ground cell("DefaultMacro") cell("formattedCode") )
-      fn(x y) should signal(Condition Error Type IncorrectType)
+      cell("DefaultMacro") should checkReceiverTypeOn(:formattedCode)
     )
   )
 )
