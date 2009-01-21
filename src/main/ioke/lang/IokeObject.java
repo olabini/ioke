@@ -4,7 +4,6 @@
 package ioke.lang;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.List;
@@ -688,6 +687,40 @@ public class IokeObject {
     	}
     }
 
+    public static Object ensureTypeIs(Class<?> clazz, IokeObject self, Object on, final IokeObject context, IokeObject message) throws ControlFlow {
+        final Object[] receiver = new Object[] { on };
+        while(!clazz.isInstance(IokeObject.data(receiver[0]))) {
+            final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
+                    message, 
+                    context, 
+                    "Error", 
+                    "Type",
+                    "IncorrectType")).mimic(message, context);
+            condition.setCell("message", message);
+            condition.setCell("context", context);
+            condition.setCell("receiver", self);
+            condition.setCell("expectedType", context.runtime.nil);
+
+            context.runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
+                public void run() throws ControlFlow {
+                    context.runtime.errorCondition(condition);
+                }}, 
+                context,
+                new Restart.ArgumentGivingRestart("useValue") { 
+                    public List<String> getArgumentNames() {
+                        return new ArrayList<String>(Arrays.asList("newValue"));
+                    }
+
+                    public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
+                        receiver[0] = arguments.get(0);
+                        return context.runtime.nil;
+                    }
+                }
+            );
+        }
+        return receiver[0];
+    }
+    
     public IokeObject convertToRational(IokeObject m, IokeObject context, boolean signalCondition) throws ControlFlow {
         IokeObject result = data.convertToRational(this, m, context, false);
         if(result == null) {
