@@ -128,4 +128,52 @@ describe("DefaultSyntax",
     m()
     x_syntax_spec should == 43
   )
+
+  describe("name",
+    it("should validate type of receiver",
+      syntax should checkReceiverTypeOn(:name)
+    )
+  )
+
+  describe("expand",
+    it("should validate type of receiver",
+      syntax should checkReceiverTypeOn(:expand)
+    )
+  )
+
+  describe("message",
+    it("should validate type of receiver",
+      syntax should checkReceiverTypeOn(:message)
+    )
+  )
+
+  describe("argumentsCode",
+    it("should validate type of receiver",
+      syntax should checkReceiverTypeOn(:argumentsCode)
+    )
+  )
+
+  describe("inspect",
+    it("should validate type of receiver",
+      syntax should checkReceiverTypeOn(:inspect)
+    )
+  )
+
+  describe("notice",
+    it("should validate type of receiver",
+      syntax should checkReceiverTypeOn(:notice)
+    )
+  )
+
+  describe("code",
+    it("should validate type of receiver",
+      syntax should checkReceiverTypeOn(:code)
+    )
+  )
+
+  describe("formattedCode",
+    it("should validate type of receiver",
+      syntax should checkReceiverTypeOn(:formattedCode)
+    )
+  )
 )
