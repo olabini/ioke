@@ -100,15 +100,11 @@ public class DefaultMacro extends IokeData implements Named, Inspectable, Associ
                 }
             }));
         
-        macro.registerMethod(macro.runtime.newJavaMethod("returns the full code of this macro, as a Text", new JavaMethod.WithNoArguments("code") {
+        macro.registerMethod(macro.runtime.newJavaMethod("returns the full code of this macro, as a Text", new TypeCheckingJavaMethod.WithNoArguments("code", macro) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     IokeData data = IokeObject.data(on);
-                    if(!(data instanceof DefaultMacro) && !(data instanceof AliasMethod)) {
-                        on = context.runtime.defaultMacro.convertToThis(on, message, context);
-                    }
 
-                    data = IokeObject.data(on);
                     if(data instanceof DefaultMacro) {
                         return context.runtime.newText(((DefaultMacro)data).getCodeString());
                     } else {
