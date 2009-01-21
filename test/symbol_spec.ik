@@ -18,4 +18,32 @@ describe("Symbol",
     :foo x = 13
     :foo x should == 13
   )
+  
+  describe("asText",
+    it("should validate type of receiver",
+      Symbol should checkReceiverTypeOn(:asText)
+    )
+  )
+  
+  describe("inspect",
+    it("should validate type of receiver",
+      Symbol should checkReceiverTypeOn(:inspect)
+    )
+  )
+  
+  describe("notice",
+    it("should validate type of receiver",
+      Symbol should checkReceiverTypeOn(:notice)
+    )
+  )
+  
+  describe("<=>",
+    it("should validate type of receiver",
+      Symbol should checkReceiverTypeOn(:"<=>", :arovane)
+    )
+    
+    it("should validate type of argument",
+       fn(:eggs <=> 1) should signal(Condition Error Type IncorrectType)
+    )
+  )
 )
