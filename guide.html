@@ -1698,7 +1698,8 @@ msg code <span style="color: #a52a2a;">;; "2 -(1)"</span></pre>
 
                   <p>There are many more methods that can be used to do interesting introspection and reflection in Ioke. The reference documentation includes them all. Most of the interesting stuff can be found on the Message kind.</p>
 
-                  <p>TODO: add information about send</p>
+                  <h4>send</h4>
+                  <p>In many cases you want to activate something activatable in a cell, with a specific receiver. You can do this using <span class="code">send</span>. You can send messages to most objects. Send takes one argument that should evaluate to the name of the message to send, and then sends along all other arguments given to send to the new message. These arguments will remain unevaluated, and will be evaluated at the leisure of the final method activated.</p>
                 </div>
 
                 <div class="chapter">
