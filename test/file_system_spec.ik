@@ -157,5 +157,11 @@ describe(FileSystem,
   describe(FileSystem File,
     it("should have the right kind",
       FileSystem File should have kind("FileSystem File"))
+
+    describe("close",
+      it("should validate type of receiver",
+        FileSystem File should checkReceiverTypeOn(:close)
+      )
+    )
   )
 )

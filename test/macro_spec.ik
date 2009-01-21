@@ -93,4 +93,46 @@ describe("DefaultMacro",
       43)
     y should == 42
   )
+
+  describe("name",
+    it("should validate type of receiver",
+      cell("DefaultMacro") should checkReceiverTypeOn(:name)
+    )
+  )
+
+  describe("message",
+    it("should validate type of receiver",
+      cell("DefaultMacro") should checkReceiverTypeOn(:message)
+    )
+  )
+
+  describe("argumentsCode",
+    it("should validate type of receiver",
+      cell("DefaultMacro") should checkReceiverTypeOn(:argumentsCode)
+    )
+  )
+
+  describe("inspect",
+    it("should validate type of receiver",
+      cell("DefaultMacro") should checkReceiverTypeOn(:inspect)
+    )
+  )
+
+  describe("notice",
+    it("should validate type of receiver",
+      cell("DefaultMacro") should checkReceiverTypeOn(:notice)
+    )
+  )
+
+  describe("code",
+    it("should validate type of receiver",
+      cell("DefaultMacro") should checkReceiverTypeOn(:code)
+    )
+  )
+
+  describe("formattedCode",
+    it("should validate type of receiver",
+      cell("DefaultMacro") should checkReceiverTypeOn(:formattedCode)
+    )
+  )
 )

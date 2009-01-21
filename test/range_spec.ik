@@ -76,9 +76,7 @@ describe("Range",
     )
 
     it("should validate the type of receiver",
-      x = Origin mimic
-      x cell("from") = (0..0) cell("from")
-      fn(x from) should signal(Condition Error Type IncorrectType)
+      Range should checkReceiverTypeOn(:from)
     )
   )
 
