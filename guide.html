@@ -133,6 +133,9 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
                       <li>
                         <a href="#assignmentShuffling">Assignment shuffling</a>
                       </li>
+                      <li>
+                        <a href="#invertedOperators">Inverted operators</a>
+                      </li>
                     </ol>
                   </li>
 
@@ -438,15 +441,15 @@ Bye.</pre>
                   <p>Ioke has no keywords or statements. Everything is an expression composed of a chain of messages. A piece of code is represented as a chain of messages that links to the next message. The result of one message will be the receiver of the next message, until a "." message is received. The "." message is a terminator that throws away the current receiver. A newline will serve as a "." message in the circumstances where it feels natural.</p>
 
                   <p>An informal BNF description of Ioke looks like this:</p>
-                  <p>TODO: update to match new grammar, talk about all the new operators!!!</p>
+
                   <pre style="font-family: courier;">
-    program       ::=  messageChain*
-    messageChain  ::=  expression*
-    expression    ::=  message | brackets | operator | literal | terminator
+    program       ::=  messageChain?
+    messageChain  ::=  expression+
+    expression    ::=  message | brackets | literal | terminator
+    literal       ::=  Text | Regexp | Number | Decimal | Unit
     message       ::=  Identifier ( "(" commated? ")" )?
-    commated      ::=  expression+ ( "," expression+ )*
+    commated      ::=  messageChain ( "," messageChain )*
     brackets      ::=  ( "[" commated? "]" ) | ( "{" commated? "}" )
-    literal       ::=  Text | Regexp | Number | Decimal
     terminator    ::=  "." | "\n"
     comment       ::=  ";" .* "\n"</pre>
 
@@ -454,7 +457,9 @@ Bye.</pre>
 
                   <p>All the types of literals are actually turned into a message to create that literal, so the canonical form of the message chain contains no literals, just a message to create that literal. Any message can have zero or more arguments given to it. Arguments are separated with comma. If there are no arguments to a message, the parenthesis can be left off, but they need to be there if there are arguments. Mostly any combination of characters can be used as an Identifier, with some exceptions.</p>
 
-                  <p>There is also a syntactic element called operators, which are handled a bit differently from regular messages. Specifically, through the use of operator shuffling, operators can be used in infix, including having different precedence rules. Assignment is a specific form of operator which gets its own kind of shuffling. These are both described below.</p>
+                  <p>There used to be a parsing element called operators, but these have now been included into identifiers. They are not parsed differently at all, but the operator shuffling step will handle them differently. Specifically, operators can be used in infix, including having different precedence rules. Assignment is a specific form of operator which gets its own kind of shuffling. These are both described below.</p>
+
+                  <p>An identifier in Ioke can be one of several things. Ioke takes the rules for Java identifiers, and adds some more to them. All Unicode letters and digits can be part of an identifier, except for the first entry. Underscores are allowed, just like in Java. Ioke also allows colons as an identifier. Exclamation mark and question mark is allowed anywhere in the identifier except for in the beginning. Identifiers can be broadly classified into identifiers and operators, where operators can be any combination of several sigils. There are also some special operators that have restructions. These are: Opening and close brackets are not allowed, except together with its counterpart, so [ is not a valid identifier, while [] is. So is {}. () is not valid either. Two or more dots is a valid identifier. A hash sign can be followed by any operator char, but isn't parsed as an identifier by itself. Slash is not an operator char, but can be used as it except in combinations that look like regular expressions. The operator chars are: +, -, *, %, &lt;, &gt;, !, ?, ~, &amp;, |, ^, $, =, @, ', ` and :. These can be combined together in any order, and any number, except for the caveats noted before. That means the available operator space is infinite, and very wide. Combinations of letters and operator characters are generally not allowed, except for the exceptions with :, ! and ?. This is to make it possible to have infix operations without spaces in some situations.</p>
 
                   <p>The two forms of brackets will get turned into a canonical form. Surrounding comma-separated message chains with square brackets is the same as calling the method [], giving it those message chains as argument. So [foo, bar, quux] is exactly the same as [](foo, bar, quux). The same is true for curly brackets.</p>
 
@@ -601,81 +606,117 @@ mux"</span>
 
                     <p>The precedence rules for regular operators can be found in the cell 'Message OperatorTable operators', which is a regular Dict that can be updated with new values. The new values will obviously not take effect until the current code has run, and a new parse is started.</p>
 
-                    <p>At the time of writing, the available operators are these:</p>
+                    <p>Note that the below is only the operators that have defined precedence rules. As noted in the section on syntax, you can use any operator you want really. It is easy to add new precedences to the table, either temporarily or permanently.</p>
 
-                    <ul>
-                      <li>&lt;=&gt;</li>
-                      <li>&lt;=</li>
-                      <li>&gt;=</li>
-                      <li>&lt;</li>
-                      <li>&gt;</li>
-                      <li>===</li>
-                      <li>==</li>
-                      <li>!=</li>
-                      <li>=~</li>
-                      <li>!~</li>
-                      <li>-</li>
-                      <li>+</li>
-                      <li>**</li>
+                    <p>At the time of writing, the available operators - in order of precedence - are these:</p>
+
+                    <ul style="color: black; font-family: courier;">
+                      <li>!</li>
+                      <li>?</li>
+                      <li>$</li>
+                      <li>~</li>
+                      <li style="padding-bottom: 1em;">#</li>
+
+                      <li style="padding-bottom: 1em;">**</li>
+
                       <li>*</li>
                       <li>/</li>
-                      <li>%</li>
-                      <li>&amp;&amp;</li>
-                      <li>&amp;</li>
-                      <li>||</li>
-                      <li>|</li>
-                      <li>^</li>
-                      <li>=&gt;</li>
-                      <li>=&gt;&gt;</li>
-                      <li>&lt;-&gt;</li>
-                      <li>-&gt;</li>
-                      <li>+&gt;</li>
-                      <li>!&gt;</li>
-                      <li>&lt;&gt;</li>
-                      <li>&amp;&gt;</li>
-                      <li>%&gt;</li>
-                      <li>#&gt;</li>
-                      <li>@&gt;</li>
-                      <li>/&gt;</li>
-                      <li>*&gt;</li>
-                      <li>?&gt;</li>
-                      <li>|&gt;</li>
-                      <li>^&gt;</li>
-                      <li>~&gt;</li>
-                      <li>**&gt;</li>
-                      <li>&amp;&amp;&gt;</li>
-                      <li>||&gt;</li>
-                      <li>$&gt;</li>
-                      <li>-&gt;&gt;</li>
-                      <li>+&gt;&gt;</li>
-                      <li>!&gt;&gt;</li>
-                      <li>&lt;&gt;&gt;</li>
-                      <li>&amp;&gt;&gt;</li>
-                      <li>%&gt;&gt;</li>
-                      <li>#&gt;&gt;</li>
-                      <li>@&gt;&gt;</li>
-                      <li>/&gt;&gt;</li>
-                      <li>*&gt;&gt;</li>
-                      <li>?&gt;&gt;</li>
-                      <li>&gt;&gt;</li>
-                      <li>^&gt;&gt;</li>
-                      <li>~&gt;&gt;</li>
-                      <li>**&gt;&gt;</li>
-                      <li>&amp;&amp;&gt;&gt;</li>
-                      <li>||&gt;&gt;</li>
-                      <li>$&gt;&gt;</li>
-                      <li>...</li>
-                      <li>..</li>
+                      <li style="padding-bottom: 1em;">%</li>
+
+                      <li>+</li>
+                      <li style="padding-bottom: 1em;">-</li>
+
                       <li>&lt;&lt;</li>
-                      <li>&gt;&gt;</li>
-                      <li>or</li>
-                      <li>nor</li>
-                      <li>xor</li>
+                      <li style="padding-bottom: 1em;">>></li>
+
+                      <li>&lt;=></li>
+                      <li>></li>
+                      <li>&lt;</li>
+                      <li>&lt;=</li>
+                      <li>>=</li>
+                      <li>&lt;></li>
+                      <li style="padding-bottom: 1em;">&lt;>></li>
+
+                      <li>==</li>
+                      <li>!=</li>
+                      <li>===</li>
+                      <li>=~</li>
+                      <li style="padding-bottom: 1em;">!~</li>
+
+                      <li style="padding-bottom: 1em;">&amp;</li>
+
+                      <li style="padding-bottom: 1em;">^</li>
+
+                      <li style="padding-bottom: 1em;">|</li>
+
+                      <li>&amp;&amp;</li>
+                      <li style="padding-bottom: 1em;">?&amp;</li>
+
+                      <li>||</li>
+                      <li style="padding-bottom: 1em;">?|</li>
+
+                      <li>..</li>
+                      <li>...</li>
+                      <li>=></li>
+                      <li>&lt;-></li>
+                      <li>-></li>
+                      <li>+></li>
+                      <li>!></li>
+                      <li>&amp;></li>
+                      <li>%></li>
+                      <li>#></li>
+                      <li>@></li>
+                      <li>/></li>
+                      <li>*></li>
+                      <li>?></li>
+                      <li>|></li>
+                      <li>^></li>
+                      <li>~></li>
+                      <li>->></li>
+                      <li>+>></li>
+                      <li>!>></li>
+                      <li>&amp;>></li>
+                      <li>%>></li>
+                      <li>#>></li>
+                      <li>@>></li>
+                      <li>/>></li>
+                      <li>*>></li>
+                      <li>?>></li>
+                      <li>|>></li>
+                      <li>^>></li>
+                      <li>~>></li>
+                      <li>=>></li>
+                      <li>**></li>
+                      <li>**>></li>
+                      <li>&amp;&amp;></li>
+                      <li>&amp;&amp;>></li>
+                      <li>||></li>
+                      <li>||>></li>
+                      <li>$></li>
+                      <li style="padding-bottom: 1em;">$>></li>
+
+                      <li>+=</li>
+                      <li>-=</li>
+                      <li>**=</li>
+                      <li>*=</li>
+                      <li>/=</li>
+                      <li>%=</li>
                       <li>and</li>
                       <li>nand</li>
-                      <li>!</li>
-                      <li>~</li>
-                      <li>$</li>
+                      <li>&amp;=</li>
+                      <li>&amp;&amp;=</li>
+                      <li>^=</li>
+                      <li>or</li>
+                      <li>xor</li>
+                      <li>nor</li>
+                      <li>|=</li>
+                      <li>||=</li>
+                      <li>&lt;&lt;=</li>
+                      <li style="padding-bottom: 1em;">>>=</li>
+
+                      <li style="padding-bottom: 1em;">&lt;-</li>
+
+                      <li>return</li>
                     </ul>
 
                     <p>And as mentioned above, all of these can be used for your own purpose, although some of them already have reserved meanings. This document will cover most of the used operators, while the rest can be found in the reference.</p>
@@ -687,7 +728,7 @@ mux"</span>
 
                   <div class="section">
                     <h3><a name="assignmentShuffling">Assignment shuffling</a></h3>
-                    <p>Much like with regular operators, assignment operators are subject to a kind of shuffling. This shuffling differs from regular operator shuffling, in that it will shuffle around two things - the left hand side and the right hand side. This is true for every assignment operator except for the unary ones, which will only reshuffle one message.</p>
+                    <p>Much like with regular operators, trinary - assignment - operators are subject to a kind of shuffling. This shuffling differs from regular operator shuffling, in that it will shuffle around two things - the left hand side and the right hand side. This is true for every assignment operator except for the unary ones, which will only reshuffle one message.</p>
 
                     <p>A few examples might make the translation easier to perceive. The first item is the readable form, while the second form is the canonical form:</p>
                     <pre class="code">
@@ -705,11 +746,11 @@ flux<span style="color: #00bfff;">++</span>
 
                     <p>These examples show some more advanced details -- specifically the fact that assignment operators generally work on "places", not on names or cells. This will be more explored in the chapter on <a href="#assignment">assignment</a>. The important thing to notice from the above examples is that for most assignments two things will be rearranged. For the unary operators only one thing will be moved.</p>
 
-                    <p>Just as with regular operators, the assignment operators have information in the 'Message OperatorTable' cell. The specific cell is 'Message OperatorTable assignOperators', and it matches an assignment operator to either the integer 1, or the integer 2. Everything with 1 will be matched as being unary assignment.</p>
+                    <p>Just as with regular operators, the assignment operators have information in the 'Message OperatorTable' cell. The specific cell is 'Message OperatorTable trinaryOperators', and it matches an assignment operator to either the integer 1, or the integer 2. Everything with 1 will be matched as being unary assignment.</p>
 
                     <p>The currently available assignment operators are:</p>
 
-                    <ul>
+                    <ul style="color: black; font-family: courier;">
                       <li>=</li>
                       <li>++</li>
                       <li>--</li>
@@ -729,6 +770,24 @@ flux<span style="color: #00bfff;">++</span>
                     </ul>
 
                     <p>Just as with regular operators, what an assignment operator does depend on what the result is from sending the message of that name to the receiver object, just like with any type of message.</p>
+                  </div>
+
+                  <div class="section">
+                    <h3><a name="invertedOperators">Inverted operators</a></h3>
+
+                    <p>In addition to the regular binary operators and the trinary assignment operators, Ioke also sports inverted operators. These aren't actually used anywhere in the core distribution, but they might be useful at some time or another. The basic idea is that sometimes you want to have the right hand side of an expresssion become the receiver of an operator call, and the left hand side become the argument to the operator. Inverted operators allow this.</p>
+
+                    <p>As with both the binary and trinary operators, you can find and update information about inverted operators in the cell 'Message OperatorTable invertedOperators'. To make this a little less abstract, let us look at two simple examples and what they translate into:</p>
+                    <pre class="code">
+<span style="color: #0050a0;">"foo"</span> <span style="color: #7777d4;">::</span> [<span style="color: #0050a0;">1</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">2</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">3</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">4</span>] map(<span style="color: #449900;">asText</span>) 
+<span style="color: #a52a2a;">;; will be translated to
+</span>[<span style="color: #0050a0;">1</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">2</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">3</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">4</span>] map(<span style="color: #449900;">asText</span>) <span style="color: #7777d4;">::</span>(<span style="color: #0050a0;">"foo"</span>)
+
+<span style="color: #a52a2a;">;; provided we have an inverted
+;; operator called 'doit'
+</span>abc foo quux <span style="color: #449900;">doit</span> another time
+<span style="color: #a52a2a;">;; will be translated to
+</span>another time <span style="color: #449900;">doit</span>(abc foo quux)</pre>
                   </div>
                 </div>
 
