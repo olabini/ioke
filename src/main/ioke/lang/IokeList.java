@@ -107,10 +107,7 @@ public class IokeList extends IokeData {
 
                     Runtime runtime = context.runtime;
                     
-                    Object onAsList = on;
-                    if(!(IokeObject.data(onAsList) instanceof IokeList)) {
-                      onAsList = IokeObject.convertTo(context.runtime.list, onAsList, true, null, message, context);
-                    }
+                    Object onAsList = context.runtime.list.convertToThis(on, message, context);
                     
                     List<Object> ls = ((IokeList)IokeObject.data(onAsList)).list;
                     
@@ -149,7 +146,7 @@ public class IokeList extends IokeData {
                         break;
                     }
                     }
-                    return on;
+                    return onAsList;
                 }
             }));
 
@@ -300,7 +297,7 @@ public class IokeList extends IokeData {
 
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
-                      Object arg = args.get(0);
+                    Object arg = args.get(0);
 
                     if(IokeObject.data(arg) instanceof Range) {
                         int first = Number.extractInt(Range.getFrom(arg), message, context); 
@@ -373,7 +370,6 @@ public class IokeList extends IokeData {
 
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, final IokeObject context, final IokeObject message) throws ControlFlow {
-
                     Object arg = args.get(0);
                     Object value = args.get(1);
                     if(!(IokeObject.data(arg) instanceof Number)) {
