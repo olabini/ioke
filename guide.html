@@ -1514,12 +1514,57 @@ y(<span style="color: #0050a0;">42</span>)</pre>
 
                   <div class="section">
                     <h3><a name="syntax">Syntax</a></h3>
-                    <p>TODO: Write about syntax</p>
+
+                    <p>Ioke supports loads of stuff with the standard macro, but sometimes these macros are a bit too low level for commonly used operations. Syntax is one of those cases you can achieve with macros, but you don't really want too. Many features in Ioke S is implemented using syntax.</p>
+
+                    <p>You can define syntax using the 'syntax' method. This returns a mimic of DefaultSyntax. You can use the same kind of cells in a syntax as you can in a macro. What is different with syntax is that syntax can only return one of two things. The first is nil, and the second is a message chain. A syntax will only be executed once at every point in the message chains, because after a syntax executes the first time, it will replace itself with thte result of that evaluation. If that evaluation returns nil, syntax will just remove itself from the message chain.</p>
+
+                    <p>You can use this for many things, but one of the more useful things you can do is translate a high level declarative definition of something into a low level executable version. That is exactly how for comprehensions are implemented.</p>
+
+                    <p>The syntactic macros are fairly advanced, and takes some time to grok. They are incredibly useful though, and they are used all over the standard library to achieve all manner of interesting things. Take a look there and things should hopefully become clearer. It's also a must to read the section on message chain manipulation and quoting later on to make syntax macros readable.</p>
                   </div>
 
                   <div class="section">
                     <h3><a name="destructuring">Destructuring</a></h3>
-                    <p>TODO: Write about destructuring</p>
+                    <p>A common problem with macros is that you want to take several different combinations of arguments, and do different things depending on how many you get. Say you might want to take one code argument, but also two optional arguments that should be evaluated. All of that code turns out to be highly repetetive, so Ioke contains a collection of syntax macros that make it easier to write these things. These are collectively called destructuring syntax.</p>
+
+                    <p>Let us say we have a macro that either [code], [evaluatedArgument, code], or [evaluatedArgument, code, evaluatedArgument]. The stuff that should happen is totally different for each of these cases. With a regular macro the code would look something like this:</p>
+
+                    <pre class="code">
+<span style="color: #b0c4de;">foo</span> <span style="color: #00bfff;">=</span> <span style="color: #6495ed;">macro</span>(
+  <span style="color: #b0c4de;">len</span> <span style="color: #00bfff;">=</span> <span style="color: #449900;">call</span> arguments length
+  case(len<span style="color: #006666;">,</span>
+    <span style="color: #0050a0;">1</span><span style="color: #006666;">,</span>
+    <span style="color: #b0c4de;">code</span> <span style="color: #00bfff;">=</span> <span style="color: #449900;">call</span> arguments[<span style="color: #0050a0;">0</span>]
+    <span style="color: #a52a2a;">; do something with the code
+</span>    <span style="color: #006666;">,</span>
+    <span style="color: #0050a0;">2</span><span style="color: #006666;">,</span>
+    <span style="color: #b0c4de;">arg1</span> <span style="color: #00bfff;">=</span> <span style="color: #449900;">call</span> argAt(<span style="color: #0050a0;">0</span>)
+    <span style="color: #b0c4de;">code</span> <span style="color: #00bfff;">=</span> <span style="color: #449900;">call</span> arguments[<span style="color: #0050a0;">1</span>]
+    <span style="color: #a52a2a;">; do something with the code and arg
+</span>    <span style="color: #006666;">,</span>
+    <span style="color: #0050a0;">3</span><span style="color: #006666;">,</span>
+    <span style="color: #b0c4de;">arg1</span> <span style="color: #00bfff;">=</span> <span style="color: #449900;">call</span> argAt(<span style="color: #0050a0;">0</span>)
+    <span style="color: #b0c4de;">code</span> <span style="color: #00bfff;">=</span> <span style="color: #449900;">call</span> arguments[<span style="color: #0050a0;">1</span>]
+    <span style="color: #b0c4de;">arg2</span> <span style="color: #00bfff;">=</span> <span style="color: #449900;">call</span> argAt(<span style="color: #0050a0;">2</span>)
+    <span style="color: #a52a2a;">; do something with the code and args
+</span>    ))</pre>
+
+                    <p>As you can see it's really a lot of code to see what happens here, and it is very imperative in style. But, if I instead use dmacro - which is the destructuring version of macro - it looks like this:</p>
+
+                    <pre class="code">
+<span style="color: #b0c4de;">foo</span> <span style="color: #00bfff;">=</span> <span style="color: #6495ed;">dmacro</span>(
+  [code]
+  <span style="color: #a52a2a;">; do something with the code
+</span>  <span style="color: #006666;">,</span>
+  [&gt;arg1<span style="color: #006666;">,</span> code]
+  <span style="color: #a52a2a;">; do something with the code and arg
+</span>  <span style="color: #006666;">,</span>
+  [&gt;arg1<span style="color: #006666;">,</span> code<span style="color: #006666;">,</span> &gt;arg2]
+  <span style="color: #a52a2a;">; do something with the code and args
+</span>)</pre>
+
+                    <p>dmacro will automatically check the length and extract the different arguments. The right arrow before the names of arg1 and arg2 marks that these should be evaluated. And what is more, dmacro will generate code that also generates a good condition if no argument matching works out. If you give zero arguments to the first version, it will fail silently. The dmacro will complain immediately. The dmacro destructuring syntax actually supports several more ways of ripping arguments apart. You can find this information in the doks for dmacro. Also, there are equivalent versions of dmacro for lecro, lecrox and syntax, called dlecro, dlecrox and dsyntax. They do the same thing, except they act like lecros or syntax instead.</p>
                   </div>
 
                   <div class="section">
