@@ -30,6 +30,10 @@ describe("Set",
       x = set("abc", "cde")
       x empty? should be false
     )
+
+    it("should validate type of receiver",
+      Set should checkReceiverTypeOn(:empty?)
+    )
   )
 
   describe("ifEmpty",
@@ -116,6 +120,10 @@ describe("Set",
       set(1,2,3) each(x, blarg=32)
       x should == 14
     )
+
+    it("should validate type of receiver",
+      Set should checkReceiverTypeOn(:each, "foo")
+    )
   )
 
   describe("==", 
@@ -176,6 +184,10 @@ describe("Set",
       x = set(1)
       (x << 2) should be same(x)
     )
+
+    it("should validate type of receiver",
+      Set should checkReceiverTypeOn(:"<<", 2)
+    )
   )
 
   describe("include?", 
@@ -191,6 +203,52 @@ describe("Set",
       set(1,2) include?(3) should be false
       set(2,3,1) include?(:bar) should be false
       set("foo", "bar") include?(:bar) should be false
+    )
+
+    it("should validate type of receiver",
+      Set should checkReceiverTypeOn(:include?, 42)
+    )
+  )
+
+  describe("+",
+    it("should add two sets",
+      (set(1,2) + set(1,3)) should == set(1,2,3)
+    )
+
+    it("should validate type of argument",
+      fn(set(2) + 3) should signal(Condition Error Type IncorrectType)
+    )
+
+    it("should validate type of receiver",
+      Set should checkReceiverTypeOn(:"+", set(2))
+    )
+  )
+
+  describe("remove!",
+    it("should remove entry from set",
+      set(1,2) remove!(1) should == set(2)
+    )
+
+    it("should validate type of receiver",
+      Set should checkReceiverTypeOn(:remove!, 42)
+    )
+  )
+
+  describe("inspect",
+    it("should validate type of receiver",
+      Set should checkReceiverTypeOn(:inspect)
+    )
+  )
+
+  describe("notice",
+    it("should validate type of receiver",
+      Set should checkReceiverTypeOn(:notice)
+    )
+  )
+
+  describe("withIdentitySemantics!",
+    it("should validate type of receiver",
+      Set should checkReceiverTypeOn(:withIdentitySemantics!)
     )
   )
 )
