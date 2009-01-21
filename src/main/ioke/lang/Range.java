@@ -6,6 +6,7 @@ package ioke.lang;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
+import java.util.Map;
 
 import ioke.lang.exceptions.ControlFlow;
 
@@ -142,8 +143,8 @@ public class Range extends IokeData {
 
         obj.registerMethod(runtime.newJavaMethod("returns the 'from' part of the range", new TypeCheckingJavaMethod.WithNoArguments("from", runtime.range) {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getValidatedArgumentsAndReceiver(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return ((Range)IokeObject.data(on)).from;
                 }
             }));
