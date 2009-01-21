@@ -1867,7 +1867,17 @@ msg code <span style="color: #a52a2a;">;; "2 -(1)"</span></pre>
 
                     <p>There are many conditions defined in the core of Ioke, and they are used by the implementation to signal error conditions of different kinds. Refer to the reference to see which conditions are available.</p>
 
-                    <p>TODO: add info about ensure here</p>
+                    <p>Finally, one thing that you might miss if you're used to exceptions in other languages, is a construct that makes it possible to ensure that code gets executed, even if a non-local flow control happens. Don't despair, Ioke has one. It is called ensure, and works mostly like ensure in Ruby, and finally in Java. It takes one main code argument, followed by zero or more arguments that contain the code to always make sure executes. It looks like this:</p>
+
+                    <pre class="code">
+ensure(
+  <span style="color: #b0c4de;">conn</span> <span style="color: #00bfff;">=</span> <span style="color: #606060;">Database</span> open
+  conn <span style="color: #606060;">SELECT</span> <span style="color: #00bfff;">*</span> <span style="color: #606060;">FROM</span> a_table<span style="color: #006666;">,</span>
+  conn close!<span style="color: #006666;">,</span>
+  conn reallyClose!<span style="color: #006666;">,</span>
+  conn reallyReallyReallyClose!)</pre>
+  
+                    <p>This code uses a hypothetical database library, opens up a connection, does something, and then in three different ensure blocks tries to ensure that it really is closed afterwards. The return value of the ensure block will still be the return value of the last expression in the main code. Non local flow control can happen inside of the ensure block, but exactly what will happen is undefined -- so avoid it, please.</p>
                   </div>
 
                   <div class="section">
