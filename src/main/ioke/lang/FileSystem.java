@@ -17,6 +17,7 @@ import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
+import java.util.Map;
 
 import ioke.lang.exceptions.ControlFlow;
 
@@ -52,10 +53,9 @@ public class FileSystem {
 
             obj.setKind("FileSystem File");
 
-            obj.registerMethod(runtime.newJavaMethod("Closes any open stream to this file", new JavaMethod.WithNoArguments("close") {
+            obj.registerMethod(runtime.newJavaMethod("Closes any open stream to this file", new TypeCheckingJavaMethod.WithNoArguments("close", obj) {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     try {
                         Writer writer = IokeFile.getWriter(on);
                         if(writer != null) {
