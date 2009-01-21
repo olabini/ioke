@@ -33,10 +33,10 @@ IokeDebugger = Origin mimic do(
             restartArguments = argumentNames map(name,
               newIo prompt = "  dbg:#{len}:#{name}> "
               argVal = Message fromText(newIo gets) evaluateOn(condition context)
-              out println("  +> #{argVal inspect}")
+              out println("  +> #{cell(:argVal) inspect}")
               out println
 
-              argVal
+              cell(:argVal)
             )
 
             out println
