@@ -2244,8 +2244,16 @@ x <span style="color: #00bfff;">===</span> <span style="color: #0050a0;">4</span
 
                   <div class="section">
                     <h3><a name="other_things">Other things</a></h3>
-                    <p>TODO: write about become!</p>
-                    <p>TODO: write about freeze! and thaw!</p>
+                    <p>Ioke supports transforming an object into another object through the use of the method <span class="code">become!</span>. After an object becomes another object, those two objects are indistinguishable from Ioke. This makes it really easy to do transparent proxies, futures and other things like that. To use it, do something like this: </p>
+                    <pre class="code">
+<span style="color: #b0c4de;">x</span> <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">"foo"</span>
+<span style="color: #b0c4de;">y</span> <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">"bar"</span>
+
+x become!(y)
+x same?(y) <span style="color: #a52a2a;">; =</span>&gt;<span style="color: #a52a2a;"> true
+</span></pre>
+
+                    <p>In Ioke, objects can also be frozen. When an object is frozen it cannot be modified in any way. Any try at modifying a frozen object will result in a condition. This can be really helpful to track down problems in code, and make assertions about what should be possible. You freeze an Ioke object by calling <span class="code">freeze!</span> on it. You can unfree it by calling <span class="code">thaw!</span> on it. You can also check if something is frozen by calling <span class="code">frozen?</span> on it.</p>
                   </div>
                 </div>
 
