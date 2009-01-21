@@ -1573,7 +1573,49 @@ y(<span style="color: #0050a0;">42</span>)</pre>
 
                     <p>The term message chain fragment is also used to specifically mean a message chain that is meant to be put together with something and evaluated. Picture a daisy chain that gets added at the end of another chain and then executed. That's what happens if you execute something like "[1, 2, 3] map(*2)". In this case the call to "*" with the argument 2 will be a message chain fragment that will be put together with a new receiver before execution.</p>
 
-                    <p>TODO: information about quoting</p>
+                    <p>To handle syntax correctly - but also to generally handle manipulation of message chains - it is important to know about the available methods to do this. I have added quite a lot of nice stuff that makes it easy to work with message chains.</p>
+
+                    <p>First, messages are actually Enumerable, so you can use any Enumerable methods on them. The enumeration always starts at the receiver. It will not proceed into arguments, just following the next-pointer. To create a new message or message chain, there are several helpful methods and operators. The first method is called 'message' and takes an evaluated name and returns a new message with that name. 'Message from' takes one argument that will not be evaluated and returns a message chain corresponding to that argument. 'Message fromText' parses text and returns the message chain for it. 'Message wrap' takes an evaluated argument and returns a message that will always return that value. As will be mentioned later, Message has 'next=' and 'prev=' methods that you can use to set the next and previous pointers. Message also has 'appendArgument' and 'prependArgument' that allow you to add new arguments to the message arguments.</p>
+
+                    <p>The most used versions for creating message chains are short cuts for the above. Let us begin with creation. Instead of 'Message from' you can use '. That is a single quote mark. The message after that will be unevaluated and returned as a message chain. If you use a `, a backtick, that is equivalent to 'Message wrap'. And then we have '', that is two single quotes after each other. This message is generally called metaquote or quasiquote. It works the same as ', except that it will find any place where ` is used and insert the value of evaluating the message after the ` and insert that into the current message chain. Finally, '' will replace a `` with a literal ` message.</p>
+
+                    <p>You can add new arguments to a message by using the &lt;&lt; operator. This operator returns the receiver.</p>
+                    
+                    <p>If you want to chain together a message chain, using next= and prev= is pretty tedious. You can instead use the -> operator. This will chain together the left hand side and the right hand side messages, and return the right hand side message.</p>
+
+                    <p>I think it is time for some examples:</p>
+
+                    <pre class="code">
+<span style="color: #a52a2a;">; create a new message with name foo
+</span><span style="color: #b0c4de;">x</span> <span style="color: #00bfff;">=</span> <span style="color: #006666;">'</span>foo
+
+<span style="color: #a52a2a;">; add two arguments to the foo message
+</span><span style="color: #b0c4de;">arg</span> <span style="color: #00bfff;">=</span> <span style="color: #006666;">'</span>(bar quux)
+(x &lt;&lt; arg) &lt;&lt; <span style="color: #006666;">'</span>baz
+
+<span style="color: #a52a2a;">; what we have done so far could be done with:
+</span><span style="color: #b0c4de;">x</span> <span style="color: #00bfff;">=</span> <span style="color: #006666;">'</span>(foo(bar quux<span style="color: #006666;">,</span> baz))
+
+
+<span style="color: #b0c4de;">y</span> <span style="color: #00bfff;">=</span> <span style="color: #006666;">'</span>blurg
+<span style="color: #a52a2a;">; chain together x and y
+</span>x <span style="color: #00bfff;">-</span>&gt; y
+
+<span style="color: #a52a2a;">; the above is equivalent to
+</span><span style="color: #449900;">if</span>(y prev<span style="color: #006666;">,</span>
+  y prev <span style="color: #b0c4de;">next</span> <span style="color: #00bfff;">=</span> <span style="color: #6495ed;">nil</span>)
+x <span style="color: #b0c4de;">next</span> <span style="color: #00bfff;">=</span> y
+y <span style="color: #b0c4de;">prev</span> <span style="color: #00bfff;">=</span> x
+
+<span style="color: #b0c4de;">val</span> <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">42</span>
+
+<span style="color: #a52a2a;">; insert the message chain in x
+</span><span style="color: #006666;">''</span>(foo bar(<span style="color: #006666;">`</span>val) <span style="color: #006666;">`</span>x)
+
+<span style="color: #a52a2a;">; the above will return the same as
+</span><span style="color: #006666;">'</span>(foo bar(<span style="color: #0050a0;">42</span>) foo(bar quux<span style="color: #006666;">,</span> baz))</pre>
+
+                    <p>To understand these operators, you need to have a clear understanding of how the internals of message chains work. Once that clicks, these should be fairly straight forward to understand.</p>
                   </div>
                 </div>
 
@@ -2454,12 +2496,6 @@ describe(<span style="color: #606060;">Foo</span><span style="color: #006666;">,
                   <h2><a name="futurePlans">Future plans</a></h2>
                   <p>I have many plans for the future of Ioke. The next major versions of Ioke will be called Ioke S, Ioke E and Ioke P, respectively. Exactly what they will contain we'll have to see, but these are things I need to have, large and small:</p>
                   <ul>
-                    <li>Alternative String syntax</li>
-                    <li>Interpolation in Regexp literals</li>
-                    <li>Aspects (before, after, around advice)</li>
-                    <li>Argument specifications for macros</li>
-                    <li>Syntax (this is code that modifies the message tree)</li>
-                    <li>A case-when syntax. Maybe cond.</li>
                     <li>Java integration</li>
                     <li>Concurrency primitives of some kind</li>
                   </ul>
