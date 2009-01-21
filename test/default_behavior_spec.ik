@@ -488,6 +488,10 @@ describe(DefaultBehavior,
       f = Origin mimic. Origin mimic!(f). f kind?("Origin") should be true
       f = Origin mimic. Origin mimic!(f). f kind?("DefaultBehavior") should be true
     )
+
+    it("should validate type of argument",
+      fn("" kind?([])) should signal(Condition Error Type IncorrectType)
+    )
   )
   
   describe("mimics?", 
