@@ -82,6 +82,10 @@ describe(Message,
     it("should include the next pointer if any exists", 
       Message fromText("foo bar") code should == "foo bar"
     )
+
+    it("should validate type of receiver",
+      Message should checkReceiverTypeOn(:code)
+    )
   )
 
   describe("name", 
@@ -96,6 +100,16 @@ describe(Message,
     it("should return a name with a question mark", 
       Message fromText("blarg?") name should == :"blarg?"
     )
+
+    it("should validate type of receiver",
+      Message should checkReceiverTypeOn(:name)
+    )
+  )
+
+  describe("name=", 
+    it("should validate type of receiver",
+      Message should checkReceiverTypeOn(:"name=", "foo")
+    )
   )
 
   describe("next", 
@@ -107,6 +121,10 @@ describe(Message,
       Message fromText("foo bar") next name should == :bar
       Message fromText("foo(123, 321) bar") next name should == :bar
     )
+
+    it("should validate type of receiver",
+      Message should checkReceiverTypeOn(:next)
+    )
   )
 
   describe("prev", 
@@ -117,6 +135,16 @@ describe(Message,
     it("should return the prev pointer", 
       Message fromText("foo bar") next prev name should == :foo
       Message fromText("foo(123, 321) bar") next prev name should == :foo
+    )
+
+    it("should validate type of receiver",
+      Message should checkReceiverTypeOn(:next)
+    )
+  )
+
+  describe("prev=",
+    it("should validate type of receiver",
+      Message should checkReceiverTypeOn(:"prev=", "foo")
     )
   )
   
@@ -133,9 +161,13 @@ describe(Message,
     it("should return false for the empty message", 
       Message fromText("()") keyword? should be false
     )
+
+    it("should validate type of receiver",
+      Message should checkReceiverTypeOn(:keyword?)
+    )
   )
 
-  describe("symbol", 
+  describe("symbol?", 
     it("should return true for a message that starts with a colon", 
       Message fromText(":foo") symbol? should be true
       Message fromText("::::bar") symbol? should be true
@@ -147,6 +179,10 @@ describe(Message,
 
     it("should return false for the empty message", 
       Message fromText("()") symbol? should be false
+    )
+
+    it("should validate type of receiver",
+      Message should checkReceiverTypeOn(:symbol?)
     )
   )
 
@@ -223,6 +259,14 @@ describe(Message,
       msg next should be nil
       (msg cell(:next) == cell(:val)) should be true
     )
+
+    it("should validate type of argument",
+      fn(Message next = []) should signal(Condition Error Type IncorrectType)
+    )
+
+    it("should validate type of receiver",
+      Message should checkReceiverTypeOn(:"next=", 'foo)
+    )
   )
 
   describe("prev=",
@@ -232,6 +276,14 @@ describe(Message,
       msg next prev = nil
       msg next prev should be nil
       (msg next cell(:prev) == cell(:val)) should be true
+    )
+
+    it("should validate type of argument",
+      fn(Message prev = []) should signal(Condition Error Type IncorrectType)
+    )
+
+    it("should validate type of receiver",
+      Message should checkReceiverTypeOn(:"prev=", 'foo)
     )
   )
   
@@ -247,6 +299,10 @@ describe(Message,
       msg terminator? should be false
       msg next terminator? should be false
     )
+
+    it("should validate type of receiver",
+      Message should checkReceiverTypeOn(:"terminator?")
+    )
   )
 
   describe("<<",
@@ -255,7 +311,7 @@ describe(Message,
       msg << '(blarg mux)
       msg code should == "foo(x, blarg mux)"
     )
-
+    
     it("should return the original message",
       msg = '(foo(x))
       (msg << '(blarg mux)) should be same(msg)
@@ -302,6 +358,14 @@ describe(Message,
 
       x -> nil
       x next should be nil
+    )
+
+    it("should validate type of argument",
+      fn('foo -> []) should signal(Condition Error Type IncorrectType)
+    )
+
+    it("should validate type of receiver",
+      Message should checkReceiverTypeOn(:"->", 'foo)
     )
   )
 
@@ -354,6 +418,10 @@ describe(Message,
       y = []
       '(foo bar baz quux) each(i, x, y << [i, x name])
       y should == [[0, :foo], [1, :bar], [2, :baz], [3, :quux]]
+    )
+
+    it("should validate type of receiver",
+      Message should checkReceiverTypeOn(:each)
     )
   )
 )
