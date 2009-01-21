@@ -2232,9 +2232,28 @@ x <span style="color: #00bfff;">===</span> <span style="color: #0050a0;">4</span
 
                   <div class="section">
                     <h3><a name="regexps">Regexps</a></h3>
-                    <p>Regular expressions allow the matching of text against an abstract pattern. Ioke uses the JRegex engine to implement regular expressions. This means Ioke supports quite advanced expressions. At the moment, Ioke only allows matching against an expression and getting a yes or no answer, though. This is done using the "=~" method. When the regular expression support has been expanded, this section will include information about everything that can be done using them.</p>
+                    <p>Regular expressions allow the matching of text against an abstract pattern. Ioke uses the JRegex engine to implement regular expressions. This means Ioke supports quite advanced expressions. Exactly what kind of regular expression syntax is supported can be found at <a href="http://jregex.sf.net">http://jregex.sf.net</a>. This section will describe how you interact with regular expressions from Ioke.</p>
 
-                    <p>TODO: complete section with new information</p>
+                    <p>There are two kinds that are used when working with regular expression. First, Regexp, which represent an actual pattern. The second is Regexp Match, which contains information about a regular expression match. It is this match that can be used to extract most information about where and how a complicated expression matched.</p>
+
+                    <p>The standard way of matching something is with the <span class="code">match</span> method. This method is aliased as <span class="code">=~</span>, which is the idiomatic usage. It takes anything that can be converted to a text and returns nil if it fails to match anything, or a Regexp Match if it matches.</p>
+
+                    <p>You can create a new Regexp from a text by using the Regexp from method. You can quote all meta characters in a text by using the Regexp quote method. Finally, if you just want to get all the text pieces that match for a regular expression, you can use Regexp allMatches. It takes a text and returns a list of all the text pieces where the Regexp matched.</p>
+
+                    <p>You can also investigate a Regexp, by asking for its pattern (the pattern method), its flags (the flag method), and the named groups it defines. The names of the named groups can be inspected with the names method.</p>
+
+                    <p>A Regexp Match is specific to one specific match. You will always get a new one every time you try to match against something. A match has a target, which is the original text the regular expression was matched against. So if I do <span class="code">#/ .. / =~ "abc fo bar"</span>, then the whole "abc fo bar" is the target. You get the target from a match by using the target method. A match can also be asked for the named groups the regular expression it was matched against support. This is also done with the names method. Match also has two methods beforeMatch and afterMatch, that returns the text before and after the match. The match method returns the text comprising the actual match. The captures method will return a list of all the captured groups in this match. The asList method returns the same things as captures, except it also includes the full match text.</p>
+
+                    <p>To figure out the indices where groups start or end, you can use the start or end methods. These take an optional index that defaults to zero, where group zero is the full match. They can also take a text or symbol that should be the name of a named group. The offset method returns a pair of the beginning and end offset of the group asked for. It works the same as start and end, with regards to what argument it takes.</p>
+
+                    <p>You can use the [] method on Match to extract the one or several pieces of matches. If m is a match, then all of these are valid expressions: <span class="code">m[0]. m[1..3]. m[:foo]. m[-2]</span>, where the ranges return several groups, and the negative index returns indexed from the end of the list of captures.</p>
+
+                    <p>Finally, a Regexp Match implements pass. It does this in such a way that if you use named groups, you can extract the value for that group by calling a method named the same as that group name. An example of this:</p>
+                    <pre class="code">
+<span style="color: #b0c4de;">number</span> <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">"555-12345"</span>
+<span style="color: #b0c4de;">m</span> <span style="color: #00bfff;">=</span> <span style="color: #ff1493;">#/({areaCode}\d{3})-({localNumber}\d{5})/</span> <span style="color: #00bfff;">=~</span> number
+m areaCode <span style="color: #449900;">println</span>
+m localNumber <span style="color: #449900;">println</span></pre>
                   </div>
 
                   <div class="section">
