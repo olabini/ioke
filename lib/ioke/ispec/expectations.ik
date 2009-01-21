@@ -7,7 +7,7 @@ ISpec do(
 
   ShouldContext create = method(value, shouldMessage,
     newSelf = self __mimic__
-    newSelf realValue = value
+    newSelf realValue = cell(:value)
     newSelf shouldMessage = shouldMessage
     newSelf)
 
@@ -18,7 +18,7 @@ ISpec do(
     realName = call message name
     msg = call message deepCopy
     msg name = "#{realName}?"
-    unless(msg sendTo(self realValue, call ground),
+    unless(msg sendTo(self cell(:realValue), call ground),
       error!(ISpec ExpectationNotMet, text: "expected #{realValue} #{msg code} to be true", shouldMessage: self shouldMessage)))
 
 

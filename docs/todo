@@ -3,7 +3,6 @@ things to do before release
 - update guide about:
  . ensure
  . lecros
- . become!
  . regexps
  . freeze! and thaw!
  . case
@@ -13,14 +12,17 @@ things to do before release
  . syntactic macros
  . destructuring
  . inverted ranges
- . removing and finding owners of cells
  . new syntax (operators and stuff)
+ . removing and finding owners of cells
  . let
- . aspects
+ . set
  . initialization
  . send
- . set
+ . aspects
 - generate new doks
+
+
+
 
 - think about Java integration
 - think about concurrency
