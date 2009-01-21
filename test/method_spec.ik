@@ -324,6 +324,7 @@ describe("DefaultMethod",
     method(x, a:, y, a) keywords should == [:a]
     method(x, a:, y, b: 123, a) keywords should == [:a, :b]
     method(x, a:, y, b: 123, foo: "foo", a) keywords should == [:a, :b, :foo]
+    method should checkReceiverTypeOn(:keywords)
   )
 
   it("should be possible to use a keyword arguments value as a default value for a regular argument", 
@@ -410,6 +411,24 @@ describe("DefaultMethod",
       rests2(*[1,2,3,4]) should == [1,2,[3,4]]
       rests2(*[1,2]) should == [1,2,[]]
       norest(*[1,2]) should == [1,2]
+    )
+
+    describe("message",
+      it("should validate type of receiver",
+        method should checkReceiverTypeOn(:message)
+      )
+    )
+
+    describe("argumentsCode",
+      it("should validate type of receiver",
+        method should checkReceiverTypeOn(:argumentsCode)
+      )
+    )
+
+    describe("formattedCode",
+      it("should validate type of receiver",
+        method should checkReceiverTypeOn(:formattedCode)
+      )
     )
   )
   
