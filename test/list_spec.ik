@@ -19,13 +19,13 @@ describe(List,
   
   describe("inspect",
     it("should validate type of receiver",
-      List should checkReceiverTypeOn(:"inspect")
+      List should checkReceiverTypeOn(:inspect)
     )
   )
   
   describe("notice",
     it("should validate type of receiver",
-      List should checkReceiverTypeOn(:"notice")
+      List should checkReceiverTypeOn(:notice)
     )
   )
   
@@ -55,7 +55,7 @@ describe(List,
     )
     
     it("should validate type of receiver",
-      List should checkReceiverTypeOn(:"at", 0)
+      List should checkReceiverTypeOn(:at, 0)
     )
     
     it("should validate type of argument",
@@ -376,7 +376,7 @@ describe(List,
     )
     
     it("should validate type of receiver",
-      List should checkReceiverTypeOn(:"clear!")
+      List should checkReceiverTypeOn(:clear!)
     )
   )
 
@@ -392,7 +392,7 @@ describe(List,
     )
     
     it("should validate type of receiver",
-      List should checkReceiverTypeOn(:"size")
+      List should checkReceiverTypeOn(:size)
     )
   )
 
@@ -408,7 +408,7 @@ describe(List,
     )
     
     it("should validate type of receiver",
-      List should checkReceiverTypeOn(:"length")
+      List should checkReceiverTypeOn(:length)
     )
   )
 
@@ -427,7 +427,7 @@ describe(List,
     )
     
     it("should validate type of receiver",
-      List should checkReceiverTypeOn(:"empty?")
+      List should checkReceiverTypeOn(:empty?)
     )
   )
 
@@ -445,7 +445,7 @@ describe(List,
     )
     
     it("should validate type of receiver",
-      List should checkReceiverTypeOn(:"include?", "Richard Richard")
+      List should checkReceiverTypeOn(:include?, "Richard Richard")
     )
     
     
@@ -545,7 +545,7 @@ describe(List,
     )
     
     it("should validate type of receiver",
-      List should checkReceiverTypeOn(:"each", println)
+      List should checkReceiverTypeOn(:each, println)
     )
   )
 
@@ -702,7 +702,7 @@ describe(List,
     )
     
     it("should validate type of receiver",
-      List should checkReceiverTypeOn(:"sort")
+      List should checkReceiverTypeOn(:sort)
     )
   )
 
@@ -745,7 +745,7 @@ describe(List,
     )
     
     it("should validate type of receiver",
-      List should checkReceiverTypeOn(:"sort!")
+      List should checkReceiverTypeOn(:sort!)
     )
   )
   
