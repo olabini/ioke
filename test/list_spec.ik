@@ -220,6 +220,14 @@ describe(List,
     it("should throw an exception if setting with negative indices outside the range", 
       fn([][0-1] = 52) should signal(Condition Error Index)
     )
+    
+    it("should validate type of receiver",
+      [0,1] should checkReceiverTypeOn(:"[]=",0,3)
+    )
+    
+    it("should validate type of argument",
+       fn([] [](:boris) = :beans) should signal(Condition Error Type IncorrectType)
+    )
   )
 
   describe("at=", 
