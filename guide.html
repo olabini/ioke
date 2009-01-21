@@ -1704,7 +1704,85 @@ msg code <span style="color: #a52a2a;">;; "2 -(1)"</span></pre>
 
                 <div class="chapter">
                   <h2><a name="aspects">Aspects</a></h2>
-                  <p>TODO: add information about aspects</p>
+                  <p>In many circumstances you might want to do several different things in a specific method. That generally goes against good software engineering, that says every piece of code should only have one responsibility. Aspect oriented programming tackles this by allowing you to slice code along a different dimension compared to the regular object oriented paradigm. Ioke has a small version of this, that allow you to add advice to cells. This advice can be before, after or around. All of them will get access to the arguments given in the original message, but after-advice also gets access to the value returned from the main cell. Finally, around-advice also gets the responsibility to invoke the original cell, so an around-advice could choose to not invoke it at all, or it could invoke it with different arguments, or maybe invoke it several times.</p>
+
+                  <p>Ioke currently only allows you to add or remove advice. To be able to remove advice, you need to name it when adding it. Unnamed advice can not be removed. Advice can be wrapped. It will be applied in an outside-in approach, where the most recently added advice will execute first.</p>
+
+                  <p>The return value of before and after advice doesn't matter, but the return value of around-advice will be interpreted as the new return value of the message send.</p>
+
+                  <p>To manipulate advice in Ioke, you need to describe what to manipulate. This description will return a Pointcut, that can then be used to inject advice at that point. Pointcuts can be defined in several ways. The easiest is to define it in terms of a cell name. Using this approach is the only way to define advice for non-existent cells.</p>
+
+                  <p>To create a Pointcut, call before, after or around on the receiver where the Pointcut should belong. The arguments specify what should be matched by the pointcut. You can see some examples of pointcuts here:</p>
+                  <pre class="code">
+<span style="color: #a52a2a;">; matches cells foo and bar
+</span><span style="color: #8b0000;">Text</span> before(<span style="color: #7777d4;">:foo</span><span style="color: #006666;">,</span> <span style="color: #7777d4;">:bar</span>)
+
+<span style="color: #0000cd;">X</span> <span style="color: #00bfff;">=</span> <span style="color: #8b0000;">Origin</span> <span style="color: #6495ed;">mimic</span>
+<span style="color: #a52a2a;">; will not match anything
+</span><span style="color: #606060;">X</span> around(<span style="color: #7777d4;">matching:</span> <span style="color: #7777d4;">:anyFromSelf</span>)
+
+<span style="color: #606060;">X</span> <span style="color: #b0c4de;">foo</span> <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">123</span>
+<span style="color: #a52a2a;">; will now match foo
+</span><span style="color: #606060;">X</span> around(<span style="color: #7777d4;">matching:</span> <span style="color: #7777d4;">:anyFromSelf</span>)
+
+<span style="color: #a52a2a;">; any cell name matching the regexp
+</span><span style="color: #606060;">X</span> after(<span style="color: #7777d4;">matching:</span> <span style="color: #ff1493;">#/foo/</span>)
+
+<span style="color: #a52a2a;">; matches any at all, except foo
+</span><span style="color: #606060;">X</span> before(<span style="color: #7777d4;">matching:</span> <span style="color: #7777d4;">:any</span><span style="color: #006666;">,</span> <span style="color: #7777d4;">except:</span> <span style="color: #7777d4;">:foo</span>)
+<span style="color: #a52a2a;">; matches any at all, except anything that matches foo
+</span><span style="color: #606060;">X</span> before(<span style="color: #7777d4;">matching:</span> <span style="color: #7777d4;">:any</span><span style="color: #006666;">,</span> <span style="color: #7777d4;">except:</span> <span style="color: #ff1493;">#/foo/</span>)
+
+<span style="color: #a52a2a;">; use a block for matching
+</span><span style="color: #606060;">X</span> around(<span style="color: #7777d4;">matching:</span> <span style="color: #6495ed;">fn</span>(x<span style="color: #006666;">,</span> x <span style="color: #00bfff;">==</span> <span style="color: #7777d4;">:blurg</span>))
+
+<span style="color: #a52a2a;">; use a list to provide alternatives
+</span><span style="color: #606060;">X</span> before(<span style="color: #7777d4;">matching:</span> [<span style="color: #ff1493;">#/foo/</span><span style="color: #006666;">,</span> <span style="color: #ff1493;">#/bar/</span>])</pre>
+
+                  <p>As you can see from these examples, the pointcuts can be fairly advanced and specific in what they match. The option to send in a block makes it possible to check any property while matching.</p>
+                  
+                  <p>OK, once you have a Pointcut, there are three different methods you can call. These are &lt;&lt;, add, and remove!. The first one adds an unnamed advice, the second adds a named advice and the third one removes a named advice. Advice is any object that can be activated or called, so a method, a block, a macro or a syntax is fine.</p>
+
+                  <p>It's time to see what it looks like to add advice. Before-advice is the easiest kind. The important thing to remember is that the code will get the same arguments as the original call, which means it will also signal an error if the arguments doesn't match.</p>
+
+                  <pre class="code">
+<span style="color: #606060;">X</span> before(<span style="color: #7777d4;">:foo</span>) &lt;&lt; <span style="color: #6495ed;">method</span>(x<span style="color: #006666;">,</span> <span style="color: #0050a0;">"got </span><span style="color: #449900;">#{x}</span><span style="color: #0050a0;">"</span> <span style="color: #449900;">println</span>)
+<span style="color: #606060;">X</span> before(<span style="color: #7777d4;">matching:</span> <span style="color: #7777d4;">:anyFromSelf</span>) &lt;&lt; <span style="color: #6495ed;">macro</span>(
+  <span style="color: #0050a0;">"called </span><span style="color: #449900;">#{call message name}</span><span style="color: #0050a0;">"</span> <span style="color: #449900;">println</span>)</pre>
+
+                  <p>This code doesn't do anything strange at all.</p>
+
+                  <p>Next up we have after-advice. The only difference here is that after-advice automatically gets a cell that is set to adviceResult, that can used inside the method.</p>
+
+                  <pre class="code">
+<span style="color: #606060;">X</span> after(<span style="color: #7777d4;">:foo</span>) &lt;&lt; <span style="color: #6495ed;">method</span>(<span style="color: #00bfff;">+</span>args<span style="color: #006666;">,</span>
+  <span style="color: #0050a0;">"foo resulted in: </span><span style="color: #449900;">#{aspectResult}</span><span style="color: #0050a0;">"</span> <span style="color: #449900;">println</span>)</pre>
+
+                  <p>Remember that the result value of before and after advice doesn't count. It is thrown away. But these methods can still affect things by side effects. They can also be used for validation. A condition signalled inside of an advice would have the same effect as if done in the method itself - namely interrupting the flow of control.</p>
+
+                  <p>The final advice is around advice. These are different in two ways. First, they get access to a cell called aspectCall, which can be used to invoke the real cell (and the next chain of advice, of course). The second difference is that the result of the around advice will be the return value from the cell. So, you can imagine the around-advice executing instead of the original code. If you forget to invoke it, the original cell won't be invoked at all.</p>
+
+                  <pre class="code">
+<span style="color: #606060;">X</span> around(<span style="color: #7777d4;">:non_existant</span>) &lt;&lt; <span style="color: #6495ed;">method</span>(
+  <span style="color: #0050a0;">42</span>)
+
+<span style="color: #606060;">X</span> around(<span style="color: #7777d4;">:foo</span>) &lt;&lt; <span style="color: #6495ed;">macro</span>(arg1<span style="color: #006666;">,</span> arg2<span style="color: #006666;">,</span>
+  <span style="color: #0050a0;">"before"</span> <span style="color: #449900;">println</span>
+  <span style="color: #b0c4de;">res</span> <span style="color: #00bfff;">=</span> aspectResult(arg2<span style="color: #006666;">,</span> arg1)
+  <span style="color: #0050a0;">"got: </span><span style="color: #449900;">#{res}</span><span style="color: #0050a0;">"</span> <span style="color: #449900;">println</span>
+  <span style="color: #0050a0;">42</span>)</pre>
+
+                  <p>The first piece of code show that you can actually use an around advice around something that doesn't exist. But if you do call aspectCall inside of it, that will generate a NoSuchCell condition, of course. In the second example we first log some information, then invoke the original code with switched argument order, saves away the result, prints the result, and finally returns 42. There you can see most of the things that can be done inside of an around macro.</p>
+
+                  <p>The aspect system in Ioke is implemented in Ioke itself, and is fairly small at the moment. The guiding principle behind it is that it shouldn't have an impact on code that doesn't use it. It is a highly useful feature that makes it possible to decompose code substantially. As an example of a common place for aspect usage is initialization. This is defined as an around-advice that looks like this:</p>
+
+                  <pre class="code">
+<span style="color: #8b0000;">Origin</span> around(<span style="color: #7777d4;">:mimic</span>) &lt;&lt; <span style="color: #6495ed;">method</span>(<span style="color: #00bfff;">+</span>rest<span style="color: #006666;">,</span> <span style="color: #00bfff;">+</span><span style="color: #7777d4;">:krest</span><span style="color: #006666;">,</span> 
+  <span style="color: #b0c4de;">newMimic</span> <span style="color: #00bfff;">=</span> aspectCall
+  <span style="color: #449900;">if</span>(newMimic <span style="color: #449900;">cell?</span>(<span style="color: #7777d4;">:initialize</span>)<span style="color: #006666;">,</span>
+    newMimic initialize(<span style="color: #00bfff;">*</span>rest<span style="color: #006666;">,</span> <span style="color: #00bfff;">*</span>krest))
+  newMimic)</pre>
+                  <p>Note first that the around advice takes any kind of arguments, but doesn't send them along to <span class="code">mimic</span>. Instead it checks if there is an initialize-cell, and in that case invokes it with the arguments given to the mimic call. It finally returns the original result.</p>
                 </div>
 
                 <div class="chapter">
