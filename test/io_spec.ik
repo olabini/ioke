@@ -5,6 +5,24 @@ describe(IO,
   it("should have the correct kind", 
     IO should have kind("IO")
   )
+
+  describe("println",
+    it("should validate type of receiver",
+      IO should checkReceiverTypeOn(:println, "foo")
+    )
+  )
+
+  describe("print",
+    it("should validate type of receiver",
+      IO should checkReceiverTypeOn(:print, "foo")
+    )
+  )
+
+  describe("read",
+    it("should validate type of receiver",
+      IO should checkReceiverTypeOn(:read)
+    )
+  )
 )
 
 describe(System, 
