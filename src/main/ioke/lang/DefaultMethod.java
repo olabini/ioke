@@ -35,38 +35,37 @@ public class DefaultMethod extends Method implements AssociatedCode {
     @Override
     public void init(IokeObject defaultMethod) throws ControlFlow {
         defaultMethod.setKind("DefaultMethod");
-        defaultMethod.registerMethod(defaultMethod.runtime.newJavaMethod("returns a list of the keywords this method takes", new JavaMethod.WithNoArguments("keywords") {
+        defaultMethod.registerMethod(defaultMethod.runtime.newJavaMethod("returns a list of the keywords this method takes", new TypeCheckingJavaMethod.WithNoArguments("keywords", defaultMethod) {
                 @Override
-                public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
-                    List<Object> keywords = new ArrayList<Object>();
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    List<Object> keywordList = new ArrayList<Object>();
                     
                     for(String keyword : ((DefaultMethod)IokeObject.data(on)).arguments.getKeywords()) {
-                        keywords.add(context.runtime.getSymbol(keyword.substring(0, keyword.length()-1)));
+                        keywordList.add(context.runtime.getSymbol(keyword.substring(0, keyword.length()-1)));
                     }
 
-                    return context.runtime.newList(keywords);
+                    return context.runtime.newList(keywordList);
                 }
             }));
+        
         defaultMethod.registerMethod(defaultMethod.runtime.newJavaMethod("returns the message chain for this method", new JavaMethod.WithNoArguments("message") {
                 @Override
-                public Object activate(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getEvaluatedArguments(dynamicContext, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
-                    return ((AssociatedCode)IokeObject.data(on)).getCode();
+                public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    return ((AssociatedCode)IokeObject.data(IokeObject.ensureTypeIs(AssociatedCode.class, self, on, context, message))).getCode();
                 }
             }));
+        
         defaultMethod.registerMethod(defaultMethod.runtime.newJavaMethod("returns the code for the argument definition", new JavaMethod.WithNoArguments("argumentsCode") {
                 @Override
-                public Object activate(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getEvaluatedArguments(dynamicContext, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
-                    return dynamicContext.runtime.newText(((AssociatedCode)IokeObject.data(on)).getArgumentsCode());
+                public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    return context.runtime.newText(((AssociatedCode)IokeObject.data(IokeObject.ensureTypeIs(AssociatedCode.class, self, on, context, message))).getArgumentsCode());
                 }
             }));
+
         defaultMethod.registerMethod(defaultMethod.runtime.newJavaMethod("returns idiomatically formatted code for this method", new JavaMethod.WithNoArguments("formattedCode") {
                 @Override
-                public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
-                    return context.runtime.newText(((AssociatedCode)IokeObject.data(on)).getFormattedCode(self));
+                public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    return context.runtime.newText(((AssociatedCode)IokeObject.data(IokeObject.ensureTypeIs(AssociatedCode.class, self, on, context, message))).getFormattedCode(self));
                 }
             }));
     }
