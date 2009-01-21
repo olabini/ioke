@@ -908,7 +908,18 @@ flux<span style="color: #00bfff;">++</span>
                     <h3><a name="origin">Origin</a></h3>
                     <p>Origin should be the place where most objects in Ioke start from. It is specifically created to be the origin of objects. As such it doesn't contain many cells for itself, but it mimics Ground and has access to everything from Base, DefaultBehavior and Ground in that way. When adding new more or less global functionality, Origin is probably the best place to put it. Currently, the only cells Origin contains is for purposes of printing itself.</p>
 
-                    <p>TODO: add information about initialization</p>
+                    <p>Origin also happens to be the point where initialization is defined. This is really done as an aspect on 'mimic'. If you want an object to be able to be initialized every time a new mimic of it is created, just create a method called initialize in your kind. It will be called by the mimic-aspect. Any arguments given to mimic will be ignored and passed along to initialize. An example: </p>
+                    <pre class="code">
+<span style="color: #0000cd;">Foo</span> <span style="color: #00bfff;">=</span> <span style="color: #8b0000;">Origin</span> <span style="color: #6495ed;">mimic</span>
+<span style="color: #606060;">Foo</span> <span style="color: #b0c4de;">initialize</span> <span style="color: #00bfff;">=</span> <span style="color: #6495ed;">method</span>(<span style="color: #0050a0;">"New foo created!"</span> <span style="color: #449900;">println</span>))
+<span style="color: #606060;">Foo</span> <span style="color: #6495ed;">mimic</span>
+<span style="color: #606060;">Foo</span> <span style="color: #6495ed;">mimic</span>
+
+<span style="color: #606060;">Foo</span> <span style="color: #b0c4de;">initialize</span> <span style="color: #00bfff;">=</span> <span style="color: #6495ed;">method</span>(arg1<span style="color: #006666;">,</span> <span style="color: #7777d4;">key:</span><span style="color: #006666;">,</span> <span style="color: #6495ed;">self</span> <span style="color: #b0c4de;">value</span> <span style="color: #00bfff;">=</span> [arg1<span style="color: #006666;">,</span> key])
+<span style="color: #606060;">Foo</span> <span style="color: #6495ed;">mimic</span>(<span style="color: #0050a0;">42</span><span style="color: #006666;">,</span> <span style="color: #7777d4;">key:</span> <span style="color: #0050a0;">15</span>)
+<span style="color: #606060;">Foo</span> <span style="color: #6495ed;">mimic</span>(<span style="color: #7777d4;">key:</span> <span style="color: #0050a0;">"blarg"</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">42</span>)</pre>
+
+                    <p>There is nothing special with the initialize method, so if you want more initialization to happen in a deep hierarchy, you will have to use super-calls and so on.</p>
                   </div>
 
                   <div class="section">
