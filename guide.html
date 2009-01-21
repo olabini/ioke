@@ -513,11 +513,11 @@ Bye.</pre>
                         <dd>Inserts the Unicode codepoint corresponding to the octal value of the one, two or three octal characters. The maximum value allowed is \377, and the minimum is obviously \0.</dd>
                       </dl>
 
+                      <p>Ioke also supports an alternative text syntax that can be used when the text in question contains many scare quotes. The alternative syntax starts with #[ and ends with ]. A right bracket will have to be escaped, but scare quotes doesn't have to be.</p>
+
                       <p>The parsing of text will generate a message with name "internal:createText". This message will get one argument that is the raw Java String corresponding to the text.</p>
 
                       <p>Ioke allows automatic interpolation of arbitrary values in the same manner as Ruby. It uses the same syntax for this, which is the #{} syntax inside a text. These can be nested in any way. The elements will be parsed and sent as arguments to the message with name "internal:concatenateText". So an Ioke text such as "foo bar#{flux} will #{1+2}" will generate the message internal:concatenateText("foo bar", flux, " will ", 1+(2), ""). As you can see, there is a small amount of waste in the way this is generated -- but the simple model makes it easy to understand. It's not guaranteed that this will remain the same, although the message will definitely remain.</p>
-
-                      <p>TODO: add info about alternative syntax and examples for it</p>
 
                       <p>Some examples:</p>
                       <pre class="code">
@@ -526,22 +526,28 @@ Bye.</pre>
 <span style="color: #0050a0;">"flax \
 mux"</span>
 
-<span style="color: #0050a0;">"one two #{three} \b four"</span></pre>
+<span style="color: #0050a0;">"one two </span><span style="color: #449900;">#{three}</span><span style="color: #0050a0;"> \b four"</span>
+
+<span style="color: #0050a0;">#[you don't really  "</span><span style="color: #449900;">#{1+2+3}</span><span style="color: #0050a0;">" believe that?]</span></pre>
                     </div>
 
                     <div class="section">
                       <h4><a name="literalRegexps">Regular expressions</a></h4>
-                      <p>The regular expression syntax of Ioke is currently quite primitive, although the literal syntax is there. A literal regular expression in Ioke starts with a hash sign, a slash, the expression, a slash, and possibly some flags. A few examples might be in order here:</p>
+                      <p>Ioke has very capable regular expressions. Exactly what you can do with them can be found further down in this guide. The literal syntax allows regular expressions to be embedded in code directly. The syntax for this starts with a #/ and ends with another /. The last slash can optionally be followed by some flags that change the behavior of the expression. Regular expressions can also use an alternative syntax that starts with #r[ and ends with ]. Just as with Text, regular expressions can contain interpolation. This interpolation will be transformed into regular expressions and then combined with the outer regular expression. A few examples might be in order here:</p>
                       <pre class="code">
 <span style="color: #ff1493;">#//</span>
+<span style="color: #ff1493;">#r[]</span>
 
 <span style="color: #ff1493;">#/foo/</span>
+<span style="color: #ff1493;">#r[foo]</span>
 
-<span style="color: #ff1493;">#/fo+/x</span></pre>
+<span style="color: #ff1493;">#/fo+/x</span>
+<span style="color: #ff1493;">#r[fo+]x</span>
 
-                      <p>The first example is an empty regular expression. The second is an expression matching the word "foo". The third expression matches an "f" followed with one or more "o". It also allows extended regular expression syntax, due to the x flag. The flags supported in Ioke are o, x, p, n, i, u, m and s. The meaning of these match the meaning of corresponding Ruby flags. Regular expressions allow most of the same escapes as Ioke text. Specifically, these escapes are supported: b, t, n, f, r, /, \ and newline. Unicode and octal escapes also work.</p>
+<span style="color: #ff1493;">#/bla </span><span style="color: #449900;">#{"foo"}</span><span style="color: #ff1493;"> bar/</span>
+<span style="color: #ff1493;">#r[bla </span><span style="color: #449900;">#{"foo"}</span><span style="color: #ff1493;"> bar]</span></pre>
 
-                      <p>TODO: add info about alternative syntax and examples for it</p>
+                      <p>The first example is an empty regular expression. The second is an expression matching the word "foo". The third expression matches an "f" followed with one or more "o". It also allows extended regular expression syntax, due to the x flag. The flags supported in Ioke are o, x, p, n, i, u, m and s. The meaning of these match the meaning of corresponding Ruby flags. Regular expressions allow most of the same escapes as Ioke text. Specifically, these escapes are supported: b, t, n, f, r, /, \ and newline. Unicode and octal escapes also work. The fourth example shows the insertion of a literal text inside of a regular expression.</p>
 
                       <p>Ioke regular expressions will be transformed into a call to internal:createRegexp. This message expects two Java strings, one with the actual pattern, and one with the flags.</p>
                     </div>
