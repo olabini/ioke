@@ -990,7 +990,67 @@ x <span style="color: #a52a2a;">;; =&gt; 43
 
                   <div class="section">
                     <h3><a name="let">Let</a></h3>
-                    <p>TODO: add information about let</p>
+                    <p>Sometimes you really need to change the value of something temporarily, but then make sure that the value gets set back to the original value afterwards. Other situations often arise when you want to have a new name bound to something, but maybe not for a complete method. This might be really useful to create closures, and also to create localized helper methods. For example, the Ioke implementations for Enumerable use a helper syntax macro. This macro is bound temporarily, using a let form. This ensures that the syntax doesn't stay around and pollute the namespace.</p>
+
+                    <p>A let in Ioke can do two different things, that on the surface look mostly the same but are really very different operations. The first one is to introduce new lexical bindings, and the second is to do a dynamic rebind of a specific place. The easiest way of thinking about it is that the lexical binding introduces a local change or addition to the available names you're currently using, while a dynamic rebinding will change the global state temporarily, and then set it back.</p>
+
+                    <p>This sounds really academic, so let us go for some examples. We begin with lexical bindings.</p>
+
+                    <pre class="code">
+<span style="color: #a52a2a;">;; put everything in a method to show explicit scope
+</span><span style="color: #b0c4de;">foo</span> <span style="color: #00bfff;">=</span> <span style="color: #6495ed;">method</span>(x<span style="color: #006666;">,</span> y<span style="color: #006666;">,</span>
+  x <span style="color: #449900;">println</span> <span style="color: #a52a2a;">; =</span>&gt;<span style="color: #a52a2a;"> argument value of x
+</span>  let(x<span style="color: #006666;">,</span> <span style="color: #0050a0;">14</span><span style="color: #006666;">,</span>
+    x <span style="color: #449900;">println</span> <span style="color: #a52a2a;">; =</span>&gt;<span style="color: #a52a2a;"> 14
+</span>  )
+  x <span style="color: #449900;">println</span> <span style="color: #a52a2a;">; =</span>&gt;<span style="color: #a52a2a;"> argument value of x
+</span>
+  y <span style="color: #449900;">println</span> <span style="color: #a52a2a;">; =</span>&gt;<span style="color: #a52a2a;"> argument value of y
+</span>  <span style="color: #b0c4de;">y</span> <span style="color: #00bfff;">=</span> <span style="color: #0050a0;">13</span>
+  y <span style="color: #449900;">println</span> <span style="color: #a52a2a;">; =</span>&gt;<span style="color: #a52a2a;"> 13
+</span>  let(y<span style="color: #006666;">,</span> <span style="color: #0050a0;">14</span><span style="color: #006666;">,</span>
+    y <span style="color: #449900;">println</span> <span style="color: #a52a2a;">; =</span>&gt;<span style="color: #a52a2a;"> 14
+</span>  )
+  y <span style="color: #449900;">println</span> <span style="color: #a52a2a;">; =</span>&gt;<span style="color: #a52a2a;"> 13
+</span>
+  z <span style="color: #449900;">println</span> <span style="color: #a52a2a;">; will signal condition
+</span>  let(z<span style="color: #006666;">,</span> <span style="color: #0050a0;">42</span><span style="color: #006666;">,</span>
+    z <span style="color: #449900;">println</span> <span style="color: #a52a2a;">; =</span>&gt;<span style="color: #a52a2a;"> 42
+</span>  )
+  z <span style="color: #449900;">println</span> <span style="color: #a52a2a;">; will signal condition
+</span>)</pre>
+                    <p>Here a new method is created that has two arguments, x and y. The first let-expression will create a new scope where a binding from x to 14 is established. This binding is valid until the end of the let-form (but it can be changed, doing an assignment will set the value to something else, but only until the end of the let form). The same thing is true with y. We can change the value of y outside of the let form. That changes the actual argument variable. But a let form that binds y will only have it active for a limited time. Finally, a let form can also create totally new variables, as when creating z.</p>
+                    
+                    <p>I didn't show any example of it, but the first part of a let-name can be any kind of place, not just a simple name. Anything you can use with =, can be used as a name for let. So you could do something like let(cell(""), 42, nil) if you wanted to.</p>
+   
+                    <p>OK, so that's lexical binding. What about dynamic rebinding? The main difference in a dynamic binding is that the scope you work in is something that is referencable from other scopes. In most cases this will be global places, but not necessarily. You can also rebind cells inside of other objects with the dynamic binding feature.</p>
+
+                    <pre class="code">
+<span style="color: #b0c4de;">bar</span> <span style="color: #00bfff;">=</span> <span style="color: #6495ed;">method</span>(
+  let(<span style="color: #8b0000;">Origin</span> foo<span style="color: #006666;">,</span> <span style="color: #6495ed;">method</span>(<span style="color: #0050a0;">"haha"</span> <span style="color: #449900;">println</span>)<span style="color: #006666;">,</span>
+    <span style="color: #0050a0;">"x"</span> foo
+    <span style="color: #8b0000;">Origin</span> foo
+    [<span style="color: #0050a0;">1</span><span style="color: #006666;">,</span><span style="color: #0050a0;">2</span><span style="color: #006666;">,</span><span style="color: #0050a0;">3</span>] foo
+  )
+
+  let(<span style="color: #8b0000;">Text</span> something<span style="color: #006666;">,</span> <span style="color: #0050a0;">42</span><span style="color: #006666;">,</span>
+    <span style="color: #0050a0;">"abc"</span> something <span style="color: #449900;">println</span> <span style="color: #a52a2a;">; =</span>&gt;<span style="color: #a52a2a;"> 42
+</span>  )
+  <span style="color: #0050a0;">"abc"</span> something <span style="color: #449900;">println</span> <span style="color: #a52a2a;">; will signal condition
+</span>
+  let(<span style="color: #8b0000;">Text</span> <span style="color: #449900;">inspect</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">"HAHA"</span><span style="color: #006666;">,</span>
+    <span style="color: #0050a0;">"foo bar qux"</span> <span style="color: #449900;">inspect</span> <span style="color: #449900;">println</span> <span style="color: #a52a2a;">; =</span>&gt;<span style="color: #a52a2a;"> "HAHA"
+</span>  )
+  <span style="color: #0050a0;">"foo bar qux"</span> <span style="color: #449900;">inspect</span> <span style="color: #449900;">println</span> <span style="color: #a52a2a;">; =</span>&gt;<span style="color: #a52a2a;"> </span><span style="color: #0050a0;">#[</span><span style="color: #a52a2a;">"foo bar qux"]
+</span>
+  let(<span style="color: #8b0000;">Text</span> asRational<span style="color: #006666;">,</span> <span style="color: #6495ed;">method</span>(<span style="color: #0050a0;">42</span>)<span style="color: #006666;">,</span>
+    (<span style="color: #0050a0;">3</span> <span style="color: #00bfff;">+</span> <span style="color: #0050a0;">"haha"</span>) <span style="color: #449900;">println</span> <span style="color: #a52a2a;">; =</span>&gt;<span style="color: #a52a2a;"> 45
+</span>  )
+)</pre>
+
+                    <p>This example actually changes things quote a lot. The first and second examples introduce new cells into existing places, uses them and then doesn't do anything. The third example actually overrides an existing cell in Text - inspect - and then uses it inside of the let code. Finally, after the let block is over, we see that the original method is back. The fourth example shows that our changes with let actually are global. There is no asRational on Text, but we add it temporarily and can then use it in arithmetic with numbers. This is once again a temporary change that will disappear afterwards.</p>
+                    
+                    <p>Ioke's let-form is incredibly powerful, and it allows very nice temporal and localized changes. Of course, it's a power that can be abused, but it gives lots of interesting possibilities for expression.</p>
                   </div>
                 </div>
 
