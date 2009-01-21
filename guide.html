@@ -1285,7 +1285,22 @@ case(value<span style="color: #006666;">,</span>
 
                     <div class="section">
                       <h3><a name="comprehensions">Comprehensions</a></h3>
-                      <p>TODO: add information about comprehensions</p>
+
+                      <p>Ioke's Enumerable mimic makes it really easy to use higher order operations to transform and work with collections of data. But in some cases the code for doing that might not be as clear as it could be. Comprehensions allow a list, set or dict to be created based on a more abstract definition of what should be done. The specific parts of a comprehension is generators, filters and the mapping. The generators are what data to work on, the filters chooses more specifically among the generated data, and the mapping decides what the output should look like.</p>
+
+                      <p>The following example does three nested iterations and returns all combinations where the product of the number is larger than 100:</p>
+                      <pre class="code">
+<span style="color: #449900;">for</span>(
+  x &lt;<span style="color: #00bfff;">-</span> <span style="color: #0050a0;">1..20</span><span style="color: #006666;">,</span> 
+  y &lt;<span style="color: #00bfff;">-</span> <span style="color: #0050a0;">1..20</span><span style="color: #006666;">,</span> 
+  z &lt;<span style="color: #00bfff;">-</span> <span style="color: #0050a0;">1..20</span><span style="color: #006666;">,</span> 
+  <span style="color: #b0c4de;">val</span> <span style="color: #00bfff;">=</span> x<span style="color: #00bfff;">*</span>y<span style="color: #00bfff;">*</span>z<span style="color: #006666;">,</span> 
+  val &gt; <span style="color: #0050a0;">100</span><span style="color: #006666;">,</span> 
+  [x<span style="color: #006666;">,</span> y<span style="color: #006666;">,</span> z<span style="color: #006666;">,</span> val])</pre>
+
+                      <p>This code neatly shows all things you can do in a comprehension. The final argument will always be the output mapping, which in this case is a list of the three variables, and their product. The generator parts is first a name, the <span class="code">&lt;-</span> operator followed by an expression that is Enumerable. You can also see that one of the expressions is an assignment, that can be used later. Finally, there is a conditional that limits what the output will be. The more or less equivalent expression using Enumerable methods would be <span class="code">1..20 flatMap(x, 1..20 flatMap(y, 1..20 filter(z, x*y*z > 100) map([x,y,z,x*y*z])))</span>. In my eyes, the for-comprehension is much more readable.</p>
+
+                      <p>There are two variations on this. The first one is when you want the output to be a <span class="code">Set</span> of things instead of a <span class="code">List</span>. The code is exactly the same, except instead of using <span class="code">for</span>, you use <span class="code">for:set</span>. There is also a <span class="code">for:dict</span> version, for more esoteric usages.</p>
                     </div>
                   </div>
                 </div>
