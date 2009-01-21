@@ -27,6 +27,10 @@ describe("Text",
       "a" should not == ""
       "" should not == "a"
     )
+
+    it("should work correctly when comparing another kind",
+      "foo" should not == Base mimic
+    )
   )
 
   describe("===",
@@ -70,6 +74,10 @@ describe("Text",
       ("" != "") should be false
       ("a" != "") should be true
       ("" != "a") should be true
+    )
+
+    it("should work correctly when comparing with non text",
+      ("foo" != Base mimic) should be true
     )
   )
 
@@ -116,6 +124,10 @@ describe("Text",
       "abcd"[-2] should == 99
       "abcd"[-3] should == 98
       "abcd"[-4] should == 97
+    )
+
+    it("should validate type of receiver",
+      Text should checkReceiverTypeOn(:"[]", 0)
     )
   )
 
@@ -187,6 +199,10 @@ describe("Text",
       "1234567891011"[-1...3] should == ""
       "1234567891011"[-1...7557] should == ""
       "1234567891011"[5...4] should == ""
+    )
+
+    it("should validate type of receiver",
+      Text should checkReceiverTypeOn(:"[]", (0..3))
     )
   )
 
