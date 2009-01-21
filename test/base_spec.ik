@@ -467,5 +467,9 @@ describe("Base",
     it("should return the documentation string set",
       (Origin mimic documentation = "something") should == "something"
     )
+
+    it("should validate type of argument",
+      fn(Origin mimic documentation = []) should signal(Condition Error Type IncorrectType)
+    )
   )
 )

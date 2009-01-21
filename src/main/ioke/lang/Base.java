@@ -3,7 +3,6 @@
  */
 package ioke.lang;
 
-import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
@@ -20,7 +19,7 @@ import ioke.lang.exceptions.ControlFlow;
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
 public class Base {
-    public static void init(IokeObject base) throws ControlFlow {
+    public static void init(final IokeObject base) throws ControlFlow {
         base.setKind("Base");
         base.registerMethod(base.runtime.newJavaMethod("returns the documentation text of the object called on. anything can have a documentation text - this text will initially be nil.", new JavaMethod.WithNoArguments("documentation") {
                 @Override
@@ -43,22 +42,19 @@ public class Base {
                 }
             }));
 
-        base.registerMethod(base.runtime.newJavaMethod("sets the documentation string for a specific object.", new JavaMethod("documentation=") {
-                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+        base.registerMethod(base.runtime.newJavaMethod("sets the documentation string for a specific object.", new TypeCheckingJavaMethod("documentation=") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
-                    .withRequiredPositional("text")
+                    .withRequiredPositional("text").whichMustMimic(base.runtime.text)
                     .getArguments();
 
                 @Override
-                public DefaultArgumentsDefinition getArguments() {
+                public TypeCheckingArgumentsDefinition getArguments() {
                     return ARGUMENTS;
                 }
 
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    List<Object> args = new ArrayList<Object>();
-                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
-
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     Object arg = args.get(0);
                     if(arg == context.runtime.nil) {
                         IokeObject.as(on).setDocumentation(null, message, context);
