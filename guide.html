@@ -1507,7 +1507,9 @@ y(<span style="color: #0050a0;">42</span>)</pre>
 
                   <div class="section">
                     <h3><a name="lecros">Lecros</a></h3>
-                    <p>TODO: Write about lecros</p>
+                    <p>A macro works exactly like a method, in that it always has a receiver, and that receiver is available inside the macro as 'self' and '@'. In some circumstances it can be really useful to have a macro that behaves like a lexical block instead - being lexical so it can use cells defined outside of the definition of the macro. These macros won't have access to 'self' or '@', since they don't have a receiver in that way. Where such a macro is called is only based on namespacing.</p>
+                    
+                    <p>Ioke supports these kind of macros. They are all mimics of the kind LexicalMacro, and they are created using the method 'lecro'. A LexicalMacro is activatable by default, but a non-activatable lecro can be created using lecrox. The 'lecro' method takes the same arguments as 'macro', and the only real difference is the way it handles outside cells and the receiver value. A lecro also has a cell called outerScope that can be used if you need to explicitly access something in the outer name space - such as call.</p>
                   </div>
 
                   <div class="section">
@@ -1525,6 +1527,8 @@ y(<span style="color: #0050a0;">42</span>)</pre>
                     <p>In many cases a macro will take code that is not wrapped up inside of a method, macro or block. These pieces of code is called message chains, since their representation will be to a raw Message mimic. The chains are quite flexible, since they can be taken apart, modified and put together again. They can also be unevaluated and used as data definitions of some kind. That's how the argument handling to methods are implemented, for example. Since the call to "method" can be seen as a regular call to a macro, the argument descriptions are actually just unevaluated message chains that are picked apart to tease out the argument names. The same technique is applicable in any macro usage.</p>
 
                     <p>The term message chain fragment is also used to specifically mean a message chain that is meant to be put together with something and evaluated. Picture a daisy chain that gets added at the end of another chain and then executed. That's what happens if you execute something like "[1, 2, 3] map(*2)". In this case the call to "*" with the argument 2 will be a message chain fragment that will be put together with a new receiver before execution.</p>
+
+                    <p>TODO: information about quoting</p>
                   </div>
                 </div>
 
