@@ -1111,12 +1111,70 @@ iik&gt; "foo" &lt;=&gt; "fop"
                     
                     <div class="section">
                       <h3><a name="cond">cond</a></h3>
-                      <p>TODO: add information about cond</p>
+                      <p>Ioke doesn't have any else-if expression, which means that when you want to do several nested checks, you end up with lots of indentation. Cond is a macro that expands to that code. The code using cond will not have more indentation, which means it might be easier to read. A cond has one or more conditional expressions followed by an action part to execute if that condition is true. As soon as a condition has evaluated to true cond will not evaluate any more conditions or actions. If no conditions evaluate to true, nil will be returned, unless there is an action part following the last action-part. In other terms, if the cond-expression has an odd number of arguments, the last argument is the default case to execute if nothing else matches.</p>
+
+                      <p>Some examples of cond:</p>
+
+                      <pre class="code">
+cond(
+  x <span style="color: #00bfff;">==</span> <span style="color: #0050a0;">1</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">"one"</span> <span style="color: #449900;">println</span><span style="color: #006666;">,</span>
+  x <span style="color: #00bfff;">==</span> <span style="color: #00bfff;">-</span><span style="color: #0050a0;">1</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">"minus one"</span> <span style="color: #449900;">println</span><span style="color: #006666;">,</span>
+  x &lt; <span style="color: #0050a0;">0</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">"negative"</span> <span style="color: #449900;">println</span><span style="color: #006666;">,</span>
+  x &gt; <span style="color: #0050a0;">0</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">"positive"</span> <span style="color: #449900;">println</span><span style="color: #006666;">,</span>
+  <span style="color: #0050a0;">"zero"</span> <span style="color: #449900;">println</span>
+)</pre>
+
+                      <p>As you can see, it becomes quite clear what happens here. Keep in mind that cond is an expression, just like anything else in Ioke, and will return the last value evaluated.</p>
                     </div>
                     
                     <div class="section">
                       <h3><a name="case">case</a></h3>
-                      <p>TODO: add information about case</p>
+                      <p>A thing that you very often want to do is to check one value against several different conditions. The case expression allows this to be done succinctly. The core to the case-expression is the === method, that is used for matching. The expression takes one value, then one or more conditionals followed by actions, and then an optional default part. Once something matches, no more conditionals will be executed. The conditional part should <u>not</u> be a complete conditional statement. Instead it should return something that implements a fitting ===. So, a small example follows:</p>
+                      
+                      <pre class="code">
+case(value<span style="color: #006666;">,</span>
+  <span style="color: #8b0000;">Text</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">"it is a text!"</span> <span style="color: #449900;">println</span><span style="color: #006666;">,</span>
+  <span style="color: #0050a0;">1..10</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">"it is a low number"</span> <span style="color: #449900;">println</span><span style="color: #006666;">,</span>
+  <span style="color: #7777d4;">:blurg</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">"it is the symbol blurg"</span> <span style="color: #449900;">println</span><span style="color: #006666;">,</span>
+  <span style="color: #6495ed;">fn</span>(c<span style="color: #006666;">,</span> (c<span style="color: #00bfff;">+</span><span style="color: #0050a0;">2</span>) <span style="color: #00bfff;">==</span> <span style="color: #0050a0;">10</span>)<span style="color: #006666;">,</span> <span style="color: #0050a0;">"it is 8"</span> <span style="color: #449900;">println</span><span style="color: #006666;">,</span>
+  <span style="color: #0050a0;">"we don't know it!"</span> <span style="color: #449900;">println</span>)</pre>
+
+                      <p>The above example shows several different things you can match against, including a lexical block. The implementation of === for a lexical block will call the block with the value and then return true or false depending on the truth-value of the result of the call to the block.</p>
+
+                      <p>A thing that can be inconvenient in some languages is to do combinations of several of these. Say you want to check that something is a Text and matches a regular expression, or it is either 5..10 or 15..20. In most cases you will end up having to write several conditional parts for at least one of those two. But Ioke allows you to use combiners in the conditional part of a case expression. These combiners will be rewritten before executed, so a combiner called "else" will actually use the method "case:else", that in turn returns an object that responds correctly to ===. The end result is that using combiners read really well, and you can define your own by prefixing the name with "case:". There are several standard ones. Using a few of them looks like this:</p>
+
+                      <pre class="code">
+case(value<span style="color: #006666;">,</span>
+  and(<span style="color: #8b0000;">Text</span><span style="color: #006666;">,</span> <span style="color: #ff1493;">#/o+/</span>)<span style="color: #006666;">,</span> <span style="color: #0050a0;">"it's a text with several oos"</span> <span style="color: #449900;">println</span><span style="color: #006666;">,</span>
+  or(<span style="color: #0050a0;">5..10</span><span style="color: #006666;">,</span> <span style="color: #0050a0;">15..20</span>)<span style="color: #006666;">,</span> <span style="color: #0050a0;">"numberific"</span> <span style="color: #449900;">println</span><span style="color: #006666;">,</span>
+  else<span style="color: #006666;">,</span> <span style="color: #0050a0;">"oh no!"</span> <span style="color: #449900;">println</span>)</pre>
+
+                      <p>Combiners can be combined with each other and nested, so you could do and(foo, or(1, 2, 3), not(x)) if you want.</p>
+
+                      <p>The available combiners are these:</p>
+                      <dl>
+                        <dt>and</dt>
+                        <dd>Returns a matcher that returns true if all the arguments return true when calling ===. This is short circuiting.</dd>
+
+                        <dt>or</dt>
+                        <dd>Returns a matcher that returns true if any of the arguments return true when calling ===. This is short circuiting.</dd>
+
+                        <dt>not</dt>
+                        <dd>Takes one argument and returns the false if calling === on the argument returns true, and the other way around.</dd>
+
+                        <dt>nand</dt>
+                        <dd>The nand operation applied to === combiners.</dd>
+
+                        <dt>nor</dt>
+                        <dd>The nor operation applied to === combiners.</dd>
+
+                        <dt>xor</dt>
+                        <dd>The xor operation applied to === combiners.</dd>
+
+                        <dt>else</dt>
+                        <dt>otherwise</dt>
+                        <dd>Returns a matcher that always returns true. This is useful to make the default argument read better.</dd>
+                      </dl>
                     </div>
                   </div>
 
@@ -1223,7 +1281,7 @@ iik&gt; "foo" &lt;=&gt; "fop"
   i<span style="color: #00bfff;">++</span>
 )</pre>
 
-                    <p>This code uses continue to jump over a specific number, so it will only print 0 to 5, and 7 to 9.</p>
+                    <p>This code uses <span class="code">continue</span> to jump over a specific number, so it will only print 0 to 5, and 7 to 9.</p>
 
                     <div class="section">
                       <h3><a name="comprehensions">Comprehensions</a></h3>
