@@ -1,27 +1,11 @@
 
 things to do before release
-- update guide about:
- . ensure
- . lecros
- . regexps
- . freeze! and thaw!
- . case
- . cond
- . comprehensions
- . alt syntax for text and regexps
- . syntactic macros
- . destructuring
- . inverted ranges
- . new syntax (operators and stuff)
- . removing and finding owners of cells
- . let
- . set
- . initialization
- . send
- . aspects
+- general fixing of the guide. read through it. fix versions and all that.
 - generate new doks
 
 
+
+FIX LET block to actually WORK
 
 
 - think about Java integration
