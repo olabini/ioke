@@ -9,7 +9,6 @@ import java.io.StringReader;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.HashMap;
 
 import org.antlr.runtime.tree.Tree;
 
@@ -21,8 +20,6 @@ import ioke.lang.exceptions.ControlFlow;
 
 import org.antlr.runtime.ANTLRReaderStream;
 import org.antlr.runtime.CommonTokenStream;
-import org.antlr.runtime.Token;
-import org.antlr.runtime.tree.Tree;
 
 /**
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
@@ -166,35 +163,34 @@ public class Message extends IokeData {
     }
 
     @Override
-    public void init(IokeObject message) throws ControlFlow {
+    public void init(final IokeObject message) throws ControlFlow {
         message.setKind("Message");
         message.mimics(IokeObject.as(message.runtime.mixins.getCell(null, null, "Enumerable")), message.runtime.nul, message.runtime.nul);
 
-        message.registerMethod(message.runtime.newJavaMethod("Returns a code representation of the object", new JavaMethod.WithNoArguments("code") {
+        message.registerMethod(message.runtime.newJavaMethod("Returns a code representation of the object", new TypeCheckingJavaMethod.WithNoArguments("code", message) {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return method.runtime.newText(((Message)IokeObject.data(on)).code());
                 }
             }));
-        message.registerMethod(message.runtime.newJavaMethod("Returns the unevaluated arguments for this message", new JavaMethod.WithNoArguments("arguments") {
+
+        message.registerMethod(message.runtime.newJavaMethod("Returns the unevaluated arguments for this message", new TypeCheckingJavaMethod.WithNoArguments("arguments", message) {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return context.runtime.newList(((Message)IokeObject.data(on)).arguments);
                 }
             }));
-        message.registerMethod(message.runtime.newJavaMethod("Returns a formatted code representation of the object", new JavaMethod.WithNoArguments("formattedCode") {
+        
+        message.registerMethod(message.runtime.newJavaMethod("Returns a formatted code representation of the object", new TypeCheckingJavaMethod.WithNoArguments("formattedCode", message) {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return method.runtime.newText(Message.formattedCode(IokeObject.as(on), 0));
                 }
             }));
-        message.registerMethod(message.runtime.newJavaMethod("returns the name of this message", new JavaMethod.WithNoArguments("name") {
+        
+        message.registerMethod(message.runtime.newJavaMethod("returns the name of this message", new TypeCheckingJavaMethod.WithNoArguments("name", message) {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return method.runtime.getSymbol(((Message)IokeObject.data(on)).name);
                 }
             }));
@@ -216,11 +212,13 @@ public class Message extends IokeData {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().checkArgumentCount(context, message, on);
 
+                    Object onAsMessage = context.runtime.message.convertToThis(on, message, context);
+                    
                     Runtime runtime = context.runtime;
                     switch(message.getArgumentCount()) {
                     case 1: {
                         IokeObject code = IokeObject.as(message.getArguments().get(0));
-                        Object o = on;
+                        Object o = onAsMessage;
                         while(o != null) {
                             code.evaluateCompleteWithReceiver(context, context.getRealContext(), o);
                             o = next(o);
@@ -233,7 +231,7 @@ public class Message extends IokeData {
                         String name = IokeObject.as(message.getArguments().get(0)).getName();
                         IokeObject code = IokeObject.as(message.getArguments().get(1));
 
-                        Object o = on;
+                        Object o = onAsMessage;
                         while(o != null) {
                             c.setCell(name, o);
                             code.evaluateCompleteWithoutExplicitReceiver(c, c.getRealContext());
@@ -248,7 +246,7 @@ public class Message extends IokeData {
                         IokeObject code = IokeObject.as(message.getArguments().get(2));
 
                         int index = 0;
-                        Object o = on;
+                        Object o = onAsMessage;
                         while(o != null) {
                             c.setCell(name, o);
                             c.setCell(iname, runtime.newNumber(index++));
@@ -258,106 +256,113 @@ public class Message extends IokeData {
                         break;
                     }
                     }
-                    return on;
+                    return onAsMessage;
                 }
             }));
 
-        message.registerMethod(message.runtime.newJavaMethod("sets the name of the message and then returns that name", new JavaMethod("name=") {
-                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+        message.registerMethod(message.runtime.newJavaMethod("sets the name of the message and then returns that name", new TypeCheckingJavaMethod("name=") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
+                    .receiverMustMimic(message)
                     .withRequiredPositional("newName")
                     .getArguments();
 
                 @Override
-                public DefaultArgumentsDefinition getArguments() {
+                public TypeCheckingArgumentsDefinition getArguments() {
                     return ARGUMENTS;
                 }
 
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    List<Object> args = new ArrayList<Object>();
-                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
-
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     Object o = args.get(0);
-                    Message.setName(IokeObject.as(on), (IokeObject.data(o) instanceof Text) ? Text.getText(o) : Symbol.getText(o));
+                    String name = null;
+                    if(IokeObject.data(o) instanceof Symbol) {
+                        name = Symbol.getText(o); 
+                    } else if(IokeObject.data(o) instanceof Text) {
+                        name = Text.getText(o);
+                    } else {
+                        name = Text.getText(IokeObject.convertToText(o, message, context, true));
+                    }
+                    
+                    Message.setName(IokeObject.as(on), name);
                     return o;
                 }
             }));
-        message.registerMethod(message.runtime.newJavaMethod("sets the next pointer of the message and then returns that pointer", new JavaMethod("next=") {
-                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+
+        message.registerMethod(message.runtime.newJavaMethod("sets the next pointer of the message and then returns that pointer", new TypeCheckingJavaMethod("next=") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
+                    .receiverMustMimic(message)
                     .withRequiredPositional("newNext")
                     .getArguments();
 
                 @Override
-                public DefaultArgumentsDefinition getArguments() {
+                public TypeCheckingArgumentsDefinition getArguments() {
                     return ARGUMENTS;
                 }
 
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    List<Object> args = new ArrayList<Object>();
-                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
-
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     Object o = args.get(0);
                     if(o == context.runtime.nil) {
                         Message.setNext(IokeObject.as(on), null);
                     } else {
+                        o = context.runtime.message.convertToThis(o, message, context);
                         Message.setNext(IokeObject.as(on), IokeObject.as(o));
                     }
                     return o;
                 }
             }));
-        message.registerMethod(message.runtime.newJavaMethod("sets the prev pointer of the message and then returns that pointer", new JavaMethod("prev=") {
-                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+        
+        message.registerMethod(message.runtime.newJavaMethod("sets the prev pointer of the message and then returns that pointer", new TypeCheckingJavaMethod("prev=") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
+                    .receiverMustMimic(message)
                     .withRequiredPositional("newPrev")
                     .getArguments();
 
                 @Override
-                public DefaultArgumentsDefinition getArguments() {
+                public TypeCheckingArgumentsDefinition getArguments() {
                     return ARGUMENTS;
                 }
 
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    List<Object> args = new ArrayList<Object>();
-                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
-
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     Object o = args.get(0);
                     if(o == context.runtime.nil) {
                         Message.setPrev(IokeObject.as(on), null);
                     } else {
+                        o = context.runtime.message.convertToThis(o, message, context);
                         Message.setPrev(IokeObject.as(on), IokeObject.as(o));
                     }
                     return o;
                 }
             }));
-        message.registerMethod(message.runtime.newJavaMethod("returns the file name where this message is written", new JavaMethod.WithNoArguments("filename") {
+        
+        message.registerMethod(message.runtime.newJavaMethod("returns the file name where this message is written", new TypeCheckingJavaMethod.WithNoArguments("filename", message) {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return method.runtime.newText(((Message)IokeObject.data(on)).file);
                 }
             }));
-        message.registerMethod(message.runtime.newJavaMethod("returns the line where this message is written", new JavaMethod.WithNoArguments("line") {
+        
+        message.registerMethod(message.runtime.newJavaMethod("returns the line where this message is written", new TypeCheckingJavaMethod.WithNoArguments("line", message) {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return method.runtime.newNumber(((Message)IokeObject.data(on)).line);
                 }
             }));
-        message.registerMethod(message.runtime.newJavaMethod("returns the position on the line where this message is written", new JavaMethod.WithNoArguments("position") {
+        
+        message.registerMethod(message.runtime.newJavaMethod("returns the position on the line where this message is written", new TypeCheckingJavaMethod.WithNoArguments("position", message) {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return method.runtime.newNumber(((Message)IokeObject.data(on)).pos);
                 }
             }));
-        message.registerMethod(message.runtime.newJavaMethod("returns the next message in the chain, or nil", new JavaMethod.WithNoArguments("next") {
+
+        message.registerMethod(message.runtime.newJavaMethod("returns the next message in the chain, or nil", new TypeCheckingJavaMethod.WithNoArguments("next", message) {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     IokeObject next = ((Message)IokeObject.data(on)).next;
                     if(next == null) {
                         return context.runtime.nil;
@@ -366,10 +371,10 @@ public class Message extends IokeData {
                     }
                 }
             }));
-        message.registerMethod(message.runtime.newJavaMethod("returns the last message in the chain", new JavaMethod.WithNoArguments("last") {
+        
+        message.registerMethod(message.runtime.newJavaMethod("returns the last message in the chain", new TypeCheckingJavaMethod.WithNoArguments("last", message) {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     IokeObject current = IokeObject.as(on);
                     while(next(current) != null) {
                         current = next(current);
@@ -377,10 +382,10 @@ public class Message extends IokeData {
                     return current;
                 }
             }));
-        message.registerMethod(message.runtime.newJavaMethod("returns the previous message in the chain, or nil", new JavaMethod.WithNoArguments("prev") {
+        
+        message.registerMethod(message.runtime.newJavaMethod("returns the previous message in the chain, or nil", new TypeCheckingJavaMethod.WithNoArguments("prev", message) {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     IokeObject prev = ((Message)IokeObject.data(on)).prev;
                     if(prev == null) {
                         return context.runtime.nil;
@@ -390,42 +395,41 @@ public class Message extends IokeData {
                 }
             }));
         
-        message.registerMethod(message.runtime.newJavaMethod("returns true when this message is a terminator, otherwise false", new JavaMethod.WithNoArguments("terminator?") {
+        message.registerMethod(message.runtime.newJavaMethod("returns true when this message is a terminator, otherwise false", new TypeCheckingJavaMethod.WithNoArguments("terminator?", message) {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return Message.isTerminator(on) ? context.runtime._true : context.runtime._false;
                 }
             }));
         
-        message.registerMethod(message.runtime.newJavaMethod("returns a string that describes this message as a stack trace elemtn", new JavaMethod.WithNoArguments("asStackTraceText") {
+        message.registerMethod(message.runtime.newJavaMethod("returns a string that describes this message as a stack trace elemtn", new TypeCheckingJavaMethod.WithNoArguments("asStackTraceText", message) {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return context.runtime.newText(Message.getStackTraceText(on));
                 }
             }));
-        message.registerMethod(message.runtime.newJavaMethod("returns a deep clone of this message chain, starting at the current point.", new JavaMethod.WithNoArguments("deepCopy") {
+
+        message.registerMethod(message.runtime.newJavaMethod("returns a deep clone of this message chain, starting at the current point.", new TypeCheckingJavaMethod.WithNoArguments("deepCopy", message) {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return Message.deepCopy(on);
                 }
             }));
-        message.registerMethod(message.runtime.newJavaMethod("returns true if this message is a keyword parameter or not", new JavaMethod.WithNoArguments("keyword?") {
+
+        message.registerMethod(message.runtime.newJavaMethod("returns true if this message is a keyword parameter or not", new TypeCheckingJavaMethod.WithNoArguments("keyword?", message) {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return ((Message)IokeObject.data(on)).isKeyword() ? context.runtime._true : context.runtime._false;
                 }
             }));
-        message.registerMethod(message.runtime.newJavaMethod("returns true if this message is a symbol message or not", new JavaMethod.WithNoArguments("symbol?") {
+
+        message.registerMethod(message.runtime.newJavaMethod("returns true if this message is a symbol message or not", new TypeCheckingJavaMethod.WithNoArguments("symbol?", message) {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return ((Message)IokeObject.data(on)).isSymbol() ? context.runtime._true : context.runtime._false;
                 }
             }));
+
         message.registerMethod(message.runtime.newJavaMethod("Takes one evaluated argument and sends this message to that argument", new JavaMethod("sendTo") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
@@ -439,20 +443,18 @@ public class Message extends IokeData {
                 }
 
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    List<Object> positionalArgs = new ArrayList<Object>();
-                    getArguments().getEvaluatedArguments(context, message, on, positionalArgs, new HashMap<String, Object>());
-
-                    IokeObject realReceiver = IokeObject.as(positionalArgs.get(0));
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    IokeObject realReceiver = IokeObject.as(args.get(0));
                     IokeObject realContext = realReceiver;
-                    if(positionalArgs.size() > 1) {
-                        realContext = IokeObject.as(positionalArgs.get(1));
+                    if(args.size() > 1) {
+                        realContext = IokeObject.as(args.get(1));
                     }
 
                     return IokeObject.as(on).sendTo(realContext, realReceiver);
                 }
             }));
-        message.registerMethod(message.runtime.newJavaMethod("evaluates the argument and adds it to the argument list of this message.", new JavaMethod("appendArgument") {
+        
+        message.registerMethod(message.runtime.newJavaMethod("evaluates the argument and adds it to the argument list of this message. it then returns the receiving message.", new JavaMethod("appendArgument") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("newArgument")
@@ -464,36 +466,13 @@ public class Message extends IokeData {
                 }
 
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    List<Object> args = new ArrayList<Object>();
-                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
-
-                    Object o = args.get(0);
-                    IokeObject.as(on).getArguments().add(o);
-                    return on;
-                }
-            }));
-
-        message.registerMethod(message.runtime.newJavaMethod("evaluates the argument and adds it to the end of the argument list of this message. it then returns the receiving message.", new JavaMethod("<<") {
-                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
-                    .builder()
-                    .withRequiredPositional("newArgument")
-                    .getArguments();
-
-                @Override
-                public DefaultArgumentsDefinition getArguments() {
-                    return ARGUMENTS;
-                }
-
-                @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    List<Object> args = new ArrayList<Object>();
-                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
-
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     IokeObject.as(on).getArguments().add(args.get(0));
                     return on;
                 }
             }));
+
+        message.aliasMethod("appendArgument", "<<", null, null);
 
         message.registerMethod(message.runtime.newJavaMethod("evaluates the argument and adds it to the beginning of the argument list of this message. it then returns the receiving message.", new JavaMethod(">>") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
@@ -507,35 +486,31 @@ public class Message extends IokeData {
                 }
 
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    List<Object> args = new ArrayList<Object>();
-                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
-
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     IokeObject.as(on).getArguments().add(0, args.get(0));
                     return on;
                 }
             }));
 
-        message.registerMethod(message.runtime.newJavaMethod("evaluates the argument and makes it the new next pointer of the receiver. it also modifies the argument so its prev pointer points back to this message. if the argument is nil, the next pointer will be erased. it then returns the receiving message.", new JavaMethod("->") {
-                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+        message.registerMethod(message.runtime.newJavaMethod("evaluates the argument and makes it the new next pointer of the receiver. it also modifies the argument so its prev pointer points back to this message. if the argument is nil, the next pointer will be erased. it then returns the receiving message.", new TypeCheckingJavaMethod("->") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
+                    .receiverMustMimic(message)
                     .withRequiredPositional("nextMessage")
                     .getArguments();
 
                 @Override
-                public DefaultArgumentsDefinition getArguments() {
+                public TypeCheckingArgumentsDefinition getArguments() {
                     return ARGUMENTS;
                 }
 
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    List<Object> args = new ArrayList<Object>();
-                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
-
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     Object arg = args.get(0);
                     if(arg == context.runtime.nil) {
                         Message.setNext(IokeObject.as(on), null);
                     } else {
+                        arg = context.runtime.message.convertToThis(arg, message, context);
                         Message.setNext(IokeObject.as(on), IokeObject.as(arg));
                         Message.setPrev(IokeObject.as(arg), IokeObject.as(on));
                     }
@@ -557,20 +532,16 @@ public class Message extends IokeData {
                 }
 
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    List<Object> positionalArgs = new ArrayList<Object>();
-                    Map<String, Object> keywordArgs = new HashMap<String, Object>();
-                    getArguments().getEvaluatedArguments(context, message, on, positionalArgs, keywordArgs);
-
-                    IokeObject messageGround = IokeObject.as(positionalArgs.get(0));
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    IokeObject messageGround = IokeObject.as(args.get(0));
                     IokeObject receiver = messageGround;
-                    int size = positionalArgs.size();
+                    int size = args.size();
                     if(size > 1) {
-                        receiver = IokeObject.as(positionalArgs.get(1));
+                        receiver = IokeObject.as(args.get(1));
                         if(size > 2) {
                             IokeObject m = IokeObject.as(on).allocateCopy(IokeObject.as(on), context);
                             m.getArguments().clear();
-                            m.getArguments().addAll(positionalArgs.subList(2, size));
+                            m.getArguments().addAll(args.subList(2, size));
                             on = m;
                         }
                     }
@@ -578,6 +549,7 @@ public class Message extends IokeData {
                     return IokeObject.as(on).evaluateCompleteWithReceiver(messageGround, messageGround, receiver);
                 }
             }));
+        
         message.registerMethod(message.runtime.newJavaMethod("takes one index, and a context and returns the evaluated argument at that index.", new JavaMethod("evalArgAt") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
@@ -591,15 +563,13 @@ public class Message extends IokeData {
                 }
 
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    List<Object> args = new ArrayList<Object>();
-                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
-
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     int index = Number.extractInt(args.get(0), message, context);
                     IokeObject newContext = IokeObject.as(args.get(1));
                     return IokeObject.as(on).getEvaluatedArgument(index, newContext);
                 }
             }));
+        
         message.registerMethod(message.runtime.newJavaMethod("Will rearrange this message and all submessages to follow regular C style operator precedence rules. Will use Message OperatorTable to guide this operation. The operation is mutating, but should not change anything if done twice.", new JavaMethod.WithNoArguments("shuffleOperators") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
@@ -626,22 +596,20 @@ public class Message extends IokeData {
                     return on;
                 }
             }));
-        message.registerMethod(message.runtime.newJavaMethod("Takes one evaluated argument and returns the message resulting from parsing and operator shuffling the resulting message.", new JavaMethod("fromText") {
-                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+
+        message.registerMethod(message.runtime.newJavaMethod("Takes one evaluated argument and returns the message resulting from parsing and operator shuffling the resulting message.", new TypeCheckingJavaMethod("fromText") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
-                    .withRequiredPositional("code")
+                    .withRequiredPositional("code").whichMustMimic(message.runtime.text)
                     .getArguments();
 
                 @Override
-                public DefaultArgumentsDefinition getArguments() {
+                public TypeCheckingArgumentsDefinition getArguments() {
                     return ARGUMENTS;
                 }
 
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    List<Object> args = new ArrayList<Object>();
-                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
-
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     String code = Text.getText(args.get(0));
                     return Message.newFromStream(context.runtime, new StringReader(code), message, context);
                 }
@@ -659,29 +627,24 @@ public class Message extends IokeData {
                 }
 
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    List<Object> args = new ArrayList<Object>();
-                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
-
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return context.runtime.createMessage(Message.wrap(IokeObject.as(args.get(0))));
                 }
             }));
 
-        message.registerMethod(message.runtime.newJavaMethod("Takes one evaluated argument and executes the contents of that text in the current context and returns the result of that.", new JavaMethod("doText") {
-                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+        message.registerMethod(message.runtime.newJavaMethod("Takes one evaluated argument and executes the contents of that text in the current context and returns the result of that.", new TypeCheckingJavaMethod("doText") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
-                    .withRequiredPositional("code")
+                    .withRequiredPositional("code").whichMustMimic(message.runtime.text)
                     .getArguments();
 
                 @Override
-                public DefaultArgumentsDefinition getArguments() {
+                public TypeCheckingArgumentsDefinition getArguments() {
                     return ARGUMENTS;
                 }
 
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    List<Object> args = new ArrayList<Object>();
-                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     String code = Text.getText(args.get(0));
                     return context.runtime.evaluateString(code, message, context);
                 }
