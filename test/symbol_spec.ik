@@ -41,9 +41,5 @@ describe("Symbol",
     it("should validate type of receiver",
       Symbol should checkReceiverTypeOn(:"<=>", :arovane)
     )
-    
-    it("should validate type of argument",
-       fn(:eggs <=> 1) should signal(Condition Error Type IncorrectType)
-    )
   )
 )
