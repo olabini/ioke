@@ -45,7 +45,7 @@ public class Base {
         base.registerMethod(base.runtime.newJavaMethod("sets the documentation string for a specific object.", new TypeCheckingJavaMethod("documentation=") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
-                    .withRequiredPositional("text")
+                    .withRequiredPositional("text").whichMustMimicOrBeNil(base.runtime.text)
                     .getArguments();
 
                 @Override
