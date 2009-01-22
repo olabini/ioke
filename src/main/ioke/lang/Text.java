@@ -42,17 +42,17 @@ public class Text extends IokeData {
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newJavaMethod("Converts the content of this text into a rational value", new JavaMethod.WithNoArguments("toRational") {
+        obj.registerMethod(obj.runtime.newJavaMethod("Converts the content of this text into a rational value", new TypeCheckingJavaMethod.WithNoArguments("toRational", runtime.text) {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return Text.toRational(on, context, message);
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newJavaMethod("Converts the content of this text into a decimal value", new JavaMethod.WithNoArguments("toDecimal") {
+        obj.registerMethod(obj.runtime.newJavaMethod("Converts the content of this text into a decimal value", new TypeCheckingJavaMethod.WithNoArguments("toDecimal", runtime.text) {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return Text.toDecimal(on, context, message);
                 }
@@ -74,27 +74,27 @@ public class Text extends IokeData {
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newJavaMethod("Returns a lower case version of this text", new JavaMethod.WithNoArguments("lower") {
+        obj.registerMethod(obj.runtime.newJavaMethod("Returns a lower case version of this text", new TypeCheckingJavaMethod.WithNoArguments("lower", runtime.text) {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                    getArguments().getValidatedArgumentsAndReceiver(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return method.runtime.newText(Text.getText(on).toLowerCase());
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newJavaMethod("Returns an upper case version of this text", new JavaMethod.WithNoArguments("upper") {
+        obj.registerMethod(obj.runtime.newJavaMethod("Returns an upper case version of this text", new TypeCheckingJavaMethod.WithNoArguments("upper", runtime.text) {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                    getArguments().getValidatedArgumentsAndReceiver(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return method.runtime.newText(Text.getText(on).toUpperCase());
                 }
             }));
         
         obj.registerMethod(obj.runtime.newJavaMethod("Returns a version of this text with leading and trailing whitespace removed", new TypeCheckingJavaMethod.WithNoArguments("trim", runtime.text) {
             @Override
-            public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
-              getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
-              return runtime.newText(Text.getText(on).trim());
+            public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+              getArguments().getValidatedArgumentsAndReceiver(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+              return method.runtime.newText(Text.getText(on).trim());
             }
           }));
 
@@ -207,9 +207,9 @@ public class Text extends IokeData {
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newJavaMethod("Returns the length of this text", new JavaMethod.WithNoArguments("length") {
+        obj.registerMethod(obj.runtime.newJavaMethod("Returns the length of this text", new TypeCheckingJavaMethod.WithNoArguments("length", runtime.text) {
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return context.runtime.newNumber(getText(on).length());
                 }
@@ -238,20 +238,20 @@ public class Text extends IokeData {
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newJavaMethod("compares this text against the argument, returning -1, 0 or 1 based on which one is lexically larger", new JavaMethod("<=>") {
-                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+        obj.registerMethod(obj.runtime.newJavaMethod("compares this text against the argument, returning -1, 0 or 1 based on which one is lexically larger", new TypeCheckingJavaMethod("<=>") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
+                    .receiverMustMimic(runtime.text)
                     .withRequiredPositional("other")
                     .getArguments();
 
                 @Override
-                public DefaultArgumentsDefinition getArguments() {
+                public TypeCheckingArgumentsDefinition getArguments() {
                     return ARGUMENTS;
                 }
 
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    List<Object> args = new ArrayList<Object>();
+                public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
                     Object arg = args.get(0);
 

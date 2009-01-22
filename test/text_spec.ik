@@ -98,6 +98,13 @@ describe("Text",
     it("should not return true for a text with only a newline", 
       "\n" empty? should be false
     )
+
+    it("should validate type of receiver",
+      x = Origin mimic
+      x cell("empty?") = Text cell("empty?")
+      x cell("length") = Text cell("length")
+      fn(x empty?) should signal(Condition Error Type IncorrectType)
+    )
   )
   
   describe("[number]", 
@@ -350,6 +357,10 @@ describe("Text",
       fn("1f" toRational) should offer(restart(useValue, fn))
       fn("1f" toRational) should returnFromRestart(:useValue, 32) == 32
     )
+
+    it("should validate type of receiver",
+      Text should checkReceiverTypeOn(:"toRational")
+    )
   )
 
   describe("toDecimal",
@@ -390,6 +401,10 @@ describe("Text",
       fn("1.0f" toDecimal) should offer(restart(useValue, fn))
       fn("1.0f" toDecimal) should returnFromRestart(:useValue, 32) == 32
     )
+
+    it("should validate type of receiver",
+      Text should checkReceiverTypeOn(:"toDecimal")
+    )
   )
 
   describe("lower",
@@ -404,6 +419,10 @@ describe("Text",
       x lower should == "flurg"
       x should == "FLuRg"
     )
+
+    it("should validate type of receiver",
+      Text should checkReceiverTypeOn(:"lower")
+    )
   )
 
   describe("upper",
@@ -417,6 +436,10 @@ describe("Text",
       x = "FLuRg"
       x upper should == "FLURG"
       x should == "FLuRg"
+    )
+
+    it("should validate type of receiver",
+      Text should checkReceiverTypeOn(:"upper")
     )
   )
   
@@ -556,6 +579,10 @@ describe("Text",
 
     it("should return 1 when the receiver is longer than the argument",
       ("fooo" <=> "foo") should == 1
+    )
+
+    it("should validate type of receiver",
+      Text should checkReceiverTypeOn(:"<=>", "foo")
     )
   )
 
