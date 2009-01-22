@@ -2,15 +2,15 @@
 use("ispec")
 
 describe(DefaultBehavior,
-;   describe("ʎ", 
-;     it("should be possible to create a new LexicalBlock with it",
-;       ʎ call should be nil
-;     )
+  describe("ʎ", 
+    it("should be possible to create a new LexicalBlock with it",
+      ʎ call should be nil
+    )
 
-;     it("should be possible to create a new LexicalBlock with it that returns a value",
-;       ʎ(42) call should == 42
-;     )
-;   )
+    it("should be possible to create a new LexicalBlock with it that returns a value",
+      ʎ(42) call should == 42
+    )
+  )
   
   describe("fnx", 
     it("should be possible to give it a documentation string", 

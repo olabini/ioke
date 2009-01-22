@@ -84,7 +84,7 @@ fi
 # ----- Execute The Requested Command -----------------------------------------
 
 if [ -z "$JAVA_MEM" ] ; then
-  JAVA_MEM=-Xmx64m
+  JAVA_MEM=-Xmx128m
 fi
 
 if [ -z "$JAVA_STACK" ] ; then
