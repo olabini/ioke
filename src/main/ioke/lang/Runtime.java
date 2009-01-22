@@ -142,8 +142,8 @@ public class Runtime {
     // NOT TO BE EXPOSED TO Ioke - used for internal usage only
     public final NullObject nul = new NullObject(this);
 
-    public Runtime() {
-        this(new PrintWriter(java.lang.System.out), new InputStreamReader(java.lang.System.in), new PrintWriter(java.lang.System.err));
+    public Runtime() throws Exception {
+        this(new PrintWriter(java.lang.System.out), new InputStreamReader(java.lang.System.in, "UTF-8"), new PrintWriter(java.lang.System.err));
     }
 
     public Runtime(PrintWriter out, Reader in, PrintWriter err) {
@@ -152,8 +152,8 @@ public class Runtime {
         this.err = err;
     }
 
-    public static Runtime getRuntime() throws ControlFlow {
-        return getRuntime(new PrintWriter(java.lang.System.out), new InputStreamReader(java.lang.System.in), new PrintWriter(java.lang.System.err));
+    public static Runtime getRuntime() throws ControlFlow, Exception {
+        return getRuntime(new PrintWriter(java.lang.System.out), new InputStreamReader(java.lang.System.in, "UTF-8"), new PrintWriter(java.lang.System.err));
     }
 
     public static Runtime getRuntime(PrintWriter out, Reader in, PrintWriter err) throws ControlFlow {
