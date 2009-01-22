@@ -55,7 +55,7 @@ public class IokeList extends IokeData {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(runtime.list)
-                    .withRequiredPositional("other").whichMustMimic(runtime.list)
+                    .withRequiredPositional("other")
                     .getArguments();
 
                 @Override
@@ -67,7 +67,11 @@ public class IokeList extends IokeData {
                 public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
 
                     List<Object> one = IokeList.getList(on);
-                    List<Object> two = IokeList.getList(args.get(0));
+                    Object arg = args.get(0);
+                    if(!(IokeObject.data(arg) instanceof IokeList)) {
+                        return context.runtime.nil;
+                    }
+                    List<Object> two = IokeList.getList(arg);
 
                     int len = Math.min(one.size(), two.size());
                     SpaceshipComparator sc = new SpaceshipComparator(context, message);

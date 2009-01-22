@@ -545,7 +545,7 @@ describe(List,
     )
     
     it("should validate type of receiver",
-      List should checkReceiverTypeOn(:each, println)
+      List should checkReceiverTypeOn(:each, 1)
     )
   )
 
@@ -817,10 +817,6 @@ describe(List,
     
     it("should validate type of receiver",
       List should checkReceiverTypeOn(:"<=>", [])
-    )
-    
-    it("should validate type of argument",
-      fn([1,2,3] <=> 3) should signal(Condition Error Type IncorrectType)
     )
   )
 )
