@@ -443,11 +443,21 @@ public class Runtime {
     }
 
     public Object evaluateStream(Reader reader, IokeObject message, IokeObject context) throws ControlFlow {
-        return parseStream(reader, message, context).evaluateComplete();
+        IokeObject msg = parseStream(reader, message, context);
+        if(msg != null) {
+            return msg.evaluateComplete();
+        } else {
+            return nil;
+        }
     }
 
     public Object evaluateString(String str, IokeObject message, IokeObject context) throws ControlFlow {
-        return parseStream(new StringReader(str), message, context).evaluateComplete();
+        IokeObject msg = parseStream(new StringReader(str), message, context);
+        if(msg != null) {
+            return msg.evaluateComplete();
+        } else {
+            return nil;
+        }
     }
 
     // ONLY FOR USE FROM RSPEC

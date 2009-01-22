@@ -782,7 +782,9 @@ public class Message extends IokeData {
 
     public static void opShuffle(IokeObject self) throws ControlFlow {
         // TODO: Should handle stuff that's not been inited at this point...
-        self.runtime.opShuffle.sendTo(self.runtime.ground, self);
+        if(self != null) {
+            self.runtime.opShuffle.sendTo(self.runtime.ground, self);
+        }
     }
 
     public static IokeObject newFromStream(Runtime runtime, Reader reader, IokeObject message, IokeObject context) throws ControlFlow {
