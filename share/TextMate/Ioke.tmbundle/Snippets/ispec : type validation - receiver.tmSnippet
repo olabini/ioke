@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>content</key>
+	<string>it("should validate type of receiver",
+  ${1:Receiver} should checkReceiverTypeOn(:${2:cell_name}${4:, ${3:params}})
+)</string>
+	<key>name</key>
+	<string>ispec : type validation - receiver</string>
+	<key>scope</key>
+	<string>source.ioke</string>
+	<key>tabTrigger</key>
+	<string>svr</string>
+	<key>uuid</key>
+	<string>7EBCCF74-AFEF-4F4A-AE8B-2EE721189551</string>
+</dict>
+</plist>
