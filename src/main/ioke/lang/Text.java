@@ -90,28 +90,28 @@ public class Text extends IokeData {
                 }
             }));
         
-        obj.registerMethod(obj.runtime.newJavaMethod("Returns a version of this text with leading and trailing whitespace removed", new JavaMethod.WithNoArguments("trim") {
-        		@Override
-        		public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-        			getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
-        			return method.runtime.newText(Text.getText(on).trim());
-        		}
-        	}));
+        obj.registerMethod(obj.runtime.newJavaMethod("Returns a version of this text with leading and trailing whitespace removed", new TypeCheckingJavaMethod.WithNoArguments("trim", runtime.text) {
+            @Override
+            public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+              getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+              return runtime.newText(Text.getText(on).trim());
+            }
+          }));
 
-        obj.registerMethod(obj.runtime.newJavaMethod("Returns an array of texts split around the argument", new JavaMethod("split") {
-                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+        obj.registerMethod(obj.runtime.newJavaMethod("Returns an array of texts split around the argument", new TypeCheckingJavaMethod("split") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
+                    .receiverMustMimic(runtime.text)
                     .withRequiredPositional("splitAround")
                     .getArguments();
 
                 @Override
-                public DefaultArgumentsDefinition getArguments() {
+                public TypeCheckingArgumentsDefinition getArguments() {
                     return ARGUMENTS;
                 }
                 
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    List<Object> args = new ArrayList<Object>();
+                public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
                     String real = Text.getText(on);
                     Object arg = args.get(0);
@@ -135,21 +135,21 @@ public class Text extends IokeData {
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newJavaMethod("Takes two text arguments where the first is the substring to replace, and the second is the replacement to insert. Will only replace the first match, if any is found, and return a new Text with the result.", new JavaMethod("replace") {
-                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+        obj.registerMethod(obj.runtime.newJavaMethod("Takes two text arguments where the first is the substring to replace, and the second is the replacement to insert. Will only replace the first match, if any is found, and return a new Text with the result.", new TypeCheckingJavaMethod("replace") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
+                    .receiverMustMimic(runtime.text)
                     .withRequiredPositional("pattern")
                     .withRequiredPositional("replacement")
                     .getArguments();
 
                 @Override
-                public DefaultArgumentsDefinition getArguments() {
+                public TypeCheckingArgumentsDefinition getArguments() {
                     return ARGUMENTS;
                 }
                 
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    List<Object> args = new ArrayList<Object>();
+                public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
                     String initial = Text.getText(on);
                     String repl = Text.getText(args.get(1));
@@ -171,21 +171,21 @@ public class Text extends IokeData {
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newJavaMethod("Takes two text arguments where the first is the substring to replace, and the second is the replacement to insert. Will replace all matches, if any is found, and return a new Text with the result.", new JavaMethod("replaceAll") {
-                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+        obj.registerMethod(obj.runtime.newJavaMethod("Takes two text arguments where the first is the substring to replace, and the second is the replacement to insert. Will replace all matches, if any is found, and return a new Text with the result.", new TypeCheckingJavaMethod("replaceAll") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
+                    .receiverMustMimic(runtime.text)
                     .withRequiredPositional("pattern")
                     .withRequiredPositional("replacement")
                     .getArguments();
 
                 @Override
-                public DefaultArgumentsDefinition getArguments() {
+                public TypeCheckingArgumentsDefinition getArguments() {
                     return ARGUMENTS;
                 }
                 
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    List<Object> args = new ArrayList<Object>();
+                public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
                     String initial = Text.getText(on);
                     String repl = Text.getText(args.get(1));
@@ -215,20 +215,20 @@ public class Text extends IokeData {
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newJavaMethod("Takes any number of arguments, and expects the text receiver to contain format specifications. The currently supported specifications are only %s and %{, %}. These have several parameters that can be used. See the spec for more info about these. The format method will return a new text based on the content of the receiver, and the arguments given.", new JavaMethod("format") {
-                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+        obj.registerMethod(obj.runtime.newJavaMethod("Takes any number of arguments, and expects the text receiver to contain format specifications. The currently supported specifications are only %s and %{, %}. These have several parameters that can be used. See the spec for more info about these. The format method will return a new text based on the content of the receiver, and the arguments given.", new TypeCheckingJavaMethod("format") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
+                    .receiverMustMimic(runtime.text)
                     .withRest("replacements")
                     .getArguments();
 
                 @Override
-                public DefaultArgumentsDefinition getArguments() {
+                public TypeCheckingArgumentsDefinition getArguments() {
                     return ARGUMENTS;
                 }
                 
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    List<Object> args = new ArrayList<Object>();
+                public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
 
                     StringBuilder result = new StringBuilder();
