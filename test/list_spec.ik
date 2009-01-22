@@ -17,6 +17,18 @@ describe(List,
     List should mimic(Mixins Enumerable)
   )
   
+  describe("inspect",
+    it("should validate type of receiver",
+      List should checkReceiverTypeOn(:inspect)
+    )
+  )
+  
+  describe("notice",
+    it("should validate type of receiver",
+      List should checkReceiverTypeOn(:notice)
+    )
+  )
+  
   describe("at", 
     it("should return nil if empty list", 
       list at(0) should be nil
@@ -40,6 +52,14 @@ describe(List,
       [1,2,3,4] at(0-2) should == 3
       [1,2,3,4] at(0-3) should == 2
       [1,2,3,4] at(0-4) should == 1
+    )
+    
+    it("should validate type of receiver",
+      List should checkReceiverTypeOn(:at, 0)
+    )
+    
+    it("should validate type of argument",
+       fn([] at([])) should signal(Condition Error Type IncorrectType)
     )
   )
 
@@ -77,6 +97,14 @@ describe(List,
         [][10..20] should == []
         [][10...20] should == []
         [][-1..20] should == []
+      )
+      
+      it("should validate type of receiver",
+        List should checkReceiverTypeOn(:"[]", 0)
+      )
+
+      it("should validate type of argument",
+         fn([] []([])) should signal(Condition Error Type IncorrectType)
       )
     )
     
@@ -192,6 +220,14 @@ describe(List,
     it("should throw an exception if setting with negative indices outside the range", 
       fn([][0-1] = 52) should signal(Condition Error Index)
     )
+    
+    it("should validate type of receiver",
+      [0,1] should checkReceiverTypeOn(:"[]=",0,3)
+    )
+    
+    it("should validate type of argument",
+       fn([] [](:boris) = :beans) should signal(Condition Error Type IncorrectType)
+    )
   )
 
   describe("at=", 
@@ -243,6 +279,14 @@ describe(List,
     it("should throw an exception if setting with negative indices outside the range", 
       fn([][-1] = 52) should signal(Condition Error Index)
     )
+    
+    it("should validate type of receiver",
+      [0,1] should checkReceiverTypeOn(:"at=",0,3)
+    )
+    
+    it("should validate type of argument",
+       fn([] at(:stilton) = :gouda) should signal(Condition Error Type IncorrectType)
+    )
   )
 
   describe("<<", 
@@ -266,6 +310,10 @@ describe(List,
     it("should return the list after the append", 
       x = []
       (x << 42) should == x
+    )
+    
+    it("should validate type of receiver",
+      List should checkReceiverTypeOn(:"<<", 1)
     )
   )
   
@@ -326,6 +374,10 @@ describe(List,
       x = [1,2,3,4]
       x clear! should == x
     )
+    
+    it("should validate type of receiver",
+      List should checkReceiverTypeOn(:clear!)
+    )
   )
 
   describe("size", 
@@ -338,6 +390,10 @@ describe(List,
       [1] size should == 1
       ["abc", "cde"] size should == 2
     )
+    
+    it("should validate type of receiver",
+      List should checkReceiverTypeOn(:size)
+    )
   )
 
   describe("length", 
@@ -349,6 +405,10 @@ describe(List,
     it("should return the size for a non-empty list", 
       [1] length should == 1
       ["abc", "cde"] length should == 2
+    )
+    
+    it("should validate type of receiver",
+      List should checkReceiverTypeOn(:length)
     )
   )
 
@@ -365,6 +425,10 @@ describe(List,
       x = ["abc", "cde"]
       x empty? should be false
     )
+    
+    it("should validate type of receiver",
+      List should checkReceiverTypeOn(:empty?)
+    )
   )
 
   describe("include?", 
@@ -379,6 +443,12 @@ describe(List,
       [1, 2] include?(2) should be true
       [2, 1, :foo, "bar"] include?(2) should be true
     )
+    
+    it("should validate type of receiver",
+      List should checkReceiverTypeOn(:include?, "Richard Richard")
+    )
+    
+    
   )
   
   describe("ifEmpty",
@@ -472,6 +542,10 @@ describe(List,
       y = []
       [[1],[2],[3]] each(x, y << x)
       y should == [[1],[2],[3]]
+    )
+    
+    it("should validate type of receiver",
+      List should checkReceiverTypeOn(:each, println)
     )
   )
 
@@ -626,6 +700,10 @@ describe(List,
 
       [x1, x2, x3] sort should == [x2, x1, x3]
     )
+    
+    it("should validate type of receiver",
+      List should checkReceiverTypeOn(:sort)
+    )
   )
 
   describe("sort!", 
@@ -665,6 +743,10 @@ describe(List,
 
       [x1, x2, x3] sort! should == [x2, x1, x3]
     )
+    
+    it("should validate type of receiver",
+      List should checkReceiverTypeOn(:sort!)
+    )
   )
   
   describe("+", 
@@ -685,9 +767,9 @@ describe(List,
     )
 
     it("should validate type of receiver",
-      List should checkReceiverTypeOn(:"+", 3)
+      List should checkReceiverTypeOn(:"+", [])
     )
-
+    
     it("should validate type of argument",
       fn([1,2,3] + 3) should signal(Condition Error Type IncorrectType)
     )
@@ -711,6 +793,14 @@ describe(List,
       (x - y) should == [1,3]
       (y - x) should == [4,6]
     )
+    
+    it("should validate type of receiver",
+      List should checkReceiverTypeOn(:"-", [])
+    )
+    
+    it("should validate type of argument",
+      fn([1,2,3] - 3) should signal(Condition Error Type IncorrectType)
+    )
   )      
   
   describe("<=>", 
@@ -723,6 +813,14 @@ describe(List,
       ([1] <=> [1,2]) should == -1
       ([1,2] <=> [1,3]) should == -1
       ([1,3] <=> [1,2]) should == 1
+    )
+    
+    it("should validate type of receiver",
+      List should checkReceiverTypeOn(:"<=>", [])
+    )
+    
+    it("should validate type of argument",
+      fn([1,2,3] <=> 3) should signal(Condition Error Type IncorrectType)
     )
   )
 )
