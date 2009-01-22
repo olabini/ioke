@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Kind: DefaultBehavior</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href=".././dokgen-style.css" type="text/css" media="screen" />
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=480,width=750" ).focus();
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+    <table border='0' cellpadding='0' cellspacing='0' width="100%" class='banner'>
+      <tr>
+        <td>
+          <table width="100%" border='0' cellpadding='0' cellspacing='0'>
+            <tr>
+              <td class="file-title" colspan="2">
+                <span class="file-title-prefix">Kind</span>
+                <br />
+                LexicalMacro
+              </td>
+              <td align="right">
+                <table cellspacing="0" cellpadding="2">
+                  <tr>
+                    <td>Main mimic:</td>
+                    <td>
+                      <a href="../kinds/Origin.html">Origin</a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <div id="bodyContent">
+      <div id="content">
+        <div class="description">
+          <p>
+LexicalMacro is the instance all lexical macros in the system are derived from.
+          </p>
+        </div>
+
+        <div class="sectiontitle">Mimics</div>
+        <ul>
+          <li><a href="../kinds/Origin.html">Origin</a></li>
+        </ul>        
+
+        <div class="sectiontitle">Inactive cells</div>
+        <ul>
+          <li><a href="#C00387">activatable</a></li>
+<li><a href="#C00386">kind</a></li>
+
+        </ul>        
+
+        <div class="sectiontitle">Active cells</div>
+        <ul>
+          <li><a href="#C00391">argumentsCode()</a></li>
+<li><a href="#C00389">call(+[arguments])</a></li>
+<li><a href="#C00394">code()</a></li>
+<li><a href="#C00395">formattedCode()</a></li>
+<li><a href="#C00392">inspect()</a></li>
+<li><a href="#C00390">message()</a></li>
+<li><a href="#C00388">name()</a></li>
+<li><a href="#C00393">notice()</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Specs</div>
+        <div class="specs">
+          <ul style="list-style-type: none;">
+<li>- should be possible to give it a documentation string <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S0_source')" id="l_C00K01S0_source">show source</a> ]</span>
+            <div id="C00K01S0_source" class="dyn-source">
+<pre>
+lecro("foo is bar", nil) documentation should ==("foo is bar") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should signal a condition if activating the kind <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S1_source')" id="l_C00K01S1_source">show source</a> ]</span>
+            <div id="C00K01S1_source" class="dyn-source">
+<pre>
+fn(LexicalMacro) should signal(Condition Error Invocation NotActivatable) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should have 'call' defined inside the call to the macro <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S2_source')" id="l_C00K01S2_source">show source</a> ]</span>
+            <div id="C00K01S2_source" class="dyn-source">
+<pre>
+result = lecro(call) call 
+result should have kind("Call") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not evaluate it's arguments by default <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S3_source')" id="l_C00K01S3_source">show source</a> ]</span>
+            <div id="C00K01S3_source" class="dyn-source">
+<pre>
+x = 42 
+lecro(nil) call(x = 13) 
+x should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take any kinds of arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S4_source')" id="l_C00K01S4_source">show source</a> ]</span>
+            <div id="C00K01S4_source" class="dyn-source">
+<pre>
+x = lecro(nil) 
+x(13, 42, foo: 42 *(13)) should be nil 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the last value in the macro <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S5_source')" id="l_C00K01S5_source">show source</a> ]</span>
+            <div id="C00K01S5_source" class="dyn-source">
+<pre>
+x = lecro(nil 
+    42 +(13)) 
+x should ==(55) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should have access to variables in the scope it was defined, in simple do <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S6_source')" id="l_C00K01S6_source">show source</a> ]</span>
+            <div id="C00K01S6_source" class="dyn-source">
+<pre>
+x = 26 
+lecro(x) call should ==(26) 
+x = Origin mimic 
+x do(
+  y = 42 
+  z = lecro(y +(1)) call) 
+x z should ==(43) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should have access to variables in the scope it was defined, in more complicated do <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S7_source')" id="l_C00K01S7_source">show source</a> ]</span>
+            <div id="C00K01S7_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x do(
+  y = 42 
+  z = lecro(y +(2))) 
+x z should ==(44) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should have access to variables in the scope it was defined, in more nested blocks <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S8_source')" id="l_C00K01S8_source">show source</a> ]</span>
+            <div id="C00K01S8_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x do(
+  y = 42 
+  z = lecro(lecro(y +(3)) call)) 
+x z should ==(45) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should have access to variables in the scope it was defined, in method <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S9_source')" id="l_C00K01S9_source">show source</a> ]</span>
+            <div id="C00K01S9_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x y = method(
+    z = 42 
+    lecro(z +(5)) 
+    ) 
+x y call should ==(47) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should have access to variables in the scope it was defined, in method, getting self <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S10_source')" id="l_C00K01S10_source">show source</a> ]</span>
+            <div id="C00K01S10_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x y = method(
+    lecro(self) 
+    ) 
+x y call should ==(x) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be able to update variables in the scope it was defined <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S11_source')" id="l_C00K01S11_source">show source</a> ]</span>
+            <div id="C00K01S11_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x do(
+  y = 42 
+  lecro(y = 43) call 
+  ) 
+x y should ==(43) 
+x = Origin mimic 
+x do(
+  y = 44 
+  zz = lecro(y = 45) 
+  ) 
+x zz 
+x y should ==(45) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should create a new variable when assigning something that doesn't exist <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S12_source')" id="l_C00K01S12_source">show source</a> ]</span>
+            <div id="C00K01S12_source" class="dyn-source">
+<pre>
+lecro(lecro_blarg = 42 
+  lecro_blarg) call should ==(42) 
+cell?(:lecro_blarg) should be false 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to get the code for the lecro by calling 'code' on it <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S13_source')" id="l_C00K01S13_source">show source</a> ]</span>
+            <div id="C00K01S13_source" class="dyn-source">
+<pre>
+lecro code should ==("lecro(nil)") 
+lecro(nil) code should ==("lecro(nil)") 
+lecro(1) code should ==("lecro(1)") 
+lecro(1 +(1)) code should ==("lecro(1 +(1))") 
+lecrox code should ==("lecrox(nil)") 
+lecrox(nil) code should ==("lecrox(nil)") 
+lecrox(1) code should ==("lecrox(1)") 
+lecrox(1 +(1)) code should ==("lecrox(1 +(1))") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should have a outerScope cell that returns the outside scope this macro is executed in <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S14_source')" id="l_C00K01S14_source">show source</a> ]</span>
+            <div id="C00K01S14_source" class="dyn-source">
+<pre>
+lecro(
+  lecro(
+    [](call evaluatedArguments, outerScope call evaluatedArguments)) 
+  ) call(123, 321) call(42, 45) should ==([]([](42, 45), [](123, 321))) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+        </div>
+
+        <div class="sectiontitle">Inactive cells (details)</div>
+                <div class="cell">
+          <a name="C00387"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">activatable</td>
+              <td>=</td>
+              <td class="cell-value">true</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cell">
+          <a name="C00386"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">kind</td>
+              <td>=</td>
+              <td class="cell-value">"LexicalMacro"</td>
+            </tr>
+          </table>
+        </div>
+
+
+        <div class="sectiontitle">Active cells (details)</div>
+                <div class="cell">
+          <div class="title">
+          <a name="C00391"></a><b>argumentsCode</b>()
+          </div>
+          <div class="description">
+            <p>returns the code for the argument definition</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00389"></a><b>call</b>(+[arguments])
+          </div>
+          <div class="description">
+            <p>activates this lecro with the arguments given to call</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00394"></a><b>code</b>()
+          </div>
+          <div class="description">
+            <p>returns the full code of this lecro, as a Text</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00395"></a><b>formattedCode</b>()
+          </div>
+          <div class="description">
+            <p>returns idiomatically formatted code for this lecro</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00392"></a><b>inspect</b>()
+          </div>
+          <div class="description">
+            <p>Returns a text inspection of the object</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00390"></a><b>message</b>()
+          </div>
+          <div class="description">
+            <p>returns the message chain for this lecro</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00388"></a><b>name</b>()
+          </div>
+          <div class="description">
+            <p>returns the name of the lecro</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00393"></a><b>notice</b>()
+          </div>
+          <div class="description">
+            <p>Returns a brief text inspection of the object</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </body>
+</html>

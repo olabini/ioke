@@ -79,7 +79,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
       <div id="content">
         <div class="description">
           <p>
-          Runtime gives meta-circular access to the currently executing Ioke runtime.
+Runtime gives meta-circular access to the currently executing Ioke runtime.
           </p>
         </div>
 
@@ -90,14 +90,14 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 
         <div class="sectiontitle">Inactive cells</div>
         <ul>
-          <li><a href="#C00131">kind</a></li>
-<li><a href="#C00133">version</a></li>
+          <li><a href="#C00229">kind</a></li>
+<li><a href="#C00231">version</a></li>
 
         </ul>        
 
         <div class="sectiontitle">Active cells</div>
         <ul>
-          <li><a href="#C00132">notice()</a></li>
+          <li><a href="#C00230">notice()</a></li>
 
         </ul>
 
@@ -118,7 +118,7 @@ Runtime should have kind("Runtime")
 
         <div class="sectiontitle">Inactive cells (details)</div>
                 <div class="cell">
-          <a name="C00131"></a>
+          <a name="C00229"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">kind</td>
@@ -128,12 +128,12 @@ Runtime should have kind("Runtime")
           </table>
         </div>
         <div class="cell">
-          <a name="C00133"></a>
+          <a name="C00231"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">version</td>
               <td>=</td>
-              <td class="cell-value">Origin_0xE61FD1</td>
+              <td class="cell-value">Origin_0xA70677</td>
             </tr>
           </table>
         </div>
@@ -142,16 +142,14 @@ Runtime should have kind("Runtime")
         <div class="sectiontitle">Active cells (details)</div>
                 <div class="cell">
           <div class="title">
-          <a name="C00132"></a><b>notice</b>()
+          <a name="C00230"></a><b>notice</b>()
           </div>
           <div class="description">
-            <p>
-              returns a short text description of the receiver, the text Runtime if this is the main Runtime object, otherwise falls back to the super implementation
-            </p>
+            <p>returns a short text description of the receiver, the text Runtime if this is the main Runtime object, otherwise falls back to the super implementation</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00132_source')" id="l_C00132_source">show source</a> ]</p>
-            <div id="C00132_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00230_source')" id="l_C00230_source">show source</a> ]</p>
+            <div id="C00230_source" class="dyn-source">
 <pre>
 method(
   if(cell(:self) ==(Runtime), 
@@ -163,8 +161,8 @@ method(
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return 'Runtime <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001321S0_source')" id="l_C001321S0_source">show source</a> ]</span>
-            <div id="C001321S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002301S0_source')" id="l_C002301S0_source">show source</a> ]</span>
+            <div id="C002301S0_source" class="dyn-source">
 <pre>
 Runtime notice should ==("Runtime") 
 
@@ -172,8 +170,8 @@ Runtime notice should ==("Runtime")
             </div>
             </span></li>
 <li>- should not return 'Runtime' for a mimic <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001321S1_source')" id="l_C001321S1_source">show source</a> ]</span>
-            <div id="C001321S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002301S1_source')" id="l_C002301S1_source">show source</a> ]</span>
+            <div id="C002301S1_source" class="dyn-source">
 <pre>
 Runtime mimic notice should not ==("Runtime") 
 

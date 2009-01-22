@@ -79,7 +79,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
       <div id="content">
         <div class="description">
           <p>
-          Represents a symbol - an object that always represents itself.
+Represents a symbol - an object that always represents itself.
           </p>
         </div>
 
@@ -90,16 +90,17 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 
         <div class="sectiontitle">Inactive cells</div>
         <ul>
-          <li><a href="#C00148">kind</a></li>
+          <li><a href="#C00255">kind</a></li>
 
         </ul>        
 
         <div class="sectiontitle">Active cells</div>
         <ul>
-          <li><a href="#C00152">&lt;=&gt;(other)</a></li>
-<li><a href="#C00149">asText()</a></li>
-<li><a href="#C00150">inspect()</a></li>
-<li><a href="#C00151">notice()</a></li>
+          <li><a href="#C00259">&lt;=&gt;(other)</a></li>
+<li><a href="#C00260">===(other)</a></li>
+<li><a href="#C00256">asText()</a></li>
+<li><a href="#C00257">inspect()</a></li>
+<li><a href="#C00258">notice()</a></li>
 
         </ul>
 
@@ -148,7 +149,7 @@ fn(:foo mimic) should signal(Condition Error CantMimicOddball)
 
         <div class="sectiontitle">Inactive cells (details)</div>
                 <div class="cell">
-          <a name="C00148"></a>
+          <a name="C00255"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">kind</td>
@@ -162,61 +163,19 @@ fn(:foo mimic) should signal(Condition Error CantMimicOddball)
         <div class="sectiontitle">Active cells (details)</div>
                 <div class="cell">
           <div class="title">
-          <a name="C00152"></a><b>&lt;=&gt;</b>(other)
+          <a name="C00259"></a><b>&lt;=&gt;</b>(other)
           </div>
           <div class="description">
-            <p>
-              compares this symbol against the argument, returning -1, 0 or 1 based on which one is lexically larger
-            </p>
-          </div>
-          
-          <div class="specs">
-            
-          </div>
-        </div>
-        <div class="cell">
-          <div class="title">
-          <a name="C00149"></a><b>asText</b>()
-          </div>
-          <div class="description">
-            <p>
-              Returns a text representation of the object
-            </p>
-          </div>
-          
-          <div class="specs">
-            
-          </div>
-        </div>
-        <div class="cell">
-          <div class="title">
-          <a name="C00150"></a><b>inspect</b>()
-          </div>
-          <div class="description">
-            <p>
-              Returns a text inspection of the object
-            </p>
+            <p>compares this symbol against the argument, returning -1, 0 or 1 based on which one is lexically larger</p>
           </div>
           
           <div class="specs">
             <ul style="list-style-type: none;">
-<li>- should return the symbol with a colon in front of it <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001501S0_source')" id="l_C001501S0_source">show source</a> ]</span>
-            <div id="C001501S0_source" class="dyn-source">
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002591S0_source')" id="l_C002591S0_source">show source</a> ]</span>
+            <div id="C002591S0_source" class="dyn-source">
 <pre>
-:foo inspect should ==(":foo") 
-:x inspect should ==(":x") 
-:AAAAAAAAAA inspect should ==(":AAAAAAAAAA") 
-
-</pre>
-            </div>
-            </span></li>
-<li>- should quote the symbol if necessary <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001501S1_source')" id="l_C001501S1_source">show source</a> ]</span>
-            <div id="C001501S1_source" class="dyn-source">
-<pre>
-:("=") inspect should ==(":\"=\"") 
-:("") inspect should ==(":\"\"") 
+Symbol should checkReceiverTypeOn(:("&lt;=&gt;"), :arovane) 
 
 </pre>
             </div>
@@ -227,19 +186,110 @@ fn(:foo mimic) should signal(Condition Error CantMimicOddball)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00151"></a><b>notice</b>()
+          <a name="C00260"></a><b>===</b>(other)
           </div>
           <div class="description">
-            <p>
-              Returns a brief text inspection of the object
-            </p>
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00260_source')" id="l_C00260_source">show source</a> ]</p>
+            <div id="C00260_source" class="dyn-source">
+<pre>
+method(other, 
+  if(self same?(
+      ), 
+    other mimics?(
+      ), 
+    bind(rescue(Condition Error, fn(c, false)), 
+      self ==(
+        other))))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00256"></a><b>asText</b>()
+          </div>
+          <div class="description">
+            <p>Returns a text representation of the object</p>
+          </div>
+          
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002561S0_source')" id="l_C002561S0_source">show source</a> ]</span>
+            <div id="C002561S0_source" class="dyn-source">
+<pre>
+Symbol should checkReceiverTypeOn(:asText) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00257"></a><b>inspect</b>()
+          </div>
+          <div class="description">
+            <p>Returns a text inspection of the object</p>
           </div>
           
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return the symbol with a colon in front of it <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001511S0_source')" id="l_C001511S0_source">show source</a> ]</span>
-            <div id="C001511S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002571S0_source')" id="l_C002571S0_source">show source</a> ]</span>
+            <div id="C002571S0_source" class="dyn-source">
+<pre>
+:foo inspect should ==(":foo") 
+:x inspect should ==(":x") 
+:AAAAAAAAAA inspect should ==(":AAAAAAAAAA") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should quote the symbol if necessary <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002571S1_source')" id="l_C002571S1_source">show source</a> ]</span>
+            <div id="C002571S1_source" class="dyn-source">
+<pre>
+:("=") inspect should ==(":\"=\"") 
+:("") inspect should ==(":\"\"") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002571S2_source')" id="l_C002571S2_source">show source</a> ]</span>
+            <div id="C002571S2_source" class="dyn-source">
+<pre>
+Symbol should checkReceiverTypeOn(:inspect) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00258"></a><b>notice</b>()
+          </div>
+          <div class="description">
+            <p>Returns a brief text inspection of the object</p>
+          </div>
+          
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return the symbol with a colon in front of it <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002581S0_source')" id="l_C002581S0_source">show source</a> ]</span>
+            <div id="C002581S0_source" class="dyn-source">
 <pre>
 :foo notice should ==(":foo") 
 :x notice should ==(":x") 
@@ -249,11 +299,20 @@ fn(:foo mimic) should signal(Condition Error CantMimicOddball)
             </div>
             </span></li>
 <li>- should quote the symbol if necessary <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001511S1_source')" id="l_C001511S1_source">show source</a> ]</span>
-            <div id="C001511S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002581S1_source')" id="l_C002581S1_source">show source</a> ]</span>
+            <div id="C002581S1_source" class="dyn-source">
 <pre>
 :("=") notice should ==(":\"=\"") 
 :("") notice should ==(":\"\"") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002581S2_source')" id="l_C002581S2_source">show source</a> ]</span>
+            <div id="C002581S2_source" class="dyn-source">
+<pre>
+Symbol should checkReceiverTypeOn(:notice) 
 
 </pre>
             </div>

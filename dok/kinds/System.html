@@ -79,7 +79,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
       <div id="content">
         <div class="description">
           <p>
-          System defines things that represents the currently running system, such as the load path.
+System defines things that represents the currently running system, such as the load path.
           </p>
         </div>
 
@@ -90,25 +90,26 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 
         <div class="sectiontitle">Inactive cells</div>
         <ul>
-          <li><a href="#C00121">currentDebugger</a></li>
-<li><a href="#C00119">err</a></li>
-<li><a href="#C00120">in</a></li>
-<li><a href="#C00117">kind</a></li>
-<li><a href="#C00118">out</a></li>
-<li><a href="#C00127">programArguments</a></li>
+          <li><a href="#C00218">currentDebugger</a></li>
+<li><a href="#C00216">err</a></li>
+<li><a href="#C00217">in</a></li>
+<li><a href="#C00214">kind</a></li>
+<li><a href="#C00215">out</a></li>
+<li><a href="#C00225">programArguments</a></li>
 
         </ul>        
 
         <div class="sectiontitle">Active cells</div>
         <ul>
-          <li><a href="#C00129">atExit([code])</a></li>
-<li><a href="#C00125">currentDirectory()</a></li>
-<li><a href="#C00122">currentFile()</a></li>
-<li><a href="#C00126">exit(other 1)</a></li>
-<li><a href="#C00128">ifMain([code])</a></li>
-<li><a href="#C00124">loadPath()</a></li>
-<li><a href="#C00130">notice()</a></li>
-<li><a href="#C00123">windows?()</a></li>
+          <li><a href="#C00227">atExit([code])</a></li>
+<li><a href="#C00223">currentDirectory()</a></li>
+<li><a href="#C00219">currentFile()</a></li>
+<li><a href="#C00224">exit(other 1)</a></li>
+<li><a href="#C00226">ifMain([code])</a></li>
+<li><a href="#C00221">loadPath()</a></li>
+<li><a href="#C00228">notice()</a></li>
+<li><a href="#C00222">randomNumber()</a></li>
+<li><a href="#C00220">windows?()</a></li>
 
         </ul>
 
@@ -147,7 +148,7 @@ System should have kind("System")
 
         <div class="sectiontitle">Inactive cells (details)</div>
                 <div class="cell">
-          <a name="C00121"></a>
+          <a name="C00218"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">currentDebugger</td>
@@ -157,27 +158,27 @@ System should have kind("System")
           </table>
         </div>
         <div class="cell">
-          <a name="C00119"></a>
+          <a name="C00216"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">err</td>
               <td>=</td>
-              <td class="cell-value">IO_0x11201A1</td>
+              <td class="cell-value">IO_0x129DAA7</td>
             </tr>
           </table>
         </div>
         <div class="cell">
-          <a name="C00120"></a>
+          <a name="C00217"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">in</td>
               <td>=</td>
-              <td class="cell-value">IO_0xA224B5</td>
+              <td class="cell-value">IO_0x38BE59</td>
             </tr>
           </table>
         </div>
         <div class="cell">
-          <a name="C00117"></a>
+          <a name="C00214"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">kind</td>
@@ -187,17 +188,17 @@ System should have kind("System")
           </table>
         </div>
         <div class="cell">
-          <a name="C00118"></a>
+          <a name="C00215"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">out</td>
               <td>=</td>
-              <td class="cell-value">IO_0x2130C2</td>
+              <td class="cell-value">IO_0x10541E</td>
             </tr>
           </table>
         </div>
         <div class="cell">
-          <a name="C00127"></a>
+          <a name="C00225"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">programArguments</td>
@@ -211,12 +212,10 @@ System should have kind("System")
         <div class="sectiontitle">Active cells (details)</div>
                 <div class="cell">
           <div class="title">
-          <a name="C00129"></a><b>atExit</b>([code])
+          <a name="C00227"></a><b>atExit</b>([code])
           </div>
           <div class="description">
-            <p>
-              adds a new piece of code that should be executed on exit
-            </p>
+            <p>adds a new piece of code that should be executed on exit</p>
           </div>
           
           <div class="specs">
@@ -225,12 +224,10 @@ System should have kind("System")
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00125"></a><b>currentDirectory</b>()
+          <a name="C00223"></a><b>currentDirectory</b>()
           </div>
           <div class="description">
-            <p>
-              returns the current directory that the code is executing in
-            </p>
+            <p>returns the current directory that the code is executing in</p>
           </div>
           
           <div class="specs">
@@ -239,12 +236,10 @@ System should have kind("System")
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00122"></a><b>currentFile</b>()
+          <a name="C00219"></a><b>currentFile</b>()
           </div>
           <div class="description">
-            <p>
-              returns the current file executing
-            </p>
+            <p>returns the current file executing</p>
           </div>
           
           <div class="specs">
@@ -253,12 +248,10 @@ System should have kind("System")
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00126"></a><b>exit</b>(other 1)
+          <a name="C00224"></a><b>exit</b>(other 1)
           </div>
           <div class="description">
-            <p>
-              forcibly exits the currently running interpreter. takes one optional argument that defaults to 1 - which is the value to return from the process, if the process is exited.
-            </p>
+            <p>forcibly exits the currently running interpreter. takes one optional argument that defaults to 1 - which is the value to return from the process, if the process is exited.</p>
           </div>
           
           <div class="specs">
@@ -267,12 +260,10 @@ System should have kind("System")
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00128"></a><b>ifMain</b>([code])
+          <a name="C00226"></a><b>ifMain</b>([code])
           </div>
           <div class="description">
-            <p>
-              returns result of evaluating first argument
-            </p>
+            <p>returns result of evaluating first argument</p>
           </div>
           
           <div class="specs">
@@ -281,12 +272,10 @@ System should have kind("System")
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00124"></a><b>loadPath</b>()
+          <a name="C00221"></a><b>loadPath</b>()
           </div>
           <div class="description">
-            <p>
-              returns the current load path
-            </p>
+            <p>returns the current load path</p>
           </div>
           
           <div class="specs">
@@ -295,16 +284,14 @@ System should have kind("System")
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00130"></a><b>notice</b>()
+          <a name="C00228"></a><b>notice</b>()
           </div>
           <div class="description">
-            <p>
-              returns a short text description of the receiver, the text System if this is the main System object, otherwise falls back to the super implementation
-            </p>
+            <p>returns a short text description of the receiver, the text System if this is the main System object, otherwise falls back to the super implementation</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00130_source')" id="l_C00130_source">show source</a> ]</p>
-            <div id="C00130_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00228_source')" id="l_C00228_source">show source</a> ]</p>
+            <div id="C00228_source" class="dyn-source">
 <pre>
 method(
   if(cell(:self) ==(System), 
@@ -316,8 +303,8 @@ method(
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return 'System <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001301S0_source')" id="l_C001301S0_source">show source</a> ]</span>
-            <div id="C001301S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002281S0_source')" id="l_C002281S0_source">show source</a> ]</span>
+            <div id="C002281S0_source" class="dyn-source">
 <pre>
 System notice should ==("System") 
 
@@ -325,8 +312,8 @@ System notice should ==("System")
             </div>
             </span></li>
 <li>- should not return 'System' for a mimic <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001301S1_source')" id="l_C001301S1_source">show source</a> ]</span>
-            <div id="C001301S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002281S1_source')" id="l_C002281S1_source">show source</a> ]</span>
+            <div id="C002281S1_source" class="dyn-source">
 <pre>
 System mimic notice should not ==("System") 
 
@@ -339,12 +326,22 @@ System mimic notice should not ==("System")
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00123"></a><b>windows?</b>()
+          <a name="C00222"></a><b>randomNumber</b>()
           </div>
           <div class="description">
-            <p>
-              returns true if running on windows, otherwise false
-            </p>
+            <p>returns a random number</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00220"></a><b>windows?</b>()
+          </div>
+          <div class="description">
+            <p>returns true if running on windows, otherwise false</p>
           </div>
           
           <div class="specs">

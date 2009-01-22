@@ -79,7 +79,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
       <div id="content">
         <div class="description">
           <p>
-          Contains an immutable piece of text.
+Contains an immutable piece of text.
           </p>
         </div>
 
@@ -90,25 +90,34 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 
         <div class="sectiontitle">Inactive cells</div>
         <ul>
-          <li><a href="#C00134">kind</a></li>
+          <li><a href="#C00232">kind</a></li>
 
         </ul>        
 
         <div class="sectiontitle">Active cells</div>
         <ul>
-          <li><a href="#C00147">*(times)</a></li>
-<li><a href="#C00145">+(...)</a></li>
-<li><a href="#C00143">&lt;=&gt;(other)</a></li>
-<li><a href="#C00144">[](index)</a></li>
-<li><a href="#C00135">asText()</a></li>
-<li><a href="#C00146">empty?()</a></li>
-<li><a href="#C00142">format(+replacements)</a></li>
-<li><a href="#C00136">inspect()</a></li>
-<li><a href="#C00141">length()</a></li>
-<li><a href="#C00137">notice()</a></li>
-<li><a href="#C00139">replace(pattern, replacement)</a></li>
-<li><a href="#C00140">replaceAll(pattern, replacement)</a></li>
-<li><a href="#C00138">split(splitAround)</a></li>
+          <li><a href="#C00250">*(times)</a></li>
+<li><a href="#C00248">+(...)</a></li>
+<li><a href="#C00246">&lt;=&gt;(other)</a></li>
+<li><a href="#C00251">===(other)</a></li>
+<li><a href="#C00254">?&(...)</a></li>
+<li><a href="#C00253">?|(...)</a></li>
+<li><a href="#C00247">[](index)</a></li>
+<li><a href="#C00233">asText()</a></li>
+<li><a href="#C00252">chars()</a></li>
+<li><a href="#C00249">empty?()</a></li>
+<li><a href="#C00245">format(+replacements)</a></li>
+<li><a href="#C00236">inspect()</a></li>
+<li><a href="#C00244">length()</a></li>
+<li><a href="#C00238">lower()</a></li>
+<li><a href="#C00237">notice()</a></li>
+<li><a href="#C00242">replace(pattern, replacement)</a></li>
+<li><a href="#C00243">replaceAll(pattern, replacement)</a></li>
+<li><a href="#C00241">split(splitAround)</a></li>
+<li><a href="#C00235">toDecimal()</a></li>
+<li><a href="#C00234">toRational()</a></li>
+<li><a href="#C00240">trim()</a></li>
+<li><a href="#C00239">upper()</a></li>
 
         </ul>
 
@@ -132,11 +141,11 @@ Text should have kind("Text")
             <div id="C00K02S0_source" class="dyn-source">
 <pre>
 x = "foo" 
-(x !=(x)) should ==(false) 
+(x !=(x)) should be false 
 x = "" 
-(x !=(x)) should ==(false) 
+(x !=(x)) should be false 
 x = "34tertsegdf\ndfgsdfgd" 
-(x !=(x)) should ==(false) 
+(x !=(x)) should be false 
 
 </pre>
             </div>
@@ -145,8 +154,8 @@ x = "34tertsegdf\ndfgsdfgd"
             <span class="source-link">[ <a href="javascript:toggleSource('C00K02S1_source')" id="l_C00K02S1_source">show source</a> ]</span>
             <div id="C00K02S1_source" class="dyn-source">
 <pre>
-("foo" !=("bar")) should ==(true) 
-("foo" !=("sdfsdgdfgsgf\nadsfgdsfgsdfgdfg\nsdfgdsfgsdfg")) should ==(true) 
+("foo" !=("bar")) should be true 
+("foo" !=("sdfsdgdfgsgf\nadsfgdsfgsdfgdfg\nsdfgdsfgsdfg")) should be true 
 
 </pre>
             </div>
@@ -155,8 +164,8 @@ x = "34tertsegdf\ndfgsdfgd"
             <span class="source-link">[ <a href="javascript:toggleSource('C00K02S2_source')" id="l_C00K02S2_source">show source</a> ]</span>
             <div id="C00K02S2_source" class="dyn-source">
 <pre>
-("foo" !=("foo")) should ==(false) 
-("sdfsdgdfgsgf\nadsfgdsfgsdfgdfg\nsdfgdsfgsdfg" !=("sdfsdgdfgsgf\nadsfgdsfgsdfgdfg\nsdfgdsfgsdfg")) should ==(false) 
+("foo" !=("foo")) should be false 
+("sdfsdgdfgsgf\nadsfgdsfgsdfgdfg\nsdfgdsfgsdfg" !=("sdfsdgdfgsgf\nadsfgdsfgsdfgdfg\nsdfgdsfgsdfg")) should be false 
 
 </pre>
             </div>
@@ -165,9 +174,18 @@ x = "34tertsegdf\ndfgsdfgd"
             <span class="source-link">[ <a href="javascript:toggleSource('C00K02S3_source')" id="l_C00K02S3_source">show source</a> ]</span>
             <div id="C00K02S3_source" class="dyn-source">
 <pre>
-("" !=("")) should ==(false) 
-("a" !=("")) should ==(true) 
-("" !=("a")) should ==(true) 
+("" !=("")) should be false 
+("a" !=("")) should be true 
+("" !=("a")) should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should work correctly when comparing with non text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K02S4_source')" id="l_C00K02S4_source">show source</a> ]</span>
+            <div id="C00K02S4_source" class="dyn-source">
+<pre>
+("foo" !=(Base mimic)) should be true 
 
 </pre>
             </div>
@@ -220,6 +238,15 @@ x should ==(x)
 </pre>
             </div>
             </span></li>
+<li>- should work correctly when comparing another kind <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K03S4_source')" id="l_C00K03S4_source">show source</a> ]</span>
+            <div id="C00K03S4_source" class="dyn-source">
+<pre>
+"foo" should not ==(Base mimic) 
+
+</pre>
+            </div>
+            </span></li>
 </ul>
 <b>Text [number]</b><br/>
 <ul style="list-style-type: none;">
@@ -227,9 +254,9 @@ x should ==(x)
             <span class="source-link">[ <a href="javascript:toggleSource('C00K04S0_source')" id="l_C00K04S0_source">show source</a> ]</span>
             <div id="C00K04S0_source" class="dyn-source">
 <pre>
-"" [](0) should ==(nil) 
-"" [](10) should ==(nil) 
-"" []((0 -(1))) should ==(nil) 
+"" [](0) should be nil 
+"" [](10) should be nil 
+"" []((0 -(1))) should be nil 
 
 </pre>
             </div>
@@ -238,7 +265,7 @@ x should ==(x)
             <span class="source-link">[ <a href="javascript:toggleSource('C00K04S1_source')" id="l_C00K04S1_source">show source</a> ]</span>
             <div id="C00K04S1_source" class="dyn-source">
 <pre>
-"abc" [](10) should ==(nil) 
+"abc" [](10) should be nil 
 
 </pre>
             </div>
@@ -263,6 +290,15 @@ x should ==(x)
 "abcd" [](-(2)) should ==(99) 
 "abcd" [](-(3)) should ==(98) 
 "abcd" [](-(4)) should ==(97) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K04S4_source')" id="l_C00K04S4_source">show source</a> ]</span>
+            <div id="C00K04S4_source" class="dyn-source">
+<pre>
+Text should checkReceiverTypeOn(:("[]"), 0) 
 
 </pre>
             </div>
@@ -399,68 +435,39 @@ x should ==(x)
 </pre>
             </div>
             </span></li>
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K05S12_source')" id="l_C00K05S12_source">show source</a> ]</span>
+            <div id="C00K05S12_source" class="dyn-source">
+<pre>
+Text should checkReceiverTypeOn(:("[]"), (0 ..(3))) 
+
+</pre>
+            </div>
+            </span></li>
 </ul>
-<b>Text escapes</b><br/>
+<b>Text alternative syntax</b><br/>
+<ul style="list-style-type: none;">
+<li>- should parse correctly <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K06S0_source')" id="l_C00K06S0_source">show source</a> ]</span>
+            <div id="C00K06S0_source" class="dyn-source">
+<pre>
+"foo" should ==("foo") 
+""fluxie" should ==("\"fluxie") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b>Text alternative syntax escapes</b><br/>
 <ul style="list-style-type: none;">
 </ul>
-<b>Text escapes "</b><br/>
-<ul style="list-style-type: none;">
-<li>- should be replaced when it's the only thing in the text <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00K07S0_source')" id="l_C00K07S0_source">show source</a> ]</span>
-            <div id="C00K07S0_source" class="dyn-source">
-<pre>
-"\"" should ==("\"") 
-
-</pre>
-            </div>
-            </span></li>
-<li>- should be replaced when it's at the start of the text <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00K07S1_source')" id="l_C00K07S1_source">show source</a> ]</span>
-            <div id="C00K07S1_source" class="dyn-source">
-<pre>
-"\" " should ==("\" ") 
-"\"arfoo" should ==("\"arfoo") 
-
-</pre>
-            </div>
-            </span></li>
-<li>- should be replaced when it's at the end of the text <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00K07S2_source')" id="l_C00K07S2_source">show source</a> ]</span>
-            <div id="C00K07S2_source" class="dyn-source">
-<pre>
-" \"" should ==(" \"") 
-"arfoo\"" should ==("arfoo\"") 
-
-</pre>
-            </div>
-            </span></li>
-<li>- should be replaced when it's in the middle of the text <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00K07S3_source')" id="l_C00K07S3_source">show source</a> ]</span>
-            <div id="C00K07S3_source" class="dyn-source">
-<pre>
-" \" " should ==(" \" ") 
-"ar\"foo" should ==("ar\"foo") 
-
-</pre>
-            </div>
-            </span></li>
-<li>- should be replaced when there are several in a string <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00K07S4_source')" id="l_C00K07S4_source">show source</a> ]</span>
-            <div id="C00K07S4_source" class="dyn-source">
-<pre>
-"\" \" adsf\"gtr\"rsergfg\"\"\"fert\"" should ==("\" \" adsf\"gtr\"rsergfg\"\"\"fert\"") 
-
-</pre>
-            </div>
-            </span></li>
-</ul>
-<b>Text escapes \#</b><br/>
+<b>Text alternative syntax escapes "</b><br/>
 <ul style="list-style-type: none;">
 <li>- should be replaced when it's the only thing in the text <span class="sourcecode">
             <span class="source-link">[ <a href="javascript:toggleSource('C00K08S0_source')" id="l_C00K08S0_source">show source</a> ]</span>
             <div id="C00K08S0_source" class="dyn-source">
 <pre>
-"\#" should ==("\#") 
+"\"" should ==("\"") 
 
 </pre>
             </div>
@@ -469,8 +476,8 @@ x should ==(x)
             <span class="source-link">[ <a href="javascript:toggleSource('C00K08S1_source')" id="l_C00K08S1_source">show source</a> ]</span>
             <div id="C00K08S1_source" class="dyn-source">
 <pre>
-"\# " should ==("\# ") 
-"\#arfoo" should ==("\#arfoo") 
+"\" " should ==("\" ") 
+"\"arfoo" should ==("\"arfoo") 
 
 </pre>
             </div>
@@ -479,8 +486,8 @@ x should ==(x)
             <span class="source-link">[ <a href="javascript:toggleSource('C00K08S2_source')" id="l_C00K08S2_source">show source</a> ]</span>
             <div id="C00K08S2_source" class="dyn-source">
 <pre>
-" \#" should ==(" \#") 
-"arfoo\#" should ==("arfoo\#") 
+" \"" should ==(" \"") 
+"arfoo\"" should ==("arfoo\"") 
 
 </pre>
             </div>
@@ -489,8 +496,8 @@ x should ==(x)
             <span class="source-link">[ <a href="javascript:toggleSource('C00K08S3_source')" id="l_C00K08S3_source">show source</a> ]</span>
             <div id="C00K08S3_source" class="dyn-source">
 <pre>
-" \# " should ==(" \# ") 
-"ar\#foo" should ==("ar\#foo") 
+" \" " should ==(" \" ") 
+"ar\"foo" should ==("ar\"foo") 
 
 </pre>
             </div>
@@ -499,19 +506,19 @@ x should ==(x)
             <span class="source-link">[ <a href="javascript:toggleSource('C00K08S4_source')" id="l_C00K08S4_source">show source</a> ]</span>
             <div id="C00K08S4_source" class="dyn-source">
 <pre>
-"\# \# adsf\#gtr\#rsergfg\#\#\#fert\#" should ==("\# \# adsf\#gtr\#rsergfg\#\#\#fert\#") 
+"\" \" adsf\"gtr\"rsergfg\"\"\"fert\"" should ==("\" \" adsf\"gtr\"rsergfg\"\"\"fert\"") 
 
 </pre>
             </div>
             </span></li>
 </ul>
-<b>Text escapes \\</b><br/>
+<b>Text alternative syntax escapes \#</b><br/>
 <ul style="list-style-type: none;">
 <li>- should be replaced when it's the only thing in the text <span class="sourcecode">
             <span class="source-link">[ <a href="javascript:toggleSource('C00K09S0_source')" id="l_C00K09S0_source">show source</a> ]</span>
             <div id="C00K09S0_source" class="dyn-source">
 <pre>
-"\\" should ==("\\") 
+"\#" should ==("\#") 
 
 </pre>
             </div>
@@ -520,8 +527,8 @@ x should ==(x)
             <span class="source-link">[ <a href="javascript:toggleSource('C00K09S1_source')" id="l_C00K09S1_source">show source</a> ]</span>
             <div id="C00K09S1_source" class="dyn-source">
 <pre>
-"\\ " should ==("\\ ") 
-"\\arfoo" should ==("\\arfoo") 
+"\# " should ==("\# ") 
+"\#arfoo" should ==("\#arfoo") 
 
 </pre>
             </div>
@@ -530,8 +537,8 @@ x should ==(x)
             <span class="source-link">[ <a href="javascript:toggleSource('C00K09S2_source')" id="l_C00K09S2_source">show source</a> ]</span>
             <div id="C00K09S2_source" class="dyn-source">
 <pre>
-" \\" should ==(" \\") 
-"arfoo\\" should ==("arfoo\\") 
+" \#" should ==(" \#") 
+"arfoo\#" should ==("arfoo\#") 
 
 </pre>
             </div>
@@ -540,8 +547,8 @@ x should ==(x)
             <span class="source-link">[ <a href="javascript:toggleSource('C00K09S3_source')" id="l_C00K09S3_source">show source</a> ]</span>
             <div id="C00K09S3_source" class="dyn-source">
 <pre>
-" \\ " should ==(" \\ ") 
-"ar\\foo" should ==("ar\\foo") 
+" \# " should ==(" \# ") 
+"ar\#foo" should ==("ar\#foo") 
 
 </pre>
             </div>
@@ -550,17 +557,68 @@ x should ==(x)
             <span class="source-link">[ <a href="javascript:toggleSource('C00K09S4_source')" id="l_C00K09S4_source">show source</a> ]</span>
             <div id="C00K09S4_source" class="dyn-source">
 <pre>
+"\# \# adsf\#gtr\#rsergfg\#\#\#fert\#" should ==("\# \# adsf\#gtr\#rsergfg\#\#\#fert\#") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b>Text alternative syntax escapes \\</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be replaced when it's the only thing in the text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K010S0_source')" id="l_C00K010S0_source">show source</a> ]</span>
+            <div id="C00K010S0_source" class="dyn-source">
+<pre>
+"\\" should ==("\\") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be replaced when it's at the start of the text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K010S1_source')" id="l_C00K010S1_source">show source</a> ]</span>
+            <div id="C00K010S1_source" class="dyn-source">
+<pre>
+"\\ " should ==("\\ ") 
+"\\arfoo" should ==("\\arfoo") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be replaced when it's at the end of the text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K010S2_source')" id="l_C00K010S2_source">show source</a> ]</span>
+            <div id="C00K010S2_source" class="dyn-source">
+<pre>
+" \\" should ==(" \\") 
+"arfoo\\" should ==("arfoo\\") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be replaced when it's in the middle of the text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K010S3_source')" id="l_C00K010S3_source">show source</a> ]</span>
+            <div id="C00K010S3_source" class="dyn-source">
+<pre>
+" \\ " should ==(" \\ ") 
+"ar\\foo" should ==("ar\\foo") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be replaced when there are several in a string <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K010S4_source')" id="l_C00K010S4_source">show source</a> ]</span>
+            <div id="C00K010S4_source" class="dyn-source">
+<pre>
 "\\ \\ adsf\\gtr\\rsergfg\\\\\\fert\\" should ==("\\ \\ adsf\\gtr\\rsergfg\\\\\\fert\\") 
 
 </pre>
             </div>
             </span></li>
 </ul>
-<b>Text escapes \\n</b><br/>
+<b>Text alternative syntax escapes \\n</b><br/>
 <ul style="list-style-type: none;">
 <li>- should be replaced when it's the only thing in the text <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00K010S0_source')" id="l_C00K010S0_source">show source</a> ]</span>
-            <div id="C00K010S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K011S0_source')" id="l_C00K011S0_source">show source</a> ]</span>
+            <div id="C00K011S0_source" class="dyn-source">
 <pre>
 "\
 " should ==("") 
@@ -569,8 +627,8 @@ x should ==(x)
             </div>
             </span></li>
 <li>- should be replaced when it's at the start of the text <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00K010S1_source')" id="l_C00K010S1_source">show source</a> ]</span>
-            <div id="C00K010S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K011S1_source')" id="l_C00K011S1_source">show source</a> ]</span>
+            <div id="C00K011S1_source" class="dyn-source">
 <pre>
 "\
  " should ==(" ") 
@@ -581,8 +639,8 @@ arfoo" should ==("arfoo")
             </div>
             </span></li>
 <li>- should be replaced when it's at the end of the text <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00K010S2_source')" id="l_C00K010S2_source">show source</a> ]</span>
-            <div id="C00K010S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K011S2_source')" id="l_C00K011S2_source">show source</a> ]</span>
+            <div id="C00K011S2_source" class="dyn-source">
 <pre>
 " \
 " should ==(" ") 
@@ -593,8 +651,8 @@ arfoo" should ==("arfoo")
             </div>
             </span></li>
 <li>- should be replaced when it's in the middle of the text <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00K010S3_source')" id="l_C00K010S3_source">show source</a> ]</span>
-            <div id="C00K010S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K011S3_source')" id="l_C00K011S3_source">show source</a> ]</span>
+            <div id="C00K011S3_source" class="dyn-source">
 <pre>
 " \
  " should ==("  ") 
@@ -605,8 +663,622 @@ foo" should ==("arfoo")
             </div>
             </span></li>
 <li>- should be replaced when there are several in a string <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00K010S4_source')" id="l_C00K010S4_source">show source</a> ]</span>
-            <div id="C00K010S4_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K011S4_source')" id="l_C00K011S4_source">show source</a> ]</span>
+            <div id="C00K011S4_source" class="dyn-source">
+<pre>
+"\
+ \
+ adsf\
+gtr\
+rsergfg\
+\
+\
+fert\
+" should ==("  adsfgtrrsergfgfert") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b>Text alternative syntax escapes \b</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be replaced when it's the only thing in the text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K012S0_source')" id="l_C00K012S0_source">show source</a> ]</span>
+            <div id="C00K012S0_source" class="dyn-source">
+<pre>
+"\b" should ==("\b") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be replaced when it's at the start of the text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K012S1_source')" id="l_C00K012S1_source">show source</a> ]</span>
+            <div id="C00K012S1_source" class="dyn-source">
+<pre>
+"\b " should ==("\b ") 
+"\barfoo" should ==("\barfoo") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be replaced when it's at the end of the text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K012S2_source')" id="l_C00K012S2_source">show source</a> ]</span>
+            <div id="C00K012S2_source" class="dyn-source">
+<pre>
+" \b" should ==(" \b") 
+"arfoo\b" should ==("arfoo\b") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be replaced when it's in the middle of the text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K012S3_source')" id="l_C00K012S3_source">show source</a> ]</span>
+            <div id="C00K012S3_source" class="dyn-source">
+<pre>
+" \b " should ==(" \b ") 
+"ar\bfoo" should ==("ar\bfoo") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be replaced when there are several in a string <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K012S4_source')" id="l_C00K012S4_source">show source</a> ]</span>
+            <div id="C00K012S4_source" class="dyn-source">
+<pre>
+"\b \b adsf\bgtr\brsergfg\b\b\bfert\b" should ==("\b \b adsf\bgtr\brsergfg\b\b\bfert\b") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b>Text alternative syntax escapes \f</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be replaced when it's the only thing in the text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K013S0_source')" id="l_C00K013S0_source">show source</a> ]</span>
+            <div id="C00K013S0_source" class="dyn-source">
+<pre>
+"\f" should ==("\f") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be replaced when it's at the start of the text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K013S1_source')" id="l_C00K013S1_source">show source</a> ]</span>
+            <div id="C00K013S1_source" class="dyn-source">
+<pre>
+"\f " should ==("\f ") 
+"\farfoo" should ==("\farfoo") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be replaced when it's at the end of the text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K013S2_source')" id="l_C00K013S2_source">show source</a> ]</span>
+            <div id="C00K013S2_source" class="dyn-source">
+<pre>
+" \f" should ==(" \f") 
+"arfoo\f" should ==("arfoo\f") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be replaced when it's in the middle of the text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K013S3_source')" id="l_C00K013S3_source">show source</a> ]</span>
+            <div id="C00K013S3_source" class="dyn-source">
+<pre>
+" \f " should ==(" \f ") 
+"ar\ffoo" should ==("ar\ffoo") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be replaced when there are several in a string <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K013S4_source')" id="l_C00K013S4_source">show source</a> ]</span>
+            <div id="C00K013S4_source" class="dyn-source">
+<pre>
+"\f \f adsf\fgtr\frsergfg\f\f\ffert\f" should ==("\f \f adsf\fgtr\frsergfg\f\f\ffert\f") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b>Text alternative syntax escapes \n</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be replaced when it's the only thing in the text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K014S0_source')" id="l_C00K014S0_source">show source</a> ]</span>
+            <div id="C00K014S0_source" class="dyn-source">
+<pre>
+"\n" should ==("\n") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be replaced when it's at the start of the text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K014S1_source')" id="l_C00K014S1_source">show source</a> ]</span>
+            <div id="C00K014S1_source" class="dyn-source">
+<pre>
+"\n " should ==("\n ") 
+"\narfoo" should ==("\narfoo") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be replaced when it's at the end of the text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K014S2_source')" id="l_C00K014S2_source">show source</a> ]</span>
+            <div id="C00K014S2_source" class="dyn-source">
+<pre>
+" \n" should ==(" \n") 
+"arfoo\n" should ==("arfoo\n") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be replaced when it's in the middle of the text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K014S3_source')" id="l_C00K014S3_source">show source</a> ]</span>
+            <div id="C00K014S3_source" class="dyn-source">
+<pre>
+" \n " should ==(" \n ") 
+"ar\nfoo" should ==("ar\nfoo") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be replaced when there are several in a string <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K014S4_source')" id="l_C00K014S4_source">show source</a> ]</span>
+            <div id="C00K014S4_source" class="dyn-source">
+<pre>
+"\n \n adsf\ngtr\nrsergfg\n\n\nfert\n" should ==("\n \n adsf\ngtr\nrsergfg\n\n\nfert\n") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b>Text alternative syntax escapes \r</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be replaced when it's the only thing in the text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K015S0_source')" id="l_C00K015S0_source">show source</a> ]</span>
+            <div id="C00K015S0_source" class="dyn-source">
+<pre>
+"\r" should ==("\r") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be replaced when it's at the start of the text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K015S1_source')" id="l_C00K015S1_source">show source</a> ]</span>
+            <div id="C00K015S1_source" class="dyn-source">
+<pre>
+"\r " should ==("\r ") 
+"\rarfoo" should ==("\rarfoo") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be replaced when it's at the end of the text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K015S2_source')" id="l_C00K015S2_source">show source</a> ]</span>
+            <div id="C00K015S2_source" class="dyn-source">
+<pre>
+" \r" should ==(" \r") 
+"arfoo\r" should ==("arfoo\r") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be replaced when it's in the middle of the text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K015S3_source')" id="l_C00K015S3_source">show source</a> ]</span>
+            <div id="C00K015S3_source" class="dyn-source">
+<pre>
+" \r " should ==(" \r ") 
+"ar\rfoo" should ==("ar\rfoo") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be replaced when there are several in a string <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K015S4_source')" id="l_C00K015S4_source">show source</a> ]</span>
+            <div id="C00K015S4_source" class="dyn-source">
+<pre>
+"\r \r adsf\rgtr\rrsergfg\r\r\rfert\r" should ==("\r \r adsf\rgtr\rrsergfg\r\r\rfert\r") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b>Text alternative syntax escapes \t</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be replaced when it's the only thing in the text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K016S0_source')" id="l_C00K016S0_source">show source</a> ]</span>
+            <div id="C00K016S0_source" class="dyn-source">
+<pre>
+"\t" should ==("\t") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be replaced when it's at the start of the text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K016S1_source')" id="l_C00K016S1_source">show source</a> ]</span>
+            <div id="C00K016S1_source" class="dyn-source">
+<pre>
+"\t " should ==("\t ") 
+"\tarfoo" should ==("\tarfoo") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be replaced when it's at the end of the text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K016S2_source')" id="l_C00K016S2_source">show source</a> ]</span>
+            <div id="C00K016S2_source" class="dyn-source">
+<pre>
+" \t" should ==(" \t") 
+"arfoo\t" should ==("arfoo\t") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be replaced when it's in the middle of the text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K016S3_source')" id="l_C00K016S3_source">show source</a> ]</span>
+            <div id="C00K016S3_source" class="dyn-source">
+<pre>
+" \t " should ==(" \t ") 
+"ar\tfoo" should ==("ar\tfoo") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be replaced when there are several in a string <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K016S4_source')" id="l_C00K016S4_source">show source</a> ]</span>
+            <div id="C00K016S4_source" class="dyn-source">
+<pre>
+"\t \t adsf\tgtr\trsergfg\t\t\tfert\t" should ==("\t \t adsf\tgtr\trsergfg\t\t\tfert\t") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b>Text alternative syntax escapes octal</b><br/>
+<ul style="list-style-type: none;">
+<li>- should handle an octal letter of one letter <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K017S0_source')" id="l_C00K017S0_source">show source</a> ]</span>
+            <div id="C00K017S0_source" class="dyn-source">
+<pre>
+"blarg \0xxx" [](6) should ==(0) 
+"blarg \1xxx" [](6) should ==(1) 
+"blarg \2xxx" [](6) should ==(2) 
+"blarg \3xxx" [](6) should ==(3) 
+"blarg \4xxx" [](6) should ==(4) 
+"blarg \5xxx" [](6) should ==(5) 
+"blarg \6xxx" [](6) should ==(6) 
+"blarg \7xxx" [](6) should ==(7) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should handle an octal letter of two letters <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K017S1_source')" id="l_C00K017S1_source">show source</a> ]</span>
+            <div id="C00K017S1_source" class="dyn-source">
+<pre>
+"blarg \00xxx" [](6) should ==(0) 
+"blarg \01xxx" [](6) should ==(1) 
+"blarg \02xxx" [](6) should ==(2) 
+"blarg \03xxx" [](6) should ==(3) 
+"blarg \04xxx" [](6) should ==(4) 
+"blarg \05xxx" [](6) should ==(5) 
+"blarg \06xxx" [](6) should ==(6) 
+"blarg \07xxx" [](6) should ==(7) 
+"blarg \34xxx" [](6) should ==(28) 
+"blarg \12xxx" [](6) should ==(10) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b>Text alternative syntax escapes unicode</b><br/>
+<ul style="list-style-type: none;">
+<li>- should replace any unicode letter in a string with only it <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K018S0_source')" id="l_C00K018S0_source">show source</a> ]</span>
+            <div id="C00K018S0_source" class="dyn-source">
+<pre>
+"\uAAAA" length should ==(1) 
+"\uAAAA" [](0) should ==(0xAAAA) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should replace a unicode letter at the beginning of a string <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K018S1_source')" id="l_C00K018S1_source">show source</a> ]</span>
+            <div id="C00K018S1_source" class="dyn-source">
+<pre>
+"\u000a foo bar x" [](0) should ==(0xA) 
+"\u000a foo bar x" [](1 ..(-(1))) should ==(" foo bar x") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should replace a unicode letter at the end of a string <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K018S2_source')" id="l_C00K018S2_source">show source</a> ]</span>
+            <div id="C00K018S2_source" class="dyn-source">
+<pre>
+"blarg ucrg ma\u3332" [](-(1)) should ==(0x3332) 
+"blarg ucrg ma\u3332" [](0 ..(-(2))) should ==("blarg ucrg ma") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b>Text alternative syntax interpolation</b><br/>
+<ul style="list-style-type: none;">
+<li>- should parse correctly with a simple number inside of it <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K019S0_source')" id="l_C00K019S0_source">show source</a> ]</span>
+            <div id="C00K019S0_source" class="dyn-source">
+<pre>
+m = parse("#[foo \#{1} bar]") 
+m should ==("internal:concatenateText(\"foo \", 1, \" bar\")") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should parse correctly with a complex expression <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K019S1_source')" id="l_C00K019S1_source">show source</a> ]</span>
+            <div id="C00K019S1_source" class="dyn-source">
+<pre>
+m = parse("#[foo \#{29*5+foo bar} bar]") 
+m should ==("internal:concatenateText(\"foo \", 29 *(5) +(foo bar), \" bar\")") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should parse correctly with interpolation at the beginning of the text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K019S2_source')" id="l_C00K019S2_source">show source</a> ]</span>
+            <div id="C00K019S2_source" class="dyn-source">
+<pre>
+m = parse("#[\#{1} bar]") 
+m should ==("internal:concatenateText(\"\", 1, \" bar\")") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should parse correctly with interpolation at the end of the text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K019S3_source')" id="l_C00K019S3_source">show source</a> ]</span>
+            <div id="C00K019S3_source" class="dyn-source">
+<pre>
+m = parse("#[foo \#{1}]") 
+m should ==("internal:concatenateText(\"foo \", 1, \"\")") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should parse correctly with more than one interpolation <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K019S4_source')" id="l_C00K019S4_source">show source</a> ]</span>
+            <div id="C00K019S4_source" class="dyn-source">
+<pre>
+m = parse("#[foo \#{1} bar \#{2} quux \#{3}]") 
+m should ==("internal:concatenateText(\"foo \", 1, \" bar \", 2, \" quux \", 3, \"\")") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should parse correctly with nested interpolations <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K019S5_source')" id="l_C00K019S5_source">show source</a> ]</span>
+            <div id="C00K019S5_source" class="dyn-source">
+<pre>
+m = parse("#[foo \#{\"fux \#{32} bar\" bletch} bar]") 
+m should ==("internal:concatenateText(\"foo \", internal:concatenateText(\"fux \", 32, \" bar\") bletch, \" bar\")") 
+m = parse("#[foo \#{#[fux \#{32} bar] bletch} bar]") 
+m should ==("internal:concatenateText(\"foo \", internal:concatenateText(\"fux \", 32, \" bar\") bletch, \" bar\")") 
+m = parse("\"foo \#{#[fux \#{32} bar] bletch} bar\"") 
+m should ==("internal:concatenateText(\"foo \", internal:concatenateText(\"fux \", 32, \" bar\") bletch, \" bar\")") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b>Text escapes</b><br/>
+<ul style="list-style-type: none;">
+</ul>
+<b>Text escapes "</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be replaced when it's the only thing in the text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K021S0_source')" id="l_C00K021S0_source">show source</a> ]</span>
+            <div id="C00K021S0_source" class="dyn-source">
+<pre>
+"\"" should ==("\"") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be replaced when it's at the start of the text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K021S1_source')" id="l_C00K021S1_source">show source</a> ]</span>
+            <div id="C00K021S1_source" class="dyn-source">
+<pre>
+"\" " should ==("\" ") 
+"\"arfoo" should ==("\"arfoo") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be replaced when it's at the end of the text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K021S2_source')" id="l_C00K021S2_source">show source</a> ]</span>
+            <div id="C00K021S2_source" class="dyn-source">
+<pre>
+" \"" should ==(" \"") 
+"arfoo\"" should ==("arfoo\"") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be replaced when it's in the middle of the text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K021S3_source')" id="l_C00K021S3_source">show source</a> ]</span>
+            <div id="C00K021S3_source" class="dyn-source">
+<pre>
+" \" " should ==(" \" ") 
+"ar\"foo" should ==("ar\"foo") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be replaced when there are several in a string <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K021S4_source')" id="l_C00K021S4_source">show source</a> ]</span>
+            <div id="C00K021S4_source" class="dyn-source">
+<pre>
+"\" \" adsf\"gtr\"rsergfg\"\"\"fert\"" should ==("\" \" adsf\"gtr\"rsergfg\"\"\"fert\"") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b>Text escapes \#</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be replaced when it's the only thing in the text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K022S0_source')" id="l_C00K022S0_source">show source</a> ]</span>
+            <div id="C00K022S0_source" class="dyn-source">
+<pre>
+"\#" should ==("\#") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be replaced when it's at the start of the text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K022S1_source')" id="l_C00K022S1_source">show source</a> ]</span>
+            <div id="C00K022S1_source" class="dyn-source">
+<pre>
+"\# " should ==("\# ") 
+"\#arfoo" should ==("\#arfoo") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be replaced when it's at the end of the text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K022S2_source')" id="l_C00K022S2_source">show source</a> ]</span>
+            <div id="C00K022S2_source" class="dyn-source">
+<pre>
+" \#" should ==(" \#") 
+"arfoo\#" should ==("arfoo\#") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be replaced when it's in the middle of the text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K022S3_source')" id="l_C00K022S3_source">show source</a> ]</span>
+            <div id="C00K022S3_source" class="dyn-source">
+<pre>
+" \# " should ==(" \# ") 
+"ar\#foo" should ==("ar\#foo") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be replaced when there are several in a string <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K022S4_source')" id="l_C00K022S4_source">show source</a> ]</span>
+            <div id="C00K022S4_source" class="dyn-source">
+<pre>
+"\# \# adsf\#gtr\#rsergfg\#\#\#fert\#" should ==("\# \# adsf\#gtr\#rsergfg\#\#\#fert\#") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b>Text escapes \\</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be replaced when it's the only thing in the text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K023S0_source')" id="l_C00K023S0_source">show source</a> ]</span>
+            <div id="C00K023S0_source" class="dyn-source">
+<pre>
+"\\" should ==("\\") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be replaced when it's at the start of the text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K023S1_source')" id="l_C00K023S1_source">show source</a> ]</span>
+            <div id="C00K023S1_source" class="dyn-source">
+<pre>
+"\\ " should ==("\\ ") 
+"\\arfoo" should ==("\\arfoo") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be replaced when it's at the end of the text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K023S2_source')" id="l_C00K023S2_source">show source</a> ]</span>
+            <div id="C00K023S2_source" class="dyn-source">
+<pre>
+" \\" should ==(" \\") 
+"arfoo\\" should ==("arfoo\\") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be replaced when it's in the middle of the text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K023S3_source')" id="l_C00K023S3_source">show source</a> ]</span>
+            <div id="C00K023S3_source" class="dyn-source">
+<pre>
+" \\ " should ==(" \\ ") 
+"ar\\foo" should ==("ar\\foo") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be replaced when there are several in a string <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K023S4_source')" id="l_C00K023S4_source">show source</a> ]</span>
+            <div id="C00K023S4_source" class="dyn-source">
+<pre>
+"\\ \\ adsf\\gtr\\rsergfg\\\\\\fert\\" should ==("\\ \\ adsf\\gtr\\rsergfg\\\\\\fert\\") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b>Text escapes \\n</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be replaced when it's the only thing in the text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K024S0_source')" id="l_C00K024S0_source">show source</a> ]</span>
+            <div id="C00K024S0_source" class="dyn-source">
+<pre>
+"\
+" should ==("") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be replaced when it's at the start of the text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K024S1_source')" id="l_C00K024S1_source">show source</a> ]</span>
+            <div id="C00K024S1_source" class="dyn-source">
+<pre>
+"\
+ " should ==(" ") 
+"\
+arfoo" should ==("arfoo") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be replaced when it's at the end of the text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K024S2_source')" id="l_C00K024S2_source">show source</a> ]</span>
+            <div id="C00K024S2_source" class="dyn-source">
+<pre>
+" \
+" should ==(" ") 
+"arfoo\
+" should ==("arfoo") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be replaced when it's in the middle of the text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K024S3_source')" id="l_C00K024S3_source">show source</a> ]</span>
+            <div id="C00K024S3_source" class="dyn-source">
+<pre>
+" \
+ " should ==("  ") 
+"ar\
+foo" should ==("arfoo") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be replaced when there are several in a string <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K024S4_source')" id="l_C00K024S4_source">show source</a> ]</span>
+            <div id="C00K024S4_source" class="dyn-source">
 <pre>
 "\
  \
@@ -625,8 +1297,8 @@ fert\
 <b>Text escapes \b</b><br/>
 <ul style="list-style-type: none;">
 <li>- should be replaced when it's the only thing in the text <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00K011S0_source')" id="l_C00K011S0_source">show source</a> ]</span>
-            <div id="C00K011S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K025S0_source')" id="l_C00K025S0_source">show source</a> ]</span>
+            <div id="C00K025S0_source" class="dyn-source">
 <pre>
 "\b" should ==("\b") 
 
@@ -634,8 +1306,8 @@ fert\
             </div>
             </span></li>
 <li>- should be replaced when it's at the start of the text <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00K011S1_source')" id="l_C00K011S1_source">show source</a> ]</span>
-            <div id="C00K011S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K025S1_source')" id="l_C00K025S1_source">show source</a> ]</span>
+            <div id="C00K025S1_source" class="dyn-source">
 <pre>
 "\b " should ==("\b ") 
 "\barfoo" should ==("\barfoo") 
@@ -644,8 +1316,8 @@ fert\
             </div>
             </span></li>
 <li>- should be replaced when it's at the end of the text <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00K011S2_source')" id="l_C00K011S2_source">show source</a> ]</span>
-            <div id="C00K011S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K025S2_source')" id="l_C00K025S2_source">show source</a> ]</span>
+            <div id="C00K025S2_source" class="dyn-source">
 <pre>
 " \b" should ==(" \b") 
 "arfoo\b" should ==("arfoo\b") 
@@ -654,8 +1326,8 @@ fert\
             </div>
             </span></li>
 <li>- should be replaced when it's in the middle of the text <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00K011S3_source')" id="l_C00K011S3_source">show source</a> ]</span>
-            <div id="C00K011S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K025S3_source')" id="l_C00K025S3_source">show source</a> ]</span>
+            <div id="C00K025S3_source" class="dyn-source">
 <pre>
 " \b " should ==(" \b ") 
 "ar\bfoo" should ==("ar\bfoo") 
@@ -664,8 +1336,8 @@ fert\
             </div>
             </span></li>
 <li>- should be replaced when there are several in a string <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00K011S4_source')" id="l_C00K011S4_source">show source</a> ]</span>
-            <div id="C00K011S4_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K025S4_source')" id="l_C00K025S4_source">show source</a> ]</span>
+            <div id="C00K025S4_source" class="dyn-source">
 <pre>
 "\b \b adsf\bgtr\brsergfg\b\b\bfert\b" should ==("\b \b adsf\bgtr\brsergfg\b\b\bfert\b") 
 
@@ -676,8 +1348,8 @@ fert\
 <b>Text escapes \f</b><br/>
 <ul style="list-style-type: none;">
 <li>- should be replaced when it's the only thing in the text <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00K012S0_source')" id="l_C00K012S0_source">show source</a> ]</span>
-            <div id="C00K012S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K026S0_source')" id="l_C00K026S0_source">show source</a> ]</span>
+            <div id="C00K026S0_source" class="dyn-source">
 <pre>
 "\f" should ==("\f") 
 
@@ -685,8 +1357,8 @@ fert\
             </div>
             </span></li>
 <li>- should be replaced when it's at the start of the text <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00K012S1_source')" id="l_C00K012S1_source">show source</a> ]</span>
-            <div id="C00K012S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K026S1_source')" id="l_C00K026S1_source">show source</a> ]</span>
+            <div id="C00K026S1_source" class="dyn-source">
 <pre>
 "\f " should ==("\f ") 
 "\farfoo" should ==("\farfoo") 
@@ -695,8 +1367,8 @@ fert\
             </div>
             </span></li>
 <li>- should be replaced when it's at the end of the text <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00K012S2_source')" id="l_C00K012S2_source">show source</a> ]</span>
-            <div id="C00K012S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K026S2_source')" id="l_C00K026S2_source">show source</a> ]</span>
+            <div id="C00K026S2_source" class="dyn-source">
 <pre>
 " \f" should ==(" \f") 
 "arfoo\f" should ==("arfoo\f") 
@@ -705,8 +1377,8 @@ fert\
             </div>
             </span></li>
 <li>- should be replaced when it's in the middle of the text <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00K012S3_source')" id="l_C00K012S3_source">show source</a> ]</span>
-            <div id="C00K012S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K026S3_source')" id="l_C00K026S3_source">show source</a> ]</span>
+            <div id="C00K026S3_source" class="dyn-source">
 <pre>
 " \f " should ==(" \f ") 
 "ar\ffoo" should ==("ar\ffoo") 
@@ -715,8 +1387,8 @@ fert\
             </div>
             </span></li>
 <li>- should be replaced when there are several in a string <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00K012S4_source')" id="l_C00K012S4_source">show source</a> ]</span>
-            <div id="C00K012S4_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K026S4_source')" id="l_C00K026S4_source">show source</a> ]</span>
+            <div id="C00K026S4_source" class="dyn-source">
 <pre>
 "\f \f adsf\fgtr\frsergfg\f\f\ffert\f" should ==("\f \f adsf\fgtr\frsergfg\f\f\ffert\f") 
 
@@ -727,8 +1399,8 @@ fert\
 <b>Text escapes \n</b><br/>
 <ul style="list-style-type: none;">
 <li>- should be replaced when it's the only thing in the text <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00K013S0_source')" id="l_C00K013S0_source">show source</a> ]</span>
-            <div id="C00K013S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K027S0_source')" id="l_C00K027S0_source">show source</a> ]</span>
+            <div id="C00K027S0_source" class="dyn-source">
 <pre>
 "\n" should ==("\n") 
 
@@ -736,8 +1408,8 @@ fert\
             </div>
             </span></li>
 <li>- should be replaced when it's at the start of the text <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00K013S1_source')" id="l_C00K013S1_source">show source</a> ]</span>
-            <div id="C00K013S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K027S1_source')" id="l_C00K027S1_source">show source</a> ]</span>
+            <div id="C00K027S1_source" class="dyn-source">
 <pre>
 "\n " should ==("\n ") 
 "\narfoo" should ==("\narfoo") 
@@ -746,8 +1418,8 @@ fert\
             </div>
             </span></li>
 <li>- should be replaced when it's at the end of the text <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00K013S2_source')" id="l_C00K013S2_source">show source</a> ]</span>
-            <div id="C00K013S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K027S2_source')" id="l_C00K027S2_source">show source</a> ]</span>
+            <div id="C00K027S2_source" class="dyn-source">
 <pre>
 " \n" should ==(" \n") 
 "arfoo\n" should ==("arfoo\n") 
@@ -756,8 +1428,8 @@ fert\
             </div>
             </span></li>
 <li>- should be replaced when it's in the middle of the text <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00K013S3_source')" id="l_C00K013S3_source">show source</a> ]</span>
-            <div id="C00K013S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K027S3_source')" id="l_C00K027S3_source">show source</a> ]</span>
+            <div id="C00K027S3_source" class="dyn-source">
 <pre>
 " \n " should ==(" \n ") 
 "ar\nfoo" should ==("ar\nfoo") 
@@ -766,8 +1438,8 @@ fert\
             </div>
             </span></li>
 <li>- should be replaced when there are several in a string <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00K013S4_source')" id="l_C00K013S4_source">show source</a> ]</span>
-            <div id="C00K013S4_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K027S4_source')" id="l_C00K027S4_source">show source</a> ]</span>
+            <div id="C00K027S4_source" class="dyn-source">
 <pre>
 "\n \n adsf\ngtr\nrsergfg\n\n\nfert\n" should ==("\n \n adsf\ngtr\nrsergfg\n\n\nfert\n") 
 
@@ -778,8 +1450,8 @@ fert\
 <b>Text escapes \r</b><br/>
 <ul style="list-style-type: none;">
 <li>- should be replaced when it's the only thing in the text <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00K014S0_source')" id="l_C00K014S0_source">show source</a> ]</span>
-            <div id="C00K014S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K028S0_source')" id="l_C00K028S0_source">show source</a> ]</span>
+            <div id="C00K028S0_source" class="dyn-source">
 <pre>
 "\r" should ==("\r") 
 
@@ -787,8 +1459,8 @@ fert\
             </div>
             </span></li>
 <li>- should be replaced when it's at the start of the text <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00K014S1_source')" id="l_C00K014S1_source">show source</a> ]</span>
-            <div id="C00K014S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K028S1_source')" id="l_C00K028S1_source">show source</a> ]</span>
+            <div id="C00K028S1_source" class="dyn-source">
 <pre>
 "\r " should ==("\r ") 
 "\rarfoo" should ==("\rarfoo") 
@@ -797,8 +1469,8 @@ fert\
             </div>
             </span></li>
 <li>- should be replaced when it's at the end of the text <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00K014S2_source')" id="l_C00K014S2_source">show source</a> ]</span>
-            <div id="C00K014S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K028S2_source')" id="l_C00K028S2_source">show source</a> ]</span>
+            <div id="C00K028S2_source" class="dyn-source">
 <pre>
 " \r" should ==(" \r") 
 "arfoo\r" should ==("arfoo\r") 
@@ -807,8 +1479,8 @@ fert\
             </div>
             </span></li>
 <li>- should be replaced when it's in the middle of the text <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00K014S3_source')" id="l_C00K014S3_source">show source</a> ]</span>
-            <div id="C00K014S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K028S3_source')" id="l_C00K028S3_source">show source</a> ]</span>
+            <div id="C00K028S3_source" class="dyn-source">
 <pre>
 " \r " should ==(" \r ") 
 "ar\rfoo" should ==("ar\rfoo") 
@@ -817,8 +1489,8 @@ fert\
             </div>
             </span></li>
 <li>- should be replaced when there are several in a string <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00K014S4_source')" id="l_C00K014S4_source">show source</a> ]</span>
-            <div id="C00K014S4_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K028S4_source')" id="l_C00K028S4_source">show source</a> ]</span>
+            <div id="C00K028S4_source" class="dyn-source">
 <pre>
 "\r \r adsf\rgtr\rrsergfg\r\r\rfert\r" should ==("\r \r adsf\rgtr\rrsergfg\r\r\rfert\r") 
 
@@ -829,8 +1501,8 @@ fert\
 <b>Text escapes \t</b><br/>
 <ul style="list-style-type: none;">
 <li>- should be replaced when it's the only thing in the text <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00K015S0_source')" id="l_C00K015S0_source">show source</a> ]</span>
-            <div id="C00K015S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K029S0_source')" id="l_C00K029S0_source">show source</a> ]</span>
+            <div id="C00K029S0_source" class="dyn-source">
 <pre>
 "\t" should ==("\t") 
 
@@ -838,8 +1510,8 @@ fert\
             </div>
             </span></li>
 <li>- should be replaced when it's at the start of the text <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00K015S1_source')" id="l_C00K015S1_source">show source</a> ]</span>
-            <div id="C00K015S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K029S1_source')" id="l_C00K029S1_source">show source</a> ]</span>
+            <div id="C00K029S1_source" class="dyn-source">
 <pre>
 "\t " should ==("\t ") 
 "\tarfoo" should ==("\tarfoo") 
@@ -848,8 +1520,8 @@ fert\
             </div>
             </span></li>
 <li>- should be replaced when it's at the end of the text <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00K015S2_source')" id="l_C00K015S2_source">show source</a> ]</span>
-            <div id="C00K015S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K029S2_source')" id="l_C00K029S2_source">show source</a> ]</span>
+            <div id="C00K029S2_source" class="dyn-source">
 <pre>
 " \t" should ==(" \t") 
 "arfoo\t" should ==("arfoo\t") 
@@ -858,8 +1530,8 @@ fert\
             </div>
             </span></li>
 <li>- should be replaced when it's in the middle of the text <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00K015S3_source')" id="l_C00K015S3_source">show source</a> ]</span>
-            <div id="C00K015S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K029S3_source')" id="l_C00K029S3_source">show source</a> ]</span>
+            <div id="C00K029S3_source" class="dyn-source">
 <pre>
 " \t " should ==(" \t ") 
 "ar\tfoo" should ==("ar\tfoo") 
@@ -868,8 +1540,8 @@ fert\
             </div>
             </span></li>
 <li>- should be replaced when there are several in a string <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00K015S4_source')" id="l_C00K015S4_source">show source</a> ]</span>
-            <div id="C00K015S4_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K029S4_source')" id="l_C00K029S4_source">show source</a> ]</span>
+            <div id="C00K029S4_source" class="dyn-source">
 <pre>
 "\t \t adsf\tgtr\trsergfg\t\t\tfert\t" should ==("\t \t adsf\tgtr\trsergfg\t\t\tfert\t") 
 
@@ -880,8 +1552,8 @@ fert\
 <b>Text escapes octal</b><br/>
 <ul style="list-style-type: none;">
 <li>- should handle an octal letter of one letter <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00K016S0_source')" id="l_C00K016S0_source">show source</a> ]</span>
-            <div id="C00K016S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K030S0_source')" id="l_C00K030S0_source">show source</a> ]</span>
+            <div id="C00K030S0_source" class="dyn-source">
 <pre>
 "blarg \0xxx" [](6) should ==(0) 
 "blarg \1xxx" [](6) should ==(1) 
@@ -896,8 +1568,8 @@ fert\
             </div>
             </span></li>
 <li>- should handle an octal letter of two letters <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00K016S1_source')" id="l_C00K016S1_source">show source</a> ]</span>
-            <div id="C00K016S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K030S1_source')" id="l_C00K030S1_source">show source</a> ]</span>
+            <div id="C00K030S1_source" class="dyn-source">
 <pre>
 "blarg \00xxx" [](6) should ==(0) 
 "blarg \01xxx" [](6) should ==(1) 
@@ -917,8 +1589,8 @@ fert\
 <b>Text escapes unicode</b><br/>
 <ul style="list-style-type: none;">
 <li>- should replace any unicode letter in a string with only it <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00K017S0_source')" id="l_C00K017S0_source">show source</a> ]</span>
-            <div id="C00K017S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K031S0_source')" id="l_C00K031S0_source">show source</a> ]</span>
+            <div id="C00K031S0_source" class="dyn-source">
 <pre>
 "\uAAAA" length should ==(1) 
 "\uAAAA" [](0) should ==(0xAAAA) 
@@ -927,8 +1599,8 @@ fert\
             </div>
             </span></li>
 <li>- should replace a unicode letter at the beginning of a string <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00K017S1_source')" id="l_C00K017S1_source">show source</a> ]</span>
-            <div id="C00K017S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K031S1_source')" id="l_C00K031S1_source">show source</a> ]</span>
+            <div id="C00K031S1_source" class="dyn-source">
 <pre>
 "\u000a foo bar x" [](0) should ==(0xA) 
 "\u000a foo bar x" [](1 ..(-(1))) should ==(" foo bar x") 
@@ -937,8 +1609,8 @@ fert\
             </div>
             </span></li>
 <li>- should replace a unicode letter at the end of a string <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00K017S2_source')" id="l_C00K017S2_source">show source</a> ]</span>
-            <div id="C00K017S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K031S2_source')" id="l_C00K031S2_source">show source</a> ]</span>
+            <div id="C00K031S2_source" class="dyn-source">
 <pre>
 "blarg ucrg ma\u3332" [](-(1)) should ==(0x3332) 
 "blarg ucrg ma\u3332" [](0 ..(-(2))) should ==("blarg ucrg ma") 
@@ -950,8 +1622,8 @@ fert\
 <b>Text interpolation</b><br/>
 <ul style="list-style-type: none;">
 <li>- should parse correctly with a simple number inside of it <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00K018S0_source')" id="l_C00K018S0_source">show source</a> ]</span>
-            <div id="C00K018S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K032S0_source')" id="l_C00K032S0_source">show source</a> ]</span>
+            <div id="C00K032S0_source" class="dyn-source">
 <pre>
 m = parse("\"foo \#{1} bar\"") 
 m should ==("internal:concatenateText(\"foo \", 1, \" bar\")") 
@@ -960,8 +1632,8 @@ m should ==("internal:concatenateText(\"foo \", 1, \" bar\")")
             </div>
             </span></li>
 <li>- should parse correctly with a complex expression <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00K018S1_source')" id="l_C00K018S1_source">show source</a> ]</span>
-            <div id="C00K018S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K032S1_source')" id="l_C00K032S1_source">show source</a> ]</span>
+            <div id="C00K032S1_source" class="dyn-source">
 <pre>
 m = parse("\"foo \#{29*5+foo bar} bar\"") 
 m should ==("internal:concatenateText(\"foo \", 29 *(5) +(foo bar), \" bar\")") 
@@ -970,8 +1642,8 @@ m should ==("internal:concatenateText(\"foo \", 29 *(5) +(foo bar), \" bar\")")
             </div>
             </span></li>
 <li>- should parse correctly with interpolation at the beginning of the text <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00K018S2_source')" id="l_C00K018S2_source">show source</a> ]</span>
-            <div id="C00K018S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K032S2_source')" id="l_C00K032S2_source">show source</a> ]</span>
+            <div id="C00K032S2_source" class="dyn-source">
 <pre>
 m = parse("\"\#{1} bar\"") 
 m should ==("internal:concatenateText(\"\", 1, \" bar\")") 
@@ -980,8 +1652,8 @@ m should ==("internal:concatenateText(\"\", 1, \" bar\")")
             </div>
             </span></li>
 <li>- should parse correctly with interpolation at the end of the text <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00K018S3_source')" id="l_C00K018S3_source">show source</a> ]</span>
-            <div id="C00K018S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K032S3_source')" id="l_C00K032S3_source">show source</a> ]</span>
+            <div id="C00K032S3_source" class="dyn-source">
 <pre>
 m = parse("\"foo \#{1}\"") 
 m should ==("internal:concatenateText(\"foo \", 1, \"\")") 
@@ -990,8 +1662,8 @@ m should ==("internal:concatenateText(\"foo \", 1, \"\")")
             </div>
             </span></li>
 <li>- should parse correctly with more than one interpolation <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00K018S4_source')" id="l_C00K018S4_source">show source</a> ]</span>
-            <div id="C00K018S4_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K032S4_source')" id="l_C00K032S4_source">show source</a> ]</span>
+            <div id="C00K032S4_source" class="dyn-source">
 <pre>
 m = parse("\"foo \#{1} bar \#{2} quux \#{3}\"") 
 m should ==("internal:concatenateText(\"foo \", 1, \" bar \", 2, \" quux \", 3, \"\")") 
@@ -1000,8 +1672,8 @@ m should ==("internal:concatenateText(\"foo \", 1, \" bar \", 2, \" quux \", 3, 
             </div>
             </span></li>
 <li>- should parse correctly with nested interpolations <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00K018S5_source')" id="l_C00K018S5_source">show source</a> ]</span>
-            <div id="C00K018S5_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K032S5_source')" id="l_C00K032S5_source">show source</a> ]</span>
+            <div id="C00K032S5_source" class="dyn-source">
 <pre>
 m = parse("\"foo \#{\"fux \#{32} bar\" bletch} bar\"") 
 m should ==("internal:concatenateText(\"foo \", internal:concatenateText(\"fux \", 32, \" bar\") bletch, \" bar\")") 
@@ -1014,7 +1686,7 @@ m should ==("internal:concatenateText(\"foo \", internal:concatenateText(\"fux \
 
         <div class="sectiontitle">Inactive cells (details)</div>
                 <div class="cell">
-          <a name="C00134"></a>
+          <a name="C00232"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">kind</td>
@@ -1028,16 +1700,14 @@ m should ==("internal:concatenateText(\"foo \", internal:concatenateText(\"fux \
         <div class="sectiontitle">Active cells (details)</div>
                 <div class="cell">
           <div class="title">
-          <a name="C00147"></a><b>*</b>(times)
+          <a name="C00250"></a><b>*</b>(times)
           </div>
           <div class="description">
-            <p>
-              returns the text repeated as many times as the argument. 0 and negative means no times
-            </p>
+            <p>returns the text repeated as many times as the argument. 0 and negative means no times</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00147_source')" id="l_C00147_source">show source</a> ]</p>
-            <div id="C00147_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00250_source')" id="l_C00250_source">show source</a> ]</p>
+            <div id="C00250_source" class="dyn-source">
 <pre>
 method(times, 
   result = "" 
@@ -1050,8 +1720,8 @@ method(times,
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return an empty string for 0 <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001471S0_source')" id="l_C001471S0_source">show source</a> ]</span>
-            <div id="C001471S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002501S0_source')" id="l_C002501S0_source">show source</a> ]</span>
+            <div id="C002501S0_source" class="dyn-source">
 <pre>
 ("foo" *(0)) should ==("") 
 ("bar\nfoo" *(0)) should ==("") 
@@ -1060,8 +1730,8 @@ method(times,
             </div>
             </span></li>
 <li>- should return the string for 1 <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001471S1_source')" id="l_C001471S1_source">show source</a> ]</span>
-            <div id="C001471S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002501S1_source')" id="l_C002501S1_source">show source</a> ]</span>
+            <div id="C002501S1_source" class="dyn-source">
 <pre>
 ("foo" *(1)) should ==("foo") 
 ("bar\nfoo" *(1)) should ==("bar\nfoo") 
@@ -1070,8 +1740,8 @@ method(times,
             </div>
             </span></li>
 <li>- should return the string repeated for 2 <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001471S2_source')" id="l_C001471S2_source">show source</a> ]</span>
-            <div id="C001471S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002501S2_source')" id="l_C002501S2_source">show source</a> ]</span>
+            <div id="C002501S2_source" class="dyn-source">
 <pre>
 ("foo" *(2)) should ==("foofoo") 
 ("bar\nfoo" *(2)) should ==("bar\nfoobar\nfoo") 
@@ -1080,8 +1750,8 @@ method(times,
             </div>
             </span></li>
 <li>- should return a string repeated several times <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001471S3_source')" id="l_C001471S3_source">show source</a> ]</span>
-            <div id="C001471S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002501S3_source')" id="l_C002501S3_source">show source</a> ]</span>
+            <div id="C002501S3_source" class="dyn-source">
 <pre>
 ("fx" *(7)) should ==("fxfxfxfxfxfxfx") 
 
@@ -1094,12 +1764,10 @@ method(times,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00145"></a><b>+</b>(...)
+          <a name="C00248"></a><b>+</b>(...)
           </div>
           <div class="description">
-            <p>
-              nil
-            </p>
+            <p>nil</p>
           </div>
           
           <div class="specs">
@@ -1108,19 +1776,17 @@ method(times,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00143"></a><b>&lt;=&gt;</b>(other)
+          <a name="C00246"></a><b>&lt;=&gt;</b>(other)
           </div>
           <div class="description">
-            <p>
-              compares this text against the argument, returning -1, 0 or 1 based on which one is lexically larger
-            </p>
+            <p>compares this text against the argument, returning -1, 0 or 1 based on which one is lexically larger</p>
           </div>
           
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return -1 when the receiver is less than the argument <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001431S0_source')" id="l_C001431S0_source">show source</a> ]</span>
-            <div id="C001431S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002461S0_source')" id="l_C002461S0_source">show source</a> ]</span>
+            <div id="C002461S0_source" class="dyn-source">
 <pre>
 ("foo" &lt;=&gt;("fox")) should ==(-(1)) 
 
@@ -1128,8 +1794,8 @@ method(times,
             </div>
             </span></li>
 <li>- should return -1 when the receiver is shorter than the argument <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001431S1_source')" id="l_C001431S1_source">show source</a> ]</span>
-            <div id="C001431S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002461S1_source')" id="l_C002461S1_source">show source</a> ]</span>
+            <div id="C002461S1_source" class="dyn-source">
 <pre>
 ("fo" &lt;=&gt;("foo")) should ==(-(1)) 
 
@@ -1137,8 +1803,8 @@ method(times,
             </div>
             </span></li>
 <li>- should return 0 when the receiver is the same as the argument <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001431S2_source')" id="l_C001431S2_source">show source</a> ]</span>
-            <div id="C001431S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002461S2_source')" id="l_C002461S2_source">show source</a> ]</span>
+            <div id="C002461S2_source" class="dyn-source">
 <pre>
 ("foo" &lt;=&gt;("foo")) should ==(0) 
 
@@ -1146,8 +1812,8 @@ method(times,
             </div>
             </span></li>
 <li>- should return 1 when the receiver is greater than the argument <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001431S3_source')" id="l_C001431S3_source">show source</a> ]</span>
-            <div id="C001431S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002461S3_source')" id="l_C002461S3_source">show source</a> ]</span>
+            <div id="C002461S3_source" class="dyn-source">
 <pre>
 ("fox" &lt;=&gt;("foo")) should ==(1) 
 
@@ -1155,8 +1821,8 @@ method(times,
             </div>
             </span></li>
 <li>- should return 1 when the receiver is longer than the argument <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001431S4_source')" id="l_C001431S4_source">show source</a> ]</span>
-            <div id="C001431S4_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002461S4_source')" id="l_C002461S4_source">show source</a> ]</span>
+            <div id="C002461S4_source" class="dyn-source">
 <pre>
 ("fooo" &lt;=&gt;("foo")) should ==(1) 
 
@@ -1169,85 +1835,52 @@ method(times,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00144"></a><b>[]</b>(index)
+          <a name="C00251"></a><b>===</b>(other)
           </div>
           <div class="description">
-            <p>
-              takes one argument, that can be either an index or a range of two indicis. this slicing works the same as for Lists, so you can index from the end, both with the single index and with the range.
-            </p>
-          </div>
-          
-          <div class="specs">
-            
-          </div>
-        </div>
-        <div class="cell">
-          <div class="title">
-          <a name="C00135"></a><b>asText</b>()
-          </div>
-          <div class="description">
-            <p>
-              Returns a text representation of the object
-            </p>
-          </div>
-          
-          <div class="specs">
-            
-          </div>
-        </div>
-        <div class="cell">
-          <div class="title">
-          <a name="C00146"></a><b>empty?</b>()
-          </div>
-          <div class="description">
-            <p>
-              returns true if the length of this text is exactly zero, otherwise false
-            </p>
+            <p>nil</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00146_source')" id="l_C00146_source">show source</a> ]</p>
-            <div id="C00146_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00251_source')" id="l_C00251_source">show source</a> ]</p>
+            <div id="C00251_source" class="dyn-source">
 <pre>
-method(
-  length ==(0))
+method(other, 
+  if(self same?(
+      ), 
+    other mimics?(
+      ), 
+    bind(rescue(Condition Error, fn(c, false)), 
+      self ==(
+        other))))
 </pre>
             </div>
             </div>
           <div class="specs">
             <ul style="list-style-type: none;">
-<li>- should return true for an empty text <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001461S0_source')" id="l_C001461S0_source">show source</a> ]</span>
-            <div id="C001461S0_source" class="dyn-source">
+<li>- should check for mimicness if receiver is Text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002511S0_source')" id="l_C002511S0_source">show source</a> ]</span>
+            <div id="C002511S0_source" class="dyn-source">
 <pre>
-"" empty? should ==(true) 
+Text should ===(Text) 
+Text should ===("foo") 
+Text should ===("") 
+Text should ===("bar") 
+Text should not ===(123) 
+Text should not ===(#/foo/) 
+Text should not ===(("foo" ..("bar"))) 
 
 </pre>
             </div>
             </span></li>
-<li>- should not return true for a non-empty text <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001461S1_source')" id="l_C001461S1_source">show source</a> ]</span>
-            <div id="C001461S1_source" class="dyn-source">
+<li>- should check for equalness if receiver is not Text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002511S1_source')" id="l_C002511S1_source">show source</a> ]</span>
+            <div id="C002511S1_source" class="dyn-source">
 <pre>
-"a b c" empty? should ==(false) 
-
-</pre>
-            </div>
-            </span></li>
-<li>- should not return true for a text with only spaces <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001461S2_source')" id="l_C001461S2_source">show source</a> ]</span>
-            <div id="C001461S2_source" class="dyn-source">
-<pre>
-" " empty? should ==(false) 
-"  " empty? should ==(false) 
-
-</pre>
-            </div>
-            </span></li>
-<li>- should not return true for a text with only a newline <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001461S3_source')" id="l_C001461S3_source">show source</a> ]</span>
-            <div id="C001461S3_source" class="dyn-source">
-<pre>
-"\n" empty? should ==(false) 
+"" should ===("") 
+"foo" should ===("foo") 
+"bar" should ===("bar") 
+"foo" should not ===("bar") 
+"foo" should not ===("") 
 
 </pre>
             </div>
@@ -1258,19 +1891,261 @@ method(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00142"></a><b>format</b>(+replacements)
+          <a name="C00254"></a><b>?&</b>(...)
           </div>
           <div class="description">
-            <p>
-              Takes any number of arguments, and expects the text receiver to contain format specifications. The currently supported specifications are only %s and %{, %}. These have several parameters that can be used. See the spec for more info about these. The format method will return a new text based on the content of the receiver, and the arguments given.
-            </p>
+            <p>if this text is non-empty, returns the result of evaluating the argument, otherwise returns the text</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00254_source')" id="l_C00254_source">show source</a> ]</p>
+            <div id="C00254_source" class="dyn-source">
+<pre>
+macro(
+  argCount = call arguments length 
+  cond(
+    argCount ==(
+      1), 
+    
+    theCode = call arguments [](
+        0) 
+    
+    unless(empty?, 
+      call argAt(0), 
+      self), 
+    error!(Condition Error Invocation NoMatch, message: call message, context: call currentContext)) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should just return itself if empty <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002541S0_source')" id="l_C002541S0_source">show source</a> ]</span>
+            <div id="C002541S0_source" class="dyn-source">
+<pre>
+("" ?&(42)) should ==("") 
+("" ?&([](1, 2, 3))) should ==("") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the result of evaluating the code if non-empty <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002541S1_source')" id="l_C002541S1_source">show source</a> ]</span>
+            <div id="C002541S1_source" class="dyn-source">
+<pre>
+"1" ?&(10) should ==(10) 
+"1,2,3" ?&(20) should ==(20) 
+x = "1,2" 
+x ?&([](1, 2, 3)) should ==([](1, 2, 3)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00253"></a><b>?|</b>(...)
+          </div>
+          <div class="description">
+            <p>if this text is empty, returns the result of evaluating the argument, otherwise returns the text</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00253_source')" id="l_C00253_source">show source</a> ]</p>
+            <div id="C00253_source" class="dyn-source">
+<pre>
+macro(
+  argCount = call arguments length 
+  cond(
+    argCount ==(
+      1), 
+    
+    theCode = call arguments [](
+        0) 
+    
+    if(empty?, 
+      call argAt(0), 
+      self), 
+    error!(Condition Error Invocation NoMatch, message: call message, context: call currentContext)) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should just return itself if not empty <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002531S0_source')" id="l_C002531S0_source">show source</a> ]</span>
+            <div id="C002531S0_source" class="dyn-source">
+<pre>
+"1" ?|(x /(0)) should ==("1") 
+"1,2,3" ?|(x /(0)) should ==("1,2,3") 
+x = "1,2" 
+x ?|(blarg) should be same(x) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the result of evaluating the code if empty <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002531S1_source')" id="l_C002531S1_source">show source</a> ]</span>
+            <div id="C002531S1_source" class="dyn-source">
+<pre>
+"" ?|(42) should ==(42) 
+"" ?|([](1, 2, 3)) should ==([](1, 2, 3)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00247"></a><b>[]</b>(index)
+          </div>
+          <div class="description">
+            <p>takes one argument, that can be either an index or a range of two indicis. this slicing works the same as for Lists, so you can index from the end, both with the single index and with the range.</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00233"></a><b>asText</b>()
+          </div>
+          <div class="description">
+            <p>Returns a text representation of the object</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00252"></a><b>chars</b>()
+          </div>
+          <div class="description">
+            <p>returns a list of each character in this text</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00252_source')" id="l_C00252_source">show source</a> ]</p>
+            <div id="C00252_source" class="dyn-source">
+<pre>
+method(
+  self split("") [](0 ..(-(2))))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return an empty list on an empty string <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002521S0_source')" id="l_C002521S0_source">show source</a> ]</span>
+            <div id="C002521S0_source" class="dyn-source">
+<pre>
+"" chars should ==([]) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return a list of three individual strings on a three-character string <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002521S1_source')" id="l_C002521S1_source">show source</a> ]</span>
+            <div id="C002521S1_source" class="dyn-source">
+<pre>
+"foo" chars should ==([]("f", "o", "o")) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should include whitespace <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002521S2_source')" id="l_C002521S2_source">show source</a> ]</span>
+            <div id="C002521S2_source" class="dyn-source">
+<pre>
+"foo bar\n" chars should ==([]("f", "o", "o", " ", "b", "a", "r", "\n")) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00249"></a><b>empty?</b>()
+          </div>
+          <div class="description">
+            <p>returns true if the length of this text is exactly zero, otherwise false</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00249_source')" id="l_C00249_source">show source</a> ]</p>
+            <div id="C00249_source" class="dyn-source">
+<pre>
+method(
+  length ==(0))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return true for an empty text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002491S0_source')" id="l_C002491S0_source">show source</a> ]</span>
+            <div id="C002491S0_source" class="dyn-source">
+<pre>
+"" empty? should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not return true for a non-empty text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002491S1_source')" id="l_C002491S1_source">show source</a> ]</span>
+            <div id="C002491S1_source" class="dyn-source">
+<pre>
+"a b c" empty? should be false 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not return true for a text with only spaces <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002491S2_source')" id="l_C002491S2_source">show source</a> ]</span>
+            <div id="C002491S2_source" class="dyn-source">
+<pre>
+" " empty? should be false 
+"  " empty? should be false 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not return true for a text with only a newline <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002491S3_source')" id="l_C002491S3_source">show source</a> ]</span>
+            <div id="C002491S3_source" class="dyn-source">
+<pre>
+"\n" empty? should be false 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00245"></a><b>format</b>(+replacements)
+          </div>
+          <div class="description">
+            <p>Takes any number of arguments, and expects the text receiver to contain format specifications. The currently supported specifications are only %s and %{, %}. These have several parameters that can be used. See the spec for more info about these. The format method will return a new text based on the content of the receiver, and the arguments given.</p>
           </div>
           
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should create a text when no % is specified <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001421S0_source')" id="l_C001421S0_source">show source</a> ]</span>
-            <div id="C001421S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002451S0_source')" id="l_C002451S0_source">show source</a> ]</span>
+            <div id="C002451S0_source" class="dyn-source">
 <pre>
 "abc foo bar quux \n men men" format should ==("abc foo bar quux \n men men") 
 
@@ -1278,8 +2153,8 @@ method(
             </div>
             </span></li>
 <li>- should handle a % followed by a non-specifier <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001421S1_source')" id="l_C001421S1_source">show source</a> ]</span>
-            <div id="C001421S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002451S1_source')" id="l_C002451S1_source">show source</a> ]</span>
+            <div id="C002451S1_source" class="dyn-source">
 <pre>
 "abc foo% bar quux \n men men" format should ==("abc foo% bar quux \n men men") 
 "abc foo 10% bar quux \n men men" format should ==("abc foo 10% bar quux \n men men") 
@@ -1292,8 +2167,8 @@ method(
             </div>
             </span></li>
 <li>- should handle a % followed by a newline <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001421S2_source')" id="l_C001421S2_source">show source</a> ]</span>
-            <div id="C001421S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002451S2_source')" id="l_C002451S2_source">show source</a> ]</span>
+            <div id="C002451S2_source" class="dyn-source">
 <pre>
 "foo%
 " format should ==("foo%\n") 
@@ -1302,8 +2177,8 @@ method(
             </div>
             </span></li>
 <li>- should handle a % followed by end of string <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001421S3_source')" id="l_C001421S3_source">show source</a> ]</span>
-            <div id="C001421S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002451S3_source')" id="l_C002451S3_source">show source</a> ]</span>
+            <div id="C002451S3_source" class="dyn-source">
 <pre>
 "abc%" format should ==("abc%") 
 
@@ -1311,8 +2186,8 @@ method(
             </div>
             </span></li>
 <li>- should handle a % at beginning of string <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001421S4_source')" id="l_C001421S4_source">show source</a> ]</span>
-            <div id="C001421S4_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002451S4_source')" id="l_C002451S4_source">show source</a> ]</span>
+            <div id="C002451S4_source" class="dyn-source">
 <pre>
 "% abc" format should ==("% abc") 
 
@@ -1320,8 +2195,8 @@ method(
             </div>
             </span></li>
 <li>- should insert a text with only a %s <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001421S5_source')" id="l_C001421S5_source">show source</a> ]</span>
-            <div id="C001421S5_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002451S5_source')" id="l_C002451S5_source">show source</a> ]</span>
+            <div id="C002451S5_source" class="dyn-source">
 <pre>
 "%s" format("bar") should ==("bar") 
 "%s" format("") should ==("") 
@@ -1331,8 +2206,8 @@ method(
             </div>
             </span></li>
 <li>- should insert a text with %s inside of stuff <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001421S6_source')" id="l_C001421S6_source">show source</a> ]</span>
-            <div id="C001421S6_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002451S6_source')" id="l_C002451S6_source">show source</a> ]</span>
+            <div id="C002451S6_source" class="dyn-source">
 <pre>
 "foo bar %s dfgdfg" format("bar") should ==("foo bar bar dfgdfg") 
 "foo bar %s dfgdfg" format("flurg") should ==("foo bar flurg dfgdfg") 
@@ -1341,8 +2216,8 @@ method(
             </div>
             </span></li>
 <li>- should insert two texts with two %s inside of stuff <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001421S7_source')" id="l_C001421S7_source">show source</a> ]</span>
-            <div id="C001421S7_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002451S7_source')" id="l_C002451S7_source">show source</a> ]</span>
+            <div id="C002451S7_source" class="dyn-source">
 <pre>
 "foo bar %s dfgdfg%sabc" format("bar", "mums") should ==("foo bar bar dfgdfgmumsabc") 
 
@@ -1350,8 +2225,8 @@ method(
             </div>
             </span></li>
 <li>- should call asText when inserting %s <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001421S8_source')" id="l_C001421S8_source">show source</a> ]</span>
-            <div id="C001421S8_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002451S8_source')" id="l_C002451S8_source">show source</a> ]</span>
+            <div id="C002451S8_source" class="dyn-source">
 <pre>
 x = Origin mimic 
 x asText = "blurg" 
@@ -1361,8 +2236,8 @@ x asText = "blurg"
             </div>
             </span></li>
 <li>- should right adjust when given %s with a number <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001421S9_source')" id="l_C001421S9_source">show source</a> ]</span>
-            <div id="C001421S9_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002451S9_source')" id="l_C002451S9_source">show source</a> ]</span>
+            <div id="C002451S9_source" class="dyn-source">
 <pre>
 "%10s" format("bar") should ==("       bar") 
 "a%10sb" format("bar") should ==("a       barb") 
@@ -1371,8 +2246,8 @@ x asText = "blurg"
             </div>
             </span></li>
 <li>- should left adjust when given %s with a negative number <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001421S10_source')" id="l_C001421S10_source">show source</a> ]</span>
-            <div id="C001421S10_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002451S10_source')" id="l_C002451S10_source">show source</a> ]</span>
+            <div id="C002451S10_source" class="dyn-source">
 <pre>
 "%-10s" format("bar") should ==("bar       ") 
 "a%-10sb" format("bar") should ==("abar       b") 
@@ -1381,8 +2256,8 @@ x asText = "blurg"
             </div>
             </span></li>
 <li>- should overflow when giving right adjustment but the string is too long <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001421S11_source')" id="l_C001421S11_source">show source</a> ]</span>
-            <div id="C001421S11_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002451S11_source')" id="l_C002451S11_source">show source</a> ]</span>
+            <div id="C002451S11_source" class="dyn-source">
 <pre>
 "%2s" format("barfly") should ==("barfly") 
 "a%2sb" format("barfly") should ==("abarflyb") 
@@ -1391,8 +2266,8 @@ x asText = "blurg"
             </div>
             </span></li>
 <li>- should overflow when giving left adjustment but the string is too long <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001421S12_source')" id="l_C001421S12_source">show source</a> ]</span>
-            <div id="C001421S12_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002451S12_source')" id="l_C002451S12_source">show source</a> ]</span>
+            <div id="C002451S12_source" class="dyn-source">
 <pre>
 "%-2s" format("barfly") should ==("barfly") 
 "a%-2sb" format("barfly") should ==("abarflyb") 
@@ -1401,18 +2276,17 @@ x asText = "blurg"
             </div>
             </span></li>
 <li>- should not print anything for an empty list, with %[ and %] <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001421S13_source')" id="l_C001421S13_source">show source</a> ]</span>
-            <div id="C001421S13_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002451S13_source')" id="l_C002451S13_source">show source</a> ]</span>
+            <div id="C002451S13_source" class="dyn-source">
 <pre>
-"foo %[bar %]quux" format(
-  []) should ==("foo quux") 
+"foo %[bar %]quux" format([]) should ==("foo quux") 
 
 </pre>
             </div>
             </span></li>
 <li>- should iterate over an element when using %[ and %] <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001421S14_source')" id="l_C001421S14_source">show source</a> ]</span>
-            <div id="C001421S14_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002451S14_source')" id="l_C002451S14_source">show source</a> ]</span>
+            <div id="C002451S14_source" class="dyn-source">
 <pre>
 "foo %[%s - %]quux" format([]("one", "two", "three")) should ==("foo one - two - three - quux") 
 "%[%s - %]" format([]("one", "two", "three")) should ==("one - two - three - ") 
@@ -1421,8 +2295,8 @@ x asText = "blurg"
             </div>
             </span></li>
 <li>- should iterate over an element with each when using %[ and %] <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001421S15_source')" id="l_C001421S15_source">show source</a> ]</span>
-            <div id="C001421S15_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002451S15_source')" id="l_C002451S15_source">show source</a> ]</span>
+            <div id="C002451S15_source" class="dyn-source">
 <pre>
 CustomEnumerable = Origin mimic 
 CustomEnumerable mimic!(Mixins Enumerable) 
@@ -1437,9 +2311,19 @@ CustomEnumerable each = macro(
 </pre>
             </div>
             </span></li>
+<li>- should splat a pair when using %:[ and %] <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002451S16_source')" id="l_C002451S16_source">show source</a> ]</span>
+            <div id="C002451S16_source" class="dyn-source">
+<pre>
+"foo%:[ %s =&gt; %s %]" format([]("one" =&gt;(42), "two" =&gt;(55))) should ==("foo one =&gt; 42  two =&gt; 55 ") 
+"foo%:[ %s =&gt; %s %]" format({}(one: 42)) should ==("foo one =&gt; 42 ") 
+
+</pre>
+            </div>
+            </span></li>
 <li>- should splat all inner elements when using %*[ and %] <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001421S16_source')" id="l_C001421S16_source">show source</a> ]</span>
-            <div id="C001421S16_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002451S17_source')" id="l_C002451S17_source">show source</a> ]</span>
+            <div id="C002451S17_source" class="dyn-source">
 <pre>
 "foo %*[%s = %s - %]quux" format([]([]("one", "1", "ignored"), []("two", "2", "ignored"), []("three", "3", "ignored"))) should ==("foo one = 1 - two = 2 - three = 3 - quux") 
 "%*[%s=%s%]" format([]([]("one", "1", "ignored"), []("two", "2", "ignored"), []("three", "3", "ignored"))) should ==("one=1two=2three=3") 
@@ -1453,19 +2337,17 @@ CustomEnumerable each = macro(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00136"></a><b>inspect</b>()
+          <a name="C00236"></a><b>inspect</b>()
           </div>
           <div class="description">
-            <p>
-              Returns a text inspection of the object
-            </p>
+            <p>Returns a text inspection of the object</p>
           </div>
           
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return the Text inside of quotes <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001361S0_source')" id="l_C001361S0_source">show source</a> ]</span>
-            <div id="C001361S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002361S0_source')" id="l_C002361S0_source">show source</a> ]</span>
+            <div id="C002361S0_source" class="dyn-source">
 <pre>
 "" inspect should ==("\"\"") 
 "foo" inspect should ==("\"foo\"") 
@@ -1480,12 +2362,10 @@ CustomEnumerable each = macro(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00141"></a><b>length</b>()
+          <a name="C00244"></a><b>length</b>()
           </div>
           <div class="description">
-            <p>
-              Returns the length of this text
-            </p>
+            <p>Returns the length of this text</p>
           </div>
           
           <div class="specs">
@@ -1494,19 +2374,53 @@ CustomEnumerable each = macro(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00137"></a><b>notice</b>()
+          <a name="C00238"></a><b>lower</b>()
           </div>
           <div class="description">
-            <p>
-              Returns a brief text inspection of the object
-            </p>
+            <p>Returns a lower case version of this text</p>
+          </div>
+          
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return the same string if it's already lower case <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002381S0_source')" id="l_C002381S0_source">show source</a> ]</span>
+            <div id="C002381S0_source" class="dyn-source">
+<pre>
+"foo" lower should ==("foo") 
+"foo bar quux" lower should ==("foo bar quux") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should make everything lower case and return a new string <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002381S1_source')" id="l_C002381S1_source">show source</a> ]</span>
+            <div id="C002381S1_source" class="dyn-source">
+<pre>
+"FOP" lower should ==("fop") 
+x = "FLuRg" 
+x lower should ==("flurg") 
+x should ==("FLuRg") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00237"></a><b>notice</b>()
+          </div>
+          <div class="description">
+            <p>Returns a brief text inspection of the object</p>
           </div>
           
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return the Text inside of quotes <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001371S0_source')" id="l_C001371S0_source">show source</a> ]</span>
-            <div id="C001371S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002371S0_source')" id="l_C002371S0_source">show source</a> ]</span>
+            <div id="C002371S0_source" class="dyn-source">
 <pre>
 "" notice should ==("\"\"") 
 "foo" notice should ==("\"foo\"") 
@@ -1521,19 +2435,17 @@ CustomEnumerable each = macro(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00139"></a><b>replace</b>(pattern, replacement)
+          <a name="C00242"></a><b>replace</b>(pattern, replacement)
           </div>
           <div class="description">
-            <p>
-              Takes two text arguments where the first is the substring to replace, and the second is the replacement to insert. Will only replace the first match, if any is found, and return a new Text with the result.
-            </p>
+            <p>Takes two text arguments where the first is the substring to replace, and the second is the replacement to insert. Will only replace the first match, if any is found, and return a new Text with the result.</p>
           </div>
           
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return the same string when the thing to replace isn't there <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001391S0_source')" id="l_C001391S0_source">show source</a> ]</span>
-            <div id="C001391S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002421S0_source')" id="l_C002421S0_source">show source</a> ]</span>
+            <div id="C002421S0_source" class="dyn-source">
 <pre>
 "x" replace("f", "b") should ==("x") 
 
@@ -1541,8 +2453,8 @@ CustomEnumerable each = macro(
             </div>
             </span></li>
 <li>- should replace a single character <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001391S1_source')" id="l_C001391S1_source">show source</a> ]</span>
-            <div id="C001391S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002421S1_source')" id="l_C002421S1_source">show source</a> ]</span>
+            <div id="C002421S1_source" class="dyn-source">
 <pre>
 "xfx" replace("f", "b") should ==("xbx") 
 "fxx" replace("f", "b") should ==("bxx") 
@@ -1552,8 +2464,8 @@ CustomEnumerable each = macro(
             </div>
             </span></li>
 <li>- should replace a larger thing with something else <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001391S2_source')" id="l_C001391S2_source">show source</a> ]</span>
-            <div id="C001391S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002421S2_source')" id="l_C002421S2_source">show source</a> ]</span>
+            <div id="C002421S2_source" class="dyn-source">
 <pre>
 "xfoox" replace("foo", "bar") should ==("xbarx") 
 "fooxx" replace("foo", "bar") should ==("barxx") 
@@ -1563,10 +2475,46 @@ CustomEnumerable each = macro(
             </div>
             </span></li>
 <li>- should only replace the first match <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001391S3_source')" id="l_C001391S3_source">show source</a> ]</span>
-            <div id="C001391S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002421S3_source')" id="l_C002421S3_source">show source</a> ]</span>
+            <div id="C002421S3_source" class="dyn-source">
 <pre>
 "xfooxfoox" replace("foo", "bar") should ==("xbarxfoox") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should replace something that looks like a regexp match <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002421S4_source')" id="l_C002421S4_source">show source</a> ]</span>
+            <div id="C002421S4_source" class="dyn-source">
+<pre>
+"oooo+oooo+" replace("o+", "bar") should ==("ooobaroooo+") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should replace a regexp match <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002421S5_source')" id="l_C002421S5_source">show source</a> ]</span>
+            <div id="C002421S5_source" class="dyn-source">
+<pre>
+"oooo+oooo+" replace(#/o+/, "bar") should ==("bar+oooo+") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should replace a match group with numbers <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002421S6_source')" id="l_C002421S6_source">show source</a> ]</span>
+            <div id="C002421S6_source" class="dyn-source">
+<pre>
+"abcdefg" replace(#/(.)d(.)/, "{{$2$2d$1$1}}") should ==("ab{{eedcc}}fg") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should replace a match group with names <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002421S7_source')" id="l_C002421S7_source">show source</a> ]</span>
+            <div id="C002421S7_source" class="dyn-source">
+<pre>
+"abcdefg" replace(#/({one}.)d({two}.)/, "{{${two}${two}d${one}${one}}}") should ==("ab{{eedcc}}fg") 
 
 </pre>
             </div>
@@ -1577,19 +2525,17 @@ CustomEnumerable each = macro(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00140"></a><b>replaceAll</b>(pattern, replacement)
+          <a name="C00243"></a><b>replaceAll</b>(pattern, replacement)
           </div>
           <div class="description">
-            <p>
-              Takes two text arguments where the first is the substring to replace, and the second is the replacement to insert. Will replace all matches, if any is found, and return a new Text with the result.
-            </p>
+            <p>Takes two text arguments where the first is the substring to replace, and the second is the replacement to insert. Will replace all matches, if any is found, and return a new Text with the result.</p>
           </div>
           
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return the same string when the thing to replace isn't there <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001401S0_source')" id="l_C001401S0_source">show source</a> ]</span>
-            <div id="C001401S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002431S0_source')" id="l_C002431S0_source">show source</a> ]</span>
+            <div id="C002431S0_source" class="dyn-source">
 <pre>
 "x" replaceAll("f", "b") should ==("x") 
 
@@ -1597,8 +2543,8 @@ CustomEnumerable each = macro(
             </div>
             </span></li>
 <li>- should replace a single character <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001401S1_source')" id="l_C001401S1_source">show source</a> ]</span>
-            <div id="C001401S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002431S1_source')" id="l_C002431S1_source">show source</a> ]</span>
+            <div id="C002431S1_source" class="dyn-source">
 <pre>
 "xfx" replaceAll("f", "b") should ==("xbx") 
 "fxx" replaceAll("f", "b") should ==("bxx") 
@@ -1608,8 +2554,8 @@ CustomEnumerable each = macro(
             </div>
             </span></li>
 <li>- should replace a larger thing with something else <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001401S2_source')" id="l_C001401S2_source">show source</a> ]</span>
-            <div id="C001401S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002431S2_source')" id="l_C002431S2_source">show source</a> ]</span>
+            <div id="C002431S2_source" class="dyn-source">
 <pre>
 "xfoox" replaceAll("foo", "bar") should ==("xbarx") 
 "fooxx" replaceAll("foo", "bar") should ==("barxx") 
@@ -1619,10 +2565,46 @@ CustomEnumerable each = macro(
             </div>
             </span></li>
 <li>- should replace all matches <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001401S3_source')" id="l_C001401S3_source">show source</a> ]</span>
-            <div id="C001401S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002431S3_source')" id="l_C002431S3_source">show source</a> ]</span>
+            <div id="C002431S3_source" class="dyn-source">
 <pre>
 "xfooxfooxfoox" replaceAll("foo", "bar") should ==("xbarxbarxbarx") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should replace something that looks like a regexp match <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002431S4_source')" id="l_C002431S4_source">show source</a> ]</span>
+            <div id="C002431S4_source" class="dyn-source">
+<pre>
+"oooo+oooo+" replaceAll("o+", "bar") should ==("ooobarooobar") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should replace a regexp match <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002431S5_source')" id="l_C002431S5_source">show source</a> ]</span>
+            <div id="C002431S5_source" class="dyn-source">
+<pre>
+"oooo+oooo+" replaceAll(#/o+/, "bar") should ==("bar+bar+") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should replace a match group with numbers <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002431S6_source')" id="l_C002431S6_source">show source</a> ]</span>
+            <div id="C002431S6_source" class="dyn-source">
+<pre>
+"abcdefgxxdy" replaceAll(#/(.)d(.)/, "{{$2$2d$1$1}}") should ==("ab{{eedcc}}fgx{{yydxx}}") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should replace a match group with names <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002431S7_source')" id="l_C002431S7_source">show source</a> ]</span>
+            <div id="C002431S7_source" class="dyn-source">
+<pre>
+"abcdefgxxdy" replaceAll(#/({one}.)d({two}.)/, "{{${two}${two}d${one}${one}}}") should ==("ab{{eedcc}}fgx{{yydxx}}") 
 
 </pre>
             </div>
@@ -1633,19 +2615,17 @@ CustomEnumerable each = macro(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00138"></a><b>split</b>(splitAround)
+          <a name="C00241"></a><b>split</b>(splitAround)
           </div>
           <div class="description">
-            <p>
-              Returns an array of texts split around the argument
-            </p>
+            <p>Returns an array of texts split around the argument</p>
           </div>
           
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return the string if nothing to split on is available <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001381S0_source')" id="l_C001381S0_source">show source</a> ]</span>
-            <div id="C001381S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002411S0_source')" id="l_C002411S0_source">show source</a> ]</span>
+            <div id="C002411S0_source" class="dyn-source">
 <pre>
 "foo" split("b") should ==([]("foo")) 
 
@@ -1653,11 +2633,270 @@ CustomEnumerable each = macro(
             </div>
             </span></li>
 <li>- should return each segment splitted on a string <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001381S1_source')" id="l_C001381S1_source">show source</a> ]</span>
-            <div id="C001381S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002411S1_source')" id="l_C002411S1_source">show source</a> ]</span>
+            <div id="C002411S1_source" class="dyn-source">
 <pre>
 "foobquux" split("b") should ==([]("foo", "quux")) 
 "foo/bar/quux" split("/") should ==([]("foo", "bar", "quux")) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should split on something that looks like a regexp as a text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002411S2_source')" id="l_C002411S2_source">show source</a> ]</span>
+            <div id="C002411S2_source" class="dyn-source">
+<pre>
+"fooo o+ fooo o+ xxx" split("o+") should ==([]("fooo ", " fooo ", " xxx")) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should split on a regexp <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002411S3_source')" id="l_C002411S3_source">show source</a> ]</span>
+            <div id="C002411S3_source" class="dyn-source">
+<pre>
+"x oooo y o fofblooooooooooooo" split(#/o+/) should ==([]("x ", " y ", " f", "fbl", "")) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00235"></a><b>toDecimal</b>()
+          </div>
+          <div class="description">
+            <p>Converts the content of this text into a decimal value</p>
+          </div>
+          
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return a simple decimal <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002351S0_source')" id="l_C002351S0_source">show source</a> ]</span>
+            <div id="C002351S0_source" class="dyn-source">
+<pre>
+"0" toDecimal should ==(0.0) 
+"1.1" toDecimal should ==(1.1) 
+"0.000001" toDecimal should ==(0.000001) 
+"123435236467901923.2342345" toDecimal should ==(123435236467901923.2342345) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return a negative decimal <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002351S1_source')" id="l_C002351S1_source">show source</a> ]</span>
+            <div id="C002351S1_source" class="dyn-source">
+<pre>
+"-0" toDecimal should ==(-(0.0)) 
+"-1.1" toDecimal should ==(-(1.1)) 
+"-0.000001" toDecimal should ==(-(0.000001)) 
+"-123435236467901923.2342345" toDecimal should ==(-(123435236467901923.2342345)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return a decimal with only a exponential part <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002351S2_source')" id="l_C002351S2_source">show source</a> ]</span>
+            <div id="C002351S2_source" class="dyn-source">
+<pre>
+"10e6" toDecimal should ==(10e6) 
+"1e-6" toDecimal should ==(1e-6) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return a decimal with both exponential and decimal part <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002351S3_source')" id="l_C002351S3_source">show source</a> ]</span>
+            <div id="C002351S3_source" class="dyn-source">
+<pre>
+"10.3e2" toDecimal should ==(10.3e2) 
+"0.000043e-22" toDecimal should ==(0.000043e-22) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should signal a condition if no decimal can be parsed <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002351S4_source')" id="l_C002351S4_source">show source</a> ]</span>
+            <div id="C002351S4_source" class="dyn-source">
+<pre>
+fn("fox" toDecimal) should signal(Condition Error Arithmetic NotParseable) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should offer a restart to only take the part of the decimal found <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002351S5_source')" id="l_C002351S5_source">show source</a> ]</span>
+            <div id="C002351S5_source" class="dyn-source">
+<pre>
+fn("1.0f" toDecimal) should offer(restart(takeLongest, fn)) 
+fn("1.0f" toDecimal) should returnFromRestart(:takeLongest) ==(1.0) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should offer a useValue restart if the decimal can't be parsed <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002351S6_source')" id="l_C002351S6_source">show source</a> ]</span>
+            <div id="C002351S6_source" class="dyn-source">
+<pre>
+fn("1.0f" toDecimal) should offer(restart(useValue, fn)) 
+fn("1.0f" toDecimal) should returnFromRestart(:useValue, 32) ==(32) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00234"></a><b>toRational</b>()
+          </div>
+          <div class="description">
+            <p>Converts the content of this text into a rational value</p>
+          </div>
+          
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return a simple number <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002341S0_source')" id="l_C002341S0_source">show source</a> ]</span>
+            <div id="C002341S0_source" class="dyn-source">
+<pre>
+"1" toRational should ==(1) 
+"0" toRational should ==(0) 
+"10" toRational should ==(10) 
+"9123" toRational should ==(9123) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return a negative number <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002341S1_source')" id="l_C002341S1_source">show source</a> ]</span>
+            <div id="C002341S1_source" class="dyn-source">
+<pre>
+"-0" toRational should ==(0) 
+"-1" toRational should ==(-(1)) 
+"-9" toRational should ==(-(9)) 
+"-3124" toRational should ==(-(3124)) 
+"-666" toRational should ==(-(666)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should signal a condition if no number can be parsed <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002341S2_source')" id="l_C002341S2_source">show source</a> ]</span>
+            <div id="C002341S2_source" class="dyn-source">
+<pre>
+fn("fox" toRational) should signal(Condition Error Arithmetic NotParseable) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should offer a restart to only take the part of the number found <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002341S3_source')" id="l_C002341S3_source">show source</a> ]</span>
+            <div id="C002341S3_source" class="dyn-source">
+<pre>
+fn("1f" toRational) should offer(restart(takeLongest, fn)) 
+fn("1f" toRational) should returnFromRestart(:takeLongest) ==(1) 
+fn("1fsdfgdg434234" toRational) should offer(restart(takeLongest, fn)) 
+fn("1fsdfgdg434234" toRational) should returnFromRestart(:takeLongest) ==(1) 
+fn("123423423fsdfgdg434234" toRational) should returnFromRestart(:takeLongest) ==(123423423) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should offer a useValue restart if the number can't be parsed <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002341S4_source')" id="l_C002341S4_source">show source</a> ]</span>
+            <div id="C002341S4_source" class="dyn-source">
+<pre>
+fn("1f" toRational) should offer(restart(useValue, fn)) 
+fn("1f" toRational) should returnFromRestart(:useValue, 32) ==(32) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00240"></a><b>trim</b>()
+          </div>
+          <div class="description">
+            <p>Returns a version of this text with leading and trailing whitespace removed</p>
+          </div>
+          
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return the string if nothing needs to be trimmed <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002401S0_source')" id="l_C002401S0_source">show source</a> ]</span>
+            <div id="C002401S0_source" class="dyn-source">
+<pre>
+"foo" trim should ==("foo") 
+"foo bar quux" trim should ==("foo bar quux") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return a new string with leading and trailing whitespace removed <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002401S1_source')" id="l_C002401S1_source">show source</a> ]</span>
+            <div id="C002401S1_source" class="dyn-source">
+<pre>
+"foo  " trim should ==("foo") 
+"  foo" trim should ==("foo") 
+" foo " trim should ==("foo") 
+"  foo bar quux  " trim should ==("foo bar quux") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return a new string with leading and trailing newlines removed <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002401S2_source')" id="l_C002401S2_source">show source</a> ]</span>
+            <div id="C002401S2_source" class="dyn-source">
+<pre>
+"foo\n" trim should ==("foo") 
+"\nfoo" trim should ==("foo") 
+"\nfoo\n" trim should ==("foo") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00239"></a><b>upper</b>()
+          </div>
+          <div class="description">
+            <p>Returns an upper case version of this text</p>
+          </div>
+          
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return the same string if it's already upper case <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002391S0_source')" id="l_C002391S0_source">show source</a> ]</span>
+            <div id="C002391S0_source" class="dyn-source">
+<pre>
+"FOO" upper should ==("FOO") 
+"FOO BAR QUUX" upper should ==("FOO BAR QUUX") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should make everything upper case and return a new string <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002391S1_source')" id="l_C002391S1_source">show source</a> ]</span>
+            <div id="C002391S1_source" class="dyn-source">
+<pre>
+"fop" upper should ==("FOP") 
+x = "FLuRg" 
+x upper should ==("FLURG") 
+x should ==("FLuRg") 
 
 </pre>
             </div>

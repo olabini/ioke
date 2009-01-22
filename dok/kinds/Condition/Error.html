@@ -79,7 +79,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
       <div id="content">
         <div class="description">
           <p>
-          
+
           </p>
         </div>
 
@@ -90,14 +90,15 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 
         <div class="sectiontitle">Inactive cells</div>
         <ul>
-          <li><a href="#C00427">kind</a></li>
-<li><a href="#C00460">text</a></li>
+          <li><a href="#C00620">kind</a></li>
+<li><a href="#C00657">text</a></li>
 
         </ul>        
 
         <div class="sectiontitle">Active cells</div>
         <ul>
-          
+          <li><a href="#C00658">noticeFor(obj)</a></li>
+
         </ul>
 
         <div class="sectiontitle">Specs</div>
@@ -117,7 +118,7 @@ Condition Error should have kind("Condition Error")
 
         <div class="sectiontitle">Inactive cells (details)</div>
                 <div class="cell">
-          <a name="C00427"></a>
+          <a name="C00620"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">kind</td>
@@ -127,7 +128,7 @@ Condition Error should have kind("Condition Error")
           </table>
         </div>
         <div class="cell">
-          <a name="C00460"></a>
+          <a name="C00657"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">text</td>
@@ -139,7 +140,30 @@ Condition Error should have kind("Condition Error")
 
 
         <div class="sectiontitle">Active cells (details)</div>
-        
+                <div class="cell">
+          <div class="title">
+          <a name="C00658"></a><b>noticeFor</b>(obj)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00658_source')" id="l_C00658_source">show source</a> ]</p>
+            <div id="C00658_source" class="dyn-source">
+<pre>
+method(obj, 
+  bind(rescue(Condition Error, fn(c, obj kind)), 
+    if(obj cell?(:notice), 
+      obj notice, 
+      obj kind)))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+
 
       </div>
     </div>

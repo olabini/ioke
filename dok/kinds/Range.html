@@ -79,7 +79,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
       <div id="content">
         <div class="description">
           <p>
-          A range is a collection of two objects of the same kind. This Range can be either inclusive or exclusive.
+A range is a collection of two objects of the same kind. This Range can be either inclusive or exclusive.
           </p>
         </div>
 
@@ -90,19 +90,22 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 
         <div class="sectiontitle">Inactive cells</div>
         <ul>
-          <li><a href="#C00368">kind</a></li>
+          <li><a href="#C00537">kind</a></li>
 
         </ul>        
 
         <div class="sectiontitle">Active cells</div>
         <ul>
-          <li><a href="#C00375">===(other)</a></li>
-<li><a href="#C00370">exclusive(from, to)</a></li>
-<li><a href="#C00371">exclusive?()</a></li>
-<li><a href="#C00373">from()</a></li>
-<li><a href="#C00369">inclusive(from, to)</a></li>
-<li><a href="#C00372">inclusive?()</a></li>
-<li><a href="#C00374">to()</a></li>
+          <li><a href="#C00545">===(other)</a></li>
+<li><a href="#C00544">each([indexOrArgOrCode], [argOrCode] nil, [code] nil)</a></li>
+<li><a href="#C00539">exclusive(from, to)</a></li>
+<li><a href="#C00540">exclusive?()</a></li>
+<li><a href="#C00542">from()</a></li>
+<li><a href="#C00538">inclusive(from, to)</a></li>
+<li><a href="#C00541">inclusive?()</a></li>
+<li><a href="#C00546">inspect()</a></li>
+<li><a href="#C00547">notice()</a></li>
+<li><a href="#C00543">to()</a></li>
 
         </ul>
 
@@ -140,7 +143,7 @@ Range should have kind("Range")
 
         <div class="sectiontitle">Inactive cells (details)</div>
                 <div class="cell">
-          <a name="C00368"></a>
+          <a name="C00537"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">kind</td>
@@ -154,44 +157,63 @@ Range should have kind("Range")
         <div class="sectiontitle">Active cells (details)</div>
                 <div class="cell">
           <div class="title">
-          <a name="C00375"></a><b>===</b>(other)
+          <a name="C00545"></a><b>===</b>(other)
           </div>
           <div class="description">
-            <p>
-              returns true if the argument is within the confines of this range. how this comparison is done depends on if the object mimics Comparing. If it does, < and > will be used. If not, all the available entries in this range will be enumerated using 'succ' until either the end or the element we're looking for is found. in that case, comparison is done with '=='
-            </p>
+            <p>returns true if the argument is within the confines of this range. how this comparison is done depends on if the object mimics Comparing. If it does, < and > will be used. If not, all the available entries in this range will be enumerated using 'succ'/'pred' until either the end or the element we're looking for is found. in that case, comparison is done with '=='</p>
           </div>
           
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should match something inside the range <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C003751S0_source')" id="l_C003751S0_source">show source</a> ]</span>
-            <div id="C003751S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005451S0_source')" id="l_C005451S0_source">show source</a> ]</span>
+            <div id="C005451S0_source" class="dyn-source">
 <pre>
-((1 ..(5)) ===(1)) should ==(true) 
-((1 ..(5)) ===(2)) should ==(true) 
-((1 ..(5)) ===(3)) should ==(true) 
-((1 ..(5)) ===(4)) should ==(true) 
-((1 ..(5)) ===(5)) should ==(true) 
-((1 ..(5)) ===(1.5)) should ==(true) 
-((1 ..(5)) ===(4.9999)) should ==(true) 
-((1 ...(5)) ===(4.9999)) should ==(true) 
-((1 ..(5)) ===(4 /(3))) should ==(true) 
+((1 ..(5)) ===(1)) should be true 
+((1 ..(5)) ===(2)) should be true 
+((1 ..(5)) ===(3)) should be true 
+((1 ..(5)) ===(4)) should be true 
+((1 ..(5)) ===(5)) should be true 
+((1 ..(5)) ===(1.5)) should be true 
+((1 ..(5)) ===(4.9999)) should be true 
+((1 ...(5)) ===(4.9999)) should be true 
+((1 ..(5)) ===(4 /(3))) should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should match even when using inverted ranges <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005451S1_source')" id="l_C005451S1_source">show source</a> ]</span>
+            <div id="C005451S1_source" class="dyn-source">
+<pre>
+(5 ..(1)) should ===(5) 
+(5 ..(1)) should ===(4) 
+(5 ..(1)) should ===(3) 
+(5 ..(1)) should ===(2) 
+(5 ..(1)) should ===(1) 
+(5 ..(1)) should not ===(0) 
+(5 ..(1)) should not ===(6) 
+(5 ...(1)) should not ===(1) 
+(5 ...(1)) should ===(2) 
+(5 ...(1)) should ===(3) 
+(5 ...(1)) should ===(4) 
+(5 ...(1)) should ===(5) 
+(5 ...(1)) should not ===(6) 
 
 </pre>
             </div>
             </span></li>
 <li>- should not match something outside the range <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C003751S1_source')" id="l_C003751S1_source">show source</a> ]</span>
-            <div id="C003751S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005451S2_source')" id="l_C005451S2_source">show source</a> ]</span>
+            <div id="C005451S2_source" class="dyn-source">
 <pre>
-((1 ..(5)) ===(0)) should ==(false) 
-((1 ...(5)) ===(5)) should ==(false) 
-((1 ..(5)) ===(0.5)) should ==(false) 
-((1 ..(5)) ===(5.000001)) should ==(false) 
-((1 ...(5)) ===(5.0)) should ==(false) 
-((1 ..(5)) ===(1 /(3))) should ==(false) 
-((1 ..(5)) ===(:foo)) should ==(false) 
+((1 ..(5)) ===(0)) should be false 
+((1 ...(5)) ===(5)) should be false 
+((1 ..(5)) ===(0.5)) should be false 
+((1 ..(5)) ===(5.000001)) should be false 
+((1 ...(5)) ===(5.0)) should be false 
+((1 ..(5)) ===(1 /(3))) should be false 
+((1 ..(5)) ===(:foo)) should be false 
 
 </pre>
             </div>
@@ -202,12 +224,125 @@ Range should have kind("Range")
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00370"></a><b>exclusive</b>(from, to)
+          <a name="C00544"></a><b>each</b>([indexOrArgOrCode], [argOrCode] nil, [code] nil)
           </div>
           <div class="description">
-            <p>
-              will return a new exclusive Range based on the two arguments
-            </p>
+            <p>takes either one or two or three arguments. if one argument is given, it should be a message chain that will be sent to each object in the range. the result will be thrown away. if two arguments are given, the first is an unevaluated name that will be set to each of the values in the range in succession, and then the second argument will be evaluated in a scope with that argument in it. if three arguments is given, the first one is an unevaluated name that will be set to the index of each element, and the other two arguments are the name of the argument for the value, and the actual code. the code will evaluate in a lexical context, and if the argument name is available outside the context, it will be shadowed. the method will return the range.</p>
+          </div>
+          
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should not do anything for an empty list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005441S0_source')" id="l_C005441S0_source">show source</a> ]</span>
+            <div id="C005441S0_source" class="dyn-source">
+<pre>
+x = 0 
+(0 ...(0)) each(++(x)) 
+x should ==(0) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to iterate the wrong way with it <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005441S1_source')" id="l_C005441S1_source">show source</a> ]</span>
+            <div id="C005441S1_source" class="dyn-source">
+<pre>
+Ground y = [] 
+(10 ..(0)) each(xx, y &lt;&lt;(xx)) 
+y should ==([](10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0)) 
+Ground y = [] 
+(10 ...(0)) each(xx, y &lt;&lt;(xx)) 
+y should ==([](10, 9, 8, 7, 6, 5, 4, 3, 2, 1)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to just give it a message chain, that will be invoked on each object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005441S2_source')" id="l_C005441S2_source">show source</a> ]</span>
+            <div id="C005441S2_source" class="dyn-source">
+<pre>
+Ground y = [] 
+Ground xs = method(y &lt;&lt;(self)) 
+(1 ..(3)) each(xs) 
+y should ==([](1, 2, 3)) 
+Ground y = [] 
+Ground xs = method(y &lt;&lt;(self)) 
+(1 ...(3)) each(xs) 
+y should ==([](1, 2)) 
+x = 0 
+(1 ..(3)) each(nil 
+  ++(x)) 
+x should ==(3) 
+x = 0 
+(1 ...(3)) each(nil 
+  ++(x)) 
+x should ==(2) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to give it an argument name, and code <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005441S3_source')" id="l_C005441S3_source">show source</a> ]</span>
+            <div id="C005441S3_source" class="dyn-source">
+<pre>
+y = [] 
+(1 ..(3)) each(x, y &lt;&lt;(x)) 
+y should ==([](1, 2, 3)) 
+y = [] 
+(1 ...(3)) each(x, y &lt;&lt;(x)) 
+y should ==([](1, 2)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005441S4_source')" id="l_C005441S4_source">show source</a> ]</span>
+            <div id="C005441S4_source" class="dyn-source">
+<pre>
+y = 1 ..(3) 
+(y each(x, x)) should ==(y) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should establish a lexical context when invoking the methods. this context will be the same for all invocations. <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005441S5_source')" id="l_C005441S5_source">show source</a> ]</span>
+            <div id="C005441S5_source" class="dyn-source">
+<pre>
+(1 ..(3)) each(x_list, blarg = 32) 
+cell?(:x_list) should be false 
+cell?(:blarg) should be false 
+x = 14 
+(1 ..(3)) each(x, blarg = 32) 
+x should ==(14) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to give it an extra argument to get the index <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005441S6_source')" id="l_C005441S6_source">show source</a> ]</span>
+            <div id="C005441S6_source" class="dyn-source">
+<pre>
+y = [] 
+(1 ..(4)) each(i, x, y &lt;&lt;([](i, x))) 
+y should ==([]([](0, 1), [](1, 2), [](2, 3), [](3, 4))) 
+y = [] 
+(1 ...(4)) each(i, x, y &lt;&lt;([](i, x))) 
+y should ==([]([](0, 1), [](1, 2), [](2, 3))) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00539"></a><b>exclusive</b>(from, to)
+          </div>
+          <div class="description">
+            <p>will return a new exclusive Range based on the two arguments</p>
           </div>
           
           <div class="specs">
@@ -216,30 +351,28 @@ Range should have kind("Range")
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00371"></a><b>exclusive?</b>()
+          <a name="C00540"></a><b>exclusive?</b>()
           </div>
           <div class="description">
-            <p>
-              returns true if the receiver is an exclusive range, false otherwise
-            </p>
+            <p>returns true if the receiver is an exclusive range, false otherwise</p>
           </div>
           
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return false for an inclusive range <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C003711S0_source')" id="l_C003711S0_source">show source</a> ]</span>
-            <div id="C003711S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005401S0_source')" id="l_C005401S0_source">show source</a> ]</span>
+            <div id="C005401S0_source" class="dyn-source">
 <pre>
-(0 ..(13)) exclusive? should ==(false) 
+(0 ..(13)) exclusive? should be false 
 
 </pre>
             </div>
             </span></li>
 <li>- should return true for an exclusive range <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C003711S1_source')" id="l_C003711S1_source">show source</a> ]</span>
-            <div id="C003711S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005401S1_source')" id="l_C005401S1_source">show source</a> ]</span>
+            <div id="C005401S1_source" class="dyn-source">
 <pre>
-(0 ...(13)) exclusive? should ==(true) 
+(0 ...(13)) exclusive? should be true 
 
 </pre>
             </div>
@@ -250,19 +383,17 @@ Range should have kind("Range")
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00373"></a><b>from</b>()
+          <a name="C00542"></a><b>from</b>()
           </div>
           <div class="description">
-            <p>
-              returns the 'from' part of the range
-            </p>
+            <p>returns the 'from' part of the range</p>
           </div>
           
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return the from part of the range <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C003731S0_source')" id="l_C003731S0_source">show source</a> ]</span>
-            <div id="C003731S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005421S0_source')" id="l_C005421S0_source">show source</a> ]</span>
+            <div id="C005421S0_source" class="dyn-source">
 <pre>
 (13 ..(0)) from should ==(13) 
 (-(42) ..(0)) from should ==(-(42)) 
@@ -274,18 +405,25 @@ Range should have kind("Range")
 </pre>
             </div>
             </span></li>
+<li>- should validate the type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005421S1_source')" id="l_C005421S1_source">show source</a> ]</span>
+            <div id="C005421S1_source" class="dyn-source">
+<pre>
+Range should checkReceiverTypeOn(:from) 
+
+</pre>
+            </div>
+            </span></li>
 </ul>
 
           </div>
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00369"></a><b>inclusive</b>(from, to)
+          <a name="C00538"></a><b>inclusive</b>(from, to)
           </div>
           <div class="description">
-            <p>
-              will return a new inclusive Range based on the two arguments
-            </p>
+            <p>will return a new inclusive Range based on the two arguments</p>
           </div>
           
           <div class="specs">
@@ -294,30 +432,28 @@ Range should have kind("Range")
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00372"></a><b>inclusive?</b>()
+          <a name="C00541"></a><b>inclusive?</b>()
           </div>
           <div class="description">
-            <p>
-              returns true if the receiver is an inclusive range, false otherwise
-            </p>
+            <p>returns true if the receiver is an inclusive range, false otherwise</p>
           </div>
           
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return true for an inclusive range <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C003721S0_source')" id="l_C003721S0_source">show source</a> ]</span>
-            <div id="C003721S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005411S0_source')" id="l_C005411S0_source">show source</a> ]</span>
+            <div id="C005411S0_source" class="dyn-source">
 <pre>
-(0 ..(13)) inclusive? should ==(true) 
+(0 ..(13)) inclusive? should be true 
 
 </pre>
             </div>
             </span></li>
 <li>- should return false for an exclusive range <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C003721S1_source')" id="l_C003721S1_source">show source</a> ]</span>
-            <div id="C003721S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005411S1_source')" id="l_C005411S1_source">show source</a> ]</span>
+            <div id="C005411S1_source" class="dyn-source">
 <pre>
-(0 ...(13)) inclusive? should ==(false) 
+(0 ...(13)) inclusive? should be false 
 
 </pre>
             </div>
@@ -328,12 +464,78 @@ Range should have kind("Range")
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00374"></a><b>to</b>()
+          <a name="C00546"></a><b>inspect</b>()
           </div>
           <div class="description">
-            <p>
-              returns the 'to' part of the range
-            </p>
+            <p>Returns a text inspection of the object</p>
+          </div>
+          
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return the inspect of something inside it <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005461S0_source')" id="l_C005461S0_source">show source</a> ]</span>
+            <div id="C005461S0_source" class="dyn-source">
+<pre>
+("foo" ..(method(blarg fux))) inspect should ==("\"foo\"..method(blarg fux)") 
+("foo" ...(method(blarg fux))) inspect should ==("\"foo\"...method(blarg fux)") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return a simple string for something simple <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005461S1_source')" id="l_C005461S1_source">show source</a> ]</span>
+            <div id="C005461S1_source" class="dyn-source">
+<pre>
+(1 ..(2)) inspect should ==("1..2") 
+(1 ...(2)) inspect should ==("1...2") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00547"></a><b>notice</b>()
+          </div>
+          <div class="description">
+            <p>Returns a brief text inspection of the object</p>
+          </div>
+          
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return the notice of something inside it <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005471S0_source')" id="l_C005471S0_source">show source</a> ]</span>
+            <div id="C005471S0_source" class="dyn-source">
+<pre>
+("foo" ..(method(blarg fux))) notice should ==("\"foo\"..method(...)") 
+("foo" ...(method(blarg fux))) notice should ==("\"foo\"...method(...)") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return a simple string for something simple <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005471S1_source')" id="l_C005471S1_source">show source</a> ]</span>
+            <div id="C005471S1_source" class="dyn-source">
+<pre>
+(1 ..(2)) notice should ==("1..2") 
+(1 ...(2)) notice should ==("1...2") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00543"></a><b>to</b>()
+          </div>
+          <div class="description">
+            <p>returns the 'to' part of the range</p>
           </div>
           
           <div class="specs">

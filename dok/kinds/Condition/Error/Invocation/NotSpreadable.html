@@ -79,7 +79,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
       <div id="content">
         <div class="description">
           <p>
-          
+
           </p>
         </div>
 
@@ -90,13 +90,13 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 
         <div class="sectiontitle">Inactive cells</div>
         <ul>
-          <li><a href="#C00443">kind</a></li>
+          <li><a href="#C00637">kind</a></li>
 
         </ul>        
 
         <div class="sectiontitle">Active cells</div>
         <ul>
-          <li><a href="#C00444">report()</a></li>
+          <li><a href="#C00638">report()</a></li>
 
         </ul>
 
@@ -117,7 +117,7 @@ Condition Error Invocation NotSpreadable should have kind("Condition Error Invoc
 
         <div class="sectiontitle">Inactive cells (details)</div>
                 <div class="cell">
-          <a name="C00443"></a>
+          <a name="C00637"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">kind</td>
@@ -131,19 +131,17 @@ Condition Error Invocation NotSpreadable should have kind("Condition Error Invoc
         <div class="sectiontitle">Active cells (details)</div>
                 <div class="cell">
           <div class="title">
-          <a name="C00444"></a><b>report</b>()
+          <a name="C00638"></a><b>report</b>()
           </div>
           <div class="description">
-            <p>
-              returns a representation of this error, printing the object that couldn't be spread
-            </p>
+            <p>returns a representation of this error, printing the object that couldn't be spread</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00444_source')" id="l_C00444_source">show source</a> ]</p>
-            <div id="C00444_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00638_source')" id="l_C00638_source">show source</a> ]</p>
+            <div id="C00638_source" class="dyn-source">
 <pre>
 method(
-  "can't spread value '#{given notice}' given to method '#{message name}' (#{self kind})
+  "can't spread value '#{noticeFor(given)}' given to method '#{message name}' (#{self kind})
 
 #{message asStackTraceText}
 #{context stackTraceAsText}")

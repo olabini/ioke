@@ -79,7 +79,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
       <div id="content">
         <div class="description">
           <p>
-          
+
           </p>
         </div>
 
@@ -90,13 +90,13 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 
         <div class="sectiontitle">Inactive cells</div>
         <ul>
-          <li><a href="#C00439">kind</a></li>
+          <li><a href="#C00633">kind</a></li>
 
         </ul>        
 
         <div class="sectiontitle">Active cells</div>
         <ul>
-          <li><a href="#C00440">report()</a></li>
+          <li><a href="#C00634">report()</a></li>
 
         </ul>
 
@@ -117,7 +117,7 @@ Condition Error Invocation TooManyArguments should have kind("Condition Error In
 
         <div class="sectiontitle">Inactive cells (details)</div>
                 <div class="cell">
-          <a name="C00439"></a>
+          <a name="C00633"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">kind</td>
@@ -131,19 +131,17 @@ Condition Error Invocation TooManyArguments should have kind("Condition Error In
         <div class="sectiontitle">Active cells (details)</div>
                 <div class="cell">
           <div class="title">
-          <a name="C00440"></a><b>report</b>()
+          <a name="C00634"></a><b>report</b>()
           </div>
           <div class="description">
-            <p>
-              returns a representation of this error, printing the given argument values that wasn't expected
-            </p>
+            <p>returns a representation of this error, printing the given argument values that wasn't expected</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00440_source')" id="l_C00440_source">show source</a> ]</p>
-            <div id="C00440_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00634_source')" id="l_C00634_source">show source</a> ]</p>
+            <div id="C00634_source" class="dyn-source">
 <pre>
 method(
-  "didn't expect these arguments: #{extra notice} given to '#{message name}' (#{self kind})
+  "didn't expect these arguments: #{noticeFor(extra)} given to '#{message name}' (#{self kind})
 
 #{message asStackTraceText}
 #{context stackTraceAsText}")

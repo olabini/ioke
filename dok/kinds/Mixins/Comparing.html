@@ -79,7 +79,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
       <div id="content">
         <div class="description">
           <p>
-          allows different objects to be compared, based on the spaceship operator being available
+allows different objects to be compared, based on the spaceship operator being available
           </p>
         </div>
 
@@ -90,19 +90,19 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 
         <div class="sectiontitle">Inactive cells</div>
         <ul>
-          <li><a href="#C00276">kind</a></li>
+          <li><a href="#C00416">kind</a></li>
 
         </ul>        
 
         <div class="sectiontitle">Active cells</div>
         <ul>
-          <li><a href="#C00283">!=(other)</a></li>
-<li><a href="#C00278">&lt;(other)</a></li>
-<li><a href="#C00279">&lt;=(other)</a></li>
-<li><a href="#C00277">&lt;=&gt;(other)</a></li>
-<li><a href="#C00282">==(other)</a></li>
-<li><a href="#C00280">&gt;(other)</a></li>
-<li><a href="#C00281">&gt;=(other)</a></li>
+          <li><a href="#C00423">!=(other)</a></li>
+<li><a href="#C00418">&lt;(other)</a></li>
+<li><a href="#C00419">&lt;=(other)</a></li>
+<li><a href="#C00417">&lt;=&gt;(other)</a></li>
+<li><a href="#C00422">==(other)</a></li>
+<li><a href="#C00420">&gt;(other)</a></li>
+<li><a href="#C00421">&gt;=(other)</a></li>
 
         </ul>
 
@@ -123,7 +123,7 @@ Mixins Comparing kind should ==("Mixins Comparing")
 
         <div class="sectiontitle">Inactive cells (details)</div>
                 <div class="cell">
-          <a name="C00276"></a>
+          <a name="C00416"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">kind</td>
@@ -137,16 +137,14 @@ Mixins Comparing kind should ==("Mixins Comparing")
         <div class="sectiontitle">Active cells (details)</div>
                 <div class="cell">
           <div class="title">
-          <a name="C00283"></a><b>!=</b>(other)
+          <a name="C00423"></a><b>!=</b>(other)
           </div>
           <div class="description">
-            <p>
-              return true if the receiver is not equal to the argument, otherwise false
-            </p>
+            <p>return true if the receiver is not equal to the argument, otherwise false</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00283_source')" id="l_C00283_source">show source</a> ]</p>
-            <div id="C00283_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00423_source')" id="l_C00423_source">show source</a> ]</p>
+            <div id="C00423_source" class="dyn-source">
 <pre>
 method(other, 
   !((&lt;=&gt;(other)) ==(0)))
@@ -159,16 +157,14 @@ method(other,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00278"></a><b>&lt;</b>(other)
+          <a name="C00418"></a><b>&lt;</b>(other)
           </div>
           <div class="description">
-            <p>
-              return true if the receiver is less than the argument, otherwise false
-            </p>
+            <p>return true if the receiver is less than the argument, otherwise false</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00278_source')" id="l_C00278_source">show source</a> ]</p>
-            <div id="C00278_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00418_source')" id="l_C00418_source">show source</a> ]</p>
+            <div id="C00418_source" class="dyn-source">
 <pre>
 method(other, 
   (&lt;=&gt;(other)) ==(0 -(1)))
@@ -181,16 +177,14 @@ method(other,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00279"></a><b>&lt;=</b>(other)
+          <a name="C00419"></a><b>&lt;=</b>(other)
           </div>
           <div class="description">
-            <p>
-              return true if the receiver is less than or equal to the argument, otherwise false
-            </p>
+            <p>return true if the receiver is less than or equal to the argument, otherwise false</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00279_source')" id="l_C00279_source">show source</a> ]</p>
-            <div id="C00279_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00419_source')" id="l_C00419_source">show source</a> ]</p>
+            <div id="C00419_source" class="dyn-source">
 <pre>
 method(other, 
   result = (&lt;=&gt;(other)) 
@@ -204,16 +198,14 @@ method(other,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00277"></a><b>&lt;=&gt;</b>(other)
+          <a name="C00417"></a><b>&lt;=&gt;</b>(other)
           </div>
           <div class="description">
-            <p>
-              should be overridden - will result in an inconsistent ordering by always returning -1 except when comparing to itself, and then it will return 0
-            </p>
+            <p>should be overridden - will result in an inconsistent ordering by always returning -1 except when comparing to itself, and then it will return 0</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00277_source')" id="l_C00277_source">show source</a> ]</p>
-            <div id="C00277_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00417_source')" id="l_C00417_source">show source</a> ]</p>
+            <div id="C00417_source" class="dyn-source">
 <pre>
 method(other, 
   if(cell(:other) kind ==("Mixins Comparing"), 
@@ -228,16 +220,14 @@ method(other,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00282"></a><b>==</b>(other)
+          <a name="C00422"></a><b>==</b>(other)
           </div>
           <div class="description">
-            <p>
-              return true if the receiver is equal to the argument, otherwise false
-            </p>
+            <p>return true if the receiver is equal to the argument, otherwise false</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00282_source')" id="l_C00282_source">show source</a> ]</p>
-            <div id="C00282_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00422_source')" id="l_C00422_source">show source</a> ]</p>
+            <div id="C00422_source" class="dyn-source">
 <pre>
 method(other, 
   (&lt;=&gt;(cell(:other))) ==(0))
@@ -250,16 +240,14 @@ method(other,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00280"></a><b>&gt;</b>(other)
+          <a name="C00420"></a><b>&gt;</b>(other)
           </div>
           <div class="description">
-            <p>
-              return true if the receiver is greater than the argument, otherwise false
-            </p>
+            <p>return true if the receiver is greater than the argument, otherwise false</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00280_source')" id="l_C00280_source">show source</a> ]</p>
-            <div id="C00280_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00420_source')" id="l_C00420_source">show source</a> ]</p>
+            <div id="C00420_source" class="dyn-source">
 <pre>
 method(other, 
   (&lt;=&gt;(other)) ==(1))
@@ -272,16 +260,14 @@ method(other,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00281"></a><b>&gt;=</b>(other)
+          <a name="C00421"></a><b>&gt;=</b>(other)
           </div>
           <div class="description">
-            <p>
-              return true if the receiver is greater than or equal to the argument, otherwise false
-            </p>
+            <p>return true if the receiver is greater than or equal to the argument, otherwise false</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00281_source')" id="l_C00281_source">show source</a> ]</p>
-            <div id="C00281_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00421_source')" id="l_C00421_source">show source</a> ]</p>
+            <div id="C00421_source" class="dyn-source">
 <pre>
 method(other, 
   result = (&lt;=&gt;(other)) 
