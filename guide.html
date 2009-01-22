@@ -307,13 +307,15 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
                   <h2><a name="introduction">Introduction</a></h2>
                   <p>Ioke is a general purpose language. It is a strongly typed, extremely dynamic, prototype object oriented language. It is homoiconic and its closest ancestors are Io, Smalltalk, Ruby and Lisp - but it's quite a distance from all of them. It looks a lot like Io, to a limit.</p>
 
+                  <p>Ioke is a <i>folding</i> language. This means it folds in on itself. You can create new abstractions covering any of the existing abstractions in the language. You can abstract over these, over and over again, until you have a language that lets you express what you want to express in a succinct and readable way. Ioke allows you to fold your code.</p>
+                  
                   <p>Ioke is targeted at the Java Virtual Machine and is tightly integrated with the platform. Why the JVM? It's available everywhere, it gives several important features such as world class garbage collectors, capable thread schedulers and an amazing JIT compiler. All of these are things that serves Ioke well, without requiring direct development resources from the Ioke team. Access to the Java platform also means access to all existing libraries and functionality, with all that entails. The JVM is just a very pragmatic choice.</p>
 
                   <p>You're probably reading this guide at <a href="http://ioke.org/guide.html">ioke.org</a>. That is the official home of the project, although some of the project functionality is hosted at <a href="http://ioke.kenai.org">Kenai</a>, where such things as mailing lists and a bug tracker is available. The canonical source repository for Ioke exists at GitHub, at <a href="http://github.org/olabini/ioke/tree/master">http://github.org/olabini/ioke/tree/master</a>.</p>
 
-                  <p>The current version of Ioke is called Ioke 0. The naming of Ioke will change regularly with major revisions. There are two different versions in play here. Ioke 0 is the name and version of the language and core libraries. The initial implementation for Ioke 0 is called ikJVM 0.1.0, and the version numbers are not interdependent. The next major version of Ioke will be called Ioke S, and you can find information about it in the chapter on <a href="#futurePlans">future plans</a>.</p>
+                  <p>The current version of Ioke is called Ioke S. The naming of Ioke will change regularly with major revisions. There are two different versions in play here. Ioke S is the name and version of the language and core libraries. The initial implementation for Ioke S is called ikj 0.2.0, and the version numbers are not interdependent. The next major version of Ioke will be called Ioke E, and you can find information about it in the chapter on <a href="#futurePlans">future plans</a>.</p>
 
-                  <p>This programming guide -- together with the reference for your current version -- should be the complete document needed to understand Ioke 0, how to program in it, how to understand the names and concepts used, and also to give an initial inkling on what I think is good taste.</p>
+                  <p>This programming guide -- together with the reference for your current version -- should be the complete document needed to understand Ioke S, how to program in it, how to understand the names and concepts used, and also to give an initial inkling on what I think is good taste.</p>
 
                   <p>Note that I will use many names that aren't necessarily the same as the ones traditional programming languages use. These names will be made clear sooner or later in this document, but it might help some to jump forward to <a href="#objects">Objects</a>, skim that bit, and then start over once words like Origin, cell and mimic make sense.</p>
 
@@ -337,7 +339,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 
                   <div class="section">
                     <h3><a name="gettingStarted">Getting started</a></h3>
-                    <p>Ioke is very easy to get started with. The first step is to download a package. Which one you choose depends on what platform you're on, and whether you want to build Ioke yourself, or just start using it. This guide will only cover using a prebuilt version. Go to the download page at <a href="http://ioke.org/download.html">http://ioke.org/download.html</a>, and download one of the distributions. At the time of writing the full version of Ioke is Ioke 0 ikJVM 0.1.0. Choose the latest download in the 0.1-series for this document to apply. In later revisions of the document, any major change will be noted inline.</p>
+                    <p>Ioke is very easy to get started with. The first step is to download a package. Which one you choose depends on what platform you're on, and whether you want to build Ioke yourself, or just start using it. This guide will only cover using a prebuilt version. Go to the download page at <a href="http://ioke.org/download.html">http://ioke.org/download.html</a>, and download one of the distributions. At the time of writing the full version of Ioke is Ioke S ikj 0.2.0. Choose the latest download in the 0.2-series for this document to apply. In later revisions of the document, any major change will be noted inline.</p>
 
                     <p>Once you have downloaded the distribution, you need to unpack it somewhere, and finally add the bin-directory to your PATH environment variable. There is also a jar-download that can be run directly. If you choose this option you don't get the benefits of having a home for Ioke, which in some cases be inconvenient. Ioke can be run directly from the jar-file, though.</p>
 
@@ -1880,7 +1882,7 @@ msg code <span style="color: #a52a2a;">;; "2 -(1)"</span></pre>
                   <h2><a name="importing">Importing</a></h2>
                   <p>To import new code into Ioke, the method "use" should be used. The terminology is that you give "use" a name of a module to include, and if that module has already been included it will not be evaluated again. If it has not been included, "use" will try to find the module using several different heuristics. It will add an ".ik" to the name and try to look up a file of that name - but it will also try to look it up without a ".ik", if a full file name has been given. Several different places will be searched, and the exact order and what will be searched can be found by calling the "System loadPath" method. This will return a list of all the places to search for modules. This list can be modified to add more directories to the load path.</p>
                   
-                  <p>If a module of the specified name can't be found, a condition will be called.</p>
+                  <p>If a module of the specified name can't be found, a condition will be signalled.</p>
                 </div>
 
                 <div class="chapter">
@@ -2454,7 +2456,7 @@ describe(<span style="color: #606060;">Foo</span><span style="color: #006666;">,
 
   describe(<span style="color: #0050a0;">"aMethod"</span><span style="color: #006666;">,</span>
     <span style="color: #ffc0cb;">it</span>(<span style="color: #0050a0;">"should not return nil"</span><span style="color: #006666;">,</span>
-      <span style="color: #606060;">Foo</span> aMethod should not <span style="color: #00bfff;">==</span> <span style="color: #6495ed;">nil</span>
+      <span style="color: #606060;">Foo</span> aMethod should not be <span style="color: #6495ed;">nil</span>
     )
 
     <span style="color: #ffc0cb;">it</span>(<span style="color: #0050a0;">"should return a number that can be multiplied"</span><span style="color: #006666;">,</span>
@@ -2485,16 +2487,15 @@ describe(<span style="color: #606060;">Foo</span><span style="color: #006666;">,
 
                 <div class="chapter">
                   <h2><a name="missing">What is missing</a></h2>
-                  <p>Sadly, Ioke 0 is not finished. Many, many, many things are missing before it's complete. The core mechanics of the language I'm feeling fairly confident in, but the core libraries are generally only partially implemented. I have implemented the pieces I've needed, but not much else. That means there are big holes all over the core. Regular expressions and IO are two examples of things that are mostly just not there yet.</p>
+                  <p>Sadly, Ioke S is not finished. Several things are missing before it's complete. The core mechanics of the language I'm feeling fairly confident in, but the core libraries are generally only partially implemented. They are much more complete than for the Ioke 0 release, but there still exist large holes in it.</p>
 
-                  <p>Another major part -- maybe even THE major part -- is Java integration. At the moment it is not possible to call or interact with Java libraries. That need to happen, but it will not happen for this release.</p>
-
-                  <p>I have not given any consideration at all to issues of concurrency. There are no concurrency mechanisms in the language at the moment. That will also need to be looked at, at some point.</p>
+                  <p>Another major part -- maybe even THE major part -- is Java integration. At the moment it is not possible to call or interact with Java libraries. That need to happen, and it will happen after the S release. Concurrency will also be part of the work after the S release.</p>
                 </div>
 
                 <div class="chapter">
                   <h2><a name="futurePlans">Future plans</a></h2>
-                  <p>I have many plans for the future of Ioke. The next major versions of Ioke will be called Ioke S, Ioke E and Ioke P, respectively. Exactly what they will contain we'll have to see, but these are things I need to have, large and small:</p>
+                  <p>I have many plans for the future of Ioke. The next major versions of Ioke will be called Ioke E and Ioke P, respectively. Exactly what they will contain we'll have to see, but these are things I need to have, large and small:</p>
+
                   <ul>
                     <li>Java integration</li>
                     <li>Concurrency primitives of some kind</li>
