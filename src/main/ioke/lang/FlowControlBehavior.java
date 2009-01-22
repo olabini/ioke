@@ -36,7 +36,7 @@ public class FlowControlBehavior {
                 }
 
                 @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                public Object activate(IokeObject method, final IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().checkArgumentCount(context, message, on);
                     List<Object> args = message.getArguments();
                     LexicalContext lc = new LexicalContext(context.runtime, context.getRealContext(), "Let lexical activation context", message, context);
@@ -67,13 +67,15 @@ public class FlowControlBehavior {
                                 if(place != realPlace) {
                                     wherePlace = Message.getEvaluatedArgument(place, context);
                                 }
-
-                                Object originalValue = null;
-                                try {
-                                    originalValue = realPlace.sendTo(context, wherePlace);
-                                } catch(Throwable e) {
-                                    originalValue = null;
-                                }
+                                
+                                final IokeObject _realPlace = realPlace;
+                                final Object _wherePlace = wherePlace;
+                                
+                                Object originalValue = runtime.withReturningRescue(context, null, new RunnableWithReturnAndControlFlow() {
+                                        public Object run() throws ControlFlow {
+                                            return _realPlace.sendTo(context, _wherePlace);
+                                        }
+                                    });
                             
                                 if(realPlace.getArguments().size() != 0) {
                                     String newName = realPlace.getName() + "=";
