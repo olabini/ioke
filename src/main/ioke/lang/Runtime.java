@@ -791,6 +791,26 @@ public class Runtime {
         }
     }
 
+    public Object withReturningRescue(IokeObject context, Object toReturn, RunnableWithReturnAndControlFlow javaRescue) throws ControlFlow {
+        List<RescueInfo> rescues = new ArrayList<RescueInfo>();
+        IokeObject rr = IokeObject.as(mimic.sendTo(context, rescue));
+        List<Object> conds = new ArrayList();
+        conds.add(this.condition);
+        rescues.add(new RescueInfo(rr, conds, rescues, getBindIndex()));
+        registerRescues(rescues);
+        try {
+            return javaRescue.run();
+        } catch(ControlFlow.Rescue e) {
+            if(e.getRescue().token == rescues) {
+                return toReturn;
+            } else {
+                throw e;
+            }
+        } finally {
+            unregisterRescues(rescues);
+        }
+    }
+    
     public static class RescueInfo {
         public final IokeObject rescue;
         public final List<Object> applicableConditions;
