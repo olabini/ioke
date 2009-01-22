@@ -27,9 +27,16 @@ public class TypeCheckingArgumentsDefinition extends DefaultArgumentsDefinition 
         if (mimic == null) {
             return on;
         } else {
-            return IokeObject.as(mimic).convertToThis(on, message, context);
+            if(mimic instanceof Builder.OrNil) {
+                if(on == context.runtime.nil) {
+                    return on;
+                } else {
+                    return IokeObject.as(((Builder.OrNil)mimic).realKind).convertToThis(on, message, context);
+                }
+            } else {
+                return IokeObject.as(mimic).convertToThis(on, message, context);
+            }
         }
-
     }
 
     public Object getValidatedArgumentsAndReceiver(IokeObject context,
@@ -73,6 +80,13 @@ public class TypeCheckingArgumentsDefinition extends DefaultArgumentsDefinition 
     }
     
     public static class Builder extends DefaultArgumentsDefinition.Builder {
+        public static class OrNil {
+            public final Object realKind;
+            public OrNil(Object realKind) {
+                this.realKind = realKind;
+            }
+        }
+
         private List<Object> mustMimic = new ArrayList<Object>();
         private Object receiverMustMimic;
 
@@ -87,6 +101,12 @@ public class TypeCheckingArgumentsDefinition extends DefaultArgumentsDefinition 
 
         public Builder whichMustMimic(Object mimic) {
             mustMimic.add(mimic);
+            setMimic = true;
+            return this;
+        }
+
+        public Builder whichMustMimicOrBeNil(Object mimic) {
+            mustMimic.add(new OrNil(mimic));
             setMimic = true;
             return this;
         }
