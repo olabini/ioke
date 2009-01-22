@@ -5,6 +5,7 @@ package ioke.lang;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import ioke.lang.exceptions.ControlFlow;
@@ -43,17 +44,17 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
     }
     
     @Override
-    public void init(IokeObject syntax) throws ControlFlow {
+    public void init(final IokeObject syntax) throws ControlFlow {
         syntax.setKind("DefaultSyntax");
         syntax.registerCell("activatable", syntax.runtime._true);
 
-        syntax.registerMethod(syntax.runtime.newJavaMethod("returns the name of the syntax", new JavaMethod.WithNoArguments("name") {
+        syntax.registerMethod(syntax.runtime.newJavaMethod("returns the name of the syntax", new TypeCheckingJavaMethod.WithNoArguments("name", syntax) {
                 @Override
-                public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return context.runtime.newText(((DefaultSyntax)IokeObject.data(on)).name);
                 }
             }));
+        
         syntax.registerMethod(syntax.runtime.newJavaMethod("activates this syntax with the arguments given to call", new JavaMethod("call") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
@@ -70,54 +71,56 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
                     return IokeObject.as(on).activate(context, message, context.getRealContext());
                 }
             }));
+        
         syntax.registerMethod(syntax.runtime.newJavaMethod("returns the result of activating this syntax without actually doing the replacement or execution part.", new JavaMethod("expand") {
-                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .withRestUnevaluated("arguments")
                     .getArguments();
 
                 @Override
-                public DefaultArgumentsDefinition getArguments() {
+                public TypeCheckingArgumentsDefinition getArguments() {
                     return ARGUMENTS;
                 }
 
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    return ((DefaultSyntax)IokeObject.data(on)).expand(IokeObject.as(on), context, message, context.getRealContext(), null);
+                    Object onAsSyntax = context.runtime.defaultSyntax.convertToThis(on, message, context);
+                    return ((DefaultSyntax)IokeObject.data(onAsSyntax)).expand(IokeObject.as(onAsSyntax), context, message, context.getRealContext(), null);
                 }
             }));
+        
         syntax.registerMethod(syntax.runtime.newJavaMethod("returns the message chain for this syntax", new JavaMethod.WithNoArguments("message") {
                 @Override
-                public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
-                    return ((AssociatedCode)IokeObject.data(on)).getCode();
+                public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    return ((AssociatedCode)IokeObject.data(IokeObject.ensureTypeIs(AssociatedCode.class, self, on, context, message))).getCode();
                 }
             }));
+        
         syntax.registerMethod(syntax.runtime.newJavaMethod("returns the code for the argument definition", new JavaMethod.WithNoArguments("argumentsCode") {
                 @Override
-                public Object activate(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getEvaluatedArguments(dynamicContext, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
-                    return dynamicContext.runtime.newText(((AssociatedCode)IokeObject.data(on)).getArgumentsCode());
+                public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    return context.runtime.newText(((AssociatedCode)IokeObject.data(IokeObject.ensureTypeIs(AssociatedCode.class, self, on, context, message))).getArgumentsCode());
                 }
             }));
-        syntax.registerMethod(syntax.runtime.newJavaMethod("Returns a text inspection of the object", new JavaMethod.WithNoArguments("inspect") {
+
+        syntax.registerMethod(syntax.runtime.newJavaMethod("Returns a text inspection of the object", new TypeCheckingJavaMethod.WithNoArguments("inspect", syntax) {
                 @Override
-                public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return context.runtime.newText(DefaultSyntax.getInspect(on));
                 }
             }));
-        syntax.registerMethod(syntax.runtime.newJavaMethod("Returns a brief text inspection of the object", new JavaMethod.WithNoArguments("notice") {
+        
+        syntax.registerMethod(syntax.runtime.newJavaMethod("Returns a brief text inspection of the object", new TypeCheckingJavaMethod.WithNoArguments("notice", syntax) {
                 @Override
-                public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return context.runtime.newText(DefaultSyntax.getNotice(on));
                 }
             }));
-        syntax.registerMethod(syntax.runtime.newJavaMethod("returns the full code of this syntax, as a Text", new JavaMethod.WithNoArguments("code") {
+
+        syntax.registerMethod(syntax.runtime.newJavaMethod("returns the full code of this syntax, as a Text", new TypeCheckingJavaMethod.WithNoArguments("code", syntax) {
                 @Override
-                public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     IokeData data = IokeObject.data(on);
                     if(data instanceof DefaultSyntax) {
                         return context.runtime.newText(((DefaultSyntax)data).getCodeString());
@@ -126,11 +129,11 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
                     }
                 }
             }));
+
         syntax.registerMethod(syntax.runtime.newJavaMethod("returns idiomatically formatted code for this syntax", new JavaMethod.WithNoArguments("formattedCode") {
                 @Override
-                public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
-                    return context.runtime.newText(((AssociatedCode)IokeObject.data(on)).getFormattedCode(self));
+                public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    return context.runtime.newText(((AssociatedCode)IokeObject.data(IokeObject.ensureTypeIs(AssociatedCode.class, self, on, context, message))).getFormattedCode(self));
                 }
             }));
     }
