@@ -16,7 +16,7 @@ describe(Runtime,
 
     describe("versionNumber",
       it("should be the correct version",
-        Runtime version versionNumber should == [0,1,1]
+        Runtime version versionNumber should == [0,2,0]
       )
     )
   )
