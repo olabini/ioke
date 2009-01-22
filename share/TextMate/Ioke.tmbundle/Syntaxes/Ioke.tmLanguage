@@ -8,62 +8,72 @@
 	</array>
 	<key>firstLineMatch</key>
 	<string>^#!/.*\bioke\b</string>
-	<key>foldingStartMarker</key>
-	<string>(method|do|macro|fn|fnx|describe|it)\((?![^)]*+\))</string>
-	<key>foldingStopMarker</key>
-	<string>^\s*+\)</string>
 	<key>name</key>
 	<string>Ioke</string>
 	<key>patterns</key>
 	<array>
 		<dict>
-			<key>match</key>
-			<string>\b(Base|Call|Condition|DateTime|DefaultBehavior|DefaultMacro|DefaultMethod|DefaultSyntax|Dict|FileSystem|Ground|Handler|IO|JavaMethod|LexicalBlock|LexicalMacro|List|Message|Method|Mixins|Number|Number Decimal|Number Integer|Number Rational|Number Real|Origin|Pair|Range|Regexp|Rescue|Restart|Runtime|Set|Symbol|System|Text)\b</string>
-			<key>name</key>
-			<string>entity.prototype-names.ioke</string>
-		</dict>
-		<dict>
 			<key>begin</key>
-			<string>[[:alnum:]!?_:-]+(?=[[:space:]]*=.*mimic(?=\b).*($|\.))</string>
+			<string>((?&lt;=fn\()|(?&lt;=fnx\()|(?&lt;=method\()|(?&lt;=macro\()|(?&lt;=lecro\()|(?&lt;=syntax\()|(?&lt;=dmacro\()|(?&lt;=dlecro\()|(?&lt;=dlecrox\()|(?&lt;=dsyntax\())[[:space]]*"</string>
 			<key>end</key>
-			<string>(?=\.)|$</string>
+			<string>"</string>
 			<key>name</key>
-			<string>constant.object.mimic.ioke</string>
+			<string>string.documentation.ioke</string>
 			<key>patterns</key>
 			<array>
 				<dict>
-					<key>include</key>
-					<string>#prototype_names</string>
+					<key>match</key>
+					<string>\\.</string>
+					<key>name</key>
+					<string>constant.character.escape.ioke</string>
 				</dict>
 				<dict>
-					<key>include</key>
-					<string>#operator_symbols</string>
+					<key>captures</key>
+					<dict>
+						<key>0</key>
+						<dict>
+							<key>name</key>
+							<string>punctuation.section.embedded.ioke</string>
+						</dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>source.embedded.empty.ioke</string>
+						</dict>
+					</dict>
+					<key>match</key>
+					<string>#\{(\})</string>
+					<key>name</key>
+					<string>source.embedded.ioke</string>
 				</dict>
 				<dict>
-					<key>include</key>
-					<string>#operator_names</string>
-				</dict>
-				<dict>
-					<key>include</key>
-					<string>#kinds</string>
+					<key>begin</key>
+					<string>#\{</string>
+					<key>captures</key>
+					<dict>
+						<key>0</key>
+						<dict>
+							<key>name</key>
+							<string>punctuation.section.embedded.ioke</string>
+						</dict>
+					</dict>
+					<key>end</key>
+					<string>\}</string>
+					<key>name</key>
+					<string>source.embedded.ioke</string>
+					<key>patterns</key>
+					<array>
+						<dict>
+							<key>include</key>
+							<string>#nest_curly_and_self</string>
+						</dict>
+						<dict>
+							<key>include</key>
+							<string>$self</string>
+						</dict>
+					</array>
 				</dict>
 			</array>
-		</dict>
-		<dict>
-			<key>include</key>
-			<string>#prototype_names</string>
-		</dict>
-		<dict>
-			<key>include</key>
-			<string>#operator_symbols</string>
-		</dict>
-		<dict>
-			<key>include</key>
-			<string>#operator_names</string>
-		</dict>
-		<dict>
-			<key>include</key>
-			<string>#kinds</string>
 		</dict>
 		<dict>
 			<key>begin</key>
@@ -74,38 +84,66 @@
 			<string>comment.line.ioke</string>
 		</dict>
 		<dict>
+			<key>begin</key>
+			<string>#!</string>
+			<key>end</key>
+			<string>$\n?</string>
+			<key>name</key>
+			<string>comment.line.ioke</string>
+		</dict>
+		<dict>
 			<key>match</key>
-			<string>\b[[:digit:]_.eE\-]+\b</string>
+			<string>((?&lt;![[:alnum:]!?_:])|(?&lt;![[:alnum:]!?_:]!))[[:alnum:]!?_:]+?:\s</string>
+			<key>name</key>
+			<string>string.literal.keyword-argument.ioke</string>
+		</dict>
+		<dict>
+			<key>include</key>
+			<string>#function_names</string>
+		</dict>
+		<dict>
+			<key>include</key>
+			<string>#prototype_names</string>
+		</dict>
+		<dict>
+			<key>include</key>
+			<string>#operator_names</string>
+		</dict>
+		<dict>
+			<key>include</key>
+			<string>#kinds</string>
+		</dict>
+		<dict>
+			<key>include</key>
+			<string>#assignments</string>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>((?&lt;![[:alnum:]!?_:])|(?&lt;![[:alnum:]!?_:]!))[[:alnum:]!?_:]+(?=[[:space:]]*=.*mimic[[:space]])</string>
+			<key>name</key>
+			<string>constant.object.mimic.ioke</string>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>((?&lt;![[:alnum:]!?_:])|(?&lt;![[:alnum:]!?_:]!))[+-]?[[:digit:]_.eE]+(?![[:alnum:]!?_:])</string>
 			<key>name</key>
 			<string>constant.numeric.ioke</string>
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>\b0[xX][A-Fa-f0-9]+</string>
+			<string>((?&lt;![[:alnum:]!?_:])|(?&lt;![[:alnum:]!?_:]!))0[xX][[:xdigit:]]+\b</string>
 			<key>name</key>
 			<string>constant.numeric.hexadecimal.ioke</string>
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>\b[A-Z][[:alnum:]!?_:-]*\b</string>
-			<key>name</key>
-			<string>constant.kind.ioke</string>
-		</dict>
-		<dict>
-			<key>match</key>
-			<string>[[:alnum:]!?_:-]+(?=[[:space:]]*[+*/-]?=[^=].*($|\.))</string>
+			<string>[[:alnum:]_:][[:alnum:]!?_:]*(?=[[:space:]]*[+*/-]?=[^=].*($|\.))</string>
 			<key>name</key>
 			<string>variable.assignment.ioke</string>
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>[[:alnum:]!?_:-]+?:\s</string>
-			<key>name</key>
-			<string>string.literal.keyword-argument.ioke</string>
-		</dict>
-		<dict>
-			<key>match</key>
-			<string>[^[:alnum:]!?_:-]:[[:alnum:]!?_:-]+</string>
+			<string>((?&lt;![[:alnum:]!?_:])|(?&lt;![[:alnum:]!?_:]!)):[[:alnum:]!?_:-]+</string>
 			<key>name</key>
 			<string>string.literal.symbol.ioke</string>
 		</dict>
@@ -312,46 +350,84 @@
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>\b(fn|fnx|method|macro)\b</string>
-			<key>name</key>
-			<string>entity.name.function</string>
-		</dict>
-		<dict>
-			<key>match</key>
-			<string>(print|println|cell\?|cell|documentation|if|unless|while|until|loop|for|for:set|for:dict|bind|rescue|handle|restart|asText|inspect|notice|do|call|list|dict|set|with|kind)</string>
+			<string>((?&lt;![[:alnum:]!?_:])|(?&lt;![[:alnum:]!?_:]!))(print|println|cell\?|cell|keyword|documentation|if|unless|while|until|loop|for|for:set|for:dict|bind|rescue|handle|restart|asText|inspect|notice|do|call|list|dict|set|with|kind)(?![[:alnum:]!?_:])</string>
 			<key>name</key>
 			<string>keyword.cell-names.ioke</string>
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>(\`\`|\`|''|'|\.|\,|@|@@|\(|\))</string>
+			<string>(\`\`|\`|''|'|\.|\,|@|@@)</string>
 			<key>name</key>
 			<string>punctuation.ioke</string>
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>\bit\b</string>
+			<string>((?&lt;![[:alnum:]!?_:])|(?&lt;![[:alnum:]!?_:]!))it(?![[:alnum:]!?_:])</string>
 			<key>name</key>
 			<string>entity.standout-names.ioke</string>
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>\b(return|break|continue|mimic|self|use|fn|fnx|method|macro|lecro|lecrox|syntax|dmacro|dlecro|dlecrox|dsyntax|unless|true|false|nil)\b</string>
+			<string>[[:alnum:]_][[:alnum:]!?_:]*</string>
 			<key>name</key>
-			<string>keyword.operator.names.ioke</string>
+			<string>source.identifier.ioke</string>
+		</dict>
+		<dict>
+			<key>include</key>
+			<string>#operator_symbols</string>
 		</dict>
 	</array>
 	<key>repository</key>
 	<dict>
+		<key>assignments</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>match</key>
+					<string>(?&lt;=[[:space:]])[^[:space:].]+=[[:space:]]*=[[:space:]](fn|fnx|method|macro|lecro|syntax|dmacro|dlecro|dlecrox|dsyntax)</string>
+					<key>name</key>
+					<string>variable.assignment.function.ioke</string>
+				</dict>
+			</array>
+		</dict>
+		<key>function_names</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>match</key>
+					<string>((^)|(?&lt;![[:alnum:]!?_:])|(?&lt;![[:alnum:]!?_:]!))(fn|fnx|method|macro|lecro|syntax|dmacro|dlecro|dlecrox|dsyntax)(?![[:alnum:]!?_:])</string>
+					<key>name</key>
+					<string>entity.name.function.ioke</string>
+				</dict>
+			</array>
+		</dict>
 		<key>kinds</key>
 		<dict>
 			<key>patterns</key>
 			<array>
 				<dict>
 					<key>match</key>
-					<string>\b[A-Z][[:alnum:]!?_:-]*\b</string>
+					<string>((?&lt;![[:alnum:]!?_:])|(?&lt;![[:alnum:]!?_:]!))[A-Z][[:alnum:]!?_:-]*(?![[:alnum:]!?_:])</string>
 					<key>name</key>
 					<string>constant.kind.ioke</string>
+				</dict>
+			</array>
+		</dict>
+		<key>meta_parens</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>begin</key>
+					<string>\(</string>
+					<key>end</key>
+					<string>\)</string>
+					<key>include</key>
+					<string>#meta_parens</string>
+					<key>name</key>
+					<string>meta.parens.ioke</string>
 				</dict>
 			</array>
 		</dict>
@@ -392,7 +468,7 @@
 			<array>
 				<dict>
 					<key>match</key>
-					<string>\b(return|break|continue|mimic|self|use|fn|fnx|method|macro|lecro|lecrox|syntax|dmacro|dlecro|dlecrox|dsyntax|unless|true|false|nil)\b</string>
+					<string>((?&lt;![[:alnum:]!?_:])|(?&lt;![[:alnum:]!?_:]!))(return|break|continue|mimic|self|use|fn|fnx|method|macro|lecro|lecrox|syntax|dmacro|dlecro|dlecrox|dsyntax|unless|true|false|nil)(?![[:alnum:]!?_:])</string>
 					<key>name</key>
 					<string>keyword.operator.names.ioke</string>
 				</dict>
@@ -404,7 +480,7 @@
 			<array>
 				<dict>
 					<key>match</key>
-					<string>(\.\.\.|===|\*\*&gt;|&amp;&amp;&gt;|\|\|&gt;|\-&gt;&gt;|\+&gt;&gt;|!&gt;&gt;|&lt;&gt;&gt;&gt;|&amp;&gt;&gt;|%&gt;&gt;|#&gt;&gt;|@&gt;&gt;|/&gt;&gt;|\*&gt;&gt;|\?&gt;&gt;|\|&gt;&gt;|\^&gt;&gt;|~&gt;&gt;|\$&gt;&gt;|&lt;&lt;=|&gt;&gt;=|&lt;=&gt;|&lt;\-&gt;|=~|!~|=&gt;|\+\+|\-\-|&lt;=|&gt;=|==|!=|&amp;&amp;|\.\.|\+=|\-=|\*=|\/=|%=|&amp;=|\^=|\|=|&lt;\-|\+&gt;|!&gt;|&lt;&gt;|&amp;&gt;|%&gt;|#&gt;|@&gt;|\/&gt;|\*&gt;|\?&gt;|\|&gt;|\^&gt;|~&gt;|\$&gt;|&lt;\-&gt;|\-&gt;|&lt;&lt;|&gt;&gt;|\?\||\?&amp;|\|\||&gt;|&lt;|\*|\/|%|\+|\-|&amp;|\^|\||=|\$)(?![.=*&amp;|&gt;!&lt;%#@/\\+?$~^-])</string>
+					<string>(?&lt;![.=*&amp;|&gt;!&lt;%#@/\\+?$~^:-])(\.\.\.|===|\*\*&gt;|&amp;&amp;&gt;|\|\|&gt;|\-&gt;&gt;|\+&gt;&gt;|!&gt;&gt;|&lt;&gt;&gt;&gt;|&amp;&gt;&gt;|%&gt;&gt;|#&gt;&gt;|@&gt;&gt;|/&gt;&gt;|\*&gt;&gt;|\?&gt;&gt;|\|&gt;&gt;|\^&gt;&gt;|~&gt;&gt;|\$&gt;&gt;|&lt;&lt;=|&gt;&gt;=|&lt;=&gt;|&lt;\-&gt;|:::|::|=~|!~|=&gt;|\+\+|\-\-|&lt;=|&gt;=|==|!=|&amp;&amp;|\.\.|\+=|\-=|\*=|\/=|%=|&amp;=|\^=|\|=|&lt;\-|\+&gt;|!&gt;|&lt;&gt;|&amp;&gt;|%&gt;|#&gt;|@&gt;|\/&gt;|\*&gt;|\?&gt;|\|&gt;|\^&gt;|~&gt;|\$&gt;|&lt;\-&gt;|\-&gt;|&lt;&lt;|&gt;&gt;|\?\||\?&amp;|\|\||&gt;|&lt;|\*|\/|%|\+|\-|&amp;|\^|\||=|\$|!)(?![.=*&amp;|&gt;!&lt;%#@/\\+?$~^:-])</string>
 					<key>name</key>
 					<string>entity.operator.symbols.ioke</string>
 				</dict>
@@ -416,7 +492,7 @@
 			<array>
 				<dict>
 					<key>match</key>
-					<string>\b(Base|Call|Condition|DateTime|DefaultBehavior|DefaultMacro|DefaultMethod|DefaultSyntax|Dict|FileSystem|Ground|Handler|IO|JavaMethod|LexicalBlock|LexicalMacro|List|Message|Method|Mixins|Number|Number Decimal|Number Integer|Number Rational|Number Real|Origin|Pair|Range|Regexp|Rescue|Restart|Runtime|Set|Symbol|System|Text)\b</string>
+					<string>((?&lt;![[:alnum:]!?_:])|(?&lt;![[:alnum:]!?_:]!))(Base|Call|Condition|DateTime|DefaultBehavior|DefaultMacro|DefaultMethod|DefaultSyntax|Dict|FileSystem|Ground|Handler|IO|JavaMethod|LexicalBlock|LexicalMacro|List|Message|Method|Mixins|Number|Number Decimal|Number Integer|Number Rational|Number Real|Origin|Pair|Range|Regexp|Rescue|Restart|Runtime|Set|Symbol|System|Text)(?![[:alnum:]!?_:])</string>
 					<key>name</key>
 					<string>entity.prototype-names.ioke</string>
 				</dict>
