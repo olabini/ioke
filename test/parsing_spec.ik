@@ -287,4 +287,11 @@ bar" should == "foobar"
       Message fromText("foo bar quux :: blarg mux") code should == "blarg mux ::(foo bar quux)"
     )
   )
+
+  describe("strange characters",
+    it("should handle japanese characters correctly",
+      キャンディ! = "Candy!"
+      キャンディ! should == "Candy!"
+    )
+  )
 )

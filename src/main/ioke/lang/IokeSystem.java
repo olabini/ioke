@@ -174,17 +174,17 @@ public class IokeSystem extends IokeData {
                 }
 
                 InputStream is = IokeSystem.class.getResourceAsStream(before + name + suffix);
-                if(null != is) {
-                    if(loaded.contains(name+suffix)) {
-                        return false;
-                    } else {
-                        context.runtime.evaluateStream(name+suffix, new InputStreamReader(is), message, context);
-                        loaded.add(name+suffix);
-                        return true;
-                    }
-                }
-
                 try {
+                    if(null != is) {
+                        if(loaded.contains(name+suffix)) {
+                            return false;
+                        } else {
+                            context.runtime.evaluateStream(name+suffix, new InputStreamReader(is, "UTF-8"), message, context);
+                            loaded.add(name+suffix);
+                            return true;
+                        }
+                    }
+
                     File f;
 
                     if(isAbsoluteFileName(currentS)) {

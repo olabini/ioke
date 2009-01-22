@@ -6,7 +6,7 @@ package ioke.lang;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.InputStreamReader;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.File;
 import java.io.StringReader;
 
@@ -485,7 +485,7 @@ public class Runtime {
     public Object evaluateFile(File f, IokeObject message, IokeObject context) throws ControlFlow {
         try {
             ((IokeSystem)IokeObject.data(system)).pushCurrentFile(f.getCanonicalPath());
-            return evaluateStream(new FileReader(f), message, context);
+            return evaluateStream(new InputStreamReader(new FileInputStream(f), "UTF-8"), message, context);
         } catch(Exception e) {
             reportJavaException(e, message, context);
             return null;
@@ -498,9 +498,9 @@ public class Runtime {
         try {
             ((IokeSystem)IokeObject.data(system)).pushCurrentFile(filename);
             if(IokeSystem.isAbsoluteFileName(filename)) {
-                return evaluateStream(new FileReader(new File(filename)), message, context);
+                return evaluateStream(new InputStreamReader(new FileInputStream(new File(filename)), "UTF-8"), message, context);
             } else {
-                return evaluateStream(new FileReader(new File(((IokeSystem)IokeObject.data(system)).getCurrentWorkingDirectory(), filename)), message, context);
+                return evaluateStream(new InputStreamReader(new FileInputStream(new File(((IokeSystem)IokeObject.data(system)).getCurrentWorkingDirectory(), filename)), "UTF-8"), message, context);
             }
         } catch(Exception e) {
             reportJavaException(e, message, context);
