@@ -42,14 +42,14 @@ public class Base {
                 }
             }));
 
-        base.registerMethod(base.runtime.newJavaMethod("sets the documentation string for a specific object.", new TypeCheckingJavaMethod("documentation=") {
-                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
+        base.registerMethod(base.runtime.newJavaMethod("sets the documentation string for a specific object.", new JavaMethod("documentation=") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
-                    .withRequiredPositional("text").whichMustMimic(base.runtime.text)
+                    .withRequiredPositional("text")
                     .getArguments();
 
                 @Override
-                public TypeCheckingArgumentsDefinition getArguments() {
+                public DefaultArgumentsDefinition getArguments() {
                     return ARGUMENTS;
                 }
 
@@ -59,6 +59,9 @@ public class Base {
                     if(arg == context.runtime.nil) {
                         IokeObject.as(on).setDocumentation(null, message, context);
                     } else {
+                        if(!Text.isText(arg)) {
+                            arg = context.runtime.text.convertToThis(arg, message, context);
+                        }
                         String s = Text.getText(arg);
                         IokeObject.as(on).setDocumentation(s, message, context);
                     }
