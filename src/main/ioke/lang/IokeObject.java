@@ -15,7 +15,7 @@ import ioke.lang.exceptions.ControlFlow;
 /**
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
-public class IokeObject {
+public class IokeObject implements TypeChecker {
     public Runtime runtime;
     private String documentation;
     private Map<String, Object> cells = new LinkedHashMap<String, Object>();
@@ -656,7 +656,7 @@ public class IokeObject {
             if(signalCondition) {
                 return data.convertTo(this, kind, true, conversionMethod, message, context);
             }
-            return context.runtime.nil;
+            return context.runtime.nul;
         }
         return result;
     }
@@ -670,7 +670,7 @@ public class IokeObject {
             if(signalCondition) {
                 return data.convertTo(this, mimic, true, conversionMethod, message, context);
             }
-            return context.runtime.nil;
+            return context.runtime.nul;
         }
         return result;
     }
@@ -933,5 +933,10 @@ public class IokeObject {
 
     public int getPosition() throws ControlFlow {
         return data.getPosition(this);
+    }
+
+    // TypeChecker
+    public Object convertToMimic(Object on, IokeObject message, IokeObject context, boolean signal) throws ControlFlow {
+        return convertToThis(on, signal, message, context);
     }
 }// IokeObject
