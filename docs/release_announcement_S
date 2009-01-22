@@ -1,0 +1,40 @@
+
+Ioke S released
+---------------
+
+Ioke is a language that is designed to be as expressive as possible. It is a dynamic language targeted at the Java Virtual Machine. It's been designed from scratch to be a highly flexible general purpose language. It is a prototype-based programming language that is inspired by Io, Smalltalk, Lisp and Ruby.
+
+
+Homepage: http://ioke.org
+Download: http://ioke.org/download.html
+Programming guide: http://ioke.org/guide.html
+
+
+Ioke S is the second release of Ioke. It includes a large amount of new features compared to Ioke 0. Among the most important are syntactic macros, full regular expression support, for comprehensions, aspects, cond and case, destructuring macros, and many more things.
+
+Ioke S also includes a large amount of bug fixes, and also several example programs.
+
+Features:
+- Expressiveness first
+- Strong, dynamic typing
+- Prototype based object orientation
+- Homoiconic language
+- Simple syntax
+- Powerful macro facilities
+- Condition system
+- Aspects
+- Developed using TDD
+- Documentation system that combines documentation with specs
+- Wedded to the JVM
+
+The many things added in Ioke S could not have been done without the support of several new contributors. I would like to call out and thank:
+T W                          <twellman@gmail.com>
+Sam Aaron                    <samaaron@gmail.com>
+Carlos Villela               <cv@lixo.org>
+Brian Guthrie                <btguthrie@gmail.com>
+Martin Elwin                 <elvvin@gmail.com>
+Felipe Rodrigues de Almeida  <felipero@gmail.com>
+
+
+Regards
+Ola Bini    - ola.bini@gmail.com
