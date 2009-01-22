@@ -45,7 +45,7 @@ public class Base {
         base.registerMethod(base.runtime.newJavaMethod("sets the documentation string for a specific object.", new TypeCheckingJavaMethod("documentation=") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
-                    .withRequiredPositional("text").whichMustMimicOrBeNil(base.runtime.text)
+                    .withRequiredPositional("text").whichMustMimic(base.runtime.text).orBeNil()
                     .getArguments();
 
                 @Override
@@ -59,9 +59,6 @@ public class Base {
                     if(arg == context.runtime.nil) {
                         IokeObject.as(on).setDocumentation(null, message, context);
                     } else {
-                        if(!Text.isText(arg)) {
-                            arg = context.runtime.text.convertToThis(arg, message, context);
-                        }
                         String s = Text.getText(arg);
                         IokeObject.as(on).setDocumentation(s, message, context);
                     }
