@@ -1,4 +1,10 @@
 
+- push to hg
+- publish release announcement
+- add stuff to ioke.org
+
+- look at setting up a wiki
+
 - think about Java integration
 - think about concurrency
   futures with agents, like Io, agents are a thread pool, futures become the real value when needed. agents can be spun off too. use some other syntax since @ is taken.
