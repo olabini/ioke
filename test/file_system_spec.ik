@@ -153,6 +153,16 @@ describe(FileSystem,
       FileSystem parentOf("/usr/local") should == "/usr"
     )
   )
+  
+  describe("readFully",
+    it("should correctly read in a blank file",
+      FileSystem readFully("test/fixtures/blank.txt") should == ""
+    )
+    
+    it("should correctly read in a list of names",
+      FileSystem readFully("test/fixtures/names.txt") should == "Ola\nMartin\nSam\nCarlos\nBrian\nFelipe"
+    )
+  )
 
   describe(FileSystem File,
     it("should have the right kind",
