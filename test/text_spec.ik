@@ -950,6 +950,31 @@ fert\
       )
     )
 
+    describe("script",
+      it("should determine the script for a 1-character Text",
+        "a" script should be :Latin
+        " " script should be :Common
+        "\u30A0" script should be :Katakana
+        "\u263A" script should be :Common
+      )
+      
+      it("should signal an error if the Text has more than one character",
+        x = bind(
+          rescue(fn(c, c)),
+          "problem" script)
+
+        x text should == "Text does not contain exactly one character"
+      )
+      
+      it("should signal an error if the Text is empty",
+        x = bind(
+          rescue(fn(c, c)),
+          "" script)
+
+        x text should == "Text does not contain exactly one character"
+      )
+    )
+
     describe("octal", 
 ;       it("should replace any octal letter in a string with only it", 
 ;         (0..255) each(number,
