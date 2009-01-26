@@ -354,6 +354,31 @@ public class Text extends IokeData {
                     return on;
                 }
             }));
+        
+        obj.registerMethod(obj.runtime.newJavaMethod("Returns a symbol representing the Unicode category of the character", new JavaMethod.WithNoArguments("category") {
+            @Override
+            public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                String character = getText(on);
+                if(character.length() == 1) {
+                  return context.runtime.getSymbol(Character.UnicodeBlock.of(character.codePointAt(0)).toString());                  
+                }
+                
+                final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
+                                                                                   message,
+                                                                                   context,
+                                                                                   "Error",
+                                                                                   "Default")).mimic(message, context);
+                condition.setCell("message", message);
+                condition.setCell("context", context);
+                condition.setCell("receiver", on);
+                condition.setCell("text", context.runtime.newText("Text does not contain exactly one character"));
+
+                runtime.errorCondition(condition);
+                return null;
+            }
+        }));
+
     }
 
     public static String getText(Object on) {
