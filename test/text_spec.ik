@@ -974,6 +974,31 @@ fert\
         x text should == "Text does not contain exactly one character"
       )
     )
+    
+    describe("category",
+      it("should determine the category for a 1-character Text",
+        "A" category should be :Lu
+        " " category should be :Zs
+        "\u30A0" category should be :Lo
+        "\u263A" category should be :So
+      )
+      
+      it("should signal an error if the Text has more than one character",
+        x = bind(
+          rescue(fn(c, c)),
+          "problem" category)
+
+        x text should == "Text does not contain exactly one character"
+      )
+      
+      it("should signal an error if the Text is empty",
+        x = bind(
+          rescue(fn(c, c)),
+          "" category)
+
+        x text should == "Text does not contain exactly one character"
+      )
+    )
 
     describe("octal", 
 ;       it("should replace any octal letter in a string with only it", 
