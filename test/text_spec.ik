@@ -692,6 +692,56 @@ describe("Text",
     )
   )
 
+  describe("script",
+    it("should determine the script for a 1-character Text",
+      "a" script should be :Latin
+      " " script should be :Common
+      "\u30A0" script should be :Katakana
+      "\u263A" script should be :Common
+    )
+    
+    it("should signal an error if the Text has more than one character",
+      x = bind(
+        rescue(fn(c, c)),
+        "problem" script)
+
+      x text should == "Text does not contain exactly one character"
+    )
+    
+    it("should signal an error if the Text is empty",
+      x = bind(
+        rescue(fn(c, c)),
+        "" script)
+
+      x text should == "Text does not contain exactly one character"
+    )
+  )
+  
+  describe("category",
+    it("should determine the category for a 1-character Text",
+      "A" category should be :Lu
+      " " category should be :Zs
+      "\u30A0" category should be :Lo
+      "\u263A" category should be :So
+    )
+    
+    it("should signal an error if the Text has more than one character",
+      x = bind(
+        rescue(fn(c, c)),
+        "problem" category)
+
+      x text should == "Text does not contain exactly one character"
+    )
+    
+    it("should signal an error if the Text is empty",
+      x = bind(
+        rescue(fn(c, c)),
+        "" category)
+
+      x text should == "Text does not contain exactly one character"
+    )
+  )
+
   describe("escapes", 
     describe("\\b", 
       it("should be replaced when it's the only thing in the text", 
@@ -947,56 +997,6 @@ fert\
       it("should replace a unicode letter at the end of a string", 
         "blarg ucrg ma\u3332"[-1] should == 0x3332
         "blarg ucrg ma\u3332"[0..-2] should == "blarg ucrg ma"
-      )
-    )
-
-    describe("script",
-      it("should determine the script for a 1-character Text",
-        "a" script should be :Latin
-        " " script should be :Common
-        "\u30A0" script should be :Katakana
-        "\u263A" script should be :Common
-      )
-      
-      it("should signal an error if the Text has more than one character",
-        x = bind(
-          rescue(fn(c, c)),
-          "problem" script)
-
-        x text should == "Text does not contain exactly one character"
-      )
-      
-      it("should signal an error if the Text is empty",
-        x = bind(
-          rescue(fn(c, c)),
-          "" script)
-
-        x text should == "Text does not contain exactly one character"
-      )
-    )
-    
-    describe("category",
-      it("should determine the category for a 1-character Text",
-        "A" category should be :Lu
-        " " category should be :Zs
-        "\u30A0" category should be :Lo
-        "\u263A" category should be :So
-      )
-      
-      it("should signal an error if the Text has more than one character",
-        x = bind(
-          rescue(fn(c, c)),
-          "problem" category)
-
-        x text should == "Text does not contain exactly one character"
-      )
-      
-      it("should signal an error if the Text is empty",
-        x = bind(
-          rescue(fn(c, c)),
-          "" category)
-
-        x text should == "Text does not contain exactly one character"
       )
     )
 
