@@ -98,6 +98,16 @@
 			<string>string.literal.keyword-argument.ioke</string>
 		</dict>
 		<dict>
+			<key>match</key>
+			<string>[[:alnum:]_:][[:alnum:]!?_:]*(?=[[:space:]]*[+*/-]?=[^=].*($|\.))</string>
+			<key>name</key>
+			<string>variable.assignment.ioke</string>
+		</dict>
+		<dict>
+			<key>include</key>
+			<string>#assignments</string>
+		</dict>
+		<dict>
 			<key>include</key>
 			<string>#function_names</string>
 		</dict>
@@ -114,10 +124,6 @@
 			<string>#kinds</string>
 		</dict>
 		<dict>
-			<key>include</key>
-			<string>#assignments</string>
-		</dict>
-		<dict>
 			<key>match</key>
 			<string>((?&lt;![[:alnum:]!?_:])|(?&lt;![[:alnum:]!?_:]!))[[:alnum:]!?_:]+(?=[[:space:]]*=.*mimic[[:space]])</string>
 			<key>name</key>
@@ -125,7 +131,7 @@
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>((?&lt;![[:alnum:]!?_:])|(?&lt;![[:alnum:]!?_:]!))[+-]?[[:digit:]_.eE]+(?![[:alnum:]!?_:])</string>
+			<string>(?&lt;![[:alnum:]])[+-]?[[:digit:]][[:digit:]]*(\.[[:digit:]])?[[:digit:]]*([eE][+-]?[[:digit:]]+)?(?![[:alnum:]!?_:])</string>
 			<key>name</key>
 			<string>constant.numeric.ioke</string>
 		</dict>
@@ -134,12 +140,6 @@
 			<string>((?&lt;![[:alnum:]!?_:])|(?&lt;![[:alnum:]!?_:]!))0[xX][[:xdigit:]]+\b</string>
 			<key>name</key>
 			<string>constant.numeric.hexadecimal.ioke</string>
-		</dict>
-		<dict>
-			<key>match</key>
-			<string>[[:alnum:]_:][[:alnum:]!?_:]*(?=[[:space:]]*[+*/-]?=[^=].*($|\.))</string>
-			<key>name</key>
-			<string>variable.assignment.ioke</string>
 		</dict>
 		<dict>
 			<key>match</key>
@@ -233,7 +233,7 @@
 			<array>
 				<dict>
 					<key>match</key>
-					<string>\\.</string>
+					<string>(\\b|\\e|\\t|\\n|\\f\\r|\\"|\\\\|\\#|\\\Z|\\u[[:xdigit:]][[:xdigit:]][[:xdigit:]][[:xdigit:]]|\\[0-3]?[0-7]?[0-7],[[:space:]]+\\[0-3]?[0-7]?[0-7],[[:space:]]+\\[0-3]?[0-7]?[0-7]|\\[0-3]?[0-7]?[0-7],[[:space:]]+\\[0-3]?[0-7]?[0-7]|\\[0-3]?[0-7]?[0-7])</string>
 					<key>name</key>
 					<string>constant.character.escape.ioke</string>
 				</dict>
@@ -356,25 +356,25 @@
 		</dict>
 		<dict>
 			<key>match</key>
+			<string>((?&lt;![[:alnum:]!?_:])|(?&lt;![[:alnum:]!?_:]!))it(?![[:alnum:]!?_:])</string>
+			<key>name</key>
+			<string>entity.standout-names.ioke</string>
+		</dict>
+		<dict>
+			<key>include</key>
+			<string>#operator_symbols</string>
+		</dict>
+		<dict>
+			<key>match</key>
 			<string>(\`\`|\`|''|'|\.|\,|@|@@)</string>
 			<key>name</key>
 			<string>punctuation.ioke</string>
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>((?&lt;![[:alnum:]!?_:])|(?&lt;![[:alnum:]!?_:]!))it(?![[:alnum:]!?_:])</string>
-			<key>name</key>
-			<string>entity.standout-names.ioke</string>
-		</dict>
-		<dict>
-			<key>match</key>
 			<string>[[:alnum:]_][[:alnum:]!?_:]*</string>
 			<key>name</key>
 			<string>source.identifier.ioke</string>
-		</dict>
-		<dict>
-			<key>include</key>
-			<string>#operator_symbols</string>
 		</dict>
 	</array>
 	<key>repository</key>
@@ -480,7 +480,7 @@
 			<array>
 				<dict>
 					<key>match</key>
-					<string>(?&lt;![.=*&amp;|&gt;!&lt;%#@/\\+?$~^:-])(\.\.\.|===|\*\*&gt;|&amp;&amp;&gt;|\|\|&gt;|\-&gt;&gt;|\+&gt;&gt;|!&gt;&gt;|&lt;&gt;&gt;&gt;|&amp;&gt;&gt;|%&gt;&gt;|#&gt;&gt;|@&gt;&gt;|/&gt;&gt;|\*&gt;&gt;|\?&gt;&gt;|\|&gt;&gt;|\^&gt;&gt;|~&gt;&gt;|\$&gt;&gt;|&lt;&lt;=|&gt;&gt;=|&lt;=&gt;|&lt;\-&gt;|:::|::|=~|!~|=&gt;|\+\+|\-\-|&lt;=|&gt;=|==|!=|&amp;&amp;|\.\.|\+=|\-=|\*=|\/=|%=|&amp;=|\^=|\|=|&lt;\-|\+&gt;|!&gt;|&lt;&gt;|&amp;&gt;|%&gt;|#&gt;|@&gt;|\/&gt;|\*&gt;|\?&gt;|\|&gt;|\^&gt;|~&gt;|\$&gt;|&lt;\-&gt;|\-&gt;|&lt;&lt;|&gt;&gt;|\?\||\?&amp;|\|\||&gt;|&lt;|\*|\/|%|\+|\-|&amp;|\^|\||=|\$|!)(?![.=*&amp;|&gt;!&lt;%#@/\\+?$~^:-])</string>
+					<string>((?&lt;![.=*&amp;|&gt;!&lt;%#@/\\+?$~^:-])(nand|and|nor|xor|or|&amp;&amp;&gt;&gt;|\|\|&gt;&gt;|\*\*&gt;&gt;|\.\.\.|===|\*\*&gt;|&amp;&amp;&gt;|\|\|&gt;|\-&gt;&gt;|\+&gt;&gt;|!&gt;&gt;|&lt;&gt;&gt;&gt;|&lt;&gt;&gt;|&amp;&gt;&gt;|%&gt;&gt;|#&gt;&gt;|@&gt;&gt;|/&gt;&gt;|\*&gt;&gt;|\?&gt;&gt;|\|&gt;&gt;|\^&gt;&gt;|~&gt;&gt;|\$&gt;&gt;|=&gt;&gt;|&lt;&lt;=|&gt;&gt;=|&lt;=&gt;|&lt;\-&gt;|:::|::|=~|!~|=&gt;|\+\+|\-\-|&lt;=|&gt;=|==|!=|&amp;&amp;|\.\.|\+=|\-=|\*=|\/=|%=|&amp;=|\^=|\|=|&lt;\-|\+&gt;|!&gt;|&lt;&gt;|&amp;&gt;|%&gt;|#&gt;|\@&gt;|\/&gt;|\*&gt;|\?&gt;|\|&gt;|\^&gt;|~&gt;|\$&gt;|&lt;\-&gt;|\-&gt;|&lt;&lt;|&gt;&gt;|\*\*|\?\||\?&amp;|\|\||&gt;|&lt;|\*|\/|%|\+|\-|&amp;|\^|\||=|\$|!|~)(?![.=*&amp;|&gt;!&lt;%#@/\\+?$~^:-]))|(\+)</string>
 					<key>name</key>
 					<string>entity.operator.symbols.ioke</string>
 				</dict>
