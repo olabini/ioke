@@ -242,7 +242,15 @@ describe("Text",
       "foo" split("b") should == ["foo"]
     )
 
-    it("should return each segment splitted on a string",
+    it("should return each character separately if empty text is given",
+      "foo" split("") should == ["f", "o", "o"]
+    )
+
+    it("should return each character separately if empty regexp is given",
+      "foo" split(#//) should == ["f", "o", "o"]
+    )
+
+    it("should return each segment splitted on a text",
       "foobquux" split("b") should == ["foo", "quux"]
       "foo/bar/quux" split("/") should == ["foo", "bar", "quux"]
     )
@@ -261,11 +269,11 @@ describe("Text",
   )
 
   describe("chars",
-    it("should return an empty list on an empty string",
+    it("should return an empty list on an empty text",
       "" chars should == []
     )
   
-    it("should return a list of three individual strings on a three-character string",
+    it("should return a list of three individual texts on a three-character text",
       "foo" chars should == ["f", "o", "o"]
     )
   
