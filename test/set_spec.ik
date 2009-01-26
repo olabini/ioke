@@ -253,6 +253,36 @@ describe("Set",
   )
 )
 
+describe("Literal syntax for set",
+  it("should have the correct kind",
+    #{} should have kind("Set")
+  )
+  
+  it("should see \#{} as identical to set()",
+    #{} should == set()
+  )
+  
+  it("should see \#{1,2,3,4,5} as identical to set(1,2,3,4,5)",
+    #{1,2,3,4,5} should == set(1,2,3,4,5)
+  )
+  
+  it("should see two similar literals as being the same",
+    #{1,2,3,4,5} should == #{1,2,3,4,5}
+  )
+  
+  it("should see to disimmilar literals as being different",
+    #{1,2,3,4,5,6} should not == #{1,2,3,4,5}
+  )
+  
+  it("should be possible to insert elements to sets defined using the literal syntax",
+   (#{1,2,3,4,5} << 6 )should == #{1,2,3,4,5,6}
+  )
+  
+  it("should be possible to insert elements to sets defined using the literal syntax",
+   (#{1,2,3,4,5} << 6 )should not == #{1,2,3,4,5}
+  )
+)
+
 describe("DefaultBehavior", 
   describe("set", 
     it("should create a new empty set when given no arguments", 
