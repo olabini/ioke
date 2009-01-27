@@ -160,7 +160,7 @@ public class Call extends IokeData {
                         self = args.get(1);
                     }
 
-                    return IokeObject.as(args.get(0)).activateWithData(c.surroundingContext, c.message, self, keys);
+                    return IokeObject.as(args.get(0), context).activateWithData(c.surroundingContext, c.message, self, keys);
                 }
             }));
 
@@ -186,7 +186,7 @@ public class Call extends IokeData {
                         self = args.get(1);
                     }
 
-                    return IokeObject.as(args.get(0)).activateWithCallAndData(c.surroundingContext, c.message, self, on, keys);
+                    return IokeObject.as(args.get(0), context).activateWithCallAndData(c.surroundingContext, c.message, self, on, keys);
                 }
             }));
 

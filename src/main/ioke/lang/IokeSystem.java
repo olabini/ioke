@@ -112,7 +112,7 @@ public class IokeSystem extends IokeData {
                                                                                        message, 
                                                                                        context, 
                                                                                        "Error", 
-                                                                                       "Load")).mimic(message, context);
+                                                                                       "Load"), context).mimic(message, context);
                     condition.setCell("message", message);
                     condition.setCell("context", context);
                     condition.setCell("receiver", self);
@@ -207,7 +207,7 @@ public class IokeSystem extends IokeData {
                                                                                        message, 
                                                                                        context, 
                                                                                        "Error", 
-                                                                                       "Load")).mimic(message, context);
+                                                                                       "Load"), context).mimic(message, context);
                     condition.setCell("message", message);
                     condition.setCell("context", context);
                     condition.setCell("receiver", self);
@@ -259,7 +259,7 @@ public class IokeSystem extends IokeData {
                                                                            message, 
                                                                            context, 
                                                                            "Error", 
-                                                                           "Load")).mimic(message, context);
+                                                                           "Load"), context).mimic(message, context);
         condition.setCell("message", message);
         condition.setCell("context", context);
         condition.setCell("receiver", self);
@@ -428,7 +428,7 @@ public class IokeSystem extends IokeData {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().checkArgumentCount(context, message, on);
-                    getAtExits(on).add(new AtExitInfo(context, IokeObject.as(message.getArguments().get(0))));
+                    getAtExits(on).add(new AtExitInfo(context, IokeObject.as(message.getArguments().get(0), context)));
                     return context.runtime.nil;
                 }
             }));

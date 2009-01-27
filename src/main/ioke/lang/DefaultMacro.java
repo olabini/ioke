@@ -68,7 +68,7 @@ public class DefaultMacro extends IokeData implements Named, Inspectable, Associ
 
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    return IokeObject.as(on).activate(context, message, context.getRealContext());
+                    return IokeObject.as(on, context).activate(context, message, context.getRealContext());
                 }
             }));
         
@@ -165,7 +165,7 @@ public class DefaultMacro extends IokeData implements Named, Inspectable, Associ
                                                                          context, 
                                                                          "Error", 
                                                                          "Invocation",
-                                                                         "NotActivatable")).mimic(message, context);
+                                                                         "NotActivatable"), context).mimic(message, context);
             condition.setCell("message", message);
             condition.setCell("context", context);
             condition.setCell("receiver", on);
@@ -212,7 +212,7 @@ public class DefaultMacro extends IokeData implements Named, Inspectable, Associ
                                                                          context, 
                                                                          "Error", 
                                                                          "Invocation",
-                                                                         "NotActivatable")).mimic(message, context);
+                                                                         "NotActivatable"), context).mimic(message, context);
             condition.setCell("message", message);
             condition.setCell("context", context);
             condition.setCell("receiver", on);
@@ -255,7 +255,7 @@ public class DefaultMacro extends IokeData implements Named, Inspectable, Associ
                                                                          context, 
                                                                          "Error", 
                                                                          "Invocation",
-                                                                         "NotActivatable")).mimic(message, context);
+                                                                         "NotActivatable"), context).mimic(message, context);
             condition.setCell("message", message);
             condition.setCell("context", context);
             condition.setCell("receiver", on);
@@ -277,7 +277,7 @@ public class DefaultMacro extends IokeData implements Named, Inspectable, Associ
             }));
         c.setCell("currentMessage", message);
         c.setCell("surroundingContext", context);
-        c.setCell("call", context.runtime.newCallFrom(c, message, context, IokeObject.as(on)));
+        c.setCell("call", context.runtime.newCallFrom(c, message, context, IokeObject.as(on, context)));
 
         try {
             return code.evaluateCompleteWith(c, on);
@@ -298,7 +298,7 @@ public class DefaultMacro extends IokeData implements Named, Inspectable, Associ
                                                                          context, 
                                                                          "Error", 
                                                                          "Invocation",
-                                                                         "NotActivatable")).mimic(message, context);
+                                                                         "NotActivatable"), context).mimic(message, context);
             condition.setCell("message", message);
             condition.setCell("context", context);
             condition.setCell("receiver", on);
@@ -320,7 +320,7 @@ public class DefaultMacro extends IokeData implements Named, Inspectable, Associ
             }));
         c.setCell("currentMessage", message);
         c.setCell("surroundingContext", context);
-        c.setCell("call", context.runtime.newCallFrom(c, message, context, IokeObject.as(on)));
+        c.setCell("call", context.runtime.newCallFrom(c, message, context, IokeObject.as(on, context)));
         for(Map.Entry<String, Object> d : data.entrySet()) {
             String s = d.getKey();
             c.setCell(s.substring(0, s.length()-1), d.getValue());

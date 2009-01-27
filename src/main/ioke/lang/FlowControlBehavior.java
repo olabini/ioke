@@ -45,7 +45,7 @@ public class FlowControlBehavior {
                     List<Object[]> valuesToUnbind = new LinkedList<Object[]>();
                     try {
                         while(ix < end) {
-                            IokeObject place = IokeObject.as(args.get(ix++));
+                            IokeObject place = IokeObject.as(args.get(ix++), context);
 
                             if(Message.next(place) == null && place.getArguments().size() == 0) {
                                 Object value = message.getEvaluatedArgument(ix++, context);
@@ -96,9 +96,9 @@ public class FlowControlBehavior {
                         while(!valuesToUnbind.isEmpty()) {
                             try {
                                 Object[] vals = valuesToUnbind.remove(0);
-                                IokeObject wherePlace = IokeObject.as(vals[0]);
+                                IokeObject wherePlace = IokeObject.as(vals[0], context);
                                 Object value = vals[1];
-                                IokeObject realPlace = IokeObject.as(vals[2]);
+                                IokeObject realPlace = IokeObject.as(vals[2], context);
 
                                 if(realPlace.getArguments().size() != 0) {
                                     String newName = realPlace.getName() + "=";
@@ -112,7 +112,7 @@ public class FlowControlBehavior {
                                             context.runtime.newMessageFrom(realPlace, newName, arguments).sendTo(context, wherePlace);
                                         }
                                     } else {
-                                        arguments.add(context.runtime.createMessage(Message.wrap(IokeObject.as(value))));
+                                        arguments.add(context.runtime.createMessage(Message.wrap(IokeObject.as(value, context))));
                                         context.runtime.newMessageFrom(realPlace, newName, arguments).sendTo(context, wherePlace);
                                     }
                                 } else {
@@ -404,10 +404,10 @@ public class FlowControlBehavior {
                     Object result = runtime.nil;
 
                     try {
-                        result = IokeObject.as(args.get(0)).evaluateCompleteWithoutExplicitReceiver(context, context.getRealContext());
+                        result = IokeObject.as(args.get(0), context).evaluateCompleteWithoutExplicitReceiver(context, context.getRealContext());
                     } finally {
                         for(Object o : args.subList(1, argCount)) {
-                            IokeObject.as(o).evaluateCompleteWithoutExplicitReceiver(context, context.getRealContext());
+                            IokeObject.as(o, context).evaluateCompleteWithoutExplicitReceiver(context, context.getRealContext());
                         }
                     }
 
