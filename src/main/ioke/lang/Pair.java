@@ -1,4 +1,4 @@
-/*
+l/*
  * See LICENSE file in distribution for copyright and licensing information.
  */
 package ioke.lang;
@@ -42,8 +42,8 @@ public class Pair extends IokeData {
         final Runtime runtime = obj.runtime;
 
         obj.setKind("Pair");
-        obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Enumerable")), runtime.nul, runtime.nul);
-        obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Comparing")), runtime.nul, runtime.nul);
+        obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Enumerable"), null), runtime.nul, runtime.nul);
+        obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Comparing"), null), runtime.nul, runtime.nul);
 
         obj.registerMethod(runtime.newJavaMethod("Returns the first value", new TypeCheckingJavaMethod.WithNoArguments("first", runtime.pair) {
                 @Override
