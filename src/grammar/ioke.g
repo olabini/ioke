@@ -206,8 +206,8 @@ Identifier
     |   (OperatorChar | '/') (OperatorChar | '#' | '/')*
     |   '#' (OperatorChar | '#')+
     |   '.' '.'+
-    |   Letter (Letter|IDDigit|':'|'!'|'?')*
-    |   ':' (Letter|IDDigit) (Letter|IDDigit|':'|'!'|'?')*
+    |   Letter (Letter|IDDigit|':'|'!'|'?'|'$')*
+    |   ':' (Letter|IDDigit) (Letter|IDDigit|':'|'!'|'?'|'$')*
     ;
 
 DecimalLiteral
