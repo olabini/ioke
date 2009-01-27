@@ -136,7 +136,7 @@ public class ReflectionBehavior {
                     List<Object> args = new ArrayList<Object>();
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
 
-                    IokeObject arg = IokeObject.as(args.get(0));
+                    IokeObject arg = IokeObject.as(args.get(0), context);
                     return IokeObject.isMimic(on, arg) ? context.runtime._true : context.runtime._false;
                 }
             }));
@@ -157,7 +157,7 @@ public class ReflectionBehavior {
                     List<Object> args = new ArrayList<Object>();
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
 
-                    IokeObject arg = IokeObject.as(args.get(0));
+                    IokeObject arg = IokeObject.as(args.get(0), context);
                     return IokeObject.isMimic(on, arg) ? context.runtime._true : context.runtime._false;
                 }
             }));
@@ -218,8 +218,8 @@ public class ReflectionBehavior {
                     List<Object> args = new ArrayList<Object>();
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
 
-                    IokeObject newMimic = IokeObject.as(args.get(0));
-                    IokeObject.as(on).mimics(newMimic, message, context);
+                    IokeObject newMimic = IokeObject.as(args.get(0), context);
+                    IokeObject.as(on, context).mimics(newMimic, message, context);
                     return on;
                 }
             }));
@@ -240,8 +240,8 @@ public class ReflectionBehavior {
                     List<Object> args = new ArrayList<Object>();
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
 
-                    IokeObject newMimic = IokeObject.as(args.get(0));
-                    IokeObject.as(on).mimics(0, newMimic, message, context);
+                    IokeObject newMimic = IokeObject.as(args.get(0), context);
+                    IokeObject.as(on, context).mimics(0, newMimic, message, context);
                     return on;
                 }
             }));
@@ -261,15 +261,15 @@ public class ReflectionBehavior {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> args = new ArrayList<Object>();
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
-                    IokeObject me = IokeObject.as(on);
-                    IokeObject other = IokeObject.as(args.get(0));
+                    IokeObject me = IokeObject.as(on, context);
+                    IokeObject other = IokeObject.as(args.get(0), context);
 
                     if(on == context.runtime.nil || on == context.runtime._true || on == context.runtime._false) {
                         final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
                                                                                            message, 
                                                                                            context,
                                                                                            "Error", 
-                                                                                           "CantMimicOddball")).mimic(message, context);
+                                                                                           "CantMimicOddball"), context).mimic(message, context);
                         condition.setCell("message", message);
                         condition.setCell("context", context);
                         condition.setCell("receiver", on);
