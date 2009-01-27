@@ -148,16 +148,130 @@
 			<string>string.literal.symbol.ioke</string>
 		</dict>
 		<dict>
-			<key>match</key>
-			<string>#/.*?/[oxpniums]*</string>
+			<key>begin</key>
+			<string>#/</string>
+			<key>end</key>
+			<string>/[oxpniums]*</string>
 			<key>name</key>
 			<string>string.regexp.ioke</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>match</key>
+					<string>\\.</string>
+					<key>name</key>
+					<string>constant.character.escape.ioke</string>
+				</dict>
+				<dict>
+					<key>captures</key>
+					<dict>
+						<key>0</key>
+						<dict>
+							<key>name</key>
+							<string>punctuation.section.embedded.ioke</string>
+						</dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>source.embedded.empty.ioke</string>
+						</dict>
+					</dict>
+					<key>match</key>
+					<string>#\{(\})</string>
+					<key>name</key>
+					<string>source.embedded.ioke</string>
+				</dict>
+				<dict>
+					<key>begin</key>
+					<string>#\{</string>
+					<key>captures</key>
+					<dict>
+						<key>0</key>
+						<dict>
+							<key>name</key>
+							<string>punctuation.section.embedded.ioke</string>
+						</dict>
+					</dict>
+					<key>end</key>
+					<string>\}</string>
+					<key>name</key>
+					<string>source.embedded.ioke</string>
+					<key>patterns</key>
+					<array>
+						<dict>
+							<key>include</key>
+							<string>#nest_curly_and_self</string>
+						</dict>
+						<dict>
+							<key>include</key>
+							<string>$self</string>
+						</dict>
+					</array>
+				</dict>
+			</array>
 		</dict>
 		<dict>
-			<key>match</key>
-			<string>#r\[.*?\][oxpniums]*</string>
+			<key>begin</key>
+			<string>#r\[</string>
+			<key>end</key>
+			<string>\][oxpniums]*</string>
 			<key>name</key>
 			<string>string.regexp.ioke</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>match</key>
+					<string>\\.</string>
+					<key>name</key>
+					<string>constant.character.escape.ioke</string>
+				</dict>
+				<dict>
+					<key>captures</key>
+					<dict>
+						<key>0</key>
+						<dict>
+							<key>name</key>
+							<string>punctuation.section.embedded.ioke</string>
+						</dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>source.embedded.empty.ioke</string>
+						</dict>
+					</dict>
+					<key>match</key>
+					<string>#\{(\})</string>
+					<key>name</key>
+					<string>source.embedded.ioke</string>
+				</dict>
+				<dict>
+					<key>begin</key>
+					<string>#\{</string>
+					<key>captures</key>
+					<dict>
+						<key>0</key>
+						<dict>
+							<key>name</key>
+							<string>punctuation.section.embedded.ioke</string>
+						</dict>
+					</dict>
+					<key>end</key>
+					<string>\}</string>
+					<key>name</key>
+					<string>source.embedded.ioke</string>
+					<key>patterns</key>
+					<array>
+						<dict>
+							<key>include</key>
+							<string>#nest_curly_and_self</string>
+						</dict>
+						<dict>
+							<key>include</key>
+							<string>$self</string>
+						</dict>
+					</array>
+				</dict>
+			</array>
 		</dict>
 		<dict>
 			<key>begin</key>
