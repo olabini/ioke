@@ -209,7 +209,7 @@ public class DefinitionsBehavior {
                         return runtime.newLexicalBlock(null, runtime.lexicalBlock, new LexicalBlock(context, DefaultArgumentsDefinition.empty(), method.runtime.nilMessage));
                     }
 
-                    IokeObject code = IokeObject.as(args.get(args.size()-1));
+                    IokeObject code = IokeObject.as(args.get(args.size()-1), context);
 
                     DefaultArgumentsDefinition def = DefaultArgumentsDefinition.createFrom(args, 0, args.size()-1, message, on, context);
                     return runtime.newLexicalBlock(null, runtime.lexicalBlock, new LexicalBlock(context, def, code));
@@ -247,7 +247,7 @@ public class DefinitionsBehavior {
                         doc = s;
                     }
 
-                    IokeObject code = IokeObject.as(args.get(args.size()-1));
+                    IokeObject code = IokeObject.as(args.get(args.size()-1), context);
 
                     DefaultArgumentsDefinition def = DefaultArgumentsDefinition.createFrom(args, start, args.size()-1, message, on, context);
                     return runtime.newLexicalBlock(doc, runtime.lexicalBlock, new LexicalBlock(context, def, code));
@@ -273,7 +273,7 @@ public class DefinitionsBehavior {
 
                     String fromName = Text.getText(runtime.asText.sendTo(context, args.get(0)));
                     String toName = Text.getText(runtime.asText.sendTo(context, args.get(1)));
-                    IokeObject.as(on).aliasMethod(fromName, toName, message, context);
+                    IokeObject.as(on, context).aliasMethod(fromName, toName, message, context);
                     return on;
                 }
             }));

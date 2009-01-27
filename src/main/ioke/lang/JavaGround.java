@@ -16,7 +16,7 @@ public class JavaGround {
     public static void init(IokeObject obj) throws ControlFlow {
         final Runtime runtime = obj.runtime;
         obj.setKind("JavaGround");
-        obj.mimicsWithoutCheck(IokeObject.as(runtime.defaultBehavior.getCells().get("BaseBehavior")));
+        obj.mimicsWithoutCheck(IokeObject.as(runtime.defaultBehavior.getCells().get("BaseBehavior"), null));
 
 
         obj.registerMethod(runtime.newJavaMethod("takes an internal name for a Java type and returns that object.", new TypeCheckingJavaMethod("primitiveJavaClass!") {

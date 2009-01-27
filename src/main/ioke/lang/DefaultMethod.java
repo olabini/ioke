@@ -126,7 +126,7 @@ public class DefaultMethod extends Method implements AssociatedCode {
                                                                          context, 
                                                                          "Error", 
                                                                          "Invocation",
-                                                                         "NotActivatable")).mimic(message, context);
+                                                                         "NotActivatable"), context).mimic(message, context);
             condition.setCell("message", message);
             condition.setCell("context", context);
             condition.setCell("receiver", on);
@@ -182,7 +182,7 @@ public class DefaultMethod extends Method implements AssociatedCode {
                                                                          context, 
                                                                          "Error", 
                                                                          "Invocation",
-                                                                         "NotActivatable")).mimic(message, context);
+                                                                         "NotActivatable"), context).mimic(message, context);
             condition.setCell("message", message);
             condition.setCell("context", context);
             condition.setCell("receiver", on);
@@ -242,7 +242,7 @@ public class DefaultMethod extends Method implements AssociatedCode {
                                                                          context, 
                                                                          "Error", 
                                                                          "Invocation",
-                                                                         "NotActivatable")).mimic(message, context);
+                                                                         "NotActivatable"), context).mimic(message, context);
             condition.setCell("message", message);
             condition.setCell("context", context);
             condition.setCell("receiver", on);
@@ -298,7 +298,7 @@ public class DefaultMethod extends Method implements AssociatedCode {
                                                                          context, 
                                                                          "Error", 
                                                                          "Invocation",
-                                                                         "NotActivatable")).mimic(message, context);
+                                                                         "NotActivatable"), context).mimic(message, context);
             condition.setCell("message", message);
             condition.setCell("context", context);
             condition.setCell("receiver", on);
