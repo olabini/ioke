@@ -69,7 +69,7 @@ public class Method extends IokeData implements Named, Inspectable {
 
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    return IokeObject.as(on).activate(context, message, context.getRealContext());
+                    return IokeObject.as(on, context).activate(context, message, context.getRealContext());
                 }
             }));
 
@@ -107,7 +107,7 @@ public class Method extends IokeData implements Named, Inspectable {
                                                                      context, 
                                                                      "Error", 
                                                                      "Invocation",
-                                                                     "NotActivatable")).mimic(message, context);
+                                                                     "NotActivatable"), context).mimic(message, context);
         condition.setCell("message", message);
         condition.setCell("context", context);
         condition.setCell("receiver", on);

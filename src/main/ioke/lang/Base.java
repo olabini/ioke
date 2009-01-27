@@ -97,13 +97,15 @@ public class Base {
 
                         IokeObject.assign(on, name, value, context, message);
 
-                        if((IokeObject.data(value) instanceof Named) && ((Named)IokeObject.data(value)).getName() == null) {
-                            ((Named)IokeObject.data(value)).setName(name);
-                        } else if(name.length() > 0 && Character.isUpperCase(name.charAt(0)) && !IokeObject.as(value).hasKind()) {
-                            if(on == context.runtime.ground) {
-                                IokeObject.as(value).setKind(name);
-                            } else {
-                                IokeObject.as(value).setKind(IokeObject.as(on).getKind() + " " + name);
+                        if(value instanceof IokeObject) {
+                            if((IokeObject.data(value) instanceof Named) && ((Named)IokeObject.data(value)).getName() == null) {
+                                ((Named)IokeObject.data(value)).setName(name);
+                            } else if(name.length() > 0 && Character.isUpperCase(name.charAt(0)) && !IokeObject.as(value).hasKind()) {
+                                if(on == context.runtime.ground) {
+                                    IokeObject.as(value).setKind(name);
+                                } else {
+                                    IokeObject.as(value).setKind(IokeObject.as(on).getKind() + " " + name);
+                                }
                             }
                         }
                     

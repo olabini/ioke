@@ -155,7 +155,7 @@ public class Number extends IokeData {
         final IokeObject number = obj;
         
         obj.setKind("Number");
-        obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Comparing")), runtime.nul, runtime.nul);
+        obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Comparing"), obj), runtime.nul, runtime.nul);
 
         IokeObject real = new IokeObject(runtime, "A real number can be either a rational number or a decimal number", new Number());
         real.mimicsWithoutCheck(number);
@@ -402,7 +402,7 @@ public class Number extends IokeData {
                                                                                                context, 
                                                                                                "Error", 
                                                                                                "Arithmetic",
-                                                                                               "DivisionByZero")).mimic(message, context);
+                                                                                               "DivisionByZero"), context).mimic(message, context);
                             condition.setCell("message", message);
                             condition.setCell("context", context);
                             condition.setCell("receiver", on);

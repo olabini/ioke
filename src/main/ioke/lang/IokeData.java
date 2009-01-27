@@ -28,7 +28,7 @@ public abstract class IokeData {
                                                                                    m, 
                                                                                    context,
                                                                                    "Error", 
-                                                                                   "CantMimicOddball")).mimic(m, context);
+                                                                                   "CantMimicOddball"), context).mimic(m, context);
                 condition.setCell("message", m);
                 condition.setCell("context", context);
                 condition.setCell("receiver", obj);
@@ -60,7 +60,7 @@ public abstract class IokeData {
                                                                                    m, 
                                                                                    context,
                                                                                    "Error", 
-                                                                                   "CantMimicOddball")).mimic(m, context);
+                                                                                   "CantMimicOddball"), context).mimic(m, context);
                 condition.setCell("message", m);
                 condition.setCell("context", context);
                 condition.setCell("receiver", obj);
@@ -88,7 +88,7 @@ public abstract class IokeData {
                                                                                    m, 
                                                                                    context,
                                                                                    "Error", 
-                                                                                   "CantMimicOddball")).mimic(m, context);
+                                                                                   "CantMimicOddball"), context).mimic(m, context);
                 condition.setCell("message", m);
                 condition.setCell("context", context);
                 condition.setCell("receiver", obj);
@@ -114,7 +114,7 @@ public abstract class IokeData {
     }
 
     public boolean isEqualTo(IokeObject self, Object other) {
-        return (other instanceof IokeObject) && (self.getCells() == IokeObject.as(other).getCells());
+        return (other instanceof IokeObject) && (self.getCells() == IokeObject.as(other, self).getCells());
     }
 
     public int hashCode(IokeObject self) {
@@ -124,7 +124,7 @@ public abstract class IokeData {
     public IokeData cloneData(IokeObject obj, IokeObject m, IokeObject context) {return this;}
 
     public Object convertTo(IokeObject self, String kind, boolean signalCondition, String conversionMethod, IokeObject message, final IokeObject context) throws ControlFlow {
-        if(IokeObject.isKind(self, kind)) {
+        if(IokeObject.isKind(self, kind, context)) {
             return self;
         }
         if(signalCondition) {
@@ -133,7 +133,7 @@ public abstract class IokeData {
                                                                                context, 
                                                                                "Error", 
                                                                                "Type",
-                                                                               "IncorrectType")).mimic(message, context);
+                                                                               "IncorrectType"), context).mimic(message, context);
             condition.setCell("message", message);
             condition.setCell("context", context);
             condition.setCell("receiver", self);
@@ -164,7 +164,7 @@ public abstract class IokeData {
     }
 
     public Object convertTo(IokeObject self, Object mimic, boolean signalCondition, String conversionMethod, IokeObject message, final IokeObject context) throws ControlFlow {
-        if(IokeObject.isMimic(self, IokeObject.as(mimic))) {
+        if(IokeObject.isMimic(self, IokeObject.as(mimic, context), context)) {
             return self;
         }
         if(signalCondition) {
@@ -173,7 +173,7 @@ public abstract class IokeData {
                                                                                context, 
                                                                                "Error", 
                                                                                "Type",
-                                                                               "IncorrectType")).mimic(message, context);
+                                                                               "IncorrectType"), context).mimic(message, context);
             condition.setCell("message", message);
             condition.setCell("context", context);
             condition.setCell("receiver", self);
@@ -210,7 +210,7 @@ public abstract class IokeData {
                                                                                context, 
                                                                                "Error", 
                                                                                "Type",
-                                                                               "IncorrectType")).mimic(m, context);
+                                                                               "IncorrectType"), context).mimic(m, context);
             condition.setCell("message", m);
             condition.setCell("context", context);
             condition.setCell("receiver", self);
@@ -248,7 +248,7 @@ public abstract class IokeData {
                                                                                context, 
                                                                                "Error", 
                                                                                "Type",
-                                                                               "IncorrectType")).mimic(m, context);
+                                                                               "IncorrectType"), context).mimic(m, context);
             condition.setCell("message", m);
             condition.setCell("context", context);
             condition.setCell("receiver", self);
@@ -284,7 +284,7 @@ public abstract class IokeData {
                                                                            context, 
                                                                            "Error", 
                                                                            "Type",
-                                                                           "IncorrectType")).mimic(m, context);
+                                                                           "IncorrectType"), context).mimic(m, context);
         condition.setCell("message", m);
         condition.setCell("context", context);
         condition.setCell("receiver", self);
@@ -321,7 +321,7 @@ public abstract class IokeData {
                                                                                context, 
                                                                                "Error", 
                                                                                "Type",
-                                                                               "IncorrectType")).mimic(m, context);
+                                                                               "IncorrectType"), context).mimic(m, context);
             condition.setCell("message", m);
             condition.setCell("context", context);
             condition.setCell("receiver", self);
@@ -357,7 +357,7 @@ public abstract class IokeData {
                                                                                context, 
                                                                                "Error", 
                                                                                "Type",
-                                                                               "IncorrectType")).mimic(m, context);
+                                                                               "IncorrectType"), context).mimic(m, context);
             condition.setCell("message", m);
             condition.setCell("context", context);
             condition.setCell("receiver", self);
@@ -392,7 +392,7 @@ public abstract class IokeData {
                                                                            context, 
                                                                            "Error", 
                                                                            "Type",
-                                                                           "IncorrectType")).mimic(m, context);
+                                                                           "IncorrectType"), context).mimic(m, context);
         condition.setCell("message", m);
         condition.setCell("context", context);
         condition.setCell("receiver", self);
@@ -426,7 +426,7 @@ public abstract class IokeData {
                                                                      context, 
                                                                      "Error", 
                                                                      "Invocation",
-                                                                     "NotActivatable")).mimic(message, context);
+                                                                     "NotActivatable"), context).mimic(message, context);
         condition.setCell("message", message);
         condition.setCell("context", context);
         condition.setCell("receiver", self);
@@ -444,7 +444,7 @@ public abstract class IokeData {
             newMessage.getArguments().clear();
             newMessage.getArguments().add(context.runtime.createMessage(Message.wrap(context)));
             newMessage.getArguments().add(context.runtime.createMessage(Message.wrap(message)));
-            newMessage.getArguments().add(context.runtime.createMessage(Message.wrap(IokeObject.as(on))));
+            newMessage.getArguments().add(context.runtime.createMessage(Message.wrap(IokeObject.as(on, context))));
             return IokeObject.getOrActivate(cell, context, newMessage, self);
         }
     }
@@ -512,7 +512,7 @@ public abstract class IokeData {
     }
 
     public Object evaluateCompleteWith(IokeObject message, Object ground) throws ControlFlow {
-        report(ground, IokeObject.as(ground), message, "evaluateCompleteWith");
+        report(ground, IokeObject.as(ground, message), message, "evaluateCompleteWith");
         return message.runtime.nil;
     }
 
