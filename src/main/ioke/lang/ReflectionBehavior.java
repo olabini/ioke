@@ -24,7 +24,7 @@ public class ReflectionBehavior {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
 
-                    return context.runtime.newText("0x" + Integer.toHexString(System.identityHashCode(IokeObject.getCells(on))).toUpperCase());
+                    return context.runtime.newText("0x" + Integer.toHexString(System.identityHashCode(IokeObject.getCells(on, context))).toUpperCase());
                 }
             }));
 
@@ -116,7 +116,7 @@ public class ReflectionBehavior {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     String kind = Text.getText(args.get(0));
-                    return IokeObject.isKind(on, kind) ? context.runtime._true : context.runtime._false;
+                    return IokeObject.isKind(on, kind, context) ? context.runtime._true : context.runtime._false;
                 }
             }));
 
@@ -137,7 +137,7 @@ public class ReflectionBehavior {
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
 
                     IokeObject arg = IokeObject.as(args.get(0), context);
-                    return IokeObject.isMimic(on, arg) ? context.runtime._true : context.runtime._false;
+                    return IokeObject.isMimic(on, arg, context) ? context.runtime._true : context.runtime._false;
                 }
             }));
 
@@ -158,7 +158,7 @@ public class ReflectionBehavior {
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
 
                     IokeObject arg = IokeObject.as(args.get(0), context);
-                    return IokeObject.isMimic(on, arg) ? context.runtime._true : context.runtime._false;
+                    return IokeObject.isMimic(on, arg, context) ? context.runtime._true : context.runtime._false;
                 }
             }));
 
@@ -167,7 +167,7 @@ public class ReflectionBehavior {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
 
-                    return context.runtime.newList(new ArrayList<Object>(IokeObject.getMimics(on)));
+                    return context.runtime.newList(new ArrayList<Object>(IokeObject.getMimics(on, context)));
                 }
             }));
 
