@@ -32,7 +32,7 @@ public class Text extends IokeData {
         final Runtime runtime = obj.runtime;
 
         obj.setKind("Text");
-        obj.mimics(IokeObject.as(obj.runtime.mixins.getCell(null, null, "Comparing")), obj.runtime.nul, obj.runtime.nul);
+        obj.mimics(IokeObject.as(obj.runtime.mixins.getCell(null, null, "Comparing"), null), obj.runtime.nul, obj.runtime.nul);
 
         obj.registerMethod(obj.runtime.newJavaMethod("Returns a text representation of the object", new JavaMethod.WithNoArguments("asText") {
                 @Override
@@ -368,7 +368,7 @@ public class Text extends IokeData {
                                                                                    message,
                                                                                    context,
                                                                                    "Error",
-                                                                                   "Default")).mimic(message, context);
+                                                                                   "Default"), context).mimic(message, context);
                 condition.setCell("message", message);
                 condition.setCell("context", context);
                 condition.setCell("receiver", on);
@@ -558,7 +558,7 @@ public class Text extends IokeData {
                                                                                context, 
                                                                                "Error", 
                                                                                "Arithmetic",
-                                                                               "NotParseable")).mimic(message, context);
+                                                                               "NotParseable"), context).mimic(message, context);
             condition.setCell("message", message);
             condition.setCell("context", context);
             condition.setCell("receiver", on);
@@ -644,7 +644,7 @@ public class Text extends IokeData {
                                                                                context, 
                                                                                "Error", 
                                                                                "Arithmetic",
-                                                                               "NotParseable")).mimic(message, context);
+                                                                               "NotParseable"), context).mimic(message, context);
             condition.setCell("message", message);
             condition.setCell("context", context);
             condition.setCell("receiver", on);

@@ -15,6 +15,6 @@ import ioke.lang.exceptions.ControlFlow;
 public class IokeRegistry {
     public static IokeObject wrap(Object on, IokeObject context) {
         System.err.println("Weeeeeeh. Wrap.");
-        return null;
+        return context.runtime.nil;
     }
 }

@@ -59,7 +59,7 @@ public class TypeCheckingArgumentsDefinition extends DefaultArgumentsDefinition 
     }
 
     public static TypeCheckingArgumentsDefinition emptyButReceiverMustMimic(Object mimic) {
-        return new TypeCheckingArgumentsDefinition(new ArrayList<Argument>(), new ArrayList<String>(), null, null, 0, 0, false, new ArrayList<TypeChecker>(), IokeObject.as(mimic));
+        return new TypeCheckingArgumentsDefinition(new ArrayList<Argument>(), new ArrayList<String>(), null, null, 0, 0, false, new ArrayList<TypeChecker>(), (IokeObject)mimic);
     }
     
     public static class Builder extends DefaultArgumentsDefinition.Builder {

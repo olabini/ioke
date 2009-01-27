@@ -94,7 +94,7 @@ public class Main {
                                                                                                context, 
                                                                                                "Error", 
                                                                                                "CommandLine", 
-                                                                                               "DontUnderstandOption")).mimic(message, context);
+                                                                                               "DontUnderstandOption"), null).mimic(message, context);
                             condition.setCell("message", message);
                             condition.setCell("context", context);
                             condition.setCell("receiver", context);

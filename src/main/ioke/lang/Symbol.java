@@ -25,7 +25,7 @@ public class Symbol extends IokeData {
     @Override
     public void init(final IokeObject obj) throws ControlFlow {
         obj.setKind("Symbol");
-        obj.mimics(IokeObject.as(obj.runtime.mixins.getCell(null, null, "Comparing")), obj.runtime.nul, obj.runtime.nul);
+        obj.mimics(IokeObject.as(obj.runtime.mixins.getCell(null, null, "Comparing"), null), obj.runtime.nul, obj.runtime.nul);
 
         obj.registerMethod(obj.runtime.newJavaMethod("Returns a text representation of the object", new TypeCheckingJavaMethod.WithNoArguments("asText", obj.runtime.symbol) {
                 @Override
@@ -82,7 +82,7 @@ public class Symbol extends IokeData {
                                                                            m, 
                                                                            context,
                                                                            "Error", 
-                                                                           "CantMimicOddball")).mimic(m, context);
+                                                                           "CantMimicOddball"), context).mimic(m, context);
         condition.setCell("message", m);
         condition.setCell("context", context);
         condition.setCell("receiver", obj);

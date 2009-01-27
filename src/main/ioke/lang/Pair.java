@@ -1,4 +1,4 @@
-l/*
+/*
  * See LICENSE file in distribution for copyright and licensing information.
  */
 package ioke.lang;

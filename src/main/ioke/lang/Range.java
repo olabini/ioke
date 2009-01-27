@@ -78,7 +78,7 @@ public class Range extends IokeData {
                     Object from = args.get(0);
                     Object to = args.get(1);
 
-                    boolean comparing = IokeObject.isMimic(from, IokeObject.as(context.runtime.mixins.getCells().get("Comparing"), context));
+                    boolean comparing = IokeObject.isMimic(from, IokeObject.as(context.runtime.mixins.getCells().get("Comparing"), context), context);
                     boolean inverted = false;
 
                     if(comparing) {
@@ -112,7 +112,7 @@ public class Range extends IokeData {
                     Object from = args.get(0);
                     Object to = args.get(1);
 
-                    boolean comparing = IokeObject.isMimic(from, IokeObject.as(context.runtime.mixins.getCells().get("Comparing"), context));
+                    boolean comparing = IokeObject.isMimic(from, IokeObject.as(context.runtime.mixins.getCells().get("Comparing"), context), context);
                     boolean inverted = false;
                     if(comparing) {
                         Object result = context.runtime.spaceShip.sendTo(context, from, to);
