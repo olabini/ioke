@@ -53,6 +53,7 @@ public class Ground {
         ground.registerCell("IO", runtime.io);
         ground.registerCell("FileSystem", runtime.fileSystem);
         ground.registerCell("Regexp", runtime.regexp);
+        ground.registerCell("JavaGround", runtime.javaGround);
 
         ground.registerMethod(runtime.newJavaMethod("will return a text representation of the current stack trace", 
                                                     new JavaMethod.WithNoArguments("stackTraceAsText") {

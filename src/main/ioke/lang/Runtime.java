@@ -81,6 +81,8 @@ public class Runtime {
 
     public IokeObject regexp = new IokeObject(this, "A regular expression allows you to matching text against a pattern.", Regexp.create("", ""));
 
+    public IokeObject javaGround = new IokeObject(this, "JavaGround is the place that defines the connections to the Java integration subsystem");
+
     public IokeObject integer = null;
     public IokeObject decimal = null;
     public IokeObject ratio = null;
@@ -208,10 +210,12 @@ public class Runtime {
         io.init();
         FileSystem.init(fileSystem);
         regexp.init();
+        JavaGround.init(javaGround);
 
         ground.mimicsWithoutCheck(defaultBehavior);
         ground.mimicsWithoutCheck(base);
         origin.mimicsWithoutCheck(ground);
+        origin.mimicsWithoutCheck(javaGround);
 
         mixins.mimicsWithoutCheck(defaultBehavior);
 
