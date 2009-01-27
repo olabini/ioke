@@ -486,7 +486,7 @@
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>[[:alnum:]_][[:alnum:]!?_:]*</string>
+			<string>[[:alnum:]_][[:alnum:]!?_:$]*[[:alnum:]!?_:]</string>
 			<key>name</key>
 			<string>source.identifier.ioke</string>
 		</dict>
