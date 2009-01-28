@@ -872,7 +872,11 @@ public class IokeObject implements TypeChecker {
 
     @Override
     public boolean equals(Object other) {
-        return isEqualTo(other);
+        try {
+            return isEqualTo(other);
+        } catch(Exception e) {
+            return false;
+        }
     }
 
     @Override
