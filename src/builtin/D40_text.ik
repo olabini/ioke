@@ -20,7 +20,7 @@ Text do(=== = generateMatchMethod(==))
 Text chars = method(
 	"returns a list of each character in this text",
 	
-	self split("")[0..-2])
+	self split(""))
 
 Text ?| = dmacro(
   "if this text is empty, returns the result of evaluating the argument, otherwise returns the text",

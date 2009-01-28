@@ -218,14 +218,14 @@ describe("Text",
       "foo" trim should == "foo"
       "foo bar quux" trim should == "foo bar quux"
     )
-  
+
     it("should return a new string with leading and trailing whitespace removed",
       "foo  " trim should == "foo"
       "  foo" trim should == "foo"
       " foo " trim should == "foo"
       "  foo bar quux  " trim should == "foo bar quux"
     )
-  
+
     it("should return a new string with leading and trailing newlines removed",
       "foo\n" trim should == "foo"
       "\nfoo" trim should == "foo"
@@ -245,7 +245,7 @@ describe("Text",
     it("should return each character separately if empty text is given",
       "foo" split("") should == ["f", "o", "o"]
     )
-
+    
     it("should return each character separately if empty regexp is given",
       "foo" split(#//) should == ["f", "o", "o"]
     )
@@ -260,7 +260,7 @@ describe("Text",
     )
 
     it("should split on a regexp",
-      "x oooo y o fofblooooooooooooo" split(#/o+/) should == ["x ", " y ", " f", "fbl", ""]
+      "x oooo y o fofblooooooooooooo" split(#/o+/) should == ["x ", " y ", " f", "fbl"]
     )
 
     it("should validate type of receiver",
