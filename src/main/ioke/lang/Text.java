@@ -126,7 +126,7 @@ public class Text extends IokeData {
                     }
 
                     RETokenizer tok = new RETokenizer(p, real);
-                    tok.setEmptyEnabled(true);
+                    tok.setEmptyEnabled(false);
                     while(tok.hasMore()) {
                         r.add(context.runtime.newText(tok.nextToken()));
                     }
