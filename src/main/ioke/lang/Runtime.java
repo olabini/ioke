@@ -38,6 +38,8 @@ public class Runtime {
     PrintWriter out;
     PrintWriter err;
     Reader in;
+    
+    public IokeRegistry registry = new IokeRegistry(this);
 
     // Core objects and origins
     public IokeObject base = new IokeObject(this, "Base is the top of the inheritance structure. Most of the objects in the system are derived from this instance. Base should keep its cells to the bare minimum needed for the system.");
@@ -72,6 +74,7 @@ public class Runtime {
     public IokeObject dateTime = new IokeObject(this, "A DateTime represents the current date and time in a particular time zone.", new DateTime(0));
 
     public IokeObject locals = new IokeObject(this, "Contains all the locals for a specific invocation.");
+    public IokeObject javaWrapper = new IokeObject(this, "Wraps a java object.", new JavaWrapper());
 
     public IokeObject condition = new IokeObject(this, "The root mimic of all the conditions in the system.");
     public IokeObject rescue = new IokeObject(this, "A Rescue contains handling information from rescuing a Condition.");
@@ -211,6 +214,7 @@ public class Runtime {
         FileSystem.init(fileSystem);
         regexp.init();
         JavaGround.init(javaGround);
+        javaWrapper.init();
 
         ground.mimicsWithoutCheck(defaultBehavior);
         ground.mimicsWithoutCheck(base);
@@ -271,6 +275,8 @@ public class Runtime {
 
         Restart.init(restart);
         restart.mimicsWithoutCheck(origin);
+
+        javaWrapper.mimicsWithoutCheck(origin);
 
         addBuiltinScript("benchmark", new Builtin() {
                 public IokeObject load(Runtime runtime, IokeObject context, IokeObject message) throws ControlFlow {
@@ -573,6 +579,21 @@ public class Runtime {
         obj.setData(Decimal.decimal(number));
         return obj;
     }
+
+    public IokeObject createJavaWrapper(Object object) {
+        IokeObject obj = this.javaWrapper.allocateCopy(null, null);
+        obj.mimicsWithoutCheck(this.javaWrapper);
+        obj.setData(new JavaWrapper(object));
+        return obj;
+    }
+
+//     public IokeObject createOriginalJavaWrapper(Object object) throws ControlFlow {
+//         IokeObject obj = this.javaWrapper.allocateCopy(null, null);
+//         // here it should mimic its super class or something. gah
+//         obj.mimicsWithoutCheck();
+//         obj.setData(new JavaWrapper(object));
+//         return obj;
+//     }
 
     public IokeObject newNumber(String number) throws ControlFlow {
         IokeObject obj = this.integer.allocateCopy(null, null);
