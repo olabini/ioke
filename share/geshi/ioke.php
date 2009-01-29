@@ -222,10 +222,9 @@ $language_data = array (
             
             //kinds
             11 => array(
-              GESHI_SEARCH => '(\b)([A-Z][a-z\?]+)(\b)',
+              GESHI_SEARCH => '(\b)([A-Z][a-z\?]+)',
               GESHI_BEFORE  => '\\1',
               GESHI_REPLACE => '\\2',
-              GESHI_AFTER   => '\\3' 
             ),
             
             //symbol symbol
