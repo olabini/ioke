@@ -1,0 +1,44 @@
+
+All classes NEED to be wrapped - the whole hierarchy immediately. Wrap all methods too. The regular objects shouldn't be necessary to wrap.
+
+
+
+Origin mimics JavaGround
+
+How to refer to full class names?
+   Foo
+   java:util:HashMap
+   xml:com:sun:blarg:Foo$Bar$Quux  ;; inner classes
+   xml:com:sun:blarg:Foo Bar Quux  ;; inner classes
+
+Importing:
+  JavaGround#import
+
+   import(java:util:HashMap)
+
+ assignment works too:
+
+   HMap = java:util:HashMap
+
+The class referred is the real class.
+
+Create new instances with new
+
+   HMap new
+
+To figure out:
+ - how to call overloaded methods
+ - args by name functionality?
+ - how to send code to Java methods?
+    maybe something like this:
+      Thread new(Runnable: callSomeExpensiveThing)
+      Thread new(run: callSomeExpensiveThing)
+      Collections sort(list, fn(x, y, x <=> y))
+      Collections sort(list, compareTo: (x, y, x <=> y))
+
+ - how to see difference between fields and methods
+ - how to implement interfaces
+ - how to extend from Java classes in some way
+
+
+ - add loads of good helpers to Java types
