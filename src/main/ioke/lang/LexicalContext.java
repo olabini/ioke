@@ -44,7 +44,7 @@ public class LexicalContext extends IokeObject {
         if(place == runtime.nul) {
             place = this;
         }
-        IokeObject.setCell(place, name, value);
+        IokeObject.setCell(place, name, value, context);
     }
 
     @Override

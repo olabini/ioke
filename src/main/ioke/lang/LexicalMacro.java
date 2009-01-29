@@ -33,7 +33,7 @@ public class LexicalMacro extends IokeData implements AssociatedCode, Named, Ins
     }
 
     public String getCodeString(Object self) throws ControlFlow {
-        if(IokeObject.as(self).isActivatable()) {
+        if(IokeObject.as(self, null).isActivatable()) {
             return "lecro(" + Message.code(code) + ")";
         } else {
             return "lecrox(" + Message.code(code) + ")";
@@ -41,7 +41,7 @@ public class LexicalMacro extends IokeData implements AssociatedCode, Named, Ins
     }
 
     public String getFormattedCode(Object self) throws ControlFlow {
-        if(IokeObject.as(self).isActivatable()) {
+        if(IokeObject.as(self, null).isActivatable()) {
             return "lecro(\n  " + Message.formattedCode(code, 2) + ")";
         } else {
             return "lecrox(\n  " + Message.formattedCode(code, 2) + ")";
@@ -74,7 +74,7 @@ public class LexicalMacro extends IokeData implements AssociatedCode, Named, Ins
 
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    return IokeObject.as(on).activate(context, message, context.getRealContext());
+                    return IokeObject.as(on, context).activate(context, message, context.getRealContext());
                 }
             }));
         obj.registerMethod(obj.runtime.newJavaMethod("returns the message chain for this lecro", new JavaMethod.WithNoArguments("message") {
@@ -154,7 +154,7 @@ public class LexicalMacro extends IokeData implements AssociatedCode, Named, Ins
 
     public String inspect(Object self) {
         String type = "lecro";
-        if(!IokeObject.as(self).isActivatable()) {
+        if(!IokeObject.as(self, null).isActivatable()) {
             type = "lecrox";
         }
 
@@ -167,7 +167,7 @@ public class LexicalMacro extends IokeData implements AssociatedCode, Named, Ins
 
     public String notice(Object self) {
         String type = "lecro";
-        if(!IokeObject.as(self).isActivatable()) {
+        if(!IokeObject.as(self, null).isActivatable()) {
             type = "lecrox";
         }
 
@@ -186,7 +186,7 @@ public class LexicalMacro extends IokeData implements AssociatedCode, Named, Ins
                                                                          dynamicContext, 
                                                                          "Error", 
                                                                          "Invocation",
-                                                                         "NotActivatable")).mimic(message, dynamicContext);
+                                                                         "NotActivatable"), dynamicContext).mimic(message, dynamicContext);
             condition.setCell("message", message);
             condition.setCell("context", dynamicContext);
             condition.setCell("receiver", on);
@@ -216,7 +216,7 @@ public class LexicalMacro extends IokeData implements AssociatedCode, Named, Ins
                                                                          dynamicContext, 
                                                                          "Error", 
                                                                          "Invocation",
-                                                                         "NotActivatable")).mimic(message, dynamicContext);
+                                                                         "NotActivatable"), dynamicContext).mimic(message, dynamicContext);
             condition.setCell("message", message);
             condition.setCell("context", dynamicContext);
             condition.setCell("receiver", on);
@@ -242,7 +242,7 @@ public class LexicalMacro extends IokeData implements AssociatedCode, Named, Ins
                                                                          dynamicContext, 
                                                                          "Error", 
                                                                          "Invocation",
-                                                                         "NotActivatable")).mimic(message, dynamicContext);
+                                                                         "NotActivatable"), dynamicContext).mimic(message, dynamicContext);
             condition.setCell("message", message);
             condition.setCell("context", dynamicContext);
             condition.setCell("receiver", on);
@@ -255,7 +255,7 @@ public class LexicalMacro extends IokeData implements AssociatedCode, Named, Ins
         LexicalContext c = new LexicalContext(self.runtime, on, "Lexical macro activation context", message, this.context);
 
         c.setCell("outerScope", context);
-        c.setCell("call", dynamicContext.runtime.newCallFrom(c, message, dynamicContext, IokeObject.as(on)));
+        c.setCell("call", dynamicContext.runtime.newCallFrom(c, message, dynamicContext, IokeObject.as(on, dynamicContext)));
 
         return this.code.evaluateCompleteWith(c, on);
     }
@@ -268,7 +268,7 @@ public class LexicalMacro extends IokeData implements AssociatedCode, Named, Ins
                                                                          dynamicContext, 
                                                                          "Error", 
                                                                          "Invocation",
-                                                                         "NotActivatable")).mimic(message, dynamicContext);
+                                                                         "NotActivatable"), dynamicContext).mimic(message, dynamicContext);
             condition.setCell("message", message);
             condition.setCell("context", dynamicContext);
             condition.setCell("receiver", on);
@@ -281,7 +281,7 @@ public class LexicalMacro extends IokeData implements AssociatedCode, Named, Ins
         LexicalContext c = new LexicalContext(self.runtime, on, "Lexical macro activation context", message, this.context);
 
         c.setCell("outerScope", context);
-        c.setCell("call", dynamicContext.runtime.newCallFrom(c, message, dynamicContext, IokeObject.as(on)));
+        c.setCell("call", dynamicContext.runtime.newCallFrom(c, message, dynamicContext, IokeObject.as(on, dynamicContext)));
         for(Map.Entry<String, Object> d : data.entrySet()) {
             String s = d.getKey();
             c.setCell(s.substring(0, s.length()-1), d.getValue());

@@ -356,7 +356,7 @@ public class RegexpMatch extends IokeData {
                                                                                            message, 
                                                                                            context, 
                                                                                            "Error", 
-                                                                                           "NoSuchCell")).mimic(message, context);
+                                                                                           "NoSuchCell"), context).mimic(message, context);
                         condition.setCell("message", message);
                         condition.setCell("context", context);
                         condition.setCell("receiver", on);

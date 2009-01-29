@@ -26,7 +26,7 @@ public class Base {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
 
-                    String docs = IokeObject.as(on).getDocumentation();
+                    String docs = IokeObject.as(on, context).getDocumentation();
                     if(null == docs) {
                         return context.runtime.nil;
                     }
@@ -57,10 +57,10 @@ public class Base {
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     Object arg = args.get(0);
                     if(arg == context.runtime.nil) {
-                        IokeObject.as(on).setDocumentation(null, message, context);
+                        IokeObject.as(on, context).setDocumentation(null, message, context);
                     } else {
                         String s = Text.getText(arg);
-                        IokeObject.as(on).setDocumentation(s, message, context);
+                        IokeObject.as(on, context).setDocumentation(s, message, context);
                     }
                     return arg;
                 }
@@ -71,7 +71,7 @@ public class Base {
                                                            @Override
                                                            public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                                                                getArguments().checkArgumentCount(context, message, on);
-                                                               return IokeObject.as(on).mimic(message, context);
+                                                               return IokeObject.as(on, context).mimic(message, context);
                                                            }}));
 
         base.registerMethod(base.runtime.newJavaMethod("expects two arguments, the first unevaluated, the second evaluated. assigns the result of evaluating the second argument in the context of the caller, and assigns this result to the name provided by the first argument. the first argument remains unevaluated. the result of the assignment is the value assigned to the name. if the second argument is a method-like object and it's name is not set, that name will be set to the name of the cell. TODO: add setf documentation here.", new JavaMethod("=") {
@@ -90,20 +90,22 @@ public class Base {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().checkArgumentCount(context, message, on);
 
-                    IokeObject m1 = IokeObject.as(Message.getArg1(message));
+                    IokeObject m1 = IokeObject.as(Message.getArg1(message), context);
                     String name = m1.getName();
                     if(m1.getArguments().size() == 0) {
                         Object value = message.getEvaluatedArgument(1, context);
 
                         IokeObject.assign(on, name, value, context, message);
 
-                        if((IokeObject.data(value) instanceof Named) && ((Named)IokeObject.data(value)).getName() == null) {
-                            ((Named)IokeObject.data(value)).setName(name);
-                        } else if(name.length() > 0 && Character.isUpperCase(name.charAt(0)) && !IokeObject.as(value).hasKind()) {
-                            if(on == context.runtime.ground) {
-                                IokeObject.as(value).setKind(name);
-                            } else {
-                                IokeObject.as(value).setKind(IokeObject.as(on).getKind() + " " + name);
+                        if(value instanceof IokeObject) {
+                            if((IokeObject.data(value) instanceof Named) && ((Named)IokeObject.data(value)).getName() == null) {
+                                ((Named)IokeObject.data(value)).setName(name);
+                            } else if(name.length() > 0 && Character.isUpperCase(name.charAt(0)) && !IokeObject.as(value, context).hasKind()) {
+                                if(on == context.runtime.ground) {
+                                    IokeObject.as(value, context).setKind(name);
+                                } else {
+                                    IokeObject.as(value, context).setKind(IokeObject.as(on, context).getKind() + " " + name);
+                                }
                             }
                         }
                     
@@ -281,7 +283,7 @@ public class Base {
                         toVisit.add(on);
 
                         while(!toVisit.isEmpty()) {
-                            IokeObject current = IokeObject.as(toVisit.remove(0));
+                            IokeObject current = IokeObject.as(toVisit.remove(0), context);
                             if(!visited.containsKey(current)) {
                                 visited.put(current, null);
                                 if(cutoff != current) {
@@ -308,7 +310,7 @@ public class Base {
                         
                         return runtime.newList(names);
                     } else {
-                        Map<String, Object> mso = IokeObject.as(on).getCells();
+                        Map<String, Object> mso = IokeObject.as(on, context).getCells();
                         List<Object> names = new ArrayList<Object>();
                         Runtime runtime = context.runtime;
 
@@ -351,7 +353,7 @@ public class Base {
                         toVisit.add(on);
 
                         while(!toVisit.isEmpty()) {
-                            IokeObject current = IokeObject.as(toVisit.remove(0));
+                            IokeObject current = IokeObject.as(toVisit.remove(0), context);
                             if(!visited.containsKey(current)) {
                                 visited.put(current, null);
                                 toVisit.addAll(current.getMimics());
@@ -374,7 +376,7 @@ public class Base {
                             }
                         }
                     } else {
-                        Map<String, Object> mso = IokeObject.as(on).getCells();
+                        Map<String, Object> mso = IokeObject.as(on, context).getCells();
 
                         for(String s : mso.keySet()) {
                             Object val = mso.get(s);
@@ -410,11 +412,11 @@ public class Base {
 
                     if((IokeObject.data(val) instanceof Named) && ((Named)IokeObject.data(val)).getName() == null) {
                         ((Named)IokeObject.data(val)).setName(name);
-                    } else if(name.length() > 0 && Character.isUpperCase(name.charAt(0)) && !IokeObject.as(val).hasKind()) {
+                    } else if(name.length() > 0 && Character.isUpperCase(name.charAt(0)) && !IokeObject.as(val, context).hasKind()) {
                         if(on == context.runtime.ground) {
-                            IokeObject.as(val).setKind(name);
+                            IokeObject.as(val, context).setKind(name);
                         } else {
-                            IokeObject.as(val).setKind(IokeObject.as(on).getKind() + " " + name);
+                            IokeObject.as(val, context).setKind(IokeObject.as(on, context).getKind() + " " + name);
                         }
                     }
 

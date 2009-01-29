@@ -30,7 +30,7 @@ public class AssignmentBehavior {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().checkArgumentCount(context, message, on);
 
-                    IokeObject m1 = IokeObject.as(Message.getArg1(message));
+                    IokeObject m1 = IokeObject.as(Message.getArg1(message), context);
                     String name = m1.getName();
 
                     if(m1.getArgumentCount() == 0) {
@@ -67,7 +67,7 @@ public class AssignmentBehavior {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().checkArgumentCount(context, message, on);
 
-                    IokeObject m1 = IokeObject.as(Message.getArg1(message));
+                    IokeObject m1 = IokeObject.as(Message.getArg1(message), context);
                     String name = m1.getName();
 
                     if(m1.getArgumentCount() == 0) {
@@ -104,16 +104,16 @@ public class AssignmentBehavior {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().checkArgumentCount(context, message, on);
 
-                    IokeObject m1 = IokeObject.as(Message.getArg1(message));
+                    IokeObject m1 = IokeObject.as(Message.getArg1(message), context);
                     String name = m1.getName();
                     if(m1.getArgumentCount() == 0) {
                         Object val = IokeObject.getCell(on, message, context, name);
                         Object result = context.runtime.plusMessage.sendTo(context, val, Message.getArg2(message));
-                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result))));
+                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
                     } else {
                         Object val = m1.sendTo(context, on);
                         Object result = context.runtime.plusMessage.sendTo(context, val, Message.getArg2(message));
-                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result))));
+                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
                     }
                 }
             }));
@@ -134,16 +134,16 @@ public class AssignmentBehavior {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().checkArgumentCount(context, message, on);
 
-                    IokeObject m1 = IokeObject.as(Message.getArg1(message));
+                    IokeObject m1 = IokeObject.as(Message.getArg1(message), context);
                     String name = m1.getName();
                     if(m1.getArgumentCount() == 0) {
                         Object val = IokeObject.getCell(on, message, context, name);
                         Object result = context.runtime.minusMessage.sendTo(context, val, Message.getArg2(message));
-                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result))));
+                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
                     } else {
                         Object val = m1.sendTo(context, on);
                         Object result = context.runtime.minusMessage.sendTo(context, val, Message.getArg2(message));
-                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result))));
+                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
                     }
                 }
             }));
@@ -164,16 +164,16 @@ public class AssignmentBehavior {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().checkArgumentCount(context, message, on);
 
-                    IokeObject m1 = IokeObject.as(Message.getArg1(message));
+                    IokeObject m1 = IokeObject.as(Message.getArg1(message), context);
                     String name = m1.getName();
                     if(m1.getArgumentCount() == 0) {
                         Object val = IokeObject.getCell(on, message, context, name);
                         Object result = context.runtime.multMessage.sendTo(context, val, Message.getArg2(message));
-                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result))));
+                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
                     } else {
                         Object val = m1.sendTo(context, on);
                         Object result = context.runtime.multMessage.sendTo(context, val, Message.getArg2(message));
-                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result))));
+                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
                     }
                 }
             }));
@@ -194,16 +194,16 @@ public class AssignmentBehavior {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().checkArgumentCount(context, message, on);
 
-                    IokeObject m1 = IokeObject.as(Message.getArg1(message));
+                    IokeObject m1 = IokeObject.as(Message.getArg1(message), context);
                     String name = m1.getName();
                     if(m1.getArgumentCount() == 0) {
                         Object val = IokeObject.getCell(on, message, context, name);
                         Object result = context.runtime.divMessage.sendTo(context, val, Message.getArg2(message));
-                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result))));
+                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
                     } else {
                         Object val = m1.sendTo(context, on);
                         Object result = context.runtime.divMessage.sendTo(context, val, Message.getArg2(message));
-                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result))));
+                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
                     }
                 }
             }));
@@ -224,16 +224,16 @@ public class AssignmentBehavior {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().checkArgumentCount(context, message, on);
 
-                    IokeObject m1 = IokeObject.as(Message.getArg1(message));
+                    IokeObject m1 = IokeObject.as(Message.getArg1(message), context);
                     String name = m1.getName();
                     if(m1.getArgumentCount() == 0) {
                         Object val = IokeObject.getCell(on, message, context, name);
                         Object result = context.runtime.modMessage.sendTo(context, val, Message.getArg2(message));
-                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result))));
+                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
                     } else {
                         Object val = m1.sendTo(context, on);
                         Object result = context.runtime.modMessage.sendTo(context, val, Message.getArg2(message));
-                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result))));
+                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
                     }
                 }
             }));
@@ -254,16 +254,16 @@ public class AssignmentBehavior {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().checkArgumentCount(context, message, on);
 
-                    IokeObject m1 = IokeObject.as(Message.getArg1(message));
+                    IokeObject m1 = IokeObject.as(Message.getArg1(message), context);
                     String name = m1.getName();
                     if(m1.getArgumentCount() == 0) {
                         Object val = IokeObject.getCell(on, message, context, name);
                         Object result = context.runtime.expMessage.sendTo(context, val, Message.getArg2(message));
-                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result))));
+                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
                     } else {
                         Object val = m1.sendTo(context, on);
                         Object result = context.runtime.expMessage.sendTo(context, val, Message.getArg2(message));
-                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result))));
+                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
                     }
                 }
             }));
@@ -284,16 +284,16 @@ public class AssignmentBehavior {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().checkArgumentCount(context, message, on);
 
-                    IokeObject m1 = IokeObject.as(Message.getArg1(message));
+                    IokeObject m1 = IokeObject.as(Message.getArg1(message), context);
                     String name = m1.getName();
                     if(m1.getArgumentCount() == 0) {
                         Object val = IokeObject.getCell(on, message, context, name);
                         Object result = context.runtime.binAndMessage.sendTo(context, val, Message.getArg2(message));
-                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result))));
+                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
                     } else {
                         Object val = m1.sendTo(context, on);
                         Object result = context.runtime.binAndMessage.sendTo(context, val, Message.getArg2(message));
-                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result))));
+                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
                     }
                 }
             }));
@@ -314,16 +314,16 @@ public class AssignmentBehavior {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().checkArgumentCount(context, message, on);
 
-                    IokeObject m1 = IokeObject.as(Message.getArg1(message));
+                    IokeObject m1 = IokeObject.as(Message.getArg1(message), context);
                     String name = m1.getName();
                     if(m1.getArgumentCount() == 0) {
                         Object val = IokeObject.getCell(on, message, context, name);
                         Object result = context.runtime.binOrMessage.sendTo(context, val, Message.getArg2(message));
-                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result))));
+                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
                     } else {
                         Object val = m1.sendTo(context, on);
                         Object result = context.runtime.binOrMessage.sendTo(context, val, Message.getArg2(message));
-                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result))));
+                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
                     }
                 }
             }));
@@ -344,16 +344,16 @@ public class AssignmentBehavior {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().checkArgumentCount(context, message, on);
 
-                    IokeObject m1 = IokeObject.as(Message.getArg1(message));
+                    IokeObject m1 = IokeObject.as(Message.getArg1(message), context);
                     String name = m1.getName();
                     if(m1.getArgumentCount() == 0) {
                         Object val = IokeObject.getCell(on, message, context, name);
                         Object result = context.runtime.binXorMessage.sendTo(context, val, Message.getArg2(message));
-                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result))));
+                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
                     } else {
                         Object val = m1.sendTo(context, on);
                         Object result = context.runtime.binXorMessage.sendTo(context, val, Message.getArg2(message));
-                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result))));
+                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
                     }
                 }
             }));
@@ -374,16 +374,16 @@ public class AssignmentBehavior {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().checkArgumentCount(context, message, on);
 
-                    IokeObject m1 = IokeObject.as(Message.getArg1(message));
+                    IokeObject m1 = IokeObject.as(Message.getArg1(message), context);
                     String name = m1.getName();
                     if(m1.getArgumentCount() == 0) {
                         Object val = IokeObject.getCell(on, message, context, name);
                         Object result = context.runtime.lshMessage.sendTo(context, val, Message.getArg2(message));
-                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result))));
+                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
                     } else {
                         Object val = m1.sendTo(context, on);
                         Object result = context.runtime.lshMessage.sendTo(context, val, Message.getArg2(message));
-                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result))));
+                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
                     }
                 }
             }));
@@ -404,16 +404,16 @@ public class AssignmentBehavior {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().checkArgumentCount(context, message, on);
 
-                    IokeObject m1 = IokeObject.as(Message.getArg1(message));
+                    IokeObject m1 = IokeObject.as(Message.getArg1(message), context);
                     String name = m1.getName();
                     if(m1.getArgumentCount() == 0) {
                         Object val = IokeObject.getCell(on, message, context, name);
                         Object result = context.runtime.rshMessage.sendTo(context, val, Message.getArg2(message));
-                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result))));
+                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
                     } else {
                         Object val = m1.sendTo(context, on);
                         Object result = context.runtime.rshMessage.sendTo(context, val, Message.getArg2(message));
-                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result))));
+                        return context.runtime.setValue.sendTo(context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
                     }
                 }
             }));
@@ -434,7 +434,7 @@ public class AssignmentBehavior {
                     getArguments().checkArgumentCount(context, message, on);
                     IokeObject nameMessage = (IokeObject)Message.getArg1(message);
                     String name = nameMessage.getName();
-                    Object current = IokeObject.as(on).perform(context, message, name);
+                    Object current = IokeObject.as(on, context).perform(context, message, name);
                     Object value = runtime.succ.sendTo(context, current);
                     return runtime.setValue.sendTo(context, on, nameMessage, value);
                 }
@@ -457,7 +457,7 @@ public class AssignmentBehavior {
 
                     IokeObject nameMessage = (IokeObject)Message.getArg1(message);
                     String name = nameMessage.getName();
-                    Object current = IokeObject.as(on).perform(context, message, name);
+                    Object current = IokeObject.as(on, context).perform(context, message, name);
                     Object value = runtime.pred.sendTo(context, current);
                     return runtime.setValue.sendTo(context, on, nameMessage, value);
                 }

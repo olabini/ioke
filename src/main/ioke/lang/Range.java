@@ -56,7 +56,7 @@ public class Range extends IokeData {
         final Runtime runtime = obj.runtime;
 
         obj.setKind("Range");
-        obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Enumerable")), runtime.nul, runtime.nul);
+        obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Enumerable"), null), runtime.nul, runtime.nul);
 
         obj.registerMethod(runtime.newJavaMethod("will return a new inclusive Range based on the two arguments", new JavaMethod("inclusive") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
@@ -78,7 +78,7 @@ public class Range extends IokeData {
                     Object from = args.get(0);
                     Object to = args.get(1);
 
-                    boolean comparing = IokeObject.isMimic(from, IokeObject.as(context.runtime.mixins.getCells().get("Comparing")));
+                    boolean comparing = IokeObject.isMimic(from, IokeObject.as(context.runtime.mixins.getCells().get("Comparing"), context), context);
                     boolean inverted = false;
 
                     if(comparing) {
@@ -88,7 +88,7 @@ public class Range extends IokeData {
                         }
                     }
 
-                    return runtime.newRange(IokeObject.as(from), IokeObject.as(to), true, inverted);
+                    return runtime.newRange(IokeObject.as(from, context), IokeObject.as(to, context), true, inverted);
                 }
             }));
 
@@ -112,7 +112,7 @@ public class Range extends IokeData {
                     Object from = args.get(0);
                     Object to = args.get(1);
 
-                    boolean comparing = IokeObject.isMimic(from, IokeObject.as(context.runtime.mixins.getCells().get("Comparing")));
+                    boolean comparing = IokeObject.isMimic(from, IokeObject.as(context.runtime.mixins.getCells().get("Comparing"), context), context);
                     boolean inverted = false;
                     if(comparing) {
                         Object result = context.runtime.spaceShip.sendTo(context, from, to);
@@ -121,7 +121,7 @@ public class Range extends IokeData {
                         }
                     }
 
-                    return runtime.newRange(IokeObject.as(from), IokeObject.as(to), false, inverted);
+                    return runtime.newRange(IokeObject.as(from, context), IokeObject.as(to, context), false, inverted);
                 }
             }));
 
@@ -176,8 +176,8 @@ public class Range extends IokeData {
 
                     Runtime runtime = context.runtime;
 
-                    IokeObject from = IokeObject.as(((Range)IokeObject.data(on)).from);
-                    IokeObject to = IokeObject.as(((Range)IokeObject.data(on)).to);
+                    IokeObject from = IokeObject.as(((Range)IokeObject.data(on)).from, context);
+                    IokeObject to = IokeObject.as(((Range)IokeObject.data(on)).to, context);
                     boolean inclusive = ((Range)IokeObject.data(on)).inclusive;
 
                     IokeObject messageToSend = context.runtime.succ;
@@ -187,7 +187,7 @@ public class Range extends IokeData {
 
                     switch(message.getArgumentCount()) {
                     case 1: {
-                        IokeObject code = IokeObject.as(message.getArguments().get(0));
+                        IokeObject code = IokeObject.as(message.getArguments().get(0), context);
 
                         Object current = from;
 
@@ -203,8 +203,8 @@ public class Range extends IokeData {
                     }
                     case 2: {
                         LexicalContext c = new LexicalContext(context.runtime, context, "Lexical activation context for Range#each", message, context);
-                        String name = IokeObject.as(message.getArguments().get(0)).getName();
-                        IokeObject code = IokeObject.as(message.getArguments().get(1));
+                        String name = IokeObject.as(message.getArguments().get(0), context).getName();
+                        IokeObject code = IokeObject.as(message.getArguments().get(1), context);
 
                         Object current = from;
 
@@ -222,9 +222,9 @@ public class Range extends IokeData {
                     }
                     case 3: {
                         LexicalContext c = new LexicalContext(context.runtime, context, "Lexical activation context for List#each", message, context);
-                        String iname = IokeObject.as(message.getArguments().get(0)).getName();
-                        String name = IokeObject.as(message.getArguments().get(1)).getName();
-                        IokeObject code = IokeObject.as(message.getArguments().get(2));
+                        String iname = IokeObject.as(message.getArguments().get(0), context).getName();
+                        String name = IokeObject.as(message.getArguments().get(1), context).getName();
+                        IokeObject code = IokeObject.as(message.getArguments().get(2), context);
 
                         int index = 0;
 
@@ -266,9 +266,9 @@ public class Range extends IokeData {
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
                     Object other = args.get(0);
 
-                    IokeObject from = IokeObject.as(((Range)IokeObject.data(on)).from);
-                    IokeObject to = IokeObject.as(((Range)IokeObject.data(on)).to);
-                    boolean comparing = IokeObject.isMimic(from, IokeObject.as(context.runtime.mixins.getCells().get("Comparing")));
+                    IokeObject from = IokeObject.as(((Range)IokeObject.data(on)).from, context);
+                    IokeObject to = IokeObject.as(((Range)IokeObject.data(on)).to, context);
+                    boolean comparing = IokeObject.isMimic(from, IokeObject.as(context.runtime.mixins.getCells().get("Comparing"), context));
                     boolean inclusive = ((Range)IokeObject.data(on)).inclusive;
 
                     if(comparing) {

@@ -158,10 +158,11 @@ expression
     :
         {!"(".equals(input.LT(2).getText())}?=> 
         v=Identifier                               -> ^(MESSAGE[$v] Identifier)
-    |   v=Identifier '(' commatedExpression? ')'   -> ^(MESSAGE[$v] Identifier       '('  commatedExpression?)
-    |   v='(' commatedExpression? ')'              -> ^(MESSAGE[$v] Identifier[""]   '('  commatedExpression?)
-    |   v='[' commatedExpression? ']'              -> ^(MESSAGE[$v] Identifier["[]"] '['  commatedExpression?)
-    |   v='{' commatedExpression? '}'              -> ^(MESSAGE[$v] Identifier["{}"] '{'  commatedExpression?)
+    |   v=Identifier '(' commatedExpression? ')'   -> ^(MESSAGE[$v] Identifier        '('  commatedExpression?)
+    |   v='('  commatedExpression? ')'             -> ^(MESSAGE[$v] Identifier[""]    '('  commatedExpression?)
+    |   v='['  commatedExpression? ']'             -> ^(MESSAGE[$v] Identifier["[]"]  '['  commatedExpression?)
+    |   v='{'  commatedExpression? '}'             -> ^(MESSAGE[$v] Identifier["{}"]  '{'  commatedExpression?)
+    |   v='#{' commatedExpression? '}'             -> ^(MESSAGE[$v] Identifier["set"] '{'  commatedExpression?)
     |   literals
     |   Terminator
     ;
@@ -205,8 +206,8 @@ Identifier
     |   (OperatorChar | '/') (OperatorChar | '#' | '/')*
     |   '#' (OperatorChar | '#')+
     |   '.' '.'+
-    |   Letter (Letter|IDDigit|':'|'!'|'?')*
-    |   ':' (Letter|IDDigit) (Letter|IDDigit|':'|'!'|'?')*
+    |   Letter (Letter|IDDigit|':'|'!'|'?'|'$')*
+    |   ':' (Letter|IDDigit) (Letter|IDDigit|':'|'!'|'?'|'$')*
     ;
 
 DecimalLiteral

@@ -94,7 +94,7 @@ public class Main {
                                                                                                context, 
                                                                                                "Error", 
                                                                                                "CommandLine", 
-                                                                                               "DontUnderstandOption")).mimic(message, context);
+                                                                                               "DontUnderstandOption"), null).mimic(message, context);
                             condition.setCell("message", message);
                             condition.setCell("context", context);
                             condition.setCell("receiver", context);
@@ -124,7 +124,7 @@ public class Main {
             
             if(readStdin) {
                 ((IokeSystem)IokeObject.data(r.system)).setCurrentProgram("<stdin>");
-                r.evaluateStream("<stdin>", new InputStreamReader(System.in), message, context);
+                r.evaluateStream("<stdin>", new InputStreamReader(System.in, "UTF-8"), message, context);
             }
 
             if(args.length > start) { 

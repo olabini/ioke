@@ -75,11 +75,11 @@ public abstract class JavaMethod extends Method {
     public Object activate(IokeObject self, Object on, List<Object> args,
             Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
         IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
-                message, 
-                context, 
-                "Error", 
-                "Invocation",
-                "NotActivatable")).mimic(message, context);
+                                                                     message, 
+                                                                     context, 
+                                                                     "Error", 
+                                                                     "Invocation",
+                                                                     "NotActivatable"), context).mimic(message, context);
         
         condition.setCell("message", message);
         condition.setCell("context", context);

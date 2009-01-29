@@ -296,7 +296,7 @@ public class Decimal extends IokeData {
                                                                                                context, 
                                                                                                "Error", 
                                                                                                "Arithmetic",
-                                                                                               "DivisionByZero")).mimic(message, context);
+                                                                                               "DivisionByZero"), context).mimic(message, context);
                             condition.setCell("message", message);
                             condition.setCell("context", context);
                             condition.setCell("receiver", on);

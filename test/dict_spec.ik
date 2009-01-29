@@ -230,10 +230,12 @@ describe("Dict",
     )
     
     it("should be possible to just give it a message chain, that will be invoked on each object", 
-      Ground y = []
-      Ground x = method(Ground y << self)
-      {one: 1, two: 2, three: 3} each(x)
-      y sort should == [:one => 1, :two => 2, :three => 3] sort
+      d = {one: 1, two: 2, three: 3}
+      Pair y = []
+      Pair x = method(y << self)
+      d each(x)
+
+      Pair y sort should == [:one => 1, :two => 2, :three => 3] sort
 
       x = 0
       {one: 1, two: 2, three: 3} each(nil. x++)

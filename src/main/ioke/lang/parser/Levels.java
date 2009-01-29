@@ -72,7 +72,7 @@ public class Levels {
                 if(message.getArgumentCount() == 1) {
                     Object arg1 = message.getArguments().get(0);
                     if(arg1 instanceof IokeObject) { 
-                        IokeObject arg = IokeObject.as(arg1);
+                        IokeObject arg = IokeObject.as(arg1, null);
                         if(arg.getName().length() == 0 && arg.getArgumentCount() == 1 && Message.next(arg) == null) {
                             int index = expressions.indexOf(arg);
 
@@ -251,7 +251,7 @@ public class Levels {
         this._context = context;
         this._message = message;
 
-        IokeObject opTable = IokeObject.as(msg.findCell(_message, _context, "OperatorTable"));
+        IokeObject opTable = IokeObject.as(msg.findCell(_message, _context, "OperatorTable"), null);
         if(opTable == runtime.nul) {
             opTable = runtime.newFromOrigin();
             opTable.setKind("Message OperatorTable");
@@ -290,7 +290,7 @@ public class Levels {
     }
 
     public Map<Object, Object> getOpTable(IokeObject opTable, String name, OpTableCreator creator) throws ControlFlow {
-        IokeObject operators = IokeObject.as(opTable.findCell(_message, _context, name));
+        IokeObject operators = IokeObject.as(opTable.findCell(_message, _context, name), null);
         if(operators != runtime.nul && (IokeObject.data(operators) instanceof Dict)) {
             return Dict.getMap(operators);
         } else {
@@ -414,7 +414,7 @@ public class Levels {
             precedence = -1;
             Object arg = Message.next(msg);
             Message.setNext(msg, Message.next(arg));
-            Message.setNext(IokeObject.as(arg), null);
+            Message.setNext(IokeObject.as(arg, null), null);
             msg.getArguments().add(arg);
             msgArgCount++;
         }
@@ -481,7 +481,7 @@ public class Levels {
                                                                                    _context, 
                                                                                    "Error", 
                                                                                    "Parser", 
-                                                                                   "OpShuffle")).mimic(_message, _context);
+                                                                                   "OpShuffle"), _context).mimic(_message, _context);
                 condition.setCell("message", _message);
                 condition.setCell("context", _context);
                 condition.setCell("receiver", _context);

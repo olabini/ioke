@@ -403,7 +403,7 @@ public class FileSystem {
                                                                                            message, 
                                                                                            context, 
                                                                                            "Error", 
-                                                                                           "IO")).mimic(message, context);
+                                                                                           "IO"), context).mimic(message, context);
                         condition.setCell("message", message);
                         condition.setCell("context", context);
                         condition.setCell("receiver", on);
@@ -462,7 +462,7 @@ public class FileSystem {
                                                                                            message, 
                                                                                            context, 
                                                                                            "Error", 
-                                                                                           "IO")).mimic(message, context);
+                                                                                           "IO"), context).mimic(message, context);
                         condition.setCell("message", message);
                         condition.setCell("context", context);
                         condition.setCell("receiver", on);

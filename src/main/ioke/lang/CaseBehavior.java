@@ -27,7 +27,7 @@ public class CaseBehavior {
             return cp;
         } 
 
-        return IokeObject.as(when);
+        return IokeObject.as(when, context);
     }
 
     private static void replaceAllCaseNames(IokeObject when, IokeObject context, IokeObject message, IokeObject caseMimic) throws ControlFlow {
@@ -36,7 +36,7 @@ public class CaseBehavior {
             Message.setName(when, theName);
 
             for(Object arg : when.getArguments()) {
-                replaceAllCaseNames(IokeObject.as(arg), context, message, caseMimic);
+                replaceAllCaseNames(IokeObject.as(arg, context), context, message, caseMimic);
             }
         }
     }
@@ -66,13 +66,13 @@ public class CaseBehavior {
                     List<Object> args = message.getArguments();
                     int argCount = args.size();
                     int index = 0;
-                    Object value = IokeObject.as(args.get(index++)).evaluateCompleteWithoutExplicitReceiver(context, context.getRealContext());
+                    Object value = IokeObject.as(args.get(index++), context).evaluateCompleteWithoutExplicitReceiver(context, context.getRealContext());
                     argCount--;
 
                     while(argCount > 1) {
                         Object when = transformWhenStatement(args.get(index++), context, message, obj).evaluateCompleteWithoutExplicitReceiver(context, context.getRealContext());
                         if(IokeObject.isTrue(runtime.eqqMessage.sendTo(context, when, value))) {
-                            return IokeObject.as(args.get(index++)).evaluateCompleteWithoutExplicitReceiver(context, context.getRealContext());
+                            return IokeObject.as(args.get(index++), context).evaluateCompleteWithoutExplicitReceiver(context, context.getRealContext());
                         } else {
                             index++;
                         }
@@ -80,7 +80,7 @@ public class CaseBehavior {
                     }
 
                     if(argCount == 1) {
-                        return IokeObject.as(args.get(index++)).evaluateCompleteWithoutExplicitReceiver(context, context.getRealContext());
+                        return IokeObject.as(args.get(index++), context).evaluateCompleteWithoutExplicitReceiver(context, context.getRealContext());
                     }
 
                     return runtime.nil;

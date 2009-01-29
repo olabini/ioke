@@ -8,17 +8,16 @@
   <property file="build.properties"/>
   <property file="default.build.properties"/>
 
+  <taskdef resource="tasks.properties">
+    <classpath>
+      <fileset dir="${lib.build.dir}" includes="*.jar"/>
+    </classpath>
+  </taskdef>
+
   <path id="build.classpath">
     <fileset dir="${lib.build.dir}" includes="*.jar"/>
     <fileset dir="${lib.release.dir}" includes="*.jar"/>
   </path>
-
-  <path id="emma.lib" >
-    <pathelement location="${lib.build.dir}/emma.jar" />
-    <pathelement location="${lib.build.dir}/emma_ant.jar" />
-  </path>
-
-  <taskdef resource="emma_ant.properties" classpathref="emma.lib" />
 
   <target name="prepare" description="Creates the directories needed for building">
     <mkdir dir="${build.dir}"/>
@@ -32,7 +31,6 @@
   <target name="generate.antlr" depends="prepare" description="Generates source files from the ANTLR definitions" unless="grammar.notUpdated">
     <java classname="org.antlr.Tool" fork="true" dir="${antlr.grammar.dir}" classpathref="build.classpath">
       <arg line="-o ${src.generated.dir.relative} ${antlr.grammar.file}"/>
-<!--      <arg line="-report -o ${src.generated.dir.relative} ${antlr.grammar.file}"/> -->
     </java>
   </target>
 
@@ -64,6 +62,12 @@
     </copy>
   </target>
 
+  <target name="coverage.instrument" depends="compile" description="">
+    <cobertura-instrument todir="${coverage.classes.dir}">
+        <fileset dir="${classes.dir}" excludes="ioke/lang/parser/**/*.class"/>
+    </cobertura-instrument>
+  </target>
+
   <target name="test" depends="compile" description="Runs all ISpec tests">
     <java classname="ioke.lang.Main" fork="true" failonerror="true">
       <classpath refid="build.classpath"/>
@@ -71,6 +75,18 @@
 
       <arg line="bin/ispec test -fs"/>
     </java>
+  </target>
+
+  <target name="coverage" depends="coverage.instrument" description="Runs all ISpec tests using Cobertura and produces a report">
+    <java classname="ioke.lang.Main" fork="true" failonerror="true">
+      <classpath refid="build.classpath"/>
+      <classpath path="${coverage.classes.dir}"/>
+      <classpath path="${classes.dir}"/>
+
+      <arg line="bin/ispec test -fs"/>
+    </java>
+
+    <cobertura-report srcdir="${src.dir}" destdir="${coverage.report.dir}"/>
   </target>
 
   <target name="jar" depends="test" description="Create the ioke.jar file">

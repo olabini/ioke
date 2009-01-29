@@ -31,7 +31,7 @@ public class IokeSet extends IokeData {
         final Runtime runtime = obj.runtime;
 
         obj.setKind("Set");
-        obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Enumerable")), runtime.nul, runtime.nul);
+        obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Enumerable"), null), runtime.nul, runtime.nul);
 
         obj.registerMethod(obj.runtime.newJavaMethod("Returns a text inspection of the object", new TypeCheckingJavaMethod.WithNoArguments("inspect", runtime.set) {
                 @Override
@@ -162,7 +162,7 @@ public class IokeSet extends IokeData {
 
                     switch(message.getArgumentCount()) {
                     case 1: {
-                        IokeObject code = IokeObject.as(message.getArguments().get(0));
+                        IokeObject code = IokeObject.as(message.getArguments().get(0), context);
 
                         for(Object o : set) {
                             code.evaluateCompleteWithReceiver(context, context.getRealContext(), o);
@@ -171,8 +171,8 @@ public class IokeSet extends IokeData {
                     }
                     case 2: {
                         LexicalContext c = new LexicalContext(context.runtime, context, "Lexical activation context for Set#each", message, context);
-                        String name = IokeObject.as(message.getArguments().get(0)).getName();
-                        IokeObject code = IokeObject.as(message.getArguments().get(1));
+                        String name = IokeObject.as(message.getArguments().get(0), context).getName();
+                        IokeObject code = IokeObject.as(message.getArguments().get(1), context);
 
                         for(Object o : set) {
                             c.setCell(name, o);
@@ -182,9 +182,9 @@ public class IokeSet extends IokeData {
                     }
                     case 3: {
                         LexicalContext c = new LexicalContext(context.runtime, context, "Lexical activation context for Set#each", message, context);
-                        String iname = IokeObject.as(message.getArguments().get(0)).getName();
-                        String name = IokeObject.as(message.getArguments().get(1)).getName();
-                        IokeObject code = IokeObject.as(message.getArguments().get(2));
+                        String iname = IokeObject.as(message.getArguments().get(0), context).getName();
+                        String name = IokeObject.as(message.getArguments().get(1), context).getName();
+                        IokeObject code = IokeObject.as(message.getArguments().get(2), context);
 
                         int index = 0;
                         for(Object o : set) {
