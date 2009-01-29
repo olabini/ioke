@@ -1,0 +1,6 @@
+
+- look up mn-trees for lookup stuff
+ - first step: go to using a trie
+ - linking tries together?
+ - splay tree, possibly (since it allows the same key several times)
+
