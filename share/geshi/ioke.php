@@ -57,6 +57,7 @@ $language_data = array (
         3 => false,
         ),
     'STYLES' => array(
+      //$geshi->set_overall_style('font-family: \'DejaVu Sans Mono\', \'Bitstream Vera Sans Mono\', Consolas, \'Andale Mono WT\', \'Andale Mono\', \'Lucida Console\', \'Lucida Sans Typewriter\', \'Liberation Mono\', \'Nimbus Mono L\', Monaco, \'Courier New\', Courier, monospace; background-color: #000000; color: white;', true);
         'BACKGROUND-COLOR' => array(
              0 => 'color: #555555;'
              ),
@@ -71,7 +72,7 @@ $language_data = array (
             'MULTI' => 'color: #808080; font-style: italic;'
             ),
         'ESCAPE_CHAR' => array(
-            0 => 'color: #000099; font-weight: bold;'
+            0 => 'color: #00A0A0;'
             ),
         'BRACKETS' => array(
             0 => 'color: #808080;'
@@ -122,6 +123,12 @@ $language_data = array (
             
             //kinds
             11 => 'color: #99CC99;',
+            
+            //symbols
+            12 => 'color: #A8FF60;',
+            
+            //symbols
+            13 => 'color: #A8FF60;'
             ),
                 
             
@@ -172,7 +179,7 @@ $language_data = array (
             
             //operators (that require space)
             5 => array(
-              GESHI_SEARCH  => '(\A|[[:space:]])(\+|\-|nand|and|xor|nor|or)(\Z|\b)',
+              GESHI_SEARCH  => '(\A|[[:space:]])(\+|\-|nand|and|xor|nor|or|::)(\Z|\b)',
               GESHI_REPLACE => '\\2',
               GESHI_BEFORE => '\\1',
               GESHI_AFTER => '\\3'
@@ -192,28 +199,49 @@ $language_data = array (
             
             //function keywords
             8 => array(
-              GESHI_SEARCH => '((^)|(?<![[:alnum:]!?_:])|(?<![[:alnum:]!?_:]!))(fn|fnx|method|macro|lecro|syntax|dmacro|dlecro|dlecrox|dsyntax)(?![[:alnum:]!?_:])',
-              GESHI_REPLACE => '\\3'
+              GESHI_SEARCH => '(\b)(fn|fnx|method|macro|lecro|syntax|dmacro|dlecro|dlecrox|dsyntax)(\b)',
+              GESHI_BEFORE  => '\\1',
+              GESHI_REPLACE => '\\2',
+              GESHI_AFTER   => '\\3'
             ),
             
             //prototype-name keywords
             9 => array(
-              GESHI_SEARCH => '((?<![[:alnum:]!?_:])|(?<![[:alnum:]!?_:]!))(Base|Call|Condition|DateTime|DefaultBehavior|DefaultMacro|DefaultMethod|DefaultSyntax|Dict|FileSystem|Ground|Handler|IO|JavaMethod|LexicalBlock|LexicalMacro|List|Message|Method|Mixins|Number|Number Decimal|Number Integer|Number Rational|Number Real|Origin|Pair|Range|Regexp|Rescue|Restart|Runtime|Set|Symbol|System|Text)(?![[:alnum:]!?_:])',
-              GESHI_REPLACE => '\\2'
-            ),
+              GESHI_SEARCH => '(\b)(Base|Call|Condition|DateTime|DefaultBehavior|DefaultMacro|DefaultMethod|DefaultSyntax|Dict|FileSystem|Ground|Handler|IO|JavaMethod|LexicalBlock|LexicalMacro|List|Message|Method|Mixins|Number|Number Decimal|Number Integer|Number Rational|Number Real|Origin|Pair|Range|Regexp|Rescue|Restart|Runtime|Set|Symbol|System|Text)(\b)',
+              GESHI_BEFORE  => '\\1',
+              GESHI_REPLACE => '\\2',
+              GESHI_AFTER   => '\\3'            ),
             
             //cell-name keywords
             10 => array(
-              GESHI_SEARCH => '((?<![[:alnum:]!?_:])|(?<![[:alnum:]!?_:]!))(print|println|cell\?|cell|keyword|documentation|if|unless|while|until|loop|for|for:set|for:dict|bind|rescue|handle|restart|asText|inspect|notice|do|call|list|dict|set|with|kind)(?![[:alnum:]!?_:])',
-              GESHI_REPLACE => '\\2'
+              GESHI_SEARCH => '(\b)(print|println|cell\?|cell|keyword|documentation|if|unless|while|until|loop|for|for:set|for:dict|bind|rescue|handle|restart|asText|inspect|notice|do|call|list|dict|set|with|kind)(\b)',
+              GESHI_BEFORE  => '\\1',
+              GESHI_REPLACE => '\\2',
+              GESHI_AFTER   => '\\3'
             ),
             
             //kinds
             11 => array(
-              GESHI_SEARCH => '([A-Z][a-z\?]+)',
-              GESHI_REPLACE => '\\1',
+              GESHI_SEARCH => '(\b)([A-Z][a-z\?]+)(\b)',
+              GESHI_BEFORE  => '\\1',
+              GESHI_REPLACE => '\\2',
+              GESHI_AFTER   => '\\3' 
             ),
             
+            //symbol symbol
+            12 => array(
+              GESHI_SEARCH => '(:[^\b:[:space:]]+)',
+              GESHI_REPLACE => '\\1'
+             // GESHI_AFTER   => '\\2'
+            ),
+            
+            //symbol content
+             13 => array(
+               GESHI_SEARCH => '(:)',
+//               GESHI_BEFORE  => '\\1',  
+               GESHI_REPLACE => '\\1',
+  //             GESHI_AFTER   => '\\3'             
+            ),
         ),
     'STRICT_MODE_APPLIES' => GESHI_NEVER,
     'SCRIPT_DELIMITERS' => array(
