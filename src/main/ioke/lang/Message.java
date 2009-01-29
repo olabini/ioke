@@ -38,7 +38,7 @@ public class Message extends IokeData {
     public IokeObject next;
     public IokeObject prev;
 
-    private IokeObject cached = null;
+    private Object cached = null;
 
     public Message(Runtime runtime, String name) {
         this(runtime, name, null, Type.MESSAGE);
@@ -63,12 +63,16 @@ public class Message extends IokeData {
         }
     }
 
-    public static Message wrap(IokeObject cachedResult) {
-        return wrap("cachedResult", cachedResult);
+    public static Message wrap(Object cachedResult, Runtime runtime) {
+        return wrap("cachedResult", cachedResult, runtime);
     }
 
-    public static Message wrap(String name, IokeObject cachedResult) {
-        Message m = new Message(cachedResult.runtime, name);
+    public static Message wrap(IokeObject cachedResult) {
+        return wrap("cachedResult", cachedResult, cachedResult.runtime);
+    }
+
+    public static Message wrap(String name, Object cachedResult, Runtime runtime) {
+        Message m = new Message(runtime, name);
         m.cached = cachedResult;
         return m;
     }
@@ -78,15 +82,15 @@ public class Message extends IokeData {
     }
 
     public static void cacheValue(Object message, Object cachedValue) throws ControlFlow {
-        ((Message)IokeObject.data(message)).cached = IokeObject.as(cachedValue);
+        ((Message)IokeObject.data(message)).cached = cachedValue;
     }
 
     public static void addArg(Object message, Object arg) throws ControlFlow {
-        IokeObject.as(message).getArguments().add(arg);
+        IokeObject.as(message, null).getArguments().add(arg);
     }
 
     public static IokeObject copy(Object message) throws ControlFlow {
-        IokeObject copy = IokeObject.as(message).mimic(null, null);
+        IokeObject copy = IokeObject.as(message, null).mimic(null, null);
         copySourceLocation(message, copy);
         Message.setPrev(copy, Message.prev(message));
         Message.setNext(copy, Message.next(message));
@@ -94,7 +98,7 @@ public class Message extends IokeData {
     }
 
     public static IokeObject deepCopy(Object message) throws ControlFlow {
-        IokeObject copy = IokeObject.as(message).mimic(null, null);
+        IokeObject copy = IokeObject.as(message, null).mimic(null, null);
         copySourceLocation(message, copy);
         Message orgMsg = (Message)IokeObject.data(message);
         Message copyMsg = (Message)IokeObject.data(copy);
@@ -143,7 +147,7 @@ public class Message extends IokeData {
     }
 
     public static String getStackTraceText(Object _message) throws ControlFlow {
-        IokeObject message = IokeObject.as(_message);
+        IokeObject message = IokeObject.as(_message, null);
         IokeObject start = message;
         
         while(prev(start) != null && prev(start).getLine() == message.getLine()) {
@@ -165,7 +169,7 @@ public class Message extends IokeData {
     @Override
     public void init(final IokeObject message) throws ControlFlow {
         message.setKind("Message");
-        message.mimics(IokeObject.as(message.runtime.mixins.getCell(null, null, "Enumerable")), message.runtime.nul, message.runtime.nul);
+        message.mimics(IokeObject.as(message.runtime.mixins.getCell(null, null, "Enumerable"), null), message.runtime.nul, message.runtime.nul);
 
         message.registerMethod(message.runtime.newJavaMethod("Returns a code representation of the object", new TypeCheckingJavaMethod.WithNoArguments("code", message) {
                 @Override
@@ -184,7 +188,7 @@ public class Message extends IokeData {
         message.registerMethod(message.runtime.newJavaMethod("Returns a formatted code representation of the object", new TypeCheckingJavaMethod.WithNoArguments("formattedCode", message) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
-                    return method.runtime.newText(Message.formattedCode(IokeObject.as(on), 0));
+                    return method.runtime.newText(Message.formattedCode(IokeObject.as(on, context), 0));
                 }
             }));
         
@@ -217,7 +221,7 @@ public class Message extends IokeData {
                     Runtime runtime = context.runtime;
                     switch(message.getArgumentCount()) {
                     case 1: {
-                        IokeObject code = IokeObject.as(message.getArguments().get(0));
+                        IokeObject code = IokeObject.as(message.getArguments().get(0), context);
                         Object o = onAsMessage;
                         while(o != null) {
                             code.evaluateCompleteWithReceiver(context, context.getRealContext(), o);
@@ -228,8 +232,8 @@ public class Message extends IokeData {
                     }
                     case 2: {
                         LexicalContext c = new LexicalContext(context.runtime, context, "Lexical activation context for List#each", message, context);
-                        String name = IokeObject.as(message.getArguments().get(0)).getName();
-                        IokeObject code = IokeObject.as(message.getArguments().get(1));
+                        String name = IokeObject.as(message.getArguments().get(0), context).getName();
+                        IokeObject code = IokeObject.as(message.getArguments().get(1), context);
 
                         Object o = onAsMessage;
                         while(o != null) {
@@ -241,9 +245,9 @@ public class Message extends IokeData {
                     }
                     case 3: {
                         LexicalContext c = new LexicalContext(context.runtime, context, "Lexical activation context for List#each", message, context);
-                        String iname = IokeObject.as(message.getArguments().get(0)).getName();
-                        String name = IokeObject.as(message.getArguments().get(1)).getName();
-                        IokeObject code = IokeObject.as(message.getArguments().get(2));
+                        String iname = IokeObject.as(message.getArguments().get(0), context).getName();
+                        String name = IokeObject.as(message.getArguments().get(1), context).getName();
+                        IokeObject code = IokeObject.as(message.getArguments().get(2), context);
 
                         int index = 0;
                         Object o = onAsMessage;
@@ -284,7 +288,7 @@ public class Message extends IokeData {
                         name = Text.getText(IokeObject.convertToText(o, message, context, true));
                     }
                     
-                    Message.setName(IokeObject.as(on), name);
+                    Message.setName(IokeObject.as(on, context), name);
                     return o;
                 }
             }));
@@ -305,10 +309,10 @@ public class Message extends IokeData {
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     Object o = args.get(0);
                     if(o == context.runtime.nil) {
-                        Message.setNext(IokeObject.as(on), null);
+                        Message.setNext(IokeObject.as(on, context), null);
                     } else {
                         o = context.runtime.message.convertToThis(o, message, context);
-                        Message.setNext(IokeObject.as(on), IokeObject.as(o));
+                        Message.setNext(IokeObject.as(on, context), IokeObject.as(o, context));
                     }
                     return o;
                 }
@@ -330,10 +334,10 @@ public class Message extends IokeData {
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     Object o = args.get(0);
                     if(o == context.runtime.nil) {
-                        Message.setPrev(IokeObject.as(on), null);
+                        Message.setPrev(IokeObject.as(on, context), null);
                     } else {
                         o = context.runtime.message.convertToThis(o, message, context);
-                        Message.setPrev(IokeObject.as(on), IokeObject.as(o));
+                        Message.setPrev(IokeObject.as(on, context), IokeObject.as(o, context));
                     }
                     return o;
                 }
@@ -375,7 +379,7 @@ public class Message extends IokeData {
         message.registerMethod(message.runtime.newJavaMethod("returns the last message in the chain", new TypeCheckingJavaMethod.WithNoArguments("last", message) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
-                    IokeObject current = IokeObject.as(on);
+                    IokeObject current = IokeObject.as(on, context);
                     while(next(current) != null) {
                         current = next(current);
                     }
@@ -444,13 +448,13 @@ public class Message extends IokeData {
 
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
-                    IokeObject realReceiver = IokeObject.as(args.get(0));
+                    IokeObject realReceiver = IokeObject.as(args.get(0), context);
                     IokeObject realContext = realReceiver;
                     if(args.size() > 1) {
-                        realContext = IokeObject.as(args.get(1));
+                        realContext = IokeObject.as(args.get(1), context);
                     }
 
-                    return IokeObject.as(on).sendTo(realContext, realReceiver);
+                    return IokeObject.as(on, context).sendTo(realContext, realReceiver);
                 }
             }));
         
@@ -467,7 +471,7 @@ public class Message extends IokeData {
 
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
-                    IokeObject.as(on).getArguments().add(args.get(0));
+                    IokeObject.as(on, context).getArguments().add(args.get(0));
                     return on;
                 }
             }));
@@ -487,7 +491,7 @@ public class Message extends IokeData {
 
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
-                    IokeObject.as(on).getArguments().add(0, args.get(0));
+                    IokeObject.as(on, context).getArguments().add(0, args.get(0));
                     return on;
                 }
             }));
@@ -508,11 +512,11 @@ public class Message extends IokeData {
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     Object arg = args.get(0);
                     if(arg == context.runtime.nil) {
-                        Message.setNext(IokeObject.as(on), null);
+                        Message.setNext(IokeObject.as(on, context), null);
                     } else {
                         arg = context.runtime.message.convertToThis(arg, message, context);
-                        Message.setNext(IokeObject.as(on), IokeObject.as(arg));
-                        Message.setPrev(IokeObject.as(arg), IokeObject.as(on));
+                        Message.setNext(IokeObject.as(on, context), IokeObject.as(arg, context));
+                        Message.setPrev(IokeObject.as(arg, context), IokeObject.as(on, context));
                     }
                     return arg;
                 }
@@ -533,20 +537,20 @@ public class Message extends IokeData {
 
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
-                    IokeObject messageGround = IokeObject.as(args.get(0));
+                    IokeObject messageGround = IokeObject.as(args.get(0), context);
                     IokeObject receiver = messageGround;
                     int size = args.size();
                     if(size > 1) {
-                        receiver = IokeObject.as(args.get(1));
+                        receiver = IokeObject.as(args.get(1), context);
                         if(size > 2) {
-                            IokeObject m = IokeObject.as(on).allocateCopy(IokeObject.as(on), context);
+                            IokeObject m = IokeObject.as(on, context).allocateCopy(IokeObject.as(on, context), context);
                             m.getArguments().clear();
                             m.getArguments().addAll(args.subList(2, size));
                             on = m;
                         }
                     }
                     
-                    return IokeObject.as(on).evaluateCompleteWithReceiver(messageGround, messageGround, receiver);
+                    return IokeObject.as(on, context).evaluateCompleteWithReceiver(messageGround, messageGround, receiver);
                 }
             }));
         
@@ -565,18 +569,18 @@ public class Message extends IokeData {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     int index = Number.extractInt(args.get(0), message, context);
-                    IokeObject newContext = IokeObject.as(args.get(1));
-                    return IokeObject.as(on).getEvaluatedArgument(index, newContext);
+                    IokeObject newContext = IokeObject.as(args.get(1), context);
+                    return IokeObject.as(on, context).getEvaluatedArgument(index, newContext);
                 }
             }));
         
         message.registerMethod(message.runtime.newJavaMethod("Will rearrange this message and all submessages to follow regular C style operator precedence rules. Will use Message OperatorTable to guide this operation. The operation is mutating, but should not change anything if done twice.", new JavaMethod.WithNoArguments("shuffleOperators") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    Levels levels = new Levels(IokeObject.as(on), context, message);
+                    Levels levels = new Levels(IokeObject.as(on, context), context, message);
                     List<IokeObject> expressions = new ArrayList<IokeObject>();
                     if(on instanceof IokeObject) {
-                        expressions.add(0, IokeObject.as(on));
+                        expressions.add(0, IokeObject.as(on, context));
 
                         while(expressions.size() > 0) {
                             IokeObject n = expressions.remove(0);
@@ -584,7 +588,7 @@ public class Message extends IokeData {
                                 levels.attach(n, expressions);
                                 for(Object o : n.getArguments()) {
                                     if(o instanceof IokeObject) { //Otherwise a pure String parameter to internal:createText
-                                        expressions.add(0, IokeObject.as(o));
+                                        expressions.add(0, IokeObject.as(o, context));
                                     }
                                 }
                             } while((n = Message.next(n)) != null);
@@ -628,7 +632,7 @@ public class Message extends IokeData {
 
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
-                    return context.runtime.createMessage(Message.wrap(IokeObject.as(args.get(0))));
+                    return context.runtime.createMessage(Message.wrap(IokeObject.as(args.get(0), context)));
                 }
             }));
 
@@ -718,15 +722,15 @@ public class Message extends IokeData {
     }
 
     public static String file(Object message) throws ControlFlow {
-        return IokeObject.as(message).getFile();
+        return IokeObject.as(message, null).getFile();
     }
 
     public static int line(Object message) throws ControlFlow {
-        return IokeObject.as(message).getLine();
+        return IokeObject.as(message, null).getLine();
     }
 
     public static int position(Object message) throws ControlFlow {
-        return IokeObject.as(message).getPosition();
+        return IokeObject.as(message, null).getPosition();
     }
 
     public static void setFile(Object message, String file) throws ControlFlow {
@@ -1098,7 +1102,7 @@ public class Message extends IokeData {
             return argument;
         }
 
-        IokeObject o = IokeObject.as(argument);
+        IokeObject o = IokeObject.as(argument, context);
         if(!o.isMessage()) {
             return o;
         }
@@ -1211,7 +1215,7 @@ public class Message extends IokeData {
 
     @Override
     public Object evaluateCompleteWith(IokeObject self, Object ground) throws ControlFlow {
-        return evaluateCompleteWith(self, IokeObject.as(ground), IokeObject.getRealContext(ground));
+        return evaluateCompleteWith(self, IokeObject.as(ground, self), IokeObject.getRealContext(ground));
     }
 
     public static String code(IokeObject message) {
@@ -1342,7 +1346,7 @@ public class Message extends IokeData {
                     base.append(Message.arguments(arg).get(0));
                 } else {
                     base.append("#{");
-                    base.append(Message.formattedCode(IokeObject.as(arg), 0));
+                    base.append(Message.formattedCode(IokeObject.as(arg, null), 0));
                     base.append("}");
                 }
             }
@@ -1358,7 +1362,7 @@ public class Message extends IokeData {
         } else if(this.name.equals("=")) {
             base.append(this.arguments.get(0));
             base.append(" = ");
-            base.append(Message.formattedCode(IokeObject.as(this.arguments.get(1)), indent+2));
+            base.append(Message.formattedCode(IokeObject.as(this.arguments.get(1), null), indent+2));
         } else if(this.type == Type.TERMINATOR) {
             base.append("\n");
             for(int i=0;i<indent;i++) {
@@ -1385,7 +1389,7 @@ public class Message extends IokeData {
                             }
                         }
 
-                        base.append(Message.formattedCode(IokeObject.as(o), indent+2));
+                        base.append(Message.formattedCode(IokeObject.as(o, null), indent+2));
                     }
 
                     sep = ", ";

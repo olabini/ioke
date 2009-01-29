@@ -45,7 +45,7 @@ public class Dict extends IokeData {
         final Runtime runtime = obj.runtime;
 
         obj.setKind("Dict");
-        obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Enumerable")), runtime.nul, runtime.nul);
+        obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Enumerable"), null), runtime.nul, runtime.nul);
         obj.registerMethod(runtime.newJavaMethod("takes one argument, that should be a default value, and returns a new mimic of the receiver, with the default value for that new dict set to the argument", new TypeCheckingJavaMethod("withDefault") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
@@ -61,7 +61,7 @@ public class Dict extends IokeData {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     Object newDict = IokeObject.mimic(on, message, context);
-                    setDefaultValue(newDict, IokeObject.as(args.get(0)));
+                    setDefaultValue(newDict, IokeObject.as(args.get(0), context));
                     return newDict;
                 }}));
 
@@ -217,7 +217,7 @@ public class Dict extends IokeData {
                     Map<Object, Object> ls = Dict.getMap(on);
                     switch(message.getArgumentCount()) {
                     case 1: {
-                        IokeObject code = IokeObject.as(message.getArguments().get(0));
+                        IokeObject code = IokeObject.as(message.getArguments().get(0), context);
 
                         for(Map.Entry<Object, Object> o : ls.entrySet()) {
                             code.evaluateCompleteWithReceiver(context, context.getRealContext(), runtime.newPair(o.getKey(), o.getValue()));
@@ -226,8 +226,8 @@ public class Dict extends IokeData {
                     }
                     case 2: {
                         LexicalContext c = new LexicalContext(context.runtime, context, "Lexical activation context for List#each", message, context);
-                        String name = IokeObject.as(message.getArguments().get(0)).getName();
-                        IokeObject code = IokeObject.as(message.getArguments().get(1));
+                        String name = IokeObject.as(message.getArguments().get(0), context).getName();
+                        IokeObject code = IokeObject.as(message.getArguments().get(1), context);
 
                         for(Map.Entry<Object, Object> o : ls.entrySet()) {
                             c.setCell(name, runtime.newPair(o.getKey(), o.getValue()));
@@ -237,9 +237,9 @@ public class Dict extends IokeData {
                     }
                     case 3: {
                         LexicalContext c = new LexicalContext(context.runtime, context, "Lexical activation context for List#each", message, context);
-                        String iname = IokeObject.as(message.getArguments().get(0)).getName();
-                        String name = IokeObject.as(message.getArguments().get(1)).getName();
-                        IokeObject code = IokeObject.as(message.getArguments().get(2));
+                        String iname = IokeObject.as(message.getArguments().get(0), context).getName();
+                        String name = IokeObject.as(message.getArguments().get(1), context).getName();
+                        IokeObject code = IokeObject.as(message.getArguments().get(2), context);
 
                         int index = 0;
                         for(Map.Entry<Object, Object> o : ls.entrySet()) {

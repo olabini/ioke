@@ -9,7 +9,7 @@
 	<key>name</key>
 	<string>Embedded Code — #{…}</string>
 	<key>scope</key>
-	<string>string.quoted.double.ioke</string>
+	<string>string.quoted.double.ioke, string.regexp.ioke, string.documentation.ioke, string.literal.symbol.ioke</string>
 	<key>uuid</key>
 	<string>26C50C17-4F6E-4515-9E8F-CFCC8832E5A7</string>
 </dict>

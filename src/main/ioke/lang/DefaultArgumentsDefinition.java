@@ -138,7 +138,7 @@ public class DefaultArgumentsDefinition {
                 if(defValue instanceof String) {
                     sb.append(defValue);
                 } else {
-                    sb.append(Message.code(IokeObject.as(defValue)));
+                    sb.append(Message.code(IokeObject.as(defValue, null)));
                 }
             } else if((argument instanceof KeywordArgument) && ((KeywordArgument)argument).getDefaultValue() != null) {
                 sb.append(" ");
@@ -146,7 +146,7 @@ public class DefaultArgumentsDefinition {
                 if(defValue instanceof String) {
                     sb.append(defValue);
                 } else {
-                    sb.append(Message.code(IokeObject.as(defValue)));
+                    sb.append(Message.code(IokeObject.as(defValue, null)));
                 }
             }
 
@@ -185,11 +185,11 @@ public class DefaultArgumentsDefinition {
             final int finalArgCount = argCount;
             if(argCount < min) {
                 final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
-                                                                             message, 
-                                                                             context, 
-                                                                             "Error", 
-                                                                             "Invocation", 
-                                                                             "TooFewArguments")).mimic(message, context);
+                                                                                   message, 
+                                                                                   context, 
+                                                                                   "Error", 
+                                                                                   "Invocation", 
+                                                                                   "TooFewArguments"), context).mimic(message, context);
                 condition.setCell("message", message);
                 condition.setCell("context", context);
                 condition.setCell("receiver", on);
@@ -204,7 +204,7 @@ public class DefaultArgumentsDefinition {
                                                                                          context, 
                                                                                          "Error", 
                                                                                          "Invocation", 
-                                                                                         "TooManyArguments")).mimic(message, context);
+                                                                                         "TooManyArguments"), context).mimic(message, context);
                             condition.setCell("message", message);
                             condition.setCell("context", context);
                             condition.setCell("receiver", on);
@@ -226,9 +226,9 @@ public class DefaultArgumentsDefinition {
 
         for(Object o : arguments) {
             if(Message.isKeyword(o)) {
-                givenKeywords.put(IokeObject.as(o).getName(), Message.getEvaluatedArgument(((Message)IokeObject.data(o)).next, context));
-            } else if(Message.hasName(o, "*") && IokeObject.as(o).getArguments().size() == 1) { // Splat
-                Object result = Message.getEvaluatedArgument(IokeObject.as(o).getArguments().get(0), context);
+                givenKeywords.put(IokeObject.as(o, context).getName(), Message.getEvaluatedArgument(((Message)IokeObject.data(o)).next, context));
+            } else if(Message.hasName(o, "*") && IokeObject.as(o, context).getArguments().size() == 1) { // Splat
+                Object result = Message.getEvaluatedArgument(IokeObject.as(o, context).getArguments().get(0), context);
                 if(IokeObject.data(result) instanceof IokeList) {
                     List<Object> elements = IokeList.getList(result);
                     argumentsWithoutKeywords.addAll(elements);
@@ -244,7 +244,7 @@ public class DefaultArgumentsDefinition {
                                                                                        context, 
                                                                                        "Error", 
                                                                                        "Invocation", 
-                                                                                       "NotSpreadable")).mimic(message, context);
+                                                                                       "NotSpreadable"), context).mimic(message, context);
                     condition.setCell("message", message);
                     condition.setCell("context", context);
                     condition.setCell("receiver", on);
@@ -256,7 +256,7 @@ public class DefaultArgumentsDefinition {
                             }}, 
                             context,
                             new Restart.DefaultValuesGivingRestart("ignoreArgument", runtime.nil, 0),
-                            new Restart.DefaultValuesGivingRestart("takeArgumentAsIs", IokeObject.as(result), 1)
+                            new Restart.DefaultValuesGivingRestart("takeArgumentAsIs", IokeObject.as(result, context), 1)
                             ));
 
                     argumentsWithoutKeywords.addAll(outp);
@@ -277,7 +277,7 @@ public class DefaultArgumentsDefinition {
                                                                              context, 
                                                                              "Error", 
                                                                              "Invocation", 
-                                                                             "TooFewArguments")).mimic(message, context);
+                                                                             "TooFewArguments"), context).mimic(message, context);
                 condition.setCell("message", message);
                 condition.setCell("context", context);
                 condition.setCell("receiver", on);
@@ -310,7 +310,7 @@ public class DefaultArgumentsDefinition {
                                                                                          context, 
                                                                                          "Error", 
                                                                                          "Invocation", 
-                                                                                         "TooManyArguments")).mimic(message, context);
+                                                                                         "TooManyArguments"), context).mimic(message, context);
                             condition.setCell("message", message);
                             condition.setCell("context", context);
                             condition.setCell("receiver", on);
@@ -333,7 +333,7 @@ public class DefaultArgumentsDefinition {
                                                                                      context, 
                                                                                      "Error", 
                                                                                      "Invocation", 
-                                                                                     "MismatchedKeywords")).mimic(message, context);
+                                                                                     "MismatchedKeywords"), context).mimic(message, context);
                         condition.setCell("message", message);
                         condition.setCell("context", context);
                         condition.setCell("receiver", on);
@@ -395,7 +395,7 @@ public class DefaultArgumentsDefinition {
                 if(given == null) {
                     Object defVal = ((KeywordArgument)a).getDefaultValue();
                     if(!(defVal instanceof String)) {
-                        result = IokeObject.as(defVal).evaluateCompleteWithoutExplicitReceiver(locals, locals.getRealContext());
+                        result = IokeObject.as(defVal, context).evaluateCompleteWithoutExplicitReceiver(locals, locals.getRealContext());
                         locals.setCell(a.getName(), result);
                     }
                 } else {
@@ -405,7 +405,7 @@ public class DefaultArgumentsDefinition {
             } else if((a instanceof OptionalArgument) && ix>=argCount) {
                 Object defVal = ((OptionalArgument)a).getDefaultValue();
                 if(!(defVal instanceof String)) {
-                    locals.setCell(a.getName(), IokeObject.as(defVal).evaluateCompleteWithoutExplicitReceiver(locals, locals.getRealContext()));
+                    locals.setCell(a.getName(), IokeObject.as(defVal, context).evaluateCompleteWithoutExplicitReceiver(locals, locals.getRealContext()));
                 }
             } else {
                 locals.setCell(a.getName(), argumentsWithoutKeywords.get(ix++));
@@ -489,7 +489,7 @@ public class DefaultArgumentsDefinition {
                                                                                        context, 
                                                                                        "Error", 
                                                                                        "Invocation", 
-                                                                                       "ArgumentWithoutDefaultValue")).mimic(message, context);
+                                                                                       "ArgumentWithoutDefaultValue"), context).mimic(message, context);
                     condition.setCell("message", message);
                     condition.setCell("context", context);
                     condition.setCell("receiver", on);
@@ -514,11 +514,11 @@ public class DefaultArgumentsDefinition {
                         max++;
                     }
 
-                    arguments.add(new OptionalArgument(m.getName(null), runtime.createMessage(Message.wrap(IokeObject.as(newValue.get(0))))));
+                    arguments.add(new OptionalArgument(m.getName(null), runtime.createMessage(Message.wrap(IokeObject.as(newValue.get(0), context)))));
                 } else {
                     min++;
                     max++;
-                    arguments.add(new Argument(IokeObject.as(obj).getName()));
+                    arguments.add(new Argument(IokeObject.as(obj, context).getName()));
                 }
             }
         }

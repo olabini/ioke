@@ -36,16 +36,20 @@ public class IokeObject implements TypeChecker {
     }
 
     public static boolean same(Object one, Object two) throws ControlFlow {
-        return as(one).cells == as(two).cells;
+        if((one instanceof IokeObject) && (two instanceof IokeObject)) {
+            return as(one, null).cells == as(two, null).cells;
+        } else {
+            return one == two;
+        }
     }
 
     private void checkFrozen(String modification, IokeObject message, IokeObject context) throws ControlFlow {
         if(frozen) {
-            final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
-                                                                               message, 
-                                                                               context,
-                                                                               "Error", 
-                                                                               "ModifyOnFrozen")).mimic(message, context);
+            final IokeObject condition = as(IokeObject.getCellChain(context.runtime.condition, 
+                                                                    message, 
+                                                                    context,
+                                                                    "Error", 
+                                                                    "ModifyOnFrozen"), context).mimic(message, context);
             condition.setCell("message", message);
             condition.setCell("context", context);
             condition.setCell("receiver", this);
@@ -70,15 +74,20 @@ public class IokeObject implements TypeChecker {
     }
 
     public static boolean isFrozen(Object on) {
-        return as(on).frozen;
+        return (on instanceof IokeObject) && as(on, null).frozen;
     }
 
     public static void freeze(Object on) {
-        as(on).frozen = true;
+        if(on instanceof IokeObject) {
+            as(on,null).frozen = true;
+        }
+
     }
 
     public static void thaw(Object on) {
-        as(on).frozen = false;
+        if(on instanceof IokeObject) {
+            as(on, null).frozen = false;
+        }
     }
 
     public void setDocumentation(String docs, IokeObject message, IokeObject context) throws ControlFlow {
@@ -99,23 +108,23 @@ public class IokeObject implements TypeChecker {
         cells.put("kind", runtime.newText(kind));
     }
 
-    public static List<IokeObject> getMimics(Object on) {
-        return as(on).mimics;
+    public static List<IokeObject> getMimics(Object on, IokeObject context) {
+        return as(on, context).mimics;
     }
 
     public static void removeMimic(Object on, Object other, IokeObject message, IokeObject context) throws ControlFlow {
-        as(on).checkFrozen("removeMimic!", message, context);
-        as(on).mimics.remove(other);
+        as(on, context).checkFrozen("removeMimic!", message, context);
+        as(on, context).mimics.remove(other);
     }
 
     public static void removeAllMimics(Object on, IokeObject message, IokeObject context) throws ControlFlow {
-        as(on).checkFrozen("removeAllMimics!", message, context);
-        as(on).mimics.clear();
+        as(on, context).checkFrozen("removeAllMimics!", message, context);
+        as(on, context).mimics.clear();
     }
 
     public static Object getRealContext(Object o) {
         if(o instanceof IokeObject) {
-            return IokeObject.as(o).getRealContext();
+            return as(o, null).getRealContext();
         }
         return o;
     }
@@ -129,7 +138,7 @@ public class IokeObject implements TypeChecker {
     }
 
     public static Object findSuperCellOn(Object obj, IokeObject early, IokeObject message, IokeObject context, String name) {
-        return as(obj).findSuperCell(early, message, context, name, new boolean[]{false}, new IdentityHashMap<IokeObject, Object>());
+        return as(obj, context).findSuperCell(early, message, context, name, new boolean[]{false}, new IdentityHashMap<IokeObject, Object>());
     }
 
     public Object findSuperCell(IokeObject early, IokeObject message, IokeObject context, String name, boolean[] found, IdentityHashMap<IokeObject, Object> visited) {
@@ -159,25 +168,25 @@ public class IokeObject implements TypeChecker {
     }
 
     public static Object findCell(Object obj, IokeObject m, IokeObject context, String name) {
-        return as(obj).findCell(m, context, name, new IdentityHashMap<IokeObject, Object>());
+        return as(obj, context).findCell(m, context, name, new IdentityHashMap<IokeObject, Object>());
     }
 
     public static Object findCell(Object obj, IokeObject m, IokeObject context, String name, IdentityHashMap<IokeObject, Object> visited) {
-        return as(obj).findCell(m, context, name, visited);
+        return as(obj, context).findCell(m, context, name, visited);
     }
 
     public static Object findPlace(Object obj, String name, IdentityHashMap<IokeObject, Object> visited) {
-        return as(obj).findPlace(name, visited);
+        return as(obj, null).findPlace(name, visited);
     }
 
     public static Object findPlace(Object obj, IokeObject m, IokeObject context, String name) throws ControlFlow {
         Object result = findPlace(obj, name, new IdentityHashMap<IokeObject, Object>());
         if(result == m.runtime.nul) {
-            final IokeObject condition = IokeObject.as(IokeObject.getCellChain(m.runtime.condition, 
-                                                                               m, 
-                                                                               context, 
-                                                                               "Error", 
-                                                                               "NoSuchCell")).mimic(m, context);
+            final IokeObject condition = as(IokeObject.getCellChain(m.runtime.condition, 
+                                                                    m, 
+                                                                    context, 
+                                                                    "Error", 
+                                                                    "NoSuchCell"), context).mimic(m, context);
             condition.setCell("message", m);
             condition.setCell("context", context);
             condition.setCell("receiver", obj);
@@ -245,7 +254,7 @@ public class IokeObject implements TypeChecker {
     }
 
     public static IokeObject mimic(Object on, IokeObject message, IokeObject context) throws ControlFlow {
-        return as(on).mimic(message, context);
+        return as(on, context).mimic(message, context);
     }
 
     public IokeObject mimic(IokeObject message, IokeObject context) throws ControlFlow {
@@ -260,12 +269,20 @@ public class IokeObject implements TypeChecker {
         return findCell(m, context, name, new IdentityHashMap<IokeObject, Object>());
     }
 
-    public static boolean isKind(Object on, String kind) {
-        return IokeObject.as(on).isKind(kind, new IdentityHashMap<IokeObject, Object>());
+    public static boolean isKind(Object on, String kind, IokeObject context) {
+        return as(on, context).isKind(kind, new IdentityHashMap<IokeObject, Object>());
     }
 
-    public static boolean isMimic(Object on, IokeObject potentialMimic) {
-        return IokeObject.as(on).isMimic(potentialMimic, new IdentityHashMap<Map<String, Object>, Object>());
+    public static boolean isMimic(Object on, IokeObject potentialMimic, IokeObject context) {
+        return as(on, context).isMimic(potentialMimic, new IdentityHashMap<Map<String, Object>, Object>());
+    }
+
+    public static boolean isKind(IokeObject on, String kind) {
+        return as(on, on).isKind(kind, new IdentityHashMap<IokeObject, Object>());
+    }
+
+    public static boolean isMimic(IokeObject on, IokeObject potentialMimic) {
+        return as(on, on).isMimic(potentialMimic, new IdentityHashMap<Map<String, Object>, Object>());
     }
 
     private boolean isKind(String kind, IdentityHashMap<IokeObject, Object> visited) {
@@ -338,11 +355,11 @@ public class IokeObject implements TypeChecker {
         Object cell = this.findCell(m, context, name);
 
         while(cell == runtime.nul) {
-            final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
-                                                                               m, 
-                                                                               context, 
-                                                                               "Error", 
-                                                                               "NoSuchCell")).mimic(m, context);
+            final IokeObject condition = as(IokeObject.getCellChain(runtime.condition, 
+                                                                    m, 
+                                                                    context, 
+                                                                    "Error", 
+                                                                    "NoSuchCell"), context).mimic(m, context);
             condition.setCell("message", m);
             condition.setCell("context", context);
             condition.setCell("receiver", this);
@@ -396,11 +413,11 @@ public class IokeObject implements TypeChecker {
         if(cells.containsKey(name)) {
             cells.remove(name);
         } else {
-            final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
-                                                                               m, 
-                                                                               context, 
-                                                                               "Error", 
-                                                                               "NoSuchCell")).mimic(m, context);
+            final IokeObject condition = as(IokeObject.getCellChain(runtime.condition, 
+                                                                    m, 
+                                                                    context, 
+                                                                    "Error", 
+                                                                    "NoSuchCell"), context).mimic(m, context);
             condition.setCell("message", m);
             condition.setCell("context", context);
             condition.setCell("receiver", this);
@@ -427,14 +444,14 @@ public class IokeObject implements TypeChecker {
 
     public static Object getOrActivate(Object obj, IokeObject context, IokeObject message, Object on) throws ControlFlow {
         if(obj instanceof IokeObject) {
-            return as(obj).getOrActivate(context, message, on);
+            return as(obj, context).getOrActivate(context, message, on);
         } else {
             return obj;
         }
     }
 
     public static Object perform(Object obj, IokeObject ctx, IokeObject message) throws ControlFlow {
-        return as(obj).perform(ctx, message);
+        return as(obj, ctx).perform(ctx, message);
     }
 
     public Object perform(IokeObject ctx, IokeObject message) throws ControlFlow {
@@ -446,11 +463,11 @@ public class IokeObject implements TypeChecker {
         Object cell = this.findCell(message, ctx, name);
         
         while(cell == runtime.nul && ((cell = this.findCell(message, ctx, "pass")) == runtime.nul)) {
-            final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
-                                                                               message, 
-                                                                               ctx, 
-                                                                               "Error", 
-                                                                               "NoSuchCell")).mimic(message, ctx);
+            final IokeObject condition = as(IokeObject.getCellChain(runtime.condition, 
+                                                                    message, 
+                                                                    ctx, 
+                                                                    "Error", 
+                                                                    "NoSuchCell"), ctx).mimic(message, ctx);
             condition.setCell("message", message);
             condition.setCell("context", ctx);
             condition.setCell("receiver", this);
@@ -500,8 +517,12 @@ public class IokeObject implements TypeChecker {
         return getOrActivate(cell, ctx, message, this);
     }
 
-    public static void setCell(Object on, String name, Object value) {
-        as(on).setCell(name, value);
+    public static void setCell(Object on, String name, Object value, IokeObject context) {
+        as(on, context).setCell(name, value);
+    }
+
+    public static void setCell(IokeObject on, String name, Object value) {
+        as(on, on).setCell(name, value);
     }
 
     public void setCell(String name, Object value) {
@@ -509,14 +530,14 @@ public class IokeObject implements TypeChecker {
     }
 
     public static void assign(Object on, String name, Object value, IokeObject context, IokeObject message) throws ControlFlow {
-        as(on).assign(name, value, context, message);
+        as(on, context).assign(name, value, context, message);
     }
 
     public void assign(String name, Object value, IokeObject context, IokeObject message) throws ControlFlow {
         checkFrozen("=", message, context);
 
         if(!Symbol.BAD_CHARS.matcher(name).find() && findCell(message, context, name + "=") != runtime.nul) {
-            runtime.createMessage(new Message(runtime, name + "=", runtime.createMessage(Message.wrap(IokeObject.as(value))))).sendTo(context, this);
+            runtime.createMessage(new Message(runtime, name + "=", runtime.createMessage(Message.wrap(as(value, context))))).sendTo(context, this);
         } else {
             cells.put(name, value);
         }
@@ -531,7 +552,7 @@ public class IokeObject implements TypeChecker {
     }
 
     public static boolean isTrue(Object on) {
-        return as(on).isTrue();
+        return !(on instanceof IokeObject) || as(on, null).isTrue();
     }
 
     public boolean isTrue() {
@@ -539,7 +560,7 @@ public class IokeObject implements TypeChecker {
     }
 
     public static boolean isMessage(Object obj) {
-        return as(obj).isMessage();
+        return (obj instanceof IokeObject) && as(obj, null).isMessage();
     }
 
     public boolean isMessage() {
@@ -581,7 +602,7 @@ public class IokeObject implements TypeChecker {
     public void aliasMethod(String originalName, String newName, IokeObject message, IokeObject context) throws ControlFlow {
         checkFrozen("aliasMethod", message, context);
 
-        IokeObject io = as(findCell(null, null, originalName));
+        IokeObject io = as(findCell(null, null, originalName), context);
         IokeObject newObj = io.mimic(null, null);
         newObj.data = new AliasMethod(newName, io.data, io);
         cells.put(newName, newObj);
@@ -603,8 +624,8 @@ public class IokeObject implements TypeChecker {
         return data.negate(this);
     }
 
-    public static Map<String, Object> getCells(Object on) {
-        return as(on).getCells();
+    public static Map<String, Object> getCells(Object on, IokeObject context) {
+        return as(on, context).getCells();
     }
 
     public Map<String, Object> getCells() {
@@ -615,8 +636,12 @@ public class IokeObject implements TypeChecker {
         return ((IokeObject)on).data;
     }
 
-    public static IokeObject as(Object on) {
-        return ((IokeObject)on);
+    public static IokeObject as(Object on, IokeObject context) {
+        if(on instanceof IokeObject) {
+            return ((IokeObject)on);
+        } else {
+            return IokeRegistry.wrap(on, context);
+        }
     }
 
     public Object getSelf() {
@@ -690,12 +715,12 @@ public class IokeObject implements TypeChecker {
     public static Object ensureTypeIs(Class<?> clazz, IokeObject self, Object on, final IokeObject context, IokeObject message) throws ControlFlow {
         final Object[] receiver = new Object[] { on };
         while(!clazz.isInstance(IokeObject.data(receiver[0]))) {
-            final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
-                    message, 
-                    context, 
-                    "Error", 
-                    "Type",
-                    "IncorrectType")).mimic(message, context);
+            final IokeObject condition = as(IokeObject.getCellChain(context.runtime.condition, 
+                                                                               message, 
+                                                                               context, 
+                                                                               "Error", 
+                                                                               "Type",
+                                                                               "IncorrectType"), context).mimic(message, context);
             condition.setCell("message", message);
             condition.setCell("context", context);
             condition.setCell("receiver", self);
@@ -725,7 +750,7 @@ public class IokeObject implements TypeChecker {
         IokeObject result = data.convertToRational(this, m, context, false);
         if(result == null) {
             if(findCell(m, context, "asRational") != context.runtime.nul) {
-                return IokeObject.as(context.runtime.asRational.sendTo(context, this));
+                return IokeObject.as(context.runtime.asRational.sendTo(context, this), context);
             }
             if(signalCondition) {
                 return data.convertToRational(this, m, context, true);
@@ -739,7 +764,7 @@ public class IokeObject implements TypeChecker {
         IokeObject result = data.convertToDecimal(this, m, context, false);
         if(result == null) {
             if(findCell(m, context, "asDecimal") != context.runtime.nul) {
-                return IokeObject.as(context.runtime.asDecimal.sendTo(context, this));
+                return IokeObject.as(context.runtime.asDecimal.sendTo(context, this), context);
             }
             if(signalCondition) {
                 return data.convertToDecimal(this, m, context, true);
@@ -766,13 +791,13 @@ public class IokeObject implements TypeChecker {
     }
 
     public static String inspect(Object on) throws ControlFlow {
-        IokeObject ion = as(on);
+        IokeObject ion = (IokeObject)on;
         Runtime runtime = ion.runtime;
         return Text.getText(runtime.inspectMessage.sendTo(ion, ion));
     }
 
     public static String notice(Object on) throws ControlFlow {
-        IokeObject ion = as(on);
+        IokeObject ion = (IokeObject)on;
         Runtime runtime = ion.runtime;
         return Text.getText(runtime.noticeMessage.sendTo(ion, ion));
     }
@@ -781,7 +806,7 @@ public class IokeObject implements TypeChecker {
         IokeObject result = data.convertToText(this, m, context, false);
         if(result == null) {
             if(findCell(m, context, "asText") != context.runtime.nul) {
-                return IokeObject.as(context.runtime.asText.sendTo(context, this));
+                return as(context.runtime.asText.sendTo(context, this), context);
             }
             if(signalCondition) {
                 return data.convertToText(this, m, context, true);
@@ -799,7 +824,7 @@ public class IokeObject implements TypeChecker {
         IokeObject result = data.convertToSymbol(this, m, context, false);
         if(result == null) {
             if(findCell(m, context, "asSymbol") != context.runtime.nul) {
-                return IokeObject.as(context.runtime.asSymbol.sendTo(context, this));
+                return as(context.runtime.asSymbol.sendTo(context, this), context);
             }
             if(signalCondition) {
                 return data.convertToSymbol(this, m, context, true);
@@ -826,7 +851,7 @@ public class IokeObject implements TypeChecker {
     }
 
     public static Object activate(Object self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-        return as(self).activate(context, message, on);
+        return as(self, context).activate(context, message, on);
     }
 
     public Object activate(IokeObject context, IokeObject message, Object on) throws ControlFlow {
@@ -856,7 +881,7 @@ public class IokeObject implements TypeChecker {
     }
 
     public static boolean equals(Object lhs, Object rhs) {
-        return IokeObject.as(lhs).isEqualTo(rhs);
+        return ((IokeObject)lhs).isEqualTo(rhs);
     }
 
     public boolean isEqualTo(Object other) {

@@ -305,7 +305,8 @@ describe("Base",
 
       ;; Easy way to remove duplicates - create a set of it and then sort it back into a list
       groundAllNames = set(*(groundNames + baseNames + defaultBehaviorAllNames)) sort
-      originAllNames = set(*(originNames + groundAllNames)) sort
+      javaGroundAllNames = JavaGround cells keys sort
+      originAllNames = set(*(originNames + groundAllNames + javaGroundAllNames)) sort
 
       Base cellNames sort should == baseNames
       Base cellNames(false) sort should == baseNames

@@ -81,6 +81,8 @@ public class Runtime {
 
     public IokeObject regexp = new IokeObject(this, "A regular expression allows you to matching text against a pattern.", Regexp.create("", ""));
 
+    public IokeObject javaGround = new IokeObject(this, "JavaGround is the place that defines the connections to the Java integration subsystem");
+
     public IokeObject integer = null;
     public IokeObject decimal = null;
     public IokeObject ratio = null;
@@ -142,8 +144,8 @@ public class Runtime {
     // NOT TO BE EXPOSED TO Ioke - used for internal usage only
     public final NullObject nul = new NullObject(this);
 
-    public Runtime() {
-        this(new PrintWriter(java.lang.System.out), new InputStreamReader(java.lang.System.in), new PrintWriter(java.lang.System.err));
+    public Runtime() throws Exception {
+        this(new PrintWriter(java.lang.System.out), new InputStreamReader(java.lang.System.in, "UTF-8"), new PrintWriter(java.lang.System.err));
     }
 
     public Runtime(PrintWriter out, Reader in, PrintWriter err) {
@@ -152,8 +154,8 @@ public class Runtime {
         this.err = err;
     }
 
-    public static Runtime getRuntime() throws ControlFlow {
-        return getRuntime(new PrintWriter(java.lang.System.out), new InputStreamReader(java.lang.System.in), new PrintWriter(java.lang.System.err));
+    public static Runtime getRuntime() throws ControlFlow, Exception {
+        return getRuntime(new PrintWriter(java.lang.System.out), new InputStreamReader(java.lang.System.in, "UTF-8"), new PrintWriter(java.lang.System.err));
     }
 
     public static Runtime getRuntime(PrintWriter out, Reader in, PrintWriter err) throws ControlFlow {
@@ -208,10 +210,12 @@ public class Runtime {
         io.init();
         FileSystem.init(fileSystem);
         regexp.init();
+        JavaGround.init(javaGround);
 
         ground.mimicsWithoutCheck(defaultBehavior);
         ground.mimicsWithoutCheck(base);
         origin.mimicsWithoutCheck(ground);
+        origin.mimicsWithoutCheck(javaGround);
 
         mixins.mimicsWithoutCheck(defaultBehavior);
 
@@ -308,6 +312,8 @@ public class Runtime {
 
             evaluateString("use(\"builtin/G05_aspects\")", message, ground);
             evaluateString("use(\"builtin/G10_origin\")", message, ground);
+
+            evaluateString("use(\"builtin/J05_javaGround\")", message, ground);
         } catch(ControlFlow cf) {
         }
     }
@@ -515,7 +521,7 @@ public class Runtime {
                                                                            message, 
                                                                            context, 
                                                                            "Error", 
-                                                                           "JavaException")).mimic(message, context);
+                                                                           "JavaException"), context).mimic(message, context);
         condition.setCell("message", message);
         condition.setCell("context", context);
         condition.setCell("receiver", context);
@@ -698,7 +704,7 @@ public class Runtime {
     }
 
     public IokeObject newFile(IokeObject context, File eff) throws ControlFlow {
-        IokeObject fileMimic = IokeObject.as(FileMessage.sendTo(context, this.fileSystem));
+        IokeObject fileMimic = IokeObject.as(FileMessage.sendTo(context, this.fileSystem), context);
         IokeObject obj = fileMimic.allocateCopy(null, null);
         obj.mimicsWithoutCheck(fileMimic);
         obj.setData(new FileSystem.IokeFile(eff));
@@ -737,20 +743,20 @@ public class Runtime {
         BindIndex index = getBindIndex();
         
         for(Restart.JavaRestart rjr : restarts) {
-            IokeObject rr = IokeObject.as(mimic.sendTo(context, restart));
-            IokeObject.setCell(rr, "name", getSymbol(rjr.getName()));
+            IokeObject rr = IokeObject.as(mimic.sendTo(context, restart), context);
+            IokeObject.setCell(rr, "name", getSymbol(rjr.getName()), context);
 
             List<Object> args = new ArrayList<Object>();
             for(String argName : rjr.getArgumentNames()) {
                 args.add(getSymbol(argName));
             }
 
-            IokeObject.setCell(rr, "name", getSymbol(rjr.getName()));
-            IokeObject.setCell(rr, "argumentNames", newList(args));
+            IokeObject.setCell(rr, "name", getSymbol(rjr.getName()), context);
+            IokeObject.setCell(rr, "argumentNames", newList(args), context);
             
             String report = rjr.report();
             if(report != null) {
-                IokeObject.setCell(rr, "report", evaluateString("fn(r, \"" + report + "\")", message, ground));
+                IokeObject.setCell(rr, "report", evaluateString("fn(r, \"" + report + "\")", message, ground), context);
             }
 
 
@@ -777,9 +783,9 @@ public class Runtime {
     }
 
     public void withReturningRestart(String name, IokeObject context, RunnableWithControlFlow code) throws ControlFlow {
-        IokeObject rr = IokeObject.as(mimic.sendTo(context, restart));
-        IokeObject.setCell(rr, "name", getSymbol(name));
-        IokeObject.setCell(rr, "argumentNames", newList(new ArrayList<Object>()));
+        IokeObject rr = IokeObject.as(mimic.sendTo(context, restart), context);
+        IokeObject.setCell(rr, "name", getSymbol(name), context);
+        IokeObject.setCell(rr, "argumentNames", newList(new ArrayList<Object>()), context);
 
         List<RestartInfo> rrs = new ArrayList<RestartInfo>();
         BindIndex index = getBindIndex();
@@ -803,7 +809,7 @@ public class Runtime {
 
     public Object withReturningRescue(IokeObject context, Object toReturn, RunnableWithReturnAndControlFlow javaRescue) throws ControlFlow {
         List<RescueInfo> rescues = new ArrayList<RescueInfo>();
-        IokeObject rr = IokeObject.as(mimic.sendTo(context, rescue));
+        IokeObject rr = IokeObject.as(mimic.sendTo(context, rescue), context);
         List<Object> conds = new ArrayList();
         conds.add(this.condition);
         rescues.add(new RescueInfo(rr, conds, rescues, getBindIndex()));
@@ -949,7 +955,7 @@ public class Runtime {
                 }
 
                 for(Object possibleKind : rp.applicableConditions) {
-                    if(IokeObject.isMimic(condition, IokeObject.as(possibleKind))) {
+                    if(IokeObject.isMimic(condition, IokeObject.as(possibleKind, condition))) {
                         result.add(rp);
                     }
                 }
@@ -963,7 +969,7 @@ public class Runtime {
         for(List<RescueInfo> lrp : rescues.get()) {
             for(RescueInfo rp : lrp) {
                 for(Object possibleKind : rp.applicableConditions) {
-                    if(IokeObject.isMimic(condition, IokeObject.as(possibleKind))) {
+                    if(IokeObject.isMimic(condition, IokeObject.as(possibleKind, condition))) {
                         return rp;
                     }
                 }

@@ -87,14 +87,14 @@ public class Regexp extends IokeData {
 
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
-                    IokeObject target = IokeObject.as(context.runtime.asText.sendTo(context, args.get(0)));
+                    IokeObject target = IokeObject.as(context.runtime.asText.sendTo(context, args.get(0)), context);
                     String arg = Text.getText(target);
                     Matcher m = ((Regexp)IokeObject.data(on)).regexp.matcher(arg);
                     
                     if(m.find()) {
                         IokeObject match = regexpMatch.allocateCopy(message, context);
                         match.mimicsWithoutCheck(regexpMatch);
-                        match.setData(new RegexpMatch(IokeObject.as(on), m, target));
+                        match.setData(new RegexpMatch(IokeObject.as(on, context), m, target));
                         return match;
                     } else {
                         return context.runtime.nil;

@@ -68,7 +68,7 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
 
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    return IokeObject.as(on).activate(context, message, context.getRealContext());
+                    return IokeObject.as(on, context).activate(context, message, context.getRealContext());
                 }
             }));
         
@@ -86,7 +86,7 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     Object onAsSyntax = context.runtime.defaultSyntax.convertToThis(on, message, context);
-                    return ((DefaultSyntax)IokeObject.data(onAsSyntax)).expand(IokeObject.as(onAsSyntax), context, message, context.getRealContext(), null);
+                    return ((DefaultSyntax)IokeObject.data(onAsSyntax)).expand(IokeObject.as(onAsSyntax, context), context, message, context.getRealContext(), null);
                 }
             }));
         
@@ -181,7 +181,7 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
                                                                          context, 
                                                                          "Error", 
                                                                          "Invocation",
-                                                                         "NotActivatable")).mimic(message, context);
+                                                                         "NotActivatable"), context).mimic(message, context);
             condition.setCell("message", message);
             condition.setCell("context", context);
             condition.setCell("receiver", on);
@@ -203,7 +203,7 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
             }));
         c.setCell("currentMessage", message);
         c.setCell("surroundingContext", context);
-        c.setCell("call", context.runtime.newCallFrom(c, message, context, IokeObject.as(on)));
+        c.setCell("call", context.runtime.newCallFrom(c, message, context, IokeObject.as(on, context)));
         if(data != null) {
             for(Map.Entry<String, Object> d : data.entrySet()) {
                 String s = d.getKey();
@@ -233,7 +233,7 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
                                                                          context, 
                                                                          "Error", 
                                                                          "Invocation",
-                                                                         "NotActivatable")).mimic(message, context);
+                                                                         "NotActivatable"), context).mimic(message, context);
             condition.setCell("message", message);
             condition.setCell("context", context);
             condition.setCell("receiver", on);
@@ -301,9 +301,9 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
 
             IokeObject newObj = null;
             if(IokeObject.data(result) instanceof Message) {
-                newObj = IokeObject.as(result);
+                newObj = IokeObject.as(result, context);
             } else {
-                newObj = context.runtime.createMessage(Message.wrap(IokeObject.as(result)));
+                newObj = context.runtime.createMessage(Message.wrap(IokeObject.as(result, context)));
             }
 
             IokeObject prev = Message.prev(message);
@@ -359,9 +359,9 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
 
             IokeObject newObj = null;
             if(IokeObject.data(result) instanceof Message) {
-                newObj = IokeObject.as(result);
+                newObj = IokeObject.as(result, context);
             } else {
-                newObj = context.runtime.createMessage(Message.wrap(IokeObject.as(result)));
+                newObj = context.runtime.createMessage(Message.wrap(IokeObject.as(result, context)));
             }
 
             IokeObject prev = Message.prev(message);
