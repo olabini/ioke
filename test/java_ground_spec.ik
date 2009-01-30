@@ -20,12 +20,20 @@ describe("JavaGround",
     )
   )
 
-;   describe("primitiveJavaClass!",
-;     it("should return the Java class for the string sent in",
-;       px = JavaGround primitiveJavaClass!("java.util.HashMap")
-;       px kind should == "java:lang:Class"
-;       px name should == "java:util:HashMap"
-;       px cell?(:new) should be true
-;     )
-;   )
+  describe("primitiveJavaClass!",
+    it("should return the Java class for the string sent in",
+      px = JavaGround primitiveJavaClass!("java.util.HashMap")
+      px kind should == "java:lang:Class"
+      px name should == "java:util:HashMap"
+      px cell?(:new) should be true
+    )
+  )
+
+  describe("construction",
+    it("should be possible to create a new instance of a Java class",
+      px = JavaGround primitiveJavaClass!("java.util.HashMap")
+      val = px new
+      val should mimic(px)
+    )      
+  )
 )

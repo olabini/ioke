@@ -3,6 +3,9 @@
  */
 package ioke.lang;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+
 import java.util.List;
 import java.util.HashSet;
 import java.util.Map;
@@ -19,54 +22,55 @@ public class JavaWrapper extends IokeData {
     private Class clazz;
 
     public JavaWrapper() {
-        this(null);
+        this.object = null;
     }
 
     public JavaWrapper(Object object) {
         this.object = object;
-        if(object != null) {
-            clazz = this.object.getClass();
-            kind = clazz.getName().replaceAll("\\.", ":");
+        this.clazz = this.object.getClass();
+        this.kind = clazz.getName().replaceAll("\\.", ":");
+    }
+
+    public static JavaWrapper wrapWithMethods(Class<?> clz, IokeObject obj, Runtime runtime) {
+        try {
+            for(Method m : clz.getDeclaredMethods()) {
+                if(m.getParameterTypes().length == 0) {
+                    //                System.err.println("creating method: " + m.getName() + " on: " + clz);
+                    obj.setCell(m.getName(), runtime.createJavaMethod(m));
+                }
+            }
+            for(Constructor c : clz.getDeclaredConstructors()) {
+                if(c.getParameterTypes().length == 0) {
+                    //                System.err.println("creating method: " + m.getName() + " on: " + clz);
+                    obj.setCell("new", runtime.createJavaMethod(c));
+                    break;
+                }
+            }
+        } catch(Throwable e) {
+            System.err.print("woopsie: ");
+            e.printStackTrace();
         }
+
+        return new JavaWrapper(clz);
+    }
+
+    public Object getObject() {
+        return object;
     }
 
     @Override
     public void init(final IokeObject obj) throws ControlFlow {
         final Runtime runtime = obj.runtime;
 
-        obj.registerMethod(runtime.newJavaMethod("returns the kind of this Java object.", new TypeCheckingJavaMethod.WithNoArguments("kind", obj) {
+        obj.registerMethod(runtime.newJavaMethod("returns the kind of this Java object.", new JavaMethod.WithNoArguments("kind") {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
-                    return context.runtime.newText(((JavaWrapper)IokeObject.data(on)).kind);
+                    if(on instanceof IokeObject) {
+                        return context.runtime.newText(((JavaWrapper)IokeObject.data(on)).kind);
+                    } else {
+                        return context.runtime.newText(on.getClass().getName().replaceAll("\\.", ":"));
+                    }
                 }
             }));
-
-        obj.registerMethod(runtime.newJavaMethod("will pass along the call to the real Java object of this wrapper.", 
-                                                       new TypeCheckingJavaMethod("pass") {
-                                                           private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
-                                                               .builder()
-                                                               .receiverMustMimic(obj)
-                                                               .withRestUnevaluated("arguments")
-                                                               .getArguments();
-
-                                                           @Override
-                                                           public TypeCheckingArgumentsDefinition getArguments() {
-                                                               return ARGUMENTS;
-                                                           }
-
-                                                           @Override
-                                                           public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
-                                                               return ((JavaWrapper)IokeObject.data(on)).invokeJavaMethod(on, context, message);
-                                                           }}));
-    }
-
-    public Object invokeJavaMethod(Object self, IokeObject context, IokeObject message) throws ControlFlow {
-        String name = message.getName();
-        try {
-            return clazz.getMethod(name).invoke(object);
-        } catch(Exception e) {
-            System.err.println("PROBLEM: " + e);
-            return context.runtime.nil;
-        }
     }
 }
