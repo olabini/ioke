@@ -410,6 +410,7 @@ public class Base {
                     String name = Text.getText(context.runtime.asText.sendTo(context, args.get(0)));
                     Object val = args.get(1);
 
+                    if(val instanceof IokeObject) {
                     if((IokeObject.data(val) instanceof Named) && ((Named)IokeObject.data(val)).getName() == null) {
                         ((Named)IokeObject.data(val)).setName(name);
                     } else if(name.length() > 0 && Character.isUpperCase(name.charAt(0)) && !IokeObject.as(val, context).hasKind()) {
@@ -418,6 +419,7 @@ public class Base {
                         } else {
                             IokeObject.as(val, context).setKind(IokeObject.as(on, context).getKind() + " " + name);
                         }
+                    }
                     }
 
                     return IokeObject.setCell(on, message, context, name, val);
