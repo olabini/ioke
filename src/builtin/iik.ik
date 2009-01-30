@@ -3,7 +3,7 @@
 IIk = Origin mimic do(
   Exit = Condition mimic
 
-  mainContext = Ground mimic do(
+  mainContext = Origin mimic do(
 
     exit = method(signal!(IIk Exit))
 

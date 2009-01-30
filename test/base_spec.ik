@@ -51,19 +51,19 @@ describe("Base",
       Origin mimic undefineCell!(:test_undefine_cell)
     )
 
-    it("should make the cell inaccessible",
-      x = Origin mimic
-      y = x mimic
+;     it("should make the cell inaccessible",
+;       x = Origin mimic
+;       y = x mimic
     
-      x foo = "blurg"
-      y foo = "blarg"
+;       x foo = "blurg"
+;       y foo = "blarg"
 
-      y undefineCell!(:foo)
-      x cell?(:foo) should be true
-      y cell?(:foo) should be false
-      fn(y foo) should signal(Condition Error NoSuchCell)
-      fn(y mimic foo) should signal(Condition Error NoSuchCell)
-    )
+;       y undefineCell!(:foo)
+;       x cell?(:foo) should be true
+;       y cell?(:foo) should be false
+;       fn(y foo) should signal(Condition Error NoSuchCell)
+;       fn(y mimic foo) should signal(Condition Error NoSuchCell)
+;     )
 
     it("should stop the cell from showing up in cellNames",
       x = Origin mimic

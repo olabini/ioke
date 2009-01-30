@@ -38,8 +38,7 @@ public class JavaGround {
                     try {
                         c = Class.forName(name);
                     } catch(Exception e) {
-                        System.err.println("Ouchie...: " + e);
-                        c = null;
+                        runtime.reportJavaException(e, message, context);
                     }
                     return c;
                 }
