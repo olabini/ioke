@@ -25,10 +25,6 @@ public class IokeRegistry {
         if(on == null) {
             return runtime.nil;
         }
-
-        if(on instanceof String) {
-            return runtime.newText((String)on);
-        }
         
         IokeObject obj = wrappedObjects.get(on);
         if(obj == null) {
@@ -36,6 +32,14 @@ public class IokeRegistry {
             wrappedObjects.put(on, obj);
         }
         return obj;
+    }
+
+    public boolean isWrapped(Object on) {
+        return wrappedObjects.containsKey(on);
+    }
+
+    public static boolean isWrapped(Object on, IokeObject context) {
+        return context.runtime.registry.isWrapped(on);
     }
 
     public static IokeObject wrap(Object on, IokeObject context) {

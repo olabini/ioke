@@ -451,7 +451,73 @@ public class IokeObject implements TypeChecker {
     }
 
     public static Object perform(Object obj, IokeObject ctx, IokeObject message) throws ControlFlow {
-        return as(obj, ctx).perform(ctx, message);
+        if((obj instanceof IokeObject) || IokeRegistry.isWrapped(obj, ctx)) {
+            return as(obj, ctx).perform(ctx, message);
+        } else {
+            return performJava(obj, ctx, message);
+        }
+    }
+
+    private static Object performJava(Object obj, IokeObject ctx, IokeObject message) throws ControlFlow {
+        final IokeObject clz = IokeRegistry.wrap(obj.getClass(), ctx);
+        final Runtime runtime = ctx.runtime;
+        final String name = message.getName();
+        final String outerName = name;
+        Object cell = clz.findCell(message, ctx, name);
+        
+        while(cell == runtime.nul && ((cell = clz.findCell(message, ctx, "pass")) == runtime.nul)) {
+            final IokeObject condition = as(IokeObject.getCellChain(runtime.condition, 
+                                                                    message, 
+                                                                    ctx, 
+                                                                    "Error", 
+                                                                    "NoSuchCell"), ctx).mimic(message, ctx);
+            condition.setCell("message", message);
+            condition.setCell("context", ctx);
+            condition.setCell("receiver", obj);
+            condition.setCell("cellName", runtime.getSymbol(name));
+
+            final Object[] newCell = new Object[]{cell};
+
+            runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
+                    public void run() throws ControlFlow {
+                        runtime.errorCondition(condition);
+                    }}, 
+                ctx,
+                new Restart.ArgumentGivingRestart("useValue") { 
+                    public String report() {
+                        return "Use value for: " + outerName;
+                    }
+
+                    public List<String> getArgumentNames() {
+                        return new ArrayList<String>(Arrays.asList("newValue"));
+                    }
+
+                    public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
+                        newCell[0] = arguments.get(0);
+                        return context.runtime.nil;
+                    }
+                },
+                new Restart.ArgumentGivingRestart("storeValue") {
+                    public String report() {
+                        return "Store value for: " + outerName;
+                    }
+
+                    public List<String> getArgumentNames() {
+                        return new ArrayList<String>(Arrays.asList("newValue"));
+                    }
+
+                    public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
+                        newCell[0] = arguments.get(0);
+                        clz.setCell(outerName, newCell[0]);
+                        return context.runtime.nil;
+                    }
+                }
+                );
+
+            cell = newCell[0];
+        }
+
+        return clz.getOrActivate(cell, ctx, message, obj);
     }
 
     public Object perform(IokeObject ctx, IokeObject message) throws ControlFlow {
@@ -705,11 +771,19 @@ public class IokeObject implements TypeChecker {
     }
     
     public Object convertToThis(Object on, boolean signalCondition, IokeObject message, IokeObject context) throws ControlFlow {
-    	if(IokeObject.data(on).getClass().equals(data.getClass())) {
-    		return on;
-    	} else {
-    		return IokeObject.convertTo(this, on, signalCondition, IokeObject.data(on).getConvertMethod(), message, context);
-    	}
+        if(on instanceof IokeObject) {
+            if(IokeObject.data(on).getClass().equals(data.getClass())) {
+                return on;
+            } else {
+                return IokeObject.convertTo(this, on, signalCondition, IokeObject.data(on).getConvertMethod(), message, context);
+            }
+        } else {
+            if(signalCondition) {
+                throw new RuntimeException("oh no. -(: " + message.getName());
+            } else {
+                return context.runtime.nul;
+            }
+        }
     }
 
     public static Object ensureTypeIs(Class<?> clazz, IokeObject self, Object on, final IokeObject context, IokeObject message) throws ControlFlow {
