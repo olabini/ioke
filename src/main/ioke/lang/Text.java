@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Arrays;
 
 import ioke.lang.exceptions.ControlFlow;
+import ioke.lang.util.UnicodeScript;
 
 import org.jregex.Pattern;
 import org.jregex.RETokenizer;
@@ -354,6 +355,30 @@ public class Text extends IokeData {
                     return on;
                 }
             }));
+
+        obj.registerMethod(obj.runtime.newJavaMethod("returns a symbol representing the script (from the Unicode Character Database) of character", new JavaMethod.WithNoArguments("script") {
+            @Override
+            public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                String character = getText(on);
+                if(character.length() == 1) {
+                  return context.runtime.getSymbol(UnicodeScript.getScriptFor(character.codePointAt(0)).toString());
+                }
+                
+                final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
+                                                                                   message,
+                                                                                   context,
+                                                                                   "Error",
+                                                                                   "Default"), context).mimic(message, context);
+                condition.setCell("message", message);
+                condition.setCell("context", context);
+                condition.setCell("receiver", on);
+                condition.setCell("text", context.runtime.newText("Text does not contain exactly one character"));
+
+                runtime.errorCondition(condition);
+                return null;
+            }
+        }));
         
         obj.registerMethod(obj.runtime.newJavaMethod("Returns a symbol representing the Unicode category of the character", new JavaMethod.WithNoArguments("category") {
             @Override
