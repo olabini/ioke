@@ -40,7 +40,7 @@ public class JavaGround {
                     } catch(Exception e) {
                         runtime.reportJavaException(e, message, context);
                     }
-                    return c;
+                    return runtime.registry.wrap(c);
                 }
             }));
         

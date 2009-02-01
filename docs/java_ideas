@@ -1,16 +1,18 @@
 
-All classes NEED to be wrapped - the whole hierarchy immediately. Wrap all methods too. The regular objects shouldn't be necessary to wrap.
-  process for invoking cell:
-   -- if not Ioke object
-     -- see if there is a wrapper for it
-     -- if wrapper exists, return that
-     -- else get wrapper for class and use that for invocation
-  -- creating a wrapper for a Java object will lead to: the class and all its interfaces being added to that wrappers mimics. After that point, all invocations will use regular Ioke semantics
+implement == to use equals
+implement same? to use real ==
+
+I think that during cell lookup there needs to be a check - isAppropriate? that allows the division between classes and objects to be respected in lookup.
 
 
 
 
-Origin mimics JavaGround
+
+
+
+
+
+
 
 How to refer to full class names?
    Foo
@@ -56,5 +58,10 @@ To figure out:
 Code:
  all interfaces and classes are activatable, so you can create a new simple implementatino of Comparable by calling it:
    Comparable(x, y, y <=> x)
+
+   Comparable(
+     compareTo: fn(x,y, x<=>y),
+     equals: fn(other, other == 1)
+   )
 
  keyword arguments will use the paranamer approach

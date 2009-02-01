@@ -34,6 +34,34 @@ describe("JavaGround",
       px = JavaGround primitiveJavaClass!("java.util.HashMap")
       val = px new
       val should mimic(px)
-    )      
+    )
+  )
+
+
+  describe("calling method with arguments",
+    it("should be possible to give one arguments",
+      ll = java:util:ArrayList new
+      ll size asRational should == 0
+      ll add("foo")
+      ll size asRational should == 1
+      ll add("foo")
+      ll size asRational should == 2
+    )
+
+    it("should be possible to give two arguments",
+      hm = java:util:HashMap new
+      hm size asRational should == 0
+      hm put("foo", "bar")
+      hm size asRational should == 1
+      hm put("foo", "quux")
+      hm size asRational should == 1
+    )
+
+    describe("conversion protocol",
+      it("should not transform argument when parameter type is object - except for nil")
+      it("should always coerce nil into null")
+      it("should coerce a Text to a String argument")
+      it("should never coerce the return value")
+    )
   )
 )
