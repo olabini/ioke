@@ -41,7 +41,7 @@ public class JavaWrapper extends IokeData {
             }
             for(Constructor c : clz.getDeclaredConstructors()) {
                 if(c.getParameterTypes().length == 0) {
-                    //                System.err.println("creating method: " + m.getName() + " on: " + clz);
+                    System.err.println("creating ctor: " + c);
                     obj.setCell("new", runtime.createJavaMethod(c));
                     break;
                 }

@@ -39,10 +39,10 @@ public class JavaMethodJavaMethod extends ioke.lang.Method {
     public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
         try {
             if((on instanceof IokeObject) && (IokeObject.data(on) instanceof JavaWrapper)) {
-                //                System.err.println("Invoking " + method.getName() + " on " + ((JavaWrapper)IokeObject.data(on)).getObject() + "[" + ((JavaWrapper)IokeObject.data(on)).getObject().getClass().getName() + "]");
+                               System.err.println("Invoking " + method.getName() + " on " + ((JavaWrapper)IokeObject.data(on)).getObject() + "[" + ((JavaWrapper)IokeObject.data(on)).getObject().getClass().getName() + "]");
                 return method.invoke(((JavaWrapper)IokeObject.data(on)).getObject());
             } else {
-                //                System.err.println("Invoking " + method.getName() + " on " + on + "[" + on.getClass().getName() + "]");
+                               System.err.println("Invoking " + method.getName() + " on " + on + "[" + on.getClass().getName() + "]");
                 return method.invoke(on);
             }
         } catch(Exception e) {

@@ -1,8 +1,14 @@
 
 JavaGround java:lang:Class = JavaGround primitiveJavaClass!("java.lang.Class")
+JavaGround java:lang:Object = JavaGround primitiveJavaClass!("java.lang.Object")
 JavaGround java:lang:String = JavaGround primitiveJavaClass!("java.lang.String")
+JavaGround java:lang:Integer = JavaGround primitiveJavaClass!("java.lang.Integer")
 
 JavaGround java:lang:String asText = method(internal:createText(self))
+JavaGround java:lang:Integer asRational = method(internal:createNumber(self))
+
+JavaGround java:lang:Object inspect = method(self toString asText)
+JavaGround java:lang:Object notice  = method(self toString asText)
 
 JavaGround java:lang:Class name = method(
   self getName asText replaceAll(".", ":")

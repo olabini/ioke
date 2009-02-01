@@ -187,8 +187,13 @@ public class InternalBehavior {
                         cache = false;
                         o = Message.getEvaluatedArgument(o, context);
                     }
+                    Object value = null;
+                    if(o instanceof String) {
+                        value = runtime.newNumber((String)o);
+                    } else if(o instanceof Integer) {
+                        value = runtime.newNumber((Integer)o);
+                    }
 
-                    Object value = runtime.newNumber((String)o);
                     if(cache) {
                         Message.cacheValue(message, value);
                     }
