@@ -8,6 +8,8 @@
 	</array>
 	<key>firstLineMatch</key>
 	<string>^#!/.*\bioke\b</string>
+	<key>keyEquivalent</key>
+	<string>^~I</string>
 	<key>name</key>
 	<string>Ioke</string>
 	<key>patterns</key>
