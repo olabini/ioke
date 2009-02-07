@@ -3,16 +3,16 @@ DefaultBehavior Definitions destructuring doFor = method(defName, theCall,
   docstring = nil
   args = theCall arguments
   if((args length > 1) && (args[0] name == :"internal:createText"),
-    docstring = args[0]
-    args = args[1..-1])
+      docstring = args[0]
+      args = args[1..-1])
 
-  min = 0
-  max = 0
+    min = 0
+    max = 0
 
-  inner = 'cond
-  val = ''(argCount = call arguments length
-`inner
-)
+    inner = 'cond
+    val = ''(argCount = call arguments length
+    `inner
+  )
 
   args each(arg,
     generatePatternMatch(arg arguments, inner)
