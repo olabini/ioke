@@ -619,8 +619,8 @@ public class Runtime {
         }
     }
 
-    public IokeObject createJavaMethod(java.lang.reflect.Method method) throws ControlFlow {
-        return newMethod(null, this.javaMethod, new JavaMethodJavaMethod(method));
+    public IokeObject createJavaMethod(java.lang.reflect.Method[] methods) throws ControlFlow {
+        return newMethod(null, this.javaMethod, new JavaMethodJavaMethod(methods));
     }
 
     public IokeObject createJavaMethod(java.lang.reflect.Constructor ctor) throws ControlFlow {

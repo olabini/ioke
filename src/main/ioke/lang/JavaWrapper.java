@@ -7,8 +7,10 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
 import java.util.List;
+import java.util.LinkedList;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.HashMap;
 
 import ioke.lang.exceptions.ControlFlow;
 
@@ -31,17 +33,33 @@ public class JavaWrapper extends IokeData {
         this.kind = clazz.getName().replaceAll("\\.", ":");
     }
 
+    public static Object getObject(Object wrapped) {
+        return ((JavaWrapper)IokeObject.data(wrapped)).object;
+    }
+
     public static JavaWrapper wrapWithMethods(Class<?> clz, IokeObject obj, Runtime runtime) {
         try {
+            Map<String, List<Method>> ms = new HashMap<String, List<Method>>();
             for(Method m : clz.getDeclaredMethods()) {
-                if(m.getParameterTypes().length == 0) {
-                    //                System.err.println("creating method: " + m.getName() + " on: " + clz);
-                    obj.setCell(m.getName(), runtime.createJavaMethod(m));
+                String name = m.getName();
+                List<Method> lm = null;
+                if(!ms.containsKey(name)) {
+                    lm = new LinkedList<Method>();
+                    ms.put(name, lm);
+                } else {
+                    lm = ms.get(name);
                 }
+                lm.add(m);
             }
+
+            for(Map.Entry<String, List<Method>> mesl : ms.entrySet()) {
+//                 System.err.println("creating method: " + mesl.getKey() + " on: " + clz);
+                obj.setCell(mesl.getKey(), runtime.createJavaMethod(mesl.getValue().toArray(new Method[0])));
+            }
+
             for(Constructor c : clz.getDeclaredConstructors()) {
                 if(c.getParameterTypes().length == 0) {
-                    System.err.println("creating ctor: " + c);
+//                     System.err.println("creating ctor: " + c);
                     obj.setCell("new", runtime.createJavaMethod(c));
                     break;
                 }
