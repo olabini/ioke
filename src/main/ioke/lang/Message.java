@@ -198,7 +198,69 @@ public class Message extends IokeData {
                     return method.runtime.getSymbol(((Message)IokeObject.data(on)).name);
                 }
             }));
-        
+
+        message.registerMethod(message.runtime.newJavaMethod("takes either one or two arguments. if one argument is given, it should be a message chain that will be sent to each message in the chain, recursively. the result will be thrown away. if two arguments are given, the first is an unevaluated name that will be set to each of the messages in the chain in succession, and then the second argument will be evaluated in a scope with that argument in it. the code will evaluate in a lexical context, and if the argument name is available outside the context, it will be shadowed. the method will return the original message.", new JavaMethod("walk") {
+            private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                .builder()
+                .withOptionalPositionalUnevaluated("argOrCode")
+                .withOptionalPositionalUnevaluated("code")
+                .getArguments();
+
+            @Override
+            public DefaultArgumentsDefinition getArguments() {
+                return ARGUMENTS;
+            }
+
+            @Override
+            public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                getArguments().checkArgumentCount(context, message, on);
+
+                Object onAsMessage = context.runtime.message.convertToThis(on, message, context);
+
+                switch(message.getArgumentCount()) {
+                case 1: {
+                    IokeObject code = IokeObject.as(message.getArguments().get(0), context);
+                    walkWithReceiver(context, onAsMessage, code);
+
+                    break;
+                }
+                case 2: {
+                    LexicalContext c = new LexicalContext(context.runtime, context, "Lexical activation context for Message#walk", message, context);
+                    String name = IokeObject.as(message.getArguments().get(0), context).getName();
+                    IokeObject code = IokeObject.as(message.getArguments().get(1), context);
+
+                    walkWithoutExplicitReceiver(onAsMessage, c, name, code);
+                    break;
+                }
+                }
+                return onAsMessage;
+
+            }
+
+            private void walkWithoutExplicitReceiver(Object onAsMessage, LexicalContext c, String name, IokeObject code) throws ControlFlow {
+                Object o = onAsMessage;
+                while(o != null) {
+                    c.setCell(name, o);
+                    code.evaluateCompleteWithoutExplicitReceiver(c, c.getRealContext());
+                    for (Object arg : ((IokeObject)o).getArguments()) {
+                        walkWithoutExplicitReceiver(arg, c, name, code);
+                    }
+                    o = next(o);
+                }
+            }
+
+            private void walkWithReceiver(IokeObject context, Object onAsMessage, IokeObject code) throws ControlFlow {
+                Object o = onAsMessage;
+                while(o != null) {
+                    code.evaluateCompleteWithReceiver(context, context.getRealContext(), o);
+                    for (Object arg : ((IokeObject)o).getArguments()) {
+                        walkWithReceiver(context, arg, code);
+                    }
+                    o = next(o);
+                }
+            }
+        }));
+
         message.registerMethod(message.runtime.newJavaMethod("takes either one or two or three arguments. if one argument is given, it should be a message chain that will be sent to each message in the chain. the result will be thrown away. if two arguments are given, the first is an unevaluated name that will be set to each of the messages in the chain in succession, and then the second argument will be evaluated in a scope with that argument in it. if three arguments is given, the first one is an unevaluated name that will be set to the index of each message, and the other two arguments are the name of the argument for the value, and the actual code. the code will evaluate in a lexical context, and if the argument name is available outside the context, it will be shadowed. the method will return the original message.", new JavaMethod("each") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
