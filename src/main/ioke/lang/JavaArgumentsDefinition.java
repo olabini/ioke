@@ -120,6 +120,7 @@ public class JavaArgumentsDefinition {
             // Totally ignore varargs for now, right...
             if(parameterTypes[i].length == argCount) {
                 Class[] current = parameterTypes[i];
+//                 System.err.println("checking: " + members[i]);
                 for(int k=0; k<argCount; k++) {
                     Class clz = current[k];
                     Object obj = resultArguments.get(k);
@@ -253,7 +254,7 @@ public class JavaArgumentsDefinition {
         }
 
         // error that no matching method could be found here. wait for specs for this, of course
-
+//         System.err.println("- Running with: " + members[i]);
         return members[i];
     }
 }// JavaArgumentsDefinition
