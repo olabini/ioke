@@ -46,9 +46,11 @@ Condition report = method(
 Condition Error JavaException report = method(
   "returns a representation of this error, showing some information about the java exception",
   
+  stackTrace = "%[  %s\n%]" format(self exceptionStackTrace)
+
   "#{self exceptionType}: #{self exceptionMessage} (#{self kind})
 
-#{self exceptionStackTrace}
+#{stackTrace}
 
 #{message asStackTraceText}
 #{context stackTraceAsText}")

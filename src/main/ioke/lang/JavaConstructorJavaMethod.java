@@ -38,7 +38,7 @@ public class JavaConstructorJavaMethod extends ioke.lang.Method {
 
     public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
         try {
-            System.err.println("invoking: " + ctor);
+//             System.err.println("invoking: " + ctor);
             return ctor.newInstance();
         } catch(Exception e) {
             System.err.print("woops: ");
