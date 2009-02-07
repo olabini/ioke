@@ -424,4 +424,54 @@ describe(Message,
       Message should checkReceiverTypeOn(:each)
     )
   )
+
+  describe("walk",
+    it("should always execute for itself", 
+      Ground x = 0
+      'foo(bar) walk(. Ground x++)
+      Ground x should == 2
+    )
+
+    it("should execute once for each message and each argument in the chain",
+      result = []
+      '(foo(bar) quux(bar)) walk(m, result << m name)
+      result should == [:foo, :bar, :quux, :bar]
+    )
+    
+    it("should be possible to just give it a message chain, and it will be invoked on each object recursively", 
+      Ground y = []
+      Ground xs = method(y << self name)
+      '(foo bar(quux)) walk(xs)
+      y should == [:foo, :bar, :quux]
+
+      x = 0
+      '(foo bar(quux)) walk(nil. x++)
+      x should == 3
+    )
+    
+    it("should be possible to give it an argument name, and code", 
+      y = []
+      '(foo bar(quux)) walk(x, y << x name)
+      y should == [:foo, :bar, :quux]
+    )
+
+    it("should return the object", 
+      y = '(foo bar(quux))
+      (y walk(x, x)) should be same(y)
+    )
+    
+    it("should establish a lexical context when invoking the methods. this context will be the same for all invocations.", 
+      '(foo bar(quux)) walk(x_list, blarg=32)
+      cell?(:x_list) should be false
+      cell?(:blarg) should be false
+
+      x=14
+      '(foo bar quux) walk(x, blarg=32)
+      x should == 14
+    )
+
+    it("should validate type of receiver",
+      Message should checkReceiverTypeOn(:walk)
+    )
+  )
 )
