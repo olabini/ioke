@@ -49,6 +49,25 @@ public class JavaArgumentsDefinition {
         return new JavaArgumentsDefinition(m, params, min, max);
     }
 
+    public static JavaArgumentsDefinition createFrom(Constructor[] m) {
+        Class[][] params = new Class[m.length][];
+        int ix = 0;
+        int min = -1;
+        int max = -1;
+        for(Constructor ms : m) {
+            params[ix++] = ms.getParameterTypes();
+            int num = params[ix-1].length;
+            if(min == -1 || num < min) {
+                min = num;
+            }
+            if(max == -1 || num > max) {
+                max = num;
+            }
+        }
+
+        return new JavaArgumentsDefinition(m, params, min, max);
+    }
+
     public Member getJavaArguments(IokeObject context, IokeObject message, Object on, List<Object> args) throws ControlFlow {
         final Runtime runtime = context.runtime;
         final List<Object> arguments = message.getArguments();

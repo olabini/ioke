@@ -8,6 +8,7 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.LinkedList;
 import java.util.Map;
 
 import ioke.lang.exceptions.ControlFlow;
@@ -16,12 +17,14 @@ import ioke.lang.exceptions.ControlFlow;
  *
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
-public class JavaConstructorJavaMethod extends ioke.lang.Method {
-    private Constructor ctor;
+public class JavaConstructorJavaMethod extends ioke.lang.Method { 
+    private Constructor[] ctors;
+    private JavaArgumentsDefinition arguments;
 
-    public JavaConstructorJavaMethod(Constructor ctor) {
+    public JavaConstructorJavaMethod(Constructor[] ctors) {
         super("new");
-        this.ctor = ctor;
+        this.ctors = ctors;
+        this.arguments = JavaArgumentsDefinition.createFrom(ctors);
     }
 
     public String getArgumentsCode() {
@@ -30,16 +33,15 @@ public class JavaConstructorJavaMethod extends ioke.lang.Method {
 
     @Override
     public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-        List<Object> args = new ArrayList<Object>();
-        Map<String, Object> keywords = new HashMap<String, Object>();
-        //        getArguments().getEvaluatedArguments(context, message, on, args, keywords);
-        return activate(self, on, args, keywords, context, message);
+        List<Object> args = new LinkedList<Object>();
+        Constructor ctor = (Constructor)arguments.getJavaArguments(context, message, on, args);
+        return activate(self, on, args, ctor, context, message);
     }
 
-    public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+    public Object activate(IokeObject self, Object on, List<Object> args, Constructor ctor, IokeObject context, IokeObject message) throws ControlFlow {
         try {
 //             System.err.println("invoking: " + ctor);
-            return ctor.newInstance();
+            return ctor.newInstance(args.toArray());
         } catch(Exception e) {
             System.err.print("woops: ");
             e.printStackTrace();
@@ -49,6 +51,6 @@ public class JavaConstructorJavaMethod extends ioke.lang.Method {
     
     @Override
     public String inspect(Object self) {
-        return "method(" + ctor.getDeclaringClass().getName() + "_new)";
+        return "method(" + ctors[0].getDeclaringClass().getName() + "_new)";
     }
 }

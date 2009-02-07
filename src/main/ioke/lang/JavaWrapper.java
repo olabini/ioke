@@ -57,13 +57,7 @@ public class JavaWrapper extends IokeData {
                 obj.setCell(mesl.getKey(), runtime.createJavaMethod(mesl.getValue().toArray(new Method[0])));
             }
 
-            for(Constructor c : clz.getDeclaredConstructors()) {
-                if(c.getParameterTypes().length == 0) {
-//                     System.err.println("creating ctor: " + c);
-                    obj.setCell("new", runtime.createJavaMethod(c));
-                    break;
-                }
-            }
+            obj.setCell("new", runtime.createJavaMethod(clz.getDeclaredConstructors()));
         } catch(Throwable e) {
             System.err.print("woopsie: ");
             e.printStackTrace();

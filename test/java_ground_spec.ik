@@ -37,6 +37,9 @@ describe("JavaGround",
     )
   )
 
+  describe("calling static methods",
+    it("should have tests")
+  )
 
   describe("calling method with arguments",
     it("should be possible to give one arguments",
@@ -62,6 +65,20 @@ describe("JavaGround",
       it("should always coerce nil into null")
       it("should coerce a Text to a String argument")
       it("should never coerce the return value")
+    )
+  )
+
+  describe("calling constructors with arguments",
+    it("should disambiguate between two constructors with the same arg count",
+      ll = java:util:ArrayList new(10)
+      ll size asRational should == 0
+
+      val = java:util:ArrayList new
+      val add("foo")
+      val add("bar")
+
+      ll = java:util:ArrayList new(val)
+      ll size asRational should == 2
     )
   )
 )
