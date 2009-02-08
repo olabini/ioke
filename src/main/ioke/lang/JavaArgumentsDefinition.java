@@ -67,11 +67,28 @@ public class JavaArgumentsDefinition {
 
         return new JavaArgumentsDefinition(m, params, min, max);
     }
+    
+    private static class JavaArgumentDefinition {
+        public final Class type;
+        public final Class altType;
+        public final Object obj;
+        public JavaArgumentDefinition(Class type, Class altType, Object obj) {
+            this.type = type;
+            this.altType = altType;
+            this.obj = obj;
+        }
+
+        @Override
+        public String toString() {
+            return "<JavaArgument type=" + type + ", alt=" + altType + ">";
+        }
+    }
+
 
     public Member getJavaArguments(IokeObject context, IokeObject message, Object on, List<Object> args) throws ControlFlow {
         final Runtime runtime = context.runtime;
         final List<Object> arguments = message.getArguments();
-        final List<Object> resultArguments = new ArrayList(arguments.size());
+        final List<JavaArgumentDefinition> resultArguments = new ArrayList<JavaArgumentDefinition>(arguments.size());
         int argCount = 0;
 
         for(Object o : arguments) {
@@ -81,7 +98,9 @@ public class JavaArgumentsDefinition {
                 Object result = Message.getEvaluatedArgument(IokeObject.as(o, context).getArguments().get(0), context);
                 if(IokeObject.data(result) instanceof IokeList) {
                     List<Object> elements = IokeList.getList(result);
-                    resultArguments.addAll(elements);
+                    for(Object oe : elements) {
+                        resultArguments.add(new JavaArgumentDefinition(null, null, oe));
+                    }
                     argCount += elements.size();
                 } else if(IokeObject.data(result) instanceof Dict) {
                     // Ignore for now
@@ -106,11 +125,52 @@ public class JavaArgumentsDefinition {
                             new Restart.DefaultValuesGivingRestart("takeArgumentAsIs", IokeObject.as(result, context), 1)
                             ));
 
-                    resultArguments.addAll(outp);
+                    for(Object oe : outp) {
+                        resultArguments.add(new JavaArgumentDefinition(null, null, oe));
+                    }
                     argCount += outp.size();
                 }
+            } else if(Message.hasName(o, "") && IokeObject.as(o, context).getArguments().size() == 1) { // Splat
+                String name = Message.name(IokeObject.as(o, context).getArguments().get(0)).intern();
+                Object result = Message.getEvaluatedArgument(Message.next(o), context);
+                Class into = null;
+                Class alt = null;
+                if(name == "Object") {
+                    into = Object.class;
+                } else if(name == "String") {
+                    into = String.class;
+                } else if(name == "Class") {
+                    into = Class.class;
+                } else if(name == "int" || name == "integer") {
+                    into = Integer.TYPE;
+                    alt = Integer.class;
+                } else if(name == "short") {
+                    into = Short.TYPE;
+                    alt = Short.class;
+                } else if(name == "char" || name == "character") {
+                    into = Character.TYPE;
+                    alt = Character.class;
+                } else if(name == "long") {
+                    into = Long.TYPE;
+                    alt = Long.class;
+                } else if(name == "float") {
+                    into = Float.TYPE;
+                    alt = Float.class;
+                } else if(name == "double") {
+                    into = Double.TYPE;
+                    alt = Double.class;
+                } else {
+                    String s = name.replaceAll(":", ".");
+                    try {
+                        into = Class.forName(s);
+                    } catch(Exception e) {
+                        into = null;
+                    }
+                }
+                resultArguments.add(new JavaArgumentDefinition(into, alt, result));
+                argCount++;
             } else {
-                resultArguments.add(Message.getEvaluatedArgument(o, context));
+                resultArguments.add(new JavaArgumentDefinition(null, null, Message.getEvaluatedArgument(o, context)));
                 argCount++;
             }
         }
@@ -123,10 +183,14 @@ public class JavaArgumentsDefinition {
 //                 System.err.println("checking: " + members[i]);
                 for(int k=0; k<argCount; k++) {
                     Class clz = current[k];
-                    Object obj = resultArguments.get(k);
+                    JavaArgumentDefinition jad = resultArguments.get(k);
+                    Object obj = jad.obj;
                     boolean isIokeObject = obj instanceof IokeObject;
                     boolean isWrapper = isIokeObject && IokeObject.data(obj) instanceof JavaWrapper;
-
+                    boolean isExplicitCast = jad.type != null;
+                    if(isExplicitCast && !(clz == jad.type || clz == jad.altType)) {
+                        continue nextMethod;
+                    }
                     if(clz == String.class) {
                         if(obj instanceof String) {
                             args.add(obj);
@@ -136,6 +200,8 @@ public class JavaArgumentsDefinition {
                             args.add(Text.getText(obj));
                         } else if(isIokeObject &&  IokeObject.data(obj) instanceof Symbol) {
                             args.add(Symbol.getText(obj));
+                        } else if(obj == runtime.nil) {
+                            args.add(null);
                         } else {
                             args.clear();
                             continue nextMethod;
@@ -147,6 +213,8 @@ public class JavaArgumentsDefinition {
                             args.add(JavaWrapper.getObject(obj));
                         } else if(isIokeObject && IokeObject.data(obj) instanceof Number) {
                             args.add(new Character((char)Number.intValue(obj).intValue()));
+                        } else if(!clz.isPrimitive() && obj == runtime.nil) {
+                            args.add(null);
                         } else {
                             args.clear();
                             continue nextMethod;
@@ -159,6 +227,8 @@ public class JavaArgumentsDefinition {
                             args.add(JavaWrapper.getObject(obj));
                         } else if(isIokeObject && IokeObject.data(obj) instanceof Number) {
                             args.add(Integer.valueOf(Number.intValue(obj).intValue()));
+                        } else if(!clz.isPrimitive() && obj == runtime.nil) {
+                            args.add(null);
                         } else {
                             args.clear();
                             continue nextMethod;
@@ -171,6 +241,8 @@ public class JavaArgumentsDefinition {
                             args.add(JavaWrapper.getObject(obj));
                         } else if(isIokeObject && IokeObject.data(obj) instanceof Number) {
                             args.add(Short.valueOf((short)Number.intValue(obj).intValue()));
+                        } else if(!clz.isPrimitive() && obj == runtime.nil) {
+                            args.add(null);
                         } else {
                             args.clear();
                             continue nextMethod;
@@ -183,6 +255,8 @@ public class JavaArgumentsDefinition {
                             args.add(JavaWrapper.getObject(obj));
                         } else if(isIokeObject && IokeObject.data(obj) instanceof Number) {
                             args.add(Long.valueOf(Number.value(obj).longValue()));
+                        } else if(!clz.isPrimitive() && obj == runtime.nil) {
+                            args.add(null);
                         } else {
                             args.clear();
                             continue nextMethod;
@@ -195,6 +269,10 @@ public class JavaArgumentsDefinition {
                             args.add(JavaWrapper.getObject(obj));
                         } else if(isIokeObject && IokeObject.data(obj) instanceof Decimal) {
                             args.add(Float.valueOf(Decimal.value(obj).floatValue()));
+                        } else if(isExplicitCast && IokeObject.data(obj) instanceof Number) {
+                            args.add(Float.valueOf(Number.value(obj).intValue()));
+                        } else if(!clz.isPrimitive() && obj == runtime.nil) {
+                            args.add(null);
                         } else {
                             args.clear();
                             continue nextMethod;
@@ -207,6 +285,10 @@ public class JavaArgumentsDefinition {
                             args.add(JavaWrapper.getObject(obj));
                         } else if(isIokeObject && IokeObject.data(obj) instanceof Decimal) {
                             args.add(Double.valueOf(Decimal.value(obj).doubleValue()));
+                        } else if(isExplicitCast && IokeObject.data(obj) instanceof Number) {
+                            args.add(Double.valueOf(Number.value(obj).longValue()));
+                        } else if(!clz.isPrimitive() && obj == runtime.nil) {
+                            args.add(null);
                         } else {
                             args.clear();
                             continue nextMethod;
@@ -220,6 +302,8 @@ public class JavaArgumentsDefinition {
                             args.add(Boolean.TRUE);
                         } else if(obj == runtime._false) {
                             args.add(Boolean.FALSE);
+                        } else if(!clz.isPrimitive() && obj == runtime.nil) {
+                            args.add(null);
                         } else {
                             args.clear();
                             continue nextMethod;
@@ -255,6 +339,10 @@ public class JavaArgumentsDefinition {
 
         // error that no matching method could be found here. wait for specs for this, of course
 //         System.err.println("- Running with: " + members[i]);
+        if(i == members.length) {
+            System.err.println("couldn't find matching for " + members[0] + " for arguments: " + resultArguments);
+        }
+
         return members[i];
     }
 }// JavaArgumentsDefinition
