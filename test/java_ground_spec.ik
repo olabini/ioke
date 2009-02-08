@@ -72,8 +72,6 @@ describe("Java Objects",
     it("should coerce false correctly to boolean")      
     it("should coerce nil correctly to string")      
     it("should coerce something else correctly to Object")
-    it("should sort them in most specific order before choosing")
-    it("should not wrap the result value")
     it("should be possible to manually coerce into a short argument")
     it("should be possible to manually coerce into an int argument")
     it("should be possible to manually coerce into a char argument")
@@ -105,19 +103,65 @@ describe("Java Objects",
       hm size asRational should == 1
     )
 
-    it("should disambiguate between two method with the same arg count")
-    it("should invoke a method with no arguments correctly")
-    it("should coerce Text correctly to String")
-    it("should coerce Symbol correctly to String")
-    it("should coerce Rational correctly to int")
-    it("should coerce Decimal correctly to float")
-    it("should coerce true correctly to boolean")
-    it("should coerce false correctly to boolean")      
-    it("should coerce nil correctly to string")      
-    it("should coerce something else correctly to Object")
-    it("should sort them in most specific order before choosing")
-    it("should not wrap the result value")
-    it("should be possible to manually coerce into a short argument")
+    it("should disambiguate between two method with the same arg count",
+      i = ioke:lang:test:InstanceMethods new
+      i overloaded(true, 123) asText should == "overloaded(boolean, int)"
+      i overloaded(true, 123.3) asText should == "overloaded(boolean, double)"
+    )
+
+    it("should invoke a method with no arguments correctly",
+      i = ioke:lang:test:InstanceMethods new
+      i overloaded asText should == "overloaded()"
+    )
+
+    it("should coerce Text correctly to String",
+      i = ioke:lang:test:InstanceMethods new
+      i overloaded("foo") asText should == "overloaded(String)"
+    )
+
+    it("should coerce Symbol correctly to String",
+      i = ioke:lang:test:InstanceMethods new
+      i overloaded(:foo) asText should == "overloaded(String)"
+    )
+
+    it("should coerce Rational correctly to int",
+      i = ioke:lang:test:InstanceMethods new
+      i overloaded(42) asText should == "overloaded(int)"
+    )
+
+    it("should coerce Decimal correctly to double",
+      i = ioke:lang:test:InstanceMethods new
+      i overloaded(0.1) asText should == "overloaded(double)"
+    )
+
+    it("should coerce true correctly to boolean",
+      i = ioke:lang:test:InstanceMethods new
+      i overloaded(true) asText should == "overloaded(boolean)"
+    )
+
+    it("should coerce false correctly to boolean",
+      i = ioke:lang:test:InstanceMethods new
+      i overloaded(false) asText should == "overloaded(boolean)"
+    )
+
+    it("should coerce nil correctly to string",
+      i = ioke:lang:test:InstanceMethods new
+      i overloaded(nil) asText should == "overloaded(null: String)"
+    )
+
+    it("should coerce something else correctly to Object",
+      i = ioke:lang:test:InstanceMethods new
+      i overloaded(1..42) asText should == "overloaded(Object)"
+    )
+
+    it("should be possible to manually coerce into a short argument",
+      i = ioke:lang:test:InstanceMethods new
+      i overloaded((short)102) asText should == "overloaded(short)"
+      i overloaded((short)102, false) asText should == "overloaded(short, boolean)"
+      i overloaded(123, (short)42) asText should == "overloaded(int, short)"
+      i overloaded((short)123, (short)42) asText should == "overloaded(short, short)"
+    )
+
     it("should be possible to manually coerce into an int argument")
     it("should be possible to manually coerce into a char argument")
     it("should be possible to manually coerce into a long argument")
@@ -159,8 +203,8 @@ describe("Java Objects",
       ioke:lang:test:Constructors new(4242) getData asText should == "Constructors(int)"
     )      
 
-    it("should coerce Decimal correctly to float",
-      ioke:lang:test:Constructors new(4242.42) getData asText should == "Constructors(float)"
+    it("should coerce Decimal correctly to double",
+      ioke:lang:test:Constructors new(4242.42) getData asText should == "Constructors(double)"
     )      
 
     it("should coerce true correctly to boolean",
@@ -178,8 +222,6 @@ describe("Java Objects",
     it("should coerce something else correctly to Object",
       ioke:lang:test:Constructors new(1..40) getData asText should == "Constructors(Object)"
     )
-    
-    it("should sort them in most specific order before choosing")
 
     it("should be possible to manually coerce into a short argument",
       ioke:lang:test:Constructors new( (short) 4242 ) getData asText should == "Constructors(short)"

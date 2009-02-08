@@ -4,6 +4,7 @@
 package ioke.lang;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -30,7 +31,129 @@ public class JavaArgumentsDefinition {
         this.max = max;
     }
 
+    private static class FullOrdering {
+        protected int ordering(Class a, Class b) {
+            // There are three choices. The first is when one argument is strictly more specific than the other
+            // The second is when the second argument is more specific than the first
+            // Third is when there is no real ordering between them
+
+            // Primitive linearization:
+            //  rationals:  int < character < long < short
+            //  reals:      double < float
+            if(a == b) {
+                // if they are the same we don't care.
+                return 0;
+            } else if(a.isPrimitive() && b.isPrimitive()) {
+                if(a == Integer.TYPE) {
+                    if(b == Short.TYPE || b == Character.TYPE || b == Long.TYPE) {
+                        return -1;
+                    }
+                } else if(a == Short.TYPE) {
+                    if(b == Long.TYPE || b == Integer.TYPE || b == Character.TYPE) {
+                        return 1;
+                    }
+                } else if(a == Character.TYPE) {
+                    if(b == Long.TYPE || b == Short.TYPE) {
+                        return -1;
+                    } else if(b == Integer.TYPE) {
+                        return 1;
+                    }
+                } else if(a == Long.TYPE) {
+                    if(b == Short.TYPE) {
+                        return -1;
+                    } else if(b == Integer.TYPE || b == Character.TYPE) {
+                        return 1;
+                    }
+                } else if(a == Float.TYPE) {
+                    if(b == Double.TYPE) {
+                        return 1;
+                    }
+                } else if(a == Double.TYPE) {
+                    if(b == Float.TYPE) {
+                        return -1;
+                    }
+                }
+            } else if(b.isAssignableFrom(a)) {
+                return -1;
+            } else if(a.isAssignableFrom(b)) {
+                return 1;
+            } else if(a.isPrimitive()) {
+                return -1;
+            } else if(b.isPrimitive()) {
+                return 1;
+            }
+            return 0;
+        }
+    }
+
+    private static class MethodComparator extends FullOrdering implements Comparator<Method> {
+        public int compare(Method a, Method b) {
+            Class<?>[] aTypes = a.getParameterTypes();
+            Class<?>[] bTypes = b.getParameterTypes();
+            // Shorter argument lists should be tried first
+            if(aTypes.length != bTypes.length) {
+                return aTypes.length - bTypes.length;
+            }
+            
+            // Comparison of each parameter in turn. The first one to be different will decide the full ordering
+
+            for(int i=0,j=aTypes.length; i<j; i++) {
+                int ret = ordering(aTypes[i], bTypes[i]);
+                if(ret != 0) {
+                    return ret;
+                }
+            }
+            return 0;
+        }
+    }
+
+    private static class ConstructorComparator extends FullOrdering implements Comparator<Constructor> {
+        public int compare(Constructor a, Constructor b) {
+            Class<?>[] aTypes = a.getParameterTypes();
+            Class<?>[] bTypes = b.getParameterTypes();
+            // Shorter argument lists should be tried first
+            if(aTypes.length != bTypes.length) {
+                return aTypes.length - bTypes.length;
+            }
+            
+            // Comparison of each parameter in turn. The first one to be different will decide the full ordering
+
+            for(int i=0,j=aTypes.length; i<j; i++) {
+                int ret = ordering(aTypes[i], bTypes[i]);
+                if(ret != 0) {
+                    return ret;
+                }
+            }
+            return 0;
+        }
+    }
+
+    private static void sortByParameterOrdering(Method[] m) {
+//         System.err.println("Before sort: ");
+//         for(Method mex : m) {
+//             System.err.println(" - " + mex);
+//         }
+        Arrays.sort(m, new MethodComparator());
+//         System.err.println("After sort: ");
+//         for(Method mex : m) {
+//             System.err.println(" - " + mex);
+//         }
+    }
+
+    private static void sortByParameterOrdering(Constructor[] m) {
+//         System.err.println("Before sort: ");
+//         for(Constructor mex : m) {
+//             System.err.println(" - " + mex);
+//         }
+        Arrays.sort(m, new ConstructorComparator());
+//         System.err.println("After sort: ");
+//         for(Constructor mex : m) {
+//             System.err.println(" - " + mex);
+//         }
+    }
+
     public static JavaArgumentsDefinition createFrom(Method[] m) {
+        sortByParameterOrdering(m);
         Class[][] params = new Class[m.length][];
         int ix = 0;
         int min = -1;
@@ -50,6 +173,7 @@ public class JavaArgumentsDefinition {
     }
 
     public static JavaArgumentsDefinition createFrom(Constructor[] m) {
+        sortByParameterOrdering(m);
         Class[][] params = new Class[m.length][];
         int ix = 0;
         int min = -1;
@@ -183,7 +307,7 @@ public class JavaArgumentsDefinition {
             // Totally ignore varargs for now, right...
             if(parameterTypes[i].length == argCount) {
                 Class[] current = parameterTypes[i];
-//                 System.err.println("checking: " + members[i]);
+                //                System.err.println("checking: " + members[i]);
                 for(int k=0; k<argCount; k++) {
                     Class clz = current[k];
                     JavaArgumentDefinition jad = resultArguments.get(k);
@@ -192,6 +316,7 @@ public class JavaArgumentsDefinition {
                     boolean isWrapper = isIokeObject && IokeObject.data(obj) instanceof JavaWrapper;
                     boolean isExplicitCast = jad.type != null;
                     if(isExplicitCast && !(clz == jad.type || clz == jad.altType)) {
+                        args.clear();
                         continue nextMethod;
                     }
                     if(clz == String.class) {
@@ -345,7 +470,7 @@ public class JavaArgumentsDefinition {
         if(i == members.length) {
             System.err.println("couldn't find matching for " + members[0] + " for arguments: " + resultArguments);
         }
-
+//         System.err.println("using: " + members[i] + " for: " + resultArguments + " with args: " + args);
         return members[i];
     }
 }// JavaArgumentsDefinition
