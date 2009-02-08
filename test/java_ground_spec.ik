@@ -80,8 +80,10 @@ describe("Java Objects",
     it("should be possible to manually coerce into a long argument")
     it("should be possible to manually coerce into a float argument")
     it("should be possible to manually coerce into a double argument")
+    it("should be possible to manually coerce object arguments")
     it("should be possible to supply arguments by name")
     it("should always return nil instead of null")
+    it("should add aliases for JavaBean style methods")
   )
 
   describe("methods",
@@ -121,9 +123,11 @@ describe("Java Objects",
     it("should be possible to manually coerce into a long argument")
     it("should be possible to manually coerce into a float argument")
     it("should be possible to manually coerce into a double argument")
+    it("should be possible to manually coerce object arguments")
     it("should disambiguate between methods that take a Class and methods that take instance of that class, when searching for appropriate methods")
     it("should be possible to supply arguments by name")
     it("should always return nil instead of null")
+    it("should add aliases for JavaBean style methods")
   )
 
   describe("constructors",
@@ -168,7 +172,7 @@ describe("Java Objects",
     )      
 
     it("should coerce nil correctly to string",
-      ioke:lang:test:Constructors new(nil) getData asText should == "Constructors(null: Object)"
+      ioke:lang:test:Constructors new(nil) getData asText should == "Constructors(null: String)"
     )      
 
     it("should coerce something else correctly to Object",
@@ -176,13 +180,46 @@ describe("Java Objects",
     )
     
     it("should sort them in most specific order before choosing")
-    it("should be possible to manually coerce into a short argument")
-    it("should be possible to manually coerce into an int argument")
-    it("should be possible to manually coerce into a char argument")
-    it("should be possible to manually coerce into a long argument")
-    it("should be possible to manually coerce into a float argument")
-    it("should be possible to manually coerce into a double argument")
-    
+
+    it("should be possible to manually coerce into a short argument",
+      ioke:lang:test:Constructors new( (short) 4242 ) getData asText should == "Constructors(short)"
+    )
+
+    it("should be possible to manually coerce into an int argument",
+      ioke:lang:test:Constructors new( (int) 4242 ) getData asText should == "Constructors(int)"
+      ioke:lang:test:Constructors new((integer)4242) getData asText should == "Constructors(int)"
+    )
+
+    it("should be possible to manually coerce into a char argument",
+      ioke:lang:test:Constructors new( (char) 4242 ) getData asText should == "Constructors(char)"
+      ioke:lang:test:Constructors new((character)4242) getData asText should == "Constructors(char)"
+    )
+
+    it("should be possible to manually coerce into a long argument",
+      ioke:lang:test:Constructors new( (long)4242 ) getData asText should == "Constructors(long)"
+    )
+
+    it("should be possible to manually coerce into a float argument",
+      ioke:lang:test:Constructors new( (float)4242 ) getData asText should == "Constructors(float)"
+      ioke:lang:test:Constructors new( (float)4242.0 ) getData asText should == "Constructors(float)"
+    )
+
+    it("should be possible to manually coerce into a double argument",
+      ioke:lang:test:Constructors new( (double)4242 ) getData asText should == "Constructors(double)"
+      ioke:lang:test:Constructors new( (double)4242.1 ) getData asText should == "Constructors(double)"
+    )
+
+    it("should be possible to manually coerce object arguments",
+      ioke:lang:test:Constructors new((Object)"foo") getData asText should == "Constructors(Object)"
+      ioke:lang:test:Constructors new((java:lang:Object)"foo") getData asText should == "Constructors(Object)"
+
+      ioke:lang:test:Constructors new((String)nil) getData asText should == "Constructors(null: String)"
+      ioke:lang:test:Constructors new((java:lang:String)nil) getData asText should == "Constructors(null: String)"
+
+      ioke:lang:test:Constructors new((Object)nil) getData asText should == "Constructors(null: Object)"
+      ioke:lang:test:Constructors new((java:lang:Object)nil) getData asText should == "Constructors(null: Object)"
+    )
+
     it("should be possible to supply arguments by name")
   )
 
