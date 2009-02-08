@@ -460,10 +460,10 @@ describe(LexicalBlock,
     m1 = fnx(x:, y x+2, y)
     m2 = fnx(y x+2, x:, y)
 
-    m1(x: 14) should should == 16
-    m1(13, x: 14) should should == 13
-    m1(x: 14, 42) should should == 42
-    m2(x: 14, 44) should should == 44
+    m1(x: 14) should == 16
+    m1(13, x: 14) should == 13
+    m1(x: 14, 42) should == 42
+    m2(x: 14, 44) should == 44
 
     fn(m2(x:15)) should signal(Condition Error NoSuchCell)
   )
