@@ -80,7 +80,6 @@ describe("Java Objects",
     it("should be possible to manually coerce into a double argument")
     it("should be possible to manually coerce object arguments")
     it("should be possible to supply arguments by name")
-    it("should always return nil instead of null")
     it("should add aliases for JavaBean style methods")
   )
 
@@ -162,15 +161,78 @@ describe("Java Objects",
       i overloaded((short)123, (short)42) asText should == "overloaded(short, short)"
     )
 
-    it("should be possible to manually coerce into an int argument")
-    it("should be possible to manually coerce into a char argument")
-    it("should be possible to manually coerce into a long argument")
-    it("should be possible to manually coerce into a float argument")
-    it("should be possible to manually coerce into a double argument")
-    it("should be possible to manually coerce object arguments")
+    it("should be possible to manually coerce into an int argument",
+      i = ioke:lang:test:InstanceMethods new
+      i overloaded((int)102) asText should == "overloaded(int)"
+      i overloaded((int)102, 40.2) asText should == "overloaded(int, double)"
+      i overloaded(false, (int)42) asText should == "overloaded(boolean, int)"
+      i overloaded((int)123, (int)42) asText should == "overloaded(int, int)"
+    )
+
+    it("should be possible to manually coerce into a char argument",
+      i = ioke:lang:test:InstanceMethods new
+      i overloaded((char)102) asText should == "overloaded(char)"
+      i overloaded((char)102, false) asText should == "overloaded(char, boolean)"
+      i overloaded(123, (char)42) asText should == "overloaded(int, char)"
+      i overloaded((char)123, (char)42) asText should == "overloaded(char, char)"
+    )
+
+    it("should be possible to manually coerce into a long argument",
+      i = ioke:lang:test:InstanceMethods new
+      i overloaded((long)102) asText should == "overloaded(long)"
+      i overloaded((long)102, false) asText should == "overloaded(long, boolean)"
+      i overloaded(123, (long)42) asText should == "overloaded(int, long)"
+      i overloaded((long)123, (long)42) asText should == "overloaded(long, long)"
+    )
+
+    it("should be possible to manually coerce into a float argument",
+      i = ioke:lang:test:InstanceMethods new
+      i overloaded((float)102) asText should == "overloaded(float)"
+      i overloaded((float)102, false) asText should == "overloaded(float, boolean)"
+      i overloaded(123, (float)42) asText should == "overloaded(int, float)"
+      i overloaded((float)123, (float)42) asText should == "overloaded(float, float)"
+
+      i overloaded((float)102.2) asText should == "overloaded(float)"
+      i overloaded((float)102.3, false) asText should == "overloaded(float, boolean)"
+      i overloaded(123, (float)42.4) asText should == "overloaded(int, float)"
+      i overloaded((float)123.6, (float)42.5) asText should == "overloaded(float, float)"
+    )
+
+    it("should be possible to manually coerce into a double argument",
+      i = ioke:lang:test:InstanceMethods new
+      i overloaded((double)102) asText should == "overloaded(double)"
+      i overloaded((double)102, false) asText should == "overloaded(double, boolean)"
+      i overloaded(123, (double)42) asText should == "overloaded(int, double)"
+      i overloaded((double)123, (double)42) asText should == "overloaded(double, double)"
+
+      i overloaded((double)102.2) asText should == "overloaded(double)"
+      i overloaded((double)102.3, false) asText should == "overloaded(double, boolean)"
+      i overloaded(123, (double)42.4) asText should == "overloaded(int, double)"
+      i overloaded((double)123.6, (double)42.5) asText should == "overloaded(double, double)"
+    )
+
+    it("should be possible to manually coerce into a boolean argument",
+      i = ioke:lang:test:InstanceMethods new
+      i overloaded((boolean)false) asText should == "overloaded(boolean)"
+      i overloaded((boolean)false, 102) asText should == "overloaded(boolean, int)"
+      i overloaded(123, (boolean)true) asText should == "overloaded(int, boolean)"
+      i overloaded((boolean)true, (boolean)false) asText should == "overloaded(boolean, boolean)"
+    )
+
+    it("should be possible to manually coerce object arguments",
+      i = ioke:lang:test:InstanceMethods new
+      i overloaded((Object)"foo") asText should == "overloaded(Object)"
+      i overloaded((java:lang:Object)"foo") asText should == "overloaded(Object)"
+
+      i overloaded((String)nil) asText should == "overloaded(null: String)"
+      i overloaded((java:lang:String)nil) asText should == "overloaded(null: String)"
+
+      i overloaded((Object)nil) asText should == "overloaded(null: Object)"
+      i overloaded((java:lang:Object)nil) asText should == "overloaded(null: Object)"
+    )
+
     it("should disambiguate between methods that take a Class and methods that take instance of that class, when searching for appropriate methods")
     it("should be possible to supply arguments by name")
-    it("should always return nil instead of null")
     it("should add aliases for JavaBean style methods")
   )
 
