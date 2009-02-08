@@ -199,6 +199,10 @@ describe("Java Objects",
       ioke:lang:test:Constructors new( (long)4242 ) getData asText should == "Constructors(long)"
     )
 
+    it("should be possible to manually coerce into a boolean argument",
+      ioke:lang:test:Constructors new( (boolean)true ) getData asText should == "Constructors(boolean)"
+    )
+
     it("should be possible to manually coerce into a float argument",
       ioke:lang:test:Constructors new( (float)4242 ) getData asText should == "Constructors(float)"
       ioke:lang:test:Constructors new( (float)4242.0 ) getData asText should == "Constructors(float)"

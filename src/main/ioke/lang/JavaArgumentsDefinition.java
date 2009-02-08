@@ -147,6 +147,9 @@ public class JavaArgumentsDefinition {
                 } else if(name == "short") {
                     into = Short.TYPE;
                     alt = Short.class;
+                } else if(name == "boolean") {
+                    into = Boolean.TYPE;
+                    alt = Boolean.class;
                 } else if(name == "char" || name == "character") {
                     into = Character.TYPE;
                     alt = Character.class;
