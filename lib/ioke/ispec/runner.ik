@@ -2,22 +2,33 @@
 ISpec do(
   Options = Origin mimic do(
     create = method(err, out,
-      self with(errorStream: err, outStream: out, formatters: [], files: [], directories: []))
+      self with(errorStream: err, outStream: out, formatters: [], files: [], directories: [], hasFormat?: false, hasHelp?: true, missingFiles: [], unknownOption?: true))
+      
+    hasMissingFiles? = method(missingFiles empty?)
+    
+    shouldRun? = method(!hasHelp? && missingFiles empty? && !unknownOption? )
     
     parse! = method(
-      hasFormat = false
       argv each(arg,
-        if(arg == "-fp",
-          hasFormat = true
-          formatters << ISpec Formatter ProgressBarFormatter mimic,
-          if(arg == "-fs",
-            hasFormat = true
-            formatters << ISpec Formatter SpecDocFormatter mimic,
-            if(FileSystem directory?(arg),
-              directories << arg,
-              files << arg))))
+        ; if(arg == "-fp",
+        ;   hasFormat = true
+        ;   formatters << ISpec Formatter ProgressBarFormatter mimic,
+        ;   if(arg == "-fs",
+        ;     hasFormat = true
+        ;     formatters << ISpec Formatter SpecDocFormatter mimic,
+        ;     if(FileSystem directory?(arg),
+        ;       directories << arg,
+        ;       files << arg))))
 
-      unless(hasFormat,
+        case(arg,
+          or("-h", "--help"), hasHelp? = true,
+          "-fp", formatters << ISpec Formatter ProgressBarFormatter mimic,
+          "-fs", formatters << ISpec Formatter SpecDocFormatter mimic,
+          fn(file, FileSystem file?(file)), files << arg,
+          fn(dir, FileSystem directory?(dir)), directories << arg,
+          /^-/, unknownOption? = true,
+          else missingFiles << arg))
+      if(formatters empty?,
         formatters << ISpec Formatter ProgressBarFormatter mimic)
     )
 
@@ -64,7 +75,9 @@ ISpec do(
         newOP errorStream = err
         newOP outStream = out
         newOP options = ISpec Options create(newOP errorStream, newOP outStream)
-        newOP banner = "Usage: ispec (FILE|DIRECTORY|GLOB)+ [options]"
+        newOP banner = "Usage: ispec (FILE|DIRECTORY|GLOB)+ [options]
+  -fp show output as progress bar (default)
+  -fs show output as spec doc"
         newOP)
 
       order! = method(argv,
@@ -107,14 +120,15 @@ ISpec do(
   )
 
   didRun? = false
-  shouldRun? = true
   shouldExit? = true
 
   run = method(
     "runs all the defined descriptions and specs",
 
     if(didRun?, return(true))
-    result = ispec_options runExamples
-    self didRun? = true
-    result)
+    if(ispec_options shouldRun?,
+      result = ispec_options runExamples
+      self didRun? = true
+      result),
+      ispec_options banner println)
 )
