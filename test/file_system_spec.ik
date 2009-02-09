@@ -141,16 +141,30 @@ describe(FileSystem,
   )
 
   describe("parentOf",
-    it("should return nil for the parent of something that doesn't have a parent",
-      FileSystem parentOf("/") should be nil
-    )
+    if(System windows?,
+      it("should return nil for the parent of something that doesn't have a parent",
+        FileSystem parentOf("C:\\") should be nil
+      )
 
-    it("should return the parent of a relative directory", 
-      FileSystem parentOf("src/builtin") should == "src"
-    )
+      it("should return the parent of a relative directory", 
+        FileSystem parentOf("src\\builtin") should == "src"
+      )
 
-    it("should return the parent of an absolute directory",
-      FileSystem parentOf("/usr/local") should == "/usr"
+      it("should return the parent of an absolute directory",
+        FileSystem parentOf("C:\\windows\\system32") should == "C:\\windows"
+      )
+      ,
+      it("should return nil for the parent of something that doesn't have a parent",
+        FileSystem parentOf("/") should be nil
+      )
+
+      it("should return the parent of a relative directory", 
+        FileSystem parentOf("src/builtin") should == "src"
+      )
+
+      it("should return the parent of an absolute directory",
+        FileSystem parentOf("/usr/local") should == "/usr"
+      )
     )
   )
   
