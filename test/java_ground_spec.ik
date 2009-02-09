@@ -181,7 +181,29 @@ describe("Java Objects",
     )
 
     it("should be possible to supply arguments by name")
-    it("should add aliases for JavaBean style methods")
+
+    it("should add an alias for a name beginning in get, taking no arguments",
+      val = ioke:lang:test:StaticJavaBean
+      val getFooValue asText should == "foo"
+      val fooValue asText should == "foo"
+    )
+
+    it("should add an alias for a name beginning with set, taking one argument",
+      val = ioke:lang:test:StaticJavaBean
+      val setQuuxValue("blax")
+      val getQuuxValue asText should == "blax"
+      val quuxValue = "blux"
+      val getQuuxValue asText should == "blux"
+    )
+
+    it("should add an alias for a name beginning with is, taking no arguments",
+      val = ioke:lang:test:StaticJavaBean
+      val isBarValue() should be true
+      val barValue? should be true
+      val setBarValue(false)
+      val isBarValue() should be false
+      val barValue? should be false
+    )
   )
 
   describe("methods",
@@ -334,7 +356,29 @@ describe("Java Objects",
 
     it("should disambiguate between methods that take a Class and methods that take instance of that class, when searching for appropriate methods")
     it("should be possible to supply arguments by name")
-    it("should add aliases for JavaBean style methods")
+
+    it("should add an alias for a name beginning in get, taking no arguments",
+      val = ioke:lang:test:JavaBean new("foo", false)
+      val getFooValue asText should == "foo"
+      val fooValue asText should == "foo"
+    )
+
+    it("should add an alias for a name beginning with set, taking one argument",
+      val = ioke:lang:test:JavaBean new("foo", false)
+      val setFooValue("blax")
+      val getFooValue asText should == "blax"
+      val fooValue = "blux"
+      val getFooValue asText should == "blux"
+    )
+
+    it("should add an alias for a name beginning with is, taking no arguments",
+      val = ioke:lang:test:JavaBean new("foo", true)
+      val isBarValue() should be true
+      val barValue? should be true
+      val setBarValue(false)
+      val isBarValue() should be false
+      val barValue? should be false
+    )
   )
 
   describe("constructors",

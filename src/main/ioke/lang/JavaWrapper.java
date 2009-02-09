@@ -54,7 +54,19 @@ public class JavaWrapper extends IokeData {
 
             for(Map.Entry<String, List<Method>> mesl : ms.entrySet()) {
 //                 System.err.println("creating method: " + mesl.getKey() + " on: " + clz);
-                obj.setCell(mesl.getKey(), runtime.createJavaMethod(mesl.getValue().toArray(new Method[0])));
+                Object method = runtime.createJavaMethod(mesl.getValue().toArray(new Method[0]));
+                String key = mesl.getKey();
+                obj.setCell(key, method);
+                if(key.startsWith("get") && key.length() > 3) {
+                    char first = Character.toLowerCase(key.charAt(3));
+                    obj.setCell(""+first+key.substring(4), method);
+                } else if(key.startsWith("set") && key.length() > 3) {
+                    char first = Character.toLowerCase(key.charAt(3));
+                    obj.setCell(""+first+key.substring(4) + "=", method);
+                } else if(key.startsWith("is") && key.length() > 2) {
+                    char first = Character.toLowerCase(key.charAt(2));
+                    obj.setCell(""+first+key.substring(3) + "?", method);
+                }
             }
 
             obj.setCell("new", runtime.createJavaMethod(clz.getDeclaredConstructors()));

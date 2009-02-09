@@ -24,6 +24,8 @@ public class IokeRegistry {
     public IokeObject wrap(Object on) {
         if(on == null) {
             return runtime.nil;
+        } else if(on instanceof Boolean) {
+            return ((Boolean)on).booleanValue() ? runtime._true : runtime._false;
         }
         
         IokeObject obj = wrappedObjects.get(on);
