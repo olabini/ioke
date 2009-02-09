@@ -42,10 +42,22 @@ public class JavaMethodJavaMethod extends ioke.lang.Method {
         try {
             if((on instanceof IokeObject) && (IokeObject.data(on) instanceof JavaWrapper)) {
 //                  System.err.println("Invoking " + method.getName() + " on " + ((JavaWrapper)IokeObject.data(on)).getObject() + "[" + ((JavaWrapper)IokeObject.data(on)).getObject().getClass().getName() + "]");
-                return method.invoke(((JavaWrapper)IokeObject.data(on)).getObject(), args.toArray());
+                Object result = method.invoke(((JavaWrapper)IokeObject.data(on)).getObject(), args.toArray());
+                if(result == null) {
+                    return context.runtime.nil;
+                } else if(result instanceof Boolean) {
+                    return ((Boolean)result).booleanValue() ? context.runtime._true : context.runtime._false;
+                }
+                return result;
             } else {
 //                  System.err.println("Invoking " + method.getName() + " on " + on + "[" + on.getClass().getName() + "]");
-                return method.invoke(on, args.toArray());
+                Object result = method.invoke(on, args.toArray());
+                if(result == null) {
+                    return context.runtime.nil;
+                } else if(result instanceof Boolean) {
+                    return ((Boolean)result).booleanValue() ? context.runtime._true : context.runtime._false;
+                }
+                return result;
             }
         } catch(Exception e) {
             context.runtime.reportJavaException(e, message, context);
