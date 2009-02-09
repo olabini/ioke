@@ -7,11 +7,11 @@ JavaGround java:lang:Integer = JavaGround primitiveJavaClass!("java.lang.Integer
 JavaGround java:lang:String asText = JavaGround cell("primitiveMagic: String->Text")
 JavaGround java:lang:Integer asRational = JavaGround cell("primitiveMagic: Integer->Rational")
 
-JavaGround java:lang:Object inspect = method(self toString asText)
-JavaGround java:lang:Object notice  = method(self toString asText)
+JavaGround java:lang:Object inspect = method(toString asText)
+JavaGround java:lang:Object notice  = method(toString asText)
 
 JavaGround java:lang:Class name = method(
-  self getName asText replaceAll(".", ":")
+  getName asText replaceAll(".", ":")
 )
 
 JavaGround pass = macro(

@@ -439,4 +439,8 @@ describe("Java Objects",
   describe("extending classes",
     it("should have tests")
   )
+
+  describe("working with arrays",
+    it("should have tests")
+  )
 )
