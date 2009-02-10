@@ -27,6 +27,12 @@ public class StringUtils {
                 case '\n':
                     // escaped newline means nothing.
                     break;
+                case '\r':
+                    if(i<len && s.charAt(i) == '\n') {
+                        i++;
+                    }
+                    // escaped newline means nothing.
+                    break;
                 case '\\':
                     result.append(c);
                     break;
