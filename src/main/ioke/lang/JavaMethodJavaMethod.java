@@ -18,12 +18,14 @@ import ioke.lang.exceptions.ControlFlow;
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
 public class JavaMethodJavaMethod extends ioke.lang.Method {
+    private Class declaringClass;
     private Method[] methods;
     private JavaArgumentsDefinition arguments;
 
     public JavaMethodJavaMethod(Method[] methods) {
         super(methods[0].getName());
         this.methods = methods;
+        this.declaringClass = methods[0].getDeclaringClass();
         this.arguments = JavaArgumentsDefinition.createFrom(methods);
     }
 
@@ -42,7 +44,12 @@ public class JavaMethodJavaMethod extends ioke.lang.Method {
         try {
             if((on instanceof IokeObject) && (IokeObject.data(on) instanceof JavaWrapper)) {
 //                  System.err.println("Invoking " + method.getName() + " on " + ((JavaWrapper)IokeObject.data(on)).getObject() + "[" + ((JavaWrapper)IokeObject.data(on)).getObject().getClass().getName() + "]");
-                Object result = method.invoke(((JavaWrapper)IokeObject.data(on)).getObject(), args.toArray());
+                Object obj = ((JavaWrapper)IokeObject.data(on)).getObject();
+                if(!(declaringClass.isInstance(obj))) {
+                    obj = obj.getClass();
+                }
+
+                Object result = method.invoke(obj, args.toArray());
                 if(result == null) {
                     return context.runtime.nil;
                 } else if(result instanceof Boolean) {
@@ -51,7 +58,11 @@ public class JavaMethodJavaMethod extends ioke.lang.Method {
                 return result;
             } else {
 //                  System.err.println("Invoking " + method.getName() + " on " + on + "[" + on.getClass().getName() + "]");
-                Object result = method.invoke(on, args.toArray());
+                Object obj = on;
+                if(!(declaringClass.isInstance(obj))) {
+                    obj = obj.getClass();
+                }
+                Object result = method.invoke(obj, args.toArray());
                 if(result == null) {
                     return context.runtime.nil;
                 } else if(result instanceof Boolean) {

@@ -32,6 +32,10 @@ describe("JavaGround",
   describe("import",
     it("should have tests")
   )
+
+  describe("use of jar-files",
+    it("should have tests")
+  )
 )
 
 describe("Java Objects",
@@ -367,6 +371,7 @@ describe("Java Objects",
       i toString asText should == "[foo, bar]"
 
       java:util:ArrayList class:toString asText should == "class java.util.ArrayList"
+      java:util:ArrayList new class:toString asText should == "class java.util.ArrayList"
     )
 
     it("should be possible to supply arguments by name")
