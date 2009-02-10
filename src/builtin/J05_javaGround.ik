@@ -10,8 +10,8 @@ JavaGround java:lang:Integer asRational = JavaGround cell("primitiveMagic: Integ
 JavaGround java:lang:Object inspect = method(toString asText)
 JavaGround java:lang:Object notice  = method(toString asText)
 
-JavaGround java:lang:Class name = method(
-  getName asText replaceAll(".", ":")
+JavaGround java:lang:Class class:name = method(
+  class:getName asText replaceAll(".", ":")
 )
 
 JavaGround pass = macro(

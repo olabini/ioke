@@ -24,7 +24,7 @@ describe("JavaGround",
     it("should return the Java class for the string sent in",
       px = JavaGround primitiveJavaClass!("java.util.HashMap")
       px kind should == "java:lang:Class"
-      px name should == "java:util:HashMap"
+      px class:name should == "java:util:HashMap"
       px cell?(:new) should be true
     )
   )
@@ -354,7 +354,21 @@ describe("Java Objects",
       i overloaded((java:lang:Object)nil) asText should == "overloaded(null: Object)"
     )
 
-    it("should disambiguate between methods that take a Class and methods that take instance of that class, when searching for appropriate methods")
+    it("should disambiguate between methods that take a Class and methods that take instance of that class, when searching for appropriate methods",
+      i = java:util:ArrayList new
+      i add("foo")
+      i add("bar")
+      
+      ;; this test might look weird. the reason is that ArrayList doesn't implement its own toString.
+      ;; that implementation is in a super class. the problem is that the Class#toString method will be found
+      ;; first, so this will cause an invocation problem currently. that shouldn't happen.
+      ;; instead, a Java lookup like this should actually totally ignore methods implemented for classes when
+      ;; the instance in question is not a class. ok, that explanation sucks. someone redo it good?
+      i toString asText should == "[foo, bar]"
+
+      java:util:ArrayList class:toString asText should == "class java.util.ArrayList"
+    )
+
     it("should be possible to supply arguments by name")
 
     it("should add an alias for a name beginning in get, taking no arguments",
