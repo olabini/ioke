@@ -214,7 +214,7 @@ $language_data = array (
             
             //cell-name keywords
             10 => array(
-              GESHI_SEARCH => '(\b)(print|println|cell\?|cell|keyword|documentation|if|unless|while|until|loop|for|for:set|for:dict|bind|rescue|handle|restart|asText|inspect|notice|do|call|list|dict|set|with|kind)(\b)',
+              GESHI_SEARCH => '([(,[[:space:]`\']])(print|println|cell\?|cell|keyword|documentation|if|unless|while|until|loop|for|for:set|for:dict|bind|rescue|handle|restart|asText|inspect|notice|do|call|list|dict|set|with|kind)(\b)',
               GESHI_BEFORE  => '\\1',
               GESHI_REPLACE => '\\2',
               GESHI_AFTER   => '\\3'
