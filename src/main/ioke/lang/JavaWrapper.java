@@ -39,6 +39,11 @@ public class JavaWrapper extends IokeData {
 
     public static JavaWrapper wrapWithMethods(Class<?> clz, IokeObject obj, Runtime runtime) {
         try {
+            String prefix = "";
+            if(clz == Class.class) {
+                prefix = "class:";
+            }
+
             Map<String, List<Method>> ms = new HashMap<String, List<Method>>();
             for(Method m : clz.getDeclaredMethods()) {
                 String name = m.getName();
@@ -56,16 +61,16 @@ public class JavaWrapper extends IokeData {
 //                 System.err.println("creating method: " + mesl.getKey() + " on: " + clz);
                 Object method = runtime.createJavaMethod(mesl.getValue().toArray(new Method[0]));
                 String key = mesl.getKey();
-                obj.setCell(key, method);
+                obj.setCell(prefix + key, method);
                 if(key.startsWith("get") && key.length() > 3) {
                     char first = Character.toLowerCase(key.charAt(3));
-                    obj.setCell(""+first+key.substring(4), method);
+                    obj.setCell(prefix+first+key.substring(4), method);
                 } else if(key.startsWith("set") && key.length() > 3) {
                     char first = Character.toLowerCase(key.charAt(3));
-                    obj.setCell(""+first+key.substring(4) + "=", method);
+                    obj.setCell(prefix+first+key.substring(4) + "=", method);
                 } else if(key.startsWith("is") && key.length() > 2) {
                     char first = Character.toLowerCase(key.charAt(2));
-                    obj.setCell(""+first+key.substring(3) + "?", method);
+                    obj.setCell(prefix+first+key.substring(3) + "?", method);
                 }
             }
 
