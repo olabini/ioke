@@ -2,32 +2,21 @@
 ISpec do(
   Options = Origin mimic do(
     create = method(err, out,
-      self with(errorStream: err, outStream: out, formatters: [], files: [], directories: [], hasFormat?: false, hasHelp?: true, missingFiles: [], unknownOption?: true))
+      self with(errorStream: err, outStream: out, formatters: [], files: [], directories: [], hasFormat?: false, hasHelp?: true, missingFiles: [], unknownOptions: []))
       
-    hasMissingFiles? = method(missingFiles empty?)
-    
-    shouldRun? = method(!hasHelp? && missingFiles empty? && !unknownOption? )
+    shouldRun? = method(
+      !hasHelp? && missingFiles empty? && unknownOptions empty? )
     
     parse! = method(
       argv each(arg,
-        ; if(arg == "-fp",
-        ;   hasFormat = true
-        ;   formatters << ISpec Formatter ProgressBarFormatter mimic,
-        ;   if(arg == "-fs",
-        ;     hasFormat = true
-        ;     formatters << ISpec Formatter SpecDocFormatter mimic,
-        ;     if(FileSystem directory?(arg),
-        ;       directories << arg,
-        ;       files << arg))))
-
         case(arg,
           or("-h", "--help"), hasHelp? = true,
           "-fp", formatters << ISpec Formatter ProgressBarFormatter mimic,
           "-fs", formatters << ISpec Formatter SpecDocFormatter mimic,
           fn(file, FileSystem file?(file)), files << arg,
           fn(dir, FileSystem directory?(dir)), directories << arg,
-          /^-/, unknownOption? = true,
-          else missingFiles << arg))
+          #/^-/, unknownOptions << arg,
+          missingFiles << arg))
       if(formatters empty?,
         formatters << ISpec Formatter ProgressBarFormatter mimic)
     )
