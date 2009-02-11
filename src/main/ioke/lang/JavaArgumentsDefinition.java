@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Member;
 
@@ -190,6 +191,13 @@ public class JavaArgumentsDefinition {
         }
 
         return new JavaArgumentsDefinition(m, params, min, max);
+    }
+
+    public static JavaArgumentsDefinition createFrom(Field f) {
+        Class[][] params = new Class[1][0];
+        params[0] = new Class[]{f.getType()};
+
+        return new JavaArgumentsDefinition(new Field[]{f}, params, 1, 1);
     }
     
     private static class JavaArgumentDefinition {

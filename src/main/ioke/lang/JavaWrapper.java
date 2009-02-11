@@ -5,6 +5,8 @@ package ioke.lang;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 
 import java.util.List;
 import java.util.LinkedList;
@@ -71,6 +73,19 @@ public class JavaWrapper extends IokeData {
                 } else if(key.startsWith("is") && key.length() > 2) {
                     char first = Character.toLowerCase(key.charAt(2));
                     obj.setCell(prefix+first+key.substring(3) + "?", method);
+                }
+            }
+
+            for(Field f : clz.getDeclaredFields()) {
+                try {
+                    f.setAccessible(true);
+                } catch(Exception e) {}
+
+                Object getter = runtime.createJavaFieldGetter(f);
+                obj.setCell("field:" + f.getName(), getter);
+
+                if(!Modifier.isFinal(f.getModifiers())) {
+                    obj.setCell("field:" + f.getName() + "=", runtime.createJavaFieldSetter(f));
                 }
             }
 
