@@ -1,4 +1,7 @@
 
+JavaGround notice  = "JavaGround"
+JavaGround inspect = "JavaGround"
+
 JavaGround java:lang:Class = JavaGround primitiveJavaClass!("java.lang.Class")
 JavaGround java:lang:Object = JavaGround primitiveJavaClass!("java.lang.Object")
 JavaGround java:lang:String = JavaGround primitiveJavaClass!("java.lang.String")
