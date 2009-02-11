@@ -28,6 +28,10 @@ ISpec do(
         error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to == #{value inspect}. difference: #{(realValue - value) inspect}. #{realValue length} vs #{value length}", shouldMessage: self shouldMessage),
         error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to == #{value inspect}", shouldMessage: self shouldMessage))))
 
+  ShouldContext close = method(value, epsilon 0.0001,
+    unless(((realValue - value) < epsilon) && ((realValue - value) > -epsilon),
+      error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to be close to #{value inspect}", shouldMessage: self shouldMessage)))
+
   ShouldContext === = method(value,
     unless(realValue === value,
       error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to === #{value inspect}", shouldMessage: self shouldMessage)))
@@ -111,6 +115,10 @@ ISpec do(
   NotShouldContext == = method(value,
     if(realValue == value,
       error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to not == #{value inspect}", shouldMessage: self shouldMessage)))
+
+  NotShouldContext close = method(value, epsilon 0.0001,
+    if(((realValue - value) < epsilon) && ((realValue - value) > -epsilon),
+      error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to not be close to #{value inspect}", shouldMessage: self shouldMessage)))
 
   NotShouldContext === = method(value,
     if(realValue === value,

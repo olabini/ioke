@@ -342,6 +342,15 @@ public class Range extends IokeData {
         return ((Range)(IokeObject.data(on))).notice(on);
     }
 
+    @Override
+    public boolean isEqualTo(IokeObject self, Object other) {
+        return ((other instanceof IokeObject) && 
+                (IokeObject.data(other) instanceof Range) 
+                && this.inclusive == ((Range)IokeObject.data(other)).inclusive
+                && this.from.equals(((Range)IokeObject.data(other)).from)
+                && this.to.equals(((Range)IokeObject.data(other)).to));
+    }
+
     public String inspect(Object obj) throws ControlFlow {
         StringBuilder sb = new StringBuilder();
 
