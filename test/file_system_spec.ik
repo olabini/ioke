@@ -174,7 +174,9 @@ describe(FileSystem,
     )
     
     it("should correctly read in a list of names",
-      FileSystem readFully("test/fixtures/names.txt") should == "Ola\nMartin\nSam\nCarlos\nBrian\nFelipe"
+      if(System windows?,
+	FileSystem readFully("test/fixtures/names.txt") should == "Ola\r\nMartin\r\nSam\r\nCarlos\r\nBrian\r\nFelipe",
+	FileSystem readFully("test/fixtures/names.txt") should == "Ola\nMartin\nSam\nCarlos\nBrian\nFelipe")
     )
   )
 

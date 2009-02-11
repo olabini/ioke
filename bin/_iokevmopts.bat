@@ -1,6 +1,6 @@
 @echo off
 
-set _MEM=-Xmx64m
+set _MEM=-Xmx128m
 if not defined JAVA_MEM goto memOptDone
 set _MEM=%JAVA_MEM%
 :memOptDone
