@@ -37,7 +37,7 @@
   <target name="generate" depends="generate.antlr" description="Generates source files from the ANTLR definitions"/>
 
   <target name="generate_filters" depends="generate.antlr" description="Generates source files from the ANTLR definitions">
-    <exec executable="ruby" input="generate_filter_data.rb"/>
+    <exec executable="ruby" input="generate_filter_data.rb" failonerror="false" failifexecutionfails="false"/>
   </target>
 
   <target name="compile" depends="generate, generate_filters" description="Compile the source files for the project.">
@@ -69,7 +69,7 @@
   </target>
 
   <target name="test" depends="compile" description="Runs all ISpec tests">
-    <java classname="ioke.lang.Main" fork="true" failonerror="true">
+    <java classname="ioke.lang.Main" fork="true" failonerror="true" maxmemory="256m">
       <classpath refid="build.classpath"/>
       <classpath path="${classes.dir}"/>
 
