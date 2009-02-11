@@ -19,6 +19,12 @@ ISpec do(
         "#{surrounding fullName} #{describesWhat}",
         describesWhat))
 
+    onlyWhen = dmacro(
+      [>condition, code]
+      if(condition,
+	code evaluateOn(call ground, call ground))
+    )
+
     run = method(
       "runs all the defined descriptions and specs",
       reporter,

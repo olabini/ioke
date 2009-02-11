@@ -141,7 +141,7 @@ describe(FileSystem,
   )
 
   describe("parentOf",
-    if(System windows?,
+    onlyWhen(System windows?,
       it("should return nil for the parent of something that doesn't have a parent",
         FileSystem parentOf("C:\\") should be nil
       )
@@ -153,7 +153,8 @@ describe(FileSystem,
       it("should return the parent of an absolute directory",
         FileSystem parentOf("C:\\windows\\system32") should == "C:\\windows"
       )
-      ,
+    )
+    onlyWhen(! System windows?,
       it("should return nil for the parent of something that doesn't have a parent",
         FileSystem parentOf("/") should be nil
       )
