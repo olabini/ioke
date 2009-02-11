@@ -601,7 +601,7 @@ describe("Text",
     )
 
     it("should handle a % followed by a newline", 
-"foo%
+      "foo%
 " format should == "foo%\n"
     )
     
