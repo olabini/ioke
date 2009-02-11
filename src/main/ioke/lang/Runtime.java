@@ -627,6 +627,14 @@ public class Runtime {
         return newMethod(null, this.javaMethod, new JavaConstructorJavaMethod(ctors));
     }
 
+    public IokeObject createJavaFieldGetter(java.lang.reflect.Field field) throws ControlFlow {
+        return newMethod(null, this.javaMethod, new JavaFieldGetterJavaMethod(field));
+    }
+
+    public IokeObject createJavaFieldSetter(java.lang.reflect.Field field) throws ControlFlow {
+        return newMethod(null, this.javaMethod, new JavaFieldSetterJavaMethod(field));
+    }
+
     public IokeObject newNumber(String number) throws ControlFlow {
         IokeObject obj = this.integer.allocateCopy(null, null);
         obj.mimicsWithoutCheck(this.integer);

@@ -3,6 +3,8 @@
  */
 package ioke.lang;
 
+import java.math.BigDecimal;
+
 import java.util.List;
 import java.util.Map;
 
@@ -65,6 +67,60 @@ public class JavaGround {
                     }
                 }
             }));
-        
+
+        obj.registerMethod(runtime.newJavaMethod("expects to be invoked on a Java Short, either wrapped or unwrapped.", new JavaMethod.WithNoArguments("primitiveMagic: Short->Rational") {
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    if(on instanceof Short) {
+                        return runtime.newNumber(((Short)on).longValue());
+                    } else {
+                        return runtime.newNumber(((Short)JavaWrapper.getObject(on)).longValue());
+                    }
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("expects to be invoked on a Java Long, either wrapped or unwrapped.", new JavaMethod.WithNoArguments("primitiveMagic: Long->Rational") {
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    if(on instanceof Long) {
+                        return runtime.newNumber(((Long)on).longValue());
+                    } else {
+                        return runtime.newNumber(((Long)JavaWrapper.getObject(on)).longValue());
+                    }
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("expects to be invoked on a Java Character, either wrapped or unwrapped.", new JavaMethod.WithNoArguments("primitiveMagic: Character->Rational") {
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    if(on instanceof Character) {
+                        return runtime.newNumber(((Character)on).charValue());
+                    } else {
+                        return runtime.newNumber(((Character)JavaWrapper.getObject(on)).charValue());
+                    }
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("expects to be invoked on a Java Float, either wrapped or unwrapped.", new JavaMethod.WithNoArguments("primitiveMagic: Float->Decimal") {
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    if(on instanceof Float) {
+                        return runtime.newDecimal(BigDecimal.valueOf(((Float)on).doubleValue()));
+                    } else {
+                        return runtime.newDecimal(BigDecimal.valueOf(((Float)JavaWrapper.getObject(on)).doubleValue()));
+                    }
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("expects to be invoked on a Java Double, either wrapped or unwrapped.", new JavaMethod.WithNoArguments("primitiveMagic: Double->Decimal") {
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    if(on instanceof Double) {
+                        return runtime.newDecimal(BigDecimal.valueOf(((Double)on).doubleValue()));
+                    } else {
+                        return runtime.newDecimal(BigDecimal.valueOf(((Double)JavaWrapper.getObject(on)).doubleValue()));
+                    }
+                }
+            }));
     }
 }
