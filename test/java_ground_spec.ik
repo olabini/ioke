@@ -51,6 +51,10 @@ describe("Java Objects",
     it("should have tests")
   )
 
+  describe("static fields",
+    it("should have tests")
+  )
+
   describe("fields",
     describe("public",
       describe("final",
@@ -117,7 +121,7 @@ describe("Java Objects",
 
         it("should handle a simple float field",
           i = ioke:lang:test:InstanceFields new
-          i field:publicFloatFieldFinal asDecimal should == 434.2
+          i field:publicFloatFieldFinal asDecimal should be close(434.2)
         )
 
         it("should not have a setter for the float field",
@@ -128,7 +132,7 @@ describe("Java Objects",
 
         it("should handle a simple double field",
           i = ioke:lang:test:InstanceFields new
-          i field:publicDoubleFieldFinal asDecimal should == 3432435.22
+          i field:publicDoubleFieldFinal asDecimal should be close(3432435.22)
         )
 
         it("should not have a setter for the double field",
@@ -195,14 +199,14 @@ describe("Java Objects",
         i = ioke:lang:test:InstanceFields new
         i field:publicFloatField asDecimal should == 0.0
         i field:publicFloatField = 10.3
-        i get_publicFloatField asDecimal should == 10.3
+        i get_publicFloatField asDecimal should be close(10.3)
       )
 
       it("should handle a simple double field",
         i = ioke:lang:test:InstanceFields new
         i field:publicDoubleField asDecimal should == 0.0
         i field:publicDoubleField = 5335.234
-        i get_publicDoubleField asDecimal should == 5335.234
+        i get_publicDoubleField asDecimal should be close(5335.234)
       )
 
       it("should handle a simple boolean field",
@@ -278,7 +282,7 @@ describe("Java Objects",
 
         it("should handle a simple float field",
           i = ioke:lang:test:InstanceFields new
-          i field:protectedFloatFieldFinal asDecimal should == 434.2
+          i field:protectedFloatFieldFinal asDecimal should be close(434.2)
         )
 
         it("should not have a setter for the float field",
@@ -289,7 +293,7 @@ describe("Java Objects",
 
         it("should handle a simple double field",
           i = ioke:lang:test:InstanceFields new
-          i field:protectedDoubleFieldFinal asDecimal should == 3432435.22
+          i field:protectedDoubleFieldFinal asDecimal should be close(3432435.22)
         )
 
         it("should not have a setter for the double field",
@@ -356,14 +360,14 @@ describe("Java Objects",
         i = ioke:lang:test:InstanceFields new
         i field:protectedFloatField asDecimal should == 0.0
         i field:protectedFloatField = 10.3
-        i get_protectedFloatField asDecimal should == 10.3
+        i get_protectedFloatField asDecimal should be close(10.3)
       )
 
       it("should handle a simple double field",
         i = ioke:lang:test:InstanceFields new
         i field:protectedDoubleField asDecimal should == 0.0
         i field:protectedDoubleField = 5335.234
-        i get_protectedDoubleField asDecimal should == 5335.234
+        i get_protectedDoubleField asDecimal should be close(5335.234)
       )
 
       it("should handle a simple boolean field",
@@ -439,7 +443,7 @@ describe("Java Objects",
 
         it("should handle a simple float field",
           i = ioke:lang:test:InstanceFields new
-          i field:packagePrivateFloatFieldFinal asDecimal should == 434.2
+          i field:packagePrivateFloatFieldFinal asDecimal should be close(434.2)
         )
 
         it("should not have a setter for the float field",
@@ -450,7 +454,7 @@ describe("Java Objects",
 
         it("should handle a simple double field",
           i = ioke:lang:test:InstanceFields new
-          i field:packagePrivateDoubleFieldFinal asDecimal should == 3432435.22
+          i field:packagePrivateDoubleFieldFinal asDecimal should be close(3432435.22)
         )
 
         it("should not have a setter for the double field",
@@ -517,14 +521,14 @@ describe("Java Objects",
         i = ioke:lang:test:InstanceFields new
         i field:packagePrivateFloatField asDecimal should == 0.0
         i field:packagePrivateFloatField = 10.3
-        i get_packagePrivateFloatField asDecimal should == 10.3
+        i get_packagePrivateFloatField asDecimal should be close(10.3)
       )
 
       it("should handle a simple double field",
         i = ioke:lang:test:InstanceFields new
         i field:packagePrivateDoubleField asDecimal should == 0.0
         i field:packagePrivateDoubleField = 5335.234
-        i get_packagePrivateDoubleField asDecimal should == 5335.234
+        i get_packagePrivateDoubleField asDecimal should be close(5335.234)
       )
 
       it("should handle a simple boolean field",
@@ -601,7 +605,7 @@ describe("Java Objects",
 
         it("should handle a simple float field",
           i = ioke:lang:test:InstanceFields new
-          i field:privateFloatFieldFinal asDecimal should == 434.2
+          i field:privateFloatFieldFinal asDecimal should be close(434.2)
         )
 
         it("should not have a setter for the float field",
@@ -612,7 +616,7 @@ describe("Java Objects",
 
         it("should handle a simple double field",
           i = ioke:lang:test:InstanceFields new
-          i field:privateDoubleFieldFinal asDecimal should == 3432435.22
+          i field:privateDoubleFieldFinal asDecimal should be close(3432435.22)
         )
 
         it("should not have a setter for the double field",
@@ -679,14 +683,14 @@ describe("Java Objects",
         i = ioke:lang:test:InstanceFields new
         i field:privateFloatField asDecimal should == 0.0
         i field:privateFloatField = 10.3
-        i get_privateFloatField asDecimal should == 10.3
+        i get_privateFloatField asDecimal should be close(10.3)
       )
 
       it("should handle a simple double field",
         i = ioke:lang:test:InstanceFields new
         i field:privateDoubleField asDecimal should == 0.0
         i field:privateDoubleField = 5335.234
-        i get_privateDoubleField asDecimal should == 5335.234
+        i get_privateDoubleField asDecimal should be close(5335.234)
       )
 
       it("should handle a simple boolean field",

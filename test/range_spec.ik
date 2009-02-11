@@ -185,6 +185,16 @@ describe("Range",
     )
   )
   
+  describe("==",
+    it("should say equal when the elements are equal and the ranges are the same inclusivity",
+      (1..5) should == (1..5)
+      (1..5) should not == (1...5)
+      (2..5) should == (2..5)
+      (3..5) should not == (2..5)
+      (3..6) should not == (3..5)
+    )
+  )
+
   describe("===", 
     it("should match something inside the range", 
       ((1..5) === 1) should be true
