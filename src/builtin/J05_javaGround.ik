@@ -20,8 +20,15 @@ JavaGround java:lang:Long asRational = JavaGround cell("primitiveMagic: Long->Ra
 JavaGround java:lang:Float asDecimal = JavaGround cell("primitiveMagic: Float->Decimal")
 JavaGround java:lang:Double asDecimal = JavaGround cell("primitiveMagic: Double->Decimal")
 
-JavaGround java:lang:Object inspect = method(toString asText)
-JavaGround java:lang:Object notice  = method(toString asText)
+JavaGround java:lang:Object inspect = method(
+  if(self class?,
+    self class:toString asText,
+    self toString asText))
+
+JavaGround java:lang:Object notice  = method(
+  if(self class?,
+    self class:toString asText,
+    self toString asText))
 
 JavaGround java:lang:Class class:name = method(
   class:getName asText replaceAll(".", ":")

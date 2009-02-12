@@ -2,6 +2,18 @@
 use("ispec")
 
 describe(DefaultBehavior, 
+  it("should be possible to inspect all the cells in ground",
+    Ground cells inspect
+  )
+
+  it("should be possible to inspect all the cells in an Origin mimic",
+    Origin mimic cells(true) inspect
+  )
+
+  it("should be possible to notice all the cells in an Origin mimic",
+    Origin mimic cells(true) notice
+  )
+  
   describe("cellDescriptionDict", 
     it("should return an empty dict for an object without cells", 
       Origin mimic cellDescriptionDict should == {}

@@ -29,7 +29,8 @@ public abstract class Benchmark {
         Runtime runtime = bm.runtime;
         bm.setKind("Benchmark");
         runtime.ground.setCell("Benchmark", bm);
-        
+        bm.mimicsWithoutCheck(runtime.origin);
+
         bm.registerMethod(runtime.newJavaMethod("expects two optional numbers, x (default 10) and y (default 1), and a block of code to run, and will run benchmark this block x times, while looping y times in each benchmark. after each loop will print the timings for this loop", new JavaMethod("report") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()

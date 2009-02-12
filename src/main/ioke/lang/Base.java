@@ -104,7 +104,7 @@ public class Base {
                                 if(on == context.runtime.ground) {
                                     IokeObject.as(value, context).setKind(name);
                                 } else {
-                                    IokeObject.as(value, context).setKind(IokeObject.as(on, context).getKind() + " " + name);
+                                    IokeObject.as(value, context).setKind(IokeObject.as(on, context).getKind(message, context) + " " + name);
                                 }
                             }
                         }
@@ -417,7 +417,7 @@ public class Base {
                         if(on == context.runtime.ground) {
                             IokeObject.as(val, context).setKind(name);
                         } else {
-                            IokeObject.as(val, context).setKind(IokeObject.as(on, context).getKind() + " " + name);
+                            IokeObject.as(val, context).setKind(IokeObject.as(on, context).getKind(message, context) + " " + name);
                         }
                     }
                     }

@@ -435,8 +435,22 @@ public class IokeObject implements TypeChecker {
         cells.put(name, runtime.nul);
     }
 
+    public String getKind(IokeObject message, IokeObject context) throws ControlFlow {
+        Object obj = findCell(null, null, "kind");
+        if(IokeObject.data(obj) instanceof Text) {
+            return ((Text)IokeObject.data(obj)).getText();
+        } else {
+            return ((Text)IokeObject.data(getOrActivate(obj, context, message, this))).getText();
+        }
+    }
+
     public String getKind() {
-        return ((Text)IokeObject.data(findCell(null, null, "kind"))).getText();
+        Object obj = findCell(null, null, "kind");
+        if(obj != null && IokeObject.data(obj) instanceof Text) {
+            return ((Text)IokeObject.data(obj)).getText();
+        } else {
+            return null;
+        }
     }
 
     public boolean hasKind() {
