@@ -462,7 +462,7 @@ public class ConditionsBehavior {
                     final Runtime runtime = context.runtime;
                     IokeObject restart = IokeObject.as(args.get(0), context);
                     Runtime.RestartInfo realRestart = null;
-                    while(!(restart.isSymbol() || restart.getKind().equals("Restart"))) {
+                    while(!(restart.isSymbol() || restart.getKind(message, context).equals("Restart"))) {
                         final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
                                                                                            message, 
                                                                                            context, 
@@ -498,7 +498,7 @@ public class ConditionsBehavior {
                     if(restart.isSymbol()) {
                         String name = Symbol.getText(restart);
                         realRestart = runtime.findActiveRestart(name);
-                    } else if(restart.getKind().equals("Restart")) {
+                    } else if(restart.getKind(message, context).equals("Restart")) {
                         realRestart = runtime.findActiveRestart(restart);
                     }
                     if(realRestart == null) {

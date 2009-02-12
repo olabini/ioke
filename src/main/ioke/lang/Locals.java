@@ -75,7 +75,7 @@ public class Locals {
                                                                StringBuilder sb = new StringBuilder();
 
                                                                IokeObject current = IokeObject.as(on, context);
-                                                               while("Locals".equals(current.getKind())) {
+                                                               while("Locals".equals(current.getKind(m, context))) {
                                                                    IokeObject message = IokeObject.as(IokeObject.getCell(current, m, context, "currentMessage"), context);
                                                                    IokeObject start = message;
                                                                    

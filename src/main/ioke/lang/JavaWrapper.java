@@ -116,5 +116,27 @@ public class JavaWrapper extends IokeData {
                     }
                 }
             }));
+
+        obj.registerMethod(runtime.newJavaMethod("returns the true if the receiver is a class object, false otherwise.", new JavaMethod.WithNoArguments("class?") {
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    if(on instanceof IokeObject) {
+                        return (((JavaWrapper)IokeObject.data(on)).clazz == Class.class) ? context.runtime._true : context.runtime._false;
+                    } else {
+                        return (on instanceof Class) ? context.runtime._true : context.runtime._false;
+                    }
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("calls toString on the receiver and returns it.", new JavaMethod.WithNoArguments("class:toString") {
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    if(on instanceof IokeObject) {
+                        return ((JavaWrapper)IokeObject.data(on)).object.toString();
+                    } else {
+                        return on.toString();
+                    }
+                }
+            }));
     }
 }
