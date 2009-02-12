@@ -215,7 +215,8 @@ public class Levels {
 
 		new OpTable("<-",  14),
 
-		new OpTable("return", 14)
+		new OpTable("return", 14),
+		new OpTable("import", 14)
     };
 
     public static OpTable[] defaultTrinaryOperators = new OpTable[]{

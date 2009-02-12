@@ -40,3 +40,21 @@ JavaGround pass = macro(
     JavaGround cell(call message name) = val
     val)
 )
+
+JavaGround import = method(+rest, +:krest,
+  case(rest length,
+    0, nil,
+    1,
+    name = rest[0] class:name split(":") last
+    unless(self cell?(name),
+      self cell(name) = rest[0]),
+    else, 
+    packageName = rest[0] asText
+    rest[1..-1] each(cName,
+      unless(self cell?(cName),
+        self cell(cName) = primitiveJavaClass!("#{packageName}:#{cName}" replaceAll(":", ".")))))
+
+  krest each(im,
+    unless(self cell?(im key),
+      self cell(im key) = im value)))
+
