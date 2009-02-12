@@ -30,7 +30,58 @@ describe("JavaGround",
   )
 
   describe("import",
-    it("should have tests NOW NOW NOW NOW NOW NOW NOW NOW NOW NOW NOW NOW NOW NOW NOW NOW NOW NOW NOW NOW NOW NOW NOW NOW NOW NOW NOW NOW NOW NOW NOW NOW NOW NOW")
+    it("should simply import a named class with an argument",
+      cell?(:NavigableMap) should be false
+      import(java:util:NavigableMap)
+      cell?(:NavigableMap) should be true
+      import(java:util:NavigableMap)
+      cell?(:NavigableMap) should be true
+    )
+
+    it("should work as an operator when importing single classes",
+      cell?(:NavigableSet) should be false
+      import java:util:NavigableSet
+      cell?(:NavigableSet) should be true
+      import java:util:NavigableSet
+      cell?(:NavigableSet) should be true
+    )
+
+    it("shouldn't overwrite or shadow an existing cell",
+      foo = Origin mimic
+      foo bar = 123
+      foo2 = foo mimic
+      foo2 import(bar: java:util:HashMap)
+      foo bar should == 123
+      foo2 bar should == 123
+
+      foo import(bar: java:util:LinkedList)
+      foo bar should == 123
+    )
+
+    it("should allow renaming by using hash arguments",
+      cell?(:TestOfImportingNaming1) should be false
+      cell?(:TestOfImportingNaming2) should be false
+      cell?(:TestOfImportingNaming3) should be false
+
+      import(TestOfImportingNaming1: java:util:HashMap, TestOfImportingNaming2: java:util:ArrayList)
+      import TestOfImportingNaming3: java:util:HashMap
+
+      cell?(:TestOfImportingNaming1) should be true
+      cell?(:TestOfImportingNaming2) should be true
+      cell?(:TestOfImportingNaming3) should be true
+    )
+
+    it("should allow importing of more than one entity from the same package",
+      cell?(:ListResourceBundle) should be false
+      cell?(:SimpleTimeZone) should be false
+      cell?(:GregorianCalendar) should be false
+
+      import(:java:util, :ListResourceBundle, :SimpleTimeZone, :GregorianCalendar)
+
+      cell?(:ListResourceBundle) should be true
+      cell?(:SimpleTimeZone) should be true
+      cell?(:GregorianCalendar) should be true
+    )
   )
 
   describe("use of jar-files",
