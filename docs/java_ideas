@@ -109,3 +109,29 @@ Code:
    )
 
  keyword arguments will use the paranamer approach
+
+
+
+
+
+
+
+
+
+
+
+-----
+
+Send in code to methods that take interfaces ... three variations:
+ one:
+   if we see a parenthesis with more than one argument, we know it's a code argument to coerce into an interface or abstract class:
+ addActionListener((e, e source text = "blarg"))
+
+ two:
+   a method or lexical block can always be coerced into an interface:
+ addActionListener(fn(e, e source text = "Blarg"))
+
+ three:
+   activating a java class/interface
+ addActionListener(ActionListener(e, e source text = "Blarg"))
+ addActionListener(ActionListener(onEvent: fn(e, e source text = "Blarg")))
