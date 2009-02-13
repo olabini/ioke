@@ -31,19 +31,19 @@ describe("JavaGround",
 
   describe("import",
     it("should simply import a named class with an argument",
-      cell?(:NavigableMap) should be false
-      import(java:util:NavigableMap)
-      cell?(:NavigableMap) should be true
-      import(java:util:NavigableMap)
-      cell?(:NavigableMap) should be true
+      cell?(:AbstractMap) should be false
+      import(java:util:AbstractMap)
+      cell?(:AbstractMap) should be true
+      import(java:util:AbstractMap)
+      cell?(:AbstractMap) should be true
     )
 
     it("should work as an operator when importing single classes",
-      cell?(:NavigableSet) should be false
-      import java:util:NavigableSet
-      cell?(:NavigableSet) should be true
-      import java:util:NavigableSet
-      cell?(:NavigableSet) should be true
+      cell?(:AbstractSet) should be false
+      import java:util:AbstractSet
+      cell?(:AbstractSet) should be true
+      import java:util:AbstractSet
+      cell?(:AbstractSet) should be true
     )
 
     it("shouldn't overwrite or shadow an existing cell",
@@ -91,11 +91,31 @@ describe("JavaGround",
 
 describe("Java Objects",
   describe("==",
-    it("should call java.lang.Object#equals")
+    it("should call java.lang.Object#equals",
+      x = ioke:lang:test:EqualsTest new
+      y = ioke:lang:test:EqualsTest new
+      
+      x should == y
+
+      x theProperty = "oh noes"
+
+      x should not == y
+      
+      y theProperty = "oh noes"
+
+      x should == y
+    )
   )
 
   describe("same?",
-    it("should use Java ==")
+    it("should use Java ==",
+      x = java:lang:Object new
+      y = java:lang:Object new
+      x same?(y) should be false
+      x same?(x) should be true
+      z = x
+      x same?(z) should be true
+    )
   )
 
   describe("inner classes",
