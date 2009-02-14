@@ -8,6 +8,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.HashSet;
@@ -136,6 +137,70 @@ public class JavaWrapper extends IokeData {
                     } else {
                         return on.toString();
                     }
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("returns true if the left hand side is equal to the right hand side. this will use the Java equals method - after unwrapping both the left hand and right hand side.", new JavaMethod("==") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("other")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+
+                    Object left = on;
+                    Object right = args.get(0);
+                    if(left instanceof IokeObject && IokeObject.data(left) instanceof JavaWrapper) {
+                        left = getObject(left);
+                    }
+
+                    if(right instanceof IokeObject && IokeObject.data(right) instanceof JavaWrapper) {
+                        right = getObject(right);
+                    }
+
+                    if(left == null) {
+                        return right == null ? context.runtime._true : context.runtime._false;
+                    }
+                    return left.equals(right) ? context.runtime._true : context.runtime._false;
+                }
+            }));
+
+
+        obj.registerMethod(runtime.newJavaMethod("returns true if the left hand side is the same instance as the right hand side", new JavaMethod("same?") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("other")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+
+                    Object left = on;
+                    Object right = args.get(0);
+                    if(left instanceof IokeObject && IokeObject.data(left) instanceof JavaWrapper) {
+                        left = getObject(left);
+                    }
+
+                    if(right instanceof IokeObject && IokeObject.data(right) instanceof JavaWrapper) {
+                        right = getObject(right);
+                    }
+
+                    return left == right ? context.runtime._true : context.runtime._false;
                 }
             }));
     }
