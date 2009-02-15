@@ -11,6 +11,8 @@ import ioke.lang.exceptions.ControlFlow;
 import ioke.lang.parser.iokeLexer;
 import ioke.lang.parser.iokeParser;
 
+import ioke.lang.java.ClassRegistry;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
@@ -39,6 +41,7 @@ public class Runtime {
     Reader in;
     
     public IokeRegistry registry = new IokeRegistry(this);
+    public ClassRegistry classRegistry = new ClassRegistry(this);
 
     // Core objects and origins
     public IokeObject base = new IokeObject(this, "Base is the top of the inheritance structure. Most of the objects in the system are derived from this instance. Base should keep its cells to the bare minimum needed for the system.");
