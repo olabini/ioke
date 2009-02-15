@@ -62,73 +62,73 @@ $language_data = array (
              0 => 'color: #555555;'
              ),
         'KEYWORDS' => array(
-            1 => 'color: #b1b100;',
+            1 => 'color: #535400;',
             2 => 'color: #000000; font-weight: bold;',
             3 => 'color: #000066;'
             ),
         'COMMENTS' => array(
-            1 => 'color: #808080; font-style: italic;',
-            2 => 'color: #808080; font-style: italic;',
-            'MULTI' => 'color: #808080; font-style: italic;'
+            1 => 'color: #4C4C4C; font-style: italic;',
+            2 => 'color: #4C4C4C; font-style: italic;',
+            'MULTI' => 'color: #4C4C4C; font-style: italic;'
             ),
         'ESCAPE_CHAR' => array(
-            0 => 'color: #00A0A0;'
+            0 => 'color: #007172;'
             ),
         'BRACKETS' => array(
-            0 => 'color: #808080;'
+            0 => 'color: #333333;'
             ),
         'STRINGS' => array(
-            0 => 'color: #A8FF60;'
+            0 => 'color: #008000;'
             ),
         'NUMBERS' => array(
-            0 => 'color: #cc66cc;'
+            0 => 'color: #800080;'
             ),
         'SYMBOLS' => array(
             //operators
-            0 => 'color: #FFD2A7;'
+            0 => 'color: #B65B00;'
             ),
         'REGEXPS' => array(
             //positive or negative number symbol
-            0 => 'color: #cc66cc;',
+            0 => 'color: #6D006E;',
             
             //hexadecimal numbers
-            1 => 'color: #cc66cc;',
+            1 => 'color: #800080;',
             
             //exponential numbers
-            2 => 'color: #cc66cc;',
+            2 => 'color: #800080;',
             
             //exponential numbers (partial)
-            3 => 'color: #cc66cc;',
+            3 => 'color: #800080;',
             
             //operators
-            4 => 'color: #FFD2A7;',
+            4 => 'color: #3B0000;',
             
             //operators (that require space)
-            5 => 'color: #FFD2A7;',
+            5 => 'color: #3B0000;',
             
             //keywords
-            6 => 'color: #96CBFE;',
+            6 => 'color: #000080;',
             
             //control keywords
-            7 => 'color: #96CBFE;',
+            7 => 'color: #000080;',
             
             //function keywords
-            8 => 'color: #96CBFE;',
+            8 => 'color: #000080;',
             
             //prototype-name keywords
-            9 => 'color: #96CBFE;',
+            9 => 'color: #000080;',
             
             //cell-name keywords
-            10 => 'color: #96CBFE;',
+            10 => 'color: #000080;',
             
             //kinds
-            11 => 'color: #99CC99;',
+            11 => 'color: #405741;',
             
             //symbols
-            12 => 'color: #A8FF60;',
+            12 => 'color: #B65B00;',
             
             //symbols
-            13 => 'color: #A8FF60;'
+            13 => 'color: #B65B00;'
             ),
                 
             
