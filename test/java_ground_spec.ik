@@ -6,7 +6,7 @@ describe("JavaGround",
     JavaGround kind should == "JavaGround"
   )
 
-  it("should be a mimic of Origin",
+  it("should be one of Origin's mimics",
     Origin should mimic(JavaGround)
   )
 
