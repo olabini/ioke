@@ -327,5 +327,42 @@ describe(IOpt,
     )
 
   ); Action
+
+
+  describe("help",
+    
+    it("should create content formatted as man page",
+      opt = IOpt mimic
+      
+      opt help(:man,
+        name = "app"
+        desc = "The helpful application"
+        
+        NAME( p("#{@name} - #{@desc}") )
+
+        SYNOPSYS( p("#{@name} [options] [--] <filepattern>...") )
+
+        DESCRIPTION(
+          p("This isn't actually an application",
+            "This example demostrates how to write documentation",
+            "that can be displayed by programs like man.")
+
+          p("This help format can be feed to your system pager",
+            "to provide a more readable reference.")
+
+          p("In the future we could use a markup language like",
+            "textile."))
+
+        OPTIONS(
+          opt options each(o,
+            p("%[%s %]   (%s)" format(o flags, o argumentsCode), 
+              >(o documentation))))
+        
+        CONFIGURATION(
+          p("The file ~/.app.yml stores user settings"))
+        
+      )
+      
+  )) ;; help
   
 ); IOpt
