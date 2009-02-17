@@ -3,6 +3,19 @@ use("iopt")
 
 describe(IOpt,
 
+  describe("parse",
+    it("should execute tasks by priority level",
+      opt = IOpt mimic
+      order = []
+      opt on("-a", order << :a) priority = -10
+      opt on("-b", order << :b) priority = 5
+      opt on("-c", order << :c)
+      opt on("-d", order << :d) priority = 1
+      opt on("-e", order << :e)
+      
+      opt parse(["-d", "-b", "-e", "-a", "-c"])
+      order should == [:a, :e, :c, :d, :b]))
+
   describe("[]=",
 
     it("should assign an option some code to execute",
