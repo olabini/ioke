@@ -158,7 +158,8 @@ public class JavaGround {
                     Class newType = JavaIntegration.getOrCreate(types, context.runtime.classRegistry);
                     System.err.println(newType);
                     // this should return a JavaIntegrationWrapper instead of a JavaWrapper
-                    return newType;
+//                     return newType;
+                    return IokeRegistry.wrap(newType, context);
                 }
             }));
     }

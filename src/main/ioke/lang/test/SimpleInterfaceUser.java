@@ -9,6 +9,13 @@ package ioke.lang.test;
  */
 public class SimpleInterfaceUser {
     public static String useObject(SimpleInterface si) {
-        return si.doSomething();
+        try {
+            String s = si.doSomething();
+            System.err.println("no exception...");
+            return s;
+        } catch(Throwable e) {
+            System.err.println(e);
+            throw new RuntimeException(e);
+        }
     }
 }// SimpleInterfaceUser
