@@ -150,7 +150,7 @@ IOpt do(
         argv << ary first
         ary = ary rest))
 
-    cell(:argv) = argv
+    @cell(:argv) = argv
     ;; sort them by priority to be executed
     actions sortBy(priority) each(action,
       res = actdata[action]

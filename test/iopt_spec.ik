@@ -4,6 +4,17 @@ use("iopt")
 describe(IOpt,
 
   describe("parse",
+    
+    it("should not consume arguments that arent options",
+      opt = IOpt mimic
+      p = nil
+      opt on("-f", a, b, p = a => b)
+      ary = ["hello", "-f", "one", "two", "world"]
+      opt parse(ary)
+      ary should == ["hello", "-f", "one", "two", "world"]
+      p should == ("one" => "two")
+      opt argv should == ["hello", "world"])
+    
     it("should execute tasks by priority level",
       opt = IOpt mimic
       order = []
