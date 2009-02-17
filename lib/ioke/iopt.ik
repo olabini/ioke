@@ -2,8 +2,7 @@ IOpt = Origin mimic
 IOpt do(
 
   documentation = "Command line processing the Ioke way.
-  
-  TODO: Write usage examples here.
+    
   "
   
   initialize = method(
@@ -134,20 +133,51 @@ IOpt do(
     action) ; on
 
 
-  parse = method(argv, 
-    
-  )
+  parse = method(items, 
+    ; an array to store not handled input
+    argv = list()
+    ; first convert the strings to actions.
+    ary = items
+    actions = list()
+    actdata = dict()
+    until(ary empty?,
+      if(action = self[ary first],
+        actions << action
+        res = action consume(ary)
+        actdata[action] = res
+        ary = res remnant
+        res removeCell!(:remnant),
+        argv << ary first
+        ary = ary rest))
+
+    cell(:argv) = argv
+    ;; sort them by priority to be executed
+    actions sortBy(priority) each(action,
+      res = actdata[action]
+      action send(:call, *(res named_args), *(res keyed_args))))
 
   Action = Origin mimic do(
     
-    initialize = method(action, docs nil, args nil,
+    initialize = method(action, docs nil, args nil, plevel 0,
       @flags = set()
       @default = true
+      @priority = plevel
       @documentation = docs || cell(:action) documentation
       @argumentsCode = args || if(cell(:action) cell?(:argumentsCode), cell(:action) argumentsCode)
       @body = cell(:action))
 
+    cell(:<=>) = method(other, priority <=> other priority)
+
     cell(:call) = macro(call activateValue(@cell(:body)))
+
+    cell(:"priority=") = method("Set the option priority. 
+      Default priority level is 0.
+      Negative values are higher priority for options that
+      must be processed before those having priority(0).
+      Positive ones are executed just after all priority(0)",
+      value,
+      @cell(:priority) = value
+      self)
     
     handles? = method(option,
       flags any?(flag, handleData(flag, option)))
@@ -174,17 +204,19 @@ IOpt do(
       if(code == "..." || code == "", code = nil)
       cell(:argumentsCode) = code
       i = Origin with(names: [], keywords: [], rest: nil, krest: nil)
-      unless(code, return(@argumentsInfo = i))
+      unless(code, @argumentsInfo = i. return(self))
       dummy = Message fromText("fn(#{code}, nil)")
       dummy = dummy evaluateOn(dummy)
       i names = dummy argumentNames
       i keywords = dummy keywords
       i rest = if(match = #/\\+([^: ,]+)/ match(code), :(match[1]))
       i krest = if(match = #/\\+:([^ ,]+)/ match(code), :(match[1]))
-      @argumentsInfo = i)
+      @argumentsInfo = i
+      self)
 
-    handle = method(+argv,
-      data = nil. flag = nil. res = Origin mimic
+    consume = method(argv,
+      res = Origin mimic
+      data = nil. flag = nil
       flags find(f, if(data = handleData(f, argv first), flag = f))
       unless(flag, error!("I cant handle #{argv first}"))
 
@@ -234,11 +266,19 @@ IOpt do(
           args << arg
           nil)) || -1
 
-      if(args empty? && kmap empty?, args = list(data[:value]))
+      if(args empty? && kmap empty? && 
+        !(@cell(:body) argumentsCode empty?), 
+        args = list(data[:value]))
       
       res flag = flag
       res remnant = remnant[idx..-1]
-      res result = send(:call, *args, *kmap)
+      res named_args = args
+      res keyed_args = kmap
+      res)
+
+    handle = method(+argv,
+      res = consume(argv)
+      res result = send(:call, *(res named_args), *(res keyed_args))
       res)
 
   ); Action
