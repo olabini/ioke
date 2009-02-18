@@ -184,25 +184,27 @@ IOpt do(
       self)
     
     handles? = method(option,
-      flags any?(flag, handleData(flag, option)))
+      flags find(flag, handleData(flag, option)))
 
     handleData = method(flag, option,
       d = dict()
-      m = #/=/ match(option)
-      if (m, option = m beforeMatch. d[:value] = m afterMatch)
+      if(m = #/=/ match(option),
+        option = m beforeMatch
+        d[:immediate] = m afterMatch)
       cond(
         flag == option, d[:value] ||= @cell(:default),
-        d empty? && #/^-\\w$/ match(flag) && 
-          m = #/^#{flag}/ match(option),
-        d[:value] = m afterMatch,
+
+        d empty? && #/^-[^-]/ match(flag) && m = #/^#{flag}/ match(option),
+        d[:immediate] = m afterMatch,
+        
         m = #/\\[(.*?)\\]/ match(flag),
         case(option,
           m beforeMatch + m afterMatch,
           d[:value] ||= @cell(:default),
           m beforeMatch + m[1] + m afterMatch,
-          d[:value] ||= if(@cell?(:alternative), 
+          d[:value] ||= if(@cell?(:alternative),
             @cell(:alternative), @cell(:default) not())))
-      d key?(:value) and(d))
+      if(d empty?, nil, d))
 
     cell("argumentsCode=") = method(code,
       if(code == "..." || code == "", code = nil)
@@ -230,6 +232,8 @@ IOpt do(
       args = list()
       klist = list()
       kmap = dict()
+      
+      if(data[:immediate] && info names length > 0, args << data[:immediate])
 
       shouldContinue = fn(arg, 
         cond(
@@ -247,7 +251,7 @@ IOpt do(
           false))
 
       isKeyword = fn(arg,
-        if(m = #/^([\\w+]):/ match(arg),
+        if(m = #/^([\\w-]+):/ match(arg),
           :(m[1]) => if(m afterMatch empty?, nil, m afterMatch)))
 
       idx = remnant findIndex(arg,
@@ -268,14 +272,13 @@ IOpt do(
           currentKey = nil,
             
           args << arg
-          nil)) || -1
+          nil))
 
-      if(args empty? && kmap empty? && 
-        !(@cell(:body) argumentsCode empty?), 
-        args = list(data[:value]))
+      if(args empty? && kmap empty? && !(@cell(:body) argumentsCode empty?), 
+        args = list(data[:immediate] || data[:value]))
       
       res flag = flag
-      res remnant = remnant[idx..-1]
+      res remnant = remnant[(idx || 0-1)..-1]
       res named_args = args
       res keyed_args = kmap
 
