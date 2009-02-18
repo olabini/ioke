@@ -212,14 +212,12 @@ describe(IOpt,
         a handleData("-p", "-p")[:value] should == "Foo"
         a handleData("--path", "--path")[:value] should == "Foo")
 
-      it("should use cell(:alternative) for alt opt",
+      it("should use cell(:not) for alt opt",
         a = IOpt Action mimic(fn)
-        lin = Origin mimic
-        win = Origin mimic
-        a default = lin
-        a alternative = win
-        a handleData("--[disable-]unix", "--unix")[:value] should == lin
-        a handleData("--[disable-]unix", "--disable-unix")[:value] should == win)
+        a default = :lin
+        a alternative = :win
+        a handleData("--[disable-]unix", "--unix")[:value] should == :lin
+        a handleData("--[disable-]unix", "--disable-unix")[:value] should == :win)
 
       it("should use cell(:default) cell(:not) for alt opt",
         a = IOpt Action mimic(fn)
@@ -258,26 +256,45 @@ describe(IOpt,
         value = nil
         a = IOpt Action mimic(fn(v, value = v)) do(flags << "-f"
           argumentsCode = nil)
-        res = a handle("-f", "hello")
+        res = a handle(["-f", "hello"])
         value should == true
         res remnant should == ["hello"])
+
+      it("should consume only the option if it takes no args",
+        value = nil
+        a = IOpt Action mimic(fn(value = :yes)) do(flags << "-f"
+          argumentsCode = nil)
+        res = a handle(["-f", "hello"])
+        value should == :yes
+        res remnant should == ["hello"])
+
+      it("should signal error when missing a required argument",
+        a = IOpt Action mimic(fn(v, v)) do(flags << "--args")
+        fn(a handle(["--args"])) should signal(
+          Condition Error Invocation TooFewArguments))
+
+      it("should set the message name to the flag being used",
+        a = IOpt Action mimic(lecro(call message name)) do(
+          flags << "-f" << "--foo")
+        a handle(["-f"]) result should == :"-f"
+        a handle(["--foo"]) result should == :"--foo")
 
       it("should consume arguments for one named arg",
         value = nil
         a = IOpt Action mimic(fn(v, value = v)) do(flags << "-f")
-        res = a handle("-f", "hello world")
+        res = a handle(["-f", "hello world"])
         value should == "hello world"
         res remnant should be empty
         
-        res = a handle("-f0", "end")
+        res = a handle(["-f0", "end"])
         value should == "0"
         res remnant should == ["end"]
 
-        res = a handle("-fone", "two")
+        res = a handle(["-fone", "two"])
         value should == "one"
         res remnant should == ["two"]
         
-        res = a handle("-f=value", "done")
+        res = a handle(["-f=value", "done"])
         value should == "value"
         res remnant should == ["done"])
 
@@ -286,11 +303,11 @@ describe(IOpt,
         a = IOpt Action mimic(fn(a, b "world", value = "#{a} #{b}"))
         a flags << "-f"
       
-        res = a handle("-f", "hello")
+        res = a handle(["-f", "hello"])
         value should == "hello world"
         res remnant should be empty
         
-        res = a handle("-f", "hola", "mundo")
+        res = a handle(["-f", "hola", "mundo"])
         value should == "hola mundo"
         res remnant should be empty)
 
@@ -298,7 +315,7 @@ describe(IOpt,
         value = nil
         a = IOpt Action mimic(fn(a, b "world", value = "#{a} #{b}"))
         a flags << "-f"
-        res = a handle("-f", "hello", "--another-option")
+        res = a handle(["-f", "hello", "--another-option"])
         value should == "hello world"
         res remnant should == ["--another-option"])
 
@@ -309,8 +326,8 @@ describe(IOpt,
             value = "#{a} #{c} #{b}"))
         a flags << "-f"
         
-        res = a handle("-f", "hello", "b:", "mundo", "al", 
-          "--another-option")
+        res = a handle(["-f", "hello", "b:", "mundo", "al", 
+            "--another-option"])
         value should == "hello al mundo"
         res remnant should == ["--another-option"])
 
@@ -320,7 +337,7 @@ describe(IOpt,
             value = "#{a} #{c} #{b}"))
         a flags << "-f"
         
-        res = a handle("-f", "b:monde", "hola")
+        res = a handle(["-f", "b:monde", "hola"])
         value should == "hola le monde"
         res remnant should be empty)
 
@@ -329,7 +346,7 @@ describe(IOpt,
         a = IOpt Action mimic(fn(a, b "le", +c,
             value = "%[%s %] %s %s" format(c, a, b)))
         a flags << "-f"
-        res = a handle("-f", "hola", "que", "tal", "amigo", "-h")
+        res = a handle(["-f", "hola", "que", "tal", "amigo", "-h"])
         value should == "tal amigo  hola que"
         res remnant should == ["-h"])
       
@@ -338,9 +355,9 @@ describe(IOpt,
         a = IOpt Action mimic(fn(a:, b: "b", +:c,
             value = dict(a: a, b: b, c: c)))
         a flags << "-f"
-        res = a handle("-f",
+        res = a handle(["-f",
           "e:", "hola", "b:", "que", "a:tal", "g:amigo", "m:", "!",
-          "-h")
+          "-h"])
         value[:a] should == "tal"
         value[:b] should == "que"
         value[:c] should == dict(e: "hola", g: "amigo", m: "!")

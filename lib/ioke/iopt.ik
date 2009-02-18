@@ -141,23 +141,19 @@ IOpt do(
     @programArguments = list()
     ; first convert the strings to actions.
     ary = argv
-    callValues = list()
-    callDatas = dict()
+    opts = list()
     until(ary empty?,
       if(action = self[ary first],
-        callValues << action
         res = action consume(ary)
-        callDatas[action] = res
+        opts << ((action => res) do(<=> = method(o, key <=> o key)))
         ary = res remnant
         res removeCell!(:remnant),
         programArguments << ary first
         ary = ary rest))
 
     ;; sort them by priority to be executed
-    callValues sort each(action,
-      res = callDatas[action]
-      action callReceiver ||= self
-      action send(:call, *(res named_args), *(res keyed_args))))
+    opts sort each(pair,
+      pair key handle(args: pair value, receiver: self)))
 
   Action = Origin mimic do(
     
@@ -274,7 +270,8 @@ IOpt do(
           args << arg
           nil))
 
-      if(args empty? && kmap empty? && !(@cell(:body) argumentsCode empty?), 
+      if(args empty? && kmap empty? && info names empty? &&
+        !(@cell(:body) argumentsCode empty?),
         args = list(data[:immediate] || data[:value]))
       
       res flag = flag
@@ -284,9 +281,12 @@ IOpt do(
 
       res)
 
-    handle = method(+argv,
-      res = consume(argv)
-      res result = send(:call, *(res named_args), *(res keyed_args))
+    handle = method(argv nil, args: nil, receiver: nil, messageName: nil,
+      res = if(argv, consume(argv), args)
+      messageName ||= res flag
+      let(@cell(messageName), @cell(:body),
+        @callReceiver, @callReceiver || receiver,
+        res result = send(messageName, *(res named_args), *(res keyed_args)))
       res)
 
   ); Action
