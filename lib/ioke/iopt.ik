@@ -145,7 +145,8 @@ IOpt do(
     until(ary empty?,
       if(action = self[ary first],
         res = action consume(ary)
-        opts << ((action => res) do(<=> = method(o, key <=> o key)))
+        opts << ((action => res) do(
+            <=> = method(o, key priority <=> o key priority)))
         ary = res remnant
         res removeCell!(:remnant),
         programArguments << ary first
@@ -165,8 +166,6 @@ IOpt do(
       @documentation = docs || cell(:action) documentation
       @argumentsCode = args || if(cell(:action) cell?(:argumentsCode), cell(:action) argumentsCode)
       @body = cell(:action))
-
-    cell(:<=>) = method(other, priority <=> other priority)
 
     cell(:call) = macro(call activateValue(@cell(:body), callReceiver))
 
