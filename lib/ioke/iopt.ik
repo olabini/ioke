@@ -8,6 +8,7 @@ IOpt do(
   initialize = method(
     @flags = set()
     @actions = set()
+    @helps = dict(plain: IOpt Help Plain Simple mimic(self))
     @initialize = method())
   
   cell("[]") = method(option,
@@ -145,8 +146,7 @@ IOpt do(
     until(ary empty?,
       if(action = self[ary first],
         res = action consume(ary)
-        opts << ((action => res) do(
-            <=> = method(o, key priority <=> o key priority)))
+        opts << ((action => res) do(<=> = method(o, key <=> o key)))
         ary = res remnant
         res removeCell!(:remnant),
         programArguments << ary first
@@ -155,6 +155,48 @@ IOpt do(
     ;; sort them by priority to be executed
     opts sort each(pair,
       pair key handle(args: pair value, receiver: self)))
+
+  asText = method(help(:plain) asText)
+
+  help = dmacro(
+    [>format]
+    @helps[format],
+
+    [>format, +body]
+    name = (format asText[0..0] upper) + format asText[1..-1]
+    msg = ('mimic << Message wrap(self))
+    body each(a, msg << a)
+    @helps[format] = msg sendTo(IOpt Help cell(name)))
+
+  Help = Origin mimic do(
+    Plain = Origin mimic do(
+      Simple = Origin mimic do(
+        
+        initialize = method(iopt, 
+          @iopt = iopt)
+
+        asList = method(
+          lines = list()
+          
+          if(iopt cell?(:banner), lines << iopt banner << "")
+          lines << "OPTIONS:" << ""
+          
+          iopt actions each(action,
+            lines << "%[  %s%] %s" format(
+              action flags, if(action argumentsCode,
+                "(#{action argumentsCode})", ""))
+            if(action documentation && !action documentation empty?,
+              lines << "  #{action documentation}")
+            lines << "")
+          
+          lines)
+        
+        asText = method("Help string as simple plain text.",
+          "%[%s\n%]" format(asList))
+
+      ); Simple
+    ); Plain
+  ); Help
 
   Action = Origin mimic do(
     
@@ -168,6 +210,8 @@ IOpt do(
       @body = cell(:action))
 
     cell(:call) = macro(call activateValue(@cell(:body), callReceiver))
+
+    <=> = method("Compare by priority", other, priority <=> other priority)
 
     cell("priority=") = method("Set the option priority. 
       Default priority level is 0.
@@ -203,7 +247,7 @@ IOpt do(
 
     cell("argumentsCode=") = method(code,
       if(code == "..." || code == "", code = nil)
-      cell(:argumentsCode) = code
+      @cell(:argumentsCode) = code
       i = Origin with(names: [], keywords: [], rest: nil, krest: nil)
       unless(code, @argumentsInfo = i. return(self))
       dummy = Message fromText("fn(#{code}, nil)")
@@ -283,7 +327,7 @@ IOpt do(
     handle = method(argv nil, args: nil, receiver: nil, messageName: nil,
       res = if(argv, consume(argv), args)
       messageName ||= res flag
-      let(@cell(messageName), @cell(:body),
+      let(@cell(messageName), @cell(:call),
         @callReceiver, @callReceiver || receiver,
         res result = send(messageName, *(res named_args), *(res keyed_args)))
       res)
