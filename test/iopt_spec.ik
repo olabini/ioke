@@ -13,7 +13,7 @@ describe(IOpt,
       opt parse(ary)
       ary should == ["hello", "-f", "one", "two", "world"]
       p should == ("one" => "two")
-      opt argv should == ["hello", "world"])
+      opt programArguments should == ["hello", "world"])
     
     it("should execute tasks by priority level",
       opt = IOpt mimic
@@ -32,6 +32,7 @@ describe(IOpt,
     it("should assign an option some code to execute",
       opt = IOpt mimic
       opt["--help"] = fn("Show help" println)
+      opt cell?("--help") should be true
       help = opt["--help"]
       help should mimic(IOpt Action))
 
@@ -39,6 +40,7 @@ describe(IOpt,
       opt = IOpt mimic
       opt["--help"] = fn("Show help")
       opt["-h"] = "--help"
+      opt cell?("-h") should be true
       opt["-h"] should == opt["--help"])
 
     it("should allow multiple options bound to the same action",
@@ -74,12 +76,12 @@ describe(IOpt,
 
     it("should create a lexical block to handle option",
       opt = IOpt mimic
-      opt magic? = false
-      opt on("-m", "Does Magic", opt magic? = true)
+      obj = Origin with(magic?: false)
+      opt on("-m", obj magic? = true)
       opt["-m"] should mimic(IOpt Action)
-      opt should not be magic
+      obj should not be magic
       opt["-m"] call
-      opt should be magic)
+      obj should be magic)
 
     it("should create an option for calling an object's method",
       obj = Origin mimic do(foo = method("Foes", v, @r = v))
@@ -167,25 +169,12 @@ describe(IOpt,
 
 
   describe(IOpt Action,
+    
     describe("mimic", 
       it("should take a callable argument as body",
         body = fn(.)
         a = IOpt Action mimic(cell(:body))
         a cell(:body) should == cell(:body)))
-
-    describe("helpItems",
-      it("should format an action as text",
-        a = IOpt Action mimic(fn("Use magic", .))
-        a flags << "-m", "--magic"
-        a helpItems should == {
-          flags: ["-m", "--magic"],
-          desc: "Use magic",
-          args: nil
-          kargs: nil
-          default: "true"
-          }
-      )
-    )
 
     describe("handleData",
       it("should have default value set to true",
