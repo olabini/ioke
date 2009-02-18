@@ -369,6 +369,20 @@ describe(IOpt,
 
 
   describe("help",
+
+    it("should return a Plain Simple help by default",
+      opt = IOpt mimic
+      opt banner = "Usage: app [options]"
+      opt["-h", "--help"] = fn("Show help", nil)
+      opt help(:plain) should mimic(IOpt Help Plain Simple)
+      opt help(:plain) asList should == [
+        "Usage: app [options]",
+        "",
+        "OPTIONS:",
+        "",
+        "  --help  -h ",
+        "  Show help",
+        ""])
     
     it("should create content formatted as man page",
       opt = IOpt mimic
