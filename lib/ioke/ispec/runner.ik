@@ -64,6 +64,10 @@ ISpec do(
         unless(fkind, error!("Unknown output format: #{format}"))
         options formatters << fkind mimic)
 
+      ["-h", "--help"] = method("Display usage",
+        self println. System exit(0))
+      ["-h"] priority = -10 ; handle it before other options when present
+
       order! = method(argv,
         @argv = argv
         parse(argv)
