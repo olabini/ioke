@@ -6,30 +6,27 @@ IOpt do(
   "
   
   initialize = method(
-    @flags = dict()
-    flags actions = set()
-    flags cell(:"dict []=") = flags cell(:"[]=")
-    flags cell(:"[]=") = method(key, value, 
-      cond(
-        cell(:value) nil? || cell(:value) mimics?(IOpt Action), .,
-        cell(:value) mimics?(Text),
-          if(key?(value),
-            value = self[value],
-            error!("Option not defined: "+value)),
-        if(cell(:value) cell?(:call),
-          value = IOpt Action mimic(cell(:value)),
-          error!("Not callable action given for option #{key}: #{value}")))
-      send(:"dict []=", key, value)
-      value flags << key
-      actions << value
-      value))
+    @flags = set()
+    @actions = set()
+    @initialize = method())
   
-  cell(:"[]") = method(option, 
-    if(flags key?(option), return(flags[option]))
-    flags actions find(a, a handles?(option)))
+  cell("[]") = method(option,
+    if(@cell?(option) && @cell(option) mimics?(IOpt Action),
+      @cell(option),
+      actions find(a, a handles?(option))))
 
-  cell(:"[]=") = method(+args,
-    args[0..-2] inject(nil, a, k, flags[k] = a || args[-1]))
+  cell("[]=") = method(+args,
+    unless(value = args last,
+      args[0..-2] each(k, if(@cell?(k) && @cell(k) mimics?(IOpt Action),
+          @cell(k) flags each(f, @removeCell!(f))))
+      return)
+    unless(cell(:value) mimics?(IOpt Action),
+      if(cell(:value) kind?("Text"),
+        unless(value = @[value], error!("Option not defined #{value}")),
+        value = IOpt Action mimic(cell(:value))))
+    actions << value
+    args[0..-2] each(k, value flags << k. @cell(k) = value)
+    value)
 
   on = dmacro(
     [>forOption]
@@ -37,14 +34,19 @@ IOpt do(
 
     [>flag, +body]
     
-    if(flag kind?("Text"),
+    if(cell(:flag) kind?("Text"),
+      flag = list(flag)
+      while(body first && body first last == body first &&
+        body first name == :"internal:createText",
+        a = body first evaluateOn(call ground, call receiver)
+        if(#/^--?[\\w-]+/ match(a),
+          flag << a
+          body = body rest, break))
       handler = body inject('fn, m, a, m << a) evaluateOn(
         call ground, call receiver)
-      action = IOpt Action mimic(cell(:handler))
-      flags[flag] = cell(:action)
-      return(cell(:action)))
+      return(self[*flag] = handler))
 
-    receiver = flag
+    receiver = cell(:flag)
 
     settingCell = fn(name,
       handler = lecrox(
@@ -128,49 +130,51 @@ IOpt do(
       ;; set the flag
       unless(action, error!("Invalid arguments"))
 
-      flags[flag] = action)
+      self[flag] = action)
     
     action) ; on
 
 
-  parse = method(items, 
+  parse = method(argv,
+    @argv = argv
     ; an array to store not handled input
-    argv = list()
+    @programArguments = list()
     ; first convert the strings to actions.
-    ary = items
-    actions = list()
-    actdata = dict()
+    ary = argv
+    callValues = list()
+    callDatas = dict()
     until(ary empty?,
       if(action = self[ary first],
-        actions << action
+        callValues << action
         res = action consume(ary)
-        actdata[action] = res
+        callDatas[action] = res
         ary = res remnant
         res removeCell!(:remnant),
-        argv << ary first
+        programArguments << ary first
         ary = ary rest))
 
-    @cell(:argv) = argv
     ;; sort them by priority to be executed
-    actions sortBy(priority) each(action,
-      res = actdata[action]
+    callValues sort each(action,
+      res = callDatas[action]
+      action callReceiver ||= self
       action send(:call, *(res named_args), *(res keyed_args))))
 
   Action = Origin mimic do(
     
-    initialize = method(action, docs nil, args nil, plevel 0,
+    initialize = method(action, docs nil, args nil, plevel 0, receiver nil,
       @flags = set()
       @default = true
       @priority = plevel
+      @callReceiver = cell(:receiver)
       @documentation = docs || cell(:action) documentation
       @argumentsCode = args || if(cell(:action) cell?(:argumentsCode), cell(:action) argumentsCode)
       @body = cell(:action))
 
     cell(:<=>) = method(other, priority <=> other priority)
 
-    cell(:call) = macro(call activateValue(@cell(:body)))
+    cell(:call) = macro(call activateValue(@cell(:body), callReceiver))
 
-    cell(:"priority=") = method("Set the option priority. 
+    cell("priority=") = method("Set the option priority. 
       Default priority level is 0.
       Negative values are higher priority for options that
       must be processed before those having priority(0).
@@ -200,7 +204,7 @@ IOpt do(
             @cell(:alternative), @cell(:default) not())))
       d key?(:value) and(d))
 
-    cell(:"argumentsCode=") = method(code,
+    cell("argumentsCode=") = method(code,
       if(code == "..." || code == "", code = nil)
       cell(:argumentsCode) = code
       i = Origin with(names: [], keywords: [], rest: nil, krest: nil)
@@ -274,6 +278,7 @@ IOpt do(
       res remnant = remnant[idx..-1]
       res named_args = args
       res keyed_args = kmap
+
       res)
 
     handle = method(+argv,
