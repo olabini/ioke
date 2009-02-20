@@ -23,18 +23,18 @@ DokGen do(
     outputDir = "dok"
     specsPattern = "test/**/*_spec.ik"
 
-    ["-o", "--output-dir"] = method("Output directory", dir outputDir, 
+    on["-o", "--output-dir"] = method("Output directory", dir outputDir, 
       @outputDir = dir)
 
-    ["--[no-]combine-specs"] = method("Combine with specs?", v, 
+    on["--[no-]combine-specs"] = method("Combine with specs?", v, 
       @combineWithSpecs? = v)
     
-    ["--spec"] = method("Specs pattern", glob specsPattern,
+    on["--spec"] = method("Specs pattern", glob specsPattern,
       @combineWithSpecs? = true
       @specsPattern = glob)
     
-    ["-h", "--help"] = method("Display usage", @println. System exit)
-    ["-h"] priority = -10
+    on["-h", "--help"] = method("Display usage", @println. System exit)
+    on["-h"] priority = -10
   )
 
   document = method(
