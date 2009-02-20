@@ -57,6 +57,28 @@ describe(IOpt,
       
   );iopt:ion
 
+  describe("iopt:key",
+    it("should return nil for a non option keyword",
+      m = IOpt cell("iopt:key") call("--foo")
+      m should be nil)
+
+    it("should return nil for a non option keyword",
+      m = IOpt cell("iopt:key") call("jojo :")
+      m should be nil)
+
+    it("should recognize an option keyword",
+      m = IOpt cell("iopt:key") call("foo:")
+      m should not be nil
+      m name should == "foo"
+      m immediate should be nil)
+
+    it("should obtain the immediate value for an option keyword",
+      m = IOpt cell("iopt:key") call("foo:jojo")
+      m should not be nil
+      m name should == "foo"
+      m immediate should == "jojo")
+  );iopt:key
+
   describe("[]", 
       
     it("should return nil for a non existing option", 
