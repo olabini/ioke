@@ -1,18 +1,57 @@
 IOpt Action = Origin mimic
 IOpt Action do(
-  initialize = method(action, docs nil, args nil, plevel 0, receiver nil,
-    @flags = set()
-    @default = true
-    @priority = plevel
-    @callReceiver = cell(:receiver)
-    @documentation = docs || cell(:action) documentation
-    @argumentsCode = args || if(cell(:action) cell?(:argumentsCode), cell(:action) argumentsCode)
-    @body = cell(:action))
 
-  cell(:call) = macro(call activateValue(@cell(:body), callReceiver))
+  ValueActivation = IOpt Action mimic do (
+    initialize = method(valueToActivate,
+      init
+      @valueToActivate = cell(:valueToActivate)
+      @argumentsCode = @cell(:valueToActivate) argumentsCode)
+
+    call = macro(call resendToValue(@cell(:valueToActivate), receiver))
+    
+  );ValueActivation
+
+  CellActivation = IOpt Action mimic do (
+    initialize = method(cellName,
+      init
+      @cellName = cellName)
+
+    arity = method(
+      @argumentsCode = receiver cell(cellName) argumentsCode
+      @arity)
+    
+    call = macro(call resendToValue(receiver cell(cellName), receiver))
+    
+  );CellActivation
+
+  CellAssignment = IOpt Action mimic do (
+    initialize = method(cellName,
+      init
+      @cellName = cellName
+      @argumentsCode = cellName asText)
+
+    call = method(value, receiver cell(cellName) = value)
+    
+  );CellAssinment
+
+  MessageEvaluation = IOpt Action mimic do (
+    initialize = method(messageToEval,
+      init
+      @messageToEval = messageToEval)
+
+    call = dmacro([>value]
+      messageToEval evaluateOn(call ground with(it: value), receiver))
+    
+  );MessageEvaluation
+
+  init = method(
+    @flags = set()
+    @priority = 0
+    @receiver = self
+  )
 
   <=> = method("Compare by priority", other, priority <=> other priority)
-
+  
   cell("priority=") = method("Set the option priority. 
     Default priority level is 0.
     Negative values are higher priority for options that
@@ -21,115 +60,94 @@ IOpt Action do(
     value,
     @cell(:priority) = value
     self)
-  
-  handles? = method(option,
-    flags find(flag, handleData(flag, option)))
-
-  handleData = method(flag, option,
-    d = dict()
-    if(m = #/=/ match(option),
-      option = m beforeMatch
-      d[:immediate] = m afterMatch)
-    cond(
-      flag == option, d[:value] ||= @cell(:default),
-
-      d empty? && #/^-[^-]/ match(flag) && m = #/^#{flag}/ match(option),
-      d[:immediate] = m afterMatch,
-      
-      m = #/\\[(.*?)\\]/ match(flag),
-      case(option,
-        m beforeMatch + m afterMatch,
-        d[:value] ||= @cell(:default),
-        m beforeMatch + m[1] + m afterMatch,
-        d[:value] ||= if(@cell?(:alternative),
-          @cell(:alternative), @cell(:default) not())))
-    if(d empty?, nil, d))
-
-  cell("argumentsCode=") = method(code,
-    if(code == "..." || code == "", code = nil)
-    @cell(:argumentsCode) = code
-    i = Origin with(names: [], keywords: [], rest: nil, krest: nil)
-    unless(code, @argumentsInfo = i. return(self))
-    dummy = Message fromText("fn(#{code}, nil)")
-    dummy = dummy evaluateOn(dummy)
-    i names = dummy argumentNames
-    i keywords = dummy keywords
-    i rest = if(match = #/\\+([^: ,]+)/ match(code), :(match[1]))
-    i krest = if(match = #/\\+:([^ ,]+)/ match(code), :(match[1]))
-    @argumentsInfo = i
-    self)
 
   consume = method(argv,
-    res = Origin mimic
-    data = nil. flag = nil
-    flags find(f, if(data = handleData(f, argv first), flag = f))
-    unless(flag, error!("I cant handle #{argv first}"))
+    option = iopt cell("iopt:ion") call(argv first)
+    if(option nil? || !flags include?(option flag),
+      error!(NoActionForOption, 
+        text: "Cannot handle flag %s not in ([%%s,%])" format(
+          if(option, option flag, argv first), flags),
+        option: if(option, option flag, argv first)))
 
-    info = argumentsInfo
     remnant = argv rest
     currentKey = nil
     args = list()
     klist = list()
     kmap = dict()
     
-    if(data[:immediate] && info names length > 0, args << data[:immediate])
+    if(option immediate && arity names length > 0, args << option immediate)
 
     shouldContinue = fn(arg, 
       cond(
-        #/^--?/ match(arg), false, ;; found next flag
-        currentKey, true, ;; expecting value for a key arg
-        !(info names empty?) && !(info keywords empty?), 
-        (klist length + args length) < 
-        (info keywords length + info names length),
-        info names empty? && info keywords empty?, 
-        info krest || info rest,
-        info names empty?,
-        info krest || klist length < info keywords length,
-        info keywords empty?, 
-        info rest || args length < info names length,
-        false))
+        iopt[arg], false, ;; found next flag
 
-    isKeyword = fn(arg,
-      if(m = #/^([\\w-]+):/ match(arg),
-        :(m[1]) => if(m afterMatch empty?, nil, m afterMatch)))
+        currentKey, true, ;; expecting value for a key arg
+        
+        !(arity names empty?) && !(arity keywords empty?), 
+        (klist length + args length) < (info keywords length + info names length),
+
+        arity names empty? && arity keywords empty?,
+        arity krest || arity rest,
+        
+        arity names empty?,
+        arity krest || klist length < arity keywords length,
+        
+        arity keywords empty?, 
+        arity rest || args length < arity names length,
+        
+        false))
 
     idx = remnant findIndex(arg,
       cond(
         !shouldContinue(arg), true,
         
-        (p = isKeyword(arg)) && ;; process keyword arg
-        (info krest || info keywords include?(p key)),
-        if(kmap key?(p key),
-          error!("Keyword #{p key} already specified"),
-          kmap[p key] = p value
-          if(p value, klist << p key, currentKey = p key))
-        nil, ;; continue processing
-        
+        (key = iopt cell("iopt:key") call(arg) && 
+          arity krest || arity keywords include?(:(key name))),
+        keyword = :(key name)
+        if(kmap key?(keyword),
+          error!(OptionKeywordAlreadyProvided, 
+            text: "Keyword #{keyword} was specified more than once.",
+            keyword: keyword),
+          kmap[keyword] = key immediate
+          if(key immediate, klist << keyword, currentKey = keyword))
+        false,
+
         currentKey, ;; set last keyword if missing value
         klist << currentKey
         kmap[currentKey] = arg
         currentKey = nil,
         
         args << arg
-        nil))
+        false))
 
-    if(args empty? && kmap empty? && info names empty? &&
-      !(@cell(:body) argumentsCode empty?),
-      args = list(data[:immediate] || data[:value]))
+    Origin with(
+      flag: option flag, 
+      remnant: remnant[(idx || 0-1)..-1],
+      positional: args,
+      keywords: kmap)
     
-    res flag = flag
-    res remnant = remnant[(idx || 0-1)..-1]
-    res named_args = args
-    res keyed_args = kmap
+    );consume
 
-    res)
-
-  handle = method(argv nil, args: nil, receiver: nil, messageName: nil,
-    res = if(argv, consume(argv), args)
-    messageName ||= res flag
+  handle = method(optionArgs,
+    messageName = optionArgs flag
     let(@cell(messageName), @cell(:call),
-      @callReceiver, @callReceiver || receiver,
-      res result = send(messageName, *(res named_args), *(res keyed_args)))
-    res)
+      optionArgs result = send(messageName, 
+        *(optionArgs positional), *(optionArgs keywords)))
+    optionArgs)
 
-  ); IOpt Action
+  cell("argumentsCode=") = method(code,
+    if(code == "..." || code == "", code = nil)
+    @cell(:argumentsCode) = code
+    i = Origin with(names: [], keywords: [], rest: nil, krest: nil)
+    unless(code, @arity = i. return(self))
+    dummy = Message fromText("fn(#{code}, nil)")
+    dummy = dummy evaluateOn(dummy)
+    i names = dummy argumentNames
+    i keywords = dummy keywords
+    i rest = if(match = #/\\+([^: ,]+)/ match(code), :(match[1]))
+    i krest = if(match = #/\\+:([^ ,]+)/ match(code), :(match[1]))
+    @arity = i
+    self)
+  
+); IOpt Action
+
