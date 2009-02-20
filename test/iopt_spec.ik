@@ -98,7 +98,7 @@ describe(IOpt,
       o cell("iopt:actions")["-f"] = :foo
       fn(o["-f"]) should signal(IOpt NoActionForOption))
     
-  );[]
+   );[]
 
    describe("[]=",
     
@@ -163,6 +163,10 @@ describe(IOpt,
 
    describe("on", 
 
+    it("should return self if no args given", 
+      o = IOpt mimic
+      o on should == o)
+
     describe("when given flags as first arguments", 
       it("should create a lexical block to handle the option",
         o = IOpt mimic
@@ -189,8 +193,7 @@ describe(IOpt,
 
       it("should return a mimic of the original Iopt object",
         o = IOpt mimic
-        ;;o on(nil) should mimic(o)
-      )        
+        o on(nil) should mimic(o))
 
       it("should set the new receiver for actions defined with []=",
         v = Origin mimic
@@ -237,3 +240,109 @@ describe(IOpt,
    );on
 
 ); IOpt
+
+
+describe(IOpt Action ValueActivation,
+
+  it("should obtain the documentation from the valueToActivate",
+    f = fn("BlaBla", nil)
+    a = IOpt Action ValueActivation mimic(cell(:f))
+    a documentation should == "BlaBla")
+  
+  it("should obtain the argument names from the valueToActivate",
+    f = fn(a, b "yes", +c, d:, f: 22, +:g, nil)
+    a = IOpt Action ValueActivation mimic(cell(:f)) arity
+    a names should == [:a, :b]
+    a rest should == :c
+    a keywords should == [:d, :f]
+    a krest should == :g)
+
+  it("should activate the value on the receiver",
+    f = method(v, @cell(:yo) = v)
+    a = IOpt Action ValueActivation mimic(cell(:f))
+    o = Origin mimic
+    a receiver = o
+    a call(24)
+    o yo should == 24)
+  
+);IOpt Action ValueActivation
+
+describe(IOpt Action CellActivation, 
+  
+  it("should obtain the documentation from the named cell",
+    o = Origin mimic do(foo = method("Fooing", bar, @baz = bar))
+    a = IOpt Action CellActivation mimic(:foo)
+    a receiver = o
+    a documentation should == "Fooing")
+
+  it("should obtain the arity from the named cell",
+    o = Origin mimic do(foo = method("Fooing", bar, @baz = bar))
+    a = IOpt Action CellActivation mimic(:foo)
+    a receiver = o
+    a = a arity
+    a names should == [:bar]
+    a keywords should be empty
+    a rest should be nil
+    a krest should be nil)
+
+  it("should activate the named cell on receiver",
+    o = Origin mimic do(foo = method("Fooing", bar, @baz = bar))
+    a = IOpt Action CellActivation mimic(:foo)
+    a receiver = o
+    a call(24)
+    o baz should == 24)
+  
+); IOpt Action CellActivation
+
+describe(IOpt Action CellAssignment,
+  
+  it("should use a default documentation for setting named cell",
+    o = Origin mimic
+    a = IOpt Action CellAssignment mimic(:foo)
+    a documentation should == "Set foo")
+
+  it("should use an arity of one required argument named as the cell",
+    o = Origin mimic
+    a = IOpt Action CellAssignment mimic(:foo)
+    a = a arity
+    a names should == [:foo]
+    a keywords should be empty
+    a rest should be nil
+    a krest should be nil)
+
+  it("should set the named cell on receiver",
+    o = Origin mimic
+    a = IOpt Action CellAssignment mimic(:foo)
+    a receiver = o
+    a call(24)
+    o foo should == 24)
+  
+); IOpt Action CellAssignmnet
+
+describe(IOpt Action MessageEvaluation,
+
+  it("should provide default documentation",
+    a = IOpt Action MessageEvaluation mimic('foo)
+    a documentation should == "Evaluate message foo")
+
+  it("should have an empty arity by default",
+    a = IOpt Action MessageEvaluation mimic('foo) arity
+    a names should be empty
+    a keywords should be empty
+    a rest should be nil
+    a krest should be nil)
+
+  it("should activate the message without arguments",
+    o = Origin mimic do(
+      foo = method(@me = 24))
+    a = IOpt Action MessageEvaluation mimic('foo)
+    a receiver = o
+    a call()
+    o me should == 24)
+
+); IOpt Action MessageEvaluation
+
+describe(IOpt Action,
+  it("should parse argumentsCode when assigned",
+    nil)
+); IOpt Action
