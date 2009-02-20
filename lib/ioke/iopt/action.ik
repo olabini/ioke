@@ -43,6 +43,7 @@ IOpt Action do(
     initialize = method(messageToEval,
       init
       @documentation = "Evaluate message #{messageToEval code}"
+      @argumentsCode = nil
       @messageToEval = messageToEval)
 
     call = dmacro(
