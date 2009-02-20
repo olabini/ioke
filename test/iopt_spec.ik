@@ -343,6 +343,86 @@ describe(IOpt Action MessageEvaluation,
 ); IOpt Action MessageEvaluation
 
 describe(IOpt Action,
-  it("should parse argumentsCode when assigned",
-    nil)
+
+  describe("argumentsCode=",
+    it("should clear arity when assigned nil",
+      a = IOpt Action mimic
+      a argumentsCode = nil
+      i = a arity
+      i names should be empty
+      i keywords should be empty
+      i rest should be nil
+      i krest should be nil)
+
+    it("should parse arity when assigned an string",
+      a = IOpt Action mimic
+      a argumentsCode = "a, b 1, +c, d:, e: 33, +:f"
+      i = a arity
+      i names should == [:a, :b]
+      i keywords should == [:d, :e]
+      i rest should == :c
+      i krest should == :f)
+  )
+
+  describe("consume",
+
+    it("should consume no arguments if the arity is empty",
+      o = IOpt mimic
+      a = IOpt Action mimic do(init. flags << "-f")
+      a iopt = o
+      a argumentsCode = nil
+      c = a consume(["-f", "jojo", "-hey"])
+      c flag should == "-f"
+      c remnant should == ["jojo", "-hey"]
+      c positional should be empty
+      c keywords should be empty)
+
+    it("should take only required arguments",
+      o = IOpt mimic
+      a = IOpt Action mimic do(init. flags << "-f")
+      a iopt = o
+      a argumentsCode = "a,b"
+      c = a consume(["-f", "jojo", "jaja", "-hey"])
+      c flag should == "-f"
+      c remnant should == ["-hey"]
+      c positional should == ["jojo", "jaja"]
+      c keywords should be empty)
+
+    it("should take only required arguments",
+      o = IOpt mimic
+      a = IOpt Action mimic do(init. flags << "-f")
+      a iopt = o
+      a argumentsCode = "a,b"
+      c = a consume(["-f", "jojo", "--notanoption", "-hey"])
+      c flag should == "-f"
+      c remnant should == ["-hey"]
+      c positional should == ["jojo", "--notanoption"]
+      c keywords should be empty)
+
+
+    it("should take only required arguments before next option",
+      o = IOpt mimic
+      a = IOpt Action mimic do(init. flags << "-f")
+      o["--jaja"] = a
+      a iopt = o
+      a argumentsCode = "a,b"
+      c = a consume(["-f", "jojo", "--jaja", "-hey"])
+      c flag should == "-f"
+      c remnant should == ["--jaja", "-hey"]
+      c positional should == ["jojo"]
+      c keywords should be empty)
+
+    it("should take only rest arguments before next option",
+      o = IOpt mimic
+      a = IOpt Action mimic do(init. flags << "-f")
+      o["--jaja"] = a
+      a iopt = o
+      a argumentsCode = "+rest"
+      c = a consume(["-f", "jojo", "-hey", "you:notKey", "--jaja", "--jiji"])
+      c flag should == "-f"
+      c remnant should == ["--jaja", "--jiji"]
+      c positional should == ["jojo", "-hey", "you:notKey"]
+      c keywords should be empty)
+
+  )
 ); IOpt Action

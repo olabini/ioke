@@ -112,8 +112,8 @@ IOpt Action do(
       cond(
         !shouldContinue(arg), true,
         
-        (key = iopt cell("iopt:key") call(arg) && 
-          arity krest || arity keywords include?(:(key name))),
+        (key = iopt cell("iopt:key") call(arg)) && 
+        (arity krest || arity keywords include?(:(key name))),
         keyword = :(key name)
         if(kmap key?(keyword),
           error!(OptionKeywordAlreadyProvided, 
