@@ -1,140 +1,191 @@
-IOpt = Origin mimic
+IOpt = Origin mimic 
+;; read the guide at iopt/help.ik
+use("iopt/conditions")
 use("iopt/action")
 use("iopt/help")
 
 IOpt do(
-  initialize = method(
-    @flags = set()
-    @actions = set()
-    @helps = dict(plain: IOpt Help Plain Simple mimic(self))
-    @initialize = method())
   
-  cell("[]") = method(option,
-    if(@cell?(option) && @cell(option) mimics?(IOpt Action),
-      @cell(option),
-      actions find(a, a handles?(option))))
+  initialize = method(
+    @cell("iopt:receiver") = self
+    @cell("iopt:actions") = dict()
+    @cell("iopt:help") = dict(plain: IOpt Help Plain Simple mimic(self))
+    @initialize = method())
 
-  cell("[]=") = method(+args,
-    unless(value = args last,
-      args[0..-2] each(k, if(@cell?(k) && @cell(k) mimics?(IOpt Action),
-          @cell(k) flags each(f, @removeCell!(f))))
-      return)
-    unless(cell(:value) mimics?(IOpt Action),
-      if(cell(:value) kind?("Text"),
-        unless(value = @[value], error!("Option not defined #{value}")),
-        value = IOpt Action mimic(cell(:value))))
-    actions << value
-    args[0..-2] each(k, value flags << k. @cell(k) = value)
-    value)
-
-  on = dmacro(
-    [>forOption]
-    self[forOption],
-
-    [>flag, +body]
+  
+  cell("iopt:ion") = method("If the argument is a valid option name, it returns
+    an object with the following cells: 
     
-    if(cell(:flag) kind?("Text"),
-      flag = list(flag)
-      while(body first && body first last == body first &&
-        body first name == :"internal:createText",
-        a = body first evaluateOn(call ground, call receiver)
-        if(#/^--?[\\w-]+/ match(a),
-          flag << a
-          body = body rest, break))
-      handler = body inject('fn, m, a, m << a) evaluateOn(
-        call ground, call receiver)
-      return(self[*flag] = handler))
+    long: non-nil if it is a long option.
+    flag: e.g. -f, --foo. this value can be used to look for the
+          the option action.
+    immediate: if non-nil indicates this option has an immediate value,
+               for example in --foo=bar the inlined value should be bar
+               for short options like -l22 it should be 22.
 
-    receiver = cell(:flag)
+    If the argument is not a valid option name, return nil.
 
-    settingCell = fn(name,
-      handler = lecrox(
-        receiver cell(name) = call argAt(0))
-      docs = "Set #{name}"
-      args = unless(isQ?(name), "value")
-      IOpt Action mimic(handler, docs, args))
+    IOpt imposes no restriction on how an option looks like, by default
+    this method handles traditional unix style options. -f --foo. 
+    But you can easily change that and have your options look like you
+    want for example like Mike tasks or windows /? style flags if you
+    override this method.
+    ", arg,
+    if(m = #/^-({long}-)?({name}[\\w_-]+)(=({immediate}.+))?$/ match(arg),
+      if(m long nil? && m immediate nil? && m name length > 1,
+        m immediate = m name[1..-1]
+        m name = m name[0..0])
+      m flag = if(m long, "--", "-") + m name
+      m))
 
-    callingMethod = fn(name,
-      handler = lecrox(call resendToValue(receiver cell(name), receiver))
-      docs = if(receiver cell?(name), 
-        receiver cell(name) documentation)
-      args = unless(isQ?(name), 
-        if(receiver cell?(name),
-          if(receiver cell(name) cell?(:argumentsCode),
-            receiver cell(name) argumentsCode)))
-      IOpt Action mimic(handler, docs, args))
+  cell("iopt:key") = method("Return non-nil if the argument is an option keyword.
+    If non-nil, the object should have the following cells defined:
 
-    applyingValue = fn(value,
-      handler = lecrox(call resendToValue(cell(:value), receiver))
-      docs = cell(:value) documentation
-      args = if(cell(:value) cell?(:argumentsCode),
-        cell(:value) argumentsCode)
-      IOpt Action mimic(handler, docs, args))
+    name: The keyword name
+    immediate: The value if it has been provided with the keyword.
 
-    applyingMessage = fn(msg,
-      gnd = call ground mimic
-      handler = lecrox(
-        args = call evaluatedArguments
-        gnd it = args first
-        msg evaluateOn(gnd, receiver))
-      IOpt Action mimic(handler))
-
-    cellMsg? = fn(msg, msg name == :"@" &&
-      msg next && msg next next nil?) 
+    ", arg,
+    #/({name}[\\w_-]+):({immediate}.+)?$/ match(arg))
+  
+  cell("[]") = method("Return the action handling the option given as argument", 
+    option,
+    unless(o = @cell("iopt:ion") call(option), return nil)
+    action = @cell("iopt:actions")[o flag]
+    unless(action mimics?(IOpt Action),
+      signal!(NoActionForOption, 
+        text: "Not a valid flag: #{option}",
+        option: option, value: action))
+    action)
+  
+  cell("[]=") = macro("Create an option that handles the flags given as indeces 
+    using the action provided at the RHS.
+      
+    This action can be one of several things:
     
-    isQ? = fn(name, name asText[-1] == "?"[0])
+    nil - Will unregister the flags from this object.
+    Symbol - Will create an Action CellActivation that will activate the cell with
+             that name upon execution.
+    :@     - Will create an Action CellAssignment that will store the required 
+             option argument on the named cell.
+             e.g. :@here will store its value in cell(:here)
+    Text   - Will create an alias for the RHS option.
+    Action - Will register the flags being handled by the given action.
+    Message - Will create an Action MessageEvaluation that will evaluate the 
+              message given on the action receiver.
+    value  - Will create an Action ValueActivation that will activate the given
+             value, this can anything like Method, LexicalContext, Macros, etc.
+    ",
+    options = set()
+    call arguments[0..-2] each(i, a, 
+      a = call argAt(i)
+      unless(m = @cell("iopt:ion") call(a), 
+        signal!(MalformedFlag, text: "Not a valid flag: #{a}", name: a))
+      options << m flag)
+    action = call arguments last
+    action = if(action name == :":@" && action next && action next next nil?, 
+      Action CellAssignment mimic(action next name),
+      call argAt(call arguments length - 1))
+    case(cell(:action) kind,
+      "nil",  options each(o, @cell("iopt:actions")[o] = nil). return,
+        
+      "Symbol",
+      if(action asText[0..0] == "@", ;; assign a cell
+        action = Action CellAssignment mimic(:(action asText[1..-1])),
+        action = Action CellActivation mimic(action)),
+        
+      "Text", 
+      o = @cell("iopt:ion") call(action)
+      unless(o, 
+        error!(MalformedFlag, text: "Not a valid flag: #{action}", name: action))
+      unless(action = @cell("iopt:actions")[o flag],
+        signal!(NoActionForOption, 
+          text: "No action registered for flag #{o flag}", option: o flag)),
+        
+      "Message",
+      action = Action MessageEvaluation mimic(action),
+        
+      unless(cell(:action) mimics?(Action),
+        action = Action ValueActivation mimic(cell(:action))))
+    
+    action receiver = @cell("iopt:receiver")
+    action iopt = self
+    options each(o, action flags << o. @cell("iopt:actions")[o] = action)
+    action)
 
-    flagName = fn(name, 
-      name = name asText replaceAll("_", "-")
-      #/[^A-Za-z0-9-]/ allMatches(name) each(m, 
-        name = name replace(m, ""))
-      #/[A-Z]+[a-z]*/ allMatches(name) each(m,
-        name = name replace(m, "-#{m lower}"))
-      name)
+  on = dmacro("You can use this to create actions having an object as receiver.
 
+    - If the first arguments are flags, the remaining arguments
+       are used to create a LexicalBlock to handle the option.
+
+         on(\"-h\", \"--help\", \"Show help\", @println. System exit)
+       
+    - If only given one argument, will return a mimic of self, having
+      the only argument as receiver for all actions created with it.
+
+         opts = IOpt on(myApp)
+         opts[\"--path\"] = :setPath
+         opts[\"-f\"] = fn(doSomething)
+
+         --path will set the cell(:setPath) on myApp object.
+         -f will call the method having myApp as receiver.
+
+     - If the first argument is an object the remaining arguments
+       are used to create a lexicalBlock to handle the action, having
+       the first argument as receiver.
+         
+          on(myApp, \"-f\", doSomething)
+
+     - If the last argument is just a symbol, it will be used to 
+       create either an IOpt Action CellAssignment or IOpt Action CellActivation
+
+          ;; will activate myApp cell(:setPath) upon execution
+          on(myApp, \"--path\", \"Set the path to use\", :setPath)
+
+          ;; will assign the value of myApp cell(:output)
+          on(myApp, \"--output\", \"Write to this file\", :@output)
+      
+    ",
+    []
+    self,
+    
+    [>receiver]
+    other = @mimic
+    other cell("iopt:receiver") = receiver
+    other
+    ,;;[receiver]
+    [>receiver, +args]
+    flags = list()
+    body = nil
     action = nil
-    body each(handler,
-      flag = nil
-
-      if(handler name == :"internal:createText", ;; explicit flag
-        flag = handler deepCopy
-        flag -> nil
-        flag = flag evaluateOn(call ground)
-
-        what = handler next
-        if(cellMsg?(what),
-          action = settingCell(what next name),
-          what = what evaluateOn(call ground)
-
-          if(cell(:what) kind?("Symbol"),
-            action = callingMethod(what),
-            if(cell(:what) kind?("Message"),
-              action = applyingMessage(what),
-              action = applyingValue(cell(:what))))
-          ),
-
-        ;; dont have explicit flag, built it
-        if (cellMsg?(handler),
-          what = handler next name
-          name = flagName(what)
-          flag = if(isQ?(what), "--[no-]#{name}", "--#{name}")
-          action = settingCell(what), 
-          what = handler evaluateOn(call ground)
-          if(cell(:what) kind?("Symbol"),
-            name = flagName(what)
-            flag = if(isQ?(what), "--[no-]#{name}", "--#{name}")
-            action = callingMethod(what),
-            error!("Invalid argument")))
-      )
-      ;; set the flag
-      unless(action, error!("Invalid arguments"))
-
-      self[flag] = action)
+    if(receiver kind?("Text"), 
+      unless(option = @cell("iopt:ion") call(receiver),
+        signal!(MalformedFlag, text: "Not a valid flag: #{receiver}", name: receiver))
+      receiver = @cell("iopt:receiver")
+      flags << option flag)
+    while(args first name == :"internal:createText" && args first last == args first && 
+      option = @cell("iopt:ion") call(args first evaluateOn(call ground, call receiver)),
+      flags << option flag
+      args = args rest)
+    body = args inject('fn, m, a, m << a) evaluateOn(call ground, call receiver)
     
-    action) ; on
+    if(args last symbol?,
+      name = if(args last name == :":@", 
+        :("@#{args last next name}"), call argAt(call arguments length - 1))
+      action = flags inject(name, a, f, @[f] = a)
+      action documentation = cell(:body) documentation || action documentation,
+      action = flags inject(cell(:body), a, f, @[f] = a))
+    
+    action receiver = receiver
+    action
+  );on
 
-
-  parse = method(argv,
+  parse = method("Parse the given array of command line arguments. 
+    This method will invoke the actions for the flags.
+    
+    Elements that are neither an option nor par of an option's argument,
+    are stored on a list named cell(:programArguments).
+    
+    ",argv,
     @argv = argv
     ; an array to store not handled input
     @programArguments = list()
@@ -143,27 +194,27 @@ IOpt do(
     opts = list()
     until(ary empty?,
       if(action = self[ary first],
-        res = action consume(ary)
-        opts << ((action => res) do(<=> = method(o, key <=> o key)))
-        ary = res remnant
-        res removeCell!(:remnant),
+        consumed = action consume(ary)
+        opts << ((action => consumed) do(<=> = method(o, key <=> o key)))
+        ary = consumed remnant
+        consumed removeCell!(:remnant),
         programArguments << ary first
         ary = ary rest))
 
     ;; sort them by priority to be executed
-    opts sort each(pair,
-      pair key handle(args: pair value, receiver: self)))
+    opts sort each(pair, pair key handle(pair value))
+  );parse
 
   asText = method(help(:plain) asText)
 
   help = dmacro(
     [>format]
-    @helps[format],
+    @cell("iopt:help")[format],
 
     [>format, +body]
     name = (format asText[0..0] upper) + format asText[1..-1]
     msg = ('mimic << Message wrap(self))
     body each(a, msg << a)
-    @helps[format] = msg sendTo(IOpt Help cell(name)))
-
-  ); IOpt
+    @cell("iopt:help")[format] = msg sendTo(IOpt Help cell(name)))
+  
+); IOpt

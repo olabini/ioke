@@ -11,7 +11,9 @@ IOpt Help Plain do(
       if(iopt cell?(:banner), lines << iopt banner << "")
       lines << "OPTIONS:" << ""
       
-      iopt actions each(action,
+      actions = set()
+      iopt cell("iopt:actions") each(pair, actions << pair value)
+      actions sort each(action,
         lines << "%[  %s%] %s" format(
           action flags, if(action argumentsCode,
             "(#{action argumentsCode})", ""))
