@@ -107,6 +107,11 @@ describe(IOpt,
        o["-f"] = fn()
        o["-f"] should mimic(IOpt Action ValueActivation))
 
+     it("should have self as the default receiver",
+       o = IOpt mimic
+       o["-f"] = fn()
+       o["-f"] receiver should == o)
+
      it("should create an action that activates a cell by assigning a symbol to a flag",
        o = IOpt mimic
        o["-f"] = :flag
@@ -237,7 +242,39 @@ describe(IOpt,
       )
     )
 
-   );on
+  );on
+
+ describe("parse",
+   it("should execute options by priority",
+     order = []
+     o = IOpt mimic
+     o on("-a", order << :a)
+     o on("-b", order << :b) priority = -2
+     o on("-c", order << :c) priority = -1
+     o on("-d", order << :d) priority = 3
+     o on("-e", order << :e)
+     o parse(["-d", "-e", "-c", "-a", "-b"])
+     order should == [:b, :c, :e, :a, :d])
+   
+   it("should not modify original arguments and store them on argv cell",
+     o = IOpt mimic
+     o on("-a", nil)
+     o parse(["-not-an-option", "-a", "yes", "hey"])
+     o argv should == ["-not-an-option", "-a", "yes", "hey"])
+
+   it("should store non option arguments on programArguments cell",
+     o = IOpt mimic
+     o on("-a", nil)
+     o parse(["-not-an-option", "-a", "yes", "hey"])
+     o programArguments should == ["-not-an-option", "yes", "hey"])
+ )
+
+ describe("help",
+   it("should have a Help Simple Plain by default", 
+     o = IOpt mimic
+     h = o help(:plain)
+     h should not be nil)
+ )
 
 ); IOpt
 
@@ -424,5 +461,17 @@ describe(IOpt Action,
       c positional should == ["jojo", "-hey", "you:notKey"]
       c keywords should be empty)
 
+   it("should take keyword arguments before next option",
+     o = IOpt mimic
+      a = IOpt Action mimic do(init. flags << "-f")
+      o["--jaja"] = a
+      a iopt = o
+      a argumentsCode = "+rest, you:, +:all"
+      c = a consume(["-f", "jojo", "-hey", "you:aKey",
+                     "one:", "1", "two:2", "--jaja", "--jiji"])
+      c flag should == "-f"
+      c remnant should == ["--jaja", "--jiji"]
+      c positional should == ["jojo", "-hey"]
+      c keywords should == dict(you: "aKey", one: "1", two: "2" ))
   )
 ); IOpt Action

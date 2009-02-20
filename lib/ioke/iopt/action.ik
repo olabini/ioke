@@ -95,7 +95,7 @@ IOpt Action do(
         currentKey, true, ;; expecting value for a key arg
         
         !(arity names empty?) && !(arity keywords empty?), 
-        (klist length + args length) < (info keywords length + info names length),
+        (klist length + args length) < (arity keywords length + arity names length),
 
         arity names empty? && arity keywords empty?,
         arity krest || arity rest,
