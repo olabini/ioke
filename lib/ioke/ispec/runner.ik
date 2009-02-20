@@ -1,26 +1,10 @@
+use("iopt")
 
 ISpec do(
   Options = Origin mimic do(
     create = method(err, out,
       self with(errorStream: err, outStream: out, formatters: [], files: [], directories: []))
     
-    parse! = method(
-      hasFormat = false
-      argv each(arg,
-        if(arg == "-fp",
-          hasFormat = true
-          formatters << ISpec Formatter ProgressBarFormatter mimic,
-          if(arg == "-fs",
-            hasFormat = true
-            formatters << ISpec Formatter SpecDocFormatter mimic,
-            if(FileSystem directory?(arg),
-              directories << arg,
-              files << arg))))
-
-      unless(hasFormat,
-        formatters << ISpec Formatter ProgressBarFormatter mimic)
-    )
-
     runExamples = method(
       files each(f, use(f))
       directories each(d,
@@ -58,19 +42,44 @@ ISpec do(
       )
     )
 
-    OptionParser = Origin mimic do(
+    OptionParser = IOpt mimic do(
       create = method(err, out,
         newOP = self mimic
         newOP errorStream = err
         newOP outStream = out
         newOP options = ISpec Options create(newOP errorStream, newOP outStream)
-        newOP banner = "Usage: ispec (FILE|DIRECTORY|GLOB)+ [options]"
         newOP)
+
+      formatters = dict(
+        specdoc: ISpec Formatter SpecDocFormatter,
+        progress: ISpec Formatter ProgressBarFormatter)
+      formatters[:s] = formatters[:specdoc]
+      formatters[:p] = formatters[:progress]
+
+      banner = "Usage: ispec (FILE|DIRECTORY|GLOB)+ [options]"
+
+      on["-f", "--format"] = method("Specifies what format to use for output", format,
+        fkind = formatters[:(format)]
+        unless(fkind, error!("Unknown output format: #{format}"))
+        options formatters << fkind mimic)
+
+      on["-h", "--help"] = method("Display usage", @println. System exit(0))
+      on["-h"] priority = -10 ; handle it before other options when present
 
       order! = method(argv,
         @argv = argv
-        options argv = argv mimic
-        options parse!
+        parse(argv)
+        
+        ;; check if any formatter was set, or use a default.
+        if(options formatters empty?,
+          options formatters << formatters[:progress] mimic)
+
+        ;; process non option arguments
+        programArguments each(arg,
+          if(FileSystem directory?(arg),
+              options directories << arg,
+              options files << arg))
+
         options)
     )
   )
