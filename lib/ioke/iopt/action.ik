@@ -5,7 +5,8 @@ IOpt Action do(
     initialize = method(valueToActivate,
       init
       @valueToActivate = cell(:valueToActivate)
-      @argumentsCode = @cell(:valueToActivate) argumentsCode)
+      @argumentsCode = cell(:valueToActivate) argumentsCode
+      @documentation = cell(:valueToActivate) documentation)
 
     call = macro(call resendToValue(@cell(:valueToActivate), receiver))
     
@@ -15,6 +16,9 @@ IOpt Action do(
     initialize = method(cellName,
       init
       @cellName = cellName)
+
+    cell(:documentation) = method(
+      @documentation = receiver cell(cellName) documentation)
 
     arity = method(
       @argumentsCode = receiver cell(cellName) argumentsCode
@@ -28,6 +32,7 @@ IOpt Action do(
     initialize = method(cellName,
       init
       @cellName = cellName
+      @documentation = "Set #{cellName asText}"
       @argumentsCode = cellName asText)
 
     call = method(value, receiver cell(cellName) = value)
@@ -37,9 +42,14 @@ IOpt Action do(
   MessageEvaluation = IOpt Action mimic do (
     initialize = method(messageToEval,
       init
+      @documentation = "Evaluate message #{messageToEval code}"
       @messageToEval = messageToEval)
 
-    call = dmacro([>value]
+    call = dmacro(
+      []
+      messageToEval evaluateOn(call ground, receiver),
+
+      [>value]
       messageToEval evaluateOn(call ground with(it: value), receiver))
     
   );MessageEvaluation
