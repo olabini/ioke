@@ -7,6 +7,23 @@ IOpt documentation = #[Command line processing the Ioke way.
   IOpt is inspired by similar tools like ruby's optparse, and tries 
   to make command line parsing as easy as possible for ioke programs,
   while still allowing a great degree of control.
+
+  Features
+
+  - Doen't impose an option style, by default IOpt provides support 
+    for unix style options (short and long), but you can easily define
+    how an option looks like for your application.
+
+  - Interface for easily creating options that will store a cell on a given
+    object, activate a value(methods, blocks, etc).
+
+  - Option arguments can be any of those supported by Ioke, thus your
+    options can take required arguments, optionals, keywords, and
+    +rest, +:krest arguments just like any other ioke method.
+
+  - IOpt support option priority, so that you can choose which flags
+    should be handled before others (like --help or --version).
+    Default priority is 0, more negative values are higher priority.
  
   Basic Usage.
      
@@ -43,6 +60,8 @@ IOpt documentation = #[Command line processing the Ioke way.
      ;; were part of an option arguments can be accessed by
      opt programArguments
 
+     ;; The original input given to the parse method is available at
+     opt argv
 
   Action arguments.
 
@@ -84,32 +103,21 @@ IOpt documentation = #[Command line processing the Ioke way.
   
      ;; this will create a --file option taking one required 
      ;; argument. when called will store value on myObject cell(:file)
-     opt on(myObject, @file)
-
-     ;; this example will create a --[no-\]magic option that
-     ;; can handle: --magic and --no-magic, storing true or false
-     ;; on myObject cell(:magic?).
-     ;; Options like this take no arguments as the flag indicates
-     ;; which value to store. - More on alternate options later -
-     opt on(myObject, @magic?)
+     opt on(myObject, "--file", "Which file should I use", :@file)
 
      ;; Or if you already have a method on myObject and would like
      ;; to expose it as an option, use something like the follwing.
      ;; This will generate a --my-method option taking arguments
      ;; as mandated by the method object.
-     opt on(myObject, :myMethod)
+     opt on(myObject, "--my-method", :myMethod)
 
-     ;; You can always explicitly specify the flag to use..
-     opt on(myObject, "--something" :myMethod)
+     ;; Instead of giving myObject each time, you can use
+     opt = IOpt on(myObject)
+     opt on(\"--foo\", \"Set the foo\", :@foo)
+     opt on(\"-b\", \"--activate-bar\", :bar)
 
-     ;; Same for cells
-     opt on(myObject, "--output" @file)
-
-     ;; Ofcourse you can use any activable value.
-     opt on(myObject, "--moo" myObject cell(:foo))
-
-     ;; finally you can create a Lexical scope by giving 
-     ;; an option string as the first argument to the on macro.
+     ;; If the last argument is not a symbol, then the on macro
+     ;; creates a LexicalBlock to handle the option:
      opt on("--something", "-s", "The documentation", arg,
        thisLexicalScopeVar + arg)
 
@@ -136,10 +144,10 @@ IOpt documentation = #[Command line processing the Ioke way.
      ;; set the documentation displayed for --help
      ;; most of the times it is borrowed from the activable
      ;; value's documentation cell.
-     opt["--help"\] = "Display this help"
+     opt["--help"\] documentation = "Display this help"
 
      ;; set the receiver object where to activate the action
-     opt["--help"\] = fn(lazilyGetTheReceiver())
+     opt["--help"\] receiver = someOtherObject
        
      ;; change the arity for this action.
      ;; Most of the times this is borrowed from the activable
@@ -157,37 +165,6 @@ IOpt documentation = #[Command line processing the Ioke way.
      ;; from the command line, you need to specify the argumentsCode
      ;; that your macro would expect.
      opt on(app, :weird) argumentsCode = "a,b nil"
-
-
-     ;; As previously noted, IOpt supports alternate options.
-     ;; These options have a flag with the following form:
-     ;;
-     ;;    --[alt\]ern
-     ;;
-     ;; That can handle --ern or --altern. By default this
-     ;; kind of options dont take arguments as the flag name
-     ;; indicates which value to use.
-     ;;
-     ;; A positive flag (--ern) would default to true
-     ;; the alternation (--altern) evaluates to the negation of it.
-     ;; We said "the negation" because IOpt simply negates the
-     ;; default value (think `true not()') for --altern.
-     ;;
-     ;; This can be useful, for example if you want --ern to
-     ;; have a false value and --altern to be true.
-     opt on(app, "--[alt\]ern", @alt?) default = false
-
-     ;; or having some other value
-     opt on(app, "--[alt\]ern", @alt) do(
-       default = "yes, please"
-       alternative = "dont you dare")
-
-     ;; you could use any object that returns its negative value
-     ;; by calling its :not cell.
-     lin = Origin mimic
-     win = Origin mimic
-     lin cell(:not) = win
-     opt on("app", "--[hate-\]unix" @system) default = lin
 
 ]; documentation
   
