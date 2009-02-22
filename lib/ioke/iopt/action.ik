@@ -73,7 +73,7 @@ IOpt Action do(
     self)
 
   consume = method(argv,
-    option = iopt cell("iopt:ion") call(argv first)
+    option = iopt iopt:ion(argv first)
     if(option nil? || !flags include?(option flag),
       error!(NoActionForOption, 
         text: "Cannot handle flag %s not in ([%%s,%])" format(
@@ -112,7 +112,7 @@ IOpt Action do(
       cond(
         !shouldContinue(arg), true,
         
-        (key = iopt cell("iopt:key") call(arg)) && 
+        (key = iopt iopt:key(arg)) && 
         (arity krest || arity keywords include?(:(key name))),
         keyword = :(key name)
         if(kmap key?(keyword),

@@ -7,13 +7,13 @@ use("iopt/help")
 IOpt do(
   
   initialize = method(
-    @cell("iopt:receiver") = self
-    @cell("iopt:actions") = dict()
-    @cell("iopt:help") = dict(plain: IOpt Help Plain Simple mimic(self))
+    @iopt:receiver = self
+    @iopt:actions = dict()
+    @iopt:help = dict(plain: IOpt Help Plain Simple mimic(self))
     @initialize = method())
 
   
-  cell("iopt:ion") = method("If the argument is a valid option name, it returns
+  iopt:ion = method("If the argument is a valid option name, it returns
     an object with the following cells: 
     
     long: non-nil if it is a long option.
@@ -38,7 +38,7 @@ IOpt do(
       m flag = if(m long, "--", "-") + m name
       m))
 
-  cell("iopt:key") = method("Return non-nil if the argument is an option keyword.
+  iopt:key = method("Return non-nil if the argument is an option keyword.
     If non-nil, the object should have the following cells defined:
 
     name: The keyword name
@@ -49,8 +49,8 @@ IOpt do(
   
   cell("[]") = method("Return the action handling the option given as argument", 
     option,
-    unless(o = @cell("iopt:ion") call(option), return nil)
-    action = @cell("iopt:actions")[o flag]
+    unless(o = @iopt:ion(option), return nil)
+    action = @iopt:actions[o flag]
     unless(action mimics?(IOpt Action),
       signal!(NoActionForOption, 
         text: "Not a valid flag: #{option}",
@@ -78,7 +78,7 @@ IOpt do(
     options = set()
     call arguments[0..-2] each(i, a, 
       a = call argAt(i)
-      unless(m = @cell("iopt:ion") call(a), 
+      unless(m = @iopt:ion(a), 
         signal!(MalformedFlag, text: "Not a valid flag: #{a}", name: a))
       options << m flag)
     action = call arguments last
@@ -86,7 +86,7 @@ IOpt do(
       Action CellAssignment mimic(action next name),
       call argAt(call arguments length - 1))
     case(cell(:action) kind,
-      "nil",  options each(o, @cell("iopt:actions")[o] = nil). return,
+      "nil",  options each(o, @iopt:actions[o] = nil). return,
         
       "Symbol",
       if(action asText[0..0] == "@", ;; assign a cell
@@ -94,10 +94,10 @@ IOpt do(
         action = Action CellActivation mimic(action)),
         
       "Text", 
-      o = @cell("iopt:ion") call(action)
+      o = @iopt:ion(action)
       unless(o, 
         error!(MalformedFlag, text: "Not a valid flag: #{action}", name: action))
-      unless(action = @cell("iopt:actions")[o flag],
+      unless(action = @iopt:actions[o flag],
         signal!(NoActionForOption, 
           text: "No action registered for flag #{o flag}", option: o flag)),
         
@@ -107,9 +107,9 @@ IOpt do(
       unless(cell(:action) mimics?(Action),
         action = Action ValueActivation mimic(cell(:action))))
     
-    action receiver = @cell("iopt:receiver")
+    action receiver = @iopt:receiver
     action iopt = self
-    options each(o, action flags << o. @cell("iopt:actions")[o] = action)
+    options each(o, action flags << o. @iopt:actions[o] = action)
     action)
 
   on = dmacro("You can use this to create actions having an object as receiver.
@@ -150,7 +150,7 @@ IOpt do(
     
     [>receiver]
     other = @mimic
-    other cell("iopt:receiver") = receiver
+    other iopt:receiver = receiver
     other
     ,;;[receiver]
     [>receiver, +args]
@@ -158,12 +158,12 @@ IOpt do(
     body = nil
     action = nil
     if(receiver kind?("Text"), 
-      unless(option = @cell("iopt:ion") call(receiver),
+      unless(option = @iopt:ion(receiver),
         signal!(MalformedFlag, text: "Not a valid flag: #{receiver}", name: receiver))
-      receiver = @cell("iopt:receiver")
+      receiver = @iopt:receiver
       flags << option flag)
     while(args first name == :"internal:createText" && args first last == args first && 
-      option = @cell("iopt:ion") call(args first evaluateOn(call ground, call receiver)),
+      option = @iopt:ion(args first evaluateOn(call ground, call receiver)),
       flags << option flag
       args = args rest)
     body = args inject('fn, m, a, m << a) evaluateOn(call ground, call receiver)
@@ -209,12 +209,12 @@ IOpt do(
 
   help = dmacro(
     [>format]
-    @cell("iopt:help")[format],
+    @iopt:help[format],
 
     [>format, +body]
     name = (format asText[0..0] upper) + format asText[1..-1]
     msg = ('mimic << Message wrap(self))
     body each(a, msg << a)
-    @cell("iopt:help")[format] = msg sendTo(IOpt Help cell(name)))
+    @iopt:help[format] = msg sendTo(IOpt Help cell(name)))
   
 ); IOpt
