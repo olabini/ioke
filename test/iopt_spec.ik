@@ -7,49 +7,49 @@ describe(IOpt,
   describe("iopt:ion", 
     
     it("should recognize a short option", 
-      m = IOpt cell("iopt:ion") call("-f")
+      m = IOpt iopt:ion("-f")
       m should not be nil
       m long should be nil
       m flag should == "-f"
       m immediate should be nil)
     
     it("should recognize a long option", 
-      m = IOpt cell("iopt:ion") call("--foo")
+      m = IOpt iopt:ion("--foo")
       m should not be nil
       m long should not be nil
       m flag should == "--foo"
       m immediate should be nil)
     
     it("should not recognize something that is not an option", 
-      IOpt cell("iopt:ion") call("foo") should be nil
-      IOpt cell("iopt:ion") call("- foo") should be nil
-      IOpt cell("iopt:ion") call(" -foo") should be nil
-      IOpt cell("iopt:ion") call("--@foo") should be nil
-      IOpt cell("iopt:ion") call("--fo@") should be nil)
+      IOpt iopt:ion("foo") should be nil
+      IOpt iopt:ion("- foo") should be nil
+      IOpt iopt:ion(" -foo") should be nil
+      IOpt iopt:ion("--@foo") should be nil
+      IOpt iopt:ion("--fo@") should be nil)
     
     it("should obtain the immediate value for a short option using =",
-      m = IOpt cell("iopt:ion") call("-f=22")
+      m = IOpt iopt:ion("-f=22")
       m should not be nil
       m long should be nil
       m flag should == "-f"
       m immediate should == "22")
     
     it("should obtain the immediate value for a short option using =",
-      m = IOpt cell("iopt:ion") call("-f22=moo")
+      m = IOpt iopt:ion("-f22=moo")
       m should not be nil
       m long should be nil
       m flag should == "-f22"
       m immediate should == "moo")
     
     it("should obtain the immediate value for a short option",
-      m = IOpt cell("iopt:ion") call("-f22")
+      m = IOpt iopt:ion("-f22")
       m should not be nil
       m long should be nil
       m flag should == "-f"
       m immediate should == "22")
 
     it("should obtain the immediate value for a long option using =",
-        m = IOpt cell("iopt:ion") call("--foo=bar")
+        m = IOpt iopt:ion("--foo=bar")
         m should not be nil
         m long should not be nil
         m flag should == "--foo"
@@ -59,21 +59,21 @@ describe(IOpt,
 
   describe("iopt:key",
     it("should return nil for a non option keyword",
-      m = IOpt cell("iopt:key") call("--foo")
+      m = IOpt iopt:key("--foo")
       m should be nil)
 
     it("should return nil for a non option keyword",
-      m = IOpt cell("iopt:key") call("jojo :")
+      m = IOpt iopt:key("jojo :")
       m should be nil)
 
     it("should recognize an option keyword",
-      m = IOpt cell("iopt:key") call("foo:")
+      m = IOpt iopt:key("foo:")
       m should not be nil
       m name should == "foo"
       m immediate should be nil)
 
     it("should obtain the immediate value for an option keyword",
-      m = IOpt cell("iopt:key") call("foo:jojo")
+      m = IOpt iopt:key("foo:jojo")
       m should not be nil
       m name should == "foo"
       m immediate should == "jojo")
