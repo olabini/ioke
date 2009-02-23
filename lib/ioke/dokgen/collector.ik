@@ -1,6 +1,6 @@
 
 DokGen do(
-  KindsToAvoid = [DokGen]
+  KindsToAvoid = [DokGen, JavaGround]
 
   collect = method(
     current, collected, 
