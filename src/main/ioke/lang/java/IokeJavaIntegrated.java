@@ -3,9 +3,15 @@
  */
 package ioke.lang.java;
 
+import ioke.lang.IokeObject;
+import ioke.lang.Runtime;
+
 /**
  * Marker interface
  *
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
-public interface IokeJavaIntegrated {}// IokeJavaIntegrated
+public interface IokeJavaIntegrated {
+    public IokeObject __get_IokeProxy();
+    public Runtime    __get_IokeRuntime();
+}// IokeJavaIntegrated

@@ -1,4 +1,31 @@
 
+
+This is how integrated classes should work:
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+- integrate is called with one or more types
+ - returns a Class-object that implements/extends all types
+  - the class object implements a marker interface
+  - the class object has a constructor that takes an IokeObject that is the real proxy of a specific integration instance
+ - the constructor should take a proxy object and all the other arguments to one of the constructors - and there should be one constructor for each super constructor
+
+
+- integrate returns a wrapped class instance ... 
+ - when you call 'new' on this call instance, something specific happens:
+  - first, mimic is called on the object
+  - then call newInstance on the class, sending in the iokeobject
+  - then set the actual object of the wrapper thingy to the instance of the class...
+  - and return the whole thing
+
+
+  in fact, the returned thing should be a regular wrapped java object... and the integrated stuff should be EXACTLY the same, except that new should work a bit differently.
+
+
+
+
+
+
+
 fields should probably just be exposed using a namespacing to discourage use:
 
 private String x;
