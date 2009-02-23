@@ -583,14 +583,6 @@ public class Runtime {
     }
 
     public IokeObject createJavaWrapper(Object object) {
-        //        System.err.println("creating Java wrapper: " + object);
-        // if object instance of Class
-        //    if it is the class Object, don't recurse, instead mimic the java wrapper
-        //    wrap its super classes first, and add those as mimics
-        // else
-        //    wrap its class, add that as mimic, and 
-        //    then wrap the object itself
-        //
         if(object instanceof Class) {
             if(object == Object.class) {
                 IokeObject obj = this.javaWrapper.allocateCopy(null, null);
@@ -620,6 +612,17 @@ public class Runtime {
             obj.setData(new JavaWrapper(object));
             return obj;
         }
+    }
+
+    public IokeObject createIntegratedJavaWrapper(Class clz) {
+        IokeObject obj = this.javaWrapper.allocateCopy(null, null);
+        obj.mimicsWithoutCheck(registry.wrap(Class.class));
+        obj.mimicsWithoutCheck(registry.wrap(clz.getSuperclass()));
+        for(Class<?> i : clz.getInterfaces()) {
+            obj.mimicsWithoutCheck(registry.wrap(i));
+        }
+        obj.setData(JavaIntegratedWrapper.wrapWithMethods(clz, obj, this));
+        return obj;
     }
 
     public IokeObject createJavaMethod(java.lang.reflect.Method[] methods) throws ControlFlow {

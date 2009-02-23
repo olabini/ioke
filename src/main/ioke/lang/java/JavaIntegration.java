@@ -82,8 +82,10 @@ public class JavaIntegration {
         ifs[ix] = "ioke/lang/java/IokeJavaIntegrated";
 
         cw.visit(V1_5, ACC_PUBLIC, p(className), null, p(superClass), ifs);
+        cw.visitField(0, "__real_ioke_proxy", "Lioke/lang/IokeObject;", null, null);
 
         implementConstructor(cw, className, superClass);
+        implementIntegrationMethods(cw, className, superClass);
 
         if(superClass != Object.class) {
             implementStubMethodsFor(cw, className, superClass);
@@ -101,11 +103,33 @@ public class JavaIntegration {
     }
 
     private static void implementConstructor(ClassWriter cw, String className, Class superClass) {
-        MethodVisitor mv = cw.visitMethod(ACC_PUBLIC, "<init>", "()V", null, null);
+        MethodVisitor mv = cw.visitMethod(ACC_PUBLIC, "<init>", "(Lioke/lang/IokeObject;)V", null, null);
         mv.visitCode();
         mv.visitVarInsn(ALOAD, 0);
+        mv.visitInsn(DUP);
         mv.visitMethodInsn(INVOKESPECIAL, p(superClass), "<init>", "()V");
+        mv.visitVarInsn(ALOAD, 1);
+        mv.visitFieldInsn(PUTFIELD, p(className), "__real_ioke_proxy", "Lioke/lang/IokeObject;");
         mv.visitInsn(RETURN);
+        mv.visitMaxs(1,1);
+        mv.visitEnd();
+    }
+
+    private static void implementIntegrationMethods(ClassWriter cw, String className, Class superClass) {
+        MethodVisitor mv = cw.visitMethod(ACC_PUBLIC, "__get_IokeProxy", "()Lioke/lang/IokeObject;", null, null);
+        mv.visitCode();
+        mv.visitVarInsn(ALOAD, 0);
+        mv.visitFieldInsn(GETFIELD, p(className), "__real_ioke_proxy", "Lioke/lang/IokeObject;");
+        mv.visitInsn(ARETURN);
+        mv.visitMaxs(1,1);
+        mv.visitEnd();
+
+        mv = cw.visitMethod(ACC_PUBLIC, "__get_IokeRuntime", "()Lioke/lang/Runtime;", null, null);
+        mv.visitCode();
+        mv.visitVarInsn(ALOAD, 0);
+        mv.visitFieldInsn(GETFIELD, p(className), "__real_ioke_proxy", "Lioke/lang/IokeObject;");
+        mv.visitFieldInsn(GETFIELD, "ioke/lang/IokeObject", "runtime", "Lioke/lang/Runtime;");
+        mv.visitInsn(ARETURN);
         mv.visitMaxs(1,1);
         mv.visitEnd();
     }
@@ -171,7 +195,7 @@ public class JavaIntegration {
         if(!type.isInterface()) {
             mv.visitVarInsn(ALOAD, 0);
             mv.visitLdcInsn(m.getName());
-            mv.visitMethodInsn(INVOKESTATIC, P_JAVA_INVOCATION_HELPER, "hasProxyMethod", "(Ljava/lang/Object;Ljava/lang/String;)Z");
+            mv.visitMethodInsn(INVOKESTATIC, P_JAVA_INVOCATION_HELPER, "hasProxyMethod", "(Lioke/lang/java/IokeJavaIntegrated;Ljava/lang/String;)Z");
             mv.visitInsn(ICONST_0);
             Label els = new Label();
             mv.visitJumpInsn(IF_ICMPNE, els);
@@ -217,34 +241,34 @@ public class JavaIntegration {
         mv.visitLdcInsn(m.getName());
 
         if(retType == Void.TYPE) {
-            mv.visitMethodInsn(INVOKESTATIC, P_JAVA_INVOCATION_HELPER, "voidInvocation", "(Ljava/lang/Object;[Ljava/lang/Object;Ljava/lang/String;)V");
+            mv.visitMethodInsn(INVOKESTATIC, P_JAVA_INVOCATION_HELPER, "voidInvocation", "(Lioke/lang/java/IokeJavaIntegrated;[Ljava/lang/Object;Ljava/lang/String;)V");
             mv.visitInsn(RETURN);
         } else if(retType == Byte.TYPE) {
-            mv.visitMethodInsn(INVOKESTATIC, P_JAVA_INVOCATION_HELPER, "byteInvocation", "(Ljava/lang/Object;[Ljava/lang/Object;Ljava/lang/String;)B");
+            mv.visitMethodInsn(INVOKESTATIC, P_JAVA_INVOCATION_HELPER, "byteInvocation", "(Lioke/lang/java/IokeJavaIntegrated;[Ljava/lang/Object;Ljava/lang/String;)B");
             mv.visitInsn(IRETURN);
         } else if(retType == Integer.TYPE) {
-            mv.visitMethodInsn(INVOKESTATIC, P_JAVA_INVOCATION_HELPER, "intInvocation", "(Ljava/lang/Object;[Ljava/lang/Object;Ljava/lang/String;)I");
+            mv.visitMethodInsn(INVOKESTATIC, P_JAVA_INVOCATION_HELPER, "intInvocation", "(Lioke/lang/java/IokeJavaIntegrated;[Ljava/lang/Object;Ljava/lang/String;)I");
             mv.visitInsn(IRETURN);
         } else if(retType == Short.TYPE) {
-            mv.visitMethodInsn(INVOKESTATIC, P_JAVA_INVOCATION_HELPER, "shortInvocation", "(Ljava/lang/Object;[Ljava/lang/Object;Ljava/lang/String;)S");
+            mv.visitMethodInsn(INVOKESTATIC, P_JAVA_INVOCATION_HELPER, "shortInvocation", "(Lioke/lang/java/IokeJavaIntegrated;[Ljava/lang/Object;Ljava/lang/String;)S");
             mv.visitInsn(IRETURN);
         } else if(retType == Character.TYPE) {
-            mv.visitMethodInsn(INVOKESTATIC, P_JAVA_INVOCATION_HELPER, "charInvocation", "(Ljava/lang/Object;[Ljava/lang/Object;Ljava/lang/String;)C");
+            mv.visitMethodInsn(INVOKESTATIC, P_JAVA_INVOCATION_HELPER, "charInvocation", "(Lioke/lang/java/IokeJavaIntegrated;[Ljava/lang/Object;Ljava/lang/String;)C");
             mv.visitInsn(IRETURN);
         } else if(retType == Boolean.TYPE) {
-            mv.visitMethodInsn(INVOKESTATIC, P_JAVA_INVOCATION_HELPER, "booleanInvocation", "(Ljava/lang/Object;[Ljava/lang/Object;Ljava/lang/String;)Z");
+            mv.visitMethodInsn(INVOKESTATIC, P_JAVA_INVOCATION_HELPER, "booleanInvocation", "(Lioke/lang/java/IokeJavaIntegrated;[Ljava/lang/Object;Ljava/lang/String;)Z");
             mv.visitInsn(IRETURN);
         } else if(retType == Long.TYPE) {
-            mv.visitMethodInsn(INVOKESTATIC, P_JAVA_INVOCATION_HELPER, "longInvocation", "(Ljava/lang/Object;[Ljava/lang/Object;Ljava/lang/String;)J");
+            mv.visitMethodInsn(INVOKESTATIC, P_JAVA_INVOCATION_HELPER, "longInvocation", "(Lioke/lang/java/IokeJavaIntegrated;[Ljava/lang/Object;Ljava/lang/String;)J");
             mv.visitInsn(LRETURN);
         } else if(retType == Float.TYPE) {
-            mv.visitMethodInsn(INVOKESTATIC, P_JAVA_INVOCATION_HELPER, "floatInvocation", "(Ljava/lang/Object;[Ljava/lang/Object;Ljava/lang/String;)F");
+            mv.visitMethodInsn(INVOKESTATIC, P_JAVA_INVOCATION_HELPER, "floatInvocation", "(Lioke/lang/java/IokeJavaIntegrated;[Ljava/lang/Object;Ljava/lang/String;)F");
             mv.visitInsn(FRETURN);
         } else if(retType == Double.TYPE) {
-            mv.visitMethodInsn(INVOKESTATIC, P_JAVA_INVOCATION_HELPER, "doubleInvocation", "(Ljava/lang/Object;[Ljava/lang/Object;Ljava/lang/String;)D");
+            mv.visitMethodInsn(INVOKESTATIC, P_JAVA_INVOCATION_HELPER, "doubleInvocation", "(Lioke/lang/java/IokeJavaIntegrated;[Ljava/lang/Object;Ljava/lang/String;)D");
             mv.visitInsn(DRETURN);
         } else {
-            mv.visitMethodInsn(INVOKESTATIC, P_JAVA_INVOCATION_HELPER, "objectInvocation", "(Ljava/lang/Object;[Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;");
+            mv.visitMethodInsn(INVOKESTATIC, P_JAVA_INVOCATION_HELPER, "objectInvocation", "(Lioke/lang/java/IokeJavaIntegrated;[Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;");
             mv.visitTypeInsn(CHECKCAST, p(retType));
             mv.visitInsn(ARETURN);
         }

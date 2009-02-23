@@ -36,6 +36,21 @@ public class IokeRegistry {
         return obj;
     }
 
+    public IokeObject integratedWrap(Class on) {
+        if(on == null) {
+            return runtime.nil;
+        } else if(on instanceof Boolean) {
+            return ((Boolean)on).booleanValue() ? runtime._true : runtime._false;
+        }
+        
+        IokeObject obj = wrappedObjects.get(on);
+        if(obj == null) {
+            obj = runtime.createIntegratedJavaWrapper(on);
+            wrappedObjects.put(on, obj);
+        }
+        return obj;
+    }
+
     public boolean isWrapped(Object on) {
         return wrappedObjects.containsKey(on);
     }
@@ -46,5 +61,9 @@ public class IokeRegistry {
 
     public static IokeObject wrap(Object on, IokeObject context) {
         return context.runtime.registry.wrap(on);
+    }
+
+    public static IokeObject integratedWrap(Class on, IokeObject context) {
+        return context.runtime.registry.integratedWrap(on);
     }
 }
