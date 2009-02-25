@@ -3,10 +3,11 @@
  */
 package ioke.lang;
 
-import java.util.Arrays;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 
 import ioke.lang.exceptions.ControlFlow;
@@ -171,7 +172,7 @@ public class IokeList extends IokeData {
                     return on;
                 }
             }));
-
+        
         obj.registerMethod(runtime.newJavaMethod("will remove all the entries from the list, and then returns the list", new TypeCheckingJavaMethod.WithNoArguments("clear!", runtime.list) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
@@ -434,6 +435,155 @@ public class IokeList extends IokeData {
             }));
 
         obj.aliasMethod("at=", "[]=", null, null);
+        
+        obj.registerMethod(runtime.newJavaMethod(
+                "takes as argument the index of the element to be removed and returns it. can be " +
+                "negative and will in that case index from the back of the list. if the index is " +
+                "outside the bounds of the list, will return nil. the argument can also be a range, " +
+                "and will in that case remove the sublist beginning at the first index and extending " +
+                "to the position in the list specified by the second index (inclusive or exclusive " +
+                "depending on the range). the end of the range can be negative and will in that case " +
+                "index from the back of the list. if the start of the range is negative, or greater " +
+                "than the end, an empty list will be returned. if the end index exceeds the bounds " +
+                "of the list, its size will be used instead.", 
+                new TypeCheckingJavaMethod("removeAt!") {
+                	
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
+                	.builder()
+                	.receiverMustMimic(runtime.list)
+                	.withRequiredPositional("indexOrRange")
+                	.getArguments();
+            
+                @Override
+                public TypeCheckingArgumentsDefinition getArguments() {
+                	return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                	Object arg = args.get(0);
+
+                	if(IokeObject.data(arg) instanceof Range) {
+                    
+                		int first = Number.extractInt(Range.getFrom(arg), message, context); 
+                		if(first < 0) {
+                			return emptyList(context);
+                		}
+
+                		int last = Number.extractInt(Range.getTo(arg), message, context);
+                		List<Object> receiver = getList(on);
+                		int size = receiver.size();
+
+                		if(last < 0) {
+                			last = size + last;
+                		}
+
+                		if(last < 0) {
+                			return emptyList(context);
+                		}
+
+                		boolean inclusive = Range.isInclusive(arg);
+                    
+                		if(last >= size) {                        
+                			last = inclusive ? size-1 : size;
+                		}
+
+                		if(first > last || (!inclusive && first == last)) {
+                			return emptyList(context);
+                		}
+                    
+                		if(!inclusive) {
+                			last--;
+                		}
+                    
+                		List<Object> result = new ArrayList<Object>();
+                		for(int i = 0; i <= last - first; i++) {
+                			result.add(receiver.remove(first));
+                		}
+                    
+                		return copyList(context, result);
+                	}
+
+                	if(!(IokeObject.data(arg) instanceof Number)) {
+                		arg = IokeObject.convertToNumber(arg, message, context);
+                	}
+               
+                	int index = ((Number)IokeObject.data(arg)).asJavaInteger();
+                	List<Object> receiver = getList(on);
+                	int size = receiver.size();
+                
+                	if(index < 0) {
+                		index = size + index;
+                	}
+
+                	if(index >= 0 && index < size) {
+                		return receiver.remove((int)index);
+                	} else {
+                		return context.runtime.nil;
+                	}
+                }
+            }));
+        
+        obj.registerMethod(runtime.newJavaMethod(
+                "takes one or more arguments. removes all occurrences of the provided arguments from " +
+                "the list and returns the updated list. if an argument is not contained, the list " +
+                "remains unchanged. sending this method to an empty list has no effect.", 
+                new TypeCheckingJavaMethod("remove!") {
+                	
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
+                	.builder()
+                	.receiverMustMimic(runtime.list)
+                	.withRequiredPositional("element")
+                	.withRest("elements")
+                	.getArguments();
+            
+                @Override
+                public TypeCheckingArgumentsDefinition getArguments() {
+                	return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                	List<Object> receiver = getList(on);
+                	if(receiver.isEmpty()) {
+                		return emptyList(context);
+                	}
+                	receiver.removeAll(args);
+                	return copyList(context, receiver);
+                }
+            }));
+        
+        obj.registerMethod(runtime.newJavaMethod(
+                "takes one or more arguments. removes the first occurrence of the provided arguments " +
+                "from the list and returns the updated list. if an argument is not contained, the list " +
+                "remains unchanged. arguments that are provided multiple times are treated as distinct " +
+                "elements. sending this message to an empty list has no effect.", 
+                new TypeCheckingJavaMethod("removeFirst!") {
+                	
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
+                	.builder()
+                	.receiverMustMimic(runtime.list)
+                	.withRequiredPositional("element")
+                	.withRest("elements")
+                	.getArguments();
+            
+                @Override
+                public TypeCheckingArgumentsDefinition getArguments() {
+                	return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                	List<Object> receiver = getList(on);
+                	if(receiver.isEmpty()) {
+                		return emptyList(context);
+                	}
+                	for(Object o : args) {
+                		receiver.remove(o);
+                	}
+                	return copyList(context, receiver);
+                }
+            }));
     }
 
     public void add(Object obj) {
@@ -454,6 +604,14 @@ public class IokeList extends IokeData {
 
     public static String getNotice(Object on) throws ControlFlow {
         return ((IokeList)(IokeObject.data(on))).notice(on);
+    }
+    
+    public static IokeObject emptyList(IokeObject context) {
+    	return context.runtime.newList(new ArrayList<Object>());
+    }
+    
+    public static IokeObject copyList(IokeObject context, List<Object> orig) {
+    	return context.runtime.newList(new ArrayList<Object>(orig));
     }
 
     public IokeData cloneData(IokeObject obj, IokeObject m, IokeObject context) {
