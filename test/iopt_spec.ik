@@ -244,6 +244,81 @@ describe(IOpt,
 
   );on
 
+ describe("on=",
+
+    describe("when given flags as first arguments", 
+      it("should create an Action ValueActivation",
+        o = IOpt mimic
+        o on("-h", "--help") = fn("Display Help", @print. System exit)
+        o["-h"] should mimic(IOpt Action ValueActivation)
+        o["--help"] should mimic(IOpt Action ValueActivation))
+
+      describe("when the last argument is a symbol",
+
+        it("should create a cell assingment action if symbol starts with :@",
+          o = IOpt mimic
+          o on("--set") = :@setMePlease
+          o["--set"] should mimic(IOpt Action CellAssignment))
+
+        it("should create a cell activation action",
+          o = IOpt mimic
+          o pleaseCallMe! = method(:called)
+          o on("--call") = :pleaseCallMe!
+          o["--call"] should mimic(IOpt Action CellActivation))
+        
+      )
+    )
+
+    describe("when given an object as only argument",
+
+      it("should signal error if not given enought arguments",
+        o = IOpt mimic
+        fn(o on = nil) should signal(Condition Error Invocation NoMatch))
+
+      it("should set the new receiver for actions defined with []=",
+        v = Origin mimic
+        o = IOpt mimic
+        o on(v, "-f") = :foo
+        o["-f"] receiver should == v)
+
+      it("should set the new receiver for actions defined with on",
+        v = Origin mimic
+        o = IOpt mimic
+        o on(v, "--yay") = fn("Yay!", yay println)
+        o["--yay"] receiver should == v)
+    )
+
+    describe("when given an object as first argument",
+      
+      it("should create an Action ValueActivation having a receiver",
+        v = Origin mimic
+        o = IOpt mimic
+        o on(v, "-h", "--help") = fn("Display Help", @print. System exit)
+        o["-h"] should mimic(IOpt Action ValueActivation)
+        o["--help"] should mimic(IOpt Action ValueActivation)
+        o["--help"] receiver should == v)
+
+      describe("when the last argument is a symbol",
+
+        it("should create a cell assingment action if symbol starts with :@",
+          v = Origin mimic
+          o = IOpt mimic
+          o on(v, "--set", "Assign value to a cell on v") = :@setMePlease
+          o["--set"] should mimic(IOpt Action CellAssignment)
+          o["--set"] receiver should == v)
+
+        it("should create a cell activation action",
+          v = Origin mimic
+          o = IOpt mimic
+          o on(v, "--call", "Activating a cell on v") = :pleaseCallMe!
+          o["--call"] should mimic(IOpt Action CellActivation)
+          o["--call"] receiver should == v)
+  
+      )
+    )
+   
+ );on=
+
  describe("parse",
    it("should execute options by priority",
      order = []
@@ -301,6 +376,14 @@ describe(IOpt Action ValueActivation,
     a receiver = o
     a call(24)
     o yo should == 24)
+
+  it("should set cell(:it) to the receiver when activating a block",
+    v = nil
+    a = IOpt Action ValueActivation mimic(fn(v = it))
+    o = Origin mimic
+    a receiver = o
+    a call()
+    v should == o)
   
 );IOpt Action ValueActivation
 
@@ -460,18 +543,46 @@ describe(IOpt Action,
       c remnant should == ["--jaja", "--jiji"]
       c positional should == ["jojo", "-hey", "you:notKey"]
       c keywords should be empty)
-
-   it("should take keyword arguments before next option",
-     o = IOpt mimic
+    
+    it("should take keyword arguments before next option",
+      o = IOpt mimic
       a = IOpt Action mimic do(init. flags << "-f")
       o["--jaja"] = a
       a iopt = o
       a argumentsCode = "+rest, you:, +:all"
       c = a consume(["-f", "jojo", "-hey", "you:aKey",
-                     "one:", "1", "two:2", "--jaja", "--jiji"])
+          "one:", "1", "two:2", "--jaja", "--jiji"])
       c flag should == "-f"
       c remnant should == ["--jaja", "--jiji"]
       c positional should == ["jojo", "-hey"]
       c keywords should == dict(you: "aKey", one: "1", two: "2" ))
+
+  )
+
+  describe("perform",
+
+    it("should execute actions having the iopt object as receiver",
+      o = IOpt mimic
+      a = o["-f"] = method(self)
+      a perform(a consume(["-f"])) should == o
+    )
+    
+    it("should take receiver from the iopt object given as second argument",
+      o = IOpt mimic
+      o["-f"] = method(self)
+      u = o mimic
+      a = u["-f"]
+      a perform(a consume(["-f"]), u) should == u
+    )
+
+    it("should not mask the receiver if it was explicitly defined",
+      v = Origin mimic
+      o = IOpt mimic
+      o on(v)["-f"] = method(self)
+      u = o mimic
+      a = u["-f"]
+      a perform(a consume(["-f"]), u) should == v
+    )
+    
   )
 ); IOpt Action
