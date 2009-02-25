@@ -8,7 +8,12 @@ IOpt Action do(
       @argumentsCode = cell(:valueToActivate) argumentsCode
       @documentation = cell(:valueToActivate) documentation)
 
-    call = macro(call resendToValue(@cell(:valueToActivate), receiver))
+    call = macro(
+      kargs = dict()
+      if(@cell(:valueToActivate) kind?("LexicalBlock") ||
+         @cell(:valueToActivate) kind?("LexicalMacro"),
+         kargs[:it] = receiver)
+      call activateValue(@cell(:valueToActivate), receiver, *kargs))
     
   );ValueActivation
 
@@ -58,8 +63,9 @@ IOpt Action do(
   init = method(
     @flags = set()
     @priority = 0
-    @receiver = self
   )
+
+  receiver = method(iopt iopt:receiver || iopt)
 
   <=> = method("Compare by priority", other, priority <=> other priority)
   
@@ -139,12 +145,11 @@ IOpt Action do(
     
     );consume
 
-  handle = method(optionArgs,
+  perform = method(optionArgs, iopt nil, 
     messageName = optionArgs flag
     let(@cell(messageName), @cell(:call),
-      optionArgs result = send(messageName, 
-        *(optionArgs positional), *(optionArgs keywords)))
-    optionArgs)
+      @iopt, iopt || @iopt,
+      send(messageName, *(optionArgs positional), *(optionArgs keywords))))
 
   cell("argumentsCode=") = method(code,
     if(code == "..." || code == "", code = nil)
@@ -161,4 +166,3 @@ IOpt Action do(
     self)
   
 ); IOpt Action
-

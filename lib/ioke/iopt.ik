@@ -7,12 +7,11 @@ use("iopt/help")
 IOpt do(
   
   initialize = method(
-    @iopt:receiver = self
+    @iopt:receiver = nil
     @iopt:actions = dict()
     @iopt:help = dict(plain: IOpt Help Plain Simple mimic(self))
     @initialize = method())
 
-  
   iopt:ion = method("If the argument is a valid option name, it returns
     an object with the following cells: 
     
@@ -49,8 +48,8 @@ IOpt do(
   
   cell("[]") = method("Return the action handling the option given as argument", 
     option,
-    unless(o = @iopt:ion(option), return nil)
-    action = @iopt:actions[o flag]
+    unless(o = iopt:ion(option), return nil)
+    action = iopt:actions[o flag]
     unless(action mimics?(IOpt Action),
       signal!(NoActionForOption, 
         text: "Not a valid flag: #{option}",
@@ -78,7 +77,7 @@ IOpt do(
     options = set()
     call arguments[0..-2] each(i, a, 
       a = call argAt(i)
-      unless(m = @iopt:ion(a), 
+      unless(m = iopt:ion(a), 
         signal!(MalformedFlag, text: "Not a valid flag: #{a}", name: a))
       options << m flag)
     action = call arguments last
@@ -86,7 +85,7 @@ IOpt do(
       Action CellAssignment mimic(action next name),
       call argAt(call arguments length - 1))
     case(cell(:action) kind,
-      "nil",  options each(o, @iopt:actions[o] = nil). return,
+      "nil",  options each(o, iopt:actions[o] = nil). return,
         
       "Symbol",
       if(action asText[0..0] == "@", ;; assign a cell
@@ -94,10 +93,10 @@ IOpt do(
         action = Action CellActivation mimic(action)),
         
       "Text", 
-      o = @iopt:ion(action)
+      o = iopt:ion(action)
       unless(o, 
         error!(MalformedFlag, text: "Not a valid flag: #{action}", name: action))
-      unless(action = @iopt:actions[o flag],
+      unless(action = iopt:actions[o flag],
         signal!(NoActionForOption, 
           text: "No action registered for flag #{o flag}", option: o flag)),
         
@@ -107,9 +106,10 @@ IOpt do(
       unless(cell(:action) mimics?(Action),
         action = Action ValueActivation mimic(cell(:action))))
     
-    action receiver = @iopt:receiver
     action iopt = self
-    options each(o, action flags << o. @iopt:actions[o] = action)
+    if(@cell("iopt:receiver"), action receiver = iopt:receiver)
+    
+    options each(o, action flags << o. iopt:actions[o] = action)
     action)
 
   on = dmacro("You can use this to create actions having an object as receiver.
@@ -150,20 +150,21 @@ IOpt do(
     
     [>receiver]
     other = @mimic
-    other iopt:receiver = receiver
-    other
-    ,;;[receiver]
+    other iopt:receiver = cell(:receiver)
+    other,
+
+
     [>receiver, +args]
     flags = list()
     body = nil
     action = nil
-    if(receiver kind?("Text"), 
-      unless(option = @iopt:ion(receiver),
+    if(cell(:receiver) kind?("Text"), 
+      unless(option = iopt:ion(receiver),
         signal!(MalformedFlag, text: "Not a valid flag: #{receiver}", name: receiver))
-      receiver = @iopt:receiver
+      receiver = nil
       flags << option flag)
     while(args first name == :"internal:createText" && args first last == args first && 
-      option = @iopt:ion(args first evaluateOn(call ground, call receiver)),
+      option = iopt:ion(args first evaluateOn(call ground, call receiver)),
       flags << option flag
       args = args rest)
     body = args inject('fn, m, a, m << a) evaluateOn(call ground, call receiver)
@@ -172,12 +173,17 @@ IOpt do(
       name = if(args last name == :":@", 
         :("@#{args last next name}"), call argAt(call arguments length - 1))
       action = flags inject(name, a, f, @[f] = a)
-      action documentation = cell(:body) documentation || action documentation,
+      if(cell(:body) documentation, action documentation = cell(:body) documentation),
       action = flags inject(cell(:body), a, f, @[f] = a))
     
-    action receiver = receiver
+    if(cell(:receiver), action receiver = cell(:receiver))
     action
   );on
+
+  cell("on=") = dmacro(
+    [first, second, +rest]
+    call resendToValue(@cell(:on))
+  )
 
   parse = method("Parse the given array of command line arguments. 
     This method will invoke the actions for the flags.
@@ -202,19 +208,19 @@ IOpt do(
         ary = ary rest))
 
     ;; sort them by priority to be executed
-    opts sort each(pair, pair key handle(pair value))
+    opts sort each(pair, pair key perform(pair value, self))
   );parse
 
   asText = method(help(:plain) asText)
 
   help = dmacro(
     [>format]
-    @iopt:help[format],
+    iopt:help[format],
 
     [>format, +body]
     name = (format asText[0..0] upper) + format asText[1..-1]
     msg = ('mimic << Message wrap(self))
     body each(a, msg << a)
-    @iopt:help[format] = msg sendTo(IOpt Help cell(name)))
+    iopt:help[format] = msg sendTo(IOpt Help cell(name)))
   
 ); IOpt
