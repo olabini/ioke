@@ -75,7 +75,7 @@ IOpt do(
              value, this can anything like Method, LexicalContext, Macros, etc.
     ",
     options = set()
-    call arguments[0..-2] each(i, a, 
+    call arguments butLast each(i, a, 
       a = call argAt(i)
       unless(m = iopt:ion(a), 
         signal!(MalformedFlag, text: "Not a valid flag: #{a}", name: a))
