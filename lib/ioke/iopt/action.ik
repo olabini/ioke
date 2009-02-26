@@ -142,7 +142,7 @@ IOpt Action do(
       remnant: remnant[(idx || 0-1)..-1],
       positional: args,
       keywords: kmap)
-    
+
     );consume
 
   perform = method(optionArgs, iopt nil, 
@@ -151,18 +151,20 @@ IOpt Action do(
       @iopt, iopt || @iopt,
       send(messageName, *(optionArgs positional), *(optionArgs keywords))))
 
-  cell("argumentsCode=") = method(code,
-    if(code == "..." || code == "", code = nil)
-    @cell(:argumentsCode) = code
+  arityFrom = method(argumentsCode, 
     i = Origin with(names: [], keywords: [], rest: nil, krest: nil)
-    unless(code, @arity = i. return(self))
-    dummy = Message fromText("fn(#{code}, nil)")
+    if(argumentsCode nil? || argumentsCode == "..." || argumentsCode empty?, return(i))
+    dummy = Message fromText("fn(#{argumentsCode}, nil)")
     dummy = dummy evaluateOn(dummy)
     i names = dummy argumentNames
     i keywords = dummy keywords
-    i rest = if(match = #/\\+([^: ,]+)/ match(code), :(match[1]))
-    i krest = if(match = #/\\+:([^ ,]+)/ match(code), :(match[1]))
-    @arity = i
+    i rest = if(match = #/\\+([^: ,]+)/ match(argumentsCode), :(match[1]))
+    i krest = if(match = #/\\+:([^ ,]+)/ match(argumentsCode), :(match[1]))
+    i)
+
+  cell("argumentsCode=") = method(code,
+    @cell(:argumentsCode) = code
+    @arity = arityFrom(code)
     self)
   
 ); IOpt Action
