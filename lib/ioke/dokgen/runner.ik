@@ -42,7 +42,7 @@ DokGen do(
     arguments,
 
     opt = OptionParser mimic
-    opt parse(arguments)
+    opt parse!(arguments)
     
     collected = Collected from({}, {"Ground" => Ground}, {})
 
