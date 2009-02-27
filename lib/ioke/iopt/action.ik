@@ -23,9 +23,10 @@ IOpt Action do(
       @cellName = cellName)
 
     cell(:documentation) = method(
-      @documentation = receiver cell(cellName) documentation)
+      if(receiver, @documentation = receiver cell(cellName) documentation, nil))
 
-    argumentsCode = method(receiver cell(cellName) argumentsCode)
+    argumentsCode = method(
+      if(receiver, receiver cell(cellName) argumentsCode), nil)
     
     call = macro(call resendToValue(receiver cell(cellName), receiver))
     
@@ -63,7 +64,7 @@ IOpt Action do(
     @priority = 0
   )
 
-  receiver = method(iopt iopt:receiver || iopt)
+  receiver = method(if(@cell?(:iopt), iopt iopt:receiver || iopt))
 
   <=> = method("Compare by priority", other, priority <=> other priority)
   
@@ -159,7 +160,7 @@ IOpt Action do(
   perform = method(optionArgs, iopt nil, 
     messageName = optionArgs flag
     let(@cell(messageName), @cell(:call),
-      @iopt, iopt || @iopt,
+      @iopt, if(@cell?(:iopt), iopt || @iopt, iopt),
       send(messageName, *(optionArgs positional), *(optionArgs keywords))))
 
   argumentsCode = nil
