@@ -45,16 +45,17 @@ IOpt do(
 
     ", arg,
     #/({name}[\\w_-]+):({immediate}.+)?$/ match(arg))
+
+  iopt:get = method("Return the handler for option", option,
+    if(opt = iopt:ion(option),
+      if(opt action = iopt:actions[opt flag],
+        unless(opt action mimics?(IOpt Action),
+          signal!(NoActionForOption, text: "Not a valid flag: #{option}",
+            option: option, value: opt action))
+        opt)))
   
-  cell("[]") = method("Return the action handling the option given as argument", 
-    option,
-    unless(o = iopt:ion(option), return nil)
-    action = iopt:actions[o flag]
-    unless(action mimics?(IOpt Action),
-      signal!(NoActionForOption, 
-        text: "Not a valid flag: #{option}",
-        option: option, value: action))
-    action)
+  cell("[]") = method("Return the action handling the option given as argument",
+    option, if(opt = iopt:get(option), opt action))
   
   cell("[]=") = macro("Create an option that handles the flags given as indeces 
     using the action provided at the RHS.
@@ -185,30 +186,54 @@ IOpt do(
     call resendToValue(@cell(:on))
   )
 
-  parse = method("Parse the given array of command line arguments. 
-    This method will invoke the actions for the flags.
+  ParsedCommandLine = Origin mimic do(
     
-    Elements that are neither an option nor par of an option's argument,
-    are stored on a list named cell(:programArguments).
-    
-    ",argv,
-    @argv = argv
-    ; an array to store not handled input
-    @programArguments = list()
-    ; first convert the strings to actions.
-    ary = argv
-    opts = list()
-    until(ary empty?,
-      if(action = self[ary first],
-        consumed = action consume(ary)
-        opts << ((action => consumed) do(<=> = method(o, key <=> o key)))
-        ary = consumed remnant
-        consumed removeCell!(:remnant),
-        programArguments << ary first
-        ary = ary rest))
+    initialize = method(iopt, argv, argStopAtNextFlag: true,
+      @iopt = iopt
+      ; store the original argv
+      @argv = argv
+      ; an array to store not handled input
+      @rest = list()
+      
+      ; first convert the strings to option objects.
+      @options = list()
 
-    ;; sort them by priority to be executed
-    opts sort each(pair, pair key perform(pair value, self))
+      ary = argv
+      until(ary empty?,
+        if(;; we can handle this option
+           option = iopt iopt:get(ary first),
+           options << option
+           option <=> = method(o, action <=> o action)
+           option args = option action consume(
+             ary, option, stopAtNextFlag: argStopAtNextFlag)
+           ary = option args remnant
+           option args removeCell!(:remnant),
+           ;; else it is not an option, we add it to rest
+           rest << ary first
+           ary = ary rest))
+    );initialize
+    
+    execute = method("Execute the actions by priority",
+      options sort each(o, o action perform(o args, iopt))
+    )
+    
+  );ParsedCommandLine
+
+  parse = method("Execute the options specified on argv.
+    
+    This method will first obtain the actions for each option present on argv,
+    consume option arguments for each of them accoding to their arity. 
+    
+    The argument given to this method will be stored at cell argv on this object.
+    Elements from argv not consumed by any option will be available at 
+    programArguments cell on this object.
+    
+    After processing the command line, each action will be executed by priority.
+    ", argv, argStopAtNextFlag: true,
+    parsed = ParsedCommandLine mimic(self, argv, argStopAtNextFlag: argStopAtNextFlag)
+    @argv = parsed argv
+    @programArguments = parsed rest
+    parsed execute
   );parse
 
   asText = method(help(:plain) asText)
