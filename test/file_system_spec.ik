@@ -163,6 +163,10 @@ describe(FileSystem,
         FileSystem parentOf("src/builtin") should == "src"
       )
 
+      it("should return nil for a relative directory that doesn't have a parent",
+        FileSystem parentOf("src") should be nil
+      )
+
       it("should return the parent of an absolute directory",
         FileSystem parentOf("/usr/local") should == "/usr"
       )
