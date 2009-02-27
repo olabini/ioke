@@ -25,9 +25,7 @@ IOpt Action do(
     cell(:documentation) = method(
       @documentation = receiver cell(cellName) documentation)
 
-    arity = method(
-      @argumentsCode = receiver cell(cellName) argumentsCode
-      @arity)
+    argumentsCode = method(receiver cell(cellName) argumentsCode)
     
     call = macro(call resendToValue(receiver cell(cellName), receiver))
     
@@ -78,8 +76,19 @@ IOpt Action do(
     @cell(:priority) = value
     self)
 
-  consume = method(argv,
-    option = iopt iopt:ion(argv first)
+  consume = method("Take arguments for this action according to its arity.
+    
+    The argv list must have the a flag handled by this action as first element,
+    otherwise a NoActionForOption will be signaled.
+    
+    This method returns an object with the following cells: 
+
+      flag: The flag that was processed
+      remnant: The elements from argv that were not taken as arguments for this action.
+      positional: A list of positional arguments for this action.
+      keywords: A dict of keyword arguments for this action.
+      
+    ", argv, option iopt iopt:ion(argv first), stopAtNextFlag: true,
     if(option nil? || !flags include?(option flag),
       error!(NoActionForOption, 
         text: "Cannot handle flag %s not in ([%%s,%])" format(
@@ -92,15 +101,17 @@ IOpt Action do(
     klist = list()
     kmap = dict()
     
-    if(option immediate && arity names length > 0, args << option immediate)
+    if(option immediate && arity positional?, args << option immediate)
 
     shouldContinue = fn(arg, 
       cond(
-        iopt[arg], false, ;; found next flag
+        ;; if we have found the next flag
+        stopAtNextFlag && iopt[arg], false,
 
-        currentKey, true, ;; expecting value for a key arg
+        ;; if we need a value for a keyword argument
+        currentKey, true,
         
-        !(arity names empty?) && !(arity keywords empty?), 
+        !(arity names empty? || arity keywords empty?),
         (klist length + args length) < (arity keywords length + arity names length),
 
         arity names empty? && arity keywords empty?,
@@ -151,20 +162,47 @@ IOpt Action do(
       @iopt, iopt || @iopt,
       send(messageName, *(optionArgs positional), *(optionArgs keywords))))
 
-  arityFrom = method(argumentsCode, 
-    i = Origin with(names: [], keywords: [], rest: nil, krest: nil)
-    if(argumentsCode nil? || argumentsCode == "..." || argumentsCode empty?, return(i))
-    dummy = Message fromText("fn(#{argumentsCode}, nil)")
-    dummy = dummy evaluateOn(dummy)
-    i names = dummy argumentNames
-    i keywords = dummy keywords
-    i rest = if(match = #/\\+([^: ,]+)/ match(argumentsCode), :(match[1]))
-    i krest = if(match = #/\\+:([^ ,]+)/ match(argumentsCode), :(match[1]))
-    i)
+  argumentsCode = nil
+  arity = method(@arity = Arity from(argumentsCode))
 
-  cell("argumentsCode=") = method(code,
-    @cell(:argumentsCode) = code
-    @arity = arityFrom(code)
-    self)
+  Arity = Origin mimic do(
+
+    emptyCode? = method(argumentsCode,
+      argumentsCode nil? || argumentsCode == "..." || argumentsCode empty?)
+
+    from = method(activableOrCode,
+      arity = mimic
+      case(cell(:activableOrCode) kind,
+        "Text", argumentsCode = activableOrCode,
+        "nil", argumentsCode = nil,
+        argumentsCode = cell(:activableOrCode) argumentsCode)
+      unless(emptyCode?(argumentsCode),
+        dummy = Message fromText("fn(#{argumentsCode}, nil)")
+        dummy = dummy evaluateOn(dummy)
+        arity names = dummy argumentNames
+        arity keywords = dummy keywords
+        arity rest = if(match = #/\\+([^: ,]+)/ match(argumentsCode), :(match[1]))
+        arity krest = if(match = #/\\+:([^ ,]+)/ match(argumentsCode), :(match[1])))
+      arity)
+
+    initialize = method(
+      @names = list()
+      @keywords = list()
+      @rest = nil
+      @krest = nil)
+
+    empty? = method(
+      names empty? && keywords empty? && rest nil? && krest nil?)
+
+    keywords? = method(
+      !(keywords empty? && krest nil?))
+
+    positional? = method(
+      !(names empty? && rest nil?))
+    
+    takeKey? = method(key,
+      keywords include?(key) || !krest nil?)
+    
+  ); Arity
   
 ); IOpt Action
