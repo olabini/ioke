@@ -256,6 +256,11 @@ public class FileSystem {
                     }
 
                     String cwd = context.runtime.getCurrentWorkingDirectory();
+
+                    if(!IokeSystem.isAbsoluteFileName(name) && parent.equals(cwd)) {
+                        return context.runtime.nil;
+                    }
+
                     if(parent.startsWith(cwd)) {
                         parent = parent.substring(cwd.length()+1);
                     }
