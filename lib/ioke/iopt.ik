@@ -219,7 +219,7 @@ IOpt do(
     
   );ParsedCommandLine
 
-  parse = method("Execute the options specified on argv.
+  parse! = method("Execute the options specified on argv.
     
     This method will first obtain the actions for each option present on argv,
     consume option arguments for each of them accoding to their arity. 
@@ -234,7 +234,11 @@ IOpt do(
     @argv = parsed argv
     @programArguments = parsed rest
     parsed execute
-  );parse
+  );parse!
+
+  parse = method("Just parse the command line, don't execute actions.",
+    argv, argStopAtNextFlag: true,
+    ParsedCommandLine mimic(self, argv, argStopAtNextFlag: argStopAtNextFlag))
 
   asText = method(help(:plain) asText)
 

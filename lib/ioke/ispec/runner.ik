@@ -68,7 +68,7 @@ ISpec do(
 
       order! = method(argv,
         @argv = argv
-        parse(argv)
+        parse!(argv)
         
         ;; check if any formatter was set, or use a default.
         if(options formatters empty?,

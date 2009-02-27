@@ -319,7 +319,7 @@ describe(IOpt,
    
  );on=
 
- describe("parse",
+ describe("parse!",
    it("should execute options by priority",
      order = []
      o = IOpt mimic
@@ -328,19 +328,19 @@ describe(IOpt,
      o on("-c", order << :c) priority = -1
      o on("-d", order << :d) priority = 3
      o on("-e", order << :e)
-     o parse(["-d", "-e", "-c", "-a", "-b"])
+     o parse!(["-d", "-e", "-c", "-a", "-b"])
      order should == [:b, :c, :e, :a, :d])
    
    it("should not modify original arguments and store them on argv cell",
      o = IOpt mimic
      o on("-a", nil)
-     o parse(["-not-an-option", "-a", "yes", "hey"])
+     o parse!(["-not-an-option", "-a", "yes", "hey"])
      o argv should == ["-not-an-option", "-a", "yes", "hey"])
 
    it("should store non option arguments on programArguments cell",
      o = IOpt mimic
      o on("-a", nil)
-     o parse(["-not-an-option", "-a", "yes", "hey"])
+     o parse!(["-not-an-option", "-a", "yes", "hey"])
      o programArguments should == ["-not-an-option", "yes", "hey"])
  )
 
