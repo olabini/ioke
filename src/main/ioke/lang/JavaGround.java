@@ -72,6 +72,17 @@ public class JavaGround {
                 }
             }));
 
+        obj.registerMethod(runtime.newJavaMethod("expects to be invoked on a Java Byte, either wrapped or unwrapped.", new JavaMethod.WithNoArguments("primitiveMagic: Byte->Rational") {
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    if(on instanceof Byte) {
+                        return runtime.newNumber(((Byte)on).longValue());
+                    } else {
+                        return runtime.newNumber(((Byte)JavaWrapper.getObject(on)).longValue());
+                    }
+                }
+            }));
+
         obj.registerMethod(runtime.newJavaMethod("expects to be invoked on a Java Short, either wrapped or unwrapped.", new JavaMethod.WithNoArguments("primitiveMagic: Short->Rational") {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {

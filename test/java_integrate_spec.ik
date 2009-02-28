@@ -152,6 +152,32 @@ describe("JavaGround",
         )
       )
 
+      describe("returning bytes",
+        it("should be possible to implement an interface method",
+          Obj = integrate(ioke:lang:test:SimpleByteInterface)
+          Obj doSomething = method(13)
+
+          OtherObj = Obj mimic
+          OtherObj doSomething = method(54)
+
+          ioke:lang:test:SimpleUser useByteInterface(Obj new) asRational should == 13
+          ioke:lang:test:SimpleUser useByteInterface(OtherObj new) asRational should == 54
+        )
+
+        it("should be possible to override a class method",
+          Obj = integrate(ioke:lang:test:SimpleByteClass)
+          SecondObj = Obj mimic
+          SecondObj doTheThing = method(43)
+
+          OtherObj = SecondObj mimic
+          OtherObj doTheThing = method(66)
+
+          ioke:lang:test:SimpleUser useByteObject(Obj new) asRational should == 3
+          ioke:lang:test:SimpleUser useByteObject(SecondObj new) asRational should == 43
+          ioke:lang:test:SimpleUser useByteObject(OtherObj new) asRational should == 66
+        )
+      )
+
       describe("taking arguments",
         it("should have tests")
       )

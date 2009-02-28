@@ -40,6 +40,25 @@ public class JavaInvocationHelper {
     }
 
     public static byte byteInvocation(IokeJavaIntegrated object, Object[] args, String name) {
+        IokeObject pr = object.__get_IokeProxy();
+        Runtime runtime = object.__get_IokeRuntime();
+        Message newMessage = new Message(runtime, name);
+        for(Object arg : args) {
+            newMessage.getArguments(null).add(runtime.createMessage(Message.wrap(arg, runtime)));
+        }
+
+        try {
+            Object result = runtime.createMessage(newMessage).sendTo(runtime.ground, pr);
+            if(result instanceof Byte) {
+                return Byte.valueOf((Byte)result);
+            } else if(result instanceof IokeObject && IokeObject.data(result) instanceof JavaWrapper && JavaWrapper.getObject(result) instanceof Byte) {
+                return Byte.valueOf((Byte)JavaWrapper.getObject(result));
+            } else if(result instanceof IokeObject && IokeObject.data(result) instanceof Number) {
+                return Byte.valueOf((byte)Number.intValue(result).intValue());
+            }
+        } catch(Throwable e) {
+            return 0;
+        }
         return 0;
     }
 
