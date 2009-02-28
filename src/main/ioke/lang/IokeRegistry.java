@@ -20,7 +20,17 @@ public class IokeRegistry {
     public IokeRegistry(Runtime runtime) {
         this.runtime = runtime;
     }
+    
+    public static void makeWrapped(Object on, IokeObject wrapped, IokeObject context) {
+        context.runtime.registry.makeWrapped(on, wrapped);
+    }
 
+    private void makeWrapped(Object on, IokeObject wrapped) {
+        if(on != null && !(on instanceof Boolean)) {
+            wrappedObjects.put(on, wrapped);
+        }
+    }
+    
     public IokeObject wrap(Object on) {
         if(on == null) {
             return runtime.nil;
@@ -39,8 +49,6 @@ public class IokeRegistry {
     public IokeObject integratedWrap(Class on) {
         if(on == null) {
             return runtime.nil;
-        } else if(on instanceof Boolean) {
-            return ((Boolean)on).booleanValue() ? runtime._true : runtime._false;
         }
         
         IokeObject obj = wrappedObjects.get(on);
