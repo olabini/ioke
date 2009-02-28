@@ -17,14 +17,16 @@ import ioke.lang.exceptions.ControlFlow;
  *
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
-public class JavaConstructorJavaMethod extends ioke.lang.Method { 
+public class JavaConstructorJavaMethod extends ioke.lang.Method implements JavaImplementedMethod { 
     private Constructor[] ctors;
     private JavaArgumentsDefinition arguments;
+    private boolean special;
 
-    public JavaConstructorJavaMethod(Constructor[] ctors) {
+    public JavaConstructorJavaMethod(Constructor[] ctors, boolean special) {
         super("new");
         this.ctors = ctors;
-        this.arguments = JavaArgumentsDefinition.createFrom(ctors);
+        this.special = special;
+        this.arguments = JavaArgumentsDefinition.createFrom(ctors, special);
     }
 
     public String getArgumentsCode() {
@@ -40,8 +42,18 @@ public class JavaConstructorJavaMethod extends ioke.lang.Method {
 
     public Object activate(IokeObject self, Object on, List<Object> args, Constructor ctor, IokeObject context, IokeObject message) throws ControlFlow {
         try {
-//             System.err.println("invoking: " + ctor);
-            return ctor.newInstance(args.toArray());
+            if(!special) {
+                //             System.err.println("invoking: " + ctor);
+                return ctor.newInstance(args.toArray());
+            } else {
+                IokeObject other = IokeObject.mimic(on, message, context);
+                Object[] aa = args.toArray();
+                aa[0] = other;
+                Object ret = ctor.newInstance(aa);
+                JavaWrapper.setObject(other, ret);
+                IokeRegistry.makeWrapped(ret, other, context);
+                return other;
+            }
         } catch(Exception e) {
             System.err.print("woops: ");
             e.printStackTrace();

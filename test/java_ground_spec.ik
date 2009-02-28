@@ -1856,14 +1856,6 @@ describe("Java Objects",
     it("should be possible to supply arguments by name")
   )
 
-  describe("implementing interfaces",
-    it("should have tests")
-  )
-
-  describe("extending classes",
-    it("should have tests")
-  )
-
   describe("working with arrays",
     it("should have tests")
   )

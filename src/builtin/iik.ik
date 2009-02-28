@@ -6,6 +6,7 @@ IIk = Origin mimic do(
   mainContext = Origin mimic do(
 
     exit = method(signal!(IIk Exit))
+    abort = method(invokeRestart(:abort))
 
     aliasMethod("exit", "quit"))
 
