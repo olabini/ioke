@@ -256,6 +256,36 @@ describe("JavaGround",
         )
       )
 
+      describe("returning void",
+        it("should be possible to implement an interface method",
+          Obj = integrate(ioke:lang:test:SimpleVoidInterface)
+          Obj doSomething = method(self theData = "two")
+          Obj theData = "one"
+          Obj getData = method(self theData)
+
+          OtherObj = Obj mimic
+          OtherObj doSomething = method(self theData = "three")
+
+          ioke:lang:test:SimpleUser useVoidInterface(Obj new) asText should == "two"
+          ioke:lang:test:SimpleUser useVoidInterface(OtherObj new) asText should == "three"
+        )
+
+        it("should be possible to override a class method",
+          Obj = integrate(ioke:lang:test:SimpleVoidClass)
+          SecondObj = Obj mimic
+          SecondObj doTheThing = method(self theData = "two")
+          SecondObj theData = "one"
+          SecondObj getData = method(self theData)
+
+          OtherObj = SecondObj mimic
+          OtherObj doTheThing = method(self theData = "three")
+
+          ioke:lang:test:SimpleUser useVoidObject(Obj new) asText should == "done it"
+          ioke:lang:test:SimpleUser useVoidObject(SecondObj new) asText should == "two"
+          ioke:lang:test:SimpleUser useVoidObject(OtherObj new) asText should == "three"
+        )
+      )
+
       describe("taking arguments",
         it("should have tests")
       )
