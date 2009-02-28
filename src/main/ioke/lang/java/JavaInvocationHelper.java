@@ -19,14 +19,8 @@ import ioke.lang.Decimal;
  */
 public class JavaInvocationHelper {
     public static boolean hasProxyMethod(IokeJavaIntegrated object, String name) {
-//         System.err.println("hasProxyMethod? " + name);
         IokeObject pr = object.__get_IokeProxy();
         Runtime runtime = object.__get_IokeRuntime();
-//         System.err.println("  proxy.data.class: " + IokeObject.data(pr).getClass().getName());
-//         if(IokeObject.data(pr) instanceof JavaWrapper) {
-//             System.err.println("  proxy.data.object.class: " + JavaWrapper.getObject(pr).getClass().getName());
-//             System.err.println("  eq: " + (JavaWrapper.getObject(pr) == object));
-//         }
 
         Object cell = IokeObject.findCell(pr, null, null, name);
         if(cell != null && cell != runtime.nul && cell instanceof IokeObject) {
