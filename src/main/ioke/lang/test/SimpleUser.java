@@ -23,4 +23,28 @@ public class SimpleUser {
     public static int useIntInterface(SimpleIntInterface si) {
         return si.doSomething();
     }
+
+    public static short useShortObject(SimpleShortClass si) {
+        return si.doTheThing();
+    }
+
+    public static short useShortInterface(SimpleShortInterface si) {
+        return si.doSomething();
+    }
+
+    public static char useCharObject(SimpleCharClass si) {
+        return si.doTheThing();
+    }
+
+    public static char useCharInterface(SimpleCharInterface si) {
+        return si.doSomething();
+    }
+
+    public static byte useByteObject(SimpleByteClass si) {
+        return si.doTheThing();
+    }
+
+    public static byte useByteInterface(SimpleByteInterface si) {
+        return si.doSomething();
+    }
 }// SimpleUser
