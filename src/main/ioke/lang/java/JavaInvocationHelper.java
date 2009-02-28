@@ -90,6 +90,25 @@ public class JavaInvocationHelper {
     }
 
     public static char charInvocation(IokeJavaIntegrated object, Object[] args, String name) {
+        IokeObject pr = object.__get_IokeProxy();
+        Runtime runtime = object.__get_IokeRuntime();
+        Message newMessage = new Message(runtime, name);
+        for(Object arg : args) {
+            newMessage.getArguments(null).add(runtime.createMessage(Message.wrap(arg, runtime)));
+        }
+
+        try {
+            Object result = runtime.createMessage(newMessage).sendTo(runtime.ground, pr);
+            if(result instanceof Character) {
+                return Character.valueOf((Character)result);
+            } else if(result instanceof IokeObject && IokeObject.data(result) instanceof JavaWrapper && JavaWrapper.getObject(result) instanceof Character) {
+                return Character.valueOf((Character)JavaWrapper.getObject(result));
+            } else if(result instanceof IokeObject && IokeObject.data(result) instanceof Number) {
+                return Character.valueOf((char)Number.intValue(result).intValue());
+            }
+        } catch(Throwable e) {
+            return 0;
+        }
         return 0;
     }
 
