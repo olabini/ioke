@@ -61,7 +61,7 @@ public class JavaIntegration {
 
     private static void createImplementationFor(String name, Class[] types, ClassRegistry registry) {
         String className = findFirstUnusedNameFor(types);
-        System.err.println("have name: " + className);
+//         System.err.println("have name: " + className);
 
         Class superClass = Object.class;
         List<Class> interfaces = new LinkedList<Class>();
@@ -187,7 +187,7 @@ public class JavaIntegration {
     private static final String P_JAVA_INVOCATION_HELPER = p(JavaInvocationHelper.class);
 
     private static void implementStubMethod(ClassWriter cw, String className, Class type, Method m) {
-        System.err.println("should implement stub method: " + m);
+//         System.err.println("should implement stub method: " + m);
         MethodVisitor mv = cw.visitMethod(ACC_PUBLIC, m.getName(), sig(m), null, null);
         Class retType = m.getReturnType();
         mv.visitCode();
@@ -207,7 +207,7 @@ public class JavaIntegration {
                 loadParameter(mv, pType, i++);
             }
 
-            mv.visitMethodInsn(INVOKEVIRTUAL, p(type.getSuperclass()), m.getName(), sig(m));
+            mv.visitMethodInsn(INVOKESPECIAL, p(type), m.getName(), sig(m));
 
             if(retType == Void.TYPE) {
                 mv.visitInsn(RETURN);
@@ -268,7 +268,9 @@ public class JavaIntegration {
             mv.visitMethodInsn(INVOKESTATIC, P_JAVA_INVOCATION_HELPER, "doubleInvocation", "(Lioke/lang/java/IokeJavaIntegrated;[Ljava/lang/Object;Ljava/lang/String;)D");
             mv.visitInsn(DRETURN);
         } else {
-            mv.visitMethodInsn(INVOKESTATIC, P_JAVA_INVOCATION_HELPER, "objectInvocation", "(Lioke/lang/java/IokeJavaIntegrated;[Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;");
+            mv.visitLdcInsn(retType.getName());
+            mv.visitMethodInsn(INVOKESTATIC, "java/lang/Class", "forName", "(Ljava/lang/String;)Ljava/lang/Class;");
+            mv.visitMethodInsn(INVOKESTATIC, P_JAVA_INVOCATION_HELPER, "objectInvocation", "(Lioke/lang/java/IokeJavaIntegrated;[Ljava/lang/Object;Ljava/lang/String;Ljava/lang/Class;)Ljava/lang/Object;");
             mv.visitTypeInsn(CHECKCAST, p(retType));
             mv.visitInsn(ARETURN);
         }

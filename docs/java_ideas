@@ -15,15 +15,34 @@ This is how integrated classes should work:
   - first, mimic is called on the object
   - then call newInstance on the class, sending in the iokeobject
   - then set the actual object of the wrapper thingy to the instance of the class...
+  - make sure it's registered first
   - and return the whole thing
 
 
   in fact, the returned thing should be a regular wrapped java object... and the integrated stuff should be EXACTLY the same, except that new should work a bit differently.
 
+--------------------------------------------------
+
+
+calling a JIW from Ioke
+ should be possible exactly like regular Java objects
+ introspection should work on these methods, of course, in the normal, important way.
+
+calling a JIW from Java
+ should only be possible using established protocol - existing methods on interfaces or classes.
+ when a call like this happens it should first try to dispatch to the proxy and then if that doesn't work call a super method
+ that means the proxy can ONLY have methods defined for those that should be overridden
+ how do we verify this if the class is part of the regular hierarcy? is it possible? how can we make sure that a cell implemented to call from Ioke to Java won't be recursively invoked from Java?
+
+ maybe we can just use cellPlace? and if the result of doing that is the JIW class itself, we know that we shouldn't recurse
+ 
+defining Ioke methods on a JIW
+ should work the same as defining cells. or should it?
 
 
 
 
+--------------------------------------------------
 
 
 fields should probably just be exposed using a namespacing to discourage use:

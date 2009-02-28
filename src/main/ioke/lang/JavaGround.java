@@ -156,7 +156,7 @@ public class JavaGround {
                     }
 
                     Class newType = JavaIntegration.getOrCreate(types, context.runtime.classRegistry);
-                    System.err.println(newType);
+//                     System.err.println(newType);
                     return IokeRegistry.integratedWrap(newType, context);
                 }
             }));

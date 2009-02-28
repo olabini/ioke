@@ -23,13 +23,19 @@ public class JavaArgumentsDefinition {
     private Member[] members;
     private int min;
     private int max;
+    private boolean special;
     
     public JavaArgumentsDefinition(Member[] members, Class[][] parameterTypes, int min, int max) {
+        this(members, parameterTypes, min, max, false);
+    }
+
+    public JavaArgumentsDefinition(Member[] members, Class[][] parameterTypes, int min, int max, boolean special) {
 //         System.err.println("creating a new arguments definition: " + Arrays.asList((Object[])members) + "(" + Arrays.asList((Object[])parameterTypes[0]) + ") min=" + min + ", max=" + max);
         this.members = members;
         this.parameterTypes = parameterTypes;
         this.min = min;
         this.max = max;
+        this.special = special;
     }
 
     private static class FullOrdering {
@@ -173,7 +179,7 @@ public class JavaArgumentsDefinition {
         return new JavaArgumentsDefinition(m, params, min, max);
     }
 
-    public static JavaArgumentsDefinition createFrom(Constructor[] m) {
+    public static JavaArgumentsDefinition createFrom(Constructor[] m, boolean special) {
         sortByParameterOrdering(m);
         Class[][] params = new Class[m.length][];
         int ix = 0;
@@ -190,7 +196,7 @@ public class JavaArgumentsDefinition {
             }
         }
 
-        return new JavaArgumentsDefinition(m, params, min, max);
+        return new JavaArgumentsDefinition(m, params, min, max, special);
     }
 
     public static JavaArgumentsDefinition createFrom(Field f) {
@@ -311,14 +317,18 @@ public class JavaArgumentsDefinition {
         }
 
         int i = 0;
+        if(special) {
+            argCount++;
+        }
+
         nextMethod: for(int j=parameterTypes.length; i<j; i++) {
             // Totally ignore varargs for now, right...
             if(parameterTypes[i].length == argCount) {
                 Class[] current = parameterTypes[i];
                 //                System.err.println("checking: " + members[i]);
-                for(int k=0; k<argCount; k++) {
-                    Class clz = current[k];
-                    JavaArgumentDefinition jad = resultArguments.get(k);
+                for(int kpar = (special ? 1 : 0), karg = 0; kpar<argCount; kpar++, karg++) {
+                    Class clz = current[kpar];
+                    JavaArgumentDefinition jad = resultArguments.get(karg);
                     Object obj = jad.obj;
                     boolean isIokeObject = obj instanceof IokeObject;
                     boolean isWrapper = isIokeObject && IokeObject.data(obj) instanceof JavaWrapper;
@@ -479,6 +489,10 @@ public class JavaArgumentsDefinition {
             System.err.println("couldn't find matching for " + members[0] + " for arguments: " + resultArguments);
         }
 //         System.err.println("using: " + members[i] + " for: " + resultArguments + " with args: " + args);
+        if(special) {
+            args.add(0, on);
+        }
+
         return members[i];
     }
 }// JavaArgumentsDefinition

@@ -621,7 +621,7 @@ public class Runtime {
         for(Class<?> i : clz.getInterfaces()) {
             obj.mimicsWithoutCheck(registry.wrap(i));
         }
-        obj.setData(JavaIntegratedWrapper.wrapWithMethods(clz, obj, this));
+        obj.setData(JavaIntegrationWrapper.wrapWithMethods(clz, obj, this));
         return obj;
     }
 
@@ -629,8 +629,8 @@ public class Runtime {
         return newMethod(null, this.javaMethod, new JavaMethodJavaMethod(methods));
     }
 
-    public IokeObject createJavaMethod(java.lang.reflect.Constructor[] ctors) throws ControlFlow {
-        return newMethod(null, this.javaMethod, new JavaConstructorJavaMethod(ctors));
+    public IokeObject createJavaMethod(java.lang.reflect.Constructor[] ctors, boolean special) throws ControlFlow {
+        return newMethod(null, this.javaMethod, new JavaConstructorJavaMethod(ctors, special));
     }
 
     public IokeObject createJavaFieldGetter(java.lang.reflect.Field field) throws ControlFlow {
