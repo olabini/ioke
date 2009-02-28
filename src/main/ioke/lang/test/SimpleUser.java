@@ -71,4 +71,14 @@ public class SimpleUser {
     public static double useDoubleInterface(SimpleDoubleInterface si) {
         return si.doSomething();
     }
+
+    public static String useVoidObject(SimpleVoidClass si) {
+        si.doTheThing();
+        return si.getData();
+    }
+
+    public static String useVoidInterface(SimpleVoidInterface si) {
+        si.doSomething();
+        return si.getData();
+    }
 }// SimpleUser

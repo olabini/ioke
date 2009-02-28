@@ -37,6 +37,17 @@ public class JavaInvocationHelper {
     }
 
     public static void voidInvocation(IokeJavaIntegrated object, Object[] args, String name) {
+        IokeObject pr = object.__get_IokeProxy();
+        Runtime runtime = object.__get_IokeRuntime();
+        Message newMessage = new Message(runtime, name);
+        for(Object arg : args) {
+            newMessage.getArguments(null).add(runtime.createMessage(Message.wrap(arg, runtime)));
+        }
+
+        try {
+            runtime.createMessage(newMessage).sendTo(runtime.ground, pr);
+        } catch(Throwable e) {
+        }
     }
 
     public static byte byteInvocation(IokeJavaIntegrated object, Object[] args, String name) {
