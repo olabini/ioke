@@ -204,7 +204,27 @@ public class JavaInvocationHelper {
     }
 
     public static double doubleInvocation(IokeJavaIntegrated object, Object[] args, String name) {
-        return 0.0;
+        IokeObject pr = object.__get_IokeProxy();
+        Runtime runtime = object.__get_IokeRuntime();
+        Message newMessage = new Message(runtime, name);
+        for(Object arg : args) {
+            newMessage.getArguments(null).add(runtime.createMessage(Message.wrap(arg, runtime)));
+        }
+
+        try {
+            Object result = runtime.createMessage(newMessage).sendTo(runtime.ground, pr);
+
+            if(result instanceof Double) {
+                return Double.valueOf((Double)result);
+            } else if(result instanceof IokeObject && IokeObject.data(result) instanceof JavaWrapper && JavaWrapper.getObject(result) instanceof Double) {
+                return Double.valueOf((Double)JavaWrapper.getObject(result));
+            } else if(result instanceof IokeObject && IokeObject.data(result) instanceof Decimal) {
+                return Double.valueOf(Decimal.value(result).doubleValue());
+            }
+        } catch(Throwable e) {
+            return 0D;
+        }
+        return 0D;
     }
 
     public static Object objectInvocation(IokeJavaIntegrated object, Object[] args, String name, Class expectedType) {

@@ -230,6 +230,32 @@ describe("JavaGround",
         )
       )
 
+      describe("returning doubles",
+        it("should be possible to implement an interface method",
+          Obj = integrate(ioke:lang:test:SimpleDoubleInterface)
+          Obj doSomething = method(13.4)
+
+          OtherObj = Obj mimic
+          OtherObj doSomething = method(54.66)
+
+          ioke:lang:test:SimpleUser useDoubleInterface(Obj new) asDecimal should be close(13.4)
+          ioke:lang:test:SimpleUser useDoubleInterface(OtherObj new) asDecimal should be close(54.66)
+        )
+
+        it("should be possible to override a class method",
+          Obj = integrate(ioke:lang:test:SimpleDoubleClass)
+          SecondObj = Obj mimic
+          SecondObj doTheThing = method(43.1)
+
+          OtherObj = SecondObj mimic
+          OtherObj doTheThing = method(66.101)
+
+          ioke:lang:test:SimpleUser useDoubleObject(Obj new) asDecimal should be close(45.66)
+          ioke:lang:test:SimpleUser useDoubleObject(SecondObj new) asDecimal should be close(43.1)
+          ioke:lang:test:SimpleUser useDoubleObject(OtherObj new) asDecimal should be close(66.101)
+        )
+      )
+
       describe("taking arguments",
         it("should have tests")
       )
