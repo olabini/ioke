@@ -56,6 +56,27 @@ public class JavaInvocationHelper {
     }
 
     public static boolean booleanInvocation(IokeJavaIntegrated object, Object[] args, String name) {
+        IokeObject pr = object.__get_IokeProxy();
+        Runtime runtime = object.__get_IokeRuntime();
+        Message newMessage = new Message(runtime, name);
+        for(Object arg : args) {
+            newMessage.getArguments(null).add(runtime.createMessage(Message.wrap(arg, runtime)));
+        }
+
+        try {
+            Object result = runtime.createMessage(newMessage).sendTo(runtime.ground, pr);
+            if(result instanceof Boolean) {
+                return Boolean.valueOf((Boolean)result);
+            } else if(result instanceof IokeObject && IokeObject.data(result) instanceof JavaWrapper && JavaWrapper.getObject(result) instanceof Boolean) {
+                return Boolean.valueOf((Boolean)JavaWrapper.getObject(result));
+            } else if(result == runtime._true) {
+                return true;
+            } else if(result == runtime._false) {
+                return false;
+            }
+        } catch(Throwable e) {
+            return false;
+        }
         return false;
     }
 
@@ -72,25 +93,14 @@ public class JavaInvocationHelper {
     }
 
     public static Object objectInvocation(IokeJavaIntegrated object, Object[] args, String name, Class expectedType) {
-//         System.err.println("calling " + name + " as object // expecting: " + expectedType);
         IokeObject pr = object.__get_IokeProxy();
         Runtime runtime = object.__get_IokeRuntime();
-//         System.err.println("  proxy.data.class: " + IokeObject.data(pr).getClass().getName());
-//         if(IokeObject.data(pr) instanceof JavaWrapper) {
-//             System.err.println("  proxy.data.object.class: " + JavaWrapper.getObject(pr).getClass().getName());
-//             System.err.println("  eq: " + (JavaWrapper.getObject(pr) == object));
-//         }
         
         Message newMessage = new Message(runtime, name);
         for(Object arg : args) {
             newMessage.getArguments(null).add(runtime.createMessage(Message.wrap(arg, runtime)));
         }
-//         System.err.println("______________________________________");
-//         System.err.println("object: " + object);
-//         System.err.println("proxy : " + pr);
-//         System.err.println("cells : " + pr.getCells().keySet());
-//         System.err.println("mimics: " + pr.getMimics());
-//         System.err.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+
         try {
             return tryConvertTo(runtime.createMessage(newMessage).sendTo(runtime.ground, pr), expectedType, runtime);
         } catch(Throwable e) {

@@ -47,6 +47,36 @@ describe("JavaGround",
         ; this is a bit unintuitive, but it's the way it has to be
         ioke:lang:test:SimpleClassUser useObject(anotherObject) asText should == "otherObject implementation"
       )
+
+      describe("returning booleans",
+        it("should be possible to implement an interface method",
+          Obj = integrate(ioke:lang:test:SimpleBooleanInterface)
+          Obj doSomething = method(true)
+
+          OtherObj = Obj mimic
+          OtherObj doSomething = method(false)
+
+          ioke:lang:test:SimpleUser useBooleanInterface(Obj new) should == true
+          ioke:lang:test:SimpleUser useBooleanInterface(OtherObj new) should == false
+        )
+
+        it("should be possible to override a class method",
+          Obj = integrate(ioke:lang:test:SimpleBooleanClass)
+          SecondObj = Obj mimic
+          SecondObj doTheThing = method(true)
+
+          OtherObj = SecondObj mimic
+          OtherObj doTheThing = method(false)
+
+          ioke:lang:test:SimpleUser useBooleanObject(Obj new) should == false
+          ioke:lang:test:SimpleUser useBooleanObject(SecondObj new) should == true
+          ioke:lang:test:SimpleUser useBooleanObject(OtherObj new) should == false
+        )
+      )
+
+      describe("taking arguments",
+        it("should have tests")
+      )
     )
   )
 )
