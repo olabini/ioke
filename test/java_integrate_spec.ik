@@ -20,7 +20,9 @@ describe("JavaGround",
         ioke:lang:test:SimpleInterfaceUser useObject(OneObject new) asText should == "called from a simple integration"
         ioke:lang:test:SimpleInterfaceUser useObject(OtherObject new) asText should == "called from another simple integration"
         ioke:lang:test:SimpleInterfaceUser useObject(otherObject) asText should == "called from a single instance ..."
-        ioke:lang:test:SimpleInterfaceUser useObject(anotherObject) asText should == "called from a mimic of a single instance ..."
+
+        ; this is a bit unintuitive, but it's the way it has to be
+        ioke:lang:test:SimpleInterfaceUser useObject(anotherObject) asText should == "called from a single instance ..."
       )
 
       it("should be possible to create a simple extension of a simple class",
@@ -41,8 +43,10 @@ describe("JavaGround",
         ioke:lang:test:SimpleClassUser useObject(SecondObject new) asText should == "SecondObject implementation"
         ioke:lang:test:SimpleClassUser useObject(OtherObject new) asText should == "OtherObject implementation"
         ioke:lang:test:SimpleClassUser useObject(otherObject) asText should == "otherObject implementation" 
-        ioke:lang:test:SimpleClassUser useObject(anotherObject) asText should == "anotherObject implementation"
-     )
+
+        ; this is a bit unintuitive, but it's the way it has to be
+        ioke:lang:test:SimpleClassUser useObject(anotherObject) asText should == "otherObject implementation"
+      )
     )
   )
 )

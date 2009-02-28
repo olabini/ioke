@@ -53,7 +53,6 @@ public class JavaConstructorJavaMethod extends ioke.lang.Method implements JavaI
                 JavaWrapper.setObject(other, ret);
                 IokeRegistry.makeWrapped(ret, other, context);
                 return other;
-
             }
         } catch(Exception e) {
             System.err.print("woops: ");

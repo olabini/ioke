@@ -85,6 +85,12 @@ public class JavaInvocationHelper {
         for(Object arg : args) {
             newMessage.getArguments(null).add(runtime.createMessage(Message.wrap(arg, runtime)));
         }
+//         System.err.println("______________________________________");
+//         System.err.println("object: " + object);
+//         System.err.println("proxy : " + pr);
+//         System.err.println("cells : " + pr.getCells().keySet());
+//         System.err.println("mimics: " + pr.getMimics());
+//         System.err.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
         try {
             return tryConvertTo(runtime.createMessage(newMessage).sendTo(runtime.ground, pr), expectedType, runtime);
         } catch(Throwable e) {
