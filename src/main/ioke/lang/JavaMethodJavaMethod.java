@@ -17,7 +17,7 @@ import ioke.lang.exceptions.ControlFlow;
  *
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
-public class JavaMethodJavaMethod extends ioke.lang.Method {
+public class JavaMethodJavaMethod extends ioke.lang.Method implements JavaImplementedMethod {
     private Class declaringClass;
     private Method[] methods;
     private JavaArgumentsDefinition arguments;
@@ -71,7 +71,7 @@ public class JavaMethodJavaMethod extends ioke.lang.Method {
                 return result;
             }
         } catch(Exception e) {
-            context.runtime.reportJavaException(e, message, context);
+            context.runtime.reportJavaException((Exception)e.getCause(), message, context);
             return context.runtime.nil;
         }
     }

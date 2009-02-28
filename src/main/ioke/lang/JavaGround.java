@@ -5,10 +5,14 @@ package ioke.lang;
 
 import java.math.BigDecimal;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import ioke.lang.exceptions.ControlFlow;
+
+import ioke.lang.java.JavaIntegration;
 
 /**
  *
@@ -120,6 +124,40 @@ public class JavaGround {
                     } else {
                         return runtime.newDecimal(BigDecimal.valueOf(((Double)JavaWrapper.getObject(on)).doubleValue()));
                     }
+                }
+            }));
+
+
+        obj.registerMethod(runtime.newJavaMethod("expects to be invoked with one or more Java types and will return either a new or a cached implementation of a combination of these types.", new JavaMethod("integrate") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("firstType")
+                    .withRest("restTypes")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+
+                    Class[] types = new Class[args.size()];
+                    int i = 0;
+                    for(Object a : args) {
+                        if(a instanceof IokeObject) {
+                            types[i++] = (Class)JavaWrapper.getObject(a);
+                        } else {
+                            types[i++] = (Class)a;
+                        }
+                    }
+
+                    Class newType = JavaIntegration.getOrCreate(types, context.runtime.classRegistry);
+//                     System.err.println(newType);
+                    return IokeRegistry.integratedWrap(newType, context);
                 }
             }));
     }
