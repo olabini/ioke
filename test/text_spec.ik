@@ -242,6 +242,10 @@ describe("Text",
       "foo" split("b") should == ["foo"]
     )
 
+    it("should split on whitespace if no argument is given",
+      "foo bar\nquux" split() should == ["foo", "bar", "quux"]
+    )
+
     it("should return each character separately if empty text is given",
       "foo" split("") should == ["f", "o", "o"]
     )
