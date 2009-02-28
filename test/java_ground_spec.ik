@@ -119,7 +119,15 @@ describe("Java Objects",
   )
 
   describe("inner classes",
-    it("should have tests")
+    it("should be possible to create a new instance of one",
+      obj = ioke:lang:test:TestInner$TheInner new
+      obj foo asText should == "an inner class"
+    )
+
+    it("should be possible to import one",
+      import ioke:lang:test:TestInner$TheInner
+      TestInner$TheInner new should not be nil
+    )
   )
 
   describe("static fields",
