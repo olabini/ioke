@@ -447,8 +447,33 @@ describe(List,
     it("should validate type of receiver",
       List should checkReceiverTypeOn(:include?, "Richard Richard")
     )
-    
-    
+  )
+
+  describe("===", 
+    it("should return false for something not in the list", 
+      ([] === :foo) should be false
+      ([1] === 2) should be false
+      ([1, :foo, "bar"] === 2) should be false
+    )
+
+    it("should return true for something in the list", 
+      ([:foo] === :foo) should be true
+      ([1, 2] === 2) should be true
+      ([2, 1, :foo, "bar"] === 2) should be true
+    )
+
+    it("should return true when called against List and the other is a list",
+      (List === List) should be true
+      (List === []) should be true
+      (List === [1,2,3]) should be true
+      (List === [:foo]) should be true
+    )
+
+    it("should return true when called against List and the other is not a list",
+      (List === set) should be false
+      (List === (1..5)) should be false
+      (List === :foo) should be false
+    )
   )
   
   describe("ifEmpty",
