@@ -74,6 +74,32 @@ describe("JavaGround",
         )
       )
 
+      describe("returning ints",
+        it("should be possible to implement an interface method",
+          Obj = integrate(ioke:lang:test:SimpleIntInterface)
+          Obj doSomething = method(13)
+
+          OtherObj = Obj mimic
+          OtherObj doSomething = method(54)
+
+          ioke:lang:test:SimpleUser useIntInterface(Obj new) asRational should == 13
+          ioke:lang:test:SimpleUser useIntInterface(OtherObj new) asRational should == 54
+        )
+
+        it("should be possible to override a class method",
+          Obj = integrate(ioke:lang:test:SimpleIntClass)
+          SecondObj = Obj mimic
+          SecondObj doTheThing = method(677667)
+
+          OtherObj = SecondObj mimic
+          OtherObj doTheThing = method(12466)
+
+          ioke:lang:test:SimpleUser useIntObject(Obj new) asRational should == 444
+          ioke:lang:test:SimpleUser useIntObject(SecondObj new) asRational should == 677667
+          ioke:lang:test:SimpleUser useIntObject(OtherObj new) asRational should == 12466
+        )
+      )
+
       describe("taking arguments",
         it("should have tests")
       )
