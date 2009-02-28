@@ -178,6 +178,32 @@ describe("JavaGround",
         )
       )
 
+      describe("returning longs",
+        it("should be possible to implement an interface method",
+          Obj = integrate(ioke:lang:test:SimpleLongInterface)
+          Obj doSomething = method(13)
+
+          OtherObj = Obj mimic
+          OtherObj doSomething = method(54)
+
+          ioke:lang:test:SimpleUser useLongInterface(Obj new) asRational should == 13
+          ioke:lang:test:SimpleUser useLongInterface(OtherObj new) asRational should == 54
+        )
+
+        it("should be possible to override a class method",
+          Obj = integrate(ioke:lang:test:SimpleLongClass)
+          SecondObj = Obj mimic
+          SecondObj doTheThing = method(43)
+
+          OtherObj = SecondObj mimic
+          OtherObj doTheThing = method(66)
+
+          ioke:lang:test:SimpleUser useLongObject(Obj new) asRational should == 46556745745
+          ioke:lang:test:SimpleUser useLongObject(SecondObj new) asRational should == 43
+          ioke:lang:test:SimpleUser useLongObject(OtherObj new) asRational should == 66
+        )
+      )
+
       describe("taking arguments",
         it("should have tests")
       )

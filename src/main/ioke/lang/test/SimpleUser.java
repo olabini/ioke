@@ -47,4 +47,28 @@ public class SimpleUser {
     public static byte useByteInterface(SimpleByteInterface si) {
         return si.doSomething();
     }
+
+    public static long useLongObject(SimpleLongClass si) {
+        return si.doTheThing();
+    }
+
+    public static long useLongInterface(SimpleLongInterface si) {
+        return si.doSomething();
+    }
+
+    public static float useFloatObject(SimpleFloatClass si) {
+        return si.doTheThing();
+    }
+
+    public static float useFloatInterface(SimpleFloatInterface si) {
+        return si.doSomething();
+    }
+
+    public static double useDoubleObject(SimpleDoubleClass si) {
+        return si.doTheThing();
+    }
+
+    public static double useDoubleInterface(SimpleDoubleInterface si) {
+        return si.doSomething();
+    }
 }// SimpleUser
