@@ -1553,7 +1553,7 @@ describe("Java Objects",
       ioke:lang:test:StaticMethods overloaded((java:lang:Object)nil) asText should == "overloaded(null: Object)"
     )
 
-    it("should be possible to supply arguments by name")
+;     it("should be possible to supply arguments by name")
 
     it("should add an alias for a name beginning in get, taking no arguments",
       val = ioke:lang:test:StaticJavaBean
@@ -1743,7 +1743,7 @@ describe("Java Objects",
       java:util:ArrayList new class:toString asText should == "class java.util.ArrayList"
     )
 
-    it("should be possible to supply arguments by name")
+;     it("should be possible to supply arguments by name")
 
     it("should add an alias for a name beginning in get, taking no arguments",
       val = ioke:lang:test:JavaBean new("foo", false)
@@ -1861,7 +1861,7 @@ describe("Java Objects",
       ioke:lang:test:Constructors new((java:lang:Object)nil) getData asText should == "Constructors(null: Object)"
     )
 
-    it("should be possible to supply arguments by name")
+;     it("should be possible to supply arguments by name")
   )
 
   describe("working with arrays",
