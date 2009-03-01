@@ -984,9 +984,7 @@ describe(Mixins,
         it("should convert a list with multiple elements to a flat string of all its elements as text",
           ["a","man","walked","into","a","bar..."]  join should == "amanwalkedintoabar..."
            [1,2,3,4,5] join should == "12345"
-          #{1,2,3,4,5} join should == "12345"
         )
-        
       )
       
       describe("with one argument",
