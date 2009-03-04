@@ -97,4 +97,91 @@ describe(TextScanner,
       t position should == 0
     )
   )
+
+  describe("preMatch",
+    it("should return the text before the match of the last scan",
+      t = TextScanner mimic("original matchable text")
+      t search(#/matchable/)
+      t preMatch should == "original "
+      t search(#/text/)
+      t preMatch should == "original matchable "
+    )
+
+    it("should return nil if no scans have been performed yet",
+      t = TextScanner mimic("original matchable text")
+      t preMatch should == nil
+    )
+  )
+
+  describe("postMatch",
+    it("should return the text after the match of the last scan",
+      t = TextScanner mimic("original matchable text")
+      t search(#/original/)
+      t postMatch should == " matchable text"
+    )
+
+    it("should return nil if no scans have been performed yet",
+      t = TextScanner mimic("original matchable text")
+      t postMatch should == nil
+    )
+  )
+
+  describe("textStart?",
+    it("should return true if the pointer position is at the start of the text",
+      t = TextScanner mimic("original matchable text")
+      t textStart? should == true
+    )
+
+    it("should return false if the pointer position is in the middle of the text",
+      t = TextScanner mimic("original matchable text")
+      t search(#/matchable/)
+      t textStart? should == false
+    )
+
+    it("should return false if the pointer position is at the end of the text",
+      t = TextScanner mimic("original matchable text")
+      t search(#/text/)
+      t textStart? should == false
+    )
+  )
+
+ describe("textEnd?",
+    it("should return false if the pointer position is at the start of the text",
+      t = TextScanner mimic("original matchable text")
+      t textEnd? should == false
+    )
+
+    it("should return false if the pointer position is in the middle of the text",
+      t = TextScanner mimic("original matchable text")
+      t search(#/matchable/)
+      t textEnd? should == false
+    )
+
+    it("should return true if the pointer position is at the end of the text",
+      t = TextScanner mimic("original matchable text")
+      t search(#/text/)
+      t textEnd? should == true
+    )
+  )
+
+  describe("getChar",
+    it("should return the first character no scanning has taken place",
+      t = TextScanner mimic("original matchable text")
+      t getChar should == "o"
+    )
+
+    it("should advance the pointer",
+      t = TextScanner mimic("original matchable text")
+      t position should == 0
+      t getChar
+      t position should == 1
+    )
+
+    it("should return nil if the pointer is at the end of the text",
+      t = TextScanner mimic("original matchable text")
+      t position = "original matchable text" length
+      t getChar should == nil
+    )
+  )
+
 )
