@@ -10,14 +10,14 @@ describe(IOpt,
       m = IOpt iopt:ion("-f")
       m should not be nil
       m long should be nil
-      m flag should == "-f"
+      m option should == "-f"
       m immediate should be nil)
     
     it("should recognize a long option", 
       m = IOpt iopt:ion("--foo")
       m should not be nil
       m long should not be nil
-      m flag should == "--foo"
+      m option should == "--foo"
       m immediate should be nil)
     
     it("should not recognize something that is not an option", 
@@ -31,28 +31,28 @@ describe(IOpt,
       m = IOpt iopt:ion("-f=22")
       m should not be nil
       m long should be nil
-      m flag should == "-f"
+      m option should == "-f"
       m immediate should == "22")
     
     it("should obtain the immediate value for a short option using =",
       m = IOpt iopt:ion("-f22=moo")
       m should not be nil
       m long should be nil
-      m flag should == "-f22"
+      m option should == "-f22"
       m immediate should == "moo")
     
     it("should obtain the immediate value for a short option",
       m = IOpt iopt:ion("-f22")
       m should not be nil
       m long should be nil
-      m flag should == "-f"
+      m option should == "-f"
       m immediate should == "22")
 
     it("should obtain the immediate value for a long option using =",
         m = IOpt iopt:ion("--foo=bar")
         m should not be nil
         m long should not be nil
-        m flag should == "--foo"
+        m option should == "--foo"
         m immediate should == "bar")
       
   );iopt:ion
@@ -102,7 +102,7 @@ describe(IOpt,
 
    describe("[]=",
     
-     it("should create an action by assigning a value to a flag",
+     it("should create an action by assigning a value to an option",
        o = IOpt mimic
        o["-f"] = fn()
        o["-f"] should mimic(IOpt Action ValueActivation))
@@ -112,33 +112,33 @@ describe(IOpt,
        o["-f"] = fn()
        o["-f"] receiver should == o)
 
-     it("should create an action that activates a cell by assigning a symbol to a flag",
+     it("should create an action that activates a cell by assigning a symbol to an option",
        o = IOpt mimic
        o["-f"] = :flag
        o["-f"] should mimic(IOpt Action CellActivation))
 
-     it("should create an action that evaluates a message by assigning to a flag",
+     it("should create an action that evaluates a message by assigning to an option",
        o = IOpt mimic
        o["-f"] = Message fromText("why")
        o["-f"] should mimic(IOpt Action MessageEvaluation)
        o["-f"] = 'not
        o["-f"] should mimic(IOpt Action MessageEvaluation))
 
-     it("should create an action that stores a cell by assigning a :@thing to a flag",
+     it("should create an action that stores a cell by assigning a :@thing to an option",
        o = IOpt mimic
        o["-f"] = :"@flag"
        o["-f"] should mimic(IOpt Action CellAssignment)
        o["-f"] = :@thing
        o["-f"] should mimic(IOpt Action CellAssignment))
 
-    it("should not create an action if given one to bind to a flag",
+    it("should not create an action if given one to bind to an option",
       o = IOpt mimic
       o["-f"] = fn
       a = o["-f"]
       o["--foo"] = a
       o["--foo"] should == a)
     
-    it("should alias an action by assigning an existing flag to a new flag",
+    it("should alias an action by assigning an existing option to a new one",
       o = IOpt mimic
       o["-f"] = fn
       a = o["-f"]
@@ -149,12 +149,12 @@ describe(IOpt,
       o = IOpt mimic
       fn(o["--foo"] = "-f") should signal(IOpt NoActionForOption))
     
-    it("should be possible to assign multiple flags for a single action",
+    it("should be possible to assign multiple options for a single action",
       o = IOpt mimic
       o["-f", "--foo"] = fn
       o["-f"] should == o["--foo"])
 
-    it("should remove an action by assigning nil to its flag", 
+    it("should remove an action by assigning nil to its options", 
       o = IOpt mimic
       o["-f", "--foo", "--bar"] = fn
       a = o["-f"]
@@ -172,7 +172,7 @@ describe(IOpt,
       o = IOpt mimic
       o on should == o)
 
-    describe("when given flags as first arguments", 
+    describe("when given options as first arguments", 
       it("should create a lexical block to handle the option",
         o = IOpt mimic
         o on("-h", "--help", "Display Help", @print. System exit)
@@ -246,7 +246,7 @@ describe(IOpt,
 
  describe("on=",
 
-    describe("when given flags as first arguments", 
+    describe("when given options as first arguments", 
       it("should create an Action ValueActivation",
         o = IOpt mimic
         o on("-h", "--help") = fn("Display Help", @print. System exit)
@@ -334,13 +334,17 @@ describe(IOpt,
    it("should not modify original arguments and store them on argv cell",
      o = IOpt mimic
      o on("-a", nil)
-     o parse!(["-not-an-option", "-a", "yes", "hey"])
+     argv = ["-not-an-option", "-a", "yes", "hey"]
+     fn(o parse!(argv)) should signal(IOpt UnknownOption)
+     o parse!(argv, errorUnknownOptions: false)
      o argv should == ["-not-an-option", "-a", "yes", "hey"])
 
    it("should store non option arguments on programArguments cell",
      o = IOpt mimic
      o on("-a", nil)
-     o parse!(["-not-an-option", "-a", "yes", "hey"])
+     argv = ["-not-an-option", "-a", "yes", "hey"]
+     fn(o parse!(argv)) should signal(IOpt UnknownOption)
+     o parse!(argv, errorUnknownOptions: false)
      o programArguments should == ["-not-an-option", "yes", "hey"])
  )
 
@@ -377,13 +381,13 @@ describe(IOpt Action ValueActivation,
     a call(24)
     o yo should == 24)
 
-  it("should set cell(:it) to the receiver when activating a block",
+  it("should set self and @ to the receiver when activating a block",
     v = nil
-    a = IOpt Action ValueActivation mimic(fn(v = it))
+    a = IOpt Action ValueActivation mimic(fn(v = [self, @]))
     o = Origin mimic
     a receiver = o
     a call()
-    v should == o)
+    v should == [o, o])
   
 );IOpt Action ValueActivation
 
@@ -488,33 +492,33 @@ describe(IOpt Action,
 
     it("should consume no arguments if the arity is empty",
       o = IOpt mimic
-      a = IOpt Action mimic do(init. flags << "-f")
+      a = IOpt Action mimic do(init. options << "-f")
       a iopt = o
       a argumentsCode = nil
       c = a consume(["-f", "jojo", "-hey"])
-      c flag should == "-f"
+      c option should == "-f"
       c remnant should == ["jojo", "-hey"]
       c positional should be empty
       c keywords should be empty)
 
     it("should take only required arguments",
       o = IOpt mimic
-      a = IOpt Action mimic do(init. flags << "-f")
+      a = IOpt Action mimic do(init. options << "-f")
       a iopt = o
       a argumentsCode = "a,b"
       c = a consume(["-f", "jojo", "jaja", "-hey"])
-      c flag should == "-f"
+      c option should == "-f"
       c remnant should == ["-hey"]
       c positional should == ["jojo", "jaja"]
       c keywords should be empty)
 
     it("should take only required arguments",
       o = IOpt mimic
-      a = IOpt Action mimic do(init. flags << "-f")
+      a = IOpt Action mimic do(init. options << "-f")
       a iopt = o
       a argumentsCode = "a,b"
       c = a consume(["-f", "jojo", "--notanoption", "-hey"])
-      c flag should == "-f"
+      c option should == "-f"
       c remnant should == ["-hey"]
       c positional should == ["jojo", "--notanoption"]
       c keywords should be empty)
@@ -522,37 +526,37 @@ describe(IOpt Action,
 
     it("should take only required arguments before next option",
       o = IOpt mimic
-      a = IOpt Action mimic do(init. flags << "-f")
+      a = IOpt Action mimic do(init. options << "-f")
       o["--jaja"] = a
       a iopt = o
       a argumentsCode = "a,b"
       c = a consume(["-f", "jojo", "--jaja", "-hey"])
-      c flag should == "-f"
+      c option should == "-f"
       c remnant should == ["--jaja", "-hey"]
       c positional should == ["jojo"]
       c keywords should be empty)
 
     it("should take only rest arguments before next option",
       o = IOpt mimic
-      a = IOpt Action mimic do(init. flags << "-f")
+      a = IOpt Action mimic do(init. options << "-f")
       o["--jaja"] = a
       a iopt = o
       a argumentsCode = "+rest"
       c = a consume(["-f", "jojo", "-hey", "you:notKey", "--jaja", "--jiji"])
-      c flag should == "-f"
+      c option should == "-f"
       c remnant should == ["--jaja", "--jiji"]
       c positional should == ["jojo", "-hey", "you:notKey"]
       c keywords should be empty)
     
     it("should take keyword arguments before next option",
       o = IOpt mimic
-      a = IOpt Action mimic do(init. flags << "-f")
+      a = IOpt Action mimic do(init. options << "-f")
       o["--jaja"] = a
       a iopt = o
       a argumentsCode = "+rest, you:, +:all"
       c = a consume(["-f", "jojo", "-hey", "you:aKey",
           "one:", "1", "two:2", "--jaja", "--jiji"])
-      c flag should == "-f"
+      c option should == "-f"
       c remnant should == ["--jaja", "--jiji"]
       c positional should == ["jojo", "-hey"]
       c keywords should == dict(you: "aKey", one: "1", two: "2" ))
