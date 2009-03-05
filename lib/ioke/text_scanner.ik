@@ -1,9 +1,13 @@
 TextScanner = Origin mimic do(
   initialize = method("initialize a new text scanner with a given piece of text",
     text,
-    @text = text  ;"The text to be scanned"
-    @position = 0 ;"The position of the scan pointer. In the initial or 'reset' position, this value is zero. In the 'terminated' position (i.e. the text has been completely scanned), this value is the length of the text"
-    @match = nil
+    @text = text  ;The text to be scanned
+
+    @position = 0 ;The position of the scan pointer. In the initial or 'reset' position, this value is zero. 
+                  ;In the 'terminated' position (i.e. the text has been completely scanned), 
+                  ;this value is the length of the text
+
+    @match = nil  ;The result of the last match
   )
 
   scan = method("Takes one parameter, a regular expression, and will check for a match starting at the current position pointer. If a match exists it will advance the position pointer to the next match and return that match",
@@ -20,20 +24,20 @@ TextScanner = Origin mimic do(
     text[position..-1]
   )
 
-  preMatch = method("Returns the text before the last match, or nil if no scanning has been performed yet",
-    if(@match, text[0...(@position - @match[0] length)], nil)
+  beforeMatch = method("Returns the text before the last match, or nil if no scanning has been performed yet",
+    if(match, text[0...(position - match[0] length)], nil)
   )
 
-  postMatch = method("Returns the text after tha last match, or nil if no scanning has been performed yet",
-    if(@match, text[@position..-1], nil)
+  afterMatch = method("Returns the text after tha last match, or nil if no scanning has been performed yet",
+    if(match, text[position..-1], nil)
   )
 
   textStart? = method("Returns true if the pointer position is at the start of the text (line breaks are ignored)",
-    @position == 0
+    position == 0
   )
 
   textEnd? = method("Returns true if the pointer position is at the end of the text (line breaks are ignored)",
-    @position == text length
+    position == text length
   )
 
   getChar = method("Return the character at the pointer position, and advance the pointer. If the pointer is at the end of the text, return nil",
