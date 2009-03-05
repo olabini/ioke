@@ -98,31 +98,31 @@ describe(TextScanner,
     )
   )
 
-  describe("preMatch",
+  describe("beforeMatch",
     it("should return the text before the match of the last scan",
       t = TextScanner mimic("original matchable text")
       t search(#/matchable/)
-      t preMatch should == "original "
+      t beforeMatch should == "original "
       t search(#/text/)
-      t preMatch should == "original matchable "
+      t beforeMatch should == "original matchable "
     )
 
     it("should return nil if no scans have been performed yet",
       t = TextScanner mimic("original matchable text")
-      t preMatch should == nil
+      t beforeMatch should == nil
     )
   )
 
-  describe("postMatch",
+  describe("afterMatch",
     it("should return the text after the match of the last scan",
       t = TextScanner mimic("original matchable text")
       t search(#/original/)
-      t postMatch should == " matchable text"
+      t afterMatch should == " matchable text"
     )
 
     it("should return nil if no scans have been performed yet",
       t = TextScanner mimic("original matchable text")
-      t postMatch should == nil
+      t afterMatch should == nil
     )
   )
 
