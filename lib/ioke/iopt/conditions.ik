@@ -3,8 +3,10 @@ IOpt do(
   
   NoActionForOption = Condition mimic
 
-  MalformedFlag = Condition mimic
+  MalformedOption = Condition mimic
 
   OptionKeywordAlreadyProvided = Condition mimic
+
+  UnknownOption = Condition mimic
   
 )
