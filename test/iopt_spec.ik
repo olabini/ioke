@@ -590,3 +590,79 @@ describe(IOpt Action,
     
   )
 ); IOpt Action
+
+describe(IOpt CommandLine, 
+
+  it("should include unknown options (default)",
+    o = IOpt mimic
+    c = IOpt CommandLine mimic(o, ["--foo", "bar", "--bat"])
+    c should be empty
+    c rest should be empty
+    c unknownOptions should == ["--foo", "--bat"]
+    c programArguments should == ["--foo", "bar", "--bat"])
+
+  it("should not include unknown options if includeUnknownOption is false",
+    o = IOpt mimic
+    c = IOpt CommandLine mimic(o, ["--foo", "bar", "--bat"], includeUnknownOption: false)
+    c should be empty
+    c rest should be empty
+    c unknownOptions should == ["--foo", "--bat"]
+    c programArguments should == ["bar"])
+
+  it("should process option arguments until next option is found (default)",
+    o = IOpt mimic
+    o on("--foo", arg0, nil)
+    o on("--bat", nil)
+    c = IOpt CommandLine mimic(o, ["--foo", "--bat", "man"])
+    c rest should be empty
+    c unknownOptions should be empty
+    c programArguments should == ["man"]
+    c options length should == 2
+    f = c options first
+    f option should == "--foo"
+    f args positional should be empty
+    f args keywords should be empty)
+
+  it("should process option arguments even if they are options when argUntilNextOption is false",
+    o = IOpt mimic
+    o on("--foo", arg0, nil)
+    o on("--bat", nil)
+    c = IOpt CommandLine mimic(o, ["--foo", "--bat", "man"], argUntilNextOption: false)
+    c rest should be empty
+    c unknownOptions should be empty
+    c programArguments should == ["man"]
+    c options length should == 1
+    f = c options first
+    f option should == "--foo"
+    f args positional should == ["--bat"]
+    f args keywords should be empty)
+
+  it("should take look-like option elements as valid option argument (default)",
+    o = IOpt mimic
+    o on("--foo", arg0, nil)
+    o on("--bat", nil)
+    c = IOpt CommandLine mimic(o, ["--foo", "--bar", "--bat", "man"])
+    c rest should be empty
+    c unknownOptions should be empty
+    c programArguments should == ["man"]
+    c options length should == 2
+    f = c options first
+    f option should == "--foo"
+    f args positional should == ["--bar"]
+    f args keywords should be empty)
+  
+  it("should stop processing command line when found value for stopAt",
+    o = IOpt mimic
+    o on("-f", v, nil)
+    c = IOpt CommandLine mimic(o, 
+      ["-f", "--bar", "man", "--bat", "--", "jojo"], stopAt: "--")
+    c should include("-f")
+    c unknownOptions should == ["--bat"]
+    c programArguments should == ["man", "--bat"]
+    c rest should == ["jojo"]
+    c = IOpt CommandLine mimic(o, 
+      ["-f", "--bar", "man", "--bat", "--"], stopAt: "--")
+    c programArguments should == ["man", "--bat"]
+    c rest should be empty)
+
+); IOpt CommandLine
