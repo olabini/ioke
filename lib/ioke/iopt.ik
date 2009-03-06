@@ -13,11 +13,12 @@ IOpt do(
     @iopt:help = dict(plain: IOpt Help Plain Simple mimic(self))
     @initialize = method())
 
-  iopt:ion = method("If the argument is a valid option name, it returns
-    an object with the following cells: 
+  iopt:ion = method("If the argument is a valid option name, it MUST return
+    an object with the following cells:
     
-    long: non-nil if it is a long option.
-    option e.g. -f, --foo. this value will be used to look for the
+    short: an string like '-' if it is a short option, otherwise nil.
+           this value must be '-' or whatever prefix you use for short options.
+    option e.g. '-f', '--foo'. this value will be used to look for the
            the option action by the iopt:get method.
     immediate: if non-nil indicates this option has an immediate value,
                for example in --foo=bar the inlined value should be bar
@@ -35,6 +36,7 @@ IOpt do(
       if(m long nil? && m immediate nil? && m name length > 1,
         m immediate = m name[1..-1]
         m name = m name[0..0])
+      m short = if(m long, nil, "-")
       m option = if(m long, "--", "-") + m name
       m))
 
