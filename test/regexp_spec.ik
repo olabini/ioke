@@ -582,11 +582,20 @@ describe(Regexp,
     )
 
     describe("\\w",
-      it("should have tests")
+      it("should match a word character",
+        "f" should match(#/\w/)
+        " f " should match(#/\w/)
+        " 1 " should match(#/\w/)
+        "  . !!!" should not match(#/\w/)
+      )
     )
 
     describe("\\W",
-      it("should have tests")
+      it("should match anything that is not a word character",
+        "123 " should match(#/\W/)
+        " abc" should match(#/\W/)
+        "abc" should not match(#/\W/)
+      )
     )
 
     describe("\\b",
