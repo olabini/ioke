@@ -210,6 +210,34 @@ describe("Set",
     )
   )
 
+
+  describe("===", 
+    it("should return false for something not in the set", 
+      (set === :foo) should be false
+      (set(1) === 2) should be false
+      (set(1, :foo, "bar") === 2) should be false
+    )
+
+    it("should return true for something in the set", 
+      (set(:foo) === :foo) should be true
+      (set(1, 2) === 2) should be true
+      (set(2, 1, :foo, "bar") === 2) should be true
+    )
+
+    it("should return true when called against Set and the other is a set",
+      (Set === Set) should be true
+      (Set === set) should be true
+      (Set === set(1,2,3)) should be true
+      (Set === set(:foo)) should be true
+    )
+
+    it("should return true when called against Set and the other is not a set",
+      (Set === []) should be false
+      (Set === (1..5)) should be false
+      (Set === :foo) should be false
+    )
+  )
+
   describe("+",
     it("should add two sets",
       (set(1,2) + set(1,3)) should == set(1,2,3)

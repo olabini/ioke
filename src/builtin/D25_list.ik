@@ -59,4 +59,4 @@ List ?& = dmacro(
     call argAt(0),
     self))
 
-List do(=== = generateMatchMethod(==))
+List do(=== = generateMatchMethod(include?))

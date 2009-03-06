@@ -17,7 +17,7 @@ import ioke.lang.exceptions.ControlFlow;
  *
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
-public class JavaFieldSetterJavaMethod extends Method {
+public class JavaFieldSetterJavaMethod extends Method implements JavaImplementedMethod {
     private Class declaringClass;
     private Field field;
     private JavaArgumentsDefinition arguments;

@@ -23,4 +23,4 @@ Set ?& = dmacro(
     call argAt(0),
     self))
 
-Set do(=== = generateMatchMethod(==))
+Set do(=== = generateMatchMethod(include?))

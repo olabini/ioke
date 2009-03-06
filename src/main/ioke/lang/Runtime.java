@@ -11,6 +11,8 @@ import ioke.lang.exceptions.ControlFlow;
 import ioke.lang.parser.iokeLexer;
 import ioke.lang.parser.iokeParser;
 
+import ioke.lang.java.ClassRegistry;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
@@ -39,6 +41,7 @@ public class Runtime {
     Reader in;
     
     public IokeRegistry registry = new IokeRegistry(this);
+    public ClassRegistry classRegistry = new ClassRegistry(this);
 
     // Core objects and origins
     public IokeObject base = new IokeObject(this, "Base is the top of the inheritance structure. Most of the objects in the system are derived from this instance. Base should keep its cells to the bare minimum needed for the system.");
@@ -580,14 +583,6 @@ public class Runtime {
     }
 
     public IokeObject createJavaWrapper(Object object) {
-        //        System.err.println("creating Java wrapper: " + object);
-        // if object instance of Class
-        //    if it is the class Object, don't recurse, instead mimic the java wrapper
-        //    wrap its super classes first, and add those as mimics
-        // else
-        //    wrap its class, add that as mimic, and 
-        //    then wrap the object itself
-        //
         if(object instanceof Class) {
             if(object == Object.class) {
                 IokeObject obj = this.javaWrapper.allocateCopy(null, null);
@@ -619,12 +614,23 @@ public class Runtime {
         }
     }
 
+    public IokeObject createIntegratedJavaWrapper(Class clz) {
+        IokeObject obj = this.javaWrapper.allocateCopy(null, null);
+        obj.mimicsWithoutCheck(registry.wrap(Class.class));
+        obj.mimicsWithoutCheck(registry.wrap(clz.getSuperclass()));
+        for(Class<?> i : clz.getInterfaces()) {
+            obj.mimicsWithoutCheck(registry.wrap(i));
+        }
+        obj.setData(JavaIntegrationWrapper.wrapWithMethods(clz, obj, this));
+        return obj;
+    }
+
     public IokeObject createJavaMethod(java.lang.reflect.Method[] methods) throws ControlFlow {
         return newMethod(null, this.javaMethod, new JavaMethodJavaMethod(methods));
     }
 
-    public IokeObject createJavaMethod(java.lang.reflect.Constructor[] ctors) throws ControlFlow {
-        return newMethod(null, this.javaMethod, new JavaConstructorJavaMethod(ctors));
+    public IokeObject createJavaMethod(java.lang.reflect.Constructor[] ctors, boolean special) throws ControlFlow {
+        return newMethod(null, this.javaMethod, new JavaConstructorJavaMethod(ctors, special));
     }
 
     public IokeObject createJavaFieldGetter(java.lang.reflect.Field field) throws ControlFlow {

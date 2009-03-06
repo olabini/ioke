@@ -40,7 +40,22 @@ public class JavaWrapper extends IokeData {
         return ((JavaWrapper)IokeObject.data(wrapped)).object;
     }
 
+    public static void setObject(Object wrapped, Object obj) {
+        JavaWrapper jw = ((JavaWrapper)IokeObject.data(wrapped));
+        jw.object = obj;
+        jw.clazz = jw.object.getClass();
+        jw.kind = jw.clazz.getName().replaceAll("\\.", ":");
+    }
+
     public static JavaWrapper wrapWithMethods(Class<?> clz, IokeObject obj, Runtime runtime) {
+        return wrapWithMethods(clz, obj, runtime, false);
+    }
+
+    public IokeData cloneData(IokeObject obj, IokeObject m, IokeObject context) {
+        return object == null ? new JavaWrapper() : new JavaWrapper(object);
+    }
+
+    public static JavaWrapper wrapWithMethods(Class<?> clz, IokeObject obj, Runtime runtime, boolean special) {
         try {
             String prefix = "";
             if(clz == Class.class) {
@@ -90,7 +105,7 @@ public class JavaWrapper extends IokeData {
                 }
             }
 
-            obj.setCell("new", runtime.createJavaMethod(clz.getDeclaredConstructors()));
+            obj.setCell("new", runtime.createJavaMethod(clz.getDeclaredConstructors(), special));
         } catch(Throwable e) {
             System.err.print("woopsie: ");
             e.printStackTrace();

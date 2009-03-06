@@ -99,6 +99,7 @@
       <zipfileset src="${lib.release.dir}/antlr-3.1.1.jar" includes="**/*"/>
       <zipfileset src="${lib.release.dir}/jline-0.9.93.jar" includes="**/*"/>
       <zipfileset src="${lib.release.dir}/joda-time-1.6.jar" includes="**/*"/>
+      <zipfileset src="${lib.release.dir}/asm-3.1.jar" includes="**/*"/>
       <manifest>
         <attribute name="Built-By" value="${user.name}"/>
         <attribute name="Main-Class" value="ioke.lang.Main"/>
@@ -116,6 +117,7 @@
       <zipfileset src="${lib.release.dir}/antlr-3.1.1.jar" includes="**/*"/>
       <zipfileset src="${lib.release.dir}/jline-0.9.93.jar" includes="**/*"/>
       <zipfileset src="${lib.release.dir}/joda-time-1.6.jar" includes="**/*"/>
+      <zipfileset src="${lib.release.dir}/asm-3.1.jar" includes="**/*"/>
       <manifest>
         <attribute name="Built-By" value="${user.name}"/>
         <attribute name="Main-Class" value="ioke.lang.Main"/>

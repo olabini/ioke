@@ -398,7 +398,18 @@ Mixins Enumerable grep = dmacro(
     if(matchingAgainst === cell(:n),
       result << lexicalCode call(cell(:n))))
   result)
+  
 
+Mixins Enumerable join = method(
+  "returns a string created by converting each element of the array to text, separated by an optional separator",
+  separator "",
+  
+  result = ""
+  self each(index, n,
+    result += (n asText)
+    if(index < count - 1, result += separator))
+  result)
+  
 Mixins Enumerable aliasMethod("map", "collect")
 Mixins Enumerable aliasMethod("map", "collect:list")
 Mixins Enumerable aliasMethod("map", "map:list")

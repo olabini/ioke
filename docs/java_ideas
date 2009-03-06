@@ -1,18 +1,4 @@
 
-fields should probably just be exposed using a namespacing to discourage use:
-
-private String x;
-  will give
-
-field:x
-field:x=
-
-private final String y;
-  will give
-
-field:y
-
-
 
 For private methods, do the same thing so it's obvious that they are private:
 
@@ -34,25 +20,7 @@ private:something=
 
 
 
-
 protected and public methods should probably just be open, to make it easy.
-
-
-
-
-
-
-
-implement == to use equals
-implement same? to use real ==
-
-I think that during cell lookup there needs to be a check - isAppropriate? that allows the division between classes and objects to be respected in lookup.
-
-
-
-
-
-
 
 
 
@@ -64,23 +32,7 @@ How to refer to full class names?
    xml:com:sun:blarg:Foo$Bar$Quux  ;; inner classes
    xml:com:sun:blarg:Foo Bar Quux  ;; inner classes
 
-Importing:
-  JavaGround#import
-
-   import(java:util:HashMap)
-
- assignment works too:
-
-   HMap = java:util:HashMap
-
-The class referred is the real class.
-
-Create new instances with new
-
-   HMap new
-
 To figure out:
- - how to call overloaded methods
  - args by name functionality?
  - how to send code to Java methods?
     maybe something like this:
@@ -88,11 +40,6 @@ To figure out:
       Thread new(run: callSomeExpensiveThing)
       Collections sort(list, fn(x, y, x <=> y))
       Collections sort(list, compareTo: (x, y, x <=> y))
-
- - how to see difference between fields and methods
- - how to implement interfaces
- - how to extend from Java classes in some way
-
 
  - add loads of good helpers to Java types
 
@@ -109,15 +56,6 @@ Code:
    )
 
  keyword arguments will use the paranamer approach
-
-
-
-
-
-
-
-
-
 
 
 -----
