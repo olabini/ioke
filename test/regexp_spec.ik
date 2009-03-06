@@ -599,11 +599,18 @@ describe(Regexp,
     )
 
     describe("\\b",
-      it("should have tests")
+      it("should match a word boundary",
+        "foo bar" should match(#/\bbar/)
+        "foo bar" should match(#/\bfoo/)
+        "foobar" should not match(#/\bbar/)
+      )
     )
 
     describe("\\B",
-      it("should have tests")
+      it("should match anything that is not a word boundary",
+        "foobar" should match(#/\Bbar/)
+        "foo bar" should not match(#/\Bbar/)
+      )
     )
 
     describe("\\<",

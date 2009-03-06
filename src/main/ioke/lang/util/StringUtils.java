@@ -230,9 +230,6 @@ public class StringUtils {
                     case 't':
                         result.append('\t');
                         break;
-                    case 'b':
-                        result.append('\b');
-                        break;
                     case 'e':
                         result.append((char)27);
                         break;
@@ -308,9 +305,6 @@ public class StringUtils {
                         break;
                     case 't':
                         result.append('\t');
-                        break;
-                    case 'b':
-                        result.append('\b');
                         break;
                     case 'e':
                         result.append((char)27);
