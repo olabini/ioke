@@ -632,11 +632,33 @@ describe(Regexp,
     )
 
     describe("\\z",
-      it("should have tests")
+      it("should match the end of the text",
+        "foo" should match(#/foo\z/)
+        "foo\nfoo" should match(#/foo\z/)
+      )
+
+      it("should not match the end of a line",
+        "foo\nbar" should not match(#/foo\z/)
+      )
+
+      it("should not match the end of a line before the end of the text",
+        "foo\n" should not match(#/foo\z/)
+      )
     )
 
     describe("\\Z",
-      it("should have tests")
+      it("should match the end of the text",
+        "foo" should match(#/foo\Z/)
+        "foo\nfoo" should match(#/foo\Z/)
+      )
+
+      it("should match the end of a line before the end of the text",
+        "foo\n" should match(#/foo\Z/)
+      )
+
+      it("should not match the end of a line",
+        "foo\nbar" should not match(#/foo\Z/)
+      )
     )
 
     describe("\\G",
