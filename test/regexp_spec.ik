@@ -681,19 +681,19 @@ describe(Regexp,
       )
     )
 
-;     describe("\\{",
-;       it("should match literally",
-;         "foo{" should match(#/\{/)
-;         "foo" should not match(#/\{/)
-;       )
-;     )
+    describe("\\{",
+      it("should match literally",
+        "foo{" should match(#/\{/)
+        "foo" should not match(#/\{/)
+      )
+    )
 
-;     describe("\\}",
-;       it("should match literally",
-;         "foo}" should match(#/\}/)
-;         "foo" should not match(#/\}/)
-;       )
-;     )
+    describe("\\}",
+      it("should match literally",
+        "foo}" should match(#/\}/)
+        "foo" should not match(#/\}/)
+      )
+    )
 
 ;     describe("\\.",
 ;       it("should match literally",
