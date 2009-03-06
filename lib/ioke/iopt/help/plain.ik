@@ -14,7 +14,7 @@ IOpt Help Plain do(
       actions = set()
       iopt cell("iopt:actions") each(pair, actions << pair value)
       actions sort each(action,
-        option = "%[ %s%] " format(action option)
+        option = "%[ %s%] " format(action options)
         unless(action arity empty?, option += " (" + action argumentsCode + ")")
         lines << option
         if(action documentation && !action documentation empty?,
