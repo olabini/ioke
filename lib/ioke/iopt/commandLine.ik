@@ -21,6 +21,8 @@ IOpt CommandLine = Origin mimic do(
 
     includeUnknownOption: When true, unknown options will be included in the programArguments list.
 
+    coerce: a CommandLine Coerce object or false to avoid argument coercion.
+
     This object has the following cells available:
 
         argv: The original array of command line arguments.
@@ -30,7 +32,7 @@ IOpt CommandLine = Origin mimic do(
         programArguments: A list of elements from argv that are neither an option nor par of an option arguments
         rest: A list arguments found after stopAt
     ", 
-    iopt, argv, argUntilNextOption: true, includeUnknownOption: true, stopAt: nil,
+    iopt, argv, coerce: nil, argUntilNextOption: true, includeUnknownOption: true, stopAt: nil,
     
     @iopt = iopt
     @argv = argv
@@ -43,7 +45,7 @@ IOpt CommandLine = Origin mimic do(
     if(stopAt,
       ary = argv takeWhile(a, case(a, stopAt, false, true))
       @rest = argv[ary length succ .. -1])
-    
+
     until(ary empty?,
       if(handler = iopt iopt:get(ary first),
         if(handler action
@@ -51,7 +53,7 @@ IOpt CommandLine = Origin mimic do(
           options << handler
           handler <=> = method(o, action <=> o action)
           handler args = handler action consume(
-            ary, handler, untilNextOption: argUntilNextOption)
+            ary, handler, untilNextOption: argUntilNextOption, coerce: coerce)
           ary = handler args remnant
           handler args removeCell!(:remnant)
           , ;; else it just looks like an option but isnt
@@ -71,6 +73,34 @@ IOpt CommandLine = Origin mimic do(
 
   execute = method("Execute the actions by priority",
     options sort each(o, o action perform(o args, iopt)))
+
+  Coerce = Origin mimic do (
+
+    initialize = method(+names, +:coercions,
+      coercions each(pair,
+        @cell("coerce_#{pair key}?") = if(
+          pair value key cell?(:activatable) && pair value key activatable,
+          pair value key, 
+          match = pair value key
+          fn(t, match === t))
+        @cell("coerce_#{pair key}") = pair value value)
+      all = names + coercions keys asList
+      unless(all empty?, @all = all)
+    )
+    
+    coerce = method(txt,
+      all each(name,
+        if(send("coerce_#{name}?", txt), 
+          return( send("coerce_#{name}", txt) )))
+      txt)
+    
+  ) mimic (
+    nil:     "nil" => method(t, nil),
+    boolean: #/^(true|false)$/ => method(t, t == "true"),
+    symbol:  #/^:\\w+$/ => method(t, :(t[1..-1])),
+    number:  #/^\\d+(\\.\\d+)?([eE]\\d*)?$/ => 
+    method(t, Message fromText(t) evaluateOn(self))
+  ); Coerce
   
  );CommandLine
 

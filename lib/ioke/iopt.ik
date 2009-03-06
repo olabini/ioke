@@ -1,8 +1,8 @@
 IOpt = Origin mimic 
 ;; read the documentation at iopt/doc.ik
 use("iopt/conditions")
-use("iopt/action")
 use("iopt/commandLine")
+use("iopt/action")
 use("iopt/help")
 
 IOpt do(

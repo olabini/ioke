@@ -77,6 +77,9 @@ IOpt Action do(
     @cell(:priority) = value
     self)
 
+  ; The object used to coerce arguments for this action.
+  coerce = nil
+
   consume = method("Take arguments for this action according to its arity.
     
     The argv list must have its first element be one of the options handled by this action
@@ -89,7 +92,7 @@ IOpt Action do(
       positional: A list of positional arguments for this action.
       keywords: A dict of keyword arguments for this action.
       
-    ", argv, handler iopt iopt:ion(argv first), untilNextOption: true,
+    ", argv, handler iopt iopt:ion(argv first), untilNextOption: true, coerce: nil,
     if(handler nil? || !options include?(handler option),
       error!(NoActionForOption, 
         text: "Cannot handle option %s not in %s" format(
@@ -101,8 +104,12 @@ IOpt Action do(
     args = list()
     klist = list()
     kmap = dict()
-    
-    if(handler immediate && arity positional?, args << handler immediate)
+
+    coerced = fn(txt,
+      if(coerce == false || @coerce == false, txt,
+        (coerce || @coerce || IOpt CommandLine Coerce mimic) coerce(txt)))
+      
+    if(handler immediate && arity positional?, args << coerced(handler immediate))
 
     shouldContinue = fn(arg, 
       cond(
@@ -137,16 +144,16 @@ IOpt Action do(
           error!(OptionKeywordAlreadyProvided, 
             text: "Keyword #{keyword} was specified more than once.",
             keyword: keyword),
-          kmap[keyword] = key immediate
+          kmap[keyword] = coerced(key immediate)
           if(key immediate, klist << keyword, currentKey = keyword))
         false,
 
         currentKey, ;; set last keyword if missing value
         klist << currentKey
-        kmap[currentKey] = arg
+        kmap[currentKey] = coerced(arg)
         currentKey = nil,
         
-        args << arg
+        args << coerced(arg)
         false))
 
     Origin with(
