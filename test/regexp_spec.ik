@@ -614,11 +614,21 @@ describe(Regexp,
     )
 
     describe("\\<",
-      it("should have tests")
+      it("should match beginning of a word",
+        "foo bar" should match(#/\<bar/)
+        "foo bar" should match(#/\<foo/)
+        "foobar" should not match(#/\<bar/)
+        "foo bar" should not match(#/foo\</)
+      )
     )
 
     describe("\\>",
-      it("should have tests")
+      it("should match end of a word",
+        "foo bar" should match(#/foo\>/)
+        "foo bar" should match(#/bar\>/)
+        "foobar" should not match(#/\>bar/)
+        "foo bar" should not match(#/\>foo/)
+      )
     )
 
     describe("\\z",
