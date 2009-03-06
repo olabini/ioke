@@ -108,8 +108,6 @@ IOpt Action do(
     coerced = fn(txt,
       if(coerce == false || @coerce == false, txt,
         (coerce || @coerce || IOpt CommandLine Coerce mimic) coerce(txt)))
-      
-    if(handler immediate && arity positional?, args << coerced(handler immediate))
 
     shouldContinue = fn(arg, 
       cond(
@@ -132,6 +130,14 @@ IOpt Action do(
         arity rest || args length < arity names length,
         
         false))
+
+    if(handler short && handler immediate,
+      opt = iopt iopt:get(handler short + handler immediate)
+      if(opt && opt action && opt short,
+        remnant = [handler short + handler immediate] + remnant
+        handler immediate = nil))
+      
+    if(handler immediate && arity positional?, args << coerced(handler immediate))
 
     idx = remnant findIndex(arg,
       cond(
