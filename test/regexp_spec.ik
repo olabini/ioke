@@ -725,7 +725,10 @@ describe(Regexp,
     )
 
     describe("\\*",
-      it("should have tests")
+      it("should match literally",
+        "foo*" should match(#/\*/)
+        "foo" should not match(#/\*/)
+      )
     )
 
     describe("\\+",
