@@ -523,7 +523,7 @@ describe(IOpt Action,
       c positional should == ["jojo", "--notanoption"]
       c keywords should be empty)
 
-
+    
     it("should take only required arguments before next option",
       o = IOpt mimic
       a = IOpt Action mimic do(init. options << "-f")
@@ -559,7 +559,7 @@ describe(IOpt Action,
       c option should == "-f"
       c remnant should == ["--jaja", "--jiji"]
       c positional should == ["jojo", "-hey"]
-      c keywords should == dict(you: "aKey", one: "1", two: "2" ))
+      c keywords should == dict(you: "aKey", one: 1, two: 2 ))
 
   )
 
@@ -664,5 +664,58 @@ describe(IOpt CommandLine,
       ["-f", "--bar", "man", "--bat", "--"], stopAt: "--")
     c programArguments should == ["man", "--bat"]
     c rest should be empty)
+
+  it("should coerce option arguments that are literals (default)",
+    o = IOpt mimic
+    o on("-f", +r, nil)
+    c = IOpt CommandLine mimic(o, 
+      ["-f", "true", "false", "nil", ":symbol", "24", "text"])
+    f = c options first
+    f option should == "-f"
+    f args positional should == [true, false, nil, :symbol, 24, "text"])
+
+  it("should coerce option arguments just for the selected types",
+    o = IOpt mimic
+    o on("-f", +r, nil)
+    c = IOpt CommandLine mimic(o,
+      ["-f", "true", "false", "nil", ":symbol", "24", "text"],
+      coerce: IOpt CommandLine Coerce mimic(:boolean, :symbol))
+    f = c options first
+    f option should == "-f"
+    f args positional should == [true, false, "nil", :symbol, "24", "text"])
+
+  it("should not coerce option arguments when given coerce: false",
+    o = IOpt mimic
+    o on("-f", +r, nil)
+    c = IOpt CommandLine mimic(o, 
+      ["-f", "true", "false", "nil", ":symbol", "24", "text"],
+      coerce: false)
+    f = c options first
+    f option should == "-f"
+    f args positional should == ["true", "false", "nil", ":symbol", "24", "text"])
+
+
+  it("should allow action specific coercion",
+    o = IOpt mimic
+    o on("-n", +r, nil) coerce = false
+    o on("-y", +r, nil) coerce = IOpt CommandLine Coerce mimic(
+      yesno: #/^yes|no$/ => method(t, t == "yes")
+    )
+    o on("-s", +r, nil) coerce = IOpt CommandLine Coerce mimic(
+      *IOpt CommandLine Coerce all,
+      yesno: #/^si|no$/ => method(t, t == "si")
+    )
+
+    c = IOpt CommandLine mimic(o, 
+      ["-n", "true", "-y", "no", "nil", "-s", "si", "nil"])
+    f = c options first
+    f option should == "-n"
+    f args positional should == ["true"]
+    f = c options[1]
+    f option should == "-y"
+    f args positional should == [false, "nil"]
+    f = c options[2]
+    f option should == "-s"
+    f args positional should == [true, nil])
 
 ); IOpt CommandLine
