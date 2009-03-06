@@ -48,13 +48,13 @@ Basic Usage
 
      app = Origin with(name: "app", version: "1.0", style: "none", verbosity: 1)
      app stdout = method("Default output strategy", block, block(System out))
-     app outStrategy = app cell(:stdout)
+     app withOut = app cell(:stdout)
 
      app loadConfig = method("Load configuration from io", io, "Reading" println)
 
-     app usingOutput = method("Use new output strategy for file", file, append: false,
-       if(file == "-", return(@outStrategy = @cell(:stdout)))
-       @outStrategy = fn("New output strategy that writes to  #{file}", block,
+     app outStrategy = method("Use new output strategy for file", file, append: false,
+       if(file == "-", return(@withOut = @cell(:stdout)))
+       @withOut = fn("New output strategy that writes to  \#{file}", block,
          ensure(
            os = if(file kind?("java:net:Socket"), os getOutputStream,
              java:io:FileOutputStream new(file, append))
@@ -64,14 +64,14 @@ Basic Usage
            os close)))
 
      app run = method("Execute the application", args,
-       outStrategy(fn(out,
+       withOut(fn(out,
            verbosity times(i,
-             out println("#{i}: #{name} is running #{args inspect}, my style is #{style}")))
+             out println("\#{i}: \#{name} is running \#{args inspect}, my style is \#{style}")))
      ))
 
      ;; Done with app implementation, now let's define it's command line options
      opt = IOpt on(app) ; app will be the receiver object to execute actions on
-     opt banner = "Usage: #{app name} [options\]"
+     opt banner = "Usage: \#{app name} [options\]"
 
      ; Print the opt object and exit. Highest priority option.
      opt on("-h", "--help", "HALP!", opt println. System exit) priority = -10
@@ -87,13 +87,13 @@ Basic Usage
      opt on("-s", "--style", "Set output style", :@style)
      
      ; increase app verbosity. takes an optional argument
-     opt on("-v", "Increase verbosity", value = 1,
+     opt on("-v", "Increase verbosity", value 1,
        @verbosity += value)
 
-     ; An option that will activate the usingOutput cell on app
+     ; An option that will activate the outStrategy cell on app
      ;
      ; help string will be taken from that cell's documentation
-     ; This action will take aditional arguments according to usingOutput's arity
+     ; This action will take aditional arguments according to outStrategy's arity
      ;
      ; Also this action uses a custom coercing strategy to convert
      ; english yes/no and japanese hai/iie to true/false ioke objects.
@@ -103,7 +103,7 @@ Basic Usage
      ; it will be executed after higher (more negative) actions, thus 
      ; if the user specified --style, this action will be executing having
      ; the user specified style already set.
-     opt on("-o", "--output", :usingOutput) coercing (
+     opt on("-o", "--output", :outStrategy) coercing (
        english: #/^yes|no$/ => method(t, t == "yes"),
        japanese: #/^hai|iie$/ => method(t, t == "hai"),
        net: #/:\\d+$/ => method(t,
@@ -138,8 +138,8 @@ More Advanced Usage
   represents the parsed command line, including all options found, etc.
   
       cl = opt parse(argv, stopAt: "--", includeUnknownOption: false)
-      unless(cl unknownOptions emtpy, 
-        error!("Unknown options: %[%s %]" format(cl unknownOptions)))
+      unless(cl unknownOptions emtpy?, 
+        error!("Unknown options: %[%s %\]" format(cl unknownOptions)))
       unless(cl include?("--required"),
         error!("The --required option must be present!"))
       once = cl options select(o, o option == "--once")
@@ -148,7 +148,7 @@ More Advanced Usage
         error!("Please provide at least one argument"))
       sendToSubProgram(cl rest) ; elements found after --
       fileOption = cl options find(o, o option == "--file")
-      fileOption args positional[0] = "IDontMindUserInput.txt"
+      fileOption args positional[0\] = "IDontMindUserInput.txt"
       fileOption action priority = -99 ; set higher priority
       cl execute
   
