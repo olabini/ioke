@@ -98,8 +98,10 @@ IOpt CommandLine = Origin mimic do(
     nil:     "nil" => method(t, nil),
     boolean: #/^(true|false)$/ => method(t, t == "true"),
     symbol:  #/^:\\w+$/ => method(t, :(t[1..-1])),
-    number:  #/^-?\\d+(\\.\\d+)?([eE]\\d*)?$/ => 
-    method(t, Message fromText(t) evaluateOn(self))
+    integer: #/^[+-]?\\d+$/ => method(t,
+      n = Message fromText(if(#/^[+-]/ === t, t[1..-1], t)) evaluateOn(self)
+      if(#/^-/ === t, n negation, n)),
+    decimal: #/^[+-]?\\d+\\.(\\d+)?([eE]\\d*)?$/ => method(t, t toDecimal)
   ); Coerce
   
  );CommandLine
