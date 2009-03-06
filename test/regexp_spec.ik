@@ -668,11 +668,17 @@ describe(Regexp,
     )
 
     describe("\\p",
-      it("should have tests")
+      it("should match a specific unicode block or category",
+        "FoF" should match(#/\p{Ll}/)
+        "FOF" should not match(#/\p{Ll}/)
+      )
     )
 
     describe("\\P",
-      it("should have tests")
+      it("should match anything that isn't a specific uncode block or category",
+        "oooooFooooo" should match(#/\P{Ll}/)
+        "ooooofooooo" should not match(#/\P{Ll}/)
+      )
     )
   )
 
