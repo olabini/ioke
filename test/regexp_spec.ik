@@ -662,7 +662,9 @@ describe(Regexp,
     )
 
     describe("\\G",
-      it("should have tests")
+      it("should match the beginning of the text for a new match",
+        "foo" should match(#/\Gfoo/)
+      )
     )
 
     describe("\\p",
