@@ -267,21 +267,21 @@ StringLiteral
 
 RegexpLiteral
     :  ('#/'
-            ( ({!lookingAtInterpolation()}?=> ( EscapeSequenceRegexp | ~('\\'|'/')))* )
+            ( ({!lookingAtInterpolation()}?=> ( EscapeSequenceRegexpB | ~('\\'|'/')))* )
             (
                 '#{' {startRegexpInterpolation(); }
             |   '/' RegexpModifier))
     |  ('#r[' 
-        ( ({!lookingAtInterpolation()}?=> (EscapeSequenceRegexp | ~('\\'|']')))* ) 
+        ( ({!lookingAtInterpolation()}?=> (EscapeSequenceRegexpA | ~('\\'|']')))* ) 
         (
             '#{' {startAltRegexpInterpolation(); }
         |   ']' RegexpModifier))
-    | {isRegexpInterpolating()}?=> ('}' (({!lookingAtInterpolation()}?=> (EscapeSequenceRegexp | ~('\\'|'/')))* ) 
+    | {isRegexpInterpolating()}?=> ('}' (({!lookingAtInterpolation()}?=> (EscapeSequenceRegexpB | ~('\\'|'/')))* ) 
         (
             '#{' {startRegexpInterpolation(); }
 
         |   '/' RegexpModifier  {endRegexpInterpolation(); }))
-    | {isAltRegexpInterpolating()}?=> ('}' ( ({!lookingAtInterpolation()}?=> (EscapeSequenceRegexp | ~('\\'|']')))* ) 
+    | {isAltRegexpInterpolating()}?=> ('}' ( ({!lookingAtInterpolation()}?=> (EscapeSequenceRegexpA | ~('\\'|']')))* ) 
         (
             '#{' {startAltRegexpInterpolation(); }
         |   '/' RegexpModifier {endAltRegexpInterpolation(); }))
@@ -295,7 +295,14 @@ EscapeSequence
     ;
 
 fragment
-EscapeSequenceRegexp
+EscapeSequenceRegexpA
+    :   '\\' ('t'|'n'|'f'|'r'|'/'|'\\'|'\n'|'#'|'A'|'d'|'D'|'s'|'S'|'w'|'W'|'b'|'B'|'z'|'Z'|'<'|'>'|'G'|'p'|'P'|'{'|'}'|'['|'*'|'('|')'|'$'|'^'|'+'|'?'|'.'|'|'|'\r' '\n')
+    |   UnicodeEscape
+    |   OctalEscape
+    ;
+
+fragment
+EscapeSequenceRegexpB
     :   '\\' ('t'|'n'|'f'|'r'|'/'|'\\'|'\n'|'#'|'A'|'d'|'D'|'s'|'S'|'w'|'W'|'b'|'B'|'z'|'Z'|'<'|'>'|'G'|'p'|'P'|'{'|'}'|'['|'*'|'('|')'|'$'|'^'|'+'|'?'|'.'|'|'|'\r' '\n')
     |   UnicodeEscape
     |   OctalEscape
