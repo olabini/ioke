@@ -296,7 +296,7 @@ EscapeSequence
 
 fragment
 EscapeSequenceRegexp
-    :   '\\' ('t'|'n'|'f'|'r'|'/'|'\\'|'\n'|'#'|'A'|'d'|'D'|'s'|'S'|'w'|'W'|'b'|'B'|'z'|'Z'|'<'|'>'|'\r' '\n')
+    :   '\\' ('t'|'n'|'f'|'r'|'/'|'\\'|'\n'|'#'|'A'|'d'|'D'|'s'|'S'|'w'|'W'|'b'|'B'|'z'|'Z'|'<'|'>'|'G'|'\r' '\n')
     |   UnicodeEscape
     |   OctalEscape
     ;
