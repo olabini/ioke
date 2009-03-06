@@ -79,6 +79,9 @@ IOpt Action do(
 
   ; The object used to coerce arguments for this action.
   coerce = nil
+  coercing = method(+types, +:coersions,
+    @coerce = IOpt CommandLine Coerce mimic(*types, *coersions)
+    self)
 
   consume = method("Take arguments for this action according to its arity.
     
