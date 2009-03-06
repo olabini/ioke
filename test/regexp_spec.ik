@@ -568,11 +568,17 @@ describe(Regexp,
     )
 
     describe("\\s",
-      it("should have tests")
+      it("should match a whitespace",
+        "f b" should match(#/\s/)
+        "fib" should not match(#/\s/)
+      )
     )
 
     describe("\\S",
-      it("should have tests")
+      it("should match anything that is not a whitespace",
+        "  f  " should match(#/\S/)
+        "   " should not match(#/\S/)
+      )
     )
 
     describe("\\w",
