@@ -669,10 +669,10 @@ describe(IOpt CommandLine,
     o = IOpt mimic
     o on("-f", +r, nil)
     c = IOpt CommandLine mimic(o, 
-      ["-f", "true", "false", "nil", ":symbol", "24", "text"])
+      ["-f", "true", "false", "nil", ":symbol", "24", "-12", "+12", "text"])
     f = c options first
     f option should == "-f"
-    f args positional should == [true, false, nil, :symbol, 24, "text"])
+    f args positional should == [true, false, nil, :symbol, 24, -12, "+12", "text"])
 
   it("should coerce option arguments just for the selected types",
     o = IOpt mimic
@@ -711,11 +711,27 @@ describe(IOpt CommandLine,
     f = c options first
     f option should == "-n"
     f args positional should == ["true"]
-    f = c options[1]
+    f = c options second
     f option should == "-y"
     f args positional should == [false, "nil"]
-    f = c options[2]
+    f = c options third
     f option should == "-s"
     f args positional should == [true, nil])
+
+  it("should correctly parse clustered short options", 
+    o = IOpt mimic
+    o on("-v", +n, nil)
+    c = IOpt CommandLine mimic(o, ["-vvv", "3"])
+    c options length should == 3
+    c options first option should == "-v"
+    c options first args positional should be empty
+    c options second option should == "-v"
+    c options first args positional should be empty
+    c options third option should == "-v"
+    c options third args positional should == [3]
+
+    c = IOpt CommandLine mimic(o, ["-v41v"])
+    c options length should == 1
+    c options first args positional should == ["41v"])
 
 ); IOpt CommandLine
