@@ -159,7 +159,7 @@ public class InternalBehavior {
                     }
                     if(o instanceof String) {
                         String s = (String)o;
-                        return runtime.newRegexp(new StringUtils().replaceEscapes(s), (String)o2, context, message);
+                        return runtime.newRegexp(new StringUtils().replaceRegexpEscapes(s), (String)o2, context, message);
                     } else {
                         return IokeObject.convertToRegexp(o, message, context);
                     }

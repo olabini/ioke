@@ -540,4 +540,23 @@ describe(Regexp,
       m should == "internal:compositeRegexp(\"foo \", 1, #/ bar/mx)"
     )      
   )
+  
+  describe("escapes",
+    describe("\\A",
+      it("should match the beginning of the text",
+        "foox" should match(#/\Afoo/)
+        "xfoox" should not match(#/\Afoo/)
+      )
+
+      it("should not match the beginning of a line",
+        "\nfoox" should not match(#/\Afoo/)
+      )
+    )
+
+
+  )
+
+  describe("flags",
+    it("should have tests")
+  )
 )
