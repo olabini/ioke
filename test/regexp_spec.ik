@@ -553,7 +553,68 @@ describe(Regexp,
       )
     )
 
+    describe("\\d",
+      it("should match a number",
+        "f1b" should match(#/\d/)
+        "fib" should not match(#/\d/)
+      )
+    )
 
+    describe("\\D",
+      it("should have tests")
+    )
+
+    describe("\\s",
+      it("should have tests")
+    )
+
+    describe("\\S",
+      it("should have tests")
+    )
+
+    describe("\\w",
+      it("should have tests")
+    )
+
+    describe("\\W",
+      it("should have tests")
+    )
+
+    describe("\\b",
+      it("should have tests")
+    )
+
+    describe("\\B",
+      it("should have tests")
+    )
+
+    describe("\\<",
+      it("should have tests")
+    )
+
+    describe("\\>",
+      it("should have tests")
+    )
+
+    describe("\\z",
+      it("should have tests")
+    )
+
+    describe("\\Z",
+      it("should have tests")
+    )
+
+    describe("\\G",
+      it("should have tests")
+    )
+
+    describe("\\p",
+      it("should have tests")
+    )
+
+    describe("\\P",
+      it("should have tests")
+    )
   )
 
   describe("flags",
