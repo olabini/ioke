@@ -32,6 +32,7 @@ public class Regexp extends IokeData {
         try {
             return new Regexp(pattern, new Pattern(pattern), flags);
         } catch(Exception e) {
+            e.printStackTrace();
             return null;
         }
     }
@@ -40,6 +41,7 @@ public class Regexp extends IokeData {
         try {
             return new Regexp(pattern, new Pattern(pattern), flags);
         } catch(Exception e) {
+            e.printStackTrace();
             return null;
         }
     }
