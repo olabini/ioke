@@ -680,6 +680,85 @@ describe(Regexp,
         "ooooofooooo" should not match(#/\P{Ll}/)
       )
     )
+
+;     describe("\\{",
+;       it("should match literally",
+;         "foo{" should match(#/\{/)
+;         "foo" should not match(#/\{/)
+;       )
+;     )
+
+;     describe("\\}",
+;       it("should match literally",
+;         "foo}" should match(#/\}/)
+;         "foo" should not match(#/\}/)
+;       )
+;     )
+
+;     describe("\\.",
+;       it("should match literally",
+;         "foo." should match(#/\./)
+;         "foo" should not match(#/\./)
+;       )
+;     )
+
+;     describe("\\[",
+;       it("should match literally",
+;         "foo[" should match(#/\[/)
+;         "foo" should not match(#/\[/)
+;       )
+;     )
+
+;     describe("\\]",
+;       it("should match literally",
+;         "foo]" should match(#/\]/)
+;         "foo" should not match(#/\]/)
+;       )
+;     )
+
+    describe("\\^",
+      it("should have tests")
+    )
+
+    describe("\\$",
+      it("should have tests")
+    )
+
+    describe("\\*",
+      it("should have tests")
+    )
+
+    describe("\\+",
+      it("should have tests")
+    )
+
+    describe("\\?",
+      it("should have tests")
+    )
+
+    describe("\\(",
+      it("should have tests")
+    )
+
+    describe("\\)",
+      it("should have tests")
+    )
+
+    describe("\\|",
+      it("should have tests")
+    )
+
+    describe("\\`",
+      it("should have tests")
+    )
+
+    describe("\\'",
+      it("should have tests")
+    )
+
+    describe("\\/",
+      it("should have tests")
+    )
   )
 
   describe("flags",
