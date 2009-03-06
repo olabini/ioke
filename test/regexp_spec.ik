@@ -561,7 +561,10 @@ describe(Regexp,
     )
 
     describe("\\D",
-      it("should have tests")
+      it("should match anything that is not a number",
+        "142b3" should match(#/\D/)
+        "123" should not match(#/\D/)
+      )
     )
 
     describe("\\s",
