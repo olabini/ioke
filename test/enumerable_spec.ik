@@ -967,5 +967,45 @@ describe(Mixins,
         ["abc","bfooo","cc"] min(x, x[1]) should == "abc"
       )
     )
+    
+    describe("join",
+      describe("with no arguments",
+        it("should convert an empty list to an empty string",
+           [] join should == ""
+          #{} join should == ""
+        )
+        
+        it("should convert a list with one element to it's equivalent as text",
+          ["tempestuous turmoil"] join should == "tempestuous turmoil"
+           [1] join should == "1"
+          #{1} join should == "1"
+        )
+        
+        it("should convert a list with multiple elements to a flat string of all its elements as text",
+          ["a","man","walked","into","a","bar..."]  join should == "amanwalkedintoabar..."
+           [1,2,3,4,5] join should == "12345"
+        )
+      )
+      
+      describe("with one argument",
+        it("should convert an empty list to an empty string",
+           [] join("glue") should == ""
+          #{} join("glue") should == ""
+        )
+        
+        it("should convert a list with one element to it's equivalent as text",
+          ["tempestuous turmoil"]  join("glue") should == "tempestuous turmoil"
+          #{"tempestuous turmoil"} join("glue") should == "tempestuous turmoil"
+           [1] join("glue") should == "1"
+          #{1} join("glue") should == "1"
+        )
+        
+        it("should convert a list with multiple elements to a flat string of all its elements as text",
+          ["a","man","walked","into","a","bar..."] join(" ") should == "a man walked into a bar..."
+          [1,2,3,4,5] join(", ") should == "1, 2, 3, 4, 5"
+          #{1,2,3} join(" ") split(" ") sort should == ["1", "2", "3"] ;;account for sets being unordered
+        )
+      )
+    )
   )
 )

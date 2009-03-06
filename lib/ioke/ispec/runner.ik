@@ -4,7 +4,7 @@ ISpec do(
   Options = Origin mimic do(
     create = method(err, out,
       self with(errorStream: err, outStream: out, formatters: [], files: [], directories: []))
-    
+      
     runExamples = method(
       files each(f, use(f))
       directories each(d,
@@ -116,8 +116,6 @@ ISpec do(
   )
 
   didRun? = false
-  shouldRun? = true
-  shouldExit? = true
 
   run = method(
     "runs all the defined descriptions and specs",
@@ -126,4 +124,5 @@ ISpec do(
     result = ispec_options runExamples
     self didRun? = true
     result)
+
 )

@@ -447,8 +447,33 @@ describe(List,
     it("should validate type of receiver",
       List should checkReceiverTypeOn(:include?, "Richard Richard")
     )
-    
-    
+  )
+
+  describe("===", 
+    it("should return false for something not in the list", 
+      ([] === :foo) should be false
+      ([1] === 2) should be false
+      ([1, :foo, "bar"] === 2) should be false
+    )
+
+    it("should return true for something in the list", 
+      ([:foo] === :foo) should be true
+      ([1, 2] === 2) should be true
+      ([2, 1, :foo, "bar"] === 2) should be true
+    )
+
+    it("should return true when called against List and the other is a list",
+      (List === List) should be true
+      (List === []) should be true
+      (List === [1,2,3]) should be true
+      (List === [:foo]) should be true
+    )
+
+    it("should return true when called against List and the other is not a list",
+      (List === set) should be false
+      (List === (1..5)) should be false
+      (List === :foo) should be false
+    )
   )
   
   describe("ifEmpty",
@@ -817,6 +842,303 @@ describe(List,
     
     it("should validate type of receiver",
       List should checkReceiverTypeOn(:"<=>", [])
+    )
+  )
+  
+  describe("removeAt!", 
+    it("should return nil if receiver is empty list", 
+      list removeAt!(0) should be nil
+      list removeAt!(10) should be nil
+      list removeAt!(-1) should be nil
+    )
+
+    it("should return nil if argument is greater than the list's size", 
+      list(1) removeAt!(1) should be nil
+    )
+
+    it("should remove element from front if argument is zero or positive", 
+      l = [1,2,3,4]
+      l removeAt!(0) should == 1
+      l should == [2,3,4]
+    
+      l = [1,2,3,4]
+      l removeAt!(1) should == 2
+      l should == [1,3,4]
+    
+      l = [1,2,3,4]
+      l removeAt!(2) should == 3
+      l should == [1,2,4]
+    
+      l = [1,2,3,4]
+      l removeAt!(3) should == 4
+      l should == [1,2,3]
+    )
+
+    it("should remove element from back if argument is negative", 
+      l = [1,2,3,4]
+      l removeAt!(-1) should == 4
+      l should == [1,2,3]
+    
+      l = [1,2,3,4]
+      l removeAt!(-2) should == 3
+      l should == [1,2,4]
+    
+      l = [1,2,3,4]
+      l removeAt!(-3) should == 2
+      l should == [1,3,4]
+    
+      l = [1,2,3,4]
+      l removeAt!(-4) should == 1
+      l should == [2,3,4]
+    )
+
+    it("should not remove anything for any range if reveicer is empty list", 
+      l = []
+      l removeAt!(0..0) should == []
+      l should == []
+    
+      l = []
+      l removeAt!(0...0) should == []
+      l should == []
+    
+      l = []
+      l removeAt!(0..-1) should == []
+      l should == []
+    
+      l = []
+      l removeAt!(0...-1) should == []
+      l should == []
+    
+      l = []
+      l removeAt!(10..20) should == []
+      l should == []
+    
+      l = []
+      l removeAt!(10...20) should == []
+      l should == []
+    
+      l = []
+      l removeAt!(-1..20) should == []
+      l should == []
+    )
+
+    it("should remove all elements for 0..-1", 
+      l = []
+      l removeAt!(0..-1) should == []
+      l should == []
+    
+      l = [1,2,3]
+      l removeAt!(0..-1) should == [1,2,3]
+      l should == []
+    
+      l = ["x", "y"]
+      l removeAt!(0..-1) should == ["x","y"]
+      l should == []
+    )
+
+    it("should remove all except first element for 1..-1", 
+      l = [1]
+      l removeAt!(1..-1) should == []
+      l should == [1]
+    
+      l = [1,2,3]
+      l removeAt!(1..-1) should == [2,3]
+      l should == [1]
+    
+      l = ["x", "y"]
+      l removeAt!(1..-1) should == ["y"]
+      l should == ["x"]
+    )
+
+    it("should remove all except first and last element for 1...-1", 
+      l = [1,2]
+      l removeAt!(1...-1) should == []
+      l should == [1,2]
+    
+      l = [1,2,3]
+      l removeAt!(1...-1) should == [2]
+      l should == [1,3]
+    
+      l = ["x", "y", "zed", "bar"]
+      l removeAt!(1...-1) should == ["y", "zed"]
+      l should == ["x", "bar"]
+    )
+
+    it("should remove first element for 0..0", 
+      l = [1]
+      l removeAt!(0..0) should == [1]
+      l should == []
+    
+      l = [1,2,3]
+      l removeAt!(0..0) should == [1]
+      l should == [2,3]
+    
+      l = ["x", "y"]
+      l removeAt!(0..0) should == ["x"]
+      l should == ["y"]
+    )
+
+    it("should not remove anything for 0...0", 
+      l = [1]
+      l removeAt!(0...0) should == []
+      l should ==[1]
+    
+      l = [1,2,3]
+      l removeAt!(0...0) should == []
+      l should == [1,2,3]
+    
+      l = ["x", "y"]
+      l removeAt!(0...0) should == []
+      l should ==["x", "y"]
+    )
+
+    it("should remove sublist for inclusive range", 
+      l = [1,2,3,4,5,6,7,8,9,10,11]
+      l removeAt!(3..5) should == [4,5,6]
+      l should == [1,2,3,7,8,9,10,11]
+    )
+
+    it("should remove sublist for exclusive range", 
+      l = [1,2,3,4,5,6,7,8,9,10,11]
+      l removeAt!(3...6) should == [4,5,6]
+      l should == [1,2,3,7,8,9,10,11]
+    )
+
+    it("should remove sublist for inclusive range that ends in negative index", 
+      l = [1,2,3,4,5,6,7,8,9,10,11]
+      l removeAt!(3..-3) should == [4,5,6,7,8,9]
+      l should == [1,2,3,10,11]
+    )
+
+    it("should remove sublist for exclusive range that ends in negative index", 
+      l = [1,2,3,4,5,6,7,8,9,10,11]
+      l removeAt!(3...-3) should == [4,5,6,7,8]
+      l should == [1,2,3,9,10,11]
+    )
+
+    it("should remove all elements to end of list for range that ends in index greater than list's size", 
+      l = [1,2,3,4,5,6,7,8,9,10,11]
+      l removeAt!(5..3443343) should == [6,7,8,9,10,11]
+      l should == [1,2,3,4,5]
+    
+      l = [1,2,3,4,5,6,7,8,9,10,11]
+      l removeAt!(5...3443343) should == [6,7,8,9,10,11]
+      l should == [1,2,3,4,5]
+    )
+
+    it("should not remove anything for a totally messed up indexing", 
+      l = [1,2,3,4,5,6,7,8,9,10,11]
+      l removeAt!(-1..3) should == []
+      l should == [1,2,3,4,5,6,7,8,9,10,11]
+    
+      l = [1,2,3,4,5,6,7,8,9,10,11]
+      l removeAt!(-1..7557) should == []
+      l should == [1,2,3,4,5,6,7,8,9,10,11]
+    
+      l = [1,2,3,4,5,6,7,8,9,10,11]
+      l removeAt!(5..4) should == []
+      l should == [1,2,3,4,5,6,7,8,9,10,11]
+    
+      l = [1,2,3,4,5,6,7,8,9,10,11]
+      l removeAt!(-1...3) should == []
+      l should == [1,2,3,4,5,6,7,8,9,10,11]
+    
+      l = [1,2,3,4,5,6,7,8,9,10,11]
+      l removeAt!(-1...7557) should == []
+      l should == [1,2,3,4,5,6,7,8,9,10,11]
+    
+      l = [1,2,3,4,5,6,7,8,9,10,11]
+      l removeAt!(5...4) should == []
+      l should == [1,2,3,4,5,6,7,8,9,10,11]
+    )
+
+    it("should validate type of receiver", 
+      List should checkReceiverTypeOn(:removeAt!, 0)
+    )
+
+    it("should validate type of argument", 
+      fn([] removeAt!([])) should signal(Condition Error Type IncorrectType)
+      fn([] removeAt!("foo")) should signal(Condition Error Type IncorrectType)
+    )
+  )
+
+  describe("remove!", 
+    it("should return empty list if receiver is empty list", 
+      [] remove!(1) should == []
+      [] remove!("a") should == []
+      [] remove!(1,2) should == []
+      [] remove!("a","b") should == []
+    )
+
+    it("should remove all occurrences of single argument", 
+      [1,2,3,4,1,2,3,4] remove!(2) should == [1,3,4,1,3,4]
+      ["a","b","c","a","b","c"] remove!("b") should == ["a","c","a","c"]
+    )
+
+    it("should remove all occurrences of multiple arguments", 
+      [1,2,3,4,1,2,3,4] remove!(1,3) should == [2,4,2,4]
+      [1,2,3,4,1,2,3,4] remove!(1,2,3,4) should == []
+    
+      ["a","b","c","a","b","c"] remove!("a","b","c") should == []
+      ["a","b","c","a","b","c"] remove!("a","b") should == ["c","c"]
+    )
+
+    it("should leave list unmodified if arguments not contained in list", 
+      [1,2,3,4] remove!(5) should == [1,2,3,4]
+      [1,2,3,4] remove!(5,6,7) should == [1,2,3,4]
+    
+      ["a","b","c"] remove!("x") should == ["a","b","c"]
+      ["a","b","c"] remove!("x","y","z") should == ["a","b","c"]
+    )
+
+    it("should skip arguments not contained in list", 
+      [1,2,3,4,1,2,3,4] remove!(2,3,5,6) should == [1,4,1,4]
+      ["a","b","c","a","b","c"] remove!("a","b","x","y") should == ["c","c"]
+    )
+
+    it("should validate type of receiver", 
+      List should checkReceiverTypeOn(:remove!, 0)
+    )
+  )
+
+  describe("removeFirst!", 
+    it("should return empty list if receiver is empty list", 
+      [] removeFirst!(1) should == []
+      [] removeFirst!("a") should == []
+      [] removeFirst!(1,2) should == []
+      [] removeFirst!("a","b") should == []
+    )
+
+    it("should remove first occurrence of single argument", 
+      [1,2,1,2] removeFirst!(2) should == [1,1,2]
+      ["a","b","a","b"] removeFirst!("b") should == ["a","a","b"]
+    )
+
+    it("should remove first occurrence of multiple arguments", 
+      [1,2,1,2] removeFirst!(1,2) should == [1,2]
+      [1,2,1,2] removeFirst!(1,1) should == [2,2]
+      [1,2,1,2] removeFirst!(1,2,1,2) should == []
+    
+      ["a","b","a","b"] removeFirst!("a","b") should == ["a","b"]
+      ["a","b","a","b"] removeFirst!("a","a") should == ["b","b"]
+      ["a","b","a","b"] removeFirst!("a","b","a","b") should == []
+    )
+
+    it("should leave list unmodified if arguments not contained in list", 
+      [1,2,3,4] removeFirst!(5) should == [1,2,3,4]
+      [1,2,3,4] removeFirst!(5,6,7) should == [1,2,3,4]
+    
+      ["a","b","c"] removeFirst!("x") should == ["a","b","c"]
+      ["a","b","c"] removeFirst!("x","y","z") should == ["a","b","c"]
+    )
+
+    it("should skip arguments not contained in list", 
+      [1,2,1,2] removeFirst!(2,5,6) should == [1,1,2]
+      ["a","b","a","b"] removeFirst!("a","x","y") should == ["b","a","b"]
+    )
+
+    it("should validate type of receiver", 
+      List should checkReceiverTypeOn(:removeFirst!, 0)
     )
   )
 )

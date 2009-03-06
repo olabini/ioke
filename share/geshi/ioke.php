@@ -128,7 +128,13 @@ $language_data = array (
             12 => 'color: #B65B00;',
             
             //symbols
-            13 => 'color: #B65B00;'
+            13 => 'color: #B65B00;',
+            
+            //regexp
+            14 => 'color: #FF0000;',
+            
+            //regexp
+            15 => 'color: #FF0000;'
             ),
                 
             
@@ -240,6 +246,18 @@ $language_data = array (
 //               GESHI_BEFORE  => '\\1',  
                GESHI_REPLACE => '\\1',
   //             GESHI_AFTER   => '\\3'             
+            ),
+            
+            //regexp
+            14 => array(
+              GESHI_SEARCH => '(#\/.*\/[oxpniums]?)',
+              GESHI_REPLACE => '\\1',
+            ),
+            
+            //regexp
+            15 => array(
+              GESHI_SEARCH => '(#r\[.*\][oxpniums]?)',
+              GESHI_REPLACE => '\\1',
             ),
         ),
     'STRICT_MODE_APPLIES' => GESHI_NEVER,
