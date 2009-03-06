@@ -672,7 +672,12 @@ describe(IOpt CommandLine,
       ["-f", "true", "false", "nil", ":symbol", "24", "-12", "+12", "text"])
     f = c options first
     f option should == "-f"
-    f args positional should == [true, false, nil, :symbol, 24, -12, "+12", "text"])
+    f args positional should == [true, false, nil, :symbol, 24, -12, 12, "text"]
+    c = IOpt CommandLine mimic(o, ["-f", "3.14159", "-5.22", "+9.81"])
+    f = c options first
+    f args positional first should be close(3.14159)
+    f args positional second should be close(-5.22)
+    f args positional third should be close(9.81))
 
   it("should coerce option arguments just for the selected types",
     o = IOpt mimic
