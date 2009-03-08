@@ -540,4 +540,247 @@ describe(Regexp,
       m should == "internal:compositeRegexp(\"foo \", 1, #/ bar/mx)"
     )      
   )
+  
+  describe("escapes",
+    describe("\\A",
+      it("should match the beginning of the text",
+        "foox" should match(#/\Afoo/)
+        "xfoox" should not match(#/\Afoo/)
+      )
+
+      it("should not match the beginning of a line",
+        "\nfoox" should not match(#/\Afoo/)
+      )
+    )
+
+    describe("\\d",
+      it("should match a number",
+        "f1b" should match(#/\d/)
+        "fib" should not match(#/\d/)
+      )
+    )
+
+    describe("\\D",
+      it("should match anything that is not a number",
+        "142b3" should match(#/\D/)
+        "123" should not match(#/\D/)
+      )
+    )
+
+    describe("\\s",
+      it("should match a whitespace",
+        "f b" should match(#/\s/)
+        "fib" should not match(#/\s/)
+      )
+    )
+
+    describe("\\S",
+      it("should match anything that is not a whitespace",
+        "  f  " should match(#/\S/)
+        "   " should not match(#/\S/)
+      )
+    )
+
+    describe("\\w",
+      it("should match a word character",
+        "f" should match(#/\w/)
+        " f " should match(#/\w/)
+        " 1 " should match(#/\w/)
+        "  . !!!" should not match(#/\w/)
+      )
+    )
+
+    describe("\\W",
+      it("should match anything that is not a word character",
+        "123 " should match(#/\W/)
+        " abc" should match(#/\W/)
+        "abc" should not match(#/\W/)
+      )
+    )
+
+    describe("\\b",
+      it("should match a word boundary",
+        "foo bar" should match(#/\bbar/)
+        "foo bar" should match(#/\bfoo/)
+        "foobar" should not match(#/\bbar/)
+      )
+    )
+
+    describe("\\B",
+      it("should match anything that is not a word boundary",
+        "foobar" should match(#/\Bbar/)
+        "foo bar" should not match(#/\Bbar/)
+      )
+    )
+
+    describe("\\<",
+      it("should match beginning of a word",
+        "foo bar" should match(#/\<bar/)
+        "foo bar" should match(#/\<foo/)
+        "foobar" should not match(#/\<bar/)
+        "foo bar" should not match(#/foo\</)
+      )
+    )
+
+    describe("\\>",
+      it("should match end of a word",
+        "foo bar" should match(#/foo\>/)
+        "foo bar" should match(#/bar\>/)
+        "foobar" should not match(#/\>bar/)
+        "foo bar" should not match(#/\>foo/)
+      )
+    )
+
+    describe("\\z",
+      it("should match the end of the text",
+        "foo" should match(#/foo\z/)
+        "foo\nfoo" should match(#/foo\z/)
+      )
+
+      it("should not match the end of a line",
+        "foo\nbar" should not match(#/foo\z/)
+      )
+
+      it("should not match the end of a line before the end of the text",
+        "foo\n" should not match(#/foo\z/)
+      )
+    )
+
+    describe("\\Z",
+      it("should match the end of the text",
+        "foo" should match(#/foo\Z/)
+        "foo\nfoo" should match(#/foo\Z/)
+      )
+
+      it("should match the end of a line before the end of the text",
+        "foo\n" should match(#/foo\Z/)
+      )
+
+      it("should not match the end of a line",
+        "foo\nbar" should not match(#/foo\Z/)
+      )
+    )
+
+    describe("\\G",
+      it("should match the beginning of the text for a new match",
+        "foo" should match(#/\Gfoo/)
+      )
+    )
+
+    describe("\\p",
+      it("should match a specific unicode block or category",
+        "FoF" should match(#/\p{Ll}/)
+        "FOF" should not match(#/\p{Ll}/)
+      )
+    )
+
+    describe("\\P",
+      it("should match anything that isn't a specific uncode block or category",
+        "oooooFooooo" should match(#/\P{Ll}/)
+        "ooooofooooo" should not match(#/\P{Ll}/)
+      )
+    )
+
+    describe("\\{",
+      it("should match literally",
+        "foo{" should match(#/\{/)
+        "foo" should not match(#/\{/)
+      )
+    )
+
+    describe("\\}",
+      it("should match literally",
+        "foo}" should match(#/\}/)
+        "foo" should not match(#/\}/)
+      )
+    )
+
+    describe("\\.",
+      it("should match literally",
+        "foo." should match(#/\./)
+        "foo" should not match(#/\./)
+      )
+    )
+
+    describe("\\[",
+      it("should match literally",
+        "foo[" should match(#/\[/)
+        "foo" should not match(#/\[/)
+      )
+    )
+
+    describe("]",
+      it("should match literally",
+        "foo]" should match(#/]/)
+        "foo" should not match(#/]/)
+      )
+    )
+
+    describe("\\^",
+      it("should match literally",
+        "foo^" should match(#/\^/)
+        "foo" should not match(#/\^/)
+      )
+    )
+
+    describe("\\$",
+      it("should match literally",
+        "foo$" should match(#/\$/)
+        "foo" should not match(#/\$/)
+      )
+    )
+
+    describe("\\*",
+      it("should match literally",
+        "foo*" should match(#/\*/)
+        "foo" should not match(#/\*/)
+      )
+    )
+
+    describe("\\+",
+      it("should match literally",
+        "foo+" should match(#/\+/)
+        "foo" should not match(#/\+/)
+      )
+    )
+
+    describe("\\?",
+      it("should match literally",
+        "foo?" should match(#/\?/)
+        "foo" should not match(#/\?/)
+      )
+    )
+
+    describe("\\(",
+      it("should match literally",
+        "foo(" should match(#/\(/)
+        "foo" should not match(#/\(/)
+      )
+    )
+
+    describe("\\)",
+      it("should match literally",
+        "foo)" should match(#/\)/)
+        "foo" should not match(#/\)/)
+      )
+    )
+
+    describe("\\|",
+      it("should match literally",
+        "foo|" should match(#/\|/)
+        "foo" should not match(#/\|/)
+      )
+    )
+
+    describe("\\/",
+      it("should match literally",
+        "foo/" should match(#/\//)
+        "foo" should not match(#/\//)
+      )
+    )
+  )
+
+  describe("flags",
+    it("should have tests")
+  )
 )
