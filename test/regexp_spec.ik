@@ -781,6 +781,29 @@ describe(Regexp,
   )
 
   describe("flags",
-    it("should have tests")
+    describe("i",
+      it("should match without caring about case",
+        "fOxGGG" should match(#/oXg/i)
+        "fOxGGG" should match(#/OXG/i)
+        "foxgGG" should match(#/OXG/i)
+        "foxgGG" should not match(#/pOXG/i)
+      )
+    )
+
+    describe("m",
+      it("should have tests")
+    )
+
+    describe("s",
+      it("should have tests")
+    )
+
+    describe("x",
+      it("should have tests")
+    )
+
+    describe("u",
+      it("should have tests")
+    )
   )
 )
