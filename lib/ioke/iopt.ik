@@ -148,25 +148,36 @@ IOpt do(
 
     [>receiver, +args]
     options = list()
+    docs = list()
     body = nil
     action = nil
-    if(cell(:receiver) kind?("Text"), 
+    
+    if(cell(:receiver) kind?("Text"),
       unless(handler = iopt:ion(receiver),
         signal!(MalformedOption, text: "Not a valid option: #{receiver}", option: receiver))
       receiver = nil
       options << handler option)
-    while(args first name == :"internal:createText" && args first last == args first && 
-      handler = iopt:ion(args first evaluateOn(call ground, call receiver)),
-      options << handler option
-      args = args rest)
-    body = args inject('fn, m, a, m << a) evaluateOn(call ground, call receiver)
     
-    if(args last symbol?,
-      name = if(args last name == :":@", 
-        :("@#{args last next name}"), call argAt(call arguments length - 1))
-      action = options inject(name, a, f, @[f] = a)
+    while(
+      list(:"internal:createText", :"internal:concatenateText") include?(args first name) && args first last == args first,
+      txt = args first evaluateOn(call ground)
+      if(handler = iopt:ion(txt),
+        options << handler option,
+        docs << txt)
+      args = args rest)
+
+    body = if(args last symbol?,
+      if(args last name == :":@",
+        :("@#{args last next name}"), call argAt(call arguments length - 1)),
+      if(args last name == :cachedResult,
+        args last evaluateOn(call ground),
+        args inject('fn, m, a, m << a) evaluateOn(call ground)))
+    
+    action = options inject(cell(:body), a, f, @[f] = cell(:a))
+    
+    if(docs empty?,
       if(cell(:body) documentation, action documentation = cell(:body) documentation),
-      action = options inject(cell(:body), a, f, @[f] = a))
+      action documentation = docs join("\n"))
     
     if(cell(:receiver), action receiver = cell(:receiver))
     action
@@ -174,8 +185,9 @@ IOpt do(
 
   cell("on=") = dmacro(
     [first, second, +rest]
-    call resendToValue(@cell(:on))
-  )
+    msg = call arguments butLast inject('on, m, a, m << a)
+    msg << Message wrap(call argAt(call arguments length - 1))
+    msg evaluateOn(call ground, call receiver))
 
   parse! = method("Execute the options specified on argv.
     
