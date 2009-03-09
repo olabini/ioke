@@ -4,6 +4,11 @@ use("ispec")
 describe(ISpec Runner OptionParser,
 
   describe("when parsing arguments",
+
+    it("should add the test directory if it exists and is no given files/dirs",
+      parser = ISpec Runner OptionParser create(nil, nil)
+      parser order([]) directories should == ["test"]
+    )
     
     it("should set hasHelp? when -h specified",
       parser = ISpec Runner OptionParser create(nil, nil)
@@ -68,13 +73,13 @@ describe(ISpec Runner OptionParser,
       parser order([]) loadPatterns should not be empty
     )
 
-    it("should have allow to set loadPatterns with --pattern", 
+    it("should allow to set loadPatterns with --pattern", 
       parser = ISpec Runner OptionParser create(nil, nil)
       parser order(["--pattern", "foo", 
           "--pattern", "bar"]) loadPatterns should == ["foo", "bar"]
     )
 
-    it("should have allow to set loadPatterns with -p", 
+    it("should allow to set loadPatterns with -p", 
       parser = ISpec Runner OptionParser create(nil, nil)
       parser order(["-p", "foo", 
           "-p", "bar"]) loadPatterns should == ["foo", "bar"]
