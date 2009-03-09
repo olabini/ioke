@@ -3,7 +3,7 @@ IOpt Action do(
 
   ValueActivation = IOpt Action mimic do (
     initialize = method(valueToActivate,
-      init
+      super()
       @valueToActivate = cell(:valueToActivate)
       @argumentsCode = cell(:valueToActivate) argumentsCode
       @documentation = cell(:valueToActivate) documentation)
@@ -19,7 +19,7 @@ IOpt Action do(
 
   CellActivation = IOpt Action mimic do (
     initialize = method(cellName,
-      init
+      super()
       @cellName = cellName)
 
     cell(:documentation) = method(
@@ -34,7 +34,7 @@ IOpt Action do(
 
   CellAssignment = IOpt Action mimic do (
     initialize = method(cellName,
-      init
+      super()
       @cellName = cellName
       @documentation = "Set #{cellName asText}"
       @argumentsCode = cellName asText)
@@ -45,7 +45,7 @@ IOpt Action do(
 
   MessageEvaluation = IOpt Action mimic do (
     initialize = method(messageToEval,
-      init
+      super()
       @documentation = "Evaluate message #{messageToEval code}"
       @argumentsCode = nil
       @messageToEval = messageToEval)
@@ -59,7 +59,7 @@ IOpt Action do(
     
   );MessageEvaluation
 
-  init = method(
+  initialize = method(
     @options = set()
     @priority = 0
   )
