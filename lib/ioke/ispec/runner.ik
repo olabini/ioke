@@ -40,7 +40,7 @@ ISpec do(
   
     exampleAdded = method(context,
       example = context specs last
-      unless(onlyLines empty? && example third kind?("Message"),
+      if(!onlyLines empty? && example third kind?("Message"),
         lines = (example third first line .. example third last line)
         if(onlyLines any?(o, lines include?(o)),
           specsToRun[context fullName] ||= context with(specs: list())
