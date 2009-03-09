@@ -58,13 +58,42 @@ ISpec do(
 
       banner = "Usage: ispec (FILE|DIRECTORY|GLOB)+ [options]"
 
-      on["-f", "--format"] = method("Specifies what format to use for output", format,
-        fkind = formatters[:(format)]
-        unless(fkind, error!("Unknown output format: #{format}"))
-        options formatters << fkind mimic)
+      on("-h", "--help", "Display usage.", @println. System exit(0)) priority = -10
 
-      on["-h", "--help"] = method("Display usage", @println. System exit(0))
-      on["-h"] priority = -10 ; handle it before other options when present
+      on("-f", "--format", format, to: System out,
+        fkind = formatters[:(format)]
+        unless(fkind, 
+          fkind = Message fromText(format) sendTo(Ground)
+          unless(fkind mimics?(ISpec Formatter), 
+            error!("Expected #{format} to mimic ISpec Formatter")))
+        formatter = fkind mimic
+        case(to,
+          or("-", System out), nil,
+          formatter output = java:io:PrintStream new(to))
+        @options formatters << formatter
+      ) do (
+        cell(:documentation) = method(
+          doc = list("Specify the output format to use.")
+          doc << "Use the to: keyword argument to tell where to write output,"
+          doc << "if given \"-\" will write to standard output."
+          doc << "e.g."
+          doc << "     --format specdoc to: specOut.txt"
+          doc << ""
+          formats = dict()
+          receiver formatters each(pair, 
+            if(formats key?(pair value),
+              formats[pair value] << pair key,
+              formats[pair value] = list(pair key)))
+          doc << "Builtin formats:"
+          formats each(pair,
+            doc << "%-20s %s" format(pair value sort join("|"),
+              pair key documentation || pair key kind))
+                              
+          doc << ""
+          doc << "When not given a builtin format, ISpec will try to evaluate"
+          doc << "the given argument to an ISpec Formatter kind"
+          doc join("\n"))
+      ); --format
 
       order! = method(argv,
         @argv = argv
@@ -116,6 +145,7 @@ ISpec do(
   )
 
   didRun? = false
+  shouldRun? = true
 
   run = method(
     "runs all the defined descriptions and specs",
