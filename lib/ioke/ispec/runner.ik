@@ -10,6 +10,12 @@ ISpec do(
         missingFiles: [], useColour: true, hasHelp?: false))
 
     order = method(
+      ;; if not given files nor directories
+      if(files empty? && directories empty?, 
+        if(FileSystem directory?("spec"), 
+          directories << "spec", 
+          if(FileSystem directory?("test"),
+            directories << "test")))
       
       ;; check if any pattern was set or use a default
       if(loadPatterns empty?,
@@ -34,7 +40,12 @@ ISpec do(
   
     exampleAdded = method(context,
       example = context specs last
-      ;; TODO process onlyLines
+      unless(onlyLines empty? && example third kind?("Message"),
+        lines = (example third first line .. example third last line)
+        if(onlyLines any?(o, lines include?(o)),
+          specsToRun[context fullName] ||= context with(specs: list())
+          specsToRun[context fullName] specs << example)
+      )
       unless(onlyMatching empty?,
         exampleDesc = "#{context fullName} #{example second}"
         if(onlyMatching any?(o, o === exampleDesc),
