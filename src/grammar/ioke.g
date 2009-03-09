@@ -310,7 +310,7 @@ EscapeSequenceRegexpB
 
 fragment
 RegexpModifier
-		:	('o'|'x'|'p'|'n'|'i'|'u'|'m'|'s')*
+		:	('x'|'i'|'u'|'m'|'s')*
 		;
 
 Terminator

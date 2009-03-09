@@ -30,7 +30,7 @@ public class Regexp extends IokeData {
 
     public static Regexp create(String pattern, String flags, IokeObject context, IokeObject message) throws ControlFlow {
         try {
-            return new Regexp(pattern, new Pattern(pattern), flags);
+            return new Regexp(pattern, new Pattern(pattern, flags), flags);
         } catch(Exception e) {
             e.printStackTrace();
             return null;
@@ -39,7 +39,7 @@ public class Regexp extends IokeData {
 
     static Regexp create(String pattern, String flags) {
         try {
-            return new Regexp(pattern, new Pattern(pattern), flags);
+            return new Regexp(pattern, new Pattern(pattern, flags), flags);
         } catch(Exception e) {
             e.printStackTrace();
             return null;
