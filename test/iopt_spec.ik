@@ -738,15 +738,22 @@ describe(IOpt CommandLine,
 
   it("should correctly parse clustered short options", 
     o = IOpt mimic
+    o on("-a", nil)
+    o on("-b", nil)
     o on("-v", +n, nil)
-    c = IOpt CommandLine mimic(o, ["-vvv", "3"])
+    c = IOpt CommandLine mimic(o, ["-abv", "3"])
     c options length should == 3
-    c options first option should == "-v"
+    c options first option should == "-a"
     c options first args positional should be empty
-    c options second option should == "-v"
+    c options second option should == "-b"
     c options first args positional should be empty
     c options third option should == "-v"
     c options third args positional should == [3]
+
+    c = IOpt CommandLine mimic(o, ["-vab"])
+    c options length should == 1
+    c options first option should == "-v"
+    c options first args positional should == ["ab"]
 
     c = IOpt CommandLine mimic(o, ["-v41v"])
     c options length should == 1

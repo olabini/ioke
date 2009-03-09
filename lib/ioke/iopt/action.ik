@@ -134,7 +134,7 @@ IOpt Action do(
         
         false))
 
-    if(handler short && handler immediate,
+    if(handler short && handler immediate && !arity positional?,
       opt = iopt iopt:get(handler short + handler immediate)
       if(opt && opt action && opt short,
         remnant = [handler short + handler immediate] + remnant
