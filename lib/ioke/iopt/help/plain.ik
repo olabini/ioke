@@ -14,11 +14,13 @@ IOpt Help Plain do(
       actions = set()
       iopt cell("iopt:actions") each(pair, actions << pair value)
       actions sort each(action,
-        option = "%[ %s%] " format(action options)
+        option = action options join(", ")
         unless(action arity empty?, option += " (" + action argumentsCode + ")")
-        lines << option
+        docs = list()
         if(action documentation && !action documentation empty?,
-          lines << "  #{action documentation}")
+          docs = action documentation split("\n"))
+        lines << "  %-40s %s" format(option, docs first)
+        docs rest each(d, lines << "  %-40s %s" format("", d))
         lines << "")
       
       lines)
