@@ -505,7 +505,7 @@ describe(IOpt Action,
 
     it("should consume no arguments if the arity is empty",
       o = IOpt mimic
-      a = IOpt Action mimic do(init. options << "-f")
+      a = IOpt Action mimic do(options << "-f")
       a iopt = o
       a argumentsCode = nil
       c = a consume(["-f", "jojo", "-hey"])
@@ -516,7 +516,7 @@ describe(IOpt Action,
 
     it("should take only required arguments",
       o = IOpt mimic
-      a = IOpt Action mimic do(init. options << "-f")
+      a = IOpt Action mimic do(options << "-f")
       a iopt = o
       a argumentsCode = "a,b"
       c = a consume(["-f", "jojo", "jaja", "-hey"])
@@ -527,7 +527,7 @@ describe(IOpt Action,
 
     it("should take only required arguments",
       o = IOpt mimic
-      a = IOpt Action mimic do(init. options << "-f")
+      a = IOpt Action mimic do(options << "-f")
       a iopt = o
       a argumentsCode = "a,b"
       c = a consume(["-f", "jojo", "--notanoption", "-hey"])
@@ -539,7 +539,7 @@ describe(IOpt Action,
     
     it("should take only required arguments before next option",
       o = IOpt mimic
-      a = IOpt Action mimic do(init. options << "-f")
+      a = IOpt Action mimic do(options << "-f")
       o["--jaja"] = a
       a iopt = o
       a argumentsCode = "a,b"
@@ -551,7 +551,7 @@ describe(IOpt Action,
 
     it("should take only rest arguments before next option",
       o = IOpt mimic
-      a = IOpt Action mimic do(init. options << "-f")
+      a = IOpt Action mimic do(options << "-f")
       o["--jaja"] = a
       a iopt = o
       a argumentsCode = "+rest"
@@ -563,7 +563,7 @@ describe(IOpt Action,
     
     it("should take keyword arguments before next option",
       o = IOpt mimic
-      a = IOpt Action mimic do(init. options << "-f")
+      a = IOpt Action mimic do(options << "-f")
       o["--jaja"] = a
       a iopt = o
       a argumentsCode = "+rest, you:, +:all"
