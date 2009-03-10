@@ -808,7 +808,10 @@ describe(Regexp,
     )
 
     describe("u",
-      it("should have tests")
+      it("should recognize non-latin characters as word character",
+        "ʎ" should not match(#/\w/)
+        "ʎ" should match(#/\w/u)
+      )
     )
   )
 )
