@@ -795,11 +795,16 @@ describe(Regexp,
     )
 
     describe("s",
-      it("should have tests")
+      it("should make dots match newlines when used",
+        "foo\nbar" should not match(#/foo.bar/)
+        "foo\nbar" should match(#/foo.bar/s)
+      )
     )
 
     describe("x",
-      it("should have tests")
+      it("should allow white space in regexps",
+        "foobar" should match(#/foo       bar/x)
+      )
     )
 
     describe("u",
