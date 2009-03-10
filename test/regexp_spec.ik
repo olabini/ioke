@@ -791,7 +791,12 @@ describe(Regexp,
     )
 
     describe("m",
-      it("should have tests")
+      it("should match beginning of lines and ends of lines",
+        "x\nfoo\nbar" should not match(#/^foo/)
+        "x\nfoo\nbar" should not match(#/foo$/)
+        "x\nfoo\nbar" should match(#/^foo/m)
+        "x\nfoo\nbar" should match(#/foo$/m)
+      )
     )
 
     describe("s",
