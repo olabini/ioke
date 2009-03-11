@@ -20,6 +20,19 @@ describe(TextScanner,
     )
   )
 
+  describe("delimiter",
+    it("should match whitespace as default",
+      t = TextScanner mimic("original text")
+      t delimiter should == #/\W+/
+    )
+
+    it("should be possible to set the delimeter",
+      t = TextScanner mimic("original text")
+      t delimeter = #/new delimeter/
+      t delimeter should == #/new delimeter/
+    )
+  )
+
   describe("rest",
     it("should return all of the text before any scanning has taken place",
       t = TextScanner mimic("original text")
