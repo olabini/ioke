@@ -29,7 +29,7 @@
   </target>
 
   <target name="generate.antlr" depends="prepare" description="Generates source files from the ANTLR definitions" unless="grammar.notUpdated">
-    <java classname="org.antlr.Tool" fork="true" dir="${antlr.grammar.dir}" classpathref="build.classpath">
+    <java classname="org.antlr.Tool" fork="true" dir="${antlr.grammar.dir}" classpathref="build.classpath" maxmemory="256m">
       <arg line="-o ${src.generated.dir.relative} ${antlr.grammar.file}"/>
     </java>
   </target>
@@ -96,7 +96,7 @@
         <include name="**/*.ik"/>
         <include name="**/*.properties"/>
       </fileset>
-      <zipfileset src="${lib.release.dir}/antlr-3.1.1.jar" includes="**/*"/>
+      <zipfileset src="${lib.release.dir}/antlr-3.1.2.jar" includes="**/*"/>
       <zipfileset src="${lib.release.dir}/jline-0.9.93.jar" includes="**/*"/>
       <zipfileset src="${lib.release.dir}/joda-time-1.6.jar" includes="**/*"/>
       <zipfileset src="${lib.release.dir}/asm-3.1.jar" includes="**/*"/>
@@ -114,7 +114,7 @@
         <include name="**/*.ik"/>
         <include name="**/*.properties"/>
       </fileset>
-      <zipfileset src="${lib.release.dir}/antlr-3.1.1.jar" includes="**/*"/>
+      <zipfileset src="${lib.release.dir}/antlr-3.1.2.jar" includes="**/*"/>
       <zipfileset src="${lib.release.dir}/jline-0.9.93.jar" includes="**/*"/>
       <zipfileset src="${lib.release.dir}/joda-time-1.6.jar" includes="**/*"/>
       <zipfileset src="${lib.release.dir}/asm-3.1.jar" includes="**/*"/>
