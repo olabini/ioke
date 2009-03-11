@@ -59,31 +59,35 @@ describe(TextScanner,
      )
 
      describe("with a bespoke delimiter",
-       t = TextScanner mimic("original-text-with-hyphen-separated-words")
-       t delimiter = #/-/
-       t next should == "original"
-       t next should == "text"
-       t next should == "with"
-       t next should == "hyphen"
-       t next should == "separated"
-       t next should == "words"
-       t next should == nil
+       it("should be able tokenise the text appropriately",
+         t = TextScanner mimic("original-text-with-hyphen-separated-words")
+         t delimiter = #/-/
+         t next should == "original"
+         t next should == "text"
+         t next should == "with"
+         t next should == "hyphen"
+         t next should == "separated"
+         t next should == "words"
+         t next should == nil
+       )
      )
 
      describe("whilst changing the delimiter mid scanning",
-       t = TextScanner mimic("text with a--mix-of---space-and (multiple)hyphen separated words")
-       t next should == "text"
-       t next should == "with"
-       t delimiter = #/-+/
-       t next should == "a"
-       t next should == "mix"
-       t next should == "of"
-       t next should == "space"
-       t delimiter = #/\s+/
-       t next should == "and"
-       t next should == "(multiple)hyphen"
-       t next should == "separated"
-       t next should == "words"
+       it("should be able to tokenise the text appropriately",
+         t = TextScanner mimic("text with a--mix-of---space-and (multiple)hyphen separated words")
+         t next should == "text"
+         t next should == "with"
+         t delimiter = #/-+/
+         t next should == "a"
+         t next should == "mix"
+         t next should == "of"
+         t next should == "space"
+         t delimiter = #/\s+/
+         t next should == "and"
+         t next should == "(multiple)hyphen"
+         t next should == "separated"
+         t next should == "words"
+       )
      )
   )
 
