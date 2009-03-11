@@ -56,6 +56,13 @@ describe(TextScanner,
          t next should == "original-text-with-hyphen-separated-words"
          t next should == nil
        )
+
+       it("should advance the pointer position",
+         t = TextScanner mimic("original text")
+         originalPosition = t position
+         t next
+         t position should == originalPosition + "original" length + 1
+       )
      )
 
      describe("with a bespoke delimiter",
@@ -91,6 +98,28 @@ describe(TextScanner,
      )
   )
 
+
+  describe("hasNext?",
+    it("should be able to correctly determine that there is a token left to scan",
+      t = TextScanner mimic("original text")
+      t hasNext? should == "original"
+    )
+
+    it("should have idempotent-like behaviour",
+      t = TextScanner mimic("original text")
+      t hasNext? should == "original"
+      t hasNext? should == "original"
+      t hasNext? should == "original"
+    )
+    
+    it("should not advance the pointer position",
+      t = TextScanner mimic("original text")
+      originalPosition = t position
+      t hasNext?
+      t position should == originalPosition
+    )
+  )
+  
   describe("rest",
     it("should return all of the text before any scanning has taken place",
       t = TextScanner mimic("original text")
