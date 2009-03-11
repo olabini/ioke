@@ -11,8 +11,12 @@ TextScanner = Origin mimic do(
     @delimiter = #/\s+/ ;The pattern which describes the default delimiter between tokens
   )
 
-  next = method("Returns the next token after the position as delimited by the default delimeter",
+  next = method("Returns the next token after the position as delimited by the default delimeter and advances the pointer",
     internal:scan(internal:alterPatternToAlsoMatchLineEnd(delimiter), matchFromPointer: false, returnPositionToMatch: true)
+  )
+
+  hasNext? = method("Returns the next token after the position as delimited by the default delimeter but does not advance the pointer",
+    internal:scan(internal:alterPatternToAlsoMatchLineEnd(delimiter), advancePointer: false, matchFromPointer: false, returnPositionToMatch: true)
   )
 
   scan = method("Takes one parameter, a regular expression, and will check for a match starting at the current position pointer. If a match exists it will advance the position pointer to the next match and return that match",
@@ -75,8 +79,8 @@ TextScanner = Origin mimic do(
     if(match,
 
       fullMatch = rest[0...(@match end)]
-      fromPositionToMatch = rest[0..((@match start) - 1)]
-      @position += match end
+      fromPositionToMatch = rest[0...(@match start)]
+      if(advancePointer, @position += match end)
       if(returnPositionToMatch,
         if(fromPositionToMatch == "", return nil, return fromPositionToMatch),
         if(fullMatch == "", return nil, return fullMatch)
