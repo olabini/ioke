@@ -8,7 +8,7 @@ TextScanner = Origin mimic do(
                   ;this value is the length of the text
 
     @match = nil  ;The result of the last match
-    @delimiter = #/\W+/ ;The pattern which describes the default delimiter between tokens
+    @delimiter = #/\s+/ ;The pattern which describes the default delimiter between tokens
   )
 
   next = method("Returns the next token after the position as delimited by the default delimeter",

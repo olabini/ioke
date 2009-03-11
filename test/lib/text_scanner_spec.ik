@@ -23,7 +23,7 @@ describe(TextScanner,
   describe("delimiter",
     it("should match whitespace as default",
       t = TextScanner mimic("original text")
-      t delimiter should == #/\W+/
+      t delimiter should == #/\s+/
     )
 
     it("should be possible to set the delimeter",
@@ -34,16 +34,27 @@ describe(TextScanner,
   )
 
    describe("next",
-    it("should return the next token as delimited by the delimiter",
-      t = TextScanner mimic("original text with whitespace separated tokens")
-      t next should == "original"
-      t next should == "text"
-      t next should == "with"
-      t next should == "whitespace"
-      t next should == "separated"
-      t next should == "tokens"
-      t next should == nil
-    )
+     it("should return nil if there are no more tokens to return",
+       t = TextScanner mimic("")
+       t next should == nil
+     )
+     
+     describe("with the default delimiter",
+       it("should return each token as delimited by the delimiter",
+         t = TextScanner mimic("original text with whitespace separated tokens")
+         t next should == "original"
+         t next should == "text"
+         t next should == "with"
+         t next should == "whitespace"
+         t next should == "separated"
+         t next should == "tokens"
+       )
+
+       it("should return the entire text if the delimiter can't be found",
+         t = TextScanner mimic("original-text-with-hyphen-separated-words")
+         t next should == "original-text-with-hyphen-separated-words"
+       )
+     )
   )
 
   describe("rest",
