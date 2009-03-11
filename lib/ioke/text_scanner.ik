@@ -18,7 +18,7 @@ TextScanner = Origin mimic do(
 
   positionScan = method("Takes one parameter, a regular expression, and will check for a match starting at the current position pointer. If a match exists it will advance the position pointer to the next match and return the pointer position",
     pattern,
-    internal:scan(pattern, returnMatch: false)
+    if(internal:scan(pattern, returnMatch: false), return position, return nil)
   )
 
   search = method("Takes one parameter, a regular expression, and will check for a match anywhere after the current position pointer. If match exists it will advance the position pointer to the next match and return that match",
@@ -28,7 +28,7 @@ TextScanner = Origin mimic do(
 
   positionSearch = method("Takes one parameter, a regular expression, and will check for a match anywhere after the current position pointer. If match exists it will advance the position pointer to the next match and return the pointer position",
     pattern,
-    internal:scan(pattern, matchFromPointer: false, returnMatch: false)
+    if(internal:scan(pattern, matchFromPointer: false, returnMatch: false), return position, return nil)
   )
 
   rest = method("Returns the remainder of the text that is yet to be scanned: all the text after the pointer position",
@@ -73,7 +73,7 @@ TextScanner = Origin mimic do(
       @position += @match end
       if(returnMatch,
           return fullMatch,
-          return position
+          return "position"
         )
 
       return nil)

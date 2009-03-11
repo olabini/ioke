@@ -89,6 +89,13 @@ describe(TextScanner,
       t positionScan(#/matchable/) should == nil
     )
 
+    it("should not adance the pointer position if the match doesn't start at the pointer position",
+      t = TextScanner mimic("original matchable text")
+      originalPosition = t position
+      t positionScan(#/matchable/)
+      t position should == originalPosition
+    )
+
     it("should advance the pointer position to the position after the first match",
       t = TextScanner mimic("original matchable text")
       t position should == 0
@@ -134,6 +141,18 @@ describe(TextScanner,
       t search(#/matchable/)
       t position should == 18
     )
+
+    it("should return nil if the pattern given could not be found in the rest of the text",
+      t = TextScanner mimic("original matchable text")
+      t search(#/moonunit/) should == nil
+    )
+
+    it("should not advance the pointer position if no match was found",
+      t = TextScanner mimic("original matchable text")
+      originalPosition = t position
+      t search(#/plinky/)
+      t position should == originalPosition
+    )
   )
 
   describe("positionSearch",
@@ -159,6 +178,18 @@ describe(TextScanner,
       t = TextScanner mimic("original matchable text")
       t positionSearch(#/matchable/)
       t position should == 18
+    )
+
+    it("should return nil if the pattern given could not be found in the rest of the text",
+      t = TextScanner mimic("original matchable text")
+      t positionSearch(#/blimp/) should == nil
+    )
+
+    it("should not advane the pointer position if the pattern given could not be found in the rest of the text",
+      t = TextScanner mimic("original matchable text")
+      originalPosition = t position
+      t positionSearch(#/blimp/)
+      t position should == originalPosition
     )
   )
 
