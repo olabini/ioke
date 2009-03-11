@@ -8,6 +8,7 @@ TextScanner = Origin mimic do(
                   ;this value is the length of the text
 
     @match = nil  ;The result of the last match
+    @delimiter = #/\W+/ ;The pattern which describes the default delimiter between tokens
   )
 
   scan = method("Takes one parameter, a regular expression, and will check for a match starting at the current position pointer. If a match exists it will advance the position pointer to the next match and return that match",
