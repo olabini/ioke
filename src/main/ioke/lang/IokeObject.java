@@ -479,7 +479,7 @@ public class IokeObject implements TypeChecker {
         final String name = message.getName();
         final String outerName = name;
         Object cell = clz.findCell(message, ctx, name);
-        
+
         while(cell == runtime.nul && ((cell = clz.findCell(message, ctx, "pass")) == runtime.nul)) {
             final IokeObject condition = as(IokeObject.getCellChain(runtime.condition, 
                                                                     message, 
@@ -542,7 +542,7 @@ public class IokeObject implements TypeChecker {
     public Object perform(IokeObject ctx, IokeObject message, final String name) throws ControlFlow {
         final String outerName = name;
         Object cell = this.findCell(message, ctx, name);
-        
+
         while(cell == runtime.nul && ((cell = this.findCell(message, ctx, "pass")) == runtime.nul)) {
             final IokeObject condition = as(IokeObject.getCellChain(runtime.condition, 
                                                                     message, 
