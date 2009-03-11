@@ -11,6 +11,10 @@ TextScanner = Origin mimic do(
     @delimiter = #/\W+/ ;The pattern which describes the default delimiter between tokens
   )
 
+  next = method("Returns the next token after the position as delimited by the default delimeter",
+    internal:scan(internal:alterPatternToAlsoMatchLineEnd(delimiter), matchFromPointer: false, returnPositionToMatch: true)
+  )
+
   scan = method("Takes one parameter, a regular expression, and will check for a match starting at the current position pointer. If a match exists it will advance the position pointer to the next match and return that match",
     pattern,
     internal:scan(pattern)
@@ -18,7 +22,7 @@ TextScanner = Origin mimic do(
 
   positionScan = method("Takes one parameter, a regular expression, and will check for a match starting at the current position pointer. If a match exists it will advance the position pointer to the next match and return the pointer position",
     pattern,
-    if(internal:scan(pattern, returnMatch: false), return position, return nil)
+    if(internal:scan(pattern), return position, return nil)
   )
 
   search = method("Takes one parameter, a regular expression, and will check for a match anywhere after the current position pointer. If match exists it will advance the position pointer to the next match and return that match",
@@ -28,7 +32,7 @@ TextScanner = Origin mimic do(
 
   positionSearch = method("Takes one parameter, a regular expression, and will check for a match anywhere after the current position pointer. If match exists it will advance the position pointer to the next match and return the pointer position",
     pattern,
-    if(internal:scan(pattern, matchFromPointer: false, returnMatch: false), return position, return nil)
+    if(internal:scan(pattern, matchFromPointer: false), return position, return nil)
   )
 
   rest = method("Returns the remainder of the text that is yet to be scanned: all the text after the pointer position",
@@ -61,26 +65,33 @@ TextScanner = Origin mimic do(
     )
   )
 
-  internal:scan = method("blah blah",
-    pattern, matchFromPointer: true, advancePointer: true, returnMatch: true,
+  internal:scan = method("this is starting to get pretty nasty...",
+    pattern, matchFromPointer: true, advancePointer: true, returnPositionToMatch: false,
     
     if(matchFromPointer, pattern =  internal:alterPatternToMatchFromHead(pattern))
     
     @match = pattern match(rest)
 
-    if(@match,
+    if(match,
+
       fullMatch = rest[0...(@match end)]
-      @position += @match end
-      if(returnMatch,
-          return fullMatch,
-          return "position"
-        )
+      fromPositionToMatch = rest[0..((@match start) - 1)]
+      @position += match end
+      if(returnPositionToMatch,
+        if(fromPositionToMatch == "", return nil, return fromPositionToMatch),
+        if(fullMatch == "", return nil, return fullMatch)
+      )
 
       return nil)
   )
 
   internal:alterPatternToMatchFromHead = method("Takes one parameter, a regexp pattern, which it converts to match against the start of some text only. This is equivalent to starting the pattern with ^",
     pattern,
-    #/^#{pattern inspect[2..-2]}/
+    #/^#{pattern}/
+  )
+
+  internal:alterPatternToAlsoMatchLineEnd = method("Takes one parameter, a regexp pattern, which it converts to match against the end of the text in addition to the match itself",
+    pattern,
+    #/#{pattern}|$/
   )
 )
