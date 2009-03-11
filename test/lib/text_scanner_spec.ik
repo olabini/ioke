@@ -33,6 +33,19 @@ describe(TextScanner,
     )
   )
 
+   describe("next",
+    it("should return the next token as delimited by the delimiter",
+      t = TextScanner mimic("original text with whitespace separated tokens")
+      t next should == "original"
+      t next should == "text"
+      t next should == "with"
+      t next should == "whitespace"
+      t next should == "separated"
+      t next should == "tokens"
+      t next should == nil
+    )
+  )
+
   describe("rest",
     it("should return all of the text before any scanning has taken place",
       t = TextScanner mimic("original text")
