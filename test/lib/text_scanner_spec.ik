@@ -65,13 +65,45 @@ describe(TextScanner,
     )
   )
 
+  describe("positionScan",
+    it("should return the pointer position if the provided regexp matches text from the pointer position",
+      t = TextScanner mimic("original matchable text")
+      t positionScan(#/original/) should == 8
+    )
+
+    it("should not match if the match doesn't start at the pointer position",
+      t = TextScanner mimic("original matchable text")
+      t positionScan(#/matchable/) should == nil
+    )
+
+    it("should advance the pointer position to the position after the first match",
+      t = TextScanner mimic("original matchable text")
+      t position should == 0
+      t positionScan(#/original/)
+      t position should == 8
+    )
+
+    it("should advance the pointer position multiple times with multiple matches",
+      t = TextScanner mimic("my umbrella is asymetric")
+      t position should == 0
+      t positionScan(#/my/) should == 2
+      t position should == 2
+      t positionScan(#/umbrella/) should == nil
+      t position should == 2
+      t positionScan(#/ /) should == 3
+      t position should == 3
+      t positionScan(#/umb.*/) should == "my umbrella is asymetric" length
+      t position should == "my umbrella is asymetric" length
+    )
+  )
+
   describe("search",
-    it("should find a match at the end of the text",
+    it("should find a match at the end of the text and return the match",
       t = TextScanner mimic("original matchable text")
       t search(#/text/) should == "original matchable text"
     )
 
-    it("should find a match in the middle of the text h",
+    it("should find a match in the middle of the text and return the match",
       t = TextScanner mimic("original matchable text")
       t search(#/matchable/) should == "original matchable"
     )
@@ -87,6 +119,32 @@ describe(TextScanner,
     it("should advance the pointer position",
       t = TextScanner mimic("original matchable text")
       t search(#/matchable/)
+      t position should == 18
+    )
+  )
+
+  describe("positionSearch",
+    it("should find a match at the end of the text and return the position",
+      t = TextScanner mimic("original matchable text")
+      t positionSearch(#/text/) should == "original matchable text" length
+    )
+
+    it("should find a match in the middle of the text and return the position",
+      t = TextScanner mimic("original matchable text")
+      t positionSearch(#/matchable/) should == "original matchable" length
+    )
+
+    it("should find a match in the middle of the text and return all the text from the pointer position to the match",
+      t = TextScanner mimic("original matchable text")
+      t scan(#/original/)
+      t position should == 8
+      t positionSearch(#/text/) should == "original matchable text" length
+      t position should == "original matchable text" length
+    )
+
+    it("should advance the pointer position",
+      t = TextScanner mimic("original matchable text")
+      t positionSearch(#/matchable/)
       t position should == 18
     )
   )
