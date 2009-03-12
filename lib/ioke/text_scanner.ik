@@ -7,7 +7,8 @@ TextScanner = Origin mimic do(
                   ;In the 'terminated' position (i.e. the text has been completely scanned), 
                   ;this value is the length of the text
 
-    @match = nil  ;The result of the last match
+    @internal:matchData = nil  ;The result of the last match
+    @match = nil
     @delimiter = #/\s+/ ;The pattern which describes the default delimiter between tokens
   )
 
@@ -44,7 +45,7 @@ TextScanner = Origin mimic do(
   )
 
   beforeMatch = method("Returns the text before the last match, or nil if no scanning has been performed yet",
-    if(match, text[0...(position - match[0] length)], nil)
+    if(match, text[0...(position - internal:matchData[0] length)], nil)
   )
 
   afterMatch = method("Returns the text after tha last match, or nil if no scanning has been performed yet",
@@ -65,28 +66,29 @@ TextScanner = Origin mimic do(
 
       char = rest[0..0]
       @position += 1
+      @match = char
       char
     )
   )
 
-  internal:scan = method("this is starting to get pretty nasty...",
+  internal:scan = method("this is starting to get really really nasty...",
     pattern, matchFromPointer: true, advancePointer: true, returnPositionToMatch: false,
     
     if(matchFromPointer, pattern =  internal:alterPatternToMatchFromHead(pattern))
     
-    @match = pattern match(rest)
+    @internal:matchData = pattern match(rest)
 
-    if(match,
+    if(internal:matchData,
 
-      fullMatch = rest[0...(@match end)]
-      fromPositionToMatch = rest[0...(@match start)]
-      if(advancePointer, @position += match end)
+      fullMatch = rest[0...(internal:matchData end)]
+      fromPositionToMatch = rest[0...(internal:matchData start)]
+      if(advancePointer, @position += internal:matchData end)
       if(returnPositionToMatch,
-        if(fromPositionToMatch == "", return nil, return fromPositionToMatch),
-        if(fullMatch == "", return nil, return fullMatch)
+        if(fromPositionToMatch == "", @match = nil. return nil, @match = fromPositionToMatch. return fromPositionToMatch),
+        if(fullMatch == "", @match = nil. return nil, @match = fullMatch. return fullMatch)
       )
 
-      return nil)
+      @match = nil. return nil)
   )
 
   internal:alterPatternToMatchFromHead = method("Takes one parameter, a regexp pattern, which it converts to match against the start of some text only. This is equivalent to starting the pattern with ^",
