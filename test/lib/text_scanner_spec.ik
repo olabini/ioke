@@ -40,7 +40,7 @@ describe(TextScanner,
       t delimiter should == #/\s+/
     )
 
-    it("should be possible to set the delimeter",
+    it("should be possible to set the delimiter",
       t = TextScanner mimic("original text")
       t delimeter = #/new delimeter/
       t delimeter should == #/new delimeter/
@@ -57,6 +57,33 @@ describe(TextScanner,
       t = TextScanner mimic("original matchable text")
       originalMatch = t match
       t delimiter
+      t match should == originalMatch
+    )
+  )
+
+  describe("lineDelimiter",
+    it("should match newlines as default",
+      t = TextScanner mimic("original text")
+      t lineDelimiter should == #/\n/
+    )
+
+    it("should be possible to set the line delimiter",
+      t = TextScanner mimic("original text")
+      t lineDelimiter = #/new line delimiter/
+      t lineDelimiter should == #/new line delimiter/
+    )
+
+    it("should not advance the pointer position",
+      t = TextScanner mimic("original matchable text")
+      originalPosition = t position
+      t lineDelimiter
+      t position should == originalPosition
+    )
+     
+    it("should not modify the match",
+      t = TextScanner mimic("original matchable text")
+      originalMatch = t match
+      t lineDelimiter
       t match should == originalMatch
     )
   )

@@ -10,6 +10,7 @@ TextScanner = Origin mimic do(
     @internal:matchData = nil  ;The result of the last match
     @match = nil
     @delimiter = #/\s+/ ;The pattern which describes the default delimiter between tokens
+    @lineDelimiter = #/\n/ ;The pattern which describes the default delimiter between lines
   )
 
   next = method("Returns the next token after the position as delimited by the default delimeter and advances the pointer",
