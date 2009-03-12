@@ -331,6 +331,38 @@ describe(Message,
     )
   )
 
+  describe("<=",
+    
+    it("should return the receiver", 
+      msg = '(foo(x))
+      b = msg <= nil
+      b should == msg
+    )
+
+    it("should clear the arguments list if given nil", 
+      msg = '(foo(x))
+      msg <= nil
+      msg code should == "foo"
+    )
+
+    it("should set the only argument unless given a list", 
+      msg = '(foo(x,y))
+      msg <= 'bar
+      msg code should == "foo(bar)"
+    )
+
+    it("should change the arguments list to the given list", 
+      msg = '(foo(x,y))
+      other = '(me(i,j))
+      msg <= other arguments
+      msg code should == "foo(i, j)"
+    )
+    
+    it("should validate type of receiver",
+      Message should checkReceiverTypeOn(:"<=", 'foo)
+    )
+  )
+
   describe("->",
     it("should change the next pointer of the receiver to the argument",
       one = 'foo
