@@ -173,6 +173,14 @@ public class Dict extends IokeData {
                     return args.get(1);
                 }}));
 
+        obj.registerMethod(runtime.newJavaMethod("Returns the number of pairs contained in this dict.", new TypeCheckingJavaMethod.WithNoArguments("size", runtime.dict) {
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    return runtime.newNumber(Dict.getMap(on).size());
+                }
+            }));
+
+
         obj.registerMethod(runtime.newJavaMethod("Returns a text inspection of the object", new TypeCheckingJavaMethod.WithNoArguments("inspect", runtime.dict) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
