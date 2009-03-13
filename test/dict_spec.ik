@@ -365,4 +365,13 @@ describe(DefaultBehavior,
       {foo:, bar:, quux:} should == {:foo => nil, :bar => nil, :quux => nil} 
     )
   )
+
+  describe("size",
+    it("should be 0 for an empty dict",
+      dict size should == 0)
+    
+    it("should be the number of pairs in dict",
+      dict(a: 1, b: 2) size should == 2)
+  )
+      
 )
