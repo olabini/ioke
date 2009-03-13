@@ -110,6 +110,22 @@ public class DefaultArgumentsDefinition {
         return arguments;
     }
 
+    public int getMax() {
+        return max;
+    }
+
+    public int getMin() {
+        return min;
+    }
+
+    public String getRestName() {
+        return rest;
+    }
+
+    public String getKrestName() {
+        return krest;
+    }
+
     public String getCode() {
         return getCode(true);
     }
@@ -431,6 +447,10 @@ public class DefaultArgumentsDefinition {
 
             locals.setCell(rest, runtime.newList(rests));
         }
+    }
+
+    public boolean isEmpty() {
+        return min == 0 && max == 0 && arguments.isEmpty() && keywords.isEmpty() && rest == null && krest == null;
     }
 
     public static DefaultArgumentsDefinition empty() {

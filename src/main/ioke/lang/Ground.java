@@ -37,6 +37,7 @@ public class Ground {
         ground.registerCell("DefaultMacro", runtime.defaultMacro);
         ground.registerCell("LexicalMacro", runtime.lexicalMacro);
         ground.registerCell("DefaultSyntax", runtime.defaultSyntax);
+        ground.registerCell("Arity", runtime.arity);
         ground.registerCell("Mixins", runtime.mixins);
         ground.registerCell("Restart", runtime.restart);
         ground.registerCell("List", runtime.list);
