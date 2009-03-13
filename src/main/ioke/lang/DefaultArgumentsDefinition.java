@@ -448,7 +448,7 @@ public class DefaultArgumentsDefinition {
         String rest = null;
         String krest = null;
 
-        for(Object obj : args.subList(start, args.size()-1)) {
+        for(Object obj : args.subList(start, len)) {
             Message m = (Message)IokeObject.data(obj);
             String mname = m.getName(null);
             if(!"+:".equals(mname) && m.isKeyword()) {
