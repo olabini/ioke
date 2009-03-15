@@ -538,7 +538,13 @@ describe(Regexp,
     it("should add all the flags as the last argument",
       m = parse("#/foo \#{1} bar/mx")
       m should == "internal:compositeRegexp(\"foo \", 1, #/ bar/mx)"
-    )      
+    )
+
+    it("should interpolate an empty expression",
+      "ab" should match(#/a#{}b/)
+      "xabx" should match(#/a#{}b/)
+    )
+
   )
   
   describe("escapes",

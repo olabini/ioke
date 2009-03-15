@@ -85,13 +85,15 @@ public class InternalBehavior {
 
                     String flags = "";
                     for(Object o : args) {
-                        if(IokeObject.data(o) instanceof Text) {
-                            sb.append(Text.getText(o));
-                        } else if(IokeObject.data(o) instanceof Regexp) {
-                            sb.append(Regexp.getPattern(o));
-                            flags = Regexp.getFlags(o);
-                        } else {
-                            sb.append(Text.getText(context.runtime.asText.sendTo(context, o)));
+                        if(o != null) {
+                            if(IokeObject.data(o) instanceof Text) {
+                                sb.append(Text.getText(o));
+                            } else if(IokeObject.data(o) instanceof Regexp) {
+                                sb.append(Regexp.getPattern(o));
+                                flags = Regexp.getFlags(o);
+                            } else {
+                                sb.append(Text.getText(context.runtime.asText.sendTo(context, o)));
+                            }
                         }
                     }
 
