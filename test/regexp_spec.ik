@@ -588,6 +588,14 @@ describe(Regexp,
       "ho" should not match(b)
       "ho" should not match(c)
     )
+
+    it("should handle escapes correctly when doing interpolation",
+      p = #/hi/
+      r = #/\A#{p}\Z/
+      r should == #/\A(?-ixmus:hi)\Z/
+      "hi" should match(r)
+      "\nhi" should not match(r)
+    )
   )
   
   describe("escapes",
