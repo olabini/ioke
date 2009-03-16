@@ -84,13 +84,38 @@ public class InternalBehavior {
                     }
 
                     String flags = "";
+                    Object last = args.get(args.size()-1);
                     for(Object o : args) {
                         if(o != null) {
                             if(IokeObject.data(o) instanceof Text) {
                                 sb.append(Text.getText(o));
                             } else if(IokeObject.data(o) instanceof Regexp) {
-                                sb.append(Regexp.getPattern(o));
-                                flags = Regexp.getFlags(o);
+                                if(last == o) {
+                                    sb.append(Regexp.getPattern(o));
+                                    flags = Regexp.getFlags(o);
+                                } else {
+                                    String f = Regexp.getFlags(o);
+                                    String nflags = "";
+                                    if(f.indexOf("i") == -1) {
+                                        nflags += "i";
+                                    }
+                                    if(f.indexOf("x") == -1) {
+                                        nflags += "x";
+                                    }
+                                    if(f.indexOf("m") == -1) {
+                                        nflags += "m";
+                                    }
+                                    if(f.indexOf("u") == -1) {
+                                        nflags += "u";
+                                    }
+                                    if(f.indexOf("s") == -1) {
+                                        nflags += "s";
+                                    }
+                                    if(nflags.length() > 0) {
+                                        nflags = "-" + nflags;
+                                    }
+                                    sb.append("(?").append(f).append(nflags).append(":").append(Regexp.getPattern(o)).append(")");
+                                }
                             } else {
                                 sb.append(Text.getText(context.runtime.asText.sendTo(context, o)));
                             }

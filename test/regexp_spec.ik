@@ -545,6 +545,35 @@ describe(Regexp,
       "xabx" should match(#/a#{}b/)
     )
 
+    it("should interpolate an inner expression",
+      "abc" should match(#/a#{#/b/}c/)
+      "fabcf" should match(#/a#{#/b/}c/)
+      "ac" should not match(#/a#{#/b/}c/)
+
+      "abc" should match(#/#{#/b/}/)
+      "fabcf" should match(#/#{#/b/}/)
+      "ac" should not match(#/#{#/b/}/)
+    )
+
+    it("should interpolate an inner expression from a variable",
+      outer = #/b/
+      "abc" should match(#/a#{outer}c/)
+      "fabcf" should match(#/a#{outer}c/)
+      "ac" should not match(#/a#{outer}c/)
+
+      "abc" should match(#/#{outer}/)
+      "fabcf" should match(#/#{outer}/)
+      "ac" should not match(#/#{outer}/)
+    )
+
+    it("should combine different flags during interpolation",
+      one = #/abc/i
+      two = #/a b c/x
+      "ABC" should match(#/#{one}/)
+      "abc" should match(#/#{two}/)
+      "xABCx" should match(#/x#{one}x/)
+      "XABCX" should not match(#/x#{one}x/)
+    )
   )
   
   describe("escapes",
