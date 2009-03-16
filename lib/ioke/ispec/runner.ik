@@ -2,7 +2,7 @@
 ISpec do(
   Options = Origin mimic do(
     create = method(err, out,
-      self with(errorStream: err, outStream: out, formatters: [], files: [], directories: [], hasFormat?: false, hasHelp?: true, missingFiles: [], unknownOptions: []))
+      self with(errorStream: err, outStream: out, formatters: [], files: [], directories: [], hasFormat?: false, hasHelp?: false, missingFiles: [], unknownOptions: []))
       
     shouldRun? = method(
       !hasHelp? && missingFiles empty? && unknownOptions empty? )
@@ -43,7 +43,7 @@ ISpec do(
   Runner = Origin mimic do(
     registerAtExitHook = method(
       System atExit(
-        unless((ISpec didRun?) || !(ISpec shouldRun?),
+        unless((ISpec didRun?) || !(ISpec ispec_options shouldRun?),
           success = ISpec run
           if(ISpec shouldExit?,
             System exit(success))))
@@ -118,6 +118,6 @@ ISpec do(
     if(ispec_options shouldRun?,
       result = ispec_options runExamples
       self didRun? = true
-      result),
-      ispec_options banner println)
+      result,
+      ispec_options banner println))
 )
