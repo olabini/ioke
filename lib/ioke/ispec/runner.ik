@@ -10,7 +10,7 @@ ISpec do(
     parse! = method(
       argv each(arg,
         case(arg,
-          or("-h", "--help"), hasHelp? = true,
+          or("-h", "--help"), self hasHelp? = true,
           "-fp", formatters << ISpec Formatter ProgressBarFormatter mimic,
           "-fs", formatters << ISpec Formatter SpecDocFormatter mimic,
           fn(file, FileSystem file?(file)), files << arg,
