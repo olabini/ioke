@@ -25,7 +25,7 @@ import org.antlr.runtime.CommonTokenStream;
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
 public class Message extends IokeData {
-    public static enum Type {MESSAGE, DETACH, TERMINATOR, SEPARATOR, START_INTERPOLATION, START_RE_INTERPOLATION, END_INTERPOLATION, MIDDLE_INTERPOLATION};
+    public static enum Type {MESSAGE, DETACH, TERMINATOR, SEPARATOR, START_INTERPOLATION, START_RE_INTERPOLATION, END_INTERPOLATION, END_RE_INTERPOLATION, MIDDLE_INTERPOLATION, MIDDLE_RE_INTERPOLATION};
 
     private String name;
     private String file;
@@ -907,7 +907,7 @@ public class Message extends IokeData {
                     m.setPosition(tree.getCharPositionInLine());
                     return runtime.createMessage(m);
                 } else if(first == '}' && last == '{') {
-                    m = new Message(runtime, "internal:createText", s.substring(1, s.length()-2), Type.MIDDLE_INTERPOLATION);
+                    m = new Message(runtime, "internal:createText", s.substring(1, s.length()-2), Type.MIDDLE_RE_INTERPOLATION);
                     m.setLine(tree.getLine());
                     m.setPosition(tree.getCharPositionInLine());
                     return runtime.createMessage(m);
@@ -916,7 +916,7 @@ public class Message extends IokeData {
                     if(lastIndex == -1) {
                         lastIndex = s.lastIndexOf(']');
                     }
-                    m = new Message(runtime, "internal:createRegexp", s.substring(1, lastIndex), Type.END_INTERPOLATION);
+                    m = new Message(runtime, "internal:createText", s.substring(1, lastIndex), Type.END_RE_INTERPOLATION);
                     m.arguments.add(s.substring(lastIndex+1));
                     m.setLine(tree.getLine());
                     m.setPosition(tree.getCharPositionInLine());
@@ -1045,11 +1045,11 @@ public class Message extends IokeData {
 
         IokeObject mx = m == null ? (IokeObject)null : runtime.createMessage(m);
 
-        IokeObject head = null;
+        Object head = null;
         List<IokeObject> currents = new ArrayList<IokeObject>();
 
         List<List<IokeObject>> oldCurrents = new ArrayList<List<IokeObject>>();
-        List<IokeObject> oldHeads = new ArrayList<IokeObject>();
+        List<Object> oldHeads = new ArrayList<Object>();
         List<IokeObject> oldMx = new ArrayList<IokeObject>();
 
         for(int i=argStart,j=tree.getChildCount(); i<j; i++) {
@@ -1080,7 +1080,7 @@ public class Message extends IokeData {
                 oldMx.add(0, mx);
 
                 currents = new ArrayList<IokeObject>();
-                head = created;
+                head = created.getArguments().get(0);
                 mx = runtime.createMessage(mvv);
 
                 created = runtime.createMessage(new Message(runtime, ",", null, Type.SEPARATOR));
@@ -1094,9 +1094,27 @@ public class Message extends IokeData {
 
                 created = runtime.createMessage(new Message(runtime, ",", null, Type.SEPARATOR));
                 break;
+            case MIDDLE_RE_INTERPOLATION:
+                mx.getArguments().add(head);
+
+                currents.clear();
+                head = created.getArguments().get(0);
+
+                created = runtime.createMessage(new Message(runtime, ",", null, Type.SEPARATOR));
+                break;
             case END_INTERPOLATION:
                 mx.getArguments().add(head);
                 mx.getArguments().add(created);
+
+                currents = oldCurrents.remove(0);
+                head = oldHeads.remove(0);
+                created = mx;
+                mx = oldMx.remove(0);
+                break;
+            case END_RE_INTERPOLATION:
+                mx.getArguments().add(head);
+                mx.getArguments().add(created.getArguments().get(0));
+                mx.getArguments().add(created.getArguments().get(1));
 
                 currents = oldCurrents.remove(0);
                 head = oldHeads.remove(0);
@@ -1138,7 +1156,7 @@ public class Message extends IokeData {
             mx.getArguments().add(head);
         }
 
-        return mx == null ? head : mx;
+        return mx == null ? (IokeObject)head : mx;
     }
 
     public static String name(Object o) {
