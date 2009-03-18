@@ -107,6 +107,17 @@
     </jar>
   </target>
 
+  <target name="jar-lib" depends="jar" description="Create the ioke-lib.jar file">
+    <jar destfile="${lib.dir}/ioke-lib.jar">
+      <fileset dir="lib/ioke">
+        <include name="**/*"/>
+      </fileset>
+      <manifest>
+        <attribute name="Built-By" value="${user.name}"/>
+      </manifest>
+    </jar>
+  </target>
+
   <target name="jar-notest" depends="compile" description="Create the ioke.jar file">
     <jar destfile="${lib.dir}/ioke.jar">
       <fileset dir="${classes.dir}">
@@ -121,6 +132,17 @@
       <manifest>
         <attribute name="Built-By" value="${user.name}"/>
         <attribute name="Main-Class" value="ioke.lang.Main"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="jar-lib-notest" depends="jar-notest" description="Create the ioke-lib.jar file">
+    <jar destfile="${lib.dir}/ioke-lib.jar">
+      <fileset dir="lib/ioke">
+        <include name="**/*"/>
+      </fileset>
+      <manifest>
+        <attribute name="Built-By" value="${user.name}"/>
       </manifest>
     </jar>
   </target>
@@ -166,6 +188,7 @@
   <target name="clean" description="clean almost everything">
     <delete dir="${build.dir}"/>
     <delete file="${lib.dir}/ioke.jar" quiet="true"/>
+    <delete file="${lib.dir}/ioke-lib.jar" quiet="true"/>
     <delete dir="${src.generated.dir}"/>
   </target>
 </project>
