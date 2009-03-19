@@ -9,6 +9,9 @@ ISpec do(
         loadPatterns: [], onlyMatching: [], onlyLines: [],
         missingFiles: [], useColour: true, hasHelp?: false))
 
+    shouldRun? = method(
+      !hasHelp? && missingFiles empty?)
+
     order = method(
       ;; if not given files nor directories
       if(files empty? && directories empty?, 
@@ -78,7 +81,7 @@ ISpec do(
   Runner = Origin mimic do(
     registerAtExitHook = method(
       System atExit(
-        unless((ISpec didRun?) || !(ISpec shouldRun?),
+        unless((ISpec didRun?) || !(ISpec ispec_options shouldRun?),
           success = ISpec run
           if(ISpec shouldExit?,
             System exit(success))))
@@ -222,8 +225,10 @@ ISpec do(
     "runs all the defined descriptions and specs",
 
     if(didRun?, return(true))
-    result = ispec_options runExamples
-    self didRun? = true
-    result)
+    if(ispec_options shouldRun?,
+      result = ispec_options runExamples
+      self didRun? = true
+      result,
+      ispec_options banner println))
 
 )

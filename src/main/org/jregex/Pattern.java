@@ -429,17 +429,17 @@ public class Pattern implements Serializable,REFlags{
    }
    
    private static int getFlag(char c)throws PatternSyntaxException{
-      switch(c){
-         case 'i':
-            return IGNORE_CASE;
-         case 'm':
-            return MULTILINE|DOTALL;
-            //         case 's':
-            //            return DOTALL;
-         case 'x':
-            return IGNORE_SPACES;
-            //         case 'u':
-            //            return UNICODE;
+       switch(c){
+       case 'i':
+           return IGNORE_CASE;
+       case 'm':
+           return MULTILINE|DOTALL;
+       case 's':
+           return DOTALL;
+       case 'x':
+           return IGNORE_SPACES;
+       case 'u':
+           return UNICODE;
             //         case 'X':
             //            return XML_SCHEMA;
       }
