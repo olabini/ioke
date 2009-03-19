@@ -43,7 +43,9 @@ public class JavaMethodJavaMethod extends ioke.lang.Method implements JavaImplem
     public Object activate(IokeObject self, Object on, List<Object> args, Method method, IokeObject context, IokeObject message) throws ControlFlow {
         try {
             if((on instanceof IokeObject) && (IokeObject.data(on) instanceof JavaWrapper)) {
-//                  System.err.println("Invoking " + method.getName() + " on " + ((JavaWrapper)IokeObject.data(on)).getObject() + "[" + ((JavaWrapper)IokeObject.data(on)).getObject().getClass().getName() + "]");
+//                   System.err.println("Invoking " + method.getName() + " on " + ((JavaWrapper)IokeObject.data(on)).getObject() + "[" + ((JavaWrapper)IokeObject.data(on)).getObject().getClass().getName() + "]");
+//                   System.err.println("  method: " + method);
+//                   System.err.println("  class : " + declaringClass);
                 Object obj = ((JavaWrapper)IokeObject.data(on)).getObject();
                 if(!(declaringClass.isInstance(obj))) {
                     obj = obj.getClass();
@@ -57,7 +59,9 @@ public class JavaMethodJavaMethod extends ioke.lang.Method implements JavaImplem
                 }
                 return result;
             } else {
-//                  System.err.println("Invoking " + method.getName() + " on " + on + "[" + on.getClass().getName() + "]");
+//                   System.err.println("Invoking " + method.getName() + " on " + on + "[" + on.getClass().getName() + "]");
+//                   System.err.println("  method: " + method);
+//                   System.err.println("  class : " + declaringClass);
                 Object obj = on;
                 if(!(declaringClass.isInstance(obj))) {
                     obj = obj.getClass();
@@ -71,7 +75,12 @@ public class JavaMethodJavaMethod extends ioke.lang.Method implements JavaImplem
                 return result;
             }
         } catch(Exception e) {
-            context.runtime.reportJavaException((Exception)e.getCause(), message, context);
+            if((Exception)e.getCause() != null) {
+                context.runtime.reportJavaException((Exception)e.getCause(), message, context);
+            } else {
+                context.runtime.reportJavaException((Exception)e, message, context);
+            }
+
             return context.runtime.nil;
         }
     }
