@@ -73,6 +73,9 @@ public class JavaWrapper extends IokeData {
                     lm = ms.get(name);
                 }
                 lm.add(m);
+                try {
+                    m.setAccessible(true);
+                } catch(Exception e) {}
             }
 
             for(Map.Entry<String, List<Method>> mesl : ms.entrySet()) {

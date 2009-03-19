@@ -507,38 +507,95 @@ describe(Regexp,
   describe("interpolation",
     it("should parse correctly with a simple number inside of it", 
       m = parse("#/foo \#{1} bar/")
-      m should == "internal:compositeRegexp(\"foo \", 1, #/ bar/)"
+      m should == "internal:compositeRegexp(foo , 1,  bar, )"
     )
 
     it("should parse correctly with a complex expression", 
       m = parse("#/foo \#{29*5+foo bar} bar/")
-      m should == "internal:compositeRegexp(\"foo \", 29 *(5) +(foo bar), #/ bar/)"
+      m should == "internal:compositeRegexp(foo , 29 *(5) +(foo bar),  bar, )"
     )
 
     it("should parse correctly with interpolation at the beginning of the text", 
       m = parse("#/\#{1} bar/")
-      m should == "internal:compositeRegexp(\"\", 1, #/ bar/)"
+      m should == "internal:compositeRegexp(, 1,  bar, )"
     )
 
     it("should parse correctly with interpolation at the end of the text", 
       m = parse("#/foo \#{1}/")
-      m should == "internal:compositeRegexp(\"foo \", 1, #//)"
+      m should == "internal:compositeRegexp(foo , 1, , )"
     )
 
     it("should parse correctly with more than one interpolation", 
       m = parse("#/foo \#{1} bar \#{2} quux \#{3}/")
-      m should == "internal:compositeRegexp(\"foo \", 1, \" bar \", 2, \" quux \", 3, #//)"
+      m should == "internal:compositeRegexp(foo , 1,  bar , 2,  quux , 3, , )"
     )
 
     it("should parse correctly with nested interpolations", 
       m = parse("#/foo \#{#/fux \#{32} bar/ bletch} bar/")
-      m should == "internal:compositeRegexp(\"foo \", internal:compositeRegexp(\"fux \", 32, #/ bar/) bletch, #/ bar/)"
+      m should == "internal:compositeRegexp(foo , internal:compositeRegexp(fux , 32,  bar, ) bletch,  bar, )"
     )
 
     it("should add all the flags as the last argument",
       m = parse("#/foo \#{1} bar/mx")
-      m should == "internal:compositeRegexp(\"foo \", 1, #/ bar/mx)"
-    )      
+      m should == "internal:compositeRegexp(foo , 1,  bar, mx)"
+    )
+
+    it("should interpolate an empty expression",
+      "ab" should match(#/a#{}b/)
+      "xabx" should match(#/a#{}b/)
+    )
+
+    it("should interpolate an inner expression",
+      "abc" should match(#/a#{#/b/}c/)
+      "fabcf" should match(#/a#{#/b/}c/)
+      "ac" should not match(#/a#{#/b/}c/)
+
+      "abc" should match(#/#{#/b/}/)
+      "fabcf" should match(#/#{#/b/}/)
+      "ac" should not match(#/#{#/b/}/)
+    )
+
+    it("should interpolate an inner expression from a variable",
+      outer = #/b/
+      "abc" should match(#/a#{outer}c/)
+      "fabcf" should match(#/a#{outer}c/)
+      "ac" should not match(#/a#{outer}c/)
+
+      "abc" should match(#/#{outer}/)
+      "fabcf" should match(#/#{outer}/)
+      "ac" should not match(#/#{outer}/)
+    )
+
+    it("should combine different flags during interpolation",
+      one = #/abc/i
+      two = #/a b c/x
+      "ABC" should match(#/#{one}/)
+      "abc" should match(#/#{two}/)
+      "xABCx" should match(#/x#{one}x/)
+      "XABCX" should not match(#/x#{one}x/)
+    )
+
+    it("should combine regexps correctly with parenthesis",
+      a = #/hi/
+      b = #/#{a}/
+      c = #/(#{a})/
+
+      "hi" should match(a)
+      "hi" should match(b)
+      "hi" should match(c)
+
+      "ho" should not match(a)
+      "ho" should not match(b)
+      "ho" should not match(c)
+    )
+
+    it("should handle escapes correctly when doing interpolation",
+      p = #/hi/
+      r = #/\A#{p}\Z/
+      r should == #/\A(?-ixmus:hi)\Z/
+      "hi" should match(r)
+      "\nhi" should not match(r)
+    )
   )
   
   describe("escapes",
@@ -781,6 +838,42 @@ describe(Regexp,
   )
 
   describe("flags",
-    it("should have tests")
+    describe("i",
+      it("should match without caring about case",
+        "fOxGGG" should match(#/oXg/i)
+        "fOxGGG" should match(#/OXG/i)
+        "foxgGG" should match(#/OXG/i)
+        "foxgGG" should not match(#/pOXG/i)
+      )
+    )
+
+    describe("m",
+      it("should match beginning of lines and ends of lines",
+        "x\nfoo\nbar" should not match(#/^foo/)
+        "x\nfoo\nbar" should not match(#/foo$/)
+        "x\nfoo\nbar" should match(#/^foo/m)
+        "x\nfoo\nbar" should match(#/foo$/m)
+      )
+    )
+
+    describe("s",
+      it("should make dots match newlines when used",
+        "foo\nbar" should not match(#/foo.bar/)
+        "foo\nbar" should match(#/foo.bar/s)
+      )
+    )
+
+    describe("x",
+      it("should allow white space in regexps",
+        "foobar" should match(#/foo       bar/x)
+      )
+    )
+
+    describe("u",
+      it("should recognize non-latin characters as word character",
+        "ʎ" should not match(#/\w/)
+        "ʎ" should match(#/\w/u)
+      )
+    )
   )
 )

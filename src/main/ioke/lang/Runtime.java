@@ -534,7 +534,13 @@ public class Runtime {
         condition.setCell("context", context);
         condition.setCell("receiver", context);
         condition.setCell("exceptionType", newText(e.getClass().getName()));
-        condition.setCell("exceptionMessage", newText(e.getMessage()));
+
+        if(e.getMessage() != null) {
+            condition.setCell("exceptionMessage", newText(e.getMessage()));
+        } else {
+            condition.setCell("exceptionMessage", nil);
+        }
+
         List<Object> ob = new ArrayList<Object>();
         for(StackTraceElement ste : e.getStackTrace()) {
             ob.add(newText(ste.toString()));
