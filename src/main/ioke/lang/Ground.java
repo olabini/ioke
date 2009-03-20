@@ -15,47 +15,49 @@ import ioke.lang.exceptions.ControlFlow;
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
 public class Ground {
-    public static void init(IokeObject ground) throws ControlFlow {
+    public static void init(IokeObject iokeGround, IokeObject ground) throws ControlFlow {
         Runtime runtime = ground.runtime;
+        iokeGround.setKind("IokeGround");
         ground.setKind("Ground");
-        ground.registerCell("Base", runtime.base);
-        ground.registerCell("DefaultBehavior", runtime.defaultBehavior);
-        ground.registerCell("Ground", runtime.ground);
-        ground.registerCell("Origin", runtime.origin);
-        ground.registerCell("System", runtime.system);
-        ground.registerCell("Runtime", runtime.runtime);
-        ground.registerCell("Text", runtime.text);
-        ground.registerCell("Symbol", runtime.symbol);
-        ground.registerCell("Number", runtime.number);
-        ground.registerCell("nil", runtime.nil);
-        ground.registerCell("true", runtime._true);
-        ground.registerCell("false", runtime._false);
-        ground.registerCell("Method", runtime.method);
-        ground.registerCell("DefaultMethod", runtime.defaultMethod);
-        ground.registerCell("JavaMethod", runtime.javaMethod);
-        ground.registerCell("LexicalBlock", runtime.lexicalBlock);
-        ground.registerCell("DefaultMacro", runtime.defaultMacro);
-        ground.registerCell("LexicalMacro", runtime.lexicalMacro);
-        ground.registerCell("DefaultSyntax", runtime.defaultSyntax);
-        ground.registerCell("Mixins", runtime.mixins);
-        ground.registerCell("Restart", runtime.restart);
-        ground.registerCell("List", runtime.list);
-        ground.registerCell("Dict", runtime.dict);
-        ground.registerCell("Set", runtime.set);
-        ground.registerCell("Range", runtime.range);
-        ground.registerCell("Pair", runtime.pair);
-        ground.registerCell("DateTime", runtime.dateTime);
-        ground.registerCell("Message", runtime.message);
-        ground.registerCell("Call", runtime.call);
-        ground.registerCell("Condition", runtime.condition);
-        ground.registerCell("Rescue", runtime.rescue);
-        ground.registerCell("Handler", runtime.handler);
-        ground.registerCell("IO", runtime.io);
-        ground.registerCell("FileSystem", runtime.fileSystem);
-        ground.registerCell("Regexp", runtime.regexp);
-        ground.registerCell("JavaGround", runtime.javaGround);
+        iokeGround.registerCell("Base", runtime.base);
+        iokeGround.registerCell("DefaultBehavior", runtime.defaultBehavior);
+        iokeGround.registerCell("IokeGround", runtime.iokeGround);
+        iokeGround.registerCell("Ground", runtime.ground);
+        iokeGround.registerCell("Origin", runtime.origin);
+        iokeGround.registerCell("System", runtime.system);
+        iokeGround.registerCell("Runtime", runtime.runtime);
+        iokeGround.registerCell("Text", runtime.text);
+        iokeGround.registerCell("Symbol", runtime.symbol);
+        iokeGround.registerCell("Number", runtime.number);
+        iokeGround.registerCell("nil", runtime.nil);
+        iokeGround.registerCell("true", runtime._true);
+        iokeGround.registerCell("false", runtime._false);
+        iokeGround.registerCell("Method", runtime.method);
+        iokeGround.registerCell("DefaultMethod", runtime.defaultMethod);
+        iokeGround.registerCell("JavaMethod", runtime.javaMethod);
+        iokeGround.registerCell("LexicalBlock", runtime.lexicalBlock);
+        iokeGround.registerCell("DefaultMacro", runtime.defaultMacro);
+        iokeGround.registerCell("LexicalMacro", runtime.lexicalMacro);
+        iokeGround.registerCell("DefaultSyntax", runtime.defaultSyntax);
+        iokeGround.registerCell("Mixins", runtime.mixins);
+        iokeGround.registerCell("Restart", runtime.restart);
+        iokeGround.registerCell("List", runtime.list);
+        iokeGround.registerCell("Dict", runtime.dict);
+        iokeGround.registerCell("Set", runtime.set);
+        iokeGround.registerCell("Range", runtime.range);
+        iokeGround.registerCell("Pair", runtime.pair);
+        iokeGround.registerCell("DateTime", runtime.dateTime);
+        iokeGround.registerCell("Message", runtime.message);
+        iokeGround.registerCell("Call", runtime.call);
+        iokeGround.registerCell("Condition", runtime.condition);
+        iokeGround.registerCell("Rescue", runtime.rescue);
+        iokeGround.registerCell("Handler", runtime.handler);
+        iokeGround.registerCell("IO", runtime.io);
+        iokeGround.registerCell("FileSystem", runtime.fileSystem);
+        iokeGround.registerCell("Regexp", runtime.regexp);
+        iokeGround.registerCell("JavaGround", runtime.javaGround);
 
-        ground.registerMethod(runtime.newJavaMethod("will return a text representation of the current stack trace", 
+        iokeGround.registerMethod(runtime.newJavaMethod("will return a text representation of the current stack trace", 
                                                     new JavaMethod.WithNoArguments("stackTraceAsText") {
                                                         @Override
                                                         public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
