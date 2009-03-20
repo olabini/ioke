@@ -45,7 +45,8 @@ public class Runtime {
 
     // Core objects and origins
     public IokeObject base = new IokeObject(this, "Base is the top of the inheritance structure. Most of the objects in the system are derived from this instance. Base should keep its cells to the bare minimum needed for the system.");
-    public IokeObject ground = new IokeObject(this, "Ground is the default place code is evaluated in. This is where you can find most of the global objects defined.");
+    public IokeObject iokeGround = new IokeObject(this, "IokeGround is the place that mimics default behavior, and where most global objects are defined..");
+    public IokeObject ground = new IokeObject(this, "Ground is the default place code is evaluated in.");
     public IokeObject system = new IokeObject(this, "System defines things that represents the currently running system, such as the load path.", new IokeSystem());
     public IokeObject runtime = new IokeObject(this, "Runtime gives meta-circular access to the currently executing Ioke runtime.");
     public IokeObject defaultBehavior = new IokeObject(this, "DefaultBehavior is a mixin that provides most of the methods shared by most instances in the system.");
@@ -192,7 +193,7 @@ public class Runtime {
         system.init();
         Runtime.init(runtime);
         message.init();
-        Ground.init(ground);
+        Ground.init(iokeGround, ground);
         Origin.init(origin);
         nil.init();
         _true.init();
@@ -218,10 +219,11 @@ public class Runtime {
         JavaGround.init(javaGround);
         javaWrapper.init();
 
-        ground.mimicsWithoutCheck(defaultBehavior);
-        ground.mimicsWithoutCheck(base);
+        iokeGround.mimicsWithoutCheck(defaultBehavior);
+        iokeGround.mimicsWithoutCheck(base);
+        ground.mimicsWithoutCheck(iokeGround);
+        ground.mimicsWithoutCheck(javaGround);
         origin.mimicsWithoutCheck(ground);
-        origin.mimicsWithoutCheck(javaGround);
 
         mixins.mimicsWithoutCheck(defaultBehavior);
 
