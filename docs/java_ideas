@@ -23,15 +23,6 @@ private:something=
 protected and public methods should probably just be open, to make it easy.
 
 
-
-
-
-How to refer to full class names?
-   Foo
-   java:util:HashMap
-   xml:com:sun:blarg:Foo$Bar$Quux  ;; inner classes
-   xml:com:sun:blarg:Foo Bar Quux  ;; inner classes
-
 To figure out:
  - args by name functionality?
  - how to send code to Java methods?
