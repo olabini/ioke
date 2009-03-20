@@ -147,6 +147,8 @@ public class Runtime {
 
     public IokeObject testMessage = newMessage("test");
 
+    public IokeObject isApplicableMessage = newMessage("applicable?");
+
     // NOT TO BE EXPOSED TO Ioke - used for internal usage only
     public final NullObject nul = new NullObject(this);
 
