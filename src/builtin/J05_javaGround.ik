@@ -46,6 +46,11 @@ JavaGround pass = macro(
     val)
 )
 
+JavaGround cell(:pass) applicable? = method(msg,
+  bind(rescue(Condition, fn(c, false)),
+    primitiveJavaClass!(msg name asText replaceAll(":","."))
+    true))
+
 JavaGround import = method(+rest, +:krest,
   case(rest length,
     0, nil,
