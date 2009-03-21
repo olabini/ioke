@@ -27,6 +27,24 @@ describe("pass",
     x pass = macro([call message name, call evaluatedArguments])
     x bar(42,4+4) should == [:bar, [42, 8]]
   )
+
+  it("should honor an applicable? method if one exists on the pass object",
+    x = Origin mimic
+    val = []
+    x pass = fnx(val << :passed)
+    x cell(:pass) applicable? = fnx(msg, val << [:applicable, msg name]. true)
+    x blarg
+    val should == [[:applicable, :blarg], :passed]
+  )
+
+  it("should raise a regular cellnotfound if the applicable method returns false",
+    x = Origin mimic
+    val = []
+    x pass = fnx(val << :passed)
+    x cell(:pass) applicable? = fnx(msg, val << [:applicable, msg name]. false)
+    fn(x blarg) should signal(Condition Error NoSuchCell)
+    val should == [[:applicable, :blarg]]
+  )
 )
 
 ; describe("activate", 
