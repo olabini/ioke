@@ -839,6 +839,9 @@ public class Message extends IokeData {
         Message m = new Message(obj.runtime, name);
         m.arguments = new ArrayList<Object>(((Message)IokeObject.data(obj)).arguments);
         m.type = ((Message)IokeObject.data(obj)).type;
+        m.file = ((Message)IokeObject.data(obj)).file;
+        m.line = ((Message)IokeObject.data(obj)).line;
+        m.pos = ((Message)IokeObject.data(obj)).pos;
         return m;
     }
 
