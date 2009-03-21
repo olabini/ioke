@@ -40,11 +40,16 @@ JavaGround pass = macro(
   ; JavaGround really doesn't have access to much, so we scope every call to anything inside "call"
   ; this means scoping even calls to internal:createText
   ; hopefully these things shouldn't be necessary in many places.
-  call bind(call rescue(call Condition, call fn(c, call message sendTo(call Ground))),
+  call bind(call rescue(call Condition, call fn(c, call message sendTo(call IokeGround))),
     val = primitiveJavaClass!(call message name asText replaceAll(call ":", call "."))
     self cell(call message name) = val
     val)
 )
+
+JavaGround cell(:pass) applicable? = method(msg,
+  bind(rescue(Condition, fn(c, false)),
+    primitiveJavaClass!(msg name asText replaceAll(":","."))
+    true))
 
 JavaGround import = method(+rest, +:krest,
   case(rest length,

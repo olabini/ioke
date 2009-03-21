@@ -479,8 +479,9 @@ public class IokeObject implements TypeChecker {
         final String name = message.getName();
         final String outerName = name;
         Object cell = clz.findCell(message, ctx, name);
+        Object passed = null;
 
-        while(cell == runtime.nul && ((cell = clz.findCell(message, ctx, "pass")) == runtime.nul)) {
+        while(cell == runtime.nul && (((cell = passed = clz.findCell(message, ctx, "pass")) == runtime.nul) ||  !clz.isApplicable(passed, message, ctx))) {
             final IokeObject condition = as(IokeObject.getCellChain(runtime.condition, 
                                                                     message, 
                                                                     ctx, 
@@ -539,11 +540,19 @@ public class IokeObject implements TypeChecker {
         return perform(ctx, message, message.getName());
     }
 
+    private boolean isApplicable(Object pass, IokeObject message, IokeObject ctx) throws ControlFlow {
+        if(pass != null && pass != runtime.nul && IokeObject.as(pass, ctx).findCell(message, ctx, "applicable?") != runtime.nul) {
+            return isTrue(runtime.isApplicableMessage.sendTo(ctx, pass, runtime.createMessage(Message.wrap(message))));
+        }
+        return true;
+    }
+
     public Object perform(IokeObject ctx, IokeObject message, final String name) throws ControlFlow {
         final String outerName = name;
         Object cell = this.findCell(message, ctx, name);
+        Object passed = null;
 
-        while(cell == runtime.nul && ((cell = this.findCell(message, ctx, "pass")) == runtime.nul)) {
+        while(cell == runtime.nul && (((cell = passed = this.findCell(message, ctx, "pass")) == runtime.nul) || !isApplicable(passed, message, ctx))) {
             final IokeObject condition = as(IokeObject.getCellChain(runtime.condition, 
                                                                     message, 
                                                                     ctx, 
