@@ -474,4 +474,28 @@ describe(Message,
       Message should checkReceiverTypeOn(:walk)
     )
   )
+  
+  describe("filename",
+    it("should be preserved on mimic",
+      m1 = '(foo)
+      m2 = m1 mimic
+      m2 filename should == m1 filename
+    )
+  )
+  
+  describe("line",
+    it("should be preserved on mimic",
+      m1 = '(foo)
+      m2 = m1 mimic
+      m2 line should == m1 line
+    )
+  )
+  
+  describe("position",
+    it("should be preserved on mimic",
+      m1 = '(foo)
+      m2 = m1 mimic
+      m2 position should == m1 position
+    )
+  )	   
 )
