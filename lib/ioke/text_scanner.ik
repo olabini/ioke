@@ -71,7 +71,7 @@ TextScanner = Origin mimic do(
     )
   )
 
-  internal:scan = method("this is starting to get really really nasty...",
+  internal:scan = method("Internal scanning method used as the core of the external methods",
     pattern, matchFromPointer: true, advancePointer: true, returnPositionToMatch: false,
     
     if(matchFromPointer, pattern =  internal:alterPatternToMatchFromHead(pattern))
@@ -80,23 +80,30 @@ TextScanner = Origin mimic do(
 
     if(internal:matchData,
 
-      fullMatch = rest[0...(internal:matchData end)]
+      fullMatch           = rest[0...(internal:matchData end)]
       fromPositionToMatch = rest[0...(internal:matchData start)]
-      if(advancePointer, @position += internal:matchData end)
-      if(returnPositionToMatch,
-        if(fromPositionToMatch == "", @match = nil. return nil, @match = fromPositionToMatch. return fromPositionToMatch),
-        if(fullMatch == "", @match = nil. return nil, @match = fullMatch. return fullMatch)
-      )
 
-      @match = nil. return nil)
+      if(advancePointer, @position += internal:matchData end)
+
+      if(returnPositionToMatch,
+        unless(fromPositionToMatch == "", 
+          @match = fromPositionToMatch
+          return fromPositionToMatch),
+
+        unless(fullMatch == "", 
+          @match = fullMatch
+          return fullMatch)))
+
+      @match = nil
+      return nil
   )
 
-  internal:alterPatternToMatchFromHead = method("Takes one parameter, a regexp pattern, which it converts to match against the start of some text only. This is equivalent to starting the pattern with ^",
+  internal:alterPatternToMatchFromHead = method("Takes one parameter, a regexp pattern, which it converts to match against the start of some text only. This is equivalent to starting the pattern with \\A",
     pattern,
     #/\A#{pattern}/
   )
 
-  internal:alterPatternToAlsoMatchLineEnd = method("Takes one parameter, a regexp pattern, which it converts to match against the end of the text in addition to the match itself",
+  internal:alterPatternToAlsoMatchLineEnd = method("Takes one parameter, a regexp pattern, which it converts to match against the end of the text in addition to the match itself. This is equivalent to additionally matching the pattern with \\Z",
     pattern,
     #/#{pattern}|\Z/
   )
