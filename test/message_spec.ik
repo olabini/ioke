@@ -331,6 +331,31 @@ describe(Message,
     )
   )
 
+  describe("arguments=",
+    it("should clear the arguments list if given nil", 
+      msg = '(foo(x))
+      msg arguments = nil
+      msg code should == "foo"
+    )
+
+    it("should set the only argument unless given a list", 
+      msg = '(foo(x,y))
+      msg arguments = 'bar
+      msg code should == "foo(bar)"
+    )
+
+    it("should change the arguments list to the given list", 
+      msg = '(foo(x,y))
+      other = '(me(i,j))
+      msg arguments = other arguments
+      msg code should == "foo(i, j)"
+    )
+    
+    it("should validate type of receiver",
+      Message should checkReceiverTypeOn(:"arguments=", 'foo)
+    )
+  )
+
   describe("->",
     it("should change the next pointer of the receiver to the argument",
       one = 'foo
@@ -474,4 +499,28 @@ describe(Message,
       Message should checkReceiverTypeOn(:walk)
     )
   )
+  
+  describe("filename",
+    it("should be preserved on mimic",
+      m1 = '(foo)
+      m2 = m1 mimic
+      m2 filename should == m1 filename
+    )
+  )
+  
+  describe("line",
+    it("should be preserved on mimic",
+      m1 = '(foo)
+      m2 = m1 mimic
+      m2 line should == m1 line
+    )
+  )
+  
+  describe("position",
+    it("should be preserved on mimic",
+      m1 = '(foo)
+      m2 = m1 mimic
+      m2 position should == m1 position
+    )
+  )	   
 )

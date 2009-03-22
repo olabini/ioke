@@ -584,6 +584,35 @@ public class Message extends IokeData {
                 }
             }));
 
+
+        message.registerMethod(message.runtime.newJavaMethod("sets the arguments for this message. if given nil the arguments list will be creared, otherwise the list given as arguments will be used. it then returns the receiving message.", new TypeCheckingJavaMethod("arguments=") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
+                    .builder()
+                    .receiverMustMimic(message)
+                    .withRequiredPositional("newArguments")
+                    .getArguments();
+
+                @Override
+                public TypeCheckingArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    Object arg = args.get(0);
+                    IokeObject.as(on, method).getArguments().clear();
+                    if(arg == context.runtime.nil) {
+                        // no arguments for this message
+                    } else if (IokeObject.data(arg) instanceof IokeList) {
+                        List<Object> elements = IokeList.getList(arg);
+                        IokeObject.as(on, method).getArguments().addAll(elements);
+                    } else {
+                        IokeObject.as(on, method).getArguments().add(0, arg);
+                    }
+                    return on;
+                }
+            }));
+
         message.registerMethod(message.runtime.newJavaMethod("Takes one or more evaluated arguments and sends this message chain to where the first argument is ground, and if there are more arguments, the second is the receiver, and the rest will be the arguments", new JavaMethod("evaluateOn") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
@@ -839,6 +868,9 @@ public class Message extends IokeData {
         Message m = new Message(obj.runtime, name);
         m.arguments = new ArrayList<Object>(((Message)IokeObject.data(obj)).arguments);
         m.type = ((Message)IokeObject.data(obj)).type;
+        m.file = ((Message)IokeObject.data(obj)).file;
+        m.line = ((Message)IokeObject.data(obj)).line;
+        m.pos = ((Message)IokeObject.data(obj)).pos;
         return m;
     }
 
