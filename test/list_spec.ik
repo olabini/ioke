@@ -574,14 +574,6 @@ describe(List,
     )
   )
 
-;   describe("remove!", 
-;     it("should have tests")
-;   )
-
-;   describe("removeAt!", 
-;     it("should have tests")
-;   )
-
 ;   describe("removeIf!", 
 ;     it("should have tests")
 ;   )
