@@ -110,6 +110,22 @@ public class DefaultArgumentsDefinition {
         return arguments;
     }
 
+    public int getMax() {
+        return max;
+    }
+
+    public int getMin() {
+        return min;
+    }
+
+    public String getRestName() {
+        return rest;
+    }
+
+    public String getKrestName() {
+        return krest;
+    }
+
     public String getCode() {
         return getCode(true);
     }
@@ -433,6 +449,10 @@ public class DefaultArgumentsDefinition {
         }
     }
 
+    public boolean isEmpty() {
+        return min == 0 && max == 0 && arguments.isEmpty() && keywords.isEmpty() && rest == null && krest == null;
+    }
+
     public static DefaultArgumentsDefinition empty() {
         return new DefaultArgumentsDefinition(new ArrayList<Argument>(), new ArrayList<String>(), null, null, 0, 0, false);
     }
@@ -448,7 +468,7 @@ public class DefaultArgumentsDefinition {
         String rest = null;
         String krest = null;
 
-        for(Object obj : args.subList(start, args.size()-1)) {
+        for(Object obj : args.subList(start, len)) {
             Message m = (Message)IokeObject.data(obj);
             String mname = m.getName(null);
             if(!"+:".equals(mname) && m.isKeyword()) {

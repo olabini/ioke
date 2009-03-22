@@ -32,6 +32,7 @@ public class Ground {
         iokeGround.registerCell("nil", runtime.nil);
         iokeGround.registerCell("true", runtime._true);
         iokeGround.registerCell("false", runtime._false);
+        iokeGround.registerCell("Arity", runtime.arity);
         iokeGround.registerCell("Method", runtime.method);
         iokeGround.registerCell("DefaultMethod", runtime.defaultMethod);
         iokeGround.registerCell("JavaMethod", runtime.javaMethod);
