@@ -93,8 +93,7 @@ TextScanner = Origin mimic do(
 
   internal:alterPatternToMatchFromHead = method("Takes one parameter, a regexp pattern, which it converts to match against the start of some text only. This is equivalent to starting the pattern with ^",
     pattern,
-    Regexp from("\\A#{pattern inspect[2...-1]}")
-    ; This is what I would like if it didn't blow up: #/\A#{pattern}/
+    #/\A#{pattern}/
   )
 
   internal:alterPatternToAlsoMatchLineEnd = method("Takes one parameter, a regexp pattern, which it converts to match against the end of the text in addition to the match itself",
