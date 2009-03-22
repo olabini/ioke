@@ -64,6 +64,7 @@ public class Runtime {
     public IokeObject defaultMacro = new IokeObject(this, "DefaultMacro is the instance all non-lexical macros in the system are derived from.", new DefaultMacro((String)null));
     public IokeObject lexicalMacro = new IokeObject(this, "LexicalMacro is the instance all lexical macros in the system are derived from.", new LexicalMacro((String)null));
     public IokeObject defaultSyntax = new IokeObject(this, "DefaultSyntax is the instance all syntactical macros in the system are derived from.", new DefaultSyntax((String)null));
+    public IokeObject arity = new IokeObject(this, "Arity provides information about the arguments needed to activate a value.", new Arity((DefaultArgumentsDefinition) null));
     public IokeObject mixins = new IokeObject(this, "Mixins is the name space for most mixins in the system. DefaultBehavior is the notable exception.");
     public IokeObject message = new IokeObject(this, "A Message is the basic code unit in Ioke.", new Message(this, ""));
     public IokeObject restart = new IokeObject(this, "A Restart is the actual object that contains restart information.");
@@ -268,6 +269,7 @@ public class Runtime {
         defaultMacro.init();
         lexicalMacro.init();
         defaultSyntax.init();
+        arity.init();
         call.mimicsWithoutCheck(origin);
 
         method.mimicsWithoutCheck(origin);
@@ -276,7 +278,7 @@ public class Runtime {
         defaultMacro.mimicsWithoutCheck(origin);
         lexicalMacro.mimicsWithoutCheck(origin);
         defaultSyntax.mimicsWithoutCheck(origin);
-
+        arity.mimicsWithoutCheck(origin);
         lexicalBlock.mimicsWithoutCheck(origin);
 
         Restart.init(restart);
@@ -324,6 +326,7 @@ public class Runtime {
 
             evaluateString("use(\"builtin/G05_aspects\")", message, ground);
             evaluateString("use(\"builtin/G10_origin\")", message, ground);
+            evaluateString("use(\"builtin/G10_arity\")", message, ground);
 
             evaluateString("use(\"builtin/J05_javaGround\")", message, ground);
         } catch(ControlFlow cf) {
