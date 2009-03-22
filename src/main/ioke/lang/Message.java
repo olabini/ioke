@@ -585,7 +585,7 @@ public class Message extends IokeData {
             }));
 
 
-        message.registerMethod(message.runtime.newJavaMethod("sets the arguments for this message. if given nil the arguments list will be creared, otherwise the list given as arguments will be used. it then returns the receiving message.", new TypeCheckingJavaMethod("<=") {
+        message.registerMethod(message.runtime.newJavaMethod("sets the arguments for this message. if given nil the arguments list will be creared, otherwise the list given as arguments will be used. it then returns the receiving message.", new TypeCheckingJavaMethod("arguments=") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(message)
@@ -612,8 +612,6 @@ public class Message extends IokeData {
                     return on;
                 }
             }));
-        message.aliasMethod("<=", "arguments=", null, null);
-
 
         message.registerMethod(message.runtime.newJavaMethod("Takes one or more evaluated arguments and sends this message chain to where the first argument is ground, and if there are more arguments, the second is the receiver, and the rest will be the arguments", new JavaMethod("evaluateOn") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
