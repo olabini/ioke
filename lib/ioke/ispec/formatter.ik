@@ -11,16 +11,16 @@ ISpec do(
       )
 
       dumpFailure = method(counter, failure, 
-        "" println
-        "#{counter})" println
-        red("#{failure header}") println
-        red("#{failure condition report}") println
-        "  #{failure condition describeContext stackTraceAsText}" println)
+        println("")
+        println("#{counter})")
+        println(red("#{failure header}"))
+        println(red("#{failure condition report}"))
+        println("  #{failure condition describeContext stackTraceAsText}"))
 
       dumpSummary = method(duration, exampleCount, failureCount, pendingCount,
-        "" println
-        "Finished in #{duration} seconds" println
-        "" println
+        println("")
+        println("Finished in #{duration} seconds")
+        println("")
 
         summary = "#{exampleCount} example#{if(exampleCount == 1, "", "s")}, " 
         summary += "#{failureCount} failure#{if(failureCount == 1, "", "s")}" 
@@ -29,16 +29,16 @@ ISpec do(
         
         if(failureCount == 0,
           if(pendingCount > 0,
-            yellow(summary) println,
-            green(summary) println),
-          red(summary) println))
+            println(yellow(summary)),
+            println(green(summary))),
+          println(red(summary))))
       
       dumpPending = method(
         unless(pendingExamples empty?,
-          "" println
-          "Pending:" println
+          println("")
+          println("Pending:")
           pendingExamples each(pe,
-            "#{pe[0]} (#{pe[1]})" println)))
+            println("#{pe[0]} (#{pe[1]})"))))
 
       colour = method(
         "outputs text with colour if possible",
@@ -58,38 +58,38 @@ ISpec do(
     SpecDocFormatter = ISpec Formatter TextFormatter mimic do(
       addExampleGroup = method(exampleGroup, 
         super(exampleGroup)
-        "" println
-        exampleGroup fullName println)
+        println("")
+        println(exampleGroup fullName))
 
       exampleFailed = method(example, counter, failure,
-        red("- #{example description} (FAILED - #{counter})") println
+        println(red("- #{example description} (FAILED - #{counter})"))
       )
 
       examplePassed = method(example,
-        green("- #{example description}") println
+        println(green("- #{example description}"))
       )
 
       examplePending = method(example, message,
         super(example, message)
-        yellow("- #{example description} (PENDING: #{message})") println
+        println(yellow("- #{example description} (PENDING: #{message})"))
       )
     )
 
     ProgressBarFormatter = ISpec Formatter TextFormatter mimic do(
       exampleFailed = method(example, counter, failure,
-        red("F") print
+        print(red("F"))
       )
 
       examplePassed = method(example, 
-        green(".") print
+        print(green("."))
       )
 
       examplePending = method(example, message, 
         super(example, message)
-        yellow("P") print
+        print(yellow("P"))
       )
 
-      startDump      = method("" println)
+      startDump      = method(println(""))
       pass           = method(+rest, +:krest, nil) ;ignore other methods
     )
 
@@ -99,10 +99,13 @@ ISpec do(
     exampleFailed   = method(example, counter, failure, nil)
     examplePassed   = method(example, nil)
     examplePending  = method(example, message, nil)
-    startDump       = method()
     dumpFailure     = method(counter, failure, nil)
     dumpSummary     = method(duration, exampleCount, failureCount, pendingCount, nil)
     dumpPending     = method(nil)
-    close           = method(nil)
+    startDump       = method(nil)
+    output          = System out mimic do(close = nil)
+    close           = method(output close)
+    println         = method(a, output println(a))
+    print           = method(a, output print(a))
   )
 )

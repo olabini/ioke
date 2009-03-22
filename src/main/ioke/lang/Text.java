@@ -102,7 +102,7 @@ public class Text extends IokeData {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(runtime.text)
-                    .withRequiredPositional("splitAround")
+                    .withOptionalPositional("splitAround", "")
                     .getArguments();
 
                 @Override
@@ -114,15 +114,19 @@ public class Text extends IokeData {
                 public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
                     String real = Text.getText(on);
-                    Object arg = args.get(0);
-
                     List<Object> r = new ArrayList<Object>();
                     Pattern p = null;
-                    if(IokeObject.data(arg) instanceof Regexp) {
-                        p = Regexp.getRegexp(arg);
+
+                    if(args.size() == 0) {
+                        p = new Pattern("\\s");
                     } else {
-                        String around = Text.getText(arg);
-                        p = new Pattern(Pattern.quote(around));
+                        Object arg = args.get(0);
+                        if(IokeObject.data(arg) instanceof Regexp) {
+                            p = Regexp.getRegexp(arg);
+                        } else {
+                            String around = Text.getText(arg);
+                            p = new Pattern(Pattern.quote(around));
+                        }
                     }
 
                     RETokenizer tok = new RETokenizer(p, real);

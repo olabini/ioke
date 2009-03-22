@@ -41,9 +41,11 @@ ISpec do(
 
     it = macro(
       "takes one text argument, and one optional code argument. if the code argument is left out, this spec will be marked as pending",
+      shouldText = call argAt(0)
       if(call arguments length == 1,
-        self specs << [:pending, call argAt(0)],
-        self specs << [:test, call argAt(0), call arguments second])
+          self specs << [:pending, shouldText],
+          self specs << [:test, shouldText, call arguments second])
+      ISpec ispec_options exampleAdded(self)
     )
   )
 )
