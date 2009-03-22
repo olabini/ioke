@@ -94,8 +94,8 @@ TextScanner = Origin mimic do(
           @match = fullMatch
           return fullMatch)))
 
-      @match = nil
-      return nil
+    @match = nil
+    return nil
   )
 
   internal:alterPatternToMatchFromHead = method("Takes one parameter, a regexp pattern, which it converts to match against the start of some text only. This is equivalent to starting the pattern with \\A",
