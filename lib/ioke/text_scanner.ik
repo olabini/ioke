@@ -27,7 +27,7 @@ TextScanner = Origin mimic do(
 
   positionScan = method("Takes one parameter, a regular expression, and will check for a match starting at the current position pointer. If a match exists it will advance the position pointer to the next match and return the pointer position",
     pattern,
-    if(internal:scan(pattern), return position, return nil)
+    if(internal:scan(pattern), position, nil)
   )
 
   search = method("Takes one parameter, a regular expression, and will check for a match anywhere after the current position pointer. If match exists it will advance the position pointer to the next match and return that match",
@@ -37,7 +37,7 @@ TextScanner = Origin mimic do(
 
   positionSearch = method("Takes one parameter, a regular expression, and will check for a match anywhere after the current position pointer. If match exists it will advance the position pointer to the next match and return the pointer position",
     pattern,
-    if(internal:scan(pattern, matchFromPointer: false), return position, return nil)
+    if(internal:scan(pattern, matchFromPointer: false), position, nil)
   )
 
   rest = method("Returns the remainder of the text that is yet to be scanned: all the text after the pointer position",
@@ -62,7 +62,7 @@ TextScanner = Origin mimic do(
 
   getChar = method("Return the character at the pointer position, and advance the pointer. If the pointer is at the end of the text, return nil",
     if(textEnd?,
-      return nil,
+      nil,
 
       char = rest[0..0]
       @position += 1
@@ -95,7 +95,7 @@ TextScanner = Origin mimic do(
           return fullMatch)))
 
     @match = nil
-    return nil
+    nil
   )
 
   internal:alterPatternToMatchFromHead = method("Takes one parameter, a regexp pattern, which it converts to match against the start of some text only. This is equivalent to starting the pattern with \\A",
