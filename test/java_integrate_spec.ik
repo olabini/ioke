@@ -292,12 +292,12 @@ describe("JavaGround",
     )
   )
 
-  describe("coercing lexical blocks to interfaces",
-    it("should work for a simple one-method interface returning boolean",
-      called = []
-      ioke:lang:test:SimpleUser useBooleanInterface(fn(called << :once. false)) should == false 
-      ioke:lang:test:SimpleUser useBooleanInterface(fn(called << :twice. true)) should == true
-      called should == [:once, :twice]
-    )
-  )
+;   describe("coercing lexical blocks to interfaces",
+;     it("should work for a simple one-method interface returning boolean",
+;       called = []
+;       ioke:lang:test:SimpleUser useBooleanInterface(fn(called << :once. false)) should == false 
+;       ioke:lang:test:SimpleUser useBooleanInterface(fn(called << :twice. true)) should == true
+;       called should == [:once, :twice]
+;     )
+;   )
 )
