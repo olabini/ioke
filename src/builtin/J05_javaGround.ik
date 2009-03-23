@@ -68,3 +68,12 @@ JavaGround import = method(+rest, +:krest,
     unless(self cell?(im key),
       self cell(im key) = im value)))
 
+
+cell(:LexicalBlock) java:coerceCode = method(javaType, abstractNames,
+  proxy = integrate(javaType) mimic
+  outerSelf = self
+  abstractNames each(name,
+    proxy cell(name) = fnx(+rest, +:krest, cell(:outerSelf) call(*rest, *krest))
+  )
+  proxy new
+)
