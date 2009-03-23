@@ -381,7 +381,7 @@ describe(IOpt Action ValueActivation,
   it("should obtain the argument names from the valueToActivate",
     f = fn(a, b "yes", +c, d:, f: 22, +:g, nil)
     a = IOpt Action ValueActivation mimic(cell(:f)) arity
-    a names should == [:a, :b]
+    a positionals should == [:a, :b]
     a rest should == :c
     a keywords should == [:d, :f]
     a krest should == :g)
@@ -417,7 +417,7 @@ describe(IOpt Action CellActivation,
     a = IOpt Action CellActivation mimic(:foo)
     a receiver = o
     a = a arity
-    a names should == [:bar]
+    a positionals should == [:bar]
     a keywords should be empty
     a rest should be nil
     a krest should be nil)
@@ -442,7 +442,7 @@ describe(IOpt Action CellAssignment,
     o = Origin mimic
     a = IOpt Action CellAssignment mimic(:foo)
     a = a arity
-    a names should == [:foo]
+    a positionals should == [:foo]
     a keywords should be empty
     a rest should be nil
     a krest should be nil)
@@ -464,7 +464,7 @@ describe(IOpt Action MessageEvaluation,
 
   it("should have an empty arity by default",
     a = IOpt Action MessageEvaluation mimic('foo) arity
-    a names should be empty
+    a positionals should be empty
     a keywords should be empty
     a rest should be nil
     a krest should be nil)
@@ -486,7 +486,7 @@ describe(IOpt Action,
       a = IOpt Action mimic
       a argumentsCode = nil
       i = a arity
-      i names should be empty
+      i positionals should be empty
       i keywords should be empty
       i rest should be nil
       i krest should be nil)
@@ -495,7 +495,7 @@ describe(IOpt Action,
       a = IOpt Action mimic
       a argumentsCode = "a, b 1, +c, d:, e: 33, +:f"
       i = a arity
-      i names should == [:a, :b]
+      i positionals should == [:a, :b]
       i keywords should == [:d, :e]
       i rest should == :c
       i krest should == :f)
@@ -536,7 +536,17 @@ describe(IOpt Action,
       c positional should == ["jojo", "--notanoption"]
       c keywords should be empty)
 
-    
+    it("should take only positional arguments if no keyword args given",
+      o = IOpt mimic
+      a = IOpt Action mimic do(options << "-f")
+      a iopt = o
+      a argumentsCode = "a,b:"
+      c = a consume(["-f", "jojo", "hey", "you"])
+      c option should == "-f"
+      c remnant should == ["hey", "you"]
+      c positional should == ["jojo"]
+      c keywords should be empty)
+
     it("should take only required arguments before next option",
       o = IOpt mimic
       a = IOpt Action mimic do(options << "-f")

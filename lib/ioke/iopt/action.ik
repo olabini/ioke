@@ -104,9 +104,10 @@ IOpt Action do(
 
     remnant = argv rest
     currentKey = nil
-    args = list()
-    klist = list()
-    kmap = dict()
+    args = list
+    klist = list
+    kmap = dict
+    arity = @arity
 
     coerced = fn(txt,
       if(coerce == false || @coerce == false, txt,
@@ -119,28 +120,27 @@ IOpt Action do(
 
         ;; if we need a value for a keyword argument
         currentKey, true,
-        
-        !(arity names empty? || arity keywords empty?),
-        (klist length + args length) < (arity keywords length + arity names length),
 
-        arity names empty? && arity keywords empty?,
-        arity krest || arity rest,
-        
-        arity names empty?,
-        arity krest || klist length < arity keywords length,
-        
-        arity keywords empty?, 
-        arity rest || args length < arity names length,
-        
-        false))
+        ;; if takes rest positional or rest keywords
+        arity rest || arity krest, true,
 
-    if(handler short && handler immediate && !arity positional?,
+        ;; keyword argument
+        iopt iopt:key(arg),
+        klist length < arity keywords length, 
+        
+        ;; positional argument
+        args length < arity positionals length
+      )
+    )
+
+    if(handler short && handler immediate && arity max abs zero?,
       opt = iopt iopt:get(handler short + handler immediate)
       if(opt && opt action && opt short,
         remnant = [handler short + handler immediate] + remnant
         handler immediate = nil))
       
-    if(handler immediate && arity positional?, args << coerced(handler immediate))
+    if(handler immediate && arity max abs > 0,
+      args << coerced(handler immediate))
 
     idx = remnant findIndex(arg,
       cond(
@@ -180,46 +180,6 @@ IOpt Action do(
       send(messageName, *(args positional), *(args keywords))))
 
   argumentsCode = nil
-  arity = method(@arity = Arity from(argumentsCode))
+  arity = method(Arity fromArgumentsCode(argumentsCode))
 
-  Arity = Origin mimic do(
-
-    emptyCode? = method(argumentsCode,
-      argumentsCode nil? || argumentsCode == "..." || argumentsCode empty?)
-
-    from = method(activableOrCode,
-      arity = mimic
-      case(cell(:activableOrCode) kind,
-        "Text", argumentsCode = activableOrCode,
-        "nil", argumentsCode = nil,
-        argumentsCode = cell(:activableOrCode) argumentsCode)
-      unless(emptyCode?(argumentsCode),
-        dummy = Message fromText("fn(#{argumentsCode}, nil)")
-        dummy = dummy evaluateOn(dummy)
-        arity names = dummy argumentNames
-        arity keywords = dummy keywords
-        arity rest = if(match = #/\\+([^: ,]+)/ match(argumentsCode), :(match[1]))
-        arity krest = if(match = #/\\+:([^ ,]+)/ match(argumentsCode), :(match[1])))
-      arity)
-
-    initialize = method(
-      @names = list()
-      @keywords = list()
-      @rest = nil
-      @krest = nil)
-
-    empty? = method(
-      names empty? && keywords empty? && rest nil? && krest nil?)
-
-    keywords? = method(
-      !(keywords empty? && krest nil?))
-
-    positional? = method(
-      !(names empty? && rest nil?))
-    
-    takeKey? = method(key,
-      keywords include?(key) || !krest nil?)
-    
-  ); Arity
-  
 ); IOpt Action
