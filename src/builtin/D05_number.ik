@@ -4,6 +4,11 @@ Number negation = method(
 
   0 - @)
 
+Number abs = method(
+  "Returns the absolute value of this number",
+  if(self < 0, negation, self)
+)
+
 Number          do(=== = generateMatchMethod(==))
 Number Real     do(=== = generateMatchMethod(==))
 Number Rational do(=== = generateMatchMethod(==))
