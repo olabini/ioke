@@ -46,6 +46,23 @@ describe(Number,
   it("should mimic Comparing",
     Number should mimic(Mixins Comparing))
 
+  describe("zero?",
+    it("should return true for int zero",
+      0 should be zero)
+    
+    it("should return true for real zero",
+      0.0 should be zero)
+
+    it("should return false for a negative value",
+      -1 should not be zero)
+
+    it("should return false for a real > 0.0",
+      0.1 should not be zero)
+
+    it("should return false for an int > 0",
+      1 should not be zero)
+  )
+
   describe("negation",
     it("should return zero for zero",
       0 negation should == 0)

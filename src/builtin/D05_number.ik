@@ -1,3 +1,7 @@
+Number zero? = method(
+  "Returns true if this number is zero.",
+  @ == 0
+)
 
 Number negation = method(
   "Returns the negation of this number",
