@@ -12,6 +12,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Member;
+import java.lang.reflect.Modifier;
 
 import ioke.lang.exceptions.ControlFlow;
 
@@ -210,10 +211,17 @@ public class JavaArgumentsDefinition {
         public final Class type;
         public final Class altType;
         public final Object obj;
+        public final boolean associatedCode;
+
         public JavaArgumentDefinition(Class type, Class altType, Object obj) {
+            this(type, altType, obj, false);
+        }
+
+        public JavaArgumentDefinition(Class type, Class altType, Object obj, boolean associatedCode) {
             this.type = type;
             this.altType = altType;
             this.obj = obj;
+            this.associatedCode = associatedCode;
         }
 
         @Override
@@ -311,7 +319,9 @@ public class JavaArgumentsDefinition {
                 resultArguments.add(new JavaArgumentDefinition(into, alt, result));
                 argCount++;
             } else {
-                resultArguments.add(new JavaArgumentDefinition(null, null, Message.getEvaluatedArgument(o, context)));
+                Object val = Message.getEvaluatedArgument(o, context);
+                JavaArgumentDefinition jarg = new JavaArgumentDefinition(null, null, val, val instanceof IokeObject && IokeObject.data(val) instanceof AssociatedCode);
+                resultArguments.add(jarg);
                 argCount++;
             }
         }
@@ -333,6 +343,7 @@ public class JavaArgumentsDefinition {
                     boolean isIokeObject = obj instanceof IokeObject;
                     boolean isWrapper = isIokeObject && IokeObject.data(obj) instanceof JavaWrapper;
                     boolean isExplicitCast = jad.type != null;
+                    boolean clzIsAbstract = Modifier.isAbstract(clz.getModifiers()) || clz.isInterface();
                     if(isExplicitCast && !(clz == jad.type || clz == jad.altType)) {
                         args.clear();
                         continue nextMethod;
@@ -473,6 +484,17 @@ public class JavaArgumentsDefinition {
                             args.add(obj);
                         } else if(isWrapper) {
                             args.add(JavaWrapper.getObject(obj));
+                        } else if(jad.associatedCode && clzIsAbstract) {
+                            try {
+                                Object obj2 = runtime.coerceIntoJavaCodeMessage.sendTo(context, obj, runtime.registry.wrap(clz), findAbstractMethodNames(clz, context));
+                                if(obj2 instanceof IokeObject && IokeObject.data(obj2) instanceof JavaWrapper) {
+                                    obj2 = JavaWrapper.getObject(obj2);
+                                }
+                                args.add(obj2);
+                            } catch(ControlFlow e) {
+                                args.clear();
+                                continue nextMethod;
+                            }
                         } else {
                             args.clear();
                             continue nextMethod;
@@ -494,5 +516,16 @@ public class JavaArgumentsDefinition {
         }
 
         return members[i];
+    }
+
+    private IokeObject findAbstractMethodNames(Class<?> type, IokeObject context) throws ControlFlow {
+        List<Object> names = new ArrayList<Object>();
+        for(java.lang.reflect.Method m : type.getMethods()) {
+            if(Modifier.isAbstract(m.getModifiers())) {
+                names.add(context.runtime.newText(m.getName()));
+            }
+        }
+
+        return context.runtime.newList(names);
     }
 }// JavaArgumentsDefinition
