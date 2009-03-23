@@ -63,6 +63,20 @@ describe(Number,
       353654645676451123345674 negation should == -353654645676451123345674)
   )
 
+  describe("abs",
+    it("should return zero for zero",
+      0 abs should == 0)
+    
+    it("should return the negation for negative number",
+      -1 abs should == 1)
+
+    it("should return the receiver for positive number",
+      1 abs should == 1)
+
+    it("should return a large positive number for a large negative number",
+      -353654645676451123345674 abs should == 353654645676451123345674)
+  )
+
   describe("===",
     it("should check for mimicness if receiver is Number",
       Number should === Number
