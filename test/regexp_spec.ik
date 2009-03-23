@@ -485,7 +485,7 @@ describe(Regexp,
     )
 
     it("should quote metacharacters",
-      Regexp quote("+?{}[]().* ") should == "\\+\\?\\{\\}\\[\\]\\(\\)\\.\\*\\ "
+      Regexp quote("+?{}[]().* #") should == "\\+\\?\\{\\}\\[]\\(\\)\\.\\*\\ #"
     )
   )
 

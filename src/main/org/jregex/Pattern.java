@@ -455,11 +455,11 @@ public class Pattern implements Serializable,REFlags{
             for(; p < end; p++) {
                 char c = entries[p];
                 switch (c) {
-                case '[': case ']': case '{': case '}':
+                case '[': case '{': case '}':
                 case '(': case ')': case '|': case '-':
                 case '*': case '.': case '\\':
                 case '?': case '+': case '^': case '$':
-                case ' ': case '#':
+                case ' ':
                 case '\t': case '\f': case '\n': case '\r':
                     break metaFound;
                 }
@@ -473,11 +473,11 @@ public class Pattern implements Serializable,REFlags{
         for(; p < end; p++) {
             char c = entries[p];
             switch (c) {
-            case '[': case ']': case '{': case '}':
+            case '[': case '{': case '}':
             case '(': case ')': case '|': case '-':
             case '*': case '.': case '\\':
             case '?': case '+': case '^': case '$':
-            case '#': result.append('\\'); break;
+            result.append('\\'); break;
             case ' ': result.append("\\ "); continue;
             case '\t':result.append("\\t"); continue;
             case '\n':result.append("\\n"); continue;
