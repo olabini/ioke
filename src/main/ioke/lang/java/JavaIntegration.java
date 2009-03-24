@@ -306,7 +306,7 @@ public class JavaIntegration {
         }
 
         int number = 0;
-        String baseName = mainType.getName() + "$ioke$";
+        String baseName = "ioke.syn." + mainType.getName() + "$ioke$";
         String current = baseName + (number++);
 
         while(NAMES.containsKey(current)) {
