@@ -290,6 +290,10 @@ describe("JavaGround",
         it("should have tests")
       )
     )
+
+    it("should be possible to integrate something in java.*",
+      integrate(java:util:Map)
+    )
   )
 
   describe("coercing lexical blocks to interfaces",
