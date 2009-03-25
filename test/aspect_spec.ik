@@ -1607,8 +1607,8 @@ describe(DefaultBehavior,
       it("should signal a nosuchcell exception for a non-existing cell, after invoking the around advice",
         x = Origin mimic
         accesses = []
-        x around(:foo) << fn(accesses << :called. aspectCall())
-        fn(x foo) should signal(Condition Error NoSuchCell)
+        x around(:method_to_test_advice_around_non_existing_cell) << fn(accesses << :called. aspectCall())
+        fn(x method_to_test_advice_around_non_existing_cell) should signal(Condition Error NoSuchCell)
         accesses should == [:called]
       )
 
