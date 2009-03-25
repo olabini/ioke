@@ -834,7 +834,7 @@ describe(DefaultBehavior,
 
   describe("||=", 
     it("should assign a cell if it doesn't exist", 
-      x ||= 42. x should == 42
+      test_double_pipe_equals ||= 42. test_double_pipe_equals should == 42
     )
 
     it("should assign a cell if it is nil", 
