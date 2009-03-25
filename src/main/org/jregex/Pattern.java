@@ -456,7 +456,7 @@ public class Pattern implements Serializable,REFlags{
                 char c = entries[p];
                 switch (c) {
                 case '[': case '{': case '}':
-                case '(': case ')': case '|': case '-':
+                case '(': case ')': case '|':
                 case '*': case '.': case '\\':
                 case '?': case '+': case '^': case '$':
                 case ' ':
@@ -474,7 +474,7 @@ public class Pattern implements Serializable,REFlags{
             char c = entries[p];
             switch (c) {
             case '[': case '{': case '}':
-            case '(': case ')': case '|': case '-':
+            case '(': case ')': case '|':
             case '*': case '.': case '\\':
             case '?': case '+': case '^': case '$':
             result.append('\\'); break;
