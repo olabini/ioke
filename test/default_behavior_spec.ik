@@ -825,12 +825,13 @@ describe(DefaultBehavior,
 
     it("should be possible to have a number become something else",
       x = Origin mimic
-      y = 321
+      ; this number should really NOT be used in ANY other test
+      y = -324234534534145
 
       y become!(x)
 
       y should have kind("Origin")
-      y should not == 321
+      y asText should not == "-324234534534145"
     )
 
     it("should be possible to have something become a number",

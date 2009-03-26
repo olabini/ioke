@@ -14,6 +14,9 @@ describe("parsing",
 
     it("should be possible to parse a really long number",
       112142342353453453453453453475434574675674564756896765786781121213200000 should == 112142342353453453453453453475434574675674564756896765786781121213200000)
+
+    it("should return the same number for several parses",
+      1 should be same(1))
   )
 
   describe("hexadecimal numbers",
