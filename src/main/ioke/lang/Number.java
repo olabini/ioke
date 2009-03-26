@@ -26,23 +26,22 @@ public class Number extends IokeData {
     private final RatNum value;
     private final boolean kind;
 
-    public Number(String textRepresentation) {
-        if(textRepresentation.startsWith("0x") || textRepresentation.startsWith("0X")) {
-            value = IntNum.valueOf(textRepresentation.substring(2), 16);
-        } else {
-            value = IntNum.valueOf(textRepresentation);
-        }
-        kind = false;
-    }
-
-    public Number(long javaNumber) {
-        value = IntNum.make(javaNumber);
-        kind = false;
-    }
 
     public Number(RatNum value) {
         this.value = value;
         kind = false;
+    }
+
+    public static IntNum getFrom(long javaNumber) {
+        return IntNum.make(javaNumber);
+    }
+
+    public static IntNum getFrom(String textRepresentation) {
+        if(textRepresentation.startsWith("0x") || textRepresentation.startsWith("0X")) {
+            return IntNum.valueOf(textRepresentation.substring(2), 16);
+        } else {
+            return IntNum.valueOf(textRepresentation);
+        }
     }
 
     private Number() {
@@ -51,11 +50,11 @@ public class Number extends IokeData {
     }
     
     public static Number integer(String val) {
-        return new Number(val);
+        return new Number(getFrom(val));
     }
 
     public static Number integer(long val) {
-        return new Number(val);
+        return new Number(getFrom(val));
     }
 
     public static Number integer(IntNum val) {
@@ -65,6 +64,7 @@ public class Number extends IokeData {
     public static Number ratio(IntFraction val) {
         return new Number(val);
     }
+
 
     public String asJavaString() {
         return value.toString();

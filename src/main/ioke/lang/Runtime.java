@@ -56,7 +56,7 @@ public class Runtime {
     public IokeObject _false = new IokeObject(this, "false is an oddball object that always represents itself. It can not be mimicked and (alongside nil) is one of the two false values.", IokeData.False);
     public IokeObject text = new IokeObject(this, "Contains an immutable piece of text.", new Text(""));
     public IokeObject symbol = new IokeObject(this, "Represents a symbol - an object that always represents itself.", new Symbol(""));
-    public IokeObject number = new IokeObject(this, "Represents an exact number", new Number("0"));
+    public IokeObject number = new IokeObject(this, "Represents an exact number", new Number(Number.getFrom("0")));
     public IokeObject method = new IokeObject(this, "Method is the origin of all methods in the system, both default and Java..", new Method((String)null));
     public IokeObject defaultMethod = new IokeObject(this, "DefaultMethod is the instance all methods in the system are derived from.", new DefaultMethod((String)null));
     public IokeObject javaMethod = new IokeObject(this, "JavaMethod is a derivation of Method that represents a primitive implemented in Java.", new JavaMethod.WithNoArguments((String)null));
@@ -656,39 +656,37 @@ public class Runtime {
         return newMethod(null, this.javaMethod, new JavaFieldSetterJavaMethod(field));
     }
 
-    public IokeObject newNumber(String number) throws ControlFlow {
-        IokeObject obj = this.integer.allocateCopy(null, null);
-        obj.mimicsWithoutCheck(this.integer);
-        obj.setData(Number.integer(number));
-        return obj;
+    public IokeObject newNumber(String number) {
+        return newNumber(Number.getFrom(number));
     }
 
+    public IokeObject newNumber(long number) {
+        return newNumber(Number.getFrom(number));
+    }
+
+    private Map<IntNum, IokeObject> numCache = new HashMap<IntNum, IokeObject>();
+
     public IokeObject newNumber(IntNum number) {
-        IokeObject obj = this.integer.allocateCopy(null, null);
-        obj.mimicsWithoutCheck(this.integer);
-        obj.setData(Number.integer(number));
+        IokeObject obj = null;
+        obj = numCache.get(number);
+        if(obj == null) {
+            obj = this.integer.allocateCopy(null, null);
+            obj.mimicsWithoutCheck(this.integer);
+            obj.setData(Number.integer(number));
+            numCache.put(number, obj);
+        }
         return obj;
     }
 
     public IokeObject newNumber(RatNum number) {
         if(number instanceof IntNum) {
-            IokeObject obj = this.integer.allocateCopy(null, null);
-            obj.mimicsWithoutCheck(this.integer);
-            obj.setData(Number.integer((IntNum)number));
-            return obj;
+            return newNumber((IntNum)number);
         } else {
             IokeObject obj = this.ratio.allocateCopy(null, null);
             obj.mimicsWithoutCheck(this.ratio);
             obj.setData(Number.ratio((IntFraction)number));
             return obj;
         }
-    }
-
-    public IokeObject newNumber(long number) {
-        IokeObject obj = this.integer.allocateCopy(null, null);
-        obj.mimicsWithoutCheck(this.integer);
-        obj.setData(Number.integer(number));
-        return obj;
     }
 
     public IokeObject newMethod(String doc, IokeObject tp, Method impl) throws ControlFlow {
