@@ -479,9 +479,9 @@ describe(Regexp,
       it("should correctly handle escaped /",
         #/\// inspect should == "#/\\//"
       )
-;       it("should correctly handle escaped \\",
-;         #/\\/ inspect should == "#/\\\\/"
-;       )
+      it("should correctly handle escaped \\",
+        #/\\/ inspect should == "#/\\\\/"
+      )
 ;       it("should correctly handle escaped A",
 ;         #/\A/ inspect should == "#/\\A/"
 ;       )
