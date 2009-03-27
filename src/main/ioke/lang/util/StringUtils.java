@@ -11,6 +11,27 @@ public class StringUtils {
     public StringUtils() {
     }
 
+    public String escape(String s) {
+        int len = s.length();
+        StringBuilder result = new StringBuilder(s.length());
+        for(int i=0;i<len;i++) {
+            char c = s.charAt(i);
+            switch(c) {
+            case '\\':
+                result.append(c).append(c);
+                break;
+            case '"':
+                result.append('\\').append(c);
+                break;
+            default:
+                result.append(c);
+                break;
+            }
+        }
+
+        return result.toString();
+    }
+
     public String replaceEscapes(String s) {
         if(s.indexOf('\\') == -1) {
             if(ioke.lang.IokeSystem.DOSISH) {

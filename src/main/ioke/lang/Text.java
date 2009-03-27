@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Arrays;
 
 import ioke.lang.exceptions.ControlFlow;
+import ioke.lang.util.StringUtils;
 
 import org.jregex.Pattern;
 import org.jregex.RETokenizer;
@@ -773,6 +774,6 @@ public class Text extends IokeData {
 
     public String inspect(Object obj) {
         // This should obviously have more stuff later for escaping and so on.
-        return "\"" + text + "\"";
+        return "\"" + new StringUtils().escape(text) + "\"";
     }
 }// Text

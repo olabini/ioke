@@ -704,6 +704,16 @@ describe("Text",
     )
   )
 
+  describe("inspect",
+    it("should escape slashes in output correctly",
+      "\\foo" inspect should == "\"\\\\foo\""
+    )
+
+    it("should escape double quotes in output correctly",
+      "\"" inspect should == "\"\\\"\""
+    )
+  )
+
   describe("script",
     it("should determine the script for a 1-character Text",
       "a" script should be :Latin
