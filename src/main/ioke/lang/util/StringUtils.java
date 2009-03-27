@@ -23,6 +23,13 @@ public class StringUtils {
             case '"':
                 result.append('\\').append(c);
                 break;
+            case '#':
+                if((i+1 < len) && s.charAt(i+1) == '{') {
+                    result.append('\\').append(c);
+                } else {
+                    result.append(c);
+                }
+                break;
             case '\b':
                 result.append('\\').append('b');
                 break;
@@ -42,7 +49,17 @@ public class StringUtils {
                 result.append('\\').append('e');
                 break;
             default:
-                result.append(c);
+                if(c < 32) {
+                    result.append(String.format("\\%03o", Integer.valueOf(c)));
+                } else if(c > 126) {
+                    if(c > 255) {
+                        result.append(String.format("\\u%04X", Integer.valueOf(c)));
+                    } else {
+                        result.append(String.format("\\%03o", Integer.valueOf(c)));
+                    }
+                } else {
+                    result.append(c);
+                }
                 break;
             }
         }
