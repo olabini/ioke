@@ -142,7 +142,7 @@ describe("Text",
     it("should return the Text inside of quotes",
       "" notice should == "\"\""
       "foo" notice should == "\"foo\""
-      "foo\nbar" notice should == "\"foo\nbar\""
+      "foo\nbar" notice should == "\"foo\\nbar\""
     )      
   )
   
@@ -150,7 +150,7 @@ describe("Text",
     it("should return the Text inside of quotes",
       "" inspect should == "\"\""
       "foo" inspect should == "\"foo\""
-      "foo\nbar" inspect should == "\"foo\nbar\""
+      "foo\nbar" inspect should == "\"foo\\nbar\""
     )      
   )
 )

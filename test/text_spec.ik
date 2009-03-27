@@ -712,6 +712,30 @@ describe("Text",
     it("should escape double quotes in output correctly",
       "\"" inspect should == "\"\\\"\""
     )
+
+    it("should escape \\b in output correctly",
+      "\b" inspect should == "\"\\b\""
+    )
+
+    it("should escape \\f in output correctly",
+      "\f" inspect should == "\"\\f\""
+    )
+
+    it("should escape \\r in output correctly",
+      "\r" inspect should == "\"\\r\""
+    )
+
+    it("should escape \\n in output correctly",
+      "\n" inspect should == "\"\\n\""
+    )
+
+    it("should escape \\t in output correctly",
+      "\t" inspect should == "\"\\t\""
+    )
+
+    it("should escape \\e in output correctly",
+      "\e" inspect should == "\"\\e\""
+    )
   )
 
   describe("script",
