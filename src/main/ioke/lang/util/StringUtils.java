@@ -23,6 +23,24 @@ public class StringUtils {
             case '"':
                 result.append('\\').append(c);
                 break;
+            case '\b':
+                result.append('\\').append('b');
+                break;
+            case '\f':
+                result.append('\\').append('f');
+                break;
+            case '\r':
+                result.append('\\').append('r');
+                break;
+            case '\t':
+                result.append('\\').append('t');
+                break;
+            case '\n':
+                result.append('\\').append('n');
+                break;
+            case 27:
+                result.append('\\').append('e');
+                break;
             default:
                 result.append(c);
                 break;
