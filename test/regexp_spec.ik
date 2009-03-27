@@ -463,6 +463,111 @@ describe(Regexp,
       #/foo/x inspect should == "#/foo/x"
     )
 
+    describe("escapes",
+      it("should correctly handle escaped t",
+        #/\t/ inspect should == "#/\t/"
+      )
+      it("should correctly handle escaped n",
+        #/\n/ inspect should == "#/\n/"
+      )
+      it("should correctly handle escaped f",
+        #/\f/ inspect should == "#/\f/"
+      )
+      it("should correctly handle escaped r",
+        #/\r/ inspect should == "#/\r/"
+      )
+      it("should correctly handle escaped /",
+        #/\// inspect should == "#/\\//"
+      )
+;       it("should correctly handle escaped \\",
+;         #/\\/ inspect should == "#/\\\\/"
+;       )
+;       it("should correctly handle escaped A",
+;         #/\A/ inspect should == "#/\\A/"
+;       )
+;       it("should correctly handle escaped d",
+;         #/\d/ inspect should == "#/\\d/"
+;       )
+;       it("should correctly handle escaped D",
+;         #/\D/ inspect should == "#/\\D/"
+;       )
+;       it("should correctly handle escaped s",
+;         #/\s/ inspect should == "#/\\s/"
+;       )
+;       it("should correctly handle escaped S",
+;         #/\S/ inspect should == "#/\\S/"
+;       )
+;       it("should correctly handle escaped w",
+;         #/\w/ inspect should == "#/\\w/"
+;       )
+;       it("should correctly handle escaped W",
+;         #/\W/ inspect should == "#/\\W/"
+;       )
+;       it("should correctly handle escaped b",
+;         #/\b/ inspect should == "#/\\b/"
+;       )
+;       it("should correctly handle escaped B",
+;         #/\B/ inspect should == "#/\\B/"
+;       )
+;       it("should correctly handle escaped z",
+;         #/\z/ inspect should == "#/\\z/"
+;       )
+;       it("should correctly handle escaped Z",
+;         #/\Z/ inspect should == "#/\\Z/"
+;       )
+;       it("should correctly handle escaped <",
+;         #/\</ inspect should == "#/\\</"
+;       )
+;       it("should correctly handle escaped >",
+;         #/\>/ inspect should == "#/\\>/"
+;       )
+;       it("should correctly handle escaped G",
+;         #/\G/ inspect should == "#/\\G/"
+;       )
+;       it("should correctly handle escaped p",
+;         #/\p/ inspect should == "#/\\p/"
+;       )
+;       it("should correctly handle escaped P",
+;         #/\P/ inspect should == "#/\\P/"
+;       )
+;       it("should correctly handle escaped {",
+;         #/\{/ inspect should == "#/\\{/"
+;       )
+;       it("should correctly handle escaped }",
+;         #/\}/ inspect should == "#/\\}/"
+;       )
+;       it("should correctly handle escaped [",
+;         #/\[/ inspect should == "#/\\[/"
+;       )
+;       it("should correctly handle escaped *",
+;         #/\*/ inspect should == "#/\\*/"
+;       )
+;       it("should correctly handle escaped (",
+;         #/\(/ inspect should == "#/\\(/"
+;       )
+;       it("should correctly handle escaped )",
+;         #/\)/ inspect should == "#/\\)/"
+;       )
+;       it("should correctly handle escaped $",
+;         #/\$/ inspect should == "#/\\$/"
+;       )
+;       it("should correctly handle escaped ^",
+;         #/\^/ inspect should == "#/\\^/"
+;       )
+;       it("should correctly handle escaped +",
+;         #/\+/ inspect should == "#/\\+/"
+;       )
+;       it("should correctly handle escaped ?",
+;         #/\?/ inspect should == "#/\\?/"
+;       )
+;       it("should correctly handle escaped .",
+;         #/\./ inspect should == "#/\\./"
+;       )
+;       it("should correctly handle escaped |",
+;         #/\|/ inspect should == "#/\\|/"
+;       )
+    )
+
     it("should validate type of receiver",
       Regexp should checkReceiverTypeOn(:inspect)
     )
@@ -756,6 +861,13 @@ describe(Regexp,
       it("should match literally",
         "foo." should match(#/\./)
         "foo" should not match(#/\./)
+      )
+    )
+
+    describe("\\\\",
+      it("should match literally",
+        "\\" should match(#/\\/)
+        "foo" should not match(#/\\/)
       )
     )
 

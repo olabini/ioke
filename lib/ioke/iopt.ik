@@ -32,7 +32,7 @@ IOpt do(
     want for example like Mike tasks or windows /? style options if you
     override this method.
     ", arg,
-    if(m = #/^-({long}-)?({name}[\\w_-]+)(=({immediate}.+))?$/ match(arg),
+    if(m = #/^-({long}-)?({name}[\w_-]+)(=({immediate}.+))?$/ match(arg),
       if(m long nil? && m immediate nil? && m name length > 1,
         m immediate = m name[1..-1]
         m name = m name[0..0])
@@ -47,7 +47,7 @@ IOpt do(
     immediate: The value if it has been provided with the keyword.
 
     ", arg,
-    #/({name}[\\w_-]+):({immediate}.+)?$/ match(arg))
+    #/({name}[\w_-]+):({immediate}.+)?$/ match(arg))
 
   iopt:get = method("Return the handler for option", arg,
     if(handler = iopt:ion(arg),

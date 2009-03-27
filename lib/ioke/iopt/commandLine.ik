@@ -97,11 +97,11 @@ IOpt CommandLine = Origin mimic do(
   ) mimic (
     nil:     "nil" => method(t, nil),
     boolean: #/^(true|false)$/ => method(t, t == "true"),
-    symbol:  #/^:\\w+$/ => method(t, :(t[1..-1])),
-    integer: #/^[+-]?\\d+$/ => method(t,
+    symbol:  #/^:\w+$/ => method(t, :(t[1..-1])),
+    integer: #/^[+-]?\d+$/ => method(t,
       n = Message fromText(if(#/^[+-]/ === t, t[1..-1], t)) evaluateOn(self)
       if(#/^-/ === t, n negation, n)),
-    decimal: #/^[+-]?\\d+\\.(\\d+)?([eE]\\d*)?$/ => method(t, t toDecimal)
+    decimal: #/^[+-]?\d+\.(\d+)?([eE]\d*)?$/ => method(t, t toDecimal)
   ); Coerce
   
  );CommandLine
