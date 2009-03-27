@@ -1071,6 +1071,10 @@ class Term implements REFlags{
                case 't':
                   c='\t'; // tab
                   break;
+
+               case '\\':
+                  c='\\';
+                  break;
                
                case 'u':
                    if(i+4 >= out) throw new PatternSyntaxException("To few characters for u-escape");

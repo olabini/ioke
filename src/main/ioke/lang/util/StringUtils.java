@@ -215,9 +215,6 @@ public class StringUtils {
                         }
                         // escaped newline means nothing.
                         break;
-                    case '\\':
-                        result.append(c);
-                        break;
                     case 'f':
                         result.append('\f');
                         break;
@@ -290,9 +287,6 @@ public class StringUtils {
                             i++;
                         }
                         // escaped newline means nothing.
-                        break;
-                    case '\\':
-                        result.append(c);
                         break;
                     case 'f':
                         result.append('\f');
