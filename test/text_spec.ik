@@ -715,6 +715,7 @@ describe("Text",
 
     it("should escape \\b in output correctly",
       "\b" inspect should == "\"\\b\""
+      "\010" inspect should == "\"\\b\""
     )
 
     it("should escape \\f in output correctly",
@@ -735,6 +736,19 @@ describe("Text",
 
     it("should escape \\e in output correctly",
       "\e" inspect should == "\"\\e\""
+    )
+
+    it("should escape unprintable things",
+      "\001" inspect should == "\"\\001\""
+      "\177" inspect should == "\"\\177\""
+      "\377" inspect should == "\"\\377\""
+      "\uFFFE" inspect should == "\"\\uFFFE\""
+    )
+    
+    it("should escape a # correctly",
+      "#" inspect should == "\"#\""
+      "#blah" inspect should == "\"#blah\""
+      "\#{foo}" inspect should == "\"\\\#{foo}\""
     )
   )
 
