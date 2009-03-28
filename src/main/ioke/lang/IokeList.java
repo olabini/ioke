@@ -197,6 +197,8 @@ public class IokeList extends IokeData {
                 }
             }));
 
+        obj.aliasMethod("append!", "push!", null, null);
+
         obj.registerMethod(runtime.newJavaMethod("takes one argument and adds it at the beginning of the list, and then returns the list", new TypeCheckingJavaMethod("prepend!") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
@@ -216,7 +218,7 @@ public class IokeList extends IokeData {
                     return on;
                 }
             }));
-        
+
         obj.registerMethod(runtime.newJavaMethod("will remove all the entries from the list, and then returns the list", new TypeCheckingJavaMethod.WithNoArguments("clear!", runtime.list) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {

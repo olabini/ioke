@@ -1220,7 +1220,35 @@ describe(List,
 
   describe("push!",
     ; always adds at end, alias of append!
-    it("should have tests")
+    it("should add an element to an empty list",
+      l = []
+      l push!(:foo)
+      l should == [:foo]
+    )
+
+    it("should add an element at the end of a list with elements in it",
+      l = [:foo, :bar, 1, 42]
+      l push!(:flax)
+      l should == [:foo, :bar, 1, 42, :flax]
+    )
+
+    it("should add an element several times if asked to",
+      l = [:foo]
+      l push!(:foo)
+      l push!(:foo)
+      l push!(:foo)
+      l push!(:foo)
+      l should == [:foo, :foo, :foo, :foo, :foo]
+    )
+
+    it("should return the list",
+      l = []
+      l push!(:foo) should == l
+    )
+
+    it("should validate type of receiver",
+      List should checkReceiverTypeOn(:push!, 0)
+    )
   )
 
   describe("pop!",
