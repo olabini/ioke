@@ -1133,6 +1133,46 @@ describe(List,
       List should checkReceiverTypeOn(:removeFirst!, 0)
     )
   )
+
+  describe("add!",
+    ; can take an optional index on where to add - otherwise adds at end
+    it("should have tests")
+  )
+
+  describe("insert!",
+    ; always takes index on where to insert
+    it("should have tests")
+  )
+
+  describe("append!",
+    ; always adds at end
+    it("should have tests")
+  )
+
+  describe("prepend!",
+    ; always adds at beginning
+    it("should have tests")
+  )
+
+  describe("shift!",
+    ; always removes at beginning
+    it("should have tests")
+  )
+
+  describe("unshift!",
+    ; always adds at beginning, alias of prepend!
+    it("should have tests")
+  )
+
+  describe("push!",
+    ; always adds at end, alias of append!
+    it("should have tests")
+  )
+
+  describe("pop!",
+    ; always removes at end
+    it("should have tests")
+  )
 )
 
 describe("DefaultBehavior", 
