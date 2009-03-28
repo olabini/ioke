@@ -219,6 +219,8 @@ public class IokeList extends IokeData {
                 }
             }));
 
+        obj.aliasMethod("prepend!", "unshift!", null, null);
+
         obj.registerMethod(runtime.newJavaMethod("will remove all the entries from the list, and then returns the list", new TypeCheckingJavaMethod.WithNoArguments("clear!", runtime.list) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
