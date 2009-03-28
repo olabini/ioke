@@ -1214,12 +1214,38 @@ describe(List,
   )
 
   describe("unshift!",
-    ; always adds at beginning, alias of prepend!
-    it("should have tests")
+    it("should add an element to an empty list",
+      l = []
+      l unshift!(:foo)
+      l should == [:foo]
+    )
+
+    it("should add an element at the beginning of a list with elements in it",
+      l = [:foo, :bar, 1, 42]
+      l unshift!(:flax)
+      l should == [:flax, :foo, :bar, 1, 42]
+    )
+
+    it("should add an element several times if asked to",
+      l = [:foo]
+      l unshift!(:foo)
+      l unshift!(:foo)
+      l unshift!(:foo)
+      l unshift!(:foo)
+      l should == [:foo, :foo, :foo, :foo, :foo]
+    )
+
+    it("should return the list",
+      l = []
+      l unshift!(:foo) should == l
+    )
+
+    it("should validate type of receiver",
+      List should checkReceiverTypeOn(:unshift!, 0)
+    )
   )
 
   describe("push!",
-    ; always adds at end, alias of append!
     it("should add an element to an empty list",
       l = []
       l push!(:foo)
