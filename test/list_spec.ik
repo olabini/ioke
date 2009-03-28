@@ -1209,8 +1209,35 @@ describe(List,
   )
 
   describe("shift!",
-    ; always removes at beginning
-    it("should have tests")
+    it("should return nil for an empty list",
+      [] shift! should be nil
+    )
+
+    it("should return the element for a list with one element",
+      [:blarg] shift! should == :blarg
+    )
+
+    it("should remove the element in a list with one element",
+      l = [:blarg]
+      l shift!
+      l should == []
+    )
+
+    it("should return the first element for a list with more than one element",
+      [:blem, :flag, :moppy] shift! should == :blem
+    )
+
+    it("should remove the first element in a list with more than one element",
+      l = [:blem, :flag, :moppy]
+      l shift!
+      l should == [:flag, :moppy]
+      l shift!
+      l should == [:moppy]
+    )
+
+    it("should validate type of receiver",
+      List should checkReceiverTypeOn(:shift!)
+    )
   )
 
   describe("unshift!",
