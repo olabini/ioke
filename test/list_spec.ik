@@ -1151,7 +1151,7 @@ describe(List,
       l should == [:foo]
     )
 
-    it("should add an element add the end of a list with elements in it",
+    it("should add an element at the end of a list with elements in it",
       l = [:foo, :bar, 1, 42]
       l append!(:flax)
       l should == [:foo, :bar, 1, 42, :flax]
@@ -1166,8 +1166,9 @@ describe(List,
       l should == [:foo, :foo, :foo, :foo, :foo]
     )
 
-    it("should return the element added",
-      [] append!(:foo) should == :foo
+    it("should return the list",
+      l = []
+      l append!(:foo) should == l
     )
 
     it("should validate type of receiver",
@@ -1176,8 +1177,35 @@ describe(List,
   )
 
   describe("prepend!",
-    ; always adds at beginning
-    it("should have tests")
+    it("should add an element to an empty list",
+      l = []
+      l prepend!(:foo)
+      l should == [:foo]
+    )
+
+    it("should add an element at the beginning of a list with elements in it",
+      l = [:foo, :bar, 1, 42]
+      l prepend!(:flax)
+      l should == [:flax, :foo, :bar, 1, 42]
+    )
+
+    it("should add an element several times if asked to",
+      l = [:foo]
+      l prepend!(:foo)
+      l prepend!(:foo)
+      l prepend!(:foo)
+      l prepend!(:foo)
+      l should == [:foo, :foo, :foo, :foo, :foo]
+    )
+
+    it("should return the list",
+      l = []
+      l prepend!(:foo) should == l
+    )
+
+    it("should validate type of receiver",
+      List should checkReceiverTypeOn(:prepend!, 0)
+    )
   )
 
   describe("shift!",
