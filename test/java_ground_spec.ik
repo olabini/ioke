@@ -85,7 +85,12 @@ describe("JavaGround",
   )
 
   describe("use of jar-files",
-    it("should have tests")
+    it("should make it possible to integrate on interfaces from the jar file")
+    it("should make it possible to integrate on classes from the jar file")
+    it("should make it possible to integrate on interfaces from two different jar-files that's been used")
+    it("should make it possible to use a type from that jar-file")
+    it("should be possible to use a jar-file directly")
+    it("should be possible to use the special 'use jar' style to point out a jar-file")
   )
 )
 
