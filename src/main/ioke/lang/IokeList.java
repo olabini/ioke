@@ -31,6 +31,10 @@ public class IokeList extends IokeData {
         ((IokeList)IokeObject.data(list)).list.add(obj);
     }
 
+    public static void add(Object list, int index, Object obj) {
+        ((IokeList)IokeObject.data(list)).list.add(index, obj);
+    }
+
     @Override
     public void init(IokeObject obj) throws ControlFlow {
         final Runtime runtime = obj.runtime;
@@ -173,7 +177,7 @@ public class IokeList extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("takes one argument and adds it at the end of the list, and then returns the element added", new TypeCheckingJavaMethod("append!") {
+        obj.registerMethod(runtime.newJavaMethod("takes one argument and adds it at the end of the list, and then returns the list", new TypeCheckingJavaMethod("append!") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(runtime.list)
@@ -189,7 +193,27 @@ public class IokeList extends IokeData {
                 public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     Object value = args.get(0);
                     IokeList.add(on, value);
-                    return value;
+                    return on;
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("takes one argument and adds it at the beginning of the list, and then returns the list", new TypeCheckingJavaMethod("prepend!") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
+                    .builder()
+                    .receiverMustMimic(runtime.list)
+                    .withRequiredPositional("value")
+                    .getArguments();
+
+                @Override
+                public TypeCheckingArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    Object value = args.get(0);
+                    IokeList.add(on, 0, value);
+                    return on;
                 }
             }));
         
