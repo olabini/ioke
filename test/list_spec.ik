@@ -1134,14 +1134,57 @@ describe(List,
     )
   )
 
-  describe("add!",
-    ; can take an optional index on where to add - otherwise adds at end
-    it("should have tests")
-  )
-
   describe("insert!",
-    ; always takes index on where to insert
-    it("should have tests")
+    it("inserts objects before the element at index for non-negative index",
+      ary = []
+      ary insert!(0, 3) should == ary
+      ary should == [3]
+
+      ary insert!(0, 1, 2) should == ary
+      ary should == [1, 2, 3]
+      ary insert!(0)
+      ary should == [1, 2, 3]
+      
+      ary insert!(1, :a) should == [1, :a, 2, 3]
+      ary insert!(0, :b) should == [:b, 1, :a, 2, 3]
+      ary insert!(5, :c) should == [:b, 1, :a, 2, 3, :c]
+      ary insert!(7, :d) should == [:b, 1, :a, 2, 3, :c, nil, :d]
+      ary insert!(10, 5, 4) should == [:b, 1, :a, 2, 3, :c, nil, :d, nil, nil, 5, 4]
+    )
+
+    it("appends objects to the end of the array for index == -1",
+      [1, 3, 3] insert!(-1, 2, :x, 5) should == [1, 3, 3, 2, :x, 5]
+    )
+
+    it("inserts objects after the element at index with negative index",
+      ary = []
+      ary insert!(-1, 3) should == [3]
+      ary insert!(-2, 2) should == [2, 3]
+      ary insert!(-3, 1) should == [1, 2, 3]
+      ary insert!(-2, -3) should == [1, 2, -3, 3]
+      ary insert!(-1, []) should == [1, 2, -3, 3, []]
+      ary insert!(-2, :x, :y) should == [1, 2, -3, 3, :x, :y, []]
+    )
+
+    it("pads with nils if the index to be inserted to is past the end",
+      [] insert!(5, 5) should == [nil, nil, nil, nil, nil, 5]
+    )
+
+    it("can insert before the first element with a negative index",
+      [1, 2, 3] insert!(-4, -3) should == [-3, 1, 2, 3]
+    )  
+  
+    it("raises an IndexError if the negative index is out of bounds",
+      fn([]  insert!(-2, 1)) should signal(Condition Error Index)
+      fn([1] insert!(-3, 2)) should signal(Condition Error Index)
+    )
+
+    it("does nothing if no object is passed",
+      [] insert!(0)  should == []
+      [] insert!(-1) should == []
+      [] insert!(10) should == []
+      [] insert!(-2) should == []
+    )
   )
 
   describe("append!",
