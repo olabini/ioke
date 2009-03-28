@@ -1278,8 +1278,35 @@ describe(List,
   )
 
   describe("pop!",
-    ; always removes at end
-    it("should have tests")
+    it("should return nil for an empty list",
+      [] pop! should be nil
+    )
+
+    it("should return the element for a list with one element",
+      [:blarg] pop! should == :blarg
+    )
+
+    it("should remove the element in a list with one element",
+      l = [:blarg]
+      l pop!
+      l should == []
+    )
+
+    it("should return the last element for a list with more than one element",
+      [:blem, :flag, :moppy] pop! should == :moppy
+    )
+
+    it("should remove the last element in a list with more than one element",
+      l = [:blem, :flag, :moppy]
+      l pop!
+      l should == [:blem, :flag]
+      l pop!
+      l should == [:blem]
+    )
+
+    it("should validate type of receiver",
+      List should checkReceiverTypeOn(:pop!)
+    )
   )
 )
 

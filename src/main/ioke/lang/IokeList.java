@@ -221,6 +221,17 @@ public class IokeList extends IokeData {
 
         obj.aliasMethod("prepend!", "unshift!", null, null);
 
+        obj.registerMethod(runtime.newJavaMethod("removes the last element from the list and returns it. returns nil if the list is empty.", new TypeCheckingJavaMethod.WithNoArguments("pop!", runtime.list) {
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    List<Object> l = ((IokeList)IokeObject.data(on)).getList();
+                    if(l.size() == 0) {
+                        return context.runtime.nil;
+                    }
+                    return l.remove(l.size()-1);
+                }
+            }));
+
         obj.registerMethod(runtime.newJavaMethod("will remove all the entries from the list, and then returns the list", new TypeCheckingJavaMethod.WithNoArguments("clear!", runtime.list) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
