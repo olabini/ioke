@@ -1145,8 +1145,34 @@ describe(List,
   )
 
   describe("append!",
-    ; always adds at end
-    it("should have tests")
+    it("should add an element to an empty list",
+      l = []
+      l append!(:foo)
+      l should == [:foo]
+    )
+
+    it("should add an element add the end of a list with elements in it",
+      l = [:foo, :bar, 1, 42]
+      l append!(:flax)
+      l should == [:foo, :bar, 1, 42, :flax]
+    )
+
+    it("should add an element several times if asked to",
+      l = [:foo]
+      l append!(:foo)
+      l append!(:foo)
+      l append!(:foo)
+      l append!(:foo)
+      l should == [:foo, :foo, :foo, :foo, :foo]
+    )
+
+    it("should return the element added",
+      [] append!(:foo) should == :foo
+    )
+
+    it("should validate type of receiver",
+      List should checkReceiverTypeOn(:append!, 0)
+    )
   )
 
   describe("prepend!",
