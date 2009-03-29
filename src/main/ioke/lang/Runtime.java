@@ -619,10 +619,10 @@ public class Runtime {
             } else {
                 IokeObject obj = this.javaWrapper.allocateCopy(null, null);
                 Class<?> clz = (Class)object;
-                obj.mimicsWithoutCheck(registry.wrap(Class.class));
                 if(((Class)object).isArray()) {
                     obj.mimicsWithoutCheck(javaArray);
                 }
+                obj.mimicsWithoutCheck(registry.wrap(Class.class));
                 obj.mimicsWithoutCheck(registry.wrap(clz.getSuperclass()));
                 for(Class<?> i : clz.getInterfaces()) {
                     obj.mimicsWithoutCheck(registry.wrap(i));
