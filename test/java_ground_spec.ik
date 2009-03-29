@@ -1897,7 +1897,60 @@ describe("Java Objects",
 ;     it("should be possible to supply arguments by name")
   )
 
-  describe("working with arrays",
-    it("should have tests")
+  describe("arrays",
+    describe("byte",
+      it("should be possible to create a new array",
+        java:byte[10] new
+        java:byte[0] new
+      )
+
+      it("should be possible to create a nested array",
+        java:byte[10][10] new
+      )
+
+      it("should be possible to coerce a List into an array")
+
+      it("should be possible to get the length of one",
+        java:byte[42] new length should == 42
+        java:byte[5][8] new length should == 5
+      )
+
+      it("should be possible to get values in the array")
+      it("should be possible to set values in the array")
+      it("should be possible to send the array as java argument")
+      it("should be possible to manually cast to the array")
+    )
+
+    describe("short",
+      it("should have tests")
+    )
+
+    describe("char",
+      it("should have tests")
+    )
+
+    describe("int",
+      it("should have tests")
+    )
+
+    describe("long",
+      it("should have tests")
+    )
+
+    describe("float",
+      it("should have tests")
+    )
+
+    describe("double",
+      it("should have tests")
+    )
+
+    describe("boolean",
+      it("should have tests")
+    )
+
+    describe("Object",
+      it("should have tests")
+    )
   )
 )

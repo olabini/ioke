@@ -3,6 +3,8 @@
  */
 package ioke.lang;
 
+import java.lang.reflect.Array;
+
 import java.math.BigDecimal;
 
 import java.util.ArrayList;
@@ -47,6 +49,31 @@ public class JavaGround {
                         runtime.reportJavaException(e, message, context);
                     }
                     return runtime.registry.wrap(c);
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("takes a Java class and a list of dimensions and creates a new instance of the array with those dimensions", new TypeCheckingJavaMethod("createPrimitiveJavaArray!") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("componentType")
+                    .withRest("dimensions")
+                    .getArguments();
+
+                @Override
+                public TypeCheckingArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    Object ctype = args.get(0);
+                    Class<?> type = (ctype instanceof IokeObject) ? (Class<?>)JavaWrapper.getObject(ctype) : ((Class<?>)ctype);
+                    int[] dimensions = new int[args.size()-1];
+                    for(int i=0; i<dimensions.length; i++) {
+                        dimensions[i] = Number.intValue(args.get(i+1)).intValue();
+                    }
+
+                    return Array.newInstance(type, dimensions);
                 }
             }));
 

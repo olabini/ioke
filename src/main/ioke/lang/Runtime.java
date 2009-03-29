@@ -90,6 +90,8 @@ public class Runtime {
 
     public IokeObject javaGround = new IokeObject(this, "JavaGround is the place that defines the connections to the Java integration subsystem");
 
+    public IokeObject javaArray = new IokeObject(this, "JavaArray is the common mimic that defines all the magic methods on native java arrays");
+
     public IokeObject integer = null;
     public IokeObject decimal = null;
     public IokeObject ratio = null;
@@ -224,6 +226,7 @@ public class Runtime {
         FileSystem.init(fileSystem);
         regexp.init();
         JavaGround.init(javaGround);
+        JavaArray.init(javaArray);
         javaWrapper.init();
 
         iokeGround.mimicsWithoutCheck(defaultBehavior);
@@ -617,6 +620,9 @@ public class Runtime {
                 IokeObject obj = this.javaWrapper.allocateCopy(null, null);
                 Class<?> clz = (Class)object;
                 obj.mimicsWithoutCheck(registry.wrap(Class.class));
+                if(((Class)object).isArray()) {
+                    obj.mimicsWithoutCheck(javaArray);
+                }
                 obj.mimicsWithoutCheck(registry.wrap(clz.getSuperclass()));
                 for(Class<?> i : clz.getInterfaces()) {
                     obj.mimicsWithoutCheck(registry.wrap(i));

@@ -12,6 +12,9 @@ JavaGround java:lang:Character = JavaGround primitiveJavaClass!("java.lang.Chara
 JavaGround java:lang:Long = JavaGround primitiveJavaClass!("java.lang.Long")
 JavaGround java:lang:Float = JavaGround primitiveJavaClass!("java.lang.Float")
 JavaGround java:lang:Double = JavaGround primitiveJavaClass!("java.lang.Double")
+JavaGround java:lang:reflect:Array = JavaGround primitiveJavaClass!("java.lang.reflect.Array")
+
+JavaGround java:byte = java:lang:Byte field:TYPE
 
 JavaGround java:lang:String asText = JavaGround cell("primitiveMagic: String->Text")
 JavaGround java:lang:Integer asRational = JavaGround cell("primitiveMagic: Integer->Rational")
@@ -34,6 +37,28 @@ JavaGround java:lang:Object notice  = method(
 
 JavaGround java:lang:Class class:name = method(
   class:getName asText replaceAll(".", ":")
+)
+
+JavaGround JavaArrayProxyCreator = Origin mimic do(
+  initialize = method(componentType, dimensions,
+    @componentType = componentType
+    @dimensions    = dimensions
+  )
+
+  new = method(createPrimitiveJavaArray!(componentType, *dimensions))
+
+  [] = method(dimension,
+    JavaArrayProxyCreator mimic(componentType, dimensions + nil[dimension])
+  )
+)
+
+JavaGround java:lang:Class [] = method(dimension nil,
+  ; if dimension is nil, we want the class, otherwise we want a proxy creator
+  if(dimension,
+    JavaArrayProxyCreator mimic(self, nil[dimension])
+    ,
+    nil
+  )
 )
 
 JavaGround pass = macro(
