@@ -110,8 +110,15 @@ describe("JavaGround",
       ioke:lang:test:JarFileTest1 new should not be nil
     )
 
-    it("should be possible to use a jar-file directly")
-    it("should be possible to use the special 'use jar' style to point out a jar-file")
+    it("should be possible to use a jar-file directly",
+      use("test/jars/JarFileTest3")
+      ioke:lang:test:JarFileTest3
+    )
+
+    it("should be possible to use the special 'use jar' style to point out a jar-file",
+      use jar("test/jars/JarFileTest4")
+      ioke:lang:test:JarFileTest4
+    )
   )
 )
 

@@ -152,6 +152,8 @@ public class Runtime {
 
     public IokeObject coerceIntoJavaCodeMessage = newMessage("java:coerceCode");
 
+    public IokeObject useWhatMessage = newMessage("UseWhat");
+
     // NOT TO BE EXPOSED TO Ioke - used for internal usage only
     public final NullObject nul = new NullObject(this);
 
@@ -306,6 +308,7 @@ public class Runtime {
             evaluateString("use(\"builtin/A15_dmacro\")", message, ground);
             evaluateString("use(\"builtin/A20_comparing\")", message, ground);
             evaluateString("use(\"builtin/A25_defaultBehavior_inspection\")", message, ground);
+            evaluateString("use(\"builtin/A30_system\")", message, ground);
 
             evaluateString("use(\"builtin/D05_number\")", message, ground);
             evaluateString("use(\"builtin/D10_call\")", message, ground);

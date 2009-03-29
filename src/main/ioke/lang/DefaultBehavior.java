@@ -103,8 +103,7 @@ public class DefaultBehavior {
         obj.registerMethod(runtime.newJavaMethod("takes one or more evaluated string argument. will import the files corresponding to each of the strings named based on the Ioke loading behavior that can be found in the documentation for the loadBehavior cell on System.", new JavaMethod("use") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
-                    .withRequiredPositional("module")
-                    //                    .withRest("modules")
+                    .withOptionalPositional("module", "false")
                     .getArguments();
 
                 @Override
@@ -116,6 +115,9 @@ public class DefaultBehavior {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> args = new ArrayList<Object>();
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+                    if(args.size() == 0) {
+                        return method;
+                    }
                     
                     String name = Text.getText(runtime.asText.sendTo(context, args.get(0)));
                     if(((IokeSystem)IokeObject.data(runtime.system)).use(IokeObject.as(on, context), context, message, name)) {

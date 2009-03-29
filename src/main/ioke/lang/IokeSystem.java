@@ -162,7 +162,7 @@ public class IokeSystem extends IokeData {
 
         List<Object> paths = ((IokeList)IokeObject.data(loadPath)).getList();
 
-        String[] suffixes = name.endsWith(".ik") || name.endsWith(".jar") ? SUFFIXES_WITH_BLANK : SUFFIXES;
+        String[] suffixes = (name.endsWith(".ik") || name.endsWith(".jar")) ? SUFFIXES_WITH_BLANK : SUFFIXES;
 
         for(Object o : paths) {
             String currentS = Text.getText(o);
@@ -182,6 +182,8 @@ public class IokeSystem extends IokeData {
                     } else {
                         f = new File(new File(currentWorkingDirectory, currentS), name + suffix);
                     }
+
+//                     System.err.println("trying: " + f);
 
                     if(f.exists() && f.isFile()) {
                         if(loaded.contains(f.getCanonicalPath())) {

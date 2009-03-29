@@ -19,6 +19,7 @@ public class IokeClassLoader extends URLClassLoader {
 
     @Override
     public void addURL(URL url) {
+//         System.err.println("adding: " + url);
         super.addURL(url);
     }
 
