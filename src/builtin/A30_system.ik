@@ -1,5 +1,5 @@
 
-cell(:use) jar = method(jarFile,
+use jar = method(jarFile,
   use(if(#/\.jar$/ =~ jarFile,
       jarFile,
       "#{jarFile}.jar")))
