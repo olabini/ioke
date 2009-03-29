@@ -890,15 +890,23 @@ public class IokeObject implements TypeChecker {
     }
 
     public static String inspect(Object on) throws ControlFlow {
-        IokeObject ion = (IokeObject)on;
-        Runtime runtime = ion.runtime;
-        return Text.getText(runtime.inspectMessage.sendTo(ion, ion));
+        if(on instanceof IokeObject) {
+            IokeObject ion = (IokeObject)on;
+            Runtime runtime = ion.runtime;
+            return Text.getText(runtime.inspectMessage.sendTo(ion, ion));
+        } else {
+            return on.toString();
+        }
     }
 
     public static String notice(Object on) throws ControlFlow {
-        IokeObject ion = (IokeObject)on;
-        Runtime runtime = ion.runtime;
-        return Text.getText(runtime.noticeMessage.sendTo(ion, ion));
+        if(on instanceof IokeObject) {
+            IokeObject ion = (IokeObject)on;
+            Runtime runtime = ion.runtime;
+            return Text.getText(runtime.noticeMessage.sendTo(ion, ion));
+        } else {
+            return on.toString();
+        }
     }
 
     public IokeObject convertToText(IokeObject m, IokeObject context, boolean signalCondition) throws ControlFlow {
