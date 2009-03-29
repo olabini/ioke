@@ -85,9 +85,24 @@ describe("JavaGround",
   )
 
   describe("use of jar-files",
-    it("should make it possible to integrate on interfaces from the jar file")
-    it("should make it possible to integrate on classes from the jar file")
-    it("should make it possible to integrate on interfaces from two different jar-files that's been used")
+    it("should make it possible to integrate on interfaces from the jar file",
+      use("test/jars/JarFileTest7.jar")
+      newClass = integrate(ioke:lang:test:JarFileTest7)
+      newClass new
+    )
+
+    it("should make it possible to integrate on classes from the jar file",
+      use("test/jars/JarFileTest2.jar")
+      newClass = integrate(ioke:lang:test:JarFileTest2)
+      newClass new
+    )
+
+    it("should make it possible to integrate on interfaces from two different jar-files that's been used",
+      use("test/jars/JarFileTest5.jar")
+      use("test/jars/JarFileTest6.jar")
+      newClass = integrate(ioke:lang:test:JarFileTest5, ioke:lang:test:JarFileTest6)
+      newClass new
+    )
 
     it("should make it possible to use a type from a jar-file",
       fn(ioke:lang:test:JarFileTest1 new) should signal(Condition Error NoSuchCell)
