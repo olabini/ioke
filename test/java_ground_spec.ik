@@ -1915,8 +1915,19 @@ describe("Java Objects",
         java:byte[5][8] new length should == 5
       )
 
-      it("should be possible to get values in the array")
-      it("should be possible to set values in the array")
+      it("should be possible to get and set values in the array",
+        x = java:byte[5] new
+        x[0] asRational should == 0
+        x[1] asRational should == 0
+        x[2] asRational should == 0
+        x[3] asRational should == 0
+        x[4] asRational should == 0
+        x[3] = 55
+        x[3] asRational should == 55
+        x[-1] asRational should == 0
+        x[-2] asRational should == 55
+      )
+
       it("should be possible to send the array as java argument")
       it("should be possible to manually cast to the array")
     )
