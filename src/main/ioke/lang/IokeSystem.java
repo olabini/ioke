@@ -83,8 +83,8 @@ public class IokeSystem extends IokeData {
         IokeList.getList(programArguments).add(programArguments.runtime.newText(newArgument));
     }
 
-    private static final String[] SUFFIXES = {".ik"};
-    private static final String[] SUFFIXES_WITH_BLANK = {"", ".ik"};
+    private static final String[] SUFFIXES = {".ik", ".jar"};
+    private static final String[] SUFFIXES_WITH_BLANK = {"", ".ik", ".jar"};
 
     public final static boolean DOSISH = System.getProperty("os.name").indexOf("Windows") != -1;
 
@@ -162,7 +162,7 @@ public class IokeSystem extends IokeData {
 
         List<Object> paths = ((IokeList)IokeObject.data(loadPath)).getList();
 
-        String[] suffixes = name.endsWith(".ik") ? SUFFIXES_WITH_BLANK : SUFFIXES;
+        String[] suffixes = name.endsWith(".ik") || name.endsWith(".jar") ? SUFFIXES_WITH_BLANK : SUFFIXES;
 
         for(Object o : paths) {
             String currentS = Text.getText(o);
@@ -175,16 +175,6 @@ public class IokeSystem extends IokeData {
 
                 InputStream is = IokeSystem.class.getResourceAsStream(before + name + suffix);
                 try {
-                    if(null != is) {
-                        if(loaded.contains(name+suffix)) {
-                            return false;
-                        } else {
-                            context.runtime.evaluateStream(name+suffix, new InputStreamReader(is, "UTF-8"), message, context);
-                            loaded.add(name+suffix);
-                            return true;
-                        }
-                    }
-
                     File f;
 
                     if(isAbsoluteFileName(currentS)) {
@@ -197,8 +187,27 @@ public class IokeSystem extends IokeData {
                         if(loaded.contains(f.getCanonicalPath())) {
                             return false;
                         } else {
-                            context.runtime.evaluateFile(f, message, context);
+                            if(f.getCanonicalPath().endsWith(".jar")) {
+                                context.runtime.classRegistry.getClassLoader().addURL(f.toURI().toURL());
+                            } else {
+                                context.runtime.evaluateFile(f, message, context);
+                            }
+
                             loaded.add(f.getCanonicalPath());
+                            return true;
+                        }
+                    }
+
+                    if(null != is) {
+                        if(loaded.contains(name+suffix)) {
+                            return false;
+                        } else {
+                            if((name+suffix).endsWith(".jar")) {
+                                // load jar here - can't do it correctly at the moment, though.
+                            } else {
+                                context.runtime.evaluateStream(name+suffix, new InputStreamReader(is, "UTF-8"), message, context);
+                            }
+                            loaded.add(name+suffix);
                             return true;
                         }
                     }

@@ -311,7 +311,7 @@ public class JavaArgumentsDefinition {
                 } else {
                     String s = name.replaceAll(":", ".");
                     try {
-                        into = Class.forName(s);
+                        into = Class.forName(s, true, context.runtime.classRegistry.getClassLoader());
                     } catch(Exception e) {
                         into = null;
                     }

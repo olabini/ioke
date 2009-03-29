@@ -42,7 +42,7 @@ public class JavaGround {
                     String name = Text.getText(arg);
                     Class<?> c = null;
                     try {
-                        c = Class.forName(name);
+                        c = context.runtime.classRegistry.getClassLoader().loadClass(name);
                     } catch(Exception e) {
                         runtime.reportJavaException(e, message, context);
                     }

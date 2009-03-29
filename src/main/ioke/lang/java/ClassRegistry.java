@@ -39,4 +39,8 @@ public class ClassRegistry {
             return null;
         }
     }
+
+    public IokeClassLoader getClassLoader() {
+        return classLoader;
+    }
 }// ClassRegistry
