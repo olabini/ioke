@@ -2318,7 +2318,67 @@ describe("Java Objects",
     )
 
     describe("long",
-      it("should have tests")
+      it("should be possible to create a new array",
+        java:long[10] new
+        java:long[0] new
+      )
+
+      it("should be possible to create a nested array",
+        java:long[10][10] new
+      )
+
+      it("should be possible to coerce a List longo an array",
+        x = java:long[] from([1,2,3,42,0])
+        x[0] asRational should == 1
+        x[1] asRational should == 2
+        x[2] asRational should == 3
+        x[3] asRational should == 42
+        x[4] asRational should == 0
+      )
+
+      it("should be possible to convert an array longo a List",
+        x = java:long[5] new
+        x[3] = 42
+        x[2] = 40
+        y = x asList
+        y should have kind("List")
+        y[0] asRational should == 0
+        y[1] asRational should == 0
+        y[2] asRational should == 40
+        y[3] asRational should == 42
+        y[4] asRational should == 0
+      )
+
+      it("should be possible to get the length of one",
+        java:long[42] new length should == 42
+        java:long[5][8] new length should == 5
+      )
+
+      it("should be possible to get and set values in the array",
+        x = java:long[5] new
+        x[0] asRational should == 0
+        x[1] asRational should == 0
+        x[2] asRational should == 0
+        x[3] asRational should == 0
+        x[4] asRational should == 0
+        x[3] = 55
+        x[3] asRational should == 55
+        x[-1] asRational should == 0
+        x[-2] asRational should == 55
+      )
+
+      it("should be possible to send the array as java argument",
+        x = java:long[5] new
+        x[3] = 42
+        ioke:lang:test:ArrayUser longUse(x, 3) asRational should == 42
+      )
+
+      it("should be possible to manually cast to the array",
+        x = java:long[5] new
+        ioke:lang:test:ArrayUser use(x) asText should == "long[]"
+        ioke:lang:test:ArrayUser use((java:long[])x) asText should == "long[]"
+;         ioke:lang:test:ArrayUser use((java:lang:Object[])x) asText should == "Object[]"
+      )
     )
 
     describe("float",
