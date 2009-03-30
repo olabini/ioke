@@ -37,6 +37,10 @@ public class InstanceMethods {
         return "overloaded(char)";
     }
 
+    public String overloaded(byte i) {
+        return "overloaded(byte)";
+    }
+
     public String overloaded(short i) {
         return "overloaded(short)";
     }
@@ -65,6 +69,10 @@ public class InstanceMethods {
         return "overloaded(int, char)";
     }
 
+    public String overloaded(int x, byte i) {
+        return "overloaded(int, byte)";
+    }
+
     public String overloaded(int x, short i) {
         return "overloaded(int, short)";
     }
@@ -85,12 +93,48 @@ public class InstanceMethods {
         return "overloaded(int, boolean)";
     }
 
+    public String overloaded(byte x, int i) {
+        return "overloaded(byte, int)";
+    }
+
+    public String overloaded(byte x, char i) {
+        return "overloaded(byte, char)";
+    }
+
+    public String overloaded(byte x, byte i) {
+        return "overloaded(byte, byte)";
+    }
+
+    public String overloaded(byte x, short i) {
+        return "overloaded(byte, short)";
+    }
+
+    public String overloaded(byte x, long i) {
+        return "overloaded(byte, long)";
+    }
+
+    public String overloaded(byte x, float i) {
+        return "overloaded(byte, float)";
+    }
+
+    public String overloaded(byte x, double i) {
+        return "overloaded(byte, double)";
+    }
+
+    public String overloaded(byte x, boolean i) {
+        return "overloaded(byte, boolean)";
+    }
+
     public String overloaded(short x, int i) {
         return "overloaded(short, int)";
     }
 
     public String overloaded(short x, char i) {
         return "overloaded(short, char)";
+    }
+
+    public String overloaded(short x, byte i) {
+        return "overloaded(short, byte)";
     }
 
     public String overloaded(short x, short i) {
@@ -121,6 +165,10 @@ public class InstanceMethods {
         return "overloaded(long, char)";
     }
 
+    public String overloaded(long x, byte i) {
+        return "overloaded(long, byte)";
+    }
+
     public String overloaded(long x, short i) {
         return "overloaded(long, short)";
     }
@@ -147,6 +195,10 @@ public class InstanceMethods {
 
     public String overloaded(char x, char i) {
         return "overloaded(char, char)";
+    }
+
+    public String overloaded(char x, byte i) {
+        return "overloaded(char, byte)";
     }
 
     public String overloaded(char x, short i) {
@@ -177,6 +229,10 @@ public class InstanceMethods {
         return "overloaded(float, char)";
     }
 
+    public String overloaded(float x, byte i) {
+        return "overloaded(float, byte)";
+    }
+
     public String overloaded(float x, short i) {
         return "overloaded(float, short)";
     }
@@ -205,6 +261,10 @@ public class InstanceMethods {
         return "overloaded(double, char)";
     }
 
+    public String overloaded(double x, byte i) {
+        return "overloaded(double, byte)";
+    }
+
     public String overloaded(double x, short i) {
         return "overloaded(double, short)";
     }
@@ -231,6 +291,10 @@ public class InstanceMethods {
 
     public String overloaded(boolean x, char i) {
         return "overloaded(boolean, char)";
+    }
+
+    public String overloaded(boolean x, byte i) {
+        return "overloaded(boolean, byte)";
     }
 
     public String overloaded(boolean x, short i) {

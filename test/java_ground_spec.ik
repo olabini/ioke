@@ -194,6 +194,17 @@ describe("Java Objects",
           i cell?("field:publicIntFieldFinal=") should be false
         )
 
+        it("should handle a simple byte field",
+          i = ioke:lang:test:StaticFields
+          i field:publicByteFieldFinal asRational should == 13
+        )
+
+        it("should not have a setter for the byte field",
+          i = ioke:lang:test:StaticFields
+          i cell?("field:publicByteField=") should be true
+          i cell?("field:publicByteFieldFinal=") should be false
+        )
+
         it("should handle a simple short field",
           i = ioke:lang:test:StaticFields
           i field:publicShortFieldFinal asRational should == 13
@@ -282,6 +293,13 @@ describe("Java Objects",
         i get_publicIntField asRational should == 42
       )
 
+      it("should handle a simple byte field",
+        i = ioke:lang:test:StaticFields
+        i field:publicByteField asRational should == 0
+        i field:publicByteField = 12
+        i get_publicByteField asRational should == 12
+      )
+
       it("should handle a simple short field",
         i = ioke:lang:test:StaticFields
         i field:publicShortField asRational should == 0
@@ -353,6 +371,17 @@ describe("Java Objects",
           i = ioke:lang:test:StaticFields
           i cell?("field:protectedIntField=") should be true
           i cell?("field:protectedIntFieldFinal=") should be false
+        )
+
+        it("should handle a simple byte field",
+          i = ioke:lang:test:StaticFields
+          i field:protectedByteFieldFinal asRational should == 13
+        )
+
+        it("should not have a setter for the byte field",
+          i = ioke:lang:test:StaticFields
+          i cell?("field:protectedByteField=") should be true
+          i cell?("field:protectedByteFieldFinal=") should be false
         )
 
         it("should handle a simple short field",
@@ -443,6 +472,13 @@ describe("Java Objects",
         i get_protectedIntField asRational should == 42
       )
 
+      it("should handle a simple byte field",
+        i = ioke:lang:test:StaticFields
+        i field:protectedByteField asRational should == 0
+        i field:protectedByteField = 12
+        i get_protectedByteField asRational should == 12
+      )
+
       it("should handle a simple short field",
         i = ioke:lang:test:StaticFields
         i field:protectedShortField asRational should == 0
@@ -514,6 +550,17 @@ describe("Java Objects",
           i = ioke:lang:test:StaticFields
           i cell?("field:packagePrivateIntField=") should be true
           i cell?("field:packagePrivateIntFieldFinal=") should be false
+        )
+
+        it("should handle a simple byte field",
+          i = ioke:lang:test:StaticFields
+          i field:packagePrivateByteFieldFinal asRational should == 13
+        )
+
+        it("should not have a setter for the byte field",
+          i = ioke:lang:test:StaticFields
+          i cell?("field:packagePrivateByteField=") should be true
+          i cell?("field:packagePrivateByteFieldFinal=") should be false
         )
 
         it("should handle a simple short field",
@@ -604,6 +651,13 @@ describe("Java Objects",
         i get_packagePrivateIntField asRational should == 42
       )
 
+      it("should handle a simple byte field",
+        i = ioke:lang:test:StaticFields
+        i field:packagePrivateByteField asRational should == 0
+        i field:packagePrivateByteField = 12
+        i get_packagePrivateByteField asRational should == 12
+      )
+
       it("should handle a simple short field",
         i = ioke:lang:test:StaticFields
         i field:packagePrivateShortField asRational should == 0
@@ -676,6 +730,17 @@ describe("Java Objects",
           i = ioke:lang:test:StaticFields
           i cell?("field:privateIntField=") should be true
           i cell?("field:privateIntFieldFinal=") should be false
+        )
+
+        it("should handle a simple byte field",
+          i = ioke:lang:test:StaticFields
+          i field:privateByteFieldFinal asRational should == 13
+        )
+
+        it("should not have a setter for the byte field",
+          i = ioke:lang:test:StaticFields
+          i cell?("field:privateByteField=") should be true
+          i cell?("field:privateByteFieldFinal=") should be false
         )
 
         it("should handle a simple short field",
@@ -764,6 +829,13 @@ describe("Java Objects",
         i field:privateIntField asRational should == 0
         i field:privateIntField = 42
         i get_privateIntField asRational should == 42
+      )
+
+      it("should handle a simple byte field",
+        i = ioke:lang:test:StaticFields
+        i field:privateByteField asRational should == 0
+        i field:privateByteField = 12
+        i get_privateByteField asRational should == 12
       )
 
       it("should handle a simple short field",
@@ -841,6 +913,17 @@ describe("Java Objects",
           i cell?("field:publicIntFieldFinal=") should be false
         )
 
+        it("should handle a simple byte field",
+          i = ioke:lang:test:InstanceFields new
+          i field:publicByteFieldFinal asRational should == 13
+        )
+
+        it("should not have a setter for the byte field",
+          i = ioke:lang:test:InstanceFields new
+          i cell?("field:publicByteField=") should be true
+          i cell?("field:publicByteFieldFinal=") should be false
+        )
+
         it("should handle a simple short field",
           i = ioke:lang:test:InstanceFields new
           i field:publicShortFieldFinal asRational should == 13
@@ -929,6 +1012,13 @@ describe("Java Objects",
         i get_publicIntField asRational should == 42
       )
 
+      it("should handle a simple byte field",
+        i = ioke:lang:test:InstanceFields new
+        i field:publicByteField asRational should == 0
+        i field:publicByteField = 12
+        i get_publicByteField asRational should == 12
+      )
+
       it("should handle a simple short field",
         i = ioke:lang:test:InstanceFields new
         i field:publicShortField asRational should == 0
@@ -1000,6 +1090,17 @@ describe("Java Objects",
           i = ioke:lang:test:InstanceFields new
           i cell?("field:protectedIntField=") should be true
           i cell?("field:protectedIntFieldFinal=") should be false
+        )
+
+        it("should handle a simple byte field",
+          i = ioke:lang:test:InstanceFields new
+          i field:protectedByteFieldFinal asRational should == 13
+        )
+
+        it("should not have a setter for the byte field",
+          i = ioke:lang:test:InstanceFields new
+          i cell?("field:protectedByteField=") should be true
+          i cell?("field:protectedByteFieldFinal=") should be false
         )
 
         it("should handle a simple short field",
@@ -1090,6 +1191,13 @@ describe("Java Objects",
         i get_protectedIntField asRational should == 42
       )
 
+      it("should handle a simple byte field",
+        i = ioke:lang:test:InstanceFields new
+        i field:protectedByteField asRational should == 0
+        i field:protectedByteField = 12
+        i get_protectedByteField asRational should == 12
+      )
+
       it("should handle a simple short field",
         i = ioke:lang:test:InstanceFields new
         i field:protectedShortField asRational should == 0
@@ -1161,6 +1269,17 @@ describe("Java Objects",
           i = ioke:lang:test:InstanceFields new
           i cell?("field:packagePrivateIntField=") should be true
           i cell?("field:packagePrivateIntFieldFinal=") should be false
+        )
+
+        it("should handle a simple byte field",
+          i = ioke:lang:test:InstanceFields new
+          i field:packagePrivateByteFieldFinal asRational should == 13
+        )
+
+        it("should not have a setter for the byte field",
+          i = ioke:lang:test:InstanceFields new
+          i cell?("field:packagePrivateByteField=") should be true
+          i cell?("field:packagePrivateByteFieldFinal=") should be false
         )
 
         it("should handle a simple short field",
@@ -1251,6 +1370,13 @@ describe("Java Objects",
         i get_packagePrivateIntField asRational should == 42
       )
 
+      it("should handle a simple byte field",
+        i = ioke:lang:test:InstanceFields new
+        i field:packagePrivateByteField asRational should == 0
+        i field:packagePrivateByteField = 12
+        i get_packagePrivateByteField asRational should == 12
+      )
+
       it("should handle a simple short field",
         i = ioke:lang:test:InstanceFields new
         i field:packagePrivateShortField asRational should == 0
@@ -1323,6 +1449,17 @@ describe("Java Objects",
           i = ioke:lang:test:InstanceFields new
           i cell?("field:privateIntField=") should be true
           i cell?("field:privateIntFieldFinal=") should be false
+        )
+
+        it("should handle a simple byte field",
+          i = ioke:lang:test:InstanceFields new
+          i field:privateByteFieldFinal asRational should == 13
+        )
+
+        it("should not have a setter for the byte field",
+          i = ioke:lang:test:InstanceFields new
+          i cell?("field:privateByteField=") should be true
+          i cell?("field:privateByteFieldFinal=") should be false
         )
 
         it("should handle a simple short field",
@@ -1411,6 +1548,13 @@ describe("Java Objects",
         i field:privateIntField asRational should == 0
         i field:privateIntField = 42
         i get_privateIntField asRational should == 42
+      )
+
+      it("should handle a simple byte field",
+        i = ioke:lang:test:InstanceFields new
+        i field:privateByteField asRational should == 0
+        i field:privateByteField = 12
+        i get_privateByteField asRational should == 12
       )
 
       it("should handle a simple short field",
@@ -1514,6 +1658,13 @@ describe("Java Objects",
 
     it("should coerce something else correctly to Object",
       ioke:lang:test:StaticMethods overloaded(1..42) asText should == "overloaded(Object)"
+    )
+
+    it("should be possible to manually coerce into a byte argument",
+      ioke:lang:test:StaticMethods overloaded((byte)102) asText should == "overloaded(byte)"
+      ioke:lang:test:StaticMethods overloaded((byte)102, false) asText should == "overloaded(byte, boolean)"
+      ioke:lang:test:StaticMethods overloaded(123, (byte)42) asText should == "overloaded(int, byte)"
+      ioke:lang:test:StaticMethods overloaded((byte)123, (byte)42) asText should == "overloaded(byte, byte)"
     )
 
     it("should be possible to manually coerce into a short argument",
@@ -1680,6 +1831,14 @@ describe("Java Objects",
     it("should coerce something else correctly to Object",
       i = ioke:lang:test:InstanceMethods new
       i overloaded(1..42) asText should == "overloaded(Object)"
+    )
+
+    it("should be possible to manually coerce into a byte argument",
+      i = ioke:lang:test:InstanceMethods new
+      i overloaded((byte)102) asText should == "overloaded(byte)"
+      i overloaded((byte)102, false) asText should == "overloaded(byte, boolean)"
+      i overloaded(123, (byte)42) asText should == "overloaded(int, byte)"
+      i overloaded((byte)123, (byte)42) asText should == "overloaded(byte, byte)"
     )
 
     it("should be possible to manually coerce into a short argument",
@@ -1851,6 +2010,10 @@ describe("Java Objects",
       ioke:lang:test:Constructors new(1..40) getData asText should == "Constructors(Object)"
     )
 
+    it("should be possible to manually coerce into a byte argument",
+      ioke:lang:test:Constructors new( (byte) 4242 ) getData asText should == "Constructors(byte)"
+    )
+
     it("should be possible to manually coerce into a short argument",
       ioke:lang:test:Constructors new( (short) 4242 ) getData asText should == "Constructors(short)"
     )
@@ -1928,9 +2091,19 @@ describe("Java Objects",
         x[-2] asRational should == 55
       )
 
-      it("should be possible to send the array as java argument")
-      it("should be possible to manually cast to the array")
-    )
+;       it("should be possible to send the array as java argument",
+;         x = java:byte[5] new
+;         x[3] = 42
+;         ioke:lang:test:ArrayUser byteUse(x, 3) asRational should == 42
+;       )
+
+;       it("should be possible to manually cast to the array",
+;         x = java:byte[5] new
+;         ioke:lang:test:ArrayUser use(x) should == "byte[]"
+;         ioke:lang:test:ArrayUser use((java:byte[])x) should == "byte[]"
+;         ioke:lang:test:ArrayUser use((java:lang:Object[])x) should == "Object[]"
+;       )
+)
 
     describe("short",
       it("should have tests")

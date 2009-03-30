@@ -40,6 +40,10 @@ public class StaticMethods {
         return "overloaded(char)";
     }
 
+    public static String overloaded(byte i) {
+        return "overloaded(byte)";
+    }
+
     public static String overloaded(short i) {
         return "overloaded(short)";
     }
@@ -68,6 +72,10 @@ public class StaticMethods {
         return "overloaded(int, char)";
     }
 
+    public static String overloaded(int x, byte i) {
+        return "overloaded(int, byte)";
+    }
+
     public static String overloaded(int x, short i) {
         return "overloaded(int, short)";
     }
@@ -86,6 +94,38 @@ public class StaticMethods {
 
     public static String overloaded(int x, boolean i) {
         return "overloaded(int, boolean)";
+    }
+
+    public static String overloaded(byte x, int i) {
+        return "overloaded(byte, int)";
+    }
+
+    public static String overloaded(byte x, char i) {
+        return "overloaded(byte, char)";
+    }
+
+    public static String overloaded(byte x, byte i) {
+        return "overloaded(byte, byte)";
+    }
+
+    public static String overloaded(byte x, short i) {
+        return "overloaded(byte, short)";
+    }
+
+    public static String overloaded(byte x, long i) {
+        return "overloaded(byte, long)";
+    }
+
+    public static String overloaded(byte x, float i) {
+        return "overloaded(byte, float)";
+    }
+
+    public static String overloaded(byte x, double i) {
+        return "overloaded(byte, double)";
+    }
+
+    public static String overloaded(byte x, boolean i) {
+        return "overloaded(byte, boolean)";
     }
 
     public static String overloaded(short x, int i) {

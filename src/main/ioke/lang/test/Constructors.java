@@ -30,6 +30,10 @@ public class Constructors {
         this.data = "Constructors(long)";
     }
 
+    public Constructors(byte i) {
+        this.data = "Constructors(byte)";
+    }
+
     public Constructors(short i) {
         this.data = "Constructors(short)";
     }
