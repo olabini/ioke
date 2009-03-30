@@ -2072,6 +2072,7 @@ describe("Java Objects",
       )
 
       it("should be possible to coerce a List into an array")
+      it("should be possible to convert an array into a List")
 
       it("should be possible to get the length of one",
         java:byte[42] new length should == 42
@@ -2091,19 +2092,19 @@ describe("Java Objects",
         x[-2] asRational should == 55
       )
 
-;       it("should be possible to send the array as java argument",
-;         x = java:byte[5] new
-;         x[3] = 42
-;         ioke:lang:test:ArrayUser byteUse(x, 3) asRational should == 42
-;       )
+      it("should be possible to send the array as java argument",
+        x = java:byte[5] new
+        x[3] = 42
+        ioke:lang:test:ArrayUser byteUse(x, 3) asRational should == 42
+      )
 
-;       it("should be possible to manually cast to the array",
-;         x = java:byte[5] new
-;         ioke:lang:test:ArrayUser use(x) should == "byte[]"
-;         ioke:lang:test:ArrayUser use((java:byte[])x) should == "byte[]"
-;         ioke:lang:test:ArrayUser use((java:lang:Object[])x) should == "Object[]"
-;       )
-)
+      it("should be possible to manually cast to the array",
+        x = java:byte[5] new
+        ioke:lang:test:ArrayUser use(x) asText should == "byte[]"
+        ioke:lang:test:ArrayUser use((java:byte[])x) asText should == "byte[]"
+;         ioke:lang:test:ArrayUser use((java:lang:Object[])x) asText should == "Object[]"
+      )
+    )
 
     describe("short",
       it("should have tests")

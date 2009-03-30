@@ -8,6 +8,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.ArrayList;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -283,7 +284,8 @@ public class JavaArgumentsDefinition {
                     argCount += outp.size();
                 }
             } else if(Message.hasName(o, "") && IokeObject.as(o, context).getArguments().size() == 1) {
-                String name = Message.name(IokeObject.as(o, context).getArguments().get(0)).intern();
+                Object m = IokeObject.as(o, context).getArguments().get(0);
+                String name = Message.name(m).intern();
                 Object result = Message.getEvaluatedArgument(Message.next(o), context);
                 Class into = null;
                 Class alt = null;
@@ -326,6 +328,21 @@ public class JavaArgumentsDefinition {
                         into = null;
                     }
                 }
+
+                if(into != null) {
+                    int dimensions = 0;
+                    IokeObject next = Message.next(m);
+                    while(next != null && next.getName().equals("[]")) {
+                        dimensions++;
+                        next = Message.next(next);
+                    }
+                    if(dimensions > 0) {
+                        int[] ds = new int[dimensions];
+                        into = Array.newInstance(into, ds).getClass();
+                        alt = null;
+                    }
+                }
+
                 resultArguments.add(new JavaArgumentDefinition(into, alt, result));
                 argCount++;
             } else {
@@ -500,6 +517,22 @@ public class JavaArgumentsDefinition {
                                 args.add(obj);
                             }
                         }
+                    } else if(clz.isArray()) {
+//                         System.err.println(" -- adding the object for: " + members[i]);
+//                         System.err.println("  :" + clz);
+//                         System.err.println("   " + clz + ".isAssignableFrom(" + obj.getClass() + "): " + clz.isAssignableFrom(obj.getClass()));
+//                         System.err.println("   " + obj.getClass() + ".isAssignableFrom(" + clz + "): " + obj.getClass().isAssignableFrom(clz));
+
+                        if(obj == runtime.nil) {
+                            args.add(null);
+                        } else if(!isIokeObject && (clz.isAssignableFrom(obj.getClass()) || isExplicitCast)) {
+                            args.add(obj);
+                        } else if(isWrapper && (clz.isAssignableFrom(JavaWrapper.getObject(obj).getClass()) || isExplicitCast)) {
+                            args.add(JavaWrapper.getObject(obj));
+                        } else {
+                            args.clear();
+                            continue nextMethod;
+                        }
                     } else {
                         // here should probably be more advanced matching later on
                         if(obj == runtime.nil) {
@@ -532,7 +565,7 @@ public class JavaArgumentsDefinition {
         // error that no matching method could be found here. wait for specs for this, of course
 //         System.err.println("- Running with: " + members[i]);
         if(i == members.length) {
-            System.err.println("couldn't find matching for " + members[0] + " for arguments: " + resultArguments);
+            System.err.println("couldn't find matching for " + java.util.Arrays.asList((Object[])members) + " for arguments: " + resultArguments);
         }
 //         System.err.println("using: " + members[i] + " for: " + resultArguments + " with args: " + args);
         if(special) {
