@@ -2446,7 +2446,67 @@ describe("Java Objects",
     )
 
     describe("double",
-      it("should have tests")
+      it("should be possible to create a new array",
+        java:double[10] new
+        java:double[0] new
+      )
+
+      it("should be possible to create a nested array",
+        java:double[10][10] new
+      )
+
+      it("should be possible to coerce a List into an array",
+        x = java:double[] from([1.0,2.0,3.0,42.0,0.0])
+        x[0] asDecimal should be close(1.0)
+        x[1] asDecimal should be close(2.0)
+        x[2] asDecimal should be close(3.0)
+        x[3] asDecimal should be close(42.0)
+        x[4] asDecimal should be close(0.0)
+      )
+
+      it("should be possible to convert an array into a List",
+        x = java:double[5] new
+        x[3] = 42.0
+        x[2] = 40.0
+        y = x asList
+        y should have kind("List")
+        y[0] asDecimal should be close(0.0)
+        y[1] asDecimal should be close(0.0)
+        y[2] asDecimal should be close(40.0)
+        y[3] asDecimal should be close(42.0)
+        y[4] asDecimal should be close(0.0)
+      )
+
+      it("should be possible to get the length of one",
+        java:double[42] new length should == 42
+        java:double[5][8] new length should == 5
+      )
+
+      it("should be possible to get and set values in the array",
+        x = java:double[5] new
+        x[0] asDecimal should be close(0.0)
+        x[1] asDecimal should be close(0.0)
+        x[2] asDecimal should be close(0.0)
+        x[3] asDecimal should be close(0.0)
+        x[4] asDecimal should be close(0.0)
+        x[3] = 55.0
+        x[3] asDecimal should be close(55.0)
+        x[-1] asDecimal should be close(0.0)
+        x[-2] asDecimal should be close(55.0)
+      )
+
+      it("should be possible to send the array as java argument",
+        x = java:double[5] new
+        x[3] = 42.0
+        ioke:lang:test:ArrayUser doubleUse(x, 3) asDecimal should be close(42.0)
+      )
+
+      it("should be possible to manually cast to the array",
+        x = java:double[5] new
+        ioke:lang:test:ArrayUser use(x) asText should == "double[]"
+        ioke:lang:test:ArrayUser use((java:double[])x) asText should == "double[]"
+;         ioke:lang:test:ArrayUser use((java:lang:Object[])x) asText should == "Object[]"
+      )
     )
 
     describe("boolean",
