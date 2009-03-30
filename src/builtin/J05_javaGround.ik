@@ -55,11 +55,38 @@ JavaGround JavaArrayProxyCreator = Origin mimic do(
 JavaGround java:lang:Class [] = method(dimension nil,
   ; if dimension is nil, we want the class, otherwise we want a proxy creator
   if(dimension,
-    JavaArrayProxyCreator mimic(self, nil[dimension])
-    ,
-    nil
+    JavaArrayProxyCreator mimic(self, nil[dimension]),
+    dimension = 0
+    clz = self
+    while(clz class:array?,
+      dimension++
+      clz = clz:componentType)
+
+    baseType = if(clz class:array?,
+      clz class:componentType,
+      clz)
+    
+    dimension++
+    dims = list()
+    dimension times(dims << 0)
+    createPrimitiveJavaArray!(baseType, *dims) class
   )
 )
+
+JavaGround JavaArray each = dmacro(
+  [code]
+  (0...self length) each(n, code evaluateOn(call ground, self[n]))
+  self,
+
+  [argName, code]
+  lexical = LexicalBlock createFrom(list(argName, code), call ground)
+  (0...self length) each(n, lexical call(self[n]))
+  self,
+
+  [indexName, argName, code]
+  lexical = LexicalBlock createFrom(list(indexName, argName, code), call ground)
+  (0...self length) each(n, lexical call(n, self[n]))
+  self)
 
 JavaGround pass = macro(
   ; JavaGround really doesn't have access to much, so we scope every call to anything inside "call"

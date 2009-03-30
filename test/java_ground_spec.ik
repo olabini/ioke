@@ -2071,8 +2071,27 @@ describe("Java Objects",
         java:byte[10][10] new
       )
 
-      it("should be possible to coerce a List into an array")
-      it("should be possible to convert an array into a List")
+      it("should be possible to coerce a List into an array",
+        x = java:byte[] from([1,2,3,42,0])
+        x[0] asRational should == 1
+        x[1] asRational should == 2
+        x[2] asRational should == 3
+        x[3] asRational should == 42
+        x[4] asRational should == 0
+      )
+
+      it("should be possible to convert an array into a List",
+        x = java:byte[5] new
+        x[3] = 42
+        x[2] = 40
+        y = x asList
+        y should have kind("List")
+        y[0] asRational should == 0
+        y[1] asRational should == 0
+        y[2] asRational should == 40
+        y[3] asRational should == 42
+        y[4] asRational should == 0
+      )
 
       it("should be possible to get the length of one",
         java:byte[42] new length should == 42

@@ -25,7 +25,7 @@ public class JavaGround {
         final Runtime runtime = obj.runtime;
         obj.setKind("JavaGround");
         obj.mimicsWithoutCheck(IokeObject.as(runtime.defaultBehavior.getCells().get("BaseBehavior"), null));
-
+        obj.registerCell("JavaArray", runtime.javaArray);
 
         obj.registerMethod(runtime.newJavaMethod("takes an internal name for a Java type and returns that object.", new TypeCheckingJavaMethod("primitiveJavaClass!") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
@@ -72,7 +72,6 @@ public class JavaGround {
                     for(int i=0; i<dimensions.length; i++) {
                         dimensions[i] = Number.intValue(args.get(i+1)).intValue();
                     }
-
                     return Array.newInstance(type, dimensions);
                 }
             }));
