@@ -8,6 +8,7 @@ JavaGround java:lang:String = JavaGround primitiveJavaClass!("java.lang.String")
 JavaGround java:lang:Integer = JavaGround primitiveJavaClass!("java.lang.Integer")
 JavaGround java:lang:Short = JavaGround primitiveJavaClass!("java.lang.Short")
 JavaGround java:lang:Byte = JavaGround primitiveJavaClass!("java.lang.Byte")
+JavaGround java:lang:Boolean = JavaGround primitiveJavaClass!("java.lang.Boolean")
 JavaGround java:lang:Character = JavaGround primitiveJavaClass!("java.lang.Character")
 JavaGround java:lang:Long = JavaGround primitiveJavaClass!("java.lang.Long")
 JavaGround java:lang:Float = JavaGround primitiveJavaClass!("java.lang.Float")
@@ -19,6 +20,7 @@ JavaGround java:short =     java:lang:Short field:TYPE
 JavaGround java:char  = java:lang:Character field:TYPE
 JavaGround java:int   =   java:lang:Integer field:TYPE
 JavaGround java:long  =      java:lang:Long field:TYPE
+JavaGround java:boolean = java:lang:Boolean field:TYPE
 
 JavaGround java:lang:String asText = JavaGround cell("primitiveMagic: String->Text")
 JavaGround java:lang:Integer asRational = JavaGround cell("primitiveMagic: Integer->Rational")
@@ -83,12 +85,12 @@ JavaGround JavaArray each = dmacro(
   self,
 
   [argName, code]
-  lexical = LexicalBlock createFrom(list(argName, code), call ground)
+  lexical = call LexicalBlock createFrom(call list(argName, code), call ground)
   (0...self length) each(n, lexical call(self[n]))
   self,
 
   [indexName, argName, code]
-  lexical = LexicalBlock createFrom(list(indexName, argName, code), call ground)
+  lexical = call LexicalBlock createFrom(call list(indexName, argName, code), call ground)
   (0...self length) each(n, lexical call(n, self[n]))
   self)
 

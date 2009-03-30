@@ -67,7 +67,14 @@ public class JavaArray {
                     }
 
                     if(index >= 0 && index < size) {
-                        return Array.get(arr, index);
+                        Object obj = Array.get(arr, index);
+                        if(obj == null) {
+                            return context.runtime.nil;
+                        } else if(obj instanceof Boolean) {
+                            return ((Boolean)obj).booleanValue() ? context.runtime._true : context.runtime._false;
+                        } else {
+                            return obj;
+                        }
                     } else {
                         return context.runtime.nil;
                     }

@@ -2327,7 +2327,7 @@ describe("Java Objects",
         java:long[10][10] new
       )
 
-      it("should be possible to coerce a List longo an array",
+      it("should be possible to coerce a List into an array",
         x = java:long[] from([1,2,3,42,0])
         x[0] asRational should == 1
         x[1] asRational should == 2
@@ -2336,7 +2336,7 @@ describe("Java Objects",
         x[4] asRational should == 0
       )
 
-      it("should be possible to convert an array longo a List",
+      it("should be possible to convert an array into a List",
         x = java:long[5] new
         x[3] = 42
         x[2] = 40
@@ -2390,7 +2390,67 @@ describe("Java Objects",
     )
 
     describe("boolean",
-      it("should have tests")
+      it("should be possible to create a new array",
+        java:boolean[10] new
+        java:boolean[0] new
+      )
+
+      it("should be possible to create a nested array",
+        java:boolean[10][10] new
+      )
+
+      it("should be possible to coerce a List into an array",
+        x = java:boolean[] from([true,false,false,true,true])
+        x[0] should be true
+        x[1] should be false
+        x[2] should be false
+        x[3] should be true
+        x[4] should be true
+      )
+
+      it("should be possible to convert an array into a List",
+        x = java:boolean[5] new
+        x[3] = true
+        x[2] = true
+        y = x asList
+        y should have kind("List")
+        y[0] should be false
+        y[1] should be false
+        y[2] should be true
+        y[3] should be true
+        y[4] should be false
+      )
+
+      it("should be possible to get the length of one",
+        java:boolean[42] new length should == 42
+        java:boolean[5][8] new length should == 5
+      )
+
+      it("should be possible to get and set values in the array",
+        x = java:boolean[5] new
+        x[0] should be false
+        x[1] should be false
+        x[2] should be false
+        x[3] should be false
+        x[4] should be false
+        x[3] = true
+        x[3] should be true
+        x[-1] should be false
+        x[-2] should be true
+      )
+
+      it("should be possible to send the array as java argument",
+        x = java:boolean[5] new
+        x[3] = true
+        ioke:lang:test:ArrayUser booleanUse(x, 3) should == true
+      )
+
+      it("should be possible to manually cast to the array",
+        x = java:boolean[5] new
+        ioke:lang:test:ArrayUser use(x) asText should == "boolean[]"
+        ioke:lang:test:ArrayUser use((java:boolean[])x) asText should == "boolean[]"
+;         ioke:lang:test:ArrayUser use((java:lang:Object[])x) asText should == "Object[]"
+      )
     )
 
     describe("Object",
