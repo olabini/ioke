@@ -21,7 +21,8 @@ JavaGround java:char  = java:lang:Character field:TYPE
 JavaGround java:int   =   java:lang:Integer field:TYPE
 JavaGround java:long  =      java:lang:Long field:TYPE
 JavaGround java:boolean = java:lang:Boolean field:TYPE
-JavaGround java:float =     java:lang:Float field:TYPE
+JavaGround java:float  =    java:lang:Float field:TYPE
+JavaGround java:double =   java:lang:Double field:TYPE
 
 JavaGround java:lang:String asText = JavaGround cell("primitiveMagic: String->Text")
 JavaGround java:lang:Integer asRational = JavaGround cell("primitiveMagic: Integer->Rational")
