@@ -48,43 +48,47 @@ public class ArrayUser {
         return arr[index];
     }
 
-    public static String use(byte[] arr, int index) {
+    public static String use(byte[] arr) {
         return "byte[]";
     }
 
-    public static String use(short[] arr, int index) {
+    public static String use(short[] arr) {
         return "short[]";
     }
 
-    public static String use(char[] arr, int index) {
+    public static String use(char[] arr) {
         return "char[]";
     }
 
-    public static String use(int[] arr, int index) {
+    public static String use(int[] arr) {
         return "int[]";
     }
 
-    public static String use(long[] arr, int index) {
+    public static String use(long[] arr) {
         return "long[]";
     }
 
-    public static String use(float[] arr, int index) {
+    public static String use(float[] arr) {
         return "float[]";
     }
 
-    public static String use(double[] arr, int index) {
+    public static String use(double[] arr) {
         return "double[]";
     }
 
-    public static String use(boolean[] arr, int index) {
+    public static String use(boolean[] arr) {
         return "boolean[]";
     }
 
-    public static String use(Object[] arr, int index) {
+    public static String use(Object[] arr) {
         return "Object[]";
     }
 
-    public static String use(Object[][] arr, int index) {
+    public static String use(String[] arr) {
+        return "String[]";
+    }
+
+    public static String use(Object[][] arr) {
         return "Object[][]";
     }
 }// ArrayUser
