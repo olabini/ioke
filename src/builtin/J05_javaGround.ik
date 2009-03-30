@@ -16,6 +16,7 @@ JavaGround java:lang:reflect:Array = JavaGround primitiveJavaClass!("java.lang.r
 
 JavaGround java:byte =  java:lang:Byte field:TYPE
 JavaGround java:short = java:lang:Short field:TYPE
+JavaGround java:char =  java:lang:Character field:TYPE
 
 JavaGround java:lang:String asText = JavaGround cell("primitiveMagic: String->Text")
 JavaGround java:lang:Integer asRational = JavaGround cell("primitiveMagic: Integer->Rational")
