@@ -15,6 +15,8 @@ public class InstanceFields {
     public Object get_publicObjectField(){ return publicObjectField; }
     public int publicIntField;
     public int get_publicIntField(){ return publicIntField; }
+    public byte publicByteField;
+    public byte get_publicByteField(){ return publicByteField; }
     public short publicShortField;
     public short get_publicShortField(){ return publicShortField; }
     public long publicLongField;
@@ -31,6 +33,7 @@ public class InstanceFields {
     public final String publicStringFieldFinal = "test1StringFinal";
     public final Object publicObjectFieldFinal = new java.util.ArrayList();
     public final int publicIntFieldFinal = 42;
+    public final byte publicByteFieldFinal = 13;
     public final short publicShortFieldFinal = 13;
     public final long publicLongFieldFinal = 13243435;
     public final char publicCharFieldFinal = 44;
@@ -44,6 +47,8 @@ public class InstanceFields {
     public Object get_protectedObjectField(){ return protectedObjectField; }
     protected int protectedIntField;
     public int get_protectedIntField(){ return protectedIntField; }
+    protected byte protectedByteField;
+    public byte get_protectedByteField(){ return protectedByteField; }
     protected short protectedShortField;
     public short get_protectedShortField(){ return protectedShortField; }
     protected long protectedLongField;
@@ -60,6 +65,7 @@ public class InstanceFields {
     protected final String protectedStringFieldFinal = "test1StringFinal";
     protected final Object protectedObjectFieldFinal = new java.util.ArrayList();
     protected final int protectedIntFieldFinal = 42;
+    protected final byte protectedByteFieldFinal = 13;
     protected final short protectedShortFieldFinal = 13;
     protected final long protectedLongFieldFinal = 13243435;
     protected final char protectedCharFieldFinal = 44;
@@ -73,6 +79,8 @@ public class InstanceFields {
     public Object get_packagePrivateObjectField(){ return packagePrivateObjectField; }
     int packagePrivateIntField;
     public int get_packagePrivateIntField(){ return packagePrivateIntField; }
+    byte packagePrivateByteField;
+    public byte get_packagePrivateByteField(){ return packagePrivateByteField; }
     short packagePrivateShortField;
     public short get_packagePrivateShortField(){ return packagePrivateShortField; }
     long packagePrivateLongField;
@@ -89,6 +97,7 @@ public class InstanceFields {
     final String packagePrivateStringFieldFinal = "test1StringFinal";
     final Object packagePrivateObjectFieldFinal = new java.util.ArrayList();
     final int packagePrivateIntFieldFinal = 42;
+    final byte packagePrivateByteFieldFinal = 13;
     final short packagePrivateShortFieldFinal = 13;
     final long packagePrivateLongFieldFinal = 13243435;
     final char packagePrivateCharFieldFinal = 44;
@@ -102,6 +111,8 @@ public class InstanceFields {
     public Object get_privateObjectField(){ return privateObjectField; }
     private int privateIntField;
     public int get_privateIntField(){ return privateIntField; }
+    private byte privateByteField;
+    public byte get_privateByteField(){ return privateByteField; }
     private short privateShortField;
     public short get_privateShortField(){ return privateShortField; }
     private long privateLongField;
@@ -118,6 +129,7 @@ public class InstanceFields {
     private final String privateStringFieldFinal = "test1StringFinal";
     private final Object privateObjectFieldFinal = new java.util.ArrayList();
     private final int privateIntFieldFinal = 42;
+    private final byte privateByteFieldFinal = 13;
     private final short privateShortFieldFinal = 13;
     private final long privateLongFieldFinal = 13243435;
     private final char privateCharFieldFinal = 44;

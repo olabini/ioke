@@ -46,28 +46,34 @@ public class JavaArgumentsDefinition {
             // Third is when there is no real ordering between them
 
             // Primitive linearization:
-            //  rationals:  int < character < long < short
+            //  rationals:  int < character < long < short < byte
             //  reals:      double < float
             if(a == b) {
                 // if they are the same we don't care.
                 return 0;
             } else if(a.isPrimitive() && b.isPrimitive()) {
                 if(a == Integer.TYPE) {
-                    if(b == Short.TYPE || b == Character.TYPE || b == Long.TYPE) {
+                    if(b == Short.TYPE || b == Character.TYPE || b == Long.TYPE || b == Byte.TYPE) {
                         return -1;
                     }
                 } else if(a == Short.TYPE) {
                     if(b == Long.TYPE || b == Integer.TYPE || b == Character.TYPE) {
                         return 1;
+                    } else if(b == Byte.TYPE) {
+                        return -1;
+                    }
+                } else if(a == Byte.TYPE) {
+                    if(b == Short.TYPE || b == Long.TYPE || b == Integer.TYPE || b == Character.TYPE) {
+                        return 1;
                     }
                 } else if(a == Character.TYPE) {
-                    if(b == Long.TYPE || b == Short.TYPE) {
+                    if(b == Long.TYPE || b == Short.TYPE || b == Byte.TYPE) {
                         return -1;
                     } else if(b == Integer.TYPE) {
                         return 1;
                     }
                 } else if(a == Long.TYPE) {
-                    if(b == Short.TYPE) {
+                    if(b == Short.TYPE || b == Byte.TYPE) {
                         return -1;
                     } else if(b == Integer.TYPE || b == Character.TYPE) {
                         return 1;
@@ -276,11 +282,12 @@ public class JavaArgumentsDefinition {
                     }
                     argCount += outp.size();
                 }
-            } else if(Message.hasName(o, "") && IokeObject.as(o, context).getArguments().size() == 1) { // Splat
+            } else if(Message.hasName(o, "") && IokeObject.as(o, context).getArguments().size() == 1) {
                 String name = Message.name(IokeObject.as(o, context).getArguments().get(0)).intern();
                 Object result = Message.getEvaluatedArgument(Message.next(o), context);
                 Class into = null;
                 Class alt = null;
+                // TODO: make these handle native arrays too
                 if(name == "Object") {
                     into = Object.class;
                 } else if(name == "String") {
@@ -293,6 +300,9 @@ public class JavaArgumentsDefinition {
                 } else if(name == "short") {
                     into = Short.TYPE;
                     alt = Short.class;
+                } else if(name == "byte") {
+                    into = Byte.TYPE;
+                    alt = Byte.class;
                 } else if(name == "boolean") {
                     into = Boolean.TYPE;
                     alt = Boolean.class;
@@ -398,6 +408,20 @@ public class JavaArgumentsDefinition {
                             args.add(JavaWrapper.getObject(obj));
                         } else if(isIokeObject && IokeObject.data(obj) instanceof Number) {
                             args.add(Short.valueOf((short)Number.intValue(obj).intValue()));
+                        } else if(!clz.isPrimitive() && obj == runtime.nil) {
+                            args.add(null);
+                        } else {
+                            args.clear();
+                            continue nextMethod;
+                        }
+                    } else if(clz == Byte.class || clz == Byte.TYPE) {
+                        // This should take into account widening and stuff like that later
+                        if(obj instanceof Byte) {
+                            args.add(obj);
+                        } else if(isWrapper && JavaWrapper.getObject(obj) instanceof Byte) {
+                            args.add(JavaWrapper.getObject(obj));
+                        } else if(isIokeObject && IokeObject.data(obj) instanceof Number) {
+                            args.add(Byte.valueOf((byte)Number.intValue(obj).intValue()));
                         } else if(!clz.isPrimitive() && obj == runtime.nil) {
                             args.add(null);
                         } else {

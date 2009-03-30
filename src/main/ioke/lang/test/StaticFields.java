@@ -14,6 +14,8 @@ public class StaticFields {
     public static Object get_publicObjectField(){ return publicObjectField; }
     public static int publicIntField;
     public static int get_publicIntField(){ return publicIntField; }
+    public static byte publicByteField;
+    public static byte get_publicByteField(){ return publicByteField; }
     public static short publicShortField;
     public static short get_publicShortField(){ return publicShortField; }
     public static long publicLongField;
@@ -30,6 +32,7 @@ public class StaticFields {
     public static final String publicStringFieldFinal = "test1StringFinal";
     public static final Object publicObjectFieldFinal = new java.util.ArrayList();
     public static final int publicIntFieldFinal = 42;
+    public static final byte publicByteFieldFinal = 13;
     public static final short publicShortFieldFinal = 13;
     public static final long publicLongFieldFinal = 13243435;
     public static final char publicCharFieldFinal = 44;
@@ -43,6 +46,8 @@ public class StaticFields {
     public static Object get_protectedObjectField(){ return protectedObjectField; }
     protected static int protectedIntField;
     public static int get_protectedIntField(){ return protectedIntField; }
+    protected static byte protectedByteField;
+    public static byte get_protectedByteField(){ return protectedByteField; }
     protected static short protectedShortField;
     public static short get_protectedShortField(){ return protectedShortField; }
     protected static long protectedLongField;
@@ -59,6 +64,7 @@ public class StaticFields {
     protected static final String protectedStringFieldFinal = "test1StringFinal";
     protected static final Object protectedObjectFieldFinal = new java.util.ArrayList();
     protected static final int protectedIntFieldFinal = 42;
+    protected static final byte protectedByteFieldFinal = 13;
     protected static final short protectedShortFieldFinal = 13;
     protected static final long protectedLongFieldFinal = 13243435;
     protected static final char protectedCharFieldFinal = 44;
@@ -72,6 +78,8 @@ public class StaticFields {
     public static Object get_packagePrivateObjectField(){ return packagePrivateObjectField; }
     static int packagePrivateIntField;
     public static int get_packagePrivateIntField(){ return packagePrivateIntField; }
+    static byte packagePrivateByteField;
+    public static byte get_packagePrivateByteField(){ return packagePrivateByteField; }
     static short packagePrivateShortField;
     public static short get_packagePrivateShortField(){ return packagePrivateShortField; }
     static long packagePrivateLongField;
@@ -88,6 +96,7 @@ public class StaticFields {
     static final String packagePrivateStringFieldFinal = "test1StringFinal";
     static final Object packagePrivateObjectFieldFinal = new java.util.ArrayList();
     static final int packagePrivateIntFieldFinal = 42;
+    static final byte packagePrivateByteFieldFinal = 13;
     static final short packagePrivateShortFieldFinal = 13;
     static final long packagePrivateLongFieldFinal = 13243435;
     static final char packagePrivateCharFieldFinal = 44;
@@ -101,6 +110,8 @@ public class StaticFields {
     public static Object get_privateObjectField(){ return privateObjectField; }
     private static int privateIntField;
     public static int get_privateIntField(){ return privateIntField; }
+    private static byte privateByteField;
+    public static byte get_privateByteField(){ return privateByteField; }
     private static short privateShortField;
     public static short get_privateShortField(){ return privateShortField; }
     private static long privateLongField;
@@ -117,6 +128,7 @@ public class StaticFields {
     private static final String privateStringFieldFinal = "test1StringFinal";
     private static final Object privateObjectFieldFinal = new java.util.ArrayList();
     private static final int privateIntFieldFinal = 42;
+    private static final byte privateByteFieldFinal = 13;
     private static final short privateShortFieldFinal = 13;
     private static final long privateLongFieldFinal = 13243435;
     private static final char privateCharFieldFinal = 44;
