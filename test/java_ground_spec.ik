@@ -2126,7 +2126,67 @@ describe("Java Objects",
     )
 
     describe("short",
-      it("should have tests")
+      it("should be possible to create a new array",
+        java:short[10] new
+        java:short[0] new
+      )
+
+      it("should be possible to create a nested array",
+        java:short[10][10] new
+      )
+
+      it("should be possible to coerce a List into an array",
+        x = java:short[] from([1,2,3,42,0])
+        x[0] asRational should == 1
+        x[1] asRational should == 2
+        x[2] asRational should == 3
+        x[3] asRational should == 42
+        x[4] asRational should == 0
+      )
+
+      it("should be possible to convert an array into a List",
+        x = java:short[5] new
+        x[3] = 42
+        x[2] = 40
+        y = x asList
+        y should have kind("List")
+        y[0] asRational should == 0
+        y[1] asRational should == 0
+        y[2] asRational should == 40
+        y[3] asRational should == 42
+        y[4] asRational should == 0
+      )
+
+      it("should be possible to get the length of one",
+        java:short[42] new length should == 42
+        java:short[5][8] new length should == 5
+      )
+
+      it("should be possible to get and set values in the array",
+        x = java:short[5] new
+        x[0] asRational should == 0
+        x[1] asRational should == 0
+        x[2] asRational should == 0
+        x[3] asRational should == 0
+        x[4] asRational should == 0
+        x[3] = 55
+        x[3] asRational should == 55
+        x[-1] asRational should == 0
+        x[-2] asRational should == 55
+      )
+
+      it("should be possible to send the array as java argument",
+        x = java:short[5] new
+        x[3] = 42
+        ioke:lang:test:ArrayUser shortUse(x, 3) asRational should == 42
+      )
+
+      it("should be possible to manually cast to the array",
+        x = java:short[5] new
+        ioke:lang:test:ArrayUser use(x) asText should == "short[]"
+        ioke:lang:test:ArrayUser use((java:short[])x) asText should == "short[]"
+;         ioke:lang:test:ArrayUser use((java:lang:Object[])x) asText should == "Object[]"
+      )
     )
 
     describe("char",
