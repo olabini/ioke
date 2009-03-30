@@ -14,9 +14,10 @@ JavaGround java:lang:Float = JavaGround primitiveJavaClass!("java.lang.Float")
 JavaGround java:lang:Double = JavaGround primitiveJavaClass!("java.lang.Double")
 JavaGround java:lang:reflect:Array = JavaGround primitiveJavaClass!("java.lang.reflect.Array")
 
-JavaGround java:byte =  java:lang:Byte field:TYPE
-JavaGround java:short = java:lang:Short field:TYPE
-JavaGround java:char =  java:lang:Character field:TYPE
+JavaGround java:byte  =      java:lang:Byte field:TYPE
+JavaGround java:short =     java:lang:Short field:TYPE
+JavaGround java:char  = java:lang:Character field:TYPE
+JavaGround java:int   =   java:lang:Integer field:TYPE
 
 JavaGround java:lang:String asText = JavaGround cell("primitiveMagic: String->Text")
 JavaGround java:lang:Integer asRational = JavaGround cell("primitiveMagic: Integer->Rational")
