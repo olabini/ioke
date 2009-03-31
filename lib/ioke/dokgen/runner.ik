@@ -1,4 +1,3 @@
-use("iopt")
 
 DokGen do(
   Collected = [{},{},{},{}] mimic do(
@@ -16,41 +15,23 @@ DokGen do(
     collectedSpecs = method([3])
   )
 
-  OptionParser = IOpt mimic do(
-    banner = "Usage: dokgen [options]"
-    
-    combineWithSpecs? = true
-    outputDir = "dok"
-    specsPattern = "test/**/*_spec.ik"
-
-    on["-o", "--output-dir"] = method("Output directory", dir outputDir, 
-      @outputDir = dir)
-
-    on["--[no-]combine-specs"] = method("Combine with specs?", v, 
-      @combineWithSpecs? = v)
-    
-    on["--spec"] = method("Specs pattern", glob specsPattern,
-      @combineWithSpecs? = true
-      @specsPattern = glob)
-    
-    on["-h", "--help"] = method("Display usage", @println. System exit)
-    on["-h"] priority = -10
-  )
-
   document = method(
     "Takes a list of command line arguments, parses these and then builds up the documentation about all data in the system",
     arguments,
 
-    opt = OptionParser mimic
-    opt parse!(arguments)
+    outputDir = "dok"
+
+    combineWithSpecs = true
+    specsPattern = "test/**/*_spec.ik"
     
-    collected = Collected from({}, {"Ground" => Ground}, {})
+    collected = Collected from({}, {"IokeGround" => IokeGround, "Ground" => Ground}, {})
 
-    collect(Ground, collected)
+    collect(IokeGround, collected)
 
-    if(opt combineWithSpecs?,
-      collectSpecs(opt specsPattern, collected collectedSpecs, collected))
+    if(combineWithSpecs,
+      collectSpecs(specsPattern, collected collectedSpecs, collected)
+    )
 
-    generate(opt outputDir, collected)
+    generate(outputDir, collected)
   )
 )

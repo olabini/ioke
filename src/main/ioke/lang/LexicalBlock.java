@@ -222,16 +222,16 @@ public class LexicalBlock extends IokeData implements AssociatedCode {
 
     public String getFormattedCode(Object self) throws ControlFlow {
         String args = arguments == null ? "" : arguments.getCode();
-        if(IokeObject.as(self, null).isActivatable()) {
-            return "fnx(" + args + "\n  " + Message.formattedCode(message, 2) + ")";
+        if(IokeObject.as(self, (IokeObject)self).isActivatable()) {
+            return "fnx(" + args + "\n  " + Message.formattedCode(message, 2, (IokeObject)self) + ")";
         } else {
-            return "fn(" + args + "\n  " + Message.formattedCode(message, 2) + ")";
+            return "fn(" + args + "\n  " + Message.formattedCode(message, 2, (IokeObject)self) + ")";
         }
     }
 
     public String inspect(Object self) {
         String args = arguments.getCode();
-        if(IokeObject.as(self, null).isActivatable()) {
+        if(IokeObject.as(self, (IokeObject)self).isActivatable()) {
             return "fnx(" + args + Message.code(message) + ")";
         } else {
             return "fn(" + args + Message.code(message) + ")";
@@ -239,7 +239,7 @@ public class LexicalBlock extends IokeData implements AssociatedCode {
     }
 
     public String notice(Object self) {
-        if(IokeObject.as(self, null).isActivatable()) {
+        if(IokeObject.as(self, (IokeObject)self).isActivatable()) {
             return "fnx(...)";
         } else {
             return "fn(...)";

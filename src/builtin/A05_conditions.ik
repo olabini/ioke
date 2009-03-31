@@ -123,10 +123,23 @@ Condition Error Invocation NotSpreadable report = method(
 #{message asStackTraceText}
 #{context stackTraceAsText}")
 
+Condition Error Invocation NotActivatable report = method(
+  "returns a representation of this error",
+
+  "can't activate value '#{noticeFor(receiver)}' for method #{methodName} (#{self kind})")
+
 Condition Error Invocation NoMatch report = method(
   "returns a representation of this error",
 
   "couldn't match arguments to '#{message name}' (#{self kind})
+
+#{message asStackTraceText}
+#{context stackTraceAsText}")
+
+Condition Error Type IncorrectType report = method(
+  "returns a representation of this error",
+
+  "expected type: '#{expectedType}'
 
 #{message asStackTraceText}
 #{context stackTraceAsText}")

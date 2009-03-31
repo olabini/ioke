@@ -40,7 +40,7 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
     }
 
     public String getFormattedCode(Object self) throws ControlFlow {
-        return "syntax(\n  " + Message.formattedCode(code, 2) + ")";
+        return "syntax(\n  " + Message.formattedCode(code, 2, (IokeObject)self) + ")";
     }
     
     @Override

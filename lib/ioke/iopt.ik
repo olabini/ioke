@@ -80,7 +80,7 @@ IOpt do(
     call arguments butLast each(i, a, 
       a = call argAt(i)
       unless(m = iopt:ion(a), 
-        signal!(MalformedOption, text: "Not a valid option: #{a}", option: a))
+        error!(MalformedOption, text: "Not a valid option: #{a}", option: a))
       options << m option)
     action = call arguments last
     action = if(action name == :":@" && action next && action next next nil?, 

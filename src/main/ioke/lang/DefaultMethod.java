@@ -76,7 +76,7 @@ public class DefaultMethod extends Method implements AssociatedCode {
 
     public String getFormattedCode(Object self) throws ControlFlow {
         String args = arguments == null ? "" : arguments.getCode();
-        return "method(" + args + "\n  " + Message.formattedCode(code, 2) + ")";
+        return "method(" + args + "\n  " + Message.formattedCode(code, 2, (IokeObject)self) + ")";
     }
 
     @Override
