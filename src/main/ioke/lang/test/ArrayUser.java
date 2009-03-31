@@ -40,6 +40,14 @@ public class ArrayUser {
         return arr[index];
     }
 
+    public static String stringUse(String[] arr, int index) {
+        return arr[index];
+    }
+
+    public static java.util.Map mapUse(java.util.Map[] arr, int index) {
+        return arr[index];
+    }
+
     public static Object objectUse(Object[] arr, int index) {
         return arr[index];
     }

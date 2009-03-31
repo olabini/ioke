@@ -2636,7 +2636,66 @@ describe("Java Objects",
     )
 
     describe("String",
-      it("should have tests")
+      it("should be possible to create a new array",
+        java:lang:String[10] new
+        java:lang:String[0] new
+      )
+
+      it("should be possible to create a nested array",
+        java:lang:String[10][10] new
+      )
+
+      it("should be possible to coerce a List into an array",
+        x = java:lang:String[] from(["foo", "bar", "flux", nil])
+        x[0] asText should == "foo"
+        x[1] asText should == "bar"
+        x[2] asText should == "flux"
+        x[3] should be nil
+      )
+
+      it("should be possible to convert an array into a List",
+        x = java:lang:String[5] new
+        x[3] = "flem"
+        x[2] = "mix"
+        y = x asList
+        y should have kind("List")
+        y[0] should be nil
+        y[1] should be nil
+        y[2] asText should == "mix"
+        y[3] asText should == "flem"
+        y[4] should be nil
+      )
+
+      it("should be possible to get the length of one",
+        java:lang:String[42] new length should == 42
+        java:lang:String[5][8] new length should == 5
+      )
+
+      it("should be possible to get and set values in the array",
+        x = java:lang:String[5] new
+        x[0] should be nil
+        x[1] should be nil
+        x[2] should be nil
+        x[3] should be nil
+        x[4] should be nil
+        x[3] = "hello!"
+        x[3] asText should == "hello!"
+        x[-1] should be nil
+        x[-2] asText should == "hello!"
+      )
+
+      it("should be possible to send the array as java argument",
+        x = java:lang:String[5] new
+        x[3] = "blarg"
+        ioke:lang:test:ArrayUser stringUse(x, 3) asText should == "blarg"
+      )
+
+      it("should be possible to manually cast to the array",
+        x = java:lang:String[5] new
+        ioke:lang:test:ArrayUser use(x) asText should == "String[]"
+        ioke:lang:test:ArrayUser use((java:lang:String[])x) asText should == "String[]"
+        ioke:lang:test:ArrayUser use((java:lang:Object[])x) asText should == "Object[]"
+      )
     )
 
     describe("java:util:Map",
