@@ -2699,7 +2699,73 @@ describe("Java Objects",
     )
 
     describe("java:util:Map",
-      it("should have tests")
+      it("should be possible to create a new array",
+        java:util:Map[10] new
+        java:util:Map[0] new
+      )
+
+      it("should be possible to create a nested array",
+        java:util:Map[10][10] new
+      )
+
+      it("should be possible to coerce a List into an array",
+        one = java:util:HashMap new
+        two = java:util:HashMap new
+        three = java:util:HashMap new
+        x = java:util:Map[] from([one, two, three, nil])
+        x[0] should be same(one)
+        x[1] should be same(two)
+        x[2] should be same(three)
+        x[3] should be nil
+      )
+
+      it("should be possible to convert an array into a List",
+        one = java:util:HashMap new
+        two = java:util:HashMap new
+        x = java:util:Map[5] new
+        x[3] = one
+        x[2] = two
+        y = x asList
+        y should have kind("List")
+        y[0] should be nil
+        y[1] should be nil
+        y[2] should be same(two)
+        y[3] should be same(one)
+        y[4] should be nil
+      )
+
+      it("should be possible to get the length of one",
+        java:util:Map[42] new length should == 42
+        java:util:Map[5][8] new length should == 5
+      )
+
+      it("should be possible to get and set values in the array",
+        x = java:util:Map[5] new
+        x[0] should be nil
+        x[1] should be nil
+        x[2] should be nil
+        x[3] should be nil
+        x[4] should be nil
+        mm = java:util:HashMap new
+        x[3] = mm
+        x[3] should be same(mm)
+        x[-1] should be nil
+        x[-2] should be same(mm)
+      )
+
+      it("should be possible to send the array as java argument",
+        x = java:util:Map[5] new
+        mm = java:util:HashMap new
+        x[3] = mm
+        ioke:lang:test:ArrayUser mapUse(x, 3) should be same(mm)
+      )
+
+      it("should be possible to manually cast to the array",
+        x = java:util:Map[5] new
+        ioke:lang:test:ArrayUser use(x) asText should == "Map[]"
+        ioke:lang:test:ArrayUser use((java:util:Map[])x) asText should == "Map[]"
+        ioke:lang:test:ArrayUser use((java:lang:Object[])x) asText should == "Object[]"
+      )
     )
   )
 )
