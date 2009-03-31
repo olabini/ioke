@@ -17,4 +17,14 @@ public class ArgumentUser {
         si.doTheThing("max");
         return si.getData();
     }
+
+    public static Object useDoubleVoidInterface(DoubleArgumentVoidInterface si) {
+        si.doSomething("max");
+        return si.getData();
+    }
+
+    public static Object useDoubleVoidInterface2(DoubleArgumentVoidInterface si) {
+        si.doSomething("max", "blex");
+        return si.getData();
+    }
 }// ArgumentUser
