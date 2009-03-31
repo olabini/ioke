@@ -88,6 +88,10 @@ public class ArrayUser {
         return "String[]";
     }
 
+    public static String use(java.util.Map[] arr) {
+        return "Map[]";
+    }
+
     public static String use(Object[][] arr) {
         return "Object[][]";
     }

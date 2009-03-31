@@ -2574,6 +2574,72 @@ describe("Java Objects",
     )
 
     describe("Object",
+      it("should be possible to create a new array",
+        java:lang:Object[10] new
+        java:lang:Object[0] new
+      )
+
+      it("should be possible to create a nested array",
+        java:lang:Object[10][10] new
+      )
+
+      it("should be possible to coerce a List into an array",
+        x = java:lang:Object[] from(["blah", "blurg", "blerg", nil])
+        x[0] should == "blah"
+        x[1] should == "blurg" 
+        x[2] should == "blerg"
+        x[3] should be nil 
+      )
+
+      it("should be possible to convert an array into a List",
+        x = java:lang:Object[5] new
+        x[3] = "blaha"
+        x[2] = "mux"
+        y = x asList
+        y should have kind("List")
+        y[0] should be nil
+        y[1] should be nil
+        y[2] should == "mux"
+        y[3] should == "blaha"
+        y[4] should be nil
+      )
+
+      it("should be possible to get the length of one",
+        java:lang:Object[42] new length should == 42
+        java:lang:Object[5][8] new length should == 5
+      )
+
+      it("should be possible to get and set values in the array",
+        x = java:lang:Object[5] new
+        x[0] should be nil
+        x[1] should be nil
+        x[2] should be nil
+        x[3] should be nil
+        x[4] should be nil
+        x[3] = 123
+        x[3] should == 123
+        x[-1] should be nil
+        x[-2] should == 123
+      )
+
+      it("should be possible to send the array as java argument",
+        x = java:lang:Object[5] new
+        x[3] = :haha
+        ioke:lang:test:ArrayUser objectUse(x, 3) should == :haha
+      )
+
+      it("should be possible to manually cast to the array",
+        x = java:lang:Object[5] new
+        ioke:lang:test:ArrayUser use(x) asText should == "Object[]"
+        ioke:lang:test:ArrayUser use((java:lang:Object[])x) asText should == "Object[]"
+      )
+    )
+
+    describe("String",
+      it("should have tests")
+    )
+
+    describe("java:util:Map",
       it("should have tests")
     )
   )
