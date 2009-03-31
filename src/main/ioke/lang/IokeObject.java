@@ -668,6 +668,12 @@ public class IokeObject implements TypeChecker {
         }
     }
 
+    public void mimicsWithoutCheck(int index, IokeObject mimic) {
+        if(!this.mimics.contains(mimic)) {
+            this.mimics.add(index, mimic);
+        }
+    }
+
     public void mimics(IokeObject mimic, IokeObject message, IokeObject context) throws ControlFlow {
         checkFrozen("mimic!", message, context);
 

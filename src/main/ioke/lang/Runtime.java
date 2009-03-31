@@ -613,8 +613,12 @@ public class Runtime {
             } else if(object == Class.class) {
                 IokeObject obj = this.javaWrapper.allocateCopy(null, null);
                 Class<?> clz = (Class)object;
-                obj.mimicsWithoutCheck(registry.wrap(clz.getSuperclass()));
+                IokeObject objWrap = registry.wrap(clz.getSuperclass());
+                obj.mimicsWithoutCheck(objWrap);
                 obj.setData(JavaWrapper.wrapWithMethods(clz, obj, this));
+
+                objWrap.mimicsWithoutCheck(0, obj); //circularity - warning! =)
+
                 return obj;
             } else {
                 IokeObject obj = this.javaWrapper.allocateCopy(null, null);
