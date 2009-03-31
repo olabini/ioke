@@ -3,6 +3,12 @@ use("ispec")
 
 describe(DefaultBehavior,
   describe("use",
+    it("should load a file with an absolute file name",
+      result = use(System currentDirectory + "/_test2/loadx")
+      result should be true
+      loadx_loaded should == 42
+    )
+
     it("should load a file in the same directory", 
       result = use("test/load1")
       result should be true
