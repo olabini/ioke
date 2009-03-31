@@ -40,7 +40,7 @@ public class DefaultMacro extends IokeData implements Named, Inspectable, Associ
     }
 
     public String getFormattedCode(Object self) throws ControlFlow {
-        return "macro(\n  " + Message.formattedCode(code, 2) + ")";
+        return "macro(\n  " + Message.formattedCode(code, 2, (IokeObject)self) + ")";
     }
     
     @Override

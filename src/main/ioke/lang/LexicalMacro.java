@@ -41,10 +41,10 @@ public class LexicalMacro extends IokeData implements AssociatedCode, Named, Ins
     }
 
     public String getFormattedCode(Object self) throws ControlFlow {
-        if(IokeObject.as(self, null).isActivatable()) {
-            return "lecro(\n  " + Message.formattedCode(code, 2) + ")";
+        if(IokeObject.as(self, (IokeObject)self).isActivatable()) {
+            return "lecro(\n  " + Message.formattedCode(code, 2, (IokeObject)self) + ")";
         } else {
-            return "lecrox(\n  " + Message.formattedCode(code, 2) + ")";
+            return "lecrox(\n  " + Message.formattedCode(code, 2, (IokeObject)self) + ")";
         }
     }
 

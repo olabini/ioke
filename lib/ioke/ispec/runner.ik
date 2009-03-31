@@ -13,13 +13,6 @@ ISpec do(
       !hasHelp? && missingFiles empty?)
 
     order = method(
-      ;; if not given files nor directories
-      if(files empty? && directories empty?, 
-        if(FileSystem directory?("spec"), 
-          directories << "spec", 
-          if(FileSystem directory?("test"),
-            directories << "test")))
-      
       ;; check if any pattern was set or use a default
       if(loadPatterns empty?,
         loadPatterns << "**/*_spec.ik")
@@ -110,7 +103,7 @@ ISpec do(
       formatters[:s] = formatters[:specdoc]
       formatters[:p] = formatters[:progress]
 
-      banner = "Usage: ispec (FILE|DIRECTORY|GLOB)+ [options]"
+      banner = "Usage: ispec (FILE|DIRECTORY|GLOB)* [options]"
 
       on("-h", "--help", "Display usage.", @options hasHelp? = true)
 
@@ -219,7 +212,7 @@ ISpec do(
   )
 
   didRun? = false
-  shouldRun? = true
+  shouldExit? = true
 
   run = method(
     "runs all the defined descriptions and specs",

@@ -5,9 +5,9 @@ describe(ISpec Runner OptionParser,
 
   describe("when parsing arguments",
 
-    it("should add the test directory if it exists and is no given files/dirs",
+    it("should NOT add the test directory if it exists and is no given files/dirs",
       parser = ISpec Runner OptionParser create(nil, nil)
-      parser order([]) directories should == ["test"]
+      parser order([]) directories should == []
     )
     
     it("should set hasHelp? when -h specified",

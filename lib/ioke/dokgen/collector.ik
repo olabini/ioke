@@ -36,7 +36,7 @@ DokGen do(
   collectSpecs = method(specsPattern, collectedSpecs, collected,
     use("ispec")
 
-    ISpec shouldRun? = false
+    ISpec Options shouldRun? = false
     ISpec shouldExit? = false
 
     FileSystem[specsPattern] each(f, use(f))
@@ -55,7 +55,7 @@ DokGen do(
 
         cellForSegment = collected collectedCells[segments[-1]]
         if(cellForSegment,
-          place = cellForSegment find(x, (x[0] kind == kindName) || ((x[0] kind == "Ground") && kindName == ""))
+          place = cellForSegment find(x, (x[0] kind == kindName) || ((x[0] kind == "Ground") && kindName == "") || ((x[0] kind == "IokeGround") && kindName == ""))
 
           if(place,
             place[4][cspec key] = cspec value
