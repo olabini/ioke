@@ -313,7 +313,19 @@ describe("JavaGround",
           ioke:lang:test:ArgumentUser useVoidClass(OtherObj new) asText should == "blarg"
         )
 
-        it("should be possible to override an overloaded method")
+        it("should be possible to override an overloaded method on an interface",
+          Obj = integrate(ioke:lang:test:DoubleArgumentVoidInterface)
+          Obj doSomething = method(x, y nil, if(y, y = y asText). self theData = nil[x asText, y])
+          Obj getData = method(self theData)
+
+          OtherObj = Obj mimic
+          OtherObj doSomething = method(x, y nil, self theData = "blarg")
+
+          ioke:lang:test:ArgumentUser useDoubleVoidInterface(Obj new) should == ["max", nil]
+          ioke:lang:test:ArgumentUser useDoubleVoidInterface(OtherObj new) asText should == "blarg"
+          ioke:lang:test:ArgumentUser useDoubleVoidInterface2(Obj new) should == ["max", "blex"]
+          ioke:lang:test:ArgumentUser useDoubleVoidInterface2(OtherObj new) asText should == "blarg"
+        )
       )
     )
 
