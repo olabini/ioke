@@ -164,6 +164,100 @@ public class IokeSystem extends IokeData {
 
         String[] suffixes = (name.endsWith(".ik") || name.endsWith(".jar")) ? SUFFIXES_WITH_BLANK : SUFFIXES;
 
+        // Absolute path
+        for(String suffix : suffixes) {
+            String before = "/";
+            if(name.startsWith("/")) {
+                before = "";
+            }
+
+            InputStream is = IokeSystem.class.getResourceAsStream(before + name + suffix);
+            try {
+                File f = new File(name + suffix);
+
+                if(f.exists() && f.isFile()) {
+                    if(loaded.contains(f.getCanonicalPath())) {
+                        return false;
+                    } else {
+                        if(f.getCanonicalPath().endsWith(".jar")) {
+                            context.runtime.classRegistry.getClassLoader().addURL(f.toURI().toURL());
+                        } else {
+                            context.runtime.evaluateFile(f, message, context);
+                        }
+
+                        loaded.add(f.getCanonicalPath());
+                        return true;
+                    }
+                }
+
+                if(null != is) {
+                    if(loaded.contains(name+suffix)) {
+                        return false;
+                    } else {
+                        if((name+suffix).endsWith(".jar")) {
+                            // load jar here - can't do it correctly at the moment, though.
+                        } else {
+                            context.runtime.evaluateStream(name+suffix, new InputStreamReader(is, "UTF-8"), message, context);
+                        }
+                        loaded.add(name+suffix);
+                        return true;
+                    }
+                }
+            } catch(Throwable e) {
+                final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
+                                                                                   message, 
+                                                                                   context, 
+                                                                                   "Error", 
+                                                                                   "Load"), context).mimic(message, context);
+                condition.setCell("message", message);
+                condition.setCell("context", context);
+                condition.setCell("receiver", self);
+                condition.setCell("moduleName", runtime.newText(name));
+                condition.setCell("exceptionMessage", runtime.newText(e.getMessage()));
+                List<Object> ob = new ArrayList<Object>();
+                for(StackTraceElement ste : e.getStackTrace()) {
+                    ob.add(runtime.newText(ste.toString()));
+                }
+
+                condition.setCell("exceptionStackTrace", runtime.newList(ob));
+
+                final boolean[] continueLoadChain = new boolean[]{false};
+
+                runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
+                        public void run() throws ControlFlow {
+                            runtime.errorCondition(condition);
+                        }}, 
+                    context,
+                    new Restart.ArgumentGivingRestart("continueLoadChain") { 
+                        public List<String> getArgumentNames() {
+                            return new ArrayList<String>();
+                        }
+
+                        public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
+                            continueLoadChain[0] = true;
+                            return runtime.nil;
+                        }
+                    },
+                    new Restart.ArgumentGivingRestart("ignoreLoadError") {
+                        public List<String> getArgumentNames() {
+                            return new ArrayList<String>();
+                        }
+
+                        public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
+                            continueLoadChain[0] = false;
+                            return runtime.nil;
+                        }
+                    }
+                    );
+                if(!continueLoadChain[0]) {
+                    return false;
+                }
+            }
+        }
+
+
+
+
         for(Object o : paths) {
             String currentS = Text.getText(o);
 
