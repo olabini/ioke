@@ -386,10 +386,13 @@ public class IokeSystem extends IokeData {
 
         obj.setKind("System");
 
-        try {
-            currentWorkingDirectory = new File(".").getCanonicalPath();
-        } catch(Exception e) {
-            currentWorkingDirectory = ".";
+        if(currentWorkingDirectory == null) {
+            // Use the JVM's CWD
+            try {
+                currentWorkingDirectory = new File(".").getCanonicalPath();
+            } catch(Exception e) {
+                currentWorkingDirectory = ".";
+            }
         }
 
         List<Object> l = new ArrayList<Object>();
