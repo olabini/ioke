@@ -1,0 +1,15 @@
+Things missing from Ioke that it needs to have:
+-----------------------------------------------
+
+- Tree template restructuring
+- Cane
+- Concurrency
+- Destructuring assignment with ()
+- Units
+- Sockets
+- Tuples
+- IIk - saving history to file
+
+
+--- Comparison with Ruby libs
+
