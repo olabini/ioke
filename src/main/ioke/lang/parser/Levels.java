@@ -432,31 +432,33 @@ public class Levels {
                 head = Message.prev(head);
             }
             
-            IokeObject argPart = Message.deepCopy(head);
+            if(head != msg) {
+                IokeObject argPart = Message.deepCopy(head);
             
-            if(Message.prev(msg) != null) {
-                Message.setNext(Message.prev(msg), null);
-            }
-            Message.setPrev(msg, null);
+                if(Message.prev(msg) != null) {
+                    Message.setNext(Message.prev(msg), null);
+                }
+                Message.setPrev(msg, null);
 
-            IokeObject beforeHead = Message.prev(head);
-            msg.getArguments().add(argPart);
+                IokeObject beforeHead = Message.prev(head);
+                msg.getArguments().add(argPart);
 
-            IokeObject next = Message.next(msg);
+                IokeObject next = Message.next(msg);
 
-            IokeObject last = next;
-            while(Message.next(last) != null && !Message.isTerminator(Message.next(last))) {
-                last = Message.next(last);
-            }
-            IokeObject cont = Message.next(last);
-            Message.setNext(msg, cont);
-            if(cont != null) {
-                Message.setPrev(cont, msg);
-            }
-            Message.setNext(last, msg);
-            Message.setPrev(msg, last);
+                IokeObject last = next;
+                while(Message.next(last) != null && !Message.isTerminator(Message.next(last))) {
+                    last = Message.next(last);
+                }
+                IokeObject cont = Message.next(last);
+                Message.setNext(msg, cont);
+                if(cont != null) {
+                    Message.setPrev(cont, msg);
+                }
+                Message.setNext(last, msg);
+                Message.setPrev(msg, last);
             
-            head.become(next, null, null);
+                head.become(next, null, null);
+            }
         }
 
         /*
