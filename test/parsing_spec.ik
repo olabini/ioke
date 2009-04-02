@@ -229,10 +229,20 @@ bar" should == "foobar"
       m should == ":foo"
     )
 
-;     it("should be allowed to begin with two colons",  
-;       m = parse("::foo")
-;       m should == "::foo"
-;     )
+    it("should use two colons",  
+      m = parse("::")
+      m should == "::"
+    )
+
+    it("should separate two colons",  
+      m = parse("::foo")
+      m should == "::(foo)"
+    )
+
+    it("should separate three colons",  
+      m = parse(":::foo")
+      m should == ":::(foo)"
+    )
 
     it("should be allowed to only be a colon",  
       m = parse(":")
