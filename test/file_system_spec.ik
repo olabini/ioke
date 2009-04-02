@@ -135,7 +135,7 @@ describe(FileSystem,
         [ [ "test/_test/_file1"              ],             "test/**/_f*[il]e[01]*" ],
         [ [ "test/_test/_file1"              ],             "test/**/_f*[^ie]e[01]*" ],
         ] each(theList,
-        FileSystem[theList second] should == theList first
+        FileSystem[theList second] sort should == theList first sort
       )
     )
   )
