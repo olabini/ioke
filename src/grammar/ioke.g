@@ -210,6 +210,7 @@ Identifier
     |   ':' (Letter|IDDigit) (Letter|IDDigit|':'|'!'|'?'|'$')*
     ;
 
+fragment
 DecimalLiteral
     :
     ;
