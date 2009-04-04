@@ -22,6 +22,11 @@ Text cell("%") = method(
     self format(*formatSpec),
     self format(formatSpec)))
 
+Text cell("=~") = method(
+  "takes a regular expression, and tries to match that regular expression against the the self",
+  regexp,
+  regexp =~ self)
+
 Text do(=== = generateMatchMethod(==))
 
 Text chars = method(
