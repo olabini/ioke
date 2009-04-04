@@ -27,6 +27,11 @@ Text cell("=~") = method(
   regexp,
   regexp =~ self)
 
+Text cell("!~") = method(
+  "takes a regular expression, and tries to see if that expression doesn't match the text",
+  regexp,
+  regexp !~ self)
+
 Text do(=== = generateMatchMethod(==))
 
 Text chars = method(

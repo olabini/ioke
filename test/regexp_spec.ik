@@ -369,6 +369,25 @@ describe(Regexp,
     )
   )
 
+  describe("!~",
+    it("should return a false value when matching",
+      (#/foo/ !~ "foo") should not be true
+      (#/fo{1,2}/ !~ "foo") should not be true
+      (#/foo/ !~ "x foo x") should not be true
+      (#/^foo$/ !~ "foo") should not be true
+      (#/^foo/ !~ "foo bar") should not be true
+      (#/ foo$/ !~ "bar foo") should not be true
+    )
+
+    it("should return true when not matching",
+      (#/fo{3}/ !~ "foo") should be true
+      (#/fox/ !~ "x foo x") should be true
+      (#/^ foo$/ !~ "foo") should be true
+      (#/foo$/ !~ "foo bar") should be true
+      (#/^foo/ !~ "bar foo") should be true
+    )
+  )
+
   describe("match",
     it("should return a true value when matching",
       (#/foo/ match("foo")) true? should be true

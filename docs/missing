@@ -6,7 +6,7 @@ Things missing from Ioke that it needs to have:
 - Concurrency
 - Destructuring assignment with ()
 - Units
-- Sockets
+- IO, Sockets
 - Tuples
 - IIk - saving history to file
 
@@ -35,20 +35,6 @@ Array:
  sort!
  
 
-Dir
- chdir
- getwd
- mkdir
- 
-
 File
  delete
-
-
-
-IO, Sockets
-
-
-String
- =~
     
