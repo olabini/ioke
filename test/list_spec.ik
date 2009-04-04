@@ -29,6 +29,66 @@ describe(List,
     )
   )
   
+  describe("*",
+    it("should have tests")
+  )
+
+  describe("assoc",
+    it("should have tests")
+  )
+
+  describe("collect!",
+    it("should have tests")
+  )
+
+  describe("map!",
+    it("should have tests")
+  )
+
+  describe("compact",
+    it("should have tests")
+  )
+
+  describe("compact!",
+    it("should have tests")
+  )
+
+  describe("concat!",
+    it("should have tests")
+  )
+
+  describe("deleteIf!",
+    it("should have tests")
+  )
+
+  describe("flatten",
+    it("should have tests")
+  )
+
+  describe("flatten!",
+    it("should have tests")
+  )
+
+  describe("index",
+    it("should have tests")
+  )
+
+  describe("rindex",
+    it("should have tests")
+  )
+
+  describe("join",
+    it("should have tests")
+  )
+
+  describe("reverse",
+    it("should have tests")
+  )
+
+  describe("reverse!",
+    it("should have tests")
+  )
+
   describe("at", 
     it("should return nil if empty list", 
       list at(0) should be nil
