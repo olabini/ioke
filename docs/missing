@@ -12,4 +12,44 @@ Things missing from Ioke that it needs to have:
 
 
 --- Comparison with Ruby libs
+Array:
+ * (repetition)
+ + (concat)
+ - (array difference)
+ assoc
+ clear
+ collect!, map!
+ compact
+ compact!
+ concat! (add array)
+ delete! 
+ deleteIf! 
+ empty?
+ flatten
+ flatten!
+ index (gets the index of something)
+  rindex
+ join
+ reverse
+ reverse!
+ sort!
+ 
 
+Dir
+ chdir
+ getwd
+ mkdir
+ 
+
+File
+ delete
+
+
+
+IO, Sockets
+
+
+String
+ %
+ =~
+    
