@@ -15,6 +15,13 @@ Text cell("*") = method(
   times times(result += self)
   result)
 
+Text cell("%") = method(
+  "takes either a single argument or a list of arguments and sends these on to 'format'",
+  formatSpec,
+  if(formatSpec mimics?(List),
+    self format(*formatSpec),
+    self format(formatSpec)))
+
 Text do(=== = generateMatchMethod(==))
 
 Text chars = method(
