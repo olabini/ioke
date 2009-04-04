@@ -111,6 +111,10 @@ describe(FileSystem,
       FileSystem should not have directory("test/dir_to_remove")
     )
   )
+
+  describe("removeFile!",
+    it("should have tests")
+  )
   
   describe("[]", 
     it("should glob correctly", 
