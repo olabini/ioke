@@ -608,6 +608,16 @@ describe("Text",
     )
   )
 
+  describe("!~",
+    it("should match the regular expression on as the argument",
+      ("foo" !~ #/fo+/) should be false
+    )
+
+    it("should not match against something that isn't matching regexp",
+      ("foo" !~ #/xfo+/) should be true
+    )
+  )
+
   describe("%",
     it("should format a simple text",
       ("foo bar %s dfgdfg" % "bar") should == "foo bar bar dfgdfg"
