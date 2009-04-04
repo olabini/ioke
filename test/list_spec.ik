@@ -46,11 +46,68 @@ describe(List,
   )
 
   describe("compact",
-    it("should have tests")
+    it("should return an empty list for an empty list",
+      [] compact should == []
+    )
+
+    it("should return a list without nils",
+      [nil] compact should == []
+      [nil, 1] compact should == [1]
+      [1, nil, 1] compact should == [1, 1]
+      [1, nil] compact should == [1]
+      [1,2,3,:nil,nil, nil, nil, nil, :bah, nil] compact should == [1, 2, 3, :nil, :bah]
+    )
+
+    it("should leave a list without nils unmodified",
+      [:a] compact should == [:a]
+      [:a, :b, 123] compact should == [:a, :b, 123]
+    )
+
+    it("should not remove false values",
+      [false] compact should == [false]
+    )
+
+    it("should not modify the original list",
+      x = [nil, 1]
+      x compact
+      x should == [nil, 1]
+    )
   )
 
   describe("compact!",
-    it("should have tests")
+    it("should return the list",
+      x = [1,2,3]
+      x compact! should be same(x)
+    )
+
+    it("should leave an empty list unmodified",
+      x = []
+      x compact!
+      x should == []
+    )
+
+    it("should remove all nils in the list",
+      [nil] compact! should == []
+      [nil, 1] compact! should == [1]
+      [1, nil, 1] compact! should == [1, 1]
+      [1, nil] compact! should == [1]
+      [1,2,3,:nil,nil, nil, nil, nil, :bah, nil] compact! should == [1, 2, 3, :nil, :bah]
+    )
+
+    it("should leave a list without nils unmodified",
+      [:a] compact! should == [:a]
+      [:a, :b, 123] compact! should == [:a, :b, 123]
+    )
+
+    it("should not remove false values",
+      [false] compact! should == [false]
+    )
+
+    it("should modify the original list",
+      x = [1, nil]
+      x compact!
+      x should == [1]
+    )
   )
 
   describe("concat!",
