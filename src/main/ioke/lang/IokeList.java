@@ -723,6 +723,22 @@ public class IokeList extends IokeData {
                 	return copyList(context, receiver);
                 }
             }));
+
+        obj.registerMethod(obj.runtime.newJavaMethod("Returns all nils in this list, and then returns the list", new TypeCheckingJavaMethod.WithNoArguments("compact!", runtime.list) {
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    List<Object> list = getList(on);
+                    List<Object> newList = new ArrayList<Object>();
+                    Object nil = context.runtime.nil;
+                    for(Object o : list) {
+                        if(o != nil) {
+                            newList.add(o);
+                        }
+                    }
+                    setList(on, newList);
+                    return on;
+                }
+            }));
     }
 
     public void add(Object obj) {
@@ -733,8 +749,16 @@ public class IokeList extends IokeData {
         return list;
     }
 
+    public void setList(List<Object> list) {
+        this.list = list;
+    }
+
     public static List<Object> getList(Object on) {
         return ((IokeList)(IokeObject.data(on))).getList();
+    }
+
+    public static void setList(Object on, List<Object> list) {
+        ((IokeList)(IokeObject.data(on))).setList(list);
     }
 
     public static String getInspect(Object on) throws ControlFlow {

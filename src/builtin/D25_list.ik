@@ -60,3 +60,9 @@ List ?& = dmacro(
     self))
 
 List do(=== = generateMatchMethod(include?))
+
+List compact = method(
+  "returns a new list that is a mimic of the current list, except that all nils are removed from it",
+  newList = self mimic
+  newList compact!
+  newList)
