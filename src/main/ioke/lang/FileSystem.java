@@ -484,5 +484,60 @@ public class FileSystem {
                     return context.runtime.nil;
                 }
             }));
+
+        obj.registerMethod(runtime.newJavaMethod("Takes one string argument and removes a file with that name. Will signal a condition if the file doesn't exist, or if there's a directory with that name.", new JavaMethod("removeFile!") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("fileName")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+
+                    String name = Text.getText(args.get(0));
+                    File f = null;
+                    if(IokeSystem.isAbsoluteFileName(name)) {
+                        f = new File(name);
+                    } else {
+                        f = new File(context.runtime.getCurrentWorkingDirectory(), name);
+                    }
+
+                    final Runtime runtime = context.runtime;
+                    if(!f.exists() || !f.isFile()) {
+                        String msg = null;
+                        if(!f.isFile()) {
+                            msg = "Can't remove file '" + name + "' since it is a directory";
+                        } else {
+                            msg = "Can't remove file '" + name + "' since it doesn't exist";
+                        }
+
+                        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
+                                                                                           message, 
+                                                                                           context, 
+                                                                                           "Error", 
+                                                                                           "IO"), context).mimic(message, context);
+                        condition.setCell("message", message);
+                        condition.setCell("context", context);
+                        condition.setCell("receiver", on);
+                        condition.setCell("text", runtime.newText(msg));
+
+                        runtime.withReturningRestart("ignore", context, new RunnableWithControlFlow() {
+                                public void run() throws ControlFlow {
+                                    runtime.errorCondition(condition);
+                                }});
+                    }
+
+                    f.delete();
+
+                    return context.runtime.nil;
+                }
+            }));
     }
 }// FileSystem
