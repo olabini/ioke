@@ -36,9 +36,13 @@ describe(ISpec Runner OptionParser,
     )
 
     it("should set the formatter output when given keyword arg to: file",
-      parser = ISpec Runner OptionParser create(nil, nil)
-      parser order(["--format", "specdoc", "to:", "file"])
-      parser options formatters first output kind should == "java:io:PrintStream"
+      ensure(
+        parser = ISpec Runner OptionParser create(nil, nil)
+        parser order(["--format", "specdoc", "to:", "file"])
+        parser options formatters first output kind should == "java:io:PrintStream",
+        
+        if(FileSystem file?("file"),
+          FileSystem removeFile!("file")))
     )
 
     it("should set the formatter output to stdout when given keyword arg to: -",

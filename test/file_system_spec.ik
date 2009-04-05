@@ -113,7 +113,19 @@ describe(FileSystem,
   )
 
   describe("removeFile!",
-    it("should have tests")
+    it("should signal an error if the file doesn't exists",
+      fn(FileSystem removeFile!("non_existing_file")) should signal(Condition Error IO)
+    )
+
+    it("should signal an error if a directory with the same name exists",
+      fn(FileSystem removeFile!("build")) should signal(Condition Error IO)
+    )
+
+    it("should remove the file",
+      FileSystem withOpenFile("test/file_to_remove", fn(f, f println("hello"))) ;; setup
+      FileSystem removeFile!("test/file_to_remove")
+      FileSystem should not have file("test/file_to_remove")
+    )
   )
   
   describe("[]", 
