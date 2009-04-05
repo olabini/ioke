@@ -1,0 +1,47 @@
+
+Ioke E released
+---------------
+
+Ioke is a language that is designed to be as expressive as possible. It is a dynamic language targeted at the Java Virtual Machine. It's been designed from scratch to be a highly flexible general purpose language. It is a prototype-based programming language that is inspired by Io, Smalltalk, Lisp and Ruby.
+
+
+Homepage: http://ioke.org
+Download: http://ioke.org/download.html
+Programming guide: http://ioke.org/wiki/index.php/Guide
+Wiki: http://ioke.org/wiki
+
+
+Ioke E is the third release of Ioke. It includes many new features from Ioke S, among them full support for Java integration (including implementing interfaces and extending classes), many new methods in the core libraries, IOpt, TextScanner, BlankSlate, better support for regexp interpolation and escapes in regexps, support for Unicode analysis and much more.
+
+Ioke E also includes a large amount of bug fixes.
+
+Features:
+- Expressiveness first
+- Strong, dynamic typing
+- Prototype based object orientation
+- Homoiconic language
+- Simple syntax
+- Powerful macro facilities
+- Condition system
+- Aspects
+- Java integration
+- Developed using TDD
+- Documentation system that combines documentation with specs
+- Wedded to the JVM
+
+The many things added in Ioke E could not have been done without the support of several new contributors. I would like to call out and thank:
+T W <twellman@gmail.com>
+Sam Aaron <samaaron@gmail.com>
+Carlos Villela <cv@lixo.org>
+Brian Guthrie <btguthrie@gmail.com>
+Martin Elwin <elvvin@gmail.com>
+Felipe Rodrigues de Almeida <felipero@gmail.com>
+Wes Oldenbeuving <narnach@gmail.com>
+Martin Dobmeier <martin.dobmeier@googlemail.com>
+Victor Hugo Borja <vic.borja@gmail.com>
+Bragi Ragnarson <bragi@ragnarson.com>
+Petrik de Heus
+
+
+Regards
+Ola Bini    - ola.bini@gmail.com
