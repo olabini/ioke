@@ -120,7 +120,7 @@ describe(ISpec Runner OptionParser,
       it("should load onlyMatching from a file if --example is given a path",
         parser = ISpec Runner OptionParser create(nil, nil)
         parser order(["-e", "test/fixtures/names.txt",
-            ]) onlyMatching should == ["Ola\r", "Martin\r", "Sam\r", "Carlos\r", "Brian\r", "Felipe\r"]
+            ]) onlyMatching should == ["Ola\r", "Martin\r", "Sam\r", "Carlos\r", "Brian\r", "Felipe"]
       )
     )
 
