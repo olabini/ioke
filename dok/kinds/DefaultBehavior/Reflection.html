@@ -90,35 +90,33 @@ contains behavior related to reflection
 
         <div class="sectiontitle">Inactive cells</div>
         <ul>
-          <li><a href="#C00150">kind</a></li>
+          <li><a href="#C00187">inspect</a></li>
+<li><a href="#C00166">kind</a></li>
+<li><a href="#C00186">notice</a></li>
 
         </ul>        
 
         <div class="sectiontitle">Active cells</div>
         <ul>
-          <li><a href="#C00154">!=(other)</a></li>
-<li><a href="#C00155">asText()</a></li>
-<li><a href="#C00164">become!(objectToBecome)</a></li>
-<li><a href="#C00172">cellDescriptionDict()</a></li>
-<li><a href="#C00173">cellSummary()</a></li>
-<li><a href="#C00168">derive()</a></li>
-<li><a href="#C00166">freeze!()</a></li>
-<li><a href="#C00165">frozen?()</a></li>
-<li><a href="#C00169">in?(aList)</a></li>
-<li><a href="#C00170">inspect()</a></li>
-<li><a href="#C00158">is?(potentialMimic)</a></li>
-<li><a href="#C00156">kind?(name)</a></li>
-<li><a href="#C00162">mimic!(newMimic)</a></li>
-<li><a href="#C00159">mimics()</a></li>
-<li><a href="#C00157">mimics?(potentialMimic)</a></li>
-<li><a href="#C00171">notice()</a></li>
-<li><a href="#C00163">prependMimic!(newMimic)</a></li>
-<li><a href="#C00160">removeAllMimics!()</a></li>
-<li><a href="#C00161">removeMimic!(mimicToRemove)</a></li>
-<li><a href="#C00152">same?(other)</a></li>
-<li><a href="#C00153">send(messageName, +[arguments], +:keywordArguments)</a></li>
-<li><a href="#C00167">thaw!()</a></li>
-<li><a href="#C00151">uniqueHexId()</a></li>
+          <li><a href="#C00170">!=(other)</a></li>
+<li><a href="#C00171">asText()</a></li>
+<li><a href="#C00180">become!(objectToBecome)</a></li>
+<li><a href="#C00184">derive()</a></li>
+<li><a href="#C00182">freeze!()</a></li>
+<li><a href="#C00181">frozen?()</a></li>
+<li><a href="#C00185">in?(aList)</a></li>
+<li><a href="#C00174">is?(potentialMimic)</a></li>
+<li><a href="#C00172">kind?(name)</a></li>
+<li><a href="#C00178">mimic!(newMimic)</a></li>
+<li><a href="#C00175">mimics()</a></li>
+<li><a href="#C00173">mimics?(potentialMimic)</a></li>
+<li><a href="#C00179">prependMimic!(newMimic)</a></li>
+<li><a href="#C00176">removeAllMimics!()</a></li>
+<li><a href="#C00177">removeMimic!(mimicToRemove)</a></li>
+<li><a href="#C00168">same?(other)</a></li>
+<li><a href="#C00169">send(messageName, +[arguments], +:keywordArguments)</a></li>
+<li><a href="#C00183">thaw!()</a></li>
+<li><a href="#C00167">uniqueHexId()</a></li>
 
         </ul>
 
@@ -129,10 +127,30 @@ contains behavior related to reflection
 
         <div class="sectiontitle">Inactive cells (details)</div>
                 <div class="cell">
-          <a name="C00150"></a>
+          <a name="C00187"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">inspect</td>
+              <td>=</td>
+              <td class="cell-value">"DefaultBehavior Reflection"</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cell">
+          <a name="C00166"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">kind</td>
+              <td>=</td>
+              <td class="cell-value">"DefaultBehavior Reflection"</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cell">
+          <a name="C00186"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">notice</td>
               <td>=</td>
               <td class="cell-value">"DefaultBehavior Reflection"</td>
             </tr>
@@ -143,7 +161,7 @@ contains behavior related to reflection
         <div class="sectiontitle">Active cells (details)</div>
                 <div class="cell">
           <div class="title">
-          <a name="C00154"></a><b>!=</b>(other)
+          <a name="C00170"></a><b>!=</b>(other)
           </div>
           <div class="description">
             <p>returns false if the left hand side is equal to the right hand side. exactly what this means depend on the object. the default behavior of Ioke objects is to only be equal if they are the same instance.</p>
@@ -155,7 +173,7 @@ contains behavior related to reflection
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00155"></a><b>asText</b>()
+          <a name="C00171"></a><b>asText</b>()
           </div>
           <div class="description">
             <p>returns a textual representation of the object called on.</p>
@@ -167,7 +185,7 @@ contains behavior related to reflection
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00164"></a><b>become!</b>(objectToBecome)
+          <a name="C00180"></a><b>become!</b>(objectToBecome)
           </div>
           <div class="description">
             <p>modifies the receiver to be in all ways identical to the argument. if the receiver is nil, true or false, this method can't be used - but those are the only exceptions. it's generally not recommended to use it on kinds and objects that are important for the Ioke runtime, since the result might be highly unpredictable.</p>
@@ -179,59 +197,14 @@ contains behavior related to reflection
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00172"></a><b>cellDescriptionDict</b>()
-          </div>
-          <div class="description">
-            <p>returns a dict containing each cell and it's corresponding description</p>
-          </div>
-                    <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00172_source')" id="l_C00172_source">show source</a> ]</p>
-            <div id="C00172_source" class="dyn-source">
-<pre>
-method(
-  cellNames = cell(:self) cellNames sort 
-  cellDescs = cellNames map(name, cell(:self) cell(name) notice) 
-  {} addKeysAndValues(cellNames, cellDescs))
-</pre>
-            </div>
-            </div>
-          <div class="specs">
-            
-          </div>
-        </div>
-        <div class="cell">
-          <div class="title">
-          <a name="C00173"></a><b>cellSummary</b>()
-          </div>
-          <div class="description">
-            <p>returns a representation of the current object that includes information about it's cells</p>
-          </div>
-                    <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00173_source')" id="l_C00173_source">show source</a> ]</p>
-            <div id="C00173_source" class="dyn-source">
-<pre>
-method(
-  cellDescriptions = cellDescriptionDict 
-  vals = cellDescriptions keys sort map(k, list(k, cellDescriptions [](k))) 
-  " #{cell(:self) notice}:
-%*[  %-28s = %s\n%]" format(vals))
-</pre>
-            </div>
-            </div>
-          <div class="specs">
-            
-          </div>
-        </div>
-        <div class="cell">
-          <div class="title">
-          <a name="C00168"></a><b>derive</b>()
+          <a name="C00184"></a><b>derive</b>()
           </div>
           <div class="description">
             <p>calls mimic.</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00168_source')" id="l_C00168_source">show source</a> ]</p>
-            <div id="C00168_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00184_source')" id="l_C00184_source">show source</a> ]</p>
+            <div id="C00184_source" class="dyn-source">
 <pre>
 method(
   mimic)
@@ -244,7 +217,7 @@ method(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00166"></a><b>freeze!</b>()
+          <a name="C00182"></a><b>freeze!</b>()
           </div>
           <div class="description">
             <p>ensures that the receiver is frozen</p>
@@ -256,7 +229,7 @@ method(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00165"></a><b>frozen?</b>()
+          <a name="C00181"></a><b>frozen?</b>()
           </div>
           <div class="description">
             <p>returns true if the receiver is frozen, otherwise false</p>
@@ -268,14 +241,14 @@ method(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00169"></a><b>in?</b>(aList)
+          <a name="C00185"></a><b>in?</b>(aList)
           </div>
           <div class="description">
             <p>returns true if the receiver is included in the argument. sends 'include?' to the argument to find this out</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00169_source')" id="l_C00169_source">show source</a> ]</p>
-            <div id="C00169_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00185_source')" id="l_C00185_source">show source</a> ]</p>
+            <div id="C00185_source" class="dyn-source">
 <pre>
 method(aList, 
   aList include?(self))
@@ -288,27 +261,7 @@ method(aList,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00170"></a><b>inspect</b>()
-          </div>
-          <div class="description">
-            <p>returns a longer description of the receiver, in general including cell information</p>
-          </div>
-                    <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00170_source')" id="l_C00170_source">show source</a> ]</p>
-            <div id="C00170_source" class="dyn-source">
-<pre>
-method(
-  cellSummary)
-</pre>
-            </div>
-            </div>
-          <div class="specs">
-            
-          </div>
-        </div>
-        <div class="cell">
-          <div class="title">
-          <a name="C00158"></a><b>is?</b>(potentialMimic)
+          <a name="C00174"></a><b>is?</b>(potentialMimic)
           </div>
           <div class="description">
             <p>Takes one evaluated argument and returns either true or false if this object or one of it's mimics mimics that argument. exactly the same as 'mimics?'</p>
@@ -320,7 +273,7 @@ method(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00156"></a><b>kind?</b>(name)
+          <a name="C00172"></a><b>kind?</b>(name)
           </div>
           <div class="description">
             <p>Takes one evaluated Text argument and returns either true or false if this object or one of it's mimics have the kind of the name specified</p>
@@ -332,7 +285,7 @@ method(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00162"></a><b>mimic!</b>(newMimic)
+          <a name="C00178"></a><b>mimic!</b>(newMimic)
           </div>
           <div class="description">
             <p>Takes one evaluated argument and adds it to the list of mimics for the receiver. the receiver will be returned.</p>
@@ -344,7 +297,7 @@ method(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00159"></a><b>mimics</b>()
+          <a name="C00175"></a><b>mimics</b>()
           </div>
           <div class="description">
             <p>returns a list of all the mimics of the receiver. it will not be the same list as is used to back the object, so modifications to this list will not show up in the object.</p>
@@ -356,7 +309,7 @@ method(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00157"></a><b>mimics?</b>(potentialMimic)
+          <a name="C00173"></a><b>mimics?</b>(potentialMimic)
           </div>
           <div class="description">
             <p>Takes one evaluated argument and returns either true or false if this object or one of it's mimics mimics that argument</p>
@@ -368,32 +321,7 @@ method(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00171"></a><b>notice</b>()
-          </div>
-          <div class="description">
-            <p>returns a short text description of the receiver</p>
-          </div>
-                    <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00171_source')" id="l_C00171_source">show source</a> ]</p>
-            <div id="C00171_source" class="dyn-source">
-<pre>
-method(
-  if(currentMessage Origin ==(cell(:self)), 
-    "Origin", 
-    if(currentMessage Ground ==(cell(:self)), 
-      "Ground", 
-      "#{cell(:self) kind}_#{cell(:self) uniqueHexId}" 
-      )))
-</pre>
-            </div>
-            </div>
-          <div class="specs">
-            
-          </div>
-        </div>
-        <div class="cell">
-          <div class="title">
-          <a name="C00163"></a><b>prependMimic!</b>(newMimic)
+          <a name="C00179"></a><b>prependMimic!</b>(newMimic)
           </div>
           <div class="description">
             <p>Takes one evaluated argument and prepends it to the list of mimics for the receiver. the receiver will be returned.</p>
@@ -405,7 +333,7 @@ method(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00160"></a><b>removeAllMimics!</b>()
+          <a name="C00176"></a><b>removeAllMimics!</b>()
           </div>
           <div class="description">
             <p>removes all mimics on the receiver, and returns the receiver</p>
@@ -417,7 +345,7 @@ method(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00161"></a><b>removeMimic!</b>(mimicToRemove)
+          <a name="C00177"></a><b>removeMimic!</b>(mimicToRemove)
           </div>
           <div class="description">
             <p>removes the argument mimic from the list of all mimics on the receiver. will do nothing if the receiver has no such mimic. it returns the receiver</p>
@@ -429,7 +357,7 @@ method(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00152"></a><b>same?</b>(other)
+          <a name="C00168"></a><b>same?</b>(other)
           </div>
           <div class="description">
             <p>returns true if the evaluated argument is the same reference as the receiver, false otherwise.</p>
@@ -441,7 +369,7 @@ method(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00153"></a><b>send</b>(messageName, +[arguments], +:keywordArguments)
+          <a name="C00169"></a><b>send</b>(messageName, +[arguments], +:keywordArguments)
           </div>
           <div class="description">
             <p>takes the name of a message to send, and the arguments to give it. send should generally behave exactly as if you had sent the message itself - except that you can give a variable containing the name.</p>
@@ -453,7 +381,7 @@ method(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00167"></a><b>thaw!</b>()
+          <a name="C00183"></a><b>thaw!</b>()
           </div>
           <div class="description">
             <p>ensures that the receiver is not frozen</p>
@@ -465,7 +393,7 @@ method(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00151"></a><b>uniqueHexId</b>()
+          <a name="C00167"></a><b>uniqueHexId</b>()
           </div>
           <div class="description">
             <p>returns a text hex representation of the receiver in upper case hex literal, starting with 0x. This value is based on System.identityHashCode, and as such is not totally guaranteed to be totally unique. but almost.</p>

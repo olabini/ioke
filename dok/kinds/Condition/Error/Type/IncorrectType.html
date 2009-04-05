@@ -90,13 +90,14 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 
         <div class="sectiontitle">Inactive cells</div>
         <ul>
-          <li><a href="#C00648">kind</a></li>
+          <li><a href="#C00741">kind</a></li>
 
         </ul>        
 
         <div class="sectiontitle">Active cells</div>
         <ul>
-          
+          <li><a href="#C00742">report()</a></li>
+
         </ul>
 
         <div class="sectiontitle">Specs</div>
@@ -116,7 +117,7 @@ Condition Error Type IncorrectType should have kind("Condition Error Type Incorr
 
         <div class="sectiontitle">Inactive cells (details)</div>
                 <div class="cell">
-          <a name="C00648"></a>
+          <a name="C00741"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">kind</td>
@@ -128,7 +129,30 @@ Condition Error Type IncorrectType should have kind("Condition Error Type Incorr
 
 
         <div class="sectiontitle">Active cells (details)</div>
-        
+                <div class="cell">
+          <div class="title">
+          <a name="C00742"></a><b>report</b>()
+          </div>
+          <div class="description">
+            <p>returns a representation of this error</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00742_source')" id="l_C00742_source">show source</a> ]</p>
+            <div id="C00742_source" class="dyn-source">
+<pre>
+method(
+  "expected type: '#{expectedType}'
+
+#{message asStackTraceText}
+#{context stackTraceAsText}")
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+
 
       </div>
     </div>

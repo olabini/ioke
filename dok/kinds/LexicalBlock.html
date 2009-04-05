@@ -90,23 +90,25 @@ A lexical block allows you to delay a computation in a specific lexical context.
 
         <div class="sectiontitle">Inactive cells</div>
         <ul>
-          <li><a href="#C00364">kind</a></li>
+          <li><a href="#C00421">kind</a></li>
 
         </ul>        
 
         <div class="sectiontitle">Active cells</div>
         <ul>
-          <li><a href="#C00375">===(other)</a></li>
-<li><a href="#C00370">argumentNames()</a></li>
-<li><a href="#C00368">argumentsCode()</a></li>
-<li><a href="#C00366">call(+[arguments])</a></li>
-<li><a href="#C00367">code()</a></li>
-<li><a href="#C00365">createFrom(messageList, lexicalContext)</a></li>
-<li><a href="#C00374">formattedCode()</a></li>
-<li><a href="#C00372">inspect()</a></li>
-<li><a href="#C00369">keywords()</a></li>
-<li><a href="#C00371">message()</a></li>
-<li><a href="#C00373">notice()</a></li>
+          <li><a href="#C00432">===(other)</a></li>
+<li><a href="#C00427">argumentNames()</a></li>
+<li><a href="#C00425">argumentsCode()</a></li>
+<li><a href="#C00433">arity()</a></li>
+<li><a href="#C00423">call(+[arguments])</a></li>
+<li><a href="#C00424">code()</a></li>
+<li><a href="#C00422">createFrom(messageList, lexicalContext)</a></li>
+<li><a href="#C00431">formattedCode()</a></li>
+<li><a href="#C00429">inspect()</a></li>
+<li><a href="#C00434">java:coerceCode(javaType, abstractNames)</a></li>
+<li><a href="#C00426">keywords()</a></li>
+<li><a href="#C00428">message()</a></li>
+<li><a href="#C00430">notice()</a></li>
 
         </ul>
 
@@ -490,10 +492,10 @@ fn(x, a:, y, b: 123, foo: "foo", a) keywords should ==([](:a, :b, :foo))
 <pre>
 m1 = fnx(x:, y x +(2), y) 
 m2 = fnx(y x +(2), x:, y) 
-m1(x: 14) should should ==(16) 
-m1(13, x: 14) should should ==(13) 
-m1(x: 14, 42) should should ==(42) 
-m2(x: 14, 44) should should ==(44) 
+m1(x: 14) should ==(16) 
+m1(13, x: 14) should ==(13) 
+m1(x: 14, 42) should ==(42) 
+m2(x: 14, 44) should ==(44) 
 fn(m2(x:15)) should signal(Condition Error NoSuchCell) 
 
 </pre>
@@ -626,7 +628,7 @@ norest(*([](1, 2))) should ==([](1, 2))
 
         <div class="sectiontitle">Inactive cells (details)</div>
                 <div class="cell">
-          <a name="C00364"></a>
+          <a name="C00421"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">kind</td>
@@ -640,20 +642,20 @@ norest(*([](1, 2))) should ==([](1, 2))
         <div class="sectiontitle">Active cells (details)</div>
                 <div class="cell">
           <div class="title">
-          <a name="C00375"></a><b>===</b>(other)
+          <a name="C00432"></a><b>===</b>(other)
           </div>
           <div class="description">
             <p>nil</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00375_source')" id="l_C00375_source">show source</a> ]</p>
-            <div id="C00375_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00432_source')" id="l_C00432_source">show source</a> ]</p>
+            <div id="C00432_source" class="dyn-source">
 <pre>
 method(other, 
   if(self same?(
-      #&lt;LexicalBlock:2F0D54&gt;), 
+      #&lt;LexicalBlock:FF94B1&gt;), 
     other mimics?(
-      #&lt;LexicalBlock:2F0D54&gt;), 
+      #&lt;LexicalBlock:FF94B1&gt;), 
     bind(rescue(Condition Error, fn(c, false)), 
       self call(
         other))))
@@ -666,7 +668,7 @@ method(other,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00370"></a><b>argumentNames</b>()
+          <a name="C00427"></a><b>argumentNames</b>()
           </div>
           <div class="description">
             <p>returns a list of the argument names the positional arguments this block takes</p>
@@ -675,8 +677,8 @@ method(other,
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return an empty list for a simple fn <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C003701S0_source')" id="l_C003701S0_source">show source</a> ]</span>
-            <div id="C003701S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004271S0_source')" id="l_C004271S0_source">show source</a> ]</span>
+            <div id="C004271S0_source" class="dyn-source">
 <pre>
 fn argumentNames should ==([]) 
 
@@ -684,8 +686,8 @@ fn argumentNames should ==([])
             </div>
             </span></li>
 <li>- should return an the argument names as symbols for a block <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C003701S1_source')" id="l_C003701S1_source">show source</a> ]</span>
-            <div id="C003701S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004271S1_source')" id="l_C004271S1_source">show source</a> ]</span>
+            <div id="C004271S1_source" class="dyn-source">
 <pre>
 fn(x, x) argumentNames should ==([](:x)) 
 fn(x, y 12, x) argumentNames should ==([](:x, :y)) 
@@ -701,7 +703,7 @@ fn(y: 12, x, x) argumentNames should ==([](:x))
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00368"></a><b>argumentsCode</b>()
+          <a name="C00425"></a><b>argumentsCode</b>()
           </div>
           <div class="description">
             <p>returns the code for the argument definition</p>
@@ -713,7 +715,27 @@ fn(y: 12, x, x) argumentNames should ==([](:x))
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00366"></a><b>call</b>(+[arguments])
+          <a name="C00433"></a><b>arity</b>()
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00433_source')" id="l_C00433_source">show source</a> ]</p>
+            <div id="C00433_source" class="dyn-source">
+<pre>
+method(
+  Arity fromArgumentsCode(argumentsCode))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00423"></a><b>call</b>(+[arguments])
           </div>
           <div class="description">
             <p>invokes the block with the arguments provided, returning the result of the last expression in the block</p>
@@ -725,7 +747,7 @@ fn(y: 12, x, x) argumentNames should ==([](:x))
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00367"></a><b>code</b>()
+          <a name="C00424"></a><b>code</b>()
           </div>
           <div class="description">
             <p>returns the full code of this lexical block, as a Text</p>
@@ -737,7 +759,7 @@ fn(y: 12, x, x) argumentNames should ==([](:x))
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00365"></a><b>createFrom</b>(messageList, lexicalContext)
+          <a name="C00422"></a><b>createFrom</b>(messageList, lexicalContext)
           </div>
           <div class="description">
             <p>takes two evaluated arguments, where this first one is a list of messages which will be used as the arguments and the code, and the second is the context where this lexical scope should be created in</p>
@@ -749,7 +771,7 @@ fn(y: 12, x, x) argumentNames should ==([](:x))
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00374"></a><b>formattedCode</b>()
+          <a name="C00431"></a><b>formattedCode</b>()
           </div>
           <div class="description">
             <p>returns idiomatically formatted code for this lexical block</p>
@@ -761,7 +783,7 @@ fn(y: 12, x, x) argumentNames should ==([](:x))
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00372"></a><b>inspect</b>()
+          <a name="C00429"></a><b>inspect</b>()
           </div>
           <div class="description">
             <p>Returns a text inspection of the object</p>
@@ -770,8 +792,8 @@ fn(y: 12, x, x) argumentNames should ==([](:x))
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return the code inside the method <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C003721S0_source')" id="l_C003721S0_source">show source</a> ]</span>
-            <div id="C003721S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004291S0_source')" id="l_C004291S0_source">show source</a> ]</span>
+            <div id="C004291S0_source" class="dyn-source">
 <pre>
 fn(foo bar) inspect should ==("fn(foo bar)") 
 fn(123 +(444)) inspect should ==("fn(123 +(444))") 
@@ -782,8 +804,8 @@ fnx(123 +(444)) inspect should ==("fnx(123 +(444))")
             </div>
             </span></li>
 <li>- should include any argument names provided <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C003721S1_source')" id="l_C003721S1_source">show source</a> ]</span>
-            <div id="C003721S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004291S1_source')" id="l_C004291S1_source">show source</a> ]</span>
+            <div id="C004291S1_source" class="dyn-source">
 <pre>
 fn(x, foo bar) inspect should ==("fn(x, foo bar)") 
 fn(y, foo 123, 123 +(444)) inspect should ==("fn(y, foo 123, 123 +(444))") 
@@ -799,7 +821,33 @@ fnx(y, foo 123, 123 +(444)) inspect should ==("fnx(y, foo 123, 123 +(444))")
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00369"></a><b>keywords</b>()
+          <a name="C00434"></a><b>java:coerceCode</b>(javaType, abstractNames)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00434_source')" id="l_C00434_source">show source</a> ]</p>
+            <div id="C00434_source" class="dyn-source">
+<pre>
+method(javaType, abstractNames, 
+  proxy = integrate(javaType) mimic 
+  outerSelf = self 
+  abstractNames each(name, 
+    proxy cell(name) = fnx(+(rest), +:(krest), cell(:outerSelf) call(*(rest), *(krest))) 
+    ) 
+  proxy new 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00426"></a><b>keywords</b>()
           </div>
           <div class="description">
             <p>returns a list of the keywords this block takes</p>
@@ -811,7 +859,7 @@ fnx(y, foo 123, 123 +(444)) inspect should ==("fnx(y, foo 123, 123 +(444))")
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00371"></a><b>message</b>()
+          <a name="C00428"></a><b>message</b>()
           </div>
           <div class="description">
             <p>returns the message chain for this block</p>
@@ -823,7 +871,7 @@ fnx(y, foo 123, 123 +(444)) inspect should ==("fnx(y, foo 123, 123 +(444))")
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00373"></a><b>notice</b>()
+          <a name="C00430"></a><b>notice</b>()
           </div>
           <div class="description">
             <p>Returns a brief text inspection of the object</p>
@@ -832,8 +880,8 @@ fnx(y, foo 123, 123 +(444)) inspect should ==("fnx(y, foo 123, 123 +(444))")
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should just return a simple description without code <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C003731S0_source')" id="l_C003731S0_source">show source</a> ]</span>
-            <div id="C003731S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004301S0_source')" id="l_C004301S0_source">show source</a> ]</span>
+            <div id="C004301S0_source" class="dyn-source">
 <pre>
 fn notice should ==("fn(...)") 
 fn(nil) notice should ==("fn(...)") 

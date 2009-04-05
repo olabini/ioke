@@ -90,22 +90,24 @@ contains behavior related to conditions
 
         <div class="sectiontitle">Inactive cells</div>
         <ul>
-          <li><a href="#C0092">kind</a></li>
+          <li><a href="#C00114">inspect</a></li>
+<li><a href="#C00102">kind</a></li>
+<li><a href="#C00113">notice</a></li>
 
         </ul>        
 
         <div class="sectiontitle">Active cells</div>
         <ul>
-          <li><a href="#C0099">availableRestarts(condition Condition)</a></li>
-<li><a href="#C0096">bind(+[bindablesAndCode])</a></li>
-<li><a href="#C00101">error!(datum, +:errorArguments)</a></li>
-<li><a href="#C0098">findRestart(nameOrRestart)</a></li>
-<li><a href="#C0095">handle(+conditionsAndAction)</a></li>
-<li><a href="#C0097">invokeRestart(nameOrRestart, +arguments)</a></li>
-<li><a href="#C0094">rescue(+conditionsAndAction)</a></li>
-<li><a href="#C0093">restart([name] nil, report: nil, test: nil, action)</a></li>
-<li><a href="#C00100">signal!(datum, +:conditionArguments)</a></li>
-<li><a href="#C00102">warn!(datum, +:krest)</a></li>
+          <li><a href="#C00109">availableRestarts(condition Condition)</a></li>
+<li><a href="#C00106">bind(+[bindablesAndCode])</a></li>
+<li><a href="#C00111">error!(datum, +:errorArguments)</a></li>
+<li><a href="#C00108">findRestart(nameOrRestart)</a></li>
+<li><a href="#C00105">handle(+conditionsAndAction)</a></li>
+<li><a href="#C00107">invokeRestart(nameOrRestart, +arguments)</a></li>
+<li><a href="#C00104">rescue(+conditionsAndAction)</a></li>
+<li><a href="#C00103">restart([name] nil, report: nil, test: nil, action)</a></li>
+<li><a href="#C00110">signal!(datum, +:conditionArguments)</a></li>
+<li><a href="#C00112">warn!(datum, +:krest)</a></li>
 
         </ul>
 
@@ -117,10 +119,30 @@ contains behavior related to conditions
 
         <div class="sectiontitle">Inactive cells (details)</div>
                 <div class="cell">
-          <a name="C0092"></a>
+          <a name="C00114"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">inspect</td>
+              <td>=</td>
+              <td class="cell-value">"DefaultBehavior Conditions"</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cell">
+          <a name="C00102"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">kind</td>
+              <td>=</td>
+              <td class="cell-value">"DefaultBehavior Conditions"</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cell">
+          <a name="C00113"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">notice</td>
               <td>=</td>
               <td class="cell-value">"DefaultBehavior Conditions"</td>
             </tr>
@@ -131,7 +153,7 @@ contains behavior related to conditions
         <div class="sectiontitle">Active cells (details)</div>
                 <div class="cell">
           <div class="title">
-          <a name="C0099"></a><b>availableRestarts</b>(condition Condition)
+          <a name="C00109"></a><b>availableRestarts</b>(condition Condition)
           </div>
           <div class="description">
             <p>takes an optional condition to specify - returns all restarts that are applicable to that condition. closer restarts will be first in the list</p>
@@ -140,8 +162,8 @@ contains behavior related to conditions
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return the available restarts <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00991S0_source')" id="l_C00991S0_source">show source</a> ]</span>
-            <div id="C00991S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001091S0_source')" id="l_C001091S0_source">show source</a> ]</span>
+            <div id="C001091S0_source" class="dyn-source">
 <pre>
 r = restart(fox, fn) 
 bind(r, 
@@ -151,8 +173,8 @@ bind(r,
             </div>
             </span></li>
 <li>- should use the test of a restart to see if it's correct <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00991S1_source')" id="l_C00991S1_source">show source</a> ]</span>
-            <div id="C00991S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001091S1_source')" id="l_C001091S1_source">show source</a> ]</span>
+            <div id="C001091S1_source" class="dyn-source">
 <pre>
 r = restart(fox, fn) 
 Ground Cond1 = Condition mimic 
@@ -167,8 +189,8 @@ calledRTest should be true
             </div>
             </span></li>
 <li>- should get the restarts applicable <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00991S2_source')" id="l_C00991S2_source">show source</a> ]</span>
-            <div id="C00991S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001091S2_source')" id="l_C001091S2_source">show source</a> ]</span>
+            <div id="C001091S2_source" class="dyn-source">
 <pre>
 r = restart(fox, fn) 
 Ground Cond1 = Condition mimic 
@@ -185,7 +207,7 @@ bind(r,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C0096"></a><b>bind</b>(+[bindablesAndCode])
+          <a name="C00106"></a><b>bind</b>(+[bindablesAndCode])
           </div>
           <div class="description">
             <p>will evaluate all arguments, and expects all except for the last to be a Restart. bind will associate these restarts for the duration of the execution of the last argument and then unbind them again. it will return the result of the last argument, or if a restart is executed it will instead return the result of that invocation.</p>
@@ -194,8 +216,8 @@ bind(r,
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should evaluate it's last argument and return the result of that <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00961S0_source')" id="l_C00961S0_source">show source</a> ]</span>
-            <div id="C00961S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001061S0_source')" id="l_C001061S0_source">show source</a> ]</span>
+            <div id="C001061S0_source" class="dyn-source">
 <pre>
 bind should be nil 
 bind(42) should ==(42) 
@@ -210,8 +232,8 @@ bind(
             </div>
             </span></li>
 <li>- should fail if any argument except the last doesn't evaluate to a restart <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00961S1_source')" id="l_C00961S1_source">show source</a> ]</span>
-            <div id="C00961S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001061S1_source')" id="l_C001061S1_source">show source</a> ]</span>
+            <div id="C001061S1_source" class="dyn-source">
 <pre>
 fn(bind(10, 10)) should signal(Condition Error Type IncorrectType) 
 
@@ -224,7 +246,7 @@ fn(bind(10, 10)) should signal(Condition Error Type IncorrectType)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00101"></a><b>error!</b>(datum, +:errorArguments)
+          <a name="C00111"></a><b>error!</b>(datum, +:errorArguments)
           </div>
           <div class="description">
             <p>takes the same kind of arguments as 'signal!', and will signal a condition. the default condition used is Condition Error Default. if no rescue or restart is invoked error! will report the condition to System err and exit the currently running Ioke VM. this might be a problem when exceptions happen inside of running Java code, as callbacks and so on.. if 'System currentDebugger' is non-nil, it will be invoked before the exiting of the VM. the exit can only be avoided by invoking a restart. that means that error! will never return. </p>
@@ -233,8 +255,8 @@ fn(bind(10, 10)) should signal(Condition Error Type IncorrectType)
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should signal a Condition Error Default by default <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001011S0_source')" id="l_C001011S0_source">show source</a> ]</span>
-            <div id="C001011S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001111S0_source')" id="l_C001111S0_source">show source</a> ]</span>
+            <div id="C001111S0_source" class="dyn-source">
 <pre>
 x = bind(
     rescue(fn(c, c)), 
@@ -246,8 +268,8 @@ x should have kind("Condition Error Default")
             </div>
             </span></li>
 <li>- should take an existing condition <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001011S1_source')" id="l_C001011S1_source">show source</a> ]</span>
-            <div id="C001011S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001111S1_source')" id="l_C001111S1_source">show source</a> ]</span>
+            <div id="C001111S1_source" class="dyn-source">
 <pre>
 c1 = Condition mimic 
 cx = nil 
@@ -260,8 +282,8 @@ cx should ==(c1)
             </div>
             </span></li>
 <li>- should take a condition mimic and a set of keyword parameters <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001011S2_source')" id="l_C001011S2_source">show source</a> ]</span>
-            <div id="C001011S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001111S2_source')" id="l_C001111S2_source">show source</a> ]</span>
+            <div id="C001111S2_source" class="dyn-source">
 <pre>
 cx = bind(
     rescue(fn(c, c)), 
@@ -278,7 +300,7 @@ cx should not ==(Condition)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C0098"></a><b>findRestart</b>(nameOrRestart)
+          <a name="C00108"></a><b>findRestart</b>(nameOrRestart)
           </div>
           <div class="description">
             <p>takes either a name (as a symbol) or a Restart instance. if the restart is active, will return that restart, otherwise returns nil.</p>
@@ -287,8 +309,8 @@ cx should not ==(Condition)
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return nil if it can't find the named restart <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00981S0_source')" id="l_C00981S0_source">show source</a> ]</span>
-            <div id="C00981S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001081S0_source')" id="l_C001081S0_source">show source</a> ]</span>
+            <div id="C001081S0_source" class="dyn-source">
 <pre>
 findRestart(:foo) should be nil 
 bind(
@@ -299,8 +321,8 @@ bind(
             </div>
             </span></li>
 <li>- should return the restart if found <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00981S1_source')" id="l_C00981S1_source">show source</a> ]</span>
-            <div id="C00981S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001081S1_source')" id="l_C001081S1_source">show source</a> ]</span>
+            <div id="C001081S1_source" class="dyn-source">
 <pre>
 bind(
   restart(foo, fn), 
@@ -314,8 +336,8 @@ bind(
             </div>
             </span></li>
 <li>- should return the innermost restart for the name <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00981S2_source')" id="l_C00981S2_source">show source</a> ]</span>
-            <div id="C00981S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001081S2_source')" id="l_C001081S2_source">show source</a> ]</span>
+            <div id="C001081S2_source" class="dyn-source">
 <pre>
 re1 = restart(foo, fn) 
 re2 = restart(foo, fn) 
@@ -344,8 +366,8 @@ bind(
             </div>
             </span></li>
 <li>- should fail when given nil <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00981S3_source')" id="l_C00981S3_source">show source</a> ]</span>
-            <div id="C00981S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001081S3_source')" id="l_C001081S3_source">show source</a> ]</span>
+            <div id="C001081S3_source" class="dyn-source">
 <pre>
 fn(findRestart(nil)) should signal(Condition Error Type IncorrectType) 
 fn(bind(
@@ -359,8 +381,8 @@ fn(bind(
             </div>
             </span></li>
 <li>- should take a restart as argument and return it when that restart is active <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00981S4_source')" id="l_C00981S4_source">show source</a> ]</span>
-            <div id="C00981S4_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001081S4_source')" id="l_C001081S4_source">show source</a> ]</span>
+            <div id="C001081S4_source" class="dyn-source">
 <pre>
 re = restart(foo, fn) 
 bind(
@@ -375,8 +397,8 @@ bind(
             </div>
             </span></li>
 <li>- should take a restart as argument and return nil when that restart is not active <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00981S5_source')" id="l_C00981S5_source">show source</a> ]</span>
-            <div id="C00981S5_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001081S5_source')" id="l_C001081S5_source">show source</a> ]</span>
+            <div id="C001081S5_source" class="dyn-source">
 <pre>
 re = restart(foo, fn) 
 bind(
@@ -394,7 +416,7 @@ bind(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C0095"></a><b>handle</b>(+conditionsAndAction)
+          <a name="C00105"></a><b>handle</b>(+conditionsAndAction)
           </div>
           <div class="description">
             <p>takes zero or more arguments that should evaluate to a condition mimic - this list will match all the conditions this Handler should be able to catch. the last argument is not optional, and should be something activatable that takes one argument - the condition instance. will return a Handler mimic.</p>
@@ -403,8 +425,8 @@ bind(
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should take only one argument, and in that case catch all Conditions <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00951S0_source')" id="l_C00951S0_source">show source</a> ]</span>
-            <div id="C00951S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001051S0_source')" id="l_C001051S0_source">show source</a> ]</span>
+            <div id="C001051S0_source" class="dyn-source">
 <pre>
 handle(fn(e, 42)) handler call(1) should ==(42) 
 handle(fn) conditions should ==([](Condition)) 
@@ -413,8 +435,8 @@ handle(fn) conditions should ==([](Condition))
             </div>
             </span></li>
 <li>- should take one or more Conditions to catch <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00951S1_source')" id="l_C00951S1_source">show source</a> ]</span>
-            <div id="C00951S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001051S1_source')" id="l_C001051S1_source">show source</a> ]</span>
+            <div id="C001051S1_source" class="dyn-source">
 <pre>
 c1 = Condition mimic 
 c2 = Condition mimic 
@@ -424,8 +446,8 @@ handle(c1, c2, fn(e, 42)) conditions should ==([](c1, c2))
             </div>
             </span></li>
 <li>- should return something that has kind Handler <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00951S2_source')" id="l_C00951S2_source">show source</a> ]</span>
-            <div id="C00951S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001051S2_source')" id="l_C001051S2_source">show source</a> ]</span>
+            <div id="C001051S2_source" class="dyn-source">
 <pre>
 handle(fn) should have kind("Handler") 
 
@@ -438,7 +460,7 @@ handle(fn) should have kind("Handler")
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C0097"></a><b>invokeRestart</b>(nameOrRestart, +arguments)
+          <a name="C00107"></a><b>invokeRestart</b>(nameOrRestart, +arguments)
           </div>
           <div class="description">
             <p>takes either a name (as a symbol) or a Restart instance. if the restart is active, will transfer control to it, supplying the rest of the given arguments to that restart.</p>
@@ -447,8 +469,8 @@ handle(fn) should have kind("Handler")
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should fail if no restarts of the name is active <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00971S0_source')" id="l_C00971S0_source">show source</a> ]</span>
-            <div id="C00971S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001071S0_source')" id="l_C001071S0_source">show source</a> ]</span>
+            <div id="C001071S0_source" class="dyn-source">
 <pre>
 fn(invokeRestart(:bar)) should signal(Condition Error RestartNotActive) 
 fn(bind(
@@ -464,8 +486,8 @@ fn(bind(
             </div>
             </span></li>
 <li>- should fail if no restarts of the restart is active <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00971S1_source')" id="l_C00971S1_source">show source</a> ]</span>
-            <div id="C00971S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001071S1_source')" id="l_C001071S1_source">show source</a> ]</span>
+            <div id="C001071S1_source" class="dyn-source">
 <pre>
 fn(re = restart(bar, fn) 
   invokeRestart(re)) should signal(Condition Error RestartNotActive) 
@@ -484,8 +506,8 @@ fn(re = restart(bar, fn)
             </div>
             </span></li>
 <li>- should invoke a restart when given the name <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00971S2_source')" id="l_C00971S2_source">show source</a> ]</span>
-            <div id="C00971S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001071S2_source')" id="l_C001071S2_source">show source</a> ]</span>
+            <div id="C001071S2_source" class="dyn-source">
 <pre>
 x = 1 
 bind(
@@ -498,8 +520,8 @@ x should ==(42)
             </div>
             </span></li>
 <li>- should invoke a restart when given the restart <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00971S3_source')" id="l_C00971S3_source">show source</a> ]</span>
-            <div id="C00971S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001071S3_source')" id="l_C001071S3_source">show source</a> ]</span>
+            <div id="C001071S3_source" class="dyn-source">
 <pre>
 x = 1 
 re = restart(foo, fn(x = 42 
@@ -513,8 +535,8 @@ x should ==(42)
             </div>
             </span></li>
 <li>- should invoke the innermost restart when given the name <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00971S4_source')" id="l_C00971S4_source">show source</a> ]</span>
-            <div id="C00971S4_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001071S4_source')" id="l_C001071S4_source">show source</a> ]</span>
+            <div id="C001071S4_source" class="dyn-source">
 <pre>
 x = 1 
 invoked = 0 
@@ -538,8 +560,8 @@ invoked should ==(1)
             </div>
             </span></li>
 <li>- should invoke the right restart when given an instance <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00971S5_source')" id="l_C00971S5_source">show source</a> ]</span>
-            <div id="C00971S5_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001071S5_source')" id="l_C001071S5_source">show source</a> ]</span>
+            <div id="C001071S5_source" class="dyn-source">
 <pre>
 x = 1 
 invoked = 0 
@@ -568,8 +590,8 @@ invoked should ==(1)
             </div>
             </span></li>
 <li>- should take arguments and pass these along to the restart <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00971S6_source')" id="l_C00971S6_source">show source</a> ]</span>
-            <div id="C00971S6_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001071S6_source')" id="l_C001071S6_source">show source</a> ]</span>
+            <div id="C001071S6_source" class="dyn-source">
 <pre>
 bind(
   restart(foo, fn(x, x)), 
@@ -590,7 +612,7 @@ bind(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C0094"></a><b>rescue</b>(+conditionsAndAction)
+          <a name="C00104"></a><b>rescue</b>(+conditionsAndAction)
           </div>
           <div class="description">
             <p>takes zero or more arguments that should evaluate to a condition mimic - this list will match all the conditions this Rescue should be able to catch. the last argument is not optional, and should be something activatable that takes one argument - the condition instance. will return a Rescue mimic.</p>
@@ -599,8 +621,8 @@ bind(
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should take only one argument, and in that case catch all Conditions <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00941S0_source')" id="l_C00941S0_source">show source</a> ]</span>
-            <div id="C00941S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001041S0_source')" id="l_C001041S0_source">show source</a> ]</span>
+            <div id="C001041S0_source" class="dyn-source">
 <pre>
 rescue(fn(e, 42)) handler call(1) should ==(42) 
 rescue(fn) conditions should ==([](Condition)) 
@@ -609,8 +631,8 @@ rescue(fn) conditions should ==([](Condition))
             </div>
             </span></li>
 <li>- should take one or more Conditions to catch <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00941S1_source')" id="l_C00941S1_source">show source</a> ]</span>
-            <div id="C00941S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001041S1_source')" id="l_C001041S1_source">show source</a> ]</span>
+            <div id="C001041S1_source" class="dyn-source">
 <pre>
 c1 = Condition mimic 
 c2 = Condition mimic 
@@ -620,8 +642,8 @@ rescue(c1, c2, fn(e, 42)) conditions should ==([](c1, c2))
             </div>
             </span></li>
 <li>- should return something that has kind Rescue <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00941S2_source')" id="l_C00941S2_source">show source</a> ]</span>
-            <div id="C00941S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001041S2_source')" id="l_C001041S2_source">show source</a> ]</span>
+            <div id="C001041S2_source" class="dyn-source">
 <pre>
 rescue(fn) should have kind("Rescue") 
 
@@ -634,7 +656,7 @@ rescue(fn) should have kind("Rescue")
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C0093"></a><b>restart</b>([name] nil, report: nil, test: nil, action)
+          <a name="C00103"></a><b>restart</b>([name] nil, report: nil, test: nil, action)
           </div>
           <div class="description">
             <p>takes one optional unevaluated parameter (this should be the first if provided), that is the name of the restart to create. this will default to nil. takes two keyword arguments, report: and test:. These should both be lexical blocks. if not provided, there will be reasonable defaults. the only required argument is something that evaluates into a lexical block. this block is what will be executed when the restart is invoked. will return a Restart mimic.</p>
@@ -643,8 +665,8 @@ rescue(fn) should have kind("Rescue")
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should take an optional unevaluated name as first argument <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00931S0_source')" id="l_C00931S0_source">show source</a> ]</span>
-            <div id="C00931S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001031S0_source')" id="l_C001031S0_source">show source</a> ]</span>
+            <div id="C001031S0_source" class="dyn-source">
 <pre>
 restart(blub, fn) name should ==(:blub) 
 
@@ -652,8 +674,8 @@ restart(blub, fn) name should ==(:blub)
             </div>
             </span></li>
 <li>- should return something that has kind Restart <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00931S1_source')" id="l_C00931S1_source">show source</a> ]</span>
-            <div id="C00931S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001031S1_source')" id="l_C001031S1_source">show source</a> ]</span>
+            <div id="C001031S1_source" class="dyn-source">
 <pre>
 restart(fn) should have kind("Restart") 
 
@@ -661,8 +683,8 @@ restart(fn) should have kind("Restart")
             </div>
             </span></li>
 <li>- should take an optional report: argument <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00931S2_source')" id="l_C00931S2_source">show source</a> ]</span>
-            <div id="C00931S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001031S2_source')" id="l_C001031S2_source">show source</a> ]</span>
+            <div id="C001031S2_source" class="dyn-source">
 <pre>
 rp = fn("report" println) 
 restart(report: rp, fn) report should ==(rp) 
@@ -671,8 +693,8 @@ restart(report: rp, fn) report should ==(rp)
             </div>
             </span></li>
 <li>- should take an optional test: argument <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00931S3_source')" id="l_C00931S3_source">show source</a> ]</span>
-            <div id="C00931S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001031S3_source')" id="l_C001031S3_source">show source</a> ]</span>
+            <div id="C001031S3_source" class="dyn-source">
 <pre>
 t1 = fn("test" println) 
 restart(test: t1, fn) test should ==(t1) 
@@ -681,8 +703,8 @@ restart(test: t1, fn) test should ==(t1)
             </div>
             </span></li>
 <li>- should take a code argument <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00931S4_source')" id="l_C00931S4_source">show source</a> ]</span>
-            <div id="C00931S4_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001031S4_source')" id="l_C001031S4_source">show source</a> ]</span>
+            <div id="C001031S4_source" class="dyn-source">
 <pre>
 restart(fn(32 +(43))) code call should ==(75) 
 
@@ -695,7 +717,7 @@ restart(fn(32 +(43))) code call should ==(75)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00100"></a><b>signal!</b>(datum, +:conditionArguments)
+          <a name="C00110"></a><b>signal!</b>(datum, +:conditionArguments)
           </div>
           <div class="description">
             <p>takes one or more datums descibing the condition to signal. this datum can be either a mimic of a Condition, in which case it will be signalled directly, or it can be a mimic of a Condition with arguments, in which case it will first be mimicked and the arguments assigned in some way. finally, if the argument is a Text, a mimic of Condition Default will be signalled, with the provided text.</p>
@@ -704,8 +726,8 @@ restart(fn(32 +(43))) code call should ==(75)
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should take an existing condition <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001001S0_source')" id="l_C001001S0_source">show source</a> ]</span>
-            <div id="C001001S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001101S0_source')" id="l_C001101S0_source">show source</a> ]</span>
+            <div id="C001101S0_source" class="dyn-source">
 <pre>
 c1 = Condition mimic 
 cx = nil 
@@ -718,8 +740,8 @@ cx should ==(c1)
             </div>
             </span></li>
 <li>- should take a condition mimic and a set of keyword parameters <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001001S1_source')" id="l_C001001S1_source">show source</a> ]</span>
-            <div id="C001001S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001101S1_source')" id="l_C001101S1_source">show source</a> ]</span>
+            <div id="C001101S1_source" class="dyn-source">
 <pre>
 cx = bind(
     rescue(fn(c, c)), 
@@ -731,8 +753,8 @@ cx should not ==(Condition)
             </div>
             </span></li>
 <li>- should not execute a handler that's not applicable <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001001S2_source')" id="l_C001001S2_source">show source</a> ]</span>
-            <div id="C001001S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001101S2_source')" id="l_C001101S2_source">show source</a> ]</span>
+            <div id="C001101S2_source" class="dyn-source">
 <pre>
 x = 1 
 C1 = Condition mimic 
@@ -745,8 +767,8 @@ x should ==(1)
             </div>
             </span></li>
 <li>- should execute one applicable handler <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001001S3_source')" id="l_C001001S3_source">show source</a> ]</span>
-            <div id="C001001S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001101S3_source')" id="l_C001101S3_source">show source</a> ]</span>
+            <div id="C001101S3_source" class="dyn-source">
 <pre>
 x = 1 
 bind(
@@ -758,8 +780,8 @@ x should ==(42)
             </div>
             </span></li>
 <li>- should execute two applicable handler, among some non-applicable <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001001S4_source')" id="l_C001001S4_source">show source</a> ]</span>
-            <div id="C001001S4_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001101S4_source')" id="l_C001101S4_source">show source</a> ]</span>
+            <div id="C001101S4_source" class="dyn-source">
 <pre>
 x = [] 
 C1 = Condition mimic 
@@ -778,8 +800,8 @@ x should ==([](19, 15))
             </div>
             </span></li>
 <li>- should not unwind the stack when invoking handlers <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001001S5_source')" id="l_C001001S5_source">show source</a> ]</span>
-            <div id="C001001S5_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001101S5_source')" id="l_C001101S5_source">show source</a> ]</span>
+            <div id="C001101S5_source" class="dyn-source">
 <pre>
 x = [] 
 bind(
@@ -794,8 +816,8 @@ x should ==([](1, 2, 3))
             </div>
             </span></li>
 <li>- should only invoke handlers up to the limit of the first applicable rescue <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001001S6_source')" id="l_C001001S6_source">show source</a> ]</span>
-            <div id="C001001S6_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001101S6_source')" id="l_C001101S6_source">show source</a> ]</span>
+            <div id="C001101S6_source" class="dyn-source">
 <pre>
 x = [] 
 bind(
@@ -815,8 +837,8 @@ x should ==([](7, 6, 5, 4, 3))
             </div>
             </span></li>
 <li>- should do nothing if no rescue has been registered for it <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001001S7_source')" id="l_C001001S7_source">show source</a> ]</span>
-            <div id="C001001S7_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001101S7_source')" id="l_C001101S7_source">show source</a> ]</span>
+            <div id="C001101S7_source" class="dyn-source">
 <pre>
 x = 1 
 signal!("foo") 
@@ -835,8 +857,8 @@ x should ==(3)
             </div>
             </span></li>
 <li>- should transfer control if the condition is matched <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001001S8_source')" id="l_C001001S8_source">show source</a> ]</span>
-            <div id="C001001S8_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001101S8_source')" id="l_C001101S8_source">show source</a> ]</span>
+            <div id="C001101S8_source" class="dyn-source">
 <pre>
 x = 1 
 bind(
@@ -849,8 +871,8 @@ x should ==(42)
             </div>
             </span></li>
 <li>- should transfer control to the innermost handler that matches <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001001S9_source')" id="l_C001001S9_source">show source</a> ]</span>
-            <div id="C001001S9_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001101S9_source')" id="l_C001101S9_source">show source</a> ]</span>
+            <div id="C001101S9_source" class="dyn-source">
 <pre>
 x = 1 
 C1 = Condition mimic 
@@ -868,8 +890,8 @@ x should ==(444)
             </div>
             </span></li>
 <li>- should invoke the handler with the signalled condition <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001001S10_source')" id="l_C001001S10_source">show source</a> ]</span>
-            <div id="C001001S10_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001101S10_source')" id="l_C001101S10_source">show source</a> ]</span>
+            <div id="C001101S10_source" class="dyn-source">
 <pre>
 x = 1 
 bind(
@@ -882,8 +904,8 @@ x should ==("something")
             </div>
             </span></li>
 <li>- should return the value of the handler from the bind of the rescue in question <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001001S11_source')" id="l_C001001S11_source">show source</a> ]</span>
-            <div id="C001001S11_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001101S11_source')" id="l_C001101S11_source">show source</a> ]</span>
+            <div id="C001101S11_source" class="dyn-source">
 <pre>
 bind(
   rescue(fn(e, 42)), 
@@ -899,14 +921,14 @@ bind(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00102"></a><b>warn!</b>(datum, +:krest)
+          <a name="C00112"></a><b>warn!</b>(datum, +:krest)
           </div>
           <div class="description">
             <p>takes the same kind of arguments as 'signal!', and will signal a condition. the default condition used is Condition Warning Default. a restart called 'ignore' will be established. if no rescue or restart is invoked warn! will report a warning to System err.</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00102_source')" id="l_C00102_source">show source</a> ]</p>
-            <div id="C00102_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00112_source')" id="l_C00112_source">show source</a> ]</p>
+            <div id="C00112_source" class="dyn-source">
 <pre>
 method(datum, +:krest, 
   if(datum kind?("Text"), 
@@ -922,8 +944,8 @@ method(datum, +:krest,
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should signal a Condition Warning Default by default <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001021S0_source')" id="l_C001021S0_source">show source</a> ]</span>
-            <div id="C001021S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001121S0_source')" id="l_C001121S0_source">show source</a> ]</span>
+            <div id="C001121S0_source" class="dyn-source">
 <pre>
 x = bind(
     rescue(fn(c, c)), 
@@ -935,8 +957,8 @@ x should have kind("Condition Warning Default")
             </div>
             </span></li>
 <li>- should take an existing condition <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001021S1_source')" id="l_C001021S1_source">show source</a> ]</span>
-            <div id="C001021S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001121S1_source')" id="l_C001121S1_source">show source</a> ]</span>
+            <div id="C001121S1_source" class="dyn-source">
 <pre>
 c1 = Condition mimic 
 cx = nil 
@@ -949,8 +971,8 @@ cx should ==(c1)
             </div>
             </span></li>
 <li>- should take a condition mimic and a set of keyword parameters <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001021S2_source')" id="l_C001021S2_source">show source</a> ]</span>
-            <div id="C001021S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001121S2_source')" id="l_C001121S2_source">show source</a> ]</span>
+            <div id="C001121S2_source" class="dyn-source">
 <pre>
 cx = bind(
     rescue(fn(c, c)), 
@@ -962,8 +984,8 @@ cx should not ==(Condition)
             </div>
             </span></li>
 <li>- should establish an ignore-restart <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C001021S3_source')" id="l_C001021S3_source">show source</a> ]</span>
-            <div id="C001021S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001121S3_source')" id="l_C001121S3_source">show source</a> ]</span>
+            <div id="C001121S3_source" class="dyn-source">
 <pre>
 gah = nil 
 bind(

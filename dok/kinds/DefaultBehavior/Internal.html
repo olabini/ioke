@@ -90,18 +90,20 @@ contains behavior related to internal functionality
 
         <div class="sectiontitle">Inactive cells</div>
         <ul>
-          <li><a href="#C0051">kind</a></li>
+          <li><a href="#C0063">inspect</a></li>
+<li><a href="#C0055">kind</a></li>
+<li><a href="#C0062">notice</a></li>
 
         </ul>        
 
         <div class="sectiontitle">Active cells</div>
         <ul>
-          <li><a href="#C0053">internal:compositeRegexp(+regexpSegments)</a></li>
-<li><a href="#C0052">internal:concatenateText(+textSegments)</a></li>
-<li><a href="#C0057">internal:createDecimal([decimal])</a></li>
-<li><a href="#C0056">internal:createNumber([number])</a></li>
-<li><a href="#C0055">internal:createRegexp([regexp], [flags])</a></li>
-<li><a href="#C0054">internal:createText([text])</a></li>
+          <li><a href="#C0057">internal:compositeRegexp(+regexpSegments)</a></li>
+<li><a href="#C0056">internal:concatenateText(+textSegments)</a></li>
+<li><a href="#C0061">internal:createDecimal([decimal])</a></li>
+<li><a href="#C0060">internal:createNumber([number])</a></li>
+<li><a href="#C0059">internal:createRegexp([regexp], [flags])</a></li>
+<li><a href="#C0058">internal:createText([text])</a></li>
 
         </ul>
 
@@ -112,10 +114,30 @@ contains behavior related to internal functionality
 
         <div class="sectiontitle">Inactive cells (details)</div>
                 <div class="cell">
-          <a name="C0051"></a>
+          <a name="C0063"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">inspect</td>
+              <td>=</td>
+              <td class="cell-value">"DefaultBehavior Internal"</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cell">
+          <a name="C0055"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">kind</td>
+              <td>=</td>
+              <td class="cell-value">"DefaultBehavior Internal"</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cell">
+          <a name="C0062"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">notice</td>
               <td>=</td>
               <td class="cell-value">"DefaultBehavior Internal"</td>
             </tr>
@@ -126,10 +148,10 @@ contains behavior related to internal functionality
         <div class="sectiontitle">Active cells (details)</div>
                 <div class="cell">
           <div class="title">
-          <a name="C0053"></a><b>internal:compositeRegexp</b>(+regexpSegments)
+          <a name="C0057"></a><b>internal:compositeRegexp</b>(+regexpSegments)
           </div>
           <div class="description">
-            <p>takes one or more arguments. it expects the last argument to be a regular expression, where the rest should be text. will call asText on all of them and insert that text in a regular expression. the flags for the regular expression will come from the last argument.</p>
+            <p>takes one or more arguments. it expects the last argument to be a text of flags, while the rest of the arguments are either texts or regexps or nil. if text, it will be inserted verbatim into the result regexp. if regexp it will be inserted into a group that make sure the flags of the regexp is preserved. if nil, nothing will be inserted.</p>
           </div>
           
           <div class="specs">
@@ -138,7 +160,7 @@ contains behavior related to internal functionality
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C0052"></a><b>internal:concatenateText</b>(+textSegments)
+          <a name="C0056"></a><b>internal:concatenateText</b>(+textSegments)
           </div>
           <div class="description">
             <p>takes zero or more arguments, calls asText on non-text arguments, and then concatenates them and returns the result.</p>
@@ -150,7 +172,7 @@ contains behavior related to internal functionality
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C0057"></a><b>internal:createDecimal</b>([decimal])
+          <a name="C0061"></a><b>internal:createDecimal</b>([decimal])
           </div>
           <div class="description">
             <p>expects one 'strange' argument. creates a new instance of Decimal that represents the number found in the strange argument.</p>
@@ -162,7 +184,7 @@ contains behavior related to internal functionality
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C0056"></a><b>internal:createNumber</b>([number])
+          <a name="C0060"></a><b>internal:createNumber</b>([number])
           </div>
           <div class="description">
             <p>expects one 'strange' argument. creates a new instance of Number that represents the number found in the strange argument.</p>
@@ -174,7 +196,7 @@ contains behavior related to internal functionality
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C0055"></a><b>internal:createRegexp</b>([regexp], [flags])
+          <a name="C0059"></a><b>internal:createRegexp</b>([regexp], [flags])
           </div>
           <div class="description">
             <p>expects two 'strange' arguments. creates a new mimic of Regexp with the given Java String backing it.</p>
@@ -186,7 +208,7 @@ contains behavior related to internal functionality
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C0054"></a><b>internal:createText</b>([text])
+          <a name="C0058"></a><b>internal:createText</b>([text])
           </div>
           <div class="description">
             <p>expects one 'strange' argument. creates a new instance of Text with the given Java String backing it.</p>

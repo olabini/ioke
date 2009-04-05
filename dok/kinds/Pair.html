@@ -90,20 +90,20 @@ A pair is a collection of two objects of any kind. They are used among other thi
 
         <div class="sectiontitle">Inactive cells</div>
         <ul>
-          <li><a href="#C00548">kind</a></li>
+          <li><a href="#C00638">kind</a></li>
 
         </ul>        
 
         <div class="sectiontitle">Active cells</div>
         <ul>
-          <li><a href="#C00555">&lt;=&gt;(other)</a></li>
-<li><a href="#C00556">===(other)</a></li>
-<li><a href="#C00549">first()</a></li>
-<li><a href="#C00553">inspect()</a></li>
-<li><a href="#C00550">key()</a></li>
-<li><a href="#C00554">notice()</a></li>
-<li><a href="#C00551">second()</a></li>
-<li><a href="#C00552">value()</a></li>
+          <li><a href="#C00645">&lt;=&gt;(other)</a></li>
+<li><a href="#C00646">===(other)</a></li>
+<li><a href="#C00639">first()</a></li>
+<li><a href="#C00643">inspect()</a></li>
+<li><a href="#C00640">key()</a></li>
+<li><a href="#C00644">notice()</a></li>
+<li><a href="#C00641">second()</a></li>
+<li><a href="#C00642">value()</a></li>
 
         </ul>
 
@@ -158,7 +158,7 @@ Pair should mimic(Mixins Comparing)
 
         <div class="sectiontitle">Inactive cells (details)</div>
                 <div class="cell">
-          <a name="C00548"></a>
+          <a name="C00638"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">kind</td>
@@ -172,14 +172,14 @@ Pair should mimic(Mixins Comparing)
         <div class="sectiontitle">Active cells (details)</div>
                 <div class="cell">
           <div class="title">
-          <a name="C00555"></a><b>&lt;=&gt;</b>(other)
+          <a name="C00645"></a><b>&lt;=&gt;</b>(other)
           </div>
           <div class="description">
             <p>compares this pair against the argument, returning -1, 0 or 1 based on which one is larger, first comparing the 'first', then comparing the 'second'</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00555_source')" id="l_C00555_source">show source</a> ]</p>
-            <div id="C00555_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00645_source')" id="l_C00645_source">show source</a> ]</p>
+            <div id="C00645_source" class="dyn-source">
 <pre>
 method(other, 
   result = self first &lt;=&gt;(other first) 
@@ -192,8 +192,8 @@ method(other,
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should first compare the first value and return the result of that <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005551S0_source')" id="l_C005551S0_source">show source</a> ]</span>
-            <div id="C005551S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006451S0_source')" id="l_C006451S0_source">show source</a> ]</span>
+            <div id="C006451S0_source" class="dyn-source">
 <pre>
 ((1 =&gt;(1)) &lt;=&gt;(2 =&gt;(1))) should ==((1 &lt;=&gt;(2))) 
 ((4 =&gt;(1)) &lt;=&gt;(3 =&gt;(1))) should ==(4 &lt;=&gt;(3))
@@ -201,8 +201,8 @@ method(other,
             </div>
             </span></li>
 <li>- should then compare the second value and return the result of that <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005551S1_source')" id="l_C005551S1_source">show source</a> ]</span>
-            <div id="C005551S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006451S1_source')" id="l_C006451S1_source">show source</a> ]</span>
+            <div id="C006451S1_source" class="dyn-source">
 <pre>
 ((1 =&gt;(1)) &lt;=&gt;(1 =&gt;(2))) should ==((1 &lt;=&gt;(2))) 
 ((1 =&gt;(4)) &lt;=&gt;(1 =&gt;(3))) should ==(4 &lt;=&gt;(3))
@@ -215,14 +215,14 @@ method(other,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00556"></a><b>===</b>(other)
+          <a name="C00646"></a><b>===</b>(other)
           </div>
           <div class="description">
             <p>nil</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00556_source')" id="l_C00556_source">show source</a> ]</p>
-            <div id="C00556_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00646_source')" id="l_C00646_source">show source</a> ]</p>
+            <div id="C00646_source" class="dyn-source">
 <pre>
 method(other, 
   if(self same?(
@@ -241,7 +241,7 @@ method(other,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00549"></a><b>first</b>()
+          <a name="C00639"></a><b>first</b>()
           </div>
           <div class="description">
             <p>Returns the first value</p>
@@ -250,16 +250,16 @@ method(other,
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return the first element <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005491S0_source')" id="l_C005491S0_source">show source</a> ]</span>
-            <div id="C005491S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006391S0_source')" id="l_C006391S0_source">show source</a> ]</span>
+            <div id="C006391S0_source" class="dyn-source">
 <pre>
 (1 =&gt;(2)) first should ==(1)
 </pre>
             </div>
             </span></li>
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005491S1_source')" id="l_C005491S1_source">show source</a> ]</span>
-            <div id="C005491S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006391S1_source')" id="l_C006391S1_source">show source</a> ]</span>
+            <div id="C006391S1_source" class="dyn-source">
 <pre>
 Pair should checkReceiverTypeOn(:first) 
 
@@ -272,7 +272,7 @@ Pair should checkReceiverTypeOn(:first)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00553"></a><b>inspect</b>()
+          <a name="C00643"></a><b>inspect</b>()
           </div>
           <div class="description">
             <p>Returns a text inspection of the object</p>
@@ -281,8 +281,8 @@ Pair should checkReceiverTypeOn(:first)
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return it's two elements separated by =>  <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005531S0_source')" id="l_C005531S0_source">show source</a> ]</span>
-            <div id="C005531S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006431S0_source')" id="l_C006431S0_source">show source</a> ]</span>
+            <div id="C006431S0_source" class="dyn-source">
 <pre>
 (1 =&gt;(2)) inspect should ==("1 =&gt; 2") 
 
@@ -290,8 +290,8 @@ Pair should checkReceiverTypeOn(:first)
             </div>
             </span></li>
 <li>- should use inspect format for elements <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005531S1_source')" id="l_C005531S1_source">show source</a> ]</span>
-            <div id="C005531S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006431S1_source')" id="l_C006431S1_source">show source</a> ]</span>
+            <div id="C006431S1_source" class="dyn-source">
 <pre>
 (method(abc foo qux) =&gt;(2)) inspect should ==("method(abc foo qux) =&gt; 2") 
 (2 =&gt;(method(abc foo qux))) inspect should ==("2 =&gt; method(abc foo qux)") 
@@ -300,8 +300,8 @@ Pair should checkReceiverTypeOn(:first)
             </div>
             </span></li>
 <li>- should return the inspect of something inside it <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005531S2_source')" id="l_C005531S2_source">show source</a> ]</span>
-            <div id="C005531S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006431S2_source')" id="l_C006431S2_source">show source</a> ]</span>
+            <div id="C006431S2_source" class="dyn-source">
 <pre>
 ("foo" =&gt;(method(blarg fux))) inspect should ==("\"foo\" =&gt; method(blarg fux)") 
 
@@ -309,8 +309,8 @@ Pair should checkReceiverTypeOn(:first)
             </div>
             </span></li>
 <li>- should return a simple string for something simple <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005531S3_source')" id="l_C005531S3_source">show source</a> ]</span>
-            <div id="C005531S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006431S3_source')" id="l_C006431S3_source">show source</a> ]</span>
+            <div id="C006431S3_source" class="dyn-source">
 <pre>
 (1 =&gt;(2)) inspect should ==("1 =&gt; 2") 
 
@@ -318,8 +318,8 @@ Pair should checkReceiverTypeOn(:first)
             </div>
             </span></li>
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005531S4_source')" id="l_C005531S4_source">show source</a> ]</span>
-            <div id="C005531S4_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006431S4_source')" id="l_C006431S4_source">show source</a> ]</span>
+            <div id="C006431S4_source" class="dyn-source">
 <pre>
 Pair should checkReceiverTypeOn(:inspect) 
 
@@ -332,7 +332,7 @@ Pair should checkReceiverTypeOn(:inspect)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00550"></a><b>key</b>()
+          <a name="C00640"></a><b>key</b>()
           </div>
           <div class="description">
             <p>Returns the first value</p>
@@ -341,16 +341,16 @@ Pair should checkReceiverTypeOn(:inspect)
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return the first element <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005501S0_source')" id="l_C005501S0_source">show source</a> ]</span>
-            <div id="C005501S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006401S0_source')" id="l_C006401S0_source">show source</a> ]</span>
+            <div id="C006401S0_source" class="dyn-source">
 <pre>
 (1 =&gt;(2)) key should ==(1)
 </pre>
             </div>
             </span></li>
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005501S1_source')" id="l_C005501S1_source">show source</a> ]</span>
-            <div id="C005501S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006401S1_source')" id="l_C006401S1_source">show source</a> ]</span>
+            <div id="C006401S1_source" class="dyn-source">
 <pre>
 Pair should checkReceiverTypeOn(:key) 
 
@@ -363,7 +363,7 @@ Pair should checkReceiverTypeOn(:key)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00554"></a><b>notice</b>()
+          <a name="C00644"></a><b>notice</b>()
           </div>
           <div class="description">
             <p>Returns a brief text inspection of the object</p>
@@ -372,8 +372,8 @@ Pair should checkReceiverTypeOn(:key)
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return it's two elements separated by =>  <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005541S0_source')" id="l_C005541S0_source">show source</a> ]</span>
-            <div id="C005541S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006441S0_source')" id="l_C006441S0_source">show source</a> ]</span>
+            <div id="C006441S0_source" class="dyn-source">
 <pre>
 (1 =&gt;(2)) notice should ==("1 =&gt; 2") 
 
@@ -381,8 +381,8 @@ Pair should checkReceiverTypeOn(:key)
             </div>
             </span></li>
 <li>- should use notice format for elements <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005541S1_source')" id="l_C005541S1_source">show source</a> ]</span>
-            <div id="C005541S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006441S1_source')" id="l_C006441S1_source">show source</a> ]</span>
+            <div id="C006441S1_source" class="dyn-source">
 <pre>
 (method(abc foo qux) =&gt;(2)) notice should ==("method(...) =&gt; 2") 
 (2 =&gt;(method(abc foo qux))) notice should ==("2 =&gt; method(...)") 
@@ -391,8 +391,8 @@ Pair should checkReceiverTypeOn(:key)
             </div>
             </span></li>
 <li>- should return the notice of something inside it <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005541S2_source')" id="l_C005541S2_source">show source</a> ]</span>
-            <div id="C005541S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006441S2_source')" id="l_C006441S2_source">show source</a> ]</span>
+            <div id="C006441S2_source" class="dyn-source">
 <pre>
 ("foo" =&gt;(method(blarg fux))) notice should ==("\"foo\" =&gt; method(...)") 
 
@@ -400,8 +400,8 @@ Pair should checkReceiverTypeOn(:key)
             </div>
             </span></li>
 <li>- should return a simple string for something simple <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005541S3_source')" id="l_C005541S3_source">show source</a> ]</span>
-            <div id="C005541S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006441S3_source')" id="l_C006441S3_source">show source</a> ]</span>
+            <div id="C006441S3_source" class="dyn-source">
 <pre>
 (1 =&gt;(2)) notice should ==("1 =&gt; 2") 
 
@@ -409,8 +409,8 @@ Pair should checkReceiverTypeOn(:key)
             </div>
             </span></li>
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005541S4_source')" id="l_C005541S4_source">show source</a> ]</span>
-            <div id="C005541S4_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006441S4_source')" id="l_C006441S4_source">show source</a> ]</span>
+            <div id="C006441S4_source" class="dyn-source">
 <pre>
 Pair should checkReceiverTypeOn(:notice) 
 
@@ -423,7 +423,7 @@ Pair should checkReceiverTypeOn(:notice)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00551"></a><b>second</b>()
+          <a name="C00641"></a><b>second</b>()
           </div>
           <div class="description">
             <p>Returns the second value</p>
@@ -432,16 +432,16 @@ Pair should checkReceiverTypeOn(:notice)
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return the second element <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005511S0_source')" id="l_C005511S0_source">show source</a> ]</span>
-            <div id="C005511S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006411S0_source')" id="l_C006411S0_source">show source</a> ]</span>
+            <div id="C006411S0_source" class="dyn-source">
 <pre>
 (1 =&gt;(2)) second should ==(2)
 </pre>
             </div>
             </span></li>
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005511S1_source')" id="l_C005511S1_source">show source</a> ]</span>
-            <div id="C005511S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006411S1_source')" id="l_C006411S1_source">show source</a> ]</span>
+            <div id="C006411S1_source" class="dyn-source">
 <pre>
 Pair should checkReceiverTypeOn(:second) 
 
@@ -454,7 +454,7 @@ Pair should checkReceiverTypeOn(:second)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00552"></a><b>value</b>()
+          <a name="C00642"></a><b>value</b>()
           </div>
           <div class="description">
             <p>Returns the second value</p>
@@ -463,16 +463,16 @@ Pair should checkReceiverTypeOn(:second)
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return the second element <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005521S0_source')" id="l_C005521S0_source">show source</a> ]</span>
-            <div id="C005521S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006421S0_source')" id="l_C006421S0_source">show source</a> ]</span>
+            <div id="C006421S0_source" class="dyn-source">
 <pre>
 (1 =&gt;(2)) value should ==(2)
 </pre>
             </div>
             </span></li>
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005521S1_source')" id="l_C005521S1_source">show source</a> ]</span>
-            <div id="C005521S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006421S1_source')" id="l_C006421S1_source">show source</a> ]</span>
+            <div id="C006421S1_source" class="dyn-source">
 <pre>
 Pair should checkReceiverTypeOn(:value) 
 

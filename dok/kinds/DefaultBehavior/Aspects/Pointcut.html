@@ -90,23 +90,23 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 
         <div class="sectiontitle">Inactive cells</div>
         <ul>
-          <li><a href="#C00194">kind</a></li>
+          <li><a href="#C00212">kind</a></li>
 
         </ul>        
 
         <div class="sectiontitle">Active cells</div>
         <ul>
-          <li><a href="#C00200">&lt;&lt;(advice)</a></li>
-<li><a href="#C00201">add(name, advice)</a></li>
-<li><a href="#C00199">addAdviceOnCell(cellName, advice, adviceName nil)</a></li>
-<li><a href="#C00197">addToJoins(matches, joins)</a></li>
-<li><a href="#C00195">advice?(obj)</a></li>
-<li><a href="#C00196">cacheCall?(obj)</a></li>
-<li><a href="#C00204">remove(name)</a></li>
-<li><a href="#C00205">removeAll(name)</a></li>
-<li><a href="#C00203">removeAllNamedAdvice(cellName, name)</a></li>
-<li><a href="#C00202">removeFirstNamedAdvice(cellName, name)</a></li>
-<li><a href="#C00198">removeFromJoins(excepts, joins)</a></li>
+          <li><a href="#C00218">&lt;&lt;(advice)</a></li>
+<li><a href="#C00219">add(name, advice)</a></li>
+<li><a href="#C00217">addAdviceOnCell(cellName, advice, adviceName nil)</a></li>
+<li><a href="#C00215">addToJoins(matches, joins)</a></li>
+<li><a href="#C00213">advice?(obj)</a></li>
+<li><a href="#C00214">cacheCall?(obj)</a></li>
+<li><a href="#C00222">remove(name)</a></li>
+<li><a href="#C00223">removeAll(name)</a></li>
+<li><a href="#C00221">removeAllNamedAdvice(cellName, name)</a></li>
+<li><a href="#C00220">removeFirstNamedAdvice(cellName, name)</a></li>
+<li><a href="#C00216">removeFromJoins(excepts, joins)</a></li>
 
         </ul>
 
@@ -117,7 +117,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 
         <div class="sectiontitle">Inactive cells (details)</div>
                 <div class="cell">
-          <a name="C00194"></a>
+          <a name="C00212"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">kind</td>
@@ -131,14 +131,14 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         <div class="sectiontitle">Active cells (details)</div>
                 <div class="cell">
           <div class="title">
-          <a name="C00200"></a><b>&lt;&lt;</b>(advice)
+          <a name="C00218"></a><b>&lt;&lt;</b>(advice)
           </div>
           <div class="description">
             <p>nil</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00200_source')" id="l_C00200_source">show source</a> ]</p>
-            <div id="C00200_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00218_source')" id="l_C00218_source">show source</a> ]</p>
+            <div id="C00218_source" class="dyn-source">
 <pre>
 method(advice, 
   joins = set(*(joinPoints)) 
@@ -157,14 +157,14 @@ method(advice,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00201"></a><b>add</b>(name, advice)
+          <a name="C00219"></a><b>add</b>(name, advice)
           </div>
           <div class="description">
             <p>nil</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00201_source')" id="l_C00201_source">show source</a> ]</p>
-            <div id="C00201_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00219_source')" id="l_C00219_source">show source</a> ]</p>
+            <div id="C00219_source" class="dyn-source">
 <pre>
 method(name, advice, 
   joins = set(*(joinPoints)) 
@@ -183,14 +183,14 @@ method(name, advice,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00199"></a><b>addAdviceOnCell</b>(cellName, advice, adviceName nil)
+          <a name="C00217"></a><b>addAdviceOnCell</b>(cellName, advice, adviceName nil)
           </div>
           <div class="description">
             <p>nil</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00199_source')" id="l_C00199_source">show source</a> ]</p>
-            <div id="C00199_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00217_source')" id="l_C00217_source">show source</a> ]</p>
+            <div id="C00217_source" class="dyn-source">
 <pre>
 method(cellName, advice, adviceName nil, 
   primary = if(self cell(:receiver) cell?(cellName), 
@@ -286,14 +286,14 @@ method(cellName, advice, adviceName nil,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00197"></a><b>addToJoins</b>(matches, joins)
+          <a name="C00215"></a><b>addToJoins</b>(matches, joins)
           </div>
           <div class="description">
             <p>nil</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00197_source')" id="l_C00197_source">show source</a> ]</p>
-            <div id="C00197_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00215_source')" id="l_C00215_source">show source</a> ]</p>
+            <div id="C00215_source" class="dyn-source">
 <pre>
 method(matches, joins, 
   case(cell(:matches), 
@@ -316,14 +316,14 @@ method(matches, joins,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00195"></a><b>advice?</b>(obj)
+          <a name="C00213"></a><b>advice?</b>(obj)
           </div>
           <div class="description">
             <p>nil</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00195_source')" id="l_C00195_source">show source</a> ]</p>
-            <div id="C00195_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00213_source')" id="l_C00213_source">show source</a> ]</p>
+            <div id="C00213_source" class="dyn-source">
 <pre>
 method(obj, 
   cell(:obj) cell?(:kind?) &&((cell(:obj) kind?("DefaultMacro") &&(cell(:obj) cell?(:advice)))) 
@@ -337,14 +337,14 @@ method(obj,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00196"></a><b>cacheCall?</b>(obj)
+          <a name="C00214"></a><b>cacheCall?</b>(obj)
           </div>
           <div class="description">
             <p>nil</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00196_source')" id="l_C00196_source">show source</a> ]</p>
-            <div id="C00196_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00214_source')" id="l_C00214_source">show source</a> ]</p>
+            <div id="C00214_source" class="dyn-source">
 <pre>
 method(obj, 
   case(cell(:obj) kind, 
@@ -365,14 +365,14 @@ method(obj,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00204"></a><b>remove</b>(name)
+          <a name="C00222"></a><b>remove</b>(name)
           </div>
           <div class="description">
             <p>nil</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00204_source')" id="l_C00204_source">show source</a> ]</p>
-            <div id="C00204_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00222_source')" id="l_C00222_source">show source</a> ]</p>
+            <div id="C00222_source" class="dyn-source">
 <pre>
 method(name, 
   joins = set(*(joinPoints)) 
@@ -391,14 +391,14 @@ method(name,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00205"></a><b>removeAll</b>(name)
+          <a name="C00223"></a><b>removeAll</b>(name)
           </div>
           <div class="description">
             <p>nil</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00205_source')" id="l_C00205_source">show source</a> ]</p>
-            <div id="C00205_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00223_source')" id="l_C00223_source">show source</a> ]</p>
+            <div id="C00223_source" class="dyn-source">
 <pre>
 method(name, 
   joins = set(*(joinPoints)) 
@@ -417,14 +417,14 @@ method(name,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00203"></a><b>removeAllNamedAdvice</b>(cellName, name)
+          <a name="C00221"></a><b>removeAllNamedAdvice</b>(cellName, name)
           </div>
           <div class="description">
             <p>nil</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00203_source')" id="l_C00203_source">show source</a> ]</p>
-            <div id="C00203_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00221_source')" id="l_C00221_source">show source</a> ]</p>
+            <div id="C00221_source" class="dyn-source">
 <pre>
 method(cellName, name, 
   currVal = self cell(:receiver) cell(cellName) 
@@ -453,14 +453,14 @@ method(cellName, name,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00202"></a><b>removeFirstNamedAdvice</b>(cellName, name)
+          <a name="C00220"></a><b>removeFirstNamedAdvice</b>(cellName, name)
           </div>
           <div class="description">
             <p>nil</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00202_source')" id="l_C00202_source">show source</a> ]</p>
-            <div id="C00202_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00220_source')" id="l_C00220_source">show source</a> ]</p>
+            <div id="C00220_source" class="dyn-source">
 <pre>
 method(cellName, name, 
   currVal = self cell(:receiver) cell(cellName) 
@@ -491,14 +491,14 @@ method(cellName, name,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00198"></a><b>removeFromJoins</b>(excepts, joins)
+          <a name="C00216"></a><b>removeFromJoins</b>(excepts, joins)
           </div>
           <div class="description">
             <p>nil</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00198_source')" id="l_C00198_source">show source</a> ]</p>
-            <div id="C00198_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00216_source')" id="l_C00216_source">show source</a> ]</p>
+            <div id="C00216_source" class="dyn-source">
 <pre>
 method(excepts, joins, 
   case(cell(:excepts), 

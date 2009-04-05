@@ -90,15 +90,17 @@ Represents an exact number
 
         <div class="sectiontitle">Inactive cells</div>
         <ul>
-          <li><a href="#C00261">kind</a></li>
+          <li><a href="#C00289">kind</a></li>
 
         </ul>        
 
         <div class="sectiontitle">Active cells</div>
         <ul>
-          <li><a href="#C00298">==(other)</a></li>
-<li><a href="#C00300">===(other)</a></li>
-<li><a href="#C00299">negation()</a></li>
+          <li><a href="#C00326">==(other)</a></li>
+<li><a href="#C00330">===(other)</a></li>
+<li><a href="#C00329">abs()</a></li>
+<li><a href="#C00328">negation()</a></li>
+<li><a href="#C00327">zero?()</a></li>
 
         </ul>
 
@@ -176,7 +178,7 @@ Number should mimic(Mixins Comparing)
 
         <div class="sectiontitle">Inactive cells (details)</div>
                 <div class="cell">
-          <a name="C00261"></a>
+          <a name="C00289"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">kind</td>
@@ -190,7 +192,7 @@ Number should mimic(Mixins Comparing)
         <div class="sectiontitle">Active cells (details)</div>
                 <div class="cell">
           <div class="title">
-          <a name="C00298"></a><b>==</b>(other)
+          <a name="C00326"></a><b>==</b>(other)
           </div>
           <div class="description">
             <p>compares this against the argument. should be overridden - in this case only used to check for equivalent number kinds</p>
@@ -202,14 +204,14 @@ Number should mimic(Mixins Comparing)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00300"></a><b>===</b>(other)
+          <a name="C00330"></a><b>===</b>(other)
           </div>
           <div class="description">
             <p>nil</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00300_source')" id="l_C00300_source">show source</a> ]</p>
-            <div id="C00300_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00330_source')" id="l_C00330_source">show source</a> ]</p>
+            <div id="C00330_source" class="dyn-source">
 <pre>
 method(other, 
   if(self same?(
@@ -225,8 +227,8 @@ method(other,
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should check for mimicness if receiver is Number <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C003001S0_source')" id="l_C003001S0_source">show source</a> ]</span>
-            <div id="C003001S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003301S0_source')" id="l_C003301S0_source">show source</a> ]</span>
+            <div id="C003301S0_source" class="dyn-source">
 <pre>
 Number should ===(Number) 
 Number should ===(Number Rational) 
@@ -246,14 +248,69 @@ Number should not ===(Origin)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00299"></a><b>negation</b>()
+          <a name="C00329"></a><b>abs</b>()
+          </div>
+          <div class="description">
+            <p>Returns the absolute value of this number</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00329_source')" id="l_C00329_source">show source</a> ]</p>
+            <div id="C00329_source" class="dyn-source">
+<pre>
+method(
+  if(self &lt;(0), negation, self) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return zero for zero <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003291S0_source')" id="l_C003291S0_source">show source</a> ]</span>
+            <div id="C003291S0_source" class="dyn-source">
+<pre>
+0 abs should ==(0)
+</pre>
+            </div>
+            </span></li>
+<li>- should return the negation for negative number <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003291S1_source')" id="l_C003291S1_source">show source</a> ]</span>
+            <div id="C003291S1_source" class="dyn-source">
+<pre>
+-(1) abs should ==(1)
+</pre>
+            </div>
+            </span></li>
+<li>- should return the receiver for positive number <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003291S2_source')" id="l_C003291S2_source">show source</a> ]</span>
+            <div id="C003291S2_source" class="dyn-source">
+<pre>
+1 abs should ==(1)
+</pre>
+            </div>
+            </span></li>
+<li>- should return a large positive number for a large negative number <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003291S3_source')" id="l_C003291S3_source">show source</a> ]</span>
+            <div id="C003291S3_source" class="dyn-source">
+<pre>
+-(353654645676451123345674) abs should ==(353654645676451123345674)
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00328"></a><b>negation</b>()
           </div>
           <div class="description">
             <p>Returns the negation of this number</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00299_source')" id="l_C00299_source">show source</a> ]</p>
-            <div id="C00299_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00328_source')" id="l_C00328_source">show source</a> ]</p>
+            <div id="C00328_source" class="dyn-source">
 <pre>
 method(
   0 -(@))
@@ -263,42 +320,105 @@ method(
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return zero for zero <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C002991S0_source')" id="l_C002991S0_source">show source</a> ]</span>
-            <div id="C002991S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003281S0_source')" id="l_C003281S0_source">show source</a> ]</span>
+            <div id="C003281S0_source" class="dyn-source">
 <pre>
 0 negation should ==(0)
 </pre>
             </div>
             </span></li>
 <li>- should return 1 for -1 <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C002991S1_source')" id="l_C002991S1_source">show source</a> ]</span>
-            <div id="C002991S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003281S1_source')" id="l_C003281S1_source">show source</a> ]</span>
+            <div id="C003281S1_source" class="dyn-source">
 <pre>
 -(1) negation should ==(1)
 </pre>
             </div>
             </span></li>
 <li>- should return -1 for 1 <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C002991S2_source')" id="l_C002991S2_source">show source</a> ]</span>
-            <div id="C002991S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003281S2_source')" id="l_C003281S2_source">show source</a> ]</span>
+            <div id="C003281S2_source" class="dyn-source">
 <pre>
 1 negation should ==(-(1))
 </pre>
             </div>
             </span></li>
 <li>- should return a large positive number for a large negative number <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C002991S3_source')" id="l_C002991S3_source">show source</a> ]</span>
-            <div id="C002991S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003281S3_source')" id="l_C003281S3_source">show source</a> ]</span>
+            <div id="C003281S3_source" class="dyn-source">
 <pre>
 -(353654645676451123345674) negation should ==(353654645676451123345674)
 </pre>
             </div>
             </span></li>
 <li>- should return a large negative number for a large positive number <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C002991S4_source')" id="l_C002991S4_source">show source</a> ]</span>
-            <div id="C002991S4_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003281S4_source')" id="l_C003281S4_source">show source</a> ]</span>
+            <div id="C003281S4_source" class="dyn-source">
 <pre>
 353654645676451123345674 negation should ==(-(353654645676451123345674))
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00327"></a><b>zero?</b>()
+          </div>
+          <div class="description">
+            <p>Returns true if this number is zero.</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00327_source')" id="l_C00327_source">show source</a> ]</p>
+            <div id="C00327_source" class="dyn-source">
+<pre>
+method(
+  @ ==(0) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return true for int zero <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003271S0_source')" id="l_C003271S0_source">show source</a> ]</span>
+            <div id="C003271S0_source" class="dyn-source">
+<pre>
+0 should be zero
+</pre>
+            </div>
+            </span></li>
+<li>- should return true for real zero <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003271S1_source')" id="l_C003271S1_source">show source</a> ]</span>
+            <div id="C003271S1_source" class="dyn-source">
+<pre>
+0.0 should be zero
+</pre>
+            </div>
+            </span></li>
+<li>- should return false for a negative value <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003271S2_source')" id="l_C003271S2_source">show source</a> ]</span>
+            <div id="C003271S2_source" class="dyn-source">
+<pre>
+-(1) should not be zero
+</pre>
+            </div>
+            </span></li>
+<li>- should return false for a real > 0.0 <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003271S3_source')" id="l_C003271S3_source">show source</a> ]</span>
+            <div id="C003271S3_source" class="dyn-source">
+<pre>
+0.1 should not be zero
+</pre>
+            </div>
+            </span></li>
+<li>- should return false for an int > 0 <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003271S4_source')" id="l_C003271S4_source">show source</a> ]</span>
+            <div id="C003271S4_source" class="dyn-source">
+<pre>
+1 should not be zero
 </pre>
             </div>
             </span></li>

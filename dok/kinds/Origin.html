@@ -90,16 +90,16 @@ Any object created from scratch should usually be derived from Origin.
 
         <div class="sectiontitle">Inactive cells</div>
         <ul>
-          <li><a href="#C00209">kind</a></li>
+          <li><a href="#C00232">kind</a></li>
 
         </ul>        
 
         <div class="sectiontitle">Active cells</div>
         <ul>
-          <li><a href="#C00212">===(other)</a></li>
-<li><a href="#C00213">mimic(...)</a></li>
-<li><a href="#C00211">print()</a></li>
-<li><a href="#C00210">println()</a></li>
+          <li><a href="#C00235">===(other)</a></li>
+<li><a href="#C00236">mimic(...)</a></li>
+<li><a href="#C00234">print()</a></li>
+<li><a href="#C00233">println()</a></li>
 
         </ul>
 
@@ -178,7 +178,7 @@ Origin mimic notice should not ==("Origin")
 
         <div class="sectiontitle">Inactive cells (details)</div>
                 <div class="cell">
-          <a name="C00209"></a>
+          <a name="C00232"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">kind</td>
@@ -192,20 +192,20 @@ Origin mimic notice should not ==("Origin")
         <div class="sectiontitle">Active cells (details)</div>
                 <div class="cell">
           <div class="title">
-          <a name="C00212"></a><b>===</b>(other)
+          <a name="C00235"></a><b>===</b>(other)
           </div>
           <div class="description">
             <p>nil</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00212_source')" id="l_C00212_source">show source</a> ]</p>
-            <div id="C00212_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00235_source')" id="l_C00235_source">show source</a> ]</p>
+            <div id="C00235_source" class="dyn-source">
 <pre>
 method(other, 
   if(self same?(
-      #&lt;Origin:55D93D&gt;), 
+      #&lt;Origin:26D607&gt;), 
     other mimics?(
-      #&lt;Origin:55D93D&gt;), 
+      #&lt;Origin:26D607&gt;), 
     bind(rescue(Condition Error, fn(c, false)), 
       self ==(
         other))))
@@ -215,8 +215,8 @@ method(other,
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should check for mimicness if receiver is Origin <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C002121S0_source')" id="l_C002121S0_source">show source</a> ]</span>
-            <div id="C002121S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002351S0_source')" id="l_C002351S0_source">show source</a> ]</span>
+            <div id="C002351S0_source" class="dyn-source">
 <pre>
 Origin should ===(Origin) 
 Origin should ===(Origin mimic) 
@@ -227,8 +227,8 @@ Origin should not ===(Ground)
             </div>
             </span></li>
 <li>- should check for equalness if receiver is not Origin <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C002121S1_source')" id="l_C002121S1_source">show source</a> ]</span>
-            <div id="C002121S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002351S1_source')" id="l_C002351S1_source">show source</a> ]</span>
+            <div id="C002351S1_source" class="dyn-source">
 <pre>
 x = Origin mimic 
 y = Origin mimic 
@@ -251,14 +251,14 @@ z should ===(x)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00213"></a><b>mimic</b>(...)
+          <a name="C00236"></a><b>mimic</b>(...)
           </div>
           <div class="description">
             <p>will return a new derivation of the receiving object. Might throw exceptions if the object is an oddball object.</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00213_source')" id="l_C00213_source">show source</a> ]</p>
-            <div id="C00213_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00236_source')" id="l_C00236_source">show source</a> ]</p>
+            <div id="C00236_source" class="dyn-source">
 <pre>
 macro(
   aspectCall = macro(ss = if(@ kind ==("Locals"), @ self, @) 
@@ -275,7 +275,7 @@ macro(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00211"></a><b>print</b>()
+          <a name="C00234"></a><b>print</b>()
           </div>
           <div class="description">
             <p>Prints a text representation to standard output</p>
@@ -284,8 +284,8 @@ macro(
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should print asText of object to 'System out' <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C002111S0_source')" id="l_C002111S0_source">show source</a> ]</span>
-            <div id="C002111S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002341S0_source')" id="l_C002341S0_source">show source</a> ]</span>
+            <div id="C002341S0_source" class="dyn-source">
 <pre>
 oldSystemOutPrint = System out cell(:print) 
 Ground expected = nil 
@@ -305,7 +305,7 @@ expected should ==("foobarz")
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00210"></a><b>println</b>()
+          <a name="C00233"></a><b>println</b>()
           </div>
           <div class="description">
             <p>Prints a text representation and a newline to standard output</p>
@@ -314,8 +314,8 @@ expected should ==("foobarz")
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should print asText of object to 'System out' <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C002101S0_source')" id="l_C002101S0_source">show source</a> ]</span>
-            <div id="C002101S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002331S0_source')" id="l_C002331S0_source">show source</a> ]</span>
+            <div id="C002331S0_source" class="dyn-source">
 <pre>
 oldSystemOutPrintln = System out cell(:println) 
 Ground expected = nil 

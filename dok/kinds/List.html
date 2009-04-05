@@ -90,40 +90,66 @@ A list is a collection of objects that can change size
 
         <div class="sectiontitle">Inactive cells</div>
         <ul>
-          <li><a href="#C00477">kind</a></li>
+          <li><a href="#C00540">kind</a></li>
 
         </ul>        
 
         <div class="sectiontitle">Active cells</div>
         <ul>
-          <li><a href="#C00486">+(otherList)</a></li>
-<li><a href="#C00487">-(otherList)</a></li>
-<li><a href="#C00482">&lt;&lt;(value)</a></li>
-<li><a href="#C00480">&lt;=&gt;(other)</a></li>
-<li><a href="#C00505">===(other)</a></li>
-<li><a href="#C00504">?&(...)</a></li>
-<li><a href="#C00503">?|(...)</a></li>
-<li><a href="#C00493">[](...)</a></li>
-<li><a href="#C00495">[]=(...)</a></li>
-<li><a href="#C00501">asList()</a></li>
-<li><a href="#C00492">at(index)</a></li>
-<li><a href="#C00494">at=(index, value)</a></li>
-<li><a href="#C00500">butLast(n 1)</a></li>
-<li><a href="#C00483">clear!()</a></li>
-<li><a href="#C00481">each([indexOrArgOrCode], [argOrCode] nil, [code] nil)</a></li>
-<li><a href="#C00484">empty?()</a></li>
-<li><a href="#C00502">ifEmpty(...)</a></li>
-<li><a href="#C00485">include?(object)</a></li>
-<li><a href="#C00478">inspect()</a></li>
-<li><a href="#C00498">last()</a></li>
-<li><a href="#C00491">length(...)</a></li>
-<li><a href="#C00479">notice()</a></li>
-<li><a href="#C00499">rest()</a></li>
-<li><a href="#C00496">second()</a></li>
-<li><a href="#C00490">size()</a></li>
-<li><a href="#C00488">sort()</a></li>
-<li><a href="#C00489">sort!()</a></li>
-<li><a href="#C00497">third()</a></li>
+          <li><a href="#C00592">*(sepOrRep)</a></li>
+<li><a href="#C00556">+(otherList)</a></li>
+<li><a href="#C00557">-(otherList)</a></li>
+<li><a href="#C00545">&lt;&lt;(value)</a></li>
+<li><a href="#C00543">&lt;=&gt;(other)</a></li>
+<li><a href="#C00586">===(other)</a></li>
+<li><a href="#C00585">?&(...)</a></li>
+<li><a href="#C00584">?|(...)</a></li>
+<li><a href="#C00563">[](...)</a></li>
+<li><a href="#C00566">[]=(...)</a></li>
+<li><a href="#C00546">append!(value)</a></li>
+<li><a href="#C00582">asList()</a></li>
+<li><a href="#C00588">assoc(obj)</a></li>
+<li><a href="#C00562">at(index)</a></li>
+<li><a href="#C00565">at=(index, value)</a></li>
+<li><a href="#C00581">butLast(n 1)</a></li>
+<li><a href="#C00552">clear!()</a></li>
+<li><a href="#C00575">collect!(...)</a></li>
+<li><a href="#C00587">compact()</a></li>
+<li><a href="#C00570">compact!()</a></li>
+<li><a href="#C00555">concat!(otherList)</a></li>
+<li><a href="#C00544">each([indexOrArgOrCode], [argOrCode] nil, [code] nil)</a></li>
+<li><a href="#C00553">empty?()</a></li>
+<li><a href="#C00591">flatten()</a></li>
+<li><a href="#C00572">flatten!()</a></li>
+<li><a href="#C00583">ifEmpty(...)</a></li>
+<li><a href="#C00554">include?(object)</a></li>
+<li><a href="#C00593">index(obj)</a></li>
+<li><a href="#C00564">insert!(index, +objects)</a></li>
+<li><a href="#C00541">inspect()</a></li>
+<li><a href="#C00573">join(separator )</a></li>
+<li><a href="#C00579">last()</a></li>
+<li><a href="#C00561">length(...)</a></li>
+<li><a href="#C00574">map!([argOrCode], [code] nil)</a></li>
+<li><a href="#C00542">notice()</a></li>
+<li><a href="#C00550">pop!()</a></li>
+<li><a href="#C00548">prepend!(value)</a></li>
+<li><a href="#C00547">push!(...)</a></li>
+<li><a href="#C00589">rassoc(obj)</a></li>
+<li><a href="#C00568">remove!(element, +elements)</a></li>
+<li><a href="#C00567">removeAt!(indexOrRange)</a></li>
+<li><a href="#C00569">removeFirst!(element, +elements)</a></li>
+<li><a href="#C00576">removeIf!([argOrCode], [code] nil)</a></li>
+<li><a href="#C00580">rest()</a></li>
+<li><a href="#C00590">reverse()</a></li>
+<li><a href="#C00571">reverse!()</a></li>
+<li><a href="#C00594">rindex(obj)</a></li>
+<li><a href="#C00577">second()</a></li>
+<li><a href="#C00551">shift!()</a></li>
+<li><a href="#C00560">size()</a></li>
+<li><a href="#C00558">sort()</a></li>
+<li><a href="#C00559">sort!()</a></li>
+<li><a href="#C00578">third()</a></li>
+<li><a href="#C00549">unshift!(...)</a></li>
 
         </ul>
 
@@ -255,7 +281,7 @@ x should ==(y)
 
         <div class="sectiontitle">Inactive cells (details)</div>
                 <div class="cell">
-          <a name="C00477"></a>
+          <a name="C00540"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">kind</td>
@@ -269,7 +295,54 @@ x should ==(y)
         <div class="sectiontitle">Active cells (details)</div>
                 <div class="cell">
           <div class="title">
-          <a name="C00486"></a><b>+</b>(otherList)
+          <a name="C00592"></a><b>*</b>(sepOrRep)
+          </div>
+          <div class="description">
+            <p>takes either a text or a number. if given a text, it works like join, while if it gets a number, it will return a new list repeated as many times as the number argument</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00592_source')" id="l_C00592_source">show source</a> ]</p>
+            <div id="C00592_source" class="dyn-source">
+<pre>
+method(sepOrRep, 
+  if(sepOrRep mimics?(Text), 
+    self join(sepOrRep), 
+    result = list 
+    sepOrRep times(result concat!(self)) 
+    result))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- is equivalent to self join(text) when passed a Text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005921S0_source')" id="l_C005921S0_source">show source</a> ]</span>
+            <div id="C005921S0_source" class="dyn-source">
+<pre>
+([](1, 2, 3) *(",")) should ==([](1, 2, 3) join(",")) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- concatenates n copies of the list when passed an integer <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005921S1_source')" id="l_C005921S1_source">show source</a> ]</span>
+            <div id="C005921S1_source" class="dyn-source">
+<pre>
+([](1, 2, 3) *(0)) should ==([]) 
+([](1, 2, 3) *(1)) should ==([](1, 2, 3)) 
+([](1, 2, 3) *(3)) should ==([](1, 2, 3, 1, 2, 3, 1, 2, 3)) 
+([] *(10)) should ==([]) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00556"></a><b>+</b>(otherList)
           </div>
           <div class="description">
             <p>returns a new list that contains the receivers elements and the elements of the list sent in as the argument.</p>
@@ -278,8 +351,8 @@ x should ==(y)
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return the same list when applied to an empty list <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004861S0_source')" id="l_C004861S0_source">show source</a> ]</span>
-            <div id="C004861S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005561S0_source')" id="l_C005561S0_source">show source</a> ]</span>
+            <div id="C005561S0_source" class="dyn-source">
 <pre>
 x = [](1, 2, 3) 
 (x +([])) should ==(x) 
@@ -290,8 +363,8 @@ x = [](1, 2, 3)
             </div>
             </span></li>
 <li>- should add two lists together, preserving the order <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004861S1_source')" id="l_C004861S1_source">show source</a> ]</span>
-            <div id="C004861S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005561S1_source')" id="l_C005561S1_source">show source</a> ]</span>
+            <div id="C005561S1_source" class="dyn-source">
 <pre>
 x = [](1, 2, 3) 
 (x +([](4, 5, 6))) should ==([](1, 2, 3, 4, 5, 6)) 
@@ -302,8 +375,8 @@ x = [](1, 2, 3)
             </div>
             </span></li>
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004861S2_source')" id="l_C004861S2_source">show source</a> ]</span>
-            <div id="C004861S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005561S2_source')" id="l_C005561S2_source">show source</a> ]</span>
+            <div id="C005561S2_source" class="dyn-source">
 <pre>
 List should checkReceiverTypeOn(:("+"), []) 
 
@@ -311,8 +384,8 @@ List should checkReceiverTypeOn(:("+"), [])
             </div>
             </span></li>
 <li>- should validate type of argument <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004861S3_source')" id="l_C004861S3_source">show source</a> ]</span>
-            <div id="C004861S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005561S3_source')" id="l_C005561S3_source">show source</a> ]</span>
+            <div id="C005561S3_source" class="dyn-source">
 <pre>
 fn([](1, 2, 3) +(3)) should signal(Condition Error Type IncorrectType) 
 
@@ -325,7 +398,7 @@ fn([](1, 2, 3) +(3)) should signal(Condition Error Type IncorrectType)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00487"></a><b>-</b>(otherList)
+          <a name="C00557"></a><b>-</b>(otherList)
           </div>
           <div class="description">
             <p>returns a new list that contains all the elements from the receivers list, except for those that are in the argument list</p>
@@ -334,8 +407,8 @@ fn([](1, 2, 3) +(3)) should signal(Condition Error Type IncorrectType)
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return the same list when given an empty list <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004871S0_source')" id="l_C004871S0_source">show source</a> ]</span>
-            <div id="C004871S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005571S0_source')" id="l_C005571S0_source">show source</a> ]</span>
+            <div id="C005571S0_source" class="dyn-source">
 <pre>
 x = [](1, 2, 3) 
 (x -([])) should ==(x) 
@@ -344,8 +417,8 @@ x = [](1, 2, 3)
             </div>
             </span></li>
 <li>- should return an empty list when subtracting from an empty list <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004871S1_source')" id="l_C004871S1_source">show source</a> ]</span>
-            <div id="C004871S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005571S1_source')" id="l_C005571S1_source">show source</a> ]</span>
+            <div id="C005571S1_source" class="dyn-source">
 <pre>
 x = [](1, 2, 3) 
 ([] -(x)) should ==([]) 
@@ -354,8 +427,8 @@ x = [](1, 2, 3)
             </div>
             </span></li>
 <li>- should remove all elements that are the same from the first list <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004871S2_source')" id="l_C004871S2_source">show source</a> ]</span>
-            <div id="C004871S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005571S2_source')" id="l_C005571S2_source">show source</a> ]</span>
+            <div id="C005571S2_source" class="dyn-source">
 <pre>
 x = [](1, 2, 3) 
 y = [](2, 4, 6, 2) 
@@ -367,8 +440,8 @@ y = [](2, 4, 6, 2)
             </div>
             </span></li>
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004871S3_source')" id="l_C004871S3_source">show source</a> ]</span>
-            <div id="C004871S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005571S3_source')" id="l_C005571S3_source">show source</a> ]</span>
+            <div id="C005571S3_source" class="dyn-source">
 <pre>
 List should checkReceiverTypeOn(:("-"), []) 
 
@@ -376,8 +449,8 @@ List should checkReceiverTypeOn(:("-"), [])
             </div>
             </span></li>
 <li>- should validate type of argument <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004871S4_source')" id="l_C004871S4_source">show source</a> ]</span>
-            <div id="C004871S4_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005571S4_source')" id="l_C005571S4_source">show source</a> ]</span>
+            <div id="C005571S4_source" class="dyn-source">
 <pre>
 fn([](1, 2, 3) -(3)) should signal(Condition Error Type IncorrectType) 
 
@@ -390,7 +463,7 @@ fn([](1, 2, 3) -(3)) should signal(Condition Error Type IncorrectType)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00482"></a><b>&lt;&lt;</b>(value)
+          <a name="C00545"></a><b>&lt;&lt;</b>(value)
           </div>
           <div class="description">
             <p>takes one argument and adds it at the end of the list, and then returns the list</p>
@@ -399,8 +472,8 @@ fn([](1, 2, 3) -(3)) should signal(Condition Error Type IncorrectType)
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should add the element at the end of an empty list <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004821S0_source')" id="l_C004821S0_source">show source</a> ]</span>
-            <div id="C004821S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005451S0_source')" id="l_C005451S0_source">show source</a> ]</span>
+            <div id="C005451S0_source" class="dyn-source">
 <pre>
 x = [] 
 x &lt;&lt;(42) 
@@ -411,8 +484,8 @@ x [](0) should ==(42)
             </div>
             </span></li>
 <li>- should add the element at the end of a list with elements <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004821S1_source')" id="l_C004821S1_source">show source</a> ]</span>
-            <div id="C004821S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005451S1_source')" id="l_C005451S1_source">show source</a> ]</span>
+            <div id="C005451S1_source" class="dyn-source">
 <pre>
 x = [](1, 2, 3) 
 x &lt;&lt;(42) 
@@ -426,8 +499,8 @@ x [](3) should ==(42)
             </div>
             </span></li>
 <li>- should return the list after the append <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004821S2_source')" id="l_C004821S2_source">show source</a> ]</span>
-            <div id="C004821S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005451S2_source')" id="l_C005451S2_source">show source</a> ]</span>
+            <div id="C005451S2_source" class="dyn-source">
 <pre>
 x = [] 
 (x &lt;&lt;(42)) should ==(x) 
@@ -436,8 +509,8 @@ x = []
             </div>
             </span></li>
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004821S3_source')" id="l_C004821S3_source">show source</a> ]</span>
-            <div id="C004821S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005451S3_source')" id="l_C005451S3_source">show source</a> ]</span>
+            <div id="C005451S3_source" class="dyn-source">
 <pre>
 List should checkReceiverTypeOn(:("&lt;&lt;"), 1) 
 
@@ -450,7 +523,7 @@ List should checkReceiverTypeOn(:("&lt;&lt;"), 1)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00480"></a><b>&lt;=&gt;</b>(other)
+          <a name="C00543"></a><b>&lt;=&gt;</b>(other)
           </div>
           <div class="description">
             <p>Compares this object against the argument. The comparison is only based on the elements inside the lists, which are in turn compared using <=>.</p>
@@ -459,8 +532,8 @@ List should checkReceiverTypeOn(:("&lt;&lt;"), 1)
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should sort based on the elements inside <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004801S0_source')" id="l_C004801S0_source">show source</a> ]</span>
-            <div id="C004801S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005431S0_source')" id="l_C005431S0_source">show source</a> ]</span>
+            <div id="C005431S0_source" class="dyn-source">
 <pre>
 ([] &lt;=&gt;([])) should ==(0) 
 ([] &lt;=&gt;([](1))) should ==(-(1)) 
@@ -475,8 +548,8 @@ List should checkReceiverTypeOn(:("&lt;&lt;"), 1)
             </div>
             </span></li>
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004801S1_source')" id="l_C004801S1_source">show source</a> ]</span>
-            <div id="C004801S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005431S1_source')" id="l_C005431S1_source">show source</a> ]</span>
+            <div id="C005431S1_source" class="dyn-source">
 <pre>
 List should checkReceiverTypeOn(:("&lt;=&gt;"), []) 
 
@@ -489,14 +562,14 @@ List should checkReceiverTypeOn(:("&lt;=&gt;"), [])
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00505"></a><b>===</b>(other)
+          <a name="C00586"></a><b>===</b>(other)
           </div>
           <div class="description">
             <p>nil</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00505_source')" id="l_C00505_source">show source</a> ]</p>
-            <div id="C00505_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00586_source')" id="l_C00586_source">show source</a> ]</p>
+            <div id="C00586_source" class="dyn-source">
 <pre>
 method(other, 
   if(self same?(
@@ -504,25 +577,72 @@ method(other,
     other mimics?(
       []), 
     bind(rescue(Condition Error, fn(c, false)), 
-      self ==(
+      self include?(
         other))))
 </pre>
             </div>
             </div>
           <div class="specs">
-            
+            <ul style="list-style-type: none;">
+<li>- should return false for something not in the list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005861S0_source')" id="l_C005861S0_source">show source</a> ]</span>
+            <div id="C005861S0_source" class="dyn-source">
+<pre>
+([] ===(:foo)) should be false 
+([](1) ===(2)) should be false 
+([](1, :foo, "bar") ===(2)) should be false 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return true for something in the list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005861S1_source')" id="l_C005861S1_source">show source</a> ]</span>
+            <div id="C005861S1_source" class="dyn-source">
+<pre>
+([](:foo) ===(:foo)) should be true 
+([](1, 2) ===(2)) should be true 
+([](2, 1, :foo, "bar") ===(2)) should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return true when called against List and the other is a list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005861S2_source')" id="l_C005861S2_source">show source</a> ]</span>
+            <div id="C005861S2_source" class="dyn-source">
+<pre>
+(List ===(List)) should be true 
+(List ===([])) should be true 
+(List ===([](1, 2, 3))) should be true 
+(List ===([](:foo))) should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return true when called against List and the other is not a list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005861S3_source')" id="l_C005861S3_source">show source</a> ]</span>
+            <div id="C005861S3_source" class="dyn-source">
+<pre>
+(List ===(set)) should be false 
+(List ===(1 ..(5))) should be false 
+(List ===(:foo)) should be false 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
           </div>
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00504"></a><b>?&</b>(...)
+          <a name="C00585"></a><b>?&</b>(...)
           </div>
           <div class="description">
             <p>if this list is not empty, returns the result of evaluating the argument, otherwise returns the list</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00504_source')" id="l_C00504_source">show source</a> ]</p>
-            <div id="C00504_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00585_source')" id="l_C00585_source">show source</a> ]</p>
+            <div id="C00585_source" class="dyn-source">
 <pre>
 macro(
   argCount = call arguments length 
@@ -544,8 +664,8 @@ macro(
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should just return itself if empty <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005041S0_source')" id="l_C005041S0_source">show source</a> ]</span>
-            <div id="C005041S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005851S0_source')" id="l_C005851S0_source">show source</a> ]</span>
+            <div id="C005851S0_source" class="dyn-source">
 <pre>
 ([] ?&(42)) should ==([]) 
 ([] ?&([](1, 2, 3))) should ==([]) 
@@ -554,8 +674,8 @@ macro(
             </div>
             </span></li>
 <li>- should return the result of evaluating the code if non-empty <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005041S1_source')" id="l_C005041S1_source">show source</a> ]</span>
-            <div id="C005041S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005851S1_source')" id="l_C005851S1_source">show source</a> ]</span>
+            <div id="C005851S1_source" class="dyn-source">
 <pre>
 [](1) ?&(10) should ==(10) 
 [](1, 2, 3) ?&(20) should ==(20) 
@@ -571,14 +691,14 @@ x ?&([](1, 2, 3)) should ==([](1, 2, 3))
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00503"></a><b>?|</b>(...)
+          <a name="C00584"></a><b>?|</b>(...)
           </div>
           <div class="description">
             <p>if this list is empty, returns the result of evaluating the argument, otherwise returns the list</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00503_source')" id="l_C00503_source">show source</a> ]</p>
-            <div id="C00503_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00584_source')" id="l_C00584_source">show source</a> ]</p>
+            <div id="C00584_source" class="dyn-source">
 <pre>
 macro(
   argCount = call arguments length 
@@ -600,8 +720,8 @@ macro(
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should just return itself if not empty <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005031S0_source')" id="l_C005031S0_source">show source</a> ]</span>
-            <div id="C005031S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005841S0_source')" id="l_C005841S0_source">show source</a> ]</span>
+            <div id="C005841S0_source" class="dyn-source">
 <pre>
 [](1) ?|(x /(0)) should ==([](1)) 
 [](1, 2, 3) ?|(x /(0)) should ==([](1, 2, 3)) 
@@ -612,8 +732,8 @@ x ?|(blarg) should be same(x)
             </div>
             </span></li>
 <li>- should return the result of evaluating the code if empty <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005031S1_source')" id="l_C005031S1_source">show source</a> ]</span>
-            <div id="C005031S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005841S1_source')" id="l_C005841S1_source">show source</a> ]</span>
+            <div id="C005841S1_source" class="dyn-source">
 <pre>
 ([] ?|(42)) should ==(42) 
 ([] ?|([](1, 2, 3))) should ==([](1, 2, 3)) 
@@ -627,7 +747,7 @@ x ?|(blarg) should be same(x)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00493"></a><b>[]</b>(...)
+          <a name="C00563"></a><b>[]</b>(...)
           </div>
           <div class="description">
             <p>nil</p>
@@ -639,8 +759,8 @@ x ?|(blarg) should be same(x)
 <b>List [] with number argument</b><br/>
 <ul style="list-style-type: none;">
 <li>- should return nil if empty list when given a number <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004932S0_source')" id="l_C004932S0_source">show source</a> ]</span>
-            <div id="C004932S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005632S0_source')" id="l_C005632S0_source">show source</a> ]</span>
+            <div id="C005632S0_source" class="dyn-source">
 <pre>
 list [](0) should be nil 
 list [](10) should be nil 
@@ -650,8 +770,8 @@ list []((0 -(1))) should be nil
             </div>
             </span></li>
 <li>- should return nil if argument is over the size when given a number <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004932S1_source')" id="l_C004932S1_source">show source</a> ]</span>
-            <div id="C004932S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005632S1_source')" id="l_C005632S1_source">show source</a> ]</span>
+            <div id="C005632S1_source" class="dyn-source">
 <pre>
 list(1) [](1) should be nil 
 
@@ -659,8 +779,8 @@ list(1) [](1) should be nil
             </div>
             </span></li>
 <li>- should return from the front if the argument is zero or positive when given a number <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004932S2_source')" id="l_C004932S2_source">show source</a> ]</span>
-            <div id="C004932S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005632S2_source')" id="l_C005632S2_source">show source</a> ]</span>
+            <div id="C005632S2_source" class="dyn-source">
 <pre>
 [](1, 2, 3, 4) [](0) should ==(1) 
 [](1, 2, 3, 4) [](1) should ==(2) 
@@ -671,8 +791,8 @@ list(1) [](1) should be nil
             </div>
             </span></li>
 <li>- should return from the back if the argument is negative when given a number <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004932S3_source')" id="l_C004932S3_source">show source</a> ]</span>
-            <div id="C004932S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005632S3_source')" id="l_C005632S3_source">show source</a> ]</span>
+            <div id="C005632S3_source" class="dyn-source">
 <pre>
 [](1, 2, 3, 4) [](0 -(1)) should ==(4) 
 [](1, 2, 3, 4) [](0 -(2)) should ==(3) 
@@ -683,8 +803,8 @@ list(1) [](1) should be nil
             </div>
             </span></li>
 <li>- should return an empty list for any range given to an empty list when given a number <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004932S4_source')" id="l_C004932S4_source">show source</a> ]</span>
-            <div id="C004932S4_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005632S4_source')" id="l_C005632S4_source">show source</a> ]</span>
+            <div id="C005632S4_source" class="dyn-source">
 <pre>
 [] [](0 ..(0)) should ==([]) 
 [] [](0 ...(0)) should ==([]) 
@@ -698,8 +818,8 @@ list(1) [](1) should be nil
             </div>
             </span></li>
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004932S5_source')" id="l_C004932S5_source">show source</a> ]</span>
-            <div id="C004932S5_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005632S5_source')" id="l_C005632S5_source">show source</a> ]</span>
+            <div id="C005632S5_source" class="dyn-source">
 <pre>
 List should checkReceiverTypeOn(:("[]"), 0) 
 
@@ -707,8 +827,8 @@ List should checkReceiverTypeOn(:("[]"), 0)
             </div>
             </span></li>
 <li>- should validate type of argument <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004932S6_source')" id="l_C004932S6_source">show source</a> ]</span>
-            <div id="C004932S6_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005632S6_source')" id="l_C005632S6_source">show source</a> ]</span>
+            <div id="C005632S6_source" class="dyn-source">
 <pre>
 fn([] []([])) should signal(Condition Error Type IncorrectType) 
 
@@ -719,8 +839,8 @@ fn([] []([])) should signal(Condition Error Type IncorrectType)
 <b>List [] with range argument</b><br/>
 <ul style="list-style-type: none;">
 <li>- should return an equal list for 0..-1 <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004933S0_source')" id="l_C004933S0_source">show source</a> ]</span>
-            <div id="C004933S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005633S0_source')" id="l_C005633S0_source">show source</a> ]</span>
+            <div id="C005633S0_source" class="dyn-source">
 <pre>
 [] [](0 ..(-(1))) should ==([]) 
 [](1, 2, 3) [](0 ..(-(1))) should ==([](1, 2, 3)) 
@@ -730,8 +850,8 @@ fn([] []([])) should signal(Condition Error Type IncorrectType)
             </div>
             </span></li>
 <li>- should return all except the first element for 1..-1 <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004933S1_source')" id="l_C004933S1_source">show source</a> ]</span>
-            <div id="C004933S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005633S1_source')" id="l_C005633S1_source">show source</a> ]</span>
+            <div id="C005633S1_source" class="dyn-source">
 <pre>
 [](1) [](1 ..(-(1))) should ==([]) 
 [](1, 2, 3) [](1 ..(-(1))) should ==([](2, 3)) 
@@ -741,8 +861,8 @@ fn([] []([])) should signal(Condition Error Type IncorrectType)
             </div>
             </span></li>
 <li>- should return all except for the first and last for 1...-1 <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004933S2_source')" id="l_C004933S2_source">show source</a> ]</span>
-            <div id="C004933S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005633S2_source')" id="l_C005633S2_source">show source</a> ]</span>
+            <div id="C005633S2_source" class="dyn-source">
 <pre>
 [](1, 2) [](1 ...(-(1))) should ==([]) 
 [](1, 2, 3) [](1 ...(-(1))) should ==([](2)) 
@@ -752,8 +872,8 @@ fn([] []([])) should signal(Condition Error Type IncorrectType)
             </div>
             </span></li>
 <li>- should return an array with the first element for 0..0 <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004933S3_source')" id="l_C004933S3_source">show source</a> ]</span>
-            <div id="C004933S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005633S3_source')" id="l_C005633S3_source">show source</a> ]</span>
+            <div id="C005633S3_source" class="dyn-source">
 <pre>
 [](1) [](0 ..(0)) should ==([](1)) 
 [](1, 2, 3) [](0 ..(0)) should ==([](1)) 
@@ -763,8 +883,8 @@ fn([] []([])) should signal(Condition Error Type IncorrectType)
             </div>
             </span></li>
 <li>- should return an empty array for 0...0 <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004933S4_source')" id="l_C004933S4_source">show source</a> ]</span>
-            <div id="C004933S4_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005633S4_source')" id="l_C005633S4_source">show source</a> ]</span>
+            <div id="C005633S4_source" class="dyn-source">
 <pre>
 [](1) [](0 ...(0)) should ==([]) 
 [](1, 2, 3) [](0 ...(0)) should ==([]) 
@@ -774,8 +894,8 @@ fn([] []([])) should signal(Condition Error Type IncorrectType)
             </div>
             </span></li>
 <li>- should return a slice from a larger array <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004933S5_source')" id="l_C004933S5_source">show source</a> ]</span>
-            <div id="C004933S5_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005633S5_source')" id="l_C005633S5_source">show source</a> ]</span>
+            <div id="C005633S5_source" class="dyn-source">
 <pre>
 [](1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11) [](3 ..(5)) should ==([](4, 5, 6)) 
 
@@ -783,8 +903,8 @@ fn([] []([])) should signal(Condition Error Type IncorrectType)
             </div>
             </span></li>
 <li>- should return a correct slice for an exclusive range <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004933S6_source')" id="l_C004933S6_source">show source</a> ]</span>
-            <div id="C004933S6_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005633S6_source')" id="l_C005633S6_source">show source</a> ]</span>
+            <div id="C005633S6_source" class="dyn-source">
 <pre>
 [](1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11) [](3 ...(6)) should ==([](4, 5, 6)) 
 
@@ -792,8 +912,8 @@ fn([] []([])) should signal(Condition Error Type IncorrectType)
             </div>
             </span></li>
 <li>- should return a correct slice for a slice that ends in a negative index <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004933S7_source')" id="l_C004933S7_source">show source</a> ]</span>
-            <div id="C004933S7_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005633S7_source')" id="l_C005633S7_source">show source</a> ]</span>
+            <div id="C005633S7_source" class="dyn-source">
 <pre>
 [](1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11) [](3 ..(-(3))) should ==([](4, 5, 6, 7, 8, 9)) 
 
@@ -801,8 +921,8 @@ fn([] []([])) should signal(Condition Error Type IncorrectType)
             </div>
             </span></li>
 <li>- should return a correct slice for an exclusive slice that ends in a negative index <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004933S8_source')" id="l_C004933S8_source">show source</a> ]</span>
-            <div id="C004933S8_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005633S8_source')" id="l_C005633S8_source">show source</a> ]</span>
+            <div id="C005633S8_source" class="dyn-source">
 <pre>
 [](1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11) [](3 ...(-(3))) should ==([](4, 5, 6, 7, 8)) 
 
@@ -810,8 +930,8 @@ fn([] []([])) should signal(Condition Error Type IncorrectType)
             </div>
             </span></li>
 <li>- should return all elements up to the end of the slice, if the end argument is way out there <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004933S9_source')" id="l_C004933S9_source">show source</a> ]</span>
-            <div id="C004933S9_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005633S9_source')" id="l_C005633S9_source">show source</a> ]</span>
+            <div id="C005633S9_source" class="dyn-source">
 <pre>
 [](1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11) [](5 ..(3443343)) should ==([](6, 7, 8, 9, 10, 11)) 
 [](1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11) [](5 ...(3443343)) should ==([](6, 7, 8, 9, 10, 11)) 
@@ -820,8 +940,8 @@ fn([] []([])) should signal(Condition Error Type IncorrectType)
             </div>
             </span></li>
 <li>- should return an empty array for a totally messed up indexing <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004933S10_source')" id="l_C004933S10_source">show source</a> ]</span>
-            <div id="C004933S10_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005633S10_source')" id="l_C005633S10_source">show source</a> ]</span>
+            <div id="C005633S10_source" class="dyn-source">
 <pre>
 [](1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11) [](-(1) ..(3)) should ==([]) 
 [](1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11) [](-(1) ..(7557)) should ==([]) 
@@ -839,7 +959,7 @@ fn([] []([])) should signal(Condition Error Type IncorrectType)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00495"></a><b>[]=</b>(...)
+          <a name="C00566"></a><b>[]=</b>(...)
           </div>
           <div class="description">
             <p>nil</p>
@@ -848,8 +968,8 @@ fn([] []([])) should signal(Condition Error Type IncorrectType)
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should set the first element in an empty list <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004951S0_source')" id="l_C004951S0_source">show source</a> ]</span>
-            <div id="C004951S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005661S0_source')" id="l_C005661S0_source">show source</a> ]</span>
+            <div id="C005661S0_source" class="dyn-source">
 <pre>
 x = [] 
 x [](0) = 42 
@@ -860,8 +980,8 @@ x [](0) should ==(42)
             </div>
             </span></li>
 <li>- should overwrite an existing element <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004951S1_source')" id="l_C004951S1_source">show source</a> ]</span>
-            <div id="C004951S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005661S1_source')" id="l_C005661S1_source">show source</a> ]</span>
+            <div id="C005661S1_source" class="dyn-source">
 <pre>
 x = [](40) 
 x [](0) = 42 
@@ -872,8 +992,8 @@ x [](0) should ==(42)
             </div>
             </span></li>
 <li>- should expand the list up to the point where the element fits, if the index is further away <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004951S2_source')" id="l_C004951S2_source">show source</a> ]</span>
-            <div id="C004951S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005661S2_source')" id="l_C005661S2_source">show source</a> ]</span>
+            <div id="C005661S2_source" class="dyn-source">
 <pre>
 x = [](40, 42) 
 x [](10) = 45 
@@ -894,8 +1014,8 @@ x [](10) should ==(45)
             </div>
             </span></li>
 <li>- should be possible to set with negative indices <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004951S3_source')" id="l_C004951S3_source">show source</a> ]</span>
-            <div id="C004951S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005661S3_source')" id="l_C005661S3_source">show source</a> ]</span>
+            <div id="C005661S3_source" class="dyn-source">
 <pre>
 x = [](40, 42, 44, 46) 
 x [](-(2)) = 52 
@@ -909,8 +1029,8 @@ x [](3) should ==(46)
             </div>
             </span></li>
 <li>- should return the value set <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004951S4_source')" id="l_C004951S4_source">show source</a> ]</span>
-            <div id="C004951S4_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005661S4_source')" id="l_C005661S4_source">show source</a> ]</span>
+            <div id="C005661S4_source" class="dyn-source">
 <pre>
 ([](40, 42, 44, 46) [](0) = 33 +(44)) should ==(77) 
 
@@ -918,8 +1038,8 @@ x [](3) should ==(46)
             </div>
             </span></li>
 <li>- should throw an exception if setting with negative indices outside the range <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004951S5_source')" id="l_C004951S5_source">show source</a> ]</span>
-            <div id="C004951S5_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005661S5_source')" id="l_C005661S5_source">show source</a> ]</span>
+            <div id="C005661S5_source" class="dyn-source">
 <pre>
 fn([] [](0 -(1)) = 52) should signal(Condition Error Index) 
 
@@ -927,8 +1047,8 @@ fn([] [](0 -(1)) = 52) should signal(Condition Error Index)
             </div>
             </span></li>
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004951S6_source')" id="l_C004951S6_source">show source</a> ]</span>
-            <div id="C004951S6_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005661S6_source')" id="l_C005661S6_source">show source</a> ]</span>
+            <div id="C005661S6_source" class="dyn-source">
 <pre>
 [](0, 1) should checkReceiverTypeOn(:("[]="), 0, 3) 
 
@@ -936,8 +1056,8 @@ fn([] [](0 -(1)) = 52) should signal(Condition Error Index)
             </div>
             </span></li>
 <li>- should validate type of argument <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004951S7_source')" id="l_C004951S7_source">show source</a> ]</span>
-            <div id="C004951S7_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005661S7_source')" id="l_C005661S7_source">show source</a> ]</span>
+            <div id="C005661S7_source" class="dyn-source">
 <pre>
 fn([] [](:boris) = :beans) should signal(Condition Error Type IncorrectType) 
 
@@ -950,14 +1070,83 @@ fn([] [](:boris) = :beans) should signal(Condition Error Type IncorrectType)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00501"></a><b>asList</b>()
+          <a name="C00546"></a><b>append!</b>(value)
+          </div>
+          <div class="description">
+            <p>takes one argument and adds it at the end of the list, and then returns the list</p>
+          </div>
+          
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should add an element to an empty list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005461S0_source')" id="l_C005461S0_source">show source</a> ]</span>
+            <div id="C005461S0_source" class="dyn-source">
+<pre>
+l = [] 
+l append!(:foo) 
+l should ==([](:foo)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should add an element at the end of a list with elements in it <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005461S1_source')" id="l_C005461S1_source">show source</a> ]</span>
+            <div id="C005461S1_source" class="dyn-source">
+<pre>
+l = [](:foo, :bar, 1, 42) 
+l append!(:flax) 
+l should ==([](:foo, :bar, 1, 42, :flax)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should add an element several times if asked to <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005461S2_source')" id="l_C005461S2_source">show source</a> ]</span>
+            <div id="C005461S2_source" class="dyn-source">
+<pre>
+l = [](:foo) 
+l append!(:foo) 
+l append!(:foo) 
+l append!(:foo) 
+l append!(:foo) 
+l should ==([](:foo, :foo, :foo, :foo, :foo)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005461S3_source')" id="l_C005461S3_source">show source</a> ]</span>
+            <div id="C005461S3_source" class="dyn-source">
+<pre>
+l = [] 
+l append!(:foo) should ==(l) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005461S4_source')" id="l_C005461S4_source">show source</a> ]</span>
+            <div id="C005461S4_source" class="dyn-source">
+<pre>
+List should checkReceiverTypeOn(:append!, 0) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00582"></a><b>asList</b>()
           </div>
           <div class="description">
             <p>returns this list</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00501_source')" id="l_C00501_source">show source</a> ]</p>
-            <div id="C00501_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00582_source')" id="l_C00582_source">show source</a> ]</p>
+            <div id="C00582_source" class="dyn-source">
 <pre>
 method(
   self)
@@ -970,7 +1159,75 @@ method(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00492"></a><b>at</b>(index)
+          <a name="C00588"></a><b>assoc</b>(obj)
+          </div>
+          <div class="description">
+            <p>takes an object, and returns the first list in this list that has that object as its first element. if it can't be found, returns nil.</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00588_source')" id="l_C00588_source">show source</a> ]</p>
+            <div id="C00588_source" class="dyn-source">
+<pre>
+method(obj, 
+  self find(el, 
+    el mimics?(List) &&(el length &gt;(0)) &&(el [](0) ==(obj))))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return nil for an empty list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005881S0_source')" id="l_C005881S0_source">show source</a> ]</span>
+            <div id="C005881S0_source" class="dyn-source">
+<pre>
+[] assoc(:foo) should be nil 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return nil for a list where it can't find the argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005881S1_source')" id="l_C005881S1_source">show source</a> ]</span>
+            <div id="C005881S1_source" class="dyn-source">
+<pre>
+[]([](:bar), [](:blah)) assoc(:foo) should be nil 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not fail for a list that includes stuff that isn't lists <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005881S2_source')" id="l_C005881S2_source">show source</a> ]</span>
+            <div id="C005881S2_source" class="dyn-source">
+<pre>
+[](1, 2, 3, 4) assoc(:foo) should be nil 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return a list if it matches <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005881S3_source')" id="l_C005881S3_source">show source</a> ]</span>
+            <div id="C005881S3_source" class="dyn-source">
+<pre>
+[]([](:abc), [](:foo, 1, 2), [](:blah)) assoc(:foo) should ==([](:foo, 1, 2)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the first list that matches <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005881S4_source')" id="l_C005881S4_source">show source</a> ]</span>
+            <div id="C005881S4_source" class="dyn-source">
+<pre>
+[]([](:abc), [](:foo, 1, 2), [](:blah), [](:foo, 3, 2)) assoc(:foo) should ==([](:foo, 1, 2)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00562"></a><b>at</b>(index)
           </div>
           <div class="description">
             <p>takes one argument, the index of the element to be returned. can be negative, and will in that case return indexed from the back of the list. if the index is outside the bounds of the list, will return nil. the argument can also be a range, and will in that case interpret the first index as where to start, and the second the end. the end can be negative and will in that case be from the end. if the first argument is negative, or after the second, an empty list will be returned. if the end point is larger than the list, the size of the list will be used as the end point.</p>
@@ -979,8 +1236,8 @@ method(
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return nil if empty list <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004921S0_source')" id="l_C004921S0_source">show source</a> ]</span>
-            <div id="C004921S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005621S0_source')" id="l_C005621S0_source">show source</a> ]</span>
+            <div id="C005621S0_source" class="dyn-source">
 <pre>
 list at(0) should be nil 
 list at(10) should be nil 
@@ -990,8 +1247,8 @@ list at(0 -(1)) should be nil
             </div>
             </span></li>
 <li>- should return nil if argument is over the size <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004921S1_source')" id="l_C004921S1_source">show source</a> ]</span>
-            <div id="C004921S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005621S1_source')" id="l_C005621S1_source">show source</a> ]</span>
+            <div id="C005621S1_source" class="dyn-source">
 <pre>
 list(1) at(1) should be nil 
 
@@ -999,8 +1256,8 @@ list(1) at(1) should be nil
             </div>
             </span></li>
 <li>- should return from the front if the argument is zero or positive <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004921S2_source')" id="l_C004921S2_source">show source</a> ]</span>
-            <div id="C004921S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005621S2_source')" id="l_C005621S2_source">show source</a> ]</span>
+            <div id="C005621S2_source" class="dyn-source">
 <pre>
 [](1, 2, 3, 4) at(0) should ==(1) 
 [](1, 2, 3, 4) at(1) should ==(2) 
@@ -1011,8 +1268,8 @@ list(1) at(1) should be nil
             </div>
             </span></li>
 <li>- should return from the back if the argument is negative <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004921S3_source')" id="l_C004921S3_source">show source</a> ]</span>
-            <div id="C004921S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005621S3_source')" id="l_C005621S3_source">show source</a> ]</span>
+            <div id="C005621S3_source" class="dyn-source">
 <pre>
 [](1, 2, 3, 4) at(0 -(1)) should ==(4) 
 [](1, 2, 3, 4) at(0 -(2)) should ==(3) 
@@ -1023,8 +1280,8 @@ list(1) at(1) should be nil
             </div>
             </span></li>
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004921S4_source')" id="l_C004921S4_source">show source</a> ]</span>
-            <div id="C004921S4_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005621S4_source')" id="l_C005621S4_source">show source</a> ]</span>
+            <div id="C005621S4_source" class="dyn-source">
 <pre>
 List should checkReceiverTypeOn(:at, 0) 
 
@@ -1032,8 +1289,8 @@ List should checkReceiverTypeOn(:at, 0)
             </div>
             </span></li>
 <li>- should validate type of argument <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004921S5_source')" id="l_C004921S5_source">show source</a> ]</span>
-            <div id="C004921S5_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005621S5_source')" id="l_C005621S5_source">show source</a> ]</span>
+            <div id="C005621S5_source" class="dyn-source">
 <pre>
 fn([] at([])) should signal(Condition Error Type IncorrectType) 
 
@@ -1046,7 +1303,7 @@ fn([] at([])) should signal(Condition Error Type IncorrectType)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00494"></a><b>at=</b>(index, value)
+          <a name="C00565"></a><b>at=</b>(index, value)
           </div>
           <div class="description">
             <p>takes two arguments, the index of the element to set, and the value to set. the index can be negative and will in that case set indexed from the end of the list. if the index is larger than the current size, the list will be expanded with nils. an exception will be raised if a abs(negative index) is larger than the size.</p>
@@ -1055,8 +1312,8 @@ fn([] at([])) should signal(Condition Error Type IncorrectType)
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should set the first element in an empty list <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004941S0_source')" id="l_C004941S0_source">show source</a> ]</span>
-            <div id="C004941S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005651S0_source')" id="l_C005651S0_source">show source</a> ]</span>
+            <div id="C005651S0_source" class="dyn-source">
 <pre>
 x = [] 
 x at(0) = 42 
@@ -1067,8 +1324,8 @@ x [](0) should ==(42)
             </div>
             </span></li>
 <li>- should overwrite an existing element <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004941S1_source')" id="l_C004941S1_source">show source</a> ]</span>
-            <div id="C004941S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005651S1_source')" id="l_C005651S1_source">show source</a> ]</span>
+            <div id="C005651S1_source" class="dyn-source">
 <pre>
 x = [](40) 
 x at(0) = 42 
@@ -1079,8 +1336,8 @@ x [](0) should ==(42)
             </div>
             </span></li>
 <li>- should expand the list up to the point where the element fits, if the index is further away <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004941S2_source')" id="l_C004941S2_source">show source</a> ]</span>
-            <div id="C004941S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005651S2_source')" id="l_C005651S2_source">show source</a> ]</span>
+            <div id="C005651S2_source" class="dyn-source">
 <pre>
 x = [](40, 42) 
 x at(10) = 45 
@@ -1101,8 +1358,8 @@ x [](10) should ==(45)
             </div>
             </span></li>
 <li>- should be possible to set with negative indices <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004941S3_source')" id="l_C004941S3_source">show source</a> ]</span>
-            <div id="C004941S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005651S3_source')" id="l_C005651S3_source">show source</a> ]</span>
+            <div id="C005651S3_source" class="dyn-source">
 <pre>
 x = [](40, 42, 44, 46) 
 x at(-(2)) = 52 
@@ -1116,8 +1373,8 @@ x [](3) should ==(46)
             </div>
             </span></li>
 <li>- should return the value set <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004941S4_source')" id="l_C004941S4_source">show source</a> ]</span>
-            <div id="C004941S4_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005651S4_source')" id="l_C005651S4_source">show source</a> ]</span>
+            <div id="C005651S4_source" class="dyn-source">
 <pre>
 ([](40, 42, 44, 46) at(0) = 33 +(44)) should ==(77) 
 
@@ -1125,8 +1382,8 @@ x [](3) should ==(46)
             </div>
             </span></li>
 <li>- should throw an exception if setting with negative indices outside the range <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004941S5_source')" id="l_C004941S5_source">show source</a> ]</span>
-            <div id="C004941S5_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005651S5_source')" id="l_C005651S5_source">show source</a> ]</span>
+            <div id="C005651S5_source" class="dyn-source">
 <pre>
 fn([] [](-(1)) = 52) should signal(Condition Error Index) 
 
@@ -1134,8 +1391,8 @@ fn([] [](-(1)) = 52) should signal(Condition Error Index)
             </div>
             </span></li>
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004941S6_source')" id="l_C004941S6_source">show source</a> ]</span>
-            <div id="C004941S6_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005651S6_source')" id="l_C005651S6_source">show source</a> ]</span>
+            <div id="C005651S6_source" class="dyn-source">
 <pre>
 [](0, 1) should checkReceiverTypeOn(:("at="), 0, 3) 
 
@@ -1143,8 +1400,8 @@ fn([] [](-(1)) = 52) should signal(Condition Error Index)
             </div>
             </span></li>
 <li>- should validate type of argument <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004941S7_source')" id="l_C004941S7_source">show source</a> ]</span>
-            <div id="C004941S7_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005651S7_source')" id="l_C005651S7_source">show source</a> ]</span>
+            <div id="C005651S7_source" class="dyn-source">
 <pre>
 fn([] at(:stilton) = :gouda) should signal(Condition Error Type IncorrectType) 
 
@@ -1157,14 +1414,14 @@ fn([] at(:stilton) = :gouda) should signal(Condition Error Type IncorrectType)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00500"></a><b>butLast</b>(n 1)
+          <a name="C00581"></a><b>butLast</b>(n 1)
           </div>
           <div class="description">
             <p>returns all the entries in the list, except for the 'n' last one, where 'n' is an optional argument that defaults to 1.</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00500_source')" id="l_C00500_source">show source</a> ]</p>
-            <div id="C00500_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00581_source')" id="l_C00581_source">show source</a> ]</p>
+            <div id="C00581_source" class="dyn-source">
 <pre>
 method(n 1, 
   end = length -(n) 
@@ -1177,8 +1434,8 @@ method(n 1,
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return an empty list for the empty list <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005001S0_source')" id="l_C005001S0_source">show source</a> ]</span>
-            <div id="C005001S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005811S0_source')" id="l_C005811S0_source">show source</a> ]</span>
+            <div id="C005811S0_source" class="dyn-source">
 <pre>
 [] butLast should ==([]) 
 
@@ -1186,8 +1443,8 @@ method(n 1,
             </div>
             </span></li>
 <li>- should return an empty list for a list with one entry <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005001S1_source')" id="l_C005001S1_source">show source</a> ]</span>
-            <div id="C005001S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005811S1_source')" id="l_C005811S1_source">show source</a> ]</span>
+            <div id="C005811S1_source" class="dyn-source">
 <pre>
 [](1) butLast should ==([]) 
 
@@ -1195,8 +1452,8 @@ method(n 1,
             </div>
             </span></li>
 <li>- should return a list with the first entry for a list with two elements <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005001S2_source')" id="l_C005001S2_source">show source</a> ]</span>
-            <div id="C005001S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005811S2_source')" id="l_C005811S2_source">show source</a> ]</span>
+            <div id="C005811S2_source" class="dyn-source">
 <pre>
 [](1, 2) butLast should ==([](1)) 
 
@@ -1204,8 +1461,8 @@ method(n 1,
             </div>
             </span></li>
 <li>- should return an empty list for a list with two elements when given 2 as an argument <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005001S3_source')" id="l_C005001S3_source">show source</a> ]</span>
-            <div id="C005001S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005811S3_source')" id="l_C005811S3_source">show source</a> ]</span>
+            <div id="C005811S3_source" class="dyn-source">
 <pre>
 [](1, 2) butLast(2) should ==([]) 
 
@@ -1213,8 +1470,8 @@ method(n 1,
             </div>
             </span></li>
 <li>- should return a list with several entries for a longer list, without arguments <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005001S4_source')" id="l_C005001S4_source">show source</a> ]</span>
-            <div id="C005001S4_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005811S4_source')" id="l_C005811S4_source">show source</a> ]</span>
+            <div id="C005811S4_source" class="dyn-source">
 <pre>
 [](1, 2, 3, 4, 5, 6) butLast should ==([](1, 2, 3, 4, 5)) 
 
@@ -1222,8 +1479,8 @@ method(n 1,
             </div>
             </span></li>
 <li>- should return a list with several entries for a longer list, with an argument of 3 <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005001S5_source')" id="l_C005001S5_source">show source</a> ]</span>
-            <div id="C005001S5_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005811S5_source')" id="l_C005811S5_source">show source</a> ]</span>
+            <div id="C005811S5_source" class="dyn-source">
 <pre>
 [](1, 2, 3, 4, 5, 6, 7) butLast(3) should ==([](1, 2, 3, 4)) 
 
@@ -1231,8 +1488,8 @@ method(n 1,
             </div>
             </span></li>
 <li>- should return the list with the same entries for an argument of zero <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005001S6_source')" id="l_C005001S6_source">show source</a> ]</span>
-            <div id="C005001S6_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005811S6_source')" id="l_C005811S6_source">show source</a> ]</span>
+            <div id="C005811S6_source" class="dyn-source">
 <pre>
 [](1, 2, 3, 4, 5, 6) butLast(0) should ==([](1, 2, 3, 4, 5, 6)) 
 
@@ -1245,7 +1502,7 @@ method(n 1,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00483"></a><b>clear!</b>()
+          <a name="C00552"></a><b>clear!</b>()
           </div>
           <div class="description">
             <p>will remove all the entries from the list, and then returns the list</p>
@@ -1254,8 +1511,8 @@ method(n 1,
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should not do anything on an empty list <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004831S0_source')" id="l_C004831S0_source">show source</a> ]</span>
-            <div id="C004831S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005521S0_source')" id="l_C005521S0_source">show source</a> ]</span>
+            <div id="C005521S0_source" class="dyn-source">
 <pre>
 x = [] 
 x clear! 
@@ -1265,8 +1522,8 @@ x size should ==(0)
             </div>
             </span></li>
 <li>- should clear a list that has entries <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004831S1_source')" id="l_C004831S1_source">show source</a> ]</span>
-            <div id="C004831S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005521S1_source')" id="l_C005521S1_source">show source</a> ]</span>
+            <div id="C005521S1_source" class="dyn-source">
 <pre>
 x = [](1, 2, 3, 4) 
 x clear! 
@@ -1276,8 +1533,8 @@ x size should ==(0)
             </div>
             </span></li>
 <li>- should return the list <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004831S2_source')" id="l_C004831S2_source">show source</a> ]</span>
-            <div id="C004831S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005521S2_source')" id="l_C005521S2_source">show source</a> ]</span>
+            <div id="C005521S2_source" class="dyn-source">
 <pre>
 x = [](1, 2, 3, 4) 
 x clear! should ==(x) 
@@ -1286,8 +1543,8 @@ x clear! should ==(x)
             </div>
             </span></li>
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004831S3_source')" id="l_C004831S3_source">show source</a> ]</span>
-            <div id="C004831S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005521S3_source')" id="l_C005521S3_source">show source</a> ]</span>
+            <div id="C005521S3_source" class="dyn-source">
 <pre>
 List should checkReceiverTypeOn(:clear!) 
 
@@ -1300,7 +1557,290 @@ List should checkReceiverTypeOn(:clear!)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00481"></a><b>each</b>([indexOrArgOrCode], [argOrCode] nil, [code] nil)
+          <a name="C00575"></a><b>collect!</b>(...)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+          
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return an empty list for an empty enumerable <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005751S0_source')" id="l_C005751S0_source">show source</a> ]</span>
+            <div id="C005751S0_source" class="dyn-source">
+<pre>
+[] collect!(x, x +(2)) should ==([]) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the same list for something that only returns itself <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005751S1_source')" id="l_C005751S1_source">show source</a> ]</span>
+            <div id="C005751S1_source" class="dyn-source">
+<pre>
+[](1, 2, 3) collect!(x, x) should ==([](1, 2, 3)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take one argument and apply the inside <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005751S2_source')" id="l_C005751S2_source">show source</a> ]</span>
+            <div id="C005751S2_source" class="dyn-source">
+<pre>
+[](1, 2, 3) collect!(+(2)) should ==([](3, 4, 5)) 
+[](1, 2, 3) collect!(1) should ==([](1, 1, 1)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take two arguments and apply the code with the argument name bound <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005751S3_source')" id="l_C005751S3_source">show source</a> ]</span>
+            <div id="C005751S3_source" class="dyn-source">
+<pre>
+[](1, 2, 3) collect!(x, x +(3)) should ==([](4, 5, 6)) 
+[](1, 2, 3) collect!(x, 1) should ==([](1, 1, 1)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the origin list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005751S4_source')" id="l_C005751S4_source">show source</a> ]</span>
+            <div id="C005751S4_source" class="dyn-source">
+<pre>
+x = [](1, 2, 3) 
+x collect!(x, 1) should be same(x) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should modify the original list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005751S5_source')" id="l_C005751S5_source">show source</a> ]</span>
+            <div id="C005751S5_source" class="dyn-source">
+<pre>
+x = [](1, 2, 3) 
+x collect!(x, 1) 
+x should ==([](1, 1, 1)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00587"></a><b>compact</b>()
+          </div>
+          <div class="description">
+            <p>returns a new list that is a mimic of the current list, except that all nils are removed from it</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00587_source')" id="l_C00587_source">show source</a> ]</p>
+            <div id="C00587_source" class="dyn-source">
+<pre>
+method(
+  newList = self mimic 
+  newList compact! 
+  newList)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return an empty list for an empty list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005871S0_source')" id="l_C005871S0_source">show source</a> ]</span>
+            <div id="C005871S0_source" class="dyn-source">
+<pre>
+[] compact should ==([]) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return a list without nils <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005871S1_source')" id="l_C005871S1_source">show source</a> ]</span>
+            <div id="C005871S1_source" class="dyn-source">
+<pre>
+[](nil) compact should ==([]) 
+[](nil, 1) compact should ==([](1)) 
+[](1, nil, 1) compact should ==([](1, 1)) 
+[](1, nil) compact should ==([](1)) 
+[](1, 2, 3, :nil, nil, nil, nil, nil, :bah, nil) compact should ==([](1, 2, 3, :nil, :bah)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should leave a list without nils unmodified <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005871S2_source')" id="l_C005871S2_source">show source</a> ]</span>
+            <div id="C005871S2_source" class="dyn-source">
+<pre>
+[](:a) compact should ==([](:a)) 
+[](:a, :b, 123) compact should ==([](:a, :b, 123)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not remove false values <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005871S3_source')" id="l_C005871S3_source">show source</a> ]</span>
+            <div id="C005871S3_source" class="dyn-source">
+<pre>
+[](false) compact should ==([](false)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not modify the original list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005871S4_source')" id="l_C005871S4_source">show source</a> ]</span>
+            <div id="C005871S4_source" class="dyn-source">
+<pre>
+x = [](nil, 1) 
+x compact 
+x should ==([](nil, 1)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00570"></a><b>compact!</b>()
+          </div>
+          <div class="description">
+            <p>removes all nils in this list, and then returns the list</p>
+          </div>
+          
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return the list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005701S0_source')" id="l_C005701S0_source">show source</a> ]</span>
+            <div id="C005701S0_source" class="dyn-source">
+<pre>
+x = [](1, 2, 3) 
+x compact! should be same(x) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should leave an empty list unmodified <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005701S1_source')" id="l_C005701S1_source">show source</a> ]</span>
+            <div id="C005701S1_source" class="dyn-source">
+<pre>
+x = [] 
+x compact! 
+x should ==([]) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should remove all nils in the list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005701S2_source')" id="l_C005701S2_source">show source</a> ]</span>
+            <div id="C005701S2_source" class="dyn-source">
+<pre>
+[](nil) compact! should ==([]) 
+[](nil, 1) compact! should ==([](1)) 
+[](1, nil, 1) compact! should ==([](1, 1)) 
+[](1, nil) compact! should ==([](1)) 
+[](1, 2, 3, :nil, nil, nil, nil, nil, :bah, nil) compact! should ==([](1, 2, 3, :nil, :bah)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should leave a list without nils unmodified <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005701S3_source')" id="l_C005701S3_source">show source</a> ]</span>
+            <div id="C005701S3_source" class="dyn-source">
+<pre>
+[](:a) compact! should ==([](:a)) 
+[](:a, :b, 123) compact! should ==([](:a, :b, 123)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not remove false values <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005701S4_source')" id="l_C005701S4_source">show source</a> ]</span>
+            <div id="C005701S4_source" class="dyn-source">
+<pre>
+[](false) compact! should ==([](false)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should modify the original list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005701S5_source')" id="l_C005701S5_source">show source</a> ]</span>
+            <div id="C005701S5_source" class="dyn-source">
+<pre>
+x = [](1, nil) 
+x compact! 
+x should ==([](1)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00555"></a><b>concat!</b>(otherList)
+          </div>
+          <div class="description">
+            <p>adds the elements in the argument list to the current list, and then returns that list</p>
+          </div>
+          
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should change nothing for an empty list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005551S0_source')" id="l_C005551S0_source">show source</a> ]</span>
+            <div id="C005551S0_source" class="dyn-source">
+<pre>
+x = [](1) 
+x concat!([]) 
+x should ==([](1)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should append the other list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005551S1_source')" id="l_C005551S1_source">show source</a> ]</span>
+            <div id="C005551S1_source" class="dyn-source">
+<pre>
+[] concat!([](1)) should ==([](1)) 
+[](:foo, [](:abc)) concat!([]([](:blarg), 1)) should ==([](:foo, [](:abc), [](:blarg), 1)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should modify the receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005551S2_source')" id="l_C005551S2_source">show source</a> ]</span>
+            <div id="C005551S2_source" class="dyn-source">
+<pre>
+x = [](1) 
+x concat!([](2)) 
+x should ==([](1, 2)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005551S3_source')" id="l_C005551S3_source">show source</a> ]</span>
+            <div id="C005551S3_source" class="dyn-source">
+<pre>
+x = [](1) 
+x concat!([](2)) should be same(x) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00544"></a><b>each</b>([indexOrArgOrCode], [argOrCode] nil, [code] nil)
           </div>
           <div class="description">
             <p>takes either one or two or three arguments. if one argument is given, it should be a message chain that will be sent to each object in the list. the result will be thrown away. if two arguments are given, the first is an unevaluated name that will be set to each of the values in the list in succession, and then the second argument will be evaluated in a scope with that argument in it. if three arguments is given, the first one is an unevaluated name that will be set to the index of each element, and the other two arguments are the name of the argument for the value, and the actual code. the code will evaluate in a lexical context, and if the argument name is available outside the context, it will be shadowed. the method will return the list.</p>
@@ -1309,8 +1849,8 @@ List should checkReceiverTypeOn(:clear!)
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should not do anything for an empty list <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004811S0_source')" id="l_C004811S0_source">show source</a> ]</span>
-            <div id="C004811S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005441S0_source')" id="l_C005441S0_source">show source</a> ]</span>
+            <div id="C005441S0_source" class="dyn-source">
 <pre>
 x = 0 
 [] each(++(x)) 
@@ -1320,8 +1860,8 @@ x should ==(0)
             </div>
             </span></li>
 <li>- should be possible to just give it a message chain, that will be invoked on each object <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004811S1_source')" id="l_C004811S1_source">show source</a> ]</span>
-            <div id="C004811S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005441S1_source')" id="l_C005441S1_source">show source</a> ]</span>
+            <div id="C005441S1_source" class="dyn-source">
 <pre>
 Ground y = [] 
 Ground xs = method(y &lt;&lt;(self)) 
@@ -1336,8 +1876,8 @@ x should ==(3)
             </div>
             </span></li>
 <li>- should be possible to give it an argument name, and code <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004811S2_source')" id="l_C004811S2_source">show source</a> ]</span>
-            <div id="C004811S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005441S2_source')" id="l_C005441S2_source">show source</a> ]</span>
+            <div id="C005441S2_source" class="dyn-source">
 <pre>
 y = [] 
 [](1, 2, 3) each(x, y &lt;&lt;(x)) 
@@ -1347,8 +1887,8 @@ y should ==([](1, 2, 3))
             </div>
             </span></li>
 <li>- should return the object <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004811S3_source')" id="l_C004811S3_source">show source</a> ]</span>
-            <div id="C004811S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005441S3_source')" id="l_C005441S3_source">show source</a> ]</span>
+            <div id="C005441S3_source" class="dyn-source">
 <pre>
 y = [](1, 2, 3) 
 (y each(x, x)) should ==(y) 
@@ -1357,8 +1897,8 @@ y = [](1, 2, 3)
             </div>
             </span></li>
 <li>- should establish a lexical context when invoking the methods. this context will be the same for all invocations. <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004811S4_source')" id="l_C004811S4_source">show source</a> ]</span>
-            <div id="C004811S4_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005441S4_source')" id="l_C005441S4_source">show source</a> ]</span>
+            <div id="C005441S4_source" class="dyn-source">
 <pre>
 [](1, 2, 3) each(x_list, blarg = 32) 
 cell?(:x_list) should be false 
@@ -1371,8 +1911,8 @@ x should ==(14)
             </div>
             </span></li>
 <li>- should be possible to give it an extra argument to get the index <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004811S5_source')" id="l_C004811S5_source">show source</a> ]</span>
-            <div id="C004811S5_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005441S5_source')" id="l_C005441S5_source">show source</a> ]</span>
+            <div id="C005441S5_source" class="dyn-source">
 <pre>
 y = [] 
 [](1, 2, 3, 4) each(i, x, y &lt;&lt;([](i, x))) 
@@ -1382,8 +1922,8 @@ y should ==([]([](0, 1), [](1, 2), [](2, 3), [](3, 4)))
             </div>
             </span></li>
 <li>- should yield lists if running over a list of lists <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004811S6_source')" id="l_C004811S6_source">show source</a> ]</span>
-            <div id="C004811S6_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005441S6_source')" id="l_C005441S6_source">show source</a> ]</span>
+            <div id="C005441S6_source" class="dyn-source">
 <pre>
 y = [] 
 []([](1), [](2), [](3)) each(x, y &lt;&lt;(x)) 
@@ -1393,8 +1933,8 @@ y should ==([]([](1), [](2), [](3)))
             </div>
             </span></li>
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004811S7_source')" id="l_C004811S7_source">show source</a> ]</span>
-            <div id="C004811S7_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005441S7_source')" id="l_C005441S7_source">show source</a> ]</span>
+            <div id="C005441S7_source" class="dyn-source">
 <pre>
 List should checkReceiverTypeOn(:each, 1) 
 
@@ -1407,7 +1947,7 @@ List should checkReceiverTypeOn(:each, 1)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00484"></a><b>empty?</b>()
+          <a name="C00553"></a><b>empty?</b>()
           </div>
           <div class="description">
             <p>returns true if this list is empty, false otherwise</p>
@@ -1416,8 +1956,8 @@ List should checkReceiverTypeOn(:each, 1)
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return true for an empty list <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004841S0_source')" id="l_C004841S0_source">show source</a> ]</span>
-            <div id="C004841S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005531S0_source')" id="l_C005531S0_source">show source</a> ]</span>
+            <div id="C005531S0_source" class="dyn-source">
 <pre>
 x = [] 
 x empty? should be true 
@@ -1426,8 +1966,8 @@ x empty? should be true
             </div>
             </span></li>
 <li>- should return false for an non empty list <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004841S1_source')" id="l_C004841S1_source">show source</a> ]</span>
-            <div id="C004841S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005531S1_source')" id="l_C005531S1_source">show source</a> ]</span>
+            <div id="C005531S1_source" class="dyn-source">
 <pre>
 x = [](1) 
 x empty? should be false 
@@ -1438,8 +1978,8 @@ x empty? should be false
             </div>
             </span></li>
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004841S2_source')" id="l_C004841S2_source">show source</a> ]</span>
-            <div id="C004841S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005531S2_source')" id="l_C005531S2_source">show source</a> ]</span>
+            <div id="C005531S2_source" class="dyn-source">
 <pre>
 List should checkReceiverTypeOn(:empty?) 
 
@@ -1452,14 +1992,172 @@ List should checkReceiverTypeOn(:empty?)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00502"></a><b>ifEmpty</b>(...)
+          <a name="C00591"></a><b>flatten</b>()
+          </div>
+          <div class="description">
+            <p>returns a new list that is a mimic of the current list, with all elements flattened in it</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00591_source')" id="l_C00591_source">show source</a> ]</p>
+            <div id="C00591_source" class="dyn-source">
+<pre>
+method(
+  newList = self mimic 
+  newList flatten! 
+  newList)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return an empty list for an empty list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005911S0_source')" id="l_C005911S0_source">show source</a> ]</span>
+            <div id="C005911S0_source" class="dyn-source">
+<pre>
+[] flatten should ==([]) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not touch non-list elements <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005911S1_source')" id="l_C005911S1_source">show source</a> ]</span>
+            <div id="C005911S1_source" class="dyn-source">
+<pre>
+[](1, 2, 3, :foo) flatten should ==([](1, 2, 3, :foo)) 
+[](1, 2, 3, set(:foo)) flatten should ==([](1, 2, 3, set(:foo))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should flatten all lists into the end result, recursively <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005911S2_source')" id="l_C005911S2_source">show source</a> ]</span>
+            <div id="C005911S2_source" class="dyn-source">
+<pre>
+[]([](1)) flatten should ==([](1)) 
+[](2, [](1), 1) flatten should ==([](2, 1, 1)) 
+[]([](2, [](1)), 1) flatten should ==([](2, 1, 1)) 
+[]([](2, [](1)), []([](1))) flatten should ==([](2, 1, 1)) 
+[]([]([](2, [](1)), []([](1)))) flatten should ==([](2, 1, 1)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not modify the receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005911S3_source')" id="l_C005911S3_source">show source</a> ]</span>
+            <div id="C005911S3_source" class="dyn-source">
+<pre>
+x = []([](1)) 
+x flatten 
+x should ==([]([](1))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not modify any of the internal lists <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005911S4_source')" id="l_C005911S4_source">show source</a> ]</span>
+            <div id="C005911S4_source" class="dyn-source">
+<pre>
+int = [](1, [](2), 3) 
+x = [](int, int) 
+x flatten 
+int should ==([](1, [](2), 3)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00572"></a><b>flatten!</b>()
+          </div>
+          <div class="description">
+            <p>flattens all lists in this list recursively, then returns it</p>
+          </div>
+          
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return an empty list for an empty list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005721S0_source')" id="l_C005721S0_source">show source</a> ]</span>
+            <div id="C005721S0_source" class="dyn-source">
+<pre>
+[] flatten! should ==([]) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not touch non-list elements <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005721S1_source')" id="l_C005721S1_source">show source</a> ]</span>
+            <div id="C005721S1_source" class="dyn-source">
+<pre>
+[](1, 2, 3, :foo) flatten! should ==([](1, 2, 3, :foo)) 
+[](1, 2, 3, set(:foo)) flatten! should ==([](1, 2, 3, set(:foo))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should flatten all lists into the end result, recursively <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005721S2_source')" id="l_C005721S2_source">show source</a> ]</span>
+            <div id="C005721S2_source" class="dyn-source">
+<pre>
+[]([](1)) flatten! should ==([](1)) 
+[](2, [](1), 1) flatten! should ==([](2, 1, 1)) 
+[]([](2, [](1)), 1) flatten! should ==([](2, 1, 1)) 
+[]([](2, [](1)), []([](1))) flatten! should ==([](2, 1, 1)) 
+[]([]([](2, [](1)), []([](1)))) flatten! should ==([](2, 1, 1)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should modify the receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005721S3_source')" id="l_C005721S3_source">show source</a> ]</span>
+            <div id="C005721S3_source" class="dyn-source">
+<pre>
+x = []([](1)) 
+x flatten! 
+x should ==([](1)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005721S4_source')" id="l_C005721S4_source">show source</a> ]</span>
+            <div id="C005721S4_source" class="dyn-source">
+<pre>
+x = []([](1)) 
+x flatten! should be same(x) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not modify any of the internal lists <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005721S5_source')" id="l_C005721S5_source">show source</a> ]</span>
+            <div id="C005721S5_source" class="dyn-source">
+<pre>
+int = [](1, [](2), 3) 
+x = [](int, int) 
+x flatten! 
+int should ==([](1, [](2), 3)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00583"></a><b>ifEmpty</b>(...)
           </div>
           <div class="description">
             <p>if this list is empty, returns the result of evaluating the argument, otherwise returns the list</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00502_source')" id="l_C00502_source">show source</a> ]</p>
-            <div id="C00502_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00583_source')" id="l_C00583_source">show source</a> ]</p>
+            <div id="C00583_source" class="dyn-source">
 <pre>
 macro(
   argCount = call arguments length 
@@ -1481,8 +2179,8 @@ macro(
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should just return itself if not empty <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005021S0_source')" id="l_C005021S0_source">show source</a> ]</span>
-            <div id="C005021S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005831S0_source')" id="l_C005831S0_source">show source</a> ]</span>
+            <div id="C005831S0_source" class="dyn-source">
 <pre>
 [](1) ifEmpty(x /(0)) should ==([](1)) 
 [](1, 2, 3) ifEmpty(x /(0)) should ==([](1, 2, 3)) 
@@ -1493,8 +2191,8 @@ x ifEmpty(blarg) should be same(x)
             </div>
             </span></li>
 <li>- should return the result of evaluating the code if empty <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005021S1_source')" id="l_C005021S1_source">show source</a> ]</span>
-            <div id="C005021S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005831S1_source')" id="l_C005831S1_source">show source</a> ]</span>
+            <div id="C005831S1_source" class="dyn-source">
 <pre>
 [] ifEmpty(42) should ==(42) 
 [] ifEmpty([](1, 2, 3)) should ==([](1, 2, 3)) 
@@ -1508,7 +2206,7 @@ x ifEmpty(blarg) should be same(x)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00485"></a><b>include?</b>(object)
+          <a name="C00554"></a><b>include?</b>(object)
           </div>
           <div class="description">
             <p>returns true if the receiver includes the evaluated argument, otherwise false</p>
@@ -1517,8 +2215,8 @@ x ifEmpty(blarg) should be same(x)
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return false for something not in the list <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004851S0_source')" id="l_C004851S0_source">show source</a> ]</span>
-            <div id="C004851S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005541S0_source')" id="l_C005541S0_source">show source</a> ]</span>
+            <div id="C005541S0_source" class="dyn-source">
 <pre>
 [] include?(:foo) should be false 
 [](1) include?(2) should be false 
@@ -1528,8 +2226,8 @@ x ifEmpty(blarg) should be same(x)
             </div>
             </span></li>
 <li>- should return true for something in the list <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004851S1_source')" id="l_C004851S1_source">show source</a> ]</span>
-            <div id="C004851S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005541S1_source')" id="l_C005541S1_source">show source</a> ]</span>
+            <div id="C005541S1_source" class="dyn-source">
 <pre>
 [](:foo) include?(:foo) should be true 
 [](1, 2) include?(2) should be true 
@@ -1539,8 +2237,8 @@ x ifEmpty(blarg) should be same(x)
             </div>
             </span></li>
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004851S2_source')" id="l_C004851S2_source">show source</a> ]</span>
-            <div id="C004851S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005541S2_source')" id="l_C005541S2_source">show source</a> ]</span>
+            <div id="C005541S2_source" class="dyn-source">
 <pre>
 List should checkReceiverTypeOn(:include?, "Richard Richard") 
 
@@ -1553,7 +2251,169 @@ List should checkReceiverTypeOn(:include?, "Richard Richard")
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00478"></a><b>inspect</b>()
+          <a name="C00593"></a><b>index</b>(obj)
+          </div>
+          <div class="description">
+            <p>takes an object and returns the index of the first occurance of that object in this list, or nil if it doesn't exist</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00593_source')" id="l_C00593_source">show source</a> ]</p>
+            <div id="C00593_source" class="dyn-source">
+<pre>
+method(obj, 
+  self each(index, element, 
+    if(element ==(obj), 
+      return(index))) 
+  nil)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return the index of the first element == to object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005931S0_source')" id="l_C005931S0_source">show source</a> ]</span>
+            <div id="C005931S0_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x == = method(obj, 3 ==(obj)) 
+[](2, x, 3, 1, 3, 1) index(3) should ==(1) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return 0 if first element == to object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005931S1_source')" id="l_C005931S1_source">show source</a> ]</span>
+            <div id="C005931S1_source" class="dyn-source">
+<pre>
+[](2, 1, 3, 2, 5) index(2) should ==(0) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return size-1 if only last element == to object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005931S2_source')" id="l_C005931S2_source">show source</a> ]</span>
+            <div id="C005931S2_source" class="dyn-source">
+<pre>
+[](2, 1, 3, 1, 5) index(5) should ==(4) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return nil if no element == to object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005931S3_source')" id="l_C005931S3_source">show source</a> ]</span>
+            <div id="C005931S3_source" class="dyn-source">
+<pre>
+[](2, 1, 1, 1, 1) index(3) should be nil 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00564"></a><b>insert!</b>(index, +objects)
+          </div>
+          <div class="description">
+            <p>takes an index and zero or more objects to insert at that point. the index can be negative to index from the end of the list. if the index is positive and larger than the size of the list, the list will be filled with nils inbetween.</p>
+          </div>
+          
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- inserts objects before the element at index for non-negative index <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005641S0_source')" id="l_C005641S0_source">show source</a> ]</span>
+            <div id="C005641S0_source" class="dyn-source">
+<pre>
+ary = [] 
+ary insert!(0, 3) should ==(ary) 
+ary should ==([](3)) 
+ary insert!(0, 1, 2) should ==(ary) 
+ary should ==([](1, 2, 3)) 
+ary insert!(0) 
+ary should ==([](1, 2, 3)) 
+
+ary insert!(1, :a) should ==([](1, :a, 2, 3)) 
+ary insert!(0, :b) should ==([](:b, 1, :a, 2, 3)) 
+ary insert!(5, :c) should ==([](:b, 1, :a, 2, 3, :c)) 
+ary insert!(7, :d) should ==([](:b, 1, :a, 2, 3, :c, nil, :d)) 
+ary insert!(10, 5, 4) should ==([](:b, 1, :a, 2, 3, :c, nil, :d, nil, nil, 5, 4)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- appends objects to the end of the array for index == -1 <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005641S1_source')" id="l_C005641S1_source">show source</a> ]</span>
+            <div id="C005641S1_source" class="dyn-source">
+<pre>
+[](1, 3, 3) insert!(-(1), 2, :x, 5) should ==([](1, 3, 3, 2, :x, 5)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- inserts objects after the element at index with negative index <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005641S2_source')" id="l_C005641S2_source">show source</a> ]</span>
+            <div id="C005641S2_source" class="dyn-source">
+<pre>
+ary = [] 
+ary insert!(-(1), 3) should ==([](3)) 
+ary insert!(-(2), 2) should ==([](2, 3)) 
+ary insert!(-(3), 1) should ==([](1, 2, 3)) 
+ary insert!(-(2), -(3)) should ==([](1, 2, -(3), 3)) 
+ary insert!(-(1), []) should ==([](1, 2, -(3), 3, [])) 
+ary insert!(-(2), :x, :y) should ==([](1, 2, -(3), 3, :x, :y, [])) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- pads with nils if the index to be inserted to is past the end <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005641S3_source')" id="l_C005641S3_source">show source</a> ]</span>
+            <div id="C005641S3_source" class="dyn-source">
+<pre>
+[] insert!(5, 5) should ==([](nil, nil, nil, nil, nil, 5)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- can insert before the first element with a negative index <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005641S4_source')" id="l_C005641S4_source">show source</a> ]</span>
+            <div id="C005641S4_source" class="dyn-source">
+<pre>
+[](1, 2, 3) insert!(-(4), -(3)) should ==([](-(3), 1, 2, 3)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- raises an IndexError if the negative index is out of bounds <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005641S5_source')" id="l_C005641S5_source">show source</a> ]</span>
+            <div id="C005641S5_source" class="dyn-source">
+<pre>
+fn([] insert!(-(2), 1)) should signal(Condition Error Index) 
+fn([](1) insert!(-(3), 2)) should signal(Condition Error Index) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- does nothing if no object is passed <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005641S6_source')" id="l_C005641S6_source">show source</a> ]</span>
+            <div id="C005641S6_source" class="dyn-source">
+<pre>
+[] insert!(0) should ==([]) 
+[] insert!(-(1)) should ==([]) 
+[] insert!(10) should ==([]) 
+[] insert!(-(2)) should ==([]) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00541"></a><b>inspect</b>()
           </div>
           <div class="description">
             <p>Returns a text inspection of the object</p>
@@ -1562,8 +2422,8 @@ List should checkReceiverTypeOn(:include?, "Richard Richard")
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return something within square brackets <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004781S0_source')" id="l_C004781S0_source">show source</a> ]</span>
-            <div id="C004781S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005411S0_source')" id="l_C005411S0_source">show source</a> ]</span>
+            <div id="C005411S0_source" class="dyn-source">
 <pre>
 [] inspect should ==("[]") 
 
@@ -1571,8 +2431,8 @@ List should checkReceiverTypeOn(:include?, "Richard Richard")
             </div>
             </span></li>
 <li>- should return the inspect format of things inside <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004781S1_source')" id="l_C004781S1_source">show source</a> ]</span>
-            <div id="C004781S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005411S1_source')" id="l_C005411S1_source">show source</a> ]</span>
+            <div id="C005411S1_source" class="dyn-source">
 <pre>
 [](method(nil), method(f, f b), fn(a b)) inspect should ==("[method(nil), method(f, f b), fn(a b)]") 
 
@@ -1580,8 +2440,8 @@ List should checkReceiverTypeOn(:include?, "Richard Richard")
             </div>
             </span></li>
 <li>- should return the list of elements separated with ,  <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004781S2_source')" id="l_C004781S2_source">show source</a> ]</span>
-            <div id="C004781S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005411S2_source')" id="l_C005411S2_source">show source</a> ]</span>
+            <div id="C005411S2_source" class="dyn-source">
 <pre>
 [](1, 2, :foo, "bar") inspect should ==("[1, 2, :foo, \"bar\"]") 
 
@@ -1589,8 +2449,8 @@ List should checkReceiverTypeOn(:include?, "Richard Richard")
             </div>
             </span></li>
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004781S3_source')" id="l_C004781S3_source">show source</a> ]</span>
-            <div id="C004781S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005411S3_source')" id="l_C005411S3_source">show source</a> ]</span>
+            <div id="C005411S3_source" class="dyn-source">
 <pre>
 List should checkReceiverTypeOn(:inspect) 
 
@@ -1603,14 +2463,77 @@ List should checkReceiverTypeOn(:inspect)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00498"></a><b>last</b>()
+          <a name="C00573"></a><b>join</b>(separator )
+          </div>
+          <div class="description">
+            <p>returns a text composed of the asText representation of all elements in the list, separated by the separator. the separator defaults to an empty text.</p>
+          </div>
+          
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- returns an empty text if the List is empty <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005731S0_source')" id="l_C005731S0_source">show source</a> ]</span>
+            <div id="C005731S0_source" class="dyn-source">
+<pre>
+a = [] 
+a join should ==("") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- returns a text formed by concatenating each element asText separated by separator without trailing separator <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005731S1_source')" id="l_C005731S1_source">show source</a> ]</span>
+            <div id="C005731S1_source" class="dyn-source">
+<pre>
+obj = Origin with(asText: "foo") 
+[](1, 2, 3, 4, obj) join(" | ") should ==("1 | 2 | 3 | 4 | foo") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- uses the same separator with nested list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005731S2_source')" id="l_C005731S2_source">show source</a> ]</span>
+            <div id="C005731S2_source" class="dyn-source">
+<pre>
+[](1, [](2, [](3, 4), 5), 6) join(":") should ==("1:2:3:4:5:6") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should default to the empty text as separator <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005731S3_source')" id="l_C005731S3_source">show source</a> ]</span>
+            <div id="C005731S3_source" class="dyn-source">
+<pre>
+[](1, 2, 3) join should ==("123") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- does not process the separator if the list is empty <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005731S4_source')" id="l_C005731S4_source">show source</a> ]</span>
+            <div id="C005731S4_source" class="dyn-source">
+<pre>
+a = [] 
+sep = Origin mimic 
+a join(sep) should ==("") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00579"></a><b>last</b>()
           </div>
           <div class="description">
             <p>returns the last element of this list, or nil of the list is empty</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00498_source')" id="l_C00498_source">show source</a> ]</p>
-            <div id="C00498_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00579_source')" id="l_C00579_source">show source</a> ]</p>
+            <div id="C00579_source" class="dyn-source">
 <pre>
 method(
   if(empty?, nil, [](0 -(1))))
@@ -1620,8 +2543,8 @@ method(
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return nil for an empty list <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004981S0_source')" id="l_C004981S0_source">show source</a> ]</span>
-            <div id="C004981S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005791S0_source')" id="l_C005791S0_source">show source</a> ]</span>
+            <div id="C005791S0_source" class="dyn-source">
 <pre>
 [] last should be nil 
 
@@ -1629,8 +2552,8 @@ method(
             </div>
             </span></li>
 <li>- should return the only entry for a list with one element <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004981S1_source')" id="l_C004981S1_source">show source</a> ]</span>
-            <div id="C004981S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005791S1_source')" id="l_C005791S1_source">show source</a> ]</span>
+            <div id="C005791S1_source" class="dyn-source">
 <pre>
 [](45) last should ==(45) 
 
@@ -1638,8 +2561,8 @@ method(
             </div>
             </span></li>
 <li>- should return the last entry for a list with more than one entry <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004981S2_source')" id="l_C004981S2_source">show source</a> ]</span>
-            <div id="C004981S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005791S2_source')" id="l_C005791S2_source">show source</a> ]</span>
+            <div id="C005791S2_source" class="dyn-source">
 <pre>
 [](33, 15, 45, 57) last should ==(57) 
 
@@ -1652,7 +2575,7 @@ method(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00491"></a><b>length</b>(...)
+          <a name="C00561"></a><b>length</b>(...)
           </div>
           <div class="description">
             <p>nil</p>
@@ -1661,8 +2584,8 @@ method(
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return zero for an empty list <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004911S0_source')" id="l_C004911S0_source">show source</a> ]</span>
-            <div id="C004911S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005611S0_source')" id="l_C005611S0_source">show source</a> ]</span>
+            <div id="C005611S0_source" class="dyn-source">
 <pre>
 x = [] 
 x length should ==(0) 
@@ -1671,8 +2594,8 @@ x length should ==(0)
             </div>
             </span></li>
 <li>- should return the size for a non-empty list <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004911S1_source')" id="l_C004911S1_source">show source</a> ]</span>
-            <div id="C004911S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005611S1_source')" id="l_C005611S1_source">show source</a> ]</span>
+            <div id="C005611S1_source" class="dyn-source">
 <pre>
 [](1) length should ==(1) 
 []("abc", "cde") length should ==(2) 
@@ -1681,8 +2604,8 @@ x length should ==(0)
             </div>
             </span></li>
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004911S2_source')" id="l_C004911S2_source">show source</a> ]</span>
-            <div id="C004911S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005611S2_source')" id="l_C005611S2_source">show source</a> ]</span>
+            <div id="C005611S2_source" class="dyn-source">
 <pre>
 List should checkReceiverTypeOn(:length) 
 
@@ -1695,7 +2618,80 @@ List should checkReceiverTypeOn(:length)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00479"></a><b>notice</b>()
+          <a name="C00574"></a><b>map!</b>([argOrCode], [code] nil)
+          </div>
+          <div class="description">
+            <p>takes one or two arguments, and will then use these arguments as code to transform each element in this list. the transform happens in place. finally the method will return the receiver.</p>
+          </div>
+          
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return an empty list for an empty enumerable <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005741S0_source')" id="l_C005741S0_source">show source</a> ]</span>
+            <div id="C005741S0_source" class="dyn-source">
+<pre>
+[] map!(x, x +(2)) should ==([]) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the same list for something that only returns itself <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005741S1_source')" id="l_C005741S1_source">show source</a> ]</span>
+            <div id="C005741S1_source" class="dyn-source">
+<pre>
+[](1, 2, 3) map!(x, x) should ==([](1, 2, 3)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take one argument and apply the inside <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005741S2_source')" id="l_C005741S2_source">show source</a> ]</span>
+            <div id="C005741S2_source" class="dyn-source">
+<pre>
+[](1, 2, 3) map!(+(2)) should ==([](3, 4, 5)) 
+[](1, 2, 3) map!(1) should ==([](1, 1, 1)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take two arguments and apply the code with the argument name bound <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005741S3_source')" id="l_C005741S3_source">show source</a> ]</span>
+            <div id="C005741S3_source" class="dyn-source">
+<pre>
+[](1, 2, 3) map!(x, x +(3)) should ==([](4, 5, 6)) 
+[](1, 2, 3) map!(x, 1) should ==([](1, 1, 1)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the origin list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005741S4_source')" id="l_C005741S4_source">show source</a> ]</span>
+            <div id="C005741S4_source" class="dyn-source">
+<pre>
+x = [](1, 2, 3) 
+x map!(x, 1) should be same(x) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should modify the original list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005741S5_source')" id="l_C005741S5_source">show source</a> ]</span>
+            <div id="C005741S5_source" class="dyn-source">
+<pre>
+x = [](1, 2, 3) 
+x map!(x, 1) 
+x should ==([](1, 1, 1)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00542"></a><b>notice</b>()
           </div>
           <div class="description">
             <p>Returns a brief text inspection of the object</p>
@@ -1704,8 +2700,8 @@ List should checkReceiverTypeOn(:length)
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return something within square brackets <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004791S0_source')" id="l_C004791S0_source">show source</a> ]</span>
-            <div id="C004791S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005421S0_source')" id="l_C005421S0_source">show source</a> ]</span>
+            <div id="C005421S0_source" class="dyn-source">
 <pre>
 [] notice should ==("[]") 
 
@@ -1713,8 +2709,8 @@ List should checkReceiverTypeOn(:length)
             </div>
             </span></li>
 <li>- should return the notice format of things inside <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004791S1_source')" id="l_C004791S1_source">show source</a> ]</span>
-            <div id="C004791S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005421S1_source')" id="l_C005421S1_source">show source</a> ]</span>
+            <div id="C005421S1_source" class="dyn-source">
 <pre>
 [](method, method, fn) notice should ==("[method(...), method(...), fn(...)]") 
 
@@ -1722,8 +2718,8 @@ List should checkReceiverTypeOn(:length)
             </div>
             </span></li>
 <li>- should return the list of elements separated with ,  <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004791S2_source')" id="l_C004791S2_source">show source</a> ]</span>
-            <div id="C004791S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005421S2_source')" id="l_C005421S2_source">show source</a> ]</span>
+            <div id="C005421S2_source" class="dyn-source">
 <pre>
 [](1, 2, :foo, "bar") notice should ==("[1, 2, :foo, \"bar\"]") 
 
@@ -1731,8 +2727,8 @@ List should checkReceiverTypeOn(:length)
             </div>
             </span></li>
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004791S3_source')" id="l_C004791S3_source">show source</a> ]</span>
-            <div id="C004791S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005421S3_source')" id="l_C005421S3_source">show source</a> ]</span>
+            <div id="C005421S3_source" class="dyn-source">
 <pre>
 List should checkReceiverTypeOn(:notice) 
 
@@ -1745,14 +2741,838 @@ List should checkReceiverTypeOn(:notice)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00499"></a><b>rest</b>()
+          <a name="C00550"></a><b>pop!</b>()
+          </div>
+          <div class="description">
+            <p>removes the last element from the list and returns it. returns nil if the list is empty.</p>
+          </div>
+          
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return nil for an empty list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005501S0_source')" id="l_C005501S0_source">show source</a> ]</span>
+            <div id="C005501S0_source" class="dyn-source">
+<pre>
+[] pop! should be nil 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the element for a list with one element <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005501S1_source')" id="l_C005501S1_source">show source</a> ]</span>
+            <div id="C005501S1_source" class="dyn-source">
+<pre>
+[](:blarg) pop! should ==(:blarg) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should remove the element in a list with one element <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005501S2_source')" id="l_C005501S2_source">show source</a> ]</span>
+            <div id="C005501S2_source" class="dyn-source">
+<pre>
+l = [](:blarg) 
+l pop! 
+l should ==([]) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the last element for a list with more than one element <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005501S3_source')" id="l_C005501S3_source">show source</a> ]</span>
+            <div id="C005501S3_source" class="dyn-source">
+<pre>
+[](:blem, :flag, :moppy) pop! should ==(:moppy) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should remove the last element in a list with more than one element <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005501S4_source')" id="l_C005501S4_source">show source</a> ]</span>
+            <div id="C005501S4_source" class="dyn-source">
+<pre>
+l = [](:blem, :flag, :moppy) 
+l pop! 
+l should ==([](:blem, :flag)) 
+l pop! 
+l should ==([](:blem)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005501S5_source')" id="l_C005501S5_source">show source</a> ]</span>
+            <div id="C005501S5_source" class="dyn-source">
+<pre>
+List should checkReceiverTypeOn(:pop!) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00548"></a><b>prepend!</b>(value)
+          </div>
+          <div class="description">
+            <p>takes one argument and adds it at the beginning of the list, and then returns the list</p>
+          </div>
+          
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should add an element to an empty list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005481S0_source')" id="l_C005481S0_source">show source</a> ]</span>
+            <div id="C005481S0_source" class="dyn-source">
+<pre>
+l = [] 
+l prepend!(:foo) 
+l should ==([](:foo)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should add an element at the beginning of a list with elements in it <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005481S1_source')" id="l_C005481S1_source">show source</a> ]</span>
+            <div id="C005481S1_source" class="dyn-source">
+<pre>
+l = [](:foo, :bar, 1, 42) 
+l prepend!(:flax) 
+l should ==([](:flax, :foo, :bar, 1, 42)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should add an element several times if asked to <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005481S2_source')" id="l_C005481S2_source">show source</a> ]</span>
+            <div id="C005481S2_source" class="dyn-source">
+<pre>
+l = [](:foo) 
+l prepend!(:foo) 
+l prepend!(:foo) 
+l prepend!(:foo) 
+l prepend!(:foo) 
+l should ==([](:foo, :foo, :foo, :foo, :foo)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005481S3_source')" id="l_C005481S3_source">show source</a> ]</span>
+            <div id="C005481S3_source" class="dyn-source">
+<pre>
+l = [] 
+l prepend!(:foo) should ==(l) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005481S4_source')" id="l_C005481S4_source">show source</a> ]</span>
+            <div id="C005481S4_source" class="dyn-source">
+<pre>
+List should checkReceiverTypeOn(:prepend!, 0) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00547"></a><b>push!</b>(...)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+          
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should add an element to an empty list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005471S0_source')" id="l_C005471S0_source">show source</a> ]</span>
+            <div id="C005471S0_source" class="dyn-source">
+<pre>
+l = [] 
+l push!(:foo) 
+l should ==([](:foo)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should add an element at the end of a list with elements in it <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005471S1_source')" id="l_C005471S1_source">show source</a> ]</span>
+            <div id="C005471S1_source" class="dyn-source">
+<pre>
+l = [](:foo, :bar, 1, 42) 
+l push!(:flax) 
+l should ==([](:foo, :bar, 1, 42, :flax)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should add an element several times if asked to <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005471S2_source')" id="l_C005471S2_source">show source</a> ]</span>
+            <div id="C005471S2_source" class="dyn-source">
+<pre>
+l = [](:foo) 
+l push!(:foo) 
+l push!(:foo) 
+l push!(:foo) 
+l push!(:foo) 
+l should ==([](:foo, :foo, :foo, :foo, :foo)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005471S3_source')" id="l_C005471S3_source">show source</a> ]</span>
+            <div id="C005471S3_source" class="dyn-source">
+<pre>
+l = [] 
+l push!(:foo) should ==(l) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005471S4_source')" id="l_C005471S4_source">show source</a> ]</span>
+            <div id="C005471S4_source" class="dyn-source">
+<pre>
+List should checkReceiverTypeOn(:push!, 0) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00589"></a><b>rassoc</b>(obj)
+          </div>
+          <div class="description">
+            <p>takes an object, and returns the first list in this list that has that object as its second element. if it can't be found, returns nil.</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00589_source')" id="l_C00589_source">show source</a> ]</p>
+            <div id="C00589_source" class="dyn-source">
+<pre>
+method(obj, 
+  self find(el, 
+    el mimics?(List) &&(el length &gt;(1)) &&(el [](1) ==(obj))))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return nil for an empty list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005891S0_source')" id="l_C005891S0_source">show source</a> ]</span>
+            <div id="C005891S0_source" class="dyn-source">
+<pre>
+[] rassoc(:foo) should be nil 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return nil for a list where it can't find the argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005891S1_source')" id="l_C005891S1_source">show source</a> ]</span>
+            <div id="C005891S1_source" class="dyn-source">
+<pre>
+[]([](1, :bar), [](2, :blah)) rassoc(:foo) should be nil 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not fail for a list that includes stuff that isn't lists <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005891S2_source')" id="l_C005891S2_source">show source</a> ]</span>
+            <div id="C005891S2_source" class="dyn-source">
+<pre>
+[](1, 2, 3, 4) rassoc(:foo) should be nil 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return a list if it matches <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005891S3_source')" id="l_C005891S3_source">show source</a> ]</span>
+            <div id="C005891S3_source" class="dyn-source">
+<pre>
+[]([](1, :abc), [](2, :foo, 1, 2), [](3, :blah)) rassoc(:foo) should ==([](2, :foo, 1, 2)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the first list that matches <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005891S4_source')" id="l_C005891S4_source">show source</a> ]</span>
+            <div id="C005891S4_source" class="dyn-source">
+<pre>
+[]([](1, :abc), [](2, :foo, 1, 2), [](3, :blah), [](4, :foo, 3, 2)) rassoc(:foo) should ==([](2, :foo, 1, 2)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00568"></a><b>remove!</b>(element, +elements)
+          </div>
+          <div class="description">
+            <p>takes one or more arguments. removes all occurrences of the provided arguments from the list and returns the updated list. if an argument is not contained, the list remains unchanged. sending this method to an empty list has no effect.</p>
+          </div>
+          
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return empty list if receiver is empty list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005681S0_source')" id="l_C005681S0_source">show source</a> ]</span>
+            <div id="C005681S0_source" class="dyn-source">
+<pre>
+[] remove!(1) should ==([]) 
+[] remove!("a") should ==([]) 
+[] remove!(1, 2) should ==([]) 
+[] remove!("a", "b") should ==([]) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should remove all occurrences of single argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005681S1_source')" id="l_C005681S1_source">show source</a> ]</span>
+            <div id="C005681S1_source" class="dyn-source">
+<pre>
+[](1, 2, 3, 4, 1, 2, 3, 4) remove!(2) should ==([](1, 3, 4, 1, 3, 4)) 
+[]("a", "b", "c", "a", "b", "c") remove!("b") should ==([]("a", "c", "a", "c")) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should remove all occurrences of multiple arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005681S2_source')" id="l_C005681S2_source">show source</a> ]</span>
+            <div id="C005681S2_source" class="dyn-source">
+<pre>
+[](1, 2, 3, 4, 1, 2, 3, 4) remove!(1, 3) should ==([](2, 4, 2, 4)) 
+[](1, 2, 3, 4, 1, 2, 3, 4) remove!(1, 2, 3, 4) should ==([]) 
+
+[]("a", "b", "c", "a", "b", "c") remove!("a", "b", "c") should ==([]) 
+[]("a", "b", "c", "a", "b", "c") remove!("a", "b") should ==([]("c", "c")) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should leave list unmodified if arguments not contained in list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005681S3_source')" id="l_C005681S3_source">show source</a> ]</span>
+            <div id="C005681S3_source" class="dyn-source">
+<pre>
+[](1, 2, 3, 4) remove!(5) should ==([](1, 2, 3, 4)) 
+[](1, 2, 3, 4) remove!(5, 6, 7) should ==([](1, 2, 3, 4)) 
+
+[]("a", "b", "c") remove!("x") should ==([]("a", "b", "c")) 
+[]("a", "b", "c") remove!("x", "y", "z") should ==([]("a", "b", "c")) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should skip arguments not contained in list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005681S4_source')" id="l_C005681S4_source">show source</a> ]</span>
+            <div id="C005681S4_source" class="dyn-source">
+<pre>
+[](1, 2, 3, 4, 1, 2, 3, 4) remove!(2, 3, 5, 6) should ==([](1, 4, 1, 4)) 
+[]("a", "b", "c", "a", "b", "c") remove!("a", "b", "x", "y") should ==([]("c", "c")) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005681S5_source')" id="l_C005681S5_source">show source</a> ]</span>
+            <div id="C005681S5_source" class="dyn-source">
+<pre>
+List should checkReceiverTypeOn(:remove!, 0) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00567"></a><b>removeAt!</b>(indexOrRange)
+          </div>
+          <div class="description">
+            <p>takes as argument the index of the element to be removed and returns it. can be negative and will in that case index from the back of the list. if the index is outside the bounds of the list, will return nil. the argument can also be a range, and will in that case remove the sublist beginning at the first index and extending to the position in the list specified by the second index (inclusive or exclusive depending on the range). the end of the range can be negative and will in that case index from the back of the list. if the start of the range is negative, or greater than the end, an empty list will be returned. if the end index exceeds the bounds of the list, its size will be used instead.</p>
+          </div>
+          
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return nil if receiver is empty list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005671S0_source')" id="l_C005671S0_source">show source</a> ]</span>
+            <div id="C005671S0_source" class="dyn-source">
+<pre>
+list removeAt!(0) should be nil 
+list removeAt!(10) should be nil 
+list removeAt!(-(1)) should be nil 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return nil if argument is greater than the list's size <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005671S1_source')" id="l_C005671S1_source">show source</a> ]</span>
+            <div id="C005671S1_source" class="dyn-source">
+<pre>
+list(1) removeAt!(1) should be nil 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should remove element from front if argument is zero or positive <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005671S2_source')" id="l_C005671S2_source">show source</a> ]</span>
+            <div id="C005671S2_source" class="dyn-source">
+<pre>
+l = [](1, 2, 3, 4) 
+l removeAt!(0) should ==(1) 
+l should ==([](2, 3, 4)) 
+
+l = [](1, 2, 3, 4) 
+l removeAt!(1) should ==(2) 
+l should ==([](1, 3, 4)) 
+
+l = [](1, 2, 3, 4) 
+l removeAt!(2) should ==(3) 
+l should ==([](1, 2, 4)) 
+
+l = [](1, 2, 3, 4) 
+l removeAt!(3) should ==(4) 
+l should ==([](1, 2, 3)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should remove element from back if argument is negative <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005671S3_source')" id="l_C005671S3_source">show source</a> ]</span>
+            <div id="C005671S3_source" class="dyn-source">
+<pre>
+l = [](1, 2, 3, 4) 
+l removeAt!(-(1)) should ==(4) 
+l should ==([](1, 2, 3)) 
+
+l = [](1, 2, 3, 4) 
+l removeAt!(-(2)) should ==(3) 
+l should ==([](1, 2, 4)) 
+
+l = [](1, 2, 3, 4) 
+l removeAt!(-(3)) should ==(2) 
+l should ==([](1, 3, 4)) 
+
+l = [](1, 2, 3, 4) 
+l removeAt!(-(4)) should ==(1) 
+l should ==([](2, 3, 4)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not remove anything for any range if reveicer is empty list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005671S4_source')" id="l_C005671S4_source">show source</a> ]</span>
+            <div id="C005671S4_source" class="dyn-source">
+<pre>
+l = [] 
+l removeAt!(0 ..(0)) should ==([]) 
+l should ==([]) 
+
+l = [] 
+l removeAt!(0 ...(0)) should ==([]) 
+l should ==([]) 
+
+l = [] 
+l removeAt!(0 ..(-(1))) should ==([]) 
+l should ==([]) 
+
+l = [] 
+l removeAt!(0 ...(-(1))) should ==([]) 
+l should ==([]) 
+
+l = [] 
+l removeAt!(10 ..(20)) should ==([]) 
+l should ==([]) 
+
+l = [] 
+l removeAt!(10 ...(20)) should ==([]) 
+l should ==([]) 
+
+l = [] 
+l removeAt!(-(1) ..(20)) should ==([]) 
+l should ==([]) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should remove all elements for 0..-1 <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005671S5_source')" id="l_C005671S5_source">show source</a> ]</span>
+            <div id="C005671S5_source" class="dyn-source">
+<pre>
+l = [] 
+l removeAt!(0 ..(-(1))) should ==([]) 
+l should ==([]) 
+
+l = [](1, 2, 3) 
+l removeAt!(0 ..(-(1))) should ==([](1, 2, 3)) 
+l should ==([]) 
+
+l = []("x", "y") 
+l removeAt!(0 ..(-(1))) should ==([]("x", "y")) 
+l should ==([]) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should remove all except first element for 1..-1 <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005671S6_source')" id="l_C005671S6_source">show source</a> ]</span>
+            <div id="C005671S6_source" class="dyn-source">
+<pre>
+l = [](1) 
+l removeAt!(1 ..(-(1))) should ==([]) 
+l should ==([](1)) 
+
+l = [](1, 2, 3) 
+l removeAt!(1 ..(-(1))) should ==([](2, 3)) 
+l should ==([](1)) 
+
+l = []("x", "y") 
+l removeAt!(1 ..(-(1))) should ==([]("y")) 
+l should ==([]("x")) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should remove all except first and last element for 1...-1 <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005671S7_source')" id="l_C005671S7_source">show source</a> ]</span>
+            <div id="C005671S7_source" class="dyn-source">
+<pre>
+l = [](1, 2) 
+l removeAt!(1 ...(-(1))) should ==([]) 
+l should ==([](1, 2)) 
+
+l = [](1, 2, 3) 
+l removeAt!(1 ...(-(1))) should ==([](2)) 
+l should ==([](1, 3)) 
+
+l = []("x", "y", "zed", "bar") 
+l removeAt!(1 ...(-(1))) should ==([]("y", "zed")) 
+l should ==([]("x", "bar")) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should remove first element for 0..0 <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005671S8_source')" id="l_C005671S8_source">show source</a> ]</span>
+            <div id="C005671S8_source" class="dyn-source">
+<pre>
+l = [](1) 
+l removeAt!(0 ..(0)) should ==([](1)) 
+l should ==([]) 
+
+l = [](1, 2, 3) 
+l removeAt!(0 ..(0)) should ==([](1)) 
+l should ==([](2, 3)) 
+
+l = []("x", "y") 
+l removeAt!(0 ..(0)) should ==([]("x")) 
+l should ==([]("y")) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not remove anything for 0...0 <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005671S9_source')" id="l_C005671S9_source">show source</a> ]</span>
+            <div id="C005671S9_source" class="dyn-source">
+<pre>
+l = [](1) 
+l removeAt!(0 ...(0)) should ==([]) 
+l should ==([](1)) 
+
+l = [](1, 2, 3) 
+l removeAt!(0 ...(0)) should ==([]) 
+l should ==([](1, 2, 3)) 
+
+l = []("x", "y") 
+l removeAt!(0 ...(0)) should ==([]) 
+l should ==([]("x", "y")) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should remove sublist for inclusive range <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005671S10_source')" id="l_C005671S10_source">show source</a> ]</span>
+            <div id="C005671S10_source" class="dyn-source">
+<pre>
+l = [](1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11) 
+l removeAt!(3 ..(5)) should ==([](4, 5, 6)) 
+l should ==([](1, 2, 3, 7, 8, 9, 10, 11)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should remove sublist for exclusive range <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005671S11_source')" id="l_C005671S11_source">show source</a> ]</span>
+            <div id="C005671S11_source" class="dyn-source">
+<pre>
+l = [](1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11) 
+l removeAt!(3 ...(6)) should ==([](4, 5, 6)) 
+l should ==([](1, 2, 3, 7, 8, 9, 10, 11)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should remove sublist for inclusive range that ends in negative index <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005671S12_source')" id="l_C005671S12_source">show source</a> ]</span>
+            <div id="C005671S12_source" class="dyn-source">
+<pre>
+l = [](1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11) 
+l removeAt!(3 ..(-(3))) should ==([](4, 5, 6, 7, 8, 9)) 
+l should ==([](1, 2, 3, 10, 11)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should remove sublist for exclusive range that ends in negative index <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005671S13_source')" id="l_C005671S13_source">show source</a> ]</span>
+            <div id="C005671S13_source" class="dyn-source">
+<pre>
+l = [](1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11) 
+l removeAt!(3 ...(-(3))) should ==([](4, 5, 6, 7, 8)) 
+l should ==([](1, 2, 3, 9, 10, 11)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should remove all elements to end of list for range that ends in index greater than list's size <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005671S14_source')" id="l_C005671S14_source">show source</a> ]</span>
+            <div id="C005671S14_source" class="dyn-source">
+<pre>
+l = [](1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11) 
+l removeAt!(5 ..(3443343)) should ==([](6, 7, 8, 9, 10, 11)) 
+l should ==([](1, 2, 3, 4, 5)) 
+
+l = [](1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11) 
+l removeAt!(5 ...(3443343)) should ==([](6, 7, 8, 9, 10, 11)) 
+l should ==([](1, 2, 3, 4, 5)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not remove anything for a totally messed up indexing <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005671S15_source')" id="l_C005671S15_source">show source</a> ]</span>
+            <div id="C005671S15_source" class="dyn-source">
+<pre>
+l = [](1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11) 
+l removeAt!(-(1) ..(3)) should ==([]) 
+l should ==([](1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11)) 
+
+l = [](1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11) 
+l removeAt!(-(1) ..(7557)) should ==([]) 
+l should ==([](1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11)) 
+
+l = [](1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11) 
+l removeAt!(5 ..(4)) should ==([]) 
+l should ==([](1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11)) 
+
+l = [](1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11) 
+l removeAt!(-(1) ...(3)) should ==([]) 
+l should ==([](1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11)) 
+
+l = [](1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11) 
+l removeAt!(-(1) ...(7557)) should ==([]) 
+l should ==([](1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11)) 
+
+l = [](1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11) 
+l removeAt!(5 ...(4)) should ==([]) 
+l should ==([](1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005671S16_source')" id="l_C005671S16_source">show source</a> ]</span>
+            <div id="C005671S16_source" class="dyn-source">
+<pre>
+List should checkReceiverTypeOn(:removeAt!, 0) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should validate type of argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005671S17_source')" id="l_C005671S17_source">show source</a> ]</span>
+            <div id="C005671S17_source" class="dyn-source">
+<pre>
+fn([] removeAt!([])) should signal(Condition Error Type IncorrectType) 
+fn([] removeAt!("foo")) should signal(Condition Error Type IncorrectType) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00569"></a><b>removeFirst!</b>(element, +elements)
+          </div>
+          <div class="description">
+            <p>takes one or more arguments. removes the first occurrence of the provided arguments from the list and returns the updated list. if an argument is not contained, the list remains unchanged. arguments that are provided multiple times are treated as distinct elements. sending this message to an empty list has no effect.</p>
+          </div>
+          
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return empty list if receiver is empty list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005691S0_source')" id="l_C005691S0_source">show source</a> ]</span>
+            <div id="C005691S0_source" class="dyn-source">
+<pre>
+[] removeFirst!(1) should ==([]) 
+[] removeFirst!("a") should ==([]) 
+[] removeFirst!(1, 2) should ==([]) 
+[] removeFirst!("a", "b") should ==([]) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should remove first occurrence of single argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005691S1_source')" id="l_C005691S1_source">show source</a> ]</span>
+            <div id="C005691S1_source" class="dyn-source">
+<pre>
+[](1, 2, 1, 2) removeFirst!(2) should ==([](1, 1, 2)) 
+[]("a", "b", "a", "b") removeFirst!("b") should ==([]("a", "a", "b")) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should remove first occurrence of multiple arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005691S2_source')" id="l_C005691S2_source">show source</a> ]</span>
+            <div id="C005691S2_source" class="dyn-source">
+<pre>
+[](1, 2, 1, 2) removeFirst!(1, 2) should ==([](1, 2)) 
+[](1, 2, 1, 2) removeFirst!(1, 1) should ==([](2, 2)) 
+[](1, 2, 1, 2) removeFirst!(1, 2, 1, 2) should ==([]) 
+
+[]("a", "b", "a", "b") removeFirst!("a", "b") should ==([]("a", "b")) 
+[]("a", "b", "a", "b") removeFirst!("a", "a") should ==([]("b", "b")) 
+[]("a", "b", "a", "b") removeFirst!("a", "b", "a", "b") should ==([]) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should leave list unmodified if arguments not contained in list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005691S3_source')" id="l_C005691S3_source">show source</a> ]</span>
+            <div id="C005691S3_source" class="dyn-source">
+<pre>
+[](1, 2, 3, 4) removeFirst!(5) should ==([](1, 2, 3, 4)) 
+[](1, 2, 3, 4) removeFirst!(5, 6, 7) should ==([](1, 2, 3, 4)) 
+
+[]("a", "b", "c") removeFirst!("x") should ==([]("a", "b", "c")) 
+[]("a", "b", "c") removeFirst!("x", "y", "z") should ==([]("a", "b", "c")) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should skip arguments not contained in list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005691S4_source')" id="l_C005691S4_source">show source</a> ]</span>
+            <div id="C005691S4_source" class="dyn-source">
+<pre>
+[](1, 2, 1, 2) removeFirst!(2, 5, 6) should ==([](1, 1, 2)) 
+[]("a", "b", "a", "b") removeFirst!("a", "x", "y") should ==([]("b", "a", "b")) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005691S5_source')" id="l_C005691S5_source">show source</a> ]</span>
+            <div id="C005691S5_source" class="dyn-source">
+<pre>
+List should checkReceiverTypeOn(:removeFirst!, 0) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00576"></a><b>removeIf!</b>([argOrCode], [code] nil)
+          </div>
+          <div class="description">
+            <p>takes one or two arguments, and will then use these arguments as code to decide what elements should be removed from the list. the method will return the receiver.</p>
+          </div>
+          
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should change the list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005761S0_source')" id="l_C005761S0_source">show source</a> ]</span>
+            <div id="C005761S0_source" class="dyn-source">
+<pre>
+x = [](1, 2, 3) 
+x removeIf!(&gt;(1)) 
+x should ==([](1)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005761S1_source')" id="l_C005761S1_source">show source</a> ]</span>
+            <div id="C005761S1_source" class="dyn-source">
+<pre>
+x = [](1, 2, 3) 
+x removeIf!(&gt;(1)) should be same(x) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take one code argument and apply that to all values <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005761S2_source')" id="l_C005761S2_source">show source</a> ]</span>
+            <div id="C005761S2_source" class="dyn-source">
+<pre>
+[] removeIf!(&gt;(1)) should ==([]) 
+[](1, 2, 3) removeIf!(&gt;(1)) should ==([](1)) 
+[](1, 2, 3) removeIf!(true) should ==([]) 
+[](nil, false, nil) removeIf!(nil?) should ==([](false)) 
+[](nil, false, true) removeIf!(==(2)) should ==([](nil, false, true)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take two arguments and use that as a predicate lexical block <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005761S3_source')" id="l_C005761S3_source">show source</a> ]</span>
+            <div id="C005761S3_source" class="dyn-source">
+<pre>
+[] removeIf!(x, x &gt;(1)) should ==([]) 
+[](1, 2, 3) removeIf!(x, x &gt;(1)) should ==([](1)) 
+[](1, 2, 3) removeIf!(x, true) should ==([]) 
+[](nil, false, nil) removeIf!(x, x nil?) should ==([](false)) 
+[](nil, false, true) removeIf!(x, x ==(2)) should ==([](nil, false, true)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00580"></a><b>rest</b>()
           </div>
           <div class="description">
             <p>returns a list that contains all entries except for the first one, or the empty list if this list is empty.</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00499_source')" id="l_C00499_source">show source</a> ]</p>
-            <div id="C00499_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00580_source')" id="l_C00580_source">show source</a> ]</p>
+            <div id="C00580_source" class="dyn-source">
 <pre>
 method(
   if(empty?, 
@@ -1764,8 +3584,8 @@ method(
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return an empty list for the empty list <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004991S0_source')" id="l_C004991S0_source">show source</a> ]</span>
-            <div id="C004991S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005801S0_source')" id="l_C005801S0_source">show source</a> ]</span>
+            <div id="C005801S0_source" class="dyn-source">
 <pre>
 [] rest should ==([]) 
 
@@ -1773,8 +3593,8 @@ method(
             </div>
             </span></li>
 <li>- should return an empty list for a list with one entry <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004991S1_source')" id="l_C004991S1_source">show source</a> ]</span>
-            <div id="C004991S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005801S1_source')" id="l_C005801S1_source">show source</a> ]</span>
+            <div id="C005801S1_source" class="dyn-source">
 <pre>
 [](1) rest should ==([]) 
 [](2) rest should ==([]) 
@@ -1784,8 +3604,8 @@ method(
             </div>
             </span></li>
 <li>- should return a list with the one element for a list with two entries <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004991S2_source')" id="l_C004991S2_source">show source</a> ]</span>
-            <div id="C004991S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005801S2_source')" id="l_C005801S2_source">show source</a> ]</span>
+            <div id="C005801S2_source" class="dyn-source">
 <pre>
 [](1, 2) rest should ==([](2)) 
 
@@ -1793,8 +3613,8 @@ method(
             </div>
             </span></li>
 <li>- should return a list with the rest of the elements for a larger list <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004991S3_source')" id="l_C004991S3_source">show source</a> ]</span>
-            <div id="C004991S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005801S3_source')" id="l_C005801S3_source">show source</a> ]</span>
+            <div id="C005801S3_source" class="dyn-source">
 <pre>
 [](1, 2, 3, 4, 5) rest should ==([](2, 3, 4, 5)) 
 
@@ -1807,14 +3627,197 @@ method(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00496"></a><b>second</b>()
+          <a name="C00590"></a><b>reverse</b>()
+          </div>
+          <div class="description">
+            <p>returns a new list that is a mimic of the current list, except that the order of all elements are reversed</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00590_source')" id="l_C00590_source">show source</a> ]</p>
+            <div id="C00590_source" class="dyn-source">
+<pre>
+method(
+  newList = self mimic 
+  newList reverse! 
+  newList)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return the same list for an empty list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005901S0_source')" id="l_C005901S0_source">show source</a> ]</span>
+            <div id="C005901S0_source" class="dyn-source">
+<pre>
+[] reverse should ==([]) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return a reversed list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005901S1_source')" id="l_C005901S1_source">show source</a> ]</span>
+            <div id="C005901S1_source" class="dyn-source">
+<pre>
+[](1) reverse should ==([](1)) 
+[](1, 2, 1) reverse should ==([](1, 2, 1)) 
+[](1, 2, 3) reverse should ==([](3, 2, 1)) 
+[](:foo, :bar) reverse should ==([](:bar, :foo)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not modify the receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005901S2_source')" id="l_C005901S2_source">show source</a> ]</span>
+            <div id="C005901S2_source" class="dyn-source">
+<pre>
+x = [](1, 2, 3, 4) 
+x reverse 
+x should ==([](1, 2, 3, 4)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not reverse internal lists <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005901S3_source')" id="l_C005901S3_source">show source</a> ]</span>
+            <div id="C005901S3_source" class="dyn-source">
+<pre>
+[]([](1, 2), [](3, 4), [](5, 6), [](7, 8)) reverse should ==([]([](7, 8), [](5, 6), [](3, 4), [](1, 2))) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00571"></a><b>reverse!</b>()
+          </div>
+          <div class="description">
+            <p>reverses the elements in this list, then returns it</p>
+          </div>
+          
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return the same list for an empty list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005711S0_source')" id="l_C005711S0_source">show source</a> ]</span>
+            <div id="C005711S0_source" class="dyn-source">
+<pre>
+[] reverse! should ==([]) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return a reversed list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005711S1_source')" id="l_C005711S1_source">show source</a> ]</span>
+            <div id="C005711S1_source" class="dyn-source">
+<pre>
+[](1) reverse! should ==([](1)) 
+[](1, 2, 1) reverse! should ==([](1, 2, 1)) 
+[](1, 2, 3) reverse! should ==([](3, 2, 1)) 
+[](:foo, :bar) reverse! should ==([](:bar, :foo)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should modify the receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005711S2_source')" id="l_C005711S2_source">show source</a> ]</span>
+            <div id="C005711S2_source" class="dyn-source">
+<pre>
+x = [](1, 2, 3, 4) 
+x reverse! 
+x should ==([](4, 3, 2, 1)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not reverse internal lists <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005711S3_source')" id="l_C005711S3_source">show source</a> ]</span>
+            <div id="C005711S3_source" class="dyn-source">
+<pre>
+[]([](1, 2), [](3, 4), [](5, 6), [](7, 8)) reverse! should ==([]([](7, 8), [](5, 6), [](3, 4), [](1, 2))) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00594"></a><b>rindex</b>(obj)
+          </div>
+          <div class="description">
+            <p>takes an object and returns the index of the last occurance of that object in this list, or nil if it doesn't exist</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00594_source')" id="l_C00594_source">show source</a> ]</p>
+            <div id="C00594_source" class="dyn-source">
+<pre>
+method(obj, 
+  ((self size -(1)) ..(0)) each(index, 
+    if(self [](index) ==(obj), 
+      return(index))) 
+  nil)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return the first index backwards from the end where element == to object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005941S0_source')" id="l_C005941S0_source">show source</a> ]</span>
+            <div id="C005941S0_source" class="dyn-source">
+<pre>
+[](3, 2, 1, 1, 2, 3) rindex(3) should ==(5) 
+[](3, 2, 1, 1, 2, 3) rindex(2) should ==(4) 
+[](3, 2, 1, 1, 2, 3) rindex(1) should ==(3) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return size-1 if last element == to object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005941S1_source')" id="l_C005941S1_source">show source</a> ]</span>
+            <div id="C005941S1_source" class="dyn-source">
+<pre>
+[](2, 1, 3, 2, 5) rindex(5) should ==(4) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return 0 if only first element == to object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005941S2_source')" id="l_C005941S2_source">show source</a> ]</span>
+            <div id="C005941S2_source" class="dyn-source">
+<pre>
+[](2, 1, 3, 1, 5) rindex(2) should ==(0) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return nil if no element == to object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005941S3_source')" id="l_C005941S3_source">show source</a> ]</span>
+            <div id="C005941S3_source" class="dyn-source">
+<pre>
+[](1, 1, 3, 2, 1, 3) rindex(4) should be nil 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00577"></a><b>second</b>()
           </div>
           <div class="description">
             <p>returns the second element of this list, or nil of the list has less than two entries</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00496_source')" id="l_C00496_source">show source</a> ]</p>
-            <div id="C00496_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00577_source')" id="l_C00577_source">show source</a> ]</p>
+            <div id="C00577_source" class="dyn-source">
 <pre>
 method(
   [](1))
@@ -1824,8 +3827,8 @@ method(
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return nil for an empty list <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004961S0_source')" id="l_C004961S0_source">show source</a> ]</span>
-            <div id="C004961S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005771S0_source')" id="l_C005771S0_source">show source</a> ]</span>
+            <div id="C005771S0_source" class="dyn-source">
 <pre>
 [] second should be nil 
 
@@ -1833,8 +3836,8 @@ method(
             </div>
             </span></li>
 <li>- should return nil for a list with one element <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004961S1_source')" id="l_C004961S1_source">show source</a> ]</span>
-            <div id="C004961S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005771S1_source')" id="l_C005771S1_source">show source</a> ]</span>
+            <div id="C005771S1_source" class="dyn-source">
 <pre>
 [](33) second should be nil 
 
@@ -1842,8 +3845,8 @@ method(
             </div>
             </span></li>
 <li>- should return the second element for a list with more than one element <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004961S2_source')" id="l_C004961S2_source">show source</a> ]</span>
-            <div id="C004961S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005771S2_source')" id="l_C005771S2_source">show source</a> ]</span>
+            <div id="C005771S2_source" class="dyn-source">
 <pre>
 [](33, 45) second should ==(45) 
 
@@ -1856,7 +3859,81 @@ method(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00490"></a><b>size</b>()
+          <a name="C00551"></a><b>shift!</b>()
+          </div>
+          <div class="description">
+            <p>removes the first element from the list and returns it. returns nil if the list is empty.</p>
+          </div>
+          
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should return nil for an empty list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005511S0_source')" id="l_C005511S0_source">show source</a> ]</span>
+            <div id="C005511S0_source" class="dyn-source">
+<pre>
+[] shift! should be nil 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the element for a list with one element <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005511S1_source')" id="l_C005511S1_source">show source</a> ]</span>
+            <div id="C005511S1_source" class="dyn-source">
+<pre>
+[](:blarg) shift! should ==(:blarg) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should remove the element in a list with one element <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005511S2_source')" id="l_C005511S2_source">show source</a> ]</span>
+            <div id="C005511S2_source" class="dyn-source">
+<pre>
+l = [](:blarg) 
+l shift! 
+l should ==([]) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the first element for a list with more than one element <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005511S3_source')" id="l_C005511S3_source">show source</a> ]</span>
+            <div id="C005511S3_source" class="dyn-source">
+<pre>
+[](:blem, :flag, :moppy) shift! should ==(:blem) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should remove the first element in a list with more than one element <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005511S4_source')" id="l_C005511S4_source">show source</a> ]</span>
+            <div id="C005511S4_source" class="dyn-source">
+<pre>
+l = [](:blem, :flag, :moppy) 
+l shift! 
+l should ==([](:flag, :moppy)) 
+l shift! 
+l should ==([](:moppy)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005511S5_source')" id="l_C005511S5_source">show source</a> ]</span>
+            <div id="C005511S5_source" class="dyn-source">
+<pre>
+List should checkReceiverTypeOn(:shift!) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00560"></a><b>size</b>()
           </div>
           <div class="description">
             <p>returns the size of this list</p>
@@ -1865,8 +3942,8 @@ method(
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return zero for an empty list <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004901S0_source')" id="l_C004901S0_source">show source</a> ]</span>
-            <div id="C004901S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005601S0_source')" id="l_C005601S0_source">show source</a> ]</span>
+            <div id="C005601S0_source" class="dyn-source">
 <pre>
 x = [] 
 x size should ==(0) 
@@ -1875,8 +3952,8 @@ x size should ==(0)
             </div>
             </span></li>
 <li>- should return the size for a non-empty list <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004901S1_source')" id="l_C004901S1_source">show source</a> ]</span>
-            <div id="C004901S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005601S1_source')" id="l_C005601S1_source">show source</a> ]</span>
+            <div id="C005601S1_source" class="dyn-source">
 <pre>
 [](1) size should ==(1) 
 []("abc", "cde") size should ==(2) 
@@ -1885,8 +3962,8 @@ x size should ==(0)
             </div>
             </span></li>
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004901S2_source')" id="l_C004901S2_source">show source</a> ]</span>
-            <div id="C004901S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005601S2_source')" id="l_C005601S2_source">show source</a> ]</span>
+            <div id="C005601S2_source" class="dyn-source">
 <pre>
 List should checkReceiverTypeOn(:size) 
 
@@ -1899,7 +3976,7 @@ List should checkReceiverTypeOn(:size)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00488"></a><b>sort</b>()
+          <a name="C00558"></a><b>sort</b>()
           </div>
           <div class="description">
             <p>returns a new sorted version of this list</p>
@@ -1908,8 +3985,8 @@ List should checkReceiverTypeOn(:size)
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return a new, sorted list of numbers <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004881S0_source')" id="l_C004881S0_source">show source</a> ]</span>
-            <div id="C004881S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005581S0_source')" id="l_C005581S0_source">show source</a> ]</span>
+            <div id="C005581S0_source" class="dyn-source">
 <pre>
 [](1, 2, 3) sort should ==([](1, 2, 3)) 
 [](3, 2, 1) sort should ==([](1, 2, 3)) 
@@ -1921,8 +3998,8 @@ List should checkReceiverTypeOn(:size)
             </div>
             </span></li>
 <li>- should return a new, sorted list of strings <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004881S1_source')" id="l_C004881S1_source">show source</a> ]</span>
-            <div id="C004881S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005581S1_source')" id="l_C005581S1_source">show source</a> ]</span>
+            <div id="C005581S1_source" class="dyn-source">
 <pre>
 []("foo", "bar", "quux") sort should ==([]("bar", "foo", "quux")) 
 []("foo", "Bar", "bar", "quux") sort should ==([]("Bar", "bar", "foo", "quux")) 
@@ -1931,8 +4008,8 @@ List should checkReceiverTypeOn(:size)
             </div>
             </span></li>
 <li>- should return a new, sorted list of symbols <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004881S2_source')" id="l_C004881S2_source">show source</a> ]</span>
-            <div id="C004881S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005581S2_source')" id="l_C005581S2_source">show source</a> ]</span>
+            <div id="C005581S2_source" class="dyn-source">
 <pre>
 [](:foo, :bar, :quux) sort should ==([](:bar, :foo, :quux)) 
 [](:foo, :Bar, :bar, :quux) sort should ==([](:Bar, :bar, :foo, :quux)) 
@@ -1941,8 +4018,8 @@ List should checkReceiverTypeOn(:size)
             </div>
             </span></li>
 <li>- should sort based on '<=> <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004881S3_source')" id="l_C004881S3_source">show source</a> ]</span>
-            <div id="C004881S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005581S3_source')" id="l_C005581S3_source">show source</a> ]</span>
+            <div id="C005581S3_source" class="dyn-source">
 <pre>
 Objs = Origin mimic 
 x1 = Objs mimic 
@@ -1958,8 +4035,8 @@ Objs &lt;=&gt; = method(other, self num &lt;=&gt;(other num))
             </div>
             </span></li>
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004881S4_source')" id="l_C004881S4_source">show source</a> ]</span>
-            <div id="C004881S4_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005581S4_source')" id="l_C005581S4_source">show source</a> ]</span>
+            <div id="C005581S4_source" class="dyn-source">
 <pre>
 List should checkReceiverTypeOn(:sort) 
 
@@ -1972,7 +4049,7 @@ List should checkReceiverTypeOn(:sort)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00489"></a><b>sort!</b>()
+          <a name="C00559"></a><b>sort!</b>()
           </div>
           <div class="description">
             <p>sorts this list in place and then returns it</p>
@@ -1981,8 +4058,8 @@ List should checkReceiverTypeOn(:sort)
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return itself <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004891S0_source')" id="l_C004891S0_source">show source</a> ]</span>
-            <div id="C004891S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005591S0_source')" id="l_C005591S0_source">show source</a> ]</span>
+            <div id="C005591S0_source" class="dyn-source">
 <pre>
 x = [] 
 x sort! uniqueHexId should ==(x uniqueHexId) 
@@ -1991,8 +4068,8 @@ x sort! uniqueHexId should ==(x uniqueHexId)
             </div>
             </span></li>
 <li>- should sort a list of numbers <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004891S1_source')" id="l_C004891S1_source">show source</a> ]</span>
-            <div id="C004891S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005591S1_source')" id="l_C005591S1_source">show source</a> ]</span>
+            <div id="C005591S1_source" class="dyn-source">
 <pre>
 [](1, 2, 3) sort! should ==([](1, 2, 3)) 
 [](3, 2, 1) sort! should ==([](1, 2, 3)) 
@@ -2004,8 +4081,8 @@ x sort! uniqueHexId should ==(x uniqueHexId)
             </div>
             </span></li>
 <li>- should sort a list of strings <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004891S2_source')" id="l_C004891S2_source">show source</a> ]</span>
-            <div id="C004891S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005591S2_source')" id="l_C005591S2_source">show source</a> ]</span>
+            <div id="C005591S2_source" class="dyn-source">
 <pre>
 []("foo", "bar", "quux") sort! should ==([]("bar", "foo", "quux")) 
 []("foo", "Bar", "bar", "quux") sort! should ==([]("Bar", "bar", "foo", "quux")) 
@@ -2014,8 +4091,8 @@ x sort! uniqueHexId should ==(x uniqueHexId)
             </div>
             </span></li>
 <li>- should sort a list of symbols <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004891S3_source')" id="l_C004891S3_source">show source</a> ]</span>
-            <div id="C004891S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005591S3_source')" id="l_C005591S3_source">show source</a> ]</span>
+            <div id="C005591S3_source" class="dyn-source">
 <pre>
 [](:foo, :bar, :quux) sort! should ==([](:bar, :foo, :quux)) 
 [](:foo, :Bar, :bar, :quux) sort! should ==([](:Bar, :bar, :foo, :quux)) 
@@ -2024,8 +4101,8 @@ x sort! uniqueHexId should ==(x uniqueHexId)
             </div>
             </span></li>
 <li>- should sort based on '<=> <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004891S4_source')" id="l_C004891S4_source">show source</a> ]</span>
-            <div id="C004891S4_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005591S4_source')" id="l_C005591S4_source">show source</a> ]</span>
+            <div id="C005591S4_source" class="dyn-source">
 <pre>
 Objs = Origin mimic 
 x1 = Objs mimic 
@@ -2041,8 +4118,8 @@ Objs &lt;=&gt; = method(other, self num &lt;=&gt;(other num))
             </div>
             </span></li>
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004891S5_source')" id="l_C004891S5_source">show source</a> ]</span>
-            <div id="C004891S5_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005591S5_source')" id="l_C005591S5_source">show source</a> ]</span>
+            <div id="C005591S5_source" class="dyn-source">
 <pre>
 List should checkReceiverTypeOn(:sort!) 
 
@@ -2055,14 +4132,14 @@ List should checkReceiverTypeOn(:sort!)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00497"></a><b>third</b>()
+          <a name="C00578"></a><b>third</b>()
           </div>
           <div class="description">
             <p>returns the third element of this list, or nil of the list has less than three entries</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00497_source')" id="l_C00497_source">show source</a> ]</p>
-            <div id="C00497_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00578_source')" id="l_C00578_source">show source</a> ]</p>
+            <div id="C00578_source" class="dyn-source">
 <pre>
 method(
   [](2))
@@ -2072,8 +4149,8 @@ method(
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return nil for an empty list <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004971S0_source')" id="l_C004971S0_source">show source</a> ]</span>
-            <div id="C004971S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005781S0_source')" id="l_C005781S0_source">show source</a> ]</span>
+            <div id="C005781S0_source" class="dyn-source">
 <pre>
 [] third should be nil 
 
@@ -2081,8 +4158,8 @@ method(
             </div>
             </span></li>
 <li>- should return nil for a list with one element <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004971S1_source')" id="l_C004971S1_source">show source</a> ]</span>
-            <div id="C004971S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005781S1_source')" id="l_C005781S1_source">show source</a> ]</span>
+            <div id="C005781S1_source" class="dyn-source">
 <pre>
 [](33) third should be nil 
 
@@ -2090,8 +4167,8 @@ method(
             </div>
             </span></li>
 <li>- should return nil for a list with two elements <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004971S2_source')" id="l_C004971S2_source">show source</a> ]</span>
-            <div id="C004971S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005781S2_source')" id="l_C005781S2_source">show source</a> ]</span>
+            <div id="C005781S2_source" class="dyn-source">
 <pre>
 [](33, 15) third should be nil 
 
@@ -2099,10 +4176,79 @@ method(
             </div>
             </span></li>
 <li>- should return the third element for a list with more than two elements <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004971S3_source')" id="l_C004971S3_source">show source</a> ]</span>
-            <div id="C004971S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005781S3_source')" id="l_C005781S3_source">show source</a> ]</span>
+            <div id="C005781S3_source" class="dyn-source">
 <pre>
 [](7, 25, 333) third should ==(333) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00549"></a><b>unshift!</b>(...)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+          
+          <div class="specs">
+            <ul style="list-style-type: none;">
+<li>- should add an element to an empty list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005491S0_source')" id="l_C005491S0_source">show source</a> ]</span>
+            <div id="C005491S0_source" class="dyn-source">
+<pre>
+l = [] 
+l unshift!(:foo) 
+l should ==([](:foo)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should add an element at the beginning of a list with elements in it <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005491S1_source')" id="l_C005491S1_source">show source</a> ]</span>
+            <div id="C005491S1_source" class="dyn-source">
+<pre>
+l = [](:foo, :bar, 1, 42) 
+l unshift!(:flax) 
+l should ==([](:flax, :foo, :bar, 1, 42)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should add an element several times if asked to <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005491S2_source')" id="l_C005491S2_source">show source</a> ]</span>
+            <div id="C005491S2_source" class="dyn-source">
+<pre>
+l = [](:foo) 
+l unshift!(:foo) 
+l unshift!(:foo) 
+l unshift!(:foo) 
+l unshift!(:foo) 
+l should ==([](:foo, :foo, :foo, :foo, :foo)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005491S3_source')" id="l_C005491S3_source">show source</a> ]</span>
+            <div id="C005491S3_source" class="dyn-source">
+<pre>
+l = [] 
+l unshift!(:foo) should ==(l) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005491S4_source')" id="l_C005491S4_source">show source</a> ]</span>
+            <div id="C005491S4_source" class="dyn-source">
+<pre>
+List should checkReceiverTypeOn(:unshift!, 0) 
 
 </pre>
             </div>

@@ -90,25 +90,27 @@ contains behavior related to literals
 
         <div class="sectiontitle">Inactive cells</div>
         <ul>
-          <li><a href="#C00103">kind</a></li>
+          <li><a href="#C00127">inspect</a></li>
+<li><a href="#C00115">kind</a></li>
+<li><a href="#C00126">notice</a></li>
 
         </ul>        
 
         <div class="sectiontitle">Active cells</div>
         <ul>
-          <li><a href="#C00109">'(...)</a></li>
-<li><a href="#C00111">''(...)</a></li>
-<li><a href="#C00114">..(to)</a></li>
-<li><a href="#C00115">...(to)</a></li>
-<li><a href="#C00106">:(symbolText)</a></li>
-<li><a href="#C00105">=&gt;(other)</a></li>
-<li><a href="#C00113">[](...)</a></li>
-<li><a href="#C00110">`(value)</a></li>
-<li><a href="#C00107">dict(+pairs, +:keywordPairs)</a></li>
-<li><a href="#C00112">list(...)</a></li>
-<li><a href="#C00104">message(name)</a></li>
-<li><a href="#C00108">set(+elements)</a></li>
-<li><a href="#C00116">{}(...)</a></li>
+          <li><a href="#C00121">'(...)</a></li>
+<li><a href="#C00123">''(...)</a></li>
+<li><a href="#C00128">..(to)</a></li>
+<li><a href="#C00129">...(to)</a></li>
+<li><a href="#C00118">:(symbolText)</a></li>
+<li><a href="#C00117">=&gt;(other)</a></li>
+<li><a href="#C00125">[](...)</a></li>
+<li><a href="#C00122">`(value)</a></li>
+<li><a href="#C00119">dict(+pairs, +:keywordPairs)</a></li>
+<li><a href="#C00124">list(...)</a></li>
+<li><a href="#C00116">message(name)</a></li>
+<li><a href="#C00120">set(+elements)</a></li>
+<li><a href="#C00130">{}(...)</a></li>
 
         </ul>
 
@@ -119,10 +121,30 @@ contains behavior related to literals
 
         <div class="sectiontitle">Inactive cells (details)</div>
                 <div class="cell">
-          <a name="C00103"></a>
+          <a name="C00127"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">inspect</td>
+              <td>=</td>
+              <td class="cell-value">"DefaultBehavior Literals"</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cell">
+          <a name="C00115"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">kind</td>
+              <td>=</td>
+              <td class="cell-value">"DefaultBehavior Literals"</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cell">
+          <a name="C00126"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">notice</td>
               <td>=</td>
               <td class="cell-value">"DefaultBehavior Literals"</td>
             </tr>
@@ -133,14 +155,14 @@ contains behavior related to literals
         <div class="sectiontitle">Active cells (details)</div>
                 <div class="cell">
           <div class="title">
-          <a name="C00109"></a><b>'</b>(...)
+          <a name="C00121"></a><b>'</b>(...)
           </div>
           <div class="description">
             <p>Takes one code argument and returns the message chain corresponding to this code argument. The code is copied, so it is safe to modify the resulting chain.</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00109_source')" id="l_C00109_source">show source</a> ]</p>
-            <div id="C00109_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00121_source')" id="l_C00121_source">show source</a> ]</p>
+            <div id="C00121_source" class="dyn-source">
 <pre>
 macro(
   call arguments [](0) deepCopy)
@@ -153,7 +175,7 @@ macro(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00111"></a><b>''</b>(...)
+          <a name="C00123"></a><b>''</b>(...)
           </div>
           <div class="description">
             <p>Takes one code argument and returns the message chain corresponding to this code argument, except that any occurrance of ` and `` will be expanded in some way, based on a set of simple rules:
@@ -167,8 +189,8 @@ if a `` is encountered, a literal ` message will be inserted at that point.
 all code evaluations will happen in the ground of the caller.</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00111_source')" id="l_C00111_source">show source</a> ]</p>
-            <div id="C00111_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00123_source')" id="l_C00123_source">show source</a> ]</p>
+            <div id="C00123_source" class="dyn-source">
 <pre>
 macro(
   DefaultBehavior Literals cell(:("''")) translate(call arguments [](0) deepCopy, call ground) 
@@ -182,14 +204,14 @@ macro(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00114"></a><b>..</b>(to)
+          <a name="C00128"></a><b>..</b>(to)
           </div>
           <div class="description">
             <p>will create and return an inclusive Range from the receiver to the 'to' argument.</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00114_source')" id="l_C00114_source">show source</a> ]</p>
-            <div id="C00114_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00128_source')" id="l_C00128_source">show source</a> ]</p>
+            <div id="C00128_source" class="dyn-source">
 <pre>
 method(to, 
   Range inclusive(cell(:("@")), cell(:to)))
@@ -202,14 +224,14 @@ method(to,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00115"></a><b>...</b>(to)
+          <a name="C00129"></a><b>...</b>(to)
           </div>
           <div class="description">
             <p>will create and return an exclusive Range from the receiver to the 'to' argument.</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00115_source')" id="l_C00115_source">show source</a> ]</p>
-            <div id="C00115_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00129_source')" id="l_C00129_source">show source</a> ]</p>
+            <div id="C00129_source" class="dyn-source">
 <pre>
 method(to, 
   Range exclusive(cell(:("@")), cell(:to)))
@@ -222,7 +244,7 @@ method(to,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00106"></a><b>:</b>(symbolText)
+          <a name="C00118"></a><b>:</b>(symbolText)
           </div>
           <div class="description">
             <p>Takes one evaluated argument that is expected to be a Text, and returns the symbol corresponding to that text</p>
@@ -234,7 +256,7 @@ method(to,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00105"></a><b>=&gt;</b>(other)
+          <a name="C00117"></a><b>=&gt;</b>(other)
           </div>
           <div class="description">
             <p>Takes one evaluated argument and returns a new Pair of the receiver and the argument</p>
@@ -246,14 +268,14 @@ method(to,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00113"></a><b>[]</b>(...)
+          <a name="C00125"></a><b>[]</b>(...)
           </div>
           <div class="description">
             <p>Takes zero or more arguments and returns a newly created list containing the result of evaluating these arguments</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00113_source')" id="l_C00113_source">show source</a> ]</p>
-            <div id="C00113_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00125_source')" id="l_C00125_source">show source</a> ]</p>
+            <div id="C00125_source" class="dyn-source">
 <pre>
 macro(
   call evaluatedArguments)
@@ -266,14 +288,14 @@ macro(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00110"></a><b>`</b>(value)
+          <a name="C00122"></a><b>`</b>(value)
           </div>
           <div class="description">
             <p>Takes one argument and returns a message that wraps the value of that argument. The message has no name and will be printed empty. The message is guaranteed to be created from scratch</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00110_source')" id="l_C00110_source">show source</a> ]</p>
-            <div id="C00110_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00122_source')" id="l_C00122_source">show source</a> ]</p>
+            <div id="C00122_source" class="dyn-source">
 <pre>
 method(value, 
   Message wrap(value))
@@ -286,7 +308,7 @@ method(value,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00107"></a><b>dict</b>(+pairs, +:keywordPairs)
+          <a name="C00119"></a><b>dict</b>(+pairs, +:keywordPairs)
           </div>
           <div class="description">
             <p>creates a new Dict from the arguments provided. these arguments can be two different things - either a keyword argument, or a pair. if it's a keyword argument, the entry added to the dict for it will be a symbol with the name from the keyword, without the ending colon. if it's not a keyword, it is expected to be an evaluated pair, where the first part of the pair is the key, and the second part is the value.</p>
@@ -298,14 +320,14 @@ method(value,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00112"></a><b>list</b>(...)
+          <a name="C00124"></a><b>list</b>(...)
           </div>
           <div class="description">
             <p>Takes zero or more arguments and returns a newly created list containing the result of evaluating these arguments</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00112_source')" id="l_C00112_source">show source</a> ]</p>
-            <div id="C00112_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00124_source')" id="l_C00124_source">show source</a> ]</p>
+            <div id="C00124_source" class="dyn-source">
 <pre>
 macro(
   call evaluatedArguments)
@@ -318,7 +340,7 @@ macro(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00104"></a><b>message</b>(name)
+          <a name="C00116"></a><b>message</b>(name)
           </div>
           <div class="description">
             <p>returns a new message with the name given as argument to this method.</p>
@@ -330,7 +352,7 @@ macro(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00108"></a><b>set</b>(+elements)
+          <a name="C00120"></a><b>set</b>(+elements)
           </div>
           <div class="description">
             <p>creates a new Set from the result of evaluating all arguments provided.</p>
@@ -342,14 +364,14 @@ macro(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00116"></a><b>{}</b>(...)
+          <a name="C00130"></a><b>{}</b>(...)
           </div>
           <div class="description">
             <p>nil</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00116_source')" id="l_C00116_source">show source</a> ]</p>
-            <div id="C00116_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00130_source')" id="l_C00130_source">show source</a> ]</p>
+            <div id="C00130_source" class="dyn-source">
 <pre>
 macro(
   call resendToMethod("dict"))

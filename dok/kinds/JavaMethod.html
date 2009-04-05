@@ -90,14 +90,15 @@ JavaMethod is a derivation of Method that represents a primitive implemented in 
 
         <div class="sectiontitle">Inactive cells</div>
         <ul>
-          <li><a href="#C00361">kind</a></li>
+          <li><a href="#C00417">kind</a></li>
 
         </ul>        
 
         <div class="sectiontitle">Active cells</div>
         <ul>
-          <li><a href="#C00363">argumentsCode()</a></li>
-<li><a href="#C00362">keywords()</a></li>
+          <li><a href="#C00419">argumentsCode()</a></li>
+<li><a href="#C00420">arity()</a></li>
+<li><a href="#C00418">keywords()</a></li>
 
         </ul>
 
@@ -127,7 +128,7 @@ fn(JavaMethod) should signal(Condition Error Invocation NotActivatable)
 
         <div class="sectiontitle">Inactive cells (details)</div>
                 <div class="cell">
-          <a name="C00361"></a>
+          <a name="C00417"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">kind</td>
@@ -141,7 +142,7 @@ fn(JavaMethod) should signal(Condition Error Invocation NotActivatable)
         <div class="sectiontitle">Active cells (details)</div>
                 <div class="cell">
           <div class="title">
-          <a name="C00363"></a><b>argumentsCode</b>()
+          <a name="C00419"></a><b>argumentsCode</b>()
           </div>
           <div class="description">
             <p>returns the code for the argument definition</p>
@@ -153,7 +154,27 @@ fn(JavaMethod) should signal(Condition Error Invocation NotActivatable)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00362"></a><b>keywords</b>()
+          <a name="C00420"></a><b>arity</b>()
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00420_source')" id="l_C00420_source">show source</a> ]</p>
+            <div id="C00420_source" class="dyn-source">
+<pre>
+method(
+  Arity fromArgumentsCode(argumentsCode))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00418"></a><b>keywords</b>()
           </div>
           <div class="description">
             <p>returns a list of the keywords this method takes</p>

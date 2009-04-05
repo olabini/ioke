@@ -64,7 +64,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
                   <tr>
                     <td>Main mimic:</td>
                     <td>
-                      <a href="../kinds/DefaultBehavior.html">DefaultBehavior</a>
+                      <a href="../kinds/IokeGround.html">IokeGround</a>
                     </td>
                   </tr>
                 </table>
@@ -79,25 +79,24 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
       <div id="content">
         <div class="description">
           <p>
-Ground is the default place code is evaluated in. This is where you can find most of the global objects defined.
+Ground is the default place code is evaluated in.
           </p>
         </div>
 
         <div class="sectiontitle">Mimics</div>
         <ul>
-          <li><a href="../kinds/DefaultBehavior.html">DefaultBehavior</a></li><li><a href="../kinds/Base.html">Base</a></li>
+          <li><a href="../kinds/IokeGround.html">IokeGround</a></li><li><a href="../kinds/JavaGround.html">JavaGround</a></li>
         </ul>        
 
         <div class="sectiontitle">Inactive cells</div>
         <ul>
-          <li><a href="#C001">kind</a></li>
+          <li><a href="#C00231">kind</a></li>
 
         </ul>        
 
         <div class="sectiontitle">Active cells</div>
         <ul>
-          <li><a href="#C00707">stackTraceAsText()</a></li>
-
+          
         </ul>
 
         <div class="sectiontitle">Specs</div>
@@ -149,6 +148,24 @@ Ground should have cell(:IO)
 </pre>
             </div>
             </span></li>
+<li>- should mimic IokeGround <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S2_source')" id="l_C00K01S2_source">show source</a> ]</span>
+            <div id="C00K01S2_source" class="dyn-source">
+<pre>
+Ground should mimic(IokeGround) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should mimic JavaGround <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S3_source')" id="l_C00K01S3_source">show source</a> ]</span>
+            <div id="C00K01S3_source" class="dyn-source">
+<pre>
+Ground should mimic(JavaGround) 
+
+</pre>
+            </div>
+            </span></li>
 </ul>
 <b>Ground notice</b><br/>
 <ul style="list-style-type: none;">
@@ -175,7 +192,7 @@ Ground mimic notice should not ==("Ground")
 
         <div class="sectiontitle">Inactive cells (details)</div>
                 <div class="cell">
-          <a name="C001"></a>
+          <a name="C00231"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">kind</td>
@@ -187,19 +204,7 @@ Ground mimic notice should not ==("Ground")
 
 
         <div class="sectiontitle">Active cells (details)</div>
-                <div class="cell">
-          <div class="title">
-          <a name="C00707"></a><b>stackTraceAsText</b>()
-          </div>
-          <div class="description">
-            <p>will return a text representation of the current stack trace</p>
-          </div>
-          
-          <div class="specs">
-            
-          </div>
-        </div>
-
+        
 
       </div>
     </div>

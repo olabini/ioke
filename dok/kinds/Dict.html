@@ -90,28 +90,29 @@ A dictionary is a collection of mappings from one object to another object. The 
 
         <div class="sectiontitle">Inactive cells</div>
         <ul>
-          <li><a href="#C00506">kind</a></li>
+          <li><a href="#C00595">kind</a></li>
 
         </ul>        
 
         <div class="sectiontitle">Active cells</div>
         <ul>
-          <li><a href="#C00509">+(...)</a></li>
-<li><a href="#C00522">===(other)</a></li>
-<li><a href="#C00521">?&(...)</a></li>
-<li><a href="#C00520">?|(...)</a></li>
-<li><a href="#C00518">[](...)</a></li>
-<li><a href="#C00513">[]=(key, value)</a></li>
-<li><a href="#C00519">addKeysAndValues(keys, values)</a></li>
-<li><a href="#C00510">at(key)</a></li>
-<li><a href="#C00517">each([indexOrArgOrCode], [argOrCode] nil, [code] nil)</a></li>
-<li><a href="#C00511">empty?()</a></li>
-<li><a href="#C00514">inspect()</a></li>
-<li><a href="#C00512">key?(key)</a></li>
-<li><a href="#C00516">keys()</a></li>
-<li><a href="#C00508">merge(+pairsAndDicts, +:keywordPairs)</a></li>
-<li><a href="#C00515">notice()</a></li>
-<li><a href="#C00507">withDefault(defaultValue)</a></li>
+          <li><a href="#C00598">+(...)</a></li>
+<li><a href="#C00612">===(other)</a></li>
+<li><a href="#C00611">?&(...)</a></li>
+<li><a href="#C00610">?|(...)</a></li>
+<li><a href="#C00608">[](...)</a></li>
+<li><a href="#C00602">[]=(key, value)</a></li>
+<li><a href="#C00609">addKeysAndValues(keys, values)</a></li>
+<li><a href="#C00599">at(key)</a></li>
+<li><a href="#C00607">each([indexOrArgOrCode], [argOrCode] nil, [code] nil)</a></li>
+<li><a href="#C00600">empty?()</a></li>
+<li><a href="#C00604">inspect()</a></li>
+<li><a href="#C00601">key?(key)</a></li>
+<li><a href="#C00606">keys()</a></li>
+<li><a href="#C00597">merge(+pairsAndDicts, +:keywordPairs)</a></li>
+<li><a href="#C00605">notice()</a></li>
+<li><a href="#C00603">size()</a></li>
+<li><a href="#C00596">withDefault(defaultValue)</a></li>
 
         </ul>
 
@@ -232,7 +233,7 @@ x should ==(y)
 
         <div class="sectiontitle">Inactive cells (details)</div>
                 <div class="cell">
-          <a name="C00506"></a>
+          <a name="C00595"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">kind</td>
@@ -246,7 +247,7 @@ x should ==(y)
         <div class="sectiontitle">Active cells (details)</div>
                 <div class="cell">
           <div class="title">
-          <a name="C00509"></a><b>+</b>(...)
+          <a name="C00598"></a><b>+</b>(...)
           </div>
           <div class="description">
             <p>nil</p>
@@ -258,14 +259,14 @@ x should ==(y)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00522"></a><b>===</b>(other)
+          <a name="C00612"></a><b>===</b>(other)
           </div>
           <div class="description">
             <p>nil</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00522_source')" id="l_C00522_source">show source</a> ]</p>
-            <div id="C00522_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00612_source')" id="l_C00612_source">show source</a> ]</p>
+            <div id="C00612_source" class="dyn-source">
 <pre>
 method(other, 
   if(self same?(
@@ -284,14 +285,14 @@ method(other,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00521"></a><b>?&</b>(...)
+          <a name="C00611"></a><b>?&</b>(...)
           </div>
           <div class="description">
             <p>if this dict is non-empty, returns the result of evaluating the argument, otherwise returns the dict</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00521_source')" id="l_C00521_source">show source</a> ]</p>
-            <div id="C00521_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00611_source')" id="l_C00611_source">show source</a> ]</p>
+            <div id="C00611_source" class="dyn-source">
 <pre>
 macro(
   argCount = call arguments length 
@@ -313,8 +314,8 @@ macro(
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should just return itself if empty <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005211S0_source')" id="l_C005211S0_source">show source</a> ]</span>
-            <div id="C005211S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006111S0_source')" id="l_C006111S0_source">show source</a> ]</span>
+            <div id="C006111S0_source" class="dyn-source">
 <pre>
 (dict ?&(42)) should ==(dict) 
 (dict ?&([](1, 2, 3))) should ==(dict) 
@@ -323,8 +324,8 @@ macro(
             </div>
             </span></li>
 <li>- should return the result of evaluating the code if non-empty <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005211S1_source')" id="l_C005211S1_source">show source</a> ]</span>
-            <div id="C005211S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006111S1_source')" id="l_C006111S1_source">show source</a> ]</span>
+            <div id="C006111S1_source" class="dyn-source">
 <pre>
 dict(foo: 1) ?&(10) should ==(10) 
 dict(foo: 1, bar: 2, quux: 3) ?&(20) should ==(20) 
@@ -340,14 +341,14 @@ x ?&([](1, 2, 3)) should ==([](1, 2, 3))
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00520"></a><b>?|</b>(...)
+          <a name="C00610"></a><b>?|</b>(...)
           </div>
           <div class="description">
             <p>if this dict is empty, returns the result of evaluating the argument, otherwise returns the dict</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00520_source')" id="l_C00520_source">show source</a> ]</p>
-            <div id="C00520_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00610_source')" id="l_C00610_source">show source</a> ]</p>
+            <div id="C00610_source" class="dyn-source">
 <pre>
 macro(
   argCount = call arguments length 
@@ -369,8 +370,8 @@ macro(
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should just return itself if not empty <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005201S0_source')" id="l_C005201S0_source">show source</a> ]</span>
-            <div id="C005201S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006101S0_source')" id="l_C006101S0_source">show source</a> ]</span>
+            <div id="C006101S0_source" class="dyn-source">
 <pre>
 dict(foo: 1) ?|(x /(0)) should ==(dict(foo: 1)) 
 dict(foo: 1, bar: 2, quux: 3) ?|(x /(0)) should ==(dict(foo: 1, bar: 2, quux: 3)) 
@@ -381,8 +382,8 @@ x ?|(blarg) should be same(x)
             </div>
             </span></li>
 <li>- should return the result of evaluating the code if empty <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005201S1_source')" id="l_C005201S1_source">show source</a> ]</span>
-            <div id="C005201S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006101S1_source')" id="l_C006101S1_source">show source</a> ]</span>
+            <div id="C006101S1_source" class="dyn-source">
 <pre>
 dict ?|(42) should ==(42) 
 dict ?|([](1, 2, 3)) should ==([](1, 2, 3)) 
@@ -396,7 +397,7 @@ dict ?|([](1, 2, 3)) should ==([](1, 2, 3))
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00518"></a><b>[]</b>(...)
+          <a name="C00608"></a><b>[]</b>(...)
           </div>
           <div class="description">
             <p>nil</p>
@@ -405,8 +406,8 @@ dict ?|([](1, 2, 3)) should ==([](1, 2, 3))
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return nil if empty dict <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005181S0_source')" id="l_C005181S0_source">show source</a> ]</span>
-            <div id="C005181S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006081S0_source')" id="l_C006081S0_source">show source</a> ]</span>
+            <div id="C006081S0_source" class="dyn-source">
 <pre>
 dict [](:foo) should be nil 
 dict []("bar") should be nil 
@@ -416,8 +417,8 @@ dict [](42) should be nil
             </div>
             </span></li>
 <li>- should return nil if argument is over the size <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005181S1_source')" id="l_C005181S1_source">show source</a> ]</span>
-            <div id="C005181S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006081S1_source')" id="l_C006081S1_source">show source</a> ]</span>
+            <div id="C006081S1_source" class="dyn-source">
 <pre>
 dict(bar: 42) [](:foo) should be nil 
 
@@ -425,8 +426,8 @@ dict(bar: 42) [](:foo) should be nil
             </div>
             </span></li>
 <li>- should an element if it's in the dict <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005181S2_source')" id="l_C005181S2_source">show source</a> ]</span>
-            <div id="C005181S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006081S2_source')" id="l_C006081S2_source">show source</a> ]</span>
+            <div id="C006081S2_source" class="dyn-source">
 <pre>
 {}(foo: 123, 321 =&gt;("foo"), "bax" =&gt;(42)) [](:foo) should ==(123) 
 {}(foo: 123, 321 =&gt;("foo"), "bax" =&gt;(42)) [](321) should ==("foo") 
@@ -436,8 +437,8 @@ dict(bar: 42) [](:foo) should be nil
             </div>
             </span></li>
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005181S3_source')" id="l_C005181S3_source">show source</a> ]</span>
-            <div id="C005181S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006081S3_source')" id="l_C006081S3_source">show source</a> ]</span>
+            <div id="C006081S3_source" class="dyn-source">
 <pre>
 Dict should checkReceiverTypeOn(:("[]"), :foo) 
 
@@ -450,7 +451,7 @@ Dict should checkReceiverTypeOn(:("[]"), :foo)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00513"></a><b>[]=</b>(key, value)
+          <a name="C00602"></a><b>[]=</b>(key, value)
           </div>
           <div class="description">
             <p>takes two arguments, the key of the element to set and the value to set it too. returns the value set</p>
@@ -459,8 +460,8 @@ Dict should checkReceiverTypeOn(:("[]"), :foo)
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should add an element to an empty dict <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005131S0_source')" id="l_C005131S0_source">show source</a> ]</span>
-            <div id="C005131S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006021S0_source')" id="l_C006021S0_source">show source</a> ]</span>
+            <div id="C006021S0_source" class="dyn-source">
 <pre>
 x = {} 
 x [](:foo) = :bar 
@@ -473,8 +474,8 @@ x should ==({}(42 =&gt;(32), foo: :bar))
             </div>
             </span></li>
 <li>- should overwrite an existing element <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005131S1_source')" id="l_C005131S1_source">show source</a> ]</span>
-            <div id="C005131S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006021S1_source')" id="l_C006021S1_source">show source</a> ]</span>
+            <div id="C006021S1_source" class="dyn-source">
 <pre>
 x = {}(foo: 6666) 
 x [](:foo) = :bar 
@@ -487,8 +488,8 @@ x should ==({}(42 =&gt;(32), foo: :bar))
             </div>
             </span></li>
 <li>- should return the value set <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005131S2_source')" id="l_C005131S2_source">show source</a> ]</span>
-            <div id="C005131S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006021S2_source')" id="l_C006021S2_source">show source</a> ]</span>
+            <div id="C006021S2_source" class="dyn-source">
 <pre>
 ({}(foo: 6666) [](42) = :bar) should ==(:bar) 
 
@@ -496,8 +497,8 @@ x should ==({}(42 =&gt;(32), foo: :bar))
             </div>
             </span></li>
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005131S3_source')" id="l_C005131S3_source">show source</a> ]</span>
-            <div id="C005131S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006021S3_source')" id="l_C006021S3_source">show source</a> ]</span>
+            <div id="C006021S3_source" class="dyn-source">
 <pre>
 Dict should checkReceiverTypeOn(:("[]="), :foo, :bar) 
 
@@ -510,14 +511,14 @@ Dict should checkReceiverTypeOn(:("[]="), :foo, :bar)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00519"></a><b>addKeysAndValues</b>(keys, values)
+          <a name="C00609"></a><b>addKeysAndValues</b>(keys, values)
           </div>
           <div class="description">
             <p>zips the keys and the values together into this dict. note that neither keys nor values need to be lists. you can use anything that is iterable with index.</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00519_source')" id="l_C00519_source">show source</a> ]</p>
-            <div id="C00519_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00609_source')" id="l_C00609_source">show source</a> ]</p>
+            <div id="C00609_source" class="dyn-source">
 <pre>
 method(keys, values, 
   keys each(i, k, 
@@ -529,8 +530,8 @@ method(keys, values,
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should add the keys and values provided to the dict <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005191S0_source')" id="l_C005191S0_source">show source</a> ]</span>
-            <div id="C005191S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006091S0_source')" id="l_C006091S0_source">show source</a> ]</span>
+            <div id="C006091S0_source" class="dyn-source">
 <pre>
 {} addKeysAndValues([](:foo, :bar, :x), [](32, 111, 4)) should ==({}(foo: 32, bar: 111, x: 4)) 
 
@@ -538,8 +539,8 @@ method(keys, values,
             </div>
             </span></li>
 <li>- should only add as many as there are keys <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005191S1_source')" id="l_C005191S1_source">show source</a> ]</span>
-            <div id="C005191S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006091S1_source')" id="l_C006091S1_source">show source</a> ]</span>
+            <div id="C006091S1_source" class="dyn-source">
 <pre>
 {} addKeysAndValues([](:foo, :bar, :x), [](32, 111, 4, 10, 42)) should ==({}(foo: 32, bar: 111, x: 4)) 
 
@@ -547,8 +548,8 @@ method(keys, values,
             </div>
             </span></li>
 <li>- should return the dict <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005191S2_source')" id="l_C005191S2_source">show source</a> ]</span>
-            <div id="C005191S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006091S2_source')" id="l_C006091S2_source">show source</a> ]</span>
+            <div id="C006091S2_source" class="dyn-source">
 <pre>
 v = {} 
 v addKeysAndValues([], []) should ==(v) 
@@ -562,7 +563,7 @@ v addKeysAndValues([], []) should ==(v)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00510"></a><b>at</b>(key)
+          <a name="C00599"></a><b>at</b>(key)
           </div>
           <div class="description">
             <p>takes one argument, the key of the element to return. if the key doesn't map to anything in the dict, returns the default value</p>
@@ -571,8 +572,8 @@ v addKeysAndValues([], []) should ==(v)
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return nil if empty dict <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005101S0_source')" id="l_C005101S0_source">show source</a> ]</span>
-            <div id="C005101S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005991S0_source')" id="l_C005991S0_source">show source</a> ]</span>
+            <div id="C005991S0_source" class="dyn-source">
 <pre>
 dict at(:foo) should be nil 
 dict at("bar") should be nil 
@@ -582,8 +583,8 @@ dict at(42) should be nil
             </div>
             </span></li>
 <li>- should return nil if argument is over the size <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005101S1_source')" id="l_C005101S1_source">show source</a> ]</span>
-            <div id="C005101S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005991S1_source')" id="l_C005991S1_source">show source</a> ]</span>
+            <div id="C005991S1_source" class="dyn-source">
 <pre>
 dict(bar: 42) at(:foo) should be nil 
 
@@ -591,8 +592,8 @@ dict(bar: 42) at(:foo) should be nil
             </div>
             </span></li>
 <li>- should an element if it's in the dict <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005101S2_source')" id="l_C005101S2_source">show source</a> ]</span>
-            <div id="C005101S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005991S2_source')" id="l_C005991S2_source">show source</a> ]</span>
+            <div id="C005991S2_source" class="dyn-source">
 <pre>
 {}(foo: 123, 321 =&gt;("foo"), "bax" =&gt;(42)) at(:foo) should ==(123) 
 {}(foo: 123, 321 =&gt;("foo"), "bax" =&gt;(42)) at(321) should ==("foo") 
@@ -602,8 +603,8 @@ dict(bar: 42) at(:foo) should be nil
             </div>
             </span></li>
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005101S3_source')" id="l_C005101S3_source">show source</a> ]</span>
-            <div id="C005101S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005991S3_source')" id="l_C005991S3_source">show source</a> ]</span>
+            <div id="C005991S3_source" class="dyn-source">
 <pre>
 Dict should checkReceiverTypeOn(:at, :foo) 
 
@@ -616,7 +617,7 @@ Dict should checkReceiverTypeOn(:at, :foo)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00517"></a><b>each</b>([indexOrArgOrCode], [argOrCode] nil, [code] nil)
+          <a name="C00607"></a><b>each</b>([indexOrArgOrCode], [argOrCode] nil, [code] nil)
           </div>
           <div class="description">
             <p>takes either one or two or three arguments. if one argument is given, it should be a message chain that will be sent to each object in the dict. the result will be thrown away. if two arguments are given, the first is an unevaluated name that will be set to each of the entries in the dict in succession, and then the second argument will be evaluated in a scope with that argument in it. if three arguments is given, the first one is an unevaluated name that will be set to the index of each element, and the other two arguments are the name of the argument for the value, and the actual code. the code will evaluate in a lexical context, and if the argument name is available outside the context, it will be shadowed. the method will return the dict. the entries yielded will be mimics of Pair.</p>
@@ -625,8 +626,8 @@ Dict should checkReceiverTypeOn(:at, :foo)
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should not do anything for an empty dict <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005171S0_source')" id="l_C005171S0_source">show source</a> ]</span>
-            <div id="C005171S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006071S0_source')" id="l_C006071S0_source">show source</a> ]</span>
+            <div id="C006071S0_source" class="dyn-source">
 <pre>
 x = 0 
 {} each(++(x)) 
@@ -636,13 +637,14 @@ x should ==(0)
             </div>
             </span></li>
 <li>- should be possible to just give it a message chain, that will be invoked on each object <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005171S1_source')" id="l_C005171S1_source">show source</a> ]</span>
-            <div id="C005171S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006071S1_source')" id="l_C006071S1_source">show source</a> ]</span>
+            <div id="C006071S1_source" class="dyn-source">
 <pre>
-Ground y = [] 
-Ground x = method(Ground y &lt;&lt;(self)) 
-{}(one: 1, two: 2, three: 3) each(x) 
-y sort should ==([](:one =&gt;(1), :two =&gt;(2), :three =&gt;(3)) sort) 
+d = {}(one: 1, two: 2, three: 3) 
+Pair y = [] 
+Pair x = method(y &lt;&lt;(self)) 
+d each(x) 
+Pair y sort should ==([](:one =&gt;(1), :two =&gt;(2), :three =&gt;(3)) sort) 
 x = 0 
 {}(one: 1, two: 2, three: 3) each(nil 
   ++(x)) 
@@ -652,8 +654,8 @@ x should ==(3)
             </div>
             </span></li>
 <li>- should be possible to give it an argument name, and code <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005171S2_source')" id="l_C005171S2_source">show source</a> ]</span>
-            <div id="C005171S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006071S2_source')" id="l_C006071S2_source">show source</a> ]</span>
+            <div id="C006071S2_source" class="dyn-source">
 <pre>
 y = [] 
 {}(one: 1, two: 2, three: 3) each(x, y &lt;&lt;(x)) 
@@ -663,8 +665,8 @@ y sort should ==([](:one =&gt;(1), :two =&gt;(2), :three =&gt;(3)) sort)
             </div>
             </span></li>
 <li>- should return the object <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005171S3_source')" id="l_C005171S3_source">show source</a> ]</span>
-            <div id="C005171S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006071S3_source')" id="l_C006071S3_source">show source</a> ]</span>
+            <div id="C006071S3_source" class="dyn-source">
 <pre>
 y = {}(one: 1, two: 2, three: 3) 
 (y each(x, x)) should ==(y) 
@@ -673,8 +675,8 @@ y = {}(one: 1, two: 2, three: 3)
             </div>
             </span></li>
 <li>- should establish a lexical context when invoking the methods. this context will be the same for all invocations. <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005171S4_source')" id="l_C005171S4_source">show source</a> ]</span>
-            <div id="C005171S4_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006071S4_source')" id="l_C006071S4_source">show source</a> ]</span>
+            <div id="C006071S4_source" class="dyn-source">
 <pre>
 {}(one: 1, two: 2, three: 3) each(xxxx, blargus42 = 32) 
 cell?(:xxxx) should be false 
@@ -687,8 +689,8 @@ x should ==(14)
             </div>
             </span></li>
 <li>- should be possible to give it an extra argument to get the index <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005171S5_source')" id="l_C005171S5_source">show source</a> ]</span>
-            <div id="C005171S5_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006071S5_source')" id="l_C006071S5_source">show source</a> ]</span>
+            <div id="C006071S5_source" class="dyn-source">
 <pre>
 y = [] 
 {}(one: 1, two: 2, three: 3, four: 4) each(i, x, y &lt;&lt;(i)) 
@@ -698,8 +700,8 @@ y should ==([](0, 1, 2, 3))
             </div>
             </span></li>
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005171S6_source')" id="l_C005171S6_source">show source</a> ]</span>
-            <div id="C005171S6_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006071S6_source')" id="l_C006071S6_source">show source</a> ]</span>
+            <div id="C006071S6_source" class="dyn-source">
 <pre>
 Dict should checkReceiverTypeOn(:each, "foo") 
 
@@ -712,7 +714,7 @@ Dict should checkReceiverTypeOn(:each, "foo")
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00511"></a><b>empty?</b>()
+          <a name="C00600"></a><b>empty?</b>()
           </div>
           <div class="description">
             <p>returns true if this dict is empty, false otherwise</p>
@@ -724,7 +726,7 @@ Dict should checkReceiverTypeOn(:each, "foo")
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00514"></a><b>inspect</b>()
+          <a name="C00604"></a><b>inspect</b>()
           </div>
           <div class="description">
             <p>Returns a text inspection of the object</p>
@@ -733,8 +735,8 @@ Dict should checkReceiverTypeOn(:each, "foo")
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return something within curly brackets <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005141S0_source')" id="l_C005141S0_source">show source</a> ]</span>
-            <div id="C005141S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006041S0_source')" id="l_C006041S0_source">show source</a> ]</span>
+            <div id="C006041S0_source" class="dyn-source">
 <pre>
 {} inspect should ==("{}") 
 
@@ -742,8 +744,8 @@ Dict should checkReceiverTypeOn(:each, "foo")
             </div>
             </span></li>
 <li>- should try to use the keyword syntax if possible <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005141S1_source')" id="l_C005141S1_source">show source</a> ]</span>
-            <div id="C005141S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006041S1_source')" id="l_C006041S1_source">show source</a> ]</span>
+            <div id="C006041S1_source" class="dyn-source">
 <pre>
 result = {}(foo: "bar", "bar" =&gt;(:foo)) inspect 
 (result ==("{foo: \"bar\", \"bar\" =&gt; :foo}")) ||((result ==("{\"bar\" =&gt; :foo, foo: \"bar\"}")) should be true) 
@@ -753,8 +755,8 @@ result = {}(foo: "bar", "bar" =&gt;(:foo)) inspect
             </div>
             </span></li>
 <li>- should return the inspect format of things inside <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005141S2_source')" id="l_C005141S2_source">show source</a> ]</span>
-            <div id="C005141S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006041S2_source')" id="l_C006041S2_source">show source</a> ]</span>
+            <div id="C006041S2_source" class="dyn-source">
 <pre>
 {}(foo: method(abc foo bar)) inspect should ==("{foo: method(abc foo bar)}") 
 {}(method(abc foo bar) =&gt;(:foo)) inspect should ==("{method(abc foo bar) =&gt; :foo}") 
@@ -763,8 +765,8 @@ result = {}(foo: "bar", "bar" =&gt;(:foo)) inspect
             </div>
             </span></li>
 <li>- should return non-keyword things with pair syntax <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005141S3_source')" id="l_C005141S3_source">show source</a> ]</span>
-            <div id="C005141S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006041S3_source')" id="l_C006041S3_source">show source</a> ]</span>
+            <div id="C006041S3_source" class="dyn-source">
 <pre>
 {}(1 =&gt;(1)) inspect should ==("{1 =&gt; 1}") 
 {}("bar" =&gt;(1)) inspect should ==("{\"bar\" =&gt; 1}") 
@@ -778,7 +780,7 @@ result = {}(foo: "bar", "bar" =&gt;(:foo)) inspect
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00512"></a><b>key?</b>(key)
+          <a name="C00601"></a><b>key?</b>(key)
           </div>
           <div class="description">
             <p>takes one argument, the key to check if it is in the dict.</p>
@@ -787,8 +789,8 @@ result = {}(foo: "bar", "bar" =&gt;(:foo)) inspect
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return false if there is no such key <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005121S0_source')" id="l_C005121S0_source">show source</a> ]</span>
-            <div id="C005121S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006011S0_source')" id="l_C006011S0_source">show source</a> ]</span>
+            <div id="C006011S0_source" class="dyn-source">
 <pre>
 {} key?(:foo) should be false 
 {}(fox: 123) key?(:foo) should be false 
@@ -798,8 +800,8 @@ result = {}(foo: "bar", "bar" =&gt;(:foo)) inspect
             </div>
             </span></li>
 <li>- should return true if the key is there <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005121S1_source')" id="l_C005121S1_source">show source</a> ]</span>
-            <div id="C005121S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006011S1_source')" id="l_C006011S1_source">show source</a> ]</span>
+            <div id="C006011S1_source" class="dyn-source">
 <pre>
 {}(foo: 123) key?(:foo) should be true 
 
@@ -807,8 +809,8 @@ result = {}(foo: "bar", "bar" =&gt;(:foo)) inspect
             </div>
             </span></li>
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005121S2_source')" id="l_C005121S2_source">show source</a> ]</span>
-            <div id="C005121S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006011S2_source')" id="l_C006011S2_source">show source</a> ]</span>
+            <div id="C006011S2_source" class="dyn-source">
 <pre>
 Dict should checkReceiverTypeOn(:key?, :foo) 
 
@@ -821,7 +823,7 @@ Dict should checkReceiverTypeOn(:key?, :foo)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00516"></a><b>keys</b>()
+          <a name="C00606"></a><b>keys</b>()
           </div>
           <div class="description">
             <p>Returns all the keys of this dict</p>
@@ -830,8 +832,8 @@ Dict should checkReceiverTypeOn(:key?, :foo)
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return an empty set for an empty dict <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005161S0_source')" id="l_C005161S0_source">show source</a> ]</span>
-            <div id="C005161S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006061S0_source')" id="l_C006061S0_source">show source</a> ]</span>
+            <div id="C006061S0_source" class="dyn-source">
 <pre>
 {} keys should ==(set) 
 
@@ -839,8 +841,8 @@ Dict should checkReceiverTypeOn(:key?, :foo)
             </div>
             </span></li>
 <li>- should return the one key in an dict with one element <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005161S1_source')" id="l_C005161S1_source">show source</a> ]</span>
-            <div id="C005161S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006061S1_source')" id="l_C006061S1_source">show source</a> ]</span>
+            <div id="C006061S1_source" class="dyn-source">
 <pre>
 {}(foo: 1) keys should ==(set(:foo)) 
 {}(1 =&gt;(:foo)) keys should ==(set(1)) 
@@ -850,8 +852,8 @@ Dict should checkReceiverTypeOn(:key?, :foo)
             </div>
             </span></li>
 <li>- should return all the keys <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005161S2_source')" id="l_C005161S2_source">show source</a> ]</span>
-            <div id="C005161S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006061S2_source')" id="l_C006061S2_source">show source</a> ]</span>
+            <div id="C006061S2_source" class="dyn-source">
 <pre>
 {}(foo: 1, bar: 2, 3 =&gt;(:quux)) keys should ==(set(:foo, :bar, 3)) 
 
@@ -859,8 +861,8 @@ Dict should checkReceiverTypeOn(:key?, :foo)
             </div>
             </span></li>
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005161S3_source')" id="l_C005161S3_source">show source</a> ]</span>
-            <div id="C005161S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006061S3_source')" id="l_C006061S3_source">show source</a> ]</span>
+            <div id="C006061S3_source" class="dyn-source">
 <pre>
 Dict should checkReceiverTypeOn(:keys) 
 
@@ -873,7 +875,7 @@ Dict should checkReceiverTypeOn(:keys)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00508"></a><b>merge</b>(+pairsAndDicts, +:keywordPairs)
+          <a name="C00597"></a><b>merge</b>(+pairsAndDicts, +:keywordPairs)
           </div>
           <div class="description">
             <p>creates a new Dict from the arguments provided, combined with the values in the receiver. the arguments provided will override those in the receiver. the rules for arguments are the same as for dict, except that dicts can also be provided. all positional arguments will be added before the keyword arguments.</p>
@@ -882,8 +884,8 @@ Dict should checkReceiverTypeOn(:keys)
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return an equal dict if given an empty dict <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005081S0_source')" id="l_C005081S0_source">show source</a> ]</span>
-            <div id="C005081S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005971S0_source')" id="l_C005971S0_source">show source</a> ]</span>
+            <div id="C005971S0_source" class="dyn-source">
 <pre>
 {}(foo: "bar") merge({}) should ==({}(foo: "bar")) 
 
@@ -891,8 +893,8 @@ Dict should checkReceiverTypeOn(:keys)
             </div>
             </span></li>
 <li>- should return a new dict that contains both of the keys and values <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005081S1_source')" id="l_C005081S1_source">show source</a> ]</span>
-            <div id="C005081S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005971S1_source')" id="l_C005971S1_source">show source</a> ]</span>
+            <div id="C005971S1_source" class="dyn-source">
 <pre>
 {}(foo: "bar") merge({}(qux: 42)) should ==({}(foo: "bar", qux: 42)) 
 
@@ -900,8 +902,8 @@ Dict should checkReceiverTypeOn(:keys)
             </div>
             </span></li>
 <li>- should return a new dict that has overwritten the values with the same key <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005081S2_source')" id="l_C005081S2_source">show source</a> ]</span>
-            <div id="C005081S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005971S2_source')" id="l_C005971S2_source">show source</a> ]</span>
+            <div id="C005971S2_source" class="dyn-source">
 <pre>
 {}(foo: "bar", qux: 16) merge({}(qux: 42)) should ==({}(foo: "bar", qux: 42)) 
 
@@ -909,8 +911,8 @@ Dict should checkReceiverTypeOn(:keys)
             </div>
             </span></li>
 <li>- should take zero or more pairs and add them to the returned dict <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005081S3_source')" id="l_C005081S3_source">show source</a> ]</span>
-            <div id="C005081S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005971S3_source')" id="l_C005971S3_source">show source</a> ]</span>
+            <div id="C005971S3_source" class="dyn-source">
 <pre>
 {}(foo: "bar", qux: 16) merge(:qux =&gt;(42)) should ==({}(foo: "bar", qux: 42)) 
 {}(foo: "bar", qux: 16) merge(:qux =&gt;(42), {}(abc: 15)) should ==({}(foo: "bar", qux: 42, abc: 15)) 
@@ -920,8 +922,8 @@ Dict should checkReceiverTypeOn(:keys)
             </div>
             </span></li>
 <li>- should take zero or more keyword arguments and add them to the returned dict <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005081S4_source')" id="l_C005081S4_source">show source</a> ]</span>
-            <div id="C005081S4_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005971S4_source')" id="l_C005971S4_source">show source</a> ]</span>
+            <div id="C005971S4_source" class="dyn-source">
 <pre>
 {}(foo: "bar", qux: 16) merge(qux: 42) should ==({}(foo: "bar", qux: 42)) 
 {}(foo: "bar", qux: 16) merge(qux: 42, {}(abc: 15)) should ==({}(foo: "bar", qux: 42, abc: 15)) 
@@ -931,8 +933,8 @@ Dict should checkReceiverTypeOn(:keys)
             </div>
             </span></li>
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005081S5_source')" id="l_C005081S5_source">show source</a> ]</span>
-            <div id="C005081S5_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005971S5_source')" id="l_C005971S5_source">show source</a> ]</span>
+            <div id="C005971S5_source" class="dyn-source">
 <pre>
 Dict should checkReceiverTypeOn(:merge, {}) 
 
@@ -945,7 +947,7 @@ Dict should checkReceiverTypeOn(:merge, {})
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00515"></a><b>notice</b>()
+          <a name="C00605"></a><b>notice</b>()
           </div>
           <div class="description">
             <p>Returns a brief text inspection of the object</p>
@@ -954,8 +956,8 @@ Dict should checkReceiverTypeOn(:merge, {})
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return something within curly brackets <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005151S0_source')" id="l_C005151S0_source">show source</a> ]</span>
-            <div id="C005151S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006051S0_source')" id="l_C006051S0_source">show source</a> ]</span>
+            <div id="C006051S0_source" class="dyn-source">
 <pre>
 {} notice should ==("{}") 
 
@@ -963,8 +965,8 @@ Dict should checkReceiverTypeOn(:merge, {})
             </div>
             </span></li>
 <li>- should try to use the keyword syntax if possible <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005151S1_source')" id="l_C005151S1_source">show source</a> ]</span>
-            <div id="C005151S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006051S1_source')" id="l_C006051S1_source">show source</a> ]</span>
+            <div id="C006051S1_source" class="dyn-source">
 <pre>
 result = {}(foo: "bar", "bar" =&gt;(:foo)) notice 
 ((result ==("{foo: \"bar\", \"bar\" =&gt; :foo}")) ||(result ==("{\"bar\" =&gt; :foo, foo: \"bar\"}"))) should be true 
@@ -974,8 +976,8 @@ result = {}(foo: "bar", "bar" =&gt;(:foo)) notice
             </div>
             </span></li>
 <li>- should return the notice format of things inside <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005151S2_source')" id="l_C005151S2_source">show source</a> ]</span>
-            <div id="C005151S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006051S2_source')" id="l_C006051S2_source">show source</a> ]</span>
+            <div id="C006051S2_source" class="dyn-source">
 <pre>
 {}(foo: method(abc foo bar)) notice should ==("{foo: method(...)}") 
 {}(method(abc foo bar) =&gt;(:foo)) notice should ==("{method(...) =&gt; :foo}") 
@@ -984,8 +986,8 @@ result = {}(foo: "bar", "bar" =&gt;(:foo)) notice
             </div>
             </span></li>
 <li>- should return non-keyword things with pair syntax <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005151S3_source')" id="l_C005151S3_source">show source</a> ]</span>
-            <div id="C005151S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006051S3_source')" id="l_C006051S3_source">show source</a> ]</span>
+            <div id="C006051S3_source" class="dyn-source">
 <pre>
 {}(1 =&gt;(1)) notice should ==("{1 =&gt; 1}") 
 {}("bar" =&gt;(1)) notice should ==("{\"bar\" =&gt; 1}") 
@@ -999,7 +1001,19 @@ result = {}(foo: "bar", "bar" =&gt;(:foo)) notice
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00507"></a><b>withDefault</b>(defaultValue)
+          <a name="C00603"></a><b>size</b>()
+          </div>
+          <div class="description">
+            <p>Returns the number of pairs contained in this dict.</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00596"></a><b>withDefault</b>(defaultValue)
           </div>
           <div class="description">
             <p>takes one argument, that should be a default value, and returns a new mimic of the receiver, with the default value for that new dict set to the argument</p>
@@ -1008,8 +1022,8 @@ result = {}(foo: "bar", "bar" =&gt;(:foo)) notice
           <div class="specs">
             <ul style="list-style-type: none;">
 <li>- should return a new mimic <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005071S0_source')" id="l_C005071S0_source">show source</a> ]</span>
-            <div id="C005071S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005961S0_source')" id="l_C005961S0_source">show source</a> ]</span>
+            <div id="C005961S0_source" class="dyn-source">
 <pre>
 x = {} 
 x withDefault(1) should not be same(x) 
@@ -1019,8 +1033,8 @@ x withDefault(1) should not be same(x)
             </div>
             </span></li>
 <li>- should set the default value for that mimic <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005071S1_source')" id="l_C005071S1_source">show source</a> ]</span>
-            <div id="C005071S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005961S1_source')" id="l_C005961S1_source">show source</a> ]</span>
+            <div id="C005961S1_source" class="dyn-source">
 <pre>
 x = {} withDefault(42) 
 x [](:blarg) should ==(42) 
@@ -1030,8 +1044,8 @@ x should ==({})
             </div>
             </span></li>
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C005071S2_source')" id="l_C005071S2_source">show source</a> ]</span>
-            <div id="C005071S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005961S2_source')" id="l_C005961S2_source">show source</a> ]</span>
+            <div id="C005961S2_source" class="dyn-source">
 <pre>
 Dict should checkReceiverTypeOn(:withDefault, 42) 
 

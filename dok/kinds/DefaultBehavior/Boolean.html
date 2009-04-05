@@ -90,27 +90,29 @@ contains behavior related to boolean behavior
 
         <div class="sectiontitle">Inactive cells</div>
         <ul>
-          <li><a href="#C00174">kind</a></li>
+          <li><a href="#C00191">inspect</a></li>
+<li><a href="#C00188">kind</a></li>
+<li><a href="#C00190">notice</a></li>
 
         </ul>        
 
         <div class="sectiontitle">Active cells</div>
         <ul>
-          <li><a href="#C00182">!(arg)</a></li>
-<li><a href="#C00180">&&(...)</a></li>
-<li><a href="#C00175">-(obj)</a></li>
-<li><a href="#C00181">?&(...)</a></li>
-<li><a href="#C00178">?|(...)</a></li>
-<li><a href="#C00179">and(...)</a></li>
-<li><a href="#C00184">false?()</a></li>
-<li><a href="#C00189">nand(...)</a></li>
-<li><a href="#C00183">nil?()</a></li>
-<li><a href="#C00188">nor(...)</a></li>
-<li><a href="#C00186">not()</a></li>
-<li><a href="#C00176">or(...)</a></li>
-<li><a href="#C00185">true?()</a></li>
-<li><a href="#C00187">xor(...)</a></li>
-<li><a href="#C00177">||(...)</a></li>
+          <li><a href="#C00198">!(arg)</a></li>
+<li><a href="#C00196">&&(...)</a></li>
+<li><a href="#C00189">-(obj)</a></li>
+<li><a href="#C00197">?&(...)</a></li>
+<li><a href="#C00194">?|(...)</a></li>
+<li><a href="#C00195">and(...)</a></li>
+<li><a href="#C00200">false?()</a></li>
+<li><a href="#C00205">nand(...)</a></li>
+<li><a href="#C00199">nil?()</a></li>
+<li><a href="#C00204">nor(...)</a></li>
+<li><a href="#C00202">not()</a></li>
+<li><a href="#C00192">or(...)</a></li>
+<li><a href="#C00201">true?()</a></li>
+<li><a href="#C00203">xor(...)</a></li>
+<li><a href="#C00193">||(...)</a></li>
 
         </ul>
 
@@ -121,10 +123,30 @@ contains behavior related to boolean behavior
 
         <div class="sectiontitle">Inactive cells (details)</div>
                 <div class="cell">
-          <a name="C00174"></a>
+          <a name="C00191"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">inspect</td>
+              <td>=</td>
+              <td class="cell-value">"DefaultBehavior Boolean"</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cell">
+          <a name="C00188"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">kind</td>
+              <td>=</td>
+              <td class="cell-value">"DefaultBehavior Boolean"</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cell">
+          <a name="C00190"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">notice</td>
               <td>=</td>
               <td class="cell-value">"DefaultBehavior Boolean"</td>
             </tr>
@@ -135,14 +157,14 @@ contains behavior related to boolean behavior
         <div class="sectiontitle">Active cells (details)</div>
                 <div class="cell">
           <div class="title">
-          <a name="C00182"></a><b>!</b>(arg)
+          <a name="C00198"></a><b>!</b>(arg)
           </div>
           <div class="description">
             <p>returns true if the argument is false, and false if it's true</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00182_source')" id="l_C00182_source">show source</a> ]</p>
-            <div id="C00182_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00198_source')" id="l_C00198_source">show source</a> ]</p>
+            <div id="C00198_source" class="dyn-source">
 <pre>
 method(arg, 
   arg not)
@@ -155,18 +177,18 @@ method(arg,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00180"></a><b>&&</b>(...)
+          <a name="C00196"></a><b>&&</b>(...)
           </div>
           <div class="description">
             <p>Evaluates the argument and returns the result</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00180_source')" id="l_C00180_source">show source</a> ]</p>
-            <div id="C00180_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00196_source')" id="l_C00196_source">show source</a> ]</p>
+            <div id="C00196_source" class="dyn-source">
 <pre>
 macro(
   argCount = call arguments length 
-  cond(
+  if(
     argCount ==(
       1), 
     
@@ -185,14 +207,14 @@ macro(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00175"></a><b>-</b>(obj)
+          <a name="C00189"></a><b>-</b>(obj)
           </div>
           <div class="description">
             <p>returns the negation of the argument</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00175_source')" id="l_C00175_source">show source</a> ]</p>
-            <div id="C00175_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00189_source')" id="l_C00189_source">show source</a> ]</p>
+            <div id="C00189_source" class="dyn-source">
 <pre>
 method(obj, 
   obj negation)
@@ -205,14 +227,14 @@ method(obj,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00181"></a><b>?&</b>(...)
+          <a name="C00197"></a><b>?&</b>(...)
           </div>
           <div class="description">
             <p>Evaluates the argument and returns the result</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00181_source')" id="l_C00181_source">show source</a> ]</p>
-            <div id="C00181_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00197_source')" id="l_C00197_source">show source</a> ]</p>
+            <div id="C00197_source" class="dyn-source">
 <pre>
 macro(
   argCount = call arguments length 
@@ -235,14 +257,14 @@ macro(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00178"></a><b>?|</b>(...)
+          <a name="C00194"></a><b>?|</b>(...)
           </div>
           <div class="description">
             <p>Does not evaluate argument and returns self</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00178_source')" id="l_C00178_source">show source</a> ]</p>
-            <div id="C00178_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00194_source')" id="l_C00194_source">show source</a> ]</p>
+            <div id="C00194_source" class="dyn-source">
 <pre>
 macro(
   argCount = call arguments length 
@@ -265,14 +287,14 @@ macro(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00179"></a><b>and</b>(...)
+          <a name="C00195"></a><b>and</b>(...)
           </div>
           <div class="description">
             <p>Evaluates the argument and returns the result</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00179_source')" id="l_C00179_source">show source</a> ]</p>
-            <div id="C00179_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00195_source')" id="l_C00195_source">show source</a> ]</p>
+            <div id="C00195_source" class="dyn-source">
 <pre>
 macro(
   argCount = call arguments length 
@@ -295,14 +317,14 @@ macro(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00184"></a><b>false?</b>()
+          <a name="C00200"></a><b>false?</b>()
           </div>
           <div class="description">
             <p>returns false.</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00184_source')" id="l_C00184_source">show source</a> ]</p>
-            <div id="C00184_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00200_source')" id="l_C00200_source">show source</a> ]</p>
+            <div id="C00200_source" class="dyn-source">
 <pre>
 method(
   false)
@@ -315,14 +337,14 @@ method(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00189"></a><b>nand</b>(...)
+          <a name="C00205"></a><b>nand</b>(...)
           </div>
           <div class="description">
             <p>Evaluates its argument and returns the inverse of it</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00189_source')" id="l_C00189_source">show source</a> ]</p>
-            <div id="C00189_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00205_source')" id="l_C00205_source">show source</a> ]</p>
+            <div id="C00205_source" class="dyn-source">
 <pre>
 macro(
   argCount = call arguments length 
@@ -345,14 +367,14 @@ macro(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00183"></a><b>nil?</b>()
+          <a name="C00199"></a><b>nil?</b>()
           </div>
           <div class="description">
             <p>returns false.</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00183_source')" id="l_C00183_source">show source</a> ]</p>
-            <div id="C00183_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00199_source')" id="l_C00199_source">show source</a> ]</p>
+            <div id="C00199_source" class="dyn-source">
 <pre>
 method(
   false)
@@ -365,14 +387,14 @@ method(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00188"></a><b>nor</b>(...)
+          <a name="C00204"></a><b>nor</b>(...)
           </div>
           <div class="description">
             <p>Does not evaluate its argument and returns false</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00188_source')" id="l_C00188_source">show source</a> ]</p>
-            <div id="C00188_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00204_source')" id="l_C00204_source">show source</a> ]</p>
+            <div id="C00204_source" class="dyn-source">
 <pre>
 macro(
   argCount = call arguments length 
@@ -395,14 +417,14 @@ macro(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00186"></a><b>not</b>()
+          <a name="C00202"></a><b>not</b>()
           </div>
           <div class="description">
             <p>Does not evaluate arguments and returns nil</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00186_source')" id="l_C00186_source">show source</a> ]</p>
-            <div id="C00186_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00202_source')" id="l_C00202_source">show source</a> ]</p>
+            <div id="C00202_source" class="dyn-source">
 <pre>
 method(
   nil)
@@ -415,14 +437,14 @@ method(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00176"></a><b>or</b>(...)
+          <a name="C00192"></a><b>or</b>(...)
           </div>
           <div class="description">
             <p>Does not evaluate argument and returns self</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00176_source')" id="l_C00176_source">show source</a> ]</p>
-            <div id="C00176_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00192_source')" id="l_C00192_source">show source</a> ]</p>
+            <div id="C00192_source" class="dyn-source">
 <pre>
 macro(
   argCount = call arguments length 
@@ -445,14 +467,14 @@ macro(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00185"></a><b>true?</b>()
+          <a name="C00201"></a><b>true?</b>()
           </div>
           <div class="description">
             <p>returns true</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00185_source')" id="l_C00185_source">show source</a> ]</p>
-            <div id="C00185_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00201_source')" id="l_C00201_source">show source</a> ]</p>
+            <div id="C00201_source" class="dyn-source">
 <pre>
 method(
   true)
@@ -465,14 +487,14 @@ method(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00187"></a><b>xor</b>(...)
+          <a name="C00203"></a><b>xor</b>(...)
           </div>
           <div class="description">
             <p>Evaluates the argument and returns the inverse of the argument</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00187_source')" id="l_C00187_source">show source</a> ]</p>
-            <div id="C00187_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00203_source')" id="l_C00203_source">show source</a> ]</p>
+            <div id="C00203_source" class="dyn-source">
 <pre>
 macro(
   argCount = call arguments length 
@@ -495,14 +517,14 @@ macro(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00177"></a><b>||</b>(...)
+          <a name="C00193"></a><b>||</b>(...)
           </div>
           <div class="description">
             <p>Does not evaluate argument and returns self</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00177_source')" id="l_C00177_source">show source</a> ]</p>
-            <div id="C00177_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00193_source')" id="l_C00193_source">show source</a> ]</p>
+            <div id="C00193_source" class="dyn-source">
 <pre>
 macro(
   argCount = call arguments length 

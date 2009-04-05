@@ -6,7 +6,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   <head>
     <title>Kind: DefaultBehavior</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-    <link rel="stylesheet" href="../.././dokgen-style.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href=".././dokgen-style.css" type="text/css" media="screen" />
     <script language="JavaScript" type="text/javascript">
     // <![CDATA[
 
@@ -57,14 +57,14 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
               <td class="file-title" colspan="2">
                 <span class="file-title-prefix">Kind</span>
                 <br />
-                Condition Warning
+                IokeGround
               </td>
               <td align="right">
                 <table cellspacing="0" cellpadding="2">
                   <tr>
                     <td>Main mimic:</td>
                     <td>
-                      <a href="../../kinds/Condition.html">Condition</a>
+                      <a href="../kinds/DefaultBehavior.html">DefaultBehavior</a>
                     </td>
                   </tr>
                 </table>
@@ -79,34 +79,53 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
       <div id="content">
         <div class="description">
           <p>
-
+IokeGround is the place that mimics default behavior, and where most global objects are defined..
           </p>
         </div>
 
         <div class="sectiontitle">Mimics</div>
         <ul>
-          <li><a href="../../kinds/Condition.html">Condition</a></li>
+          <li><a href="../kinds/DefaultBehavior.html">DefaultBehavior</a></li><li><a href="../kinds/Base.html">Base</a></li>
         </ul>        
 
         <div class="sectiontitle">Inactive cells</div>
         <ul>
-          <li><a href="#C00709">kind</a></li>
+          <li><a href="#C001">kind</a></li>
 
         </ul>        
 
         <div class="sectiontitle">Active cells</div>
         <ul>
-          
+          <li><a href="#C00803">stackTraceAsText()</a></li>
+
         </ul>
 
         <div class="sectiontitle">Specs</div>
         <div class="specs">
           <ul style="list-style-type: none;">
-<li>- should have the right kind <span class="sourcecode">
+<li>- should have the correct kind <span class="sourcecode">
             <span class="source-link">[ <a href="javascript:toggleSource('C00K01S0_source')" id="l_C00K01S0_source">show source</a> ]</span>
             <div id="C00K01S0_source" class="dyn-source">
 <pre>
-Condition Warning should have kind("Condition Warning") 
+IokeGround kind should ==("IokeGround") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should mimic Base <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S1_source')" id="l_C00K01S1_source">show source</a> ]</span>
+            <div id="C00K01S1_source" class="dyn-source">
+<pre>
+(IokeGround mimics [](1) ==(Base)) should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should mimic DefaultBehavior <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S2_source')" id="l_C00K01S2_source">show source</a> ]</span>
+            <div id="C00K01S2_source" class="dyn-source">
+<pre>
+(IokeGround mimics [](0) ==(DefaultBehavior)) should be true 
 
 </pre>
             </div>
@@ -116,19 +135,31 @@ Condition Warning should have kind("Condition Warning")
 
         <div class="sectiontitle">Inactive cells (details)</div>
                 <div class="cell">
-          <a name="C00709"></a>
+          <a name="C001"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">kind</td>
               <td>=</td>
-              <td class="cell-value">"Condition Warning"</td>
+              <td class="cell-value">"IokeGround"</td>
             </tr>
           </table>
         </div>
 
 
         <div class="sectiontitle">Active cells (details)</div>
-        
+                <div class="cell">
+          <div class="title">
+          <a name="C00803"></a><b>stackTraceAsText</b>()
+          </div>
+          <div class="description">
+            <p>will return a text representation of the current stack trace</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+
 
       </div>
     </div>

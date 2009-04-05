@@ -90,21 +90,22 @@ LexicalMacro is the instance all lexical macros in the system are derived from.
 
         <div class="sectiontitle">Inactive cells</div>
         <ul>
-          <li><a href="#C00387">activatable</a></li>
-<li><a href="#C00386">kind</a></li>
+          <li><a href="#C00447">activatable</a></li>
+<li><a href="#C00446">kind</a></li>
 
         </ul>        
 
         <div class="sectiontitle">Active cells</div>
         <ul>
-          <li><a href="#C00391">argumentsCode()</a></li>
-<li><a href="#C00389">call(+[arguments])</a></li>
-<li><a href="#C00394">code()</a></li>
-<li><a href="#C00395">formattedCode()</a></li>
-<li><a href="#C00392">inspect()</a></li>
-<li><a href="#C00390">message()</a></li>
-<li><a href="#C00388">name()</a></li>
-<li><a href="#C00393">notice()</a></li>
+          <li><a href="#C00451">argumentsCode()</a></li>
+<li><a href="#C00456">arity()</a></li>
+<li><a href="#C00449">call(+[arguments])</a></li>
+<li><a href="#C00454">code()</a></li>
+<li><a href="#C00455">formattedCode()</a></li>
+<li><a href="#C00452">inspect()</a></li>
+<li><a href="#C00450">message()</a></li>
+<li><a href="#C00448">name()</a></li>
+<li><a href="#C00453">notice()</a></li>
 
         </ul>
 
@@ -304,7 +305,7 @@ lecro(
 
         <div class="sectiontitle">Inactive cells (details)</div>
                 <div class="cell">
-          <a name="C00387"></a>
+          <a name="C00447"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">activatable</td>
@@ -314,7 +315,7 @@ lecro(
           </table>
         </div>
         <div class="cell">
-          <a name="C00386"></a>
+          <a name="C00446"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">kind</td>
@@ -328,7 +329,7 @@ lecro(
         <div class="sectiontitle">Active cells (details)</div>
                 <div class="cell">
           <div class="title">
-          <a name="C00391"></a><b>argumentsCode</b>()
+          <a name="C00451"></a><b>argumentsCode</b>()
           </div>
           <div class="description">
             <p>returns the code for the argument definition</p>
@@ -340,7 +341,27 @@ lecro(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00389"></a><b>call</b>(+[arguments])
+          <a name="C00456"></a><b>arity</b>()
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00456_source')" id="l_C00456_source">show source</a> ]</p>
+            <div id="C00456_source" class="dyn-source">
+<pre>
+method(
+  Arity fromArgumentsCode(argumentsCode))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00449"></a><b>call</b>(+[arguments])
           </div>
           <div class="description">
             <p>activates this lecro with the arguments given to call</p>
@@ -352,7 +373,7 @@ lecro(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00394"></a><b>code</b>()
+          <a name="C00454"></a><b>code</b>()
           </div>
           <div class="description">
             <p>returns the full code of this lecro, as a Text</p>
@@ -364,7 +385,7 @@ lecro(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00395"></a><b>formattedCode</b>()
+          <a name="C00455"></a><b>formattedCode</b>()
           </div>
           <div class="description">
             <p>returns idiomatically formatted code for this lecro</p>
@@ -376,7 +397,7 @@ lecro(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00392"></a><b>inspect</b>()
+          <a name="C00452"></a><b>inspect</b>()
           </div>
           <div class="description">
             <p>Returns a text inspection of the object</p>
@@ -388,7 +409,7 @@ lecro(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00390"></a><b>message</b>()
+          <a name="C00450"></a><b>message</b>()
           </div>
           <div class="description">
             <p>returns the message chain for this lecro</p>
@@ -400,7 +421,7 @@ lecro(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00388"></a><b>name</b>()
+          <a name="C00448"></a><b>name</b>()
           </div>
           <div class="description">
             <p>returns the name of the lecro</p>
@@ -412,7 +433,7 @@ lecro(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00393"></a><b>notice</b>()
+          <a name="C00453"></a><b>notice</b>()
           </div>
           <div class="description">
             <p>Returns a brief text inspection of the object</p>

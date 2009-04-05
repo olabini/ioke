@@ -457,11 +457,13 @@ x cellNames should ==([](:Why, :f))
 baseNames = Base cells keys asList sort 
 defaultBehaviorNames = DefaultBehavior cells keys sort 
 defaultBehaviorAllNames = DefaultBehavior cells(true) keys sort 
+iokeGroundNames = IokeGround cells keys sort 
 groundNames = Ground cells keys sort 
 originNames = Origin cells keys sort 
 
-groundAllNames = set(*(groundNames +(baseNames) +(defaultBehaviorAllNames))) sort 
-originAllNames = set(*(originNames +(groundAllNames))) sort 
+javaGroundAllNames = JavaGround cells keys sort 
+groundAllNames = set(*(iokeGroundNames +(groundNames) +(javaGroundAllNames) +(baseNames) +(defaultBehaviorAllNames))) sort 
+originAllNames = set(*(originNames +(groundAllNames) +(javaGroundAllNames))) sort 
 Base cellNames sort should ==(baseNames) 
 Base cellNames(false) sort should ==(baseNames) 
 Base cellNames(true) sort should ==(baseNames) 
@@ -938,27 +940,9 @@ Origin mimic undefineCell!(:test_undefine_cell)
 </pre>
             </div>
             </span></li>
-<li>- should make the cell inaccessible <span class="sourcecode">
+<li>- should stop the cell from showing up in cellNames <span class="sourcecode">
             <span class="source-link">[ <a href="javascript:toggleSource('C00131S2_source')" id="l_C00131S2_source">show source</a> ]</span>
             <div id="C00131S2_source" class="dyn-source">
-<pre>
-x = Origin mimic 
-y = x mimic 
-
-x foo = "blurg" 
-y foo = "blarg" 
-y undefineCell!(:foo) 
-x cell?(:foo) should be true 
-y cell?(:foo) should be false 
-fn(y foo) should signal(Condition Error NoSuchCell) 
-fn(y mimic foo) should signal(Condition Error NoSuchCell) 
-
-</pre>
-            </div>
-            </span></li>
-<li>- should stop the cell from showing up in cellNames <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00131S3_source')" id="l_C00131S3_source">show source</a> ]</span>
-            <div id="C00131S3_source" class="dyn-source">
 <pre>
 x = Origin mimic 
 y = x mimic 
@@ -979,8 +963,8 @@ z cellNames(true) should include(:foo)
             </div>
             </span></li>
 <li>- should stop the cell from showing up in cells <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00131S4_source')" id="l_C00131S4_source">show source</a> ]</span>
-            <div id="C00131S4_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00131S3_source')" id="l_C00131S3_source">show source</a> ]</span>
+            <div id="C00131S3_source" class="dyn-source">
 <pre>
 x = Origin mimic 
 y = x mimic 
@@ -1001,8 +985,8 @@ z cells(true) keys should include(:foo)
             </div>
             </span></li>
 <li>- should stop the cell from being able to get with cell <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00131S5_source')" id="l_C00131S5_source">show source</a> ]</span>
-            <div id="C00131S5_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00131S4_source')" id="l_C00131S4_source">show source</a> ]</span>
+            <div id="C00131S4_source" class="dyn-source">
 <pre>
 x = Origin mimic 
 y = x mimic 
@@ -1021,8 +1005,8 @@ z foo should ==(123)
             </div>
             </span></li>
 <li>- should stop the cell from showing up with cellOwner <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00131S6_source')" id="l_C00131S6_source">show source</a> ]</span>
-            <div id="C00131S6_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00131S5_source')" id="l_C00131S5_source">show source</a> ]</span>
+            <div id="C00131S5_source" class="dyn-source">
 <pre>
 x = Origin mimic 
 y = x mimic 
@@ -1036,8 +1020,8 @@ fn(y cellOwner(:foo)) should signal(Condition Error NoSuchCell)
             </div>
             </span></li>
 <li>- should stop the cell from showing up with cellOwner? <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00131S7_source')" id="l_C00131S7_source">show source</a> ]</span>
-            <div id="C00131S7_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00131S6_source')" id="l_C00131S6_source">show source</a> ]</span>
+            <div id="C00131S6_source" class="dyn-source">
 <pre>
 x = Origin mimic 
 y = x mimic 
@@ -1051,8 +1035,8 @@ fn(y cellOwner?(:foo)) should signal(Condition Error NoSuchCell)
             </div>
             </span></li>
 <li>- should be possible to remove the undefine with removeCell! <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C00131S8_source')" id="l_C00131S8_source">show source</a> ]</span>
-            <div id="C00131S8_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00131S7_source')" id="l_C00131S7_source">show source</a> ]</span>
+            <div id="C00131S7_source" class="dyn-source">
 <pre>
 x = Origin mimic 
 y = x mimic 
