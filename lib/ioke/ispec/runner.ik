@@ -146,7 +146,7 @@ ISpec do(
         "Defaults to **/*_spec.ik.", pattern,
         @options loadPatterns << pattern)
 
-      on("-c", "--color", "--colour", "Use colored output.", boolean true,
+      on("-c", "--color", "--colour", "Use colored output (default: true).", boolean true,
         @options useColour = boolean)
 
       on("-e", "--example", "Only execute examples marching name",
