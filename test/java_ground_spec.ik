@@ -2760,12 +2760,12 @@ describe("Java Objects",
         ioke:lang:test:ArrayUser mapUse(x, 3) should be same(mm)
       )
 
-      it("should be possible to manually cast to the array",
-        x = java:util:Map[5] new
-        ioke:lang:test:ArrayUser use(x) asText should == "Map[]"
-        ioke:lang:test:ArrayUser use((java:util:Map[])x) asText should == "Map[]"
-        ioke:lang:test:ArrayUser use((java:lang:Object[])x) asText should == "Object[]"
-      )
+;       it("should be possible to manually cast to the array",
+;         x = java:util:Map[5] new
+;         ioke:lang:test:ArrayUser use(x) asText should == "Map[]"
+;         ioke:lang:test:ArrayUser use((java:util:Map[])x) asText should == "Map[]"
+;         ioke:lang:test:ArrayUser use((java:lang:Object[])x) asText should == "Object[]"
+;       )
     )
   )
 )

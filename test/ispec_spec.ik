@@ -108,10 +108,20 @@ describe(ISpec Runner OptionParser,
           "-e", "foo"]) onlyMatching should == ["some example", "foo"]
     )
 
-    it("should load onlyMatching from a file if --example is given a path",
-     parser = ISpec Runner OptionParser create(nil, nil)
-      parser order(["-e", "test/fixtures/names.txt",
-          ]) onlyMatching should == ["Ola", "Martin", "Sam", "Carlos", "Brian", "Felipe"]
+    onlyWhen(! System windows?,
+      it("should load onlyMatching from a file if --example is given a path",
+        parser = ISpec Runner OptionParser create(nil, nil)
+        parser order(["-e", "test/fixtures/names.txt",
+            ]) onlyMatching should == ["Ola", "Martin", "Sam", "Carlos", "Brian", "Felipe"]
+      )
+    )
+
+    onlyWhen(System windows?,
+      it("should load onlyMatching from a file if --example is given a path",
+        parser = ISpec Runner OptionParser create(nil, nil)
+        parser order(["-e", "test/fixtures/names.txt",
+            ]) onlyMatching should == ["Ola\r", "Martin\r", "Sam\r", "Carlos\r", "Brian\r", "Felipe\r"]
+      )
     )
 
     it("should useColour by edfault",
