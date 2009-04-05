@@ -151,7 +151,27 @@ describe(List,
   )
 
   describe("concat!",
-    it("should have tests")
+    it("should change nothing for an empty list",
+      x = [1]
+      x concat!([])
+      x should == [1]
+    )
+
+    it("should append the other list",
+      [] concat!([1]) should == [1]
+      [:foo, [:abc]] concat!([[:blarg], 1]) should == [:foo, [:abc], [:blarg], 1]
+    )
+
+    it("should modify the receiver",
+      x = [1]
+      x concat!([2])
+      x should == [1, 2]
+    )
+
+    it("should return the list",
+      x = [1]
+      x concat!([2]) should be same(x)
+    )
   )
 
   describe("deleteIf!",
