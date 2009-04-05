@@ -78,3 +78,9 @@ List rassoc = method(
   obj,
   self find(el, 
     el mimics?(List) && el length > 1 && el[1] == obj))
+
+List reverse = method(
+  "returns a new list that is a mimic of the current list, except that the order of all elements are reversed",
+  newList = self mimic
+  newList reverse!
+  newList)
