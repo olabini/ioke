@@ -803,6 +803,54 @@ public class IokeList extends IokeData {
                     return context.runtime.newText(result);
                 }
             }));
+
+        obj.registerMethod(runtime.newJavaMethod("takes one or two arguments, and will then use these arguments as code to transform each element in this list. the transform happens in place. finally the method will return the receiver.", new JavaMethod("map!") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositionalUnevaluated("argOrCode")
+                    .withOptionalPositionalUnevaluated("code")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
+                    Runtime runtime = context.runtime;
+                    Object onAsList = context.runtime.list.convertToThis(on, message, context);
+                    
+                    List<Object> ls = ((IokeList)IokeObject.data(onAsList)).list;
+                    int size = ls.size();
+                    
+                    switch(message.getArgumentCount()) {
+                    case 1: {
+                        IokeObject code = IokeObject.as(message.getArguments().get(0), context);
+
+                        for(int i = 0; i<size; i++) {
+                            ls.set(i, code.evaluateCompleteWithReceiver(context, context.getRealContext(), ls.get(i)));
+                        }
+                        break;
+                    }
+                    case 2: {
+                        LexicalContext c = new LexicalContext(context.runtime, context, "Lexical activation context for List#map!", message, context);
+                        String name = IokeObject.as(message.getArguments().get(0), context).getName();
+                        IokeObject code = IokeObject.as(message.getArguments().get(1), context);
+
+                        for(int i = 0; i<size; i++) {
+                            c.setCell(name, ls.get(i));
+                            ls.set(i, code.evaluateCompleteWithoutExplicitReceiver(c, c.getRealContext()));
+                        }
+                        break;
+                    }
+                    }
+                    return on;
+                }
+            }));
+            
+        obj.aliasMethod("map!", "collect!", null, null);
     }
 
     private static List<Object> flatten(List<Object> list) {

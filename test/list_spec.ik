@@ -87,11 +87,65 @@ describe(List,
   )
 
   describe("collect!",
-    it("should have tests")
+    it("should return an empty list for an empty enumerable",
+      [] collect!(x, x+2) should == []
+    )
+      
+    it("should return the same list for something that only returns itself",
+      [1, 2, 3] collect!(x, x) should == [1, 2, 3]
+    )
+
+    it("should take one argument and apply the inside",
+      [1, 2, 3] collect!(+2) should == [3, 4, 5]
+      [1, 2, 3] collect!(. 1) should == [1, 1, 1]
+    )
+
+    it("should take two arguments and apply the code with the argument name bound",
+      [1, 2, 3] collect!(x, x+3) should == [4, 5, 6]
+      [1, 2, 3] collect!(x, 1) should == [1, 1, 1]
+    )
+
+    it("should return the origin list",
+      x = [1,2,3]
+      x collect!(x, 1) should be same(x)
+    )
+
+    it("should modify the original list",
+      x = [1,2,3]
+      x collect!(x, 1)
+      x should == [1,1,1]
+    )
   )
 
   describe("map!",
-    it("should have tests")
+    it("should return an empty list for an empty enumerable",
+      [] map!(x, x+2) should == []
+    )
+      
+    it("should return the same list for something that only returns itself",
+      [1, 2, 3] map!(x, x) should == [1, 2, 3]
+    )
+
+    it("should take one argument and apply the inside",
+      [1, 2, 3] map!(+2) should == [3, 4, 5]
+      [1, 2, 3] map!(. 1) should == [1, 1, 1]
+    )
+
+    it("should take two arguments and apply the code with the argument name bound",
+      [1, 2, 3] map!(x, x+3) should == [4, 5, 6]
+      [1, 2, 3] map!(x, 1) should == [1, 1, 1]
+    )
+
+    it("should return the origin list",
+      x = [1,2,3]
+      x map!(x, 1) should be same(x)
+    )
+
+    it("should modify the original list",
+      x = [1,2,3]
+      x map!(x, 1)
+      x should == [1,1,1]
+    )
   )
 
   describe("compact",
