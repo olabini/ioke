@@ -276,6 +276,25 @@ public class IokeList extends IokeData {
                 }
             }));
 
+        obj.registerMethod(runtime.newJavaMethod("adds the elements in the argument list to the current list, and then returns that list", new TypeCheckingJavaMethod("concat!") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
+                    .builder()
+                    .receiverMustMimic(runtime.list)
+                    .withRequiredPositional("otherList").whichMustMimic(runtime.list)
+                    .getArguments();
+
+                @Override
+                public TypeCheckingArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    ((IokeList)IokeObject.data(on)).getList().addAll(((IokeList)IokeObject.data(args.get(0))).getList());
+                    return on;
+                }
+            }));
+
         obj.registerMethod(runtime.newJavaMethod("returns a new list that contains the receivers elements and the elements of the list sent in as the argument.", new TypeCheckingJavaMethod("+") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
