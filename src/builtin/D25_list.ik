@@ -101,3 +101,19 @@ List cell("*") = method(
     result = list()
     sepOrRep times(result concat!(self))
     result))
+
+List index = method(
+  "takes an object and returns the index of the first occurance of that object in this list, or nil if it doesn't exist",
+  obj,
+  self each(index, element,
+    if(element == obj,
+      return index))
+  nil)
+
+List rindex = method(
+  "takes an object and returns the index of the last occurance of that object in this list, or nil if it doesn't exist",
+  obj,
+  ((self size - 1)..0) each(index,
+    if(self[index] == obj,
+      return index))
+  nil)

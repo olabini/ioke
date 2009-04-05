@@ -257,11 +257,43 @@ describe(List,
   )
 
   describe("index",
-    it("should have tests")
+    it("should return the index of the first element == to object",
+      x = Origin mimic
+      x == = method(obj, 3 == obj)
+      [2, x, 3, 1, 3, 1] index(3) should == 1
+    )
+
+    it("should return 0 if first element == to object",
+      [2, 1, 3, 2, 5] index(2) should == 0
+    )
+
+    it("should return size-1 if only last element == to object",
+      [2, 1, 3, 1, 5] index(5) should == 4
+    )
+
+    it("should return nil if no element == to object",
+      [2, 1, 1, 1, 1] index(3) should be nil
+    )
   )
 
   describe("rindex",
-    it("should have tests")
+    it("should return the first index backwards from the end where element == to object",
+      [3,2,1,1,2,3] rindex(3) should == 5
+      [3,2,1,1,2,3] rindex(2) should == 4
+      [3,2,1,1,2,3] rindex(1) should == 3
+    )
+
+    it("should return size-1 if last element == to object",
+      [2, 1, 3, 2, 5] rindex(5) should == 4
+    )
+
+    it("should return 0 if only first element == to object",
+      [2, 1, 3, 1, 5] rindex(2) should == 0
+    )
+
+    it("should return nil if no element == to object",
+      [1, 1, 3, 2, 1, 3] rindex(4) should be nil
+    )
   )
 
   describe("join",
