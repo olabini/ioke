@@ -775,6 +775,34 @@ public class IokeList extends IokeData {
                     return on;
                 }
             }));
+
+        obj.registerMethod(obj.runtime.newJavaMethod("returns a text composed of the asText representation of all elements in the list, separated by the separator. the separator defaults to an empty text.", new TypeCheckingJavaMethod("join") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
+                    .builder()
+                    .receiverMustMimic(runtime.list)
+                    .withOptionalPositional("separator", "")
+                    .getArguments();
+
+                @Override
+                public TypeCheckingArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+                
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    List<Object> list = getList(on);
+                    String result;
+                    if(list.size() == 0) {
+                        result = "";
+                    } else {
+                        String sep = args.size() > 0 ? Text.getText(args.get(0)) : "";
+                        StringBuilder sb = new StringBuilder();
+                        join(list, sb, sep, context.runtime.asText, context);
+                        result = sb.toString();
+                    }
+                    return context.runtime.newText(result);
+                }
+            }));
     }
 
     private static List<Object> flatten(List<Object> list) {
@@ -790,6 +818,19 @@ public class IokeList extends IokeData {
             } else {
                 result.add(l);
             }
+        }
+    }
+
+    private static void join(List<Object> list, StringBuilder sb, String sep, IokeObject asText, IokeObject context) throws ControlFlow {
+        String realSep = "";
+        for(Object o : list) {
+            sb.append(realSep);
+            if(o instanceof IokeObject && IokeObject.data(o) instanceof IokeList) {
+                join(getList(o), sb, sep, asText, context);
+            } else {
+                sb.append(Text.getText(asText.sendTo(context, o)));
+            }
+            realSep = sep;
         }
     }
 
