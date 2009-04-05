@@ -767,6 +767,30 @@ public class IokeList extends IokeData {
                     return on;
                 }
             }));
+
+        obj.registerMethod(obj.runtime.newJavaMethod("flattens all lists in this list recursively, then returns it", new TypeCheckingJavaMethod.WithNoArguments("flatten!", runtime.list) {
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    setList(on, flatten(getList(on)));
+                    return on;
+                }
+            }));
+    }
+
+    private static List<Object> flatten(List<Object> list) {
+        List<Object> result = new ArrayList<Object>(list.size()*2);
+        flatten(list, result);
+        return result;
+    }
+
+    private static void flatten(List<Object> list, List<Object> result) {
+        for(Object l : list) {
+            if(l instanceof IokeObject && IokeObject.data(l) instanceof IokeList) {
+                flatten(getList(l), result);
+            } else {
+                result.add(l);
+            }
+        }
     }
 
     public void add(Object obj) {
