@@ -72,3 +72,9 @@ List assoc = method(
   obj,
   self find(el, 
     el mimics?(List) && el length > 0 && el[0] == obj))
+
+List rassoc = method(
+  "takes an object, and returns the first list in this list that has that object as its second element. if it can't be found, returns nil.",
+  obj,
+  self find(el, 
+    el mimics?(List) && el length > 1 && el[1] == obj))

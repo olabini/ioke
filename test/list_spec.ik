@@ -55,6 +55,28 @@ describe(List,
     )
   )
 
+  describe("rassoc",
+    it("should return nil for an empty list",
+      [] rassoc(:foo) should be nil
+    )
+
+    it("should return nil for a list where it can't find the argument",
+      [[1, :bar], [2, :blah]] rassoc(:foo) should be nil
+    )
+
+    it("should not fail for a list that includes stuff that isn't lists",
+      [1,2,3,4] rassoc(:foo) should be nil
+    )
+
+    it("should return a list if it matches",
+      [[1, :abc], [2, :foo, 1, 2], [3, :blah]] rassoc(:foo) should == [2, :foo, 1, 2]
+    )
+
+    it("should return the first list that matches",
+      [[1, :abc], [2, :foo, 1, 2], [3, :blah], [4, :foo, 3, 2]] rassoc(:foo) should == [2, :foo, 1, 2]
+    )
+  )
+
   describe("collect!",
     it("should have tests")
   )
