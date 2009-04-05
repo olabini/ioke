@@ -44,9 +44,9 @@
 
   <target name="compile" depends="generate, generate_filters" description="Compile the source files for the project.">
     <filter filtersfile="version_data.properties"/>
-    <filter token="VERSION" value="P"/>
-    <filter token="VERSION_RUNTIME" value="0.4.0-snapshot"/>
-    <filter token="VERSION_STRING" value="Ioke P ikj 0.4.0-snapshot"/>
+    <filter token="VERSION" value="E"/>
+    <filter token="VERSION_RUNTIME" value="0.3.0"/>
+    <filter token="VERSION_STRING" value="Ioke E ikj 0.3.0"/>
 
     <javac destdir="${classes.dir}" debug="true" source="${javac.version}" target="${javac.version}">
       <classpath refid="build.classpath"/>
@@ -150,7 +150,7 @@
   </target>
 
   <target name="dist-bin" depends="jar">
-    <tar destfile="${release.dir}/ioke-P-ikj-0.4.0-snapshot.tar.gz" compression="gzip">
+    <tar destfile="${release.dir}/ioke-E-ikj-0.3.0.tar.gz" compression="gzip">
       <tarfileset mode="755" dir="." prefix="ioke">
         <include name="bin/**"/>
       </tarfileset>
@@ -167,7 +167,7 @@
       </tarfileset>
     </tar>
 
-    <zip destfile="${release.dir}/ioke-P-ikj-0.4.0-snapshot.zip">
+    <zip destfile="${release.dir}/ioke-E-ikj-0.3.0.zip">
       <zipfileset filemode="755" dir="." prefix="ioke">
         <include name="bin/**"/>
       </zipfileset>
