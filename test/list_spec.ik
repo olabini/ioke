@@ -199,11 +199,49 @@ describe(List,
   )
 
   describe("reverse",
-    it("should have tests")
+    it("should return the same list for an empty list",
+      [] reverse should == []
+    )
+
+    it("should return a reversed list",
+      [1] reverse should == [1]
+      [1,2,1] reverse should == [1,2,1]
+      [1,2,3] reverse should == [3,2,1]
+      [:foo, :bar] reverse should == [:bar, :foo]
+    )
+
+    it("should not modify the receiver",
+      x = [1,2,3,4]
+      x reverse
+      x should == [1,2,3,4]
+    )
+
+    it("should not reverse internal lists",
+      [[1,2], [3,4], [5,6], [7, 8]] reverse should == [[7, 8], [5,6], [3,4], [1, 2]]
+    )
   )
 
   describe("reverse!",
-    it("should have tests")
+    it("should return the same list for an empty list",
+      [] reverse! should == []
+    )
+
+    it("should return a reversed list",
+      [1] reverse! should == [1]
+      [1,2,1] reverse! should == [1,2,1]
+      [1,2,3] reverse! should == [3,2,1]
+      [:foo, :bar] reverse! should == [:bar, :foo]
+    )
+
+    it("should modify the receiver",
+      x = [1,2,3,4]
+      x reverse!
+      x should == [4,3,2,1]
+    )
+
+    it("should not reverse internal lists",
+      [[1,2], [3,4], [5,6], [7, 8]] reverse! should == [[7, 8], [5,6], [3,4], [1, 2]]
+    )
   )
 
   describe("at", 

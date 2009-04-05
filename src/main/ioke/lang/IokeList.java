@@ -743,7 +743,7 @@ public class IokeList extends IokeData {
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newJavaMethod("Returns all nils in this list, and then returns the list", new TypeCheckingJavaMethod.WithNoArguments("compact!", runtime.list) {
+        obj.registerMethod(obj.runtime.newJavaMethod("removes all nils in this list, and then returns the list", new TypeCheckingJavaMethod.WithNoArguments("compact!", runtime.list) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     List<Object> list = getList(on);
@@ -755,6 +755,15 @@ public class IokeList extends IokeData {
                         }
                     }
                     setList(on, newList);
+                    return on;
+                }
+            }));
+
+        obj.registerMethod(obj.runtime.newJavaMethod("reverses the elements in this list, then returns it", new TypeCheckingJavaMethod.WithNoArguments("reverse!", runtime.list) {
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    List<Object> list = getList(on);
+                    Collections.reverse(list);
                     return on;
                 }
             }));
