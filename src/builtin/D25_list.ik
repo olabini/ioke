@@ -90,3 +90,14 @@ List flatten = method(
   newList = self mimic
   newList flatten!
   newList)
+
+List cell("*") = method(
+  "takes either a text or a number. if given a text, it works like join, while if it gets a number, it will return a new list repeated as many times as the number argument",
+  sepOrRep,
+  
+  if(sepOrRep mimics?(Text),
+    self join(sepOrRep),
+
+    result = list()
+    sepOrRep times(result concat!(self))
+    result))

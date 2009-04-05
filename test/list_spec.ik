@@ -30,7 +30,16 @@ describe(List,
   )
   
   describe("*",
-    it("should have tests")
+    it("is equivalent to self join(text) when passed a Text",
+      ([ 1, 2, 3 ] * ",") should == [1, 2, 3] join(",")
+    )
+ 
+    it("concatenates n copies of the list when passed an integer",
+      ([ 1, 2, 3 ] * 0) should == []
+      ([ 1, 2, 3 ] * 1) should == [1, 2, 3]
+      ([ 1, 2, 3 ] * 3) should == [1, 2, 3, 1, 2, 3, 1, 2, 3]
+      ([] * 10) should == []
+    )
   )
 
   describe("assoc",
@@ -256,7 +265,29 @@ describe(List,
   )
 
   describe("join",
-    it("should have tests")
+    it("returns an empty text if the List is empty",
+      a = []
+      a join should == ""
+    )
+
+    it("returns a text formed by concatenating each element asText separated by separator without trailing separator",
+      obj = Origin with(asText: "foo")
+      [1, 2, 3, 4, obj] join(" | ") should == "1 | 2 | 3 | 4 | foo"
+    )
+  
+    it("uses the same separator with nested list",
+      [1, [2, [3, 4], 5], 6] join(":") should == "1:2:3:4:5:6"
+    )
+
+    it("should default to the empty text as separator",
+      [1, 2, 3] join should == "123"
+    )
+  
+    it("does not process the separator if the list is empty",
+      a = []
+      sep = Origin mimic
+      a join(sep) should == ""
+    )
   )
 
   describe("reverse",
