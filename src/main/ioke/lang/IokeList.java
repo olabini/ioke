@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.Iterator;
 
 import ioke.lang.exceptions.ControlFlow;
 
@@ -851,6 +852,58 @@ public class IokeList extends IokeData {
             }));
             
         obj.aliasMethod("map!", "collect!", null, null);
+
+        obj.registerMethod(runtime.newJavaMethod("takes one or two arguments, and will then use these arguments as code to decide what elements should be removed from the list. the method will return the receiver.", new JavaMethod("removeIf!") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositionalUnevaluated("argOrCode")
+                    .withOptionalPositionalUnevaluated("code")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
+                    Runtime runtime = context.runtime;
+                    Object onAsList = context.runtime.list.convertToThis(on, message, context);
+                    
+                    List<Object> ls = ((IokeList)IokeObject.data(onAsList)).list;
+                    
+                    switch(message.getArgumentCount()) {
+                    case 1: {
+                        IokeObject code = IokeObject.as(message.getArguments().get(0), context);
+
+                        for(Iterator<Object> iter = ls.iterator(); iter.hasNext();) {
+                            Object obj = iter.next();
+                            if(IokeObject.isTrue(code.evaluateCompleteWithReceiver(context, context.getRealContext(), obj))) {
+                                iter.remove();
+                            }
+                        }
+                        break;
+                    }
+                    case 2: {
+                        LexicalContext c = new LexicalContext(context.runtime, context, "Lexical activation context for List#map!", message, context);
+                        String name = IokeObject.as(message.getArguments().get(0), context).getName();
+                        IokeObject code = IokeObject.as(message.getArguments().get(1), context);
+
+                        for(Iterator<Object> iter = ls.iterator(); iter.hasNext();) {
+                            Object obj = iter.next();
+                            c.setCell(name, obj);
+                            if(IokeObject.isTrue(code.evaluateCompleteWithoutExplicitReceiver(c, c.getRealContext()))) {
+                                iter.remove();
+                            }
+                        }
+                        break;
+                    }
+                    }
+                    return on;
+                }
+            }));
+            
     }
 
     private static List<Object> flatten(List<Object> list) {

@@ -237,8 +237,33 @@ describe(List,
     )
   )
 
-  describe("deleteIf!",
-    it("should have tests")
+  describe("removeIf!",
+    it("should change the list",
+      x = [1,2,3]
+      x removeIf!(>1)
+      x should == [1]
+    )
+
+    it("should return the list",
+      x = [1, 2, 3]
+      x removeIf!(>1) should be same(x)
+    )
+
+    it("should take one code argument and apply that to all values",
+      [] removeIf!(>1) should == []
+      [1,2,3] removeIf!(>1) should == [1]
+      [1,2,3] removeIf!(. true) should == []
+      [nil,false,nil] removeIf!(nil?) should == [false]
+      [nil,false,true] removeIf!(==2) should == [nil,false,true]
+    )
+
+    it("should take two arguments and use that as a predicate lexical block",
+      [] removeIf!(x, x>1) should == []
+      [1,2,3] removeIf!(x, x>1) should == [1]
+      [1,2,3] removeIf!(x, true) should == []
+      [nil,false,nil] removeIf!(x, x nil?) should == [false]
+      [nil,false,true] removeIf!(x, x==2) should == [nil,false,true]
+    )
   )
 
   describe("flatten",
@@ -967,10 +992,6 @@ describe(List,
     )
   )
 
-;   describe("removeIf!", 
-;     it("should have tests")
-;   )
-  
   describe("first", 
     it("should return nil for an empty list", 
       [] first should be nil
