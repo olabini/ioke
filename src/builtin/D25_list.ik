@@ -66,3 +66,9 @@ List compact = method(
   newList = self mimic
   newList compact!
   newList)
+
+List assoc = method(
+  "takes an object, and returns the first list in this list that has that object as its first element. if it can't be found, returns nil.",
+  obj,
+  self find(el, 
+    el mimics?(List) && el length > 0 && el[0] == obj))

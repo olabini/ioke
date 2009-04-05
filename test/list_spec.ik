@@ -34,7 +34,25 @@ describe(List,
   )
 
   describe("assoc",
-    it("should have tests")
+    it("should return nil for an empty list",
+      [] assoc(:foo) should be nil
+    )
+
+    it("should return nil for a list where it can't find the argument",
+      [[:bar], [:blah]] assoc(:foo) should be nil
+    )
+
+    it("should not fail for a list that includes stuff that isn't lists",
+      [1,2,3,4] assoc(:foo) should be nil
+    )
+
+    it("should return a list if it matches",
+      [[:abc], [:foo, 1, 2], [:blah]] assoc(:foo) should == [:foo, 1, 2]
+    )
+
+    it("should return the first list that matches",
+      [[:abc], [:foo, 1, 2], [:blah], [:foo, 3, 2]] assoc(:foo) should == [:foo, 1, 2]
+    )
   )
 
   describe("collect!",
