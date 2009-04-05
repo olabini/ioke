@@ -84,3 +84,9 @@ List reverse = method(
   newList = self mimic
   newList reverse!
   newList)
+
+List flatten = method(
+  "returns a new list that is a mimic of the current list, with all elements flattened in it",
+  newList = self mimic
+  newList flatten!
+  newList)

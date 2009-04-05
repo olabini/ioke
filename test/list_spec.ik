@@ -179,11 +179,72 @@ describe(List,
   )
 
   describe("flatten",
-    it("should have tests")
+    it("should return an empty list for an empty list",
+      [] flatten should == []
+    )
+
+    it("should not touch non-list elements",
+      [1,2,3,:foo] flatten should == [1,2,3,:foo]
+      [1,2,3,set(:foo)] flatten should == [1,2,3,set(:foo)]
+    )
+
+    it("should flatten all lists into the end result, recursively",
+      [[1]] flatten should == [1]
+      [2, [1], 1] flatten should == [2, 1, 1]
+      [[2, [1]], 1] flatten should == [2, 1, 1]
+      [[2, [1]], [[1]]] flatten should == [2, 1, 1]
+      [[[2, [1]], [[1]]]] flatten should == [2, 1, 1]
+    )
+
+    it("should not modify the receiver",
+      x = [[1]]
+      x flatten
+      x should == [[1]]
+    )
+
+    it("should not modify any of the internal lists",
+      int = [1,[2],3]
+      x = [int, int]
+      x flatten
+      int should == [1,[2],3]
+    )
   )
 
   describe("flatten!",
-    it("should have tests")
+    it("should return an empty list for an empty list",
+      [] flatten! should == []
+    )
+
+    it("should not touch non-list elements",
+      [1,2,3,:foo] flatten! should == [1,2,3,:foo]
+      [1,2,3,set(:foo)] flatten! should == [1,2,3,set(:foo)]
+    )
+
+    it("should flatten all lists into the end result, recursively",
+      [[1]] flatten! should == [1]
+      [2, [1], 1] flatten! should == [2, 1, 1]
+      [[2, [1]], 1] flatten! should == [2, 1, 1]
+      [[2, [1]], [[1]]] flatten! should == [2, 1, 1]
+      [[[2, [1]], [[1]]]] flatten! should == [2, 1, 1]
+    )
+
+    it("should modify the receiver",
+      x = [[1]]
+      x flatten!
+      x should == [1]
+    )
+
+    it("should return the receiver",
+      x = [[1]]
+      x flatten! should be same(x)
+    )
+
+    it("should not modify any of the internal lists",
+      int = [1,[2],3]
+      x = [int, int]
+      x flatten!
+      int should == [1,[2],3]
+    )
   )
 
   describe("index",
