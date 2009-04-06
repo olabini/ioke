@@ -99,9 +99,11 @@ ISpec do(
 
       formatters = dict(
         specdoc: ISpec Formatter SpecDocFormatter,
-        progress: ISpec Formatter ProgressBarFormatter)
+        progress: ISpec Formatter ProgressBarFormatter,
+        html: ISpec Formatter HtmlFormatter)
       formatters[:s] = formatters[:specdoc]
       formatters[:p] = formatters[:progress]
+      formatters[:h] = formatters[:html]
 
       banner = "Usage: ispec (FILE|DIRECTORY|GLOB)* [options]"
 
