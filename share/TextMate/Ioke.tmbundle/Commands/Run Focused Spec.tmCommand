@@ -5,8 +5,7 @@
 	<key>beforeRunningCommand</key>
 	<string>saveModifiedFiles</string>
 	<key>command</key>
-	<string>OUTPUT=`ispec --color=false --line=$TM_LINE_NUMBER $TM_FILEPATH`
-echo "&lt;pre&gt;$OUTPUT&lt;/pre&gt;"</string>
+	<string>ispec --color=false --format=html --line=$TM_LINE_NUMBER $TM_FILEPATH</string>
 	<key>input</key>
 	<string>none</string>
 	<key>keyEquivalent</key>

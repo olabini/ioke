@@ -92,6 +92,82 @@ ISpec do(
       startDump      = method(println(""))
       pass           = method(+rest, +:krest, nil) ;ignore other methods
     )
+    
+    HtmlFormatter = ISpec Formatter TextFormatter mimic do(
+      use("blank_slate")
+      html = BlankSlate create(fn(bs, 
+            bs pass = method(+args, +:attrs, 
+              args "<%s%:[ %s=\"%s\"%]>%[%s%]</%s>\n" format(
+                currentMessage name, attrs, args, currentMessage name))))
+                
+      start = method(exampleCount,
+        super(exampleCount)
+        html style(type: "text/css",
+          ".spec { 
+             padding: 3px; 
+             margin: 3px; 
+           }
+           
+           .exampleGroup { 
+             background-color: #005500; 
+             padding: 5px;
+             color: white
+           }
+           
+           .failed { 
+             background-color: #ffaaaa;
+             border-left: solid 3px #ff1122;
+           }
+           
+           .passed { 
+             background-color: #33ff55;
+             border-left: solid 3px #005500;
+           }
+           
+           .pending { 
+             background-color: #ffee77;
+             border-left: solid 3px #ffee22;
+           }"           
+        ) println
+      )
+      
+      stackTraceAsLink = method(describeContext, name nil,
+        if(describeContext cell?(:shouldMessage), 
+          txmtLink(describeContext shouldMessage, name), 
+          txmtLink(describeContext code, name))
+      )
+      
+      txmtLink = method(code, name,
+        ; txmt://open/?url=file://~/.bash_profile&line=11&column=2
+        name ||= "#{code filename}:#{code line}:#{code position}"
+        html a(href: "txmt://open/?url=file://#{code filename}&line=#{code line}&column=#{code position}", name)
+      )
+      
+      addExampleGroup = method(exampleGroup, 
+        super(exampleGroup)
+        html div(class: "exampleGroup", exampleGroup fullName) println
+      )
+      
+      exampleFailed = method(example, counter, failure,
+        html div(class: "failed spec", 
+          link = stackTraceAsLink(failure condition describeContext, "link")
+          "#{example description} (FAILED: #{failure condition report} #{link})"
+        ) println
+      )
+
+      examplePassed = method(example,
+        html div(class: "passed spec", example description) println
+      )
+
+      examplePending = method(example, message,
+        super(example, message)
+        html div(class: "pending spec", "#{example description} (PENDING: #{message})") println
+      )
+      
+      dumpSummary = method(duration, exampleCount, failureCount, pendingCount, nil)
+      dumpFailure = method(counter, failure, nil)
+      dumpPending = method(nil)
+    )
 
     addExampleGroup = method(exampleGroup, @exampleGroup = exampleGroup)
     start           = method(exampleCount, nil)
