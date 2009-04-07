@@ -51,5 +51,57 @@ describe("ISpec",
         Origin mimic stubs should be empty
       )    
     )
-  )  
+  )
+  
+  describe("Stub",
+    describe("andReturn",
+      it("should return a simple value",
+        foo = Origin mimic do(bar = 5)
+        foo stub!(:bar) andReturn(6)
+        foo bar should == 6
+      )
+      
+      it("should return the most recent of several stubs",
+        foo = Origin mimic do(bar = 5)
+        foo stub!(:bar) andReturn(6)
+        foo stub!(:bar) andReturn(7)
+        foo stub!(:bar) andReturn(8)
+        foo bar should == 8
+      )      
+    )
+    
+    describe("withArgs",
+      it("should return the stubbed value if it matches the given single argument",
+        foo = Origin mimic do(bar = 5)
+        foo stub!(:bar) withArgs(:anArg) andReturn(6)
+        foo bar(:anArg) should == 6
+      )
+      
+      it("should return the stubbed value if it matches the given keyed argument",
+        foo = Origin mimic do(bar = 5)
+        foo stub!(:bar) withArgs(baz: "qux") andReturn(6)
+        foo bar(baz: "qux") should == 6
+      )
+      
+      it("should return the stubbed value if it matches the given mixed argument",
+        foo = Origin mimic do(bar = 5)
+        foo stub!(:bar) withArgs("wuffie", baz: "qux") andReturn(6)
+        foo bar("wuffie", baz: "qux") should == 6
+      )
+    
+      it("should signal ISpec UnexpectedInvocation if no stub matches the given args",
+        foo = Origin mimic do(bar = 5)
+        foo stub!(:bar) withArgs(:arg) andReturn(6)
+        fn(foo bar) should signal(ISpec UnexpectedInvocation)
+      )
+      
+      it("should use the correct stub if there exist multiple stubs on the same method with different expected args",
+        foo = Origin mimic do(bar = 5)
+        foo stub!(:bar) andReturn(6)
+        foo stub!(:bar) withArgs(:right) andReturn(7)
+        foo stub!(:bar) withArgs(:wrong, wrong: "again") andReturn(8)
+        foo bar(:right) should == 7
+      )
+    )
+  )
 )
