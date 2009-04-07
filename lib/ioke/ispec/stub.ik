@@ -1,15 +1,25 @@
 ISpec Stubs = Origin mimic do(
   initialize = method(@all_stubs = {})
   
-  on = method(object,
+  on = method(object, cellName nil,
     @all_stubs[object] ||= []
+    if(cellName nil?, 
+      @all_stubs[object], 
+      @all_stubs[object] select(stub, stub cellName == cellName))
   )
   
   addStub = method(object, cellName,
-    on(object) << ISpec Stub mimic(cellName)
+    object cell(cellName) = lecro(
+      ISpec stubs receive(object, cellName, call arguments map(evaluateOn(call ground)))
+    )
+    stub = ISpec Stub mimic(cellName)
+    on(object) << stub
+    stub
   )
   
-  clear! = method(@stubs = {})
+  receive = method(object, cellName, arguments, nil
+    on(object, cellName) find(stub, stub matches?(arguments)) returnValue
+  )
 )
 
 ISpec stubs = ISpec Stubs mimic
@@ -25,5 +35,12 @@ ISpec ExtendedDefaultBehavior do(
 )
 
 ISpec Stub = Origin mimic do(
-  initialize = method(cellName, @cellName = cellName)
+  initialize = method(cellName, 
+    @cellName = cellName
+    @returnValue = nil
+  )
+  
+  matches? = true
+  
+  andReturn = method(returnValue, @returnValue = returnValue)
 )
