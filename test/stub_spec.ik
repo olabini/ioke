@@ -9,6 +9,12 @@ describe("ISpec",
         foo stubs length should == 1
         foo stubs first cellName should == :bar
       )
+      
+      it("should replace the return value of the stubbed method",
+        foo = Origin mimic do(bar = 5)
+        foo stub(:bar) andReturn(6)
+        foo bar should == 6
+      )
     )
     
     describe("stubs",
