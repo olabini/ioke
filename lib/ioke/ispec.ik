@@ -8,6 +8,7 @@ use("ispec/expectations")
 use("ispec/extendedDefaultBehavior")
 use("ispec/describeContext")
 use("ispec/runner")
+use("ispec/stub")
 
 ISpec specifications = []
 
