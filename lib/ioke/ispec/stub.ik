@@ -1,3 +1,5 @@
+ISpec UnexpectedInvocation = Condition mimic
+
 ISpec Stubs = Origin mimic do(
   initialize = method(@all_stubs = {})
   
@@ -12,8 +14,8 @@ ISpec Stubs = Origin mimic do(
     if(on(object, cellName) empty?,
       if(object cell?(cellName), object cell("stubbed:#{cellName}") = object cell(cellName))
     
-      object cell(cellName) = lecro(
-        ISpec stubs receive(object, cellName, call arguments map(evaluateOn(call ground)))
+      object cell(cellName) = fnx(+posArgs, +:namedArgs,
+        ISpec stubs receive(object, cellName, posArgs, namedArgs)
       )
     ) 
 
@@ -22,8 +24,9 @@ ISpec Stubs = Origin mimic do(
     stub
   )
     
-  receive = method(object, cellName, arguments, nil
-    on(object, cellName) find(stub, stub matches?(arguments)) returnValue
+  receive = method(object, cellName, posArgs, namedArgs,
+    foundStub = on(object, cellName) select(stub, stub matches?(posArgs, namedArgs)) last 
+    if(foundStub nil?, error!(ISpec UnexpectedInvocation, message: "couldn't find matching stub for #{cellName}"), foundStub returnValue)
   )
 )
 
@@ -39,13 +42,21 @@ ISpec ExtendedDefaultBehavior do(
   )
 )
 
-ISpec Stub = Origin mimic do(
+ISpec Stub = Origin mimic do(  
   initialize = method(cellName, 
     @cellName = cellName
     @returnValue = nil
+    @expectedArgs = [ [], {} ]
   )
   
-  matches? = true
+  withArgs = method(+posArgs, +:namedArgs,
+    @expectedArgs = [ posArgs, namedArgs ]
+    self
+  )
+  
+  matches? = method(posArgs, namedArgs,
+    [ posArgs, namedArgs ] == @expectedArgs
+  )
   
   andReturn = method(returnValue, @returnValue = returnValue)
 )
