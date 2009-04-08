@@ -208,6 +208,34 @@ describe("ISpec",
         mock should not be satisfied        
       )
       
+      it("should be true if it expects to be invoked twice and has been invoked twice",
+        foo = Origin mimic
+        mock = foo mock!(:bar) times(2)
+        2 times(foo bar)
+        mock should be satisfied
+      )
+      
+      it("should be false if it exepcts to be invoked twice and has been invoked once",
+        foo = Origin mimic
+        mock = foo mock!(:bar) times(2)
+        foo bar
+        mock should not be satisfied        
+      )
+      
+      it("should be true if it expects to be invoked once or twice and is invoked once",
+        foo = Origin mimic
+        mock = foo mock!(:bar) times(1..2)
+        foo bar
+        mock should be satisfied
+      )
+
+      it("should be true if it expects to be invoked once or twice and is invoked once",
+        foo = Origin mimic
+        mock = foo mock!(:bar) times(1..2)
+        2 times(foo bar)
+        mock should be satisfied
+      )
+      
       ; it("should be false if it expects to be invoked any number of times and has not yet been invoked",
       ;   foo = Origin mimic
       ;   mock = foo mock!(:bar) atLeastOnce
