@@ -89,6 +89,12 @@ ISpec do(
     
     invoke = method(@actualCalls += 1. returnValue)
     
-    satisfied? = method(@actualCalls == @expectedCalls)
+    atLeastOnce = method(times(1..(Number Infinity)))
+    
+    satisfied? = method(
+      if(@expectedCalls cell?(:include?),
+        @expectedCalls include?(@actualCalls),
+        @expectedCalls == @actualCalls)
+    )
   )
 )
