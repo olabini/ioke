@@ -78,7 +78,14 @@ ISpec do(
   
   Mock = Stub mimic do(
     expectedCalls = 1
+    
     actualCalls   = 0
+    
+    never = method(times(0))
+    
+    once  = method(times(1))
+    
+    times = method(n, @expectedCalls = n. self)
     
     invoke = method(@actualCalls += 1. returnValue)
     
