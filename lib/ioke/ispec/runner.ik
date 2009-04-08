@@ -204,7 +204,7 @@ ISpec do(
         fn(c, c describeContext = newContext. if(c cell?(:shouldMessage), newContext shouldMessage = c shouldMessage))),
       if(code, 
         ;; don't evaluate directly, instead send it to a macro on the newContext, which can give it a real back trace context
-        code evaluateOn(newContext, newContext),
+        code evaluateOn(newContext, newContext). ISpec stubs verifyAndClear!,
 
         error!(ISpec ExamplePending, text: "Not Yet Implemented")))
 

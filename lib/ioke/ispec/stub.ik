@@ -1,27 +1,14 @@
 ISpec do(
-  UnexpectedInvocation = Condition mimic
+  UnexpectedInvocation = ISpec Condition mimic
   
   Stubs = Origin mimic do(
-    initialize = method(@all_stubs = {})
+    initialize = method(@stubs = [])
 
-    on = method(object, cellName nil,
-      @all_stubs[object] ||= []
-      if(cellName nil?, 
-        @all_stubs[object], 
-        @all_stubs[object] select(stub, stub cellName == cellName))
-    )
+    on = method(object, @stubs select(stub, stub owner == object))
 
     addStub = method(object, cellName, stubBase ISpec Stub,
-      if(on(object, cellName) empty?,
-        if(object cell?(cellName), object cell("stubbed:#{cellName}") = object cell(cellName))
-
-        object cell(cellName) = fnx(+posArgs, +:namedArgs,
-          ISpec stubs receive(object, cellName, posArgs, namedArgs)
-        )
-      ) 
-
-      stub = stubBase create(cellName)
-      on(object) << stub
+      stub = stubBase create(object, cellName)
+      stubs << stub
       stub
     )
     
@@ -29,12 +16,22 @@ ISpec do(
       addStub(object, cellName, ISpec Mock)
     )
 
-    receive = method(object, cellName, posArgs, namedArgs,
-      foundStub = on(object, cellName) select(stub, stub matches?(posArgs, namedArgs)) last 
+    invoke = method(object, cellName, posArgs, namedArgs,
+      foundStub = on(object) select(stub, stub cellName == cellName && stub matches?(posArgs, namedArgs)) last 
       if(foundStub nil?, 
-        error!(ISpec UnexpectedInvocation, message: "couldn't find matching stub for #{cellName}"), 
+        error!(ISpec UnexpectedInvocation, text: "couldn't find matching mock or stub for #{cellName}"), 
         foundStub invoke)
     )
+    
+    allMocks = method(@stubs select(mimics?(ISpec Mock)))
+    
+    verifyAndClear! = method(raiseOnFail enabled?,
+      if(raiseOnFail, allMocks each(mock, unless(mock satisfied?, mock signal!)))
+      @stubs each(stub, stub removeStub!)
+      @stubs clear!
+    )
+    
+    enabled? = true
   )
   
   stubs = ISpec Stubs mimic
@@ -54,8 +51,10 @@ ISpec do(
   )
   
   Stub = Origin mimic do(
-    create = method(cellName, 
-      self with(cellName: cellName)
+    create = method(object, cellName, 
+      stub = self with(owner: object, cellName: cellName)
+      stub performStub!
+      stub
     )
     
     returnValue = nil
@@ -73,28 +72,73 @@ ISpec do(
     
     invoke = method(returnValue)
 
-    andReturn = method(returnValue, @returnValue = returnValue)
+    andReturn = method(returnValue, @returnValue = returnValue. self)
+    
+    performStub! = method(
+      unless(alreadyStubbed?,
+        @owner cell("stubbed?:#{@cellName}") = true
+
+        if(@owner cell?(@cellName), @owner cell("hidden:#{@cellName}") = @owner cell(@cellName))
+
+        @owner cell(@cellName) = fnx(+posArgs, +:namedArgs,
+          ISpec stubs invoke(@owner, @cellName, posArgs, namedArgs))
+      ) 
+    )
+    
+    removeStub! = method(
+      if(alreadyStubbed?,
+        @owner removeCell!(@cellName)
+        @owner removeCell!("stubbed?:#{@cellName}")
+        if(@owner cell?("hidden:#{@cellName}"), 
+          @owner cell(@cellName) = @owner cell("hidden:#{@cellName}")
+          @owner removeCell!("hidden:#{@cellName}"))
+      )
+    )
+    
+    alreadyStubbed? = method(@owner cell?("stubbed?:#{@cellName}"))
   )
   
   Mock = Stub mimic do(
     expectedCalls = 1
-    
     actualCalls   = 0
-    
     never = method(times(0))
-    
     once  = method(times(1))
-    
     times = method(n, @expectedCalls = n. self)
-    
     invoke = method(@actualCalls += 1. returnValue)
-    
     atLeastOnce = method(times(1..(Number Infinity)))
     
     satisfied? = method(
       if(@expectedCalls cell?(:include?),
         @expectedCalls include?(@actualCalls),
         @expectedCalls == @actualCalls)
+    )
+    
+    signal! = method(
+      expectedMessage = if(@expectedCalls cell?(:include?), 
+        "between #{@expectedCalls from} and #{expectedCalls to} time(s)",
+        ordinalize(@expectedCalls))
+      actualMessage = ordinalize(@actualCalls)
+        
+      error!(ISpec UnexpectedInvocation, 
+        text: "#{@cellName} mock expected to be called #{expectedMessage}, but it was called #{actualMessage}")
+    )
+    
+    ordinalize = method(n,
+      cond(
+        n == 0, "never",
+        n == 1, "once",
+        "exactly #{n} times")
+    )
+  )
+  
+  ShouldContext receive = method(
+    ISpec ReceiveMatcher with(shouldContext: self)
+  )
+  
+  ReceiveMatcher = Origin mimic do(
+    pass = macro(
+      args = call message arguments map(evaluateOn(call ground))
+      shouldContext realValue mock!(call message name) withArgs(*args)
     )
   )
 )
