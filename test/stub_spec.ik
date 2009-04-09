@@ -306,35 +306,49 @@ describe("ISpec",
   
   describe("ShouldContext",      
     describe("receive",
-      it("should pass a spec if a mocked method with an expected call count of zero is never called",
-        ISpec stubs verifyAndClear!
-        foo = Origin mimic
-        foo should receive bar never
-        ISpec stubs verifyAndClear!(true)
+      it("should satisfy expectations of never being called",
+        fn(Origin mimic should not receive bar) should satisfyExpectations
+        fn(Origin mimic should receive bar) should not satisfyExpectations
       )
       
-      it("should pass a spec if its mocked method is called once",
-        ISpec stubs verifyAndClear!
-        foo = Origin mimic
-        foo should receive bar
-        foo bar
-        ISpec stubs verifyAndClear!(true)
+      it("should satisfy expectations of being called multiple times",
+        fn(foo = Origin mimic. foo should receive bar times(1). foo bar) should satisfyExpectations
+        fn(foo = Origin mimic. foo should receive bar times(1). 2 times(foo bar)) should not satisfyExpectations
+        fn(foo = Origin mimic. foo should receive bar times(2). 2 times(foo bar)) should satisfyExpectations
       )
       
+      it("should satisfy expectations of multiple different kinds of calls",
+        fn(foo = Origin mimic. foo should receive(bar, baz). foo bar) should not satisfyExpectations
+        fn(foo = Origin mimic. foo should receive(bar, baz). foo bar. foo baz) should satisfyExpectations
+        fn(foo = Origin mimic. foo should not receive(bar, baz)) should satisfyExpectations
+        fn(foo = Origin mimic. foo should not receive(bar, baz). foo bar) should not satisfyExpectations
+        fn(foo = Origin mimic. foo should not receive(bar, baz). foo baz) should not satisfyExpectations
+      )
+        
       it("should return the value from its mock",
-        ISpec stubs verifyAndClear!
-        foo = Origin mimic
-        foo should receive bar andReturn(5)
-        foo bar should == 5
-        ISpec stubs verifyAndClear!(true)
+        fn(
+          foo = Origin mimic
+          foo should receive bar andReturn(6)
+          foo bar should == 6
+        ) should satisfyExpectations
+        
+        fn(
+          foo = Origin mimic
+          foo should receive bar(:withArg) andReturn(6)
+          foo bar(:withArg) should == 6
+        ) should satisfyExpectations
       )
       
-      it("should set an expectation with an argument",
-        ISpec stubs verifyAndClear!
-        foo = Origin mimic
-        foo should receive bar(5) andReturn(6)
-        foo bar(5) should == 6
-        ISpec stubs verifyAndClear!(true)
+      it("should satisfy expectations with arguments",
+        fn(foo = Origin mimic. foo should receive bar(5). foo bar) should not satisfyExpectations
+        fn(foo = Origin mimic. foo should receive bar(5). foo bar(5)) should satisfyExpectations
+      )
+      
+      it("should satisfy expectations with arguments for multiple calls",
+        fn(foo = Origin mimic. foo should receive(bar, bar(5)). foo bar(5)) should not satisfyExpectations
+        fn(foo = Origin mimic. foo should receive(bar, bar(5)). foo bar. foo bar(5)) should satisfyExpectations
+        fn(foo = Origin mimic. foo should receive(bar(5), bar(6)). foo bar. foo bar(6)) should not satisfyExpectations
+        fn(foo = Origin mimic. foo should receive(bar(5), bar(6)). foo bar(5). foo bar(6)) should satisfyExpectations
       )
     )
   )

@@ -31,7 +31,7 @@ ISpec do(
       @stubs clear!
     )
     
-    enabled? = true
+    enabled? = Ground true
   )
   
   stubs = ISpec Stubs mimic
@@ -59,7 +59,7 @@ ISpec do(
     
     returnValue = nil
     expectedArgs = [ [], {} ]
-    satisfied? = true
+    satisfied? = Ground true
 
     withArgs = method(+posArgs, +:namedArgs,
       @expectedArgs = [ posArgs, namedArgs ]
@@ -76,7 +76,7 @@ ISpec do(
     
     performStub! = method(
       unless(alreadyStubbed?,
-        @owner cell("stubbed?:#{@cellName}") = true
+        @owner cell("stubbed?:#{@cellName}") = Ground true
 
         if(@owner cell?(@cellName), @owner cell("hidden:#{@cellName}") = @owner cell(@cellName))
 
@@ -131,14 +131,38 @@ ISpec do(
     )
   )
   
-  ShouldContext receive = method(
-    ISpec ReceiveMatcher with(shouldContext: self)
+  ShouldContext satisfyExpectations = method(
+    fn(
+      ISpec stubs verifyAndClear!(Ground false)
+      self realValue call
+      ISpec stubs verifyAndClear!(Ground true)
+    ) should not signal(ISpec UnexpectedInvocation)
   )
   
-  ReceiveMatcher = Origin mimic do(
-    pass = macro(
-      args = call message arguments map(evaluateOn(call ground))
-      shouldContext realValue mock!(call message name) withArgs(*args)
+  NotShouldContext satisfyExpectations = method(
+    fn(
+      ISpec stubs verifyAndClear!(Ground false)
+      self realValue call
+      ISpec stubs verifyAndClear!(Ground true)
+    ) should signal(ISpec UnexpectedInvocation)
+  )
+  
+  ShouldContext receive = macro(
+    if(call arguments empty?,
+      Origin mimic with(pass: generateMock(call message next, call ground)),
+      call arguments each(expectation, generateMock(expectation, call ground))
     )
   )
+  
+  NotShouldContext receive = macro(
+    if(call arguments empty?,
+      Origin mimic with(pass: generateMock(call message next, call ground) never),
+      call arguments each(expectation, generateMock(expectation, call ground) never)
+    )
+  )
+  
+  ShouldContext generateMock = method(message, ground,
+    self realValue mock!(message name) withArgs(*(message arguments map(evaluateOn(ground))))
+  )
+  
 )
