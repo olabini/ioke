@@ -52,7 +52,14 @@ describe("ISpec",
         foo stub!(:bar) andReturn(6)
         foo stub!(:bar) andReturn(7)
         ISpec stubs on(foo) map(returnValue) sort should == [ 6, 7 ]      
-      )      
+      )
+      
+      it("should accept a set of key-value pairs as stub parameters",
+        foo = Origin mimic
+        foo stub!(bar: 5, baz: 6)
+        foo bar should == 5
+        foo baz should == 6
+      )
     )
     
     describe("mock!",    
@@ -102,7 +109,7 @@ describe("ISpec",
         foo mock!(:bar) andReturn(6)
         foo mock!(:bar) andReturn(7)
         ISpec stubs on(foo) map(returnValue) sort should == [ 6, 7 ]      
-      )
+      )      
     )
     
     describe("stubs",
@@ -307,7 +314,7 @@ describe("ISpec",
   describe("ShouldContext",      
     describe("receive",
       it("should satisfy expectations of never being called",
-        fn(Origin mimic should not receive bar) should satisfyExpectations
+        ; fn(Origin mimic should not receive bar) should satisfyExpectations
         fn(Origin mimic should receive bar) should not satisfyExpectations
       )
       
@@ -349,6 +356,13 @@ describe("ISpec",
         fn(foo = Origin mimic. foo should receive(bar, bar(5)). foo bar. foo bar(5)) should satisfyExpectations
         fn(foo = Origin mimic. foo should receive(bar(5), bar(6)). foo bar. foo bar(6)) should not satisfyExpectations
         fn(foo = Origin mimic. foo should receive(bar(5), bar(6)). foo bar(5). foo bar(6)) should satisfyExpectations
+      )
+      
+      it("should chain expectations on top of each call to receive",
+        ; fn(foo = Origin mimic. foo should receive(bar, baz) never) should satisfyExpectations
+        ; fn(foo = Origin mimic. foo should receive(bar, baz) never. foo bar) should not satisfyExpectations
+        ; fn(foo = Origin mimic. foo should receive(bar, baz) never. foo baz) should not satisfyExpectations
+        ; fn(foo = Origin mimic. foo should receive(bar, baz) never. foo bar. foo baz) should not satisfyExpectations
       )
     )
   )
