@@ -105,16 +105,23 @@ ISpec do(
   Mock = Stub mimic do(
     expectedCalls = 1
     actualCalls   = 0
+    negated?      = false
+    
     never = method(times(0))
     once  = method(times(1))
     times = method(n, @expectedCalls = n. self)
-    invoke = method(@actualCalls += 1. returnValue)
     atLeastOnce = method(times(1..(Number Infinity)))
+
+    invoke = method(@actualCalls += 1. returnValue)
+    
+    negate! = method(self negated? = true. self)
     
     satisfied? = method(
-      if(@expectedCalls cell?(:include?),
+      expectationMatched? = if(@expectedCalls cell?(:include?),
         @expectedCalls include?(@actualCalls),
         @expectedCalls == @actualCalls)
+      
+      expectationMatched? xor negated?
     )
     
     signal! = method(
@@ -155,14 +162,26 @@ ISpec do(
   ShouldContext receive = macro(
     if(call arguments empty?,
       Origin mimic with(pass: generateMock(call message next, call ground)),
-      call arguments each(expectation, generateMock(expectation, call ground))
+      
+      furtherExpectations = call message next
+      call arguments each(expectation, 
+        mock = generateMock(expectation, call ground)
+        unless(furtherExpectations nil? || furtherExpectations terminator?, furtherExpectations sendTo(mock))
+        mock)
+      Origin mimic do(pass = method(nil))
     )
   )
   
   NotShouldContext receive = macro(
     if(call arguments empty?,
-      Origin mimic with(pass: generateMock(call message next, call ground) never),
-      call arguments each(expectation, generateMock(expectation, call ground) never)
+      Origin mimic with(pass: generateMock(call message next, call ground) negate!),
+
+      furtherExpectations = call message next
+      call arguments each(expectation, 
+        mock = generateMock(expectation, call ground) negate!
+        unless(furtherExpectations nil? || furtherExpectations terminator?, furtherExpectations sendTo(mock))
+        mock)
+      Origin mimic do(pass = method(nil))
     )
   )
   
