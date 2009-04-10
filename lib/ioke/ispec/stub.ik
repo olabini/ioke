@@ -37,8 +37,12 @@ ISpec do(
   stubs = ISpec Stubs mimic
   
   ExtendedDefaultBehavior do(
-    stub! = method("adds a stub to this object", cellName,
-      ISpec stubs addStub(self, cellName)
+    stub! = method("adds a stub to this object", cellName nil, +:cellNamesAndReturnValues,
+      if(!cellName nil?,
+        ISpec stubs addStub(self, cellName),
+        cellNamesAndReturnValues each(pair,
+          ISpec stubs addStub(self, pair key) andReturn(pair value))
+      )
     )
     
     mock! = method("adds a mock to this object", cellName,
@@ -131,20 +135,21 @@ ISpec do(
     )
   )
   
+  ShouldContext signalMock! = method(
+    failFn = fn(ISpec stubs verifyAndClear!(Ground false). self realValue call. ISpec stubs verifyAndClear!(Ground true))
+    signalled = "none"
+    bind(rescue(ISpec UnexpectedInvocation, fn(c, signalled = c)), failFn call)
+    signalled
+  )
+
   ShouldContext satisfyExpectations = method(
-    fn(
-      ISpec stubs verifyAndClear!(Ground false)
-      self realValue call
-      ISpec stubs verifyAndClear!(Ground true)
-    ) should not signal(ISpec UnexpectedInvocation)
+    if(signalMock! mimics?(ISpec UnexpectedInvocation),
+      error!(ISpec ExpectationNotMet, text: "expected no mock failure from satisfying expectation specified by #{realValue code}", shouldMessage: self shouldMessage))
   )
   
   NotShouldContext satisfyExpectations = method(
-    fn(
-      ISpec stubs verifyAndClear!(Ground false)
-      self realValue call
-      ISpec stubs verifyAndClear!(Ground true)
-    ) should signal(ISpec UnexpectedInvocation)
+    unless(signalMock! mimics?(ISpec UnexpectedInvocation),
+      error!(ISpec ExpectationNotMet, text: "expected a mock failure from satisfying expectation specified by #{realValue code}", shouldMessage: self shouldMessage))
   )
   
   ShouldContext receive = macro(
