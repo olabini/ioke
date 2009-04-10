@@ -131,7 +131,7 @@ ISpec do(
       actualMessage = ordinalize(@actualCalls)
         
       error!(ISpec UnexpectedInvocation, 
-        text: "#{@cellName} mock expected to be called #{expectedMessage}, but it was called #{actualMessage}")
+        text: "'#{@cellName}' expected to be called #{expectedMessage}, but it was called #{actualMessage}")
     )
     
     ordinalize = method(n,
@@ -150,13 +150,13 @@ ISpec do(
   )
 
   ShouldContext satisfyExpectations = method(
-    if(signalMock! mimics?(ISpec UnexpectedInvocation),
-      error!(ISpec ExpectationNotMet, text: "expected no mock failure from satisfying expectation specified by #{realValue code}", shouldMessage: self shouldMessage))
+    if((signal = signalMock!) mimics?(ISpec UnexpectedInvocation),
+      error!(ISpec ExpectationNotMet, text: "#{signal text}, code: #{realValue code}", shouldMessage: self shouldMessage))
   )
   
   NotShouldContext satisfyExpectations = method(
-    unless(signalMock! mimics?(ISpec UnexpectedInvocation),
-      error!(ISpec ExpectationNotMet, text: "expected a mock failure from satisfying expectation specified by #{realValue code}", shouldMessage: self shouldMessage))
+    unless((signal = signalMock!) mimics?(ISpec UnexpectedInvocation),
+      error!(ISpec ExpectationNotMet, text: "#{signal text}, code: #{realValue code}", shouldMessage: self shouldMessage))
   )
   
   ShouldContext receive = macro(
@@ -187,6 +187,5 @@ ISpec do(
   
   ShouldContext generateMock = method(message, ground,
     self realValue mock!(message name) withArgs(*(message arguments map(evaluateOn(ground))))
-  )
-  
+  ) 
 )
