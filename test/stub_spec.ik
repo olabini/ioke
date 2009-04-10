@@ -286,8 +286,8 @@ describe("ISpec",
         2 times(foo bar)
         mock should be satisfied
       )
-    ) 
-
+    )
+    
     describe("atLeastOnce",
       it("should be not be satisfied if it expects to be invoked any number of times and has not yet been invoked",
         foo = Origin mimic
@@ -309,12 +309,40 @@ describe("ISpec",
         mock should be satisfied        
       )
     )
+    
+    describe("negate!",
+      it("should be satisfied if it expects to never be called once and is not called once",
+        foo = Origin mimic
+        mock = foo mock!(:bar) once negate!
+        mock should be satisfied
+      )
+      
+      it("should not be satisfied if it expects to never be called once and is called once",
+        foo = Origin mimic
+        mock = foo mock!(:bar) once negate!
+        foo bar
+        mock should not be satisfied
+      )
+      
+      it("should be satisfy complex argument calls",
+        foo = Origin mimic
+        mock = foo mock!(:bar) times(2..3) negate!
+        foo bar
+        mock should be satisfied
+        foo bar
+        mock should not be satisfied
+        foo bar
+        mock should not be satisfied
+        foo bar
+        mock should be satisfied
+      )
+    )
   )
   
   describe("ShouldContext",      
     describe("receive",
       it("should satisfy expectations of never being called",
-        ; fn(Origin mimic should not receive bar) should satisfyExpectations
+        fn(Origin mimic should not receive bar) should satisfyExpectations
         fn(Origin mimic should receive bar) should not satisfyExpectations
       )
       
@@ -357,12 +385,26 @@ describe("ISpec",
         fn(foo = Origin mimic. foo should receive(bar(5), bar(6)). foo bar. foo bar(6)) should not satisfyExpectations
         fn(foo = Origin mimic. foo should receive(bar(5), bar(6)). foo bar(5). foo bar(6)) should satisfyExpectations
       )
+
+      it("should satisfy negated expectations with arguments for multiple calls",
+        fn(foo = Origin mimic. foo should not receive(bar, bar(5))) should satisfyExpectations
+        fn(foo = Origin mimic. foo should not receive(bar, bar(5)). foo bar(5)) should not satisfyExpectations
+        fn(foo = Origin mimic. foo should not receive(bar, bar(5)). foo bar. foo bar(5)) should not satisfyExpectations
+        fn(foo = Origin mimic. foo should not receive(bar(5), bar(6)). foo bar(5). foo bar(6)) should not satisfyExpectations
+      )
       
-      it("should chain expectations on top of each call to receive",
-        ; fn(foo = Origin mimic. foo should receive(bar, baz) never) should satisfyExpectations
-        ; fn(foo = Origin mimic. foo should receive(bar, baz) never. foo bar) should not satisfyExpectations
-        ; fn(foo = Origin mimic. foo should receive(bar, baz) never. foo baz) should not satisfyExpectations
-        ; fn(foo = Origin mimic. foo should receive(bar, baz) never. foo bar. foo baz) should not satisfyExpectations
+      it("should chain expectations",
+        fn(foo = Origin mimic. foo should receive(bar, baz) never) should satisfyExpectations
+        fn(foo = Origin mimic. foo should receive(bar, baz) never. foo bar) should not satisfyExpectations
+        fn(foo = Origin mimic. foo should receive(bar, baz) never. foo baz) should not satisfyExpectations
+        fn(foo = Origin mimic. foo should receive(bar, baz) never. foo bar. foo baz) should not satisfyExpectations        
+      )
+      
+      it("should chain negated expectations",
+        fn(foo = Origin mimic. foo should not receive(bar, baz) once) should satisfyExpectations
+        fn(foo = Origin mimic. foo should not receive(bar, baz) once. foo bar) should not satisfyExpectations
+        fn(foo = Origin mimic. foo should not receive(bar, baz) once. foo baz) should not satisfyExpectations
+        fn(foo = Origin mimic. foo should not receive(bar, baz) once. foo bar. foo baz) should not satisfyExpectations
       )
     )
   )
