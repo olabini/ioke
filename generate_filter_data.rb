@@ -6,7 +6,7 @@ begin
   commit_lines = `git branch -v --no-color`.to_a
   commit = commit_lines.grep(/^\* /).first.split[2]
 rescue Exception
-  commit = `hg heads`.to_a[0].split[1]
+  commit = "???"
 end
 
 File.open("version_data.properties", "w") do |f|

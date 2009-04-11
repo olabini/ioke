@@ -18,12 +18,6 @@ public abstract class Lexer extends org.antlr.runtime.Lexer {
         super(input,state);
     }
 
-    public Token nextToken() {
-        Token t = super.nextToken();
-        //        System.err.println("RETURNING TOKEN: " + t);
-        return t;
-    }
-
     @Override
     public void reportError(RecognitionException e) {
         //    displayRecognitionError(this.getTokenNames(), e);

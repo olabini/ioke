@@ -108,7 +108,7 @@ public class Message extends IokeData {
 
         List<Object> newArgs = new ArrayList<Object>();
         for(Object arg : orgMsg.arguments) {
-            if((arg instanceof IokeObject) && IokeObject.isMessage(arg)) {
+            if(IokeObject.isMessage(arg)) {
                 newArgs.add(deepCopy(arg));
             } else {
                 newArgs.add(arg);
