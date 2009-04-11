@@ -17,7 +17,13 @@ ISpec do(
     if(self mimics?(ISpec DescribeContext),
       context surrounding = self)
 
-    call arguments second evaluateOn(context, context)
+    call arguments last evaluateOn(context, context)
+    
+    context options = if(call arguments length == 3,
+      call arguments second,
+      
+      {}
+    ) 
 
     if(self mimics?(ISpec DescribeContext),
       self specs << [:description, context],
