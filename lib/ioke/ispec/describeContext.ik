@@ -1,11 +1,14 @@
 
 ISpec do(
   DescribeContext = Origin mimic do(
+    initialize = method(
+      self specs = []
+      self tags = {}
+    )
+    
     create = method(
       ISpec Runner registerAtExitHook
-      newSelf = mimic
-      newSelf specs = []
-      newSelf)
+      mimic)
 
     stackTraceAsText = method(
       if(cell?(:shouldMessage),
@@ -34,7 +37,7 @@ ISpec do(
       specs each(n,
         insideSuccess = if(n first == :description,
           n second run(reporter),
-          if(options[:pending],
+          if(tags[:pending],
             ISpec runTest(self, n second, nil, reporter),
             ISpec runTest(self, n second, n third, reporter)
           ))
@@ -52,8 +55,8 @@ ISpec do(
       self specs << [:test, shouldText, code]
       ISpec ispec_options exampleAdded(self),
 
-      [>shouldText, options, code]
-      if(options[:pending],
+      [>shouldText, tags, code]
+      if(tags[:pending],
         self specs << [:pending, shouldText],
 
         self specs << [:test, shouldText, code])

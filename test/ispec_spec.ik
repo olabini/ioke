@@ -37,7 +37,7 @@ describe(ISpec DescribeContext,
       context = ISpec DescribeContext create
       context describe("context")
     )
-    it("should create context with options",
+    it("should create context with tags",
       context = ISpec DescribeContext create
       context describe("context", {pending: true},
         .
@@ -56,6 +56,12 @@ describe(ISpec,
   describe("in pending context", {pending: true},
     it("should be pending although has code",
       error!("Pending example is not pending")
+    )
+    
+    describe("with nested context",
+      it("should be pending as well",
+        error!("Pending example is not pending")
+      )
     )
   )
 )
