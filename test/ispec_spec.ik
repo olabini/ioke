@@ -1,6 +1,65 @@
 
 use("ispec")
 
+describe(ISpec DescribeContext,
+  describe("when defining tests",
+    it("should add test code",
+      context = ISpec DescribeContext create
+      context it("test", 
+        code
+      )
+      context specs first first should == :test
+    )
+
+    it("should add pending test without code",
+      context = ISpec DescribeContext create
+      context it("pending test")
+      context specs first first should == :pending
+    )
+
+    it("should add pending test with code",
+      context = ISpec DescribeContext create
+      context it("pending test", {pending: true},
+        code
+      )
+      context specs first first should == :pending
+    )
+  )
+  
+  describe("when describing tests",
+    it("should create context",
+      context = ISpec DescribeContext create
+      context describe("context",
+        .
+      )
+    )
+    it("should create context without code",
+      context = ISpec DescribeContext create
+      context describe("context")
+    )
+    it("should create context with options",
+      context = ISpec DescribeContext create
+      context describe("context", {pending: true},
+        .
+      )
+    )
+  )
+)
+
+describe(ISpec,
+  describe("in context with pending example",
+    it("should be pending", {pending: true},
+      error!("Pending example is not pending")
+    )
+  )
+
+  describe("in pending context", {pending: true},
+    it("should be pending although has code",
+      error!("Pending example is not pending")
+    )
+  )
+)
+
 describe(ISpec Runner OptionParser,
 
   describe("when parsing arguments",

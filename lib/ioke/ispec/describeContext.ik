@@ -28,23 +28,35 @@ ISpec do(
     run = method(
       "runs all the defined descriptions and specs",
       reporter,
-      
+
       reporter addExampleGroup(self)
       success = true
       specs each(n,
         insideSuccess = if(n first == :description,
           n second run(reporter),
-          ISpec runTest(self, n second, n third, reporter))
+          if(options[:pending],
+            ISpec runTest(self, n second, nil, reporter),
+            ISpec runTest(self, n second, n third, reporter)
+          ))
         if(success, success = insideSuccess))
       success
     )
 
-    it = macro(
+    it = dmacro(
       "takes one text argument, and one optional code argument. if the code argument is left out, this spec will be marked as pending",
-      shouldText = call argAt(0)
-      if(call arguments length == 1,
-          self specs << [:pending, shouldText],
-          self specs << [:test, shouldText, call arguments second])
+      [>shouldText]
+      self specs << [:pending, shouldText]
+      ISpec ispec_options exampleAdded(self),
+
+      [>shouldText, code]
+      self specs << [:test, shouldText, code]
+      ISpec ispec_options exampleAdded(self),
+
+      [>shouldText, options, code]
+      if(options[:pending],
+        self specs << [:pending, shouldText],
+
+        self specs << [:test, shouldText, code])
       ISpec ispec_options exampleAdded(self)
     )
   )
