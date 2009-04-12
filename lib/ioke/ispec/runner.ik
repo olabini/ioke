@@ -34,17 +34,16 @@ ISpec do(
         value)
     )
   
-    exampleAdded = method(context,
-      example = context specs last
-      if(!onlyLines empty? && example third kind?("Message"),
-        lines = (example third first line .. example third last line)
+    exampleAdded = method(example,
+      context = example context
+      if(!onlyLines empty? && example code kind?("Message"),
+        lines = (example code first line .. example code last line)
         if(onlyLines any?(o, lines include?(o)),
           specsToRun[context fullName] ||= context with(specs: list())
           specsToRun[context fullName] specs << example)
       )
       unless(onlyMatching empty?,
-        exampleDesc = "#{context fullName} #{example second}"
-        if(onlyMatching any?(o, o === exampleDesc),
+        if(onlyMatching any?(o, o === example fullDescription),
           specsToRun[context fullName] ||= context with(specs: list())
           specsToRun[context fullName] specs << example)
       )
@@ -60,7 +59,7 @@ ISpec do(
       reporter start(0)
       success = true
 
-      specifications = if(specsToRun empty?,  ISpec specifications, specsToRun values)
+      specifications = if(specsToRun empty?,  ISpec DescribeContext specs, specsToRun values)
       specifications each(n,
         insideSuccess = n run(reporter)
         if(success, success = insideSuccess))

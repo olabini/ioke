@@ -1,14 +1,25 @@
 
 ISpec do(
+
   DescribeContext = Origin mimic do(
-    initialize = method(
-      self specs = []
-      self tags = {}
+    describesWhat = nil
+    specs = []
+    surrounding = nil
+    tags = {}
+
+    create = method(surrounding, describesWhat, tags,
+      newContext = mimic
+      newContext describesWhat = describesWhat
+      newContext surrounding = surrounding
+      newContext tags = surrounding tags merge(tags)
+      newContext surrounding specs << self
+      newContext
     )
     
-    create = method(
-      ISpec Runner registerAtExitHook
-      mimic)
+    initialize = method(
+      "created #{self}" println
+      self specs = []
+    )
 
     stackTraceAsText = method(
       if(cell?(:shouldMessage),
@@ -18,14 +29,13 @@ ISpec do(
 
     fullName = method(
       "returns the name of this context, prepended with the surrounding names",
-      if(cell?(:surrounding),
-        "#{surrounding fullName} #{describesWhat}",
-        describesWhat))
+      [if(surrounding, surrounding fullName), describesWhat] compact join(" ")
+    )
 
     onlyWhen = dmacro(
       [>condition, code]
       if(condition,
-	code evaluateOn(call ground, call ground))
+        code evaluateOn(call ground, call ground))
     )
 
     run = method(
@@ -34,33 +44,26 @@ ISpec do(
 
       reporter addExampleGroup(self)
       success = true
-      specs each(n,
-        insideSuccess = if(n first == :description,
-          n second run(reporter),
-          if(tags[:pending],
-            ISpec runTest(self, n second, nil, reporter),
-            ISpec runTest(self, n second, n third, reporter)
-          ))
-        if(success, success = insideSuccess))
+      specs each(spec,
+        insideSuccess = spec run(reporter)
+        if(success, success = insideSuccess)
+      )
       success
     )
 
-    it = dmacro(
+    it = macro(
       "takes one text argument, and one optional code argument. if the code argument is left out, this spec will be marked as pending",
-      [>shouldText]
-      self specs << [:pending, shouldText]
-      ISpec ispec_options exampleAdded(self),
+      shouldText = call arguments first
+      code = if(call arguments length > 1,
+        call arguments last
+      )
+      tags = if(call arguments length == 3,
+        call arguments second
+      )
 
-      [>shouldText, code]
-      self specs << [:test, shouldText, code]
-      ISpec ispec_options exampleAdded(self),
-
-      [>shouldText, tags, code]
-      if(tags[:pending],
-        self specs << [:pending, shouldText],
-
-        self specs << [:test, shouldText, code])
-      ISpec ispec_options exampleAdded(self)
+      example = ISpec Example mimic(self, shouldText, code, tags)
+      self specs << example
+      ISpec ispec_options exampleAdded(example)
     )
   )
 )
