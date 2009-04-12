@@ -184,6 +184,12 @@ public class Number extends IokeData {
         decimal.init();
         number.registerCell("Decimal", decimal);
         
+        IokeObject infinity = new IokeObject(runtime, "A value representing infinity", new Number(RatNum.infinity(1)));
+        infinity.mimicsWithoutCheck(ratio);
+        infinity.setKind("Number Infinity");
+        number.registerCell("Infinity", infinity);
+        runtime.infinity = infinity;
+        
         rational.registerMethod(runtime.newJavaMethod("compares this number against the argument, returning -1, 0 or 1 based on which one is larger. if the argument is a decimal, the receiver will be converted into a form suitable for comparing against a decimal, and then compared - it's not specified whether this will actually call Decimal#<=> or not. if the argument is neither a Rational nor a Decimal, it tries to call asRational, and if that doesn't work it returns nil.", new TypeCheckingJavaMethod("<=>") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
@@ -651,6 +657,21 @@ public class Number extends IokeData {
                     return runtime.newNumber(IntNum.sub(Number.intValue(on),IntNum.one()));
                 }
             }));
+            
+        infinity.registerMethod(obj.runtime.newJavaMethod("Returns a text inspection of the object", new TypeCheckingJavaMethod.WithNoArguments("inspect", infinity) {
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    return method.runtime.newText("Infinity");
+                }
+            }));
+
+        infinity.registerMethod(obj.runtime.newJavaMethod("Returns a brief text inspection of the object", new TypeCheckingJavaMethod.WithNoArguments("notice", infinity) {
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    return method.runtime.newText("Infinity");
+                }
+            }));
+        
 
         integer.registerMethod(runtime.newJavaMethod("Expects one or two arguments. If one argument is given, executes it as many times as the value of the receiving number. If two arguments are given, the first will be an unevaluated name that will receive the current loop value on each repitition. the iteration length is limited to the positive maximum of a Java int", new JavaMethod("times") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
@@ -692,6 +713,6 @@ public class Number extends IokeData {
                         return result;
                     }
                 }
-            }));
+            }));            
     }
 }// Number

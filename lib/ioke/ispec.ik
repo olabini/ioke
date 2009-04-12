@@ -9,6 +9,7 @@ use("ispec/extendedDefaultBehavior")
 use("ispec/describeContext")
 use("ispec/example")
 use("ispec/runner")
+use("ispec/stub")
 
 ISpec ispec_options = method(
   parser = ISpec Runner OptionParser create(System err, System out)

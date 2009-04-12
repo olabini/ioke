@@ -1223,4 +1223,55 @@ describe(Number,
       Number Ratio should mimic(Number Rational)
     )
   )
+  
+  describe(Number Infinity,
+    it("should have the correct kind",
+      Number Infinity kind should == "Number Infinity"
+    )
+    
+    it("should mimic Ratio",
+      Number Infinity should mimic(Number Ratio)
+    )
+    
+    it("should be represented with a descriptive string",
+      Number Infinity notice should == "Infinity"
+    )
+    
+    describe("inspect",
+      it("should validate type of receiver",
+        Number Infinity should checkReceiverTypeOn(:"inspect")
+        x = Origin mimic
+        x cell("inspect") = Number Infinity cell("inspect")
+        fn(x inspect) should signal(Condition Error Type IncorrectType)
+      )
+    )
+
+    describe("notice",
+      it("should validate type of receiver",
+        Number Infinity should checkReceiverTypeOn(:"notice")
+      )
+    )
+    
+    describe("<",
+      it("should not be less than, well, anything",
+        (Number Infinity < 1) should not be true
+      )
+    )
+    
+    describe(">",
+      it("should be greater than, well, everything",
+        (Number Infinity > 31489014839014839014893014839018439184903184390184310943104391048390184309) should be true
+      )
+    )
+    
+    describe("==",
+      it("should be equal to itself",
+        Number Infinity should == Number Infinity
+      )
+    )
+    
+    describe("mimic",
+      it("cannot be mimiced")
+    )
+  )
 )
