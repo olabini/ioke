@@ -16,6 +16,11 @@ describe(ISpec Example,
     example = ISpec Example mimic(ISpec DescribeContext mimic, "example", false, {})
     example pending? should be true
   )
+
+  it("should be failing with fail tag",
+    example = ISpec Example mimic(ISpec DescribeContext mimic, "example", false, {fail: true})
+    example fail? should be true
+  )
 )
 
 describe(ISpec DescribeContext,

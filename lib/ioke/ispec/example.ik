@@ -9,6 +9,10 @@ ISpec do(
       self fullDescription = "#{self context fullName} #{name}"
     )
     
+    fail? = method(
+      tags[:fail]
+    )
+    
     pending? = method(
       tags[:pending] || !code
     )
@@ -34,6 +38,10 @@ ISpec do(
             
             error!(ISpec ExamplePending, text: "Not Yet Implemented")
           )
+        )
+        
+        if(fail?,
+          error!(ISpec Condition, text: "Forced fail"),
         )
         ;; don't evaluate directly, instead send it to a macro on the newContext, which can give it a real back trace context
         code evaluateOn(context, context)
