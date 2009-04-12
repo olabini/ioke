@@ -41,7 +41,7 @@ ISpec do(
         )
         
         if(fail?,
-          error!(ISpec Condition, text: "Forced fail"),
+          error!(ISpec Condition, text: "Forced fail")
         )
         ;; don't evaluate directly, instead send it to a macro on the newContext, which can give it a real back trace context
         code evaluateOn(context, context)
