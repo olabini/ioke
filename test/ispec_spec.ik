@@ -68,6 +68,45 @@ describe(ISpec DescribeContext,
       )
     )
   )
+  
+  describe("with before block defining variables",
+    before(
+      test = true
+      test2 = false
+    )
+    it("should have access to variables in test",
+      test should be true
+    )
+    
+    describe("in nested context",
+      before(
+        test2 = true
+      )
+      it("should have access to variables in test as well",
+        test should be true
+      )
+      it("should call before blocks in proper order",
+        test2 should be true
+      )
+    )
+  )
+  
+  describe("with after block checking for variables",
+    after(
+      test should be true
+    )
+    it("should set variable",
+      test = true
+    )
+    describe("in nested context",
+      after(
+        test = true
+      )
+      it("should call after blocks in proper order",
+        test = false
+      )
+    )
+  )
 )
 
 describe(ISpec,

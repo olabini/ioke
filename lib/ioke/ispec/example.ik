@@ -44,7 +44,9 @@ ISpec do(
           error!(ISpec Condition, text: "Forced fail")
         )
         ;; don't evaluate directly, instead send it to a macro on the newContext, which can give it a real back trace context
+        context runBefores
         code evaluateOn(context, context)
+        context runAfters
       )
 
       reporter exampleFinished(self, executionError)
