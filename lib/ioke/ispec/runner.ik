@@ -60,8 +60,8 @@ ISpec do(
       success = true
 
       specifications = if(specsToRun empty?,  ISpec DescribeContext specs, specsToRun values)
-      specifications each(n,
-        insideSuccess = n run(reporter)
+      specifications each(spec,
+        insideSuccess = spec run(reporter)
         if(success, success = insideSuccess))
 
       reporter end
@@ -179,37 +179,6 @@ ISpec do(
           error!("Missing files: #{options missingFiles join(", ")}"))
         options)
     )
-  )
-
-  runTest = method(
-    "runs a specific test in the given describe context",
-    context, name, code, reporter,
-
-    newContext = context mimic
-    newContext fullDescription = "#{newContext fullName} #{name}"
-    newContext description = name
-    newContext code = code
-
-    executionError = nil
-
-    reporter exampleStarted(newContext)
-
-    bind(
-      rescue(Ground Condition Error, 
-        fn(c, executionError ||= c)),
-      rescue(ISpec Condition, 
-        fn(c, executionError ||= c)),
-      handle(Ground Condition,  
-        fn(c, c describeContext = newContext. if(c cell?(:shouldMessage), newContext shouldMessage = c shouldMessage))),
-      if(code, 
-        ;; don't evaluate directly, instead send it to a macro on the newContext, which can give it a real back trace context
-        code evaluateOn(newContext, newContext),
-
-        error!(ISpec ExamplePending, text: "Not Yet Implemented")))
-
-    reporter exampleFinished(newContext, executionError)
-
-    (executionError nil?) || (executionError mimics?(ExamplePending))
   )
 
   didRun? = false
