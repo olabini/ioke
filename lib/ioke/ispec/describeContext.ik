@@ -6,6 +6,8 @@ ISpec do(
     specs = []
     surrounding = nil
     tags = {}
+    befores = []
+    afters = []
 
     create = method(surrounding, describesWhat, tags,
       newContext = mimic
@@ -13,11 +15,23 @@ ISpec do(
       newContext surrounding = surrounding
       newContext tags = surrounding tags merge(tags)
       newContext surrounding specs << newContext
+      newContext befores = []
+      newContext afters = []
       newContext
     )
     
     initialize = method(
       self specs = []
+    )
+    
+    after = macro(
+      "takes one code argument and evaluates it on context after each test in the context"
+      afters << call arguments first
+    )
+    
+    before = macro(
+      "takes one code argument and evaluates it on context before every test in the context"
+      befores << call arguments first
     )
 
     fullName = method(
@@ -46,6 +60,28 @@ ISpec do(
         if(success, success = insideSuccess)
       )
       success
+    )
+    
+    aftersWithSurrounding = method(
+      if(surrounding,
+        afters + surrounding afters,
+        afters
+      )
+    )
+    
+    beforesWithSurrounding = method(
+      if(surrounding,
+        surrounding befores + befores,
+        befores
+      )
+    )
+    
+    runAfters = method(
+      aftersWithSurrounding each(evaluateOn(self))
+    )
+    
+    runBefores = method(
+      beforesWithSurrounding each(evaluateOn(self))
     )
 
     it = macro(
