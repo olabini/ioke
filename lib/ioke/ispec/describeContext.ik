@@ -12,25 +12,22 @@ ISpec do(
       newContext describesWhat = describesWhat
       newContext surrounding = surrounding
       newContext tags = surrounding tags merge(tags)
-      newContext surrounding specs << self
+      newContext surrounding specs << newContext
       newContext
     )
     
     initialize = method(
-      "created #{self}" println
       self specs = []
-    )
-
-    stackTraceAsText = method(
-      if(cell?(:shouldMessage),
-        "#{shouldMessage filename}:#{shouldMessage line}:#{shouldMessage position}",
-        "#{code filename}:#{code line}:#{code position}")
     )
 
     fullName = method(
       "returns the name of this context, prepended with the surrounding names",
       [if(surrounding, surrounding fullName), describesWhat] compact join(" ")
     )
+    
+    aliasMethod("fullName", "fullDescription")
+    
+    description = method(describesWhat)
 
     onlyWhen = dmacro(
       [>condition, code]
@@ -53,12 +50,14 @@ ISpec do(
 
     it = macro(
       "takes one text argument, and one optional code argument. if the code argument is left out, this spec will be marked as pending",
-      shouldText = call arguments first
+      shouldText = call argAt(0)
+
       code = if(call arguments length > 1,
         call arguments last
       )
+      
       tags = if(call arguments length == 3,
-        call arguments second
+        call argAt(1)
       )
 
       example = ISpec Example mimic(self, shouldText, code, tags)

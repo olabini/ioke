@@ -15,7 +15,7 @@ ISpec do(
         println("#{counter})")
         println(red("#{failure header}"))
         println(red("#{failure condition report}"))
-        println("  #{failure condition describeContext stackTraceAsText}"))
+        println("  #{failure condition example stackTraceAsText(failure condition)}"))
 
       dumpSummary = method(duration, exampleCount, failureCount, pendingCount,
         println("")
