@@ -2,9 +2,9 @@ use("iopt")
 
 ISpec do(
   Options = Origin mimic do(
-    
+
     create = method(err, out,
-      self with(errorStream: err, outStream: out, 
+      self with(errorStream: err, outStream: out,
         formatters: [], files: [], directories: [],
         loadPatterns: [], onlyMatching: [], onlyLines: [],
         missingFiles: [], useColour: true, hasHelp?: false))
@@ -16,40 +16,39 @@ ISpec do(
       ;; check if any pattern was set or use a default
       if(loadPatterns empty?,
         loadPatterns << "**/*_spec.ik")
-      
+
       ;; check if any formatter was set, or use a default.
       if(formatters empty?,
         formatters << ISpec Formatter ProgressBarFormatter mimic)
-      
-      unless(useColour, 
+
+      unless(useColour,
         formatters each(colour = method(text, +rest, text)))
-      
+
       self)
 
     specsToRun = dict() do(
       values = list()
-      cell("[]=") = method(key, value, 
+      cell("[]=") = method(key, value,
         super(key, value)
         values << value
         value)
     )
-  
-    exampleAdded = method(context,
-      example = context specs last
-      if(!onlyLines empty? && example third kind?("Message"),
-        lines = (example third first line .. example third last line)
+
+    exampleAdded = method(example,
+      context = example context
+      if(!onlyLines empty? && example code kind?("Message"),
+        lines = (example code first line .. example code last line)
         if(onlyLines any?(o, lines include?(o)),
           specsToRun[context fullName] ||= context with(specs: list())
           specsToRun[context fullName] specs << example)
       )
       unless(onlyMatching empty?,
-        exampleDesc = "#{context fullName} #{example second}"
-        if(onlyMatching any?(o, o === exampleDesc),
+        if(onlyMatching any?(o, o === example fullDescription),
           specsToRun[context fullName] ||= context with(specs: list())
           specsToRun[context fullName] specs << example)
       )
     )
-      
+
     runExamples = method(
       files each(f, use(f))
       directories each(d,
@@ -60,9 +59,9 @@ ISpec do(
       reporter start(0)
       success = true
 
-      specifications = if(specsToRun empty?,  ISpec specifications, specsToRun values)
-      specifications each(n,
-        insideSuccess = n run(reporter)
+      specifications = if(specsToRun empty?,  ISpec DescribeContext specs, specsToRun values)
+      specifications each(spec,
+        insideSuccess = spec run(reporter)
         if(success, success = insideSuccess))
 
       reporter end
@@ -70,7 +69,7 @@ ISpec do(
       success
     )
   )
-  
+
   Runner = Origin mimic do(
     registerAtExitHook = method(
       System atExit(
@@ -111,9 +110,9 @@ ISpec do(
 
       on("-f", "--format", format, to: System out,
         fkind = formatters[:(format)]
-        unless(fkind, 
+        unless(fkind,
           fkind = Message fromText(format) sendTo(Ground)
-          unless(fkind mimics?(ISpec Formatter), 
+          unless(fkind mimics?(ISpec Formatter),
             error!("Expected #{format} to mimic ISpec Formatter")))
         formatter = fkind mimic
         case(to,
@@ -129,7 +128,7 @@ ISpec do(
           doc << "     --format specdoc to: specOut.txt"
           doc << " "
           formats = dict()
-          receiver formatters each(pair, 
+          receiver formatters each(pair,
             if(formats key?(pair value),
               formats[pair value] << pair key,
               formats[pair value] = list(pair key)))
@@ -137,7 +136,7 @@ ISpec do(
           formats each(pair,
             doc << "%-20s %s" format(pair value sort join("|"),
               pair key documentation || pair key kind))
-                              
+
           doc << " "
           doc << "When not given a builtin format, ISpec will try to evaluate"
           doc << "the given argument to an ISpec Formatter kind"
@@ -162,7 +161,7 @@ ISpec do(
 
       order = method(argv,
         parse!(argv)
-        
+
         ;; process non option arguments
         programArguments each(arg,
           if(FileSystem directory?(arg),
@@ -172,7 +171,7 @@ ISpec do(
               options missingFiles << arg)))
 
         options do( order ))
-      
+
       order! = method(argv,
         order(argv)
         if(options hasHelp?, outStream println(self). System exit(0))
@@ -180,37 +179,6 @@ ISpec do(
           error!("Missing files: #{options missingFiles join(", ")}"))
         options)
     )
-  )
-
-  runTest = method(
-    "runs a specific test in the given describe context",
-    context, name, code, reporter,
-
-    newContext = context mimic
-    newContext fullDescription = "#{newContext fullName} #{name}"
-    newContext description = name
-    newContext code = code
-
-    executionError = nil
-
-    reporter exampleStarted(newContext)
-
-    bind(
-      rescue(Ground Condition Error, 
-        fn(c, executionError ||= c)),
-      rescue(ISpec Condition, 
-        fn(c, executionError ||= c)),
-      handle(Ground Condition,  
-        fn(c, c describeContext = newContext. if(c cell?(:shouldMessage), newContext shouldMessage = c shouldMessage))),
-      if(code, 
-        ;; don't evaluate directly, instead send it to a macro on the newContext, which can give it a real back trace context
-        code evaluateOn(newContext, newContext). ISpec stubs verifyAndClear!,
-
-        error!(ISpec ExamplePending, text: "Not Yet Implemented")))
-
-    reporter exampleFinished(newContext, executionError)
-
-    (executionError nil?) || (executionError mimics?(ExamplePending))
   )
 
   didRun? = false
