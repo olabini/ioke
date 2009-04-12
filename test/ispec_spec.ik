@@ -1,44 +1,63 @@
 
 use("ispec")
 
+describe(ISpec Example,
+  it("should not be pending",
+    example = ISpec Example mimic(ISpec DescribeContext mimic, "example", '., {})
+    example pending? should be nil
+  )
+
+  it("should be pending with pending tag",
+    example = ISpec Example mimic(ISpec DescribeContext mimic, "example", '., {pending: true})
+    example pending? should be true
+  )
+
+  it("should be pending without code",
+    example = ISpec Example mimic(ISpec DescribeContext mimic, "example", false, {})
+    example pending? should be true
+  )
+)
+
 describe(ISpec DescribeContext,
   describe("when defining tests",
     it("should add test code",
-      context = ISpec DescribeContext create
-      context it("test", 
+      context = ISpec DescribeContext mimic
+      context it("test",
         code
       )
-      context specs first first should == :test
+      context specs first pending? should be nil
     )
 
     it("should add pending test without code",
-      context = ISpec DescribeContext create
+      context = ISpec DescribeContext mimic
       context it("pending test")
-      context specs first first should == :pending
+      context specs first pending? should be true
     )
 
     it("should add pending test with code",
-      context = ISpec DescribeContext create
+      context = ISpec DescribeContext mimic
       context it("pending test", {pending: true},
         code
       )
-      context specs first first should == :pending
+      context specs first pending? should be true
     )
   )
-  
+
   describe("when describing tests",
     it("should create context",
-      context = ISpec DescribeContext create
+      context = ISpec DescribeContext mimic
       context describe("context",
         .
       )
     )
+
     it("should create context without code",
-      context = ISpec DescribeContext create
+      context = ISpec DescribeContext mimic
       context describe("context")
     )
+
     it("should create context with tags",
-      context = ISpec DescribeContext create
+      context = ISpec DescribeContext mimic
       context describe("context", {pending: true},
         .
       )
@@ -57,7 +76,7 @@ describe(ISpec,
     it("should be pending although has code",
       error!("Pending example is not pending")
     )
-    
+
     describe("with nested context",
       it("should be pending as well",
         error!("Pending example is not pending")
@@ -74,7 +93,7 @@ describe(ISpec Runner OptionParser,
       parser = ISpec Runner OptionParser create(nil, nil)
       parser order([]) directories should == []
     )
-    
+
     it("should set hasHelp? when -h specified",
       parser = ISpec Runner OptionParser create(nil, nil)
       parser order(["-h"]) should hasHelp
@@ -84,12 +103,12 @@ describe(ISpec Runner OptionParser,
       parser = ISpec Runner OptionParser create(nil, nil)
       parser order(["--help"]) should hasHelp
     )
-    
+
     it("should set default formatter",
       parser = ISpec Runner OptionParser create(nil, nil)
       parser order([]) formatters should not be empty
     )
-    
+
     it("should set progress bar formatter",
       parser = ISpec Runner OptionParser create(nil, nil)
       parser order(["-fp"]) formatters first should be kind("ISpec Formatter ProgressBarFormatter")
@@ -105,7 +124,7 @@ describe(ISpec Runner OptionParser,
         parser = ISpec Runner OptionParser create(nil, nil)
         parser order(["--format", "specdoc", "to:", "file"])
         parser options formatters first output kind should == "java:io:PrintStream",
-        
+
         if(FileSystem file?("file"),
           FileSystem removeFile!("file")))
     )
@@ -115,48 +134,48 @@ describe(ISpec Runner OptionParser,
       parser order(["--format", "specdoc", "to:", "-"])
       parser options formatters first output should mimic(System out)
     )
-    
+
     it("should add file when exists",
       parser = ISpec Runner OptionParser create(nil, nil)
       parser order(["test/ispec_spec.ik"]) files should not be empty
     )
-    
+
     it("should add directory when exists",
       parser = ISpec Runner OptionParser create(nil, nil)
       parser order(["test"]) directories should not be empty
     )
-    
+
     it("should add missing file",
       parser = ISpec Runner OptionParser create(nil, nil)
       parser order(["xxxzz"]) missingFiles should not be empty
     )
-    
+
     it("should add unknown option",
       parser = ISpec Runner OptionParser create(nil, nil)
       cl = parser parse(["--foo"])
       cl unknownOptions should not be empty
     )
 
-    it("should have a default loadPattern", 
+    it("should have a default loadPattern",
       parser = ISpec Runner OptionParser create(nil, nil)
       parser order([]) loadPatterns should not be empty
     )
 
-    it("should allow to set loadPatterns with --pattern", 
+    it("should allow to set loadPatterns with --pattern",
       parser = ISpec Runner OptionParser create(nil, nil)
-      parser order(["--pattern", "foo", 
+      parser order(["--pattern", "foo",
           "--pattern", "bar"]) loadPatterns should == ["foo", "bar"]
     )
 
-    it("should allow to set loadPatterns with -p", 
+    it("should allow to set loadPatterns with -p",
       parser = ISpec Runner OptionParser create(nil, nil)
-      parser order(["-p", "foo", 
+      parser order(["-p", "foo",
           "-p", "bar"]) loadPatterns should == ["foo", "bar"]
     )
 
     it("should set onlyLines with --line option",
      parser = ISpec Runner OptionParser create(nil, nil)
-      parser order(["--line", "22", 
+      parser order(["--line", "22",
           "--line", "10"]) onlyLines should == [22, 10]
     )
 
@@ -169,7 +188,7 @@ describe(ISpec Runner OptionParser,
 
     it("should set onlyMatching with --example option",
      parser = ISpec Runner OptionParser create(nil, nil)
-      parser order(["--example", "some example", 
+      parser order(["--example", "some example",
           "-e", "foo"]) onlyMatching should == ["some example", "foo"]
     )
 
@@ -204,6 +223,6 @@ describe(ISpec Runner OptionParser,
      parser order(["--color", "false"])
      parser options formatters first green("Hello") should == "Hello"
     )
-    
+
   )
 )

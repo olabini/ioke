@@ -9,6 +9,10 @@ ISpec do(
       self fullDescription = "#{self context fullName} #{name}"
     )
     
+    pending? = method(
+      tags[:pending] || !code
+    )
+    
     run = method(
       "runs tests with given reporter",
       reporter,
@@ -23,13 +27,17 @@ ISpec do(
           fn(c, executionError ||= c)),
         handle(Ground Condition,  
           fn(c, c example = self)),
-        if(tags[:pending],
-          error!(ISpec ExamplePending, text: "Disabled example"))
-        if(code,
-          ;; don't evaluate directly, instead send it to a macro on the newContext, which can give it a real back trace context
-          code evaluateOn(context, context),
-
-          error!(ISpec ExamplePending, text: "Not Yet Implemented")))
+          
+        if(pending?,
+          if(code,
+            error!(ISpec ExamplePending, text: "Disabled example"),
+            
+            error!(ISpec ExamplePending, text: "Not Yet Implemented")
+          )
+        )
+        ;; don't evaluate directly, instead send it to a macro on the newContext, which can give it a real back trace context
+        code evaluateOn(context, context)
+      )
 
       reporter exampleFinished(self, executionError)
 
@@ -37,9 +45,11 @@ ISpec do(
     )
     
     stackTraceAsText = method(condition,
-      if(condition cell?(:shouldMessage),
-        "#{shouldMessage filename}:#{shouldMessage line}:#{shouldMessage position}",
-        "#{code filename}:#{code line}:#{code position}")
+      message = if(condition cell?(:shouldMessage),
+        condition shouldMessage,
+        code
+      )
+      "#{message filename}:#{message line}:#{message position}"
     )
   )
 )
