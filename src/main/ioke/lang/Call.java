@@ -87,7 +87,8 @@ public class Call extends IokeData {
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
 
-                    return context.runtime.newList(((Call)IokeObject.data(on)).message.getEvaluatedArguments(((Call)IokeObject.data(on)).surroundingContext));
+                    IokeObject msg = ((Call)IokeObject.data(on)).message;
+                    return context.runtime.newList(((Message)IokeObject.data(msg)).getEvaluatedArguments(msg, ((Call)IokeObject.data(on)).surroundingContext));
                 }
             }));
 
@@ -106,10 +107,10 @@ public class Call extends IokeData {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     Call c = (Call)IokeObject.data(on);
-                    String name = Text.getText(runtime.asText.sendTo(context, args.get(0)));
+                    String name = Text.getText(((Message)IokeObject.data(runtime.asText)).sendTo(runtime.asText, context, args.get(0)));
                     IokeObject m = Message.copy(c.message);
                     Message.setName(m, name);
-                    return m.sendTo(c.surroundingContext, c.on);
+                    return ((Message)IokeObject.data(m)).sendTo(m, c.surroundingContext, c.on);
                 }
             }));
 

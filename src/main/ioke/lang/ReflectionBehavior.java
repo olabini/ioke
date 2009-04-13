@@ -64,13 +64,13 @@ public class ReflectionBehavior {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().checkArgumentCount(context, message, on);
                     final Runtime runtime = context.runtime;
-                    Object _name = message.getEvaluatedArgument(0, context);
-                    String name = Text.getText(runtime.asText.sendTo(context, _name));
+                    Object _name = ((Message)IokeObject.data(message)).getEvaluatedArgument(message, 0, context);
+                    String name = Text.getText(((Message)IokeObject.data(runtime.asText)).sendTo(runtime.asText, context, _name));
 
                     IokeObject newMessage = Message.deepCopy(message);
                     newMessage.getArguments().remove(0);
                     Message.setName(newMessage, name);
-                    return newMessage.sendTo(context, on);
+                    return ((Message)IokeObject.data(newMessage)).sendTo(newMessage, context, on);
                 }
             }));
 
@@ -89,7 +89,7 @@ public class ReflectionBehavior {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> args = new ArrayList<Object>();
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
-                    return !IokeObject.equals(on, message.getEvaluatedArgument(0, context)) ? context.runtime._true : context.runtime._false ;
+                    return !IokeObject.equals(on, ((Message)IokeObject.data(message)).getEvaluatedArgument(message, 0, context)) ? context.runtime._true : context.runtime._false ;
                 }
             }));
 

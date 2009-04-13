@@ -515,7 +515,8 @@ public class IokeSystem extends IokeData {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().checkArgumentCount(context, message, on);
                     if(((IokeSystem)IokeObject.data(on)).currentProgram().equals(message.getFile())) {
-                        return ((IokeObject)message.getArguments().get(0)).evaluateCompleteWith(context, context.getRealContext());
+                        IokeObject msg = ((IokeObject)message.getArguments().get(0));
+                        return ((Message)IokeObject.data(msg)).evaluateCompleteWith(msg, context, context.getRealContext());
                     } else {
                         return runtime.nil;
                     }

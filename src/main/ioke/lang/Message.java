@@ -241,7 +241,7 @@ public class Message extends IokeData {
                 Object o = onAsMessage;
                 while(o != null) {
                     c.setCell(name, o);
-                    code.evaluateCompleteWithoutExplicitReceiver(c, c.getRealContext());
+                    ((Message)IokeObject.data(code)).evaluateCompleteWithoutExplicitReceiver(code, c, c.getRealContext());
                     for (Object arg : ((IokeObject)o).getArguments()) {
                         walkWithoutExplicitReceiver(arg, c, name, code);
                     }
@@ -252,7 +252,7 @@ public class Message extends IokeData {
             private void walkWithReceiver(IokeObject context, Object onAsMessage, IokeObject code) throws ControlFlow {
                 Object o = onAsMessage;
                 while(o != null) {
-                    code.evaluateCompleteWithReceiver(context, context.getRealContext(), o);
+                    ((Message)IokeObject.data(code)).evaluateCompleteWithReceiver(code, context, context.getRealContext(), o);
                     for (Object arg : ((IokeObject)o).getArguments()) {
                         walkWithReceiver(context, arg, code);
                     }
@@ -286,7 +286,7 @@ public class Message extends IokeData {
                         IokeObject code = IokeObject.as(message.getArguments().get(0), context);
                         Object o = onAsMessage;
                         while(o != null) {
-                            code.evaluateCompleteWithReceiver(context, context.getRealContext(), o);
+                            ((Message)IokeObject.data(code)).evaluateCompleteWithReceiver(code, context, context.getRealContext(), o);
                             o = next(o);
                         }
 
@@ -300,7 +300,7 @@ public class Message extends IokeData {
                         Object o = onAsMessage;
                         while(o != null) {
                             c.setCell(name, o);
-                            code.evaluateCompleteWithoutExplicitReceiver(c, c.getRealContext());
+                            ((Message)IokeObject.data(code)).evaluateCompleteWithoutExplicitReceiver(code, c, c.getRealContext());
                             o = next(o);
                         }
                         break;
@@ -316,7 +316,7 @@ public class Message extends IokeData {
                         while(o != null) {
                             c.setCell(name, o);
                             c.setCell(iname, runtime.newNumber(index++));
-                            code.evaluateCompleteWithoutExplicitReceiver(c, c.getRealContext());
+                            ((Message)IokeObject.data(code)).evaluateCompleteWithoutExplicitReceiver(code, c, c.getRealContext());
                             o = next(o);
                         }
                         break;
@@ -516,7 +516,8 @@ public class Message extends IokeData {
                         realContext = IokeObject.as(args.get(1), context);
                     }
 
-                    return IokeObject.as(on, context).sendTo(realContext, realReceiver);
+                    IokeObject msg = IokeObject.as(on, context);
+                    return ((Message)IokeObject.data(msg)).sendTo(msg, realContext, realReceiver);
                 }
             }));
         
@@ -640,8 +641,8 @@ public class Message extends IokeData {
                             on = m;
                         }
                     }
-                    
-                    return IokeObject.as(on, context).evaluateCompleteWithReceiver(messageGround, messageGround, receiver);
+                    IokeObject msg = IokeObject.as(on, context);
+                    return ((Message)IokeObject.data(msg)).evaluateCompleteWithReceiver(msg, messageGround, messageGround, receiver);
                 }
             }));
         
@@ -661,7 +662,8 @@ public class Message extends IokeData {
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     int index = Number.extractInt(args.get(0), message, context);
                     IokeObject newContext = IokeObject.as(args.get(1), context);
-                    return IokeObject.as(on, context).getEvaluatedArgument(index, newContext);
+                    IokeObject _m =  IokeObject.as(on, context);
+                    return ((Message)IokeObject.data(_m)).getEvaluatedArgument(_m, index, newContext);
                 }
             }));
         
@@ -885,7 +887,7 @@ public class Message extends IokeData {
     public static void opShuffle(IokeObject self) throws ControlFlow {
         // TODO: Should handle stuff that's not been inited at this point...
         if(self != null) {
-            self.runtime.opShuffle.sendTo(self.runtime.ground, self);
+            ((Message)IokeObject.data(self.runtime.opShuffle)).sendTo(self.runtime.opShuffle, self.runtime.ground, self);
         }
     }
 
@@ -1223,15 +1225,13 @@ public class Message extends IokeData {
             return o;
         }
 
-        return o.evaluateCompleteWithoutExplicitReceiver(context, context.getRealContext());
+        return ((Message)IokeObject.data(o)).evaluateCompleteWithoutExplicitReceiver(o, context, context.getRealContext());
     }
 
-    @Override
     public Object getEvaluatedArgument(IokeObject self, int index, IokeObject context) throws ControlFlow {
         return Message.getEvaluatedArgument(arguments.get(index), context);
     }
 
-    @Override
     public List<Object> getEvaluatedArguments(IokeObject self, IokeObject context) throws ControlFlow {
         List<Object> args = new ArrayList<Object>(arguments.size());
         for(Object o : arguments) {
@@ -1240,7 +1240,6 @@ public class Message extends IokeData {
         return args;
     }
 
-    @Override
     public Object sendTo(IokeObject self, IokeObject context, Object recv) throws ControlFlow {
         if(cached != null) {
             return cached;
@@ -1249,7 +1248,6 @@ public class Message extends IokeData {
         return IokeObject.perform(recv, context, self);
     }
 
-    @Override
     public Object sendTo(IokeObject self, IokeObject context, Object recv, Object argument) throws ControlFlow {
         if(cached != null) {
             return cached;
@@ -1262,7 +1260,6 @@ public class Message extends IokeData {
         return IokeObject.perform(recv, context, m);
     }
 
-    @Override
     public Object sendTo(IokeObject self, IokeObject context, Object recv, Object arg1, Object arg2) throws ControlFlow {
         if(cached != null) {
             return cached;
@@ -1275,7 +1272,6 @@ public class Message extends IokeData {
         return IokeObject.perform(recv, context, m);
     }
 
-    @Override
     public Object sendTo(IokeObject self, IokeObject context, Object recv, List<Object> args) throws ControlFlow {
         if(cached != null) {
             return cached;
@@ -1287,17 +1283,14 @@ public class Message extends IokeData {
         return IokeObject.perform(recv, context, m);
     }
 
-    @Override
     public Object evaluateComplete(IokeObject self) throws ControlFlow {
         return evaluateCompleteWith(self, self.runtime.getGround());
     }
 
-    @Override
     public Object evaluateCompleteWith(IokeObject self, IokeObject ctx, Object ground) throws ControlFlow {
         return evaluateCompleteWithReceiver(self, ctx, ground, ctx);
     }
 
-    @Override
     public Object evaluateCompleteWithReceiver(IokeObject self, IokeObject ctx, Object ground, Object receiver) throws ControlFlow {
         Object current = receiver;
         Object tmp = null;
@@ -1313,7 +1306,7 @@ public class Message extends IokeData {
                 Message.cacheValue(m, current);
                 lastReal = current;
             } else {
-                tmp = m.sendTo(ctx, current);
+                tmp = ((Message)IokeObject.data(m)).sendTo(m, ctx, current);
                 if(tmp != null) {
                     current = tmp;
                     lastReal = current;
@@ -1324,12 +1317,10 @@ public class Message extends IokeData {
         return lastReal;
     }
 
-    @Override
     public Object evaluateCompleteWithoutExplicitReceiver(IokeObject self, IokeObject ctx, Object ground) throws ControlFlow {
         return evaluateCompleteWith(self, ctx, ctx);
     }
 
-    @Override
     public Object evaluateCompleteWith(IokeObject self, Object ground) throws ControlFlow {
         return evaluateCompleteWith(self, IokeObject.as(ground, self), IokeObject.getRealContext(ground));
     }

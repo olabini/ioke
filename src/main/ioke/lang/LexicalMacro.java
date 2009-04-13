@@ -205,7 +205,7 @@ public class LexicalMacro extends IokeData implements AssociatedCode, Named, Ins
             c.setCell(s.substring(0, s.length()-1), d.getValue());
         }
 
-        return this.code.evaluateCompleteWith(c, on);
+        return ((Message)IokeObject.data(this.code)).evaluateCompleteWith(this.code, c, on);
     }
 
     @Override
@@ -231,7 +231,7 @@ public class LexicalMacro extends IokeData implements AssociatedCode, Named, Ins
         c.setCell("outerScope", context);
         c.setCell("call", call);
 
-        return this.code.evaluateCompleteWith(c, on);
+        return ((Message)IokeObject.data(this.code)).evaluateCompleteWith(this.code, c, on);
     }
 
     @Override
@@ -257,7 +257,7 @@ public class LexicalMacro extends IokeData implements AssociatedCode, Named, Ins
         c.setCell("outerScope", context);
         c.setCell("call", dynamicContext.runtime.newCallFrom(c, message, dynamicContext, IokeObject.as(on, dynamicContext)));
 
-        return this.code.evaluateCompleteWith(c, on);
+        return ((Message)IokeObject.data(this.code)).evaluateCompleteWith(this.code, c, on);
     }
 
     @Override
@@ -287,6 +287,6 @@ public class LexicalMacro extends IokeData implements AssociatedCode, Named, Ins
             c.setCell(s.substring(0, s.length()-1), d.getValue());
         }
 
-        return this.code.evaluateCompleteWith(c, on);
+        return ((Message)IokeObject.data(this.code)).evaluateCompleteWith(this.code, c, on);
     }
 }// LexicalMacro

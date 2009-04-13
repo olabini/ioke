@@ -23,7 +23,7 @@ public class Origin {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
-                    runtime.printlnMessage.sendTo(context, runtime.outMessage.sendTo(context, runtime.system), on);
+                    ((Message)IokeObject.data(runtime.printlnMessage)).sendTo(runtime.printlnMessage, context, ((Message)IokeObject.data(runtime.outMessage)).sendTo(runtime.outMessage, context, runtime.system), on);
                     return runtime.getNil();
                 }
             }));
@@ -32,7 +32,7 @@ public class Origin {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
-                    runtime.printMessage.sendTo(context, runtime.outMessage.sendTo(context, runtime.system), on);
+                    ((Message)IokeObject.data(runtime.printMessage)).sendTo(runtime.printMessage, context, ((Message)IokeObject.data(runtime.outMessage)).sendTo(runtime.outMessage, context, runtime.system), on);
                     return runtime.getNil();
                 }
             }));

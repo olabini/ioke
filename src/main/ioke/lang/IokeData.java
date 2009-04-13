@@ -461,61 +461,6 @@ public abstract class IokeData {
         return activate(self, context, message, on);
     }
 
-    public Object getEvaluatedArgument(IokeObject message, int index, IokeObject context) throws ControlFlow {
-        report(context, context, message, "getEvaluatedArgument(" + index + ")");
-        return context.runtime.nil;
-    }
-
-    public List<Object> getEvaluatedArguments(IokeObject message, IokeObject context) throws ControlFlow {
-        report(context, context, message, "getEvaluatedArguments");
-        return null;
-    }
-
-    public Object sendTo(IokeObject message, IokeObject context, Object recv) throws ControlFlow {
-        report(recv, context, message, "sendTo");
-        return context.runtime.nil;
-    }
-
-    public Object sendTo(IokeObject message, IokeObject context, Object recv, Object argument) throws ControlFlow {
-        report(recv, context, message, "sendTo/1");
-        return context.runtime.nil;
-    }
-
-    public Object sendTo(IokeObject message, IokeObject context, Object recv, Object arg1, Object arg2) throws ControlFlow {
-        report(recv, context, message, "sendTo/2");
-        return context.runtime.nil;
-    }
-
-    public Object sendTo(IokeObject message, IokeObject context, Object recv, List<Object> args) throws ControlFlow {
-        report(recv, context, message, "sendTo/n");
-        return context.runtime.nil;
-    }
-
-    public Object evaluateComplete(IokeObject message) throws ControlFlow {
-        report(message, message, message, "evaluateComplete");
-        return message.runtime.nil;
-    }
-
-    public Object evaluateCompleteWith(IokeObject message, IokeObject ctx, Object ground) throws ControlFlow {
-        report(ground, ctx, message, "evaluateCompleteWith");
-        return ctx.runtime.nil;
-    }
-
-    public Object evaluateCompleteWithReceiver(IokeObject message, IokeObject ctx, Object ground, Object receiver) throws ControlFlow {
-        report(receiver, ctx, message, "evaluateCompleteWithReceiver");
-        return ctx.runtime.nil;
-    }
-
-    public Object evaluateCompleteWithoutExplicitReceiver(IokeObject message, IokeObject ctx, Object ground) throws ControlFlow {
-        report(ground, ctx, message, "evaluateCompleteWithoutExplicitReceiver");
-        return ctx.runtime.nil;
-    }
-
-    public Object evaluateCompleteWith(IokeObject message, Object ground) throws ControlFlow {
-        report(ground, IokeObject.as(ground, message), message, "evaluateCompleteWith");
-        return message.runtime.nil;
-    }
-
     public List<Object> getArguments(IokeObject self) throws ControlFlow {
         report(self, self, self, "getArguments");
         return null;

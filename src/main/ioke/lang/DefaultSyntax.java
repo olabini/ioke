@@ -214,7 +214,7 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
         Object result = null;
 
         try {
-            result = code.evaluateCompleteWith(c, on);
+            result = ((Message)IokeObject.data(code)).evaluateCompleteWith(code, c, on);
         } catch(ControlFlow.Return e) {
             if(e.context == c) {
                 result = e.getValue();
@@ -266,7 +266,7 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
         Object result = null;
 
         try {
-            result = code.evaluateCompleteWith(c, on);
+            result = ((Message)IokeObject.data(code)).evaluateCompleteWith(code, c, on);
         } catch(ControlFlow.Return e) {
             if(e.context == c) {
                 result = e.getValue();
@@ -321,7 +321,7 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
             }
             Message.setPrev(newObj, prev);
 
-            return message.sendTo(context, context);
+            return ((Message)IokeObject.data(message)).sendTo(message, context, context);
         }
     }
 
@@ -379,7 +379,7 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
             }
             Message.setPrev(newObj, prev);
 
-            return message.sendTo(context, context);
+            return ((Message)IokeObject.data(message)).sendTo(message, context, context);
         }
     }
 }// DefaultSyntax

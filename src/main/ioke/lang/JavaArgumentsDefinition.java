@@ -543,7 +543,7 @@ public class JavaArgumentsDefinition {
                             args.add(JavaWrapper.getObject(obj));
                         } else if(jad.associatedCode && clzIsAbstract) {
                             try {
-                                Object obj2 = runtime.coerceIntoJavaCodeMessage.sendTo(context, obj, runtime.registry.wrap(clz), findAbstractMethodNames(clz, context));
+                                Object obj2 = ((Message)IokeObject.data(runtime.coerceIntoJavaCodeMessage)).sendTo(runtime.coerceIntoJavaCodeMessage, context, obj, runtime.registry.wrap(clz), findAbstractMethodNames(clz, context));
                                 if(obj2 instanceof IokeObject && IokeObject.data(obj2) instanceof JavaWrapper) {
                                     obj2 = JavaWrapper.getObject(obj2);
                                 }

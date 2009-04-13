@@ -93,7 +93,7 @@ public class Base {
                     IokeObject m1 = IokeObject.as(Message.getArg1(message), context);
                     String name = m1.getName();
                     if(m1.getArguments().size() == 0) {
-                        Object value = message.getEvaluatedArgument(1, context);
+                        Object value = ((Message)IokeObject.data(message)).getEvaluatedArgument(message, 1, context);
 
                         IokeObject.assign(on, name, value, context, message);
 
@@ -115,7 +115,8 @@ public class Base {
                         String newName = name + "=";
                         List<Object> arguments = new ArrayList<Object>(m1.getArguments());
                         arguments.add(Message.getArg2(message));
-                        return context.runtime.newMessageFrom(message, newName, arguments).sendTo(context, on);
+                        IokeObject msg = context.runtime.newMessageFrom(message, newName, arguments);
+                        return ((Message)IokeObject.data(msg)).sendTo(msg, context, on);
                     }
                 }
             }));
@@ -136,7 +137,7 @@ public class Base {
                     List<Object> args = new ArrayList<Object>();
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
 
-                    String name = Text.getText(context.runtime.asText.sendTo(context, args.get(0)));
+                    String name = Text.getText(((Message)IokeObject.data(context.runtime.asText)).sendTo(context.runtime.asText, context, args.get(0)));
                     return IokeObject.getCell(on, message, context, name);
                 }
             }));
@@ -157,7 +158,7 @@ public class Base {
                     List<Object> args = new ArrayList<Object>();
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
 
-                    String name = Text.getText(context.runtime.asText.sendTo(context, args.get(0)));
+                    String name = Text.getText(((Message)IokeObject.data(context.runtime.asText)).sendTo(context.runtime.asText, context, args.get(0)));
                     return IokeObject.findCell(on, message, context, name) != context.runtime.nul ? context.runtime._true : context.runtime._false;
                 }
             }));
@@ -178,7 +179,7 @@ public class Base {
                     List<Object> args = new ArrayList<Object>();
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
 
-                    String name = Text.getText(context.runtime.asText.sendTo(context, args.get(0)));
+                    String name = Text.getText(((Message)IokeObject.data(context.runtime.asText)).sendTo(context.runtime.asText, context, args.get(0)));
                     return (IokeObject.findPlace(on, message, context, name) == on) ? context.runtime._true : context.runtime._false;
                 }
             }));
@@ -199,7 +200,7 @@ public class Base {
                     List<Object> args = new ArrayList<Object>();
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
 
-                    String name = Text.getText(context.runtime.asText.sendTo(context, args.get(0)));
+                    String name = Text.getText(((Message)IokeObject.data(context.runtime.asText)).sendTo(context.runtime.asText, context, args.get(0)));
                     Object result = IokeObject.findPlace(on, message, context, name);
                     if(result == context.runtime.nul) {
                         return context.runtime.nil;
@@ -224,7 +225,7 @@ public class Base {
                     List<Object> args = new ArrayList<Object>();
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
 
-                    String name = Text.getText(context.runtime.asText.sendTo(context, args.get(0)));
+                    String name = Text.getText(((Message)IokeObject.data(context.runtime.asText)).sendTo(context.runtime.asText, context, args.get(0)));
                     IokeObject.removeCell(on, message, context, name);
                     return on;
                 }
@@ -246,7 +247,7 @@ public class Base {
                     List<Object> args = new ArrayList<Object>();
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
 
-                    String name = Text.getText(context.runtime.asText.sendTo(context, args.get(0)));
+                    String name = Text.getText(((Message)IokeObject.data(context.runtime.asText)).sendTo(context.runtime.asText, context, args.get(0)));
                     IokeObject.undefineCell(on, message, context, name);
                     return on;
                 }
@@ -408,7 +409,7 @@ public class Base {
                     List<Object> args = new ArrayList<Object>();
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
 
-                    String name = Text.getText(context.runtime.asText.sendTo(context, args.get(0)));
+                    String name = Text.getText(((Message)IokeObject.data(context.runtime.asText)).sendTo(context.runtime.asText, context, args.get(0)));
                     Object val = args.get(1);
 
                     if(val instanceof IokeObject) {

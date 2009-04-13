@@ -411,7 +411,8 @@ public class DefaultArgumentsDefinition {
                 if(given == null) {
                     Object defVal = ((KeywordArgument)a).getDefaultValue();
                     if(!(defVal instanceof String)) {
-                        result = IokeObject.as(defVal, context).evaluateCompleteWithoutExplicitReceiver(locals, locals.getRealContext());
+                        IokeObject msg = IokeObject.as(defVal, context);
+                        result = ((Message)IokeObject.data(msg)).evaluateCompleteWithoutExplicitReceiver(msg, locals, locals.getRealContext());
                         locals.setCell(a.getName(), result);
                     }
                 } else {
@@ -421,7 +422,8 @@ public class DefaultArgumentsDefinition {
             } else if((a instanceof OptionalArgument) && ix>=argCount) {
                 Object defVal = ((OptionalArgument)a).getDefaultValue();
                 if(!(defVal instanceof String)) {
-                    locals.setCell(a.getName(), IokeObject.as(defVal, context).evaluateCompleteWithoutExplicitReceiver(locals, locals.getRealContext()));
+                    IokeObject msg = IokeObject.as(defVal, context);
+                    locals.setCell(a.getName(), ((Message)IokeObject.data(msg)).evaluateCompleteWithoutExplicitReceiver(msg, locals, locals.getRealContext()));
                 }
             } else {
                 locals.setCell(a.getName(), argumentsWithoutKeywords.get(ix++));

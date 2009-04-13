@@ -119,7 +119,7 @@ public class DefaultBehavior {
                         return method;
                     }
                     
-                    String name = Text.getText(runtime.asText.sendTo(context, args.get(0)));
+                    String name = Text.getText(((Message)IokeObject.data(runtime.asText)).sendTo(runtime.asText, context, args.get(0)));
                     if(((IokeSystem)IokeObject.data(runtime.system)).use(IokeObject.as(on, context), context, message, name)) {
                         return runtime._true;
                     } else {

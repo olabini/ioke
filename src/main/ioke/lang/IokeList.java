@@ -125,7 +125,7 @@ public class IokeList extends IokeData {
                         IokeObject code = IokeObject.as(message.getArguments().get(0), context);
 
                         for(Object o : ls) {
-                            code.evaluateCompleteWithReceiver(context, context.getRealContext(), o);
+                            ((Message)IokeObject.data(code)).evaluateCompleteWithReceiver(code, context, context.getRealContext(), o);
                         }
                         break;
                     }
@@ -136,7 +136,7 @@ public class IokeList extends IokeData {
 
                         for(Object o : ls) {
                             c.setCell(name, o);
-                            code.evaluateCompleteWithoutExplicitReceiver(c, c.getRealContext());
+                            ((Message)IokeObject.data(code)).evaluateCompleteWithoutExplicitReceiver(code, c, c.getRealContext());
                         }
                         break;
                     }
@@ -150,7 +150,7 @@ public class IokeList extends IokeData {
                         for(Object o : ls) {
                             c.setCell(name, o);
                             c.setCell(iname, runtime.newNumber(index++));
-                            code.evaluateCompleteWithoutExplicitReceiver(c, c.getRealContext());
+                            ((Message)IokeObject.data(code)).evaluateCompleteWithoutExplicitReceiver(code, c, c.getRealContext());
                         }
                         break;
                     }
@@ -831,7 +831,7 @@ public class IokeList extends IokeData {
                         IokeObject code = IokeObject.as(message.getArguments().get(0), context);
 
                         for(int i = 0; i<size; i++) {
-                            ls.set(i, code.evaluateCompleteWithReceiver(context, context.getRealContext(), ls.get(i)));
+                            ls.set(i, ((Message)IokeObject.data(code)).evaluateCompleteWithReceiver(code, context, context.getRealContext(), ls.get(i)));
                         }
                         break;
                     }
@@ -842,7 +842,7 @@ public class IokeList extends IokeData {
 
                         for(int i = 0; i<size; i++) {
                             c.setCell(name, ls.get(i));
-                            ls.set(i, code.evaluateCompleteWithoutExplicitReceiver(c, c.getRealContext()));
+                            ls.set(i, ((Message)IokeObject.data(code)).evaluateCompleteWithoutExplicitReceiver(code, c, c.getRealContext()));
                         }
                         break;
                     }
@@ -879,7 +879,7 @@ public class IokeList extends IokeData {
 
                         for(Iterator<Object> iter = ls.iterator(); iter.hasNext();) {
                             Object obj = iter.next();
-                            if(IokeObject.isTrue(code.evaluateCompleteWithReceiver(context, context.getRealContext(), obj))) {
+                            if(IokeObject.isTrue(((Message)IokeObject.data(code)).evaluateCompleteWithReceiver(code, context, context.getRealContext(), obj))) {
                                 iter.remove();
                             }
                         }
@@ -893,7 +893,7 @@ public class IokeList extends IokeData {
                         for(Iterator<Object> iter = ls.iterator(); iter.hasNext();) {
                             Object obj = iter.next();
                             c.setCell(name, obj);
-                            if(IokeObject.isTrue(code.evaluateCompleteWithoutExplicitReceiver(c, c.getRealContext()))) {
+                            if(IokeObject.isTrue(((Message)IokeObject.data(code)).evaluateCompleteWithoutExplicitReceiver(code, c, c.getRealContext()))) {
                                 iter.remove();
                             }
                         }
@@ -929,7 +929,7 @@ public class IokeList extends IokeData {
             if(o instanceof IokeObject && IokeObject.data(o) instanceof IokeList) {
                 join(getList(o), sb, sep, asText, context);
             } else {
-                sb.append(Text.getText(asText.sendTo(context, o)));
+                sb.append(Text.getText(((Message)IokeObject.data(asText)).sendTo(asText, context, o)));
             }
             realSep = sep;
         }
