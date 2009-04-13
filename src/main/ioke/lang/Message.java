@@ -1284,11 +1284,57 @@ public class Message extends IokeData {
     }
 
     public Object evaluateComplete(IokeObject self) throws ControlFlow {
-        return evaluateCompleteWith(self, self.runtime.getGround());
+        IokeObject ctx = self.runtime.ground;
+        Object current = ctx;
+        Object tmp = null;
+        Object lastReal = self.runtime.getNil();
+        IokeObject m = self;
+        while(m != null) {
+            String name = m.getName();
+
+            if(name.equals(".")) {
+                current = ctx;
+            } else if(name.length() > 0 && m.getArguments().size() == 0 && name.charAt(0) == ':') {
+                current = self.runtime.getSymbol(name.substring(1));
+                Message.cacheValue(m, current);
+                lastReal = current;
+            } else {
+                tmp = ((Message)IokeObject.data(m)).sendTo(m, ctx, current);
+                if(tmp != null) {
+                    current = tmp;
+                    lastReal = current;
+                }
+            }
+            m = Message.next(m);
+        }
+        return lastReal;
+
     }
 
     public Object evaluateCompleteWith(IokeObject self, IokeObject ctx, Object ground) throws ControlFlow {
-        return evaluateCompleteWithReceiver(self, ctx, ground, ctx);
+        Object current = ctx;
+        Object tmp = null;
+        Object lastReal = self.runtime.getNil();
+        IokeObject m = self;
+        while(m != null) {
+            String name = m.getName();
+
+            if(name.equals(".")) {
+                current = ctx;
+            } else if(name.length() > 0 && m.getArguments().size() == 0 && name.charAt(0) == ':') {
+                current = self.runtime.getSymbol(name.substring(1));
+                Message.cacheValue(m, current);
+                lastReal = current;
+            } else {
+                tmp = ((Message)IokeObject.data(m)).sendTo(m, ctx, current);
+                if(tmp != null) {
+                    current = tmp;
+                    lastReal = current;
+                }
+            }
+            m = Message.next(m);
+        }
+        return lastReal;
     }
 
     public Object evaluateCompleteWithReceiver(IokeObject self, IokeObject ctx, Object ground, Object receiver) throws ControlFlow {
@@ -1318,11 +1364,56 @@ public class Message extends IokeData {
     }
 
     public Object evaluateCompleteWithoutExplicitReceiver(IokeObject self, IokeObject ctx, Object ground) throws ControlFlow {
-        return evaluateCompleteWith(self, ctx, ctx);
+        Object current = ctx;
+        Object tmp = null;
+        Object lastReal = self.runtime.getNil();
+        IokeObject m = self;
+        while(m != null) {
+            String name = m.getName();
+
+            if(name.equals(".")) {
+                current = ctx;
+            } else if(name.length() > 0 && m.getArguments().size() == 0 && name.charAt(0) == ':') {
+                current = self.runtime.getSymbol(name.substring(1));
+                Message.cacheValue(m, current);
+                lastReal = current;
+            } else {
+                tmp = ((Message)IokeObject.data(m)).sendTo(m, ctx, current);
+                if(tmp != null) {
+                    current = tmp;
+                    lastReal = current;
+                }
+            }
+            m = Message.next(m);
+        }
+        return lastReal;
     }
 
     public Object evaluateCompleteWith(IokeObject self, Object ground) throws ControlFlow {
-        return evaluateCompleteWith(self, IokeObject.as(ground, self), IokeObject.getRealContext(ground));
+        IokeObject ctx = IokeObject.as(ground, self);
+        Object current = ctx;
+        Object tmp = null;
+        Object lastReal = self.runtime.getNil();
+        IokeObject m = self;
+        while(m != null) {
+            String name = m.getName();
+
+            if(name.equals(".")) {
+                current = ctx;
+            } else if(name.length() > 0 && m.getArguments().size() == 0 && name.charAt(0) == ':') {
+                current = self.runtime.getSymbol(name.substring(1));
+                Message.cacheValue(m, current);
+                lastReal = current;
+            } else {
+                tmp = ((Message)IokeObject.data(m)).sendTo(m, ctx, current);
+                if(tmp != null) {
+                    current = tmp;
+                    lastReal = current;
+                }
+            }
+            m = Message.next(m);
+        }
+        return lastReal;
     }
 
     public static String code(IokeObject message) {
