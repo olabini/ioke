@@ -269,7 +269,7 @@ public class JavaArray {
                 Array.set(arr, index, JavaWrapper.getObject(obj));
             } else if((obj instanceof IokeObject) && (IokeObject.data(obj) instanceof AssociatedCode) && clzIsAbstract) {
                 try {
-                    Object obj2 = runtime.coerceIntoJavaCodeMessage.sendTo(context, obj, runtime.registry.wrap(clz), JavaArgumentsDefinition.findAbstractMethodNames(clz, context));
+                    Object obj2 = ((Message)IokeObject.data(runtime.coerceIntoJavaCodeMessage)).sendTo(runtime.coerceIntoJavaCodeMessage, context, obj, runtime.registry.wrap(clz), JavaArgumentsDefinition.findAbstractMethodNames(clz, context));
                     if(obj2 instanceof IokeObject && IokeObject.data(obj2) instanceof JavaWrapper) {
                         obj2 = JavaWrapper.getObject(obj2);
                     }

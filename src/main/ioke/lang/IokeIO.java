@@ -77,7 +77,7 @@ public class IokeIO extends IokeData {
                     try {
                         if(args.size() > 0) {
                             Object arg = args.get(0);
-                            IokeIO.getWriter(on).write(context.runtime.asText.sendTo(context, arg).toString());
+                            IokeIO.getWriter(on).write(((Message)IokeObject.data(context.runtime.asText)).sendTo(context.runtime.asText, context, arg).toString());
                         }
 
                         IokeIO.getWriter(on).write("\n");
@@ -126,7 +126,7 @@ public class IokeIO extends IokeData {
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     Object arg = args.get(0);
                     try {
-                        IokeIO.getWriter(on).write(context.runtime.asText.sendTo(context, arg).toString());
+                        IokeIO.getWriter(on).write(((Message)IokeObject.data(context.runtime.asText)).sendTo(context.runtime.asText, context, arg).toString());
                         IokeIO.getWriter(on).flush();
                     } catch(IOException e) {
                         final Runtime runtime = context.runtime;

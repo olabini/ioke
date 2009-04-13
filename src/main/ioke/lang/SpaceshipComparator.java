@@ -23,7 +23,7 @@ public class SpaceshipComparator implements Comparator<Object> {
     public int compare(Object one, Object two) {
         Runtime runtime = context.runtime;
         try {
-            return Number.extractInt(runtime.spaceShip.sendTo(context, one, two), message, context);
+            return Number.extractInt(((Message)IokeObject.data(runtime.spaceShip)).sendTo(runtime.spaceShip, context, one, two), message, context);
         } catch(ControlFlow e) {
             throw new RuntimeException(e);
         }

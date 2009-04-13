@@ -164,7 +164,7 @@ public class DefaultMethod extends Method implements AssociatedCode {
         arguments.assignArgumentValues(c, context, message, on, ((Call)IokeObject.data(call)));
 
         try {
-            return code.evaluateCompleteWith(c, on);
+            return ((Message)IokeObject.data(code)).evaluateCompleteWith(code, c, on);
         } catch(ControlFlow.Return e) {
             if(e.context == c) {
                 return e.getValue();
@@ -224,7 +224,7 @@ public class DefaultMethod extends Method implements AssociatedCode {
         arguments.assignArgumentValues(c, context, message, on, ((Call)IokeObject.data(call)));
 
         try {
-            return code.evaluateCompleteWith(c, on);
+            return ((Message)IokeObject.data(code)).evaluateCompleteWith(code, c, on);
         } catch(ControlFlow.Return e) {
             if(e.context == c) {
                 return e.getValue();
@@ -280,7 +280,7 @@ public class DefaultMethod extends Method implements AssociatedCode {
         arguments.assignArgumentValues(c, context, message, on);
 
         try {
-            return code.evaluateCompleteWith(c, on);
+            return ((Message)IokeObject.data(code)).evaluateCompleteWith(code, c, on);
         } catch(ControlFlow.Return e) {
             if(e.context == c) {
                 return e.getValue();
@@ -340,7 +340,7 @@ public class DefaultMethod extends Method implements AssociatedCode {
         arguments.assignArgumentValues(c, context, message, on);
 
         try {
-            return code.evaluateCompleteWith(c, on);
+            return ((Message)IokeObject.data(code)).evaluateCompleteWith(code, c, on);
         } catch(ControlFlow.Return e) {
             if(e.context == c) {
                 return e.getValue();

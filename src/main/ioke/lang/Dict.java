@@ -228,7 +228,7 @@ public class Dict extends IokeData {
                         IokeObject code = IokeObject.as(message.getArguments().get(0), context);
 
                         for(Map.Entry<Object, Object> o : ls.entrySet()) {
-                            code.evaluateCompleteWithReceiver(context, context.getRealContext(), runtime.newPair(o.getKey(), o.getValue()));
+                            ((Message)IokeObject.data(code)).evaluateCompleteWithReceiver(code, context, context.getRealContext(), runtime.newPair(o.getKey(), o.getValue()));
                         }
                         break;
                     }
@@ -239,7 +239,7 @@ public class Dict extends IokeData {
 
                         for(Map.Entry<Object, Object> o : ls.entrySet()) {
                             c.setCell(name, runtime.newPair(o.getKey(), o.getValue()));
-                            code.evaluateCompleteWithoutExplicitReceiver(c, c.getRealContext());
+                            ((Message)IokeObject.data(code)).evaluateCompleteWithoutExplicitReceiver(code, c, c.getRealContext());
                         }
                         break;
                     }
@@ -253,7 +253,7 @@ public class Dict extends IokeData {
                         for(Map.Entry<Object, Object> o : ls.entrySet()) {
                             c.setCell(name, runtime.newPair(o.getKey(), o.getValue()));
                             c.setCell(iname, runtime.newNumber(index++));
-                            code.evaluateCompleteWithoutExplicitReceiver(c, c.getRealContext());
+                            ((Message)IokeObject.data(code)).evaluateCompleteWithoutExplicitReceiver(code, c, c.getRealContext());
                         }
                         break;
                     }

@@ -42,7 +42,7 @@ public class ConditionsBehavior {
         List<Runtime.HandlerInfo> handlers = context.runtime.findActiveHandlersFor(newCondition, (rescue == null) ? new Runtime.BindIndex(-1,-1) : rescue.index);
         
         for(Runtime.HandlerInfo rhi : handlers) {
-            context.runtime.callMessage.sendTo(context, context.runtime.handlerMessage.sendTo(context, rhi.handler), newCondition);
+            ((Message)IokeObject.data(context.runtime.callMessage)).sendTo(context.runtime.callMessage, context, ((Message)IokeObject.data(context.runtime.handlerMessage)).sendTo(context.runtime.handlerMessage, context, rhi.handler), newCondition);
         }
 
         if(rescue != null) {
@@ -119,9 +119,9 @@ public class ConditionsBehavior {
                         if(m.isKeyword()) {
                             String n = m.getName(null);
                             if(n.equals("report:")) {
-                                report = IokeObject.as(m.next.evaluateCompleteWithoutExplicitReceiver(context, context.getRealContext()), context);
+                                report = IokeObject.as(((Message)IokeObject.data(m.next)).evaluateCompleteWithoutExplicitReceiver(m.next, context, context.getRealContext()), context);
                             } else if(n.equals("test:")) {
-                                test = IokeObject.as(m.next.evaluateCompleteWithoutExplicitReceiver(context, context.getRealContext()), context);
+                                test = IokeObject.as(((Message)IokeObject.data(m.next)).evaluateCompleteWithoutExplicitReceiver(m.next, context, context.getRealContext()), context);
                             } else {
                                 final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
                                                                                                    message, 
@@ -152,8 +152,8 @@ public class ConditionsBehavior {
                         }
                     }
 
-                    code = IokeObject.as(code.evaluateCompleteWithoutExplicitReceiver(context, context.getRealContext()), context);
-                    Object restart = runtime.mimic.sendTo(context, runtime.restart);
+                    code = IokeObject.as(((Message)IokeObject.data(code)).evaluateCompleteWithoutExplicitReceiver(code, context, context.getRealContext()), context);
+                    Object restart = ((Message)IokeObject.data(runtime.mimic)).sendTo(runtime.mimic, context, runtime.restart);
                     
                     IokeObject.setCell(restart, "code", code, context);
 
@@ -190,15 +190,15 @@ public class ConditionsBehavior {
                     int count = message.getArgumentCount();
                     List<Object> conds = new ArrayList<Object>();
                     for(int i=0, j=count-1; i<j; i++) {
-                        conds.add(message.getEvaluatedArgument(i, context));
+                        conds.add(((Message)IokeObject.data(message)).getEvaluatedArgument(message, i, context));
                     }
 
                     if(conds.isEmpty()) {
                         conds.add(context.runtime.condition);
                     }
 
-                    Object handler = message.getEvaluatedArgument(count-1, context);
-                    Object rescue = context.runtime.mimic.sendTo(context, context.runtime.rescue);
+                    Object handler = ((Message)IokeObject.data(message)).getEvaluatedArgument(message, count-1, context);
+                    Object rescue = ((Message)IokeObject.data(context.runtime.mimic)).sendTo(context.runtime.mimic, context, context.runtime.rescue);
                     
                     IokeObject.setCell(rescue, "handler", handler, context);
                     IokeObject.setCell(rescue, "conditions", context.runtime.newList(conds), context);
@@ -225,15 +225,15 @@ public class ConditionsBehavior {
                     int count = message.getArgumentCount();
                     List<Object> conds = new ArrayList<Object>();
                     for(int i=0, j=count-1; i<j; i++) {
-                        conds.add(message.getEvaluatedArgument(i, context));
+                        conds.add(((Message)IokeObject.data(message)).getEvaluatedArgument(message, i, context));
                     }
 
                     if(conds.isEmpty()) {
                         conds.add(context.runtime.condition);
                     }
 
-                    Object code = message.getEvaluatedArgument(count-1, context);
-                    Object handle = context.runtime.mimic.sendTo(context, context.runtime.handler);
+                    Object code = ((Message)IokeObject.data(message)).getEvaluatedArgument(message, count-1, context);
+                    Object handle = ((Message)IokeObject.data(context.runtime.mimic)).sendTo(context.runtime.mimic, context, context.runtime.handler);
                     
                     IokeObject.setCell(handle, "handler", code, context);
                     IokeObject.setCell(handle, "conditions", context.runtime.newList(conds), context);
@@ -275,12 +275,13 @@ public class ConditionsBehavior {
 
                     try {
                         for(Object o : args.subList(0, argCount-1)) {
-                            IokeObject bindable = IokeObject.as(IokeObject.as(o, context).evaluateCompleteWithoutExplicitReceiver(context, context.getRealContext()), context);
+                            IokeObject msg = IokeObject.as(o, context);
+                            IokeObject bindable = IokeObject.as(((Message)IokeObject.data(msg)).evaluateCompleteWithoutExplicitReceiver(msg, context, context.getRealContext()), context);
                             boolean loop = false;
                             do {
                                 loop = false;
                                 if(IokeObject.isKind(bindable, "Restart")) {
-                                    Object ioName = runtime.name.sendTo(context, bindable);
+                                    Object ioName = ((Message)IokeObject.data(runtime.name)).sendTo(runtime.name, context, bindable);
                                     String name = null;
                                     if(ioName != runtime.nil) {
                                         name = Symbol.getText(ioName);
@@ -289,12 +290,12 @@ public class ConditionsBehavior {
                                     restarts.add(0, new Runtime.RestartInfo(name, bindable, restarts, index, null));
                                     index = index.nextCol();
                                 } else if(IokeObject.isKind(bindable, "Rescue")) {
-                                    Object conditions = runtime.conditionsMessage.sendTo(context, bindable);
+                                    Object conditions = ((Message)IokeObject.data(runtime.conditionsMessage)).sendTo(runtime.conditionsMessage, context, bindable);
                                     List<Object> applicable = IokeList.getList(conditions);
                                     rescues.add(0, new Runtime.RescueInfo(bindable, applicable, rescues, index));
                                     index = index.nextCol();
                                 } else if(IokeObject.isKind(bindable, "Handler")) {
-                                    Object conditions = runtime.conditionsMessage.sendTo(context, bindable);
+                                    Object conditions = ((Message)IokeObject.data(runtime.conditionsMessage)).sendTo(runtime.conditionsMessage, context, bindable);
                                     List<Object> applicable = IokeList.getList(conditions);
                                     handlers.add(0, new Runtime.HandlerInfo(bindable, applicable, handlers, index));
                                     index = index.nextCol();
@@ -338,7 +339,7 @@ public class ConditionsBehavior {
                         runtime.registerRescues(rescues);
                         runtime.registerHandlers(handlers);
 
-                        return code.evaluateCompleteWithoutExplicitReceiver(context, context.getRealContext());
+                        return ((Message)IokeObject.data(code)).evaluateCompleteWithoutExplicitReceiver(code, context, context.getRealContext());
                     } catch(ControlFlow.Restart e) {
                         Runtime.RestartInfo ri = null;
                         if((ri = e.getRestart()).token == restarts) {
@@ -346,7 +347,7 @@ public class ConditionsBehavior {
                             runtime.unregisterRescues(rescues);
                             runtime.unregisterRestarts(restarts); 
                             doUnregister = false;
-                            return runtime.callMessage.sendTo(context, runtime.code.sendTo(context, ri.restart), e.getArguments());
+                            return ((Message)IokeObject.data(runtime.callMessage)).sendTo(runtime.callMessage, context, ((Message)IokeObject.data(runtime.code)).sendTo(runtime.code, context, ri.restart), e.getArguments());
                         } else {
                             throw e;
                         } 
@@ -357,7 +358,7 @@ public class ConditionsBehavior {
                             runtime.unregisterRescues(rescues);
                             runtime.unregisterRestarts(restarts); 
                             doUnregister = false;
-                            return runtime.callMessage.sendTo(context, runtime.handlerMessage.sendTo(context, ri.rescue), e.getCondition());
+                            return ((Message)IokeObject.data(runtime.callMessage)).sendTo(runtime.callMessage, context, ((Message)IokeObject.data(runtime.handlerMessage)).sendTo(runtime.handlerMessage, context, ri.rescue), e.getCondition());
                         } else {
                             throw e;
                         }
@@ -536,7 +537,7 @@ public class ConditionsBehavior {
 
                     for(List<Runtime.RestartInfo> lri : activeRestarts) {
                         for(Runtime.RestartInfo rri : lri) {
-                            if(IokeObject.isTrue(runtime.callMessage.sendTo(context, runtime.testMessage.sendTo(context, rri.restart), toLookFor))) {
+                            if(IokeObject.isTrue(((Message)IokeObject.data(runtime.callMessage)).sendTo(runtime.callMessage, context, ((Message)IokeObject.data(runtime.testMessage)).sendTo(runtime.testMessage, context, rri.restart), toLookFor))) {
                                 result.add(rri.restart);
                             }
                         }
@@ -599,13 +600,13 @@ public class ConditionsBehavior {
                     IokeObject condition = signal(datum, positionalArgs, keywordArgs, message, context);
                     IokeObject err = IokeObject.as(context.runtime.system.getCell(message, context, "err"), context);
                     
-                    context.runtime.printMessage.sendTo(context, err, context.runtime.newText("*** - "));
-                    context.runtime.printlnMessage.sendTo(context, err, context.runtime.reportMessage.sendTo(context, condition));
+                    ((Message)IokeObject.data(context.runtime.printMessage)).sendTo(context.runtime.printMessage, context, err, context.runtime.newText("*** - "));
+                    ((Message)IokeObject.data(context.runtime.printlnMessage)).sendTo(context.runtime.printlnMessage, context, err, ((Message)IokeObject.data(context.runtime.reportMessage)).sendTo(context.runtime.reportMessage, context, condition));
                     
-                    IokeObject currentDebugger = IokeObject.as(context.runtime.currentDebuggerMessage.sendTo(context, context.runtime.system), context);
+                    IokeObject currentDebugger = IokeObject.as(((Message)IokeObject.data(context.runtime.currentDebuggerMessage)).sendTo(context.runtime.currentDebuggerMessage, context, context.runtime.system), context);
 
                     if(!currentDebugger.isNil()) {
-                        context.runtime.invokeMessage.sendTo(context, currentDebugger, condition, context);
+                        ((Message)IokeObject.data(context.runtime.invokeMessage)).sendTo(context.runtime.invokeMessage, context, currentDebugger, condition, context);
                     }
 
                     throw new ControlFlow.Exit(condition);

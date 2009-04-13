@@ -450,7 +450,7 @@ public class Text extends IokeData {
                             final boolean doSplatPairs = splatPairs;
                             splat = false;
                             splatPairs = false;
-                            context.runtime.each.sendTo(context, arg, context.runtime.createMessage(new Message(context.runtime, "internal:collectDataForText#format") { 
+                            ((Message)IokeObject.data(context.runtime.each)).sendTo(context.runtime.each, context, arg, context.runtime.createMessage(new Message(context.runtime, "internal:collectDataForText#format") { 
                                     private Object doEvaluation(IokeObject ctx, Object ground, Object receiver) throws ControlFlow {
                                         List<Object> args = null;
                                         if(doSplat) {
@@ -496,7 +496,7 @@ public class Text extends IokeData {
                             arg = positionalArgs.get(argIndex++);
                             Object txt = IokeObject.tryConvertToText(arg, message, context);
                             if(txt == null) {
-                                txt = context.runtime.asText.sendTo(context, arg);
+                                txt = ((Message)IokeObject.data(context.runtime.asText)).sendTo(context.runtime.asText, context, arg);
                             }
                             String outTxt = Text.getText(txt);
 

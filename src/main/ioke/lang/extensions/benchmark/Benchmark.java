@@ -53,10 +53,10 @@ public abstract class Benchmark {
                     long iterations = 1;
                     int index = 0;
                     if(count > 1) {
-                        bmRounds = ((Number)IokeObject.data(IokeObject.convertToNumber(message.getEvaluatedArgument(index, context), message, context))).asJavaInteger();
+                        bmRounds = ((Number)IokeObject.data(IokeObject.convertToNumber(((Message)IokeObject.data(message)).getEvaluatedArgument(message, index, context), message, context))).asJavaInteger();
                         index++;
                         if(count > 2) {
-                            iterations = ((Number)IokeObject.data(IokeObject.convertToNumber(message.getEvaluatedArgument(index, context), message, context))).asJavaLong();
+                            iterations = ((Number)IokeObject.data(IokeObject.convertToNumber(((Message)IokeObject.data(message)).getEvaluatedArgument(message, index, context), message, context))).asJavaLong();
                             index++;
                         }
                     }
@@ -64,7 +64,7 @@ public abstract class Benchmark {
                     for(int i=0;i<bmRounds;i++) {
                         long before = System.nanoTime();
                         for(int j=0;j<iterations;j++) {
-                            message.getEvaluatedArgument(index, context);
+                            ((Message)IokeObject.data(message)).getEvaluatedArgument(message, index, context);
                         }
                         long after = System.nanoTime();
                         long time = after-before;
@@ -73,7 +73,7 @@ public abstract class Benchmark {
 
                         String theCode = Message.thisCode(((IokeObject)message.getArguments().get(index)));
 
-                        context.runtime.printlnMessage.sendTo(context, context.runtime.outMessage.sendTo(context, context.runtime.system), context.runtime.newText(String.format("%-32.32s %.6s.%09d", theCode, secs, rest)));
+                        ((Message)IokeObject.data(context.runtime.printlnMessage)).sendTo(context.runtime.printlnMessage, context, ((Message)IokeObject.data(context.runtime.outMessage)).sendTo(context.runtime.outMessage, context, context.runtime.system), context.runtime.newText(String.format("%-32.32s %.6s.%09d", theCode, secs, rest)));
                     }
 
                     return context.runtime.nil;

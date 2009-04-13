@@ -474,7 +474,7 @@ public class Runtime {
     public Object evaluateStream(Reader reader, IokeObject message, IokeObject context) throws ControlFlow {
         IokeObject msg = parseStream(reader, message, context);
         if(msg != null) {
-            return msg.evaluateComplete();
+            return ((Message)IokeObject.data(msg)).evaluateComplete(msg);
         } else {
             return nil;
         }
@@ -483,7 +483,7 @@ public class Runtime {
     public Object evaluateString(String str, IokeObject message, IokeObject context) throws ControlFlow {
         IokeObject msg = parseStream(new StringReader(str), message, context);
         if(msg != null) {
-            return msg.evaluateComplete();
+            return ((Message)IokeObject.data(msg)).evaluateComplete(msg);
         } else {
             return nil;
         }
@@ -765,7 +765,7 @@ public class Runtime {
     }
 
     public void errorCondition(IokeObject cond) throws ControlFlow {
-        errorMessage.sendTo(ground, ground, createMessage(Message.wrap(cond)));
+        ((Message)IokeObject.data(errorMessage)).sendTo(errorMessage, ground, ground, createMessage(Message.wrap(cond)));
     }
 
     public IokeObject newList(List<Object> list) {
@@ -797,7 +797,7 @@ public class Runtime {
     }
 
     public IokeObject newFile(IokeObject context, File eff) throws ControlFlow {
-        IokeObject fileMimic = IokeObject.as(FileMessage.sendTo(context, this.fileSystem), context);
+        IokeObject fileMimic = IokeObject.as(((Message)IokeObject.data(FileMessage)).sendTo(FileMessage, context, this.fileSystem), context);
         IokeObject obj = fileMimic.allocateCopy(null, null);
         obj.mimicsWithoutCheck(fileMimic);
         obj.setData(new FileSystem.IokeFile(eff));
@@ -836,7 +836,7 @@ public class Runtime {
         BindIndex index = getBindIndex();
         
         for(Restart.JavaRestart rjr : restarts) {
-            IokeObject rr = IokeObject.as(mimic.sendTo(context, restart), context);
+            IokeObject rr = IokeObject.as(((Message)IokeObject.data(mimic)).sendTo(mimic, context, restart), context);
             IokeObject.setCell(rr, "name", getSymbol(rjr.getName()), context);
 
             List<Object> args = new ArrayList<Object>();
@@ -876,7 +876,7 @@ public class Runtime {
     }
 
     public void withReturningRestart(String name, IokeObject context, RunnableWithControlFlow code) throws ControlFlow {
-        IokeObject rr = IokeObject.as(mimic.sendTo(context, restart), context);
+        IokeObject rr = IokeObject.as(((Message)IokeObject.data(mimic)).sendTo(mimic, context, restart), context);
         IokeObject.setCell(rr, "name", getSymbol(name), context);
         IokeObject.setCell(rr, "argumentNames", newList(new ArrayList<Object>()), context);
 
@@ -902,7 +902,7 @@ public class Runtime {
 
     public Object withReturningRescue(IokeObject context, Object toReturn, RunnableWithReturnAndControlFlow javaRescue) throws ControlFlow {
         List<RescueInfo> rescues = new ArrayList<RescueInfo>();
-        IokeObject rr = IokeObject.as(mimic.sendTo(context, rescue), context);
+        IokeObject rr = IokeObject.as(((Message)IokeObject.data(mimic)).sendTo(mimic, context, rescue), context);
         List<Object> conds = new ArrayList();
         conds.add(this.condition);
         rescues.add(new RescueInfo(rr, conds, rescues, getBindIndex()));
@@ -1106,7 +1106,7 @@ public class Runtime {
         while(!atExits.isEmpty()) {
             IokeSystem.AtExitInfo atExit = atExits.remove(0);
             try {
-                atExit.message.evaluateCompleteWithoutExplicitReceiver(atExit.context, atExit.context.getRealContext());
+                ((Message)IokeObject.data(atExit.message)).evaluateCompleteWithoutExplicitReceiver(atExit.message, atExit.context, atExit.context.getRealContext());
             } catch(ControlFlow.Exit e) {
                 status = 1;
             } catch(ControlFlow e) {

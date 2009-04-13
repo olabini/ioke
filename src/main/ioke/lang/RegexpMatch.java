@@ -149,7 +149,7 @@ public class RegexpMatch extends IokeData {
                         if(IokeObject.data(arg) instanceof Number) {
                             index = Number.extractInt(arg, message, context);
                         } else {
-                            String namedIndex = Text.getText(context.runtime.asText.sendTo(context, arg));
+                            String namedIndex = Text.getText(((Message)IokeObject.data(context.runtime.asText)).sendTo(context.runtime.asText, context, arg));
                             Integer ix = Regexp.getRegexp(getRegexp(on)).groupId(namedIndex);
                             if(ix == null) {
                                 return context.runtime.newNumber(-1);
@@ -188,7 +188,7 @@ public class RegexpMatch extends IokeData {
                         if(IokeObject.data(arg) instanceof Number) {
                             index = Number.extractInt(arg, message, context);
                         } else {
-                            String namedIndex = Text.getText(context.runtime.asText.sendTo(context, arg));
+                            String namedIndex = Text.getText(((Message)IokeObject.data(context.runtime.asText)).sendTo(context.runtime.asText, context, arg));
                             Integer ix = Regexp.getRegexp(getRegexp(on)).groupId(namedIndex);
                             if(ix == null) {
                                 return context.runtime.newNumber(-1);
@@ -227,7 +227,7 @@ public class RegexpMatch extends IokeData {
                         if(IokeObject.data(arg) instanceof Number) {
                             index = Number.extractInt(arg, message, context);
                         } else {
-                            String namedIndex = Text.getText(context.runtime.asText.sendTo(context, arg));
+                            String namedIndex = Text.getText(((Message)IokeObject.data(context.runtime.asText)).sendTo(context.runtime.asText, context, arg));
                             Integer ix = Regexp.getRegexp(getRegexp(on)).groupId(namedIndex);
                             if(ix == null) {
                                 return context.runtime.nil;
@@ -265,7 +265,7 @@ public class RegexpMatch extends IokeData {
                     MatchResult mr = getMatchResult(on);
 
                     if((IokeObject.data(arg) instanceof Symbol) || (IokeObject.data(arg) instanceof Text)) {
-                        String namedIndex = Text.getText(context.runtime.asText.sendTo(context, arg));
+                        String namedIndex = Text.getText(((Message)IokeObject.data(context.runtime.asText)).sendTo(context.runtime.asText, context, arg));
                         Integer ix = Regexp.getRegexp(getRegexp(on)).groupId(namedIndex);
                         if(ix == null || !mr.isCaptured(ix)) {
                             return context.runtime.nil;
