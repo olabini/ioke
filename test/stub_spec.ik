@@ -408,4 +408,58 @@ describe("ISpec",
       )
     )
   )
+  
+  describe("DescribeContext",  
+    describe("mock",
+      it("should mimic Origin",
+        mock should mimic(Origin)
+      )
+      
+      it("should set a simple expectation",
+        fn(foo = mock(bar)) should not satisfyExpectations
+        fn(foo = mock(bar). foo bar) should satisfyExpectations
+      )
+      
+      it("should set an expectation with arguments",
+        fn(foo = mock(bar(5)). foo bar) should not satisfyExpectations
+        fn(foo = mock(bar(5)). foo bar(5)) should satisfyExpectations
+        
+        arg = 5
+        fn(foo = mock(bar(arg, 6)). foo bar(5)) should not satisfyExpectations
+        fn(foo = mock(bar(arg, 6)). foo bar(5, 6)) should satisfyExpectations
+      )
+      
+      it("should set multiple expectations",
+        fn(foo = mock(bar, baz). foo bar) should not satisfyExpectations
+        fn(foo = mock(bar, baz). foo bar. foo baz) should satisfyExpectations
+        fn(foo = mock(bar, bar(5)). foo bar) should not satisfyExpectations
+        fn(foo = mock(bar, bar(5)). foo bar. foo bar(5)) should satisfyExpectations
+      )
+      
+      it("should chain expectations",
+        fn(foo = mock(bar never)) should satisfyExpectations
+        fn(foo = mock(bar never). foo bar) should not satisfyExpectations
+        fn(foo = mock(bar times(2)). foo bar) should not satisfyExpectations
+        fn(foo = mock(bar times(2)). foo bar. foo bar) should satisfyExpectations
+      )
+      
+      it("should chain multiple expectations",
+        fn(foo = mock(bar never, baz never)) should satisfyExpectations
+        fn(foo = mock(bar never, baz never). foo bar) should not satisfyExpectations
+        fn(foo = mock(bar never, baz never). foo baz) should not satisfyExpectations
+        fn(foo = mock(bar never, baz never). foo bar. foo baz) should not satisfyExpectations
+      )
+      
+      it("should return values",
+        fn(foo = mock(bar andReturn(5)). foo bar should == 5) should satisfyExpectations
+      )
+      
+      it("should construct expectations using a hash syntax",
+        fn(foo = mock(bar: 5)) should not satisfyExpectations
+        fn(foo = mock(bar: 5). foo bar should == 5) should satisfyExpectations
+        fn(foo = mock(bar: 5, baz: 6). foo bar should == 5. foo baz should == 6) should satisfyExpectations   
+        fn(arg = 5. foo = mock(bar: arg). foo bar should == 5) should satisfyExpectations
+      )
+    )
+  )
 )
