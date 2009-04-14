@@ -188,6 +188,21 @@ ISpec do(
   ShouldContext generateMock = method(message, ground,
     self realValue mock!(message name) withArgs(*(message arguments map(evaluateOn(ground))))
   )
+  
+  DescribeContext mock = macro(
+    mockObject = Origin mimic
+    call arguments each(expectation,
+      
+      if(expectation name asText =~ #/:$/, ; hash syntax
+        mockObject mock!(expectation name asText replace(#/:$/, "")) andReturn(expectation next evaluateOn(call ground)),
+        
+        furtherExpectations = expectation next
+        mockExpectation = mockObject mock!(expectation name) withArgs(*(expectation arguments map(evaluateOn(call ground))))
+        unless(furtherExpectations nil? || furtherExpectations terminator?, furtherExpectations sendTo(mockExpectation))
+      )
+    )
+    mockObject
+  )
 
   DescribeContext after(
     ISpec stubs verifyAndClear!
