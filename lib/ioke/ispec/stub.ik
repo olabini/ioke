@@ -190,9 +190,17 @@ ISpec do(
   )
   
   DescribeContext mock = macro(
-    mockObject = Origin mimic
-    call arguments each(expectation,
+    mockObject = Origin mimic do(
+      pass = macro(
+        __invoke__(call message name, *(call arguments))
+      )
       
+      __invoke__ = method(cellName, +posArgs, +:namedArgs,
+        ISpec stubs invoke(self, cellName, posArgs, namedArgs)
+      )
+    )
+    
+    call arguments each(expectation,
       if(expectation name asText =~ #/:$/, ; hash syntax
         mockObject mock!(expectation name asText replace(#/:$/, "")) andReturn(expectation next evaluateOn(call ground)),
         
@@ -202,6 +210,14 @@ ISpec do(
       )
     )
     mockObject
+  )
+  
+  DescribeContext stub = method(+:cellsAndValues,
+    stubObject = Origin mimic
+    cellsAndValues each(pair,
+      stubObject stub!(pair key) andReturn(pair value)
+    )
+    stubObject
   )
 
   DescribeContext after(

@@ -59,6 +59,10 @@ describe("ISpec",
         foo stub!(bar: 5, baz: 6)
         foo bar should == 5
         foo baz should == 6
+        
+        arg = 7
+        foo stub!(qux: arg)
+        foo qux should == 7
       )
     )
     
@@ -409,10 +413,35 @@ describe("ISpec",
     )
   )
   
-  describe("DescribeContext",  
+  describe("DescribeContext",
+    describe("stub",
+      it("should mimic Origin",
+        stub should mimic(Origin)
+      )
+      
+      it("should signal NoSuchCell when calling a method that isn't stubbed",
+        fn(stub bar) should signal(Condition Error NoSuchCell)
+      )
+      
+      it("should support simple key-value pair syntax",
+        stub(bar: 5) bar should == 5
+        stub(bar: 5, qux: 6) bar should == 5
+        stub(bar: 5, qux: 6) qux should == 6
+        
+        arg = 5
+        stub(bar: arg) bar should == 5
+      )
+    )
+    
     describe("mock",
       it("should mimic Origin",
         mock should mimic(Origin)
+      )
+      
+      it("should signal UnexpectedInvocation when calling a method that isn't mocked",
+        fn(mock bar) should signal(ISpec UnexpectedInvocation)
+        fn(mock(bar(5)) bar) should signal(ISpec UnexpectedInvocation)
+        fn(mock(bar(5)) bar(5)) should not signal(ISpec UnexpectedInvocation)
       )
       
       it("should set a simple expectation",
