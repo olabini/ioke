@@ -489,6 +489,13 @@ describe("ISpec",
         fn(foo = mock(bar: 5, baz: 6). foo bar should == 5. foo baz should == 6) should satisfyExpectations   
         fn(arg = 5. foo = mock(bar: arg). foo bar should == 5) should satisfyExpectations
       )
+      
+      it("should mix expectations in a hash syntax and other expectations",
+        fn(foo = mock(bar: 5, baz andReturn(6))) should not satisfyExpectations
+        fn(foo = mock(bar: 5, baz andReturn(6)). foo bar) should not satisfyExpectations
+        fn(foo = mock(bar: 5, baz andReturn(6)). foo baz) should not satisfyExpectations
+        fn(foo = mock(bar: 5, baz andReturn(6)). foo bar. foo baz) should satisfyExpectations
+      )
     )
   )
 )

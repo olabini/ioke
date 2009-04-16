@@ -181,7 +181,7 @@ ISpec do(
   
   ShouldContext signalMock! = method(
     failFn = fn(ISpec stubs verifyAndClear!(Ground false). self realValue call. ISpec stubs verifyAndClear!(Ground true))
-    signalled = "none"
+    signalled = Origin with(text: "no unexpected invocations")
     bind(rescue(ISpec UnexpectedInvocation, fn(c, signalled = c)), failFn call)
     signalled
   )
