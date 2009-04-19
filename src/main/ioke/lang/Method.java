@@ -15,7 +15,6 @@ import ioke.lang.exceptions.ControlFlow;
  */
 public class Method extends IokeData implements Named, Inspectable {
     String name;
-    private IokeObject context;
 
     public Method(String name) {
         this.name = name;
@@ -23,8 +22,6 @@ public class Method extends IokeData implements Named, Inspectable {
 
     public Method(IokeObject context) {
         this((String)null);
-
-        this.context = context;
     }
     
     @Override

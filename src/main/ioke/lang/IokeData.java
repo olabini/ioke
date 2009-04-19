@@ -496,7 +496,7 @@ public abstract class IokeData {
         int h = hashCode(self);
         String hash = Integer.toHexString(h).toUpperCase();
         if(obj instanceof NullObject) {
-            return "#<???:" + hash + ">";
+            return "#<nul:" + hash + ">";
         }
 
         String kind = ((Text)IokeObject.data(obj)).getText();
