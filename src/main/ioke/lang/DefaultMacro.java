@@ -16,7 +16,6 @@ import ioke.lang.exceptions.ControlFlow;
  */
 public class DefaultMacro extends IokeData implements Named, Inspectable, AssociatedCode {
     String name;
-    private IokeObject context;
     private IokeObject code;
 
     public DefaultMacro(String name) {
@@ -26,7 +25,6 @@ public class DefaultMacro extends IokeData implements Named, Inspectable, Associ
     public DefaultMacro(IokeObject context, IokeObject code) {
         this((String)null);
 
-        this.context = context;
         this.code = code;
     }
 
