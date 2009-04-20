@@ -13,7 +13,7 @@ import ioke.lang.DefaultArgumentsDefinition;
 import ioke.lang.Runtime;
 import ioke.lang.RunnableWithControlFlow;
 import ioke.lang.IokeObject;
-import ioke.lang.JavaMethod;
+import ioke.lang.NativeMethod;
 import ioke.lang.Message;
 import ioke.lang.Number;
 import ioke.lang.Text;
@@ -68,7 +68,7 @@ public abstract class Readline {
         IokeObject history = runtime.newFromOrigin();
         rl.setCell("HISTORY", history);
         
-        rl.registerMethod(runtime.newNativeMethod("will print a prompt to standard out and then try to read a line with working readline functionality. takes two arguments, the first is the string to prompt, the second is a boolean that says whether we should add the read string to history or not", new JavaMethod("readline") {
+        rl.registerMethod(runtime.newNativeMethod("will print a prompt to standard out and then try to read a line with working readline functionality. takes two arguments, the first is the string to prompt, the second is a boolean that says whether we should add the read string to history or not", new NativeMethod("readline") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("prompt")
@@ -127,7 +127,7 @@ public abstract class Readline {
                 }
             }));
 
-        history.registerMethod(runtime.newNativeMethod("will add a new line to the history", new JavaMethod("<<") {
+        history.registerMethod(runtime.newNativeMethod("will add a new line to the history", new NativeMethod("<<") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("line")

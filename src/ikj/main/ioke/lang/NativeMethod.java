@@ -14,8 +14,8 @@ import ioke.lang.exceptions.ControlFlow;
  *
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
-public abstract class JavaMethod extends Method {
-    public static class WithNoArguments extends JavaMethod {
+public abstract class NativeMethod extends Method {
+    public static class WithNoArguments extends NativeMethod {
         private final static DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition.empty();
 
         public WithNoArguments(String name) {
@@ -49,8 +49,8 @@ public abstract class JavaMethod extends Method {
                     getArguments().getEvaluatedArguments(dynamicContext, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
 
                     IokeData data = IokeObject.data(on);
-                    if(data instanceof JavaMethod) {
-                        return dynamicContext.runtime.newText(((JavaMethod)data).getArgumentsCode());
+                    if(data instanceof NativeMethod) {
+                        return dynamicContext.runtime.newText(((NativeMethod)data).getArgumentsCode());
                     } else {
                         return dynamicContext.runtime.newText(((AssociatedCode)data).getArgumentsCode());
                     }

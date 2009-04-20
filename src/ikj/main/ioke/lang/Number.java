@@ -225,7 +225,7 @@ public class Number extends IokeData {
                 }
             }));
 
-        number.registerMethod(runtime.newNativeMethod("compares this against the argument. should be overridden - in this case only used to check for equivalent number kinds", new JavaMethod("==") {
+        number.registerMethod(runtime.newNativeMethod("compares this against the argument. should be overridden - in this case only used to check for equivalent number kinds", new NativeMethod("==") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("other")
@@ -617,7 +617,7 @@ public class Number extends IokeData {
                 }
             }));
 
-        rational.registerMethod(runtime.newNativeMethod("Returns a text representation of the object", new JavaMethod.WithNoArguments("asText") {
+        rational.registerMethod(runtime.newNativeMethod("Returns a text representation of the object", new NativeMethod.WithNoArguments("asText") {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return runtime.newText(on.toString());
@@ -652,7 +652,7 @@ public class Number extends IokeData {
                 }
             }));
 
-        integer.registerMethod(runtime.newNativeMethod("Expects one or two arguments. If one argument is given, executes it as many times as the value of the receiving number. If two arguments are given, the first will be an unevaluated name that will receive the current loop value on each repitition. the iteration length is limited to the positive maximum of a Java int", new JavaMethod("times") {
+        integer.registerMethod(runtime.newNativeMethod("Expects one or two arguments. If one argument is given, executes it as many times as the value of the receiving number. If two arguments are given, the first will be an unevaluated name that will receive the current loop value on each repitition. the iteration length is limited to the positive maximum of a Java int", new NativeMethod("times") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositionalUnevaluated("argumentNameOrCode")

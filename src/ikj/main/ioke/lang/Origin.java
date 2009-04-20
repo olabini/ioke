@@ -19,7 +19,7 @@ public class Origin {
         origin.setKind("Origin");
 
         // asText, asRepresentation
-        origin.registerMethod(runtime.newNativeMethod("Prints a text representation and a newline to standard output", new JavaMethod.WithNoArguments("println") {
+        origin.registerMethod(runtime.newNativeMethod("Prints a text representation and a newline to standard output", new NativeMethod.WithNoArguments("println") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -28,7 +28,7 @@ public class Origin {
                 }
             }));
 
-        origin.registerMethod(runtime.newNativeMethod("Prints a text representation to standard output", new JavaMethod.WithNoArguments("print") {
+        origin.registerMethod(runtime.newNativeMethod("Prints a text representation to standard output", new NativeMethod.WithNoArguments("print") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());

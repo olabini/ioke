@@ -125,7 +125,7 @@ public class JavaWrapper extends IokeData {
     public void init(final IokeObject obj) throws ControlFlow {
         final Runtime runtime = obj.runtime;
 
-        obj.registerMethod(runtime.newNativeMethod("returns the kind of this Java object.", new JavaMethod.WithNoArguments("kind") {
+        obj.registerMethod(runtime.newNativeMethod("returns the kind of this Java object.", new NativeMethod.WithNoArguments("kind") {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     if(on instanceof IokeObject) {
@@ -136,7 +136,7 @@ public class JavaWrapper extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("returns the true if the receiver is a class object, false otherwise.", new JavaMethod.WithNoArguments("class?") {
+        obj.registerMethod(runtime.newNativeMethod("returns the true if the receiver is a class object, false otherwise.", new NativeMethod.WithNoArguments("class?") {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     if(on instanceof IokeObject) {
@@ -147,7 +147,7 @@ public class JavaWrapper extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("calls toString on the receiver and returns it.", new JavaMethod.WithNoArguments("class:toString") {
+        obj.registerMethod(runtime.newNativeMethod("calls toString on the receiver and returns it.", new NativeMethod.WithNoArguments("class:toString") {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     if(on instanceof IokeObject) {
@@ -158,7 +158,7 @@ public class JavaWrapper extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("returns true if the left hand side is equal to the right hand side. this will use the Java equals method - after unwrapping both the left hand and right hand side.", new JavaMethod("==") {
+        obj.registerMethod(runtime.newNativeMethod("returns true if the left hand side is equal to the right hand side. this will use the Java equals method - after unwrapping both the left hand and right hand side.", new NativeMethod("==") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("other")
@@ -192,7 +192,7 @@ public class JavaWrapper extends IokeData {
             }));
 
 
-        obj.registerMethod(runtime.newNativeMethod("returns true if the left hand side is the same instance as the right hand side", new JavaMethod("same?") {
+        obj.registerMethod(runtime.newNativeMethod("returns true if the left hand side is the same instance as the right hand side", new NativeMethod("same?") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("other")

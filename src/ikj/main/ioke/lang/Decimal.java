@@ -88,7 +88,7 @@ public class Decimal extends IokeData {
         decimal.setKind("Number Decimal");
         runtime.decimal = decimal;
 
-        decimal.registerMethod(runtime.newNativeMethod("Returns a text representation of the object", new JavaMethod.WithNoArguments("asText") {
+        decimal.registerMethod(runtime.newNativeMethod("Returns a text representation of the object", new NativeMethod.WithNoArguments("asText") {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return runtime.newText(on.toString());

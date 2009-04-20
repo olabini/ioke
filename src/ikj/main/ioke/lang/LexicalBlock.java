@@ -41,7 +41,7 @@ public class LexicalBlock extends IokeData implements AssociatedCode {
     public void init(IokeObject lexicalBlock) throws ControlFlow {
         lexicalBlock.setKind("LexicalBlock");
 
-        lexicalBlock.registerMethod(lexicalBlock.runtime.newNativeMethod("takes two evaluated arguments, where this first one is a list of messages which will be used as the arguments and the code, and the second is the context where this lexical scope should be created in", new JavaMethod("createFrom") {
+        lexicalBlock.registerMethod(lexicalBlock.runtime.newNativeMethod("takes two evaluated arguments, where this first one is a list of messages which will be used as the arguments and the code, and the second is the context where this lexical scope should be created in", new NativeMethod("createFrom") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("messageList")
@@ -70,7 +70,7 @@ public class LexicalBlock extends IokeData implements AssociatedCode {
                 }
             }));
 
-        lexicalBlock.registerMethod(lexicalBlock.runtime.newNativeMethod("invokes the block with the arguments provided, returning the result of the last expression in the block", new JavaMethod("call") {
+        lexicalBlock.registerMethod(lexicalBlock.runtime.newNativeMethod("invokes the block with the arguments provided, returning the result of the last expression in the block", new NativeMethod("call") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRestUnevaluated("arguments")
@@ -87,7 +87,7 @@ public class LexicalBlock extends IokeData implements AssociatedCode {
                 }
             }));
 
-        lexicalBlock.registerMethod(lexicalBlock.runtime.newNativeMethod("returns the full code of this lexical block, as a Text", new JavaMethod.WithNoArguments("code") {
+        lexicalBlock.registerMethod(lexicalBlock.runtime.newNativeMethod("returns the full code of this lexical block, as a Text", new NativeMethod.WithNoArguments("code") {
                 @Override
                 public Object activate(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(dynamicContext, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -99,7 +99,7 @@ public class LexicalBlock extends IokeData implements AssociatedCode {
                 }
             }));
 
-        lexicalBlock.registerMethod(lexicalBlock.runtime.newNativeMethod("returns the code for the argument definition", new JavaMethod.WithNoArguments("argumentsCode") {
+        lexicalBlock.registerMethod(lexicalBlock.runtime.newNativeMethod("returns the code for the argument definition", new NativeMethod.WithNoArguments("argumentsCode") {
                 @Override
                 public Object activate(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(dynamicContext, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -107,7 +107,7 @@ public class LexicalBlock extends IokeData implements AssociatedCode {
                 }
             }));
 
-        lexicalBlock.registerMethod(lexicalBlock.runtime.newNativeMethod("returns a list of the keywords this block takes", new JavaMethod.WithNoArguments("keywords") {
+        lexicalBlock.registerMethod(lexicalBlock.runtime.newNativeMethod("returns a list of the keywords this block takes", new NativeMethod.WithNoArguments("keywords") {
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -121,7 +121,7 @@ public class LexicalBlock extends IokeData implements AssociatedCode {
                 }
             }));
 
-        lexicalBlock.registerMethod(lexicalBlock.runtime.newNativeMethod("returns a list of the argument names the positional arguments this block takes", new JavaMethod.WithNoArguments("argumentNames") {
+        lexicalBlock.registerMethod(lexicalBlock.runtime.newNativeMethod("returns a list of the argument names the positional arguments this block takes", new NativeMethod.WithNoArguments("argumentNames") {
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -137,28 +137,28 @@ public class LexicalBlock extends IokeData implements AssociatedCode {
                 }
             }));
 
-        lexicalBlock.registerMethod(lexicalBlock.runtime.newNativeMethod("returns the message chain for this block", new JavaMethod.WithNoArguments("message") {
+        lexicalBlock.registerMethod(lexicalBlock.runtime.newNativeMethod("returns the message chain for this block", new NativeMethod.WithNoArguments("message") {
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return ((AssociatedCode)IokeObject.data(on)).getCode();
                 }
             }));
-        lexicalBlock.registerMethod(lexicalBlock.runtime.newNativeMethod("Returns a text inspection of the object", new JavaMethod.WithNoArguments("inspect") {
+        lexicalBlock.registerMethod(lexicalBlock.runtime.newNativeMethod("Returns a text inspection of the object", new NativeMethod.WithNoArguments("inspect") {
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return context.runtime.newText(LexicalBlock.getInspect(on));
                 }
             }));
-        lexicalBlock.registerMethod(lexicalBlock.runtime.newNativeMethod("Returns a brief text inspection of the object", new JavaMethod.WithNoArguments("notice") {
+        lexicalBlock.registerMethod(lexicalBlock.runtime.newNativeMethod("Returns a brief text inspection of the object", new NativeMethod.WithNoArguments("notice") {
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return context.runtime.newText(LexicalBlock.getNotice(on));
                 }
             }));
-        lexicalBlock.registerMethod(lexicalBlock.runtime.newNativeMethod("returns idiomatically formatted code for this lexical block", new JavaMethod.WithNoArguments("formattedCode") {
+        lexicalBlock.registerMethod(lexicalBlock.runtime.newNativeMethod("returns idiomatically formatted code for this lexical block", new NativeMethod.WithNoArguments("formattedCode") {
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());

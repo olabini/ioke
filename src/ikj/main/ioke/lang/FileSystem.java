@@ -78,7 +78,7 @@ public class FileSystem {
         file.init();
         obj.registerCell("File", file);
 
-        obj.registerMethod(runtime.newNativeMethod("Tries to interpret the given arguments as strings describing file globs, and returns an array containing the result of applying these globs.", new JavaMethod("[]") {
+        obj.registerMethod(runtime.newNativeMethod("Tries to interpret the given arguments as strings describing file globs, and returns an array containing the result of applying these globs.", new NativeMethod("[]") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRest("globTexts")
@@ -102,7 +102,7 @@ public class FileSystem {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("Takes one string argument and returns true if it's the relative or absolute name of a directory, and false otherwise.", new JavaMethod("directory?") {
+        obj.registerMethod(runtime.newNativeMethod("Takes one string argument and returns true if it's the relative or absolute name of a directory, and false otherwise.", new NativeMethod("directory?") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("directoryName")
@@ -130,7 +130,7 @@ public class FileSystem {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("Takes one string argument that should be a file name, and returns a text of the contents of this file.", new JavaMethod("readFully") {
+        obj.registerMethod(runtime.newNativeMethod("Takes one string argument that should be a file name, and returns a text of the contents of this file.", new NativeMethod("readFully") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("fileName")
@@ -170,7 +170,7 @@ public class FileSystem {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("Takes one string argument and returns true if it's the relative or absolute name of a file, and false otherwise.", new JavaMethod("file?") {
+        obj.registerMethod(runtime.newNativeMethod("Takes one string argument and returns true if it's the relative or absolute name of a file, and false otherwise.", new NativeMethod("file?") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("fileName")
@@ -198,7 +198,7 @@ public class FileSystem {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("Takes one string argument and returns true if it's the relative or absolute name of something that exists.", new JavaMethod("exists?") {
+        obj.registerMethod(runtime.newNativeMethod("Takes one string argument and returns true if it's the relative or absolute name of something that exists.", new NativeMethod("exists?") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("entryName")
@@ -226,7 +226,7 @@ public class FileSystem {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("Takes one string argument that should be the path of a file or directory, and returns the parent of it - or nil if there is no parent.", new JavaMethod("parentOf") {
+        obj.registerMethod(runtime.newNativeMethod("Takes one string argument that should be the path of a file or directory, and returns the parent of it - or nil if there is no parent.", new NativeMethod("parentOf") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("entryName")
@@ -269,7 +269,7 @@ public class FileSystem {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("Takes a file name and a lexical block - opens the file, ensures that it exists and then yields the file to the block. Finally it closes the file after the block has finished executing, and then returns the result of the block.", new JavaMethod("withOpenFile") {
+        obj.registerMethod(runtime.newNativeMethod("Takes a file name and a lexical block - opens the file, ensures that it exists and then yields the file to the block. Finally it closes the file after the block has finished executing, and then returns the result of the block.", new NativeMethod("withOpenFile") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("fileName")
@@ -314,7 +314,7 @@ public class FileSystem {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("Copies a file. Takes two text arguments, where the first is the name of the file to copy and the second is the name of the destination. If the destination is a directory, the file will be copied with the same name, and if it's a filename, the file will get a new name", new JavaMethod("copyFile") {
+        obj.registerMethod(runtime.newNativeMethod("Copies a file. Takes two text arguments, where the first is the name of the file to copy and the second is the name of the destination. If the destination is a directory, the file will be copied with the same name, and if it's a filename, the file will get a new name", new NativeMethod("copyFile") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("fileName")
@@ -370,7 +370,7 @@ public class FileSystem {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("Takes one string argument and creates a directory with that name. It also takes an optional second argument. If it's true, will try to create all necessary directories inbetween. Default is false. Will signal a condition if the directory already exists, or if there's a file with that name.", new JavaMethod("createDirectory!") {
+        obj.registerMethod(runtime.newNativeMethod("Takes one string argument and creates a directory with that name. It also takes an optional second argument. If it's true, will try to create all necessary directories inbetween. Default is false. Will signal a condition if the directory already exists, or if there's a file with that name.", new NativeMethod("createDirectory!") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("directoryName")
@@ -430,7 +430,7 @@ public class FileSystem {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("Takes one string argument and removes a directory with that name. Will signal a condition if the directory doesn't exist, or if there's a file with that name.", new JavaMethod("removeDirectory!") {
+        obj.registerMethod(runtime.newNativeMethod("Takes one string argument and removes a directory with that name. Will signal a condition if the directory doesn't exist, or if there's a file with that name.", new NativeMethod("removeDirectory!") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("directoryName")
@@ -485,7 +485,7 @@ public class FileSystem {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("Takes one string argument and removes a file with that name. Will signal a condition if the file doesn't exist, or if there's a directory with that name.", new JavaMethod("removeFile!") {
+        obj.registerMethod(runtime.newNativeMethod("Takes one string argument and removes a file with that name. Will signal a condition if the file doesn't exist, or if there's a directory with that name.", new NativeMethod("removeFile!") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("fileName")

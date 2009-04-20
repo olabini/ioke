@@ -56,7 +56,7 @@ public class ConditionsBehavior {
         final Runtime runtime = obj.runtime;
         obj.setKind("DefaultBehavior Conditions");
 
-        obj.registerMethod(runtime.newNativeMethod("takes one optional unevaluated parameter (this should be the first if provided), that is the name of the restart to create. this will default to nil. takes two keyword arguments, report: and test:. These should both be lexical blocks. if not provided, there will be reasonable defaults. the only required argument is something that evaluates into a lexical block. this block is what will be executed when the restart is invoked. will return a Restart mimic.", new JavaMethod("restart") {
+        obj.registerMethod(runtime.newNativeMethod("takes one optional unevaluated parameter (this should be the first if provided), that is the name of the restart to create. this will default to nil. takes two keyword arguments, report: and test:. These should both be lexical blocks. if not provided, there will be reasonable defaults. the only required argument is something that evaluates into a lexical block. this block is what will be executed when the restart is invoked. will return a Restart mimic.", new NativeMethod("restart") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withOptionalPositionalUnevaluated("name")
@@ -173,7 +173,7 @@ public class ConditionsBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("takes zero or more arguments that should evaluate to a condition mimic - this list will match all the conditions this Rescue should be able to catch. the last argument is not optional, and should be something activatable that takes one argument - the condition instance. will return a Rescue mimic.", new JavaMethod("rescue") {
+        obj.registerMethod(runtime.newNativeMethod("takes zero or more arguments that should evaluate to a condition mimic - this list will match all the conditions this Rescue should be able to catch. the last argument is not optional, and should be something activatable that takes one argument - the condition instance. will return a Rescue mimic.", new NativeMethod("rescue") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRest("conditionsAndAction")
@@ -207,7 +207,7 @@ public class ConditionsBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("takes zero or more arguments that should evaluate to a condition mimic - this list will match all the conditions this Handler should be able to catch. the last argument is not optional, and should be something activatable that takes one argument - the condition instance. will return a Handler mimic.", new JavaMethod("handle") {
+        obj.registerMethod(runtime.newNativeMethod("takes zero or more arguments that should evaluate to a condition mimic - this list will match all the conditions this Handler should be able to catch. the last argument is not optional, and should be something activatable that takes one argument - the condition instance. will return a Handler mimic.", new NativeMethod("handle") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRest("conditionsAndAction")
@@ -242,7 +242,7 @@ public class ConditionsBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("will evaluate all arguments, and expects all except for the last to be a Restart. bind will associate these restarts for the duration of the execution of the last argument and then unbind them again. it will return the result of the last argument, or if a restart is executed it will instead return the result of that invocation.", new JavaMethod("bind") {
+        obj.registerMethod(runtime.newNativeMethod("will evaluate all arguments, and expects all except for the last to be a Restart. bind will associate these restarts for the duration of the execution of the last argument and then unbind them again. it will return the result of the last argument, or if a restart is executed it will instead return the result of that invocation.", new NativeMethod("bind") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRestUnevaluated("bindablesAndCode")
@@ -372,7 +372,7 @@ public class ConditionsBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("takes either a name (as a symbol) or a Restart instance. if the restart is active, will transfer control to it, supplying the rest of the given arguments to that restart.", new JavaMethod("invokeRestart") {
+        obj.registerMethod(runtime.newNativeMethod("takes either a name (as a symbol) or a Restart instance. if the restart is active, will transfer control to it, supplying the rest of the given arguments to that restart.", new NativeMethod("invokeRestart") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("nameOrRestart")
@@ -444,7 +444,7 @@ public class ConditionsBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("takes either a name (as a symbol) or a Restart instance. if the restart is active, will return that restart, otherwise returns nil.", new JavaMethod("findRestart") {
+        obj.registerMethod(runtime.newNativeMethod("takes either a name (as a symbol) or a Restart instance. if the restart is active, will return that restart, otherwise returns nil.", new NativeMethod("findRestart") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("nameOrRestart")
@@ -510,7 +510,7 @@ public class ConditionsBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("takes an optional condition to specify - returns all restarts that are applicable to that condition. closer restarts will be first in the list", new JavaMethod("availableRestarts") {
+        obj.registerMethod(runtime.newNativeMethod("takes an optional condition to specify - returns all restarts that are applicable to that condition. closer restarts will be first in the list", new NativeMethod("availableRestarts") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withOptionalPositional("condition", "Condition")
@@ -547,7 +547,7 @@ public class ConditionsBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("takes one or more datums descibing the condition to signal. this datum can be either a mimic of a Condition, in which case it will be signalled directly, or it can be a mimic of a Condition with arguments, in which case it will first be mimicked and the arguments assigned in some way. finally, if the argument is a Text, a mimic of Condition Default will be signalled, with the provided text.", new JavaMethod("signal!") {
+        obj.registerMethod(runtime.newNativeMethod("takes one or more datums descibing the condition to signal. this datum can be either a mimic of a Condition, in which case it will be signalled directly, or it can be a mimic of a Condition with arguments, in which case it will first be mimicked and the arguments assigned in some way. finally, if the argument is a Text, a mimic of Condition Default will be signalled, with the provided text.", new NativeMethod("signal!") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("datum")
@@ -571,7 +571,7 @@ public class ConditionsBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("takes the same kind of arguments as 'signal!', and will signal a condition. the default condition used is Condition Error Default. if no rescue or restart is invoked error! will report the condition to System err and exit the currently running Ioke VM. this might be a problem when exceptions happen inside of running Java code, as callbacks and so on.. if 'System currentDebugger' is non-nil, it will be invoked before the exiting of the VM. the exit can only be avoided by invoking a restart. that means that error! will never return. ", new JavaMethod("error!") {
+        obj.registerMethod(runtime.newNativeMethod("takes the same kind of arguments as 'signal!', and will signal a condition. the default condition used is Condition Error Default. if no rescue or restart is invoked error! will report the condition to System err and exit the currently running Ioke VM. this might be a problem when exceptions happen inside of running Java code, as callbacks and so on.. if 'System currentDebugger' is non-nil, it will be invoked before the exiting of the VM. the exit can only be avoided by invoking a restart. that means that error! will never return. ", new NativeMethod("error!") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("datum")

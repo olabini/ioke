@@ -44,7 +44,7 @@ public class Locals {
         obj.setCell("identity",  obj.runtime.base.getCells().get("identity"));
 
         obj.registerMethod(obj.runtime.newNativeMethod("will pass along the call to the real self object of this context.", 
-                                                       new JavaMethod("pass") {
+                                                       new NativeMethod("pass") {
                                                            private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                                                                .builder()
                                                                .withRestUnevaluated("arguments")
@@ -67,7 +67,7 @@ public class Locals {
                                                            }}));
 
         obj.registerMethod(obj.runtime.newNativeMethod("will return a text representation of the current stack trace", 
-                                                       new JavaMethod.WithNoArguments("stackTraceAsText") {
+                                                       new NativeMethod.WithNoArguments("stackTraceAsText") {
                                                            @Override
                                                            public Object activate(IokeObject method, IokeObject context, IokeObject m, Object on) throws ControlFlow {
                                                                getArguments().checkArgumentCount(context, m, on);

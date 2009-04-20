@@ -106,7 +106,7 @@ public class Regexp extends IokeData {
 
         obj.aliasMethod("match", "=~", null, null);
 
-        obj.registerMethod(runtime.newNativeMethod("Takes one argument that should be a text and returns a text that has all regexp meta characters quoted", new JavaMethod("quote") {
+        obj.registerMethod(runtime.newNativeMethod("Takes one argument that should be a text and returns a text that has all regexp meta characters quoted", new NativeMethod("quote") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("text")
@@ -123,7 +123,7 @@ public class Regexp extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("Takes one or two text arguments that describes the regular expression to create. the first text is the pattern and the second is the flags.", new JavaMethod("from") {
+        obj.registerMethod(runtime.newNativeMethod("Takes one or two text arguments that describes the regular expression to create. the first text is the pattern and the second is the flags.", new NativeMethod("from") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("pattern")
