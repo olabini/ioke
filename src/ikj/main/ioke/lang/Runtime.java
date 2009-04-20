@@ -59,7 +59,7 @@ public class Runtime {
     public IokeObject number = new IokeObject(this, "Represents an exact number", new Number(Number.getFrom("0")));
     public IokeObject method = new IokeObject(this, "Method is the origin of all methods in the system, both default and Java..", new Method((String)null));
     public IokeObject defaultMethod = new IokeObject(this, "DefaultMethod is the instance all methods in the system are derived from.", new DefaultMethod((String)null));
-    public IokeObject javaMethod = new IokeObject(this, "JavaMethod is a derivation of Method that represents a primitive implemented in Java.", new JavaMethod.WithNoArguments((String)null));
+    public IokeObject nativeMethod = new IokeObject(this, "JavaMethod is a derivation of Method that represents a primitive implemented in Java.", new JavaMethod.WithNoArguments((String)null));
     public IokeObject lexicalBlock = new IokeObject(this, "A lexical block allows you to delay a computation in a specific lexical context. See DefaultMethod#fn for detailed documentation.", new LexicalBlock(ground));
     public IokeObject defaultMacro = new IokeObject(this, "DefaultMacro is the instance all non-lexical macros in the system are derived from.", new DefaultMacro((String)null));
     public IokeObject lexicalMacro = new IokeObject(this, "LexicalMacro is the instance all lexical macros in the system are derived from.", new LexicalMacro((String)null));
@@ -271,7 +271,7 @@ public class Runtime {
 
         method.init();
         defaultMethod.init();
-        javaMethod.init();
+        nativeMethod.init();
         lexicalBlock.init();
         defaultMacro.init();
         lexicalMacro.init();
@@ -281,7 +281,7 @@ public class Runtime {
 
         method.mimicsWithoutCheck(origin);
         defaultMethod.mimicsWithoutCheck(method);
-        javaMethod.mimicsWithoutCheck(method);
+        nativeMethod.mimicsWithoutCheck(method);
         defaultMacro.mimicsWithoutCheck(origin);
         lexicalMacro.mimicsWithoutCheck(origin);
         defaultSyntax.mimicsWithoutCheck(origin);
@@ -398,7 +398,7 @@ public class Runtime {
     }
 
     public IokeObject getJavaMethod() {
-        return this.javaMethod;
+        return this.nativeMethod;
     }
 
     public IokeObject getDefaultMethod() {
@@ -654,19 +654,19 @@ public class Runtime {
     }
 
     public IokeObject createJavaMethod(java.lang.reflect.Method[] methods) throws ControlFlow {
-        return newMethod(null, this.javaMethod, new JavaMethodJavaMethod(methods));
+        return newMethod(null, this.nativeMethod, new JavaMethodJavaMethod(methods));
     }
 
     public IokeObject createJavaMethod(java.lang.reflect.Constructor[] ctors, boolean special) throws ControlFlow {
-        return newMethod(null, this.javaMethod, new JavaConstructorJavaMethod(ctors, special));
+        return newMethod(null, this.nativeMethod, new JavaConstructorJavaMethod(ctors, special));
     }
 
     public IokeObject createJavaFieldGetter(java.lang.reflect.Field field) throws ControlFlow {
-        return newMethod(null, this.javaMethod, new JavaFieldGetterJavaMethod(field));
+        return newMethod(null, this.nativeMethod, new JavaFieldGetterJavaMethod(field));
     }
 
     public IokeObject createJavaFieldSetter(java.lang.reflect.Field field) throws ControlFlow {
-        return newMethod(null, this.javaMethod, new JavaFieldSetterJavaMethod(field));
+        return newMethod(null, this.nativeMethod, new JavaFieldSetterJavaMethod(field));
     }
 
     public IokeObject newNumber(String number) {
@@ -719,7 +719,7 @@ public class Runtime {
     }
 
     public IokeObject newNativeMethod(String doc, JavaMethod impl) throws ControlFlow {
-        return newMethod(doc, this.javaMethod, impl);
+        return newMethod(doc, this.nativeMethod, impl);
     }
 
     public IokeObject newMessage(String name) {
