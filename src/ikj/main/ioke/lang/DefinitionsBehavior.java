@@ -22,7 +22,7 @@ public class DefinitionsBehavior {
         final Runtime runtime = obj.runtime;
         obj.setKind("DefaultBehavior Definitions");
 
-        obj.registerMethod(runtime.newJavaMethod("expects any number of unevaluated arguments. if no arguments at all are given, will just return nil. creates a new method based on the arguments. this method will be evaluated using the context of the object it's called on, and thus the definition can not refer to the outside scope where the method is defined. (there are other ways of achieving this). all arguments except the last one is expected to be names of arguments that will be used in the method. there will possible be additions to the format of arguments later on - including named parameters and optional arguments. the actual code is the last argument given.", new JavaMethod("method") {
+        obj.registerMethod(runtime.newNativeMethod("expects any number of unevaluated arguments. if no arguments at all are given, will just return nil. creates a new method based on the arguments. this method will be evaluated using the context of the object it's called on, and thus the definition can not refer to the outside scope where the method is defined. (there are other ways of achieving this). all arguments except the last one is expected to be names of arguments that will be used in the method. there will possible be additions to the format of arguments later on - including named parameters and optional arguments. the actual code is the last argument given.", new JavaMethod("method") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withOptionalPositionalUnevaluated("documentation")
@@ -65,7 +65,7 @@ public class DefinitionsBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("expects one code argument, optionally preceeded by a documentation string. will create a new DefaultMacro based on the code and return it.", new JavaMethod("macro") {
+        obj.registerMethod(runtime.newNativeMethod("expects one code argument, optionally preceeded by a documentation string. will create a new DefaultMacro based on the code and return it.", new JavaMethod("macro") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withOptionalPositionalUnevaluated("documentation")
@@ -106,7 +106,7 @@ public class DefinitionsBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("expects one code argument, optionally preceeded by a documentation string. will create a new DefaultSyntax based on the code and return it.", new JavaMethod("syntax") {
+        obj.registerMethod(runtime.newNativeMethod("expects one code argument, optionally preceeded by a documentation string. will create a new DefaultSyntax based on the code and return it.", new JavaMethod("syntax") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withOptionalPositionalUnevaluated("documentation")
@@ -147,7 +147,7 @@ public class DefinitionsBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("expects one code argument, optionally preceeded by a documentation string. will create a new LexicalMacro based on the code and return it.", new JavaMethod("lecro") {
+        obj.registerMethod(runtime.newNativeMethod("expects one code argument, optionally preceeded by a documentation string. will create a new LexicalMacro based on the code and return it.", new JavaMethod("lecro") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withOptionalPositionalUnevaluated("documentation")
@@ -188,7 +188,7 @@ public class DefinitionsBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("creates a new lexical block that can be executed at will, while retaining a reference to the lexical closure it was created in. it will always update variables if they exist. there is currently no way of introducing shadowing variables in the local context. new variables can be created though, just like in a method. a lexical block mimics LexicalBlock, and can take arguments. at the moment these are restricted to required arguments, but support for the same argument types as DefaultMethod will come. same as fn()", new JavaMethod("\u028E") {
+        obj.registerMethod(runtime.newNativeMethod("creates a new lexical block that can be executed at will, while retaining a reference to the lexical closure it was created in. it will always update variables if they exist. there is currently no way of introducing shadowing variables in the local context. new variables can be created though, just like in a method. a lexical block mimics LexicalBlock, and can take arguments. at the moment these are restricted to required arguments, but support for the same argument types as DefaultMethod will come. same as fn()", new JavaMethod("\u028E") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withOptionalPositionalUnevaluated("documentation")
@@ -216,7 +216,7 @@ public class DefinitionsBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("creates a new lexical block that can be executed at will, while retaining a reference to the lexical closure it was created in. it will always update variables if they exist. there is currently no way of introducing shadowing variables in the local context. new variables can be created though, just like in a method. a lexical block mimics LexicalBlock, and can take arguments. at the moment these are restricted to required arguments, but support for the same argument types as DefaultMethod will come.", new JavaMethod("fn") {
+        obj.registerMethod(runtime.newNativeMethod("creates a new lexical block that can be executed at will, while retaining a reference to the lexical closure it was created in. it will always update variables if they exist. there is currently no way of introducing shadowing variables in the local context. new variables can be created though, just like in a method. a lexical block mimics LexicalBlock, and can take arguments. at the moment these are restricted to required arguments, but support for the same argument types as DefaultMethod will come.", new JavaMethod("fn") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withOptionalPositionalUnevaluated("documentation")
@@ -254,7 +254,7 @@ public class DefinitionsBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("Takes two evaluated text or symbol arguments that name the method to alias, and the new name to give it. returns the receiver.", new JavaMethod("aliasMethod") {
+        obj.registerMethod(runtime.newNativeMethod("Takes two evaluated text or symbol arguments that name the method to alias, and the new name to give it. returns the receiver.", new JavaMethod("aliasMethod") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("oldName")

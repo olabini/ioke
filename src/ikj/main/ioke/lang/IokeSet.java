@@ -33,14 +33,14 @@ public class IokeSet extends IokeData {
         obj.setKind("Set");
         obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Enumerable"), null), runtime.nul, runtime.nul);
 
-        obj.registerMethod(obj.runtime.newJavaMethod("Returns a text inspection of the object", new TypeCheckingJavaMethod.WithNoArguments("inspect", runtime.set) {
+        obj.registerMethod(obj.runtime.newNativeMethod("Returns a text inspection of the object", new TypeCheckingJavaMethod.WithNoArguments("inspect", runtime.set) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return method.runtime.newText(IokeSet.getInspect(on));
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newJavaMethod("Converts this set to use identity semantics, and then returns it.", new TypeCheckingJavaMethod.WithNoArguments("withIdentitySemantics!", runtime.set) {
+        obj.registerMethod(obj.runtime.newNativeMethod("Converts this set to use identity semantics, and then returns it.", new TypeCheckingJavaMethod.WithNoArguments("withIdentitySemantics!", runtime.set) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     IokeSet set = (IokeSet)IokeObject.data(on);
@@ -49,21 +49,21 @@ public class IokeSet extends IokeData {
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newJavaMethod("Returns a brief text inspection of the object", new TypeCheckingJavaMethod.WithNoArguments("notice", runtime.set) {
+        obj.registerMethod(obj.runtime.newNativeMethod("Returns a brief text inspection of the object", new TypeCheckingJavaMethod.WithNoArguments("notice", runtime.set) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return method.runtime.newText(IokeSet.getNotice(on));
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newJavaMethod("returns true if this set is empty, false otherwise", new TypeCheckingJavaMethod.WithNoArguments("empty?", runtime.set) {
+        obj.registerMethod(obj.runtime.newNativeMethod("returns true if this set is empty, false otherwise", new TypeCheckingJavaMethod.WithNoArguments("empty?", runtime.set) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return ((IokeSet)IokeObject.data(on)).getSet().isEmpty() ? context.runtime._true : context.runtime._false;
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newJavaMethod("Adds the argument to this set, if it's not already in the set. Returns the set after adding the object.", new TypeCheckingJavaMethod("<<") {
+        obj.registerMethod(obj.runtime.newNativeMethod("Adds the argument to this set, if it's not already in the set. Returns the set after adding the object.", new TypeCheckingJavaMethod("<<") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(runtime.set)
@@ -82,7 +82,7 @@ public class IokeSet extends IokeData {
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newJavaMethod("Removes the argument from the set, if it's in the set. Returns the set after removing the object.", new TypeCheckingJavaMethod("remove!") {
+        obj.registerMethod(obj.runtime.newNativeMethod("Removes the argument from the set, if it's in the set. Returns the set after removing the object.", new TypeCheckingJavaMethod("remove!") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(runtime.set)
@@ -101,7 +101,7 @@ public class IokeSet extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns a new set that contains the receivers elements and the elements of the set sent in as the argument.", new TypeCheckingJavaMethod("+") {
+        obj.registerMethod(runtime.newNativeMethod("returns a new set that contains the receivers elements and the elements of the set sent in as the argument.", new TypeCheckingJavaMethod("+") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(runtime.set)
@@ -122,7 +122,7 @@ public class IokeSet extends IokeData {
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newJavaMethod("returns true if the receiver includes the evaluated argument, otherwise false", new TypeCheckingJavaMethod("include?") {
+        obj.registerMethod(obj.runtime.newNativeMethod("returns true if the receiver includes the evaluated argument, otherwise false", new TypeCheckingJavaMethod("include?") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(runtime.set)
@@ -140,7 +140,7 @@ public class IokeSet extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("takes either one, two or three arguments. if one argument is given, it should be a message chain that will be sent to each object in the set. the result will be thrown away. if two arguments are given, the first is an unevaluated name that will be set to each of the values in the set in succession, and then the second argument will be evaluated in a scope with that argument in it. if three arguments is given, the first one is an unevaluated name that will be set to the index of each element, and the other two arguments are the name of the argument for the value, and the actual code. the code will evaluate in a lexical context, and if the argument name is available outside the context, it will be shadowed. the method will return the set. the iteration order is not defined.", new JavaMethod("each") {
+        obj.registerMethod(runtime.newNativeMethod("takes either one, two or three arguments. if one argument is given, it should be a message chain that will be sent to each object in the set. the result will be thrown away. if two arguments are given, the first is an unevaluated name that will be set to each of the values in the set in succession, and then the second argument will be evaluated in a scope with that argument in it. if three arguments is given, the first one is an unevaluated name that will be set to the index of each element, and the other two arguments are the name of the argument for the value, and the actual code. the code will evaluate in a lexical context, and if the argument name is available outside the context, it will be shadowed. the method will return the set. the iteration order is not defined.", new JavaMethod("each") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositionalUnevaluated("indexOrArgOrCode")

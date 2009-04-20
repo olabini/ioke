@@ -100,7 +100,7 @@ public class DefaultBehavior {
         obj.mimicsWithoutCheck(aspects);
         obj.registerCell("Aspects", aspects);
         
-        obj.registerMethod(runtime.newJavaMethod("takes one or more evaluated string argument. will import the files corresponding to each of the strings named based on the Ioke loading behavior that can be found in the documentation for the loadBehavior cell on System.", new JavaMethod("use") {
+        obj.registerMethod(runtime.newNativeMethod("takes one or more evaluated string argument. will import the files corresponding to each of the strings named based on the Ioke loading behavior that can be found in the documentation for the loadBehavior cell on System.", new JavaMethod("use") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withOptionalPositional("module", "false")

@@ -23,7 +23,7 @@ public class InternalBehavior {
         final Runtime runtime = obj.runtime;
         obj.setKind("DefaultBehavior Internal");
 
-        obj.registerMethod(runtime.newJavaMethod("takes zero or more arguments, calls asText on non-text arguments, and then concatenates them and returns the result.", new JavaMethod("internal:concatenateText") {
+        obj.registerMethod(runtime.newNativeMethod("takes zero or more arguments, calls asText on non-text arguments, and then concatenates them and returns the result.", new JavaMethod("internal:concatenateText") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRest("textSegments")
@@ -61,7 +61,7 @@ public class InternalBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("takes one or more arguments. it expects the last argument to be a text of flags, while the rest of the arguments are either texts or regexps or nil. if text, it will be inserted verbatim into the result regexp. if regexp it will be inserted into a group that make sure the flags of the regexp is preserved. if nil, nothing will be inserted.", new JavaMethod("internal:compositeRegexp") {
+        obj.registerMethod(runtime.newNativeMethod("takes one or more arguments. it expects the last argument to be a text of flags, while the rest of the arguments are either texts or regexps or nil. if text, it will be inserted verbatim into the result regexp. if regexp it will be inserted into a group that make sure the flags of the regexp is preserved. if nil, nothing will be inserted.", new JavaMethod("internal:compositeRegexp") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRest("regexpSegments")
@@ -145,7 +145,7 @@ public class InternalBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("expects one 'strange' argument. creates a new instance of Text with the given Java String backing it.", new JavaMethod("internal:createText") {
+        obj.registerMethod(runtime.newNativeMethod("expects one 'strange' argument. creates a new instance of Text with the given Java String backing it.", new JavaMethod("internal:createText") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositionalUnevaluated("text")
@@ -179,7 +179,7 @@ public class InternalBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("expects two 'strange' arguments. creates a new mimic of Regexp with the given Java String backing it.", new JavaMethod("internal:createRegexp") {
+        obj.registerMethod(runtime.newNativeMethod("expects two 'strange' arguments. creates a new mimic of Regexp with the given Java String backing it.", new JavaMethod("internal:createRegexp") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositionalUnevaluated("regexp")
@@ -212,7 +212,7 @@ public class InternalBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("expects one 'strange' argument. creates a new instance of Number that represents the number found in the strange argument.", new JavaMethod("internal:createNumber") {
+        obj.registerMethod(runtime.newNativeMethod("expects one 'strange' argument. creates a new instance of Number that represents the number found in the strange argument.", new JavaMethod("internal:createNumber") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositionalUnevaluated("number")
@@ -247,7 +247,7 @@ public class InternalBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("expects one 'strange' argument. creates a new instance of Decimal that represents the number found in the strange argument.", new JavaMethod("internal:createDecimal") {
+        obj.registerMethod(runtime.newNativeMethod("expects one 'strange' argument. creates a new instance of Decimal that represents the number found in the strange argument.", new JavaMethod("internal:createDecimal") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositionalUnevaluated("decimal")

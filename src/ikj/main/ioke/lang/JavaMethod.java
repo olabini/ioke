@@ -35,7 +35,7 @@ public abstract class JavaMethod extends Method {
     @Override
     public void init(IokeObject javaMethod) throws ControlFlow {
         javaMethod.setKind("JavaMethod");
-        javaMethod.registerMethod(javaMethod.runtime.newJavaMethod("returns a list of the keywords this method takes", new WithNoArguments("keywords") {
+        javaMethod.registerMethod(javaMethod.runtime.newNativeMethod("returns a list of the keywords this method takes", new WithNoArguments("keywords") {
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -43,7 +43,7 @@ public abstract class JavaMethod extends Method {
                     return context.runtime.newList(new ArrayList<Object>());
                 }
             }));
-        javaMethod.registerMethod(javaMethod.runtime.newJavaMethod("returns the code for the argument definition", new WithNoArguments("argumentsCode") {
+        javaMethod.registerMethod(javaMethod.runtime.newNativeMethod("returns the code for the argument definition", new WithNoArguments("argumentsCode") {
                 @Override
                 public Object activate(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(dynamicContext, message, on, new ArrayList<Object>(), new HashMap<String, Object>());

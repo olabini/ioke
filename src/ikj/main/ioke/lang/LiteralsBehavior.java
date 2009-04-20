@@ -22,7 +22,7 @@ public class LiteralsBehavior {
         final Runtime runtime = obj.runtime;
         obj.setKind("DefaultBehavior Literals");
 
-        obj.registerMethod(runtime.newJavaMethod("returns a new message with the name given as argument to this method.", new JavaMethod("message") {
+        obj.registerMethod(runtime.newNativeMethod("returns a new message with the name given as argument to this method.", new JavaMethod("message") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("name")
@@ -56,7 +56,7 @@ public class LiteralsBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("Takes one evaluated argument and returns a new Pair of the receiver and the argument", new JavaMethod("=>") {
+        obj.registerMethod(runtime.newNativeMethod("Takes one evaluated argument and returns a new Pair of the receiver and the argument", new JavaMethod("=>") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("other")
@@ -76,7 +76,7 @@ public class LiteralsBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("Takes one evaluated argument that is expected to be a Text, and returns the symbol corresponding to that text", new JavaMethod(":") {
+        obj.registerMethod(runtime.newNativeMethod("Takes one evaluated argument that is expected to be a Text, and returns the symbol corresponding to that text", new JavaMethod(":") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("symbolText")
@@ -97,7 +97,7 @@ public class LiteralsBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("creates a new Dict from the arguments provided. these arguments can be two different things - either a keyword argument, or a pair. if it's a keyword argument, the entry added to the dict for it will be a symbol with the name from the keyword, without the ending colon. if it's not a keyword, it is expected to be an evaluated pair, where the first part of the pair is the key, and the second part is the value.", new JavaMethod("dict") {
+        obj.registerMethod(runtime.newNativeMethod("creates a new Dict from the arguments provided. these arguments can be two different things - either a keyword argument, or a pair. if it's a keyword argument, the entry added to the dict for it will be a symbol with the name from the keyword, without the ending colon. if it's not a keyword, it is expected to be an evaluated pair, where the first part of the pair is the key, and the second part is the value.", new JavaMethod("dict") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRest("pairs")
@@ -144,7 +144,7 @@ public class LiteralsBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("creates a new Set from the result of evaluating all arguments provided.", new JavaMethod("set") {
+        obj.registerMethod(runtime.newNativeMethod("creates a new Set from the result of evaluating all arguments provided.", new JavaMethod("set") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRest("elements")

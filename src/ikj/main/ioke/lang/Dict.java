@@ -46,7 +46,7 @@ public class Dict extends IokeData {
 
         obj.setKind("Dict");
         obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Enumerable"), null), runtime.nul, runtime.nul);
-        obj.registerMethod(runtime.newJavaMethod("takes one argument, that should be a default value, and returns a new mimic of the receiver, with the default value for that new dict set to the argument", new TypeCheckingJavaMethod("withDefault") {
+        obj.registerMethod(runtime.newNativeMethod("takes one argument, that should be a default value, and returns a new mimic of the receiver, with the default value for that new dict set to the argument", new TypeCheckingJavaMethod("withDefault") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(runtime.dict)
@@ -65,7 +65,7 @@ public class Dict extends IokeData {
                     return newDict;
                 }}));
 
-        obj.registerMethod(runtime.newJavaMethod("creates a new Dict from the arguments provided, combined with the values in the receiver. the arguments provided will override those in the receiver. the rules for arguments are the same as for dict, except that dicts can also be provided. all positional arguments will be added before the keyword arguments.", new TypeCheckingJavaMethod("merge") {
+        obj.registerMethod(runtime.newNativeMethod("creates a new Dict from the arguments provided, combined with the values in the receiver. the arguments provided will override those in the receiver. the rules for arguments are the same as for dict, except that dicts can also be provided. all positional arguments will be added before the keyword arguments.", new TypeCheckingJavaMethod("merge") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(runtime.dict)
@@ -108,7 +108,7 @@ public class Dict extends IokeData {
 
         obj.aliasMethod("merge", "+", null, null);
 
-        obj.registerMethod(runtime.newJavaMethod("takes one argument, the key of the element to return. if the key doesn't map to anything in the dict, returns the default value", new TypeCheckingJavaMethod("at") {
+        obj.registerMethod(runtime.newNativeMethod("takes one argument, the key of the element to return. if the key doesn't map to anything in the dict, returns the default value", new TypeCheckingJavaMethod("at") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(runtime.dict)
@@ -130,14 +130,14 @@ public class Dict extends IokeData {
                     }
                 }}));
 
-        obj.registerMethod(runtime.newJavaMethod("returns true if this dict is empty, false otherwise", new TypeCheckingJavaMethod.WithNoArguments("empty?", runtime.dict) {
+        obj.registerMethod(runtime.newNativeMethod("returns true if this dict is empty, false otherwise", new TypeCheckingJavaMethod.WithNoArguments("empty?", runtime.dict) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return Dict.getMap(on).isEmpty() ? context.runtime._true : context.runtime._false;
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("takes one argument, the key to check if it is in the dict.", new TypeCheckingJavaMethod("key?") {
+        obj.registerMethod(runtime.newNativeMethod("takes one argument, the key to check if it is in the dict.", new TypeCheckingJavaMethod("key?") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(runtime.dict)
@@ -154,7 +154,7 @@ public class Dict extends IokeData {
                     return (Dict.getMap(on).containsKey(args.get(0))) ? context.runtime._true : context.runtime._false;
                 }}));
 
-        obj.registerMethod(runtime.newJavaMethod("takes two arguments, the key of the element to set and the value to set it too. returns the value set", new TypeCheckingJavaMethod("[]=") {
+        obj.registerMethod(runtime.newNativeMethod("takes two arguments, the key of the element to set and the value to set it too. returns the value set", new TypeCheckingJavaMethod("[]=") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(runtime.dict)
@@ -173,7 +173,7 @@ public class Dict extends IokeData {
                     return args.get(1);
                 }}));
 
-        obj.registerMethod(runtime.newJavaMethod("Returns the number of pairs contained in this dict.", new TypeCheckingJavaMethod.WithNoArguments("size", runtime.dict) {
+        obj.registerMethod(runtime.newNativeMethod("Returns the number of pairs contained in this dict.", new TypeCheckingJavaMethod.WithNoArguments("size", runtime.dict) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return runtime.newNumber(Dict.getMap(on).size());
@@ -181,28 +181,28 @@ public class Dict extends IokeData {
             }));
 
 
-        obj.registerMethod(runtime.newJavaMethod("Returns a text inspection of the object", new TypeCheckingJavaMethod.WithNoArguments("inspect", runtime.dict) {
+        obj.registerMethod(runtime.newNativeMethod("Returns a text inspection of the object", new TypeCheckingJavaMethod.WithNoArguments("inspect", runtime.dict) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return method.runtime.newText(Dict.getInspect(on));
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("Returns a brief text inspection of the object", new TypeCheckingJavaMethod.WithNoArguments("notice", runtime.dict) {
+        obj.registerMethod(runtime.newNativeMethod("Returns a brief text inspection of the object", new TypeCheckingJavaMethod.WithNoArguments("notice", runtime.dict) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return method.runtime.newText(Dict.getNotice(on));
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("Returns all the keys of this dict", new TypeCheckingJavaMethod.WithNoArguments("keys", runtime.dict) {
+        obj.registerMethod(runtime.newNativeMethod("Returns all the keys of this dict", new TypeCheckingJavaMethod.WithNoArguments("keys", runtime.dict) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return method.runtime.newSet(Dict.getKeys(on));
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("takes either one or two or three arguments. if one argument is given, it should be a message chain that will be sent to each object in the dict. the result will be thrown away. if two arguments are given, the first is an unevaluated name that will be set to each of the entries in the dict in succession, and then the second argument will be evaluated in a scope with that argument in it. if three arguments is given, the first one is an unevaluated name that will be set to the index of each element, and the other two arguments are the name of the argument for the value, and the actual code. the code will evaluate in a lexical context, and if the argument name is available outside the context, it will be shadowed. the method will return the dict. the entries yielded will be mimics of Pair.", new JavaMethod("each") {
+        obj.registerMethod(runtime.newNativeMethod("takes either one or two or three arguments. if one argument is given, it should be a message chain that will be sent to each object in the dict. the result will be thrown away. if two arguments are given, the first is an unevaluated name that will be set to each of the entries in the dict in succession, and then the second argument will be evaluated in a scope with that argument in it. if three arguments is given, the first one is an unevaluated name that will be set to the index of each element, and the other two arguments are the name of the argument for the value, and the actual code. the code will evaluate in a lexical context, and if the argument name is available outside the context, it will be shadowed. the method will return the dict. the entries yielded will be mimics of Pair.", new JavaMethod("each") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositionalUnevaluated("indexOrArgOrCode")
