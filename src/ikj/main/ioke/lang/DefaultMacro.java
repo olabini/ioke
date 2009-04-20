@@ -46,7 +46,7 @@ public class DefaultMacro extends IokeData implements Named, Inspectable, Associ
         macro.setKind("DefaultMacro");
         macro.registerCell("activatable", macro.runtime._true);
 
-        macro.registerMethod(macro.runtime.newNativeMethod("returns the name of the macro", new TypeCheckingJavaMethod.WithNoArguments("name", macro) {
+        macro.registerMethod(macro.runtime.newNativeMethod("returns the name of the macro", new TypeCheckingNativeMethod.WithNoArguments("name", macro) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return context.runtime.newText(((DefaultMacro)IokeObject.data(on)).name);
@@ -70,35 +70,35 @@ public class DefaultMacro extends IokeData implements Named, Inspectable, Associ
                 }
             }));
         
-        macro.registerMethod(macro.runtime.newNativeMethod("returns the message chain for this macro", new TypeCheckingJavaMethod.WithNoArguments("message", macro) {
+        macro.registerMethod(macro.runtime.newNativeMethod("returns the message chain for this macro", new TypeCheckingNativeMethod.WithNoArguments("message", macro) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return ((AssociatedCode)IokeObject.data(on)).getCode();
                 }
             }));
         
-        macro.registerMethod(macro.runtime.newNativeMethod("returns the code for the argument definition", new TypeCheckingJavaMethod.WithNoArguments("argumentsCode", macro) {
+        macro.registerMethod(macro.runtime.newNativeMethod("returns the code for the argument definition", new TypeCheckingNativeMethod.WithNoArguments("argumentsCode", macro) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return context.runtime.newText(((AssociatedCode)IokeObject.data(on)).getArgumentsCode());
                 }
             }));
         
-        macro.registerMethod(macro.runtime.newNativeMethod("Returns a text inspection of the object", new TypeCheckingJavaMethod.WithNoArguments("inspect", macro) {
+        macro.registerMethod(macro.runtime.newNativeMethod("Returns a text inspection of the object", new TypeCheckingNativeMethod.WithNoArguments("inspect", macro) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return context.runtime.newText(DefaultMacro.getInspect(on));
                 }
             }));
         
-        macro.registerMethod(macro.runtime.newNativeMethod("Returns a brief text inspection of the object", new TypeCheckingJavaMethod.WithNoArguments("notice", macro) {
+        macro.registerMethod(macro.runtime.newNativeMethod("Returns a brief text inspection of the object", new TypeCheckingNativeMethod.WithNoArguments("notice", macro) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return context.runtime.newText(DefaultMacro.getNotice(on));
                 }
             }));
         
-        macro.registerMethod(macro.runtime.newNativeMethod("returns the full code of this macro, as a Text", new TypeCheckingJavaMethod.WithNoArguments("code", macro) {
+        macro.registerMethod(macro.runtime.newNativeMethod("returns the full code of this macro, as a Text", new TypeCheckingNativeMethod.WithNoArguments("code", macro) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     IokeData data = IokeObject.data(on);
@@ -111,7 +111,7 @@ public class DefaultMacro extends IokeData implements Named, Inspectable, Associ
                 }
             }));
 
-        macro.registerMethod(macro.runtime.newNativeMethod("returns idiomatically formatted code for this macro", new TypeCheckingJavaMethod.WithNoArguments("formattedCode", macro) {
+        macro.registerMethod(macro.runtime.newNativeMethod("returns idiomatically formatted code for this macro", new TypeCheckingNativeMethod.WithNoArguments("formattedCode", macro) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return context.runtime.newText(((AssociatedCode)IokeObject.data(on)).getFormattedCode(method));

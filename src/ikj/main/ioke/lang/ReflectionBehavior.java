@@ -102,7 +102,7 @@ public class ReflectionBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("Takes one evaluated Text argument and returns either true or false if this object or one of it's mimics have the kind of the name specified", new TypeCheckingJavaMethod("kind?") {
+        obj.registerMethod(runtime.newNativeMethod("Takes one evaluated Text argument and returns either true or false if this object or one of it's mimics have the kind of the name specified", new TypeCheckingNativeMethod("kind?") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .withRequiredPositional("name").whichMustMimic(runtime.text)

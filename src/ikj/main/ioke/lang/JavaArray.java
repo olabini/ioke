@@ -35,7 +35,7 @@ public class JavaArray {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("returns the value in the array at the index provided.", new TypeCheckingJavaMethod("[]") {
+        obj.registerMethod(runtime.newNativeMethod("returns the value in the array at the index provided.", new TypeCheckingNativeMethod("[]") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .withRequiredPositional("index")
@@ -81,7 +81,7 @@ public class JavaArray {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("takes an Ioke list and returns a newly created native array based on the content of that list", new TypeCheckingJavaMethod("from") {
+        obj.registerMethod(runtime.newNativeMethod("takes an Ioke list and returns a newly created native array based on the content of that list", new TypeCheckingNativeMethod("from") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .withRequiredPositional("values").whichMustMimic(runtime.list)
@@ -107,7 +107,7 @@ public class JavaArray {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("takes two arguments, the index of the element to set, and the value to set. the index can be negative and will in that case set indexed from the end of the list.", new TypeCheckingJavaMethod("[]=") {
+        obj.registerMethod(runtime.newNativeMethod("takes two arguments, the index of the element to set, and the value to set. the index can be negative and will in that case set indexed from the end of the list.", new TypeCheckingNativeMethod("[]=") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .withRequiredPositional("index")

@@ -48,7 +48,7 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
         syntax.setKind("DefaultSyntax");
         syntax.registerCell("activatable", syntax.runtime._true);
 
-        syntax.registerMethod(syntax.runtime.newNativeMethod("returns the name of the syntax", new TypeCheckingJavaMethod.WithNoArguments("name", syntax) {
+        syntax.registerMethod(syntax.runtime.newNativeMethod("returns the name of the syntax", new TypeCheckingNativeMethod.WithNoArguments("name", syntax) {
                 @Override
                 public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return context.runtime.newText(((DefaultSyntax)IokeObject.data(on)).name);
@@ -104,21 +104,21 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
                 }
             }));
 
-        syntax.registerMethod(syntax.runtime.newNativeMethod("Returns a text inspection of the object", new TypeCheckingJavaMethod.WithNoArguments("inspect", syntax) {
+        syntax.registerMethod(syntax.runtime.newNativeMethod("Returns a text inspection of the object", new TypeCheckingNativeMethod.WithNoArguments("inspect", syntax) {
                 @Override
                 public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return context.runtime.newText(DefaultSyntax.getInspect(on));
                 }
             }));
         
-        syntax.registerMethod(syntax.runtime.newNativeMethod("Returns a brief text inspection of the object", new TypeCheckingJavaMethod.WithNoArguments("notice", syntax) {
+        syntax.registerMethod(syntax.runtime.newNativeMethod("Returns a brief text inspection of the object", new TypeCheckingNativeMethod.WithNoArguments("notice", syntax) {
                 @Override
                 public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return context.runtime.newText(DefaultSyntax.getNotice(on));
                 }
             }));
 
-        syntax.registerMethod(syntax.runtime.newNativeMethod("returns the full code of this syntax, as a Text", new TypeCheckingJavaMethod.WithNoArguments("code", syntax) {
+        syntax.registerMethod(syntax.runtime.newNativeMethod("returns the full code of this syntax, as a Text", new TypeCheckingNativeMethod.WithNoArguments("code", syntax) {
                 @Override
                 public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     IokeData data = IokeObject.data(on);

@@ -62,7 +62,7 @@ public class Arity extends IokeData {
         arity.setCell("taking:nothing", getArity(arity, Taking.Nothing));
         arity.setCell("taking:everything", getArity(arity, Taking.Everything));
         
-        arity.registerMethod(arity.runtime.newNativeMethod("Create an Arity object from the given messages. The list of unevaluated messages given to this method will be used as if they were the arguments part of a DefaultMethod definition.", new TypeCheckingJavaMethod("from") {
+        arity.registerMethod(arity.runtime.newNativeMethod("Create an Arity object from the given messages. The list of unevaluated messages given to this method will be used as if they were the arguments part of a DefaultMethod definition.", new TypeCheckingNativeMethod("from") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(arity)
@@ -85,7 +85,7 @@ public class Arity extends IokeData {
                 }
             }));
 
-        arity.registerMethod(arity.runtime.newNativeMethod("returns the names for positional arguments", new TypeCheckingJavaMethod("positionals") {
+        arity.registerMethod(arity.runtime.newNativeMethod("returns the names for positional arguments", new TypeCheckingNativeMethod("positionals") {
                 
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
@@ -118,7 +118,7 @@ public class Arity extends IokeData {
                 }
             }));
 
-        arity.registerMethod(arity.runtime.newNativeMethod("returns the names for keyword arguments", new TypeCheckingJavaMethod.WithNoArguments("keywords", arity) {
+        arity.registerMethod(arity.runtime.newNativeMethod("returns the names for keyword arguments", new TypeCheckingNativeMethod.WithNoArguments("keywords", arity) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     Arity a = (Arity) IokeObject.data(on);
@@ -132,7 +132,7 @@ public class Arity extends IokeData {
                 }
             }));
 
-        arity.registerMethod(arity.runtime.newNativeMethod("returns the symbol name for the krest argument.", new TypeCheckingJavaMethod.WithNoArguments("krest", arity) {
+        arity.registerMethod(arity.runtime.newNativeMethod("returns the symbol name for the krest argument.", new TypeCheckingNativeMethod.WithNoArguments("krest", arity) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     Arity a = (Arity) IokeObject.data(on);
@@ -149,7 +149,7 @@ public class Arity extends IokeData {
                 }
             }));
 
-        arity.registerMethod(arity.runtime.newNativeMethod("returns the symbol name for the rest argument.", new TypeCheckingJavaMethod.WithNoArguments("rest", arity) {
+        arity.registerMethod(arity.runtime.newNativeMethod("returns the symbol name for the rest argument.", new TypeCheckingNativeMethod.WithNoArguments("rest", arity) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     Arity a = (Arity) IokeObject.data(on);
@@ -166,7 +166,7 @@ public class Arity extends IokeData {
                 }
             }));
 
-        arity.registerMethod(arity.runtime.newNativeMethod("returns the text representation of this arity", new TypeCheckingJavaMethod.WithNoArguments("asText", arity) {
+        arity.registerMethod(arity.runtime.newNativeMethod("returns the text representation of this arity", new TypeCheckingNativeMethod.WithNoArguments("asText", arity) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     Arity a = (Arity) IokeObject.data(on);

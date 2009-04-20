@@ -27,28 +27,28 @@ public class Symbol extends IokeData {
         obj.setKind("Symbol");
         obj.mimics(IokeObject.as(obj.runtime.mixins.getCell(null, null, "Comparing"), null), obj.runtime.nul, obj.runtime.nul);
 
-        obj.registerMethod(obj.runtime.newNativeMethod("Returns a text representation of the object", new TypeCheckingJavaMethod.WithNoArguments("asText", obj.runtime.symbol) {
+        obj.registerMethod(obj.runtime.newNativeMethod("Returns a text representation of the object", new TypeCheckingNativeMethod.WithNoArguments("asText", obj.runtime.symbol) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return method.runtime.newText(Symbol.getText(on));
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newNativeMethod("Returns a text inspection of the object", new TypeCheckingJavaMethod.WithNoArguments("inspect", obj.runtime.symbol) {
+        obj.registerMethod(obj.runtime.newNativeMethod("Returns a text inspection of the object", new TypeCheckingNativeMethod.WithNoArguments("inspect", obj.runtime.symbol) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return method.runtime.newText(Symbol.getInspect(on));
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newNativeMethod("Returns a brief text inspection of the object", new TypeCheckingJavaMethod.WithNoArguments("notice", obj.runtime.symbol) {
+        obj.registerMethod(obj.runtime.newNativeMethod("Returns a brief text inspection of the object", new TypeCheckingNativeMethod.WithNoArguments("notice", obj.runtime.symbol) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return method.runtime.newText(Symbol.getInspect(on));
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newNativeMethod("compares this symbol against the argument, returning -1, 0 or 1 based on which one is lexically larger", new TypeCheckingJavaMethod("<=>") {
+        obj.registerMethod(obj.runtime.newNativeMethod("compares this symbol against the argument, returning -1, 0 or 1 based on which one is lexically larger", new TypeCheckingNativeMethod("<=>") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(obj.runtime.symbol)

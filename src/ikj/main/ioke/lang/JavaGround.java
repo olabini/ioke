@@ -27,7 +27,7 @@ public class JavaGround {
         obj.mimicsWithoutCheck(IokeObject.as(runtime.defaultBehavior.getCells().get("BaseBehavior"), null));
         obj.registerCell("JavaArray", runtime.javaArray);
 
-        obj.registerMethod(runtime.newNativeMethod("takes an internal name for a Java type and returns that object.", new TypeCheckingJavaMethod("primitiveJavaClass!") {
+        obj.registerMethod(runtime.newNativeMethod("takes an internal name for a Java type and returns that object.", new TypeCheckingNativeMethod("primitiveJavaClass!") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .withRequiredPositional("name").whichMustMimic(runtime.text)
@@ -52,7 +52,7 @@ public class JavaGround {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("takes a Java class and a list of dimensions and creates a new instance of the array with those dimensions", new TypeCheckingJavaMethod("createPrimitiveJavaArray!") {
+        obj.registerMethod(runtime.newNativeMethod("takes a Java class and a list of dimensions and creates a new instance of the array with those dimensions", new TypeCheckingNativeMethod("createPrimitiveJavaArray!") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .withRequiredPositional("componentType")

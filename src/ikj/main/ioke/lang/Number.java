@@ -184,7 +184,7 @@ public class Number extends IokeData {
         decimal.init();
         number.registerCell("Decimal", decimal);
         
-        rational.registerMethod(runtime.newNativeMethod("compares this number against the argument, returning -1, 0 or 1 based on which one is larger. if the argument is a decimal, the receiver will be converted into a form suitable for comparing against a decimal, and then compared - it's not specified whether this will actually call Decimal#<=> or not. if the argument is neither a Rational nor a Decimal, it tries to call asRational, and if that doesn't work it returns nil.", new TypeCheckingJavaMethod("<=>") {
+        rational.registerMethod(runtime.newNativeMethod("compares this number against the argument, returning -1, 0 or 1 based on which one is larger. if the argument is a decimal, the receiver will be converted into a form suitable for comparing against a decimal, and then compared - it's not specified whether this will actually call Decimal#<=> or not. if the argument is neither a Rational nor a Decimal, it tries to call asRational, and if that doesn't work it returns nil.", new TypeCheckingNativeMethod("<=>") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(rational)
@@ -250,7 +250,7 @@ public class Number extends IokeData {
                 }
             }));
 
-        rational.registerMethod(runtime.newNativeMethod("compares this number against the argument, true if this number is the same, otherwise false", new TypeCheckingJavaMethod("==") {
+        rational.registerMethod(runtime.newNativeMethod("compares this number against the argument, true if this number is the same, otherwise false", new TypeCheckingNativeMethod("==") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(number)
@@ -281,7 +281,7 @@ public class Number extends IokeData {
                 }
             }));
 
-        rational.registerMethod(runtime.newNativeMethod("returns the difference between this number and the argument. if the argument is a decimal, the receiver will be converted into a form suitable for subtracting against a decimal, and then subtracted. if the argument is neither a Rational nor a Decimal, it tries to call asRational, and if that fails it signals a condition.", new TypeCheckingJavaMethod("-") {
+        rational.registerMethod(runtime.newNativeMethod("returns the difference between this number and the argument. if the argument is a decimal, the receiver will be converted into a form suitable for subtracting against a decimal, and then subtracted. if the argument is neither a Rational nor a Decimal, it tries to call asRational, and if that fails it signals a condition.", new TypeCheckingNativeMethod("-") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(number)
@@ -311,7 +311,7 @@ public class Number extends IokeData {
                 }
             }));
 
-        rational.registerMethod(runtime.newNativeMethod("returns the addition of this number and the argument. if the argument is a decimal, the receiver will be converted into a form suitable for addition against a decimal, and then added. if the argument is neither a Rational nor a Decimal, it tries to call asRational, and if that fails it signals a condition.", new TypeCheckingJavaMethod("+") {
+        rational.registerMethod(runtime.newNativeMethod("returns the addition of this number and the argument. if the argument is a decimal, the receiver will be converted into a form suitable for addition against a decimal, and then added. if the argument is neither a Rational nor a Decimal, it tries to call asRational, and if that fails it signals a condition.", new TypeCheckingNativeMethod("+") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(number)
@@ -341,7 +341,7 @@ public class Number extends IokeData {
                 }
             }));
 
-        rational.registerMethod(runtime.newNativeMethod("returns the product of this number and the argument. if the argument is a decimal, the receiver will be converted into a form suitable for multiplying against a decimal, and then multiplied. if the argument is neither a Rational nor a Decimal, it tries to call asRational, and if that fails it signals a condition.", new TypeCheckingJavaMethod("*") {
+        rational.registerMethod(runtime.newNativeMethod("returns the product of this number and the argument. if the argument is a decimal, the receiver will be converted into a form suitable for multiplying against a decimal, and then multiplied. if the argument is neither a Rational nor a Decimal, it tries to call asRational, and if that fails it signals a condition.", new TypeCheckingNativeMethod("*") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(number)
@@ -371,7 +371,7 @@ public class Number extends IokeData {
                 }
             }));
 
-        rational.registerMethod(runtime.newNativeMethod("returns the quotient of this number and the argument. if the division is not exact, it will return a Ratio.", new TypeCheckingJavaMethod("/") {
+        rational.registerMethod(runtime.newNativeMethod("returns the quotient of this number and the argument. if the division is not exact, it will return a Ratio.", new TypeCheckingNativeMethod("/") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(number)
@@ -434,7 +434,7 @@ public class Number extends IokeData {
                 }
             }));
 
-        integer.registerMethod(runtime.newNativeMethod("returns the modulo of this number and the argument", new TypeCheckingJavaMethod("%") {
+        integer.registerMethod(runtime.newNativeMethod("returns the modulo of this number and the argument", new TypeCheckingNativeMethod("%") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(integer)
@@ -460,7 +460,7 @@ public class Number extends IokeData {
                 }
             }));
 
-        rational.registerMethod(runtime.newNativeMethod("returns this number to the power of the argument", new TypeCheckingJavaMethod("**") {
+        rational.registerMethod(runtime.newNativeMethod("returns this number to the power of the argument", new TypeCheckingNativeMethod("**") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(rational)
@@ -487,7 +487,7 @@ public class Number extends IokeData {
             }));
 
 
-        integer.registerMethod(runtime.newNativeMethod("returns this number bitwise and the argument", new TypeCheckingJavaMethod("&") {
+        integer.registerMethod(runtime.newNativeMethod("returns this number bitwise and the argument", new TypeCheckingNativeMethod("&") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(integer)
@@ -513,7 +513,7 @@ public class Number extends IokeData {
                 }
             }));
 
-        integer.registerMethod(runtime.newNativeMethod("returns this number bitwise or the argument", new TypeCheckingJavaMethod("|") {
+        integer.registerMethod(runtime.newNativeMethod("returns this number bitwise or the argument", new TypeCheckingNativeMethod("|") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(integer)
@@ -539,7 +539,7 @@ public class Number extends IokeData {
                 }
             }));
 
-        integer.registerMethod(runtime.newNativeMethod("returns this number bitwise xor the argument", new TypeCheckingJavaMethod("^") {
+        integer.registerMethod(runtime.newNativeMethod("returns this number bitwise xor the argument", new TypeCheckingNativeMethod("^") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(integer)
@@ -565,7 +565,7 @@ public class Number extends IokeData {
                 }
             }));
 
-        integer.registerMethod(runtime.newNativeMethod("returns this number left shifted by the argument", new TypeCheckingJavaMethod("<<") {
+        integer.registerMethod(runtime.newNativeMethod("returns this number left shifted by the argument", new TypeCheckingNativeMethod("<<") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(integer)
@@ -591,7 +591,7 @@ public class Number extends IokeData {
                 }
             }));
 
-        integer.registerMethod(runtime.newNativeMethod("returns this number right shifted by the argument", new TypeCheckingJavaMethod(">>") {
+        integer.registerMethod(runtime.newNativeMethod("returns this number right shifted by the argument", new TypeCheckingNativeMethod(">>") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(integer)
@@ -624,28 +624,28 @@ public class Number extends IokeData {
                 }
             }));
 
-        rational.registerMethod(obj.runtime.newNativeMethod("Returns a text inspection of the object", new TypeCheckingJavaMethod.WithNoArguments("inspect", number) {
+        rational.registerMethod(obj.runtime.newNativeMethod("Returns a text inspection of the object", new TypeCheckingNativeMethod.WithNoArguments("inspect", number) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return method.runtime.newText(Number.getInspect(on));
                 }
             }));
 
-        rational.registerMethod(obj.runtime.newNativeMethod("Returns a brief text inspection of the object", new TypeCheckingJavaMethod.WithNoArguments("notice", number) {
+        rational.registerMethod(obj.runtime.newNativeMethod("Returns a brief text inspection of the object", new TypeCheckingNativeMethod.WithNoArguments("notice", number) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return method.runtime.newText(Number.getInspect(on));
                 }
             }));
 
-        integer.registerMethod(runtime.newNativeMethod("Returns the successor of this number", new TypeCheckingJavaMethod.WithNoArguments("succ", integer) {
+        integer.registerMethod(runtime.newNativeMethod("Returns the successor of this number", new TypeCheckingNativeMethod.WithNoArguments("succ", integer) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return runtime.newNumber(IntNum.add(Number.intValue(on),IntNum.one()));
                 }
             }));
 
-        integer.registerMethod(runtime.newNativeMethod("Returns the predecessor of this number", new TypeCheckingJavaMethod.WithNoArguments("pred", integer) {
+        integer.registerMethod(runtime.newNativeMethod("Returns the predecessor of this number", new TypeCheckingNativeMethod.WithNoArguments("pred", integer) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return runtime.newNumber(IntNum.sub(Number.intValue(on),IntNum.one()));

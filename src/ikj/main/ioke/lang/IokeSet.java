@@ -33,14 +33,14 @@ public class IokeSet extends IokeData {
         obj.setKind("Set");
         obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Enumerable"), null), runtime.nul, runtime.nul);
 
-        obj.registerMethod(obj.runtime.newNativeMethod("Returns a text inspection of the object", new TypeCheckingJavaMethod.WithNoArguments("inspect", runtime.set) {
+        obj.registerMethod(obj.runtime.newNativeMethod("Returns a text inspection of the object", new TypeCheckingNativeMethod.WithNoArguments("inspect", runtime.set) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return method.runtime.newText(IokeSet.getInspect(on));
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newNativeMethod("Converts this set to use identity semantics, and then returns it.", new TypeCheckingJavaMethod.WithNoArguments("withIdentitySemantics!", runtime.set) {
+        obj.registerMethod(obj.runtime.newNativeMethod("Converts this set to use identity semantics, and then returns it.", new TypeCheckingNativeMethod.WithNoArguments("withIdentitySemantics!", runtime.set) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     IokeSet set = (IokeSet)IokeObject.data(on);
@@ -49,21 +49,21 @@ public class IokeSet extends IokeData {
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newNativeMethod("Returns a brief text inspection of the object", new TypeCheckingJavaMethod.WithNoArguments("notice", runtime.set) {
+        obj.registerMethod(obj.runtime.newNativeMethod("Returns a brief text inspection of the object", new TypeCheckingNativeMethod.WithNoArguments("notice", runtime.set) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return method.runtime.newText(IokeSet.getNotice(on));
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newNativeMethod("returns true if this set is empty, false otherwise", new TypeCheckingJavaMethod.WithNoArguments("empty?", runtime.set) {
+        obj.registerMethod(obj.runtime.newNativeMethod("returns true if this set is empty, false otherwise", new TypeCheckingNativeMethod.WithNoArguments("empty?", runtime.set) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return ((IokeSet)IokeObject.data(on)).getSet().isEmpty() ? context.runtime._true : context.runtime._false;
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newNativeMethod("Adds the argument to this set, if it's not already in the set. Returns the set after adding the object.", new TypeCheckingJavaMethod("<<") {
+        obj.registerMethod(obj.runtime.newNativeMethod("Adds the argument to this set, if it's not already in the set. Returns the set after adding the object.", new TypeCheckingNativeMethod("<<") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(runtime.set)
@@ -82,7 +82,7 @@ public class IokeSet extends IokeData {
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newNativeMethod("Removes the argument from the set, if it's in the set. Returns the set after removing the object.", new TypeCheckingJavaMethod("remove!") {
+        obj.registerMethod(obj.runtime.newNativeMethod("Removes the argument from the set, if it's in the set. Returns the set after removing the object.", new TypeCheckingNativeMethod("remove!") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(runtime.set)
@@ -101,7 +101,7 @@ public class IokeSet extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("returns a new set that contains the receivers elements and the elements of the set sent in as the argument.", new TypeCheckingJavaMethod("+") {
+        obj.registerMethod(runtime.newNativeMethod("returns a new set that contains the receivers elements and the elements of the set sent in as the argument.", new TypeCheckingNativeMethod("+") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(runtime.set)
@@ -122,7 +122,7 @@ public class IokeSet extends IokeData {
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newNativeMethod("returns true if the receiver includes the evaluated argument, otherwise false", new TypeCheckingJavaMethod("include?") {
+        obj.registerMethod(obj.runtime.newNativeMethod("returns true if the receiver includes the evaluated argument, otherwise false", new TypeCheckingNativeMethod("include?") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(runtime.set)

@@ -45,7 +45,7 @@ public class DateTime extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("Expects to get one DateTime as argument, and returns the difference between this instant and that instant, in milliseconds.", new TypeCheckingJavaMethod("-") {
+        obj.registerMethod(runtime.newNativeMethod("Expects to get one DateTime as argument, and returns the difference between this instant and that instant, in milliseconds.", new TypeCheckingNativeMethod("-") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(runtime.dateTime)
@@ -64,14 +64,14 @@ public class DateTime extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("Returns a text inspection of the object", new TypeCheckingJavaMethod.WithNoArguments("inspect", runtime.dateTime) {
+        obj.registerMethod(runtime.newNativeMethod("Returns a text inspection of the object", new TypeCheckingNativeMethod.WithNoArguments("inspect", runtime.dateTime) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return method.runtime.newText(DateTime.getInspect(on));
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("Returns a brief text inspection of the object", new TypeCheckingJavaMethod.WithNoArguments("notice", runtime.dateTime) {
+        obj.registerMethod(runtime.newNativeMethod("Returns a brief text inspection of the object", new TypeCheckingNativeMethod.WithNoArguments("notice", runtime.dateTime) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return method.runtime.newText(DateTime.getNotice(on));

@@ -53,7 +53,7 @@ public class FileSystem {
 
             obj.setKind("FileSystem File");
 
-            obj.registerMethod(runtime.newNativeMethod("Closes any open stream to this file", new TypeCheckingJavaMethod.WithNoArguments("close", obj) {
+            obj.registerMethod(runtime.newNativeMethod("Closes any open stream to this file", new TypeCheckingNativeMethod.WithNoArguments("close", obj) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     try {

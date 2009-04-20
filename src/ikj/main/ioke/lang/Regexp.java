@@ -68,14 +68,14 @@ public class Regexp extends IokeData {
         regexpMatch.init();
         obj.registerCell("Match", regexpMatch);
 
-        obj.registerMethod(runtime.newNativeMethod("Returns the pattern use for this regular expression", new TypeCheckingJavaMethod.WithNoArguments("pattern", runtime.regexp) {
+        obj.registerMethod(runtime.newNativeMethod("Returns the pattern use for this regular expression", new TypeCheckingNativeMethod.WithNoArguments("pattern", runtime.regexp) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return context.runtime.newText(getPattern(on));
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("Takes one argument and tries to match that argument against the current pattern. Returns nil if no match can be done, or a Regexp Match object if a match succeeds", new TypeCheckingJavaMethod("match") {
+        obj.registerMethod(runtime.newNativeMethod("Takes one argument and tries to match that argument against the current pattern. Returns nil if no match can be done, or a Regexp Match object if a match succeeds", new TypeCheckingNativeMethod("match") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(runtime.regexp)
@@ -147,7 +147,7 @@ public class Regexp extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("Takes one argument and tries to match that argument against the current pattern. Returns a list of all the texts that were matched.", new TypeCheckingJavaMethod("allMatches") {
+        obj.registerMethod(runtime.newNativeMethod("Takes one argument and tries to match that argument against the current pattern. Returns a list of all the texts that were matched.", new TypeCheckingNativeMethod("allMatches") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(runtime.regexp)
@@ -175,21 +175,21 @@ public class Regexp extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("Returns a text inspection of the object", new TypeCheckingJavaMethod.WithNoArguments("inspect", runtime.regexp) {
+        obj.registerMethod(runtime.newNativeMethod("Returns a text inspection of the object", new TypeCheckingNativeMethod.WithNoArguments("inspect", runtime.regexp) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return method.runtime.newText(Regexp.getInspect(on));
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("Returns a brief text inspection of the object", new TypeCheckingJavaMethod.WithNoArguments("notice", runtime.regexp) {
+        obj.registerMethod(runtime.newNativeMethod("Returns a brief text inspection of the object", new TypeCheckingNativeMethod.WithNoArguments("notice", runtime.regexp) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return method.runtime.newText(Regexp.getNotice(on));
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("returns a list of all the named groups in this regular expression", new TypeCheckingJavaMethod.WithNoArguments("names", runtime.regexp) {
+        obj.registerMethod(runtime.newNativeMethod("returns a list of all the named groups in this regular expression", new TypeCheckingNativeMethod.WithNoArguments("names", runtime.regexp) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     Set names = Regexp.getRegexp(on).getGroupNames();

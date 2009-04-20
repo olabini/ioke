@@ -171,28 +171,28 @@ public class Message extends IokeData {
         message.setKind("Message");
         message.mimics(IokeObject.as(message.runtime.mixins.getCell(null, null, "Enumerable"), null), message.runtime.nul, message.runtime.nul);
 
-        message.registerMethod(message.runtime.newNativeMethod("Returns a code representation of the object", new TypeCheckingJavaMethod.WithNoArguments("code", message) {
+        message.registerMethod(message.runtime.newNativeMethod("Returns a code representation of the object", new TypeCheckingNativeMethod.WithNoArguments("code", message) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return method.runtime.newText(((Message)IokeObject.data(on)).code());
                 }
             }));
 
-        message.registerMethod(message.runtime.newNativeMethod("Returns the unevaluated arguments for this message", new TypeCheckingJavaMethod.WithNoArguments("arguments", message) {
+        message.registerMethod(message.runtime.newNativeMethod("Returns the unevaluated arguments for this message", new TypeCheckingNativeMethod.WithNoArguments("arguments", message) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return context.runtime.newList(((Message)IokeObject.data(on)).arguments);
                 }
             }));
         
-        message.registerMethod(message.runtime.newNativeMethod("Returns a formatted code representation of the object", new TypeCheckingJavaMethod.WithNoArguments("formattedCode", message) {
+        message.registerMethod(message.runtime.newNativeMethod("Returns a formatted code representation of the object", new TypeCheckingNativeMethod.WithNoArguments("formattedCode", message) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return method.runtime.newText(Message.formattedCode(IokeObject.as(on, context), 0, context));
                 }
             }));
         
-        message.registerMethod(message.runtime.newNativeMethod("returns the name of this message", new TypeCheckingJavaMethod.WithNoArguments("name", message) {
+        message.registerMethod(message.runtime.newNativeMethod("returns the name of this message", new TypeCheckingNativeMethod.WithNoArguments("name", message) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return method.runtime.getSymbol(((Message)IokeObject.data(on)).name);
@@ -326,7 +326,7 @@ public class Message extends IokeData {
                 }
             }));
 
-        message.registerMethod(message.runtime.newNativeMethod("sets the name of the message and then returns that name", new TypeCheckingJavaMethod("name=") {
+        message.registerMethod(message.runtime.newNativeMethod("sets the name of the message and then returns that name", new TypeCheckingNativeMethod("name=") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(message)
@@ -355,7 +355,7 @@ public class Message extends IokeData {
                 }
             }));
 
-        message.registerMethod(message.runtime.newNativeMethod("sets the next pointer of the message and then returns that pointer", new TypeCheckingJavaMethod("next=") {
+        message.registerMethod(message.runtime.newNativeMethod("sets the next pointer of the message and then returns that pointer", new TypeCheckingNativeMethod("next=") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(message)
@@ -380,7 +380,7 @@ public class Message extends IokeData {
                 }
             }));
         
-        message.registerMethod(message.runtime.newNativeMethod("sets the prev pointer of the message and then returns that pointer", new TypeCheckingJavaMethod("prev=") {
+        message.registerMethod(message.runtime.newNativeMethod("sets the prev pointer of the message and then returns that pointer", new TypeCheckingNativeMethod("prev=") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(message)
@@ -405,28 +405,28 @@ public class Message extends IokeData {
                 }
             }));
         
-        message.registerMethod(message.runtime.newNativeMethod("returns the file name where this message is written", new TypeCheckingJavaMethod.WithNoArguments("filename", message) {
+        message.registerMethod(message.runtime.newNativeMethod("returns the file name where this message is written", new TypeCheckingNativeMethod.WithNoArguments("filename", message) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return method.runtime.newText(((Message)IokeObject.data(on)).file);
                 }
             }));
         
-        message.registerMethod(message.runtime.newNativeMethod("returns the line where this message is written", new TypeCheckingJavaMethod.WithNoArguments("line", message) {
+        message.registerMethod(message.runtime.newNativeMethod("returns the line where this message is written", new TypeCheckingNativeMethod.WithNoArguments("line", message) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return method.runtime.newNumber(((Message)IokeObject.data(on)).line);
                 }
             }));
         
-        message.registerMethod(message.runtime.newNativeMethod("returns the position on the line where this message is written", new TypeCheckingJavaMethod.WithNoArguments("position", message) {
+        message.registerMethod(message.runtime.newNativeMethod("returns the position on the line where this message is written", new TypeCheckingNativeMethod.WithNoArguments("position", message) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return method.runtime.newNumber(((Message)IokeObject.data(on)).pos);
                 }
             }));
 
-        message.registerMethod(message.runtime.newNativeMethod("returns the next message in the chain, or nil", new TypeCheckingJavaMethod.WithNoArguments("next", message) {
+        message.registerMethod(message.runtime.newNativeMethod("returns the next message in the chain, or nil", new TypeCheckingNativeMethod.WithNoArguments("next", message) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     IokeObject next = ((Message)IokeObject.data(on)).next;
@@ -438,7 +438,7 @@ public class Message extends IokeData {
                 }
             }));
         
-        message.registerMethod(message.runtime.newNativeMethod("returns the last message in the chain", new TypeCheckingJavaMethod.WithNoArguments("last", message) {
+        message.registerMethod(message.runtime.newNativeMethod("returns the last message in the chain", new TypeCheckingNativeMethod.WithNoArguments("last", message) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     IokeObject current = IokeObject.as(on, context);
@@ -449,7 +449,7 @@ public class Message extends IokeData {
                 }
             }));
         
-        message.registerMethod(message.runtime.newNativeMethod("returns the previous message in the chain, or nil", new TypeCheckingJavaMethod.WithNoArguments("prev", message) {
+        message.registerMethod(message.runtime.newNativeMethod("returns the previous message in the chain, or nil", new TypeCheckingNativeMethod.WithNoArguments("prev", message) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     IokeObject prev = ((Message)IokeObject.data(on)).prev;
@@ -461,35 +461,35 @@ public class Message extends IokeData {
                 }
             }));
         
-        message.registerMethod(message.runtime.newNativeMethod("returns true when this message is a terminator, otherwise false", new TypeCheckingJavaMethod.WithNoArguments("terminator?", message) {
+        message.registerMethod(message.runtime.newNativeMethod("returns true when this message is a terminator, otherwise false", new TypeCheckingNativeMethod.WithNoArguments("terminator?", message) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return Message.isTerminator(on) ? context.runtime._true : context.runtime._false;
                 }
             }));
         
-        message.registerMethod(message.runtime.newNativeMethod("returns a string that describes this message as a stack trace elemtn", new TypeCheckingJavaMethod.WithNoArguments("asStackTraceText", message) {
+        message.registerMethod(message.runtime.newNativeMethod("returns a string that describes this message as a stack trace elemtn", new TypeCheckingNativeMethod.WithNoArguments("asStackTraceText", message) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return context.runtime.newText(Message.getStackTraceText(on));
                 }
             }));
 
-        message.registerMethod(message.runtime.newNativeMethod("returns a deep clone of this message chain, starting at the current point.", new TypeCheckingJavaMethod.WithNoArguments("deepCopy", message) {
+        message.registerMethod(message.runtime.newNativeMethod("returns a deep clone of this message chain, starting at the current point.", new TypeCheckingNativeMethod.WithNoArguments("deepCopy", message) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return Message.deepCopy(on);
                 }
             }));
 
-        message.registerMethod(message.runtime.newNativeMethod("returns true if this message is a keyword parameter or not", new TypeCheckingJavaMethod.WithNoArguments("keyword?", message) {
+        message.registerMethod(message.runtime.newNativeMethod("returns true if this message is a keyword parameter or not", new TypeCheckingNativeMethod.WithNoArguments("keyword?", message) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return ((Message)IokeObject.data(on)).isKeyword() ? context.runtime._true : context.runtime._false;
                 }
             }));
 
-        message.registerMethod(message.runtime.newNativeMethod("returns true if this message is a symbol message or not", new TypeCheckingJavaMethod.WithNoArguments("symbol?", message) {
+        message.registerMethod(message.runtime.newNativeMethod("returns true if this message is a symbol message or not", new TypeCheckingNativeMethod.WithNoArguments("symbol?", message) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return ((Message)IokeObject.data(on)).isSymbol() ? context.runtime._true : context.runtime._false;
@@ -559,7 +559,7 @@ public class Message extends IokeData {
                 }
             }));
 
-        message.registerMethod(message.runtime.newNativeMethod("evaluates the argument and makes it the new next pointer of the receiver. it also modifies the argument so its prev pointer points back to this message. if the argument is nil, the next pointer will be erased. it then returns the receiving message.", new TypeCheckingJavaMethod("->") {
+        message.registerMethod(message.runtime.newNativeMethod("evaluates the argument and makes it the new next pointer of the receiver. it also modifies the argument so its prev pointer points back to this message. if the argument is nil, the next pointer will be erased. it then returns the receiving message.", new TypeCheckingNativeMethod("->") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(message)
@@ -586,7 +586,7 @@ public class Message extends IokeData {
             }));
 
 
-        message.registerMethod(message.runtime.newNativeMethod("sets the arguments for this message. if given nil the arguments list will be creared, otherwise the list given as arguments will be used. it then returns the receiving message.", new TypeCheckingJavaMethod("arguments=") {
+        message.registerMethod(message.runtime.newNativeMethod("sets the arguments for this message. if given nil the arguments list will be creared, otherwise the list given as arguments will be used. it then returns the receiving message.", new TypeCheckingNativeMethod("arguments=") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(message)
@@ -694,7 +694,7 @@ public class Message extends IokeData {
                 }
             }));
 
-        message.registerMethod(message.runtime.newNativeMethod("Takes one evaluated argument and returns the message resulting from parsing and operator shuffling the resulting message.", new TypeCheckingJavaMethod("fromText") {
+        message.registerMethod(message.runtime.newNativeMethod("Takes one evaluated argument and returns the message resulting from parsing and operator shuffling the resulting message.", new TypeCheckingNativeMethod("fromText") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .withRequiredPositional("code").whichMustMimic(message.runtime.text)
@@ -729,7 +729,7 @@ public class Message extends IokeData {
                 }
             }));
 
-        message.registerMethod(message.runtime.newNativeMethod("Takes one evaluated argument and executes the contents of that text in the current context and returns the result of that.", new TypeCheckingJavaMethod("doText") {
+        message.registerMethod(message.runtime.newNativeMethod("Takes one evaluated argument and executes the contents of that text in the current context and returns the result of that.", new TypeCheckingNativeMethod("doText") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .withRequiredPositional("code").whichMustMimic(message.runtime.text)
