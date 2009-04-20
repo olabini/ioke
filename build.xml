@@ -61,6 +61,7 @@
 
     <copy todir="${classes.dir}">
       <fileset dir="${src.raw.dir}" includes="builtin/**/*.ik"/>
+      <fileset dir="${src.raw.dir}/ikj" includes="builtin/**/*.ik"/>
     </copy>
   </target>
 
