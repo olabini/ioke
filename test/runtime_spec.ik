@@ -9,7 +9,7 @@ describe(Runtime,
     )
 
     describe("machine",
-      it("should contain ijk",
+      it("should contain ikj",
         Runtime version machine should == "ikj"
       )
     )
