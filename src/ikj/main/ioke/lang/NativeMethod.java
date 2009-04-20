@@ -85,7 +85,7 @@ public abstract class NativeMethod extends Method {
         condition.setCell("context", context);
         condition.setCell("receiver", on);
         condition.setCell("method", self);
-        condition.setCell("report", context.runtime.newText("You tried to activate a method without any code - did you by any chance activate the JavaMethod kind by referring to it without wrapping it inside a call to cell?"));
+        condition.setCell("report", context.runtime.newText("You tried to activate a method without any code - did you by any chance activate the NativeMethod kind by referring to it without wrapping it inside a call to cell?"));
         context.runtime.errorCondition(condition);
 
         return self.runtime.nil;

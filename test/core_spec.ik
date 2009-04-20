@@ -84,7 +84,7 @@ describe("Ground",
     Ground should have cell(:false)
     Ground should have cell(:Method)
     Ground should have cell(:DefaultMethod)
-    Ground should have cell(:JavaMethod)
+    Ground should have cell(:NativeMethod)
     Ground should have cell(:Symbol)
     Ground should have cell(:LexicalBlock)
     Ground should have cell(:Mixins)
@@ -183,9 +183,9 @@ describe("DefaultMacro",
   )
 )
 
-describe("JavaMethod", 
+describe("NativeMethod", 
   it("should have the correct kind", 
-    cell(:JavaMethod) kind should == "JavaMethod"
+    cell(:NativeMethod) kind should == "NativeMethod"
   )
 )
 

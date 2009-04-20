@@ -71,4 +71,4 @@ public class JavaFieldGetterNativeMethod extends Method implements NativeImpleme
     public String inspect(Object self) {
         return "method(" + declaringClass.getName() + "_" + field.getName() + ")";
     }
-}// JavaFieldGetterJavaMethod
+}// JavaFieldGetterNativeMethod
