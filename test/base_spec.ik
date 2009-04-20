@@ -457,11 +457,11 @@ describe("Base",
   describe("documentation=",
     it("should set the documentation for an object",
       x = Origin mimic
-      x cell(:documentation) kind should == "JavaMethod"
+      x cell(:documentation) kind should == "NativeMethod"
 
       x documentation = "Wow, you didn't believe that, right?"
 
-      x cell(:documentation) kind should == "JavaMethod"
+      x cell(:documentation) kind should == "NativeMethod"
 
       x documentation should == "Wow, you didn't believe that, right?"
     )
