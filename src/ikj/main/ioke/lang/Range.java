@@ -58,7 +58,7 @@ public class Range extends IokeData {
         obj.setKind("Range");
         obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Enumerable"), null), runtime.nul, runtime.nul);
 
-        obj.registerMethod(runtime.newNativeMethod("will return a new inclusive Range based on the two arguments", new JavaMethod("inclusive") {
+        obj.registerMethod(runtime.newNativeMethod("will return a new inclusive Range based on the two arguments", new NativeMethod("inclusive") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("from")
@@ -92,7 +92,7 @@ public class Range extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("will return a new exclusive Range based on the two arguments", new JavaMethod("exclusive") {
+        obj.registerMethod(runtime.newNativeMethod("will return a new exclusive Range based on the two arguments", new NativeMethod("exclusive") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("from")
@@ -125,7 +125,7 @@ public class Range extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("returns true if the receiver is an exclusive range, false otherwise", new JavaMethod.WithNoArguments("exclusive?") {
+        obj.registerMethod(runtime.newNativeMethod("returns true if the receiver is an exclusive range, false otherwise", new NativeMethod.WithNoArguments("exclusive?") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -133,7 +133,7 @@ public class Range extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("returns true if the receiver is an inclusive range, false otherwise", new JavaMethod.WithNoArguments("inclusive?") {
+        obj.registerMethod(runtime.newNativeMethod("returns true if the receiver is an inclusive range, false otherwise", new NativeMethod.WithNoArguments("inclusive?") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -149,7 +149,7 @@ public class Range extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("returns the 'to' part of the range", new JavaMethod.WithNoArguments("to") {
+        obj.registerMethod(runtime.newNativeMethod("returns the 'to' part of the range", new NativeMethod.WithNoArguments("to") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -157,7 +157,7 @@ public class Range extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("takes either one or two or three arguments. if one argument is given, it should be a message chain that will be sent to each object in the range. the result will be thrown away. if two arguments are given, the first is an unevaluated name that will be set to each of the values in the range in succession, and then the second argument will be evaluated in a scope with that argument in it. if three arguments is given, the first one is an unevaluated name that will be set to the index of each element, and the other two arguments are the name of the argument for the value, and the actual code. the code will evaluate in a lexical context, and if the argument name is available outside the context, it will be shadowed. the method will return the range.", new JavaMethod("each") {
+        obj.registerMethod(runtime.newNativeMethod("takes either one or two or three arguments. if one argument is given, it should be a message chain that will be sent to each object in the range. the result will be thrown away. if two arguments are given, the first is an unevaluated name that will be set to each of the values in the range in succession, and then the second argument will be evaluated in a scope with that argument in it. if three arguments is given, the first one is an unevaluated name that will be set to the index of each element, and the other two arguments are the name of the argument for the value, and the actual code. the code will evaluate in a lexical context, and if the argument name is available outside the context, it will be shadowed. the method will return the range.", new NativeMethod("each") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositionalUnevaluated("indexOrArgOrCode")
@@ -249,7 +249,7 @@ public class Range extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("returns true if the argument is within the confines of this range. how this comparison is done depends on if the object mimics Comparing. If it does, < and > will be used. If not, all the available entries in this range will be enumerated using 'succ'/'pred' until either the end or the element we're looking for is found. in that case, comparison is done with '=='", new JavaMethod("===") {
+        obj.registerMethod(runtime.newNativeMethod("returns true if the argument is within the confines of this range. how this comparison is done depends on if the object mimics Comparing. If it does, < and > will be used. If not, all the available entries in this range will be enumerated using 'succ'/'pred' until either the end or the element we're looking for is found. in that case, comparison is done with '=='", new NativeMethod("===") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("other")
@@ -313,7 +313,7 @@ public class Range extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("Returns a text inspection of the object", new JavaMethod.WithNoArguments("inspect") {
+        obj.registerMethod(runtime.newNativeMethod("Returns a text inspection of the object", new NativeMethod.WithNoArguments("inspect") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -321,7 +321,7 @@ public class Range extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("Returns a brief text inspection of the object", new JavaMethod.WithNoArguments("notice") {
+        obj.registerMethod(runtime.newNativeMethod("Returns a brief text inspection of the object", new NativeMethod.WithNoArguments("notice") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());

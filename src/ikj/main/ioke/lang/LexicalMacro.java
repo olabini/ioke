@@ -53,7 +53,7 @@ public class LexicalMacro extends IokeData implements AssociatedCode, Named, Ins
         obj.setKind("LexicalMacro");
         obj.registerCell("activatable", obj.runtime._true);
 
-        obj.registerMethod(obj.runtime.newNativeMethod("returns the name of the lecro", new JavaMethod.WithNoArguments("name") {
+        obj.registerMethod(obj.runtime.newNativeMethod("returns the name of the lecro", new NativeMethod.WithNoArguments("name") {
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -61,7 +61,7 @@ public class LexicalMacro extends IokeData implements AssociatedCode, Named, Ins
                     return context.runtime.newText(((LexicalMacro)IokeObject.data(on)).name);
                 }
             }));
-        obj.registerMethod(obj.runtime.newNativeMethod("activates this lecro with the arguments given to call", new JavaMethod("call") {
+        obj.registerMethod(obj.runtime.newNativeMethod("activates this lecro with the arguments given to call", new NativeMethod("call") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRestUnevaluated("arguments")
@@ -77,7 +77,7 @@ public class LexicalMacro extends IokeData implements AssociatedCode, Named, Ins
                     return IokeObject.as(on, context).activate(context, message, context.getRealContext());
                 }
             }));
-        obj.registerMethod(obj.runtime.newNativeMethod("returns the message chain for this lecro", new JavaMethod.WithNoArguments("message") {
+        obj.registerMethod(obj.runtime.newNativeMethod("returns the message chain for this lecro", new NativeMethod.WithNoArguments("message") {
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -85,7 +85,7 @@ public class LexicalMacro extends IokeData implements AssociatedCode, Named, Ins
                     return ((AssociatedCode)IokeObject.data(on)).getCode();
                 }
             }));
-        obj.registerMethod(obj.runtime.newNativeMethod("returns the code for the argument definition", new JavaMethod.WithNoArguments("argumentsCode") {
+        obj.registerMethod(obj.runtime.newNativeMethod("returns the code for the argument definition", new NativeMethod.WithNoArguments("argumentsCode") {
                 @Override
                 public Object activate(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(dynamicContext, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -93,7 +93,7 @@ public class LexicalMacro extends IokeData implements AssociatedCode, Named, Ins
                     return dynamicContext.runtime.newText(((AssociatedCode)IokeObject.data(on)).getArgumentsCode());
                 }
             }));
-        obj.registerMethod(obj.runtime.newNativeMethod("Returns a text inspection of the object", new JavaMethod.WithNoArguments("inspect") {
+        obj.registerMethod(obj.runtime.newNativeMethod("Returns a text inspection of the object", new NativeMethod.WithNoArguments("inspect") {
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -101,7 +101,7 @@ public class LexicalMacro extends IokeData implements AssociatedCode, Named, Ins
                     return context.runtime.newText(LexicalMacro.getInspect(on));
                 }
             }));
-        obj.registerMethod(obj.runtime.newNativeMethod("Returns a brief text inspection of the object", new JavaMethod.WithNoArguments("notice") {
+        obj.registerMethod(obj.runtime.newNativeMethod("Returns a brief text inspection of the object", new NativeMethod.WithNoArguments("notice") {
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -109,7 +109,7 @@ public class LexicalMacro extends IokeData implements AssociatedCode, Named, Ins
                     return context.runtime.newText(LexicalMacro.getNotice(on));
                 }
             }));
-        obj.registerMethod(obj.runtime.newNativeMethod("returns the full code of this lecro, as a Text", new JavaMethod.WithNoArguments("code") {
+        obj.registerMethod(obj.runtime.newNativeMethod("returns the full code of this lecro, as a Text", new NativeMethod.WithNoArguments("code") {
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -122,7 +122,7 @@ public class LexicalMacro extends IokeData implements AssociatedCode, Named, Ins
                     }
                 }
             }));
-        obj.registerMethod(obj.runtime.newNativeMethod("returns idiomatically formatted code for this lecro", new JavaMethod.WithNoArguments("formattedCode") {
+        obj.registerMethod(obj.runtime.newNativeMethod("returns idiomatically formatted code for this lecro", new NativeMethod.WithNoArguments("formattedCode") {
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());

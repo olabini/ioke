@@ -199,7 +199,7 @@ public class Message extends IokeData {
                 }
             }));
 
-        message.registerMethod(message.runtime.newNativeMethod("takes either one or two arguments. if one argument is given, it should be a message chain that will be sent to each message in the chain, recursively. the result will be thrown away. if two arguments are given, the first is an unevaluated name that will be set to each of the messages in the chain in succession, and then the second argument will be evaluated in a scope with that argument in it. the code will evaluate in a lexical context, and if the argument name is available outside the context, it will be shadowed. the method will return the original message.", new JavaMethod("walk") {
+        message.registerMethod(message.runtime.newNativeMethod("takes either one or two arguments. if one argument is given, it should be a message chain that will be sent to each message in the chain, recursively. the result will be thrown away. if two arguments are given, the first is an unevaluated name that will be set to each of the messages in the chain in succession, and then the second argument will be evaluated in a scope with that argument in it. the code will evaluate in a lexical context, and if the argument name is available outside the context, it will be shadowed. the method will return the original message.", new NativeMethod("walk") {
             private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                 .builder()
                 .withOptionalPositionalUnevaluated("argOrCode")
@@ -261,7 +261,7 @@ public class Message extends IokeData {
             }
         }));
 
-        message.registerMethod(message.runtime.newNativeMethod("takes either one or two or three arguments. if one argument is given, it should be a message chain that will be sent to each message in the chain. the result will be thrown away. if two arguments are given, the first is an unevaluated name that will be set to each of the messages in the chain in succession, and then the second argument will be evaluated in a scope with that argument in it. if three arguments is given, the first one is an unevaluated name that will be set to the index of each message, and the other two arguments are the name of the argument for the value, and the actual code. the code will evaluate in a lexical context, and if the argument name is available outside the context, it will be shadowed. the method will return the original message.", new JavaMethod("each") {
+        message.registerMethod(message.runtime.newNativeMethod("takes either one or two or three arguments. if one argument is given, it should be a message chain that will be sent to each message in the chain. the result will be thrown away. if two arguments are given, the first is an unevaluated name that will be set to each of the messages in the chain in succession, and then the second argument will be evaluated in a scope with that argument in it. if three arguments is given, the first one is an unevaluated name that will be set to the index of each message, and the other two arguments are the name of the argument for the value, and the actual code. the code will evaluate in a lexical context, and if the argument name is available outside the context, it will be shadowed. the method will return the original message.", new NativeMethod("each") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositionalUnevaluated("indexOrArgOrCode")
@@ -496,7 +496,7 @@ public class Message extends IokeData {
                 }
             }));
 
-        message.registerMethod(message.runtime.newNativeMethod("Takes one evaluated argument and sends this message to that argument", new JavaMethod("sendTo") {
+        message.registerMethod(message.runtime.newNativeMethod("Takes one evaluated argument and sends this message to that argument", new NativeMethod("sendTo") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("newReceiver")
@@ -521,7 +521,7 @@ public class Message extends IokeData {
                 }
             }));
         
-        message.registerMethod(message.runtime.newNativeMethod("evaluates the argument and adds it to the argument list of this message. it then returns the receiving message.", new JavaMethod("appendArgument") {
+        message.registerMethod(message.runtime.newNativeMethod("evaluates the argument and adds it to the argument list of this message. it then returns the receiving message.", new NativeMethod("appendArgument") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("newArgument")
@@ -541,7 +541,7 @@ public class Message extends IokeData {
 
         message.aliasMethod("appendArgument", "<<", null, null);
 
-        message.registerMethod(message.runtime.newNativeMethod("evaluates the argument and adds it to the beginning of the argument list of this message. it then returns the receiving message.", new JavaMethod(">>") {
+        message.registerMethod(message.runtime.newNativeMethod("evaluates the argument and adds it to the beginning of the argument list of this message. it then returns the receiving message.", new NativeMethod(">>") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("newArgument")
@@ -614,7 +614,7 @@ public class Message extends IokeData {
                 }
             }));
 
-        message.registerMethod(message.runtime.newNativeMethod("Takes one or more evaluated arguments and sends this message chain to where the first argument is ground, and if there are more arguments, the second is the receiver, and the rest will be the arguments", new JavaMethod("evaluateOn") {
+        message.registerMethod(message.runtime.newNativeMethod("Takes one or more evaluated arguments and sends this message chain to where the first argument is ground, and if there are more arguments, the second is the receiver, and the rest will be the arguments", new NativeMethod("evaluateOn") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("ground")
@@ -646,7 +646,7 @@ public class Message extends IokeData {
                 }
             }));
         
-        message.registerMethod(message.runtime.newNativeMethod("takes one index, and a context and returns the evaluated argument at that index.", new JavaMethod("evalArgAt") {
+        message.registerMethod(message.runtime.newNativeMethod("takes one index, and a context and returns the evaluated argument at that index.", new NativeMethod("evalArgAt") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("argumentIndex")
@@ -667,7 +667,7 @@ public class Message extends IokeData {
                 }
             }));
         
-        message.registerMethod(message.runtime.newNativeMethod("Will rearrange this message and all submessages to follow regular C style operator precedence rules. Will use Message OperatorTable to guide this operation. The operation is mutating, but should not change anything if done twice.", new JavaMethod.WithNoArguments("shuffleOperators") {
+        message.registerMethod(message.runtime.newNativeMethod("Will rearrange this message and all submessages to follow regular C style operator precedence rules. Will use Message OperatorTable to guide this operation. The operation is mutating, but should not change anything if done twice.", new NativeMethod.WithNoArguments("shuffleOperators") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     Levels levels = new Levels(IokeObject.as(on, context), context, message);
@@ -712,7 +712,7 @@ public class Message extends IokeData {
                 }
             }));
 
-        message.registerMethod(message.runtime.newNativeMethod("Takes one evaluated argument and returns a message that wraps the value of that argument.", new JavaMethod("wrap") {
+        message.registerMethod(message.runtime.newNativeMethod("Takes one evaluated argument and returns a message that wraps the value of that argument.", new NativeMethod("wrap") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("value")

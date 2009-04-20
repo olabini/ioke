@@ -23,7 +23,7 @@ public class FlowControlBehavior {
         final Runtime runtime = obj.runtime;
         obj.setKind("DefaultBehavior FlowControl");
 
-        obj.registerMethod(runtime.newNativeMethod("takes zero or more place and value pairs and one code argument, establishes a new lexical scope and binds the places to the values given. if the place is a simple name, it will just be created as a new binding in the lexical scope. if it is a place specification, that place will be temporarily changed - but guaranteed to be changed back after the lexical scope is finished. the let-form returns the final result of the code argument.", new JavaMethod("let") {
+        obj.registerMethod(runtime.newNativeMethod("takes zero or more place and value pairs and one code argument, establishes a new lexical scope and binds the places to the values given. if the place is a simple name, it will just be created as a new binding in the lexical scope. if it is a place specification, that place will be temporarily changed - but guaranteed to be changed back after the lexical scope is finished. the let-form returns the final result of the code argument.", new NativeMethod("let") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRestUnevaluated("placesAndValues")
@@ -131,7 +131,7 @@ public class FlowControlBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("breaks out of the enclosing context. if an argument is supplied, this will be returned as the result of the object breaking out of", new JavaMethod("break") {
+        obj.registerMethod(runtime.newNativeMethod("breaks out of the enclosing context. if an argument is supplied, this will be returned as the result of the object breaking out of", new NativeMethod("break") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withOptionalPositional("value", "nil")
@@ -155,7 +155,7 @@ public class FlowControlBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("returns from the enclosing method/macro. if an argument is supplied, this will be returned as the result of the method/macro breaking out of.", new JavaMethod("return") {
+        obj.registerMethod(runtime.newNativeMethod("returns from the enclosing method/macro. if an argument is supplied, this will be returned as the result of the method/macro breaking out of.", new NativeMethod("return") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withOptionalPositional("value", "nil")
@@ -183,7 +183,7 @@ public class FlowControlBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("breaks out of the enclosing context and continues from that point again.", new JavaMethod.WithNoArguments("continue") {
+        obj.registerMethod(runtime.newNativeMethod("breaks out of the enclosing context and continues from that point again.", new NativeMethod.WithNoArguments("continue") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -192,7 +192,7 @@ public class FlowControlBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("until the first argument evaluates to something true, loops and evaluates the next argument", new JavaMethod("until") {
+        obj.registerMethod(runtime.newNativeMethod("until the first argument evaluates to something true, loops and evaluates the next argument", new NativeMethod("until") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withOptionalPositionalUnevaluated("condition")
@@ -234,7 +234,7 @@ public class FlowControlBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("while the first argument evaluates to something true, loops and evaluates the next argument", new JavaMethod("while") {
+        obj.registerMethod(runtime.newNativeMethod("while the first argument evaluates to something true, loops and evaluates the next argument", new NativeMethod("while") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withOptionalPositionalUnevaluated("condition")
@@ -276,7 +276,7 @@ public class FlowControlBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("loops forever - executing it's argument over and over until interrupted in some way.", new JavaMethod("loop") {
+        obj.registerMethod(runtime.newNativeMethod("loops forever - executing it's argument over and over until interrupted in some way.", new NativeMethod("loop") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRestUnevaluated("body")
@@ -308,7 +308,7 @@ public class FlowControlBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("evaluates the first arguments, and then evaluates the second argument if the result was true, otherwise the last argument. returns the result of the call, or the result if it's not true.", new JavaMethod("if") {
+        obj.registerMethod(runtime.newNativeMethod("evaluates the first arguments, and then evaluates the second argument if the result was true, otherwise the last argument. returns the result of the call, or the result if it's not true.", new NativeMethod("if") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("condition")
@@ -346,7 +346,7 @@ public class FlowControlBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("evaluates the first arguments, and then evaluates the second argument if the result was false, otherwise the last argument. returns the result of the call, or the result if it's true.", new JavaMethod("unless") {
+        obj.registerMethod(runtime.newNativeMethod("evaluates the first arguments, and then evaluates the second argument if the result was false, otherwise the last argument. returns the result of the call, or the result if it's true.", new NativeMethod("unless") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("condition")
@@ -384,7 +384,7 @@ public class FlowControlBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("will execute and return the value of the first argument. after the code has run, all the remaining blocks of code are guaranteed to run in order even if a non-local flow control happens inside the main code. if any code in the ensure blocks generate a new non-local flow control, the rest of the ensure blocks in that specific ensure invocation are not guaranteed to run.", new JavaMethod("ensure") {
+        obj.registerMethod(runtime.newNativeMethod("will execute and return the value of the first argument. after the code has run, all the remaining blocks of code are guaranteed to run in order even if a non-local flow control happens inside the main code. if any code in the ensure blocks generate a new non-local flow control, the rest of the ensure blocks in that specific ensure invocation are not guaranteed to run.", new NativeMethod("ensure") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositionalUnevaluated("code")

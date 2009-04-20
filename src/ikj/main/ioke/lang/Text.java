@@ -35,7 +35,7 @@ public class Text extends IokeData {
         obj.setKind("Text");
         obj.mimics(IokeObject.as(obj.runtime.mixins.getCell(null, null, "Comparing"), null), obj.runtime.nul, obj.runtime.nul);
 
-        obj.registerMethod(obj.runtime.newNativeMethod("Returns a text representation of the object", new JavaMethod.WithNoArguments("asText") {
+        obj.registerMethod(obj.runtime.newNativeMethod("Returns a text representation of the object", new NativeMethod.WithNoArguments("asText") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -59,7 +59,7 @@ public class Text extends IokeData {
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newNativeMethod("Returns a text inspection of the object", new JavaMethod.WithNoArguments("inspect") {
+        obj.registerMethod(obj.runtime.newNativeMethod("Returns a text inspection of the object", new NativeMethod.WithNoArguments("inspect") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -67,7 +67,7 @@ public class Text extends IokeData {
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newNativeMethod("Returns a brief text inspection of the object", new JavaMethod.WithNoArguments("notice") {
+        obj.registerMethod(obj.runtime.newNativeMethod("Returns a brief text inspection of the object", new NativeMethod.WithNoArguments("notice") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -360,7 +360,7 @@ public class Text extends IokeData {
                 }
             }));
         
-        obj.registerMethod(obj.runtime.newNativeMethod("Returns a symbol representing the Unicode category of the character", new JavaMethod.WithNoArguments("category") {
+        obj.registerMethod(obj.runtime.newNativeMethod("Returns a symbol representing the Unicode category of the character", new NativeMethod.WithNoArguments("category") {
             @Override
             public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                 getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());

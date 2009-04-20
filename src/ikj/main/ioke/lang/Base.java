@@ -21,7 +21,7 @@ import ioke.lang.exceptions.ControlFlow;
 public class Base {
     public static void init(final IokeObject base) throws ControlFlow {
         base.setKind("Base");
-        base.registerMethod(base.runtime.newNativeMethod("returns the documentation text of the object called on. anything can have a documentation text - this text will initially be nil.", new JavaMethod.WithNoArguments("documentation") {
+        base.registerMethod(base.runtime.newNativeMethod("returns the documentation text of the object called on. anything can have a documentation text - this text will initially be nil.", new NativeMethod.WithNoArguments("documentation") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -34,7 +34,7 @@ public class Base {
                 }
             }));
 
-        base.registerMethod(base.runtime.newNativeMethod("returns this object", new JavaMethod.WithNoArguments("identity") {
+        base.registerMethod(base.runtime.newNativeMethod("returns this object", new NativeMethod.WithNoArguments("identity") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -67,14 +67,14 @@ public class Base {
             }));
 
         base.registerMethod(base.runtime.newNativeMethod("will return a new derivation of the receiving object. Might throw exceptions if the object is an oddball object.", 
-                                                       new JavaMethod.WithNoArguments("mimic") {
+                                                       new NativeMethod.WithNoArguments("mimic") {
                                                            @Override
                                                            public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                                                                getArguments().checkArgumentCount(context, message, on);
                                                                return IokeObject.as(on, context).mimic(message, context);
                                                            }}));
 
-        base.registerMethod(base.runtime.newNativeMethod("expects two arguments, the first unevaluated, the second evaluated. assigns the result of evaluating the second argument in the context of the caller, and assigns this result to the name provided by the first argument. the first argument remains unevaluated. the result of the assignment is the value assigned to the name. if the second argument is a method-like object and it's name is not set, that name will be set to the name of the cell. TODO: add setf documentation here.", new JavaMethod("=") {
+        base.registerMethod(base.runtime.newNativeMethod("expects two arguments, the first unevaluated, the second evaluated. assigns the result of evaluating the second argument in the context of the caller, and assigns this result to the name provided by the first argument. the first argument remains unevaluated. the result of the assignment is the value assigned to the name. if the second argument is a method-like object and it's name is not set, that name will be set to the name of the cell. TODO: add setf documentation here.", new NativeMethod("=") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositionalUnevaluated("place")
@@ -121,7 +121,7 @@ public class Base {
                 }
             }));
 
-        base.registerMethod(base.runtime.newNativeMethod("expects one evaluated text or symbol argument and returns the cell that matches that name, without activating even if it's activatable.", new JavaMethod("cell") {
+        base.registerMethod(base.runtime.newNativeMethod("expects one evaluated text or symbol argument and returns the cell that matches that name, without activating even if it's activatable.", new NativeMethod("cell") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("cellName")
@@ -142,7 +142,7 @@ public class Base {
                 }
             }));
 
-        base.registerMethod(base.runtime.newNativeMethod("expects one evaluated text or symbol argument and returns a boolean indicating whether such a cell is reachable from this point.", new JavaMethod("cell?") {
+        base.registerMethod(base.runtime.newNativeMethod("expects one evaluated text or symbol argument and returns a boolean indicating whether such a cell is reachable from this point.", new NativeMethod("cell?") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("cellName")
@@ -163,7 +163,7 @@ public class Base {
                 }
             }));
 
-        base.registerMethod(base.runtime.newNativeMethod("expects one evaluated text or symbol argument and returns a boolean indicating whether this cell is owned by the receiver or not. the assumption is that the cell should exist. if it doesn't exist, a NoSuchCell condition will be signalled.", new JavaMethod("cellOwner?") {
+        base.registerMethod(base.runtime.newNativeMethod("expects one evaluated text or symbol argument and returns a boolean indicating whether this cell is owned by the receiver or not. the assumption is that the cell should exist. if it doesn't exist, a NoSuchCell condition will be signalled.", new NativeMethod("cellOwner?") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("cellName")
@@ -184,7 +184,7 @@ public class Base {
                 }
             }));
 
-        base.registerMethod(base.runtime.newNativeMethod("expects one evaluated text or symbol argument and returns the closest object that defines such a cell. if it doesn't exist, a NoSuchCell condition will be signalled.", new JavaMethod("cellOwner") {
+        base.registerMethod(base.runtime.newNativeMethod("expects one evaluated text or symbol argument and returns the closest object that defines such a cell. if it doesn't exist, a NoSuchCell condition will be signalled.", new NativeMethod("cellOwner") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("cellName")
@@ -209,7 +209,7 @@ public class Base {
                 }
             }));
 
-        base.registerMethod(base.runtime.newNativeMethod("expects one evaluated text or symbol argument and removes that cell from the current receiver. if the current receiver has no such object, signals a condition. note that if another cell with that name is available in the mimic chain, it will still be accessible after calling this method. the method returns the receiver.", new JavaMethod("removeCell!") {
+        base.registerMethod(base.runtime.newNativeMethod("expects one evaluated text or symbol argument and removes that cell from the current receiver. if the current receiver has no such object, signals a condition. note that if another cell with that name is available in the mimic chain, it will still be accessible after calling this method. the method returns the receiver.", new NativeMethod("removeCell!") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("cellName")
@@ -231,7 +231,7 @@ public class Base {
                 }
             }));
 
-        base.registerMethod(base.runtime.newNativeMethod("expects one evaluated text or symbol argument and makes that cell undefined in the current receiver. what that means is that from now on it will look like this cell doesn't exist in the receiver or any of its mimics. the cell will not show up if you call cellNames on the receiver or any of the receivers mimics. the undefined status can be removed by doing removeCell! on the correct cell name. a cell name that doesn't exist can still be undefined. the method returns the receiver.", new JavaMethod("undefineCell!") {
+        base.registerMethod(base.runtime.newNativeMethod("expects one evaluated text or symbol argument and makes that cell undefined in the current receiver. what that means is that from now on it will look like this cell doesn't exist in the receiver or any of its mimics. the cell will not show up if you call cellNames on the receiver or any of the receivers mimics. the undefined status can be removed by doing removeCell! on the correct cell name. a cell name that doesn't exist can still be undefined. the method returns the receiver.", new NativeMethod("undefineCell!") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("cellName")
@@ -253,7 +253,7 @@ public class Base {
                 }
             }));
 
-        base.registerMethod(base.runtime.newNativeMethod("takes one optional evaluated boolean argument, which defaults to false. if false, this method returns a list of the cell names of the receiver. if true, it returns the cell names of this object and all it's mimics recursively.", new JavaMethod("cellNames") {
+        base.registerMethod(base.runtime.newNativeMethod("takes one optional evaluated boolean argument, which defaults to false. if false, this method returns a list of the cell names of the receiver. if true, it returns the cell names of this object and all it's mimics recursively.", new NativeMethod("cellNames") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withOptionalPositional("includeMimics", "false")
@@ -328,7 +328,7 @@ public class Base {
             }));
 
 
-        base.registerMethod(base.runtime.newNativeMethod("takes one optional evaluated boolean argument, which defaults to false. if false, this method returns a dict of the cell names and values of the receiver. if true, it returns the cell names and values of this object and all it's mimics recursively.", new JavaMethod("cells") {
+        base.registerMethod(base.runtime.newNativeMethod("takes one optional evaluated boolean argument, which defaults to false. if false, this method returns a dict of the cell names and values of the receiver. if true, it returns the cell names and values of this object and all it's mimics recursively.", new NativeMethod("cells") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withOptionalPositional("includeMimics", "false")
@@ -392,7 +392,7 @@ public class Base {
             }));
 
 
-        base.registerMethod(base.runtime.newNativeMethod("expects one evaluated text or symbol argument that names the cell to set, sets this cell to the result of evaluating the second argument, and returns the value set.", new JavaMethod("cell=") {
+        base.registerMethod(base.runtime.newNativeMethod("expects one evaluated text or symbol argument that names the cell to set, sets this cell to the result of evaluating the second argument, and returns the value set.", new NativeMethod("cell=") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("cellName")
@@ -428,7 +428,7 @@ public class Base {
                 }
             }));
 
-        base.registerMethod(base.runtime.newNativeMethod("returns true if the left hand side is equal to the right hand side. exactly what this means depend on the object. the default behavior of Ioke objects is to only be equal if they are the same instance.", new JavaMethod("==") {
+        base.registerMethod(base.runtime.newNativeMethod("returns true if the left hand side is equal to the right hand side. exactly what this means depend on the object. the default behavior of Ioke objects is to only be equal if they are the same instance.", new NativeMethod("==") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("other")

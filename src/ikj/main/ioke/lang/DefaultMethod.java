@@ -48,21 +48,21 @@ public class DefaultMethod extends Method implements AssociatedCode {
                 }
             }));
         
-        defaultMethod.registerMethod(defaultMethod.runtime.newNativeMethod("returns the message chain for this method", new JavaMethod.WithNoArguments("message") {
+        defaultMethod.registerMethod(defaultMethod.runtime.newNativeMethod("returns the message chain for this method", new NativeMethod.WithNoArguments("message") {
                 @Override
                 public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return ((AssociatedCode)IokeObject.data(IokeObject.ensureTypeIs(AssociatedCode.class, self, on, context, message))).getCode();
                 }
             }));
         
-        defaultMethod.registerMethod(defaultMethod.runtime.newNativeMethod("returns the code for the argument definition", new JavaMethod.WithNoArguments("argumentsCode") {
+        defaultMethod.registerMethod(defaultMethod.runtime.newNativeMethod("returns the code for the argument definition", new NativeMethod.WithNoArguments("argumentsCode") {
                 @Override
                 public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return context.runtime.newText(((AssociatedCode)IokeObject.data(IokeObject.ensureTypeIs(AssociatedCode.class, self, on, context, message))).getArgumentsCode());
                 }
             }));
 
-        defaultMethod.registerMethod(defaultMethod.runtime.newNativeMethod("returns idiomatically formatted code for this method", new JavaMethod.WithNoArguments("formattedCode") {
+        defaultMethod.registerMethod(defaultMethod.runtime.newNativeMethod("returns idiomatically formatted code for this method", new NativeMethod.WithNoArguments("formattedCode") {
                 @Override
                 public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return context.runtime.newText(((AssociatedCode)IokeObject.data(IokeObject.ensureTypeIs(AssociatedCode.class, self, on, context, message))).getFormattedCode(self));
@@ -96,7 +96,7 @@ public class DefaultMethod extends Method implements AssociatedCode {
     }
 
     private IokeObject createSuperCallFor(final IokeObject out_self, final IokeObject out_context, final IokeObject out_message, final Object out_on, final Object out_superCell) throws ControlFlow {
-        return out_context.runtime.newNativeMethod("will call the super method of the current message on the same receiver", new JavaMethod("super") {
+        return out_context.runtime.newNativeMethod("will call the super method of the current message on the same receiver", new NativeMethod("super") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRestUnevaluated("arguments")
@@ -141,7 +141,7 @@ public class DefaultMethod extends Method implements AssociatedCode {
         c.setCell("self", on);
         c.setCell("@", on);
 
-        c.registerMethod(c.runtime.newNativeMethod("will return the currently executing method receiver", new JavaMethod.WithNoArguments("@@") {
+        c.registerMethod(c.runtime.newNativeMethod("will return the currently executing method receiver", new NativeMethod.WithNoArguments("@@") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -197,7 +197,7 @@ public class DefaultMethod extends Method implements AssociatedCode {
         c.setCell("self", on);
         c.setCell("@", on);
 
-        c.registerMethod(c.runtime.newNativeMethod("will return the currently executing method receiver", new JavaMethod.WithNoArguments("@@") {
+        c.registerMethod(c.runtime.newNativeMethod("will return the currently executing method receiver", new NativeMethod.WithNoArguments("@@") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -257,7 +257,7 @@ public class DefaultMethod extends Method implements AssociatedCode {
         c.setCell("self", on);
         c.setCell("@", on);
 
-        c.registerMethod(c.runtime.newNativeMethod("will return the currently executing method receiver", new JavaMethod.WithNoArguments("@@") {
+        c.registerMethod(c.runtime.newNativeMethod("will return the currently executing method receiver", new NativeMethod.WithNoArguments("@@") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -313,7 +313,7 @@ public class DefaultMethod extends Method implements AssociatedCode {
         c.setCell("self", on);
         c.setCell("@", on);
 
-        c.registerMethod(c.runtime.newNativeMethod("will return the currently executing method receiver", new JavaMethod.WithNoArguments("@@") {
+        c.registerMethod(c.runtime.newNativeMethod("will return the currently executing method receiver", new NativeMethod.WithNoArguments("@@") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());

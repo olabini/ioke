@@ -5,7 +5,7 @@ package ioke.lang.extensions.benchmark;
 
 import ioke.lang.Runtime;
 import ioke.lang.IokeObject;
-import ioke.lang.JavaMethod;
+import ioke.lang.NativeMethod;
 import ioke.lang.Message;
 import ioke.lang.Number;
 import ioke.lang.DefaultArgumentsDefinition;
@@ -31,7 +31,7 @@ public abstract class Benchmark {
         runtime.ground.setCell("Benchmark", bm);
         bm.mimicsWithoutCheck(runtime.origin);
 
-        bm.registerMethod(runtime.newNativeMethod("expects two optional numbers, x (default 10) and y (default 1), and a block of code to run, and will run benchmark this block x times, while looping y times in each benchmark. after each loop will print the timings for this loop", new JavaMethod("report") {
+        bm.registerMethod(runtime.newNativeMethod("expects two optional numbers, x (default 10) and y (default 1), and a block of code to run, and will run benchmark this block x times, while looping y times in each benchmark. after each loop will print the timings for this loop", new NativeMethod("report") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withOptionalPositional("repetitions", "10")

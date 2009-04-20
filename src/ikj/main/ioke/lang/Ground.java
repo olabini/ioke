@@ -59,7 +59,7 @@ public class Ground {
         iokeGround.registerCell("JavaGround", runtime.javaGround);
 
         iokeGround.registerMethod(runtime.newNativeMethod("will return a text representation of the current stack trace", 
-                                                    new JavaMethod.WithNoArguments("stackTraceAsText") {
+                                                    new NativeMethod.WithNoArguments("stackTraceAsText") {
                                                         @Override
                                                         public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                                                             getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());

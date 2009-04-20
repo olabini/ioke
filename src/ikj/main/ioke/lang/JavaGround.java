@@ -76,7 +76,7 @@ public class JavaGround {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("expects to be invoked on a Java String, either wrapped or unwrapped.", new JavaMethod.WithNoArguments("primitiveMagic: String->Text") {
+        obj.registerMethod(runtime.newNativeMethod("expects to be invoked on a Java String, either wrapped or unwrapped.", new NativeMethod.WithNoArguments("primitiveMagic: String->Text") {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     if(on instanceof String) {
@@ -87,7 +87,7 @@ public class JavaGround {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("expects to be invoked on a Java Integer, either wrapped or unwrapped.", new JavaMethod.WithNoArguments("primitiveMagic: Integer->Rational") {
+        obj.registerMethod(runtime.newNativeMethod("expects to be invoked on a Java Integer, either wrapped or unwrapped.", new NativeMethod.WithNoArguments("primitiveMagic: Integer->Rational") {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     if(on instanceof Integer) {
@@ -98,7 +98,7 @@ public class JavaGround {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("expects to be invoked on a Java Byte, either wrapped or unwrapped.", new JavaMethod.WithNoArguments("primitiveMagic: Byte->Rational") {
+        obj.registerMethod(runtime.newNativeMethod("expects to be invoked on a Java Byte, either wrapped or unwrapped.", new NativeMethod.WithNoArguments("primitiveMagic: Byte->Rational") {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     if(on instanceof Byte) {
@@ -109,7 +109,7 @@ public class JavaGround {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("expects to be invoked on a Java Short, either wrapped or unwrapped.", new JavaMethod.WithNoArguments("primitiveMagic: Short->Rational") {
+        obj.registerMethod(runtime.newNativeMethod("expects to be invoked on a Java Short, either wrapped or unwrapped.", new NativeMethod.WithNoArguments("primitiveMagic: Short->Rational") {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     if(on instanceof Short) {
@@ -120,7 +120,7 @@ public class JavaGround {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("expects to be invoked on a Java Long, either wrapped or unwrapped.", new JavaMethod.WithNoArguments("primitiveMagic: Long->Rational") {
+        obj.registerMethod(runtime.newNativeMethod("expects to be invoked on a Java Long, either wrapped or unwrapped.", new NativeMethod.WithNoArguments("primitiveMagic: Long->Rational") {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     if(on instanceof Long) {
@@ -131,7 +131,7 @@ public class JavaGround {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("expects to be invoked on a Java Character, either wrapped or unwrapped.", new JavaMethod.WithNoArguments("primitiveMagic: Character->Rational") {
+        obj.registerMethod(runtime.newNativeMethod("expects to be invoked on a Java Character, either wrapped or unwrapped.", new NativeMethod.WithNoArguments("primitiveMagic: Character->Rational") {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     if(on instanceof Character) {
@@ -142,7 +142,7 @@ public class JavaGround {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("expects to be invoked on a Java Float, either wrapped or unwrapped.", new JavaMethod.WithNoArguments("primitiveMagic: Float->Decimal") {
+        obj.registerMethod(runtime.newNativeMethod("expects to be invoked on a Java Float, either wrapped or unwrapped.", new NativeMethod.WithNoArguments("primitiveMagic: Float->Decimal") {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     if(on instanceof Float) {
@@ -153,7 +153,7 @@ public class JavaGround {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("expects to be invoked on a Java Double, either wrapped or unwrapped.", new JavaMethod.WithNoArguments("primitiveMagic: Double->Decimal") {
+        obj.registerMethod(runtime.newNativeMethod("expects to be invoked on a Java Double, either wrapped or unwrapped.", new NativeMethod.WithNoArguments("primitiveMagic: Double->Decimal") {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     if(on instanceof Double) {
@@ -165,7 +165,7 @@ public class JavaGround {
             }));
 
 
-        obj.registerMethod(runtime.newNativeMethod("expects to be invoked with one or more Java types and will return either a new or a cached implementation of a combination of these types.", new JavaMethod("integrate") {
+        obj.registerMethod(runtime.newNativeMethod("expects to be invoked with one or more Java types and will return either a new or a cached implementation of a combination of these types.", new NativeMethod("integrate") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("firstType")

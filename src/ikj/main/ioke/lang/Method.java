@@ -29,7 +29,7 @@ public class Method extends IokeData implements Named, Inspectable {
         method.setKind("Method");
         method.registerCell("activatable", method.runtime._true);
 
-        method.registerMethod(method.runtime.newNativeMethod("returns the name of the method", new JavaMethod.WithNoArguments("name") {
+        method.registerMethod(method.runtime.newNativeMethod("returns the name of the method", new NativeMethod.WithNoArguments("name") {
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -37,7 +37,7 @@ public class Method extends IokeData implements Named, Inspectable {
                     return context.runtime.newText(((Method)IokeObject.data(on)).name);
                 }
             }));
-        method.registerMethod(method.runtime.newNativeMethod("Returns a text inspection of the object", new JavaMethod.WithNoArguments("inspect") {
+        method.registerMethod(method.runtime.newNativeMethod("Returns a text inspection of the object", new NativeMethod.WithNoArguments("inspect") {
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -45,7 +45,7 @@ public class Method extends IokeData implements Named, Inspectable {
                     return context.runtime.newText(Method.getInspect(on));
                 }
             }));
-        method.registerMethod(method.runtime.newNativeMethod("Returns a brief text inspection of the object", new JavaMethod.WithNoArguments("notice") {
+        method.registerMethod(method.runtime.newNativeMethod("Returns a brief text inspection of the object", new NativeMethod.WithNoArguments("notice") {
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -53,7 +53,7 @@ public class Method extends IokeData implements Named, Inspectable {
                     return context.runtime.newText(Method.getNotice(on));
                 }
             }));
-        method.registerMethod(method.runtime.newNativeMethod("activates this method with the arguments given to call", new JavaMethod("call") {
+        method.registerMethod(method.runtime.newNativeMethod("activates this method with the arguments given to call", new NativeMethod("call") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRestUnevaluated("arguments")
@@ -70,7 +70,7 @@ public class Method extends IokeData implements Named, Inspectable {
                 }
             }));
 
-        method.registerMethod(method.runtime.newNativeMethod("returns the full code of this method, as a Text", new JavaMethod.WithNoArguments("code") {
+        method.registerMethod(method.runtime.newNativeMethod("returns the full code of this method, as a Text", new NativeMethod.WithNoArguments("code") {
                 @Override
                 public Object activate(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(dynamicContext, message, on, new ArrayList<Object>(), new HashMap<String, Object>());

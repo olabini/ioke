@@ -24,7 +24,7 @@ public class JavaArray {
         obj.setCell("=", runtime.base.getCells().get("="));
         obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Enumerable"), null), runtime.nul, runtime.nul);
 
-        obj.registerMethod(runtime.newNativeMethod("returns the length of the array", new JavaMethod.WithNoArguments("length") {
+        obj.registerMethod(runtime.newNativeMethod("returns the length of the array", new NativeMethod.WithNoArguments("length") {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     if(on instanceof IokeObject) {

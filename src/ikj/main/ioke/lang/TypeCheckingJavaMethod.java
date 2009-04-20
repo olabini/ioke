@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class TypeCheckingJavaMethod extends JavaMethod {
+public abstract class TypeCheckingJavaMethod extends NativeMethod {
     public static class WithNoArguments extends TypeCheckingJavaMethod {
         private TypeCheckingArgumentsDefinition ARGUMENTS;
 

@@ -55,7 +55,7 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
                 }
             }));
         
-        syntax.registerMethod(syntax.runtime.newNativeMethod("activates this syntax with the arguments given to call", new JavaMethod("call") {
+        syntax.registerMethod(syntax.runtime.newNativeMethod("activates this syntax with the arguments given to call", new NativeMethod("call") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRestUnevaluated("arguments")
@@ -72,7 +72,7 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
                 }
             }));
         
-        syntax.registerMethod(syntax.runtime.newNativeMethod("returns the result of activating this syntax without actually doing the replacement or execution part.", new JavaMethod("expand") {
+        syntax.registerMethod(syntax.runtime.newNativeMethod("returns the result of activating this syntax without actually doing the replacement or execution part.", new NativeMethod("expand") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .withRestUnevaluated("arguments")
@@ -90,14 +90,14 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
                 }
             }));
         
-        syntax.registerMethod(syntax.runtime.newNativeMethod("returns the message chain for this syntax", new JavaMethod.WithNoArguments("message") {
+        syntax.registerMethod(syntax.runtime.newNativeMethod("returns the message chain for this syntax", new NativeMethod.WithNoArguments("message") {
                 @Override
                 public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return ((AssociatedCode)IokeObject.data(IokeObject.ensureTypeIs(AssociatedCode.class, self, on, context, message))).getCode();
                 }
             }));
         
-        syntax.registerMethod(syntax.runtime.newNativeMethod("returns the code for the argument definition", new JavaMethod.WithNoArguments("argumentsCode") {
+        syntax.registerMethod(syntax.runtime.newNativeMethod("returns the code for the argument definition", new NativeMethod.WithNoArguments("argumentsCode") {
                 @Override
                 public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return context.runtime.newText(((AssociatedCode)IokeObject.data(IokeObject.ensureTypeIs(AssociatedCode.class, self, on, context, message))).getArgumentsCode());
@@ -130,7 +130,7 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
                 }
             }));
 
-        syntax.registerMethod(syntax.runtime.newNativeMethod("returns idiomatically formatted code for this syntax", new JavaMethod.WithNoArguments("formattedCode") {
+        syntax.registerMethod(syntax.runtime.newNativeMethod("returns idiomatically formatted code for this syntax", new NativeMethod.WithNoArguments("formattedCode") {
                 @Override
                 public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return context.runtime.newText(((AssociatedCode)IokeObject.data(IokeObject.ensureTypeIs(AssociatedCode.class, self, on, context, message))).getFormattedCode(self));
@@ -194,7 +194,7 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
         IokeObject c = context.runtime.locals.mimic(message, context);
         c.setCell("self", on);
         c.setCell("@", on);
-        c.registerMethod(c.runtime.newNativeMethod("will return the currently executing syntax receiver", new JavaMethod.WithNoArguments("@@") {
+        c.registerMethod(c.runtime.newNativeMethod("will return the currently executing syntax receiver", new NativeMethod.WithNoArguments("@@") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -246,7 +246,7 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
         IokeObject c = context.runtime.locals.mimic(message, context);
         c.setCell("self", on);
         c.setCell("@", on);
-        c.registerMethod(c.runtime.newNativeMethod("will return the currently executing syntax receiver", new JavaMethod.WithNoArguments("@@") {
+        c.registerMethod(c.runtime.newNativeMethod("will return the currently executing syntax receiver", new NativeMethod.WithNoArguments("@@") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());

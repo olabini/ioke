@@ -414,7 +414,7 @@ public class IokeSystem extends IokeData {
 
         obj.registerCell("currentDebugger", runtime.nil);
 
-        obj.registerMethod(runtime.newNativeMethod("returns the current file executing", new JavaMethod.WithNoArguments("currentFile") {
+        obj.registerMethod(runtime.newNativeMethod("returns the current file executing", new NativeMethod.WithNoArguments("currentFile") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -422,7 +422,7 @@ public class IokeSystem extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("returns true if running on windows, otherwise false", new JavaMethod.WithNoArguments("windows?") {
+        obj.registerMethod(runtime.newNativeMethod("returns true if running on windows, otherwise false", new NativeMethod.WithNoArguments("windows?") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -431,7 +431,7 @@ public class IokeSystem extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("returns the current load path", new JavaMethod.WithNoArguments("loadPath") {
+        obj.registerMethod(runtime.newNativeMethod("returns the current load path", new NativeMethod.WithNoArguments("loadPath") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -439,7 +439,7 @@ public class IokeSystem extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("returns a random number", new JavaMethod.WithNoArguments("randomNumber") {
+        obj.registerMethod(runtime.newNativeMethod("returns a random number", new NativeMethod.WithNoArguments("randomNumber") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -448,7 +448,7 @@ public class IokeSystem extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("returns the current directory that the code is executing in", new JavaMethod.WithNoArguments("currentDirectory") {
+        obj.registerMethod(runtime.newNativeMethod("returns the current directory that the code is executing in", new NativeMethod.WithNoArguments("currentDirectory") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -468,7 +468,7 @@ public class IokeSystem extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("forcibly exits the currently running interpreter. takes one optional argument that defaults to 1 - which is the value to return from the process, if the process is exited.", new JavaMethod("exit") {
+        obj.registerMethod(runtime.newNativeMethod("forcibly exits the currently running interpreter. takes one optional argument that defaults to 1 - which is the value to return from the process, if the process is exited.", new NativeMethod("exit") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withOptionalPositional("other", "1")
@@ -500,7 +500,7 @@ public class IokeSystem extends IokeData {
 
         obj.registerCell("programArguments", programArguments);
 
-        obj.registerMethod(runtime.newNativeMethod("returns result of evaluating first argument", new JavaMethod("ifMain") {
+        obj.registerMethod(runtime.newNativeMethod("returns result of evaluating first argument", new NativeMethod("ifMain") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositionalUnevaluated("code")
@@ -523,7 +523,7 @@ public class IokeSystem extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("adds a new piece of code that should be executed on exit", new JavaMethod("atExit") {
+        obj.registerMethod(runtime.newNativeMethod("adds a new piece of code that should be executed on exit", new NativeMethod("atExit") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositionalUnevaluated("code")
