@@ -17,11 +17,11 @@ import ioke.lang.exceptions.ControlFlow;
  *
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
-public class JavaFieldGetterJavaMethod extends Method implements JavaImplementedMethod {
+public class JavaFieldGetterNativeMethod extends Method implements NativeImplementedMethod {
     private Class declaringClass;
     private Field field;
 
-    public JavaFieldGetterJavaMethod(Field field) {
+    public JavaFieldGetterNativeMethod(Field field) {
         super(field.getName());
         this.field = field;
         this.declaringClass = field.getDeclaringClass();

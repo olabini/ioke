@@ -27,7 +27,7 @@ public abstract class TypeCheckingNativeMethod extends NativeMethod {
         }
     }
    
-    public TypeCheckingJavaMethod(String name) {
+    public TypeCheckingNativeMethod(String name) {
         super(name);
     }
 

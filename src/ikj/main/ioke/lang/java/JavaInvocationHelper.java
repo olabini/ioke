@@ -4,7 +4,7 @@
 package ioke.lang.java;
 
 import ioke.lang.IokeObject;
-import ioke.lang.JavaImplementedMethod;
+import ioke.lang.NativeImplementedMethod;
 import ioke.lang.JavaWrapper;
 import ioke.lang.Runtime;
 import ioke.lang.Message;
@@ -24,7 +24,7 @@ public class JavaInvocationHelper {
 
         Object cell = IokeObject.findCell(pr, null, null, name);
         if(cell != null && cell != runtime.nul && cell instanceof IokeObject) {
-            return !(IokeObject.data(cell) instanceof JavaImplementedMethod);
+            return !(IokeObject.data(cell) instanceof NativeImplementedMethod);
         }
 
         return false;

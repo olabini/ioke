@@ -28,13 +28,13 @@ public abstract class NativeMethod extends Method {
         }
     }
 
-    public JavaMethod(String name) {
+    public NativeMethod(String name) {
         super(name);
     }
 
     @Override
     public void init(IokeObject javaMethod) throws ControlFlow {
-        javaMethod.setKind("JavaMethod");
+        javaMethod.setKind("NativeMethod");
         javaMethod.registerMethod(javaMethod.runtime.newNativeMethod("returns a list of the keywords this method takes", new WithNoArguments("keywords") {
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {

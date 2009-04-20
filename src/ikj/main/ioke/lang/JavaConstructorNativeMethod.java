@@ -17,12 +17,12 @@ import ioke.lang.exceptions.ControlFlow;
  *
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
-public class JavaConstructorJavaMethod extends ioke.lang.Method implements JavaImplementedMethod { 
+public class JavaConstructorNativeMethod extends ioke.lang.Method implements NativeImplementedMethod { 
     private Constructor[] ctors;
     private JavaArgumentsDefinition arguments;
     private boolean special;
 
-    public JavaConstructorJavaMethod(Constructor[] ctors, boolean special) {
+    public JavaConstructorNativeMethod(Constructor[] ctors, boolean special) {
         super("new");
         this.ctors = ctors;
         this.special = special;
