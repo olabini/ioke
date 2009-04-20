@@ -654,19 +654,19 @@ public class Runtime {
     }
 
     public IokeObject createJavaMethod(java.lang.reflect.Method[] methods) throws ControlFlow {
-        return newMethod(null, this.nativeMethod, new JavaMethodJavaMethod(methods));
+        return newMethod(null, this.nativeMethod, new JavaMethodNativeMethod(methods));
     }
 
     public IokeObject createJavaMethod(java.lang.reflect.Constructor[] ctors, boolean special) throws ControlFlow {
-        return newMethod(null, this.nativeMethod, new JavaConstructorJavaMethod(ctors, special));
+        return newMethod(null, this.nativeMethod, new JavaConstructorNativeMethod(ctors, special));
     }
 
     public IokeObject createJavaFieldGetter(java.lang.reflect.Field field) throws ControlFlow {
-        return newMethod(null, this.nativeMethod, new JavaFieldGetterJavaMethod(field));
+        return newMethod(null, this.nativeMethod, new JavaFieldGetterNativeMethod(field));
     }
 
     public IokeObject createJavaFieldSetter(java.lang.reflect.Field field) throws ControlFlow {
-        return newMethod(null, this.nativeMethod, new JavaFieldSetterJavaMethod(field));
+        return newMethod(null, this.nativeMethod, new JavaFieldSetterNativeMethod(field));
     }
 
     public IokeObject newNumber(String number) {
