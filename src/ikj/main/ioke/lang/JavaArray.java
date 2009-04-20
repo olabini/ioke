@@ -24,7 +24,7 @@ public class JavaArray {
         obj.setCell("=", runtime.base.getCells().get("="));
         obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Enumerable"), null), runtime.nul, runtime.nul);
 
-        obj.registerMethod(runtime.newJavaMethod("returns the length of the array", new JavaMethod.WithNoArguments("length") {
+        obj.registerMethod(runtime.newNativeMethod("returns the length of the array", new JavaMethod.WithNoArguments("length") {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     if(on instanceof IokeObject) {
@@ -35,7 +35,7 @@ public class JavaArray {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns the value in the array at the index provided.", new TypeCheckingJavaMethod("[]") {
+        obj.registerMethod(runtime.newNativeMethod("returns the value in the array at the index provided.", new TypeCheckingJavaMethod("[]") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .withRequiredPositional("index")
@@ -81,7 +81,7 @@ public class JavaArray {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("takes an Ioke list and returns a newly created native array based on the content of that list", new TypeCheckingJavaMethod("from") {
+        obj.registerMethod(runtime.newNativeMethod("takes an Ioke list and returns a newly created native array based on the content of that list", new TypeCheckingJavaMethod("from") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .withRequiredPositional("values").whichMustMimic(runtime.list)
@@ -107,7 +107,7 @@ public class JavaArray {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("takes two arguments, the index of the element to set, and the value to set. the index can be negative and will in that case set indexed from the end of the list.", new TypeCheckingJavaMethod("[]=") {
+        obj.registerMethod(runtime.newNativeMethod("takes two arguments, the index of the element to set, and the value to set. the index can be negative and will in that case set indexed from the end of the list.", new TypeCheckingJavaMethod("[]=") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .withRequiredPositional("index")

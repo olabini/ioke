@@ -88,28 +88,28 @@ public class Decimal extends IokeData {
         decimal.setKind("Number Decimal");
         runtime.decimal = decimal;
 
-        decimal.registerMethod(runtime.newJavaMethod("Returns a text representation of the object", new JavaMethod.WithNoArguments("asText") {
+        decimal.registerMethod(runtime.newNativeMethod("Returns a text representation of the object", new JavaMethod.WithNoArguments("asText") {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return runtime.newText(on.toString());
                 }
             }));
 
-        decimal.registerMethod(obj.runtime.newJavaMethod("Returns a text inspection of the object", new TypeCheckingJavaMethod.WithNoArguments("inspect", decimal) {
+        decimal.registerMethod(obj.runtime.newNativeMethod("Returns a text inspection of the object", new TypeCheckingJavaMethod.WithNoArguments("inspect", decimal) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return method.runtime.newText(Decimal.getInspect(on));
                 }
             }));
 
-        decimal.registerMethod(obj.runtime.newJavaMethod("Returns a brief text inspection of the object", new TypeCheckingJavaMethod.WithNoArguments("notice", decimal) {
+        decimal.registerMethod(obj.runtime.newNativeMethod("Returns a brief text inspection of the object", new TypeCheckingJavaMethod.WithNoArguments("notice", decimal) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return method.runtime.newText(Decimal.getInspect(on));
                 }
             }));
 
-        decimal.registerMethod(runtime.newJavaMethod("compares this number against the argument, true if this number is the same, otherwise false", new TypeCheckingJavaMethod("==") {
+        decimal.registerMethod(runtime.newNativeMethod("compares this number against the argument, true if this number is the same, otherwise false", new TypeCheckingJavaMethod("==") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(decimal)
@@ -134,7 +134,7 @@ public class Decimal extends IokeData {
                 }
             }));
 
-        decimal.registerMethod(runtime.newJavaMethod("compares this number against the argument, returning -1, 0 or 1 based on which one is larger. if the argument is a rational, it will be converted into a form suitable for comparing against a decimal, and then compared. if the argument is neither a Rational nor a Decimal, it tries to call asDecimal, and if that doesn't work it returns nil.", new TypeCheckingJavaMethod("<=>") {
+        decimal.registerMethod(runtime.newNativeMethod("compares this number against the argument, returning -1, 0 or 1 based on which one is larger. if the argument is a rational, it will be converted into a form suitable for comparing against a decimal, and then compared. if the argument is neither a Rational nor a Decimal, it tries to call asDecimal, and if that doesn't work it returns nil.", new TypeCheckingJavaMethod("<=>") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(decimal)
@@ -175,7 +175,7 @@ public class Decimal extends IokeData {
                 }
             }));
 
-        decimal.registerMethod(runtime.newJavaMethod("returns the difference between this number and the argument. if the argument is a rational, it will be converted into a form suitable for subtracting against a decimal, and then subtracted. if the argument is neither a Rational nor a Decimal, it tries to call asDecimal, and if that fails it signals a condition.", new TypeCheckingJavaMethod("-") {
+        decimal.registerMethod(runtime.newNativeMethod("returns the difference between this number and the argument. if the argument is a rational, it will be converted into a form suitable for subtracting against a decimal, and then subtracted. if the argument is neither a Rational nor a Decimal, it tries to call asDecimal, and if that fails it signals a condition.", new TypeCheckingJavaMethod("-") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(decimal)
@@ -205,7 +205,7 @@ public class Decimal extends IokeData {
                 }
             }));
 
-        decimal.registerMethod(runtime.newJavaMethod("returns the sum of this number and the argument. if the argument is a rational, it will be converted into a form suitable for addition against a decimal, and then added. if the argument is neither a Rational nor a Decimal, it tries to call asDecimal, and if that fails it signals a condition.", new TypeCheckingJavaMethod("+") {
+        decimal.registerMethod(runtime.newNativeMethod("returns the sum of this number and the argument. if the argument is a rational, it will be converted into a form suitable for addition against a decimal, and then added. if the argument is neither a Rational nor a Decimal, it tries to call asDecimal, and if that fails it signals a condition.", new TypeCheckingJavaMethod("+") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(decimal)
@@ -235,7 +235,7 @@ public class Decimal extends IokeData {
                 }
             }));
 
-        decimal.registerMethod(runtime.newJavaMethod("returns the product of this number and the argument. if the argument is a rational, the receiver will be converted into a form suitable for multiplying against a decimal, and then multiplied. if the argument is neither a Rational nor a Decimal, it tries to call asDecimal, and if that fails it signals a condition.", new TypeCheckingJavaMethod("*") {
+        decimal.registerMethod(runtime.newNativeMethod("returns the product of this number and the argument. if the argument is a rational, the receiver will be converted into a form suitable for multiplying against a decimal, and then multiplied. if the argument is neither a Rational nor a Decimal, it tries to call asDecimal, and if that fails it signals a condition.", new TypeCheckingJavaMethod("*") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(decimal)
@@ -265,7 +265,7 @@ public class Decimal extends IokeData {
                 }
             }));
 
-        decimal.registerMethod(runtime.newJavaMethod("returns the quotient of this number and the argument.", new TypeCheckingJavaMethod("/") {
+        decimal.registerMethod(runtime.newNativeMethod("returns the quotient of this number and the argument.", new TypeCheckingJavaMethod("/") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(decimal)

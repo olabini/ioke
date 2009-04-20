@@ -19,7 +19,7 @@ public class ReflectionBehavior {
         final Runtime runtime = obj.runtime;
         obj.setKind("DefaultBehavior Reflection");
 
-        obj.registerMethod(runtime.newJavaMethod("returns a text hex representation of the receiver in upper case hex literal, starting with 0x. This value is based on System.identityHashCode, and as such is not totally guaranteed to be totally unique. but almost.", new JavaMethod.WithNoArguments("uniqueHexId") {
+        obj.registerMethod(runtime.newNativeMethod("returns a text hex representation of the receiver in upper case hex literal, starting with 0x. This value is based on System.identityHashCode, and as such is not totally guaranteed to be totally unique. but almost.", new JavaMethod.WithNoArguments("uniqueHexId") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -28,7 +28,7 @@ public class ReflectionBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns true if the evaluated argument is the same reference as the receiver, false otherwise.", new JavaMethod("same?") {
+        obj.registerMethod(runtime.newNativeMethod("returns true if the evaluated argument is the same reference as the receiver, false otherwise.", new JavaMethod("same?") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("other")
@@ -47,7 +47,7 @@ public class ReflectionBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("takes the name of a message to send, and the arguments to give it. send should generally behave exactly as if you had sent the message itself - except that you can give a variable containing the name.", new JavaMethod("send") {
+        obj.registerMethod(runtime.newNativeMethod("takes the name of a message to send, and the arguments to give it. send should generally behave exactly as if you had sent the message itself - except that you can give a variable containing the name.", new JavaMethod("send") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("messageName")
@@ -74,7 +74,7 @@ public class ReflectionBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns false if the left hand side is equal to the right hand side. exactly what this means depend on the object. the default behavior of Ioke objects is to only be equal if they are the same instance.", new JavaMethod("!=") {
+        obj.registerMethod(runtime.newNativeMethod("returns false if the left hand side is equal to the right hand side. exactly what this means depend on the object. the default behavior of Ioke objects is to only be equal if they are the same instance.", new JavaMethod("!=") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("other")
@@ -93,7 +93,7 @@ public class ReflectionBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns a textual representation of the object called on.", new JavaMethod.WithNoArguments("asText") {
+        obj.registerMethod(runtime.newNativeMethod("returns a textual representation of the object called on.", new JavaMethod.WithNoArguments("asText") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -102,7 +102,7 @@ public class ReflectionBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("Takes one evaluated Text argument and returns either true or false if this object or one of it's mimics have the kind of the name specified", new TypeCheckingJavaMethod("kind?") {
+        obj.registerMethod(runtime.newNativeMethod("Takes one evaluated Text argument and returns either true or false if this object or one of it's mimics have the kind of the name specified", new TypeCheckingJavaMethod("kind?") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .withRequiredPositional("name").whichMustMimic(runtime.text)
@@ -120,7 +120,7 @@ public class ReflectionBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("Takes one evaluated argument and returns either true or false if this object or one of it's mimics mimics that argument", new JavaMethod("mimics?") {
+        obj.registerMethod(runtime.newNativeMethod("Takes one evaluated argument and returns either true or false if this object or one of it's mimics mimics that argument", new JavaMethod("mimics?") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("potentialMimic")
@@ -141,7 +141,7 @@ public class ReflectionBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("Takes one evaluated argument and returns either true or false if this object or one of it's mimics mimics that argument. exactly the same as 'mimics?'", new JavaMethod("is?") {
+        obj.registerMethod(runtime.newNativeMethod("Takes one evaluated argument and returns either true or false if this object or one of it's mimics mimics that argument. exactly the same as 'mimics?'", new JavaMethod("is?") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("potentialMimic")
@@ -162,7 +162,7 @@ public class ReflectionBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns a list of all the mimics of the receiver. it will not be the same list as is used to back the object, so modifications to this list will not show up in the object.", new JavaMethod.WithNoArguments("mimics") {
+        obj.registerMethod(runtime.newNativeMethod("returns a list of all the mimics of the receiver. it will not be the same list as is used to back the object, so modifications to this list will not show up in the object.", new JavaMethod.WithNoArguments("mimics") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -171,7 +171,7 @@ public class ReflectionBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("removes all mimics on the receiver, and returns the receiver", new JavaMethod.WithNoArguments("removeAllMimics!") {
+        obj.registerMethod(runtime.newNativeMethod("removes all mimics on the receiver, and returns the receiver", new JavaMethod.WithNoArguments("removeAllMimics!") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -181,7 +181,7 @@ public class ReflectionBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("removes the argument mimic from the list of all mimics on the receiver. will do nothing if the receiver has no such mimic. it returns the receiver", new JavaMethod("removeMimic!") {
+        obj.registerMethod(runtime.newNativeMethod("removes the argument mimic from the list of all mimics on the receiver. will do nothing if the receiver has no such mimic. it returns the receiver", new JavaMethod("removeMimic!") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("mimicToRemove")
@@ -202,7 +202,7 @@ public class ReflectionBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("Takes one evaluated argument and adds it to the list of mimics for the receiver. the receiver will be returned.", new JavaMethod("mimic!") {
+        obj.registerMethod(runtime.newNativeMethod("Takes one evaluated argument and adds it to the list of mimics for the receiver. the receiver will be returned.", new JavaMethod("mimic!") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("newMimic")
@@ -224,7 +224,7 @@ public class ReflectionBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("Takes one evaluated argument and prepends it to the list of mimics for the receiver. the receiver will be returned.", new JavaMethod("prependMimic!") {
+        obj.registerMethod(runtime.newNativeMethod("Takes one evaluated argument and prepends it to the list of mimics for the receiver. the receiver will be returned.", new JavaMethod("prependMimic!") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("newMimic")
@@ -246,7 +246,7 @@ public class ReflectionBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("modifies the receiver to be in all ways identical to the argument. if the receiver is nil, true or false, this method can't be used - but those are the only exceptions. it's generally not recommended to use it on kinds and objects that are important for the Ioke runtime, since the result might be highly unpredictable.", new JavaMethod("become!") {
+        obj.registerMethod(runtime.newNativeMethod("modifies the receiver to be in all ways identical to the argument. if the receiver is nil, true or false, this method can't be used - but those are the only exceptions. it's generally not recommended to use it on kinds and objects that are important for the Ioke runtime, since the result might be highly unpredictable.", new JavaMethod("become!") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositional("objectToBecome")
@@ -282,7 +282,7 @@ public class ReflectionBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns true if the receiver is frozen, otherwise false", new JavaMethod.WithNoArguments("frozen?") {
+        obj.registerMethod(runtime.newNativeMethod("returns true if the receiver is frozen, otherwise false", new JavaMethod.WithNoArguments("frozen?") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -290,7 +290,7 @@ public class ReflectionBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("ensures that the receiver is frozen", new JavaMethod.WithNoArguments("freeze!") {
+        obj.registerMethod(runtime.newNativeMethod("ensures that the receiver is frozen", new JavaMethod.WithNoArguments("freeze!") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -300,7 +300,7 @@ public class ReflectionBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("ensures that the receiver is not frozen", new JavaMethod.WithNoArguments("thaw!") {
+        obj.registerMethod(runtime.newNativeMethod("ensures that the receiver is not frozen", new JavaMethod.WithNoArguments("thaw!") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());

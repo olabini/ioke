@@ -60,7 +60,7 @@ public class IokeIO extends IokeData {
 
         obj.setKind("IO");
 
-        obj.registerMethod(runtime.newJavaMethod("Prints a text representation of the argument and a newline to the current IO object", new TypeCheckingJavaMethod("println") {
+        obj.registerMethod(runtime.newNativeMethod("Prints a text representation of the argument and a newline to the current IO object", new TypeCheckingJavaMethod("println") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(runtime.io)
@@ -110,7 +110,7 @@ public class IokeIO extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("Prints a text representation of the argument to the current IO object", new TypeCheckingJavaMethod("print") {
+        obj.registerMethod(runtime.newNativeMethod("Prints a text representation of the argument to the current IO object", new TypeCheckingJavaMethod("print") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(runtime.io)
@@ -156,7 +156,7 @@ public class IokeIO extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("tries to read as much as possible and return a message chain representing what's been read", new TypeCheckingJavaMethod.WithNoArguments("read", runtime.io) {
+        obj.registerMethod(runtime.newNativeMethod("tries to read as much as possible and return a message chain representing what's been read", new TypeCheckingJavaMethod.WithNoArguments("read", runtime.io) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     try {

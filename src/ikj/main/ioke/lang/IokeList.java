@@ -43,21 +43,21 @@ public class IokeList extends IokeData {
         obj.setKind("List");
         obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Enumerable"), null), runtime.nul, runtime.nul);
 
-        obj.registerMethod(obj.runtime.newJavaMethod("Returns a text inspection of the object", new TypeCheckingJavaMethod.WithNoArguments("inspect", runtime.list) {
+        obj.registerMethod(obj.runtime.newNativeMethod("Returns a text inspection of the object", new TypeCheckingJavaMethod.WithNoArguments("inspect", runtime.list) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                   return method.runtime.newText(IokeList.getInspect(on));
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newJavaMethod("Returns a brief text inspection of the object", new TypeCheckingJavaMethod.WithNoArguments("notice", runtime.list) {
+        obj.registerMethod(obj.runtime.newNativeMethod("Returns a brief text inspection of the object", new TypeCheckingJavaMethod.WithNoArguments("notice", runtime.list) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return method.runtime.newText(IokeList.getNotice(on));
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newJavaMethod("Compares this object against the argument. The comparison is only based on the elements inside the lists, which are in turn compared using <=>.", new TypeCheckingJavaMethod("<=>") {
+        obj.registerMethod(obj.runtime.newNativeMethod("Compares this object against the argument. The comparison is only based on the elements inside the lists, which are in turn compared using <=>.", new TypeCheckingJavaMethod("<=>") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(runtime.list)
@@ -97,7 +97,7 @@ public class IokeList extends IokeData {
                 }
             }));
             
-            obj.registerMethod(runtime.newJavaMethod("takes either one or two or three arguments. if one argument is given, it should be a message chain that will be sent to each object in the list. the result will be thrown away. if two arguments are given, the first is an unevaluated name that will be set to each of the values in the list in succession, and then the second argument will be evaluated in a scope with that argument in it. if three arguments is given, the first one is an unevaluated name that will be set to the index of each element, and the other two arguments are the name of the argument for the value, and the actual code. the code will evaluate in a lexical context, and if the argument name is available outside the context, it will be shadowed. the method will return the list.", new JavaMethod("each") {
+            obj.registerMethod(runtime.newNativeMethod("takes either one or two or three arguments. if one argument is given, it should be a message chain that will be sent to each object in the list. the result will be thrown away. if two arguments are given, the first is an unevaluated name that will be set to each of the values in the list in succession, and then the second argument will be evaluated in a scope with that argument in it. if three arguments is given, the first one is an unevaluated name that will be set to the index of each element, and the other two arguments are the name of the argument for the value, and the actual code. the code will evaluate in a lexical context, and if the argument name is available outside the context, it will be shadowed. the method will return the list.", new JavaMethod("each") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositionalUnevaluated("indexOrArgOrCode")
@@ -159,7 +159,7 @@ public class IokeList extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("takes one argument and adds it at the end of the list, and then returns the list", new TypeCheckingJavaMethod("<<") {
+        obj.registerMethod(runtime.newNativeMethod("takes one argument and adds it at the end of the list, and then returns the list", new TypeCheckingJavaMethod("<<") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(runtime.list)
@@ -178,7 +178,7 @@ public class IokeList extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("takes one argument and adds it at the end of the list, and then returns the list", new TypeCheckingJavaMethod("append!") {
+        obj.registerMethod(runtime.newNativeMethod("takes one argument and adds it at the end of the list, and then returns the list", new TypeCheckingJavaMethod("append!") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(runtime.list)
@@ -200,7 +200,7 @@ public class IokeList extends IokeData {
 
         obj.aliasMethod("append!", "push!", null, null);
 
-        obj.registerMethod(runtime.newJavaMethod("takes one argument and adds it at the beginning of the list, and then returns the list", new TypeCheckingJavaMethod("prepend!") {
+        obj.registerMethod(runtime.newNativeMethod("takes one argument and adds it at the beginning of the list, and then returns the list", new TypeCheckingJavaMethod("prepend!") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(runtime.list)
@@ -222,7 +222,7 @@ public class IokeList extends IokeData {
 
         obj.aliasMethod("prepend!", "unshift!", null, null);
 
-        obj.registerMethod(runtime.newJavaMethod("removes the last element from the list and returns it. returns nil if the list is empty.", new TypeCheckingJavaMethod.WithNoArguments("pop!", runtime.list) {
+        obj.registerMethod(runtime.newNativeMethod("removes the last element from the list and returns it. returns nil if the list is empty.", new TypeCheckingJavaMethod.WithNoArguments("pop!", runtime.list) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     List<Object> l = ((IokeList)IokeObject.data(on)).getList();
@@ -233,7 +233,7 @@ public class IokeList extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("removes the first element from the list and returns it. returns nil if the list is empty.", new TypeCheckingJavaMethod.WithNoArguments("shift!", runtime.list) {
+        obj.registerMethod(runtime.newNativeMethod("removes the first element from the list and returns it. returns nil if the list is empty.", new TypeCheckingJavaMethod.WithNoArguments("shift!", runtime.list) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     List<Object> l = ((IokeList)IokeObject.data(on)).getList();
@@ -244,7 +244,7 @@ public class IokeList extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("will remove all the entries from the list, and then returns the list", new TypeCheckingJavaMethod.WithNoArguments("clear!", runtime.list) {
+        obj.registerMethod(runtime.newNativeMethod("will remove all the entries from the list, and then returns the list", new TypeCheckingJavaMethod.WithNoArguments("clear!", runtime.list) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     ((IokeList)IokeObject.data(on)).getList().clear();
@@ -252,14 +252,14 @@ public class IokeList extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns true if this list is empty, false otherwise", new TypeCheckingJavaMethod.WithNoArguments("empty?", runtime.list) {
+        obj.registerMethod(runtime.newNativeMethod("returns true if this list is empty, false otherwise", new TypeCheckingJavaMethod.WithNoArguments("empty?", runtime.list) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return ((IokeList)IokeObject.data(on)).getList().isEmpty() ? context.runtime._true : context.runtime._false;
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns true if the receiver includes the evaluated argument, otherwise false", new TypeCheckingJavaMethod("include?") {
+        obj.registerMethod(runtime.newNativeMethod("returns true if the receiver includes the evaluated argument, otherwise false", new TypeCheckingJavaMethod("include?") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(runtime.list)
@@ -277,7 +277,7 @@ public class IokeList extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("adds the elements in the argument list to the current list, and then returns that list", new TypeCheckingJavaMethod("concat!") {
+        obj.registerMethod(runtime.newNativeMethod("adds the elements in the argument list to the current list, and then returns that list", new TypeCheckingJavaMethod("concat!") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(runtime.list)
@@ -296,7 +296,7 @@ public class IokeList extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns a new list that contains the receivers elements and the elements of the list sent in as the argument.", new TypeCheckingJavaMethod("+") {
+        obj.registerMethod(runtime.newNativeMethod("returns a new list that contains the receivers elements and the elements of the list sent in as the argument.", new TypeCheckingJavaMethod("+") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(runtime.list)
@@ -317,7 +317,7 @@ public class IokeList extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns a new list that contains all the elements from the receivers list, except for those that are in the argument list", new TypeCheckingJavaMethod("-") {
+        obj.registerMethod(runtime.newNativeMethod("returns a new list that contains all the elements from the receivers list, except for those that are in the argument list", new TypeCheckingJavaMethod("-") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(runtime.list)
@@ -338,7 +338,7 @@ public class IokeList extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns a new sorted version of this list", new TypeCheckingJavaMethod.WithNoArguments("sort", runtime.list) {
+        obj.registerMethod(runtime.newNativeMethod("returns a new sorted version of this list", new TypeCheckingJavaMethod.WithNoArguments("sort", runtime.list) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     Object newList = IokeObject.mimic(on, message, context);
@@ -354,7 +354,7 @@ public class IokeList extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("sorts this list in place and then returns it", new TypeCheckingJavaMethod.WithNoArguments("sort!", runtime.list) {
+        obj.registerMethod(runtime.newNativeMethod("sorts this list in place and then returns it", new TypeCheckingJavaMethod.WithNoArguments("sort!", runtime.list) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     try {
@@ -369,7 +369,7 @@ public class IokeList extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("returns the size of this list", new TypeCheckingJavaMethod.WithNoArguments("size", runtime.list) {
+        obj.registerMethod(runtime.newNativeMethod("returns the size of this list", new TypeCheckingJavaMethod.WithNoArguments("size", runtime.list) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return context.runtime.newNumber(((IokeList)IokeObject.data(on)).getList().size());
@@ -377,7 +377,7 @@ public class IokeList extends IokeData {
             }));
         obj.aliasMethod("size", "length", null, null);
 
-        obj.registerMethod(runtime.newJavaMethod("takes one argument, the index of the element to be returned. can be negative, and will in that case return indexed from the back of the list. if the index is outside the bounds of the list, will return nil. the argument can also be a range, and will in that case interpret the first index as where to start, and the second the end. the end can be negative and will in that case be from the end. if the first argument is negative, or after the second, an empty list will be returned. if the end point is larger than the list, the size of the list will be used as the end point.", new TypeCheckingJavaMethod("at") {
+        obj.registerMethod(runtime.newNativeMethod("takes one argument, the index of the element to be returned. can be negative, and will in that case return indexed from the back of the list. if the index is outside the bounds of the list, will return nil. the argument can also be a range, and will in that case interpret the first index as where to start, and the second the end. the end can be negative and will in that case be from the end. if the first argument is negative, or after the second, an empty list will be returned. if the end point is larger than the list, the size of the list will be used as the end point.", new TypeCheckingJavaMethod("at") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(runtime.list)
@@ -449,7 +449,7 @@ public class IokeList extends IokeData {
 
         obj.aliasMethod("at", "[]", null, null);
 
-        obj.registerMethod(runtime.newJavaMethod("takes an index and zero or more objects to insert at that point. the index can be negative to index from the end of the list. if the index is positive and larger than the size of the list, the list will be filled with nils inbetween.", new TypeCheckingJavaMethod("insert!") {
+        obj.registerMethod(runtime.newNativeMethod("takes an index and zero or more objects to insert at that point. the index can be negative to index from the end of the list. if the index is positive and larger than the size of the list, the list will be filled with nils inbetween.", new TypeCheckingJavaMethod("insert!") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(runtime.list)
@@ -518,7 +518,7 @@ public class IokeList extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("takes two arguments, the index of the element to set, and the value to set. the index can be negative and will in that case set indexed from the end of the list. if the index is larger than the current size, the list will be expanded with nils. an exception will be raised if a abs(negative index) is larger than the size.", new TypeCheckingJavaMethod("at=") {
+        obj.registerMethod(runtime.newNativeMethod("takes two arguments, the index of the element to set, and the value to set. the index can be negative and will in that case set indexed from the end of the list. if the index is larger than the current size, the list will be expanded with nils. an exception will be raised if a abs(negative index) is larger than the size.", new TypeCheckingJavaMethod("at=") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(runtime.list)
@@ -595,7 +595,7 @@ public class IokeList extends IokeData {
 
         obj.aliasMethod("at=", "[]=", null, null);
         
-        obj.registerMethod(runtime.newJavaMethod(
+        obj.registerMethod(runtime.newNativeMethod(
                 "takes as argument the index of the element to be removed and returns it. can be " +
                 "negative and will in that case index from the back of the list. if the index is " +
                 "outside the bounds of the list, will return nil. the argument can also be a range, " +
@@ -683,7 +683,7 @@ public class IokeList extends IokeData {
                 }
             }));
         
-        obj.registerMethod(runtime.newJavaMethod(
+        obj.registerMethod(runtime.newNativeMethod(
                 "takes one or more arguments. removes all occurrences of the provided arguments from " +
                 "the list and returns the updated list. if an argument is not contained, the list " +
                 "remains unchanged. sending this method to an empty list has no effect.", 
@@ -712,7 +712,7 @@ public class IokeList extends IokeData {
                 }
             }));
         
-        obj.registerMethod(runtime.newJavaMethod(
+        obj.registerMethod(runtime.newNativeMethod(
                 "takes one or more arguments. removes the first occurrence of the provided arguments " +
                 "from the list and returns the updated list. if an argument is not contained, the list " +
                 "remains unchanged. arguments that are provided multiple times are treated as distinct " +
@@ -744,7 +744,7 @@ public class IokeList extends IokeData {
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newJavaMethod("removes all nils in this list, and then returns the list", new TypeCheckingJavaMethod.WithNoArguments("compact!", runtime.list) {
+        obj.registerMethod(obj.runtime.newNativeMethod("removes all nils in this list, and then returns the list", new TypeCheckingJavaMethod.WithNoArguments("compact!", runtime.list) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     List<Object> list = getList(on);
@@ -760,7 +760,7 @@ public class IokeList extends IokeData {
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newJavaMethod("reverses the elements in this list, then returns it", new TypeCheckingJavaMethod.WithNoArguments("reverse!", runtime.list) {
+        obj.registerMethod(obj.runtime.newNativeMethod("reverses the elements in this list, then returns it", new TypeCheckingJavaMethod.WithNoArguments("reverse!", runtime.list) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     List<Object> list = getList(on);
@@ -769,7 +769,7 @@ public class IokeList extends IokeData {
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newJavaMethod("flattens all lists in this list recursively, then returns it", new TypeCheckingJavaMethod.WithNoArguments("flatten!", runtime.list) {
+        obj.registerMethod(obj.runtime.newNativeMethod("flattens all lists in this list recursively, then returns it", new TypeCheckingJavaMethod.WithNoArguments("flatten!", runtime.list) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     setList(on, flatten(getList(on)));
@@ -777,7 +777,7 @@ public class IokeList extends IokeData {
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newJavaMethod("returns a text composed of the asText representation of all elements in the list, separated by the separator. the separator defaults to an empty text.", new TypeCheckingJavaMethod("join") {
+        obj.registerMethod(obj.runtime.newNativeMethod("returns a text composed of the asText representation of all elements in the list, separated by the separator. the separator defaults to an empty text.", new TypeCheckingJavaMethod("join") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(runtime.list)
@@ -805,7 +805,7 @@ public class IokeList extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newJavaMethod("takes one or two arguments, and will then use these arguments as code to transform each element in this list. the transform happens in place. finally the method will return the receiver.", new JavaMethod("map!") {
+        obj.registerMethod(runtime.newNativeMethod("takes one or two arguments, and will then use these arguments as code to transform each element in this list. the transform happens in place. finally the method will return the receiver.", new JavaMethod("map!") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositionalUnevaluated("argOrCode")
@@ -853,7 +853,7 @@ public class IokeList extends IokeData {
             
         obj.aliasMethod("map!", "collect!", null, null);
 
-        obj.registerMethod(runtime.newJavaMethod("takes one or two arguments, and will then use these arguments as code to decide what elements should be removed from the list. the method will return the receiver.", new JavaMethod("removeIf!") {
+        obj.registerMethod(runtime.newNativeMethod("takes one or two arguments, and will then use these arguments as code to decide what elements should be removed from the list. the method will return the receiver.", new JavaMethod("removeIf!") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositionalUnevaluated("argOrCode")

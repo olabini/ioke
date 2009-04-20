@@ -35,7 +35,7 @@ public class Text extends IokeData {
         obj.setKind("Text");
         obj.mimics(IokeObject.as(obj.runtime.mixins.getCell(null, null, "Comparing"), null), obj.runtime.nul, obj.runtime.nul);
 
-        obj.registerMethod(obj.runtime.newJavaMethod("Returns a text representation of the object", new JavaMethod.WithNoArguments("asText") {
+        obj.registerMethod(obj.runtime.newNativeMethod("Returns a text representation of the object", new JavaMethod.WithNoArguments("asText") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -43,7 +43,7 @@ public class Text extends IokeData {
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newJavaMethod("Converts the content of this text into a rational value", new TypeCheckingJavaMethod.WithNoArguments("toRational", runtime.text) {
+        obj.registerMethod(obj.runtime.newNativeMethod("Converts the content of this text into a rational value", new TypeCheckingJavaMethod.WithNoArguments("toRational", runtime.text) {
                 @Override
                 public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -51,7 +51,7 @@ public class Text extends IokeData {
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newJavaMethod("Converts the content of this text into a decimal value", new TypeCheckingJavaMethod.WithNoArguments("toDecimal", runtime.text) {
+        obj.registerMethod(obj.runtime.newNativeMethod("Converts the content of this text into a decimal value", new TypeCheckingJavaMethod.WithNoArguments("toDecimal", runtime.text) {
                 @Override
                 public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -59,7 +59,7 @@ public class Text extends IokeData {
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newJavaMethod("Returns a text inspection of the object", new JavaMethod.WithNoArguments("inspect") {
+        obj.registerMethod(obj.runtime.newNativeMethod("Returns a text inspection of the object", new JavaMethod.WithNoArguments("inspect") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -67,7 +67,7 @@ public class Text extends IokeData {
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newJavaMethod("Returns a brief text inspection of the object", new JavaMethod.WithNoArguments("notice") {
+        obj.registerMethod(obj.runtime.newNativeMethod("Returns a brief text inspection of the object", new JavaMethod.WithNoArguments("notice") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -75,7 +75,7 @@ public class Text extends IokeData {
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newJavaMethod("Returns a lower case version of this text", new TypeCheckingJavaMethod.WithNoArguments("lower", runtime.text) {
+        obj.registerMethod(obj.runtime.newNativeMethod("Returns a lower case version of this text", new TypeCheckingJavaMethod.WithNoArguments("lower", runtime.text) {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getValidatedArgumentsAndReceiver(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -83,7 +83,7 @@ public class Text extends IokeData {
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newJavaMethod("Returns an upper case version of this text", new TypeCheckingJavaMethod.WithNoArguments("upper", runtime.text) {
+        obj.registerMethod(obj.runtime.newNativeMethod("Returns an upper case version of this text", new TypeCheckingJavaMethod.WithNoArguments("upper", runtime.text) {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getValidatedArgumentsAndReceiver(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -91,7 +91,7 @@ public class Text extends IokeData {
                 }
             }));
         
-        obj.registerMethod(obj.runtime.newJavaMethod("Returns a version of this text with leading and trailing whitespace removed", new TypeCheckingJavaMethod.WithNoArguments("trim", runtime.text) {
+        obj.registerMethod(obj.runtime.newNativeMethod("Returns a version of this text with leading and trailing whitespace removed", new TypeCheckingJavaMethod.WithNoArguments("trim", runtime.text) {
             @Override
             public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
               getArguments().getValidatedArgumentsAndReceiver(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -99,7 +99,7 @@ public class Text extends IokeData {
             }
           }));
 
-        obj.registerMethod(obj.runtime.newJavaMethod("Returns an array of texts split around the argument", new TypeCheckingJavaMethod("split") {
+        obj.registerMethod(obj.runtime.newNativeMethod("Returns an array of texts split around the argument", new TypeCheckingJavaMethod("split") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(runtime.text)
@@ -140,7 +140,7 @@ public class Text extends IokeData {
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newJavaMethod("Takes two text arguments where the first is the substring to replace, and the second is the replacement to insert. Will only replace the first match, if any is found, and return a new Text with the result.", new TypeCheckingJavaMethod("replace") {
+        obj.registerMethod(obj.runtime.newNativeMethod("Takes two text arguments where the first is the substring to replace, and the second is the replacement to insert. Will only replace the first match, if any is found, and return a new Text with the result.", new TypeCheckingJavaMethod("replace") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(runtime.text)
@@ -176,7 +176,7 @@ public class Text extends IokeData {
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newJavaMethod("Takes two text arguments where the first is the substring to replace, and the second is the replacement to insert. Will replace all matches, if any is found, and return a new Text with the result.", new TypeCheckingJavaMethod("replaceAll") {
+        obj.registerMethod(obj.runtime.newNativeMethod("Takes two text arguments where the first is the substring to replace, and the second is the replacement to insert. Will replace all matches, if any is found, and return a new Text with the result.", new TypeCheckingJavaMethod("replaceAll") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(runtime.text)
@@ -212,7 +212,7 @@ public class Text extends IokeData {
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newJavaMethod("Returns the length of this text", new TypeCheckingJavaMethod.WithNoArguments("length", runtime.text) {
+        obj.registerMethod(obj.runtime.newNativeMethod("Returns the length of this text", new TypeCheckingJavaMethod.WithNoArguments("length", runtime.text) {
                 @Override
                 public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -220,7 +220,7 @@ public class Text extends IokeData {
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newJavaMethod("Takes any number of arguments, and expects the text receiver to contain format specifications. The currently supported specifications are only %s and %{, %}. These have several parameters that can be used. See the spec for more info about these. The format method will return a new text based on the content of the receiver, and the arguments given.", new TypeCheckingJavaMethod("format") {
+        obj.registerMethod(obj.runtime.newNativeMethod("Takes any number of arguments, and expects the text receiver to contain format specifications. The currently supported specifications are only %s and %{, %}. These have several parameters that can be used. See the spec for more info about these. The format method will return a new text based on the content of the receiver, and the arguments given.", new TypeCheckingJavaMethod("format") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(runtime.text)
@@ -243,7 +243,7 @@ public class Text extends IokeData {
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newJavaMethod("compares this text against the argument, returning -1, 0 or 1 based on which one is lexically larger", new TypeCheckingJavaMethod("<=>") {
+        obj.registerMethod(obj.runtime.newNativeMethod("compares this text against the argument, returning -1, 0 or 1 based on which one is lexically larger", new TypeCheckingJavaMethod("<=>") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(runtime.text)
@@ -286,7 +286,7 @@ public class Text extends IokeData {
                 }
             }));
 
-        obj.registerMethod(obj.runtime.newJavaMethod("takes one argument, that can be either an index or a range of two indicis. this slicing works the same as for Lists, so you can index from the end, both with the single index and with the range.", new TypeCheckingJavaMethod("[]") {
+        obj.registerMethod(obj.runtime.newNativeMethod("takes one argument, that can be either an index or a range of two indicis. this slicing works the same as for Lists, so you can index from the end, both with the single index and with the range.", new TypeCheckingJavaMethod("[]") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(runtime.text)
@@ -360,7 +360,7 @@ public class Text extends IokeData {
                 }
             }));
         
-        obj.registerMethod(obj.runtime.newJavaMethod("Returns a symbol representing the Unicode category of the character", new JavaMethod.WithNoArguments("category") {
+        obj.registerMethod(obj.runtime.newNativeMethod("Returns a symbol representing the Unicode category of the character", new JavaMethod.WithNoArguments("category") {
             @Override
             public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                 getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());

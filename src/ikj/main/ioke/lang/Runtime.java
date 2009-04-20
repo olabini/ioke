@@ -718,7 +718,7 @@ public class Runtime {
         return obj;
     }
 
-    public IokeObject newJavaMethod(String doc, JavaMethod impl) throws ControlFlow {
+    public IokeObject newNativeMethod(String doc, JavaMethod impl) throws ControlFlow {
         return newMethod(doc, this.javaMethod, impl);
     }
 
