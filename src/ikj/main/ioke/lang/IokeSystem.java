@@ -10,6 +10,7 @@ import java.io.IOException;
 
 import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
@@ -31,6 +32,8 @@ public class IokeSystem extends IokeData {
             this.message = message;
         }
     }
+
+    public static final Collection<String> FEATURES = new HashSet<String>(Arrays.asList("java"));
 
     private List<String> currentFile = new ArrayList<String>(Arrays.asList("<init>"));
     private String currentProgram;
@@ -413,6 +416,31 @@ public class IokeSystem extends IokeData {
         obj.registerCell("in", inx);
 
         obj.registerCell("currentDebugger", runtime.nil);
+
+        obj.registerMethod(runtime.newNativeMethod("takes one text or symbol argument and returns a boolean indicating whether the named feature is available on this runtime.", new NativeMethod("feature?") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("feature")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+                    
+                    String name = Text.getText(((Message)IokeObject.data(runtime.asText)).sendTo(runtime.asText, context, args.get(0)));
+                    if(FEATURES.contains(name)) {
+                        return runtime._true;
+                    } else {
+                        return runtime._false;
+                    }
+                }
+            }));
 
         obj.registerMethod(runtime.newNativeMethod("returns the current file executing", new NativeMethod.WithNoArguments("currentFile") {
                 @Override
