@@ -153,7 +153,10 @@
   <target name="dist-bin" depends="jar">
     <tar destfile="${release.dir}/ioke-P-ikj-0.4.0-snapshot.tar.gz" compression="gzip">
       <tarfileset mode="755" dir="." prefix="ioke">
-        <include name="bin/**"/>
+        <include name="bin/*.bat"/>
+        <include name="bin/dokgen"/>
+        <include name="bin/ioke"/>
+        <include name="bin/ispec"/>
       </tarfileset>
 
       <tarfileset dir="." prefix="ioke">
@@ -170,7 +173,10 @@
 
     <zip destfile="${release.dir}/ioke-P-ikj-0.4.0-snapshot.zip">
       <zipfileset filemode="755" dir="." prefix="ioke">
-        <include name="bin/**"/>
+        <include name="bin/*.bat"/>
+        <include name="bin/dokgen"/>
+        <include name="bin/ioke"/>
+        <include name="bin/ispec"/>
       </zipfileset>
 
       <zipfileset dir="." prefix="ioke">
