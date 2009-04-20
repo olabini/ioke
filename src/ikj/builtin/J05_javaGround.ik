@@ -1,4 +1,6 @@
 
+if(System feature?(:java),
+
 JavaGround notice  = "JavaGround"
 JavaGround inspect = "JavaGround"
 
@@ -136,4 +138,6 @@ cell(:LexicalBlock) java:coerceCode = method(javaType, abstractNames,
     proxy cell(name) = fnx(+rest, +:krest, cell(:outerSelf) call(*rest, *krest))
   )
   proxy new
+)
+
 )
