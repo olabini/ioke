@@ -39,14 +39,14 @@ public class Call extends IokeData {
 
         obj.setKind("Call");
 
-        obj.registerMethod(runtime.newNativeMethod("returns a list of all the unevaluated arguments", new TypeCheckingJavaMethod.WithNoArguments("arguments", runtime.call) {
+        obj.registerMethod(runtime.newNativeMethod("returns a list of all the unevaluated arguments", new TypeCheckingNativeMethod.WithNoArguments("arguments", runtime.call) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return context.runtime.newList(((Call)IokeObject.data(on)).message.getArguments());
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("returns the ground of the place this call originated", new TypeCheckingJavaMethod.WithNoArguments("ground", runtime.call) {
+        obj.registerMethod(runtime.newNativeMethod("returns the ground of the place this call originated", new TypeCheckingNativeMethod.WithNoArguments("ground", runtime.call) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -55,7 +55,7 @@ public class Call extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("returns the receiver of the call", new TypeCheckingJavaMethod.WithNoArguments("receiver", runtime.call) {
+        obj.registerMethod(runtime.newNativeMethod("returns the receiver of the call", new TypeCheckingNativeMethod.WithNoArguments("receiver", runtime.call) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -64,7 +64,7 @@ public class Call extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("returns the currently executing context", new TypeCheckingJavaMethod.WithNoArguments("currentContext", runtime.call) {
+        obj.registerMethod(runtime.newNativeMethod("returns the currently executing context", new TypeCheckingNativeMethod.WithNoArguments("currentContext", runtime.call) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -73,7 +73,7 @@ public class Call extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("returns the message that started this call", new TypeCheckingJavaMethod.WithNoArguments("message", runtime.call) {
+        obj.registerMethod(runtime.newNativeMethod("returns the message that started this call", new TypeCheckingNativeMethod.WithNoArguments("message", runtime.call) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -82,7 +82,7 @@ public class Call extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("returns a list of the result of evaluating all the arguments to this call", new TypeCheckingJavaMethod.WithNoArguments("evaluatedArguments", runtime.call) {
+        obj.registerMethod(runtime.newNativeMethod("returns a list of the result of evaluating all the arguments to this call", new TypeCheckingNativeMethod.WithNoArguments("evaluatedArguments", runtime.call) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
@@ -92,7 +92,7 @@ public class Call extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("takes one evaluated text or symbol argument and resends the current message to that method/macro on the current receiver.", new TypeCheckingJavaMethod("resendToMethod") {
+        obj.registerMethod(runtime.newNativeMethod("takes one evaluated text or symbol argument and resends the current message to that method/macro on the current receiver.", new TypeCheckingNativeMethod("resendToMethod") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(runtime.call)
@@ -114,7 +114,7 @@ public class Call extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("uhm. this is a strange one. really.", new TypeCheckingJavaMethod("resendToValue") {
+        obj.registerMethod(runtime.newNativeMethod("uhm. this is a strange one. really.", new TypeCheckingNativeMethod("resendToValue") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(runtime.call)
@@ -139,7 +139,7 @@ public class Call extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("uhm. this one isn't too bad.", new TypeCheckingJavaMethod("activateValue") {
+        obj.registerMethod(runtime.newNativeMethod("uhm. this one isn't too bad.", new TypeCheckingNativeMethod("activateValue") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(runtime.call)
@@ -165,7 +165,7 @@ public class Call extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("I really ought to write documentation for these methods, but I don't know how to describe what they do.", new TypeCheckingJavaMethod("activateValueWithCachedArguments") {
+        obj.registerMethod(runtime.newNativeMethod("I really ought to write documentation for these methods, but I don't know how to describe what they do.", new TypeCheckingNativeMethod("activateValueWithCachedArguments") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(runtime.call)

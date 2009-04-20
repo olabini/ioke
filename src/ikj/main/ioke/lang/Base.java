@@ -42,7 +42,7 @@ public class Base {
                 }
             }));
 
-        base.registerMethod(base.runtime.newNativeMethod("sets the documentation string for a specific object.", new TypeCheckingJavaMethod("documentation=") {
+        base.registerMethod(base.runtime.newNativeMethod("sets the documentation string for a specific object.", new TypeCheckingNativeMethod("documentation=") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .withRequiredPositional("text").whichMustMimic(base.runtime.text).orBeNil()

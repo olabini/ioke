@@ -141,7 +141,7 @@ public class Range extends IokeData {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("returns the 'from' part of the range", new TypeCheckingJavaMethod.WithNoArguments("from", runtime.range) {
+        obj.registerMethod(runtime.newNativeMethod("returns the 'from' part of the range", new TypeCheckingNativeMethod.WithNoArguments("from", runtime.range) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());

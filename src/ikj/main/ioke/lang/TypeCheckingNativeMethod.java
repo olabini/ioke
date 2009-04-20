@@ -7,8 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class TypeCheckingJavaMethod extends NativeMethod {
-    public static class WithNoArguments extends TypeCheckingJavaMethod {
+public abstract class TypeCheckingNativeMethod extends NativeMethod {
+    public static class WithNoArguments extends TypeCheckingNativeMethod {
         private TypeCheckingArgumentsDefinition ARGUMENTS;
 
         public WithNoArguments(String name) {

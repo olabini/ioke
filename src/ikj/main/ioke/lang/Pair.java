@@ -45,42 +45,42 @@ public class Pair extends IokeData {
         obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Enumerable"), null), runtime.nul, runtime.nul);
         obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Comparing"), null), runtime.nul, runtime.nul);
 
-        obj.registerMethod(runtime.newNativeMethod("Returns the first value", new TypeCheckingJavaMethod.WithNoArguments("first", runtime.pair) {
+        obj.registerMethod(runtime.newNativeMethod("Returns the first value", new TypeCheckingNativeMethod.WithNoArguments("first", runtime.pair) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return ((Pair)IokeObject.data(on)).first;
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("Returns the first value", new TypeCheckingJavaMethod.WithNoArguments("key", runtime.pair) {
+        obj.registerMethod(runtime.newNativeMethod("Returns the first value", new TypeCheckingNativeMethod.WithNoArguments("key", runtime.pair) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return ((Pair)IokeObject.data(on)).first;
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("Returns the second value", new TypeCheckingJavaMethod.WithNoArguments("second", runtime.pair) {
+        obj.registerMethod(runtime.newNativeMethod("Returns the second value", new TypeCheckingNativeMethod.WithNoArguments("second", runtime.pair) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return ((Pair)IokeObject.data(on)).second;
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("Returns the second value", new TypeCheckingJavaMethod.WithNoArguments("value", runtime.pair) {
+        obj.registerMethod(runtime.newNativeMethod("Returns the second value", new TypeCheckingNativeMethod.WithNoArguments("value", runtime.pair) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return ((Pair)IokeObject.data(on)).second;
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("Returns a text inspection of the object", new TypeCheckingJavaMethod.WithNoArguments("inspect", runtime.pair) {
+        obj.registerMethod(runtime.newNativeMethod("Returns a text inspection of the object", new TypeCheckingNativeMethod.WithNoArguments("inspect", runtime.pair) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return method.runtime.newText(Pair.getInspect(on));
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("Returns a brief text inspection of the object", new TypeCheckingJavaMethod.WithNoArguments("notice", runtime.pair) {
+        obj.registerMethod(runtime.newNativeMethod("Returns a brief text inspection of the object", new TypeCheckingNativeMethod.WithNoArguments("notice", runtime.pair) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return method.runtime.newText(Pair.getNotice(on));
