@@ -35,7 +35,7 @@ public class Ground {
         iokeGround.registerCell("Arity", runtime.arity);
         iokeGround.registerCell("Method", runtime.method);
         iokeGround.registerCell("DefaultMethod", runtime.defaultMethod);
-        iokeGround.registerCell("JavaMethod", runtime.javaMethod);
+        iokeGround.registerCell("JavaMethod", runtime.nativeMethod);
         iokeGround.registerCell("LexicalBlock", runtime.lexicalBlock);
         iokeGround.registerCell("DefaultMacro", runtime.defaultMacro);
         iokeGround.registerCell("LexicalMacro", runtime.lexicalMacro);
