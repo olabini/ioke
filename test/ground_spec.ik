@@ -20,7 +20,8 @@ describe("Ground",
     Ground should mimic(IokeGround)
   )
 
-  it("should mimic JavaGround",
-    Ground should mimic(JavaGround)
-  )
+  onlyWhen(System feature?(:java),
+    it("should mimic JavaGround",
+      Ground should mimic(JavaGround)
+  ))
 )

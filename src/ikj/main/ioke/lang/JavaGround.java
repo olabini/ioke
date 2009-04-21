@@ -46,7 +46,7 @@ public class JavaGround {
                     try {
                         c = context.runtime.classRegistry.getClassLoader().loadClass(name);
                     } catch(Exception e) {
-                        runtime.reportJavaException(e, message, context);
+                        runtime.reportNativeException(e, message, context);
                     }
                     return runtime.registry.wrap(c);
                 }

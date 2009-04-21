@@ -29,7 +29,7 @@ describe(true,
     )
 
 ;     it("should complain if no argument is given", 
-;       fn(true and()) should signal(Condition Error JavaException)
+;       fn(true and()) should signal(Condition Error NativeException)
 ;     )
 
     it("should return the result of the argument", 

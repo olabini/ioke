@@ -305,9 +305,9 @@ describe("Base",
       originNames = Origin cells keys sort
 
       ;; Easy way to remove duplicates - create a set of it and then sort it back into a list
-      javaGroundAllNames = JavaGround cells keys sort
-      groundAllNames = set(*(iokeGroundNames + groundNames + javaGroundAllNames + baseNames + defaultBehaviorAllNames)) sort
-      originAllNames = set(*(originNames + groundAllNames + javaGroundAllNames)) sort
+      nativeGroundAllNames = if(System feature?(:java), JavaGround cells keys sort, [])
+      groundAllNames = set(*(iokeGroundNames + groundNames + nativeGroundAllNames + baseNames + defaultBehaviorAllNames)) sort
+      originAllNames = set(*(originNames + groundAllNames + nativeGroundAllNames)) sort
 
       Base cellNames sort should == baseNames
       Base cellNames(false) sort should == baseNames

@@ -1,6 +1,7 @@
 
 use("ispec")
 
+if(System feature?(:java),
 describe("JavaGround",
   describe("integrate",
     describe("extending classes and implementing interfaces",
@@ -342,4 +343,5 @@ describe("JavaGround",
       called should == [:once, :twice]
     )
   )
+)
 )
