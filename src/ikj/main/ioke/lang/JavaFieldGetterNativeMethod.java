@@ -62,7 +62,7 @@ public class JavaFieldGetterNativeMethod extends Method implements NativeImpleme
                 return result;
             }
         } catch(Exception e) {
-            context.runtime.reportJavaException(e, message, context);
+            context.runtime.reportNativeException(e, message, context);
             return context.runtime.nil;
         }
     }

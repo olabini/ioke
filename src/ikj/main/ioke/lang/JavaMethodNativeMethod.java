@@ -76,9 +76,9 @@ public class JavaMethodNativeMethod extends ioke.lang.Method implements NativeIm
             }
         } catch(Exception e) {
             if((Exception)e.getCause() != null) {
-                context.runtime.reportJavaException((Exception)e.getCause(), message, context);
+                context.runtime.reportNativeException((Exception)e.getCause(), message, context);
             } else {
-                context.runtime.reportJavaException((Exception)e, message, context);
+                context.runtime.reportNativeException((Exception)e, message, context);
             }
 
             return context.runtime.nil;

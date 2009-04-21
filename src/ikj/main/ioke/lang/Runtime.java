@@ -504,7 +504,7 @@ public class Runtime {
             ((IokeSystem)IokeObject.data(system)).pushCurrentFile(name);
             return evaluateStream(reader, message, context);
         } catch(Exception e) {
-            reportJavaException(e, message, context);
+            reportNativeException(e, message, context);
             return null;
         } finally {
             ((IokeSystem)IokeObject.data(system)).popCurrentFile();
@@ -516,7 +516,7 @@ public class Runtime {
             ((IokeSystem)IokeObject.data(system)).pushCurrentFile(f.getCanonicalPath());
             return evaluateStream(new InputStreamReader(new FileInputStream(f), "UTF-8"), message, context);
         } catch(Exception e) {
-            reportJavaException(e, message, context);
+            reportNativeException(e, message, context);
             return null;
         } finally {
             ((IokeSystem)IokeObject.data(system)).popCurrentFile();
@@ -532,19 +532,19 @@ public class Runtime {
                 return evaluateStream(new InputStreamReader(new FileInputStream(new File(((IokeSystem)IokeObject.data(system)).getCurrentWorkingDirectory(), filename)), "UTF-8"), message, context);
             }
         } catch(Exception e) {
-            reportJavaException(e, message, context);
+            reportNativeException(e, message, context);
             return null;
         } finally {
             ((IokeSystem)IokeObject.data(system)).popCurrentFile();
         }
     }
 
-    public void reportJavaException(Exception e, IokeObject message, IokeObject context) throws ControlFlow {
+    public void reportNativeException(Exception e, IokeObject message, IokeObject context) throws ControlFlow {
         final IokeObject condition = IokeObject.as(IokeObject.getCellChain(this.condition, 
                                                                            message, 
                                                                            context, 
                                                                            "Error", 
-                                                                           "JavaException"), context).mimic(message, context);
+                                                                           "NativeException"), context).mimic(message, context);
         condition.setCell("message", message);
         condition.setCell("context", context);
         condition.setCell("receiver", context);

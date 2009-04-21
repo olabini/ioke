@@ -914,7 +914,7 @@ public class Message extends IokeData {
 //             System.err.println(e);
 //             System.err.println(e.getMessage());
 //             e.printStackTrace();
-                       runtime.reportJavaException(e, message, context);
+                       runtime.reportNativeException(e, message, context);
             return null;
         }
     }
