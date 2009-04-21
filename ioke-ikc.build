@@ -90,8 +90,8 @@
     </script>
 
     <echo file="${build.filtered.dir}/Ioke.Lang.version.properties">ioke.build.version=E
-ioke.build.runtimeVersion=0.1.0-snapshot
-ioke.build.versionString=Ioke E ikc 0.1.0-snapshot
+ioke.build.runtimeVersion=0.1.0
+ioke.build.versionString=Ioke E ikc 0.1.0
 ioke.build.date=${version::extract-date()}
 ioke.build.commit=${version::extract-commit()}
     </echo>
@@ -168,7 +168,7 @@ ioke.build.commit=${version::extract-commit()}
   </target>
 
   <target name="dist-bin">
-    <tar destfile="${release.dir}/ioke-E-ikc-0.1.0-snapshot.tar.gz" compression="GZip">
+    <tar destfile="${release.dir}/ioke-E-ikc-0.1.0.tar.gz" compression="GZip">
       <fileset filemode="755" basedir="." prefix="ioke">
         <include name="bin/*.dll"/>
         <include name="bin/*.exe"/>
@@ -188,7 +188,7 @@ ioke.build.commit=${version::extract-commit()}
       </fileset>
     </tar>
 
-    <zip zipfile="${release.dir}/ioke-E-ikc-0.1.0-snapshot.zip">
+    <zip zipfile="${release.dir}/ioke-E-ikc-0.1.0.zip">
       <fileset basedir="." prefix="ioke">
         <include name="bin/*.dll"/>
         <include name="bin/*.exe"/>
