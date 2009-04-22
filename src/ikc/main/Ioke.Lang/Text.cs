@@ -98,6 +98,7 @@ namespace Ioke.Lang {
             
             obj.Kind = "Text";
             obj.Mimics(IokeObject.As(runtime.Mixins.GetCell(null, null, "Comparing"), null), runtime.nul, runtime.nul);
+            obj.SetCell("==",        runtime.Base.Cells["=="]);
 
             obj.RegisterMethod(runtime.NewNativeMethod("Returns a text representation of the object", 
                                                        new NativeMethod.WithNoArguments("asText",

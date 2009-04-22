@@ -34,6 +34,7 @@ public class Text extends IokeData {
 
         obj.setKind("Text");
         obj.mimics(IokeObject.as(obj.runtime.mixins.getCell(null, null, "Comparing"), null), obj.runtime.nul, obj.runtime.nul);
+        obj.setCell("==",        runtime.base.getCells().get("=="));
 
         obj.registerMethod(obj.runtime.newNativeMethod("Returns a text representation of the object", new NativeMethod.WithNoArguments("asText") {
                 @Override
