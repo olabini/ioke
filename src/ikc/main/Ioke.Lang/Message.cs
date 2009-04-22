@@ -662,13 +662,13 @@ namespace Ioke.Lang {
         }
 
         private void CurrentCode(StringBuilder b) {
-            if(this.name.Equals("internal:createText") && (this.arguments[0] is string)) {
+            if(this.name.Equals("internal:createText") && (this.arguments.Count > 0 && this.arguments[0] is string)) {
                 b.Append('"').Append(this.arguments[0]).Append('"');
-            } else if(this.name.Equals("internal:createRegexp") && (this.arguments[0] is string)) {
+            } else if(this.name.Equals("internal:createRegexp") && (this.arguments.Count > 0 && this.arguments[0] is string)) {
                 b.Append("#/").Append(this.arguments[0]).Append('/').Append(this.arguments[1]);
-            } else if(this.name.Equals("internal:createNumber") && (this.arguments[0] is string)) {
+            } else if(this.name.Equals("internal:createNumber") && (this.arguments.Count > 0 && this.arguments[0] is string)) {
                 b.Append(this.arguments[0]);
-            } else if(this.name.Equals("internal:createDecimal") && (this.arguments[0] is string)) {
+            } else if(this.name.Equals("internal:createDecimal") && (this.arguments.Count > 0 && this.arguments[0] is string)) {
                 b.Append(this.arguments[0]);
             } else if(cached != null && this.name.Equals("cachedResult")) {
                 b.Append(cached);
@@ -694,13 +694,13 @@ namespace Ioke.Lang {
         }
 
         private void CurrentFormattedCode(StringBuilder b, int indent, IokeObject ctx) {
-            if(this.name.Equals("internal:createText") && (this.arguments[0] is string)) {
+            if(this.name.Equals("internal:createText") && (this.arguments.Count > 0 && this.arguments[0] is string)) {
                 b.Append('"').Append(this.arguments[0]).Append('"');
             } else if(this.name.Equals("internal:concatenateText")) {
                 b.Append('"');
                 for(int i=0;i<this.arguments.Count;i++) {
                     object arg = this.arguments[i];
-                    if(Message.GetName(arg).Equals("internal:createText") && (Message.GetArguments(arg)[0] is string)) {
+                    if(Message.GetName(arg).Equals("internal:createText") && (Message.GetArguments(arg).Count > 0 && Message.GetArguments(arg)[0] is string)) {
                         b.Append(Message.GetArguments(arg)[0]);
                     } else {
                         b.Append("#{");
@@ -709,11 +709,11 @@ namespace Ioke.Lang {
                     }
                 }
                 b.Append('"');
-            } else if(this.name.Equals("internal:createRegexp") && (this.arguments[0] is string)) {
+            } else if(this.name.Equals("internal:createRegexp") && (this.arguments.Count > 0 && this.arguments[0] is string)) {
                 b.Append("#/").Append(this.arguments[0]).Append('/').Append(this.arguments[1]);
-            } else if(this.name.Equals("internal:createNumber") && (this.arguments[0] is string)) {
+            } else if(this.name.Equals("internal:createNumber") && (this.arguments.Count > 0 && this.arguments[0] is string)) {
                 b.Append(this.arguments[0]);
-            } else if(this.name.Equals("internal:createDecimal") && (this.arguments[0] is string)) {
+            } else if(this.name.Equals("internal:createDecimal") && (this.arguments.Count > 0 && this.arguments[0] is string)) {
                 b.Append(this.arguments[0]);
             } else if(cached != null && this.name.Equals("cachedResult")) {
                 b.Append(cached);
