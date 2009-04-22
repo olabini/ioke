@@ -1502,13 +1502,13 @@ public class Message extends IokeData {
     }
 
     private void currentCode(StringBuilder base) {
-        if(this.name.equals("internal:createText") && (this.arguments.get(0) instanceof String)) {
+        if(this.name.equals("internal:createText") && (this.arguments.size() > 0 && this.arguments.get(0) instanceof String)) {
             base.append('"').append(this.arguments.get(0)).append('"');
-        } else if(this.name.equals("internal:createRegexp") && (this.arguments.get(0) instanceof String)) {
+        } else if(this.name.equals("internal:createRegexp") && (this.arguments.size() > 0 && this.arguments.get(0) instanceof String)) {
             base.append("#/").append(this.arguments.get(0)).append('/').append(this.arguments.get(1));
-        } else if(this.name.equals("internal:createNumber") && (this.arguments.get(0) instanceof String)) {
+        } else if(this.name.equals("internal:createNumber") && (this.arguments.size() > 0 && this.arguments.get(0) instanceof String)) {
             base.append(this.arguments.get(0));
-        } else if(this.name.equals("internal:createDecimal") && (this.arguments.get(0) instanceof String)) {
+        } else if(this.name.equals("internal:createDecimal") && (this.arguments.size() > 0 && this.arguments.get(0) instanceof String)) {
             base.append(this.arguments.get(0));
         } else if(cached != null && this.name.equals("cachedResult")) {
             base.append(cached);
@@ -1534,13 +1534,13 @@ public class Message extends IokeData {
     }
 
     private void currentFormattedCode(StringBuilder base, int indent, IokeObject ctx) throws ControlFlow {
-        if(this.name.equals("internal:createText") && (this.arguments.get(0) instanceof String)) {
+        if(this.name.equals("internal:createText") && (this.arguments.size() > 0 && this.arguments.get(0) instanceof String)) {
             base.append('"').append(this.arguments.get(0)).append('"');
         } else if(this.name.equals("internal:concatenateText")) {
             base.append('"');
             for(int i=0;i<this.arguments.size();i++) {
                 Object arg = this.arguments.get(i);
-                if(Message.name(arg).equals("internal:createText") && (Message.arguments(arg).get(0) instanceof String)) {
+                if(Message.name(arg).equals("internal:createText") && (Message.arguments(arg).size() > 0 && Message.arguments(arg).get(0) instanceof String)) {
                     base.append(Message.arguments(arg).get(0));
                 } else {
                     base.append("#{");
@@ -1549,11 +1549,11 @@ public class Message extends IokeData {
                 }
             }
             base.append('"');
-        } else if(this.name.equals("internal:createRegexp") && (this.arguments.get(0) instanceof String)) {
+        } else if(this.name.equals("internal:createRegexp") && (this.arguments.size() > 0 && this.arguments.get(0) instanceof String)) {
             base.append("#/").append(this.arguments.get(0)).append('/').append(this.arguments.get(1));
-        } else if(this.name.equals("internal:createNumber") && (this.arguments.get(0) instanceof String)) {
+        } else if(this.name.equals("internal:createNumber") && (this.arguments.size() > 0 && this.arguments.get(0) instanceof String)) {
             base.append(this.arguments.get(0));
-        } else if(this.name.equals("internal:createDecimal") && (this.arguments.get(0) instanceof String)) {
+        } else if(this.name.equals("internal:createDecimal") && (this.arguments.size() > 0 && this.arguments.get(0) instanceof String)) {
             base.append(this.arguments.get(0));
         } else if(cached != null && this.name.equals("cachedResult")) {
             base.append(cached);

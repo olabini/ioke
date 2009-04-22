@@ -5,6 +5,10 @@ parse = method(str,
   Message fromText(str) code)
 
 describe("Text", 
+  it("should correctly handle a call to internal:createText without arguments",
+    fn(internal:createText) should signal(Condition Error Invocation TooFewArguments)
+  )
+
   describe("==", 
     it("should return true for the same text", 
       x = "foo". x should == x
@@ -570,6 +574,9 @@ describe("Text",
       m = parse("\"foo \#{\"fux \#{32} bar\" bletch} bar\"")
       m should == "internal:concatenateText(\"foo \", internal:concatenateText(\"fux \", 32, \" bar\") bletch, \" bar\")"
     )
+
+    it("should correctly handle the case of interpolation inside a text which reference unknown cells")
+    it("should correctly handle references to self for interpolation in the context of that Text")
   )
 
   describe("<=>",
