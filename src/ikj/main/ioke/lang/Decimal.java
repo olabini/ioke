@@ -334,4 +334,18 @@ public class Decimal extends IokeData {
                 }
             }));
     }
+    
+    @Override
+    public boolean isEqualTo(IokeObject self, Object other) {
+        return ((other instanceof IokeObject) && 
+                (IokeObject.data(other) instanceof Decimal) 
+                && ((self == self.runtime.decimal && other == self) ||
+                    this.value.equals(((Decimal)IokeObject.data(other)).value)));
+    }
+
+    @Override
+    public int hashCode(IokeObject self) {
+        return this.value.hashCode();
+    }
+
 }// Decimal
