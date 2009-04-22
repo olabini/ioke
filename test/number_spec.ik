@@ -644,6 +644,11 @@ describe(Number,
       it("should validate type of receiver",
         Number Decimal should checkReceiverTypeOn(:"==", 2)
       )
+
+      it("should work inside of arrays and dicts",
+        [1.0] should == [1.0]
+        {a: 1.0} should == {a: 1.0}
+      )
     )
     
     describe("<=>", 

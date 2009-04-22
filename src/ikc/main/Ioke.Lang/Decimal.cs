@@ -245,5 +245,16 @@ namespace Ioke.Lang {
                                                                                         }
                                                                                     })));
         }
+
+        public override bool IsEqualTo(IokeObject self, object other) {
+            return ((other is IokeObject) && 
+                    (IokeObject.dataOf(other) is Decimal) 
+                    && ((self == self.runtime.Decimal && other == self) ||
+                        this.value.Equals(((Decimal)IokeObject.dataOf(other)).value)));
+        }
+
+        public override int HashCode(IokeObject self) {
+            return this.value.GetHashCode();
+        }
     }
 }
