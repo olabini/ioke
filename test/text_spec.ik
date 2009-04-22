@@ -35,6 +35,18 @@ describe("Text",
     it("should work correctly when comparing another kind",
       "foo" should not == Base mimic
     )
+
+    it("should not return true for equality with other types",
+      "true" should not == true
+      "true" should not == false
+      "true" should not == nil
+      "false" should not == false
+      "false" should not == true
+      "false" should not == nil
+      "nil" should not == nil
+      "nil" should not == false
+      "nil" should not == true
+    )
   )
 
   describe("===",
