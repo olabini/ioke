@@ -213,7 +213,8 @@ method(other,
             </div>
             </div>
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>Origin ===</b><br/>
+<ul style="list-style-type: none;">
 <li>- should check for mimicness if receiver is Origin <span class="sourcecode">
             <span class="source-link">[ <a href="javascript:toggleSource('C002351S0_source')" id="l_C002351S0_source">show source</a> ]</span>
             <div id="C002351S0_source" class="dyn-source">
@@ -262,7 +263,7 @@ z should ===(x)
 <pre>
 macro(
   aspectCall = macro(ss = if(@ kind ==("Locals"), @ self, @) 
-      call activateValueWithCachedArguments(@@ cell(:primary), ss)) 
+      call resendToValue(@@ cell(:primary), ss)) 
   cell(:aspectCall) primary = @@ cell(:primary) 
   call activateValueWithCachedArguments(@@ cell(:advice), self, aspectCall: cell(:aspectCall)) 
   )
@@ -282,7 +283,8 @@ macro(
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>Origin print</b><br/>
+<ul style="list-style-type: none;">
 <li>- should print asText of object to 'System out' <span class="sourcecode">
             <span class="source-link">[ <a href="javascript:toggleSource('C002341S0_source')" id="l_C002341S0_source">show source</a> ]</span>
             <div id="C002341S0_source" class="dyn-source">
@@ -312,7 +314,8 @@ expected should ==("foobarz")
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>Origin println</b><br/>
+<ul style="list-style-type: none;">
 <li>- should print asText of object to 'System out' <span class="sourcecode">
             <span class="source-link">[ <a href="javascript:toggleSource('C002331S0_source')" id="l_C002331S0_source">show source</a> ]</span>
             <div id="C002331S0_source" class="dyn-source">

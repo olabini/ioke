@@ -90,25 +90,25 @@ A set is an unordered collection of objects that contains no duplicates.
 
         <div class="sectiontitle">Inactive cells</div>
         <ul>
-          <li><a href="#C00613">kind</a></li>
+          <li><a href="#C00615">kind</a></li>
 
         </ul>        
 
         <div class="sectiontitle">Active cells</div>
         <ul>
-          <li><a href="#C00620">+(otherSet)</a></li>
-<li><a href="#C00618">&lt;&lt;(value)</a></li>
-<li><a href="#C00626">===(other)</a></li>
-<li><a href="#C00625">?&(...)</a></li>
-<li><a href="#C00624">?|(...)</a></li>
-<li><a href="#C00622">each([indexOrArgOrCode], [argOrCode] nil, [code] nil)</a></li>
-<li><a href="#C00617">empty?()</a></li>
-<li><a href="#C00623">ifEmpty(...)</a></li>
-<li><a href="#C00621">include?(object)</a></li>
-<li><a href="#C00614">inspect()</a></li>
-<li><a href="#C00616">notice()</a></li>
-<li><a href="#C00619">remove!(value)</a></li>
-<li><a href="#C00615">withIdentitySemantics!()</a></li>
+          <li><a href="#C00622">+(otherSet)</a></li>
+<li><a href="#C00620">&lt;&lt;(value)</a></li>
+<li><a href="#C00628">===(other)</a></li>
+<li><a href="#C00627">?&(...)</a></li>
+<li><a href="#C00626">?|(...)</a></li>
+<li><a href="#C00624">each([indexOrArgOrCode], [argOrCode] nil, [code] nil)</a></li>
+<li><a href="#C00619">empty?()</a></li>
+<li><a href="#C00625">ifEmpty(...)</a></li>
+<li><a href="#C00623">include?(object)</a></li>
+<li><a href="#C00616">inspect()</a></li>
+<li><a href="#C00618">notice()</a></li>
+<li><a href="#C00621">remove!(value)</a></li>
+<li><a href="#C00617">withIdentitySemantics!()</a></li>
 
         </ul>
 
@@ -221,7 +221,7 @@ set(1, 2, 3, 4, 5, 6, 7) should ==(set(1, 2, 3, 5, 4, 6, 7))
 
         <div class="sectiontitle">Inactive cells (details)</div>
                 <div class="cell">
-          <a name="C00613"></a>
+          <a name="C00615"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">kind</td>
@@ -235,17 +235,18 @@ set(1, 2, 3, 4, 5, 6, 7) should ==(set(1, 2, 3, 5, 4, 6, 7))
         <div class="sectiontitle">Active cells (details)</div>
                 <div class="cell">
           <div class="title">
-          <a name="C00620"></a><b>+</b>(otherSet)
+          <a name="C00622"></a><b>+</b>(otherSet)
           </div>
           <div class="description">
             <p>returns a new set that contains the receivers elements and the elements of the set sent in as the argument.</p>
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>Set +</b><br/>
+<ul style="list-style-type: none;">
 <li>- should add two sets <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C006201S0_source')" id="l_C006201S0_source">show source</a> ]</span>
-            <div id="C006201S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006221S0_source')" id="l_C006221S0_source">show source</a> ]</span>
+            <div id="C006221S0_source" class="dyn-source">
 <pre>
 (set(1, 2) +(set(1, 3))) should ==(set(1, 2, 3)) 
 
@@ -253,8 +254,8 @@ set(1, 2, 3, 4, 5, 6, 7) should ==(set(1, 2, 3, 5, 4, 6, 7))
             </div>
             </span></li>
 <li>- should validate type of argument <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C006201S1_source')" id="l_C006201S1_source">show source</a> ]</span>
-            <div id="C006201S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006221S1_source')" id="l_C006221S1_source">show source</a> ]</span>
+            <div id="C006221S1_source" class="dyn-source">
 <pre>
 fn(set(2) +(3)) should signal(Condition Error Type IncorrectType) 
 
@@ -262,8 +263,8 @@ fn(set(2) +(3)) should signal(Condition Error Type IncorrectType)
             </div>
             </span></li>
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C006201S2_source')" id="l_C006201S2_source">show source</a> ]</span>
-            <div id="C006201S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006221S2_source')" id="l_C006221S2_source">show source</a> ]</span>
+            <div id="C006221S2_source" class="dyn-source">
 <pre>
 Set should checkReceiverTypeOn(:("+"), set(2)) 
 
@@ -276,17 +277,18 @@ Set should checkReceiverTypeOn(:("+"), set(2))
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00618"></a><b>&lt;&lt;</b>(value)
+          <a name="C00620"></a><b>&lt;&lt;</b>(value)
           </div>
           <div class="description">
             <p>Adds the argument to this set, if it's not already in the set. Returns the set after adding the object.</p>
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>Set <<</b><br/>
+<ul style="list-style-type: none;">
 <li>- should add an element that isn't part of the set already <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C006181S0_source')" id="l_C006181S0_source">show source</a> ]</span>
-            <div id="C006181S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006201S0_source')" id="l_C006201S0_source">show source</a> ]</span>
+            <div id="C006201S0_source" class="dyn-source">
 <pre>
 x = set(1) 
 x &lt;&lt;(2) 
@@ -296,8 +298,8 @@ x should ==(set(1, 2))
             </div>
             </span></li>
 <li>- should not add an element that is part of the set already <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C006181S1_source')" id="l_C006181S1_source">show source</a> ]</span>
-            <div id="C006181S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006201S1_source')" id="l_C006201S1_source">show source</a> ]</span>
+            <div id="C006201S1_source" class="dyn-source">
 <pre>
 x = set(1, 2, 3) 
 x &lt;&lt;(2) 
@@ -307,8 +309,8 @@ x should ==(set(1, 2, 3))
             </div>
             </span></li>
 <li>- should return the set after adding <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C006181S2_source')" id="l_C006181S2_source">show source</a> ]</span>
-            <div id="C006181S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006201S2_source')" id="l_C006201S2_source">show source</a> ]</span>
+            <div id="C006201S2_source" class="dyn-source">
 <pre>
 x = set(1) 
 (x &lt;&lt;(2)) should be same(x) 
@@ -317,8 +319,8 @@ x = set(1)
             </div>
             </span></li>
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C006181S3_source')" id="l_C006181S3_source">show source</a> ]</span>
-            <div id="C006181S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006201S3_source')" id="l_C006201S3_source">show source</a> ]</span>
+            <div id="C006201S3_source" class="dyn-source">
 <pre>
 Set should checkReceiverTypeOn(:("&lt;&lt;"), 2) 
 
@@ -331,14 +333,14 @@ Set should checkReceiverTypeOn(:("&lt;&lt;"), 2)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00626"></a><b>===</b>(other)
+          <a name="C00628"></a><b>===</b>(other)
           </div>
           <div class="description">
             <p>nil</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00626_source')" id="l_C00626_source">show source</a> ]</p>
-            <div id="C00626_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00628_source')" id="l_C00628_source">show source</a> ]</p>
+            <div id="C00628_source" class="dyn-source">
 <pre>
 method(other, 
   if(self same?(
@@ -352,10 +354,11 @@ method(other,
             </div>
             </div>
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>Set ===</b><br/>
+<ul style="list-style-type: none;">
 <li>- should return false for something not in the set <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C006261S0_source')" id="l_C006261S0_source">show source</a> ]</span>
-            <div id="C006261S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006281S0_source')" id="l_C006281S0_source">show source</a> ]</span>
+            <div id="C006281S0_source" class="dyn-source">
 <pre>
 (set ===(:foo)) should be false 
 (set(1) ===(2)) should be false 
@@ -365,8 +368,8 @@ method(other,
             </div>
             </span></li>
 <li>- should return true for something in the set <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C006261S1_source')" id="l_C006261S1_source">show source</a> ]</span>
-            <div id="C006261S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006281S1_source')" id="l_C006281S1_source">show source</a> ]</span>
+            <div id="C006281S1_source" class="dyn-source">
 <pre>
 (set(:foo) ===(:foo)) should be true 
 (set(1, 2) ===(2)) should be true 
@@ -376,8 +379,8 @@ method(other,
             </div>
             </span></li>
 <li>- should return true when called against Set and the other is a set <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C006261S2_source')" id="l_C006261S2_source">show source</a> ]</span>
-            <div id="C006261S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006281S2_source')" id="l_C006281S2_source">show source</a> ]</span>
+            <div id="C006281S2_source" class="dyn-source">
 <pre>
 (Set ===(Set)) should be true 
 (Set ===(set)) should be true 
@@ -388,8 +391,8 @@ method(other,
             </div>
             </span></li>
 <li>- should return true when called against Set and the other is not a set <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C006261S3_source')" id="l_C006261S3_source">show source</a> ]</span>
-            <div id="C006261S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006281S3_source')" id="l_C006281S3_source">show source</a> ]</span>
+            <div id="C006281S3_source" class="dyn-source">
 <pre>
 (Set ===([])) should be false 
 (Set ===(1 ..(5))) should be false 
@@ -404,14 +407,14 @@ method(other,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00625"></a><b>?&</b>(...)
+          <a name="C00627"></a><b>?&</b>(...)
           </div>
           <div class="description">
             <p>if this set is non-empty, returns the result of evaluating the argument, otherwise returns the set</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00625_source')" id="l_C00625_source">show source</a> ]</p>
-            <div id="C00625_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00627_source')" id="l_C00627_source">show source</a> ]</p>
+            <div id="C00627_source" class="dyn-source">
 <pre>
 macro(
   argCount = call arguments length 
@@ -431,10 +434,11 @@ macro(
             </div>
             </div>
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>Set ?&</b><br/>
+<ul style="list-style-type: none;">
 <li>- should just return itself if empty <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C006251S0_source')" id="l_C006251S0_source">show source</a> ]</span>
-            <div id="C006251S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006271S0_source')" id="l_C006271S0_source">show source</a> ]</span>
+            <div id="C006271S0_source" class="dyn-source">
 <pre>
 (set ?&(42)) should ==(set) 
 (set ?&([](1, 2, 3))) should ==(set) 
@@ -443,8 +447,8 @@ macro(
             </div>
             </span></li>
 <li>- should return the result of evaluating the code if non-empty <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C006251S1_source')" id="l_C006251S1_source">show source</a> ]</span>
-            <div id="C006251S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006271S1_source')" id="l_C006271S1_source">show source</a> ]</span>
+            <div id="C006271S1_source" class="dyn-source">
 <pre>
 set(1) ?&(10) should ==(10) 
 set(1, 2, 3) ?&(20) should ==(20) 
@@ -460,14 +464,14 @@ x ?&([](1, 2, 3)) should ==([](1, 2, 3))
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00624"></a><b>?|</b>(...)
+          <a name="C00626"></a><b>?|</b>(...)
           </div>
           <div class="description">
             <p>if this set is empty, returns the result of evaluating the argument, otherwise returns the set</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00624_source')" id="l_C00624_source">show source</a> ]</p>
-            <div id="C00624_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00626_source')" id="l_C00626_source">show source</a> ]</p>
+            <div id="C00626_source" class="dyn-source">
 <pre>
 macro(
   argCount = call arguments length 
@@ -487,10 +491,11 @@ macro(
             </div>
             </div>
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>Set ?|</b><br/>
+<ul style="list-style-type: none;">
 <li>- should just return itself if not empty <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C006241S0_source')" id="l_C006241S0_source">show source</a> ]</span>
-            <div id="C006241S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006261S0_source')" id="l_C006261S0_source">show source</a> ]</span>
+            <div id="C006261S0_source" class="dyn-source">
 <pre>
 set(1) ?|(x /(0)) should ==(set(1)) 
 set(1, 2, 3) ?|(x /(0)) should ==(set(1, 2, 3)) 
@@ -501,8 +506,8 @@ x ?|(blarg) should be same(x)
             </div>
             </span></li>
 <li>- should return the result of evaluating the code if empty <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C006241S1_source')" id="l_C006241S1_source">show source</a> ]</span>
-            <div id="C006241S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006261S1_source')" id="l_C006261S1_source">show source</a> ]</span>
+            <div id="C006261S1_source" class="dyn-source">
 <pre>
 set ?|(42) should ==(42) 
 set ?|([](1, 2, 3)) should ==([](1, 2, 3)) 
@@ -516,17 +521,18 @@ set ?|([](1, 2, 3)) should ==([](1, 2, 3))
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00622"></a><b>each</b>([indexOrArgOrCode], [argOrCode] nil, [code] nil)
+          <a name="C00624"></a><b>each</b>([indexOrArgOrCode], [argOrCode] nil, [code] nil)
           </div>
           <div class="description">
             <p>takes either one, two or three arguments. if one argument is given, it should be a message chain that will be sent to each object in the set. the result will be thrown away. if two arguments are given, the first is an unevaluated name that will be set to each of the values in the set in succession, and then the second argument will be evaluated in a scope with that argument in it. if three arguments is given, the first one is an unevaluated name that will be set to the index of each element, and the other two arguments are the name of the argument for the value, and the actual code. the code will evaluate in a lexical context, and if the argument name is available outside the context, it will be shadowed. the method will return the set. the iteration order is not defined.</p>
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>Set each</b><br/>
+<ul style="list-style-type: none;">
 <li>- should not do anything for an empty set <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C006221S0_source')" id="l_C006221S0_source">show source</a> ]</span>
-            <div id="C006221S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006241S0_source')" id="l_C006241S0_source">show source</a> ]</span>
+            <div id="C006241S0_source" class="dyn-source">
 <pre>
 x = 0 
 set each(++(x)) 
@@ -536,8 +542,8 @@ x should ==(0)
             </div>
             </span></li>
 <li>- should be possible to just give it a message chain, that will be invoked on each object <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C006221S1_source')" id="l_C006221S1_source">show source</a> ]</span>
-            <div id="C006221S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006241S1_source')" id="l_C006241S1_source">show source</a> ]</span>
+            <div id="C006241S1_source" class="dyn-source">
 <pre>
 Ground y = [] 
 Ground x_set_spec1 = method(Ground y &lt;&lt;(self)) 
@@ -552,8 +558,8 @@ x should ==(3)
             </div>
             </span></li>
 <li>- should be possible to give it an argument name, and code <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C006221S2_source')" id="l_C006221S2_source">show source</a> ]</span>
-            <div id="C006221S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006241S2_source')" id="l_C006241S2_source">show source</a> ]</span>
+            <div id="C006241S2_source" class="dyn-source">
 <pre>
 y = [] 
 set(1, 2, 3) each(x, y &lt;&lt;(x)) 
@@ -563,8 +569,8 @@ y sort should ==([](1, 2, 3))
             </div>
             </span></li>
 <li>- should return the object <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C006221S3_source')" id="l_C006221S3_source">show source</a> ]</span>
-            <div id="C006221S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006241S3_source')" id="l_C006241S3_source">show source</a> ]</span>
+            <div id="C006241S3_source" class="dyn-source">
 <pre>
 y = set(1, 2, 3) 
 (y each(x, x)) should ==(y) 
@@ -573,8 +579,8 @@ y = set(1, 2, 3)
             </div>
             </span></li>
 <li>- should be possible to give it an extra argument to get the index <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C006221S4_source')" id="l_C006221S4_source">show source</a> ]</span>
-            <div id="C006221S4_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006241S4_source')" id="l_C006241S4_source">show source</a> ]</span>
+            <div id="C006241S4_source" class="dyn-source">
 <pre>
 y = [] 
 set(1, 2, 3, 4) each(i, x, y &lt;&lt;(i)) 
@@ -584,8 +590,8 @@ y should ==([](0, 1, 2, 3))
             </div>
             </span></li>
 <li>- should establish a lexical context when invoking the methods. this context will be the same for all invocations. <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C006221S5_source')" id="l_C006221S5_source">show source</a> ]</span>
-            <div id="C006221S5_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006241S5_source')" id="l_C006241S5_source">show source</a> ]</span>
+            <div id="C006241S5_source" class="dyn-source">
 <pre>
 set(1, 2, 3) each(x_set_spec, blarg_set_spec = 32) 
 cell?(:x_set_spec) should be false 
@@ -598,8 +604,8 @@ x should ==(14)
             </div>
             </span></li>
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C006221S6_source')" id="l_C006221S6_source">show source</a> ]</span>
-            <div id="C006221S6_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006241S6_source')" id="l_C006241S6_source">show source</a> ]</span>
+            <div id="C006241S6_source" class="dyn-source">
 <pre>
 Set should checkReceiverTypeOn(:each, "foo") 
 
@@ -612,17 +618,18 @@ Set should checkReceiverTypeOn(:each, "foo")
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00617"></a><b>empty?</b>()
+          <a name="C00619"></a><b>empty?</b>()
           </div>
           <div class="description">
             <p>returns true if this set is empty, false otherwise</p>
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>Set empty?</b><br/>
+<ul style="list-style-type: none;">
 <li>- should return true for an empty set <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C006171S0_source')" id="l_C006171S0_source">show source</a> ]</span>
-            <div id="C006171S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006191S0_source')" id="l_C006191S0_source">show source</a> ]</span>
+            <div id="C006191S0_source" class="dyn-source">
 <pre>
 x = set 
 x empty? should be true 
@@ -631,8 +638,8 @@ x empty? should be true
             </div>
             </span></li>
 <li>- should return false for an non empty set <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C006171S1_source')" id="l_C006171S1_source">show source</a> ]</span>
-            <div id="C006171S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006191S1_source')" id="l_C006191S1_source">show source</a> ]</span>
+            <div id="C006191S1_source" class="dyn-source">
 <pre>
 x = set(1) 
 x empty? should be false 
@@ -643,8 +650,8 @@ x empty? should be false
             </div>
             </span></li>
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C006171S2_source')" id="l_C006171S2_source">show source</a> ]</span>
-            <div id="C006171S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006191S2_source')" id="l_C006191S2_source">show source</a> ]</span>
+            <div id="C006191S2_source" class="dyn-source">
 <pre>
 Set should checkReceiverTypeOn(:empty?) 
 
@@ -657,14 +664,14 @@ Set should checkReceiverTypeOn(:empty?)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00623"></a><b>ifEmpty</b>(...)
+          <a name="C00625"></a><b>ifEmpty</b>(...)
           </div>
           <div class="description">
             <p>if this set is empty, returns the result of evaluating the argument, otherwise returns the set</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00623_source')" id="l_C00623_source">show source</a> ]</p>
-            <div id="C00623_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00625_source')" id="l_C00625_source">show source</a> ]</p>
+            <div id="C00625_source" class="dyn-source">
 <pre>
 macro(
   argCount = call arguments length 
@@ -684,10 +691,11 @@ macro(
             </div>
             </div>
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>Set ifEmpty</b><br/>
+<ul style="list-style-type: none;">
 <li>- should just return itself if not empty <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C006231S0_source')" id="l_C006231S0_source">show source</a> ]</span>
-            <div id="C006231S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006251S0_source')" id="l_C006251S0_source">show source</a> ]</span>
+            <div id="C006251S0_source" class="dyn-source">
 <pre>
 set(1) ifEmpty(x /(0)) should ==(set(1)) 
 set(1, 2, 3) ifEmpty(x /(0)) should ==(set(1, 2, 3)) 
@@ -698,8 +706,8 @@ x ifEmpty(blarg) should be same(x)
             </div>
             </span></li>
 <li>- should return the result of evaluating the code if empty <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C006231S1_source')" id="l_C006231S1_source">show source</a> ]</span>
-            <div id="C006231S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006251S1_source')" id="l_C006251S1_source">show source</a> ]</span>
+            <div id="C006251S1_source" class="dyn-source">
 <pre>
 set ifEmpty(42) should ==(42) 
 set ifEmpty([](1, 2, 3)) should ==([](1, 2, 3)) 
@@ -713,17 +721,18 @@ set ifEmpty([](1, 2, 3)) should ==([](1, 2, 3))
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00621"></a><b>include?</b>(object)
+          <a name="C00623"></a><b>include?</b>(object)
           </div>
           <div class="description">
             <p>returns true if the receiver includes the evaluated argument, otherwise false</p>
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>Set include?</b><br/>
+<ul style="list-style-type: none;">
 <li>- should match something in the set <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C006211S0_source')" id="l_C006211S0_source">show source</a> ]</span>
-            <div id="C006211S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006231S0_source')" id="l_C006231S0_source">show source</a> ]</span>
+            <div id="C006231S0_source" class="dyn-source">
 <pre>
 set(1) include?(1) should be true 
 set(1, 2) include?(2) should be true 
@@ -734,8 +743,8 @@ set("foo", "bar") include?("foo") should be true
             </div>
             </span></li>
 <li>- should not match something not in the set <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C006211S1_source')" id="l_C006211S1_source">show source</a> ]</span>
-            <div id="C006211S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006231S1_source')" id="l_C006231S1_source">show source</a> ]</span>
+            <div id="C006231S1_source" class="dyn-source">
 <pre>
 set(1) include?(2) should be false 
 set(1, 2) include?(3) should be false 
@@ -746,8 +755,8 @@ set("foo", "bar") include?(:bar) should be false
             </div>
             </span></li>
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C006211S2_source')" id="l_C006211S2_source">show source</a> ]</span>
-            <div id="C006211S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006231S2_source')" id="l_C006231S2_source">show source</a> ]</span>
+            <div id="C006231S2_source" class="dyn-source">
 <pre>
 Set should checkReceiverTypeOn(:include?, 42) 
 
@@ -760,17 +769,18 @@ Set should checkReceiverTypeOn(:include?, 42)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00614"></a><b>inspect</b>()
+          <a name="C00616"></a><b>inspect</b>()
           </div>
           <div class="description">
             <p>Returns a text inspection of the object</p>
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>Set inspect</b><br/>
+<ul style="list-style-type: none;">
 <li>- should return something inside of a call to set <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C006141S0_source')" id="l_C006141S0_source">show source</a> ]</span>
-            <div id="C006141S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006161S0_source')" id="l_C006161S0_source">show source</a> ]</span>
+            <div id="C006161S0_source" class="dyn-source">
 <pre>
 set inspect should ==("set()") 
 set inspect should ==("set()") 
@@ -780,8 +790,8 @@ set(1) inspect should ==("set(1)")
             </div>
             </span></li>
 <li>- should use inspect format for things inside <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C006141S1_source')" id="l_C006141S1_source">show source</a> ]</span>
-            <div id="C006141S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006161S1_source')" id="l_C006161S1_source">show source</a> ]</span>
+            <div id="C006161S1_source" class="dyn-source">
 <pre>
 set(method(foo bar baz)) inspect should ==("set(method(foo bar baz))") 
 
@@ -789,8 +799,8 @@ set(method(foo bar baz)) inspect should ==("set(method(foo bar baz))")
             </div>
             </span></li>
 <li>- should return all the elements separated by commas <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C006141S2_source')" id="l_C006141S2_source">show source</a> ]</span>
-            <div id="C006141S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006161S2_source')" id="l_C006161S2_source">show source</a> ]</span>
+            <div id="C006161S2_source" class="dyn-source">
 <pre>
 val = set(1, 2, 2, 2) inspect 
 
@@ -800,8 +810,8 @@ val = set(1, 2, 2, 2) inspect
             </div>
             </span></li>
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C006141S3_source')" id="l_C006141S3_source">show source</a> ]</span>
-            <div id="C006141S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006161S3_source')" id="l_C006161S3_source">show source</a> ]</span>
+            <div id="C006161S3_source" class="dyn-source">
 <pre>
 Set should checkReceiverTypeOn(:inspect) 
 
@@ -814,17 +824,18 @@ Set should checkReceiverTypeOn(:inspect)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00616"></a><b>notice</b>()
+          <a name="C00618"></a><b>notice</b>()
           </div>
           <div class="description">
             <p>Returns a brief text inspection of the object</p>
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>Set notice</b><br/>
+<ul style="list-style-type: none;">
 <li>- should return something inside of a call to set <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C006161S0_source')" id="l_C006161S0_source">show source</a> ]</span>
-            <div id="C006161S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006181S0_source')" id="l_C006181S0_source">show source</a> ]</span>
+            <div id="C006181S0_source" class="dyn-source">
 <pre>
 set notice should ==("set()") 
 set notice should ==("set()") 
@@ -834,8 +845,8 @@ set(1) notice should ==("set(1)")
             </div>
             </span></li>
 <li>- should use notice format for things inside <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C006161S1_source')" id="l_C006161S1_source">show source</a> ]</span>
-            <div id="C006161S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006181S1_source')" id="l_C006181S1_source">show source</a> ]</span>
+            <div id="C006181S1_source" class="dyn-source">
 <pre>
 set(method(foo bar baz)) notice should ==("set(method(...))") 
 
@@ -843,8 +854,8 @@ set(method(foo bar baz)) notice should ==("set(method(...))")
             </div>
             </span></li>
 <li>- should return all the elements separated by commas <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C006161S2_source')" id="l_C006161S2_source">show source</a> ]</span>
-            <div id="C006161S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006181S2_source')" id="l_C006181S2_source">show source</a> ]</span>
+            <div id="C006181S2_source" class="dyn-source">
 <pre>
 val = set(1, 2, 2, 2) notice 
 (val ==("set(1, 2)")) ||((val ==("set(2, 1)")) should be true) 
@@ -853,8 +864,8 @@ val = set(1, 2, 2, 2) notice
             </div>
             </span></li>
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C006161S3_source')" id="l_C006161S3_source">show source</a> ]</span>
-            <div id="C006161S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006181S3_source')" id="l_C006181S3_source">show source</a> ]</span>
+            <div id="C006181S3_source" class="dyn-source">
 <pre>
 Set should checkReceiverTypeOn(:notice) 
 
@@ -867,17 +878,18 @@ Set should checkReceiverTypeOn(:notice)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00619"></a><b>remove!</b>(value)
+          <a name="C00621"></a><b>remove!</b>(value)
           </div>
           <div class="description">
             <p>Removes the argument from the set, if it's in the set. Returns the set after removing the object.</p>
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>Set remove!</b><br/>
+<ul style="list-style-type: none;">
 <li>- should remove entry from set <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C006191S0_source')" id="l_C006191S0_source">show source</a> ]</span>
-            <div id="C006191S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006211S0_source')" id="l_C006211S0_source">show source</a> ]</span>
+            <div id="C006211S0_source" class="dyn-source">
 <pre>
 set(1, 2) remove!(1) should ==(set(2)) 
 
@@ -885,8 +897,8 @@ set(1, 2) remove!(1) should ==(set(2))
             </div>
             </span></li>
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C006191S1_source')" id="l_C006191S1_source">show source</a> ]</span>
-            <div id="C006191S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006211S1_source')" id="l_C006211S1_source">show source</a> ]</span>
+            <div id="C006211S1_source" class="dyn-source">
 <pre>
 Set should checkReceiverTypeOn(:remove!, 42) 
 
@@ -899,17 +911,18 @@ Set should checkReceiverTypeOn(:remove!, 42)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00615"></a><b>withIdentitySemantics!</b>()
+          <a name="C00617"></a><b>withIdentitySemantics!</b>()
           </div>
           <div class="description">
             <p>Converts this set to use identity semantics, and then returns it.</p>
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>Set withIdentitySemantics!</b><br/>
+<ul style="list-style-type: none;">
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C006151S0_source')" id="l_C006151S0_source">show source</a> ]</span>
-            <div id="C006151S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006171S0_source')" id="l_C006171S0_source">show source</a> ]</span>
+            <div id="C006171S0_source" class="dyn-source">
 <pre>
 Set should checkReceiverTypeOn(:withIdentitySemantics!) 
 

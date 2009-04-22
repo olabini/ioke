@@ -90,16 +90,16 @@ A DateTime represents the current date and time in a particular time zone.
 
         <div class="sectiontitle">Inactive cells</div>
         <ul>
-          <li><a href="#C00647">kind</a></li>
+          <li><a href="#C00649">kind</a></li>
 
         </ul>        
 
         <div class="sectiontitle">Active cells</div>
         <ul>
-          <li><a href="#C00649">-(subtrahend)</a></li>
-<li><a href="#C00650">inspect()</a></li>
-<li><a href="#C00651">notice()</a></li>
-<li><a href="#C00648">now()</a></li>
+          <li><a href="#C00651">-(subtrahend)</a></li>
+<li><a href="#C00652">inspect()</a></li>
+<li><a href="#C00653">notice()</a></li>
+<li><a href="#C00650">now()</a></li>
 
         </ul>
 
@@ -120,7 +120,7 @@ DateTime should have kind("DateTime")
 
         <div class="sectiontitle">Inactive cells (details)</div>
                 <div class="cell">
-          <a name="C00647"></a>
+          <a name="C00649"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">kind</td>
@@ -134,17 +134,18 @@ DateTime should have kind("DateTime")
         <div class="sectiontitle">Active cells (details)</div>
                 <div class="cell">
           <div class="title">
-          <a name="C00649"></a><b>-</b>(subtrahend)
+          <a name="C00651"></a><b>-</b>(subtrahend)
           </div>
           <div class="description">
             <p>Expects to get one DateTime as argument, and returns the difference between this instant and that instant, in milliseconds.</p>
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>DateTime -</b><br/>
+<ul style="list-style-type: none;">
 <li>- should validate type of argument <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C006491S0_source')" id="l_C006491S0_source">show source</a> ]</span>
-            <div id="C006491S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006511S0_source')" id="l_C006511S0_source">show source</a> ]</span>
+            <div id="C006511S0_source" class="dyn-source">
 <pre>
 fn(DateTime -(4)) should signal(Condition Error Type IncorrectType) 
 
@@ -152,8 +153,8 @@ fn(DateTime -(4)) should signal(Condition Error Type IncorrectType)
             </div>
             </span></li>
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C006491S1_source')" id="l_C006491S1_source">show source</a> ]</span>
-            <div id="C006491S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006511S1_source')" id="l_C006511S1_source">show source</a> ]</span>
+            <div id="C006511S1_source" class="dyn-source">
 <pre>
 DateTime should checkReceiverTypeOn(:("-"), DateTime now) 
 
@@ -166,17 +167,18 @@ DateTime should checkReceiverTypeOn(:("-"), DateTime now)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00650"></a><b>inspect</b>()
+          <a name="C00652"></a><b>inspect</b>()
           </div>
           <div class="description">
             <p>Returns a text inspection of the object</p>
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>DateTime inspect</b><br/>
+<ul style="list-style-type: none;">
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C006501S0_source')" id="l_C006501S0_source">show source</a> ]</span>
-            <div id="C006501S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006521S0_source')" id="l_C006521S0_source">show source</a> ]</span>
+            <div id="C006521S0_source" class="dyn-source">
 <pre>
 DateTime should checkReceiverTypeOn(:inspect) 
 
@@ -189,17 +191,18 @@ DateTime should checkReceiverTypeOn(:inspect)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00651"></a><b>notice</b>()
+          <a name="C00653"></a><b>notice</b>()
           </div>
           <div class="description">
             <p>Returns a brief text inspection of the object</p>
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>DateTime notice</b><br/>
+<ul style="list-style-type: none;">
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C006511S0_source')" id="l_C006511S0_source">show source</a> ]</span>
-            <div id="C006511S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006531S0_source')" id="l_C006531S0_source">show source</a> ]</span>
+            <div id="C006531S0_source" class="dyn-source">
 <pre>
 DateTime should checkReceiverTypeOn(:notice) 
 
@@ -212,7 +215,7 @@ DateTime should checkReceiverTypeOn(:notice)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00648"></a><b>now</b>()
+          <a name="C00650"></a><b>now</b>()
           </div>
           <div class="description">
             <p>Returns a new DateTime representing the current instant in time in the default TimeZone.</p>

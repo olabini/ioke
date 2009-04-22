@@ -207,7 +207,8 @@ Base cell?(:mimic) should be true
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>Base cell</b><br/>
+<ul style="list-style-type: none;">
 <li>- should be possible to get a cell using a Text argument <span class="sourcecode">
             <span class="source-link">[ <a href="javascript:toggleSource('C0081S0_source')" id="l_C0081S0_source">show source</a> ]</span>
             <div id="C0081S0_source" class="dyn-source">
@@ -265,7 +266,8 @@ fn(cell("clurg")) should signal(Condition Error NoSuchCell)
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>Base cell=</b><br/>
+<ul style="list-style-type: none;">
 <li>- should be possible to set a cell using a Text argument <span class="sourcecode">
             <span class="source-link">[ <a href="javascript:toggleSource('C00161S0_source')" id="l_C00161S0_source">show source</a> ]</span>
             <div id="C00161S0_source" class="dyn-source">
@@ -368,7 +370,8 @@ two x should ==(43)
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>Base cell?</b><br/>
+<ul style="list-style-type: none;">
 <li>- should be possible to check for the existance of a cell using a text argument <span class="sourcecode">
             <span class="source-link">[ <a href="javascript:toggleSource('C0091S0_source')" id="l_C0091S0_source">show source</a> ]</span>
             <div id="C0091S0_source" class="dyn-source">
@@ -429,7 +432,8 @@ cell?(:Ground) should be true
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>Base cellNames</b><br/>
+<ul style="list-style-type: none;">
 <li>- should return the cell names of this object by default <span class="sourcecode">
             <span class="source-link">[ <a href="javascript:toggleSource('C00141S0_source')" id="l_C00141S0_source">show source</a> ]</span>
             <div id="C00141S0_source" class="dyn-source">
@@ -461,9 +465,9 @@ iokeGroundNames = IokeGround cells keys sort
 groundNames = Ground cells keys sort 
 originNames = Origin cells keys sort 
 
-javaGroundAllNames = JavaGround cells keys sort 
-groundAllNames = set(*(iokeGroundNames +(groundNames) +(javaGroundAllNames) +(baseNames) +(defaultBehaviorAllNames))) sort 
-originAllNames = set(*(originNames +(groundAllNames) +(javaGroundAllNames))) sort 
+nativeGroundAllNames = if(System feature?(:java), JavaGround cells keys sort, []) 
+groundAllNames = set(*(iokeGroundNames +(groundNames) +(nativeGroundAllNames) +(baseNames) +(defaultBehaviorAllNames))) sort 
+originAllNames = set(*(originNames +(groundAllNames) +(nativeGroundAllNames))) sort 
 Base cellNames sort should ==(baseNames) 
 Base cellNames(false) sort should ==(baseNames) 
 Base cellNames(true) sort should ==(baseNames) 
@@ -498,7 +502,8 @@ Text x cellNames(true) sort should ==(([](:foxy_base_spec) +(originAllNames)) so
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>Base cellOwner</b><br/>
+<ul style="list-style-type: none;">
 <li>- should return the closest owner of a cell <span class="sourcecode">
             <span class="source-link">[ <a href="javascript:toggleSource('C00111S0_source')" id="l_C00111S0_source">show source</a> ]</span>
             <div id="C00111S0_source" class="dyn-source">
@@ -546,7 +551,8 @@ fn(Origin cellOwner(:test_cell_owner)) should returnFromRestart(:ignore) ==(nil)
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>Base cellOwner?</b><br/>
+<ul style="list-style-type: none;">
 <li>- should return true if the cell name is owned by this object <span class="sourcecode">
             <span class="source-link">[ <a href="javascript:toggleSource('C00101S0_source')" id="l_C00101S0_source">show source</a> ]</span>
             <div id="C00101S0_source" class="dyn-source">
@@ -605,7 +611,8 @@ fn(Origin cellOwner?(:test_cell_owner)) should returnFromRestart(:ignore) ==(fal
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>Base cells</b><br/>
+<ul style="list-style-type: none;">
 <li>- should return the cells of this object by default <span class="sourcecode">
             <span class="source-link">[ <a href="javascript:toggleSource('C00151S0_source')" id="l_C00151S0_source">show source</a> ]</span>
             <div id="C00151S0_source" class="dyn-source">
@@ -689,7 +696,8 @@ x cells(true) should ==({}(
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>Base documentation</b><br/>
+<ul style="list-style-type: none;">
 <li>- should return nil for a new object <span class="sourcecode">
             <span class="source-link">[ <a href="javascript:toggleSource('C0031S0_source')" id="l_C0031S0_source">show source</a> ]</span>
             <div id="C0031S0_source" class="dyn-source">
@@ -721,15 +729,16 @@ Origin documentation should ==("Any object created from scratch should usually b
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>Base documentation=</b><br/>
+<ul style="list-style-type: none;">
 <li>- should set the documentation for an object <span class="sourcecode">
             <span class="source-link">[ <a href="javascript:toggleSource('C0051S0_source')" id="l_C0051S0_source">show source</a> ]</span>
             <div id="C0051S0_source" class="dyn-source">
 <pre>
 x = Origin mimic 
-x cell(:documentation) kind should ==("JavaMethod") 
+x cell(:documentation) kind should ==("NativeMethod") 
 x documentation = "Wow, you didn't believe that, right?" 
-x cell(:documentation) kind should ==("JavaMethod") 
+x cell(:documentation) kind should ==("NativeMethod") 
 x documentation should ==("Wow, you didn't believe that, right?") 
 
 </pre>
@@ -766,7 +775,8 @@ fn(Origin mimic documentation = []) should signal(Condition Error Type Incorrect
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>Base identity</b><br/>
+<ul style="list-style-type: none;">
 <li>- should return a newly created Origin <span class="sourcecode">
             <span class="source-link">[ <a href="javascript:toggleSource('C0041S0_source')" id="l_C0041S0_source">show source</a> ]</span>
             <div id="C0041S0_source" class="dyn-source">
@@ -790,7 +800,8 @@ x identity should be same(x)
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>Base mimic</b><br/>
+<ul style="list-style-type: none;">
 <li>- should be able to mimic Origin <span class="sourcecode">
             <span class="source-link">[ <a href="javascript:toggleSource('C0061S0_source')" id="l_C0061S0_source">show source</a> ]</span>
             <div id="C0061S0_source" class="dyn-source">
@@ -856,7 +867,8 @@ fn(nil mimic) should signal(Condition Error CantMimicOddball)
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>Base removeCell!</b><br/>
+<ul style="list-style-type: none;">
 <li>- should remove the cell <span class="sourcecode">
             <span class="source-link">[ <a href="javascript:toggleSource('C00121S0_source')" id="l_C00121S0_source">show source</a> ]</span>
             <div id="C00121S0_source" class="dyn-source">
@@ -918,7 +930,8 @@ y foo should ==("blurg")
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>Base undefineCell!</b><br/>
+<ul style="list-style-type: none;">
 <li>- should remove the cell <span class="sourcecode">
             <span class="source-link">[ <a href="javascript:toggleSource('C00131S0_source')" id="l_C00131S0_source">show source</a> ]</span>
             <div id="C00131S0_source" class="dyn-source">

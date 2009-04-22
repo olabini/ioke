@@ -90,25 +90,25 @@ A lexical block allows you to delay a computation in a specific lexical context.
 
         <div class="sectiontitle">Inactive cells</div>
         <ul>
-          <li><a href="#C00421">kind</a></li>
+          <li><a href="#C00423">kind</a></li>
 
         </ul>        
 
         <div class="sectiontitle">Active cells</div>
         <ul>
-          <li><a href="#C00432">===(other)</a></li>
-<li><a href="#C00427">argumentNames()</a></li>
-<li><a href="#C00425">argumentsCode()</a></li>
-<li><a href="#C00433">arity()</a></li>
-<li><a href="#C00423">call(+[arguments])</a></li>
-<li><a href="#C00424">code()</a></li>
-<li><a href="#C00422">createFrom(messageList, lexicalContext)</a></li>
-<li><a href="#C00431">formattedCode()</a></li>
-<li><a href="#C00429">inspect()</a></li>
-<li><a href="#C00434">java:coerceCode(javaType, abstractNames)</a></li>
-<li><a href="#C00426">keywords()</a></li>
-<li><a href="#C00428">message()</a></li>
-<li><a href="#C00430">notice()</a></li>
+          <li><a href="#C00434">===(other)</a></li>
+<li><a href="#C00429">argumentNames()</a></li>
+<li><a href="#C00427">argumentsCode()</a></li>
+<li><a href="#C00435">arity()</a></li>
+<li><a href="#C00425">call(+[arguments])</a></li>
+<li><a href="#C00426">code()</a></li>
+<li><a href="#C00424">createFrom(messageList, lexicalContext)</a></li>
+<li><a href="#C00433">formattedCode()</a></li>
+<li><a href="#C00431">inspect()</a></li>
+<li><a href="#C00436">java:coerceCode(javaType, abstractNames)</a></li>
+<li><a href="#C00428">keywords()</a></li>
+<li><a href="#C00430">message()</a></li>
+<li><a href="#C00432">notice()</a></li>
 
         </ul>
 
@@ -628,7 +628,7 @@ norest(*([](1, 2))) should ==([](1, 2))
 
         <div class="sectiontitle">Inactive cells (details)</div>
                 <div class="cell">
-          <a name="C00421"></a>
+          <a name="C00423"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">kind</td>
@@ -642,14 +642,14 @@ norest(*([](1, 2))) should ==([](1, 2))
         <div class="sectiontitle">Active cells (details)</div>
                 <div class="cell">
           <div class="title">
-          <a name="C00432"></a><b>===</b>(other)
+          <a name="C00434"></a><b>===</b>(other)
           </div>
           <div class="description">
             <p>nil</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00432_source')" id="l_C00432_source">show source</a> ]</p>
-            <div id="C00432_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00434_source')" id="l_C00434_source">show source</a> ]</p>
+            <div id="C00434_source" class="dyn-source">
 <pre>
 method(other, 
   if(self same?(
@@ -668,17 +668,18 @@ method(other,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00427"></a><b>argumentNames</b>()
+          <a name="C00429"></a><b>argumentNames</b>()
           </div>
           <div class="description">
             <p>returns a list of the argument names the positional arguments this block takes</p>
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>LexicalBlock argumentNames</b><br/>
+<ul style="list-style-type: none;">
 <li>- should return an empty list for a simple fn <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004271S0_source')" id="l_C004271S0_source">show source</a> ]</span>
-            <div id="C004271S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004291S0_source')" id="l_C004291S0_source">show source</a> ]</span>
+            <div id="C004291S0_source" class="dyn-source">
 <pre>
 fn argumentNames should ==([]) 
 
@@ -686,8 +687,8 @@ fn argumentNames should ==([])
             </div>
             </span></li>
 <li>- should return an the argument names as symbols for a block <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004271S1_source')" id="l_C004271S1_source">show source</a> ]</span>
-            <div id="C004271S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004291S1_source')" id="l_C004291S1_source">show source</a> ]</span>
+            <div id="C004291S1_source" class="dyn-source">
 <pre>
 fn(x, x) argumentNames should ==([](:x)) 
 fn(x, y 12, x) argumentNames should ==([](:x, :y)) 
@@ -703,7 +704,7 @@ fn(y: 12, x, x) argumentNames should ==([](:x))
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00425"></a><b>argumentsCode</b>()
+          <a name="C00427"></a><b>argumentsCode</b>()
           </div>
           <div class="description">
             <p>returns the code for the argument definition</p>
@@ -715,14 +716,14 @@ fn(y: 12, x, x) argumentNames should ==([](:x))
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00433"></a><b>arity</b>()
+          <a name="C00435"></a><b>arity</b>()
           </div>
           <div class="description">
             <p>nil</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00433_source')" id="l_C00433_source">show source</a> ]</p>
-            <div id="C00433_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00435_source')" id="l_C00435_source">show source</a> ]</p>
+            <div id="C00435_source" class="dyn-source">
 <pre>
 method(
   Arity fromArgumentsCode(argumentsCode))
@@ -735,7 +736,7 @@ method(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00423"></a><b>call</b>(+[arguments])
+          <a name="C00425"></a><b>call</b>(+[arguments])
           </div>
           <div class="description">
             <p>invokes the block with the arguments provided, returning the result of the last expression in the block</p>
@@ -747,7 +748,7 @@ method(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00424"></a><b>code</b>()
+          <a name="C00426"></a><b>code</b>()
           </div>
           <div class="description">
             <p>returns the full code of this lexical block, as a Text</p>
@@ -759,7 +760,7 @@ method(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00422"></a><b>createFrom</b>(messageList, lexicalContext)
+          <a name="C00424"></a><b>createFrom</b>(messageList, lexicalContext)
           </div>
           <div class="description">
             <p>takes two evaluated arguments, where this first one is a list of messages which will be used as the arguments and the code, and the second is the context where this lexical scope should be created in</p>
@@ -771,7 +772,7 @@ method(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00431"></a><b>formattedCode</b>()
+          <a name="C00433"></a><b>formattedCode</b>()
           </div>
           <div class="description">
             <p>returns idiomatically formatted code for this lexical block</p>
@@ -783,17 +784,18 @@ method(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00429"></a><b>inspect</b>()
+          <a name="C00431"></a><b>inspect</b>()
           </div>
           <div class="description">
             <p>Returns a text inspection of the object</p>
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>LexicalBlock inspect</b><br/>
+<ul style="list-style-type: none;">
 <li>- should return the code inside the method <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004291S0_source')" id="l_C004291S0_source">show source</a> ]</span>
-            <div id="C004291S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004311S0_source')" id="l_C004311S0_source">show source</a> ]</span>
+            <div id="C004311S0_source" class="dyn-source">
 <pre>
 fn(foo bar) inspect should ==("fn(foo bar)") 
 fn(123 +(444)) inspect should ==("fn(123 +(444))") 
@@ -804,8 +806,8 @@ fnx(123 +(444)) inspect should ==("fnx(123 +(444))")
             </div>
             </span></li>
 <li>- should include any argument names provided <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004291S1_source')" id="l_C004291S1_source">show source</a> ]</span>
-            <div id="C004291S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004311S1_source')" id="l_C004311S1_source">show source</a> ]</span>
+            <div id="C004311S1_source" class="dyn-source">
 <pre>
 fn(x, foo bar) inspect should ==("fn(x, foo bar)") 
 fn(y, foo 123, 123 +(444)) inspect should ==("fn(y, foo 123, 123 +(444))") 
@@ -821,14 +823,14 @@ fnx(y, foo 123, 123 +(444)) inspect should ==("fnx(y, foo 123, 123 +(444))")
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00434"></a><b>java:coerceCode</b>(javaType, abstractNames)
+          <a name="C00436"></a><b>java:coerceCode</b>(javaType, abstractNames)
           </div>
           <div class="description">
             <p>nil</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00434_source')" id="l_C00434_source">show source</a> ]</p>
-            <div id="C00434_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00436_source')" id="l_C00436_source">show source</a> ]</p>
+            <div id="C00436_source" class="dyn-source">
 <pre>
 method(javaType, abstractNames, 
   proxy = integrate(javaType) mimic 
@@ -847,7 +849,7 @@ method(javaType, abstractNames,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00426"></a><b>keywords</b>()
+          <a name="C00428"></a><b>keywords</b>()
           </div>
           <div class="description">
             <p>returns a list of the keywords this block takes</p>
@@ -859,7 +861,7 @@ method(javaType, abstractNames,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00428"></a><b>message</b>()
+          <a name="C00430"></a><b>message</b>()
           </div>
           <div class="description">
             <p>returns the message chain for this block</p>
@@ -871,17 +873,18 @@ method(javaType, abstractNames,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00430"></a><b>notice</b>()
+          <a name="C00432"></a><b>notice</b>()
           </div>
           <div class="description">
             <p>Returns a brief text inspection of the object</p>
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>LexicalBlock notice</b><br/>
+<ul style="list-style-type: none;">
 <li>- should just return a simple description without code <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004301S0_source')" id="l_C004301S0_source">show source</a> ]</span>
-            <div id="C004301S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004321S0_source')" id="l_C004321S0_source">show source</a> ]</span>
+            <div id="C004321S0_source" class="dyn-source">
 <pre>
 fn notice should ==("fn(...)") 
 fn(nil) notice should ==("fn(...)") 

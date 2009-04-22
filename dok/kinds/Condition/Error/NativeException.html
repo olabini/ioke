@@ -57,7 +57,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
               <td class="file-title" colspan="2">
                 <span class="file-title-prefix">Kind</span>
                 <br />
-                Condition Error IO
+                Condition Error NativeException
               </td>
               <td align="right">
                 <table cellspacing="0" cellpadding="2">
@@ -90,13 +90,14 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 
         <div class="sectiontitle">Inactive cells</div>
         <ul>
-          <li><a href="#C00736">kind</a></li>
+          <li><a href="#C00749">kind</a></li>
 
         </ul>        
 
         <div class="sectiontitle">Active cells</div>
         <ul>
-          
+          <li><a href="#C00750">report()</a></li>
+
         </ul>
 
         <div class="sectiontitle">Specs</div>
@@ -106,7 +107,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
             <span class="source-link">[ <a href="javascript:toggleSource('C00K01S0_source')" id="l_C00K01S0_source">show source</a> ]</span>
             <div id="C00K01S0_source" class="dyn-source">
 <pre>
-Condition Error IO should have kind("Condition Error IO") 
+Condition Error NativeException should have kind("Condition Error NativeException") 
 
 </pre>
             </div>
@@ -116,19 +117,45 @@ Condition Error IO should have kind("Condition Error IO")
 
         <div class="sectiontitle">Inactive cells (details)</div>
                 <div class="cell">
-          <a name="C00736"></a>
+          <a name="C00749"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">kind</td>
               <td>=</td>
-              <td class="cell-value">"Condition Error IO"</td>
+              <td class="cell-value">"Condition Error NativeException"</td>
             </tr>
           </table>
         </div>
 
 
         <div class="sectiontitle">Active cells (details)</div>
-        
+                <div class="cell">
+          <div class="title">
+          <a name="C00750"></a><b>report</b>()
+          </div>
+          <div class="description">
+            <p>returns a representation of this error, showing some information about the native exception</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00750_source')" id="l_C00750_source">show source</a> ]</p>
+            <div id="C00750_source" class="dyn-source">
+<pre>
+method(
+  stackTrace = "%[  %s\n%]" format(self exceptionStackTrace) 
+  "#{self exceptionType}: #{self exceptionMessage} (#{self kind})
+
+#{stackTrace}
+
+#{message asStackTraceText}
+#{context stackTraceAsText}")
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+
 
       </div>
     </div>

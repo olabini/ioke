@@ -90,14 +90,14 @@ Runtime gives meta-circular access to the currently executing Ioke runtime.
 
         <div class="sectiontitle">Inactive cells</div>
         <ul>
-          <li><a href="#C00252">kind</a></li>
-<li><a href="#C00254">version</a></li>
+          <li><a href="#C00253">kind</a></li>
+<li><a href="#C00255">version</a></li>
 
         </ul>        
 
         <div class="sectiontitle">Active cells</div>
         <ul>
-          <li><a href="#C00253">notice()</a></li>
+          <li><a href="#C00254">notice()</a></li>
 
         </ul>
 
@@ -118,7 +118,7 @@ Runtime should have kind("Runtime")
 
         <div class="sectiontitle">Inactive cells (details)</div>
                 <div class="cell">
-          <a name="C00252"></a>
+          <a name="C00253"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">kind</td>
@@ -128,12 +128,12 @@ Runtime should have kind("Runtime")
           </table>
         </div>
         <div class="cell">
-          <a name="C00254"></a>
+          <a name="C00255"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">version</td>
               <td>=</td>
-              <td class="cell-value">Origin_0x13D48D9</td>
+              <td class="cell-value">Origin_0x1398DD</td>
             </tr>
           </table>
         </div>
@@ -142,14 +142,14 @@ Runtime should have kind("Runtime")
         <div class="sectiontitle">Active cells (details)</div>
                 <div class="cell">
           <div class="title">
-          <a name="C00253"></a><b>notice</b>()
+          <a name="C00254"></a><b>notice</b>()
           </div>
           <div class="description">
             <p>returns a short text description of the receiver, the text Runtime if this is the main Runtime object, otherwise falls back to the super implementation</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00253_source')" id="l_C00253_source">show source</a> ]</p>
-            <div id="C00253_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00254_source')" id="l_C00254_source">show source</a> ]</p>
+            <div id="C00254_source" class="dyn-source">
 <pre>
 method(
   if(cell(:self) ==(Runtime), 
@@ -159,10 +159,11 @@ method(
             </div>
             </div>
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>Runtime notice</b><br/>
+<ul style="list-style-type: none;">
 <li>- should return 'Runtime <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C002531S0_source')" id="l_C002531S0_source">show source</a> ]</span>
-            <div id="C002531S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002541S0_source')" id="l_C002541S0_source">show source</a> ]</span>
+            <div id="C002541S0_source" class="dyn-source">
 <pre>
 Runtime notice should ==("Runtime") 
 
@@ -170,8 +171,8 @@ Runtime notice should ==("Runtime")
             </div>
             </span></li>
 <li>- should not return 'Runtime' for a mimic <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C002531S1_source')" id="l_C002531S1_source">show source</a> ]</span>
-            <div id="C002531S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002541S1_source')" id="l_C002541S1_source">show source</a> ]</span>
+            <div id="C002541S1_source" class="dyn-source">
 <pre>
 Runtime mimic notice should not ==("Runtime") 
 

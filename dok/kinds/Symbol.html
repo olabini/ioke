@@ -90,17 +90,17 @@ Represents a symbol - an object that always represents itself.
 
         <div class="sectiontitle">Inactive cells</div>
         <ul>
-          <li><a href="#C00283">kind</a></li>
+          <li><a href="#C00285">kind</a></li>
 
         </ul>        
 
         <div class="sectiontitle">Active cells</div>
         <ul>
-          <li><a href="#C00287">&lt;=&gt;(other)</a></li>
-<li><a href="#C00288">===(other)</a></li>
-<li><a href="#C00284">asText()</a></li>
-<li><a href="#C00285">inspect()</a></li>
-<li><a href="#C00286">notice()</a></li>
+          <li><a href="#C00289">&lt;=&gt;(other)</a></li>
+<li><a href="#C00290">===(other)</a></li>
+<li><a href="#C00286">asText()</a></li>
+<li><a href="#C00287">inspect()</a></li>
+<li><a href="#C00288">notice()</a></li>
 
         </ul>
 
@@ -149,7 +149,7 @@ fn(:foo mimic) should signal(Condition Error CantMimicOddball)
 
         <div class="sectiontitle">Inactive cells (details)</div>
                 <div class="cell">
-          <a name="C00283"></a>
+          <a name="C00285"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">kind</td>
@@ -163,17 +163,18 @@ fn(:foo mimic) should signal(Condition Error CantMimicOddball)
         <div class="sectiontitle">Active cells (details)</div>
                 <div class="cell">
           <div class="title">
-          <a name="C00287"></a><b>&lt;=&gt;</b>(other)
+          <a name="C00289"></a><b>&lt;=&gt;</b>(other)
           </div>
           <div class="description">
             <p>compares this symbol against the argument, returning -1, 0 or 1 based on which one is lexically larger</p>
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>Symbol <=></b><br/>
+<ul style="list-style-type: none;">
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C002871S0_source')" id="l_C002871S0_source">show source</a> ]</span>
-            <div id="C002871S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002891S0_source')" id="l_C002891S0_source">show source</a> ]</span>
+            <div id="C002891S0_source" class="dyn-source">
 <pre>
 Symbol should checkReceiverTypeOn(:("&lt;=&gt;"), :arovane) 
 
@@ -186,14 +187,14 @@ Symbol should checkReceiverTypeOn(:("&lt;=&gt;"), :arovane)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00288"></a><b>===</b>(other)
+          <a name="C00290"></a><b>===</b>(other)
           </div>
           <div class="description">
             <p>nil</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00288_source')" id="l_C00288_source">show source</a> ]</p>
-            <div id="C00288_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00290_source')" id="l_C00290_source">show source</a> ]</p>
+            <div id="C00290_source" class="dyn-source">
 <pre>
 method(other, 
   if(self same?(
@@ -212,17 +213,18 @@ method(other,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00284"></a><b>asText</b>()
+          <a name="C00286"></a><b>asText</b>()
           </div>
           <div class="description">
             <p>Returns a text representation of the object</p>
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>Symbol asText</b><br/>
+<ul style="list-style-type: none;">
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C002841S0_source')" id="l_C002841S0_source">show source</a> ]</span>
-            <div id="C002841S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002861S0_source')" id="l_C002861S0_source">show source</a> ]</span>
+            <div id="C002861S0_source" class="dyn-source">
 <pre>
 Symbol should checkReceiverTypeOn(:asText) 
 
@@ -235,17 +237,18 @@ Symbol should checkReceiverTypeOn(:asText)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00285"></a><b>inspect</b>()
+          <a name="C00287"></a><b>inspect</b>()
           </div>
           <div class="description">
             <p>Returns a text inspection of the object</p>
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>Symbol inspect</b><br/>
+<ul style="list-style-type: none;">
 <li>- should return the symbol with a colon in front of it <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C002851S0_source')" id="l_C002851S0_source">show source</a> ]</span>
-            <div id="C002851S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002871S0_source')" id="l_C002871S0_source">show source</a> ]</span>
+            <div id="C002871S0_source" class="dyn-source">
 <pre>
 :foo inspect should ==(":foo") 
 :x inspect should ==(":x") 
@@ -255,8 +258,8 @@ Symbol should checkReceiverTypeOn(:asText)
             </div>
             </span></li>
 <li>- should quote the symbol if necessary <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C002851S1_source')" id="l_C002851S1_source">show source</a> ]</span>
-            <div id="C002851S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002871S1_source')" id="l_C002871S1_source">show source</a> ]</span>
+            <div id="C002871S1_source" class="dyn-source">
 <pre>
 :("=") inspect should ==(":\"=\"") 
 :("") inspect should ==(":\"\"") 
@@ -265,8 +268,8 @@ Symbol should checkReceiverTypeOn(:asText)
             </div>
             </span></li>
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C002851S2_source')" id="l_C002851S2_source">show source</a> ]</span>
-            <div id="C002851S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002871S2_source')" id="l_C002871S2_source">show source</a> ]</span>
+            <div id="C002871S2_source" class="dyn-source">
 <pre>
 Symbol should checkReceiverTypeOn(:inspect) 
 
@@ -279,17 +282,18 @@ Symbol should checkReceiverTypeOn(:inspect)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00286"></a><b>notice</b>()
+          <a name="C00288"></a><b>notice</b>()
           </div>
           <div class="description">
             <p>Returns a brief text inspection of the object</p>
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>Symbol notice</b><br/>
+<ul style="list-style-type: none;">
 <li>- should return the symbol with a colon in front of it <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C002861S0_source')" id="l_C002861S0_source">show source</a> ]</span>
-            <div id="C002861S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002881S0_source')" id="l_C002881S0_source">show source</a> ]</span>
+            <div id="C002881S0_source" class="dyn-source">
 <pre>
 :foo notice should ==(":foo") 
 :x notice should ==(":x") 
@@ -299,8 +303,8 @@ Symbol should checkReceiverTypeOn(:inspect)
             </div>
             </span></li>
 <li>- should quote the symbol if necessary <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C002861S1_source')" id="l_C002861S1_source">show source</a> ]</span>
-            <div id="C002861S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002881S1_source')" id="l_C002881S1_source">show source</a> ]</span>
+            <div id="C002881S1_source" class="dyn-source">
 <pre>
 :("=") notice should ==(":\"=\"") 
 :("") notice should ==(":\"\"") 
@@ -309,8 +313,8 @@ Symbol should checkReceiverTypeOn(:inspect)
             </div>
             </span></li>
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C002861S2_source')" id="l_C002861S2_source">show source</a> ]</span>
-            <div id="C002861S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002881S2_source')" id="l_C002881S2_source">show source</a> ]</span>
+            <div id="C002881S2_source" class="dyn-source">
 <pre>
 Symbol should checkReceiverTypeOn(:notice) 
 

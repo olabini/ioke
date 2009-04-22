@@ -90,23 +90,23 @@ DefaultSyntax is the instance all syntactical macros in the system are derived f
 
         <div class="sectiontitle">Inactive cells</div>
         <ul>
-          <li><a href="#C00458">activatable</a></li>
-<li><a href="#C00457">kind</a></li>
+          <li><a href="#C00460">activatable</a></li>
+<li><a href="#C00459">kind</a></li>
 
         </ul>        
 
         <div class="sectiontitle">Active cells</div>
         <ul>
-          <li><a href="#C00463">argumentsCode()</a></li>
-<li><a href="#C00468">arity()</a></li>
-<li><a href="#C00460">call(+[arguments])</a></li>
-<li><a href="#C00466">code()</a></li>
-<li><a href="#C00461">expand(+[arguments])</a></li>
-<li><a href="#C00467">formattedCode()</a></li>
-<li><a href="#C00464">inspect()</a></li>
-<li><a href="#C00462">message()</a></li>
-<li><a href="#C00459">name()</a></li>
-<li><a href="#C00465">notice()</a></li>
+          <li><a href="#C00465">argumentsCode()</a></li>
+<li><a href="#C00470">arity()</a></li>
+<li><a href="#C00462">call(+[arguments])</a></li>
+<li><a href="#C00468">code()</a></li>
+<li><a href="#C00463">expand(+[arguments])</a></li>
+<li><a href="#C00469">formattedCode()</a></li>
+<li><a href="#C00466">inspect()</a></li>
+<li><a href="#C00464">message()</a></li>
+<li><a href="#C00461">name()</a></li>
+<li><a href="#C00467">notice()</a></li>
 
         </ul>
 
@@ -305,7 +305,7 @@ x_syntax_spec should ==(43)
 
         <div class="sectiontitle">Inactive cells (details)</div>
                 <div class="cell">
-          <a name="C00458"></a>
+          <a name="C00460"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">activatable</td>
@@ -315,7 +315,7 @@ x_syntax_spec should ==(43)
           </table>
         </div>
         <div class="cell">
-          <a name="C00457"></a>
+          <a name="C00459"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">kind</td>
@@ -329,17 +329,18 @@ x_syntax_spec should ==(43)
         <div class="sectiontitle">Active cells (details)</div>
                 <div class="cell">
           <div class="title">
-          <a name="C00463"></a><b>argumentsCode</b>()
+          <a name="C00465"></a><b>argumentsCode</b>()
           </div>
           <div class="description">
             <p>returns the code for the argument definition</p>
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>DefaultSyntax argumentsCode</b><br/>
+<ul style="list-style-type: none;">
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004631S0_source')" id="l_C004631S0_source">show source</a> ]</span>
-            <div id="C004631S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004651S0_source')" id="l_C004651S0_source">show source</a> ]</span>
+            <div id="C004651S0_source" class="dyn-source">
 <pre>
 syntax should checkReceiverTypeOn(:argumentsCode) 
 
@@ -352,14 +353,14 @@ syntax should checkReceiverTypeOn(:argumentsCode)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00468"></a><b>arity</b>()
+          <a name="C00470"></a><b>arity</b>()
           </div>
           <div class="description">
             <p>nil</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00468_source')" id="l_C00468_source">show source</a> ]</p>
-            <div id="C00468_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00470_source')" id="l_C00470_source">show source</a> ]</p>
+            <div id="C00470_source" class="dyn-source">
 <pre>
 method(
   Arity fromArgumentsCode(argumentsCode))
@@ -372,7 +373,7 @@ method(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00460"></a><b>call</b>(+[arguments])
+          <a name="C00462"></a><b>call</b>(+[arguments])
           </div>
           <div class="description">
             <p>activates this syntax with the arguments given to call</p>
@@ -384,17 +385,18 @@ method(
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00466"></a><b>code</b>()
+          <a name="C00468"></a><b>code</b>()
           </div>
           <div class="description">
             <p>returns the full code of this syntax, as a Text</p>
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>DefaultSyntax code</b><br/>
+<ul style="list-style-type: none;">
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004661S0_source')" id="l_C004661S0_source">show source</a> ]</span>
-            <div id="C004661S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004681S0_source')" id="l_C004681S0_source">show source</a> ]</span>
+            <div id="C004681S0_source" class="dyn-source">
 <pre>
 syntax should checkReceiverTypeOn(:code) 
 
@@ -407,17 +409,18 @@ syntax should checkReceiverTypeOn(:code)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00461"></a><b>expand</b>(+[arguments])
+          <a name="C00463"></a><b>expand</b>(+[arguments])
           </div>
           <div class="description">
             <p>returns the result of activating this syntax without actually doing the replacement or execution part.</p>
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>DefaultSyntax expand</b><br/>
+<ul style="list-style-type: none;">
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004611S0_source')" id="l_C004611S0_source">show source</a> ]</span>
-            <div id="C004611S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004631S0_source')" id="l_C004631S0_source">show source</a> ]</span>
+            <div id="C004631S0_source" class="dyn-source">
 <pre>
 syntax should checkReceiverTypeOn(:expand) 
 
@@ -430,17 +433,18 @@ syntax should checkReceiverTypeOn(:expand)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00467"></a><b>formattedCode</b>()
+          <a name="C00469"></a><b>formattedCode</b>()
           </div>
           <div class="description">
             <p>returns idiomatically formatted code for this syntax</p>
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>DefaultSyntax formattedCode</b><br/>
+<ul style="list-style-type: none;">
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004671S0_source')" id="l_C004671S0_source">show source</a> ]</span>
-            <div id="C004671S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004691S0_source')" id="l_C004691S0_source">show source</a> ]</span>
+            <div id="C004691S0_source" class="dyn-source">
 <pre>
 syntax should checkReceiverTypeOn(:formattedCode) 
 
@@ -453,17 +457,18 @@ syntax should checkReceiverTypeOn(:formattedCode)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00464"></a><b>inspect</b>()
+          <a name="C00466"></a><b>inspect</b>()
           </div>
           <div class="description">
             <p>Returns a text inspection of the object</p>
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>DefaultSyntax inspect</b><br/>
+<ul style="list-style-type: none;">
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004641S0_source')" id="l_C004641S0_source">show source</a> ]</span>
-            <div id="C004641S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004661S0_source')" id="l_C004661S0_source">show source</a> ]</span>
+            <div id="C004661S0_source" class="dyn-source">
 <pre>
 syntax should checkReceiverTypeOn(:inspect) 
 
@@ -476,17 +481,18 @@ syntax should checkReceiverTypeOn(:inspect)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00462"></a><b>message</b>()
+          <a name="C00464"></a><b>message</b>()
           </div>
           <div class="description">
             <p>returns the message chain for this syntax</p>
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>DefaultSyntax message</b><br/>
+<ul style="list-style-type: none;">
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004621S0_source')" id="l_C004621S0_source">show source</a> ]</span>
-            <div id="C004621S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004641S0_source')" id="l_C004641S0_source">show source</a> ]</span>
+            <div id="C004641S0_source" class="dyn-source">
 <pre>
 syntax should checkReceiverTypeOn(:message) 
 
@@ -499,17 +505,18 @@ syntax should checkReceiverTypeOn(:message)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00459"></a><b>name</b>()
+          <a name="C00461"></a><b>name</b>()
           </div>
           <div class="description">
             <p>returns the name of the syntax</p>
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>DefaultSyntax name</b><br/>
+<ul style="list-style-type: none;">
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004591S0_source')" id="l_C004591S0_source">show source</a> ]</span>
-            <div id="C004591S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004611S0_source')" id="l_C004611S0_source">show source</a> ]</span>
+            <div id="C004611S0_source" class="dyn-source">
 <pre>
 syntax should checkReceiverTypeOn(:name) 
 
@@ -522,17 +529,18 @@ syntax should checkReceiverTypeOn(:name)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00465"></a><b>notice</b>()
+          <a name="C00467"></a><b>notice</b>()
           </div>
           <div class="description">
             <p>Returns a brief text inspection of the object</p>
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>DefaultSyntax notice</b><br/>
+<ul style="list-style-type: none;">
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C004651S0_source')" id="l_C004651S0_source">show source</a> ]</span>
-            <div id="C004651S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004671S0_source')" id="l_C004671S0_source">show source</a> ]</span>
+            <div id="C004671S0_source" class="dyn-source">
 <pre>
 syntax should checkReceiverTypeOn(:notice) 
 

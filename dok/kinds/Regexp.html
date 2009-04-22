@@ -90,23 +90,23 @@ A regular expression allows you to matching text against a pattern.
 
         <div class="sectiontitle">Inactive cells</div>
         <ul>
-          <li><a href="#C00776">kind</a></li>
+          <li><a href="#C00778">kind</a></li>
 
         </ul>        
 
         <div class="sectiontitle">Active cells</div>
         <ul>
-          <li><a href="#C00802">!~(text)</a></li>
-<li><a href="#C00801">===(other)</a></li>
-<li><a href="#C00794">=~(...)</a></li>
-<li><a href="#C00797">allMatches(other)</a></li>
-<li><a href="#C00796">from(pattern, flags )</a></li>
-<li><a href="#C00798">inspect()</a></li>
-<li><a href="#C00793">match(other)</a></li>
-<li><a href="#C00800">names()</a></li>
-<li><a href="#C00799">notice()</a></li>
-<li><a href="#C00792">pattern()</a></li>
-<li><a href="#C00795">quote(text)</a></li>
+          <li><a href="#C00804">!~(text)</a></li>
+<li><a href="#C00803">===(other)</a></li>
+<li><a href="#C00796">=~(...)</a></li>
+<li><a href="#C00799">allMatches(other)</a></li>
+<li><a href="#C00798">from(pattern, flags )</a></li>
+<li><a href="#C00800">inspect()</a></li>
+<li><a href="#C00795">match(other)</a></li>
+<li><a href="#C00802">names()</a></li>
+<li><a href="#C00801">notice()</a></li>
+<li><a href="#C00794">pattern()</a></li>
+<li><a href="#C00797">quote(text)</a></li>
 
         </ul>
 
@@ -860,7 +860,7 @@ r should ==(#/\A(?-ixmus:hi)\Z/)
 
         <div class="sectiontitle">Inactive cells (details)</div>
                 <div class="cell">
-          <a name="C00776"></a>
+          <a name="C00778"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">kind</td>
@@ -874,14 +874,14 @@ r should ==(#/\A(?-ixmus:hi)\Z/)
         <div class="sectiontitle">Active cells (details)</div>
                 <div class="cell">
           <div class="title">
-          <a name="C00802"></a><b>!~</b>(text)
+          <a name="C00804"></a><b>!~</b>(text)
           </div>
           <div class="description">
             <p>returns true if the regular expression doesn't match, otherwise false</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00802_source')" id="l_C00802_source">show source</a> ]</p>
-            <div id="C00802_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00804_source')" id="l_C00804_source">show source</a> ]</p>
+            <div id="C00804_source" class="dyn-source">
 <pre>
 method(text, 
   if(self =~(text), 
@@ -891,10 +891,11 @@ method(text,
             </div>
             </div>
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>Regexp !~</b><br/>
+<ul style="list-style-type: none;">
 <li>- should return a false value when matching <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C008021S0_source')" id="l_C008021S0_source">show source</a> ]</span>
-            <div id="C008021S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008041S0_source')" id="l_C008041S0_source">show source</a> ]</span>
+            <div id="C008041S0_source" class="dyn-source">
 <pre>
 (#/foo/ !~("foo")) should not be true 
 (#/fo{1,2}/ !~("foo")) should not be true 
@@ -907,8 +908,8 @@ method(text,
             </div>
             </span></li>
 <li>- should return true when not matching <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C008021S1_source')" id="l_C008021S1_source">show source</a> ]</span>
-            <div id="C008021S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008041S1_source')" id="l_C008041S1_source">show source</a> ]</span>
+            <div id="C008041S1_source" class="dyn-source">
 <pre>
 (#/fo{3}/ !~("foo")) should be true 
 (#/fox/ !~("x foo x")) should be true 
@@ -925,14 +926,14 @@ method(text,
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00801"></a><b>===</b>(other)
+          <a name="C00803"></a><b>===</b>(other)
           </div>
           <div class="description">
             <p>nil</p>
           </div>
                     <div class="sourcecode">
-          <p class="source-link">[ <a href="javascript:toggleSource('C00801_source')" id="l_C00801_source">show source</a> ]</p>
-            <div id="C00801_source" class="dyn-source">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00803_source')" id="l_C00803_source">show source</a> ]</p>
+            <div id="C00803_source" class="dyn-source">
 <pre>
 method(other, 
   if(self same?(
@@ -946,10 +947,11 @@ method(other,
             </div>
             </div>
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>Regexp ===</b><br/>
+<ul style="list-style-type: none;">
 <li>- should check for mimicness if receiver is Regexp <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C008011S0_source')" id="l_C008011S0_source">show source</a> ]</span>
-            <div id="C008011S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008031S0_source')" id="l_C008031S0_source">show source</a> ]</span>
+            <div id="C008031S0_source" class="dyn-source">
 <pre>
 Regexp should ===(Regexp) 
 Regexp should ===(#//) 
@@ -963,8 +965,8 @@ Regexp should not ===((#/foo/ ..(#/bar/)))
             </div>
             </span></li>
 <li>- should check for match if receiver is not Regexp <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C008011S1_source')" id="l_C008011S1_source">show source</a> ]</span>
-            <div id="C008011S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008031S1_source')" id="l_C008031S1_source">show source</a> ]</span>
+            <div id="C008031S1_source" class="dyn-source">
 <pre>
 #/foo/ should ===("foo") 
 #/fo{1,2}/ should ===("foo") 
@@ -988,17 +990,18 @@ Regexp should not ===((#/foo/ ..(#/bar/)))
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00794"></a><b>=~</b>(...)
+          <a name="C00796"></a><b>=~</b>(...)
           </div>
           <div class="description">
             <p>nil</p>
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>Regexp =~</b><br/>
+<ul style="list-style-type: none;">
 <li>- should return a true value when matching <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007941S0_source')" id="l_C007941S0_source">show source</a> ]</span>
-            <div id="C007941S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C007961S0_source')" id="l_C007961S0_source">show source</a> ]</span>
+            <div id="C007961S0_source" class="dyn-source">
 <pre>
 (#/foo/ =~("foo")) true? should be true 
 (#/fo{1,2}/ =~("foo")) true? should be true 
@@ -1011,8 +1014,8 @@ Regexp should not ===((#/foo/ ..(#/bar/)))
             </div>
             </span></li>
 <li>- should return an instance of Regexp Match <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007941S1_source')" id="l_C007941S1_source">show source</a> ]</span>
-            <div id="C007941S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C007961S1_source')" id="l_C007961S1_source">show source</a> ]</span>
+            <div id="C007961S1_source" class="dyn-source">
 <pre>
 (#/foo/ =~("foo")) kind should ==("Regexp Match") 
 
@@ -1020,8 +1023,8 @@ Regexp should not ===((#/foo/ ..(#/bar/)))
             </div>
             </span></li>
 <li>- should return nil when not matching <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007941S2_source')" id="l_C007941S2_source">show source</a> ]</span>
-            <div id="C007941S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C007961S2_source')" id="l_C007961S2_source">show source</a> ]</span>
+            <div id="C007961S2_source" class="dyn-source">
 <pre>
 (#/fo{3}/ =~("foo")) should be nil 
 (#/fox/ =~("x foo x")) should be nil 
@@ -1033,8 +1036,8 @@ Regexp should not ===((#/foo/ ..(#/bar/)))
             </div>
             </span></li>
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007941S3_source')" id="l_C007941S3_source">show source</a> ]</span>
-            <div id="C007941S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C007961S3_source')" id="l_C007961S3_source">show source</a> ]</span>
+            <div id="C007961S3_source" class="dyn-source">
 <pre>
 Regexp should checkReceiverTypeOn(:("=~"), "foo") 
 
@@ -1047,17 +1050,18 @@ Regexp should checkReceiverTypeOn(:("=~"), "foo")
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00797"></a><b>allMatches</b>(other)
+          <a name="C00799"></a><b>allMatches</b>(other)
           </div>
           <div class="description">
             <p>Takes one argument and tries to match that argument against the current pattern. Returns a list of all the texts that were matched.</p>
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>Regexp allMatches</b><br/>
+<ul style="list-style-type: none;">
 <li>- should return a list of all matches <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007971S0_source')" id="l_C007971S0_source">show source</a> ]</span>
-            <div id="C007971S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C007991S0_source')" id="l_C007991S0_source">show source</a> ]</span>
+            <div id="C007991S0_source" class="dyn-source">
 <pre>
 #/./ allMatches("abc") should ==([]("a", "b", "c")) 
 #/o+/ allMatches("foo baroooooooo qoxuoooo") should ==([]("oo", "oooooooo", "o", "oooo")) 
@@ -1066,8 +1070,8 @@ Regexp should checkReceiverTypeOn(:("=~"), "foo")
             </div>
             </span></li>
 <li>- should return an empty list for no matches <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007971S1_source')" id="l_C007971S1_source">show source</a> ]</span>
-            <div id="C007971S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C007991S1_source')" id="l_C007991S1_source">show source</a> ]</span>
+            <div id="C007991S1_source" class="dyn-source">
 <pre>
 #/foo/ allMatches("bar") should ==([]) 
 
@@ -1075,8 +1079,8 @@ Regexp should checkReceiverTypeOn(:("=~"), "foo")
             </div>
             </span></li>
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007971S2_source')" id="l_C007971S2_source">show source</a> ]</span>
-            <div id="C007971S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C007991S2_source')" id="l_C007991S2_source">show source</a> ]</span>
+            <div id="C007991S2_source" class="dyn-source">
 <pre>
 Regexp should checkReceiverTypeOn(:allMatches, "foo") 
 
@@ -1089,17 +1093,18 @@ Regexp should checkReceiverTypeOn(:allMatches, "foo")
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00796"></a><b>from</b>(pattern, flags )
+          <a name="C00798"></a><b>from</b>(pattern, flags )
           </div>
           <div class="description">
             <p>Takes one or two text arguments that describes the regular expression to create. the first text is the pattern and the second is the flags.</p>
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>Regexp from</b><br/>
+<ul style="list-style-type: none;">
 <li>- should create a new regular expression <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007961S0_source')" id="l_C007961S0_source">show source</a> ]</span>
-            <div id="C007961S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C007981S0_source')" id="l_C007981S0_source">show source</a> ]</span>
+            <div id="C007981S0_source" class="dyn-source">
 <pre>
 Regexp from("foo") should ==(#/foo/) 
 Regexp from("foo bar") should ==(#/foo bar/) 
@@ -1108,8 +1113,8 @@ Regexp from("foo bar") should ==(#/foo bar/)
             </div>
             </span></li>
 <li>- should take an optional argument for the flags <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007961S1_source')" id="l_C007961S1_source">show source</a> ]</span>
-            <div id="C007961S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C007981S1_source')" id="l_C007981S1_source">show source</a> ]</span>
+            <div id="C007981S1_source" class="dyn-source">
 <pre>
 Regexp from("foo", "xs") should ==(#/foo/xs) 
 Regexp from("foo bar", "xs") should ==(#/foo bar/xs) 
@@ -1123,17 +1128,18 @@ Regexp from("foo bar", "xs") should ==(#/foo bar/xs)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00798"></a><b>inspect</b>()
+          <a name="C00800"></a><b>inspect</b>()
           </div>
           <div class="description">
             <p>Returns a text inspection of the object</p>
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>Regexp inspect</b><br/>
+<ul style="list-style-type: none;">
 <li>- should inspect correctly for a simple regexp <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007981S0_source')" id="l_C007981S0_source">show source</a> ]</span>
-            <div id="C007981S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008001S0_source')" id="l_C008001S0_source">show source</a> ]</span>
+            <div id="C008001S0_source" class="dyn-source">
 <pre>
 #/foo/ inspect should ==("#/foo/") 
 #/foo/x inspect should ==("#/foo/x") 
@@ -1142,8 +1148,8 @@ Regexp from("foo bar", "xs") should ==(#/foo bar/xs)
             </div>
             </span></li>
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007981S1_source')" id="l_C007981S1_source">show source</a> ]</span>
-            <div id="C007981S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008001S1_source')" id="l_C008001S1_source">show source</a> ]</span>
+            <div id="C008001S1_source" class="dyn-source">
 <pre>
 Regexp should checkReceiverTypeOn(:inspect) 
 
@@ -1154,8 +1160,8 @@ Regexp should checkReceiverTypeOn(:inspect)
 <b>Regexp inspect escapes</b><br/>
 <ul style="list-style-type: none;">
 <li>- should correctly handle escaped t <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007982S0_source')" id="l_C007982S0_source">show source</a> ]</span>
-            <div id="C007982S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008002S0_source')" id="l_C008002S0_source">show source</a> ]</span>
+            <div id="C008002S0_source" class="dyn-source">
 <pre>
 #/\t/ inspect should ==("#/\t/") 
 
@@ -1163,8 +1169,8 @@ Regexp should checkReceiverTypeOn(:inspect)
             </div>
             </span></li>
 <li>- should correctly handle escaped n <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007982S1_source')" id="l_C007982S1_source">show source</a> ]</span>
-            <div id="C007982S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008002S1_source')" id="l_C008002S1_source">show source</a> ]</span>
+            <div id="C008002S1_source" class="dyn-source">
 <pre>
 #/\n/ inspect should ==("#/\n/") 
 
@@ -1172,8 +1178,8 @@ Regexp should checkReceiverTypeOn(:inspect)
             </div>
             </span></li>
 <li>- should correctly handle escaped f <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007982S2_source')" id="l_C007982S2_source">show source</a> ]</span>
-            <div id="C007982S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008002S2_source')" id="l_C008002S2_source">show source</a> ]</span>
+            <div id="C008002S2_source" class="dyn-source">
 <pre>
 #/\f/ inspect should ==("#/\f/") 
 
@@ -1181,8 +1187,8 @@ Regexp should checkReceiverTypeOn(:inspect)
             </div>
             </span></li>
 <li>- should correctly handle escaped r <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007982S3_source')" id="l_C007982S3_source">show source</a> ]</span>
-            <div id="C007982S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008002S3_source')" id="l_C008002S3_source">show source</a> ]</span>
+            <div id="C008002S3_source" class="dyn-source">
 <pre>
 #/\r/ inspect should ==("#/\r/") 
 
@@ -1190,8 +1196,8 @@ Regexp should checkReceiverTypeOn(:inspect)
             </div>
             </span></li>
 <li>- should correctly handle escaped / <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007982S4_source')" id="l_C007982S4_source">show source</a> ]</span>
-            <div id="C007982S4_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008002S4_source')" id="l_C008002S4_source">show source</a> ]</span>
+            <div id="C008002S4_source" class="dyn-source">
 <pre>
 #/\// inspect should ==("#/\\//") 
 
@@ -1199,8 +1205,8 @@ Regexp should checkReceiverTypeOn(:inspect)
             </div>
             </span></li>
 <li>- should correctly handle escaped \ <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007982S5_source')" id="l_C007982S5_source">show source</a> ]</span>
-            <div id="C007982S5_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008002S5_source')" id="l_C008002S5_source">show source</a> ]</span>
+            <div id="C008002S5_source" class="dyn-source">
 <pre>
 #/\\/ inspect should ==("#/\\\\/") 
 
@@ -1208,8 +1214,8 @@ Regexp should checkReceiverTypeOn(:inspect)
             </div>
             </span></li>
 <li>- should correctly handle escaped A <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007982S6_source')" id="l_C007982S6_source">show source</a> ]</span>
-            <div id="C007982S6_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008002S6_source')" id="l_C008002S6_source">show source</a> ]</span>
+            <div id="C008002S6_source" class="dyn-source">
 <pre>
 #/\A/ inspect should ==("#/\\A/") 
 
@@ -1217,8 +1223,8 @@ Regexp should checkReceiverTypeOn(:inspect)
             </div>
             </span></li>
 <li>- should correctly handle escaped d <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007982S7_source')" id="l_C007982S7_source">show source</a> ]</span>
-            <div id="C007982S7_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008002S7_source')" id="l_C008002S7_source">show source</a> ]</span>
+            <div id="C008002S7_source" class="dyn-source">
 <pre>
 #/\d/ inspect should ==("#/\\d/") 
 
@@ -1226,8 +1232,8 @@ Regexp should checkReceiverTypeOn(:inspect)
             </div>
             </span></li>
 <li>- should correctly handle escaped D <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007982S8_source')" id="l_C007982S8_source">show source</a> ]</span>
-            <div id="C007982S8_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008002S8_source')" id="l_C008002S8_source">show source</a> ]</span>
+            <div id="C008002S8_source" class="dyn-source">
 <pre>
 #/\D/ inspect should ==("#/\\D/") 
 
@@ -1235,8 +1241,8 @@ Regexp should checkReceiverTypeOn(:inspect)
             </div>
             </span></li>
 <li>- should correctly handle escaped s <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007982S9_source')" id="l_C007982S9_source">show source</a> ]</span>
-            <div id="C007982S9_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008002S9_source')" id="l_C008002S9_source">show source</a> ]</span>
+            <div id="C008002S9_source" class="dyn-source">
 <pre>
 #/\s/ inspect should ==("#/\\s/") 
 
@@ -1244,8 +1250,8 @@ Regexp should checkReceiverTypeOn(:inspect)
             </div>
             </span></li>
 <li>- should correctly handle escaped S <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007982S10_source')" id="l_C007982S10_source">show source</a> ]</span>
-            <div id="C007982S10_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008002S10_source')" id="l_C008002S10_source">show source</a> ]</span>
+            <div id="C008002S10_source" class="dyn-source">
 <pre>
 #/\S/ inspect should ==("#/\\S/") 
 
@@ -1253,8 +1259,8 @@ Regexp should checkReceiverTypeOn(:inspect)
             </div>
             </span></li>
 <li>- should correctly handle escaped w <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007982S11_source')" id="l_C007982S11_source">show source</a> ]</span>
-            <div id="C007982S11_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008002S11_source')" id="l_C008002S11_source">show source</a> ]</span>
+            <div id="C008002S11_source" class="dyn-source">
 <pre>
 #/\w/ inspect should ==("#/\\w/") 
 
@@ -1262,8 +1268,8 @@ Regexp should checkReceiverTypeOn(:inspect)
             </div>
             </span></li>
 <li>- should correctly handle escaped W <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007982S12_source')" id="l_C007982S12_source">show source</a> ]</span>
-            <div id="C007982S12_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008002S12_source')" id="l_C008002S12_source">show source</a> ]</span>
+            <div id="C008002S12_source" class="dyn-source">
 <pre>
 #/\W/ inspect should ==("#/\\W/") 
 
@@ -1271,8 +1277,8 @@ Regexp should checkReceiverTypeOn(:inspect)
             </div>
             </span></li>
 <li>- should correctly handle escaped b <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007982S13_source')" id="l_C007982S13_source">show source</a> ]</span>
-            <div id="C007982S13_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008002S13_source')" id="l_C008002S13_source">show source</a> ]</span>
+            <div id="C008002S13_source" class="dyn-source">
 <pre>
 #/\b/ inspect should ==("#/\\b/") 
 
@@ -1280,8 +1286,8 @@ Regexp should checkReceiverTypeOn(:inspect)
             </div>
             </span></li>
 <li>- should correctly handle escaped B <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007982S14_source')" id="l_C007982S14_source">show source</a> ]</span>
-            <div id="C007982S14_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008002S14_source')" id="l_C008002S14_source">show source</a> ]</span>
+            <div id="C008002S14_source" class="dyn-source">
 <pre>
 #/\B/ inspect should ==("#/\\B/") 
 
@@ -1289,8 +1295,8 @@ Regexp should checkReceiverTypeOn(:inspect)
             </div>
             </span></li>
 <li>- should correctly handle escaped z <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007982S15_source')" id="l_C007982S15_source">show source</a> ]</span>
-            <div id="C007982S15_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008002S15_source')" id="l_C008002S15_source">show source</a> ]</span>
+            <div id="C008002S15_source" class="dyn-source">
 <pre>
 #/\z/ inspect should ==("#/\\z/") 
 
@@ -1298,8 +1304,8 @@ Regexp should checkReceiverTypeOn(:inspect)
             </div>
             </span></li>
 <li>- should correctly handle escaped Z <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007982S16_source')" id="l_C007982S16_source">show source</a> ]</span>
-            <div id="C007982S16_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008002S16_source')" id="l_C008002S16_source">show source</a> ]</span>
+            <div id="C008002S16_source" class="dyn-source">
 <pre>
 #/\Z/ inspect should ==("#/\\Z/") 
 
@@ -1307,8 +1313,8 @@ Regexp should checkReceiverTypeOn(:inspect)
             </div>
             </span></li>
 <li>- should correctly handle escaped < <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007982S17_source')" id="l_C007982S17_source">show source</a> ]</span>
-            <div id="C007982S17_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008002S17_source')" id="l_C008002S17_source">show source</a> ]</span>
+            <div id="C008002S17_source" class="dyn-source">
 <pre>
 #/\&lt;/ inspect should ==("#/\\&lt;/") 
 
@@ -1316,8 +1322,8 @@ Regexp should checkReceiverTypeOn(:inspect)
             </div>
             </span></li>
 <li>- should correctly handle escaped > <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007982S18_source')" id="l_C007982S18_source">show source</a> ]</span>
-            <div id="C007982S18_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008002S18_source')" id="l_C008002S18_source">show source</a> ]</span>
+            <div id="C008002S18_source" class="dyn-source">
 <pre>
 #/\&gt;/ inspect should ==("#/\\&gt;/") 
 
@@ -1325,8 +1331,8 @@ Regexp should checkReceiverTypeOn(:inspect)
             </div>
             </span></li>
 <li>- should correctly handle escaped G <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007982S19_source')" id="l_C007982S19_source">show source</a> ]</span>
-            <div id="C007982S19_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008002S19_source')" id="l_C008002S19_source">show source</a> ]</span>
+            <div id="C008002S19_source" class="dyn-source">
 <pre>
 #/\G/ inspect should ==("#/\\G/") 
 
@@ -1334,8 +1340,8 @@ Regexp should checkReceiverTypeOn(:inspect)
             </div>
             </span></li>
 <li>- should correctly handle escaped p <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007982S20_source')" id="l_C007982S20_source">show source</a> ]</span>
-            <div id="C007982S20_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008002S20_source')" id="l_C008002S20_source">show source</a> ]</span>
+            <div id="C008002S20_source" class="dyn-source">
 <pre>
 #/\p{Ll}/ inspect should ==("#/\\p{Ll}/") 
 
@@ -1343,8 +1349,8 @@ Regexp should checkReceiverTypeOn(:inspect)
             </div>
             </span></li>
 <li>- should correctly handle escaped P <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007982S21_source')" id="l_C007982S21_source">show source</a> ]</span>
-            <div id="C007982S21_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008002S21_source')" id="l_C008002S21_source">show source</a> ]</span>
+            <div id="C008002S21_source" class="dyn-source">
 <pre>
 #/\P{Ll}/ inspect should ==("#/\\P{Ll}/") 
 
@@ -1352,8 +1358,8 @@ Regexp should checkReceiverTypeOn(:inspect)
             </div>
             </span></li>
 <li>- should correctly handle escaped { <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007982S22_source')" id="l_C007982S22_source">show source</a> ]</span>
-            <div id="C007982S22_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008002S22_source')" id="l_C008002S22_source">show source</a> ]</span>
+            <div id="C008002S22_source" class="dyn-source">
 <pre>
 #/\{/ inspect should ==("#/\\{/") 
 
@@ -1361,8 +1367,8 @@ Regexp should checkReceiverTypeOn(:inspect)
             </div>
             </span></li>
 <li>- should correctly handle escaped } <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007982S23_source')" id="l_C007982S23_source">show source</a> ]</span>
-            <div id="C007982S23_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008002S23_source')" id="l_C008002S23_source">show source</a> ]</span>
+            <div id="C008002S23_source" class="dyn-source">
 <pre>
 #/\}/ inspect should ==("#/\\}/") 
 
@@ -1370,8 +1376,8 @@ Regexp should checkReceiverTypeOn(:inspect)
             </div>
             </span></li>
 <li>- should correctly handle escaped [ <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007982S24_source')" id="l_C007982S24_source">show source</a> ]</span>
-            <div id="C007982S24_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008002S24_source')" id="l_C008002S24_source">show source</a> ]</span>
+            <div id="C008002S24_source" class="dyn-source">
 <pre>
 #/\[/ inspect should ==("#/\\[/") 
 
@@ -1379,8 +1385,8 @@ Regexp should checkReceiverTypeOn(:inspect)
             </div>
             </span></li>
 <li>- should correctly handle escaped * <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007982S25_source')" id="l_C007982S25_source">show source</a> ]</span>
-            <div id="C007982S25_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008002S25_source')" id="l_C008002S25_source">show source</a> ]</span>
+            <div id="C008002S25_source" class="dyn-source">
 <pre>
 #/\*/ inspect should ==("#/\\*/") 
 
@@ -1388,8 +1394,8 @@ Regexp should checkReceiverTypeOn(:inspect)
             </div>
             </span></li>
 <li>- should correctly handle escaped ( <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007982S26_source')" id="l_C007982S26_source">show source</a> ]</span>
-            <div id="C007982S26_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008002S26_source')" id="l_C008002S26_source">show source</a> ]</span>
+            <div id="C008002S26_source" class="dyn-source">
 <pre>
 #/\(/ inspect should ==("#/\\(/") 
 
@@ -1397,8 +1403,8 @@ Regexp should checkReceiverTypeOn(:inspect)
             </div>
             </span></li>
 <li>- should correctly handle escaped ) <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007982S27_source')" id="l_C007982S27_source">show source</a> ]</span>
-            <div id="C007982S27_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008002S27_source')" id="l_C008002S27_source">show source</a> ]</span>
+            <div id="C008002S27_source" class="dyn-source">
 <pre>
 #/\)/ inspect should ==("#/\\)/") 
 
@@ -1406,8 +1412,8 @@ Regexp should checkReceiverTypeOn(:inspect)
             </div>
             </span></li>
 <li>- should correctly handle escaped $ <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007982S28_source')" id="l_C007982S28_source">show source</a> ]</span>
-            <div id="C007982S28_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008002S28_source')" id="l_C008002S28_source">show source</a> ]</span>
+            <div id="C008002S28_source" class="dyn-source">
 <pre>
 #/\$/ inspect should ==("#/\\$/") 
 
@@ -1415,8 +1421,8 @@ Regexp should checkReceiverTypeOn(:inspect)
             </div>
             </span></li>
 <li>- should correctly handle escaped ^ <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007982S29_source')" id="l_C007982S29_source">show source</a> ]</span>
-            <div id="C007982S29_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008002S29_source')" id="l_C008002S29_source">show source</a> ]</span>
+            <div id="C008002S29_source" class="dyn-source">
 <pre>
 #/\^/ inspect should ==("#/\\^/") 
 
@@ -1424,8 +1430,8 @@ Regexp should checkReceiverTypeOn(:inspect)
             </div>
             </span></li>
 <li>- should correctly handle escaped + <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007982S30_source')" id="l_C007982S30_source">show source</a> ]</span>
-            <div id="C007982S30_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008002S30_source')" id="l_C008002S30_source">show source</a> ]</span>
+            <div id="C008002S30_source" class="dyn-source">
 <pre>
 #/\+/ inspect should ==("#/\\+/") 
 
@@ -1433,8 +1439,8 @@ Regexp should checkReceiverTypeOn(:inspect)
             </div>
             </span></li>
 <li>- should correctly handle escaped ? <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007982S31_source')" id="l_C007982S31_source">show source</a> ]</span>
-            <div id="C007982S31_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008002S31_source')" id="l_C008002S31_source">show source</a> ]</span>
+            <div id="C008002S31_source" class="dyn-source">
 <pre>
 #/\?/ inspect should ==("#/\\?/") 
 
@@ -1442,8 +1448,8 @@ Regexp should checkReceiverTypeOn(:inspect)
             </div>
             </span></li>
 <li>- should correctly handle escaped . <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007982S32_source')" id="l_C007982S32_source">show source</a> ]</span>
-            <div id="C007982S32_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008002S32_source')" id="l_C008002S32_source">show source</a> ]</span>
+            <div id="C008002S32_source" class="dyn-source">
 <pre>
 #/\./ inspect should ==("#/\\./") 
 
@@ -1451,8 +1457,8 @@ Regexp should checkReceiverTypeOn(:inspect)
             </div>
             </span></li>
 <li>- should correctly handle escaped | <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007982S33_source')" id="l_C007982S33_source">show source</a> ]</span>
-            <div id="C007982S33_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008002S33_source')" id="l_C008002S33_source">show source</a> ]</span>
+            <div id="C008002S33_source" class="dyn-source">
 <pre>
 #/\|/ inspect should ==("#/\\|/") 
 
@@ -1465,17 +1471,18 @@ Regexp should checkReceiverTypeOn(:inspect)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00793"></a><b>match</b>(other)
+          <a name="C00795"></a><b>match</b>(other)
           </div>
           <div class="description">
             <p>Takes one argument and tries to match that argument against the current pattern. Returns nil if no match can be done, or a Regexp Match object if a match succeeds</p>
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>Regexp match</b><br/>
+<ul style="list-style-type: none;">
 <li>- should return a true value when matching <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007931S0_source')" id="l_C007931S0_source">show source</a> ]</span>
-            <div id="C007931S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C007951S0_source')" id="l_C007951S0_source">show source</a> ]</span>
+            <div id="C007951S0_source" class="dyn-source">
 <pre>
 (#/foo/ match("foo")) true? should be true 
 (#/fo{1,2}/ match("foo")) true? should be true 
@@ -1488,8 +1495,8 @@ Regexp should checkReceiverTypeOn(:inspect)
             </div>
             </span></li>
 <li>- should return an instance of Regexp Match <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007931S1_source')" id="l_C007931S1_source">show source</a> ]</span>
-            <div id="C007931S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C007951S1_source')" id="l_C007951S1_source">show source</a> ]</span>
+            <div id="C007951S1_source" class="dyn-source">
 <pre>
 #/foo/ match("foo") kind should ==("Regexp Match") 
 
@@ -1497,8 +1504,8 @@ Regexp should checkReceiverTypeOn(:inspect)
             </div>
             </span></li>
 <li>- should return nil when not matching <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007931S2_source')" id="l_C007931S2_source">show source</a> ]</span>
-            <div id="C007931S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C007951S2_source')" id="l_C007951S2_source">show source</a> ]</span>
+            <div id="C007951S2_source" class="dyn-source">
 <pre>
 (#/fo{3}/ match("foo")) should be nil 
 (#/fox/ match("x foo x")) should be nil 
@@ -1510,8 +1517,8 @@ Regexp should checkReceiverTypeOn(:inspect)
             </div>
             </span></li>
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007931S3_source')" id="l_C007931S3_source">show source</a> ]</span>
-            <div id="C007931S3_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C007951S3_source')" id="l_C007951S3_source">show source</a> ]</span>
+            <div id="C007951S3_source" class="dyn-source">
 <pre>
 Regexp should checkReceiverTypeOn(:match, "foo") 
 
@@ -1524,17 +1531,18 @@ Regexp should checkReceiverTypeOn(:match, "foo")
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00800"></a><b>names</b>()
+          <a name="C00802"></a><b>names</b>()
           </div>
           <div class="description">
             <p>returns a list of all the named groups in this regular expression</p>
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>Regexp names</b><br/>
+<ul style="list-style-type: none;">
 <li>- should return an empty list for a pattern that doesn't have any named groups <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C008001S0_source')" id="l_C008001S0_source">show source</a> ]</span>
-            <div id="C008001S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008021S0_source')" id="l_C008021S0_source">show source</a> ]</span>
+            <div id="C008021S0_source" class="dyn-source">
 <pre>
 #/foo/ names should ==([]) 
 #/f(o)o/ names should ==([]) 
@@ -1543,8 +1551,8 @@ Regexp should checkReceiverTypeOn(:match, "foo")
             </div>
             </span></li>
 <li>- should return a list of all the names, ordered from beginning parenthesis <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C008001S1_source')" id="l_C008001S1_source">show source</a> ]</span>
-            <div id="C008001S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008021S1_source')" id="l_C008021S1_source">show source</a> ]</span>
+            <div id="C008021S1_source" class="dyn-source">
 <pre>
 #/({foo}bar)/ names should ==([](:foo)) 
 #/({foo}bar)({quux}.)/ names should ==([](:foo, :quux)) 
@@ -1554,8 +1562,8 @@ Regexp should checkReceiverTypeOn(:match, "foo")
             </div>
             </span></li>
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C008001S2_source')" id="l_C008001S2_source">show source</a> ]</span>
-            <div id="C008001S2_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008021S2_source')" id="l_C008021S2_source">show source</a> ]</span>
+            <div id="C008021S2_source" class="dyn-source">
 <pre>
 Regexp should checkReceiverTypeOn(:names) 
 
@@ -1568,17 +1576,18 @@ Regexp should checkReceiverTypeOn(:names)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00799"></a><b>notice</b>()
+          <a name="C00801"></a><b>notice</b>()
           </div>
           <div class="description">
             <p>Returns a brief text inspection of the object</p>
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>Regexp notice</b><br/>
+<ul style="list-style-type: none;">
 <li>- should notice correctly for a simple regexp <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007991S0_source')" id="l_C007991S0_source">show source</a> ]</span>
-            <div id="C007991S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008011S0_source')" id="l_C008011S0_source">show source</a> ]</span>
+            <div id="C008011S0_source" class="dyn-source">
 <pre>
 #/foo/ notice should ==("#/foo/") 
 #/foo/x notice should ==("#/foo/x") 
@@ -1587,8 +1596,8 @@ Regexp should checkReceiverTypeOn(:names)
             </div>
             </span></li>
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007991S1_source')" id="l_C007991S1_source">show source</a> ]</span>
-            <div id="C007991S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008011S1_source')" id="l_C008011S1_source">show source</a> ]</span>
+            <div id="C008011S1_source" class="dyn-source">
 <pre>
 Regexp should checkReceiverTypeOn(:notice) 
 
@@ -1601,17 +1610,18 @@ Regexp should checkReceiverTypeOn(:notice)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00792"></a><b>pattern</b>()
+          <a name="C00794"></a><b>pattern</b>()
           </div>
           <div class="description">
             <p>Returns the pattern use for this regular expression</p>
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>Regexp pattern</b><br/>
+<ul style="list-style-type: none;">
 <li>- should return a string containing the pattern used to create it <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007921S0_source')" id="l_C007921S0_source">show source</a> ]</span>
-            <div id="C007921S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C007941S0_source')" id="l_C007941S0_source">show source</a> ]</span>
+            <div id="C007941S0_source" class="dyn-source">
 <pre>
 #/foo/ pattern should ==("foo") 
 
@@ -1619,8 +1629,8 @@ Regexp should checkReceiverTypeOn(:notice)
             </div>
             </span></li>
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007921S1_source')" id="l_C007921S1_source">show source</a> ]</span>
-            <div id="C007921S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C007941S1_source')" id="l_C007941S1_source">show source</a> ]</span>
+            <div id="C007941S1_source" class="dyn-source">
 <pre>
 Regexp should checkReceiverTypeOn(:pattern) 
 
@@ -1633,17 +1643,18 @@ Regexp should checkReceiverTypeOn(:pattern)
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00795"></a><b>quote</b>(text)
+          <a name="C00797"></a><b>quote</b>(text)
           </div>
           <div class="description">
             <p>Takes one argument that should be a text and returns a text that has all regexp meta characters quoted</p>
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>Regexp quote</b><br/>
+<ul style="list-style-type: none;">
 <li>- should return the same text if it doesn't contain any meta characters <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007951S0_source')" id="l_C007951S0_source">show source</a> ]</span>
-            <div id="C007951S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C007971S0_source')" id="l_C007971S0_source">show source</a> ]</span>
+            <div id="C007971S0_source" class="dyn-source">
 <pre>
 Regexp quote("foobar") should ==("foobar") 
 
@@ -1651,8 +1662,8 @@ Regexp quote("foobar") should ==("foobar")
             </div>
             </span></li>
 <li>- should quote metacharacters <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007951S1_source')" id="l_C007951S1_source">show source</a> ]</span>
-            <div id="C007951S1_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C007971S1_source')" id="l_C007971S1_source">show source</a> ]</span>
+            <div id="C007971S1_source" class="dyn-source">
 <pre>
 Regexp quote("+?{}[]().* #") should ==("\\+\\?\\{\\}\\[]\\(\\)\\.\\*\\ #") 
 

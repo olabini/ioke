@@ -90,15 +90,15 @@ IO is the base for all input/output in Ioke.
 
         <div class="sectiontitle">Inactive cells</div>
         <ul>
-          <li><a href="#C00757">kind</a></li>
+          <li><a href="#C00759">kind</a></li>
 
         </ul>        
 
         <div class="sectiontitle">Active cells</div>
         <ul>
-          <li><a href="#C00759">print(object)</a></li>
-<li><a href="#C00758">println(object nil)</a></li>
-<li><a href="#C00760">read()</a></li>
+          <li><a href="#C00761">print(object)</a></li>
+<li><a href="#C00760">println(object nil)</a></li>
+<li><a href="#C00762">read()</a></li>
 
         </ul>
 
@@ -119,7 +119,7 @@ IO should have kind("IO")
 
         <div class="sectiontitle">Inactive cells (details)</div>
                 <div class="cell">
-          <a name="C00757"></a>
+          <a name="C00759"></a>
           <table border="0" cellpadding="5">
             <tr valign="top">
               <td class="cell-name">kind</td>
@@ -133,17 +133,18 @@ IO should have kind("IO")
         <div class="sectiontitle">Active cells (details)</div>
                 <div class="cell">
           <div class="title">
-          <a name="C00759"></a><b>print</b>(object)
+          <a name="C00761"></a><b>print</b>(object)
           </div>
           <div class="description">
             <p>Prints a text representation of the argument to the current IO object</p>
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>IO print</b><br/>
+<ul style="list-style-type: none;">
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007591S0_source')" id="l_C007591S0_source">show source</a> ]</span>
-            <div id="C007591S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C007611S0_source')" id="l_C007611S0_source">show source</a> ]</span>
+            <div id="C007611S0_source" class="dyn-source">
 <pre>
 IO should checkReceiverTypeOn(:print, "foo") 
 
@@ -156,17 +157,18 @@ IO should checkReceiverTypeOn(:print, "foo")
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00758"></a><b>println</b>(object nil)
+          <a name="C00760"></a><b>println</b>(object nil)
           </div>
           <div class="description">
             <p>Prints a text representation of the argument and a newline to the current IO object</p>
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>IO println</b><br/>
+<ul style="list-style-type: none;">
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007581S0_source')" id="l_C007581S0_source">show source</a> ]</span>
-            <div id="C007581S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C007601S0_source')" id="l_C007601S0_source">show source</a> ]</span>
+            <div id="C007601S0_source" class="dyn-source">
 <pre>
 IO should checkReceiverTypeOn(:println, "foo") 
 
@@ -179,17 +181,18 @@ IO should checkReceiverTypeOn(:println, "foo")
         </div>
         <div class="cell">
           <div class="title">
-          <a name="C00760"></a><b>read</b>()
+          <a name="C00762"></a><b>read</b>()
           </div>
           <div class="description">
             <p>tries to read as much as possible and return a message chain representing what's been read</p>
           </div>
           
           <div class="specs">
-            <ul style="list-style-type: none;">
+            <b>IO read</b><br/>
+<ul style="list-style-type: none;">
 <li>- should validate type of receiver <span class="sourcecode">
-            <span class="source-link">[ <a href="javascript:toggleSource('C007601S0_source')" id="l_C007601S0_source">show source</a> ]</span>
-            <div id="C007601S0_source" class="dyn-source">
+            <span class="source-link">[ <a href="javascript:toggleSource('C007621S0_source')" id="l_C007621S0_source">show source</a> ]</span>
+            <div id="C007621S0_source" class="dyn-source">
 <pre>
 IO should checkReceiverTypeOn(:read) 
 
