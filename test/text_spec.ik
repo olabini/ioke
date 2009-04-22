@@ -575,8 +575,11 @@ describe("Text",
       m should == "internal:concatenateText(\"foo \", internal:concatenateText(\"fux \", 32, \" bar\") bletch, \" bar\")"
     )
 
-    it("should correctly handle the case of interpolation inside a text which reference unknown cells")
-    it("should correctly handle references to self for interpolation in the context of that Text")
+    it("should correctly handle references to self for interpolation in the context of that Text",
+      testText = "foo"
+      testText bar = method("#{self}")
+      testText bar should == "foo"
+    )
   )
 
   describe("<=>",
