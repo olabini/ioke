@@ -73,10 +73,6 @@ namespace Ioke.Lang {
                                                                         
                                                                             StringBuilder sb = new StringBuilder();
 
-                                                                            if(IokeObject.dataOf(on) is Text) {
-                                                                                sb.Append(Text.GetText(on));
-                                                                            }
-
                                                                             foreach(object o in args) {
                                                                                 if(o is IokeObject) {
                                                                                     if(IokeObject.dataOf(o) is Text) {

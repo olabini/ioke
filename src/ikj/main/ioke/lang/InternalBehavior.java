@@ -41,10 +41,6 @@ public class InternalBehavior {
 
                     StringBuilder sb = new StringBuilder();
 
-                    if(IokeObject.data(on) instanceof Text) {
-                        sb.append(Text.getText(on));
-                    }
-
                     for(Object o : args) {
                         if(o instanceof IokeObject) {
                             if(IokeObject.data(o) instanceof Text) {
