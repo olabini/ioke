@@ -555,6 +555,66 @@ describe("Text",
     )
     
   )
+  
+  describe("camelCase",
+    it("should do nothing to an empty text",
+      "" camelCase should == ""
+    )
+    
+    it("should remove white spaces and underscores",
+      "_  \t \n __ " camelCase should == ""
+    )
+    
+    it("should do nothing to a single word in lower case",
+      "foo" camelCase should == "foo"
+    )
+    
+    it("should remove underscores and capitalise word boundaries",
+      "foo_bar" camelCase should == "fooBar"
+    )
+    
+    it("should remove whitespace and capitalise word boundaries",
+      "foo bar" camelCase should == "fooBar"
+    )
+    
+    it("should remove underscores and whitespace and capitalise word boundaries",
+      " foo_bar\tbaz\nquux" camelCase should == "fooBarBazQuux"
+    )
+    
+    it("should return a new string",
+      x = "fLuRg blUrG"
+      x camelCase should == "fLuRgBlUrG"
+      x should == "fLuRg blUrG"
+    )
+
+    it("should accept a regexp as a parameter to define word boundaries",
+      "foo1bar2baz3quux4derek" camelCase(separator: #/[0-9]/) should == "fooBarBazQuuxDerek"
+    )
+  )
+  
+  describe("capitalize",
+    it("should do nothing to an empty text",
+      "" capitalize should == ""
+    )
+
+    it("should convert the first character in the text to upper case",
+      "foo" capitalize should == "Foo"
+    )
+
+    it("should do nothing to a text already in captials",
+      "FOO" capitalize should == "FOO"
+    )
+
+    it("should only capitalize the first word, even if there are many",
+      "foo bar baz quux" capitalize should == "Foo bar baz quux"
+    )
+
+    it("should return a new text",
+      x = "flurG bLURg"
+      x capitalize should == "FlurG bLURg"
+      x should == "flurG bLURg"
+    )
+  )
 
   describe("interpolation", 
     it("should parse correctly with a simple number inside of it", 
