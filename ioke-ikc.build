@@ -53,12 +53,6 @@
   </target>
 
   <target name="compile" depends="generate_filters" description="Compile the source files for the project.">
-    <csc target="library" output="${bin.dir}/NRegex.dll" debug="true">
-      <sources>
-        <include name="${src.dir}/NRegex/**/*.cs" />
-      </sources>
-    </csc>
-
     <csc target="library" output="${bin.dir}/Ioke.Math.dll" debug="true">
       <sources>
         <include name="${src.dir}/Ioke.Math/**/*.cs" />
@@ -227,8 +221,6 @@ ioke.build.commit=${version::extract-commit()}
     <delete file="${bin.dir}/Ioke.Lang.Parser.Functional.dll.mdb"/>
     <delete file="${bin.dir}/Ioke.Math.dll"/>
     <delete file="${bin.dir}/Ioke.Math.dll.mdb"/>
-    <delete file="${bin.dir}/NRegex.dll"/>
-    <delete file="${bin.dir}/NRegex.dll.mdb"/>
     <delete dir="${src.generated.dir}"/>
   </target>
 </project>
