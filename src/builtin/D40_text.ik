@@ -10,7 +10,7 @@ Text empty? = method(
 
   length == 0)
   
-Text camelCase = method("creates a new text in camel case form based on the receiver. i.e. hello there world in camel case form is represented as helloThereWorld. Accepts a regular expressions as an optional parameter to define word boundaries (the default is whitespace and underscores)",
+Text camelCase = method("creates a new text in camel case form based on the receiver. i.e. hello there world in camel case form is represented as helloThereWorld. Accepts a regular expression as an optional parameter to define word boundaries (the default is whitespace and underscores)",
   separator: #/[\s_]+/,
 
   sliced = self split(separator)
@@ -19,7 +19,7 @@ Text camelCase = method("creates a new text in camel case form based on the rece
   sliced join  
 )
 
-Text capitalize = method("creates a new text which is identical to the receive except that the first character is converted to uppercase",
+Text capitalize = method("creates a new text which is identical to the receiver except that the first character is converted to uppercase",
 
   self[0..0] upper + self[1..-1]
 )
