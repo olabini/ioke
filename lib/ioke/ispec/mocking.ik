@@ -1,6 +1,8 @@
+use("blank_slate")
+
 ISpec do(
   UnexpectedInvocation = ISpec Condition mimic
-
+  
   Stubs = Origin mimic do(
     initialize = method(@stubs = [])
 
@@ -26,9 +28,10 @@ ISpec do(
     allMocks = method(@stubs select(mimics?(ISpec Mock)))
 
     verifyAndClear! = method(raiseOnFail enabled?,
-      if(raiseOnFail, allMocks each(mock, unless(mock satisfied?, mock signal!)))
-      @stubs each(stub, stub removeStub!)
-      @stubs clear!
+      ensure(
+        if(raiseOnFail, allMocks each(mock, unless(mock satisfied?, mock signal!)))
+        @stubs each(stub, stub removeStub!),
+        @stubs clear!)
     )
 
     enabled? = Ground true
@@ -55,6 +58,8 @@ ISpec do(
   )
 
   Stub = Origin mimic do(
+    AnyArgs = Origin mimic
+    
     create = method(object, cellName,
       stub = self with(owner: object, cellName: cellName)
       stub performStub!
@@ -62,8 +67,9 @@ ISpec do(
     )
 
     returnValue = nil
-    expectedArgs = [ [], {} ]
+    expectedArgs = AnyArgs
     satisfied? = Ground true
+    invocable? = Ground true
 
     withArgs = method(+posArgs, +:namedArgs,
       @expectedArgs = [ posArgs, namedArgs ]
@@ -71,7 +77,7 @@ ISpec do(
     )
 
     matches? = method(posArgs, namedArgs,
-      [ posArgs, namedArgs ] == @expectedArgs
+      @expectedArgs == AnyArgs || [ posArgs, namedArgs ] == @expectedArgs
     )
 
     invoke = method(returnValue)
@@ -103,25 +109,31 @@ ISpec do(
   )
 
   Mock = Stub mimic do(
-    expectedCalls = 1
+    expectedCalls = 1..1
     actualCalls   = 0
     negated?      = false
     
     never = method(times(0))
     once  = method(times(1))
-    times = method(n, @expectedCalls = n. self)
+    times = method(n, @expectedCalls = if(n cell?(:include?), n, (n..n)). self)
     atLeastOnce = method(times(1..(Number Infinity)))
 
     invoke = method(@actualCalls += 1. returnValue)
     
     negate! = method(self negated? = true. self)
     
-    satisfied? = method(
-      expectationMatched? = if(@expectedCalls cell?(:include?),
-        @expectedCalls include?(@actualCalls),
-        @expectedCalls == @actualCalls)
-      
-      expectationMatched? xor negated?
+    satisfied? = method(      
+      @expectedCalls include?(@actualCalls) xor negated?
+    )
+    
+    invocable? = method(
+      if(@negated?,
+        (@actualCalls + 1) < (@expectedCalls from),
+        @actualCalls < (@expectedCalls to))
+    )
+    
+    matches? = method(posArgs, namedArgs,
+      super(posArgs, namedArgs) && invocable?
     )
 
     signal! = method(
@@ -145,7 +157,7 @@ ISpec do(
   DescribeContext do(
     after(ISpec stubs verifyAndClear!)
     
-    mock = macro(
+    mock! = macro(
       mockObject = ISpec MockTemplate mimic
     
       call arguments each(expectation,
@@ -169,7 +181,7 @@ ISpec do(
     )
   )
   
-  MockTemplate = Origin mimic do(
+  MockTemplate = BlankSlate mimic do(
     pass = macro(
       __invoke__(call message name, *(call arguments))
     )
