@@ -3,7 +3,7 @@ use("blank_slate")
 ISpec do(
   UnexpectedInvocation = ISpec Condition mimic
   
-  Stubs = Origin mimic do(
+  StubWrangler = Origin mimic do(
     initialize = method(@stubs = [])
 
     on = method(object, @stubs select(stub, stub owner == object))
@@ -37,7 +37,7 @@ ISpec do(
     enabled? = Ground true
   )
 
-  stubs = ISpec Stubs mimic
+  stubs = ISpec StubWrangler mimic
 
   ExtendedDefaultBehavior do(
     stub! = method("adds a stub to this object", cellName nil, +:cellNamesAndReturnValues,
@@ -69,7 +69,12 @@ ISpec do(
     satisfied? = Ground true
     invocable? = Ground true
 
-    withArgs = method(+posArgs, +:namedArgs,
+    withArgs = method(
+      "Modifies the expectation so that the expected cell must be called with the given arguments.
+      Arguments may be either positional or named. Positional arguments must be given in the order
+      in which they are expected to be invoked.",
+      
+      +posArgs, +:namedArgs,
       @expectedArgs = [ posArgs, namedArgs ]
       self
     )
@@ -84,12 +89,21 @@ ISpec do(
         if(returnValues size > 1, returnValues shift!, returnValues first))
     )
 
-    andReturn = method(+returnValues, 
+    andReturn = method(
+      "Modifies the expectation to return the given values in the given order upon invocation.
+      One or more return values may be specified. If one value is given, that value will always
+      be returned upon invocation. If multiple values are given, each will be returned upon
+      successive invocation in the order in which they were given.",
+      
+      +returnValues, 
       @returnValues = @returnValues + returnValues
       self
     )
     
-    andSignal = method(signal,
+    andSignal = method(
+      "Modifies the expectation to signal the given condition upon invocation.",
+      
+      signal,
       @toSignal = signal
       self
     )
@@ -119,21 +133,51 @@ ISpec do(
   )
 
   Mock = Stub mimic do(
-    expectedCalls = 1..1
+    create = method(object, cellName,
+      mock = super(object, cellName)
+      mock expectedCalls = 1..1
+      mock actualCalls = 0
+      mock negated? = false
+      mock
+    )
+    
     actualCalls   = 0
     negated?      = false
     
-    times = method(n, @expectedCalls = if(n cell?(:include?), n, (n..n)). self)
+    times = method(
+      "Modify the expectation to indicate that it must be invoked the given number of times.
+      The given argument may be either a number or a range of numbers.",
+      n, 
+      @expectedCalls = if(n cell?(:include?), n, (n..n))
+      self
+    )
     
-    never            = method(times(0))
-    once             = method(times(1))
-    twice            = method(times(2))
-    atLeastOnce      = method(times(1..(Number Infinity)))
-    anyNumberOfTimes = method(times(0..(Number Infinity)))
-
+    never = method(
+      "Modify the expectation to indicate that it must never be invoked.", 
+      times(0))
+      
+    once = method(
+      "Modify the expectation to indicate that it must be invoked once.", 
+      times(1))
+      
+    twice = method(
+      "Modify the expectation to indicate that it must be invoked twice.",
+      times(2))
+      
+    atLeastOnce = method(
+      "Modify the expectation to indicate that it must be invoked at least once.", 
+      times(1..(Number Infinity)))
+      
+    anyNumberOfTimes = method(
+      "Modify the expectation to indicate that it may be invoked any number of times.", 
+      times(0..(Number Infinity)))
+    
+    negate! = method(
+      "Invert the call count expectations of this mock.",
+      self negated? = true. self
+    )
+    
     invoke = method(@actualCalls += 1. super)
-    
-    negate! = method(self negated? = true. self)
     
     satisfied? = method(      
       @expectedCalls include?(@actualCalls) xor negated?
