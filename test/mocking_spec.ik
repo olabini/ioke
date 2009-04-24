@@ -51,7 +51,7 @@ describe("ISpec",
         foo bar = 5
         foo stub!(:bar) andReturn(6)
         foo stub!(:bar) andReturn(7)
-        ISpec stubs on(foo) map(returnValue) sort should == [ 6, 7 ]      
+        ISpec stubs on(foo) map(returnValues) flatten sort should == [ 6, 7 ]      
       )
       
       it("should accept a set of key-value pairs as stub parameters",
@@ -112,7 +112,7 @@ describe("ISpec",
         foo bar = 5
         foo mock!(:bar) andReturn(6)
         foo mock!(:bar) andReturn(7)
-        ISpec stubs on(foo) map(returnValue) sort should == [ 6, 7 ]      
+        ISpec stubs on(foo) map(returnValues) flatten sort should == [ 6, 7 ]      
       )      
     )
     
@@ -137,7 +137,31 @@ describe("ISpec",
         foo stub!(:bar) andReturn(7)
         foo stub!(:bar) andReturn(8)
         foo bar should == 8
-      )      
+      )
+      
+      it("should return values in successive order if multiple values are given",
+        foo = Origin mimic
+        foo stub!(:bar) andReturn(6, 7, 8)
+        foo bar should == 6
+        foo bar should == 7
+        foo bar should == 8
+      )
+      
+      it("should return the last possible expected value if multiple return values are given",
+        foo = Origin mimic
+        foo stub!(:bar) andReturn(6, 7)
+        foo bar should == 6
+        foo bar should == 7
+        foo bar should == 7
+      )
+    )
+    
+    describe("andSignal",
+      it("should signal the given condition",
+        foo = Origin mimic
+        foo stub!(:bar) andSignal(Condition Error)
+        fn(foo bar) should signal(Condition Error)
+      )
     )
     
     describe("withArgs",

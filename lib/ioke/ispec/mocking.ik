@@ -61,13 +61,11 @@ ISpec do(
     AnyArgs = Origin mimic
     
     create = method(object, cellName,
-      stub = self with(owner: object, cellName: cellName)
+      stub = self with(owner: object, cellName: cellName, returnValues: [], expectedArgs: AnyArgs, toSignal: Ground nil)
       stub performStub!
       stub
     )
 
-    returnValue = nil
-    expectedArgs = AnyArgs
     satisfied? = Ground true
     invocable? = Ground true
 
@@ -80,9 +78,21 @@ ISpec do(
       @expectedArgs == AnyArgs || [ posArgs, namedArgs ] == @expectedArgs
     )
 
-    invoke = method(returnValue)
+    invoke = method(
+      if(@toSignal not nil?,
+        signal!(@toSignal),
+        if(returnValues size > 1, returnValues shift!, returnValues first))
+    )
 
-    andReturn = method(returnValue, @returnValue = returnValue. self)
+    andReturn = method(+returnValues, 
+      @returnValues = @returnValues + returnValues
+      self
+    )
+    
+    andSignal = method(signal,
+      @toSignal = signal
+      self
+    )
 
     performStub! = method(
       unless(alreadyStubbed?,
@@ -121,7 +131,7 @@ ISpec do(
     atLeastOnce      = method(times(1..(Number Infinity)))
     anyNumberOfTimes = method(times(0..(Number Infinity)))
 
-    invoke = method(@actualCalls += 1. returnValue)
+    invoke = method(@actualCalls += 1. super)
     
     negate! = method(self negated? = true. self)
     
