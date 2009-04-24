@@ -172,6 +172,15 @@ describe("ISpec",
         foo stub!(:bar) withArgs(:wrong, wrong: "again") andReturn(8)
         foo bar(:right) should == 7
       )
+      
+      it("should assume that if no arguments are given the stub should respond to any args",
+        foo = Origin mimic
+        foo stub!(:bar) andReturn(5)
+        foo bar should == 5
+        foo bar(:anArg) should == 5
+        foo bar(1, 2, 3) should == 5
+        foo bar(baz: "qux") should == 5
+      )
     )
     
     describe("satisfied?",
@@ -210,7 +219,7 @@ describe("ISpec",
   describe("Mock",
     describe("expectedCalls",
       it("should be 1 by default",
-        Origin mimic mock!(:bar) expectedCalls should == 1
+        Origin mimic mock!(:bar) expectedCalls should == (1..1)
       )
     )
     
@@ -238,13 +247,6 @@ describe("ISpec",
         foo bar
         mock should be satisfied
       )
-      
-      it("should be false if it expects to be invoked once and has been invoked twice",
-        foo = Origin mimic
-        mock = foo mock!(:bar)
-        2 times(foo bar)
-        mock should not be satisfied
-      )
     )
     
     describe("never",
@@ -254,11 +256,12 @@ describe("ISpec",
         mock should be satisfied
       )
       
-      it("should not be satisfied if it is invoked",
-        foo = Origin mimic
-        mock = foo mock!(:bar) never
-        foo bar
-        mock should not be satisfied        
+      it("should signal UnexpectedInvocation if it is invoked",
+        fn(
+          foo = Origin mimic
+          mock = foo mock!(:bar) never
+          foo bar
+        ) should signal(ISpec UnexpectedInvocation)
       )
     )
     
@@ -321,24 +324,20 @@ describe("ISpec",
         mock should be satisfied
       )
       
-      it("should not be satisfied if it expects to never be called once and is called once",
-        foo = Origin mimic
-        mock = foo mock!(:bar) once negate!
-        foo bar
-        mock should not be satisfied
+      it("should signal UnexpectedInvocation if it expects to never be called once and is called once",
+        fn(
+          foo = Origin mimic
+          mock = foo mock!(:bar) once negate!
+          foo bar
+        ) should signal(ISpec UnexpectedInvocation)
       )
       
-      it("should be satisfy complex argument calls",
+      it("should satisfy complex argument calls",
         foo = Origin mimic
         mock = foo mock!(:bar) times(2..3) negate!
         foo bar
         mock should be satisfied
-        foo bar
-        mock should not be satisfied
-        foo bar
-        mock should not be satisfied
-        foo bar
-        mock should be satisfied
+        fn(foo bar) should signal(ISpec UnexpectedInvocation)
       )
     )
   )
@@ -433,68 +432,68 @@ describe("ISpec",
       )
     )
     
-    describe("mock",
-      it("should mimic Origin",
-        mock should mimic(Origin)
+    describe("mock!",
+      it("should mimic MockTemplate",
+        mock! should mimic(ISpec MockTemplate)
       )
       
       it("should signal UnexpectedInvocation when calling a method that isn't mocked",
-        fn(mock bar) should signal(ISpec UnexpectedInvocation)
-        fn(mock(bar(5)) bar) should signal(ISpec UnexpectedInvocation)
-        fn(mock(bar(5)) bar(5)) should not signal(ISpec UnexpectedInvocation)
+        fn(mock! bar) should signal(ISpec UnexpectedInvocation)
+        fn(mock!(bar(5)) bar) should signal(ISpec UnexpectedInvocation)
+        fn(mock!(bar(5)) bar(5)) should not signal(ISpec UnexpectedInvocation)
       )
       
       it("should set a simple expectation",
-        fn(foo = mock(bar)) should not satisfyExpectations
-        fn(foo = mock(bar). foo bar) should satisfyExpectations
+        fn(foo = mock!(bar)) should not satisfyExpectations
+        fn(foo = mock!(bar). foo bar) should satisfyExpectations
       )
       
       it("should set an expectation with arguments",
-        fn(foo = mock(bar(5)). foo bar) should not satisfyExpectations
-        fn(foo = mock(bar(5)). foo bar(5)) should satisfyExpectations
+        fn(foo = mock!(bar(5)). foo bar) should not satisfyExpectations
+        fn(foo = mock!(bar(5)). foo bar(5)) should satisfyExpectations
         
         arg = 5
-        fn(foo = mock(bar(arg, 6)). foo bar(5)) should not satisfyExpectations
-        fn(foo = mock(bar(arg, 6)). foo bar(5, 6)) should satisfyExpectations
+        fn(foo = mock!(bar(arg, 6)). foo bar(5)) should not satisfyExpectations
+        fn(foo = mock!(bar(arg, 6)). foo bar(5, 6)) should satisfyExpectations
       )
       
       it("should set multiple expectations",
-        fn(foo = mock(bar, baz). foo bar) should not satisfyExpectations
-        fn(foo = mock(bar, baz). foo bar. foo baz) should satisfyExpectations
-        fn(foo = mock(bar, bar(5)). foo bar) should not satisfyExpectations
-        fn(foo = mock(bar, bar(5)). foo bar. foo bar(5)) should satisfyExpectations
+        fn(foo = mock!(bar, baz). foo bar) should not satisfyExpectations
+        fn(foo = mock!(bar, baz). foo bar. foo baz) should satisfyExpectations
+        fn(foo = mock!(bar, bar(5)). foo bar) should not satisfyExpectations
+        fn(foo = mock!(bar, bar(5)). foo bar. foo bar(5)) should satisfyExpectations
       )
       
       it("should chain expectations",
-        fn(foo = mock(bar never)) should satisfyExpectations
-        fn(foo = mock(bar never). foo bar) should not satisfyExpectations
-        fn(foo = mock(bar times(2)). foo bar) should not satisfyExpectations
-        fn(foo = mock(bar times(2)). foo bar. foo bar) should satisfyExpectations
+        fn(foo = mock!(bar never)) should satisfyExpectations
+        fn(foo = mock!(bar never). foo bar) should not satisfyExpectations
+        fn(foo = mock!(bar times(2)). foo bar) should not satisfyExpectations
+        fn(foo = mock!(bar times(2)). foo bar. foo bar) should satisfyExpectations
       )
       
       it("should chain multiple expectations",
-        fn(foo = mock(bar never, baz never)) should satisfyExpectations
-        fn(foo = mock(bar never, baz never). foo bar) should not satisfyExpectations
-        fn(foo = mock(bar never, baz never). foo baz) should not satisfyExpectations
-        fn(foo = mock(bar never, baz never). foo bar. foo baz) should not satisfyExpectations
+        fn(foo = mock!(bar never, baz never)) should satisfyExpectations
+        fn(foo = mock!(bar never, baz never). foo bar) should not satisfyExpectations
+        fn(foo = mock!(bar never, baz never). foo baz) should not satisfyExpectations
+        fn(foo = mock!(bar never, baz never). foo bar. foo baz) should not satisfyExpectations
       )
       
       it("should return values",
-        fn(foo = mock(bar andReturn(5)). foo bar should == 5) should satisfyExpectations
+        fn(foo = mock!(bar andReturn(5)). foo bar should == 5) should satisfyExpectations
       )
       
       it("should construct expectations using a hash syntax",
-        fn(foo = mock(bar: 5)) should not satisfyExpectations
-        fn(foo = mock(bar: 5). foo bar should == 5) should satisfyExpectations
-        fn(foo = mock(bar: 5, baz: 6). foo bar should == 5. foo baz should == 6) should satisfyExpectations   
-        fn(arg = 5. foo = mock(bar: arg). foo bar should == 5) should satisfyExpectations
+        fn(foo = mock!(bar: 5)) should not satisfyExpectations
+        fn(foo = mock!(bar: 5). foo bar should == 5) should satisfyExpectations
+        fn(foo = mock!(bar: 5, baz: 6). foo bar should == 5. foo baz should == 6) should satisfyExpectations   
+        fn(arg = 5. foo = mock!(bar: arg). foo bar should == 5) should satisfyExpectations
       )
       
       it("should mix expectations in a hash syntax and other expectations",
-        fn(foo = mock(bar: 5, baz andReturn(6))) should not satisfyExpectations
-        fn(foo = mock(bar: 5, baz andReturn(6)). foo bar) should not satisfyExpectations
-        fn(foo = mock(bar: 5, baz andReturn(6)). foo baz) should not satisfyExpectations
-        fn(foo = mock(bar: 5, baz andReturn(6)). foo bar. foo baz) should satisfyExpectations
+        fn(foo = mock!(bar: 5, baz andReturn(6))) should not satisfyExpectations
+        fn(foo = mock!(bar: 5, baz andReturn(6)). foo bar) should not satisfyExpectations
+        fn(foo = mock!(bar: 5, baz andReturn(6)). foo baz) should not satisfyExpectations
+        fn(foo = mock!(bar: 5, baz andReturn(6)). foo bar. foo baz) should satisfyExpectations
       )
     )
   )
