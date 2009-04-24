@@ -113,10 +113,13 @@ ISpec do(
     actualCalls   = 0
     negated?      = false
     
-    never = method(times(0))
-    once  = method(times(1))
     times = method(n, @expectedCalls = if(n cell?(:include?), n, (n..n)). self)
-    atLeastOnce = method(times(1..(Number Infinity)))
+    
+    never            = method(times(0))
+    once             = method(times(1))
+    twice            = method(times(2))
+    atLeastOnce      = method(times(1..(Number Infinity)))
+    anyNumberOfTimes = method(times(0..(Number Infinity)))
 
     invoke = method(@actualCalls += 1. returnValue)
     
@@ -158,30 +161,30 @@ ISpec do(
     after(ISpec stubs verifyAndClear!)
     
     mock! = macro(
-      mockObject = ISpec MockTemplate mimic
-    
-      call arguments each(expectation,
-        if(expectation name asText =~ #/:$/, ; hash syntax
-          mockObject mock!(expectation name asText replace(#/:$/, "")) andReturn(expectation next evaluateOn(call ground)),
-        
-          furtherExpectations = expectation next
-          mockExpectation = mockObject mock!(expectation name) withArgs(*(expectation arguments map(evaluateOn(call ground))))
-          unless(furtherExpectations nil? || furtherExpectations terminator?, furtherExpectations sendTo(mockExpectation))
-        )
-      )
-      mockObject
+      buildStubWithMethod(:mock!, call arguments, call ground)
     )
   
-    stub = method(+:cellsAndValues,
-      stubObject = Origin mimic
-      cellsAndValues each(pair,
-        stubObject stub!(pair key) andReturn(pair value)
+    stub! = macro(
+      buildStubWithMethod(:stub!, call arguments, call ground)
+    )
+    
+    buildStubWithMethod = method(stubMethod, callArguments, callGround,
+      stubObject = ISpec StubTemplate mimic
+    
+      callArguments each(expectation,
+        if(expectation name asText =~ #/:$/, ; hash syntax
+          stubObject send(stubMethod, expectation name asText replace(#/:$/, "")) andReturn(expectation next evaluateOn(callGround)),
+        
+          furtherExpectations = expectation next
+          stubExpectation = stubObject send(stubMethod, expectation name) withArgs(*(expectation arguments map(evaluateOn(callGround))))
+          unless(furtherExpectations nil? || furtherExpectations terminator?, furtherExpectations sendTo(stubExpectation))
+        )
       )
-      stubObject
+      stubObject      
     )
   )
   
-  MockTemplate = BlankSlate mimic do(
+  StubTemplate = BlankSlate mimic do(
     pass = macro(
       __invoke__(call message name, *(call arguments))
     )
