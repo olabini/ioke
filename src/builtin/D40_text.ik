@@ -1,5 +1,9 @@
 
-Text aliasMethod("internal:concatenateText", "+")
+Text cell("+") = method(
+  "concatenates two different texts",
+  other, 
+
+  "#{self}#{other}")
 
 Text empty? = method(
   "returns true if the length of this text is exactly zero, otherwise false",

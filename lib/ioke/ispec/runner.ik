@@ -118,7 +118,8 @@ ISpec do(
         formatter = fkind mimic
         case(to,
           or("-", System out), nil,
-          formatter output = java:io:PrintStream new(to))
+          if(System feature?(:java),
+            formatter output = java:io:PrintStream new(to)))
         @options formatters << formatter
       ) do (
         cell(:documentation) = method(

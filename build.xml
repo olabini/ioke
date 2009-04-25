@@ -46,7 +46,7 @@
     <filter filtersfile="version_data.properties"/>
     <filter token="VERSION" value="P"/>
     <filter token="VERSION_RUNTIME" value="0.4.0-snapshot"/>
-    <filter token="VERSION_STRING" value="Ioke P ikj 0.4.0-snapshot"/>
+    <filter token="VERSION_STRING" value="Ioke E ikj 0.4.0-snapshot"/>
 
     <javac destdir="${classes.dir}" debug="true" source="${javac.version}" target="${javac.version}">
       <classpath refid="build.classpath"/>
@@ -61,6 +61,7 @@
 
     <copy todir="${classes.dir}">
       <fileset dir="${src.raw.dir}" includes="builtin/**/*.ik"/>
+      <fileset dir="${src.raw.dir}/ikj" includes="builtin/**/*.ik"/>
     </copy>
   </target>
 
@@ -152,7 +153,10 @@
   <target name="dist-bin" depends="jar">
     <tar destfile="${release.dir}/ioke-P-ikj-0.4.0-snapshot.tar.gz" compression="gzip">
       <tarfileset mode="755" dir="." prefix="ioke">
-        <include name="bin/**"/>
+        <include name="bin/*.bat"/>
+        <include name="bin/dokgen"/>
+        <include name="bin/ioke"/>
+        <include name="bin/ispec"/>
       </tarfileset>
 
       <tarfileset dir="." prefix="ioke">
@@ -169,7 +173,10 @@
 
     <zip destfile="${release.dir}/ioke-P-ikj-0.4.0-snapshot.zip">
       <zipfileset filemode="755" dir="." prefix="ioke">
-        <include name="bin/**"/>
+        <include name="bin/*.bat"/>
+        <include name="bin/dokgen"/>
+        <include name="bin/ioke"/>
+        <include name="bin/ispec"/>
       </zipfileset>
 
       <zipfileset dir="." prefix="ioke">

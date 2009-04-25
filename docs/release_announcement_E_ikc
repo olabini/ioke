@@ -1,0 +1,31 @@
+
+Ioke for the CLR released
+-------------------------
+
+Ioke is a language that is designed to be as expressive as possible. It is a dynamic language targeted at several virtual machines. It's been designed from scratch to be a highly flexible general purpose language. It is a prototype-based programming language that is inspired by Io, Smalltalk, Lisp and Ruby.
+
+
+Homepage: http://ioke.org
+Download: http://ioke.org/download.html
+Programming guide: http://ioke.org/wiki/index.php/Guide
+Wiki: http://ioke.org/wiki
+
+
+Ioke E ikc is the first release of the ikc Ioke machine. The ikc machine is implemented in C# and F# and run's on Mono and .NET. It includes all the features of Ioke E ikj, except for Java integration. Integration with .NET types will come in another release.
+
+Features:
+- Expressiveness first
+- Strong, dynamic typing
+- Prototype based object orientation
+- Homoiconic language
+- Simple syntax
+- Powerful macro facilities
+- Condition system
+- Aspects
+- Runs on both the JVM and the CLR
+- Developed using TDD
+- Documentation system that combines documentation with specs
+
+
+Regards
+Ola Bini    - ola.bini@gmail.com

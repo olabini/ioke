@@ -30,9 +30,9 @@ describe("Method",
   )
 )
 
-describe("JavaMethod",
+describe("NativeMethod",
   it("should signal a condition if activating the kind",
-    fn(JavaMethod) should signal(Condition Error Invocation NotActivatable)
+    fn(NativeMethod) should signal(Condition Error Invocation NotActivatable)
   )
 )
 
