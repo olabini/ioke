@@ -167,8 +167,10 @@ describe(ISpec Runner OptionParser,
       ensure(
         parser = ISpec Runner OptionParser create(nil, nil)
         parser order(["--format", "specdoc", "to:", "file"])
-        parser options formatters first output kind should == "java:io:PrintStream",
 
+        if(System feature?(:java),
+          parser options formatters first output kind should == "java:io:PrintStream"),
+        
         if(FileSystem file?("file"),
           FileSystem removeFile!("file")))
     )

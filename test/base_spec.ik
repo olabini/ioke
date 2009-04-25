@@ -305,9 +305,9 @@ describe("Base",
       originNames = Origin cells keys sort
 
       ;; Easy way to remove duplicates - create a set of it and then sort it back into a list
-      javaGroundAllNames = JavaGround cells keys sort
-      groundAllNames = set(*(iokeGroundNames + groundNames + javaGroundAllNames + baseNames + defaultBehaviorAllNames)) sort
-      originAllNames = set(*(originNames + groundAllNames + javaGroundAllNames)) sort
+      nativeGroundAllNames = if(System feature?(:java), JavaGround cells keys sort, [])
+      groundAllNames = set(*(iokeGroundNames + groundNames + nativeGroundAllNames + baseNames + defaultBehaviorAllNames)) sort
+      originAllNames = set(*(originNames + groundAllNames + nativeGroundAllNames)) sort
 
       Base cellNames sort should == baseNames
       Base cellNames(false) sort should == baseNames
@@ -457,11 +457,11 @@ describe("Base",
   describe("documentation=",
     it("should set the documentation for an object",
       x = Origin mimic
-      x cell(:documentation) kind should == "JavaMethod"
+      x cell(:documentation) kind should == "NativeMethod"
 
       x documentation = "Wow, you didn't believe that, right?"
 
-      x cell(:documentation) kind should == "JavaMethod"
+      x cell(:documentation) kind should == "NativeMethod"
 
       x documentation should == "Wow, you didn't believe that, right?"
     )

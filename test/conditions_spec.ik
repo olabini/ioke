@@ -713,9 +713,9 @@ describe(Condition,
       )
     )
 
-    describe(Condition Error JavaException, 
+    describe(Condition Error NativeException, 
       it("should have the right kind", 
-        Condition Error JavaException should have kind("Condition Error JavaException")
+        Condition Error NativeException should have kind("Condition Error NativeException")
       )
     )
 

@@ -9,14 +9,30 @@ describe(Runtime,
     )
 
     describe("machine",
-      it("should contain ijk",
-        Runtime version machine should == "ikj"
+      onlyWhen(System feature?(:java),
+        it("should contain ikj",
+          Runtime version machine should == "ikj"
+        )
+      )
+
+      onlyWhen(System feature?(:clr),
+        it("should contain ikc",
+          Runtime version machine should == "ikc"
+        )
       )
     )
 
     describe("versionNumber",
-      it("should be the correct version",
-        Runtime version versionNumber should == [0,4,0]
+      onlyWhen(System feature?(:java),
+        it("should be the correct version",
+          Runtime version versionNumber should == [0,4,0]
+        )
+      )
+
+      onlyWhen(System feature?(:clr),
+        it("should be the correct version",
+          Runtime version versionNumber should == [0,2,0]
+        )
       )
     )
   )

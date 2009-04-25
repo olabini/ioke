@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Antlr3.Utility</name>
+    </assembly>
+    <members>
+        <member name="T:Antlr.Utility.Tree.DOTTreeGenerator">
+             <summary>
+             A utility class to generate DOT diagrams (graphviz) from
+             arbitrary trees.  You can pass in your own templates and
+             can pass in any kind of tree or use Tree interface method.
+             I wanted this separator so that you don't have to include
+             ST just to use the org.antlr.runtime.tree.* package.
+             This is a set of non-static methods so you can subclass
+             to override.  For example, here is an invocation:
+            
+                 CharStream input = new ANTLRInputStream(Console.In);
+                 TLexer lex = new TLexer(input);
+                 CommonTokenStream tokens = new CommonTokenStream(lex);
+                 TParser parser = new TParser(tokens);
+                 TParser.e_return r = parser.e();
+                 Tree t = (Tree)r.tree;
+                 Console.Out.WriteLine(t.ToStringTree());
+                 DOTTreeGenerator gen = new DOTTreeGenerator();
+                 StringTemplate st = gen.ToDOT(t);
+                 Console.Out.WriteLine(st);
+                 
+             </summary>
+        </member>
+        <member name="F:Antlr.Utility.Tree.DOTTreeGenerator.nodeToNumberMap">
+            <summary>
+            Track node to number mapping so we can get proper node name back
+            </summary>
+        </member>
+        <member name="F:Antlr.Utility.Tree.DOTTreeGenerator.nodeNumber">
+            <summary>
+            Track node number so we can get unique node names
+            </summary>
+        </member>
+        <member name="M:Antlr.Utility.Tree.DOTTreeGenerator.ToDOT(Antlr.Runtime.Tree.ITree)">
+             <summary>
+             Generate DOT (graphviz) for a whole tree not just a node.
+             For example, 3+4*5 should generate:
+            
+             digraph {
+               node [shape=plaintext, fixedsize=true, fontsize=11, fontname="Courier",
+                     width=.4, height=.2];
+               edge [arrowsize=.7]
+               "+"->3
+               "+"->"*"
+               "*"->4
+               "*"->5
+             }
+            
+             Return the ST not a string in case people want to alter.
+            
+             Takes a Tree interface object.
+             </summary>
+        </member>
+    </members>
+</doc>
