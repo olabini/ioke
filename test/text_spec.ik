@@ -5,6 +5,10 @@ parse = method(str,
   Message fromText(str) code)
 
 describe("Text", 
+  it("should correctly handle a call to internal:createText without arguments",
+    fn(internal:createText) should signal(Condition Error Invocation TooFewArguments)
+  )
+
   describe("==", 
     it("should return true for the same text", 
       x = "foo". x should == x
@@ -30,6 +34,18 @@ describe("Text",
 
     it("should work correctly when comparing another kind",
       "foo" should not == Base mimic
+    )
+
+    it("should not return true for equality with other types",
+      "true" should not == true
+      "true" should not == false
+      "true" should not == nil
+      "false" should not == false
+      "false" should not == true
+      "false" should not == nil
+      "nil" should not == nil
+      "nil" should not == false
+      "nil" should not == true
     )
   )
 
@@ -569,6 +585,12 @@ describe("Text",
     it("should parse correctly with nested interpolations", 
       m = parse("\"foo \#{\"fux \#{32} bar\" bletch} bar\"")
       m should == "internal:concatenateText(\"foo \", internal:concatenateText(\"fux \", 32, \" bar\") bletch, \" bar\")"
+    )
+
+    it("should correctly handle references to self for interpolation in the context of that Text",
+      testText = "foo"
+      testText bar = method("#{self}")
+      testText bar should == "foo"
     )
   )
 

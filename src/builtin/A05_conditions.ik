@@ -12,7 +12,7 @@ Condition Error Type             = Condition Error mimic
 Condition Error Index            = Condition Error mimic
 Condition Error RestartNotActive = Condition Error mimic
 Condition Error CommandLine      = Condition Error mimic
-Condition Error JavaException    = Condition Error mimic
+Condition Error NativeException  = Condition Error mimic
 Condition Error Parser           = Condition Error mimic
 
 
@@ -43,8 +43,8 @@ Condition report = method(
 #{context stackTraceAsText}")
 
 
-Condition Error JavaException report = method(
-  "returns a representation of this error, showing some information about the java exception",
+Condition Error NativeException report = method(
+  "returns a representation of this error, showing some information about the native exception",
   
   stackTrace = "%[  %s\n%]" format(self exceptionStackTrace)
 
