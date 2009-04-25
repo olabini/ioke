@@ -1,7 +1,13 @@
 Different parts of Ioke is covered by different licences and copyrights:
 
+ikj:
 The package ioke.lang is covered by the file LICENSE.
 The package gnu.math is covered by the file LICENSE.kawa.
 The package org.jregex and subpackages contains their own licensing information in the source files.
+
+ikc:
+The namepsace Ioke.Lang is covered by the file LICENSE.
+The namespace Ioke.Math is covered by the file LICENSE.kawa.
+The class Ioke.Math.BigDecimal and Ioke.Math.MathContext is covered by the file LICENSE.icu4j
 
 Everything else is covered by the file LICENSE, unless noted.

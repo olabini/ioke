@@ -1,0 +1,227 @@
+<?xml version="1.0"?>
+
+<project name="ioke" default="build" basedir=".">
+  <description>
+    ioke is a next generation language, based on Io, Self, Smalltalk, Ruby and Lisp
+  </description>
+
+  <property name="src.raw.dir" value="src"/>
+  <property name="src.dir" value="src/ikc/main"/>
+  <property name="src.generated.dir" value="src/ikc/generated/Ioke.Lang.Parser"/>
+  <property name="src.generated.dir.relative" value="../generated/Ioke.Lang.Parser"/>
+  <property name="antlr.grammar.dir" value="src/ikc/grammar"/>
+  <property name="antlr.grammar.file" value="ioke.g"/>
+  <property name="lib.dir" value="lib"/>
+  <property name="lib.build.dir" value="${lib.dir}/build"/>
+  <property name="bin.dir" value="bin"/>
+  <property name="release.dir" value="rels"/>
+  <property name="build.dir" value="build"/>
+  <property name="build.filtered.dir" value="${build.dir}/filtered"/>
+
+  <target name="prepare" description="Creates the directories needed for building">
+    <mkdir dir="${src.generated.dir}"/>
+    <mkdir dir="${build.dir}"/>
+    <mkdir dir="${build.filtered.dir}"/>
+    <mkdir dir="${release.dir}"/>
+
+    <uptodate property="grammar.notUpdated">
+      <sourcefiles>
+        <include name="${antlr.grammar.dir}/${antlr.grammar.file}" />
+      </sourcefiles>
+      <targetfiles>
+        <include name="${src.generated.dir}/iokeLexer.cs" />
+      </targetfiles>      
+    </uptodate>
+  </target>
+
+  <target name="generate.antlr" depends="prepare" description="Generates source files from the ANTLR definitions" unless="${grammar.notUpdated}">
+    <exec program="java" workingdir="${antlr.grammar.dir}">
+      <arg value="-Xmx256m"/>
+      <arg value="-cp"/>
+      <arg file="lib/build/antlr-3.1.2.jar"/>
+      <arg value="org.antlr.Tool"/>
+      <arg value="-Xconversiontimeout"/>
+      <arg value="100000"/>
+      <arg line="-o ${src.generated.dir.relative} ${antlr.grammar.file}"/>
+    </exec>
+  </target>
+
+  <target name="generate_filters" depends="generate.antlr" description="Generates source files from the ANTLR definitions">
+    <exec program="ruby" failonerror="false">
+      <arg value="generate_filter_data.rb"/>
+    </exec>
+  </target>
+
+  <target name="compile" depends="generate_filters" description="Compile the source files for the project.">
+    <csc target="library" output="${bin.dir}/Ioke.Math.dll" debug="true">
+      <sources>
+        <include name="${src.dir}/Ioke.Math/**/*.cs" />
+      </sources>
+    </csc>
+
+    <script language="C#" prefix="version">
+      <code>
+        <![CDATA[
+        [Function("extract-date")]
+        public static string ExtractDate() {
+         try {
+          string outp = System.IO.File.ReadAllText("version_data.properties");
+          string[] pieces = outp.Split('\n');
+          return pieces[0].Split('=')[1];
+         } catch(System.Exception) { return "???"; }
+        }
+
+        [Function("extract-commit")]
+        public static string ExtractCommit() {
+         try {
+          string outp = System.IO.File.ReadAllText("version_data.properties");
+          string[] pieces = outp.Split('\n');
+          return pieces[1].Split('=')[1];
+         } catch(System.Exception) { return "???"; }
+        }
+        ]]>
+      </code>
+    </script>
+
+    <echo file="${build.filtered.dir}/Ioke.Lang.version.properties">ioke.build.version=E
+ioke.build.runtimeVersion=0.2.0-snapshot
+ioke.build.versionString=Ioke E ikc 0.2.0-snapshot
+ioke.build.date=${version::extract-date()}
+ioke.build.commit=${version::extract-commit()}
+    </echo>
+
+    <csc target="library" output="${bin.dir}/Ioke.Lang.dll" debug="true">
+      <sources>
+        <include name="${src.dir}/getline.cs" />
+        <include name="${src.dir}/Ioke.Lang/**/*.cs" />
+        <include name="${src.generated.dir}/**/*.cs" />
+        <exclude name="${src.dir}/Ioke.Lang/Main.cs"/>
+        <exclude name="${src.dir}/Ioke.Lang/ISpecMain.cs"/> 
+        <exclude name="${src.dir}/Ioke.Lang/DokgenMain.cs"/>
+      </sources>
+      <references basedir="${bin.dir}">
+        <include name="*.dll" />
+        <exclude name="Ioke.Lang.dll" />
+      </references>      
+      <resources basedir="${src.raw.dir}" dynamicprefix="true">
+        <include name="builtin/**/*.ik" />
+      </resources>
+      <resources basedir="${src.raw.dir}/ikc" dynamicprefix="true">
+        <include name="builtin/**/*.ik" />
+      </resources>
+      <resources basedir="${build.filtered.dir}" dynamicprefix="true">
+        <include name="*.properties" />
+      </resources>
+    </csc>
+
+    <exec program="fsc">
+      <arg line="-a -o ${bin.dir}/Ioke.Lang.Parser.Functional.dll"/>
+      <arg line="-r ${bin.dir}/Ioke.Lang.dll"/>
+      <arg line="-r ${bin.dir}/Ioke.Math.dll"/>
+      <arg line="-r ${bin.dir}/FSharp.Core.dll"/>
+      <arg value="${src.dir}/Ioke.Lang/Parser/FunctionalOperatorShuffler.fs"/>
+    </exec>
+
+    <csc target="exe" output="${bin.dir}/ioke.exe" debug="true">
+      <sources>
+        <include name="${src.dir}/Ioke.Lang/Main.cs"/>
+      </sources>
+      <references basedir="${bin.dir}">
+        <include name="Ioke.Lang.dll" />
+        <include name="FSharp.Core.dll" />
+        <include name="Ioke.Lang.Parser.Functional.dll" />
+      </references>
+    </csc>
+
+    <csc target="exe" output="${bin.dir}/ispec.exe" debug="true">
+      <sources>
+        <include name="${src.dir}/Ioke.Lang/ISpecMain.cs"/>
+      </sources>
+      <references basedir="${bin.dir}">
+        <include name="ioke.exe" />
+      </references>
+    </csc>
+
+    <csc target="exe" output="${bin.dir}/dokgen.exe" debug="true">
+      <sources>
+        <include name="${src.dir}/Ioke.Lang/DokgenMain.cs"/>
+      </sources>
+      <references basedir="${bin.dir}">
+        <include name="ioke.exe" />
+      </references>
+    </csc>
+  </target>
+
+  <target name="test" depends="compile" description="Runs all ISpec tests">
+    <exec program="bin/ispec.exe">
+      <arg line="test -fs"/>
+    </exec>
+  </target>
+
+  <target name="build" depends="test" description="Builds everything">
+  </target>
+
+  <target name="dist-bin">
+    <tar destfile="${release.dir}/ioke-E-ikc-0.2.0-snapshot.tar.gz" compression="GZip">
+      <fileset filemode="755" basedir="." prefix="ioke">
+        <include name="bin/*.dll"/>
+        <include name="bin/*.exe"/>
+        <include name="bin/ispec"/>
+        <include name="bin/dokgen"/>
+      </fileset>
+
+      <fileset basedir="." prefix="ioke">
+        <include name="lib/ioke/**"/>
+        <include name="dok/**"/>
+        <include name="share/**"/>
+        <include name="COPYING"/>
+        <include name="LICENSE"/>
+        <include name="LICENSE.kawa"/>
+        <include name="LICENSE.icu4j"/>
+        <include name="README"/>
+      </fileset>
+    </tar>
+
+    <zip zipfile="${release.dir}/ioke-E-ikc-0.2.0-snapshot.zip">
+      <fileset basedir="." prefix="ioke">
+        <include name="bin/*.dll"/>
+        <include name="bin/*.exe"/>
+        <include name="bin/ispec"/>
+        <include name="bin/dokgen"/>
+      </fileset>
+
+      <fileset basedir="." prefix="ioke">
+        <include name="lib/ioke/**"/>
+        <include name="dok/**"/>
+        <include name="share/**"/>
+        <include name="COPYING"/>
+        <include name="LICENSE"/>
+        <include name="LICENSE.kawa"/>
+        <include name="LICENSE.icu4j"/>
+        <include name="README"/>
+      </fileset>
+    </zip>
+  </target>
+
+  <target name="dist" depends="build, dist-bin"/>
+  <target name="dist-notest" depends="compile, dist-bin"/>
+
+  <target name="clean" description="clean almost everything">
+    <delete file="${bin.dir}/ioke.dll"/>
+    <delete file="${bin.dir}/ioke.dll.mdb"/>
+    <delete file="${bin.dir}/ioke.exe"/>
+    <delete file="${bin.dir}/ioke.exe.mdb"/>
+    <delete file="${bin.dir}/ispec.exe"/>
+    <delete file="${bin.dir}/ispec.exe.mdb"/>
+    <delete file="${bin.dir}/dokgen.exe"/>
+    <delete file="${bin.dir}/dokgen.exe.mdb"/>
+    <delete file="${bin.dir}/Ioke.Lang.dll"/>
+    <delete file="${bin.dir}/Ioke.Lang.dll.mdb"/>
+    <delete file="${bin.dir}/Ioke.Lang.Parser.Functional.dll"/>
+    <delete file="${bin.dir}/Ioke.Lang.Parser.Functional.dll.mdb"/>
+    <delete file="${bin.dir}/Ioke.Math.dll"/>
+    <delete file="${bin.dir}/Ioke.Math.dll.mdb"/>
+    <delete dir="${src.generated.dir}"/>
+  </target>
+</project>
+        
