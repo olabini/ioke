@@ -1,5 +1,13 @@
 use("ispec")
 
+Text printh = method(
+  "#{self escHtml}<br/>" println
+)
+
+Text escHtml = method(
+  replaceAll(#/</, "&lt;") replaceAll(#/>/, "&gt;") replaceAll(#/&/, "&amp;")
+)
+
 describe("ISpec",
   ISpec stubs enabled? = false
 
@@ -9,7 +17,7 @@ describe("ISpec",
         foo = Origin mimic do(bar = 5)
         foo stub!(:bar)
         foo stubs length should == 1
-        foo stubs first cellName should == :bar
+        foo stubs first cellName should == "bar"
         foo stubs first should mimic(ISpec Stub)
       )
       
@@ -457,12 +465,37 @@ describe("ISpec",
         stub!(bar: arg) bar should == 5
       )
       
+      it("should support complex message chaining syntax",
+        stub!(bar(5) andReturn(6)) bar(5) should == 6
+      )
+      
+      it("should support a mix of the two syntaxes",
+        o = stub!(bar: 6, bar(7) andReturn(8))
+        o bar should == 6
+        o bar(7) should == 8
+      )
+      
       it("needs tests that prove that it exhibits the same matching behavior as mocks")
     )
     
     describe("mock!",
       it("should mimic MockTemplate",
         mock! should mimic(ISpec StubTemplate)
+      )
+      
+      it("should support simple key-value pair syntax",
+        mock!(bar: 5) bar should == 5
+        mock!(bar: 5, qux: 6) bar should == 5
+        mock!(bar: 5, qux: 6) qux should == 6
+      
+        arg = 5
+        mock!(bar: arg) bar should == 5
+      )
+      
+      it("should support a mix of the two syntaxes",
+        o = mock!(bar: 6, bar(7) andReturn(8))
+        o bar should == 6
+        o bar(7) should == 8
       )
       
       it("should signal UnexpectedInvocation when calling a method that isn't mocked",
