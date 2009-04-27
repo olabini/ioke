@@ -150,8 +150,8 @@ ISpec do(
       
       exampleFailed = method(example, counter, failure,
         html div(class: "failed spec", 
-          link = stackTraceAsLink(failure condition example, "link")
-          "#{example description} (FAILED: #{failure condition report} #{link})"
+          link = stackTraceAsLink(failure condition example, "#{failure condition example code filename}:#{failure condition example code line}")
+          "#{example description}<br/>FAILED: #{failure condition report replaceAll(#/\n/, "<br/>")}#{link}"
         ) println
       )
 

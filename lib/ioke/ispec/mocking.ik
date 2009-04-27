@@ -19,10 +19,19 @@ ISpec do(
     )
 
     invoke = method(object, cellName, posArgs, namedArgs,
-      foundStub = on(object) select(stub, stub cellName == cellName && stub matches?(posArgs, namedArgs)) last
+      foundStub = on(object) select(stub, stub cellName asText == cellName && stub matches?(posArgs, namedArgs)) last
       if(foundStub nil?,
-        error!(ISpec UnexpectedInvocation, text: "couldn't find matching mock or stub for #{cellName}"),
+        error!(ISpec UnexpectedInvocation, text: buildInvocationFailureText(object, cellName, posArgs, namedArgs)),
         foundStub invoke)
+    )
+    
+    buildInvocationFailureText = method(object, cellName, posArgs, namedArgs,
+      "couldn't find matching mock or stub for #{cellName} with arguments #{posArgs}, #{namedArgs}.\nSimilar expectations:\n" +
+      on(object) select(stub, stub cellName == cellName) map(stub,
+        " - #{stub kind} #{stub cellName}
+          (#{if(stub expectedArgs == ISpec Stub AnyArgs, "any arguments", stub expectedArgs join(", "))}) 
+          returning #{stub returnValues join(", ")}
+          (#{if(stub satisfied?, "satisfied", "not yet satisfied")})" replaceAll(#/\n/, "")) ifEmpty(["none"]) join("\n")
     )
 
     allMocks = method(@stubs select(mimics?(ISpec Mock)))
@@ -43,7 +52,7 @@ ISpec do(
     AnyArgs = Origin mimic
     
     create = method(object, cellName,
-      stub = self with(owner: object, cellName: cellName, returnValues: [], expectedArgs: AnyArgs, toSignal: Ground nil)
+      stub = self with(owner: object, cellName: cellName asText, returnValues: [], expectedArgs: AnyArgs, toSignal: Ground nil)
       stub performStub!
       stub
     )
@@ -57,6 +66,7 @@ ISpec do(
       in which they are expected to be invoked.",
       
       +posArgs, +:namedArgs,
+      
       @expectedArgs = [ posArgs, namedArgs ]
       self
     )
@@ -225,9 +235,9 @@ ISpec do(
       callArguments each(expectation,
         if(expectation name asText =~ #/:$/, ; hash syntax
           stubObject send(stubMethod, expectation name asText replace(#/:$/, "")) andReturn(expectation next evaluateOn(callGround)),
-        
-          furtherExpectations = expectation next
+          
           stubExpectation = stubObject send(stubMethod, expectation name) withArgs(*(expectation arguments map(evaluateOn(callGround))))
+          furtherExpectations = expectation next
           unless(furtherExpectations nil? || furtherExpectations terminator?, furtherExpectations sendTo(stubExpectation))
         )
       )
@@ -262,7 +272,6 @@ ISpec do(
       error!(ISpec ExpectationNotMet, text: "#{signal text}, code: #{realValue code}", shouldMessage: self shouldMessage))
   )
 
-  ; Goal: foo should receive(bar, baz, qux(5)) andReturn("xyzzy")
   ShouldContext receive = macro(
     if(call arguments empty?,
       Origin mimic with(pass: generateMock(call message next, call ground)),
@@ -270,6 +279,17 @@ ISpec do(
       Origin mimic do(pass = method(nil)) ; Ensure rest of message chain is a no-op.
     )
   )
+  
+  ShouldContext slurpExpectations = method(expectations, furtherExpectations, ground,
+    expectations map(expectation,
+      mock = generateMock(expectation, ground)
+      unless(furtherExpectations nil? || furtherExpectations terminator?, furtherExpectations sendTo(mock))
+      mock)
+  )
+  
+  ShouldContext generateMock = method(message, ground,
+    self realValue mock!(message name) withArgs(*(message arguments map(evaluateOn(ground))))
+  )  
 
   NotShouldContext receive = macro(
     if(call arguments empty?,
@@ -277,16 +297,5 @@ ISpec do(
       slurpExpectations(call arguments, call message next, call ground) each(negate!)
       Origin mimic do(pass = method(nil)) ; Ensure rest of message chain is a no-op.
     )
-  )
-
-  ShouldContext slurpExpectations = method(expectations, furtherExpectations, ground,
-    expectations map(expectation,
-      mock = generateMock(expectation, ground)
-      unless(furtherExpectations nil? || furtherExpectations terminator?, furtherExpectations sendTo(mock))
-      mock)
-  )
-
-  ShouldContext generateMock = method(message, ground,
-    self realValue mock!(message name) withArgs(*(message arguments map(evaluateOn(ground))))
   )
 )
