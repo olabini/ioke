@@ -39,24 +39,6 @@ ISpec do(
 
   stubs = ISpec StubWrangler mimic
 
-  ExtendedDefaultBehavior do(
-    stub! = method("adds a stub to this object", cellName nil, +:cellNamesAndReturnValues,
-      if(!cellName nil?,
-        ISpec stubs addStub(self, cellName),
-        cellNamesAndReturnValues each(pair,
-          ISpec stubs addStub(self, pair key) andReturn(pair value))
-      )
-    )
-
-    mock! = method("adds a mock to this object", cellName,
-      ISpec stubs addMock(self, cellName)
-    )
-
-    stubs = method("returns all stubs for this object",
-      ISpec stubs on(self)
-    )
-  )
-
   Stub = Origin mimic do(
     AnyArgs = Origin mimic
     
@@ -141,9 +123,6 @@ ISpec do(
       mock
     )
     
-    actualCalls   = 0
-    negated?      = false
-    
     times = method(
       "Modify the expectation to indicate that it must be invoked the given number of times.
       The given argument may be either a number or a range of numbers.",
@@ -211,14 +190,32 @@ ISpec do(
     )
   )
   
+  ExtendedDefaultBehavior do(
+    stub! = method("adds a stub to this object", cellName nil, +:cellNamesAndReturnValues,
+      if(!cellName nil?,
+        ISpec stubs addStub(self, cellName),
+        cellNamesAndReturnValues each(pair,
+          ISpec stubs addStub(self, pair key) andReturn(pair value))
+      )
+    )
+
+    mock! = method("adds a mock to this object", cellName,
+      ISpec stubs addMock(self, cellName)
+    )
+
+    stubs = method("returns all stubs for this object",
+      ISpec stubs on(self)
+    )
+  )
+  
   DescribeContext do(
     after(ISpec stubs verifyAndClear!)
     
-    mock! = macro(
+    mock! = macro("Creates a new mock object that mimics BlankSlate.",
       buildStubWithMethod(:mock!, call arguments, call ground)
     )
   
-    stub! = macro(
+    stub! = macro("Creates a new stub object that mimics BlankSlate.",
       buildStubWithMethod(:stub!, call arguments, call ground)
     )
     
@@ -265,30 +262,28 @@ ISpec do(
       error!(ISpec ExpectationNotMet, text: "#{signal text}, code: #{realValue code}", shouldMessage: self shouldMessage))
   )
 
+  ; Goal: foo should receive(bar, baz, qux(5)) andReturn("xyzzy")
   ShouldContext receive = macro(
     if(call arguments empty?,
       Origin mimic with(pass: generateMock(call message next, call ground)),
-      
-      furtherExpectations = call message next
-      call arguments each(expectation, 
-        mock = generateMock(expectation, call ground)
-        unless(furtherExpectations nil? || furtherExpectations terminator?, furtherExpectations sendTo(mock))
-        mock)
-      Origin mimic do(pass = method(nil))
+      slurpExpectations(call arguments, call message next, call ground)
+      Origin mimic do(pass = method(nil)) ; Ensure rest of message chain is a no-op.
     )
   )
 
   NotShouldContext receive = macro(
     if(call arguments empty?,
       Origin mimic with(pass: generateMock(call message next, call ground) negate!),
-
-      furtherExpectations = call message next
-      call arguments each(expectation, 
-        mock = generateMock(expectation, call ground) negate!
-        unless(furtherExpectations nil? || furtherExpectations terminator?, furtherExpectations sendTo(mock))
-        mock)
-      Origin mimic do(pass = method(nil))
+      slurpExpectations(call arguments, call message next, call ground) each(negate!)
+      Origin mimic do(pass = method(nil)) ; Ensure rest of message chain is a no-op.
     )
+  )
+
+  ShouldContext slurpExpectations = method(expectations, furtherExpectations, ground,
+    expectations map(expectation,
+      mock = generateMock(expectation, ground)
+      unless(furtherExpectations nil? || furtherExpectations terminator?, furtherExpectations sendTo(mock))
+      mock)
   )
 
   ShouldContext generateMock = method(message, ground,

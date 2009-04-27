@@ -63,7 +63,7 @@ describe("ISpec",
         arg = 7
         foo stub!(qux: arg)
         foo qux should == 7
-      )
+      )      
     )
     
     describe("mock!",    
@@ -136,6 +136,8 @@ describe("ISpec",
         foo stub!(:bar) andReturn(6)
         foo stub!(:bar) andReturn(7)
         foo stub!(:bar) andReturn(8)
+        foo bar should == 8
+        foo bar should == 8
         foo bar should == 8
       )
       
