@@ -119,6 +119,7 @@ namespace Ioke.Lang {
         public IokeObject Integer = null;
         public IokeObject Decimal = null;
         public IokeObject Ratio = null;
+        public IokeObject Infinity = null;
         
         public Runtime(IOperatorShufflerFactory shuffler) : this(shuffler, Console.Out, Console.In, Console.Error) {
         }
