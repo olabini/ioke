@@ -95,6 +95,7 @@ public class Runtime {
     public IokeObject integer = null;
     public IokeObject decimal = null;
     public IokeObject ratio = null;
+    public IokeObject infinity = null;
 
     // Core messages
     public IokeObject asText = newMessage("asText");
