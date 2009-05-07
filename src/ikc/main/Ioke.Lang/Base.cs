@@ -5,6 +5,141 @@ namespace Ioke.Lang {
     using System.Collections.Specialized;
 
     public class Base {
+        public static object CellNames(IokeObject context, IokeObject message, object on, bool includeMimics, object cutoff) {
+            if(includeMimics) {
+                var visited = IdentityHashTable.Create();
+                var names = new SaneArrayList();
+                var visitedNames = new SaneHashSet<object>();
+                var undefined = new SaneHashSet<string>();
+                Runtime runtime = context.runtime;
+                var toVisit = new SaneArrayList();
+                toVisit.Add(on);
+
+                while(toVisit.Count > 0) {
+                    IokeObject current = IokeObject.As(toVisit[0], context);
+                    toVisit.RemoveAt(0);
+                    if(!visited.Contains(current)) {
+                        visited[current] = null;
+                        if(cutoff != current) {
+                            foreach(IokeObject o in current.GetMimics()) toVisit.Add(o);
+                        }
+                                
+                        var mso = current.Cells;
+
+                        foreach(string s in mso.Keys) {
+                            if(!undefined.Contains(s)) {
+                                if(mso[s] == runtime.nul) {
+                                    undefined.Add(s);
+                                } else {
+                                    object x = runtime.GetSymbol(s);
+                                    if(!visitedNames.Contains(x)) {
+                                        visitedNames.Add(x);
+                                        names.Add(x);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                        
+                return runtime.NewList(names);
+            } else {
+                var mso = IokeObject.As(on, context).Cells;
+                var names = new SaneArrayList();
+                Runtime runtime = context.runtime;
+
+                foreach(string s in mso.Keys) {
+                    if(mso[s] != runtime.nul) {
+                        names.Add(runtime.GetSymbol(s));
+                    }
+                }
+
+                return runtime.NewList(names);
+            }
+        }
+
+        public static object Cells(IokeObject context, IokeObject message, object on, bool includeMimics) {
+            var cells = new SaneOrderedDictionary();
+            Runtime runtime = context.runtime;
+
+            if(includeMimics) {
+                var visited = IdentityHashTable.Create();
+                var undefined = new SaneHashSet<string>();
+                var toVisit = new SaneArrayList();
+                toVisit.Add(on);
+
+                while(toVisit.Count > 0) {
+                    IokeObject current = IokeObject.As(toVisit[0], context);
+                    toVisit.RemoveAt(0);
+                    if(!visited.Contains(current)) {
+                        visited[current] = null;
+                        foreach(IokeObject o in current.GetMimics()) toVisit.Add(o);
+                        var mso = current.Cells;
+
+                        foreach(string s in mso.Keys) {
+                            if(!undefined.Contains(s)) {
+                                object val = mso[s];
+                                if(val == runtime.nul) {
+                                    undefined.Add(s);
+                                } else {
+                                    object x = runtime.GetSymbol(s);
+                                    if(!cells.Contains(x)) {
+                                        cells[x] = val;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            } else {
+                var mso = IokeObject.As(on, context).Cells;
+
+                foreach(string s in mso.Keys) {
+                    object val = mso[s];
+                    if(val != runtime.nul) {
+                        cells[runtime.GetSymbol(s)] = val;
+                    }
+                }
+            }
+            return runtime.NewDict(cells);
+        }
+
+        public static object AssignCell(IokeObject context, IokeObject message, object on, object first, object val) {
+            string name = Text.GetText(((Message)IokeObject.dataOf(context.runtime.asText)).SendTo(context.runtime.asText, context, first));
+            
+            if(val is IokeObject) {
+                if((IokeObject.dataOf(val) is Named) && ((Named)IokeObject.dataOf(val)).Name == null) {
+                    ((Named)IokeObject.dataOf(val)).Name = name;
+                } else if(name.Length > 0 && char.IsUpper(name[0]) && !IokeObject.As(val, context).HasKind) {
+                    if(on == context.runtime.Ground) {
+                        IokeObject.As(val, context).Kind = name;
+                    } else {
+                        IokeObject.As(val, context).Kind = IokeObject.As(on, context).GetKind(message, context) + " " + name;
+                    }
+                }
+            }
+
+            return IokeObject.SetCell(on, message, context, name, val);
+        }
+
+        public static object Documentation(IokeObject context, IokeObject message, object on) {
+            string docs = IokeObject.As(on, context).Documentation;
+            if(null == docs) {
+                return context.runtime.nil;
+            }
+            return context.runtime.NewText(docs);
+        }
+
+        public static object SetDocumentation(IokeObject context, IokeObject message, object on, object arg) {
+            if(arg == context.runtime.nil) {
+                IokeObject.As(on, context).SetDocumentation(null, message, context);
+            } else {
+                string s = Text.GetText(arg);
+                IokeObject.As(on, context).SetDocumentation(s, message, context);
+            }
+            return arg;
+        }
+
         public static void Init(IokeObject obj) {
             obj.Kind = "Base";
 
@@ -59,23 +194,7 @@ namespace Ioke.Lang {
                                                                             (method, context, message, on, outer) => {
                                                                                 var args = new SaneArrayList();
                                                                                 outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, args, new SaneDictionary<string, object>());
-
-                                                                                string name = Text.GetText(((Message)IokeObject.dataOf(context.runtime.asText)).SendTo(context.runtime.asText, context, args[0]));
-                                                                                object val = args[1];
-
-                                                                                if(val is IokeObject) {
-                                                                                    if((IokeObject.dataOf(val) is Named) && ((Named)IokeObject.dataOf(val)).Name == null) {
-                                                                                        ((Named)IokeObject.dataOf(val)).Name = name;
-                                                                                    } else if(name.Length > 0 && char.IsUpper(name[0]) && !IokeObject.As(val, context).HasKind) {
-                                                                                        if(on == context.runtime.Ground) {
-                                                                                            IokeObject.As(val, context).Kind = name;
-                                                                                        } else {
-                                                                                            IokeObject.As(val, context).Kind = IokeObject.As(on, context).GetKind(message, context) + " " + name;
-                                                                                        }
-                                                                                    }
-                                                                                }
-
-                                                                                return IokeObject.SetCell(on, message, context, name, val);
+                                                                                return AssignCell(context, message, on, args[0], args[1]);
                                                                             })));
         obj.RegisterMethod(obj.runtime.NewNativeMethod("expects one evaluated text or symbol argument and returns the cell that matches that name, without activating even if it's activatable.", 
                                                        new NativeMethod("cell", DefaultArgumentsDefinition.builder()
@@ -113,11 +232,7 @@ namespace Ioke.Lang {
                                                        new NativeMethod.WithNoArguments("documentation",
                                                                                         (method, context, message, on, outer) => {
                                                                                             outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, new SaneArrayList(), new SaneDictionary<string, object>());
-                                                                                            string docs = IokeObject.As(on, context).Documentation;
-                                                                                            if(null == docs) {
-                                                                                                return context.runtime.nil;
-                                                                                            }
-                                                                                            return context.runtime.NewText(docs);
+                                                                                            return Documentation(context, message, on);
                                                                                         })));
 
         obj.RegisterMethod(obj.runtime.NewNativeMethod("returns this object", 
@@ -132,14 +247,7 @@ namespace Ioke.Lang {
                                                                                     .WithRequiredPositional("text").WhichMustMimic(obj.runtime.Text).OrBeNil()
                                                                                     .Arguments,
                                                                                     (method, on, args, keywords, context, message) => {
-                                                                                        object arg = args[0];
-                                                                                        if(arg == context.runtime.nil) {
-                                                                                            IokeObject.As(on, context).SetDocumentation(null, message, context);
-                                                                                        } else {
-                                                                                            string s = Text.GetText(arg);
-                                                                                            IokeObject.As(on, context).SetDocumentation(s, message, context);
-                                                                                        }
-                                                                                        return arg;
+                                                                                        return SetDocumentation(context, message, on, args[0]);
                                                                                     })));
 
         obj.RegisterMethod(obj.runtime.NewNativeMethod("expects one evaluated text or symbol argument and returns a boolean indicating whether this cell is owned by the receiver or not. the assumption is that the cell should exist. if it doesn't exist, a NoSuchCell condition will be signalled.", 
@@ -200,62 +308,7 @@ namespace Ioke.Lang {
                                                                         (method, context, message, on, outer) => {
                                                                             var args = new SaneArrayList();
                                                                             outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, args, new SaneDictionary<string, object>());
-
-                                                                            if(args.Count > 0 && IokeObject.IsObjectTrue(args[0])) {
-                                                                                object cutoff = null;
-                                                                                if(args.Count > 1) {
-                                                                                    cutoff = args[1];
-                                                                                }
-
-                                                                                var visited = IdentityHashTable.Create();
-                                                                                var names = new SaneArrayList();
-                                                                                var visitedNames = new SaneHashSet<object>();
-                                                                                var undefined = new SaneHashSet<string>();
-                                                                                Runtime runtime = context.runtime;
-                                                                                var toVisit = new SaneArrayList();
-                                                                                toVisit.Add(on);
-
-                                                                                while(toVisit.Count > 0) {
-                                                                                    IokeObject current = IokeObject.As(toVisit[0], context);
-                                                                                    toVisit.RemoveAt(0);
-                                                                                    if(!visited.Contains(current)) {
-                                                                                        visited[current] = null;
-                                                                                        if(cutoff != current) {
-                                                                                            foreach(IokeObject o in current.GetMimics()) toVisit.Add(o);
-                                                                                        }
-                                
-                                                                                        var mso = current.Cells;
-
-                                                                                        foreach(string s in mso.Keys) {
-                                                                                            if(!undefined.Contains(s)) {
-                                                                                                if(mso[s] == runtime.nul) {
-                                                                                                    undefined.Add(s);
-                                                                                                } else {
-                                                                                                    object x = runtime.GetSymbol(s);
-                                                                                                    if(!visitedNames.Contains(x)) {
-                                                                                                        visitedNames.Add(x);
-                                                                                                        names.Add(x);
-                                                                                                    }
-                                                                                                }
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                }
-                        
-                                                                                return runtime.NewList(names);
-                                                                            } else {
-                                                                                var mso = IokeObject.As(on, context).Cells;
-                                                                                var names = new SaneArrayList();
-                                                                                Runtime runtime = context.runtime;
-
-                                                                                foreach(string s in mso.Keys) {
-                                                                                    if(mso[s] != runtime.nul) {
-                                                                                        names.Add(runtime.GetSymbol(s));
-                                                                                    }
-                                                                                }
-
-                                                                                return runtime.NewList(names);
-                                                                            }
+                                                                            return CellNames(context, message, on, args.Count > 0 && IokeObject.IsObjectTrue(args[0]), (args.Count > 1) ? args[1] : null);
                                                                         })));
 
         obj.RegisterMethod(obj.runtime.NewNativeMethod("takes one optional evaluated boolean argument, which defaults to false. if false, this method returns a dict of the cell names and values of the receiver. if true, it returns the cell names and values of this object and all it's mimics recursively.", 
@@ -263,52 +316,9 @@ namespace Ioke.Lang {
                                                                         .WithOptionalPositional("includeMimics", "false")
                                                                         .Arguments,
                                                                         (method, context, message, on, outer) => {
-                                                                            var cells = new SaneOrderedDictionary();
-                                                                            Runtime runtime = context.runtime;
-
                                                                             var args = new SaneArrayList();
                                                                             outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, args, new SaneDictionary<string, object>());
-
-                                                                            if(args.Count > 0 && IokeObject.IsObjectTrue(args[0])) {
-                                                                                var visited = IdentityHashTable.Create();
-                                                                                var undefined = new SaneHashSet<string>();
-                                                                                var toVisit = new SaneArrayList();
-                                                                                toVisit.Add(on);
-
-                                                                                while(toVisit.Count > 0) {
-                                                                                    IokeObject current = IokeObject.As(toVisit[0], context);
-                                                                                    toVisit.RemoveAt(0);
-                                                                                    if(!visited.Contains(current)) {
-                                                                                        visited[current] = null;
-                                                                                        foreach(IokeObject o in current.GetMimics()) toVisit.Add(o);
-                                                                                        var mso = current.Cells;
-
-                                                                                        foreach(string s in mso.Keys) {
-                                                                                            if(!undefined.Contains(s)) {
-                                                                                                object val = mso[s];
-                                                                                                if(val == runtime.nul) {
-                                                                                                    undefined.Add(s);
-                                                                                                } else {
-                                                                                                    object x = runtime.GetSymbol(s);
-                                                                                                    if(!cells.Contains(x)) {
-                                                                                                        cells[x] = val;
-                                                                                                    }
-                                                                                                }
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                            } else {
-                                                                                var mso = IokeObject.As(on, context).Cells;
-
-                                                                                foreach(string s in mso.Keys) {
-                                                                                    object val = mso[s];
-                                                                                    if(val != runtime.nul) {
-                                                                                        cells[runtime.GetSymbol(s)] = val;
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                            return runtime.NewDict(cells);
+                                                                            return Cells(context, message, on, args.Count > 0 && IokeObject.IsObjectTrue(args[0]));
                                                                         })));
         }
     }

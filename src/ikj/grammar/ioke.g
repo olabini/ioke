@@ -6,6 +6,9 @@ options {
 
 tokens {
     MESSAGE;
+    DecimalLiteral;
+    UnitLiteral;
+    UnitDecimalLiteral;
 }
 
 @lexer::header {
@@ -91,21 +94,6 @@ Identifier
     |   '.' '.'+
     |   Letter (Letter|IDDigit|':'|'!'|'?'|'$')*
     |   ':' (Letter|IDDigit) (Letter|IDDigit|':'|'!'|'?'|'$')*
-    ;
-
-fragment
-DecimalLiteral
-    :
-    ;
-
-fragment
-UnitLiteral
-    :
-    ;
-
-fragment
-UnitDecimalLiteral
-    :
     ;
 
 NumberLiteral
