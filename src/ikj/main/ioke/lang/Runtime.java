@@ -95,6 +95,7 @@ public class Runtime {
     public IokeObject integer = null;
     public IokeObject decimal = null;
     public IokeObject ratio = null;
+    public IokeObject infinity = null;
 
     // Core messages
     public IokeObject asText = newMessage("asText");
@@ -292,6 +293,8 @@ public class Runtime {
         restart.mimicsWithoutCheck(origin);
 
         javaWrapper.mimicsWithoutCheck(origin);
+
+        Reflector.init(this);
 
         addBuiltinScript("benchmark", new Builtin() {
                 public IokeObject load(Runtime runtime, IokeObject context, IokeObject message) throws ControlFlow {
