@@ -19,18 +19,31 @@ import ioke.lang.exceptions.ControlFlow;
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
 public class Base {
+    public static Object documentation(IokeObject context, IokeObject message, Object on) throws ControlFlow {
+        String docs = IokeObject.as(on, context).getDocumentation();
+        if(null == docs) {
+            return context.runtime.nil;
+        }
+        return context.runtime.newText(docs);
+    }
+
+    public static Object setDocumentation(IokeObject context, IokeObject message, Object on, Object arg) throws ControlFlow {
+                    if(arg == context.runtime.nil) {
+                        IokeObject.as(on, context).setDocumentation(null, message, context);
+                    } else {
+                        String s = Text.getText(arg);
+                        IokeObject.as(on, context).setDocumentation(s, message, context);
+                    }
+                    return arg;
+    }
+
     public static void init(final IokeObject base) throws ControlFlow {
         base.setKind("Base");
         base.registerMethod(base.runtime.newNativeMethod("returns the documentation text of the object called on. anything can have a documentation text - this text will initially be nil.", new NativeMethod.WithNoArguments("documentation") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
-
-                    String docs = IokeObject.as(on, context).getDocumentation();
-                    if(null == docs) {
-                        return context.runtime.nil;
-                    }
-                    return context.runtime.newText(docs);
+                    return documentation(context, message, on);
                 }
             }));
 
@@ -55,14 +68,7 @@ public class Base {
 
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
-                    Object arg = args.get(0);
-                    if(arg == context.runtime.nil) {
-                        IokeObject.as(on, context).setDocumentation(null, message, context);
-                    } else {
-                        String s = Text.getText(arg);
-                        IokeObject.as(on, context).setDocumentation(s, message, context);
-                    }
-                    return arg;
+                    return setDocumentation(context, message, on, args.get(0));
                 }
             }));
 

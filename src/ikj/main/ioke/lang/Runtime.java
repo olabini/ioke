@@ -294,6 +294,8 @@ public class Runtime {
 
         javaWrapper.mimicsWithoutCheck(origin);
 
+        Reflector.init(this);
+
         addBuiltinScript("benchmark", new Builtin() {
                 public IokeObject load(Runtime runtime, IokeObject context, IokeObject message) throws ControlFlow {
                     return ioke.lang.extensions.benchmark.Benchmark.create(runtime);
