@@ -424,5 +424,22 @@ public class Reflector {
                     return Base.assignCell(context, message, args.get(0), args.get(1), args.get(2));
                 }
             }));
+
+        obj.registerMethod(runtime.newNativeMethod("will return a new derivation of the receiving object. Might throw exceptions if the object is an oddball object.", new TypeCheckingNativeMethod("other:mimic") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("other")
+                    .getArguments();
+
+                @Override
+                public TypeCheckingArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    return IokeObject.as(args.get(0), context).mimic(message, context);
+                }
+            }));
     }
 }
