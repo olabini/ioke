@@ -145,11 +145,11 @@ bar" should == "foobar"
     )
 
     it("should not parse correctly when mismatched",
-      fn(parse("foo([1, 2)]")) should signal(Condition Error JavaException)
+      fn(parse("foo([1, 2)]")) should signal(Condition Error NativeException)
     )
 
     it("should not parse correctly when missing end",  
-      fn(parse("[1, 2")) should signal(Condition Error JavaException)
+      fn(parse("[1, 2")) should signal(Condition Error NativeException)
     )
   )
   
@@ -215,11 +215,11 @@ bar" should == "foobar"
     )
 
     it("should not parse correctly when mismatched",  
-      fn(parse("foo({1, 2)}")) should signal(Condition Error JavaException)
+      fn(parse("foo({1, 2)}")) should signal(Condition Error NativeException)
     )
 
     it("should not parse correctly when missing end",  
-      fn(parse("{1, 2")) should signal(Condition Error JavaException)
+      fn(parse("{1, 2")) should signal(Condition Error NativeException)
     )
   )
 
