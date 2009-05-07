@@ -441,5 +441,162 @@ public class Reflector {
                     return IokeObject.as(args.get(0), context).mimic(message, context);
                 }
             }));
+
+        obj.registerMethod(runtime.newNativeMethod("modifies the receiver to be in all ways identical to the argument. if the receiver is nil, true or false, this method can't be used - but those are the only exceptions. it's generally not recommended to use it on kinds and objects that are important for the Ioke runtime, since the result might be highly unpredictable.", new NativeMethod("other:become!") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("other")
+                    .withRequiredPositional("objectToBecome")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+                    IokeObject me = IokeObject.as(args.get(0), context);
+                    IokeObject other = IokeObject.as(args.get(1), context);
+
+                    if(args.get(0) == context.runtime.nil || args.get(0) == context.runtime._true || args.get(0) == context.runtime._false) {
+                        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
+                                                                                           message, 
+                                                                                           context,
+                                                                                           "Error", 
+                                                                                           "CantMimicOddball"), context).mimic(message, context);
+                        condition.setCell("message", message);
+                        condition.setCell("context", context);
+                        condition.setCell("receiver", args.get(0));
+                        context.runtime.errorCondition(condition);
+                    }
+
+                    me.become(other, message, context);
+                    
+                    return args.get(0);
+                }
+            }));
+
+        obj.registerMethod(runtime.newNativeMethod("returns true if the receiver is frozen, otherwise false", new TypeCheckingNativeMethod("other:frozen?") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("other")
+                    .getArguments();
+
+                @Override
+                public TypeCheckingArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    return IokeObject.isFrozen(args.get(0)) ? context.runtime._true : context.runtime._false;
+                }
+            }));
+
+        obj.registerMethod(runtime.newNativeMethod("ensures that the receiver is frozen", new TypeCheckingNativeMethod("other:freeze!") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("other")
+                    .getArguments();
+
+                @Override
+                public TypeCheckingArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    IokeObject.freeze(args.get(0));
+                    return args.get(0);
+                }
+            }));
+
+        obj.registerMethod(runtime.newNativeMethod("ensures that the receiver is not frozen", new TypeCheckingNativeMethod("other:thaw!") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("other")
+                    .getArguments();
+
+                @Override
+                public TypeCheckingArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    IokeObject.thaw(args.get(0));
+                    return args.get(0);
+                }
+            }));
+
+        obj.registerMethod(runtime.newNativeMethod("returns a text hex representation of the receiver in upper case hex literal, starting with 0x. This value is based on System.identityHashCode, and as such is not totally guaranteed to be totally unique. but almost.", new TypeCheckingNativeMethod("other:uniqueHexId") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("other")
+                    .getArguments();
+
+                @Override
+                public TypeCheckingArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    return context.runtime.newText("0x" + Integer.toHexString(System.identityHashCode(IokeObject.getCells(args.get(0), context))).toUpperCase());
+                }
+            }));
+
+        obj.registerMethod(runtime.newNativeMethod("returns true if the evaluated argument is the same reference as the receiver, false otherwise.", new NativeMethod("other:same?") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("this")
+                    .withRequiredPositional("other")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+                    return IokeObject.same(args.get(0), args.get(1)) ? context.runtime._true : context.runtime._false;
+                }
+            }));
+
+        obj.registerMethod(runtime.newNativeMethod("takes the name of a message to send, and the arguments to give it. send should generally behave exactly as if you had sent the message itself - except that you can give a variable containing the name.", new NativeMethod("other:send") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("other")
+                    .withRequiredPositional("messageName")
+                    .withRestUnevaluated("arguments")
+                    .withKeywordRestUnevaluated("keywordArguments")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().checkArgumentCount(context, message, on);
+                    final Runtime runtime = context.runtime;
+                    Object recv = ((Message)IokeObject.data(message)).getEvaluatedArgument(message, 0, context);
+                    Object _name = ((Message)IokeObject.data(message)).getEvaluatedArgument(message, 1, context);
+                    String name = Text.getText(((Message)IokeObject.data(runtime.asText)).sendTo(runtime.asText, context, _name));
+
+                    IokeObject newMessage = Message.deepCopy(message);
+                    newMessage.getArguments().remove(0);
+                    newMessage.getArguments().remove(0);
+                    Message.setName(newMessage, name);
+                    return ((Message)IokeObject.data(newMessage)).sendTo(newMessage, context, recv);
+                }
+            }));
     }
 }
