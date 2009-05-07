@@ -314,6 +314,8 @@ namespace Ioke.Lang {
 
             Ioke.Lang.Restart.Init(this.Restart);
             this.Restart.MimicsWithoutCheck(this.Origin);
+            
+            Reflector.Init(this);
 
             AddBuiltinScript("benchmark", new Builtin.Delegate((runtime, context, message) => {
                         return Ioke.Lang.Extensions.Benchmark.Benchmark.Create(runtime);

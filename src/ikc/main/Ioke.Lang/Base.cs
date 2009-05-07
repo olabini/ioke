@@ -5,6 +5,24 @@ namespace Ioke.Lang {
     using System.Collections.Specialized;
 
     public class Base {
+        public static object Documentation(IokeObject context, IokeObject message, object on) {
+            string docs = IokeObject.As(on, context).Documentation;
+            if(null == docs) {
+                return context.runtime.nil;
+            }
+            return context.runtime.NewText(docs);
+        }
+
+        public static object SetDocumentation(IokeObject context, IokeObject message, object on, object arg) {
+            if(arg == context.runtime.nil) {
+                IokeObject.As(on, context).SetDocumentation(null, message, context);
+            } else {
+                string s = Text.GetText(arg);
+                IokeObject.As(on, context).SetDocumentation(s, message, context);
+            }
+            return arg;
+        }
+
         public static void Init(IokeObject obj) {
             obj.Kind = "Base";
 
@@ -113,11 +131,7 @@ namespace Ioke.Lang {
                                                        new NativeMethod.WithNoArguments("documentation",
                                                                                         (method, context, message, on, outer) => {
                                                                                             outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, new SaneArrayList(), new SaneDictionary<string, object>());
-                                                                                            string docs = IokeObject.As(on, context).Documentation;
-                                                                                            if(null == docs) {
-                                                                                                return context.runtime.nil;
-                                                                                            }
-                                                                                            return context.runtime.NewText(docs);
+                                                                                            return Documentation(context, message, on);
                                                                                         })));
 
         obj.RegisterMethod(obj.runtime.NewNativeMethod("returns this object", 
@@ -132,14 +146,7 @@ namespace Ioke.Lang {
                                                                                     .WithRequiredPositional("text").WhichMustMimic(obj.runtime.Text).OrBeNil()
                                                                                     .Arguments,
                                                                                     (method, on, args, keywords, context, message) => {
-                                                                                        object arg = args[0];
-                                                                                        if(arg == context.runtime.nil) {
-                                                                                            IokeObject.As(on, context).SetDocumentation(null, message, context);
-                                                                                        } else {
-                                                                                            string s = Text.GetText(arg);
-                                                                                            IokeObject.As(on, context).SetDocumentation(s, message, context);
-                                                                                        }
-                                                                                        return arg;
+                                                                                        return SetDocumentation(context, message, on, args[0]);
                                                                                     })));
 
         obj.RegisterMethod(obj.runtime.NewNativeMethod("expects one evaluated text or symbol argument and returns a boolean indicating whether this cell is owned by the receiver or not. the assumption is that the cell should exist. if it doesn't exist, a NoSuchCell condition will be signalled.", 
