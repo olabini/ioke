@@ -19,6 +19,122 @@ import ioke.lang.exceptions.ControlFlow;
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
 public class Base {
+    public static Object cellNames(IokeObject context, IokeObject message, Object on, boolean includeMimics, Object cutoff) throws ControlFlow {
+        if(includeMimics) {
+            IdentityHashMap<Object, Object> visited = new IdentityHashMap<Object, Object>();
+            List<Object> names = new ArrayList<Object>();
+            Set<Object> visitedNames = new HashSet<Object>();
+            Set<String> undefined = new HashSet<String>();
+            Runtime runtime = context.runtime;
+            List<Object> toVisit = new ArrayList<Object>();
+            toVisit.add(on);
+
+            while(!toVisit.isEmpty()) {
+                IokeObject current = IokeObject.as(toVisit.remove(0), context);
+                if(!visited.containsKey(current)) {
+                    visited.put(current, null);
+                    if(cutoff != current) {
+                        toVisit.addAll(current.getMimics());
+                    }
+                                
+                    Map<String, Object> mso = current.getCells();
+
+                    for(String s : mso.keySet()) {
+                        if(!undefined.contains(s)) {
+                            if(mso.get(s) == runtime.nul) {
+                                undefined.add(s);
+                            } else {
+                                Object x = runtime.getSymbol(s);
+                                if(!visitedNames.contains(x)) {
+                                    visitedNames.add(x);
+                                    names.add(x);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+                        
+            return runtime.newList(names);
+        } else {
+            Map<String, Object> mso = IokeObject.as(on, context).getCells();
+            List<Object> names = new ArrayList<Object>();
+            Runtime runtime = context.runtime;
+
+            for(String s : mso.keySet()) {
+                if(mso.get(s) != runtime.nul) {
+                    names.add(runtime.getSymbol(s));
+                }
+            }
+
+            return runtime.newList(names);
+        }
+    }
+
+    public static Object cells(IokeObject context, IokeObject message, Object on, boolean includeMimics) throws ControlFlow {
+        Map<Object, Object> cells = new LinkedHashMap<Object, Object>();
+        Runtime runtime = context.runtime;
+
+        if(includeMimics) {
+            IdentityHashMap<Object, Object> visited = new IdentityHashMap<Object, Object>();
+            Set<String> undefined = new HashSet<String>();
+
+            List<Object> toVisit = new ArrayList<Object>();
+            toVisit.add(on);
+
+            while(!toVisit.isEmpty()) {
+                IokeObject current = IokeObject.as(toVisit.remove(0), context);
+                if(!visited.containsKey(current)) {
+                    visited.put(current, null);
+                    toVisit.addAll(current.getMimics());
+                                
+                    Map<String, Object> mso = current.getCells();
+
+                    for(String s : mso.keySet()) {
+                        if(!undefined.contains(s)) {
+                            Object val = mso.get(s);
+                            if(val == runtime.nul) {
+                                undefined.add(s);
+                            } else {
+                                Object x = runtime.getSymbol(s);
+                                if(!cells.containsKey(x)) {
+                                    cells.put(x, val);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            Map<String, Object> mso = IokeObject.as(on, context).getCells();
+
+            for(String s : mso.keySet()) {
+                Object val = mso.get(s);
+                if(val != runtime.nul) {
+                    cells.put(runtime.getSymbol(s), val);
+                }
+            }
+        }
+        return runtime.newDict(cells);
+    }
+
+    public static Object assignCell(IokeObject context, IokeObject message, Object on, Object first, Object val) throws ControlFlow {
+        String name = Text.getText(((Message)IokeObject.data(context.runtime.asText)).sendTo(context.runtime.asText, context, first));
+        if(val instanceof IokeObject) {
+            if((IokeObject.data(val) instanceof Named) && ((Named)IokeObject.data(val)).getName() == null) {
+                ((Named)IokeObject.data(val)).setName(name);
+            } else if(name.length() > 0 && Character.isUpperCase(name.charAt(0)) && !IokeObject.as(val, context).hasKind()) {
+                if(on == context.runtime.ground) {
+                    IokeObject.as(val, context).setKind(name);
+                } else {
+                    IokeObject.as(val, context).setKind(IokeObject.as(on, context).getKind(message, context) + " " + name);
+                }
+            }
+        }
+
+        return IokeObject.setCell(on, message, context, name, val);
+    }
+
     public static Object documentation(IokeObject context, IokeObject message, Object on) throws ControlFlow {
         String docs = IokeObject.as(on, context).getDocumentation();
         if(null == docs) {
@@ -276,60 +392,7 @@ public class Base {
                     List<Object> args = new ArrayList<Object>();
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
 
-                    if(args.size() > 0 && IokeObject.isTrue(args.get(0))) {
-                        Object cutoff = null;
-                        if(args.size() > 1) {
-                            cutoff = args.get(1);
-                        }
-
-                        IdentityHashMap<Object, Object> visited = new IdentityHashMap<Object, Object>();
-                        List<Object> names = new ArrayList<Object>();
-                        Set<Object> visitedNames = new HashSet<Object>();
-                        Set<String> undefined = new HashSet<String>();
-                        Runtime runtime = context.runtime;
-                        List<Object> toVisit = new ArrayList<Object>();
-                        toVisit.add(on);
-
-                        while(!toVisit.isEmpty()) {
-                            IokeObject current = IokeObject.as(toVisit.remove(0), context);
-                            if(!visited.containsKey(current)) {
-                                visited.put(current, null);
-                                if(cutoff != current) {
-                                    toVisit.addAll(current.getMimics());
-                                }
-                                
-                                Map<String, Object> mso = current.getCells();
-
-                                for(String s : mso.keySet()) {
-                                    if(!undefined.contains(s)) {
-                                        if(mso.get(s) == runtime.nul) {
-                                            undefined.add(s);
-                                        } else {
-                                            Object x = runtime.getSymbol(s);
-                                            if(!visitedNames.contains(x)) {
-                                                visitedNames.add(x);
-                                                names.add(x);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        
-                        return runtime.newList(names);
-                    } else {
-                        Map<String, Object> mso = IokeObject.as(on, context).getCells();
-                        List<Object> names = new ArrayList<Object>();
-                        Runtime runtime = context.runtime;
-
-                        for(String s : mso.keySet()) {
-                            if(mso.get(s) != runtime.nul) {
-                                names.add(runtime.getSymbol(s));
-                            }
-                        }
-
-                        return runtime.newList(names);
-                    }
+                    return cellNames(context, message, on, args.size() > 0 && IokeObject.isTrue(args.get(0)), (args.size() > 1) ? args.get(1) : null);
                 }
             }));
 
@@ -347,53 +410,9 @@ public class Base {
 
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    Map<Object, Object> cells = new LinkedHashMap<Object, Object>();
-                    Runtime runtime = context.runtime;
-
                     List<Object> args = new ArrayList<Object>();
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
-
-                    if(args.size() > 0 && IokeObject.isTrue(args.get(0))) {
-                        IdentityHashMap<Object, Object> visited = new IdentityHashMap<Object, Object>();
-                        Set<String> undefined = new HashSet<String>();
-
-                        List<Object> toVisit = new ArrayList<Object>();
-                        toVisit.add(on);
-
-                        while(!toVisit.isEmpty()) {
-                            IokeObject current = IokeObject.as(toVisit.remove(0), context);
-                            if(!visited.containsKey(current)) {
-                                visited.put(current, null);
-                                toVisit.addAll(current.getMimics());
-                                
-                                Map<String, Object> mso = current.getCells();
-
-                                for(String s : mso.keySet()) {
-                                    if(!undefined.contains(s)) {
-                                        Object val = mso.get(s);
-                                        if(val == runtime.nul) {
-                                            undefined.add(s);
-                                        } else {
-                                            Object x = runtime.getSymbol(s);
-                                            if(!cells.containsKey(x)) {
-                                                cells.put(x, val);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    } else {
-                        Map<String, Object> mso = IokeObject.as(on, context).getCells();
-
-                        for(String s : mso.keySet()) {
-                            Object val = mso.get(s);
-                            if(val != runtime.nul) {
-                                cells.put(runtime.getSymbol(s), val);
-                            }
-                        }
-                    }
-                    return runtime.newDict(cells);
+                    return cells(context, message, on, args.size() > 0 && IokeObject.isTrue(args.get(0)));
                 }
             }));
 
@@ -414,23 +433,8 @@ public class Base {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> args = new ArrayList<Object>();
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
-
-                    String name = Text.getText(((Message)IokeObject.data(context.runtime.asText)).sendTo(context.runtime.asText, context, args.get(0)));
-                    Object val = args.get(1);
-
-                    if(val instanceof IokeObject) {
-                    if((IokeObject.data(val) instanceof Named) && ((Named)IokeObject.data(val)).getName() == null) {
-                        ((Named)IokeObject.data(val)).setName(name);
-                    } else if(name.length() > 0 && Character.isUpperCase(name.charAt(0)) && !IokeObject.as(val, context).hasKind()) {
-                        if(on == context.runtime.ground) {
-                            IokeObject.as(val, context).setKind(name);
-                        } else {
-                            IokeObject.as(val, context).setKind(IokeObject.as(on, context).getKind(message, context) + " " + name);
-                        }
-                    }
-                    }
-
-                    return IokeObject.setCell(on, message, context, name, val);
+                    return assignCell(context, message, on, args.get(0), args.get(1));
+                    
                 }
             }));
 
