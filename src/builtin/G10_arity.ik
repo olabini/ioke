@@ -168,7 +168,7 @@ Arity do (
 cell(:DefaultMethod) cell(:arity) = method(Arity fromArgumentsCode(argumentsCode))
 cell(:DefaultMacro)  cell(:arity) = method(Arity fromArgumentsCode(argumentsCode))
 cell(:DefaultSyntax) cell(:arity) = method(Arity fromArgumentsCode(argumentsCode))
-cell(:JavaMethod)    cell(:arity) = method(Arity fromArgumentsCode(argumentsCode))
+cell(:NativeMethod)  cell(:arity) = method(Arity fromArgumentsCode(argumentsCode))
 cell(:LexicalBlock)  cell(:arity) = method(Arity fromArgumentsCode(argumentsCode))
 cell(:LexicalMacro)  cell(:arity) = method(Arity fromArgumentsCode(argumentsCode))
 

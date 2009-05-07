@@ -1,6 +1,7 @@
 
 use("ispec")
 
+if(System feature?(:java),
 describe("JavaGround",
   it("should have the correct kind",
     JavaGround kind should == "JavaGround"
@@ -2768,4 +2769,5 @@ describe("Java Objects",
 ;       )
     )
   )
+)
 )

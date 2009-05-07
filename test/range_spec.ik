@@ -259,4 +259,16 @@ describe("Range",
       (1...2) notice should == "1...2"
     )
   )
+  
+  describe("include?",
+    it("should return true if the element is in the range",
+      (1..2) should include(1)
+      (1..2) should include(2)
+    )
+    
+    it("should return false if the element is not in the range",
+      (1..2) should not include(3)
+      (1..2) should not include(0)
+    )
+  )
 )

@@ -78,7 +78,7 @@ describe("nil",
     )
 
 ;     it("should complain if no argument is given", 
-;       fn(nil or()) should signal(Condition Error JavaException)
+;       fn(nil or()) should signal(Condition Error NativeException)
 ;     )
 
     it("should return the result of the argument", 
@@ -124,7 +124,7 @@ describe("nil",
     )
 
 ;     it("should complain if no argument is given", 
-;       fn(nil xor()) should signal(Condition Error JavaException)
+;       fn(nil xor()) should signal(Condition Error NativeException)
 ;     )
 
     it("should return true if the argument is true", 
@@ -150,7 +150,7 @@ describe("nil",
     )
 
 ;     it("should complain if no argument is given", 
-;       fn(nil nor()) should signal(Condition Error JavaException)
+;       fn(nil nor()) should signal(Condition Error NativeException)
 ;     )
 
     it("should return false if the argument is true", 

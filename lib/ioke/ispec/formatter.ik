@@ -15,7 +15,7 @@ ISpec do(
         println("#{counter})")
         println(red("#{failure header}"))
         println(red("#{failure condition report}"))
-        println("  #{failure condition describeContext stackTraceAsText}"))
+        println("  #{failure condition example stackTraceAsText(failure condition)}"))
 
       dumpSummary = method(duration, exampleCount, failureCount, pendingCount,
         println("")
@@ -131,10 +131,10 @@ ISpec do(
         ) println
       )
       
-      stackTraceAsLink = method(describeContext, name nil,
-        if(describeContext cell?(:shouldMessage), 
-          txmtLink(describeContext shouldMessage, name), 
-          txmtLink(describeContext code, name))
+      stackTraceAsLink = method(example, name nil,
+        if(example cell?(:shouldMessage), 
+          txmtLink(example shouldMessage, name), 
+          txmtLink(example code, name))
       )
       
       txmtLink = method(code, name,
@@ -150,8 +150,8 @@ ISpec do(
       
       exampleFailed = method(example, counter, failure,
         html div(class: "failed spec", 
-          link = stackTraceAsLink(failure condition describeContext, "link")
-          "#{example description} (FAILED: #{failure condition report} #{link})"
+          link = stackTraceAsLink(failure condition example, "#{failure condition example code filename}:#{failure condition example code line}")
+          "#{example description}<br/>FAILED: #{failure condition report replaceAll(#/\n/, "<br/>")}#{link}"
         ) println
       )
 
