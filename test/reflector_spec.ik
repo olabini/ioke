@@ -434,45 +434,6 @@ describe(Reflector,
     )
   )
 
-  describe("other:appendMimic!",
-    it("should add a new mimic to the list of mimics", 
-      f = Origin mimic. g = Origin mimic. Reflector other:appendMimic!(f, g)
-      f mimics length should == 2
-      f mimics[0] should == Origin
-      f mimics[1] should == g
-    )
-
-    it("should not add a mimic that's already in the list", 
-      f = Origin mimic
-      Reflector other:appendMimic!(f, Origin)
-      Reflector other:appendMimic!(f, Origin)
-      Reflector other:appendMimic!(f, Origin)
-      Reflector other:appendMimic!(f, Origin)
-      f mimics length should == 1
-    )
-
-    it("should not be able to mimic nil", 
-      fn(Reflector other:appendMimic!(Origin mimic, nil)) should signal(Condition Error CantMimicOddball)
-    )
-    
-    it("should not be able to mimic true", 
-      fn(Reflector other:appendMimic!(Origin mimic, true)) should signal(Condition Error CantMimicOddball)
-    )
-    
-    it("should not be able to mimic false", 
-      fn(Reflector other:appendMimic!(Origin mimic, false)) should signal(Condition Error CantMimicOddball)
-    )
-    
-    it("should not be able to mimic symbols", 
-      fn(Reflector other:appendMimic!(Origin mimic, :foo)) should signal(Condition Error CantMimicOddball)
-    )
-    
-    it("should return the receiving object", 
-      f = Origin mimic
-      Reflector other:appendMimic!(f, Origin) should == f
-    )
-  )
-
   describe("other:prependMimic!",
     it("should add a new mimic to the list of mimics", 
       f = Origin mimic
@@ -699,7 +660,7 @@ describe(Reflector,
       Reflector other:cellNames(Ground, false) sort should == groundNames
       Reflector other:cellNames(Ground, true) sort should == groundAllNames
 
-      Reflector other:cellNames(Origin) cellNames sort should == originNames
+      Reflector other:cellNames(Origin) sort should == originNames
       Reflector other:cellNames(Origin, false) sort should == originNames
       Reflector other:cellNames(Origin, true) sort should == originAllNames
 
