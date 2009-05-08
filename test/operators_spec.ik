@@ -2746,6 +2746,31 @@ describe("operator",
       )
     )
 
+    describe("inverted ::",
+      
+      it("should be correctly translated",
+        m = parse("foo :: bar")
+        m should == "bar ::(foo)"
+      )
+
+      it("should receive just one argument",
+        o = Origin mimic
+        o cell("::") = macro(call)
+        (foo :: o) arguments length should == 1
+      )
+
+      it("should not fail when using other operators",
+        ;; FIXME: ioke signals TooFewArguments, one missing for '>'
+        ;;o = Origin mimic
+        ;;x = nil
+        ;;o cell(">") = lecro(n, x = n. self)
+        ;;o cell("::") = macro(call)
+        ;;foo :: (o > 3)
+        ;;x should == 3
+      )
+      
+    )
+
     describe("precedence", 
       it("should work correctly for + and *", 
         m = parse("2+3*4")
