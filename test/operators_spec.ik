@@ -2758,17 +2758,6 @@ describe("operator",
         o cell("::") = macro(call)
         (foo :: o) arguments length should == 1
       )
-
-      it("should not fail when using other operators",
-        ;; FIXME: ioke signals TooFewArguments, one missing for '>'
-        ;;o = Origin mimic
-        ;;x = nil
-        ;;o cell(">") = lecro(n, x = n. self)
-        ;;o cell("::") = macro(call)
-        ;;foo :: (o > 3)
-        ;;x should == 3
-      )
-      
     )
 
     describe("precedence", 
