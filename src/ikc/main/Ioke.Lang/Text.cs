@@ -367,6 +367,11 @@ namespace Ioke.Lang {
                                                                                                             runtime.ErrorCondition(condition);
                                                                                                             return null;
                                                                                                         })));
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns a new text where all the escapes in the current text have been evaluated - exactly as if another parsing step had been applied. This does not evaluate embedded code, though.", 
+                                                           new TypeCheckingNativeMethod.WithNoArguments("evaluateEscapes", obj,
+                                                                                                        (self, on, args, keywords, context, message) => {
+                                                                                                            return context.runtime.NewText(new StringUtils().ReplaceEscapes(GetText(on)));
+                                                                                                        })));
         }
 
         public static string GetInspect(object on) {
