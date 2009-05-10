@@ -1264,6 +1264,53 @@ fert\
       )
     )
 
+    describe("evaluateEscapes",
+      it("should replace \\b",
+        " foo \\b bar" evaluateEscapes should == " foo \b bar"
+      )
+
+      it("should replace \\t",
+        " foo \\t bar" evaluateEscapes should == " foo \t bar"
+      )
+
+      it("should replace \\n",
+        " foo \\n bar" evaluateEscapes should == " foo \n bar"
+      )
+
+      it("should replace \\f",
+        " foo \\f bar" evaluateEscapes should == " foo \f bar"
+      )
+
+      it("should replace \\r",
+        " foo \\r bar" evaluateEscapes should == " foo \r bar"
+      )
+
+      it("should replace \\\"",
+        " foo \\\" bar" evaluateEscapes should == " foo \" bar"
+      )
+
+      it("should replace \\#",
+        " foo \\# bar" evaluateEscapes should == " foo \# bar"
+      )
+
+      it("should replace \\\\",
+        " foo \\\\ bar" evaluateEscapes should == " foo \\ bar"
+      )
+
+      it("should replace \\\\n",
+        " foo \\\n bar" evaluateEscapes should == " foo \
+ bar"
+      )
+
+      it("should replace unicode",
+        " foo \\u000a bar" evaluateEscapes should == " foo \u000a bar"
+      )
+
+      it("should replace octal",
+        " foo \\025 bar" evaluateEscapes should == " foo \025 bar"
+      )
+    )
+
     describe("escapes", 
       describe("\\b", 
         it("should be replaced when it's the only thing in the text", 

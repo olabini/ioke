@@ -385,6 +385,13 @@ public class Text extends IokeData {
             }
         }));
 
+        obj.registerMethod(obj.runtime.newNativeMethod("Returns a new text where all the escapes in the current text have been evaluated - exactly as if another parsing step had been applied. This does not evaluate embedded code, though.", new TypeCheckingNativeMethod.WithNoArguments("evaluateEscapes", runtime.text) {
+                @Override
+                public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                    return context.runtime.newText(new StringUtils().replaceEscapes(getText(on)));
+                }
+            }));
     }
 
     public static String getText(Object on) {
