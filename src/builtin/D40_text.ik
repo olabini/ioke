@@ -9,6 +9,20 @@ Text empty? = method(
   "returns true if the length of this text is exactly zero, otherwise false",
 
   length == 0)
+  
+Text camelCase = method("creates a new text in camel case form based on the receiver. i.e. hello there world in camel case form is represented as helloThereWorld. Accepts a regular expression as an optional parameter to define word boundaries (the default is whitespace and underscores)",
+  separator: #/[\s_]+/,
+
+  sliced = self split(separator)
+  sliced map!(word, word[0..0] upper + word[1..-1])
+  if(sliced size > 0, sliced[0] = sliced[0][0..0] lower + sliced[0][1..-1])
+  sliced join  
+)
+
+Text capitalize = method("creates a new text which is identical to the receiver except that the first character is converted to uppercase",
+
+  self[0..0] upper + self[1..-1]
+)
 
 Text cell("*") = method(
   "returns the text repeated as many times as the argument. 0 and negative means no times",
