@@ -76,5 +76,28 @@ describe(Origin,
       x should be mimic(X)
     )
   )
+
+  describe("eval",
+    it("should eval an empty string",
+      Origin eval("") should == nil
+    )
+
+    it("should eval a number",
+      Origin eval("1") should == 1
+    )
+
+    it("should eval a simple message",
+      Origin eval("[](1,2,3,4)") should == [1,2,3,4]
+    )
+
+    it("should eval a message with operator shuffling",
+      Origin eval("1 + 2") should == 3
+    )
+
+    it("should eval multiple message chains",
+      Origin eval("sam = 1. boris = 5. sooze = 10. sam + boris + sooze") should == 16
+    )
+  )
+      
 )
   
