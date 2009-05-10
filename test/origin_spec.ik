@@ -78,6 +78,13 @@ describe(Origin,
   )
 
   describe("eval",
+    it("should eval on the receiver",
+      x = Origin mimic
+      x foo = 42
+      x eval("foo should == 42")
+      x eval("identity") should be same(x)
+   )
+
     it("should eval an empty string",
       Origin eval("") should == nil
     )
