@@ -271,7 +271,7 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
 
     let isInverted (ms:IokeObject) = invertedOperatorTable.Contains(ms)
 
-    let (|Operator|InvertedOperator|OtherOp|) (sym:IokeObject) =
+    let (|Operator|InvertedOperator|OtherOp|) sym =
         if operatorTable.Contains(sym) then
             Operator(Number.GetValue(operatorTable.[sym]).intValue())
         else
@@ -280,7 +280,7 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
             else
                 OtherOp
 
-    let levelForOp (messageName : string) (messageSymbol : IokeObject) (msg : IokeObject) =
+    let levelForOp (messageName : string) messageSymbol msg =
         match messageSymbol with
             | Operator(prec) -> prec
             | InvertedOperator(prec) -> prec
@@ -307,7 +307,7 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
                             | _ -> -1
 
 
-    let argCountForOp (messageName : string) (messageSymbol : IokeObject) (msg : IokeObject) =
+    let argCountForOp messageName messageSymbol msg =
         if trinaryOperatorTable.Contains(messageSymbol) then
             Number.GetValue(trinaryOperatorTable.[messageSymbol]).intValue()
         else
@@ -315,7 +315,7 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
 
     let CurrentLevel () = stack.[0]
 
-    let popDownTo (targetLevel : int) (expressions : IList<IokeObject>) =
+    let popDownTo targetLevel (expressions : IList<IokeObject>) =
         let rec helper () =
             match stack with
                 | []  -> ()
