@@ -232,7 +232,7 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
                 x
             | opTable -> opTable
 
-    let getOpTable (opTable : IokeObject) (name : string) creator =
+    let getOpTable (opTable : IokeObject) name creator =
         let create_new () =
             let result = creator runtime
             opTable.SetCell(name, runtime.NewDict(result))
@@ -315,7 +315,7 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
 
     let CurrentLevel () = stack.[0]
 
-    let popDownTo targetLevel (expressions : IList<IokeObject>) =
+    let popDownTo targetLevel expressions =
         let rec helper () =
             match stack with
                 | []  -> ()
@@ -331,12 +331,12 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
         helper ()
     
 
-    let attachAndReplace self (msg : IokeObject) =
+    let attachAndReplace self msg =
         attach self msg
         self.level <- Attach
         self.message <- msg
 
-    let attachToTopAndPush (msg : IokeObject) precedence =
+    let attachToTopAndPush msg precedence =
         let top = stack.[0]
         attachAndReplace top msg
 
