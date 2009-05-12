@@ -422,6 +422,12 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
                     (precedence, actual_detaching msgArgCount msg)
             | _ -> (precedence, msgArgCount)
 
+
+    // o a = b c . d  becomes  o =(a, b c) . d
+    //
+    // a      attaching
+    // =      msg
+    // b c    Message.next(msg)
     let restructure_assignment_operation msgArgCount (msg : IokeObject) messageName (expressions : IList<IokeObject>) argCountForOp =
         let currentLevel = CurrentLevel ()
         let attaching = currentLevel.message
@@ -478,28 +484,17 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
         else
             Message.SetNext(attaching, Message.GetNext(msg))
 
-    let have_assignment_operation argCountForOp msgArgCount msg =
+    let is_assignment_operation argCountForOp msgArgCount msg =
         argCountForOp <> -1 && (msgArgCount = 0 || Message.typeOf(msg) = Message.Type.DETACH) && not((Message.GetNext(msg) <> null) && Message.GetName(Message.GetNext(msg)).Equals("="))        
 
     let attachMessage (msg : IokeObject) (expressions : IList<IokeObject>) =
         let messageName = Message.GetName(msg)
         let messageSymbol = runtime.GetSymbol(messageName)
         let argCountForOp = argCountForOp messageName messageSymbol msg
-        let mutable precedenceAndArgCount = (levelForOp messageName messageSymbol msg, msg.Arguments.Count)
         let inverted = isInverted messageSymbol
+        let (precedence, msgArgCount) = handle_detach_of_message (handle_unary_prefix_message (levelForOp messageName messageSymbol msg, msg.Arguments.Count) msg) inverted msg
 
-        precedenceAndArgCount <- handle_unary_prefix_message precedenceAndArgCount msg
-        precedenceAndArgCount <- handle_detach_of_message precedenceAndArgCount inverted msg
-
-        let mutable (precedence, msgArgCount) = precedenceAndArgCount
-
-        // o a = b c . d  becomes  o =(a, b c) . d
-        //
-        // a      attaching
-        // =      msg
-        // b c    Message.next(msg)
-
-        if have_assignment_operation argCountForOp msgArgCount msg then
+        if is_assignment_operation argCountForOp msgArgCount msg then
             if msgArgCount <> 0 && Message.typeOf(msg) = Message.Type.DETACH then
                 detach msg
                 restructure_assignment_operation 0 msg messageName expressions argCountForOp
