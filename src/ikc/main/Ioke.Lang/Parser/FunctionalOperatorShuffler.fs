@@ -364,72 +364,75 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
         finishAll stack
         reset ()
 
+    let rec find_direction (transform : IokeObject -> IokeObject) current =
+        match transform current with
+            | null -> current
+            | transformed ->
+                if not(Message.IsTerminator(transformed)) then
+                    find_direction transform transformed
+                else
+                    current
 
-    let attachMessage (msg : IokeObject) (expressions : IList<IokeObject>) =
-        let messageName = Message.GetName(msg)
-        let messageSymbol = runtime.GetSymbol(messageName)
-        let mutable precedence = levelForOp messageName messageSymbol msg
-        let argCountForOp = argCountForOp messageName messageSymbol msg
-        let mutable msgArgCount = msg.Arguments.Count
-        let inverted = isInverted messageSymbol
+    let find_last = find_direction (fun next -> Message.GetNext(next)) 
+    let find_head = find_direction (fun head -> Message.GetPrev(head)) 
 
-        // : "str" bar   becomes   :("str") bar
-        // -foo bar      becomes   -(foo) bar
-        match (msgArgCount, Message.GetNext(msg), messageName, Message.GetPrev(msg)) with
-            | (_, null, _, _) -> ()
+    // : "str" bar   becomes   :("str") bar
+    // -foo bar      becomes   -(foo) bar
+    let handle_unary_prefix_message (precedence, msgArgCount) (msg : IokeObject) =
+        match (msgArgCount, Message.GetNext(msg), Message.GetName(msg), Message.GetPrev(msg)) with
+            | (_, null, _, _) -> (precedence, msgArgCount)
             | (0, _, (":" | "'" | "`"), _) | (0, _, "-", null) ->
-                precedence <- -1
                 let arg = Message.GetNext(msg)
                 Message.SetNext(msg, Message.GetNext(arg))
                 Message.SetNext(IokeObject.As(arg, null), null)
                 msg.Arguments.Add(arg) |> ignore
-                msgArgCount <- msgArgCount + 1
-            | _ -> ()
-        
-        let rec find_last last =
-            match Message.GetNext(last) with
-                | null -> last
-                | next ->
-                    if not(Message.IsTerminator(next)) then
-                        find_last next
-                    else
-                        last
+                (-1, msgArgCount + 1)
+            | _ -> (precedence, msgArgCount)
+
+
+    let actual_detaching msgArgCount (msg : IokeObject) =
+        let head = find_head msg
+        if not(head = msg) then
+            let argPart = Message.DeepCopy(head)
+            match Message.GetPrev(msg) with
+                | null -> ()
+                | prev -> Message.SetNext(prev, null)
+            Message.SetPrev(msg, null)
+            msg.Arguments.Add(argPart) |> ignore
+
+            let next = Message.GetNext(msg)
+            let last = find_last next
+            let cont = Message.GetNext(last)
+            Message.SetNext(msg, cont)
+            if not(cont = null) then
+                Message.SetPrev(cont, msg)
+            Message.SetNext(last, msg)
+            Message.SetPrev(msg, last)
+
+            head.Become(next, null, null)
+        msgArgCount
+
+    let handle_detach_of_message (precedence, msgArgCount) inverted (msg : IokeObject) =
         match (inverted, msgArgCount, Message.typeOf(msg) = Message.Type.DETACH) with
             | (true, 0, _) | (true, _, true) ->
                 if Message.typeOf(msg) = Message.Type.DETACH then
                     detach msg
-                    msgArgCount <- 0
+                    (precedence, actual_detaching 0 msg)
+                else
+                    (precedence, actual_detaching msgArgCount msg)
+            | _ -> (precedence, msgArgCount)
 
-                let rec find_head head =
-                    match Message.GetPrev(head) with
-                        | null -> head
-                        | prev ->
-                            if not(Message.IsTerminator(prev)) then
-                                find_head prev
-                            else
-                                head
-                let head = find_head msg
-                if not(head = msg) then
-                    let argPart = Message.DeepCopy(head)
-                    match Message.GetPrev(msg) with
-                        | null -> ()
-                        | prev -> Message.SetNext(prev, null)
-                    Message.SetPrev(msg, null)
-                    msg.Arguments.Add(argPart) |> ignore
+    let attachMessage (msg : IokeObject) (expressions : IList<IokeObject>) =
+        let messageName = Message.GetName(msg)
+        let messageSymbol = runtime.GetSymbol(messageName)
+        let argCountForOp = argCountForOp messageName messageSymbol msg
+        let mutable precedenceAndArgCount = (levelForOp messageName messageSymbol msg, msg.Arguments.Count)
+        let inverted = isInverted messageSymbol
 
-                    let next = Message.GetNext(msg)
-                    let last = find_last next
-                    let cont = Message.GetNext(last)
-                    Message.SetNext(msg, cont)
-                    if not(cont = null) then
-                        Message.SetPrev(cont, msg)
-                    Message.SetNext(last, msg)
-                    Message.SetPrev(msg, last)
+        precedenceAndArgCount <- handle_unary_prefix_message precedenceAndArgCount msg
+        precedenceAndArgCount <- handle_detach_of_message precedenceAndArgCount inverted msg
 
-                    head.Become(next, null, null)
-            | _ -> ()
-
-
+        let mutable (precedence, msgArgCount) = precedenceAndArgCount
 
         // o a = b c . d  becomes  o =(a, b c) . d
         //
