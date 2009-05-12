@@ -232,7 +232,7 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
                 x
             | opTable -> opTable
 
-    let getOpTable opTable (name : string) (creator : Runtime -> IDictionary) =
+    let getOpTable (opTable : IokeObject) (name : string) creator =
         let create_new () =
             let result = creator runtime
             opTable.SetCell(name, runtime.NewDict(result))
