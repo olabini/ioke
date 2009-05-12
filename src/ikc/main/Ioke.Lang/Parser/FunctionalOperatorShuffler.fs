@@ -348,14 +348,14 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
     let detach (msg : IokeObject) =
         let brackets = runtime.NewMessage("")
         Message.CopySourceLocation(msg, brackets)
-        Seq.iter (fun arg -> brackets.Arguments.Add(arg) |> ignore) (Seq.cast msg.Arguments : seq<Object>)
+        add_all brackets.Arguments msg.Arguments
         msg.Arguments.Clear()
 
         Message.SetNext(brackets, Message.GetNext(msg))
         Message.SetNext(msg, brackets)
 
 
-    let nextMessage (expressions : IList<IokeObject>) =
+    let nextMessage expressions =
         let rec finishAll = function
             | [] -> ()
             | hd :: rst ->
