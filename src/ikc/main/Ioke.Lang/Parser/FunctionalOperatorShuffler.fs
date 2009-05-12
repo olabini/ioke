@@ -232,7 +232,7 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
                 x
             | opTable -> opTable
 
-    let getOpTable (opTable : IokeObject) (name : string) (creator : Runtime -> IDictionary) =
+    let getOpTable opTable (name : string) (creator : Runtime -> IDictionary) =
         let create_new () =
             let result = creator runtime
             opTable.SetCell(name, runtime.NewDict(result))
@@ -269,7 +269,7 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
 
     do reset ()
 
-    let isInverted (ms:IokeObject) = invertedOperatorTable.Contains(ms)
+    let isInverted ms = invertedOperatorTable.Contains(ms)
 
     let (|Operator|InvertedOperator|OtherOp|) sym =
         if operatorTable.Contains(sym) then
