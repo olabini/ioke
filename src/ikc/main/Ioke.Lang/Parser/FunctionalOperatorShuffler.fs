@@ -422,6 +422,65 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
                     (precedence, actual_detaching msgArgCount msg)
             | _ -> (precedence, msgArgCount)
 
+    let restructure_assignment_operation msgArgCount (msg : IokeObject) messageName (expressions : IList<IokeObject>) argCountForOp =
+        let currentLevel = CurrentLevel ()
+        let attaching = currentLevel.message
+            
+        if attaching = null then
+            let condition = IokeObject.As(IokeObject.GetCellChain(runtime.Condition, 
+                                                                  message, 
+                                                                  context, 
+                                                                  [|"Error";
+                                                                   "Parser";
+                                                                   "OpShuffle"|]), context).Mimic(message, context)
+            condition.SetCell("message", message)
+            condition.SetCell("context", context)
+            condition.SetCell("receiver", context)
+            condition.SetCell("text", runtime.NewText("Can't create trinary expression without lvalue"))
+            runtime.ErrorCondition(condition)
+                
+
+        // a = b .
+        let copyOfMessage = Message.Copy(attaching)
+
+        Message.SetPrev(copyOfMessage, null)
+        Message.SetNext(copyOfMessage, null)
+
+        attaching.Arguments.Clear()
+        // a = b .  ->  a(a) = b .
+        Message.AddArg(attaching, copyOfMessage)
+            
+        let expectedArgs = argCountForOp
+
+        // a(a) = b .  ->  =(a) = b .
+        Message.SetName(attaching, messageName)
+
+        currentLevel.level <- Attach
+
+        // =(a) = b .
+        // =(a) = or =("a") = .
+        let mn = Message.GetNext(msg)
+            
+        if expectedArgs > 1 then
+            // =(a) = b c .  ->  =(a, b c .) = b c .
+            Message.AddArg(attaching, mn)
+
+            // process the value (b c d) later  (=(a, b c d) = b c d .)
+            if Message.GetNext(msg) <> null && not(Message.IsTerminator(Message.GetNext(msg))) then
+                expressions.Insert(0, Message.GetNext(msg))
+                
+            let last = find_last msg;
+            Message.SetNext(attaching, Message.GetNext(last))
+            Message.SetNext(msg, Message.GetNext(last))
+            
+            if last <> msg then
+                Message.SetNext(last, null)
+        else
+            Message.SetNext(attaching, Message.GetNext(msg))
+
+    let have_assignment_operation argCountForOp msgArgCount msg =
+        argCountForOp <> -1 && (msgArgCount = 0 || Message.typeOf(msg) = Message.Type.DETACH) && not((Message.GetNext(msg) <> null) && Message.GetName(Message.GetNext(msg)).Equals("="))        
+
     let attachMessage (msg : IokeObject) (expressions : IList<IokeObject>) =
         let messageName = Message.GetName(msg)
         let messageSymbol = runtime.GetSymbol(messageName)
@@ -440,67 +499,12 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
         // =      msg
         // b c    Message.next(msg)
 
-        if argCountForOp <> -1 && (msgArgCount = 0 || Message.typeOf(msg) = Message.Type.DETACH) && not((Message.GetNext(msg) <> null) && Message.GetName(Message.GetNext(msg)).Equals("=")) then
+        if have_assignment_operation argCountForOp msgArgCount msg then
             if msgArgCount <> 0 && Message.typeOf(msg) = Message.Type.DETACH then
                 detach msg
-                msgArgCount <- 0
-            
-            let currentLevel = CurrentLevel ()
-            let attaching = currentLevel.message
-            let mutable (setCellName : string) = ""
-            
-            if attaching = null then
-                let condition = IokeObject.As(IokeObject.GetCellChain(runtime.Condition, 
-                                                                      message, 
-                                                                      context, 
-                                                                      [|"Error";
-                                                                       "Parser";
-                                                                       "OpShuffle"|]), context).Mimic(message, context)
-                condition.SetCell("message", message)
-                condition.SetCell("context", context)
-                condition.SetCell("receiver", context)
-                condition.SetCell("text", runtime.NewText("Can't create trinary expression without lvalue"))
-                runtime.ErrorCondition(condition)
-                
-
-            // a = b .
-            let copyOfMessage = Message.Copy(attaching)
-
-            Message.SetPrev(copyOfMessage, null)
-            Message.SetNext(copyOfMessage, null)
-
-            attaching.Arguments.Clear()
-            // a = b .  ->  a(a) = b .
-            Message.AddArg(attaching, copyOfMessage)
-            
-            setCellName <- messageName
-            let expectedArgs = argCountForOp
-
-            // a(a) = b .  ->  =(a) = b .
-            Message.SetName(attaching, setCellName)
-
-            currentLevel.level <- Attach
-
-            // =(a) = b .
-            // =(a) = or =("a") = .
-            let mn = Message.GetNext(msg)
-            
-            if expectedArgs > 1 then
-                // =(a) = b c .  ->  =(a, b c .) = b c .
-                Message.AddArg(attaching, mn)
-
-                // process the value (b c d) later  (=(a, b c d) = b c d .)
-                if Message.GetNext(msg) <> null && not(Message.IsTerminator(Message.GetNext(msg))) then
-                    expressions.Insert(0, Message.GetNext(msg))
-                
-                let last = find_last msg;
-                Message.SetNext(attaching, Message.GetNext(last))
-                Message.SetNext(msg, Message.GetNext(last))
-            
-                if last <> msg then
-                    Message.SetNext(last, null)
+                restructure_assignment_operation 0 msg messageName expressions argCountForOp
             else
-                Message.SetNext(attaching, Message.GetNext(msg))
+                restructure_assignment_operation msgArgCount msg messageName expressions argCountForOp
         elif Message.IsTerminator(msg) then
             popDownTo (OP_LEVEL_MAX-1) expressions
             attachAndReplace (CurrentLevel ()) msg
