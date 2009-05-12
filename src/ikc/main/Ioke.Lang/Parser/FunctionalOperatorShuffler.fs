@@ -51,22 +51,25 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
             | _ -> None
 
 
+    let into_list l = List.of_seq(Seq.cast l : seq<Object>)
+    let add_all (l1 : IList) l2 =
+        Seq.iter (fun arg -> l1.Add(arg) |> ignore) (Seq.cast l2 : seq<Object>)
+
     let finish level (expressions : IList<IokeObject>) =
         match level.message with
             | null -> ()
             | message ->
                 Message.SetNext(message, null)
 
-                match List.of_seq(Seq.cast message.Arguments : seq<Object>) with
+                match into_list message.Arguments with
                     | ( :? IokeObject as arg) :: [] ->
                         match (arg, message) with
                             | Detach ->
                                 match expressions.IndexOf(arg) with
                                     | -1 -> ()
-                                    | index -> expressions.Item(index) <- message
+                                    | index -> expressions.[index] <- message
                                 message.Arguments.Clear()
-                                let arglist = message.Arguments
-                                Seq.iter (fun arg -> arglist.Add(arg) |> ignore) (Seq.cast arg.Arguments : seq<Object>)
+                                add_all message.Arguments arg.Arguments
                             | Clear  -> message.Arguments.Clear()
                             | None   -> ()
                     | _ -> ()
