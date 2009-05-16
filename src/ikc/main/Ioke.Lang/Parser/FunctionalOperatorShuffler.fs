@@ -41,8 +41,6 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
         level.level <- Attach
         level.message <- msg
 
-    let ignore _ = ()
-
     let (|Detach|Clear|None|) (arg:IokeObject, message:IokeObject) =
         match (message.Name, arg.Name, arg.Arguments.Count, Message.GetNext(arg)) with
             | (_, "", 1, null) -> Detach
@@ -212,13 +210,8 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
 
     let opTableCreator opTable (runtime:Runtime) =
         let table : IDictionary = new SaneHashtable() :> IDictionary
-        let rec create = function
-            | (name, precedence) :: rest ->
-                table.Item(runtime.GetSymbol(name)) <- runtime.NewNumber(precedence : int)
-                create rest
-            | [] -> table
-        create opTable
-
+        opTable |> List.iter (fun (name, precedence) -> table.Item(runtime.GetSymbol(name)) <- runtime.NewNumber(precedence : int))
+        table
 
     let runtime = context.runtime
 
@@ -356,12 +349,7 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
 
 
     let nextMessage expressions =
-        let rec finishAll = function
-            | [] -> ()
-            | hd :: rst ->
-                finish hd expressions
-                finishAll rst
-        finishAll stack
+        stack |> List.iter (fun hd -> finish hd expressions)
         reset ()
 
     let rec find_direction (transform : IokeObject -> IokeObject) current =
