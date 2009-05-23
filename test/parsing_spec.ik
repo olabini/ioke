@@ -1081,7 +1081,7 @@ bar" should == "foobar"
       it("should parse it correctly",
         x = Origin mimic
         x ≠ = method(42)
-        x ≠ should == 42
+        (x ≠) should == 42
       )
     )
 
@@ -1113,7 +1113,7 @@ bar" should == "foobar"
       it("should parse it correctly",
         x = Origin mimic
         x ≤ = method(42)
-        x ≤ should == 42
+        (x ≤) should == 42
       )
     )
 
@@ -1121,7 +1121,7 @@ bar" should == "foobar"
       it("should parse it correctly",
         x = Origin mimic
         x ≥ = method(42)
-        x ≥ should == 42
+        (x ≥) should == 42
       )
     )
 
