@@ -2996,6 +2996,19 @@ describe("operator",
       (223524534<=223524534) should be true
     )
   )
+
+  describe("≤", 
+    it("should work for numbers", 
+      (0 ≤ 0) should be true
+      (0 ≤ 1) should be true
+      (1 ≤ 1) should be true
+      (1 ≤ 2) should be true
+      (2 ≤ 2) should be true
+      (3 ≤ 2) should be false
+      (3 ≤ 223524534) should be true
+      (223524534 ≤ 223524534) should be true
+    )
+  )
   
   describe(">", 
     it("should work for numbers", 
@@ -3027,6 +3040,21 @@ describe("operator",
     )
   )
 
+  describe("≥", 
+    it("should work for numbers", 
+      (0 ≥ 0) should be true
+      (0 ≥ 1) should be false
+      (1 ≥ 0) should be true
+      (1 ≥ 1) should be true
+      (2 ≥ 1) should be true
+      (2 ≥ 2) should be true
+      (3 ≥ 2) should be true
+      (3 ≥ 223524534) should be false
+      (223524534 ≥ 3) should be true
+      (223524534 ≥ 223524534) should be true
+    )
+  )
+
   describe("==", 
     it("should work for numbers", 
       (0==0) should be true
@@ -3054,6 +3082,21 @@ describe("operator",
       (3!=223524534) should be true
       (223524534!=3) should be true
       (223524534!=223524534) should be false
+    )
+  )
+
+  describe("≠", 
+    it("should work for numbers", 
+      (0 ≠ 0) should be false
+      (0 ≠ 1) should be true
+      (1 ≠ 0) should be true
+      (1 ≠ 1) should be false
+      (2 ≠ 1) should be true
+      (2 ≠ 2) should be false
+      (3 ≠ 2) should be true
+      (3 ≠ 223524534) should be true
+      (223524534 ≠ 3) should be true
+      (223524534 ≠ 223524534) should be false
     )
   )
 )

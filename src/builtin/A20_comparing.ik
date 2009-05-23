@@ -20,6 +20,8 @@ Mixins Comparing <= = method(
   result = (<=> other)
   result && result != 1)
 
+Mixins Comparing aliasMethod("<=", "≤")
+
 Mixins Comparing > = method(
   "return true if the receiver is greater than the argument, otherwise false",
   other,
@@ -33,6 +35,8 @@ Mixins Comparing >= = method(
   result = (<=> other)
   result && result != (0-1))
 
+Mixins Comparing aliasMethod(">=", "≥")
+
 Mixins Comparing == = method(
   "return true if the receiver is equal to the argument, otherwise false",
   other,
@@ -44,3 +48,5 @@ Mixins Comparing != = method(
   other,
   
   !((<=> other) == 0))
+
+Mixins Comparing aliasMethod("!=", "≠")
