@@ -97,12 +97,15 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
         (">",   5);
         ("<",   5);
         ("<=",  5);
+        ("≤",  5);
         (">=",  5);
+        ("≥",  5);
         ("<>",  5);
         ("<>>",  5);
         
         ("==",  6);
         ("!=",  6);
+        ("≠",  6);
         ("===",  6);
         ("=~",  6);
         ("!~",  6);

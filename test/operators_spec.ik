@@ -230,6 +230,76 @@ describe("operator",
       )
     )
 
+    describe("≤", 
+      it("should be translated correctly inside a method definition", 
+        m = parse("method(1 ≤ 2)")
+        m should == "method(1 ≤(2))"
+      )
+
+      it("should be translated correctly inside a nested method definition", 
+        m = parse("method(method(1 ≤ 2))")
+        m should == "method(method(1 ≤(2)))"
+      )
+
+      it("should be translated correctly inside a method definition with something else", 
+        m = parse("method(n, if(1 ≤ 2, n, n))")
+        m should == "method(n, if(1 ≤(2), n, n))"
+      )
+      
+      it("should be translated correctly in infix", 
+        m = parse("1 ≤ 2")
+        m should == "1 ≤(2)"
+      )
+
+      it("should be translated correctly with parenthesis", 
+        m = parse("1 ≤(2)")
+        m should == "1 ≤(2)"
+
+        m = parse("1 ≤(2)")
+        m should == "1 ≤(2)"
+      )
+
+      it("should be translated correctly with spaces", 
+        m = parse("1 ≤ 2")
+        m should == "1 ≤(2)"
+      )
+    )
+    
+    describe("≥", 
+      it("should be translated correctly inside a method definition", 
+        m = parse("method(1 ≥ 2)")
+        m should == "method(1 ≥(2))"
+      )
+
+      it("should be translated correctly inside a nested method definition", 
+        m = parse("method(method(1 ≥ 2))")
+        m should == "method(method(1 ≥(2)))"
+      )
+
+      it("should be translated correctly inside a method definition with something else", 
+        m = parse("method(n, if(1 ≥ 2, n, n))")
+        m should == "method(n, if(1 ≥(2), n, n))"
+      )
+      
+      it("should be translated correctly in infix", 
+        m = parse("1 ≥ 2")
+        m should == "1 ≥(2)"
+      )
+
+      it("should be translated correctly with parenthesis", 
+        m = parse("1 ≥(2)")
+        m should == "1 ≥(2)"
+
+        m = parse("1 ≥(2)")
+        m should == "1 ≥(2)"
+      )
+
+      it("should be translated correctly with spaces", 
+        m = parse("1 ≥ 2")
+        m should == "1 ≥(2)"
+      )
+    )
+
     describe("!=", 
       it("should be translated correctly inside a method definition", 
         m = parse("method(1!=2)")
@@ -265,6 +335,40 @@ describe("operator",
       )
     )
 
+    describe("≠", 
+      it("should be translated correctly inside a method definition", 
+        m = parse("method(1 ≠ 2)")
+        m should == "method(1 ≠(2))"
+      )
+
+      it("should be translated correctly inside a nested method definition", 
+        m = parse("method(method(1 ≠ 2))")
+        m should == "method(method(1 ≠(2)))"
+      )
+
+      it("should be translated correctly inside a method definition with something else", 
+        m = parse("method(n, if(1 ≠ 2, n, n))")
+        m should == "method(n, if(1 ≠(2), n, n))"
+      )
+      
+      it("should be translated correctly in infix", 
+        m = parse("1 ≠ 2")
+        m should == "1 ≠(2)"
+      )
+
+      it("should be translated correctly with parenthesis", 
+        m = parse("1 ≠(2)")
+        m should == "1 ≠(2)"
+
+        m = parse("1 ≠(2)")
+        m should == "1 ≠(2)"
+      )
+
+      it("should be translated correctly with spaces", 
+        m = parse("1 ≠ 2")
+        m should == "1 ≠(2)"
+      )
+    )
 
     describe("==", 
       it("should be translated correctly inside a method definition", 
