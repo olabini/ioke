@@ -308,5 +308,2021 @@ bar" should == "foobar"
       キャンディ! = "Candy!"
       キャンディ! should == "Candy!"
     )
+
+    describe("unicode mathematical operator: ∀",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∀ = method(42)
+        x ∀ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∁",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∁ = method(42)
+        x ∁ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∂",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∂ = method(42)
+        x ∂ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∃",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∃ = method(42)
+        x ∃ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∄",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∄ = method(42)
+        x ∄ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∅",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∅ = method(42)
+        x ∅ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∆",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∆ = method(42)
+        x ∆ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∇",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∇ = method(42)
+        x ∇ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∈",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∈ = method(42)
+        x ∈ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∉",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∉ = method(42)
+        x ∉ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∊",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∊ = method(42)
+        x ∊ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∋",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∋ = method(42)
+        x ∋ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∌",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∌ = method(42)
+        x ∌ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∍",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∍ = method(42)
+        x ∍ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∎",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∎ = method(42)
+        x ∎ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∏",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∏ = method(42)
+        x ∏ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∐",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∐ = method(42)
+        x ∐ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∑",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∑ = method(42)
+        x ∑ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: −",
+      it("should parse it correctly",
+        x = Origin mimic
+        x − = method(42)
+        x − should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∓",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∓ = method(42)
+        x ∓ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∔",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∔ = method(42)
+        x ∔ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∕",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∕ = method(42)
+        x ∕ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∖",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∖ = method(42)
+        x ∖ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∗",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∗ = method(42)
+        x ∗ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∘",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∘ = method(42)
+        x ∘ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∙",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∙ = method(42)
+        x ∙ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: √",
+      it("should parse it correctly",
+        x = Origin mimic
+        x √ = method(42)
+        x √ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∛",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∛ = method(42)
+        x ∛ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∜",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∜ = method(42)
+        x ∜ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∝",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∝ = method(42)
+        x ∝ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∞",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∞ = method(42)
+        x ∞ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∟",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∟ = method(42)
+        x ∟ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∠",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∠ = method(42)
+        x ∠ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∡",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∡ = method(42)
+        x ∡ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∢",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∢ = method(42)
+        x ∢ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∣",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∣ = method(42)
+        x ∣ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∤",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∤ = method(42)
+        x ∤ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∥",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∥ = method(42)
+        x ∥ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∦",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∦ = method(42)
+        x ∦ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∧",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∧ = method(42)
+        x ∧ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∨",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∨ = method(42)
+        x ∨ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∩",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∩ = method(42)
+        x ∩ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∪",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∪ = method(42)
+        x ∪ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∫",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∫ = method(42)
+        x ∫ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∬",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∬ = method(42)
+        x ∬ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∭",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∭ = method(42)
+        x ∭ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∮",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∮ = method(42)
+        x ∮ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∯",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∯ = method(42)
+        x ∯ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∰",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∰ = method(42)
+        x ∰ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∱",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∱ = method(42)
+        x ∱ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∲",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∲ = method(42)
+        x ∲ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∳",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∳ = method(42)
+        x ∳ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∴",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∴ = method(42)
+        x ∴ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∵",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∵ = method(42)
+        x ∵ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∶",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∶ = method(42)
+        x ∶ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∷",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∷ = method(42)
+        x ∷ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∸",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∸ = method(42)
+        x ∸ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∹",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∹ = method(42)
+        x ∹ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∺",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∺ = method(42)
+        x ∺ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∻",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∻ = method(42)
+        x ∻ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∼",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∼ = method(42)
+        x ∼ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∽",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∽ = method(42)
+        x ∽ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∾",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∾ = method(42)
+        x ∾ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ∿",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ∿ = method(42)
+        x ∿ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≀",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≀ = method(42)
+        x ≀ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≁",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≁ = method(42)
+        x ≁ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≂",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≂ = method(42)
+        x ≂ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≃",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≃ = method(42)
+        x ≃ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≄",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≄ = method(42)
+        x ≄ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≅",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≅ = method(42)
+        x ≅ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≆",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≆ = method(42)
+        x ≆ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≇",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≇ = method(42)
+        x ≇ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≈",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≈ = method(42)
+        x ≈ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≉",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≉ = method(42)
+        x ≉ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≊",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≊ = method(42)
+        x ≊ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≋",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≋ = method(42)
+        x ≋ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≌",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≌ = method(42)
+        x ≌ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≍",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≍ = method(42)
+        x ≍ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≎",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≎ = method(42)
+        x ≎ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≏",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≏ = method(42)
+        x ≏ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≐",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≐ = method(42)
+        x ≐ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≑",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≑ = method(42)
+        x ≑ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≒",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≒ = method(42)
+        x ≒ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≓",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≓ = method(42)
+        x ≓ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≔",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≔ = method(42)
+        x ≔ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≕",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≕ = method(42)
+        x ≕ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≖",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≖ = method(42)
+        x ≖ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≗",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≗ = method(42)
+        x ≗ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≘",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≘ = method(42)
+        x ≘ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≙",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≙ = method(42)
+        x ≙ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≚",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≚ = method(42)
+        x ≚ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≛",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≛ = method(42)
+        x ≛ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≜",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≜ = method(42)
+        x ≜ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≝",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≝ = method(42)
+        x ≝ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≞",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≞ = method(42)
+        x ≞ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≟",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≟ = method(42)
+        x ≟ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≠",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≠ = method(42)
+        x ≠ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≡",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≡ = method(42)
+        x ≡ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≢",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≢ = method(42)
+        x ≢ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≣",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≣ = method(42)
+        x ≣ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≤",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≤ = method(42)
+        x ≤ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≥",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≥ = method(42)
+        x ≥ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≦",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≦ = method(42)
+        x ≦ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≧",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≧ = method(42)
+        x ≧ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≨",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≨ = method(42)
+        x ≨ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≩",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≩ = method(42)
+        x ≩ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≪",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≪ = method(42)
+        x ≪ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≫",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≫ = method(42)
+        x ≫ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≬",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≬ = method(42)
+        x ≬ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≭",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≭ = method(42)
+        x ≭ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≮",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≮ = method(42)
+        x ≮ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≯",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≯ = method(42)
+        x ≯ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≰",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≰ = method(42)
+        x ≰ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≱",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≱ = method(42)
+        x ≱ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≲",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≲ = method(42)
+        x ≲ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≳",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≳ = method(42)
+        x ≳ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≴",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≴ = method(42)
+        x ≴ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≵",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≵ = method(42)
+        x ≵ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≶",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≶ = method(42)
+        x ≶ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≷",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≷ = method(42)
+        x ≷ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≸",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≸ = method(42)
+        x ≸ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≹",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≹ = method(42)
+        x ≹ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≺",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≺ = method(42)
+        x ≺ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≻",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≻ = method(42)
+        x ≻ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≼",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≼ = method(42)
+        x ≼ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≽",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≽ = method(42)
+        x ≽ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≾",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≾ = method(42)
+        x ≾ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ≿",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ≿ = method(42)
+        x ≿ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊀",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊀ = method(42)
+        x ⊀ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊁",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊁ = method(42)
+        x ⊁ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊂",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊂ = method(42)
+        x ⊂ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊃",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊃ = method(42)
+        x ⊃ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊄",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊄ = method(42)
+        x ⊄ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊅",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊅ = method(42)
+        x ⊅ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊆",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊆ = method(42)
+        x ⊆ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊇",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊇ = method(42)
+        x ⊇ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊈",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊈ = method(42)
+        x ⊈ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊉",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊉ = method(42)
+        x ⊉ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊊",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊊ = method(42)
+        x ⊊ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊋",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊋ = method(42)
+        x ⊋ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊌",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊌ = method(42)
+        x ⊌ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊍",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊍ = method(42)
+        x ⊍ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊎",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊎ = method(42)
+        x ⊎ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊏",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊏ = method(42)
+        x ⊏ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊐",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊐ = method(42)
+        x ⊐ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊑",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊑ = method(42)
+        x ⊑ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊒",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊒ = method(42)
+        x ⊒ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊓",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊓ = method(42)
+        x ⊓ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊔",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊔ = method(42)
+        x ⊔ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊕",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊕ = method(42)
+        x ⊕ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊖",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊖ = method(42)
+        x ⊖ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊗",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊗ = method(42)
+        x ⊗ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊘",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊘ = method(42)
+        x ⊘ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊙",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊙ = method(42)
+        x ⊙ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊚",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊚ = method(42)
+        x ⊚ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊛",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊛ = method(42)
+        x ⊛ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊜",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊜ = method(42)
+        x ⊜ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊝",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊝ = method(42)
+        x ⊝ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊞",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊞ = method(42)
+        x ⊞ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊟",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊟ = method(42)
+        x ⊟ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊠",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊠ = method(42)
+        x ⊠ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊡",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊡ = method(42)
+        x ⊡ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊢",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊢ = method(42)
+        x ⊢ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊣",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊣ = method(42)
+        x ⊣ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊤",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊤ = method(42)
+        x ⊤ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊥",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊥ = method(42)
+        x ⊥ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊦",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊦ = method(42)
+        x ⊦ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊧",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊧ = method(42)
+        x ⊧ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊨",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊨ = method(42)
+        x ⊨ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊩",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊩ = method(42)
+        x ⊩ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊪",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊪ = method(42)
+        x ⊪ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊫",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊫ = method(42)
+        x ⊫ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊬",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊬ = method(42)
+        x ⊬ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊭",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊭ = method(42)
+        x ⊭ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊮",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊮ = method(42)
+        x ⊮ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊯",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊯ = method(42)
+        x ⊯ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊰",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊰ = method(42)
+        x ⊰ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊱",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊱ = method(42)
+        x ⊱ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊲",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊲ = method(42)
+        x ⊲ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊳",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊳ = method(42)
+        x ⊳ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊴",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊴ = method(42)
+        x ⊴ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊵",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊵ = method(42)
+        x ⊵ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊶",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊶ = method(42)
+        x ⊶ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊷",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊷ = method(42)
+        x ⊷ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊸",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊸ = method(42)
+        x ⊸ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊹",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊹ = method(42)
+        x ⊹ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊺",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊺ = method(42)
+        x ⊺ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊻",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊻ = method(42)
+        x ⊻ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊼",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊼ = method(42)
+        x ⊼ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊽",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊽ = method(42)
+        x ⊽ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊾",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊾ = method(42)
+        x ⊾ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⊿",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⊿ = method(42)
+        x ⊿ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⋀",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⋀ = method(42)
+        x ⋀ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⋁",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⋁ = method(42)
+        x ⋁ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⋂",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⋂ = method(42)
+        x ⋂ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⋃",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⋃ = method(42)
+        x ⋃ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⋄",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⋄ = method(42)
+        x ⋄ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⋅",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⋅ = method(42)
+        x ⋅ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⋆",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⋆ = method(42)
+        x ⋆ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⋇",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⋇ = method(42)
+        x ⋇ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⋈",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⋈ = method(42)
+        x ⋈ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⋉",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⋉ = method(42)
+        x ⋉ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⋊",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⋊ = method(42)
+        x ⋊ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⋋",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⋋ = method(42)
+        x ⋋ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⋌",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⋌ = method(42)
+        x ⋌ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⋍",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⋍ = method(42)
+        x ⋍ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⋎",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⋎ = method(42)
+        x ⋎ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⋏",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⋏ = method(42)
+        x ⋏ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⋐",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⋐ = method(42)
+        x ⋐ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⋑",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⋑ = method(42)
+        x ⋑ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⋒",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⋒ = method(42)
+        x ⋒ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⋓",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⋓ = method(42)
+        x ⋓ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⋔",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⋔ = method(42)
+        x ⋔ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⋕",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⋕ = method(42)
+        x ⋕ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⋖",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⋖ = method(42)
+        x ⋖ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⋗",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⋗ = method(42)
+        x ⋗ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⋘",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⋘ = method(42)
+        x ⋘ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⋙",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⋙ = method(42)
+        x ⋙ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⋚",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⋚ = method(42)
+        x ⋚ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⋛",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⋛ = method(42)
+        x ⋛ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⋜",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⋜ = method(42)
+        x ⋜ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⋝",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⋝ = method(42)
+        x ⋝ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⋞",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⋞ = method(42)
+        x ⋞ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⋟",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⋟ = method(42)
+        x ⋟ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⋠",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⋠ = method(42)
+        x ⋠ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⋡",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⋡ = method(42)
+        x ⋡ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⋢",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⋢ = method(42)
+        x ⋢ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⋣",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⋣ = method(42)
+        x ⋣ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⋤",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⋤ = method(42)
+        x ⋤ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⋥",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⋥ = method(42)
+        x ⋥ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⋦",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⋦ = method(42)
+        x ⋦ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⋧",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⋧ = method(42)
+        x ⋧ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⋨",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⋨ = method(42)
+        x ⋨ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⋩",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⋩ = method(42)
+        x ⋩ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⋪",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⋪ = method(42)
+        x ⋪ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⋫",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⋫ = method(42)
+        x ⋫ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⋬",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⋬ = method(42)
+        x ⋬ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⋭",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⋭ = method(42)
+        x ⋭ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⋮",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⋮ = method(42)
+        x ⋮ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⋯",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⋯ = method(42)
+        x ⋯ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⩴",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⩴ = method(42)
+        x ⩴ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⩵",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⩵ = method(42)
+        x ⩵ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⩶",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⩶ = method(42)
+        x ⩶ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⪋",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⪋ = method(42)
+        x ⪋ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⪌",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⪌ = method(42)
+        x ⪌ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⪑",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⪑ = method(42)
+        x ⪑ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⪒",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⪒ = method(42)
+        x ⪒ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⫅",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⫅ = method(42)
+        x ⫅ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⫆",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⫆ = method(42)
+        x ⫆ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⫋",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⫋ = method(42)
+        x ⫋ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⫌",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⫌ = method(42)
+        x ⫌ should == 42
+      )
+    )
+
+    describe("unicode mathematical operator: ⫨",
+      it("should parse it correctly",
+        x = Origin mimic
+        x ⫨ = method(42)
+        x ⫨ should == 42
+      )
+    )
   )
 )
