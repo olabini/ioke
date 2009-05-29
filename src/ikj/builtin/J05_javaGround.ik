@@ -140,4 +140,25 @@ cell(:LexicalBlock) java:coerceCode = method(javaType, abstractNames,
   proxy new
 )
 
+JavaGround java:util:List each = dmacro(
+  [code]
+  (0...self size asRational) each(n, code evaluateOn(call ground, self get(n)))
+  self,
+
+  [argName, code]
+  lexical = call LexicalBlock createFrom(call list(argName, code), call ground)
+  (0...self size asRational) each(n, lexical call(self get(n)))
+  self,
+
+  [indexName, argName, code]
+  lexical = call LexicalBlock createFrom(call list(indexName, argName, code), call ground)
+  (0...self size asRational) each(n, lexical call(n, self get(n)))
+  self)
+
+JavaGround java:util:List cell("<<") = method(obj,
+  self add(obj)
 )
+
+JavaGround java:util:List mimic!(Mixins Enumerable)
+)
+

@@ -2770,4 +2770,28 @@ describe("Java Objects",
     )
   )
 )
+describe("java:util:List",
+  describe("<<",
+    it("should add an element",
+      x = java:util:ArrayList new
+      x << "foo"
+      x get(0) should == "foo"
+    )
+  )
+
+  describe("each",
+    it("should work as expected",
+      x = java:util:ArrayList new
+      x add("hello")
+      x add("goodbye")
+      result = []
+      x each(vv, result << vv)
+      result should == ["hello", "goodbye"]
+    )
+  )
+
+  it("should be enumerable",
+    java:util:List should mimic(Mixins Enumerable)
+  )
+)
 )
