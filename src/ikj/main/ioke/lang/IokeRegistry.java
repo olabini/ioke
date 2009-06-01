@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.IdentityHashMap;
 
 import ioke.lang.exceptions.ControlFlow;
+import ioke.lang.util.WeakIdentityHashMap;
 
 /**
  *
@@ -15,7 +16,7 @@ import ioke.lang.exceptions.ControlFlow;
  */
 public class IokeRegistry {
     public Runtime runtime;
-    private Map<Object, IokeObject> wrappedObjects = new IdentityHashMap<Object, IokeObject>();
+    private Map wrappedObjects = new WeakIdentityHashMap();
 
     public IokeRegistry(Runtime runtime) {
         this.runtime = runtime;
@@ -38,7 +39,7 @@ public class IokeRegistry {
             return ((Boolean)on).booleanValue() ? runtime._true : runtime._false;
         }
         
-        IokeObject obj = wrappedObjects.get(on);
+        IokeObject obj = (IokeObject)wrappedObjects.get(on);
         if(obj == null) {
             obj = runtime.createJavaWrapper(on);
             wrappedObjects.put(on, obj);
@@ -51,7 +52,7 @@ public class IokeRegistry {
             return runtime.nil;
         }
         
-        IokeObject obj = wrappedObjects.get(on);
+        IokeObject obj = (IokeObject)wrappedObjects.get(on);
         if(obj == null) {
             obj = runtime.createIntegratedJavaWrapper(on);
             wrappedObjects.put(on, obj);
