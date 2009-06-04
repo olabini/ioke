@@ -13,7 +13,7 @@ iterativeFib = method(n,
     curr = succ
     succ += old
   )
-  return curr
+  curr
 )
 
 generativeFib = method(
