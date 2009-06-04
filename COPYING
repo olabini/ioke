@@ -4,6 +4,7 @@ ikj:
 The package ioke.lang is covered by the file LICENSE.
 The package gnu.math is covered by the file LICENSE.kawa.
 The package org.jregex and subpackages contains their own licensing information in the source files.
+The package com.google.common and subpackages contain their own licensing information.
 
 ikc:
 The namepsace Ioke.Lang is covered by the file LICENSE.

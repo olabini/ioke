@@ -8,7 +8,8 @@ import java.util.Map;
 import java.util.IdentityHashMap;
 
 import ioke.lang.exceptions.ControlFlow;
-import ioke.lang.util.ObjectProxyCache;
+
+import com.google.common.collect.MapMaker;
 
 /**
  *
@@ -20,29 +21,14 @@ public class IokeRegistry {
     }
     
     public Runtime runtime;
-    private Creator regularCreator;
-    private Creator integratedCreator;
 
-    private final ObjectProxyCache<IokeObject, Creator> wrappedObjects = 
-        new ObjectProxyCache<IokeObject, Creator>(ObjectProxyCache.ReferenceType.WEAK) {
-
-        public IokeObject allocateProxy(Object javaObject, Creator creator) {
-            return creator.create(javaObject);
-        }
-    };
+    private final Map<Object, IokeObject> wrappedObjects = new MapMaker()
+        .weakKeys()
+        .weakValues()
+        .makeMap();
 
     public IokeRegistry(final Runtime runtime) {
         this.runtime = runtime;
-        this.regularCreator = new Creator() {
-                public IokeObject create(Object javaObject) {
-                    return runtime.createJavaWrapper(javaObject);
-                }
-            };
-        this.integratedCreator = new Creator() {
-                public IokeObject create(Object javaObject) {
-                    return runtime.createIntegratedJavaWrapper((Class)javaObject);
-                }
-            };
     }
     
     public static void makeWrapped(Object on, IokeObject wrapped, IokeObject context) {
@@ -61,8 +47,14 @@ public class IokeRegistry {
         } else if(on instanceof Boolean) {
             return ((Boolean)on).booleanValue() ? runtime._true : runtime._false;
         }
-        
-        return wrappedObjects.getOrCreate(on, regularCreator);
+
+        if(!wrappedObjects.containsKey(on)) {
+            IokeObject val = runtime.createJavaWrapper(on);
+            wrappedObjects.put(on, val);
+            return val;
+        }
+
+        return wrappedObjects.get(on);
     }
 
     public IokeObject integratedWrap(Class on) {
@@ -70,11 +62,17 @@ public class IokeRegistry {
             return runtime.nil;
         }
         
-        return wrappedObjects.getOrCreate(on, integratedCreator);
+        if(!wrappedObjects.containsKey(on)) {
+            IokeObject val = runtime.createIntegratedJavaWrapper(on);
+            wrappedObjects.put(on, val);
+            return val;
+        }
+
+        return wrappedObjects.get(on);
     }
 
     public boolean isWrapped(Object on) {
-        return wrappedObjects.get(on) != null;
+        return wrappedObjects.containsKey(on);
     }
 
     public static boolean isWrapped(Object on, IokeObject context) {
