@@ -63,16 +63,37 @@ public class JavaWrapper extends IokeData {
             }
 
             Map<String, List<Method>> ms = new HashMap<String, List<Method>>();
+            Map<String, List<Method>> allMethods = new HashMap<String, List<Method>>();
+            for(Method m : clz.getMethods()) {
+                String name = m.getName();
+                List<Method> lm = null;
+                if(!allMethods.containsKey(name)) {
+                    lm = new LinkedList<Method>();
+                    allMethods.put(name, lm);
+                } else {
+                    lm = allMethods.get(name);
+                }
+                lm.add(m);
+            }
+
             for(Method m : clz.getDeclaredMethods()) {
                 String name = m.getName();
                 List<Method> lm = null;
                 if(!ms.containsKey(name)) {
                     lm = new LinkedList<Method>();
                     ms.put(name, lm);
+                    List<Method> mex = allMethods.get(name);
+                    if(mex != null) {
+                        lm.addAll(mex);
+                    } else {
+                        lm.add(m);
+                    }
                 } else {
                     lm = ms.get(name);
+                    if(!lm.contains(m)) {
+                        lm.add(m);
+                    }
                 }
-                lm.add(m);
                 try {
                     m.setAccessible(true);
                 } catch(Exception e) {}
