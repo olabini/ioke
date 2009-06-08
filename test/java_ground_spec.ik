@@ -1960,6 +1960,13 @@ describe("Java Objects",
       val isBarValue() should be false
       val barValue? should be false
     )
+
+
+    it("should be possible to call a method that is overloaded in super classes and direct classes",
+      date = java:util:Date new
+      formatter = java:text:SimpleDateFormat new("dd/MM/yyyy")
+      formatter format(date) should not be nil
+    )
   )
 
   describe("constructors",
