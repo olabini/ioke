@@ -184,7 +184,7 @@ public class Number extends IokeData {
         decimal.init();
         number.registerCell("Decimal", decimal);
         
-        IokeObject infinity = new IokeObject(runtime, "A value representing infinity", new Number(RatNum.infinity(1)));
+        final IokeObject infinity = new IokeObject(runtime, "A value representing infinity", new Number(RatNum.infinity(1)));
         infinity.mimicsWithoutCheck(ratio);
         infinity.setKind("Number Infinity");
         number.registerCell("Infinity", infinity);
@@ -271,7 +271,7 @@ public class Number extends IokeData {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     Object arg = args.get(0);
-                    if(on == rational || arg == rational || on == integer || arg == integer || on == ratio || arg == ratio) {
+                    if(on == rational || arg == rational || on == integer || arg == integer || on == ratio || arg == ratio || on == infinity || arg == infinity) {
                         if(arg == on) {
                             return context.runtime._true;
                         }

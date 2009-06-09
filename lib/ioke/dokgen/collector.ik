@@ -44,7 +44,7 @@ DokGen do(
 
     FileSystem[specsPattern] each(f, use(f))
 
-    ISpec specifications each(spec,
+    ISpec DescribeContext specs each(spec,
       collectSpec(spec, collectedSpecs)
     )
 
@@ -111,9 +111,9 @@ DokGen do(
     theList = (collectedSpecs[spec fullName] ||= [])
 
     spec specs each(sp,
-      if(sp[0] == :description,
-        collectSpec(sp[1], collectedSpecs),
-        if(sp[0] == :test,
-          theList << [sp[1], sp[2]],
-          theList << [sp[1]]))))
+      if(sp mimics?(ISpec DescribeContext),
+        collectSpec(sp, collectedSpecs),
+        if(sp pending?,
+          theList << [sp name],
+          theList << [sp name, sp code]))))
 )
