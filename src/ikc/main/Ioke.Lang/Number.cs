@@ -207,7 +207,7 @@ namespace Ioke.Lang {
                                                                                          .Arguments,
                                                                                          (method, on, args, keywords, context, message) => {
                                                                                              object arg = args[0];
-                                                                                             if(on == rational || arg == rational || on == integer || arg == integer || on == ratio || arg == ratio) {
+                                                                                             if(on == rational || arg == rational || on == integer || arg == integer || on == ratio || arg == ratio || on == infinity || arg == infinity) {
                                                                                                  if(arg == on) {
                                                                                                      return context.runtime.True;
                                                                                                  }

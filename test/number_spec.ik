@@ -1273,6 +1273,14 @@ describe(Number,
       it("should be equal to itself",
         Number Infinity should == Number Infinity
       )
+
+      it("should be inequal to another rational",
+        Number Infinity should not == 42
+      )
+
+      it("should be inequal to a decimal",
+        Number Infinity should not == 3.3
+      )
     )
     
     describe("mimic",
