@@ -4,6 +4,8 @@ ISpec do(
 
   Formatter do(
     TextFormatter = ISpec Formatter mimic do(
+      noAnsi = (System windows?) || (System feature?(:java) && (java:lang:System getProperty("ispec.ansi") asText == "false"))
+
       start = method(exampleCount, @pendingExamples = [])
 
       examplePending = method(example, message,
@@ -44,7 +46,7 @@ ISpec do(
         "outputs text with colour if possible",
         text, colour_code,
         
-        if(System windows?,
+        if(noAnsi,
           text,
           "#{colour_code}#{text}\e[0m"))
 
