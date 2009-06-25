@@ -73,7 +73,7 @@
 
   <target name="test" depends="compile" description="Runs all ISpec tests">
     <java classname="ioke.lang.Main" fork="true" failonerror="true" maxmemory="256m">
-      <sysproperty key="ispec.ansi" value="${ispec.value}"/>
+      <sysproperty key="ispec.ansi" value="${ispec.ansi}"/>
       <classpath refid="build.classpath"/>
       <classpath path="${classes.dir}"/>
 
