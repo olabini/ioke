@@ -521,11 +521,15 @@ namespace Ioke.Lang.Util {
                         string dir = begin == p ? "." : _base; 
                         string magic = ExtractElem(bytes2,p,end);
                         bool recursive = false;
-
-                        if(dir[0] == '/'  || (DOSISH && 2<dir.Length && dir[1] == ':' && IsDirSep(dir[2]))) {
-                            st = new DirectoryInfo(dir);
-                        } else {
-                            st = new DirectoryInfo(Path.Combine(cwd, dir));
+                        try {
+                            if(dir[0] == '/'  || (DOSISH && 2<dir.Length && dir[1] == ':' && IsDirSep(dir[2]))) {
+                                st = new DirectoryInfo(dir);
+                            } else {
+                                st = new DirectoryInfo(Path.Combine(cwd, dir));
+                            }
+                        } catch(Exception) {
+                            // A clear sign that the file doesn't exist.
+                            return status;
                         }
 
                         if(st.Exists) {
