@@ -153,7 +153,7 @@ ioke.build.commit=${version::extract-commit()}
   </target>
 
   <target name="test" depends="compile" description="Runs all ISpec tests">
-    <exec program="bin/ispec.exe">
+    <exec managed="true" program="bin/ispec.exe">
       <arg line="test -fs"/>
     </exec>
   </target>
