@@ -1,0 +1,7 @@
+
+Instead of hooks - use something similar to Magik's dependent thing
+--------------------------------------------------------------------
+
+- It should be fairly trivial to allow an object to have observers that will be notified if that object changes.
+- This would serve the same purpose as most of the hooks in Ruby
+
