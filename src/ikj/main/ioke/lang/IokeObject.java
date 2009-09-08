@@ -8,7 +8,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.IdentityHashMap;
 import java.util.regex.Pattern;
 
 import ioke.lang.exceptions.ControlFlow;
@@ -280,23 +279,23 @@ public class IokeObject implements TypeChecker {
     }
 
     public static boolean isKind(Object on, String kind, IokeObject context) {
-        return as(on, context).isKind(kind, new IdentityHashMap<IokeObject, Object>());
+        return as(on, context).isKind(kind);
     }
 
     public static boolean isMimic(Object on, IokeObject potentialMimic, IokeObject context) {
-        return as(on, context).isMimic(potentialMimic, new IdentityHashMap<Map<String, Object>, Object>());
+        return as(on, context).isMimic(potentialMimic);
     }
 
     public static boolean isKind(IokeObject on, String kind) {
-        return as(on, on).isKind(kind, new IdentityHashMap<IokeObject, Object>());
+        return as(on, on).isKind(kind);
     }
 
     public static boolean isMimic(IokeObject on, IokeObject potentialMimic) {
-        return as(on, on).isMimic(potentialMimic, new IdentityHashMap<Map<String, Object>, Object>());
+        return as(on, on).isMimic(potentialMimic);
     }
 
-    private boolean isKind(String kind, IdentityHashMap<IokeObject, Object> visited) {
-        if(visited.containsKey(this)) {
+    private boolean isKind(String kind) {
+        if(this.marked) {
             return false;
         }
 
@@ -304,19 +303,22 @@ public class IokeObject implements TypeChecker {
             return true;
         }
 
-        visited.put(this, null);
-            
-        for(IokeObject mimic : mimics) {
-            if(mimic.isKind(kind, visited)) {
-                return true;
+        this.marked = true;
+        try {
+            for(IokeObject mimic : mimics) {
+                if(mimic.isKind(kind)) {
+                    return true;
+                }
             }
-        }
 
-        return false;
+            return false;
+        } finally {
+            this.marked = false;
+        }
     }
 
-    private boolean isMimic(IokeObject pot, IdentityHashMap<Map<String, Object>, Object> visited) {
-        if(visited.containsKey(this.cells)) {
+    private boolean isMimic(IokeObject pot) {
+        if(this.marked) {
             return false;
         }
 
@@ -324,15 +326,18 @@ public class IokeObject implements TypeChecker {
             return true;
         }
 
-        visited.put(this.cells, null);
-            
-        for(IokeObject mimic : mimics) {
-            if(mimic.isMimic(pot, visited)) {
-                return true;
+        this.marked = true;
+        try {
+            for(IokeObject mimic : mimics) {
+                if(mimic.isMimic(pot)) {
+                    return true;
+                }
             }
-        }
 
-        return false;
+            return false;
+        } finally {
+            this.marked = false;
+        }
     }
 
     public static Object getCellChain(Object on, IokeObject m, IokeObject c, String... names) throws ControlFlow {
