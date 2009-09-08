@@ -26,6 +26,9 @@ public class IokeObject implements TypeChecker {
 
     private boolean frozen = false;
 
+    // Used to handle recursive cell lookup chains more efficiently. Should in the end be a ThreadLocal of course.
+    private boolean marked = false;
+
     public IokeObject(Runtime runtime, String documentation) {
         this(runtime, documentation, IokeData.None);
     }
@@ -139,11 +142,11 @@ public class IokeObject implements TypeChecker {
     }
 
     public static Object findSuperCellOn(Object obj, IokeObject early, IokeObject message, IokeObject context, String name) {
-        return as(obj, context).findSuperCell(early, message, context, name, new boolean[]{false}, new IdentityHashMap<IokeObject, Object>());
+        return as(obj, context).markingFindSuperCell(early, message, context, name, new boolean[]{false});
     }
 
-    public Object findSuperCell(IokeObject early, IokeObject message, IokeObject context, String name, boolean[] found, IdentityHashMap<IokeObject, Object> visited) {
-        if(visited.containsKey(this)) {
+    protected Object markingFindSuperCell(IokeObject early, IokeObject message, IokeObject context, String name, boolean[] found) {
+        if(this.marked) {
             return runtime.nul;
         }
 
@@ -156,32 +159,30 @@ public class IokeObject implements TypeChecker {
             }
         }
 
-        visited.put(this, null);
-        
-        for(IokeObject mimic : mimics) {
-            Object cell = mimic.findSuperCell(early, message, context, name, found, visited);
-            if(cell != runtime.nul) {
-                return cell;
+        this.marked = true;
+        try {
+            for(IokeObject mimic : mimics) {
+                Object cell = mimic.markingFindSuperCell(early, message, context, name, found);
+                if(cell != runtime.nul) {
+                    return cell;
+                }
             }
+            return runtime.nul;
+        } finally {
+            this.marked = false;
         }
-
-        return runtime.nul;
     }
 
     public static Object findCell(Object obj, IokeObject m, IokeObject context, String name) {
-        return as(obj, context).findCell(m, context, name, new IdentityHashMap<IokeObject, Object>());
+        return as(obj, context).markingFindCell(m, context, name);
     }
 
-    public static Object findCell(Object obj, IokeObject m, IokeObject context, String name, IdentityHashMap<IokeObject, Object> visited) {
-        return as(obj, context).findCell(m, context, name, visited);
-    }
-
-    public static Object findPlace(Object obj, String name, IdentityHashMap<IokeObject, Object> visited) {
-        return as(obj, null).findPlace(name, visited);
+    public static Object findPlace(Object obj, String name) {
+        return as(obj, null).markingFindPlace(name);
     }
 
     public static Object findPlace(Object obj, IokeObject m, IokeObject context, String name) throws ControlFlow {
-        Object result = findPlace(obj, name, new IdentityHashMap<IokeObject, Object>());
+        Object result = findPlace(obj, name);
         if(result == m.runtime.nul) {
             final IokeObject condition = as(IokeObject.getCellChain(m.runtime.condition, 
                                                                     m, 
@@ -207,50 +208,58 @@ public class IokeObject implements TypeChecker {
      * findPlace is cycle aware and will not loop in an infinite chain. subclasses should copy this behavior.
      */
     public Object findPlace(String name) {
-        return findPlace(name, new IdentityHashMap<IokeObject, Object>());
+        return markingFindPlace(name);
     }
 
-    protected Object findPlace(String name, IdentityHashMap<IokeObject, Object> visited) {
-        if(visited.containsKey(this)) {
+    protected Object markingFindPlace(String name) {
+        if(this.marked) {
             return runtime.nul;
         }
+
         if(cells.containsKey(name)) {
             if(cells.get(name) == runtime.nul) {
                 return runtime.nul;
             }
             return this;
         } else {
-            visited.put(this, null);
-
-            for(IokeObject mimic : mimics) {
-                Object place = mimic.findPlace(name, visited);
-                if(place != runtime.nul) {
-                    return place;
+            this.marked = true;
+            try {
+                for(IokeObject mimic : mimics) {
+                    Object place = mimic.markingFindPlace(name);
+                    if(place != runtime.nul) {
+                        return place;
+                    }
                 }
-            }
 
-            return runtime.nul;
+                return runtime.nul;
+            } finally {
+                this.marked = false;
+            }
         }
     }
 
-    public Object findCell(IokeObject m, IokeObject context, String name, IdentityHashMap<IokeObject, Object> visited) {
-        if(visited.containsKey(this)) {
+    protected Object markingFindCell(IokeObject m, IokeObject context, String name) {
+        if(this.marked) {
             return runtime.nul;
         }
 
         if(cells.containsKey(name)) {
             return cells.get(name);
         } else {
-            visited.put(this, null);
+            this.marked = true;
 
-            for(IokeObject mimic : mimics) {
-                Object cell = mimic.findCell(m, context, name, visited);
-                if(cell != runtime.nul) {
-                    return cell;
+            try {
+                for(IokeObject mimic : mimics) {
+                    Object cell = mimic.markingFindCell(m, context, name);
+                    if(cell != runtime.nul) {
+                        return cell;
+                    }
                 }
-            }
 
-            return runtime.nul;
+                return runtime.nul;
+            } finally {
+                this.marked = false;
+            }
         }
     }
 
@@ -267,7 +276,7 @@ public class IokeObject implements TypeChecker {
     }
 
     public Object findCell(IokeObject m, IokeObject context, String name) {
-        return findCell(m, context, name, new IdentityHashMap<IokeObject, Object>());
+        return markingFindCell(m, context, name);
     }
 
     public static boolean isKind(Object on, String kind, IokeObject context) {

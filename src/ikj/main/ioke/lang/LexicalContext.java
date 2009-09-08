@@ -3,8 +3,6 @@
  */
 package ioke.lang;
 
-import java.util.IdentityHashMap;
-
 /**
  *
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
@@ -48,18 +46,18 @@ public class LexicalContext extends IokeObject {
     }
 
     @Override
-    protected Object findPlace(String name, IdentityHashMap<IokeObject, Object> visited) {
-        Object nn = super.findPlace(name, visited);
+    protected Object markingFindPlace(String name) {
+        Object nn = super.markingFindPlace(name);
         if(nn == runtime.nul) {
-            return IokeObject.findPlace(surroundingContext, name, visited);
+            return IokeObject.findPlace(surroundingContext, name);
         } else {
             return nn;
         }
     }
 
     @Override
-    public Object findSuperCell(IokeObject early, IokeObject message, IokeObject context, String name, boolean[] found, IdentityHashMap<IokeObject, Object> visited) {
-        Object nn = super.findSuperCell(early, message, context, name, found, visited);
+    protected Object markingFindSuperCell(IokeObject early, IokeObject message, IokeObject context, String name, boolean[] found) {
+        Object nn = super.markingFindSuperCell(early, message, context, name, found);
         if(nn == runtime.nul) {
             return IokeObject.findSuperCellOn(surroundingContext, early, message, context, name);
         } else {
@@ -68,11 +66,11 @@ public class LexicalContext extends IokeObject {
     }
 
     @Override
-    public Object findCell(IokeObject m, IokeObject context, String name, IdentityHashMap<IokeObject, Object> visited) {
-        Object nn = super.findCell(m, context, name, visited);
+    protected Object markingFindCell(IokeObject m, IokeObject context, String name) {
+        Object nn = super.markingFindCell(m, context, name);
         
         if(nn == runtime.nul) {
-            return IokeObject.findCell(surroundingContext, m, context, name, visited);
+            return IokeObject.findCell(surroundingContext, m, context, name);
         } else {
             return nn;
         }
