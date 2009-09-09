@@ -14,6 +14,7 @@ namespace Ioke.Lang {
         IokeData data;
 
         bool frozen = false;
+        bool marked = false;
 
         public IokeObject(Runtime runtime, string documentation) : this(runtime, documentation, IokeData.None) {
         }
@@ -131,15 +132,11 @@ namespace Ioke.Lang {
         }
 
         public static object FindCell(object obj, IokeObject m, IokeObject context, string name) {
-            return As(obj, context).FindCell(m, context, name, IdentityHashTable.Create());
-        }
-
-        public static object FindCell(object obj, IokeObject m, IokeObject context, string name, IDictionary visited) {
-            return As(obj, context).FindCell(m, context, name, visited);
+            return As(obj, context).MarkingFindCell(m, context, name);
         }
 
         public object FindCell(IokeObject m, IokeObject context, string name) {
-            return FindCell(m, context, name, IdentityHashTable.Create());
+            return MarkingFindCell(m, context, name);
         }
 
         public static void RemoveCell(object on, IokeObject m, IokeObject context, string name) {
@@ -172,33 +169,36 @@ namespace Ioke.Lang {
             cells[name] = runtime.nul;
         }
 
-        public virtual object FindCell(IokeObject m, IokeObject context, string name, IDictionary visited) {
-            if(visited.Contains(this)) {
+        protected virtual object MarkingFindCell(IokeObject m, IokeObject context, string name) {
+            if(this.marked) {
                 return runtime.nul;
             }
 
             if(cells.ContainsKey(name)) {
                 return cells[name];
             } else {
-                visited[this] = null;
-
-                foreach(IokeObject mimic in mimics) {
-                    object cell = mimic.FindCell(m, context, name, visited);
-                    if(cell != runtime.nul) {
-                        return cell;
+                this.marked = true;
+                try {
+                    foreach(IokeObject mimic in mimics) {
+                        object cell = mimic.MarkingFindCell(m, context, name);
+                        if(cell != runtime.nul) {
+                            return cell;
+                        }
                     }
-                }
 
-                return runtime.nul;
+                    return runtime.nul;
+                } finally {
+                    this.marked = false;
+                }
             }
         }
 
-        public static object FindPlace(object obj, string name, IDictionary visited) {
-            return As(obj, null).FindPlace(name, visited);
+        public static object FindPlace(object obj, string name) {
+            return As(obj, null).MarkingFindPlace(name);
         }
 
         public static object FindPlace(object obj, IokeObject m, IokeObject context, string name) {
-            object result = FindPlace(obj, name, IdentityHashTable.Create());
+            object result = FindPlace(obj, name);
             if(result == m.runtime.nul) {
                 IokeObject condition = As(IokeObject.GetCellChain(m.runtime.Condition, 
                                                                   m, 
@@ -220,11 +220,11 @@ namespace Ioke.Lang {
          * findPlace is cycle aware and will not loop in an infinite chain. subclasses should copy this behavior.
          */
         public object FindPlace(string name) {
-            return FindPlace(name, IdentityHashTable.Create());
+            return MarkingFindPlace(name);
         }
 
-        protected virtual object FindPlace(string name, IDictionary visited) {
-            if(visited.Contains(this)) {
+        protected virtual object MarkingFindPlace(string name) {
+            if(this.marked) {
                 return runtime.nul;
             }
             if(cells.ContainsKey(name)) {
@@ -233,16 +233,19 @@ namespace Ioke.Lang {
                 }
                 return this;
             } else {
-                visited[this] = null;
-
-                foreach(IokeObject mimic in mimics) {
-                    object place = mimic.FindPlace(name, visited);
-                    if(place != runtime.nul) {
-                        return place;
+                this.marked = true;
+                try {
+                    foreach(IokeObject mimic in mimics) {
+                        object place = mimic.MarkingFindPlace(name);
+                        if(place != runtime.nul) {
+                            return place;
+                        }
                     }
-                }
 
-                return runtime.nul;
+                    return runtime.nul;
+                } finally {
+                    this.marked = false;
+                }
             }
         }
 
@@ -495,11 +498,11 @@ namespace Ioke.Lang {
         }
 
         public static object FindSuperCellOn(object obj, IokeObject early, IokeObject message, IokeObject context, string name) {
-            return As(obj, context).FindSuperCell(early, message, context, name, new bool[]{false}, IdentityHashTable.Create());
+            return As(obj, context).MarkingFindSuperCell(early, message, context, name, new bool[]{false});
         }
 
-        public virtual object FindSuperCell(IokeObject early, IokeObject message, IokeObject context, string name, bool[] found, IDictionary visited) {
-            if(name == null || visited.Contains(this)) {
+        protected virtual object MarkingFindSuperCell(IokeObject early, IokeObject message, IokeObject context, string name, bool[] found) {
+            if(name == null || this.marked) {
                 return runtime.nul;
             }
 
@@ -512,16 +515,19 @@ namespace Ioke.Lang {
                 }
             }
 
-            visited[this] = null;
-        
-            foreach(IokeObject mimic in mimics) {
-                object cell = mimic.FindSuperCell(early, message, context, name, found, visited);
-                if(cell != runtime.nul) {
-                    return cell;
+            this.marked = true;
+            try {
+                foreach(IokeObject mimic in mimics) {
+                    object cell = mimic.MarkingFindSuperCell(early, message, context, name, found);
+                    if(cell != runtime.nul) {
+                        return cell;
+                    }
                 }
-            }
 
-            return runtime.nul;
+                return runtime.nul;
+            } finally {
+                this.marked = false;
+            }
         }
 
         public static object Activate(object self, IokeObject context, IokeObject message, object on) {
@@ -626,23 +632,23 @@ namespace Ioke.Lang {
 
 
         public static bool IsKind(object on, string kind, IokeObject context) {
-            return As(on, context).IsKind(kind, IdentityHashTable.Create());
+            return As(on, context).IsKind(kind);
         }
         
         public static bool IsMimic(object on, IokeObject potentialMimic, IokeObject context) {
-            return As(on, context).IsMimic(potentialMimic, IdentityHashTable.Create());
+            return As(on, context).IsMimic(potentialMimic);
         }
 
         public static bool IsKind(IokeObject on, string kind) {
-            return As(on, on).IsKind(kind, IdentityHashTable.Create());
+            return As(on, on).IsKind(kind);
         }
 
         public static bool IsMimic(IokeObject on, IokeObject potentialMimic) {
-            return As(on, on).IsMimic(potentialMimic, IdentityHashTable.Create());
+            return As(on, on).IsMimic(potentialMimic);
         }
 
-        private bool IsKind(string kind, IDictionary visited) {
-            if(visited.Contains(this)) {
+        private bool IsKind(string kind) {
+            if(this.marked) {
                 return false;
             }
 
@@ -650,19 +656,22 @@ namespace Ioke.Lang {
                 return true;
             }
 
-            visited[this] = null;
-            
-            foreach(IokeObject mimic in mimics) {
-                if(mimic.IsKind(kind, visited)) {
-                    return true;
+            this.marked = true;
+            try {
+                foreach(IokeObject mimic in mimics) {
+                    if(mimic.IsKind(kind)) {
+                        return true;
+                    }
                 }
-            }
 
-            return false;
+                return false;
+            } finally {
+                this.marked = false;
+            }
         }
 
-        private bool IsMimic(IokeObject pot, IDictionary visited) {
-            if(visited.Contains(this.cells)) {
+        private bool IsMimic(IokeObject pot) {
+            if(this.marked) {
                 return false;
             }
 
@@ -670,15 +679,18 @@ namespace Ioke.Lang {
                 return true;
             }
 
-            visited[this.cells] = null;
-            
-            foreach(IokeObject mimic in mimics) {
-                if(mimic.IsMimic(pot, visited)) {
-                    return true;
+            this.marked = true;
+            try {
+                foreach(IokeObject mimic in mimics) {
+                    if(mimic.IsMimic(pot)) {
+                        return true;
+                    }
                 }
-            }
 
-            return false;
+                return false;
+            } finally {
+                this.marked = false;
+            }
         }
 
         public static IokeObject ConvertToRational(object on, IokeObject m, IokeObject context, bool signalCondition) {

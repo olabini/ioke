@@ -35,17 +35,17 @@ namespace Ioke.Lang {
             IokeObject.SetCell(place, name, value, context);
         }
 
-        protected override object FindPlace(string name, IDictionary visited) {
-            object nn = base.FindPlace(name, visited);
+        protected override object MarkingFindPlace(string name) {
+            object nn = base.MarkingFindPlace(name);
             if(nn == runtime.nul) {
-                return IokeObject.FindPlace(surroundingContext, name, visited);
+                return IokeObject.FindPlace(surroundingContext, name);
             } else {
                 return nn;
             }
         }
 
-        public override object FindSuperCell(IokeObject early, IokeObject message, IokeObject context, string name, bool[] found, IDictionary visited) {
-            object nn = base.FindSuperCell(early, message, context, name, found, visited);
+        protected override object MarkingFindSuperCell(IokeObject early, IokeObject message, IokeObject context, string name, bool[] found) {
+            object nn = base.MarkingFindSuperCell(early, message, context, name, found);
             if(nn == runtime.nul) {
                 return IokeObject.FindSuperCellOn(surroundingContext, early, message, context, name);
             } else {
@@ -53,11 +53,11 @@ namespace Ioke.Lang {
             }
         }
 
-        public override object FindCell(IokeObject m, IokeObject context, string name, IDictionary visited) {
-            object nn = base.FindCell(m, context, name, visited);
+        protected override object MarkingFindCell(IokeObject m, IokeObject context, string name) {
+            object nn = base.MarkingFindCell(m, context, name);
         
             if(nn == runtime.nul) {
-                return IokeObject.FindCell(surroundingContext, m, context, name, visited);
+                return IokeObject.FindCell(surroundingContext, m, context, name);
             } else {
                 return nn;
             }
