@@ -26,7 +26,7 @@ public class IokeObject implements TypeChecker {
     private boolean frozen = false;
 
     // Used to handle recursive cell lookup chains more efficiently. Should in the end be a ThreadLocal of course.
-    public boolean marked = false;
+    private boolean marked = false;
 
     public IokeObject(Runtime runtime, String documentation) {
         this(runtime, documentation, IokeData.None);
