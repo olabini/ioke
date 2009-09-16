@@ -368,10 +368,6 @@ describe(Hook,
     )
   )
 
-  describe("mimicked",
-    it("should have tests")
-  )
-
   describe("mimicAdded",
     it("should call the hook when a mimic gets added",
       xx = Origin mimic
@@ -379,14 +375,21 @@ describe(Hook,
       blah = Origin mimic
       blah2 = Origin mimic
       yy invoked = 0
-      yy mimicAdded = method(@invoked++)
+      yy mimicAdded = method(_, @invoked++)
       xx mimic!(blah)
       yy invoked should == 1
       xx mimic!(blah2)
       yy invoked should == 2
     )
 
-    it("should yield the object the mimic was added to")
+    it("should yield the object the mimic was added to",
+      xx = Origin mimic
+      yy = Hook into(xx)
+      blah = Origin mimic
+      yy mimicAdded = fnx(obj, obj should be(xx))
+      xx mimic!(blah)
+    )
+
     it("should yield the mimic added")
     it("should work correctly when using prependMimic!")
     it("should fire after the mimic has been added")
@@ -397,6 +400,10 @@ describe(Hook,
   )
 
   describe("mimicsChanged",
+    it("should have tests")
+  )
+
+  describe("mimicked",
     it("should have tests")
   )
 )
