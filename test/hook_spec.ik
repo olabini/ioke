@@ -441,7 +441,19 @@ describe(Hook,
       xx removeMimic!(blah)
     )
 
-    it("should fire once for every mimic removed when you are removing more than one mimic")
+    it("should fire once for every mimic removed when you are removing more than one mimic",
+      xx = Origin mimic
+      blah = Origin mimic
+      foox = Origin mimic
+      xx mimic!(blah)
+      xx mimic!(foox)
+      yy = Hook into(xx)
+      yy invoked = 0
+      yy mimicRemoved = method(@invoked++)
+      xx removeAllMimics!
+      yy invoked should == 3
+    )
+
     it("should yield the object the event happened on")
     it("should yield the mimic that was removed")
   )

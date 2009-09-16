@@ -129,8 +129,13 @@ public class IokeObject implements TypeChecker {
     }
 
     public static void removeAllMimics(Object on, IokeObject message, IokeObject context) throws ControlFlow {
-        as(on, context).checkFrozen("removeAllMimics!", message, context);
-        as(on, context).mimics.clear();
+        IokeObject me = as(on, context);
+        me.checkFrozen("removeAllMimics!", message, context);
+        for(java.util.Iterator<IokeObject> it = me.mimics.iterator(); it.hasNext();) {
+            IokeObject mm = it.next();
+            it.remove();
+            Hook.fireMimicRemoved(me, message, context, mm);
+        }
     }
 
     public static Object getRealContext(Object o) {
