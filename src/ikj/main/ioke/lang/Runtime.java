@@ -159,6 +159,7 @@ public class Runtime {
 
     public IokeObject cellAddedMessage = newMessage("cellAdded");
     public IokeObject cellChangedMessage = newMessage("cellChanged");
+    public IokeObject cellRemovedMessage = newMessage("cellRemoved");
 
     // NOT TO BE EXPOSED TO Ioke - used for internal usage only
     public final NullObject nul = new NullObject(this);

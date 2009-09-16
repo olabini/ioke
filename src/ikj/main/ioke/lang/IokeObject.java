@@ -434,6 +434,7 @@ public class IokeObject implements TypeChecker {
             Object prev = cells.remove(name);
             if(hooks != null) {
                 Hook.fireCellChanged(this, m, context, name, prev);
+                Hook.fireCellRemoved(this, m, context, name, prev);
             }
         } else {
             final IokeObject condition = as(IokeObject.getCellChain(runtime.condition, 
