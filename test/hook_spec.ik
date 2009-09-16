@@ -62,8 +62,17 @@ describe(Hook,
       yy invoked should == 2
     )
 
-    it("should be called after the cell has been added")
-    it("should give the name of the added cell to the hook as a method")
+    it("should be called after the cell has been added",
+      xx = Origin mimic
+      yy = Hook into(xx)
+      yy cellAdded = fnx(
+        xx fox should == "blarg"
+      )
+      xx fox = "blarg"
+    )
+
+    it("should give the object that has been updated")
+    it("should give the name of the added cell to the hook as an argument")
     it("should fire on more than one hook if available")
   )
 
