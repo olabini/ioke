@@ -135,6 +135,7 @@ public class IokeObject implements TypeChecker {
         for(java.util.Iterator<IokeObject> it = me.mimics.iterator(); it.hasNext();) {
             IokeObject mm = it.next();
             it.remove();
+            Hook.fireMimicsChanged(me, message, context, mm);
             Hook.fireMimicRemoved(me, message, context, mm);
         }
     }
