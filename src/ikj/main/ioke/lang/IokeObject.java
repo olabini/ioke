@@ -432,6 +432,9 @@ public class IokeObject implements TypeChecker {
         checkFrozen("removeCell!", m, context);
         if(cells.containsKey(name)) {
             cells.remove(name);
+            if(hooks != null) {
+                Hook.fireCellChanged(this, m, context, name, context.runtime.nil);
+            }
         } else {
             final IokeObject condition = as(IokeObject.getCellChain(runtime.condition, 
                                                                     m, 
