@@ -138,7 +138,14 @@ describe(Hook,
       xx removeCell!(:val)
     )
 
-    it("should be called after the cell has been removed")
+    it("should be called after the cell has been removed",
+      xx = Origin mimic
+      xx one = 42
+      yy = Hook into(xx)
+      yy cellRemoved = fnx(xx cell?(:one) should be false)
+      xx removeCell!(:one)
+    )
+
     it("should yield the object the cell belonged on")
     it("should yield the name of the cell")
     it("should yield the previous value of the cell")
