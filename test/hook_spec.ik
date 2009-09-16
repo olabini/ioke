@@ -421,7 +421,29 @@ describe(Hook,
   )
 
   describe("mimicRemoved",
-    it("should have tests")
+    it("should fire after a mimic has been removed",
+      Bex = Origin mimic
+      xx = Bex mimic
+      xx mimic!(Origin)
+      yy = Hook into(xx)
+      yy invoked = 0
+      yy mimicRemoved = method(@invoked++)
+      xx removeMimic!(Bex)
+      yy invoked should == 1
+    )
+
+    it("should fire after the mimic has been removed",
+      xx = Origin mimic
+      blah = Origin mimic
+      xx mimic!(blah)
+      yy = Hook into(xx)
+      yy mimicRemoved = fnx(xx should not mimic(blah))
+      xx removeMimic!(blah)
+    )
+
+    it("should fire once for every mimic removed when you are removing more than one mimic")
+    it("should yield the object the event happened on")
+    it("should yield the mimic that was removed")
   )
 
   describe("mimicsChanged",
