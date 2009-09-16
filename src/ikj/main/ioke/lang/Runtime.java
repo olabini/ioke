@@ -164,6 +164,7 @@ public class Runtime {
     public IokeObject mimicAddedMessage = newMessage("mimicAdded");
     public IokeObject mimicRemovedMessage = newMessage("mimicRemoved");
     public IokeObject mimicsChangedMessage = newMessage("mimicsChanged");
+    public IokeObject mimickedMessage = newMessage("mimicked");
 
     // NOT TO BE EXPOSED TO Ioke - used for internal usage only
     public final NullObject nul = new NullObject(this);

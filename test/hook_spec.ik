@@ -577,6 +577,22 @@ describe(Hook,
   )
 
   describe("mimicked",
-    it("should have tests")
+    it("should fire when the object under observation gets mimicked",
+      xx = Origin mimic
+      yy = Hook into(xx)
+      yy invoked = 0
+      yy mimicked = method(@invoked++)
+      xx mimic
+      yy invoked should == 1
+      xx mimic
+      xx mimic
+      yy invoked should == 3
+    )
+
+    it("should fire when a mimic is added after the fact with mimic!")
+    it("should fire when a mimic is added after the fact with prependMimic!")
+    it("should fire AFTER the object has been mimicked")
+    it("should yield the object observed")
+    it("should yield the object that mimicked the observed object")
   )
 )
