@@ -161,6 +161,7 @@ public class Runtime {
     public IokeObject cellChangedMessage = newMessage("cellChanged");
     public IokeObject cellRemovedMessage = newMessage("cellRemoved");
     public IokeObject cellUndefinedMessage = newMessage("cellUndefined");
+    public IokeObject mimicAddedMessage = newMessage("mimicAdded");
 
     // NOT TO BE EXPOSED TO Ioke - used for internal usage only
     public final NullObject nul = new NullObject(this);
