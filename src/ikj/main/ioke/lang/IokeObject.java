@@ -431,9 +431,9 @@ public class IokeObject implements TypeChecker {
     public void removeCell(IokeObject m, IokeObject context, String name) throws ControlFlow {
         checkFrozen("removeCell!", m, context);
         if(cells.containsKey(name)) {
-            cells.remove(name);
+            Object prev = cells.remove(name);
             if(hooks != null) {
-                Hook.fireCellChanged(this, m, context, name, context.runtime.nil);
+                Hook.fireCellChanged(this, m, context, name, prev);
             }
         } else {
             final IokeObject condition = as(IokeObject.getCellChain(runtime.condition, 
@@ -455,7 +455,14 @@ public class IokeObject implements TypeChecker {
 
     public void undefineCell(IokeObject m, IokeObject context, String name) throws ControlFlow {
         checkFrozen("undefineCell!", m, context);
+        Object prev = cells.get(name);
         cells.put(name, runtime.nul);
+        if(hooks != null) {
+            if(prev == null) {
+                prev = runtime.nil;
+            }
+            Hook.fireCellChanged(this, m, context, name, prev);
+        }
     }
 
     public String getKind(IokeObject message, IokeObject context) throws ControlFlow {
