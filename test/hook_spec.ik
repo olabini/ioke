@@ -128,7 +128,16 @@ describe(Hook,
       yy invoked should == 2
     )
 
-    it("should be called after cellChanged")
+    it("should be called after cellChanged",
+      xx = Origin mimic
+      xx val = "foo"
+      yy = Hook into(xx)
+      yy doneCellChanged? = false
+      yy cellChanged = method(_, _, _, @doneCellChanged? = true)
+      yy cellRemoved = method(should have doneCellChanged)
+      xx removeCell!(:val)
+    )
+
     it("should be called after the cell has been removed")
     it("should yield the object the cell belonged on")
     it("should yield the name of the cell")
