@@ -55,7 +55,7 @@ describe(Hook,
       xx = Origin mimic
       yy = Hook into(xx)
       yy invoked = 0
-      yy cellAdded = method(obj, @invoked++)
+      yy cellAdded = method(obj, _,  @invoked++)
       xx bar = "hello"
       yy invoked should == 1
       xx flux = method(nil)
@@ -65,7 +65,7 @@ describe(Hook,
     it("should be called after the cell has been added",
       xx = Origin mimic
       yy = Hook into(xx)
-      yy cellAdded = fnx(obj,
+      yy cellAdded = fnx(obj, _,
         xx fox should == "blarg"
       )
       xx fox = "blarg"
@@ -74,13 +74,21 @@ describe(Hook,
     it("should give the object that has been updated",
       xx = Origin mimic
       yy = Hook into(xx)
-      yy cellAdded = fnx(obj,
+      yy cellAdded = fnx(obj, _,
         obj should be(xx)
       )
       xx fox = "blarg"
     )
 
-    it("should give the name of the added cell to the hook as an argument")
+    it("should give the name of the added cell to the hook as an argument",
+      xx = Origin mimic
+      yy = Hook into(xx)
+      yy cellAdded = fnx(obj, sym,
+        sym should == :fox
+      )
+      xx fox = "blarg"
+    )
+
     it("should fire on more than one hook if available")
   )
 
