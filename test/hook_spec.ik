@@ -536,8 +536,19 @@ describe(Hook,
       xx removeMimic!(Bex)
     )
 
-    it("should fire when a mimic is removed when all mimics are removed")
-    it("should fire after the mimic is removed with removeAllMimics!")
+    it("should fire when a mimic is removed when all mimics are removed",
+      xx = Origin mimic
+      blah = Origin mimic
+      foox = Origin mimic
+      xx mimic!(blah)
+      xx mimic!(foox)
+      yy = Hook into(xx)
+      yy invoked = 0
+      yy mimicsChanged = method(@invoked++)
+      xx removeAllMimics!
+      yy invoked should == 3
+    )
+
     it("should yield the object that the change was made on")
     it("should yield the mimic that was added")
     it("should yield the mimic that was removed")
