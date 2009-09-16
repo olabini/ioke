@@ -480,7 +480,7 @@ describe(Hook,
       blah = Origin mimic
       blah2 = Origin mimic
       yy invoked = 0
-      yy mimicsChanged = method(@invoked++)
+      yy mimicsChanged = method(_, @invoked++)
       xx mimic!(blah)
       yy invoked should == 1
       xx mimic!(blah2)
@@ -491,7 +491,7 @@ describe(Hook,
       xx = Origin mimic
       yy = Hook into(xx)
       blah = Origin mimic
-      yy mimicsChanged = fnx(xx should mimic(blah))
+      yy mimicsChanged = fnx(_, xx should mimic(blah))
       xx mimic!(blah)
     )
 
@@ -501,7 +501,7 @@ describe(Hook,
       blah = Origin mimic
       blah2 = Origin mimic
       yy invoked = 0
-      yy mimicsChanged = method(@invoked++)
+      yy mimicsChanged = method(_, @invoked++)
       xx prependMimic!(blah)
       yy invoked should == 1
       xx prependMimic!(blah2)
@@ -512,7 +512,7 @@ describe(Hook,
       xx = Origin mimic
       yy = Hook into(xx)
       blah = Origin mimic
-      yy mimicsChanged = fnx(xx should mimic(blah))
+      yy mimicsChanged = fnx(_, xx should mimic(blah))
       xx prependMimic!(blah)
     )
 
@@ -522,7 +522,7 @@ describe(Hook,
       xx mimic!(Origin)
       yy = Hook into(xx)
       yy invoked = 0
-      yy mimicsChanged = method(@invoked++)
+      yy mimicsChanged = method(_, @invoked++)
       xx removeMimic!(Bex)
       yy invoked should == 1
     )
@@ -532,7 +532,7 @@ describe(Hook,
       xx = Bex mimic
       xx mimic!(Origin)
       yy = Hook into(xx)
-      yy mimicsChanged = fnx(xx should not mimic(Bex))
+      yy mimicsChanged = fnx(_, xx should not mimic(Bex))
       xx removeMimic!(Bex)
     )
 
@@ -544,12 +544,20 @@ describe(Hook,
       xx mimic!(foox)
       yy = Hook into(xx)
       yy invoked = 0
-      yy mimicsChanged = method(@invoked++)
+      yy mimicsChanged = method(_, @invoked++)
       xx removeAllMimics!
       yy invoked should == 3
     )
 
-    it("should yield the object that the change was made on")
+    it("should yield the object that the change was made on",
+      Bex = Origin mimic
+      xx = Bex mimic
+      xx mimic!(Origin)
+      yy = Hook into(xx)
+      yy mimicsChanged = fnx(obj, obj should be(xx))
+      xx removeMimic!(Bex)
+    )
+
     it("should yield the mimic that was added")
     it("should yield the mimic that was removed")
   )
