@@ -42,12 +42,14 @@ describe(Hook,
     )
   )
 
-  describe("into!",
-    it("should add itself to the mimic chain of the first argument and bind it to the second object")
-  )
-
   describe("hook!",
-    it("should add a new observed object to the receiver")
+    it("should add a new observed object to the receiver",
+      xx = Origin mimic
+      yy = Hook into(xx)
+      zz = Origin mimic
+      yy hook!(zz)
+      yy connectedObjects[1] should be(zz)
+    )
   )
 
   describe("cellAdded",
