@@ -7,7 +7,21 @@ describe(Hook,
   )
 
   describe("connectedObjects",
-    it("should return the connected objects for that hook")
+    it("should return the connected objects for that hook",
+      x = Origin mimic
+      y = Origin mimic
+      z = Origin mimic
+      Hook into(x) connectedObjects[0] should be(x)
+      Hook into(x, y) connectedObjects[0] should be(x)
+      Hook into(x, y, z) connectedObjects[0] should be(x)
+
+      Hook into(x, y) connectedObjects[1] should be(y)
+      Hook into(x, y, z) connectedObjects[1] should be(y)
+
+      Hook into(x, y, z) connectedObjects[2] should be(z)
+
+      Hook into(x, y, z) connectedObjects length should == 3
+    )
   )
 
   describe("into",
@@ -15,7 +29,7 @@ describe(Hook,
       xx = Origin mimic
       yy = Hook into(xx)
       yy should mimic(Hook)
-      yy should not be same(Hook)
+      yy should not be(Hook)
     )
 
     it("should take one or more arguments",
