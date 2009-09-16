@@ -32,7 +32,7 @@ public class Hook extends IokeData {
         }
     }
 
-    public static void fireCellAdded(IokeObject on, IokeObject message, IokeObject context, String name, Object value) throws ControlFlow {
+    public static void fireCellAdded(IokeObject on, IokeObject message, IokeObject context, String name) throws ControlFlow {
         Collection<IokeObject> hooks = on.hooks;
         if(hooks != null) {
             IokeObject sym = context.runtime.getSymbol(name);
@@ -43,13 +43,13 @@ public class Hook extends IokeData {
         }
     }
 
-    public static void fireCellChanged(IokeObject on, IokeObject message, IokeObject context, String name, Object value, Object prevValue) throws ControlFlow {
+    public static void fireCellChanged(IokeObject on, IokeObject message, IokeObject context, String name, Object prevValue) throws ControlFlow {
         Collection<IokeObject> hooks = on.hooks;
         if(hooks != null) {
             IokeObject sym = context.runtime.getSymbol(name);
             IokeObject cellChangedMessage = context.runtime.cellChangedMessage;
             for(IokeObject h : hooks) {
-                ((Message)IokeObject.data(cellChangedMessage)).sendTo(cellChangedMessage, context, h, on, sym);
+                ((Message)IokeObject.data(cellChangedMessage)).sendTo(cellChangedMessage, context, h, on, sym, prevValue);
             }
         }
     }

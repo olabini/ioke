@@ -123,7 +123,7 @@ describe(Hook,
       xx = Origin mimic
       yy = Hook into(xx)
       yy invoked = 0
-      yy cellChanged = method(_, _, @invoked++)
+      yy cellChanged = method(_, _, _, @invoked++)
       xx bar = "hello"
       yy invoked should == 1
       xx flux = method(nil)
@@ -138,7 +138,7 @@ describe(Hook,
       xx val = "foxy"
       yy = Hook into(xx)
       yy invoked = 0
-      yy cellChanged = method(_, _, @invoked++)
+      yy cellChanged = method(_, _, _, @invoked++)
       xx val = "blaxy"
       yy invoked should == 1
       xx val = "no way"
@@ -149,7 +149,7 @@ describe(Hook,
       xx = Origin mimic
       xx val = "foxy"
       yy = Hook into(xx)
-      yy cellChanged = fnx(_, _, xx val should == "more")
+      yy cellChanged = fnx(_, _, _, xx val should == "more")
       xx val = "more"
     )
 
@@ -157,7 +157,7 @@ describe(Hook,
       xx = Origin mimic
       xx val = "foxy"
       yy = Hook into(xx)
-      yy cellChanged = fnx(obj, _, obj should be(xx))
+      yy cellChanged = fnx(obj, _, _, obj should be(xx))
       xx val = "more"
     )
 
@@ -165,11 +165,18 @@ describe(Hook,
       xx = Origin mimic
       xx val = "foxy"
       yy = Hook into(xx)
-      yy cellChanged = fnx(_, sym, sym should == :val)
+      yy cellChanged = fnx(_, sym, _, sym should == :val)
       xx val = "more"
     )
 
-    it("should yield the original value of the cell")
+    it("should yield the original value of the cell",
+      xx = Origin mimic
+      xx val = "foxy"
+      yy = Hook into(xx)
+      yy cellChanged = fnx(_, _, orig, orig should == "foxy")
+      xx val = "more"
+    )
+
     it("should fire on more than one hook if available")
   )
 
