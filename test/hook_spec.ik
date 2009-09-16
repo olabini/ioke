@@ -487,7 +487,14 @@ describe(Hook,
       yy invoked should == 2
     )
 
-    it("should fire after the mimic is added")
+    it("should fire after the mimic is added",
+      xx = Origin mimic
+      yy = Hook into(xx)
+      blah = Origin mimic
+      yy mimicsChanged = fnx(xx should mimic(blah))
+      xx mimic!(blah)
+    )
+
     it("should fire when a mimic is prepend added")
     it("should fire after the mimic is prepend added")
     it("should fire when a mimic is removed")
