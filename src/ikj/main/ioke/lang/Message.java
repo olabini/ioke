@@ -1289,6 +1289,19 @@ public class Message extends IokeData {
         return IokeObject.perform(recv, context, m);
     }
 
+    public Object sendTo(IokeObject self, IokeObject context, Object recv, Object arg1, Object arg2, Object arg3) throws ControlFlow {
+        if(cached != null) {
+            return cached;
+        }
+
+        IokeObject m = self.allocateCopy(self, context);
+        m.getArguments().clear();
+        m.getArguments().add(arg1);
+        m.getArguments().add(arg2);
+        m.getArguments().add(arg3);
+        return IokeObject.perform(recv, context, m);
+    }
+
     public Object sendTo(IokeObject self, IokeObject context, Object recv, List<Object> args) throws ControlFlow {
         if(cached != null) {
             return cached;

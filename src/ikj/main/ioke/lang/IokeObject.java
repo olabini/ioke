@@ -657,9 +657,9 @@ public class IokeObject implements TypeChecker {
                 }
                 cells.put(name, value);
                 if(!contains) {
-                    Hook.fireCellAdded(this, message, context, name, value);
+                    Hook.fireCellAdded(this, message, context, name);
                 }
-                Hook.fireCellChanged(this, message, context, name, value, prev);
+                Hook.fireCellChanged(this, message, context, name, prev);
             } else {
                 cells.put(name, value);
             }
