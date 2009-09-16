@@ -651,10 +651,15 @@ public class IokeObject implements TypeChecker {
         } else {
             if(hooks != null) {
                 boolean contains = cells.containsKey(name);
+                Object prev = context.runtime.nil;
+                if(contains) {
+                    prev = cells.get(name);
+                }
                 cells.put(name, value);
                 if(!contains) {
                     Hook.fireCellAdded(this, message, context, name, value);
                 }
+                Hook.fireCellChanged(this, message, context, name, value, prev);
             } else {
                 cells.put(name, value);
             }

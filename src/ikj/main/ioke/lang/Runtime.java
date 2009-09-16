@@ -158,6 +158,7 @@ public class Runtime {
     public IokeObject useWhatMessage = newMessage("UseWhat");
 
     public IokeObject cellAddedMessage = newMessage("cellAdded");
+    public IokeObject cellChangedMessage = newMessage("cellChanged");
 
     // NOT TO BE EXPOSED TO Ioke - used for internal usage only
     public final NullObject nul = new NullObject(this);
@@ -341,6 +342,8 @@ public class Runtime {
             evaluateString("use(\"builtin/G05_aspects\")", message, ground);
             evaluateString("use(\"builtin/G10_origin\")", message, ground);
             evaluateString("use(\"builtin/G10_arity\")", message, ground);
+
+            evaluateString("use(\"builtin/G50_hook\")", message, ground);
 
             evaluateString("use(\"builtin/J05_javaGround\")", message, ground);
         } catch(ControlFlow cf) {
