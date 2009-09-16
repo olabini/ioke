@@ -28,7 +28,9 @@ public class Hook extends IokeData {
             if(io.hooks == null) {
                 io.hooks = new LinkedList<IokeObject>();
             }
-            io.hooks.add(self);
+            if(!io.hooks.contains(self)) {
+                io.hooks.add(self);
+            }
         }
     }
 
@@ -118,6 +120,28 @@ public class Hook extends IokeData {
                     Hook h = (Hook) IokeObject.data(on);
                     List l = new ArrayList<Object>(h.connected);
                     return method.runtime.newList(l);
+                }
+            }));
+
+        obj.registerMethod(runtime.newNativeMethod("Takes one argument and will add that to the list of connected objects", new NativeMethod("hook!") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("objectToHookInto")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+                    Hook h = (Hook) IokeObject.data(on);
+                    h.connected.add(IokeObject.as(args.get(0), context));
+                    h.rewire(IokeObject.as(on, context));
+                    return on;
                 }
             }));
     }

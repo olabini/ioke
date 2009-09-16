@@ -47,6 +47,3 @@ x mimicked = method()
 x mimicAdded = method()
 x mimicRemoved = method()
 x mimicsChanged = method()
-
-blah = Origin mimic
-Hook into!(blah, y)
