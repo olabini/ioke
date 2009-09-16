@@ -527,7 +527,15 @@ describe(Hook,
       yy invoked should == 1
     )
 
-    it("should fire after the mimic is removed")
+    it("should fire after the mimic is removed",
+      Bex = Origin mimic
+      xx = Bex mimic
+      xx mimic!(Origin)
+      yy = Hook into(xx)
+      yy mimicsChanged = fnx(xx should not mimic(Bex))
+      xx removeMimic!(Bex)
+    )
+
     it("should fire when a mimic is removed when all mimics are removed")
     it("should fire after the mimic is removed with removeAllMimics!")
     it("should yield the object that the change was made on")
