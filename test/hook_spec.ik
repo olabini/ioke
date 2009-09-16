@@ -145,7 +145,14 @@ describe(Hook,
       yy invoked should == 2
     )
 
-    it("should be called after the change")
+    it("should be called after the change",
+      xx = Origin mimic
+      xx val = "foxy"
+      yy = Hook into(xx)
+      yy cellChanged = fnx(xx val should == "more")
+      xx val = "more"
+    )
+
     it("should yield the object the change happened on")
     it("should yield the name of the cell")
     it("should yield the original value of the cell")
