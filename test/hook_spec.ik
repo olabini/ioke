@@ -121,7 +121,7 @@ describe(Hook,
       xx vax = "fox"
       yy = Hook into(xx)
       yy invoked = 0
-      yy cellRemoved = method(_, _, @invoked++)
+      yy cellRemoved = method(_, _, _, @invoked++)
       xx removeCell!(:val)
       yy invoked should == 1
       xx removeCell!(:vax)
@@ -134,7 +134,7 @@ describe(Hook,
       yy = Hook into(xx)
       yy doneCellChanged? = false
       yy cellChanged = method(_, _, _, @doneCellChanged? = true)
-      yy cellRemoved = method(_, _, should have doneCellChanged)
+      yy cellRemoved = method(_, _, _, should have doneCellChanged)
       xx removeCell!(:val)
     )
 
@@ -142,7 +142,7 @@ describe(Hook,
       xx = Origin mimic
       xx one = 42
       yy = Hook into(xx)
-      yy cellRemoved = fnx(_, _, xx cell?(:one) should be false)
+      yy cellRemoved = fnx(_, _, _, xx cell?(:one) should be false)
       xx removeCell!(:one)
     )
 
@@ -150,7 +150,7 @@ describe(Hook,
       xx = Origin mimic
       xx one = 42
       yy = Hook into(xx)
-      yy cellRemoved = fnx(obj, _, obj should be(xx))
+      yy cellRemoved = fnx(obj, _, _, obj should be(xx))
       xx removeCell!(:one)
     )
 
@@ -158,11 +158,17 @@ describe(Hook,
       xx = Origin mimic
       xx one = 42
       yy = Hook into(xx)
-      yy cellRemoved = fnx(_, sym, sym should == :one)
+      yy cellRemoved = fnx(_, sym, _, sym should == :one)
       xx removeCell!(:one)
     )
 
-    it("should yield the previous value of the cell")
+    it("should yield the previous value of the cell",
+      xx = Origin mimic
+      xx one = 42
+      yy = Hook into(xx)
+      yy cellRemoved = fnx(_, _, prev, prev should == 42)
+      xx removeCell!(:one)
+    )
   )
 
   describe("cellChanged",
