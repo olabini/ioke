@@ -602,7 +602,19 @@ describe(Hook,
       yy invoked should == 3
     )
 
-    it("should fire when a mimic is added after the fact with prependMimic!")
+    it("should fire when a mimic is added after the fact with prependMimic!",
+      xx = Origin mimic
+      zz = Origin mimic
+      yy = Hook into(xx)
+      yy invoked = 0
+      yy mimicked = method(@invoked++)
+      zz prependMimic!(xx)
+      yy invoked should == 1
+      Origin mimic prependMimic!(xx)
+      Origin mimic prependMimic!(xx)
+      yy invoked should == 3
+    )
+
     it("should fire AFTER the object has been mimicked")
     it("should yield the object observed")
     it("should yield the object that mimicked the observed object")
