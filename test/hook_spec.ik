@@ -474,7 +474,32 @@ describe(Hook,
   )
 
   describe("mimicsChanged",
-    it("should have tests")
+    it("should fire when a mimic is added",
+      xx = Origin mimic
+      yy = Hook into(xx)
+      blah = Origin mimic
+      blah2 = Origin mimic
+      yy invoked = 0
+      yy mimicsChanged = method(@invoked++)
+      xx mimic!(blah)
+      yy invoked should == 1
+      xx mimic!(blah2)
+      yy invoked should == 2
+    )
+
+    it("should fire after the mimic is added")
+    it("should fire when a mimic is prepend added")
+    it("should fire after the mimic is prepend added")
+    it("should fire when a mimic is removed")
+    it("should fire after the mimic is removed")
+    it("should fire when a mimic is removed when all mimics are removed")
+    it("should fire after the mimic is removed with removeAllMimics!")
+    it("should yield the object that the change was made on")
+    it("should yield the mimic that was removed or added")
+    it("should fire after the mimic is added")
+    it("should fire after the mimic is prepend added")
+    it("should fire after the mimic is removed")
+    it("should fire after the mimic is removed with removeAllMimics!")
   )
 
   describe("mimicked",
