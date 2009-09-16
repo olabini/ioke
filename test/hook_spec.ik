@@ -6,8 +6,27 @@ describe(Hook,
     Hook should have kind("Hook")
   )
 
+  describe("connectedObjects",
+    it("should return the connected objects for that hook")
+  )
+
   describe("into",
-    it("should return a new hook object connected to the argument object")
+    it("should return a new hook object",
+      xx = Origin mimic
+      yy = Hook into(xx)
+      yy should mimic(Hook)
+      yy should not be same(Hook)
+    )
+
+    it("should take one or more arguments",
+      Hook into(Origin mimic)
+      Hook into(Origin mimic, Origin mimic)
+      Hook into(Origin mimic, Origin mimic, Origin mimic)
+      Hook into(Origin mimic, Origin mimic, Origin mimic, Origin mimic)
+      Hook into(Origin mimic, Origin mimic, Origin mimic, Origin mimic, Origin mimic)
+
+      fn(Hook into()) should signal(Condition Error Invocation TooFewArguments)
+    )
   )
 
   describe("into!",
