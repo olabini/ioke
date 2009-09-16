@@ -54,6 +54,17 @@ public class Hook extends IokeData {
         }
     }
 
+    public static void fireCellRemoved(IokeObject on, IokeObject message, IokeObject context, String name, Object prevValue) throws ControlFlow {
+        Collection<IokeObject> hooks = on.hooks;
+        if(hooks != null) {
+            IokeObject sym = context.runtime.getSymbol(name);
+            IokeObject cellRemovedMessage = context.runtime.cellRemovedMessage;
+            for(IokeObject h : hooks) {
+                ((Message)IokeObject.data(cellRemovedMessage)).sendTo(cellRemovedMessage, context, h);
+            }
+        }
+    }
+
     public static void init(final Runtime runtime) throws ControlFlow {
         final IokeObject obj = new IokeObject(runtime, "A hook allow you to observe what happens to a specific object. All hooks have Hook in their mimic chain.", new Hook(new ArrayList<IokeObject>()));
         obj.setKind("Hook");
