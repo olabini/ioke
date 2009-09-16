@@ -102,6 +102,8 @@ describe(Hook,
       yy muuh = "wow"
       zz invoked should == 3
     )
+
+    it("should not fire when a cell is updated")
   )
 
   describe("cellRemoved",
@@ -122,7 +124,19 @@ describe(Hook,
 
     it("should be called on the hook when a cell is removed on the observed object")
     it("should be called on the hook when a cell is undefined on the observed object")
-    it("should be called on the hook when a cell is changed on the observed object")
+
+    it("should be called on the hook when a cell is changed on the observed object",
+      xx = Origin mimic
+      xx val = "foxy"
+      yy = Hook into(xx)
+      yy invoked = 0
+      yy cellChanged = method(@invoked++)
+      xx val = "blaxy"
+      yy invoked should == 1
+      xx val = "no way"
+      yy invoked should == 2
+    )
+
     it("should be called after the change")
     it("should yield the object the change happened on")
     it("should yield the name of the cell")
