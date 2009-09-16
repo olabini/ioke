@@ -495,8 +495,27 @@ describe(Hook,
       xx mimic!(blah)
     )
 
-    it("should fire when a mimic is prepend added")
-    it("should fire after the mimic is prepend added")
+    it("should fire when a mimic is prepend added",
+      xx = Origin mimic
+      yy = Hook into(xx)
+      blah = Origin mimic
+      blah2 = Origin mimic
+      yy invoked = 0
+      yy mimicsChanged = method(@invoked++)
+      xx prependMimic!(blah)
+      yy invoked should == 1
+      xx prependMimic!(blah2)
+      yy invoked should == 2
+    )
+
+    it("should fire after the mimic is prepend added",
+      xx = Origin mimic
+      yy = Hook into(xx)
+      blah = Origin mimic
+      yy mimicsChanged = fnx(xx should mimic(blah))
+      xx prependMimic!(blah)
+    )
+
     it("should fire when a mimic is removed")
     it("should fire after the mimic is removed")
     it("should fire when a mimic is removed when all mimics are removed")

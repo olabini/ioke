@@ -749,6 +749,7 @@ public class IokeObject implements TypeChecker {
         if(!this.mimics.contains(mimic)) {
             this.mimics.add(index, mimic);
             if(hooks != null) {
+                Hook.fireMimicsChanged(this, message, context, mimic);
                 Hook.fireMimicAdded(this, message, context, mimic);
             }
         }
