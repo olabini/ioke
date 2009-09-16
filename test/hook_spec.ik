@@ -398,7 +398,19 @@ describe(Hook,
       xx mimic!(blah)
     )
 
-    it("should work correctly when using prependMimic!")
+    it("should work correctly when using prependMimic!",
+      xx = Origin mimic
+      yy = Hook into(xx)
+      blah = Origin mimic
+      blah2 = Origin mimic
+      yy invoked = 0
+      yy mimicAdded = method(_, _, @invoked++)
+      xx prependMimic!(blah)
+      yy invoked should == 1
+      xx prependMimic!(blah2)
+      yy invoked should == 2
+    )
+
     it("should fire after the mimic has been added")
   )
 
