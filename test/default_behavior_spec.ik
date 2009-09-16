@@ -980,6 +980,12 @@ describe(DefaultBehavior,
 
       ;; become something else
       fn(x become!(42)) should signal(Condition Error ModifyOnFrozen)
+
+      ;; remove cell
+      fn(x removeCell!(:existing)) should signal(Condition Error ModifyOnFrozen)
+
+      ;; undefine cell
+      fn(x undefineCell!(:existing)) should signal(Condition Error ModifyOnFrozen)
     )
 
     it("should be copied when becoming",
