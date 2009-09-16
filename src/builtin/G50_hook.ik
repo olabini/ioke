@@ -5,4 +5,5 @@ Hook do(
   cellRemoved   = method(obj, sym, originalValue, nil)
   cellUndefined = method(obj, sym, originalValue, nil)
   mimicAdded    = method(obj, newMimic, nil)
+  mimicRemoved  = method(obj, nil)
 )
