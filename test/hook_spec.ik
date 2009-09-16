@@ -138,7 +138,17 @@ describe(Hook,
       xx flux = method(nil)
     )
 
-    it("should be called on the hook when a cell is removed on the observed object"
+    it("should be called on the hook when a cell is removed on the observed object",
+      xx = Origin mimic
+      xx one = 42
+      xx two = 43
+      yy = Hook into(xx)
+      yy invoked = 0
+      yy cellChanged = method(_, _, _, @invoked++)
+      xx removeCell!(:one)
+      yy invoked should == 1
+      xx removeCell!(:two)
+      yy invoked should == 2
     )
 
     it("should be called on the hook when a cell is undefined on the observed object")

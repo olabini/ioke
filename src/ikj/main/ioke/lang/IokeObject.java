@@ -429,6 +429,7 @@ public class IokeObject implements TypeChecker {
     }
 
     public void removeCell(IokeObject m, IokeObject context, String name) throws ControlFlow {
+        checkFrozen("removeCell!", m, context);
         if(cells.containsKey(name)) {
             cells.remove(name);
         } else {
@@ -450,6 +451,7 @@ public class IokeObject implements TypeChecker {
     }
 
     public void undefineCell(IokeObject m, IokeObject context, String name) throws ControlFlow {
+        checkFrozen("undefineCell!", m, context);
         cells.put(name, runtime.nul);
     }
 
