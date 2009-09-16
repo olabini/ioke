@@ -159,8 +159,42 @@ describe(Hook,
       xx removeCell!(:one)
     )
 
-    it("should be called on the hook when a cell is undefined on the observed object")
-    it("should be called after the cell has been undefined")
+    it("should yield the original value of the cell when removing",
+      xx = Origin mimic
+      xx val = "foxy"
+      yy = Hook into(xx)
+      yy cellChanged = fnx(_, _, orig, orig should == "foxy")
+      xx removeCell!(:val)
+    )
+
+    it("should be called on the hook when a cell is undefined on the observed object",
+      xx = Origin mimic
+      xx one = 42
+      xx two = 43
+      yy = Hook into(xx)
+      yy invoked = 0
+      yy cellChanged = method(_, _, _, @invoked++)
+      xx undefineCell!(:one)
+      yy invoked should == 1
+      xx undefineCell!(:two)
+      yy invoked should == 2
+    )
+
+    it("should be called after the cell has been undefined",
+      xx = Origin mimic
+      xx one = 42
+      yy = Hook into(xx)
+      yy cellChanged = fnx(_, _, _, xx cell?(:one) should be false)
+      xx undefineCell!(:one)
+    )
+
+    it("should yield the original value of the cell when undefined",
+      xx = Origin mimic
+      xx val = "foxy"
+      yy = Hook into(xx)
+      yy cellChanged = fnx(_, _, orig, orig should == "foxy")
+      xx undefineCell!(:val)
+    )
 
     it("should be called on the hook when a cell is changed on the observed object",
       xx = Origin mimic
