@@ -151,7 +151,9 @@ describe(Hook,
       yy invoked should == 2
     )
 
+    it("should be called after the cell has been removed")
     it("should be called on the hook when a cell is undefined on the observed object")
+    it("should be called after the cell has been undefined")
 
     it("should be called on the hook when a cell is changed on the observed object",
       xx = Origin mimic
