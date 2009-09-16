@@ -7,5 +7,5 @@ Hook do(
   mimicAdded    = method(obj, newMimic, nil)
   mimicRemoved  = method(obj, removedMimic, nil)
   mimicsChanged = method(obj, changedMimic, nil)
-  mimicked      = method(obj, nil)
+  mimicked      = method(obj, newMimicker, nil)
 )
