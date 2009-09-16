@@ -49,7 +49,7 @@ public class Hook extends IokeData {
             IokeObject sym = context.runtime.getSymbol(name);
             IokeObject cellChangedMessage = context.runtime.cellChangedMessage;
             for(IokeObject h : hooks) {
-                ((Message)IokeObject.data(cellChangedMessage)).sendTo(cellChangedMessage, context, h);
+                ((Message)IokeObject.data(cellChangedMessage)).sendTo(cellChangedMessage, context, h, on);
             }
         }
     }

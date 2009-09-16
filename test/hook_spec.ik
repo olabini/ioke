@@ -123,7 +123,7 @@ describe(Hook,
       xx = Origin mimic
       yy = Hook into(xx)
       yy invoked = 0
-      yy cellChanged = method(@invoked++)
+      yy cellChanged = method(_, @invoked++)
       xx bar = "hello"
       yy invoked should == 1
       xx flux = method(nil)
@@ -138,7 +138,7 @@ describe(Hook,
       xx val = "foxy"
       yy = Hook into(xx)
       yy invoked = 0
-      yy cellChanged = method(@invoked++)
+      yy cellChanged = method(_, @invoked++)
       xx val = "blaxy"
       yy invoked should == 1
       xx val = "no way"
@@ -149,11 +149,18 @@ describe(Hook,
       xx = Origin mimic
       xx val = "foxy"
       yy = Hook into(xx)
-      yy cellChanged = fnx(xx val should == "more")
+      yy cellChanged = fnx(_, xx val should == "more")
       xx val = "more"
     )
 
-    it("should yield the object the change happened on")
+    it("should yield the object the change happened on",
+      xx = Origin mimic
+      xx val = "foxy"
+      yy = Hook into(xx)
+      yy cellChanged = fnx(obj, obj should be(xx))
+      xx val = "more"
+    )
+
     it("should yield the name of the cell")
     it("should yield the original value of the cell")
     it("should fire on more than one hook if available")
