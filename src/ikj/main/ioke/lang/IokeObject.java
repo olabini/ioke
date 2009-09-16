@@ -124,6 +124,7 @@ public class IokeObject implements TypeChecker {
         me.checkFrozen("removeMimic!", message, context);
         me.mimics.remove(other);
         if(me.hooks != null) {
+            Hook.fireMimicsChanged(me, message, context, other);
             Hook.fireMimicRemoved(me, message, context, other);
         }
     }

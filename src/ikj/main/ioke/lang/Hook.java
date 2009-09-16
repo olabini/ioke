@@ -98,7 +98,7 @@ public class Hook extends IokeData {
         }
     }
 
-    public static void fireMimicsChanged(IokeObject on, IokeObject message, IokeObject context, IokeObject changedMimic) throws ControlFlow {
+    public static void fireMimicsChanged(IokeObject on, IokeObject message, IokeObject context, Object changedMimic) throws ControlFlow {
         Collection<IokeObject> hooks = on.hooks;
         if(hooks != null) {
             IokeObject mimicsChangedMessage = context.runtime.mimicsChangedMessage;
