@@ -130,7 +130,17 @@ describe(Hook,
       yy invoked should == 2
     )
 
-    it("should be called on the hook when a cell is removed on the observed object")
+    it("should yield nil as the previous value when adding a cell",
+      xx = Origin mimic
+      yy = Hook into(xx)
+      yy cellChanged = method(_, _, prev, prev should be nil)
+      xx bar = "hello"
+      xx flux = method(nil)
+    )
+
+    it("should be called on the hook when a cell is removed on the observed object"
+    )
+
     it("should be called on the hook when a cell is undefined on the observed object")
 
     it("should be called on the hook when a cell is changed on the observed object",
