@@ -109,7 +109,14 @@ describe(Hook,
   )
 
   describe("cellChanged",
-    it("should have tests")
+    it("should be called on the hook when a cell is added on the observed object")
+    it("should be called on the hook when a cell is removed on the observed object")
+    it("should be called on the hook when a cell is undefined on the observed object")
+    it("should be called after the change")
+    it("should yield the object the change happened on")
+    it("should yield the name of the cell")
+    it("should yield the original value of the cell")
+    it("should fire on more than one hook if available")
   )
 
   describe("cellUndefined",
