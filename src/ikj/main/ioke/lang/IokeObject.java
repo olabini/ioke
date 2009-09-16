@@ -120,8 +120,12 @@ public class IokeObject implements TypeChecker {
     }
 
     public static void removeMimic(Object on, Object other, IokeObject message, IokeObject context) throws ControlFlow {
-        as(on, context).checkFrozen("removeMimic!", message, context);
-        as(on, context).mimics.remove(other);
+        IokeObject me = as(on, context);
+        me.checkFrozen("removeMimic!", message, context);
+        me.mimics.remove(other);
+        if(me.hooks != null) {
+            Hook.fireMimicRemoved(me, message, context, other);
+        }
     }
 
     public static void removeAllMimics(Object on, IokeObject message, IokeObject context) throws ControlFlow {
