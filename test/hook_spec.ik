@@ -615,7 +615,14 @@ describe(Hook,
       yy invoked should == 3
     )
 
-    it("should fire AFTER the object has been mimicked")
+    it("should fire AFTER the object has been mimicked",
+      xx = Origin mimic
+      zz = Origin mimic
+      yy = Hook into(xx)
+      yy mimicked = fnx(zz should mimic(xx))
+      zz mimic!(xx)
+    )
+
     it("should yield the object observed")
     it("should yield the object that mimicked the observed object")
   )
