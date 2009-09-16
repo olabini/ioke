@@ -4,7 +4,9 @@
 package ioke.lang;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.LinkedList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,6 +21,26 @@ public class Hook extends IokeData {
 
     public Hook(List<IokeObject> connected) {
         this.connected = connected;
+    }
+
+    private void rewire(IokeObject self) {
+        for(IokeObject io : connected) {
+            if(io.hooks == null) {
+                io.hooks = new LinkedList<IokeObject>();
+            }
+            io.hooks.add(self);
+        }
+    }
+
+    public static void fireCellAdded(IokeObject on, IokeObject message, IokeObject context, String name, Object value) throws ControlFlow {
+        Collection<IokeObject> hooks = on.hooks;
+        if(hooks != null) {
+            IokeObject sym = context.runtime.getSymbol(name);
+            IokeObject cellAddedMessage = context.runtime.cellAddedMessage;
+            for(IokeObject h : hooks) {
+                ((Message)IokeObject.data(cellAddedMessage)).sendTo(cellAddedMessage, context, h);
+            }
+        }
     }
 
     public static void init(final Runtime runtime) throws ControlFlow {
@@ -50,8 +72,9 @@ public class Hook extends IokeData {
                     for(Object o : args) {
                         objs.add(IokeObject.as(o, context));
                     }
-
-                    hook.setData(new Hook(objs));
+                    Hook h = new Hook(objs);
+                    hook.setData(h);
+                    h.rewire(hook);
                     return hook;
                 }
             }));

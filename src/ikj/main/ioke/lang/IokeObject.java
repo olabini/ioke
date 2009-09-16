@@ -5,6 +5,7 @@ package ioke.lang;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;
+import java.util.Collection;
 import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
@@ -20,6 +21,8 @@ public class IokeObject implements TypeChecker {
     private String documentation;
     private Map<String, Object> cells = new LinkedHashMap<String, Object>();
     private List<IokeObject> mimics = new ArrayList<IokeObject>();
+
+    Collection<IokeObject> hooks = null;
     
     private IokeData data;
 
@@ -70,6 +73,7 @@ public class IokeObject implements TypeChecker {
         this.mimics = other.mimics;
         this.data = other.data;
         this.frozen = other.frozen;
+        this.hooks = other.hooks;
     }
 
     public void init() throws ControlFlow {
@@ -645,7 +649,15 @@ public class IokeObject implements TypeChecker {
             IokeObject msg = runtime.createMessage(new Message(runtime, name + "=", runtime.createMessage(Message.wrap(as(value, context)))));
             ((Message)IokeObject.data(msg)).sendTo(msg, context, this);
         } else {
-            cells.put(name, value);
+            if(hooks != null) {
+                boolean contains = cells.containsKey(name);
+                cells.put(name, value);
+                if(!contains) {
+                    Hook.fireCellAdded(this, message, context, name, value);
+                }
+            } else {
+                cells.put(name, value);
+            }
         }
     }
 
