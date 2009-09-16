@@ -463,6 +463,7 @@ public class IokeObject implements TypeChecker {
                 prev = runtime.nil;
             }
             Hook.fireCellChanged(this, m, context, name, prev);
+            Hook.fireCellUndefined(this, m, context, name, prev);
         }
     }
 

@@ -310,7 +310,60 @@ describe(Hook,
   )
 
   describe("cellUndefined",
-    it("should have tests")
+    it("should be called on the hook when a cell is removed on the observed object",
+      xx = Origin mimic
+      xx val = "foo"
+      xx vax = "fox"
+      yy = Hook into(xx)
+      yy invoked = 0
+      yy cellUndefined = method(_, _, _, @invoked++)
+      xx undefineCell!(:val)
+      yy invoked should == 1
+      xx undefineCell!(:vax)
+      yy invoked should == 2
+    )
+
+    it("should be called after cellChanged",
+      xx = Origin mimic
+      xx val = "foo"
+      yy = Hook into(xx)
+      yy doneCellChanged? = false
+      yy cellChanged = method(_, _, _, @doneCellChanged? = true)
+      yy cellUndefined = method(_, _, _, should have doneCellChanged)
+      xx undefineCell!(:val)
+    )
+
+    it("should be called after the cell has been undefined",
+      xx = Origin mimic
+      xx one = 42
+      yy = Hook into(xx)
+      yy cellUndefined = fnx(_, _, _, xx cell?(:one) should be false)
+      xx undefineCell!(:one)
+    )
+
+    it("should yield the object the cell belonged on",
+      xx = Origin mimic
+      xx one = 42
+      yy = Hook into(xx)
+      yy cellUndefined = fnx(obj, _, _, obj should be(xx))
+      xx undefineCell!(:one)
+    )
+
+    it("should yield the name of the cell",
+      xx = Origin mimic
+      xx one = 42
+      yy = Hook into(xx)
+      yy cellUndefined = fnx(_, sym, _, sym should == :one)
+      xx undefineCell!(:one)
+    )
+
+    it("should yield the previous value of the cell",
+      xx = Origin mimic
+      xx one = 42
+      yy = Hook into(xx)
+      yy cellUndefined = fnx(_, _, prev, prev should == 42)
+      xx undefineCell!(:one)
+    )
   )
 
   describe("mimicked",
