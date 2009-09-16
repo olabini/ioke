@@ -2,6 +2,7 @@
 ISpec do(
   ShouldContext = Origin mimic
   ShouldContext __mimic__ = Origin cell(:mimic)
+  ShouldContext ____default_value____ = Origin mimic
 
   NotShouldContext = ShouldContext __mimic__
 
@@ -16,7 +17,12 @@ ISpec do(
     newSelf shouldMessage = shouldMessage
     newSelf)
 
-  ShouldContext be = method("fluff word", self)
+  ShouldContext be = method("if given no arguments, acts as a fluff word. if given one argument, passes along the call to 'same'",
+    other ____default_value____,
+    if(other same?(____default_value____),
+      self,
+      self same(other)))
+
   ShouldContext have = method("fluff word", self)
 
   ShouldContext pass = macro(
