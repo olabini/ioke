@@ -103,7 +103,15 @@ describe(Hook,
       zz invoked should == 3
     )
 
-    it("should not fire when a cell is updated")
+    it("should not fire when a cell is updated",
+      xx = Origin mimic
+      yy = Hook into(xx)
+      xx blarg = "hello"
+      yy invoked = 0
+      yy cellAdded = method(obj, _,  @invoked++)
+      xx blarg = "goodbye"
+      yy invoked should == 0
+    )
   )
 
   describe("cellRemoved",
