@@ -10,6 +10,8 @@ namespace Ioke.Lang {
         string documentation;
         IDictionary<string, object> cells;
         IList<IokeObject> mimics;
+
+        public List<IokeObject> hooks;
     
         IokeData data;
 
@@ -95,13 +97,25 @@ namespace Ioke.Lang {
         }
 
         public static void RemoveMimic(object on, object other, IokeObject message, IokeObject context) {
-            As(on, context).CheckFrozen("removeMimic!", message, context);
-            As(on, context).mimics.Remove(As(other, context));
+            IokeObject me = As(on, context);
+            me.CheckFrozen("removeMimic!", message, context);
+            me.mimics.Remove(As(other, context));
+            if(me.hooks != null) {
+                Hook.FireMimicsChanged(me, message, context, other);
+                Hook.FireMimicRemoved(me, message, context, other);
+            }
         }
 
         public static void RemoveAllMimics(object on, IokeObject message, IokeObject context) {
-            As(on, context).CheckFrozen("removeAllMimics!", message, context);
-            As(on, context).mimics.Clear();
+            IokeObject me = As(on, context);
+            me.CheckFrozen("removeAllMimics!", message, context);
+            List<IokeObject> copy = new SaneList<IokeObject>();
+            foreach(IokeObject mm in me.mimics) copy.Add(mm);
+            foreach(IokeObject mm in copy) {
+                me.mimics.Remove(mm);
+                Hook.FireMimicsChanged(me, message, context, mm);
+                Hook.FireMimicRemoved(me, message, context, mm);
+            }
         }
 
         public static bool IsFrozen(object on) {
@@ -148,8 +162,13 @@ namespace Ioke.Lang {
         }
 
         public void RemoveCell(IokeObject m, IokeObject context, string name) {
+            CheckFrozen("removeCell!", m, context);
             if(cells.ContainsKey(name)) {
-                cells.Remove(name);
+                object prev = cells.Remove(name);
+                if(hooks != null) {
+                    Hook.FireCellChanged(this, m, context, name, prev);
+                    Hook.FireCellRemoved(this, m, context, name, prev);
+                }
             } else {
                 IokeObject condition = As(IokeObject.GetCellChain(runtime.Condition, 
                                                                   m, 
@@ -166,7 +185,19 @@ namespace Ioke.Lang {
         }
 
         public void UndefineCell(IokeObject m, IokeObject context, string name) {
+            CheckFrozen("undefineCell!", m, context);
+            object prev = runtime.nil;
+            if(cells.ContainsKey(name)) {
+                prev = cells[name];
+            }
             cells[name] = runtime.nul;
+            if(hooks != null) {
+                if(prev == null) {
+                    prev = runtime.nil;
+                }
+                Hook.FireCellChanged(this, m, context, name, prev);
+                Hook.FireCellUndefined(this, m, context, name, prev);
+            }
         }
 
         protected virtual object MarkingFindCell(IokeObject m, IokeObject context, string name) {
@@ -278,7 +309,20 @@ namespace Ioke.Lang {
                 IokeObject msg = runtime.CreateMessage(new Message(runtime, name + "=", runtime.CreateMessage(Message.Wrap(As(value, context)))));
                 ((Message)IokeObject.dataOf(msg)).SendTo(msg, context, this);
             } else {
-                cells[name] = value;
+                if(hooks != null) {
+                    bool contains = cells.ContainsKey(name);
+                    object prev = runtime.nil;
+                    if(contains) {
+                        prev = cells[name];
+                    }
+                    cells[name] = value;
+                    if(!contains) {
+                        Hook.FireCellAdded(this, message, context, name);
+                    }
+                    Hook.FireCellChanged(this, message, context, name, prev);
+                } else {
+                    cells[name] = value;
+                }
             }
         }
 
@@ -400,6 +444,13 @@ namespace Ioke.Lang {
             mimic.data.CheckMimic(mimic, message, context);
             if(!this.mimics.Contains(mimic)) {
                 this.mimics.Add(mimic);
+                if(mimic.hooks != null) {
+                    Hook.FireMimicked(mimic, message, context, this);
+                }
+                if(hooks != null) {
+                    Hook.FireMimicsChanged(this, message, context, mimic);
+                    Hook.FireMimicAdded(this, message, context, mimic);
+                }
             }
         }
 
@@ -409,6 +460,13 @@ namespace Ioke.Lang {
             mimic.data.CheckMimic(mimic, message, context);
             if(!this.mimics.Contains(mimic)) {
                 this.mimics.Insert(index, mimic);
+                if(mimic.hooks != null) {
+                    Hook.FireMimicked(mimic, message, context, this);
+                }
+                if(hooks != null) {
+                    Hook.FireMimicsChanged(this, message, context, mimic);
+                    Hook.FireMimicAdded(this, message, context, mimic);
+                }
             }
         }
 
