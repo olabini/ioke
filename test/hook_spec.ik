@@ -177,7 +177,20 @@ describe(Hook,
       xx val = "more"
     )
 
-    it("should fire on more than one hook if available")
+    it("should fire on more than one hook if available",
+      xx = Origin mimic
+      yy = Origin mimic
+      zz = Hook into(xx, yy)
+      zz invoked = 0
+      zz cellChanged = method(_, _, _,
+        @invoked++
+      )
+      xx blah = "arg"
+      yy foo = "ax"
+      yy muuh = "wow"
+      xx blah = "no way"
+      zz invoked should == 4
+    )
   )
 
   describe("cellUndefined",
