@@ -51,7 +51,20 @@ describe(Hook,
   )
 
   describe("cellAdded",
-    it("should have tests")
+    it("should be called on the hook when a cell is added on the observed object",
+      xx = Origin mimic
+      yy = Hook into(xx)
+      yy invoked = 0
+      yy cellAdded = method(@invoked++)
+      xx bar = "hello"
+      yy invoked should == 1
+      xx flux = method(nil)
+      yy invoked should == 2
+    )
+
+    it("should be called after the cell has been added")
+    it("should give the name of the added cell to the hook as a method")
+    it("should fire on more than one hook if available")
   )
 
   describe("cellRemoved",
