@@ -373,7 +373,23 @@ describe(Hook,
   )
 
   describe("mimicAdded",
-    it("should have tests")
+    it("should call the hook when a mimic gets added",
+      xx = Origin mimic
+      yy = Hook into(xx)
+      blah = Origin mimic
+      blah2 = Origin mimic
+      yy invoked = 0
+      yy mimicAdded = method(@invoked++)
+      xx mimic!(blah)
+      yy invoked should == 1
+      xx mimic!(blah2)
+      yy invoked should == 2
+    )
+
+    it("should yield the object the mimic was added to")
+    it("should yield the mimic added")
+    it("should work correctly when using prependMimic!")
+    it("should fire after the mimic has been added")
   )
 
   describe("mimicRemoved",
