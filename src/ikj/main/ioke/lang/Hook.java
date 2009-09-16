@@ -6,6 +6,7 @@ package ioke.lang;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
+import java.util.Map;
 
 import ioke.lang.exceptions.ControlFlow;
 
@@ -52,6 +53,15 @@ public class Hook extends IokeData {
 
                     hook.setData(new Hook(objs));
                     return hook;
+                }
+            }));
+
+        obj.registerMethod(runtime.newNativeMethod("returns the objects this hook is connected to", new TypeCheckingNativeMethod.WithNoArguments("connectedObjects", obj) {
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    Hook h = (Hook) IokeObject.data(on);
+                    List l = new ArrayList<Object>(h.connected);
+                    return method.runtime.newList(l);
                 }
             }));
     }

@@ -11,13 +11,12 @@ describe(Hook,
       x = Origin mimic
       y = Origin mimic
       z = Origin mimic
+
       Hook into(x) connectedObjects[0] should be(x)
       Hook into(x, y) connectedObjects[0] should be(x)
-      Hook into(x, y, z) connectedObjects[0] should be(x)
-
       Hook into(x, y) connectedObjects[1] should be(y)
+      Hook into(x, y, z) connectedObjects[0] should be(x)
       Hook into(x, y, z) connectedObjects[1] should be(y)
-
       Hook into(x, y, z) connectedObjects[2] should be(z)
 
       Hook into(x, y, z) connectedObjects length should == 3
