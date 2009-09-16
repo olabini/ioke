@@ -427,7 +427,7 @@ describe(Hook,
       xx mimic!(Origin)
       yy = Hook into(xx)
       yy invoked = 0
-      yy mimicRemoved = method(@invoked++)
+      yy mimicRemoved = method(_, @invoked++)
       xx removeMimic!(Bex)
       yy invoked should == 1
     )
@@ -437,7 +437,7 @@ describe(Hook,
       blah = Origin mimic
       xx mimic!(blah)
       yy = Hook into(xx)
-      yy mimicRemoved = fnx(xx should not mimic(blah))
+      yy mimicRemoved = fnx(_, xx should not mimic(blah))
       xx removeMimic!(blah)
     )
 
@@ -449,12 +449,20 @@ describe(Hook,
       xx mimic!(foox)
       yy = Hook into(xx)
       yy invoked = 0
-      yy mimicRemoved = method(@invoked++)
+      yy mimicRemoved = method(_, @invoked++)
       xx removeAllMimics!
       yy invoked should == 3
     )
 
-    it("should yield the object the event happened on")
+    it("should yield the object the event happened on",
+      Bex = Origin mimic
+      xx = Bex mimic
+      xx mimic!(Origin)
+      yy = Hook into(xx)
+      yy mimicRemoved = fnx(obj, obj should be(xx))
+      xx removeMimic!(Bex)
+    )
+
     it("should yield the mimic that was removed")
   )
 

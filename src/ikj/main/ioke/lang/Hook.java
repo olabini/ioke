@@ -93,7 +93,7 @@ public class Hook extends IokeData {
         if(hooks != null) {
             IokeObject mimicRemovedMessage = context.runtime.mimicRemovedMessage;
             for(IokeObject h : hooks) {
-                ((Message)IokeObject.data(mimicRemovedMessage)).sendTo(mimicRemovedMessage, context, h);
+                ((Message)IokeObject.data(mimicRemovedMessage)).sendTo(mimicRemovedMessage, context, h, on);
             }
         }
     }
