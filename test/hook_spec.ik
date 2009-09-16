@@ -109,9 +109,20 @@ describe(Hook,
   )
 
   describe("cellChanged",
-    it("should be called on the hook when a cell is added on the observed object")
+    it("should be called on the hook when a cell is added on the observed object",
+      xx = Origin mimic
+      yy = Hook into(xx)
+      yy invoked = 0
+      yy cellChanged = method(@invoked++)
+      xx bar = "hello"
+      yy invoked should == 1
+      xx flux = method(nil)
+      yy invoked should == 2
+    )
+
     it("should be called on the hook when a cell is removed on the observed object")
     it("should be called on the hook when a cell is undefined on the observed object")
+    it("should be called on the hook when a cell is changed on the observed object")
     it("should be called after the change")
     it("should yield the object the change happened on")
     it("should yield the name of the cell")
