@@ -113,6 +113,15 @@ namespace Ioke.Lang {
         public IokeObject asSymbolMessage;
         public IokeObject FileMessage;
         public IokeObject closeMessage;
+
+        public IokeObject cellAddedMessage;
+        public IokeObject cellChangedMessage;
+        public IokeObject cellRemovedMessage;
+        public IokeObject cellUndefinedMessage;
+        public IokeObject mimicAddedMessage;
+        public IokeObject mimicRemovedMessage;
+        public IokeObject mimicsChangedMessage;
+        public IokeObject mimickedMessage;
         
         public readonly NullObject nul;
 
@@ -218,6 +227,15 @@ namespace Ioke.Lang {
             asSymbolMessage = NewMessage("asSymbol");
             FileMessage = NewMessage("File");
             closeMessage = NewMessage("close");
+
+            cellAddedMessage = NewMessage("cellAdded");
+            cellChangedMessage = NewMessage("cellChanged");
+            cellRemovedMessage = NewMessage("cellRemoved");
+            cellUndefinedMessage = NewMessage("cellUndefined");
+            mimicAddedMessage = NewMessage("mimicAdded");
+            mimicRemovedMessage = NewMessage("mimicRemoved");
+            mimicsChangedMessage = NewMessage("mimicsChanged");
+            mimickedMessage = NewMessage("mimicked");
 
             nul = new NullObject(this);
 
@@ -356,6 +374,8 @@ namespace Ioke.Lang {
                 EvaluateString("use(\"builtin/G05_aspects\")", Message, Ground);
                 EvaluateString("use(\"builtin/G10_origin\")", Message, Ground);
                 EvaluateString("use(\"builtin/G10_arity\")", Message, Ground);
+
+                EvaluateString("use(\"builtin/G50_hook\")", Message, Ground);
             } catch(ControlFlow cf) {
                 Console.Error.WriteLine("Internal problem: " + cf);
             }

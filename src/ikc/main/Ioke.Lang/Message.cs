@@ -808,6 +808,20 @@ namespace Ioke.Lang {
             return IokeObject.Perform(recv, context, m);
         }
 
+        public object SendTo(IokeObject self, IokeObject context, object recv, object arg1, object arg2, object arg3) {
+            if(cached != null) {
+                return cached;
+            }
+
+            IokeObject m = self.AllocateCopy(self, context);
+            m.MimicsWithoutCheck(context.runtime.Message);
+            m.Arguments.Clear();
+            m.Arguments.Add(arg1);
+            m.Arguments.Add(arg2);
+            m.Arguments.Add(arg3);
+            return IokeObject.Perform(recv, context, m);
+        }
+
         public object SendTo(IokeObject self, IokeObject context, object recv, IList args) {
             if(cached != null) {
                 return cached;
