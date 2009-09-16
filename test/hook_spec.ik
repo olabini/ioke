@@ -581,7 +581,7 @@ describe(Hook,
       xx = Origin mimic
       yy = Hook into(xx)
       yy invoked = 0
-      yy mimicked = method(_, @invoked++)
+      yy mimicked = method(_, _, @invoked++)
       xx mimic
       yy invoked should == 1
       xx mimic
@@ -594,7 +594,7 @@ describe(Hook,
       zz = Origin mimic
       yy = Hook into(xx)
       yy invoked = 0
-      yy mimicked = method(_, @invoked++)
+      yy mimicked = method(_, _, @invoked++)
       zz mimic!(xx)
       yy invoked should == 1
       Origin mimic mimic!(xx)
@@ -607,7 +607,7 @@ describe(Hook,
       zz = Origin mimic
       yy = Hook into(xx)
       yy invoked = 0
-      yy mimicked = method(_, @invoked++)
+      yy mimicked = method(_, _, @invoked++)
       zz prependMimic!(xx)
       yy invoked should == 1
       Origin mimic prependMimic!(xx)
@@ -619,17 +619,23 @@ describe(Hook,
       xx = Origin mimic
       zz = Origin mimic
       yy = Hook into(xx)
-      yy mimicked = fnx(_, zz should mimic(xx))
+      yy mimicked = fnx(_, _, zz should mimic(xx))
       zz mimic!(xx)
     )
 
     it("should yield the object observed",
       xx = Origin mimic
       yy = Hook into(xx)
-      yy mimicked = fnx(obj, obj should be(xx))
+      yy mimicked = fnx(obj, _, obj should be(xx))
       xx mimic
     )
 
-    it("should yield the object that mimicked the observed object")
+    it("should yield the object that mimicked the observed object",
+      xx = Origin mimic
+      zz = Origin mimic
+      yy = Hook into(xx)
+      yy mimicked = fnx(_, mm, mm should be(zz))
+      zz mimic!(xx)
+    )
   )
 )
