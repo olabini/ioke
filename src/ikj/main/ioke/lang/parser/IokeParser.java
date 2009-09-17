@@ -5,6 +5,7 @@ package ioke.lang.parser;
 
 import java.io.Reader;
 import java.io.LineNumberReader;
+import java.io.IOException;
 
 import ioke.lang.IokeObject;
 import ioke.lang.Message;
@@ -27,12 +28,12 @@ public class IokeParser {
         this.reader = new LineNumberReader(reader);
     }
 
-    public IokeObject parseFully() {
+    public IokeObject parseFully() throws IOException {
         IokeObject result = parseExpressionChain();
         return result;
     }
 
-    private IokeObject parseExpressionChain() {
+    private IokeObject parseExpressionChain() throws IOException {
         IokeObject c = null;
         IokeObject last = null;
         IokeObject head = null;
@@ -53,7 +54,7 @@ public class IokeParser {
 
 
     private int saved = -2;
-    private int read() {
+    private int read() throws IOException {
         if(saved > -2) {
             int x = saved;
             saved = -2;
@@ -62,14 +63,14 @@ public class IokeParser {
         return reader.read();
     }
 
-    private int peek() {
+    private int peek() throws IOException {
         if(saved == -2) {
             saved = reader.read();
         }
         return saved;
     }
 
-    private IokeObject parseExpression() {
+    private IokeObject parseExpression() throws IOException {
         int rr;
         while(true) {
             rr = read();
@@ -168,5 +169,76 @@ public class IokeParser {
 
     private void fail() {
         throw new RuntimeException();
+    }
+
+    private IokeObject parseEmptyMessageSend() {
+        // TODO: implement
+        return null;
+    }
+
+    private IokeObject parseSquareMessageSend() {
+        // TODO: implement
+        return null;
+    }
+
+    private IokeObject parseCurlyMessageSend() {
+        // TODO: implement
+        return null;
+    }
+
+    private IokeObject parseSetMessageSend() {
+        // TODO: implement
+        return null;
+    }
+
+    private IokeObject parseComment() {
+        // TODO: implement
+        return null;
+    }
+
+    private IokeObject parseRange() {
+        // TODO: implement
+        return null;
+    }
+
+    private IokeObject parseTerminator(int indicator) {
+        // TODO: implement
+        return null;
+    }
+
+    private IokeObject parseRegexpLiteral(int indicator) {
+        // TODO: implement
+        return null;
+    }
+
+    private IokeObject parseText(int indicator) {
+        // TODO: implement
+        return null;
+    }
+
+    private IokeObject parseOperatorChars(int indicator) {
+        // TODO: implement
+        return null;
+    }
+
+    private IokeObject parseNumber(int indicator) {
+        // TODO: implement
+        return null;
+    }
+
+    private IokeObject parseIdentifier(int indicator) {
+        // TODO: implement
+        return null;
+    }
+
+    private boolean isLetter(int c) {
+        // TODO: implement
+        return false;
+    }
+
+
+    private boolean isIDDigit(int c) {
+        // TODO: implement
+        return false;
     }
 }
