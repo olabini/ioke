@@ -15,6 +15,7 @@ import org.antlr.runtime.tree.Tree;
 import ioke.lang.parser.iokeLexer;
 import ioke.lang.parser.iokeParser;
 import ioke.lang.parser.Levels;
+import ioke.lang.parser.IokeParser;
 
 import ioke.lang.exceptions.ControlFlow;
 
@@ -910,23 +911,27 @@ public class Message extends IokeData {
 
     public static IokeObject newFromStream(Runtime runtime, Reader reader, IokeObject message, IokeObject context) throws ControlFlow {
         try {
-            iokeParser parser = new iokeParser(new CommonTokenStream(new iokeLexer(new ANTLRReaderStream(reader))));
-//             System.err.println("parseFully ...");
-            Tree t = parser.parseFully();
-//                         System.err.println("t: " + t.toStringTree());
-            if(t == null) {
-                Message m = new Message(runtime, ".", null, Type.TERMINATOR);
-                m.setLine(0);
-                m.setPosition(0);
-                return runtime.createMessage(m);
-            }
-
-            IokeObject m = fromTree(runtime, t);
-//             System.err.println("m: " + m);
-//                          System.err.println("m1: " + m);
+            IokeParser parser = new IokeParser(runtime, reader);
+            IokeObject m = parser.parseFully();
             opShuffle(m);
-//                          System.err.println("m2: " + m);
             return m;
+//             iokeParser parser = new iokeParser(new CommonTokenStream(new iokeLexer(new ANTLRReaderStream(reader))));
+// //             System.err.println("parseFully ...");
+//             Tree t = parser.parseFully();
+// //                         System.err.println("t: " + t.toStringTree());
+//             if(t == null) {
+//                 Message m = new Message(runtime, ".", null, Type.TERMINATOR);
+//                 m.setLine(0);
+//                 m.setPosition(0);
+//                 return runtime.createMessage(m);
+//             }
+
+//             IokeObject m = fromTree(runtime, t);
+// //             System.err.println("m: " + m);
+// //                          System.err.println("m1: " + m);
+//             opShuffle(m);
+// //                          System.err.println("m2: " + m);
+            // return m;
         } catch(Exception e) {
 //             System.err.println(e);
 //             System.err.println(e.getMessage());
