@@ -10,13 +10,23 @@ namespace Ioke.Lang {
     using Ioke.Lang.Util;
     using NETSystem = System;
 
-    public class Runtime {
+    public class Runtime : IokeData {
         private bool debug = false;
 
         public bool Debug {
             get { return this.debug; }
             set { this.debug = value; }
         }
+
+        private static int nextId = 1;
+        private static int getNextId() {
+            lock(typeof(Runtime)) {
+                int ret = nextId;
+                nextId++;
+                return ret;
+            }
+        }
+        private readonly int id;
 
         public IOperatorShufflerFactory operatorShufflerFactory;
         public Globber globber = new Ioke.Lang.Util.DefaultGlobber();
@@ -35,8 +45,8 @@ namespace Ioke.Lang {
         public IokeObject Text;
         public IokeObject Symbol;
         public IokeObject nil;
-        public IokeObject True;
-        public IokeObject False;
+        public new IokeObject True;
+        public new IokeObject False;
         public IokeObject List;
         public IokeObject Method;
         public IokeObject NativeMethod;
@@ -134,6 +144,7 @@ namespace Ioke.Lang {
         }
 
         public Runtime(IOperatorShufflerFactory shuffler, TextWriter Out, TextReader In, TextWriter Error) {
+            this.id = getNextId();
             this.operatorShufflerFactory = shuffler;
             this.Out = Out;
             this.In = In;
@@ -170,7 +181,7 @@ namespace Ioke.Lang {
             Rescue = new IokeObject(this, "A Rescue contains handling information from rescuing a Condition.");
             Handler = new IokeObject(this, "A Handler contains handling information for handling a condition without unwinding the stack.");
             Mixins = new IokeObject(this, "Mixins is the name space for most mixins in the system. DefaultBehavior is the notable exception.");
-            _Runtime = new IokeObject(this, "Runtime gives meta-circular access to the currently executing Ioke runtime.");
+            _Runtime = new IokeObject(this, "Runtime gives meta-circular access to the currently executing Ioke runtime.", this);
             Pair = new IokeObject(this, "A pair is a collection of two objects of any kind. They are used among other things to represent Dict entries.", new Pair(nil, nil));
             Regexp = new IokeObject(this, "A regular expression allows you to matching text against a pattern.", Ioke.Lang.Regexp.Create("", ""));
             FileSystem = new IokeObject(this, "Gives access to things related to the file system.");
@@ -247,7 +258,7 @@ namespace Ioke.Lang {
             Ioke.Lang.DefaultBehavior.Init(DefaultBehavior);
             Ioke.Lang.Mixins.Init(this.Mixins);
             System.Init();
-            Ioke.Lang.Runtime.Init(this._Runtime);
+            Ioke.Lang.Runtime.InitRuntime(this._Runtime);
             Message.Init();
             Ioke.Lang.Ground.Init(this.IokeGround, this.Ground);
             Ioke.Lang.Origin.Init(this.Origin);
@@ -1024,8 +1035,26 @@ namespace Ioke.Lang {
             ((Message)IokeObject.dataOf(errorMessage)).SendTo(errorMessage, this.Ground, this.Ground, CreateMessage(Ioke.Lang.Message.Wrap(cond)));
         }
 
-        public static void Init(IokeObject obj) {
+        public static void InitRuntime(IokeObject obj) {
             obj.Kind = "Runtime";
+
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the node id for the runtime it's called on",
+                                                           new TypeCheckingNativeMethod.WithNoArguments("nodeId", obj,
+                                                                                                        (method, on, args, keywords, context, message) => {
+                                                                                                            Runtime r = (Runtime)IokeObject.dataOf(on);
+                                                                                                            return method.runtime.NewNumber(r.id);
+                                                                                                        })));
+
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("creates a new runtime and returns that. be careful using this since it will result in some fairly strange behavior if used incorrectly. it will not copy the state of this runtime, but just create a new one from scratch.",
+                                                           new TypeCheckingNativeMethod.WithNoArguments("create", obj,
+                                                                                                        (method, on, args, keywords, context, message) => {
+                                                                                                            Runtime r = new Runtime(method.runtime.operatorShufflerFactory, method.runtime.Out, method.runtime.In, method.runtime.Error);
+                                                                                                            r.Init();
+                                                                                                            IokeObject o = method.runtime._Runtime.AllocateCopy(null, null);
+                                                                                                            o.MimicsWithoutCheck(method.runtime._Runtime);
+                                                                                                            o.Data = r;
+                                                                                                            return o;
+                                                                                                        })));
         }
     }
 }

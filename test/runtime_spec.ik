@@ -46,8 +46,4 @@ describe(Runtime,
       Runtime create nodeId should not == 1
     )
   )
-
-  describe("create",
-    it("should have tests")
-  )
 )
