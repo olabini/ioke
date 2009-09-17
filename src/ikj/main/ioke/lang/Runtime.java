@@ -1146,14 +1146,26 @@ public class Runtime extends IokeData {
         }
     }
 
-    public static void initRuntime(IokeObject runtime) throws ControlFlow {
-        runtime.setKind("Runtime");
+    public static void initRuntime(IokeObject obj) throws ControlFlow {
+        obj.setKind("Runtime");
 
-        runtime.registerMethod(runtime.runtime.newNativeMethod("returns the node id for the runtime it's called on", new TypeCheckingNativeMethod.WithNoArguments("nodeId", runtime) {
+        obj.registerMethod(obj.runtime.newNativeMethod("returns the node id for the runtime it's called on", new TypeCheckingNativeMethod.WithNoArguments("nodeId", obj) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     Runtime r = (Runtime)IokeObject.data(on);
                     return method.runtime.newNumber(r.id);
+                }
+            }));
+
+        obj.registerMethod(obj.runtime.newNativeMethod("creates a new runtime and returns that. be careful using this since it will result in some fairly strange behavior if used incorrectly. it will not copy the state of this runtime, but just create a new one from scratch.", new TypeCheckingNativeMethod.WithNoArguments("create", obj) {
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    Runtime r = new Runtime(method.runtime.out, method.runtime.in, method.runtime.err);
+                    r.init();
+                    IokeObject o = method.runtime.runtime.allocateCopy(null, null);
+                    o.mimicsWithoutCheck(method.runtime.runtime);
+                    o.setData(r);
+                    return o;
                 }
             }));
     }
