@@ -68,23 +68,34 @@ public class IokeParser {
         return saved;
     }
 
-    private int lastRead;
-
     private IokeObject parseExpression() {
         int rr;
         while(true) {
-            lastRead = rr = read();
+            rr = read();
             switch(rr) {
             case '(':
-                break;
+                return parseEmptyMessageSend();
             case '[':
-                break;
+                return parseSquareMessageSend();
             case '{':
-                break;
+                return parseCurlyMessageSend();
             case '#':
-                break;
+                if((rr = peek()) == '{') {
+                    return parseSetMessageSend();
+                } else if(rr == '/') {
+                    return parseRegexpLiteral('/');
+                } else if(rr == '[') {
+                    return parseText('[');
+                } else if(rr == 'r') {
+                    return parseRegexpLiteral('r');
+                } else if(rr == '!') {
+                    parseComment();
+                    break;
+                } else {
+                    return parseOperatorChars('#');
+                }
             case '"':
-                break;
+                return parseText('"');
             case '0':
             case '1':
             case '2':
@@ -95,10 +106,12 @@ public class IokeParser {
             case '7':
             case '8':
             case '9':
-                return parseNumberLike(rr);
+                return parseNumber(rr);
             case '.':
-                if(peek() == '.') {
+                if((rr = peek()) == '.') {
                     return parseRange();
+                } else if(rr >= '0' && rr <= '9') {
+                    return parseNumber('.');
                 } else {
                     return parseTerminator('.');
                 }
@@ -109,7 +122,6 @@ public class IokeParser {
             case '\u0009':
             case '\u000b':
             case '\u000c':
-                // eat white space
                 break;
             case '\\':
                 if((rr = peek()) == '\n') {
@@ -137,12 +149,14 @@ public class IokeParser {
             case '@':
             case '\'':
             case '`':
-                break;
             case '/':
-                break;
+                return parseOperatorChars(rr);
             case ':':
+                // either operator char or identifier based on if the second character is there and is a Letter|IDDigit
+                // TODO: handle
                 break;
             default:
+                // TODO: handle
                 break;
             }
         }
