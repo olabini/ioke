@@ -80,20 +80,22 @@ public class IokeParser {
             case '{':
                 return parseCurlyMessageSend();
             case '#':
-                if((rr = peek()) == '{') {
+                switch(peek()) {
+                case '{':
                     return parseSetMessageSend();
-                } else if(rr == '/') {
+                case '/':
                     return parseRegexpLiteral('/');
-                } else if(rr == '[') {
+                case '[':
                     return parseText('[');
-                } else if(rr == 'r') {
+                case 'r':
                     return parseRegexpLiteral('r');
-                } else if(rr == '!') {
+                case '!':
                     parseComment();
                     break;
-                } else {
+                default:
                     return parseOperatorChars('#');
                 }
+                break;
             case '"':
                 return parseText('"');
             case '0':
