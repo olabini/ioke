@@ -33,8 +33,16 @@ import java.util.Map;
  *
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
-public class Runtime {
+public class Runtime extends IokeData {
+    private static int nextId = 1;
+    private static synchronized int getNextId() {
+        int ret = nextId;
+        nextId++;
+        return ret;
+    }
+
     public boolean debug = false;
+    private final int id = getNextId();
 
     PrintWriter out;
     PrintWriter err;
@@ -48,7 +56,7 @@ public class Runtime {
     public IokeObject iokeGround = new IokeObject(this, "IokeGround is the place that mimics default behavior, and where most global objects are defined..");
     public IokeObject ground = new IokeObject(this, "Ground is the default place code is evaluated in.");
     public IokeObject system = new IokeObject(this, "System defines things that represents the currently running system, such as the load path.", new IokeSystem());
-    public IokeObject runtime = new IokeObject(this, "Runtime gives meta-circular access to the currently executing Ioke runtime.");
+    public IokeObject runtime = new IokeObject(this, "Runtime gives meta-circular access to the currently executing Ioke runtime.", this);
     public IokeObject defaultBehavior = new IokeObject(this, "DefaultBehavior is a mixin that provides most of the methods shared by most instances in the system.");
     public IokeObject origin = new IokeObject(this, "Any object created from scratch should usually be derived from Origin.");
     public IokeObject nil = new IokeObject(this, "nil is an oddball object that always represents itself. It can not be mimicked and (alongside false) is one of the two false values.", IokeData.Nil);
@@ -210,7 +218,7 @@ public class Runtime {
         DefaultBehavior.init(defaultBehavior);
         Mixins.init(mixins);
         system.init();
-        Runtime.init(runtime);
+        Runtime.initRuntime(runtime);
         message.init();
         Ground.init(iokeGround, ground);
         Origin.init(origin);
@@ -1138,7 +1146,15 @@ public class Runtime {
         }
     }
 
-    public static void init(IokeObject runtime) {
+    public static void initRuntime(IokeObject runtime) throws ControlFlow {
         runtime.setKind("Runtime");
+
+        runtime.registerMethod(runtime.runtime.newNativeMethod("returns the node id for the runtime it's called on", new TypeCheckingNativeMethod.WithNoArguments("nodeId", runtime) {
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    Runtime r = (Runtime)IokeObject.data(on);
+                    return method.runtime.newNumber(r.id);
+                }
+            }));
     }
 }// Runtime
