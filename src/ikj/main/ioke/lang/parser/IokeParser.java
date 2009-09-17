@@ -42,7 +42,8 @@ public class IokeParser {
                 head = c;
                 last = c;
             } else {
-                attach(last, c);
+                Message.setNext(last, c);
+                Message.setPrev(c, last);
                 last = c;
             }
         }
@@ -154,13 +155,18 @@ public class IokeParser {
             case '/':
                 return parseOperatorChars(rr);
             case ':':
-                // either operator char or identifier based on if the second character is there and is a Letter|IDDigit
-                // TODO: handle
-                break;
+                if(isLetter(rr = peek()) || isIDDigit(rr)) {
+                    return parseIdentifier(':');
+                } else {
+                    return parseOperatorChars(':');
+                }
             default:
-                // TODO: handle
-                break;
+                return parseIdentifier(rr);
             }
         }
+    }
+
+    private void fail() {
+        throw new RuntimeException();
     }
 }
