@@ -50,12 +50,30 @@ public class IokeParser {
         return head;
     }
 
+
+    private int saved = -2;
+    private int read() {
+        if(saved > -2) {
+            int x = saved;
+            saved = -2;
+            return saved;
+        }
+        return reader.read();
+    }
+
+    private int peek() {
+        if(saved == -2) {
+            saved = reader.read();
+        }
+        return saved;
+    }
+
     private int lastRead;
 
     private IokeObject parseExpression() {
         int rr;
         while(true) {
-            lastRead = rr = reader.read();
+            lastRead = rr = read();
             switch(rr) {
             case '(':
                 break;
@@ -77,21 +95,31 @@ public class IokeParser {
             case '7':
             case '8':
             case '9':
-                break;
+                return parseNumberLike(rr);
             case '.':
-                break;
+                if(peek() == '.') {
+                    return parseRange();
+                } else {
+                    return parseTerminator('.');
+                }
             case ';':
+                parseComment();
                 break;
             case ' ':
             case '\u0009':
             case '\u000b':
             case '\u000c':
+                // eat white space
                 break;
             case '\\':
-                break;
-            case '\n':
+                if((rr = peek()) == '\n') {
+                    break;
+                } else {
+                    fail();
+                }
             case '\r':
-                break;
+            case '\n':
+                return parseTerminator(rr);
             case '+':
             case '-':
             case '*':
