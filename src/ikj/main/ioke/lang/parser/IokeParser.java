@@ -20,6 +20,9 @@ import ioke.lang.exceptions.ControlFlow;
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
 public class IokeParser {
+    // TODO: line numbers yay!
+    // TODO: good failures yay!
+
     private final Runtime runtime;
     private final LineNumberReader reader;
 
@@ -29,11 +32,11 @@ public class IokeParser {
     }
 
     public IokeObject parseFully() throws IOException {
-        IokeObject result = parseExpressionChain();
+        IokeObject result = parseExpressions();
         return result;
     }
 
-    private IokeObject parseExpressionChain() throws IOException {
+    private IokeObject parseExpressions() throws IOException {
         IokeObject c = null;
         IokeObject last = null;
         IokeObject head = null;
