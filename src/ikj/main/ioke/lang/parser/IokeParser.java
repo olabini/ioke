@@ -171,6 +171,14 @@ public class IokeParser {
         throw new RuntimeException();
     }
 
+    private void parseCharacter(int c) {
+        readWhiteSpace();
+        int rr = read();
+        if(rr != c) {
+            fail();
+        }
+    }
+
     private IokeObject parseEmptyMessageSend() {
         List<Object> args = parseExpressionChain();
         parseCharacter(')');
@@ -205,18 +213,65 @@ public class IokeParser {
     }
 
     private void parseComment() {
-        // TODO: implement
-        return null;
+        int rr;
+        while((rr = peek()) != '\n' && rr != '\r') {
+            read();
+        }
     }
 
+    private final static String[] RANGES = {
+        "",
+        ".",
+        "..",
+        "...",
+        "....",
+        ".....",
+        "......",
+        ".......",
+        "........",
+        ".........",
+        "..........",
+        "...........",
+        "............"
+    };
+
+
     private IokeObject parseRange() {
-        // TODO: implement
-        return null;
+        int count = 2;
+        read();
+        int rr;
+        while((rr = peek()) == '.') {
+            count++;
+            read();
+        }
+        String result = null;
+        if(count < 13) {
+            result = RANGES[count];
+        } else {
+            StringBuilder sb = new StringBuilder();
+            for(int i = 0; i<count; i++) {
+                sb.append('.');
+            }
+            result = sb.toString();
+        }
+
+        Message m = new Message(runtime, result);
+        return runtime.createMessage(m);
     }
 
     private IokeObject parseTerminator(int indicator) {
-        // TODO: implement
-        return null;
+        int rr;
+        if(indicator == '\r') {
+            rr = peek();
+            if(rr == '\n') {
+                read();
+            }
+        }
+
+        // TODO: should parse more than one terminator into one
+
+        Message m = new Message(runtime, ".", null, Type.TERMINATOR);
+        return runtime.createMessage(m);
     }
 
     private IokeObject parseRegexpLiteral(int indicator) {
@@ -230,8 +285,73 @@ public class IokeParser {
     }
 
     private IokeObject parseOperatorChars(int indicator) {
-        // TODO: implement
-        return null;
+        StringBuilder sb = new StringBuilder();
+        sb.append((char)indicator);
+        int rr;
+        if(indicator == '#') {
+            while(true) {
+                rr = peek();
+                switch(rr) {
+                case '+':
+                case '-':
+                case '*':
+                case '%':
+                case '<':
+                case '>':
+                case '!':
+                case '?':
+                case '~':
+                case '&':
+                case '|':
+                case '^':
+                case '$':
+                case '=':
+                case '@':
+                case '\'':
+                case '`':
+                case ':':
+                case '#':
+                    read();
+                sb.append((char)rr);
+                break;
+                default:
+                    Message m = new Message(runtime, sb.toString());
+                    return runtime.createMessage(m);
+                }
+            }
+        } else {
+            while(true) {
+                rr = peek();
+                switch(rr) {
+                case '+':
+                case '-':
+                case '*':
+                case '%':
+                case '<':
+                case '>':
+                case '!':
+                case '?':
+                case '~':
+                case '&':
+                case '|':
+                case '^':
+                case '$':
+                case '=':
+                case '@':
+                case '\'':
+                case '`':
+                case '/':
+                case ':':
+                case '#':
+                    read();
+                sb.append((char)rr);
+                break;
+                default:
+                    Message m = new Message(runtime, sb.toString());
+                    return runtime.createMessage(m);
+                }
+            }
+        }
     }
 
     private IokeObject parseNumber(int indicator) {
