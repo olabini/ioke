@@ -301,7 +301,7 @@ public class IokeParser {
 
     private IokeObject parseText(int indicator) {
         StringBuilder sb = new StringBuilder();
-        boolean dqoute = indicator == '"';
+        boolean dquote = indicator == '"';
         if(dquote) {
             sb.append('"');
         } else {
