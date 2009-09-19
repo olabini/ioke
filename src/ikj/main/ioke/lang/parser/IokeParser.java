@@ -160,12 +160,12 @@ public class IokeParser {
                 return parseOperatorChars(rr);
             case ':':
                 if(isLetter(rr = peek()) || isIDDigit(rr)) {
-                    return parseIdentifier(':');
+                    return parseRegularMessageSend(':');
                 } else {
                     return parseOperatorChars(':');
                 }
             default:
-                return parseIdentifier(rr);
+                return parseRegularMessageSend(rr);
             }
         }
     }
@@ -362,9 +362,24 @@ public class IokeParser {
         return null;
     }
 
-    private IokeObject parseIdentifier(int indicator) {
-        // TODO: implement
-        return null;
+    private IokeObject parseRegularMessageSend(int indicator) {
+        StringBuilder sb = new StringBuilder();
+        sb.append((char)indicator);
+        int rr = -1;
+        while(isLetter(rr = peek()) || isIDDigit(rr) || rr == ':' || rr == '!' || rr == '?' || rr == '$') {
+            read();
+            sb.append((char)rr);
+        }
+
+        IokeObject mx = runtime.createMessage(new Message(runtime, sb.toString()));
+        if(rr == '(') {
+            read();
+            List<Object> args = parseExpressionChain();
+            parseCharacter(')');
+            Message.setArguments(mx, args);
+        }
+
+        return mx;
     }
 
     private boolean isLetter(int c) {
