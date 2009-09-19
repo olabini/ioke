@@ -300,7 +300,67 @@ public class IokeParser {
     }
 
     private IokeObject parseText(int indicator) {
-        // TODO: implement
+        StringBuilder sb = new StringBuilder();
+        boolean dqoute = indicator == '"';
+        if(dquote) {
+            sb.append('"');
+        } else {
+            sb.append("#[");
+        }
+
+        int rr;
+        Message m = new Message(runtime, "internal:createText");
+        IokeObject mm = runtime.createMessage(m);
+        List<Object> args = mm.getArguments();
+
+        while(true) {
+            switch(rr = peek()) {
+            case -1:
+                fail(); //Expected end of string
+                break;
+            case '"':
+                read();
+                sb.append((char)rr);
+                if(dquote) {
+                    args.add(sb.toString());
+                    return mm;
+                }
+                break;
+            case ']':
+                read();
+                sb.append((char)rr);
+                if(!dquote) {
+                    args.add(sb.toString());
+                    return mm;
+                }
+                break;
+            case '#':
+                read();
+                if((rr = peek()) == '{') {
+                    read();
+                    sb.append("#{");
+                    args.add(sb.toString());
+                    sb = new StringBuilder();
+                    Message.setName(mm, "internal:concatenateText");
+                    args.add(parseExpressions());
+                    readWhiteSpace();
+                    parseCharacter('}');
+                    sb.append((char)'}');
+                } else {
+                    read();
+                    sb.append((char)'#');
+                }
+                break;
+            case '\\':
+                // TODO: parse escapes
+                break;
+            default:
+                read();
+                sb.append((char)rr);
+                break;
+            }
+        }
+
         return null;
     }
 
@@ -439,6 +499,7 @@ public class IokeParser {
 
             int r2 = peek2();
             if(rr == '.' && r2 <= '0' && r2 >= '9') {
+                decimal = true;
                 sb.append((char)rr);
                 sb.append((char)r2);
                 read(); read();
@@ -467,6 +528,7 @@ public class IokeParser {
                     }
                 }
             } else if(rr == 'e' || rr == 'E') {
+                decimal = true;
                 read();
                 sb.append((char)rr);
                 read();
@@ -491,7 +553,7 @@ public class IokeParser {
 
         // TODO: add unit specifier here
 
-        Message m = new Message(runtime, sb.toString());
+        Message m = decimal ? new Message(runtime, "internal:createDecimal", sb.toString()) : new Message(runtime, "internal:createNumber", sb.toString());
         return runtime.createMessage(m);
     }
 
