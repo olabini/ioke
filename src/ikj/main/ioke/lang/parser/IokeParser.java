@@ -7,6 +7,8 @@ import java.io.Reader;
 import java.io.LineNumberReader;
 import java.io.IOException;
 
+import java.util.List;
+
 import ioke.lang.IokeObject;
 import ioke.lang.Message;
 import ioke.lang.Runtime;
@@ -288,7 +290,7 @@ public class IokeParser {
 
         // TODO: should parse more than one terminator into one
 
-        Message m = new Message(runtime, ".", null, Type.TERMINATOR);
+        Message m = new Message(runtime, ".", null, Message.Type.TERMINATOR);
         return runtime.createMessage(m);
     }
 
@@ -377,7 +379,7 @@ public class IokeParser {
         StringBuilder sb = new StringBuilder();
         sb.append((char)indicator);
         int rr = -1;
-        if(indiciator == '0') {
+        if(indicator == '0') {
             rr = peek();
             if(rr == 'x' || rr == 'X') {
                 read();
