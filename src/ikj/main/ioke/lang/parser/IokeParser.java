@@ -56,11 +56,13 @@ public class IokeParser {
     }
 
 
+    private int saved2 = -2;
     private int saved = -2;
     private int read() throws IOException {
         if(saved > -2) {
             int x = saved;
-            saved = -2;
+            saved = saved2;
+            saved2 = -2;
             return saved;
         }
         return reader.read();
@@ -68,9 +70,24 @@ public class IokeParser {
 
     private int peek() throws IOException {
         if(saved == -2) {
-            saved = reader.read();
+            if(saved2 != -2) {
+                saved = saved2;
+                saved2 = -2;
+            } else {
+                saved = reader.read();
+            }
         }
         return saved;
+    }
+
+    private int peek2() throws IOException {
+        if(saved == -2) {
+            saved = reader.read();
+        }
+        if(saved2 == -2) {
+            saved2 = reader.read();
+        }
+        return saved2;
     }
 
     private IokeObject parseExpression() throws IOException {
@@ -117,8 +134,6 @@ public class IokeParser {
             case '.':
                 if((rr = peek()) == '.') {
                     return parseRange();
-                } else if(rr >= '0' && rr <= '9') {
-                    return parseNumber('.');
                 } else {
                     return parseTerminator('.');
                 }
@@ -358,8 +373,124 @@ public class IokeParser {
     }
 
     private IokeObject parseNumber(int indicator) {
-        // TODO: implement
-        return null;
+        boolean decimal = false;
+        StringBuilder sb = new StringBuilder();
+        sb.append((char)indicator);
+        int rr = -1;
+        if(indiciator == '0') {
+            rr = peek();
+            if(rr == 'x' || rr == 'X') {
+                read();
+                rr = peek();
+                if((rr >= '0' && rr <= '9') ||
+                   (rr >= 'a' && rr <= 'f') ||
+                   (rr >= 'A' && rr <= 'F')) {
+                    read();
+                    sb.append((char)rr);
+                    rr = peek();
+                    while((rr >= '0' && rr <= '9') ||
+                          (rr >= 'a' && rr <= 'f') ||
+                          (rr >= 'A' && rr <= 'F')) {
+                        read();
+                        sb.append((char)rr);
+                    }
+                } else {
+                    fail();
+                }
+            } else {
+                int r2 = peek2();
+                if(rr == '.' && (r2 >= '0' && r2 <= '9')) {
+                    decimal = true;
+                    sb.append((char)rr);
+                    sb.append((char)r2);
+                    read(); read();
+                    while((rr = peek()) >= '0' && rr <= '9') {
+                        read();
+                        sb.append((char)rr);
+                    }
+                    if(rr == 'e' || rr == 'E') {
+                        read();
+                        sb.append((char)rr);
+                        if((rr = peek()) == '-' || rr == '+') {
+                            read();
+                            sb.append((char)rr);
+                        }
+
+                        if(rr >= '0' && rr <= '9') {
+                            read();
+                            sb.append((char)rr);
+                            while((rr = peek()) >= '0' && rr <= '9') {
+                                read();
+                                sb.append((char)rr);
+                            }
+                        } else {
+                            fail();
+                        }
+                    }
+                }
+            }
+        } else {
+            while((rr = peek()) >= '0' && rr <= '9') {
+                read();
+                sb.append((char)rr);
+            }
+
+            int r2 = peek2();
+            if(rr == '.' && r2 <= '0' && r2 >= '9') {
+                sb.append((char)rr);
+                sb.append((char)r2);
+                read(); read();
+
+                while((rr = peek()) >= '0' && rr <= '9') {
+                    read();
+                    sb.append((char)rr);
+                }
+                if(rr == 'e' || rr == 'E') {
+                    read();
+                    sb.append((char)rr);
+                    if((rr = peek()) == '-' || rr == '+') {
+                        read();
+                        sb.append((char)rr);
+                    }
+
+                    if(rr >= '0' && rr <= '9') {
+                        read();
+                        sb.append((char)rr);
+                        while((rr = peek()) >= '0' && rr <= '9') {
+                            read();
+                            sb.append((char)rr);
+                        }
+                    } else {
+                        fail();
+                    }
+                }
+            } else if(rr == 'e' || rr == 'E') {
+                read();
+                sb.append((char)rr);
+                read();
+                sb.append((char)rr);
+                if((rr = peek()) == '-' || rr == '+') {
+                    read();
+                    sb.append((char)rr);
+                }
+
+                if(rr >= '0' && rr <= '9') {
+                    read();
+                    sb.append((char)rr);
+                    while((rr = peek()) >= '0' && rr <= '9') {
+                        read();
+                        sb.append((char)rr);
+                    }
+                } else {
+                    fail();
+                }
+            }
+        }
+
+        // TODO: add unit specifier here
+
+        Message m = new Message(runtime, sb.toString());
+        return runtime.createMessage(m);
     }
 
     private IokeObject parseRegularMessageSend(int indicator) {
