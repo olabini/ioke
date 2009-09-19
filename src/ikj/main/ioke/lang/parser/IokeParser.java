@@ -24,6 +24,7 @@ import ioke.lang.exceptions.ControlFlow;
 public class IokeParser {
     // TODO: line numbers yay!
     // TODO: good failures yay!
+    // TODO: add parsing benchmark yay!
 
     private final Runtime runtime;
     private final LineNumberReader reader;
@@ -375,7 +376,11 @@ public class IokeParser {
                 }
                 break;
             case '\\':
-                // TODO: parse escapes
+                if(dquote) {
+                    parseDoubleQuoteEscape(sb);
+                } else {
+                    parseOtherEscape(sb);
+                }
                 break;
             default:
                 read();
