@@ -282,6 +282,7 @@ public class IokeParser {
 
     private IokeObject parseTerminator(int indicator) {
         int rr;
+        int rr2;
         if(indicator == '\r') {
             rr = peek();
             if(rr == '\n') {
@@ -289,7 +290,18 @@ public class IokeParser {
             }
         }
 
-        // TODO: should parse more than one terminator into one
+        while(true) {
+            rr = peek();
+            rr2 = peek2();
+            if((rr == '.' && rr2 != '.') ||
+               (rr == '\n')) {
+                read();
+            } else if(rr == '\r' && rr2 == '\n') {
+                read(); read();
+            } else {
+                break;
+            }
+        }
 
         Message m = new Message(runtime, ".", null, Message.Type.TERMINATOR);
         return runtime.createMessage(m);
