@@ -146,6 +146,7 @@ public class IokeParser {
             case '\u0009':
             case '\u000b':
             case '\u000c':
+                readWhiteSpace();
                 break;
             case '\\':
                 if((rr = peek()) == '\n') {
@@ -297,6 +298,16 @@ public class IokeParser {
     private IokeObject parseRegexpLiteral(int indicator) {
         // TODO: implement
         return null;
+    }
+
+    private void readWhiteSpace() {
+        int rr;
+        while((rr = peek()) == ' ' ||
+              rr == '\u0009' ||
+              rr == '\u000b' ||
+              rr == '\u000c') {
+            read();
+        }
     }
 
     private IokeObject parseText(int indicator) {
