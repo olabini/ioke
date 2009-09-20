@@ -913,7 +913,7 @@ public class Message extends IokeData {
             IokeObject m = parser.parseFully();
             // System.err.println("m:  " + m);
             opShuffle(m);
-            System.out.println("m: " + m);
+            // System.out.println("m: " + m);
             return m;
         } catch(Exception e) {
             // System.err.println(e);

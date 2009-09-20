@@ -25,7 +25,6 @@ import ioke.lang.exceptions.ControlFlow;
 public class IokeParser {
     // TODO: line numbers yay!
     // TODO: good failures yay!
-    // TODO: add parsing benchmark yay!
 
     private final Runtime runtime;
     private final LineNumberReader reader;
@@ -842,11 +841,19 @@ public class IokeParser {
                 break;
                 default:
                     IokeObject mx = runtime.createMessage(new Message(runtime, sb.toString()));
+
+                    int rr2 = rr;
+                    readWhiteSpace();
+                    rr = peek();
+
                     if(rr == '(') {
                         read();
                         List<Object> args = parseExpressionChain();
                         parseCharacter(')');
                         Message.setArguments(mx, args);
+                        if(rr != rr2) {
+                            Message.setType(mx, Message.Type.DETACH);
+                        }
                     }
                     return mx;
                 }
@@ -992,11 +999,17 @@ public class IokeParser {
 
         IokeObject mx = runtime.createMessage(new Message(runtime, sb.toString()));
         // System.err.println("creating new message: " + sb.toString());
+        int rr2 = rr;
+        readWhiteSpace();
+        rr = peek();
         if(rr == '(') {
             read();
             List<Object> args = parseExpressionChain();
             parseCharacter(')');
             Message.setArguments(mx, args);
+            if(rr != rr2) {
+                Message.setType(mx, Message.Type.DETACH);
+            }
         }
 
         // System.err.println("-parseRegularMessageSend() : " + mx);
@@ -1037,5 +1050,37 @@ public class IokeParser {
                 (c>='\u0E50' && c<='\u0E59') ||
                 (c>='\u0ED0' && c<='\u0ED9') ||
                 (c>='\u1040' && c<='\u1049'));
+    }
+
+    public static void main(String[] args) throws Throwable {
+        final String filename = args[0];
+        System.out.println("Reading of file: \"" + filename + "\"");
+
+        final StringBuilder input = new StringBuilder();
+        final java.io.Reader reader = new java.io.FileReader(filename);
+        char[] buff = new char[1024];
+        int read = 0;
+        while(true) {
+            read = reader.read(buff);
+            input.append(buff,0,read);
+            if(read < 1024) {
+                break;
+            }
+        }
+        reader.close();
+
+        String s = input.toString();
+        Runtime r = new Runtime();
+        r.init();
+        final long before = System.currentTimeMillis();
+
+        for(int i=0;i<10000;i++) {
+            new IokeParser(r, new java.io.StringReader(s)).parseFully();
+        }
+
+        final long after = System.currentTimeMillis();
+        final long time = after-before;
+        final double timeS = (after-before)/1000.0;
+        System.out.println("Parsing the file 10000 times took " + time + "ms, or " + timeS + " seconds");
     }
 }
