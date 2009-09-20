@@ -36,11 +36,14 @@ public class IokeParser {
     }
 
     public IokeObject parseFully() throws IOException {
+        // System.err.println("parseFully()");
         IokeObject result = parseExpressions();
+        // System.err.println("-parseFully()");
         return result;
     }
 
     private IokeObject parseExpressions() throws IOException {
+        // System.err.println("parseExpressions()");
         IokeObject c = null;
         IokeObject last = null;
         IokeObject head = null;
@@ -55,11 +58,12 @@ public class IokeParser {
                 last = c;
             }
         }
-
+        // System.err.println("-parseExpressions()");
         return head;
     }
 
     private List<Object> parseExpressionChain() throws IOException {
+        // System.err.println("parseExpressionChain()");
         List<Object> chain = new ArrayList<Object>();
 
         IokeObject curr = parseExpressions();
@@ -78,6 +82,8 @@ public class IokeParser {
             }
         }
 
+        // System.err.println("-parseExpressionChain()");
+
         return chain;
     }
 
@@ -88,9 +94,12 @@ public class IokeParser {
             int x = saved;
             saved = saved2;
             saved2 = -2;
-            return saved;
+            // System.err.println(" read(): " + x + " (" + (char)x + ")");
+            return x;
         }
-        return reader.read();
+        int xx = reader.read();
+        // System.err.println(" read(): " + xx + " (" + (char)xx + ")");
+        return xx;
     }
 
     private int peek() throws IOException {
@@ -116,17 +125,31 @@ public class IokeParser {
     }
 
     private IokeObject parseExpression() throws IOException {
+        // System.err.println("parseExpression()");
         int rr;
         while(true) {
-            rr = read();
+            rr = peek();
+            // System.err.println(" BLARG: " + rr);
             switch(rr) {
+            case -1:
+                read();
+                return null;
+            case ',':
+            case ')':
+            case ']':
+            case '}':
+                return null;
             case '(':
+                read();
                 return parseEmptyMessageSend();
             case '[':
+                read();
                 return parseSquareMessageSend();
             case '{':
+                read();
                 return parseCurlyMessageSend();
             case '#':
+                read();
                 switch(peek()) {
                 case '{':
                     return parseSetMessageSend();
@@ -144,6 +167,7 @@ public class IokeParser {
                 }
                 break;
             case '"':
+                read();
                 return parseText('"');
             case '0':
             case '1':
@@ -155,23 +179,28 @@ public class IokeParser {
             case '7':
             case '8':
             case '9':
+                read();
                 return parseNumber(rr);
             case '.':
+                read();
                 if((rr = peek()) == '.') {
                     return parseRange();
                 } else {
                     return parseTerminator('.');
                 }
             case ';':
+                read();
                 parseComment();
                 break;
             case ' ':
             case '\u0009':
             case '\u000b':
             case '\u000c':
+                read();
                 readWhiteSpace();
                 break;
             case '\\':
+                read();
                 if((rr = peek()) == '\n') {
                     break;
                 } else {
@@ -179,6 +208,7 @@ public class IokeParser {
                 }
             case '\r':
             case '\n':
+                read();
                 return parseTerminator(rr);
             case '+':
             case '-':
@@ -198,21 +228,27 @@ public class IokeParser {
             case '\'':
             case '`':
             case '/':
+                read();
                 return parseOperatorChars(rr);
             case ':':
+                read();
                 if(isLetter(rr = peek()) || isIDDigit(rr)) {
                     return parseRegularMessageSend(':');
                 } else {
                     return parseOperatorChars(':');
                 }
             default:
+                read();
                 return parseRegularMessageSend(rr);
             }
         }
     }
 
     private void fail() {
-        throw new RuntimeException();
+        System.err.println("GOT FAILURE:");
+        RuntimeException re = new RuntimeException();
+        re.printStackTrace();
+        throw re;
     }
 
     private void parseCharacter(int c) throws IOException {
@@ -224,39 +260,48 @@ public class IokeParser {
     }
 
     private IokeObject parseEmptyMessageSend() throws IOException {
+        // System.err.println("parseEmptyMessageSend()");
         List<Object> args = parseExpressionChain();
         parseCharacter(')');
         IokeObject mx = runtime.createMessage(new Message(runtime, ""));
         Message.setArguments(mx, args);
+        // System.err.println("-parseEmptyMessageSend()");
         return mx;
     }
 
     private IokeObject parseSquareMessageSend() throws IOException {
+        // System.err.println("parseSquareMessageSend()");
         List<Object> args = parseExpressionChain();
         parseCharacter(']');
         IokeObject mx = runtime.createMessage(new Message(runtime, "[]"));
         Message.setArguments(mx, args);
+        // System.err.println("-parseSquareMessageSend()");
         return mx;
     }
 
     private IokeObject parseCurlyMessageSend() throws IOException {
+        // System.err.println("parseCurlyMessageSend()");
         List<Object> args = parseExpressionChain();
         parseCharacter('}');
         IokeObject mx = runtime.createMessage(new Message(runtime, "{}"));
         Message.setArguments(mx, args);
+        // System.err.println("-parseCurlyMessageSend()");
         return mx;
     }
 
     private IokeObject parseSetMessageSend() throws IOException {
+        // System.err.println("parseSetMessageSend()");
         parseCharacter('{');
         List<Object> args = parseExpressionChain();
         parseCharacter('}');
         IokeObject mx = runtime.createMessage(new Message(runtime, "set"));
         Message.setArguments(mx, args);
+        // System.err.println("-parseSetMessageSend()");
         return mx;
     }
 
     private void parseComment() throws IOException {
+        // System.err.println("parseComment()");
         int rr;
         while((rr = peek()) != '\n' && rr != '\r') {
             read();
@@ -281,6 +326,7 @@ public class IokeParser {
 
 
     private IokeObject parseRange() throws IOException {
+        // System.err.println("parseRange()");
         int count = 2;
         read();
         int rr;
@@ -300,10 +346,12 @@ public class IokeParser {
         }
 
         Message m = new Message(runtime, result);
+        // System.err.println("-parseRange()");
         return runtime.createMessage(m);
     }
 
     private IokeObject parseTerminator(int indicator) throws IOException {
+        // System.err.println("parseTerminator()");
         int rr;
         int rr2;
         if(indicator == '\r') {
@@ -327,15 +375,12 @@ public class IokeParser {
         }
 
         Message m = new Message(runtime, ".", null, Message.Type.TERMINATOR);
+        // System.err.println("-parseTerminator()");
         return runtime.createMessage(m);
     }
 
-    private IokeObject parseRegexpLiteral(int indicator) throws IOException {
-        // TODO: implement
-        return null;
-    }
-
     private void readWhiteSpace() throws IOException {
+        // System.err.println("readWhiteSpace()");
         int rr;
         while((rr = peek()) == ' ' ||
               rr == '\u0009' ||
@@ -345,19 +390,125 @@ public class IokeParser {
         }
     }
 
-    private IokeObject parseText(int indicator) throws IOException {
+    private IokeObject parseRegexpLiteral(int indicator) throws IOException {
+        System.err.println("parseRegexpLiteral()");
         StringBuilder sb = new StringBuilder();
-        boolean dquote = indicator == '"';
-        if(dquote) {
-            sb.append('"');
-        } else {
-            sb.append("#[");
+        boolean slash = indicator == '/';
+
+        read();
+
+        if(!slash) {
+            parseCharacter('[');
         }
 
         int rr;
-        Message m = new Message(runtime, "internal:createText");
-        IokeObject mm = runtime.createMessage(m);
-        List<Object> args = m.getArguments(null);
+        String name = "internal:createRegexp";
+        List<Object> args = new ArrayList<Object>();
+
+        while(true) {
+            switch(rr = peek()) {
+            case -1:
+                fail(); //Expected end of regexp
+                break;
+            case '/':
+                read();
+                if(slash) {
+                    args.add(sb.toString());
+                    Message m = new Message(runtime, "internal:createRegexp");
+                    IokeObject mm = runtime.createMessage(m);
+                    if(!name.equals("internal:createRegexp")) {
+                        Message.setName(mm, name);
+                    }
+                    Message.setArguments(mm, args);
+
+                    sb = new StringBuilder();
+                    while(true) {
+                        switch(rr = peek()) {
+                        case 'x':
+                        case 'i':
+                        case 'u':
+                        case 'm':
+                        case 's':
+                            read();
+                            sb.append((char)rr);
+                            break;
+                        default:
+                            args.add(sb.toString());
+                            System.err.println("-parseRegexpLiteral()");
+                            return mm;
+                        }
+                    }
+                } else {
+                    sb.append((char)rr);
+                }
+                break;
+            case ']':
+                read();
+                if(!slash) {
+                    args.add(sb.toString());
+                    Message m = new Message(runtime, "internal:createRegexp");
+                    IokeObject mm = runtime.createMessage(m);
+                    if(!name.equals("internal:createRegexp")) {
+                        Message.setName(mm, name);
+                    }
+                    Message.setArguments(mm, args);
+                    sb = new StringBuilder();
+                    while(true) {
+                        switch(rr = peek()) {
+                        case 'x':
+                        case 'i':
+                        case 'u':
+                        case 'm':
+                        case 's':
+                            read();
+                            sb.append((char)rr);
+                            break;
+                        default:
+                            args.add(sb.toString());
+                            System.err.println("-parseRegexpLiteral()");
+                            return mm;
+                        }
+                    }
+                } else {
+                    sb.append((char)rr);
+                }
+                break;
+            case '#':
+                read();
+                if((rr = peek()) == '{') {
+                    read();
+                    args.add(sb.toString());
+                    sb = new StringBuilder();
+                    name = "internal:compositeRegexp";
+                    args.add(parseExpressions());
+                    readWhiteSpace();
+                    parseCharacter('}');
+                } else {
+                    read();
+                    sb.append((char)'#');
+                }
+                break;
+            case '\\':
+                System.err.println("got an escape inside of a regexp");
+                read();
+                parseRegexpEscape(sb);
+                break;
+            default:
+                read();
+                sb.append((char)rr);
+                break;
+            }
+        }
+    }
+
+    private IokeObject parseText(int indicator) throws IOException {
+        // System.err.println("parseText()");
+        StringBuilder sb = new StringBuilder();
+        boolean dquote = indicator == '"';
+
+        int rr;
+        String name = "internal:createText";
+        List<Object> args = new ArrayList<Object>();
 
         while(true) {
             switch(rr = peek()) {
@@ -366,10 +517,25 @@ public class IokeParser {
                 break;
             case '"':
                 read();
-                sb.append((char)rr);
                 if(dquote) {
                     args.add(sb.toString());
+                    Message m = new Message(runtime, "internal:createText");
+                    IokeObject mm = runtime.createMessage(m);
+                    if(!name.equals("internal:createText")) {
+                        for(int i = 0; i<args.size(); i++) {
+                            Object o = args.get(i);
+                            if(o instanceof String) {
+                                Message mx = new Message(runtime, "internal:createText", o);
+                                IokeObject mmx = runtime.createMessage(mx);
+                                args.set(i, mmx);
+                            }
+                        }
+                        Message.setName(mm, name);
+                    }
+                    Message.setArguments(mm, args);
                     return mm;
+                } else {
+                    sb.append((char)rr);
                 }
                 break;
             case ']':
@@ -377,21 +543,35 @@ public class IokeParser {
                 sb.append((char)rr);
                 if(!dquote) {
                     args.add(sb.toString());
+                    Message m = new Message(runtime, "internal:createText");
+                    IokeObject mm = runtime.createMessage(m);
+                    if(!name.equals("internal:createText")) {
+                        for(int i = 0; i<args.size(); i++) {
+                            Object o = args.get(i);
+                            if(o instanceof String) {
+                                Message mx = new Message(runtime, "internal:createText", o);
+                                IokeObject mmx = runtime.createMessage(mx);
+                                args.set(i, mmx);
+                            }
+                        }
+                        Message.setName(mm, name);
+                    }
+                    Message.setArguments(mm, args);
                     return mm;
+                } else {
+                    sb.append((char)rr);
                 }
                 break;
             case '#':
                 read();
                 if((rr = peek()) == '{') {
                     read();
-                    sb.append("#{");
                     args.add(sb.toString());
                     sb = new StringBuilder();
-                    Message.setName(mm, "internal:concatenateText");
+                    name = "internal:concatenateText";
                     args.add(parseExpressions());
                     readWhiteSpace();
                     parseCharacter('}');
-                    sb.append((char)'}');
                 } else {
                     read();
                     sb.append((char)'#');
@@ -399,15 +579,115 @@ public class IokeParser {
                 break;
             case '\\':
                 read();
-                if(dquote) {
-                    parseDoubleQuoteEscape(sb);
-                }
+                parseDoubleQuoteEscape(sb);
                 break;
             default:
                 read();
                 sb.append((char)rr);
                 break;
             }
+        }
+    }
+
+    private void parseRegexpEscape(StringBuilder sb) throws IOException {
+        sb.append('\\');
+        int rr = peek();
+        switch(rr) {
+        case 'u':
+            read();
+            sb.append((char)rr);
+            for(int i = 0; i < 4; i++) {
+                rr = peek();
+                if((rr >= '0' && rr <= '9') ||
+                   (rr >= 'a' && rr <= 'f') ||
+                   (rr >= 'A' && rr <= 'F')) {
+                    read();
+                    sb.append((char)rr);
+                } else {
+                    fail();
+                }
+            }
+            break;
+        case '0':
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '6':
+        case '7':
+            read();
+            sb.append((char)rr);
+            if(rr <= '3') {
+                rr = peek();
+                if(rr >= '0' && rr <= '7') {
+                    read();
+                    sb.append((char)rr);
+                    rr = peek();
+                    if(rr >= '0' && rr <= '7') {
+                        read();
+                        sb.append((char)rr);
+                    }
+                }
+            } else {
+                rr = peek();
+                if(rr >= '0' && rr <= '7') {
+                    read();
+                    sb.append((char)rr);
+                }
+            }
+            break;
+        case 't':
+        case 'n':
+        case 'f':
+        case 'r':
+        case '/':
+        case '\\':
+        case '\n':
+        case '#':
+        case 'A':
+        case 'd':
+        case 'D':
+        case 's':
+        case 'S':
+        case 'w':
+        case 'W':
+        case 'b':
+        case 'B':
+        case 'z':
+        case 'Z':
+        case '<':
+        case '>':
+        case 'G':
+        case 'p':
+        case 'P':
+        case '{':
+        case '}':
+        case '[':
+        case ']':
+        case '*':
+        case '(':
+        case ')':
+        case '$':
+        case '^':
+        case '+':
+        case '?':
+        case '.':
+        case '|':
+            read();
+            sb.append((char)rr);
+            break;
+        case '\r':
+            read();
+            sb.append((char)rr);
+            if((rr = peek()) == '\n') {
+                read();
+                sb.append((char)rr);
+            }
+            break;
+        default:
+            fail();
+            break;
         }
     }
 
@@ -488,6 +768,7 @@ public class IokeParser {
     }
 
     private IokeObject parseOperatorChars(int indicator) throws IOException {
+        // System.err.println("parseOperatorChars()");
         StringBuilder sb = new StringBuilder();
         sb.append((char)indicator);
         int rr;
@@ -558,6 +839,7 @@ public class IokeParser {
     }
 
     private IokeObject parseNumber(int indicator) throws IOException {
+        // System.err.println("parseNumber()");
         boolean decimal = false;
         StringBuilder sb = new StringBuilder();
         sb.append((char)indicator);
@@ -681,6 +963,7 @@ public class IokeParser {
     }
 
     private IokeObject parseRegularMessageSend(int indicator) throws IOException {
+        // System.err.println("parseRegularMessageSend()");
         StringBuilder sb = new StringBuilder();
         sb.append((char)indicator);
         int rr = -1;
@@ -690,12 +973,15 @@ public class IokeParser {
         }
 
         IokeObject mx = runtime.createMessage(new Message(runtime, sb.toString()));
+        // System.err.println("creating new message: " + sb.toString());
         if(rr == '(') {
             read();
             List<Object> args = parseExpressionChain();
             parseCharacter(')');
             Message.setArguments(mx, args);
         }
+
+        // System.err.println("-parseRegularMessageSend() : " + mx);
 
         return mx;
     }

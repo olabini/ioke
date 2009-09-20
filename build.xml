@@ -23,26 +23,13 @@
     <mkdir dir="${build.dir}"/>
     <mkdir dir="${coverage.dir}"/>
     <mkdir dir="${classes.dir}"/>
-    <mkdir dir="${src.generated.dir}"/>
-
-    <uptodate property="grammar.notUpdated" targetfile="${src.generated.dir}/iokeLexer.java" srcfile="${antlr.grammar.dir}/${antlr.grammar.file}"/>
   </target>
 
-  <target name="generate.antlr" depends="prepare" description="Generates source files from the ANTLR definitions" unless="grammar.notUpdated">
-    <java classname="org.antlr.Tool" fork="true" dir="${antlr.grammar.dir}" classpathref="build.classpath" maxmemory="256m">
-      <arg value="-Xconversiontimeout"/>
-      <arg value="100000"/>
-      <arg line="-o ${src.generated.dir.relative} ${antlr.grammar.file}"/>
-    </java>
-  </target>
-
-  <target name="generate" depends="generate.antlr" description="Generates source files from the ANTLR definitions"/>
-
-  <target name="generate_filters" depends="generate.antlr" description="Generates source files from the ANTLR definitions">
+  <target name="generate_filters" depends="prepare" description="Generates source files from the ANTLR definitions">
     <exec executable="ruby" input="generate_filter_data.rb" failonerror="false" failifexecutionfails="false"/>
   </target>
 
-  <target name="compile" depends="generate, generate_filters" description="Compile the source files for the project.">
+  <target name="compile" depends="generate_filters" description="Compile the source files for the project.">
     <filter filtersfile="version_data.properties"/>
     <filter token="VERSION" value="P"/>
     <filter token="VERSION_RUNTIME" value="0.4.0-snapshot"/>
@@ -51,7 +38,6 @@
     <javac destdir="${classes.dir}" debug="true" source="${javac.version}" target="${javac.version}">
       <classpath refid="build.classpath"/>
       <src path="${src.dir}"/>
-      <src path="${src.generated.dir}"/>
       <include name="**/*.java"/>
     </javac>
 
@@ -199,6 +185,5 @@
     <delete dir="${build.dir}"/>
     <delete file="${lib.dir}/ioke.jar" quiet="true"/>
     <delete file="${lib.dir}/ioke-lib.jar" quiet="true"/>
-    <delete dir="${src.generated.dir}"/>
   </target>
 </project>

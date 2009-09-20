@@ -8,8 +8,6 @@ import gnu.math.IntNum;
 import gnu.math.RatNum;
 
 import ioke.lang.exceptions.ControlFlow;
-import ioke.lang.parser.iokeLexer;
-import ioke.lang.parser.iokeParser;
 
 import ioke.lang.java.ClassRegistry;
 
