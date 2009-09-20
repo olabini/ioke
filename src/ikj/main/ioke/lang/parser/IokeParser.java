@@ -58,6 +58,14 @@ public class IokeParser {
                 last = c;
             }
         }
+
+        if(head != null) {
+            while(Message.isTerminator(head) && Message.next(head) != null) {
+                head = Message.next(head);
+                Message.setPrev(head, null);
+            }
+        }
+
         // System.err.println("-parseExpressions()");
         return head;
     }
@@ -391,7 +399,7 @@ public class IokeParser {
     }
 
     private IokeObject parseRegexpLiteral(int indicator) throws IOException {
-        System.err.println("parseRegexpLiteral()");
+        // System.err.println("parseRegexpLiteral()");
         StringBuilder sb = new StringBuilder();
         boolean slash = indicator == '/';
 
@@ -434,7 +442,7 @@ public class IokeParser {
                             break;
                         default:
                             args.add(sb.toString());
-                            System.err.println("-parseRegexpLiteral()");
+                            // System.err.println("-parseRegexpLiteral()");
                             return mm;
                         }
                     }
@@ -465,7 +473,7 @@ public class IokeParser {
                             break;
                         default:
                             args.add(sb.toString());
-                            System.err.println("-parseRegexpLiteral()");
+                            // System.err.println("-parseRegexpLiteral()");
                             return mm;
                         }
                     }
@@ -489,7 +497,6 @@ public class IokeParser {
                 }
                 break;
             case '\\':
-                System.err.println("got an escape inside of a regexp");
                 read();
                 parseRegexpEscape(sb);
                 break;
@@ -540,7 +547,6 @@ public class IokeParser {
                 break;
             case ']':
                 read();
-                sb.append((char)rr);
                 if(!dquote) {
                     args.add(sb.toString());
                     Message m = new Message(runtime, "internal:createText");
@@ -799,8 +805,14 @@ public class IokeParser {
                 sb.append((char)rr);
                 break;
                 default:
-                    Message m = new Message(runtime, sb.toString());
-                    return runtime.createMessage(m);
+                    IokeObject mx = runtime.createMessage(new Message(runtime, sb.toString()));
+                    if(rr == '(') {
+                        read();
+                        List<Object> args = parseExpressionChain();
+                        parseCharacter(')');
+                        Message.setArguments(mx, args);
+                    }
+                    return mx;
                 }
             }
         } else {
@@ -831,8 +843,14 @@ public class IokeParser {
                 sb.append((char)rr);
                 break;
                 default:
-                    Message m = new Message(runtime, sb.toString());
-                    return runtime.createMessage(m);
+                    IokeObject mx = runtime.createMessage(new Message(runtime, sb.toString()));
+                    if(rr == '(') {
+                        read();
+                        List<Object> args = parseExpressionChain();
+                        parseCharacter(')');
+                        Message.setArguments(mx, args);
+                    }
+                    return mx;
                 }
             }
         }
@@ -860,6 +878,7 @@ public class IokeParser {
                           (rr >= 'A' && rr <= 'F')) {
                         read();
                         sb.append((char)rr);
+                        rr = peek();
                     }
                 } else {
                     fail();

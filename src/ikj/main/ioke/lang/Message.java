@@ -911,14 +911,14 @@ public class Message extends IokeData {
         try {
             IokeParser parser = new IokeParser(runtime, reader);
             IokeObject m = parser.parseFully();
-            System.err.println("m:  " + m);
+            // System.err.println("m:  " + m);
             opShuffle(m);
-            // System.err.println("m2: " + m);
+            System.out.println("m: " + m);
             return m;
         } catch(Exception e) {
-//             System.err.println(e);
-//             System.err.println(e.getMessage());
-//             e.printStackTrace();
+            // System.err.println(e);
+            // System.err.println(e.getMessage());
+            // e.printStackTrace();
                        runtime.reportNativeException(e, message, context);
             return null;
         }
