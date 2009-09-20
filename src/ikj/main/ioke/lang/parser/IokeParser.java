@@ -492,7 +492,6 @@ public class IokeParser {
                     readWhiteSpace();
                     parseCharacter('}');
                 } else {
-                    read();
                     sb.append((char)'#');
                 }
                 break;
@@ -579,7 +578,6 @@ public class IokeParser {
                     readWhiteSpace();
                     parseCharacter('}');
                 } else {
-                    read();
                     sb.append((char)'#');
                 }
                 break;
@@ -866,6 +864,7 @@ public class IokeParser {
             rr = peek();
             if(rr == 'x' || rr == 'X') {
                 read();
+                sb.append((char)rr);
                 rr = peek();
                 if((rr >= '0' && rr <= '9') ||
                    (rr >= 'a' && rr <= 'f') ||
