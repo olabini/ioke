@@ -376,10 +376,9 @@ public class IokeParser {
                 }
                 break;
             case '\\':
+                read();
                 if(dquote) {
                     parseDoubleQuoteEscape(sb);
-                } else {
-                    parseOtherEscape(sb);
                 }
                 break;
             default:
@@ -390,6 +389,82 @@ public class IokeParser {
         }
 
         return null;
+    }
+
+    private void parseDoubleQuoteEscape(StringBuilder sb) {
+        sb.append('\\');
+        int rr = peek();
+        switch(rr) {
+        case 'u':
+            read();
+            sb.append((char)rr);
+            for(int i = 0; i < 4; i++) {
+                rr = peek();
+                if((rr >= '0' && rr <= '9') ||
+                   (rr >= 'a' && rr <= 'f') ||
+                   (rr >= 'A' && rr <= 'F')) {
+                    read();
+                    sb.append((char)rr);
+                } else {
+                    fail();
+                }
+            }
+            break;
+        case '0':
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '6':
+        case '7':
+            read();
+            sb.append((char)rr);
+            if(rr <= '3') {
+                rr = peek();
+                if(rr >= '0' && rr <= '7') {
+                    read();
+                    sb.append((char)rr);
+                    rr = peek();
+                    if(rr >= '0' && rr <= '7') {
+                        read();
+                        sb.append((char)rr);
+                    }
+                }
+            } else {
+                rr = peek();
+                if(rr >= '0' && rr <= '7') {
+                    read();
+                    sb.append((char)rr);
+                }
+            }
+            break;
+        case 'b':
+        case 't':
+        case 'n':
+        case 'f':
+        case 'r':
+        case '"':
+        case ']':
+        case '\\':
+        case '\n':
+        case '#':
+        case 'e':
+            read();
+            sb.append((char)rr);
+            break;
+        case '\r':
+            read();
+            sb.append((char)rr);
+            if((rr = peek()) == '\n') {
+                read();
+                sb.append((char)rr);
+            }
+            break;
+        default:
+            fail();
+            break;
+        }
     }
 
     private IokeObject parseOperatorChars(int indicator) {
