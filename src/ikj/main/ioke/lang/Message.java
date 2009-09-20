@@ -911,10 +911,9 @@ public class Message extends IokeData {
         try {
             IokeParser parser = new IokeParser(runtime, reader);
             IokeObject m = parser.parseFully();
-            System.err.println("got return value where base is : " + m.getName());
             System.err.println("m:  " + m);
             opShuffle(m);
-            System.err.println("m2: " + m);
+            // System.err.println("m2: " + m);
             return m;
         } catch(Exception e) {
 //             System.err.println(e);
