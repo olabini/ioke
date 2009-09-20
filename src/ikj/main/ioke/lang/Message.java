@@ -1652,4 +1652,37 @@ public class Message extends IokeData {
     public String toString(IokeObject self) {
         return code();
     }
+
+    public static void main(String[] args) throws Throwable {
+        final String filename = args[0];
+        System.out.println("Reading of file: \"" + filename + "\"");
+
+        final StringBuilder input = new StringBuilder();
+        final java.io.Reader reader = new java.io.FileReader(filename);
+        char[] buff = new char[1024];
+        int read = 0;
+        while(true) {
+            read = reader.read(buff);
+            input.append(buff,0,read);
+            if(read < 1024) {
+                break;
+            }
+        }
+        reader.close();
+
+        String s = input.toString();
+        Runtime r = new Runtime();
+        r.init();
+        final long before = System.currentTimeMillis();
+
+        for(int i=0;i<10000;i++) {
+            iokeParser parser = new iokeParser(new CommonTokenStream(new iokeLexer(new ANTLRReaderStream(new java.io.StringReader(s)))));
+            fromTree(r, parser.parseFully());
+        }
+
+        final long after = System.currentTimeMillis();
+        final long time = after-before;
+        final double timeS = (after-before)/1000.0;
+        System.out.println("Parsing the file 10000 times took " + time + "ms, or " + timeS + " seconds");
+    }
 }// Message
