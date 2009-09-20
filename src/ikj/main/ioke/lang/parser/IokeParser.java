@@ -7,6 +7,7 @@ import java.io.Reader;
 import java.io.LineNumberReader;
 import java.io.IOException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ioke.lang.IokeObject;
@@ -59,7 +60,25 @@ public class IokeParser {
     }
 
     private List<Object> parseExpressionChain() throws IOException {
-        return null;
+        List<Object> chain = new ArrayList<Object>();
+
+        IokeObject curr = parseExpressions();
+        while(curr != null) {
+            chain.add(curr);
+            readWhiteSpace();
+            int rr = peek();
+            if(rr == ',') {
+                read();
+                curr = parseExpressions();
+                if(curr == null) {
+                    fail();
+                }
+            } else {
+                curr = null;
+            }
+        }
+
+        return chain;
     }
 
     private int saved2 = -2;
