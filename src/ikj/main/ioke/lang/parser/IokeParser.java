@@ -28,13 +28,17 @@ public class IokeParser {
         private final String message;
 
         public SyntaxError(IokeParser outside, String message) {
-            this.line = outside.reader.getLineNumber();
-            this.character = outside.reader.getCharNumber();
+            this(outside, outside.lineNumber, outside.currentCharacter, message);
+        }
+
+        public SyntaxError(IokeParser outside, int line, int character, String message) {
+            this.line = line;
+            this.character = character;
             this.message = message;
         }
 
         public String getMessage() {
-            return "[line=" + line + ",offset=" + character + "] - " + message;
+            return "" + line + ":" + character + ": " + message;
         }
     }
 
@@ -42,11 +46,11 @@ public class IokeParser {
     //                    m.setPosition(tree.getCharPositionInLine());
 
     private final Runtime runtime;
-    final LineAndCharReader reader;
+    final Reader reader;
 
     public IokeParser(Runtime runtime, Reader reader) {
         this.runtime = runtime;
-        this.reader = new LineAndCharReader(reader);
+        this.reader = reader;
     }
 
     public IokeObject parseFully() throws IOException {
@@ -112,17 +116,59 @@ public class IokeParser {
         return chain;
     }
 
+    private int lineNumber = 1;
+    private int currentCharacter = -1;
+    private boolean skipLF = false;
+
     private int saved2 = -2;
     private int saved = -2;
+
     private int read() throws IOException {
         if(saved > -2) {
             int x = saved;
             saved = saved2;
             saved2 = -2;
+
+            if(skipLF) {
+                skipLF = false;
+                if(x == '\n') {
+                    return x;
+                }
+            }
+
+            currentCharacter++;
+
+            switch(x) {
+            case '\r':
+                skipLF = true;
+            case '\n':		/* Fall through */
+                lineNumber++;
+                currentCharacter = 0;
+            }
+
             //System.err.println(" read(): " + x + " (" + (char)x + ")");
             return x;
         }
+
         int xx = reader.read();
+
+        if(skipLF) {
+            skipLF = false;
+            if(xx == '\n') {
+                return xx;
+            }
+        }
+
+        currentCharacter++;
+
+        switch(xx) {
+        case '\r':
+            skipLF = true;
+        case '\n':		/* Fall through */
+            lineNumber++;
+            currentCharacter = 0;
+        }
+
         //System.err.println(" read(): " + xx + " (" + (char)xx + ")");
         return xx;
     }
@@ -270,6 +316,13 @@ public class IokeParser {
         }
     }
 
+    private void fail(int l, int c, String message) {
+        //System.err.println("GOT FAILURE:");
+        SyntaxError re = new SyntaxError(this, l, c, message);
+        //        re.printStackTrace();
+        throw re;
+    }
+
     private void fail(String message) {
         //System.err.println("GOT FAILURE:");
         SyntaxError re = new SyntaxError(this, message);
@@ -278,10 +331,13 @@ public class IokeParser {
     }
 
     private void parseCharacter(int c) throws IOException {
+        int l = lineNumber;
+        int cc = currentCharacter;
+
         readWhiteSpace();
         int rr = read();
         if(rr != c) {
-            fail("Expected: " + (char)c + " got: " + charDesc(rr));
+            fail(l, cc, "Expected: " + (char)c + " got: " + charDesc(rr));
         }
     }
 
