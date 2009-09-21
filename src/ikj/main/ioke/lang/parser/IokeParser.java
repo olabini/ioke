@@ -35,14 +35,14 @@ public class IokeParser {
     }
 
     public IokeObject parseFully() throws IOException {
-        // System.err.println("parseFully()");
+        //System.err.println("parseFully()");
         IokeObject result = parseExpressions();
-        // System.err.println("-parseFully()");
+        //System.err.println("-parseFully()");
         return result;
     }
 
     private IokeObject parseExpressions() throws IOException {
-        // System.err.println("parseExpressions()");
+        //System.err.println("parseExpressions()");
         IokeObject c = null;
         IokeObject last = null;
         IokeObject head = null;
@@ -65,12 +65,12 @@ public class IokeParser {
             }
         }
 
-        // System.err.println("-parseExpressions()");
+        //System.err.println("-parseExpressions()");
         return head;
     }
 
     private List<Object> parseExpressionChain() throws IOException {
-        // System.err.println("parseExpressionChain()");
+        //System.err.println("parseExpressionChain()");
         List<Object> chain = new ArrayList<Object>();
 
         IokeObject curr = parseExpressions();
@@ -89,7 +89,7 @@ public class IokeParser {
             }
         }
 
-        // System.err.println("-parseExpressionChain()");
+        //System.err.println("-parseExpressionChain()");
 
         return chain;
     }
@@ -101,11 +101,11 @@ public class IokeParser {
             int x = saved;
             saved = saved2;
             saved2 = -2;
-            // System.err.println(" read(): " + x + " (" + (char)x + ")");
+            //System.err.println(" read(): " + x + " (" + (char)x + ")");
             return x;
         }
         int xx = reader.read();
-        // System.err.println(" read(): " + xx + " (" + (char)xx + ")");
+        //System.err.println(" read(): " + xx + " (" + (char)xx + ")");
         return xx;
     }
 
@@ -132,11 +132,11 @@ public class IokeParser {
     }
 
     private IokeObject parseExpression() throws IOException {
-        // System.err.println("parseExpression()");
+        //System.err.println("parseExpression()");
         int rr;
         while(true) {
             rr = peek();
-            // System.err.println(" BLARG: " + rr);
+            // //System.err.println(" BLARG: " + rr);
             switch(rr) {
             case -1:
                 read();
@@ -252,7 +252,7 @@ public class IokeParser {
     }
 
     private void fail() {
-        System.err.println("GOT FAILURE:");
+        //System.err.println("GOT FAILURE:");
         RuntimeException re = new RuntimeException();
         re.printStackTrace();
         throw re;
@@ -267,50 +267,50 @@ public class IokeParser {
     }
 
     private IokeObject parseEmptyMessageSend() throws IOException {
-        // System.err.println("parseEmptyMessageSend()");
+        //System.err.println("parseEmptyMessageSend()");
         List<Object> args = parseExpressionChain();
         parseCharacter(')');
         IokeObject mx = runtime.createMessage(new Message(runtime, ""));
         Message.setArguments(mx, args);
-        // System.err.println("-parseEmptyMessageSend()");
+        //System.err.println("-parseEmptyMessageSend()");
         return mx;
     }
 
     private IokeObject parseSquareMessageSend() throws IOException {
-        // System.err.println("parseSquareMessageSend()");
+        //System.err.println("parseSquareMessageSend()");
         List<Object> args = parseExpressionChain();
         parseCharacter(']');
         IokeObject mx = runtime.createMessage(new Message(runtime, "[]"));
         Message.setArguments(mx, args);
-        // System.err.println("-parseSquareMessageSend()");
+        //System.err.println("-parseSquareMessageSend()");
         return mx;
     }
 
     private IokeObject parseCurlyMessageSend() throws IOException {
-        // System.err.println("parseCurlyMessageSend()");
+        //System.err.println("parseCurlyMessageSend()");
         List<Object> args = parseExpressionChain();
         parseCharacter('}');
         IokeObject mx = runtime.createMessage(new Message(runtime, "{}"));
         Message.setArguments(mx, args);
-        // System.err.println("-parseCurlyMessageSend()");
+        //System.err.println("-parseCurlyMessageSend()");
         return mx;
     }
 
     private IokeObject parseSetMessageSend() throws IOException {
-        // System.err.println("parseSetMessageSend()");
+        //System.err.println("parseSetMessageSend()");
         parseCharacter('{');
         List<Object> args = parseExpressionChain();
         parseCharacter('}');
         IokeObject mx = runtime.createMessage(new Message(runtime, "set"));
         Message.setArguments(mx, args);
-        // System.err.println("-parseSetMessageSend()");
+        //System.err.println("-parseSetMessageSend()");
         return mx;
     }
 
     private void parseComment() throws IOException {
-        // System.err.println("parseComment()");
+        //System.err.println("parseComment()");
         int rr;
-        while((rr = peek()) != '\n' && rr != '\r') {
+        while((rr = peek()) != '\n' && rr != '\r' && rr != -1) {
             read();
         }
     }
@@ -333,7 +333,7 @@ public class IokeParser {
 
 
     private IokeObject parseRange() throws IOException {
-        // System.err.println("parseRange()");
+        //System.err.println("parseRange()");
         int count = 2;
         read();
         int rr;
@@ -353,12 +353,12 @@ public class IokeParser {
         }
 
         Message m = new Message(runtime, result);
-        // System.err.println("-parseRange()");
+        //System.err.println("-parseRange()");
         return runtime.createMessage(m);
     }
 
     private IokeObject parseTerminator(int indicator) throws IOException {
-        // System.err.println("parseTerminator()");
+        //System.err.println("parseTerminator()");
         int rr;
         int rr2;
         if(indicator == '\r') {
@@ -382,12 +382,12 @@ public class IokeParser {
         }
 
         Message m = new Message(runtime, ".", null, Message.Type.TERMINATOR);
-        // System.err.println("-parseTerminator()");
+        //System.err.println("-parseTerminator()");
         return runtime.createMessage(m);
     }
 
     private void readWhiteSpace() throws IOException {
-        // System.err.println("readWhiteSpace()");
+        //System.err.println("readWhiteSpace()");
         int rr;
         while((rr = peek()) == ' ' ||
               rr == '\u0009' ||
@@ -398,7 +398,7 @@ public class IokeParser {
     }
 
     private IokeObject parseRegexpLiteral(int indicator) throws IOException {
-        // System.err.println("parseRegexpLiteral()");
+        //System.err.println("parseRegexpLiteral()");
         StringBuilder sb = new StringBuilder();
         boolean slash = indicator == '/';
 
@@ -441,7 +441,7 @@ public class IokeParser {
                             break;
                         default:
                             args.add(sb.toString());
-                            // System.err.println("-parseRegexpLiteral()");
+                            //System.err.println("-parseRegexpLiteral()");
                             return mm;
                         }
                     }
@@ -472,7 +472,7 @@ public class IokeParser {
                             break;
                         default:
                             args.add(sb.toString());
-                            // System.err.println("-parseRegexpLiteral()");
+                            //System.err.println("-parseRegexpLiteral()");
                             return mm;
                         }
                     }
@@ -507,9 +507,13 @@ public class IokeParser {
     }
 
     private IokeObject parseText(int indicator) throws IOException {
-        // System.err.println("parseText()");
+        //System.err.println("parseText()");
         StringBuilder sb = new StringBuilder();
         boolean dquote = indicator == '"';
+
+        if(!dquote) {
+            read();
+        }
 
         int rr;
         String name = "internal:createText";
@@ -771,7 +775,7 @@ public class IokeParser {
     }
 
     private IokeObject parseOperatorChars(int indicator) throws IOException {
-        // System.err.println("parseOperatorChars()");
+        //System.err.println("parseOperatorChars()");
         StringBuilder sb = new StringBuilder();
         sb.append((char)indicator);
         int rr;
@@ -862,7 +866,7 @@ public class IokeParser {
     }
 
     private IokeObject parseNumber(int indicator) throws IOException {
-        // System.err.println("parseNumber()");
+        // System.err.println("parseNumber("+indicator+")");
         boolean decimal = false;
         StringBuilder sb = new StringBuilder();
         sb.append((char)indicator);
@@ -906,6 +910,7 @@ public class IokeParser {
                         if((rr = peek()) == '-' || rr == '+') {
                             read();
                             sb.append((char)rr);
+                            rr = peek();
                         }
 
                         if(rr >= '0' && rr <= '9') {
@@ -926,9 +931,8 @@ public class IokeParser {
                 read();
                 sb.append((char)rr);
             }
-
             int r2 = peek2();
-            if(rr == '.' && r2 <= '0' && r2 >= '9') {
+            if(rr == '.' && r2 >= '0' && r2 <= '9') {
                 decimal = true;
                 sb.append((char)rr);
                 sb.append((char)r2);
@@ -944,6 +948,7 @@ public class IokeParser {
                     if((rr = peek()) == '-' || rr == '+') {
                         read();
                         sb.append((char)rr);
+                        rr = peek();
                     }
 
                     if(rr >= '0' && rr <= '9') {
@@ -961,11 +966,10 @@ public class IokeParser {
                 decimal = true;
                 read();
                 sb.append((char)rr);
-                read();
-                sb.append((char)rr);
                 if((rr = peek()) == '-' || rr == '+') {
                     read();
                     sb.append((char)rr);
+                    rr = peek();
                 }
 
                 if(rr >= '0' && rr <= '9') {
@@ -988,7 +992,7 @@ public class IokeParser {
     }
 
     private IokeObject parseRegularMessageSend(int indicator) throws IOException {
-        // System.err.println("parseRegularMessageSend()");
+        //System.err.println("parseRegularMessageSend()");
         StringBuilder sb = new StringBuilder();
         sb.append((char)indicator);
         int rr = -1;
@@ -998,7 +1002,7 @@ public class IokeParser {
         }
 
         IokeObject mx = runtime.createMessage(new Message(runtime, sb.toString()));
-        // System.err.println("creating new message: " + sb.toString());
+        //System.err.println("creating new message: " + sb.toString());
         int rr2 = rr;
         readWhiteSpace();
         rr = peek();
@@ -1012,7 +1016,7 @@ public class IokeParser {
             }
         }
 
-        // System.err.println("-parseRegularMessageSend() : " + mx);
+        //System.err.println("-parseRegularMessageSend() : " + mx);
 
         return mx;
     }
