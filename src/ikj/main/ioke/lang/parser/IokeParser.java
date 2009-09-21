@@ -229,6 +229,7 @@ public class IokeParser {
             case '\\':
                 read();
                 if((rr = peek()) == '\n') {
+                    read();
                     break;
                 } else {
                     fail("Expected newline after free-floating escape character");
