@@ -23,8 +23,25 @@ import ioke.lang.exceptions.ControlFlow;
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
 public class IokeParser {
+    public static class SyntaxError extends RuntimeException {
+        private final int line;
+        private final int character;
+        private final String file;
+        private final String message;
+
+        public SyntaxError(IokeParser outside, String message) {
+            this.line = -1;
+            this.character = -1;
+            this.file = "";
+            this.message = message;
+        }
+
+        public String getMessage() {
+            return this.message;
+        }
+    }
+
     // TODO: line numbers yay!
-    // TODO: good failures yay!
 
     private final Runtime runtime;
     private final LineNumberReader reader;
@@ -71,7 +88,7 @@ public class IokeParser {
 
     private List<Object> parseExpressionChain() throws IOException {
         //System.err.println("parseExpressionChain()");
-        List<Object> chain = new ArrayList<Object>();
+        ArrayList<Object> chain = new ArrayList<Object>();
 
         IokeObject curr = parseExpressions();
         while(curr != null) {
@@ -82,9 +99,12 @@ public class IokeParser {
                 read();
                 curr = parseExpressions();
                 if(curr == null) {
-                    fail();
+                    fail("Expected expression following comma");
                 }
             } else {
+                if(curr != null && Message.isTerminator(curr) && Message.next(curr) == null) {
+                    chain.remove(chain.size()-1);
+                }
                 curr = null;
             }
         }
@@ -211,7 +231,7 @@ public class IokeParser {
                 if((rr = peek()) == '\n') {
                     break;
                 } else {
-                    fail();
+                    fail("Expected newline after free-floating escape character");
                 }
             case '\r':
             case '\n':
@@ -251,10 +271,10 @@ public class IokeParser {
         }
     }
 
-    private void fail() {
+    private void fail(String message) {
         //System.err.println("GOT FAILURE:");
-        RuntimeException re = new RuntimeException();
-        re.printStackTrace();
+        SyntaxError re = new SyntaxError(this, message);
+        //        re.printStackTrace();
         throw re;
     }
 
@@ -262,7 +282,7 @@ public class IokeParser {
         readWhiteSpace();
         int rr = read();
         if(rr != c) {
-            fail();
+            fail("Expected: " + (char)c + " got: " + charDesc(rr));
         }
     }
 
@@ -278,20 +298,44 @@ public class IokeParser {
 
     private IokeObject parseSquareMessageSend() throws IOException {
         //System.err.println("parseSquareMessageSend()");
-        List<Object> args = parseExpressionChain();
-        parseCharacter(']');
+
+        int rr = peek();
+        int r2 = peek2();
         IokeObject mx = runtime.createMessage(new Message(runtime, "[]"));
-        Message.setArguments(mx, args);
+        if(rr == ']' && r2 == '(') {
+            read();
+            read();
+            List<Object> args = parseExpressionChain();
+            parseCharacter(')');
+            Message.setArguments(mx, args);
+        } else {
+            List<Object> args = parseExpressionChain();
+            parseCharacter(']');
+            Message.setArguments(mx, args);
+        }
+
         //System.err.println("-parseSquareMessageSend()");
         return mx;
     }
 
     private IokeObject parseCurlyMessageSend() throws IOException {
         //System.err.println("parseCurlyMessageSend()");
-        List<Object> args = parseExpressionChain();
-        parseCharacter('}');
+
+        int rr = peek();
+        int r2 = peek2();
         IokeObject mx = runtime.createMessage(new Message(runtime, "{}"));
-        Message.setArguments(mx, args);
+        if(rr == '}' && r2 == '(') {
+            read();
+            read();
+            List<Object> args = parseExpressionChain();
+            parseCharacter(')');
+            Message.setArguments(mx, args);
+        } else {
+            List<Object> args = parseExpressionChain();
+            parseCharacter('}');
+            Message.setArguments(mx, args);
+        }
+
         //System.err.println("-parseCurlyMessageSend()");
         return mx;
     }
@@ -415,7 +459,7 @@ public class IokeParser {
         while(true) {
             switch(rr = peek()) {
             case -1:
-                fail(); //Expected end of regexp
+                fail("Expected end of regular expression, found EOF");
                 break;
             case '/':
                 read();
@@ -522,7 +566,7 @@ public class IokeParser {
         while(true) {
             switch(rr = peek()) {
             case -1:
-                fail(); //Expected end of string
+                fail("Expected end of text, found EOF");
                 break;
             case '"':
                 read();
@@ -611,7 +655,7 @@ public class IokeParser {
                     read();
                     sb.append((char)rr);
                 } else {
-                    fail();
+                    fail("Expected four hexadecimal characters in unicode escape - got: " + charDesc(rr));
                 }
             }
             break;
@@ -693,7 +737,7 @@ public class IokeParser {
             }
             break;
         default:
-            fail();
+            fail("Undefined regular expression escape character: " + charDesc(rr));
             break;
         }
     }
@@ -713,7 +757,7 @@ public class IokeParser {
                     read();
                     sb.append((char)rr);
                 } else {
-                    fail();
+                    fail("Expected four hexadecimal characters in unicode escape - got: " + charDesc(rr));
                 }
             }
             break;
@@ -769,7 +813,7 @@ public class IokeParser {
             }
             break;
         default:
-            fail();
+            fail("Undefined text escape character: " + charDesc(rr));
             break;
         }
     }
@@ -891,7 +935,7 @@ public class IokeParser {
                         rr = peek();
                     }
                 } else {
-                    fail();
+                    fail("Expected at least one hexadecimal characters in hexadecimal number literal - got: " + charDesc(rr));
                 }
             } else {
                 int r2 = peek2();
@@ -921,7 +965,7 @@ public class IokeParser {
                                 sb.append((char)rr);
                             }
                         } else {
-                            fail();
+                            fail("Expected at least one decimal character following exponent specifier in number literal - got: " + charDesc(rr));
                         }
                     }
                 }
@@ -959,7 +1003,7 @@ public class IokeParser {
                             sb.append((char)rr);
                         }
                     } else {
-                        fail();
+                        fail("Expected at least one decimal character following exponent specifier in number literal - got: " + charDesc(rr));
                     }
                 }
             } else if(rr == 'e' || rr == 'E') {
@@ -980,7 +1024,7 @@ public class IokeParser {
                         sb.append((char)rr);
                     }
                 } else {
-                    fail();
+                    fail("Expected at least one decimal character following exponent specifier in number literal - got: " + charDesc(rr));
                 }
             }
         }
@@ -1054,6 +1098,14 @@ public class IokeParser {
                 (c>='\u0E50' && c<='\u0E59') ||
                 (c>='\u0ED0' && c<='\u0ED9') ||
                 (c>='\u1040' && c<='\u1049'));
+    }
+
+    private static String charDesc(int c) {
+        if(c == -1) {
+            return "EOF";
+        } else {
+            return "" + (char)c + "[" + c + "]";
+        }
     }
 
     public static void main(String[] args) throws Throwable {
