@@ -4,7 +4,6 @@
 package ioke.lang.parser;
 
 import java.io.Reader;
-import java.io.LineNumberReader;
 import java.io.IOException;
 
 import java.util.ArrayList;
@@ -26,29 +25,28 @@ public class IokeParser {
     public static class SyntaxError extends RuntimeException {
         private final int line;
         private final int character;
-        private final String file;
         private final String message;
 
         public SyntaxError(IokeParser outside, String message) {
-            this.line = -1;
-            this.character = -1;
-            this.file = "";
+            this.line = outside.reader.getLineNumber();
+            this.character = outside.reader.getCharNumber();
             this.message = message;
         }
 
         public String getMessage() {
-            return this.message;
+            return "[line=" + line + ",offset=" + character + "] - " + message;
         }
     }
 
-    // TODO: line numbers yay!
+    //                    m.setLine(tree.getLine());
+    //                    m.setPosition(tree.getCharPositionInLine());
 
     private final Runtime runtime;
-    private final LineNumberReader reader;
+    final LineAndCharReader reader;
 
     public IokeParser(Runtime runtime, Reader reader) {
         this.runtime = runtime;
-        this.reader = new LineNumberReader(reader);
+        this.reader = new LineAndCharReader(reader);
     }
 
     public IokeObject parseFully() throws IOException {
