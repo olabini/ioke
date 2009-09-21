@@ -873,15 +873,15 @@ public class Message extends IokeData {
         return pos;
     }
 
-    void setFile(String file) {
+    public void setFile(String file) {
         this.file = file;
     }
 
-    void setLine(int line) {
+    public void setLine(int line) {
         this.line = line;
     }
 
-    void setPosition(int pos) {
+    public void setPosition(int pos) {
         this.pos = pos;
     }
 
