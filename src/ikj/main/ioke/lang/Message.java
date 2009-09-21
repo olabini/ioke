@@ -922,10 +922,10 @@ public class Message extends IokeData {
             }
 
             IokeObject m = fromTree(runtime, t);
-            System.err.println("m: " + m);
+            // System.err.println("m: " + m);
 //                          System.err.println("m1: " + m);
             opShuffle(m);
-                         System.err.println("m2: " + m);
+                         // System.err.println("m2: " + m);
             return m;
         } catch(Exception e) {
 //             System.err.println(e);
