@@ -42,9 +42,6 @@ public class IokeParser {
         }
     }
 
-    //                    m.setLine(tree.getLine());
-    //                    m.setPosition(tree.getCharPositionInLine());
-
     private final Runtime runtime;
     final Reader reader;
 
@@ -343,9 +340,15 @@ public class IokeParser {
 
     private IokeObject parseEmptyMessageSend() throws IOException {
         //System.err.println("parseEmptyMessageSend()");
+        int l = lineNumber; int cc = currentCharacter-1;
         List<Object> args = parseExpressionChain();
         parseCharacter(')');
-        IokeObject mx = runtime.createMessage(new Message(runtime, ""));
+
+        Message m = new Message(runtime, "");
+        m.setLine(l);
+        m.setPosition(cc);
+
+        IokeObject mx = runtime.createMessage(m);
         Message.setArguments(mx, args);
         //System.err.println("-parseEmptyMessageSend()");
         return mx;
@@ -353,10 +356,16 @@ public class IokeParser {
 
     private IokeObject parseSquareMessageSend() throws IOException {
         //System.err.println("parseSquareMessageSend()");
+        int l = lineNumber; int cc = currentCharacter-1;
 
         int rr = peek();
         int r2 = peek2();
-        IokeObject mx = runtime.createMessage(new Message(runtime, "[]"));
+
+        Message m = new Message(runtime, "[]");
+        m.setLine(l);
+        m.setPosition(cc);
+
+        IokeObject mx = runtime.createMessage(m);
         if(rr == ']' && r2 == '(') {
             read();
             read();
@@ -376,9 +385,16 @@ public class IokeParser {
     private IokeObject parseCurlyMessageSend() throws IOException {
         //System.err.println("parseCurlyMessageSend()");
 
+        int l = lineNumber; int cc = currentCharacter-1;
+
         int rr = peek();
         int r2 = peek2();
-        IokeObject mx = runtime.createMessage(new Message(runtime, "{}"));
+
+        Message m = new Message(runtime, "{}");
+        m.setLine(l);
+        m.setPosition(cc);
+
+        IokeObject mx = runtime.createMessage(m);
         if(rr == '}' && r2 == '(') {
             read();
             read();
@@ -397,10 +413,18 @@ public class IokeParser {
 
     private IokeObject parseSetMessageSend() throws IOException {
         //System.err.println("parseSetMessageSend()");
+
+        int l = lineNumber; int cc = currentCharacter-1;
+
         parseCharacter('{');
         List<Object> args = parseExpressionChain();
         parseCharacter('}');
-        IokeObject mx = runtime.createMessage(new Message(runtime, "set"));
+
+        Message m = new Message(runtime, "set");
+        m.setLine(l);
+        m.setPosition(cc);
+
+        IokeObject mx = runtime.createMessage(m);
         Message.setArguments(mx, args);
         //System.err.println("-parseSetMessageSend()");
         return mx;
@@ -433,6 +457,8 @@ public class IokeParser {
 
     private IokeObject parseRange() throws IOException {
         //System.err.println("parseRange()");
+        int l = lineNumber; int cc = currentCharacter-1;
+
         int count = 2;
         read();
         int rr;
@@ -452,12 +478,16 @@ public class IokeParser {
         }
 
         Message m = new Message(runtime, result);
+        m.setLine(l);
+        m.setPosition(cc);
         //System.err.println("-parseRange()");
         return runtime.createMessage(m);
     }
 
     private IokeObject parseTerminator(int indicator) throws IOException {
         //System.err.println("parseTerminator()");
+        int l = lineNumber; int cc = currentCharacter-1;
+
         int rr;
         int rr2;
         if(indicator == '\r') {
@@ -481,6 +511,8 @@ public class IokeParser {
         }
 
         Message m = new Message(runtime, ".", null, Message.Type.TERMINATOR);
+        m.setLine(l);
+        m.setPosition(cc);
         //System.err.println("-parseTerminator()");
         return runtime.createMessage(m);
     }
@@ -500,6 +532,8 @@ public class IokeParser {
         //System.err.println("parseRegexpLiteral()");
         StringBuilder sb = new StringBuilder();
         boolean slash = indicator == '/';
+
+        int l = lineNumber; int cc = currentCharacter-1;
 
         read();
 
@@ -521,6 +555,8 @@ public class IokeParser {
                 if(slash) {
                     args.add(sb.toString());
                     Message m = new Message(runtime, "internal:createRegexp");
+                    m.setLine(l);
+                    m.setPosition(cc);
                     IokeObject mm = runtime.createMessage(m);
                     if(!name.equals("internal:createRegexp")) {
                         Message.setName(mm, name);
@@ -553,6 +589,8 @@ public class IokeParser {
                 if(!slash) {
                     args.add(sb.toString());
                     Message m = new Message(runtime, "internal:createRegexp");
+                    m.setLine(l);
+                    m.setPosition(cc);
                     IokeObject mm = runtime.createMessage(m);
                     if(!name.equals("internal:createRegexp")) {
                         Message.setName(mm, name);
@@ -610,6 +648,8 @@ public class IokeParser {
         StringBuilder sb = new StringBuilder();
         boolean dquote = indicator == '"';
 
+        int l = lineNumber; int cc = currentCharacter-1;
+
         if(!dquote) {
             read();
         }
@@ -628,12 +668,16 @@ public class IokeParser {
                 if(dquote) {
                     args.add(sb.toString());
                     Message m = new Message(runtime, "internal:createText");
+                    m.setLine(l);
+                    m.setPosition(cc);
                     IokeObject mm = runtime.createMessage(m);
                     if(!name.equals("internal:createText")) {
                         for(int i = 0; i<args.size(); i++) {
                             Object o = args.get(i);
                             if(o instanceof String) {
                                 Message mx = new Message(runtime, "internal:createText", o);
+                                mx.setLine(l);
+                                mx.setPosition(cc);
                                 IokeObject mmx = runtime.createMessage(mx);
                                 args.set(i, mmx);
                             }
@@ -651,12 +695,16 @@ public class IokeParser {
                 if(!dquote) {
                     args.add(sb.toString());
                     Message m = new Message(runtime, "internal:createText");
+                    m.setLine(l);
+                    m.setPosition(cc);
                     IokeObject mm = runtime.createMessage(m);
                     if(!name.equals("internal:createText")) {
                         for(int i = 0; i<args.size(); i++) {
                             Object o = args.get(i);
                             if(o instanceof String) {
                                 Message mx = new Message(runtime, "internal:createText", o);
+                                mx.setLine(l);
+                                mx.setPosition(cc);
                                 IokeObject mmx = runtime.createMessage(mx);
                                 args.set(i, mmx);
                             }
@@ -875,6 +923,9 @@ public class IokeParser {
 
     private IokeObject parseOperatorChars(int indicator) throws IOException {
         //System.err.println("parseOperatorChars()");
+
+        int l = lineNumber; int cc = currentCharacter-1;
+
         StringBuilder sb = new StringBuilder();
         sb.append((char)indicator);
         int rr;
@@ -905,7 +956,10 @@ public class IokeParser {
                 sb.append((char)rr);
                 break;
                 default:
-                    IokeObject mx = runtime.createMessage(new Message(runtime, sb.toString()));
+                    Message m = new Message(runtime, sb.toString());
+                    m.setLine(l);
+                    m.setPosition(cc);
+                    IokeObject mx = runtime.createMessage(m);
                     if(rr == '(') {
                         read();
                         List<Object> args = parseExpressionChain();
@@ -943,7 +997,10 @@ public class IokeParser {
                 sb.append((char)rr);
                 break;
                 default:
-                    IokeObject mx = runtime.createMessage(new Message(runtime, sb.toString()));
+                    Message m = new Message(runtime, sb.toString());
+                    m.setLine(l);
+                    m.setPosition(cc);
+                    IokeObject mx = runtime.createMessage(m);
 
                     int rr2 = rr;
                     readWhiteSpace();
@@ -966,6 +1023,7 @@ public class IokeParser {
 
     private IokeObject parseNumber(int indicator) throws IOException {
         // System.err.println("parseNumber("+indicator+")");
+        int l = lineNumber; int cc = currentCharacter-1;
         boolean decimal = false;
         StringBuilder sb = new StringBuilder();
         sb.append((char)indicator);
@@ -1087,11 +1145,14 @@ public class IokeParser {
         // TODO: add unit specifier here
 
         Message m = decimal ? new Message(runtime, "internal:createDecimal", sb.toString()) : new Message(runtime, "internal:createNumber", sb.toString());
+        m.setLine(l);
+        m.setPosition(cc);
         return runtime.createMessage(m);
     }
 
     private IokeObject parseRegularMessageSend(int indicator) throws IOException {
         //System.err.println("parseRegularMessageSend()");
+        int l = lineNumber; int cc = currentCharacter-1;
         StringBuilder sb = new StringBuilder();
         sb.append((char)indicator);
         int rr = -1;
@@ -1099,8 +1160,10 @@ public class IokeParser {
             read();
             sb.append((char)rr);
         }
-
-        IokeObject mx = runtime.createMessage(new Message(runtime, sb.toString()));
+        Message m = new Message(runtime, sb.toString());
+        m.setLine(l);
+        m.setPosition(cc);
+        IokeObject mx = runtime.createMessage(m);
         //System.err.println("creating new message: " + sb.toString());
         int rr2 = rr;
         readWhiteSpace();
