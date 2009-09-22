@@ -23,44 +23,27 @@ import ioke.lang.exceptions.ControlFlow;
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
 public class IokeParser {
-    public static class SyntaxError extends RuntimeException {
-        private final int line;
-        private final int character;
-        private final String message;
-        private final String file;
+    private final Runtime runtime;
+    private final Reader reader;
 
-        public SyntaxError(IokeParser outside, String message) {
-            this(outside, outside.lineNumber, outside.currentCharacter, message);
-        }
+    private final IokeObject context;
+    private final IokeObject message;
 
-        public SyntaxError(IokeParser outside, int line, int character, String message) {
-            this.line = line;
-            this.character = character;
-            this.file = ((IokeSystem)IokeObject.data(outside.runtime.system)).currentFile();
-            this.message = message;
-        }
-
-        public String getMessage() {
-            return file + ":" + line + ":" + character + ": " + message;
-        }
-    }
-
-    final Runtime runtime;
-    final Reader reader;
-
-    public IokeParser(Runtime runtime, Reader reader) {
+    public IokeParser(Runtime runtime, Reader reader, IokeObject context, IokeObject message) {
         this.runtime = runtime;
         this.reader = reader;
+        this.context = context;
+        this.message = message;
     }
 
-    public IokeObject parseFully() throws IOException {
+    public IokeObject parseFully() throws IOException, ControlFlow {
         //System.err.println("parseFully()");
         IokeObject result = parseExpressions();
         //System.err.println("-parseFully()");
         return result;
     }
 
-    private IokeObject parseExpressions() throws IOException {
+    private IokeObject parseExpressions() throws IOException, ControlFlow {
         //System.err.println("parseExpressions()");
         IokeObject c = null;
         IokeObject last = null;
@@ -88,7 +71,7 @@ public class IokeParser {
         return head;
     }
 
-    private List<Object> parseExpressionChain() throws IOException {
+    private List<Object> parseExpressionChain() throws IOException, ControlFlow {
         //System.err.println("parseExpressionChain()");
         ArrayList<Object> chain = new ArrayList<Object>();
 
@@ -195,7 +178,7 @@ public class IokeParser {
         return saved2;
     }
 
-    private IokeObject parseExpression() throws IOException {
+    private IokeObject parseExpression() throws IOException, ControlFlow {
         //System.err.println("parseExpression()");
         int rr;
         while(true) {
@@ -316,32 +299,50 @@ public class IokeParser {
         }
     }
 
-    private void fail(int l, int c, String message) {
-        //System.err.println("GOT FAILURE:");
-        SyntaxError re = new SyntaxError(this, l, c, message);
-        //        re.printStackTrace();
-        throw re;
+    private void fail(int l, int c, String message, String expected, String got) throws ControlFlow {
+        String file = ((IokeSystem)IokeObject.data(runtime.system)).currentFile();
+
+        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition,
+                                                                           this.message,
+                                                                           this.context,
+                                                                           "Error",
+                                                                           "Parser",
+                                                                           "Syntax"), this.context).mimic(this.message, this.context);
+        condition.setCell("message", this.message);
+        condition.setCell("context", this.context);
+        condition.setCell("receiver", this.context);
+
+        if(expected != null) {
+            condition.setCell("expected", runtime.newText(expected));
+        }
+
+        if(got != null) {
+            condition.setCell("got", runtime.newText(got));
+        }
+
+        condition.setCell("file", runtime.newText(file));
+        condition.setCell("line", runtime.newNumber(l));
+        condition.setCell("character", runtime.newNumber(c));
+        condition.setCell("text", runtime.newText(file + ":" + l + ":" + c + ": " + message));
+        runtime.errorCondition(condition);
     }
 
-    private void fail(String message) {
-        //System.err.println("GOT FAILURE:");
-        SyntaxError re = new SyntaxError(this, message);
-        //        re.printStackTrace();
-        throw re;
+    private void fail(String message) throws ControlFlow {
+        fail(lineNumber, currentCharacter, message, null, null);
     }
 
-    private void parseCharacter(int c) throws IOException {
+    private void parseCharacter(int c) throws IOException, ControlFlow {
         int l = lineNumber;
         int cc = currentCharacter;
 
         readWhiteSpace();
         int rr = read();
         if(rr != c) {
-            fail(l, cc, "Expected: '" + (char)c + "' got: " + charDesc(rr));
+            fail(l, cc, "Expected: '" + (char)c + "' got: " + charDesc(rr), "" + (char)c, charDesc(rr));
         }
     }
 
-    private IokeObject parseEmptyMessageSend() throws IOException {
+    private IokeObject parseEmptyMessageSend() throws IOException, ControlFlow {
         //System.err.println("parseEmptyMessageSend()");
         int l = lineNumber; int cc = currentCharacter-1;
         List<Object> args = parseExpressionChain();
@@ -357,7 +358,7 @@ public class IokeParser {
         return mx;
     }
 
-    private IokeObject parseSquareMessageSend() throws IOException {
+    private IokeObject parseSquareMessageSend() throws IOException, ControlFlow {
         //System.err.println("parseSquareMessageSend()");
         int l = lineNumber; int cc = currentCharacter-1;
 
@@ -385,7 +386,7 @@ public class IokeParser {
         return mx;
     }
 
-    private IokeObject parseCurlyMessageSend() throws IOException {
+    private IokeObject parseCurlyMessageSend() throws IOException, ControlFlow {
         //System.err.println("parseCurlyMessageSend()");
 
         int l = lineNumber; int cc = currentCharacter-1;
@@ -414,7 +415,7 @@ public class IokeParser {
         return mx;
     }
 
-    private IokeObject parseSetMessageSend() throws IOException {
+    private IokeObject parseSetMessageSend() throws IOException, ControlFlow {
         //System.err.println("parseSetMessageSend()");
 
         int l = lineNumber; int cc = currentCharacter-1;
@@ -531,7 +532,7 @@ public class IokeParser {
         }
     }
 
-    private IokeObject parseRegexpLiteral(int indicator) throws IOException {
+    private IokeObject parseRegexpLiteral(int indicator) throws IOException, ControlFlow {
         //System.err.println("parseRegexpLiteral()");
         StringBuilder sb = new StringBuilder();
         boolean slash = indicator == '/';
@@ -646,7 +647,7 @@ public class IokeParser {
         }
     }
 
-    private IokeObject parseText(int indicator) throws IOException {
+    private IokeObject parseText(int indicator) throws IOException, ControlFlow {
         //System.err.println("parseText()");
         StringBuilder sb = new StringBuilder();
         boolean dquote = indicator == '"';
@@ -746,7 +747,7 @@ public class IokeParser {
         }
     }
 
-    private void parseRegexpEscape(StringBuilder sb) throws IOException {
+    private void parseRegexpEscape(StringBuilder sb) throws IOException, ControlFlow {
         sb.append('\\');
         int rr = peek();
         switch(rr) {
@@ -848,7 +849,7 @@ public class IokeParser {
         }
     }
 
-    private void parseDoubleQuoteEscape(StringBuilder sb) throws IOException {
+    private void parseDoubleQuoteEscape(StringBuilder sb) throws IOException, ControlFlow {
         sb.append('\\');
         int rr = peek();
         switch(rr) {
@@ -924,7 +925,7 @@ public class IokeParser {
         }
     }
 
-    private IokeObject parseOperatorChars(int indicator) throws IOException {
+    private IokeObject parseOperatorChars(int indicator) throws IOException, ControlFlow {
         //System.err.println("parseOperatorChars()");
 
         int l = lineNumber; int cc = currentCharacter-1;
@@ -1024,7 +1025,7 @@ public class IokeParser {
         }
     }
 
-    private IokeObject parseNumber(int indicator) throws IOException {
+    private IokeObject parseNumber(int indicator) throws IOException, ControlFlow {
         // System.err.println("parseNumber("+indicator+")");
         int l = lineNumber; int cc = currentCharacter-1;
         boolean decimal = false;
@@ -1153,7 +1154,7 @@ public class IokeParser {
         return runtime.createMessage(m);
     }
 
-    private IokeObject parseRegularMessageSend(int indicator) throws IOException {
+    private IokeObject parseRegularMessageSend(int indicator) throws IOException, ControlFlow {
         //System.err.println("parseRegularMessageSend()");
         int l = lineNumber; int cc = currentCharacter-1;
         StringBuilder sb = new StringBuilder();
@@ -1256,7 +1257,7 @@ public class IokeParser {
         final long before = System.currentTimeMillis();
 
         for(int i=0;i<10000;i++) {
-            new IokeParser(r, new java.io.StringReader(s)).parseFully();
+            new IokeParser(r, new java.io.StringReader(s), null, null).parseFully();
         }
 
         final long after = System.currentTimeMillis();

@@ -909,7 +909,7 @@ public class Message extends IokeData {
 
     public static IokeObject newFromStream(Runtime runtime, Reader reader, IokeObject message, IokeObject context) throws ControlFlow {
         try {
-            IokeParser parser = new IokeParser(runtime, reader);
+            IokeParser parser = new IokeParser(runtime, reader, context, message);
             IokeObject m = parser.parseFully();
 
             if(m == null) {

@@ -66,6 +66,16 @@ ISpec do(
     unless(signalled mimics?(condition),
       error!(ISpec ExpectationNotMet, text: "expected #{condition} to be signalled in #{realValue code} - got #{signalled}", shouldMessage: self shouldMessage)))
 
+  ShouldContext signalArgument = method(+:arguments,
+    signalled = "none"
+    bind(
+      rescue(Ground Condition Error, fn(c, signalled = c)),
+      realValue call)
+
+    arguments each(p,
+      signalled cell(p key) should == p value
+  ))
+
   ShouldContext offer = method(theRestart,
     rst = Ground nil
     bind(
@@ -149,6 +159,15 @@ ISpec do(
 
     if(signalled mimics?(condition),
       error!(ISpec ExpectationNotMet, text: "expected #{condition} to not be signalled in #{realValue code} - got #{signalled}", shouldMessage: self shouldMessage)))
+
+  NotShouldContext signalArgument = method(+:arguments,
+    signalled = "none"
+    bind(
+      rescue(Ground Condition Error, fn(c, signalled = c)),
+      realValue call)
+
+    arguments each(p,
+      signalled cell(p key) should not == p value))
 
   NotShouldContext mimic = method(value,
     if(realValue mimics?(value),
