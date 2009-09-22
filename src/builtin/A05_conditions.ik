@@ -16,6 +16,7 @@ Condition Error NativeException  = Condition Error mimic
 Condition Error Parser           = Condition Error mimic
 
 
+Condition Error Parser Syntax                          = Condition Error Parser mimic
 Condition Error Parser OpShuffle                       = Condition Error Parser mimic
 
 Condition Error CommandLine DontUnderstandOption       = Condition Error CommandLine mimic
