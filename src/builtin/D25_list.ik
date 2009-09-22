@@ -59,7 +59,7 @@ List ?& = dmacro(
     call argAt(0),
     self))
 
-List do(=== = generateMatchMethod(include?))
+List do(=== = generateMatchMethod(==))
 
 List compact = method(
   "returns a new list that is a mimic of the current list, except that all nils are removed from it",
