@@ -15,6 +15,7 @@ import ioke.lang.Runtime;
 import ioke.lang.Dict;
 import ioke.lang.Number;
 import ioke.lang.Symbol;
+import ioke.lang.IokeSystem;
 import ioke.lang.exceptions.ControlFlow;
 
 /**
@@ -26,6 +27,7 @@ public class IokeParser {
         private final int line;
         private final int character;
         private final String message;
+        private final String file;
 
         public SyntaxError(IokeParser outside, String message) {
             this(outside, outside.lineNumber, outside.currentCharacter, message);
@@ -34,15 +36,16 @@ public class IokeParser {
         public SyntaxError(IokeParser outside, int line, int character, String message) {
             this.line = line;
             this.character = character;
+            this.file = ((IokeSystem)IokeObject.data(outside.runtime.system)).currentFile();
             this.message = message;
         }
 
         public String getMessage() {
-            return "" + line + ":" + character + ": " + message;
+            return file + ":" + line + ":" + character + ": " + message;
         }
     }
 
-    private final Runtime runtime;
+    final Runtime runtime;
     final Reader reader;
 
     public IokeParser(Runtime runtime, Reader reader) {
@@ -334,7 +337,7 @@ public class IokeParser {
         readWhiteSpace();
         int rr = read();
         if(rr != c) {
-            fail(l, cc, "Expected: " + (char)c + " got: " + charDesc(rr));
+            fail(l, cc, "Expected: '" + (char)c + "' got: " + charDesc(rr));
         }
     }
 
@@ -1221,8 +1224,12 @@ public class IokeParser {
     private static String charDesc(int c) {
         if(c == -1) {
             return "EOF";
+        } else if(c == 9) {
+            return "TAB";
+        } else if(c == 10 || c == 13) {
+            return "EOL";
         } else {
-            return "" + (char)c + "[" + c + "]";
+            return "'" + (char)c + "'";
         }
     }
 
