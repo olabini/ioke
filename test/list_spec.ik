@@ -871,13 +871,13 @@ describe(List,
     it("should return false for something not in the list", 
       ([] === :foo) should be false
       ([1] === 2) should be false
-      ([1, :foo, "bar"] === 2) should be false
+      ([1, :foo, "bar"] === [2]) should be false
     )
 
-    it("should return true for something in the list", 
-      ([:foo] === :foo) should be true
-      ([1, 2] === 2) should be true
-      ([2, 1, :foo, "bar"] === 2) should be true
+    it("should return true for the same list",
+      ([:foo] === [:foo]) should be true
+      ([1, 2] === [1,2]) should be true
+      ([2, 1, :foo, "bar"] === [2, 1, :foo, "bar"]) should be true
     )
 
     it("should return true when called against List and the other is a list",
