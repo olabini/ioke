@@ -10,15 +10,10 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 
-import org.antlr.runtime.tree.Tree;
-
 import ioke.lang.parser.Levels;
 import ioke.lang.parser.IokeParser;
 
 import ioke.lang.exceptions.ControlFlow;
-
-import org.antlr.runtime.ANTLRReaderStream;
-import org.antlr.runtime.CommonTokenStream;
 
 /**
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
