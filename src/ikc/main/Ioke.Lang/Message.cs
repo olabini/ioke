@@ -5,8 +5,6 @@ namespace Ioke.Lang {
     using System.Collections.Generic;
     using System.IO;
     using System.Text;
-    using Antlr.Runtime;
-    using Antlr.Runtime.Tree;
     using Ioke.Lang.Parser;
     using Ioke.Lang.Util;
 
@@ -48,6 +46,10 @@ namespace Ioke.Lang {
 
         public void SetArguments(IList value) {
             this.arguments = value;
+        }
+
+        public static void SetArguments(object o, IList value) {
+            ((Message)IokeObject.dataOf(o)).arguments = value;
         }
 
         public static bool IsTerminator(object message) {
@@ -287,322 +289,25 @@ namespace Ioke.Lang {
 
         public static IokeObject NewFromStream(Runtime runtime, TextReader reader, IokeObject message, IokeObject context) {
             try {
-                iokeParser parser = new iokeParser(new CommonTokenStream(new iokeLexer(new ANTLRReaderStream(reader))));
-//                  Console.Error.WriteLine("parseFully ...");
-                ITree t = parser.parseFully();
-//                  Console.Error.WriteLine("t: " + t.ToStringTree());
+                IokeParser parser = new IokeParser(runtime, reader, context, message);
+                IokeObject m = parser.ParseFully();
 
-                if(t == null) {
+                if(m == null) {
                     Message mx = new Message(runtime, ".", null, Type.TERMINATOR);
                     mx.Line = 0;
                     mx.Position = 0;
                     return runtime.CreateMessage(mx);
                 }
 
-                IokeObject m = FromTree(runtime, t);
-//                  Console.Error.WriteLine("m: " + m);
-
-//                 Console.Error.WriteLine("m1: " + m);
                 OpShuffle(m);
-//                 Console.Error.WriteLine("m2: " + m);
-
                 return m;
+            } catch(ControlFlow cf) {
+                // Pass through!
+                throw cf;
             } catch(Exception e) {
                 runtime.ReportNativeException(e, message, context);
                 return null;
             }
-        }
-
-
-        public static IokeObject FromTree(Runtime runtime, ITree tree) {
-//             Console.Error.WriteLine(" fromTree(" + tree.ToStringTree() + ")");
-            Message m = null;
-            int argStart = 0;
-
-            if(!tree.IsNil) {
-                switch(tree.Type) {
-                case iokeParser.RegexpLiteral: {
-                    string s = tree.Text;
-                    char first = s[0];
-                    char second = s[1];
-                    char last = s[s.Length-1];
-                    if(first == '#' && last != '{') {
-                        if(second == 'r') {
-                            int lastIndex = s.LastIndexOf(']');
-                            m = new Message(runtime, "internal:createRegexp", s.Substring(3, lastIndex-3));
-                            m.arguments.Add(s.Substring(lastIndex+1));
-                        } else {
-                            int lastIndex = s.LastIndexOf('/');
-                            m = new Message(runtime, "internal:createRegexp", s.Substring(2, lastIndex-2));
-                            m.arguments.Add(s.Substring(lastIndex+1));
-                        }
-                        m.Line = tree.Line;
-                        m.Position = tree.CharPositionInLine;
-                        return runtime.CreateMessage(m);
-                    } else if(first == '}' && last == '{') {
-                        m = new Message(runtime, "internal:createText", s.Substring(1, s.Length-3), Type.MIDDLE_RE_INTERPOLATION);
-                        m.Line = tree.Line;
-                        m.Position = tree.CharPositionInLine;
-                        return runtime.CreateMessage(m);
-                    } else if(first == '}') {
-                        int lastIndex = s.LastIndexOf('/');
-                        if(lastIndex == -1) {
-                            lastIndex = s.LastIndexOf(']');
-                        }
-                        m = new Message(runtime, "internal:createText", s.Substring(1, lastIndex-1), Type.END_RE_INTERPOLATION);
-                        m.arguments.Add(s.Substring(lastIndex+1));
-                        m.Line = tree.Line;
-                        m.Position = tree.CharPositionInLine;
-                        return runtime.CreateMessage(m);
-                    } else {
-                        m = new Message(runtime, "internal:createText", s.Substring(2, s.Length-4), Type.START_RE_INTERPOLATION);
-                        m.Line = tree.Line;
-                        m.Position = tree.CharPositionInLine;
-                        return runtime.CreateMessage(m);
-                    }
-                }
-                case iokeParser.StringLiteral: {
-                    string s = tree.Text;
-                    char first = s[0];
-                    char last = s[s.Length-1];
-                    if(first == '"' && last == '"') {
-                        m = new Message(runtime, "internal:createText", s.Substring(1, s.Length-2));
-                        m.Line = tree.Line;
-                        m.Position = tree.CharPositionInLine;
-                        return runtime.CreateMessage(m);
-                    } else if(first == '#' && last == ']') {
-                        m = new Message(runtime, "internal:createText", s.Substring(2, s.Length-3));
-                        m.Line = tree.Line;
-                        m.Position = tree.CharPositionInLine;
-                        return runtime.CreateMessage(m);
-                    } else {
-                        if(first == '}' && (last == '"' || last == ']')) { // This is an ending
-                            m = new Message(runtime, "internal:createText", s.Substring(1, s.Length-2), Type.END_INTERPOLATION);
-                            m.Line = tree.Line;
-                            m.Position = tree.CharPositionInLine;
-                            return runtime.CreateMessage(m);
-                        } else if(first == '"') { // This is a beginning
-                            m = new Message(runtime, "internal:createText", s.Substring(1, s.Length-3), Type.START_INTERPOLATION);
-                            m.Line = tree.Line;
-                            m.Position = tree.CharPositionInLine;
-                            return runtime.CreateMessage(m);
-                        } else if(first == '#') { // This is a beginning
-                            m = new Message(runtime, "internal:createText", s.Substring(2, s.Length-4), Type.START_INTERPOLATION);
-                            m.Line = tree.Line;
-                            m.Position = tree.CharPositionInLine;
-                            return runtime.CreateMessage(m);
-                        } else { // This is in the middle
-                            m = new Message(runtime, "internal:createText", s.Substring(1, s.Length-3), Type.MIDDLE_INTERPOLATION);
-                            m.Line = tree.Line;
-                            m.Position = tree.CharPositionInLine;
-                            return runtime.CreateMessage(m);
-                        }
-                    }
-                }
-                case iokeParser.NumberLiteral:
-                    m = new Message(runtime, "internal:createNumber", tree.Text);
-                    m.Line = tree.Line;
-                    m.Position = tree.CharPositionInLine;
-                    return runtime.CreateMessage(m);
-                case iokeParser.DecimalLiteral:
-                    m = new Message(runtime, "internal:createDecimal", tree.Text);
-                    m.Line = tree.Line;
-                    m.Position = tree.CharPositionInLine;
-                    return runtime.CreateMessage(m);
-                case iokeParser.UnitLiteral: {
-                    string text = tree.Text;
-                    int ending = text.Length-1;
-                    while(!Char.IsDigit(text[ending])) {
-                        ending--;
-                    }
-                    Message mex = new Message(runtime, "internal:createNumber", text.Substring(0, ending+1));
-                    mex.Line = tree.Line;
-                    mex.Position = tree.CharPositionInLine;
-                    m = new Message(runtime, "internal:createUnit", runtime.CreateMessage(mex));
-                    m.Line = tree.Line;
-                    m.Position = tree.CharPositionInLine;
-                    return runtime.CreateMessage(m);
-                }
-                case iokeParser.UnitDecimalLiteral: {
-                    string text = tree.Text;
-                    int ending = text.Length-1;
-                    while(!Char.IsDigit(text[ending])) {
-                        ending--;
-                    }
-                    Message mex = new Message(runtime, "internal:createDecimal", text.Substring(0, ending+1));
-                    mex.Line = tree.Line;
-                    mex.Position = tree.CharPositionInLine;
-                    m = new Message(runtime, "internal:createUnit", mex);
-                    m.Line = tree.Line;
-                    m.Position = tree.CharPositionInLine;
-                    return runtime.CreateMessage(m);
-                }
-                case iokeParser.Identifier:
-                    m = new Message(runtime, tree.Text);
-                    m.Line = tree.Line;
-                    m.Position = tree.CharPositionInLine;
-                    return runtime.CreateMessage(m);
-                case iokeParser.Terminator:
-                    m = new Message(runtime, ".", null, Type.TERMINATOR);
-                    m.Line = tree.Line;
-                    m.Position = tree.CharPositionInLine;
-                    return runtime.CreateMessage(m);
-                case iokeParser.Comma:
-                    m = new Message(runtime, ",", null, Type.SEPARATOR);
-                    m.Line = tree.Line;
-                    m.Position = tree.CharPositionInLine;
-                    return runtime.CreateMessage(m);
-                case iokeParser.MESSAGE: {
-                    string text = tree.GetChild(0).Text;
-                    m = new Message(runtime, text);
-                    int count = tree.ChildCount;
-                    argStart = 1;
-                    if(count > 1) {
-                        int diff = tree.GetChild(1).CharPositionInLine - (tree.CharPositionInLine+text.Length);
-                        if(diff != 0) {
-                            m.type = Type.DETACH;
-                        }
-                        argStart = 2;
-                    }
-
-                    break;
-                }
-                default:
-                    Console.Error.WriteLine("ERROR: Can't handle " + tree + " : " + tree.Type);
-                    return null;
-                }
-                
-                m.Line = tree.Line;
-                m.Position = tree.CharPositionInLine;
-            } 
-
-            IokeObject mx = m == null ? (IokeObject)null : runtime.CreateMessage(m);
-
-            object head = null;
-            IList<IokeObject> currents = new SaneList<IokeObject>();
-
-            IList<IList<IokeObject>> oldCurrents = new SaneList<IList<IokeObject>>();
-            IList<object> oldHeads = new SaneList<object>();
-            IList<IokeObject> oldMx = new SaneList<IokeObject>();
-
-            for(int i=argStart,j=tree.ChildCount; i<j; i++) {
-                IokeObject created = FromTree(runtime, tree.GetChild(i));
-
-                switch(Message.typeOf(created)) {
-                case Type.START_INTERPOLATION:{
-                    Message mvv = new Message(runtime, "internal:concatenateText");
-                    mvv.Line = tree.Line;
-                    mvv.Position = tree.CharPositionInLine;
-                    oldCurrents.Insert(0, currents);
-                    oldHeads.Insert(0, head);
-                    oldMx.Insert(0, mx);
-
-                    currents = new SaneList<IokeObject>();
-                    head = created;
-                    mx = runtime.CreateMessage(mvv);
-
-                    created = runtime.CreateMessage(new Message(runtime, ",", null, Type.SEPARATOR));
-                    break;
-                }
-                case Type.START_RE_INTERPOLATION:{
-                    Message mvv = new Message(runtime, "internal:compositeRegexp");
-                    mvv.Line = tree.Line;
-                    mvv.Position = tree.CharPositionInLine;
-                    oldCurrents.Insert(0, currents);
-                    oldHeads.Insert(0, head);
-                    oldMx.Insert(0, mx);
-
-                    currents = new SaneList<IokeObject>();
-                    head = created.Arguments[0];
-                    mx = runtime.CreateMessage(mvv);
-
-                    created = runtime.CreateMessage(new Message(runtime, ",", null, Type.SEPARATOR));
-                    break;
-                }
-                case Type.MIDDLE_INTERPOLATION:
-                    mx.Arguments.Add(head);
-
-                    currents.Clear();
-                    head = created;
-
-                    created = runtime.CreateMessage(new Message(runtime, ",", null, Type.SEPARATOR));
-                    break;
-                case Type.MIDDLE_RE_INTERPOLATION:
-                    mx.Arguments.Add(head);
-
-                    currents.Clear();
-                    head = created.Arguments[0];
-
-                    created = runtime.CreateMessage(new Message(runtime, ",", null, Type.SEPARATOR));
-                    break;
-                case Type.END_INTERPOLATION:
-                    mx.Arguments.Add(head);
-                    mx.Arguments.Add(created);
-
-                    currents = oldCurrents[0];
-                    oldCurrents.RemoveAt(0);
-
-                    head = oldHeads[0];
-                    oldHeads.RemoveAt(0);
-
-                    created = mx;
-
-                    mx = oldMx[0];
-                    oldMx.RemoveAt(0);
-
-                    break;
-                case Type.END_RE_INTERPOLATION:
-                    mx.Arguments.Add(head);
-                    mx.Arguments.Add(created.Arguments[0]);
-                    mx.Arguments.Add(created.Arguments[1]);
-
-                    currents = oldCurrents[0];
-                    oldCurrents.RemoveAt(0);
-
-                    head = oldHeads[0];
-                    oldHeads.RemoveAt(0);
-
-                    created = mx;
-
-                    mx = oldMx[0];
-                    oldMx.RemoveAt(0);
-                    break;
-                }
-
-                if(Message.typeOf(created) == Type.TERMINATOR && head == null && currents.Count == 0) {
-                    continue;
-                }
-
-                if(Message.typeOf(created) == Type.SEPARATOR && mx != null) {
-                    mx.Arguments.Add(head);
-                    currents.Clear();
-                    head = null;
-                } else {
-                    if(Message.typeOf(created) == Type.TERMINATOR && currents.Count > 1) {
-                        while(currents.Count > 1) {
-                            currents.RemoveAt(0);
-                        }
-                    }
-                    Message.SetPrev(created, currents.Count > 0 ? currents[0] : null);
-                    
-                    if(head == null && Message.typeOf(created) != Type.TERMINATOR) {
-                        head = created;
-                    }
-
-                    if(currents.Count > 0) {
-                        Message.SetNextOfLast(currents[0], created);
-                        currents[0] = created;
-                    } else {
-                        currents.Insert(0, created);
-                    }
-                }
-            }
-
-            if(mx != null && head != null) {
-                mx.Arguments.Add(head);
-            }
-
-            return mx == null ? (IokeObject)head : mx;
         }
 
         public static string Code(IokeObject message) {

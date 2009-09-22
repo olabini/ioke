@@ -145,11 +145,19 @@ bar" should == "foobar"
     )
 
     it("should not parse correctly when mismatched",
-      fn(parse("foo([1, 2)]")) should signal(Condition Error NativeException)
+      fn(parse("foo([1, 2)]")) should signal(Condition Error Parser Syntax)
+      fn(parse("foo([1, 2)]")) should signalArgument(line: 1)
+      fn(parse("foo([1, 2)]")) should signalArgument(character: 8)
+      fn(parse("foo([1, 2)]")) should signalArgument(expected: "]")
+      fn(parse("foo([1, 2)]")) should signalArgument(got: "')'")
     )
 
     it("should not parse correctly when missing end",  
-      fn(parse("[1, 2")) should signal(Condition Error NativeException)
+      fn(parse("[1, 2")) should signal(Condition Error Parser Syntax)
+      fn(parse("[1, 2")) should signalArgument(line: 1)
+      fn(parse("[1, 2")) should signalArgument(character: 5)
+      fn(parse("[1, 2")) should signalArgument(expected: "]")
+      fn(parse("[1, 2")) should signalArgument(got: "EOF")
     )
   )
   
@@ -215,11 +223,19 @@ bar" should == "foobar"
     )
 
     it("should not parse correctly when mismatched",  
-      fn(parse("foo({1, 2)}")) should signal(Condition Error NativeException)
+      fn(parse("foo({1, 2)}")) should signal(Condition Error Parser Syntax)
+      fn(parse("foo({1, 2)}")) should signalArgument(line: 1)
+      fn(parse("foo({1, 2)}")) should signalArgument(character: 8)
+      fn(parse("foo({1, 2)}")) should signalArgument(expected: "}")
+      fn(parse("foo({1, 2)}")) should signalArgument(got: "')'")
     )
 
     it("should not parse correctly when missing end",  
-      fn(parse("{1, 2")) should signal(Condition Error NativeException)
+      fn(parse("{1, 2")) should signal(Condition Error Parser Syntax)
+      fn(parse("{1, 2")) should signalArgument(line: 1)
+      fn(parse("{1, 2")) should signalArgument(character: 5)
+      fn(parse("{1, 2")) should signalArgument(expected: "}")
+      fn(parse("{1, 2")) should signalArgument(got: "EOF")
     )
   )
 
