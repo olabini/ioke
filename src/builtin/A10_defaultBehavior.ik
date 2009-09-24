@@ -132,7 +132,7 @@ DefaultBehavior FlowControl with = macro(
   newObject = mimic
   call arguments each(arg, 
     if(arg keyword?, 
-      newObject cell(arg name asText[0..0-2]) = arg next evaluateOn(call ground),
+      Reflector other:cell(newObject, arg name asText[0..0-2]) = arg next evaluateOn(call ground),
       newObject doMessage(arg)))
   newObject)
 
