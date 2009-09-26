@@ -1,0 +1,88 @@
+Generators
+-----------------------------------
+
+Names: Generators, Iterators, Sequences??? Will be called Generators in this document, but not decided.
+
+A protocol - you need to implement a method that returns a new Generator. Assume this method is called "generator".
+
+each will have as an additional protocol that it will call "generator" if given no arguments.
+
+Generator = Origin mimic do(
+  next = method()
+  next? = method()
+  reset! = method()
+
+  mapped         = macro(Generator Map          create(call))
+  collected      = macro(Generator Map          create(call))
+  sorted         = macro(Generator Sort         create(call))
+  sortedBy       = macro(Generator SortBy       create(call))
+  folded         = macro(Generator Fold         create(call))
+  injected       = macro(Generator Fold         create(call))
+  reduced        = macro(Generator Fold         create(call))
+  filtered       = macro(Generator Filter       create(call))
+  selected       = macro(Generator Filter       create(call))
+  grepped        = macro(Generator Grep         create(call))
+  zipped         = macro(Generator Zip          create(call))
+  dropped        = macro(Generator Drop         create(call))
+  droppedWhile   = macro(Generator DropWhile    create(call))
+  rejected       = macro(Generator Reject       create(call))
+
+  each = method(
+    ; implemented in terms of next and next?
+  )
+
+  mimic!(Mixins Enumerable)
+)
+
+Generator Filter    = Generator mimic do()
+Generator Map       = Generator mimic do()
+Generator Sort      = Generator mimic do()
+Generator SortBy    = Generator mimic do()
+Generator Fold      = Generator mimic do()
+Generator Grep      = Generator mimic do()
+Generator Zip       = Generator mimic do()
+Generator Drop      = Generator mimic do()
+Generator DropWhile = Generator mimic do()
+Generator Reject    = Generator mimic do()
+
+generators are lazy. each will realize the sequence. all enumerable methods will realize the sequence.
+
+The methods on generators are methods that are similar to all the methods on Enumerable that can return a collection of things.
+Typical examples are "map", "sort", "sortBy", "fold", "filter". These methods have counterparts on Generator that return new Generators that will lazily do the operation.
+
+The actual method names will be changed. There are a few alternatives. generatorMap is clunky. gen:map is also clunky.
+The best alternatives are putting the method name in past tense:
+  map    ->    mapped
+  sort   ->    sorted
+  fold   ->    folded
+  filter ->    filtered
+
+The other alternative is to add "By"
+  map    ->    mapBy
+  sort   ->    sortBy
+  fold   ->    foldBy
+  filter ->    filterBy
+This has the disadvantage of overlapping with sortBy on Enumerable.
+
+We can also combine past tense with "By":
+  map    ->    mappedBy
+  sort   ->    sortedBy
+  fold   ->    foldedBy
+  filter ->    filteredBy
+
+This once again doesn't explain what to do with sortBy.
+
+The final alternative is to use the word lazy:
+  map    ->    mapLazy
+  sort   ->    sortLazy
+  fold   ->    foldLazy
+  filter ->    filterLazy
+
+  map    ->    lazyMap
+  sort   ->    lazySort
+  fold   ->    lazyFold
+  filter ->    lazyFilter
+
+
+I still prefer the past tense though.
+
