@@ -13,6 +13,12 @@ namespace Ioke.Lang {
             }
         }
 
+        public class Sequenced {
+            public static void Init(IokeObject obj) {
+                obj.Kind = "Mixins Sequenced";
+            }
+        }
+
         public static void Init(IokeObject obj) {
             Runtime runtime = obj.runtime;
             obj.Kind = "Mixins";
@@ -35,6 +41,12 @@ namespace Ioke.Lang {
             enumerable.MimicsWithoutCheck(obj);
             Enumerable.Init(enumerable);
             obj.RegisterCell("Enumerable", enumerable);
+
+            IokeObject sequenced = new IokeObject(obj.runtime, "something that is sequenced can return a Sequence over itself. it also allows several other methods to be defined in terms of that sequence. A Sequenced object is Enumerable, since all Enumerable operations can be defined in terms of sequencing.");
+            sequenced.MimicsWithoutCheck(obj);
+            sequenced.MimicsWithoutCheck(enumerable);
+            Sequenced.Init(sequenced);
+            obj.RegisterCell("Sequenced", sequenced);
         }
     }
 }

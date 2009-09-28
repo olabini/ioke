@@ -381,6 +381,7 @@ namespace Ioke.Lang {
                 EvaluateString("use(\"builtin/F20_set\")", Message, Ground);
                 EvaluateString("use(\"builtin/F25_cond\")", Message, Ground);
                 EvaluateString("use(\"builtin/F30_enumerable\")", Message, Ground);
+                EvaluateString("use(\"builtin/F32_sequence\")", Message, Ground);
 
                 EvaluateString("use(\"builtin/G05_aspects\")", Message, Ground);
                 EvaluateString("use(\"builtin/G10_origin\")", Message, Ground);

@@ -350,6 +350,7 @@ public class Runtime extends IokeData {
             evaluateString("use(\"builtin/F20_set\")", message, ground);
             evaluateString("use(\"builtin/F25_cond\")", message, ground);
             evaluateString("use(\"builtin/F30_enumerable\")", message, ground);
+            evaluateString("use(\"builtin/F32_sequence\")", message, ground);
 
             evaluateString("use(\"builtin/G05_aspects\")", message, ground);
             evaluateString("use(\"builtin/G10_origin\")", message, ground);
