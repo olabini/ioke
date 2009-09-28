@@ -66,6 +66,16 @@ describe(Message,
     )
   )
 
+  describe("==",
+    it("should have tests")
+    it("should not judge as equal two messages with the same name")
+    it("should not care about filename")
+    it("should not care about linenumber")
+    it("should not care about previous pointer")
+    it("should include the next pointer in tests for equality")
+    it("should include the arguments in tests for equality")
+  )
+
   describe("code", 
     it("should return a text representation of itself", 
       Message fromText("foo") code should == "foo"
