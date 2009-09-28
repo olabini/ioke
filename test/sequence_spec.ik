@@ -1,6 +1,11 @@
 
 use("ispec")
 
+SequenceHelper = Origin mimic do(
+  initialize = method(@called = false)
+  mapped = macro(@called = true. @callInfo = call. 42)
+)
+
 describe(Mixins,
   describe(Mixins Sequenced,
     it("should be Enumerable",
@@ -14,7 +19,17 @@ describe(Mixins,
     )
 
     describe("mapped",
-      it("should resend the call with all arguments to the result of calling seq")
+      it("should resend the call with all arguments to the result of calling seq", {pending: true},
+        x = Origin mimic
+        x mimic!(Mixins Sequenced)
+        seqObj = SequenceHelper mimic
+        x mock!(:seq) andReturn(seqObj)
+
+        x mapped(foo, bar x * 43) should == 42
+
+        seqObj called should be true
+        seqObj callInfo arguments should == ['foo, '(bar x * 43)]
+      )
     )
 
     describe("collected",
