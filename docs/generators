@@ -86,3 +86,13 @@ The final alternative is to use the word lazy:
 
 I still prefer the past tense though.
 
+
+
+
+
+
+Look at interaction with Enumerable and what happens when you mimic Generator
+Also:
+ make versions of all methods that uses the generator method:
+
+ Generator mapped = macro(x = self generator. call resendTo(x, :mapped))

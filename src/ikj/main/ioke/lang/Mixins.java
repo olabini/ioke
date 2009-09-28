@@ -5,6 +5,7 @@ package ioke.lang;
 
 import ioke.lang.mixins.Comparing;
 import ioke.lang.mixins.Enumerable;
+import ioke.lang.mixins.Sequenced;
 
 import ioke.lang.exceptions.ControlFlow;
 
@@ -34,5 +35,11 @@ public class Mixins {
         enumerable.mimicsWithoutCheck(mixins);
         Enumerable.init(enumerable);
         mixins.registerCell("Enumerable", enumerable);
+
+        IokeObject sequenced = new IokeObject(mixins.runtime, "something that is sequenced can return a Sequence over itself. it also allows several other methods to be defined in terms of that sequence. A Sequenced object is Enumerable, since all Enumerable operations can be defined in terms of sequencing.");
+        sequenced.mimicsWithoutCheck(mixins);
+        sequenced.mimicsWithoutCheck(enumerable);
+        Sequenced.init(sequenced);
+        mixins.registerCell("Sequenced", sequenced);
     }
 }// Mixins
