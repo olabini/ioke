@@ -5,6 +5,13 @@ Message from = dmacro(
   [code]
   code deepCopy)
 
+Message == = method(other,
+  other mimics?(Message)           &&
+     @name == other name           &&
+     @arguments == other arguments &&
+     @next == other next)
+
+
 Message do(=== = generateMatchMethod(==))
 
 Message OperatorTable withOperator = dmacro(
