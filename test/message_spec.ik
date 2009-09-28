@@ -67,13 +67,64 @@ describe(Message,
   )
 
   describe("==",
-    it("should have tests")
-    it("should not judge as equal two messages with the same name")
-    it("should not care about filename")
-    it("should not care about linenumber")
-    it("should not care about previous pointer")
-    it("should include the next pointer in tests for equality")
-    it("should include the arguments in tests for equality")
+    it("should use name as a basis for equality",
+      'foo should not == 'bar
+      'foo should not == 'foox
+      'foo should == 'foo
+      'flobibar should == 'flobibar
+    )
+
+    it("should not care about previous pointer",
+      x1 = '(abc def)
+      x2 = 'def
+      x3 = '(foo def)
+      x1 next should == x2
+      x2 should == x1 next
+      x3 next should == x1 next
+      x3 next should == x2
+    )
+
+    it("should include the next pointer in tests for equality",
+      x1 = '(abc def)
+      x2 = '(abc)
+      x3 = '(abc def. foo)
+      x4 = '(abc() def())
+      x1 should == x4
+      x1 should not == x2
+      x1 should not == x3
+      x2 should not == x1
+      x2 should not == x3
+      x2 should not == x4
+      x3 should not == x1
+      x3 should not == x2
+      x3 should not == x4
+      x4 should not == x1
+      x4 should not == x2
+      x4 should not == x3
+    )
+
+    it("should include the arguments in tests for equality",
+      x1 = '(foo() bar())
+      x2 = '(foo(bar) bar())
+      x3 = 'foo(bar x, bar x)
+      x4 = 'foo(bar() x(), bar() x)
+
+      x1 should not == x2
+      x1 should not == x3
+      x1 should not == x4
+
+      x2 should not == x1
+      x2 should not == x3
+      x2 should not == x4
+
+      x3 should not == x1
+      x3 should not == x2
+      x3 should == x4
+
+      x4 should not == x1
+      x4 should not == x2
+      x4 should == x3
+    )
   )
 
   describe("code", 
