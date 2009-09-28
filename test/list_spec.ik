@@ -773,6 +773,12 @@ describe(List,
       ["1"] should == ["1"]
       [1,2,3,4,5,6,7] should == [1,2,3,4,5,6,7]
     )
+
+    it("should do the comparison using recursive applications of ==", {pending: true},
+      x = Origin mimic
+      x == = method(o, o == 42)
+      [x] should == [42]
+    )
   )
   
   describe("clear!", 
