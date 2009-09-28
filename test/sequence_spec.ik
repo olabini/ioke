@@ -3,7 +3,10 @@ use("ispec")
 
 describe(Mixins,
   describe(Mixins Sequenced,
-    it("should be Enumerable")
+    it("should be Enumerable",
+      ;; gymnastics necessary since we don't have the should method or mimics method on Mixins
+      (Reflector other:mimics(Mixins Sequenced)[1] == Mixins Enumerable) should be true
+    )
 
     describe("each",
       it("should be implemented in terms of 'seq'")
@@ -69,7 +72,9 @@ describe(Mixins,
 )
 
 describe(Sequence,
-  it("should be Enumerable")
+  it("should be Enumerable",
+    Sequence should mimic(Mixins Enumerable)
+  )
 
   describe("each",
     it("should have tests")
