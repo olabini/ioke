@@ -247,7 +247,7 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
 
     let mutable stack : Level list = []
 
-    let (pool : Level array) = Array.zero_create OP_LEVEL_MAX
+    let (pool : Level array) = Array.zeroCreate OP_LEVEL_MAX
 
     let mutable currentLevel = 0
     
@@ -470,7 +470,7 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
             Message.SetNext(attaching, Message.GetNext(last))
             Message.SetNext(msg, Message.GetNext(last))
             
-            if last <> msg then
+            if not(Object.ReferenceEquals(last, msg)) then
                 Message.SetNext(last, null)
         else
             Message.SetNext(attaching, Message.GetNext(msg))
