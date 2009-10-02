@@ -382,9 +382,10 @@ namespace Ioke.Lang {
                 bool result = (other is IokeObject) && (self.Cells == IokeObject.As(other, self).Cells);
                 return result;
             } else {
-                bool result = IokeObject.IsObjectTrue(((Message)IokeObject.dataOf(self.runtime.eqMessage)).SendTo(self.runtime.eqMessage, self.runtime.Ground, self, other));
+                bool result = IokeObject.IsObjectTrue(((Message)IokeObject.dataOf(self.runtime.eqMessage)).SendTo(self.runtime.eqMessage, self.runtime.Ground, self, self.runtime.CreateMessage(Message.Wrap(IokeObject.As(other, self)))));
                 return result;
             }
+
         }
 
         public virtual int HashCode(IokeObject self) {
