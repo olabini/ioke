@@ -58,6 +58,31 @@ public class Range extends IokeData {
         obj.setKind("Range");
         obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Enumerable"), null), runtime.nul, runtime.nul);
 
+        obj.registerMethod(runtime.newNativeMethod("returns true if the left hand side range is equal to the right hand side range.", new TypeCheckingNativeMethod("==") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
+                    .builder()
+                    .receiverMustMimic(runtime.range)
+                    .withRequiredPositional("other")
+                    .getArguments();
+
+                @Override
+                public TypeCheckingArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+                    Range d = (Range)IokeObject.data(on);
+                    Object other = args.get(0);
+                    return ((other instanceof IokeObject) &&
+                            (IokeObject.data(other) instanceof Range)
+                            && d.inclusive == ((Range)IokeObject.data(other)).inclusive
+                            && d.from.equals(((Range)IokeObject.data(other)).from)
+                            && d.to.equals(((Range)IokeObject.data(other)).to)) ? context.runtime._true : context.runtime._false;
+                }
+            }));
+
         obj.registerMethod(runtime.newNativeMethod("will return a new inclusive Range based on the two arguments", new NativeMethod("inclusive") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
@@ -340,15 +365,6 @@ public class Range extends IokeData {
 
     public static String getNotice(Object on) throws ControlFlow {
         return ((Range)(IokeObject.data(on))).notice(on);
-    }
-
-    @Override
-    public boolean isEqualTo(IokeObject self, Object other) {
-        return ((other instanceof IokeObject) && 
-                (IokeObject.data(other) instanceof Range) 
-                && this.inclusive == ((Range)IokeObject.data(other)).inclusive
-                && this.from.equals(((Range)IokeObject.data(other)).from)
-                && this.to.equals(((Range)IokeObject.data(other)).to));
     }
 
     public String inspect(Object obj) throws ControlFlow {
