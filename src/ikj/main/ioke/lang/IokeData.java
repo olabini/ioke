@@ -120,7 +120,7 @@ public abstract class IokeData {
             boolean result = (other instanceof IokeObject) && (self.getCells() == IokeObject.as(other, self).getCells());
             return result;
         } else {
-            boolean result = IokeObject.isTrue(((Message)IokeObject.data(self.runtime.eqMessage)).sendTo(self.runtime.eqMessage, self.runtime.ground, self, other));
+            boolean result = IokeObject.isTrue(((Message)IokeObject.data(self.runtime.eqMessage)).sendTo(self.runtime.eqMessage, self.runtime.ground, self, self.runtime.createMessage(Message.wrap(IokeObject.as(other, self)))));
             return result;
         }
     }
