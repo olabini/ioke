@@ -57,7 +57,7 @@ namespace Ioke.Lang {
         }
 
         public void MimicsWithoutCheck(IokeObject mimic) {
-            if(!this.mimics.Contains(mimic)) {
+            if(!Contains(this.mimics, mimic)) {
                 this.mimics.Add(mimic);
             }
         }
@@ -442,7 +442,7 @@ namespace Ioke.Lang {
             CheckFrozen("mimic!", message, context);
 
             mimic.data.CheckMimic(mimic, message, context);
-            if(!this.mimics.Contains(mimic)) {
+            if(!Contains(this.mimics, mimic)) {
                 this.mimics.Add(mimic);
                 if(mimic.hooks != null) {
                     Hook.FireMimicked(mimic, message, context, this);
@@ -458,7 +458,7 @@ namespace Ioke.Lang {
             CheckFrozen("prependMimic!", message, context);
 
             mimic.data.CheckMimic(mimic, message, context);
-            if(!this.mimics.Contains(mimic)) {
+            if(!Contains(this.mimics, mimic)) {
                 this.mimics.Insert(index, mimic);
                 if(mimic.hooks != null) {
                     Hook.FireMimicked(mimic, message, context, this);
@@ -548,7 +548,7 @@ namespace Ioke.Lang {
         }
 
         public object GetOrActivate(IokeObject context, IokeObject message, object on) {
-            if(IsActivatable || ((data is AssociatedCode) && message.Arguments.Count > 0)) {
+            if(IsActivatable || ((data is CanRun) && message.Arguments.Count > 0)) {
                 return Activate(context, message, on);
             } else {
                 return this;
@@ -728,12 +728,21 @@ namespace Ioke.Lang {
             }
         }
 
+        public static bool Contains(IList<IokeObject> l, IokeObject obj) {
+            foreach(IokeObject p in l) {
+                if(p == obj) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         private bool IsMimic(IokeObject pot) {
             if(this.marked) {
                 return false;
             }
 
-            if(this.cells == pot.cells || mimics.Contains(pot)) {
+            if(this.cells == pot.cells || Contains(mimics, pot)) {
                 return true;
             }
 
