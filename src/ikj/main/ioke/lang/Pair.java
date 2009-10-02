@@ -5,6 +5,7 @@ package ioke.lang;
 
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 
 import ioke.lang.exceptions.ControlFlow;
 
@@ -44,6 +45,30 @@ public class Pair extends IokeData {
         obj.setKind("Pair");
         obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Enumerable"), null), runtime.nul, runtime.nul);
         obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Comparing"), null), runtime.nul, runtime.nul);
+
+        obj.registerMethod(runtime.newNativeMethod("returns true if the left hand side pair is equal to the right hand side pair.", new TypeCheckingNativeMethod("==") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
+                    .builder()
+                    .receiverMustMimic(runtime.pair)
+                    .withRequiredPositional("other")
+                    .getArguments();
+
+                @Override
+                public TypeCheckingArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+                    Pair d = (Pair)IokeObject.data(on);
+                    Object other = args.get(0);
+                    return ((other instanceof IokeObject) &&
+                            (IokeObject.data(other) instanceof Pair)
+                            && d.first.equals(((Pair)IokeObject.data(other)).first)
+                            && d.second.equals(((Pair)IokeObject.data(other)).second)) ? context.runtime._true : context.runtime._false;
+                }
+            }));
 
         obj.registerMethod(runtime.newNativeMethod("Returns the first value", new TypeCheckingNativeMethod.WithNoArguments("first", runtime.pair) {
                 @Override
@@ -99,14 +124,6 @@ public class Pair extends IokeData {
 
     public static String getNotice(Object on) throws ControlFlow {
         return ((Pair)(IokeObject.data(on))).notice(on);
-    }
-
-    @Override
-    public boolean isEqualTo(IokeObject self, Object other) {
-        return ((other instanceof IokeObject) && 
-                (IokeObject.data(other) instanceof Pair) 
-                && this.first.equals(((Pair)IokeObject.data(other)).first)
-                && this.second.equals(((Pair)IokeObject.data(other)).second));
     }
 
     @Override

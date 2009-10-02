@@ -46,6 +46,30 @@ public class Dict extends IokeData {
 
         obj.setKind("Dict");
         obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Enumerable"), null), runtime.nul, runtime.nul);
+
+        obj.registerMethod(runtime.newNativeMethod("returns true if the left hand side dictionary is equal to the right hand side dictionary.", new TypeCheckingNativeMethod("==") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
+                    .builder()
+                    .receiverMustMimic(runtime.dict)
+                    .withRequiredPositional("other")
+                    .getArguments();
+
+                @Override
+                public TypeCheckingArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+                    Object other = args.get(0);
+                    return ((other instanceof IokeObject) &&
+                            (IokeObject.data(other) instanceof Dict) &&
+                            ((Dict)IokeObject.data(on)).dict.equals(((Dict)IokeObject.data(other)).dict)) ? context.runtime._true : context.runtime._false;
+                }
+            }));
+
+
         obj.registerMethod(runtime.newNativeMethod("takes one argument, that should be a default value, and returns a new mimic of the receiver, with the default value for that new dict set to the argument", new TypeCheckingNativeMethod("withDefault") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
@@ -277,13 +301,6 @@ public class Dict extends IokeData {
 
     public IokeData cloneData(IokeObject obj, IokeObject m, IokeObject context) {
         return new Dict(new HashMap<Object, Object>(dict));
-    }
-
-    @Override
-    public boolean isEqualTo(IokeObject self, Object other) {
-        return ((other instanceof IokeObject) && 
-                (IokeObject.data(other) instanceof Dict) 
-                && this.dict.equals(((Dict)IokeObject.data(other)).dict));
     }
 
     @Override

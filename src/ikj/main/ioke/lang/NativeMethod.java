@@ -14,7 +14,7 @@ import ioke.lang.exceptions.ControlFlow;
  *
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
-public abstract class NativeMethod extends Method {
+public abstract class NativeMethod extends Method implements CanRun {
     public static class WithNoArguments extends NativeMethod {
         private final static DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition.empty();
 

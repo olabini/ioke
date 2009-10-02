@@ -34,7 +34,30 @@ public class Text extends IokeData {
 
         obj.setKind("Text");
         obj.mimics(IokeObject.as(obj.runtime.mixins.getCell(null, null, "Comparing"), null), obj.runtime.nul, obj.runtime.nul);
-        obj.setCell("==",        runtime.base.getCells().get("=="));
+
+        obj.registerMethod(runtime.newNativeMethod("returns true if the left hand side text is equal to the right hand side text.", new TypeCheckingNativeMethod("==") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
+                    .builder()
+                    .receiverMustMimic(runtime.text)
+                    .withRequiredPositional("other")
+                    .getArguments();
+
+                @Override
+                public TypeCheckingArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+                    Object other = args.get(0);
+                    String real = Text.getText(on);
+                    return (((other instanceof IokeObject) &&
+                             (IokeObject.data(other) instanceof Text)
+                             && ((on == self.runtime.text || other == self.runtime.text) ? on == other :
+                                 real.equals(((Text)IokeObject.data(other)).text)))) ? context.runtime._true : context.runtime._false;
+                }
+            }));
 
         obj.registerMethod(obj.runtime.newNativeMethod("Returns a text representation of the object", new NativeMethod.WithNoArguments("asText") {
                 @Override
@@ -755,14 +778,6 @@ public class Text extends IokeData {
     @Override
     public IokeObject tryConvertToText(IokeObject self, IokeObject m, IokeObject context) {
         return self;
-    }
-
-    @Override
-    public boolean isEqualTo(IokeObject self, Object other) {
-        return ((other instanceof IokeObject) && 
-                (IokeObject.data(other) instanceof Text) 
-                && ((self == self.runtime.text || other == self.runtime.text) ? self == other :
-                    this.text.equals(((Text)IokeObject.data(other)).text)));
     }
 
     @Override

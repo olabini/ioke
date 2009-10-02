@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Iterator;
+import java.util.HashMap;
 
 import ioke.lang.exceptions.ControlFlow;
 
@@ -42,6 +43,28 @@ public class IokeList extends IokeData {
 
         obj.setKind("List");
         obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Enumerable"), null), runtime.nul, runtime.nul);
+
+        obj.registerMethod(runtime.newNativeMethod("returns true if the left hand side list is equal to the right hand side list.", new TypeCheckingNativeMethod("==") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
+                    .builder()
+                    .receiverMustMimic(runtime.list)
+                    .withRequiredPositional("other")
+                    .getArguments();
+
+                @Override
+                public TypeCheckingArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+                    Object other = args.get(0);
+                    return (((other instanceof IokeObject) &&
+                             (IokeObject.data(other) instanceof IokeList) &&
+                             ((IokeList)IokeObject.data(on)).list.equals(((IokeList)IokeObject.data(other)).list))) ? context.runtime._true : context.runtime._false;
+                }
+            }));
 
         obj.registerMethod(obj.runtime.newNativeMethod("Returns a text inspection of the object", new TypeCheckingNativeMethod.WithNoArguments("inspect", runtime.list) {
                 @Override
@@ -973,13 +996,6 @@ public class IokeList extends IokeData {
 
     public IokeData cloneData(IokeObject obj, IokeObject m, IokeObject context) {
         return new IokeList(new ArrayList<Object>(list));
-    }
-
-    @Override
-    public boolean isEqualTo(IokeObject self, Object other) {
-        return ((other instanceof IokeObject) && 
-                (IokeObject.data(other) instanceof IokeList) 
-                && this.list.equals(((IokeList)IokeObject.data(other)).list));
     }
 
     @Override

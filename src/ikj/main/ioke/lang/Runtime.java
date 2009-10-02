@@ -41,6 +41,8 @@ public class Runtime extends IokeData {
 
     public boolean debug = false;
     private final int id = getNextId();
+    // NOT TO BE EXPOSED TO Ioke - used for internal usage only
+    public final NullObject nul = new NullObject(this);
 
     PrintWriter out;
     PrintWriter err;
@@ -171,9 +173,6 @@ public class Runtime extends IokeData {
     public IokeObject mimicRemovedMessage = newMessage("mimicRemoved");
     public IokeObject mimicsChangedMessage = newMessage("mimicsChanged");
     public IokeObject mimickedMessage = newMessage("mimicked");
-
-    // NOT TO BE EXPOSED TO Ioke - used for internal usage only
-    public final NullObject nul = new NullObject(this);
 
     public Runtime() throws Exception {
         this(new PrintWriter(java.lang.System.out), new InputStreamReader(java.lang.System.in, "UTF-8"), new PrintWriter(java.lang.System.err));
