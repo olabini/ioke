@@ -19,6 +19,19 @@ namespace Ioke.Lang {
             obj.Kind = "Set";
             obj.Mimics(IokeObject.As(runtime.Mixins.GetCell(null, null, "Enumerable"), null), runtime.nul, runtime.nul);
 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns true if the left hand side set is equal to the right hand side set.",
+                                                       new TypeCheckingNativeMethod("==", TypeCheckingArgumentsDefinition.builder()
+                                                                                    .ReceiverMustMimic(runtime.Set)
+                                                                                    .WithRequiredPositional("other")
+                                                                                    .Arguments,
+                                                                                    (method, on, args, keywords, context, message) => {
+                                                                                        IokeSet d = (IokeSet)IokeObject.dataOf(on);
+                                                                                        object other = args[0];
+                                                                                        return ((other is IokeObject) &&
+                                                                                                (IokeObject.dataOf(other) is IokeSet)
+                                                                                                && d._set.Equals(((IokeSet)IokeObject.dataOf(other))._set)) ? context.runtime.True : context.runtime.False;
+                                                                                    })));
+
             obj.RegisterMethod(runtime.NewNativeMethod("Returns a text inspection of the object", 
                                                        new TypeCheckingNativeMethod.WithNoArguments("inspect", obj,
                                                                                                     (method, on, args, keywords, context, message) => {
@@ -144,12 +157,6 @@ namespace Ioke.Lang {
 
         public override IokeData CloneData(IokeObject obj, IokeObject m, IokeObject context) {
             return new IokeSet(new SaneHashSet<object>(_set));
-        }
-
-        public override bool IsEqualTo(IokeObject self, object other) {
-            return ((other is IokeObject) && 
-                    (IokeObject.dataOf(other) is IokeSet) 
-                    && this._set.Equals(((IokeSet)IokeObject.dataOf(other))._set));
         }
 
         public override int HashCode(IokeObject self) {

@@ -63,7 +63,7 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
                     | ( :? IokeObject as arg) :: [] ->
                         match (arg, message) with
                             | Detach ->
-                                match expressions.IndexOf(arg) with
+                                match SaneArrayList.IndexOf(expressions, arg) with
                                     | -1 -> ()
                                     | index -> expressions.[index] <- message
                                 message.Arguments.Clear()

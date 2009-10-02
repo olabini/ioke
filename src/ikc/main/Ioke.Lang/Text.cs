@@ -81,13 +81,6 @@ namespace Ioke.Lang {
         public override string ToString(IokeObject self) {
             return text;
         }
-
-        public override bool IsEqualTo(IokeObject self, object other) {
-            return ((other is IokeObject) && 
-                    (IokeObject.dataOf(other) is Text) 
-                    && ((self == self.runtime.Text || other == self.runtime.Text) ? self == other :
-                        this.text.Equals(((Text)IokeObject.dataOf(other)).text)));
-        }
         
         public override int HashCode(IokeObject self) {
             return this.text.GetHashCode();
@@ -98,7 +91,21 @@ namespace Ioke.Lang {
             
             obj.Kind = "Text";
             obj.Mimics(IokeObject.As(runtime.Mixins.GetCell(null, null, "Comparing"), null), runtime.nul, runtime.nul);
-            obj.SetCell("==",        runtime.Base.Cells["=="]);
+
+            obj.RegisterMethod(runtime.NewNativeMethod("returns true if the left hand side text is equal to the right hand side text.",
+                                                       new TypeCheckingNativeMethod("==", TypeCheckingArgumentsDefinition.builder()
+                                                                                    .ReceiverMustMimic(runtime.Text)
+                                                                                    .WithRequiredPositional("other")
+                                                                                    .Arguments,
+                                                                                    (method, on, args, keywords, context, message) => {
+                                                                                        Text d = (Text)IokeObject.dataOf(on);
+                                                                                        object other = args[0];
+
+                                                                                        return ((other is IokeObject) &&
+                                                                                                (IokeObject.dataOf(other) is Text)
+                                                                                                && ((on == context.runtime.Text || other == context.runtime.Text) ? on == other :
+                                                                                                    d.text.Equals(((Text)IokeObject.dataOf(other)).text))) ? context.runtime.True : context.runtime.False;
+                                                                                    })));
 
             obj.RegisterMethod(runtime.NewNativeMethod("Returns a text representation of the object", 
                                                        new NativeMethod.WithNoArguments("asText",

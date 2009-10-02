@@ -33,6 +33,21 @@ namespace Ioke.Lang {
             obj.Mimics(IokeObject.As(runtime.Mixins.GetCell(null, null, "Enumerable"), null), runtime.nul, runtime.nul);
             obj.Mimics(IokeObject.As(runtime.Mixins.GetCell(null, null, "Comparing"), null), runtime.nul, runtime.nul);
 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns true if the left hand side pair is equal to the right hand side pair.",
+                                                       new TypeCheckingNativeMethod("==", TypeCheckingArgumentsDefinition.builder()
+                                                                                    .ReceiverMustMimic(runtime.Pair)
+                                                                                    .WithRequiredPositional("other")
+                                                                                    .Arguments,
+                                                                                    (method, on, args, keywords, context, message) => {
+                                                                                        Pair d = (Pair)IokeObject.dataOf(on);
+                                                                                        object other = args[0];
+
+                                                                                        return ((other is IokeObject) &&
+                                                                                                (IokeObject.dataOf(other) is Pair)
+                                                                                                && d.first.Equals(((Pair)IokeObject.dataOf(other)).first)
+                                                                                                && d.second.Equals(((Pair)IokeObject.dataOf(other)).second)) ? context.runtime.True : context.runtime.False;
+                                                                                    })));
+
             obj.RegisterMethod(runtime.NewNativeMethod("Returns the first value", 
                                                        new TypeCheckingNativeMethod.WithNoArguments("first", obj,
                                                                                                     (method, on, args, keywords, context, message) => {
@@ -82,13 +97,6 @@ namespace Ioke.Lang {
 
         public static string GetNotice(object on) {
             return ((Pair)(IokeObject.dataOf(on))).Notice(on);
-        }
-
-        public override bool IsEqualTo(IokeObject self, object other) {
-            return ((other is IokeObject) && 
-                    (IokeObject.dataOf(other) is Pair) 
-                    && this.first.Equals(((Pair)IokeObject.dataOf(other)).first)
-                    && this.second.Equals(((Pair)IokeObject.dataOf(other)).second));
         }
 
         public override string ToString() {
