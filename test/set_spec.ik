@@ -165,6 +165,12 @@ describe("Set",
       set(1,1,1,1,1,1,2,3,4,5,6,7) should == set(1,2,3,4,5,6,7)
       set(1,2,3,4,5,6,7) should == set(1,2,3,5,4,6,7)
     )
+
+    it("should do the comparison using recursive applications of ==", {pending: true},
+      x = Origin mimic
+      x == = method(o, o == 42)
+      set(x) should == set(42)
+    )
   )
 
   describe("<<",

@@ -1025,7 +1025,7 @@ public class IokeObject implements TypeChecker {
     }
 
     public Object getOrActivate(IokeObject context, IokeObject message, Object on) throws ControlFlow {
-        if(isActivatable() || ((data instanceof AssociatedCode) && message.getArguments().size() > 0)) {
+        if(isActivatable() || ((data instanceof CanRun) && message.getArguments().size() > 0)) {
             return activate(context, message, on);
         } else {
             return this;
@@ -1062,6 +1062,8 @@ public class IokeObject implements TypeChecker {
             return isEqualTo(other);
         } catch(Exception e) {
             return false;
+        } catch(ControlFlow e) {
+            return false;
         }
     }
 
@@ -1070,11 +1072,11 @@ public class IokeObject implements TypeChecker {
         return iokeHashCode();
     }
 
-    public static boolean equals(Object lhs, Object rhs) {
+    public static boolean equals(Object lhs, Object rhs) throws ControlFlow {
         return ((IokeObject)lhs).isEqualTo(rhs);
     }
 
-    public boolean isEqualTo(Object other) {
+    public boolean isEqualTo(Object other) throws ControlFlow {
         return data.isEqualTo(this, other);
     }
 

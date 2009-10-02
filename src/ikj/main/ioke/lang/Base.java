@@ -451,10 +451,12 @@ public class Base {
 
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    // System.err.println(" calling Base#==");
                     List<Object> args = new ArrayList<Object>();
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
-
-                    return IokeObject.equals(on, args.get(0)) ? context.runtime._true : context.runtime._false;
+                    Object other = args.get(0);
+                    return (IokeObject.as(on, context).getCells() == IokeObject.as(other, context).getCells()) ? context.runtime._true : context.runtime._false;
+                    // return IokeObject.equals(on, args.get(0)) ? context.runtime._true : context.runtime._false;
                 }
             }));
     }

@@ -113,8 +113,29 @@ public abstract class IokeData {
         return obj;
     }
 
-    public boolean isEqualTo(IokeObject self, Object other) {
-        return (other instanceof IokeObject) && (self.getCells() == IokeObject.as(other, self).getCells());
+    public boolean isEqualTo(IokeObject self, Object other) throws ControlFlow {
+        System.err.println("calling == on: " + self + " and " + other);
+
+        Object cell = self.findCell(self.runtime.eqMessage, self.runtime.ground, "==");
+        // if(cell instanceof NullObject) {
+        //     System.err.println("cell instanceof NullObject");
+        //     System.err.println(" nul1: " + cell);
+        //     System.err.println(" nul2: " + self.runtime.nul);
+        // }
+        // System.err.println("cell == null: " + (cell == null));
+        // System.err.println("class: " + (cell.getClass().getName()));
+        // System.err.println("data.class: " + (IokeObject.data(cell).getClass().getName()));
+        // System.err.println("eqMessage:: " + self.runtime.eqMessage);
+
+        if(cell == self.runtime.nul) {
+            boolean result = (other instanceof IokeObject) && (self.getCells() == IokeObject.as(other, self).getCells());
+            System.err.println(" - 1with result: " + result);
+            return result;
+        } else {
+            boolean result = IokeObject.isTrue(((Message)IokeObject.data(self.runtime.eqMessage)).sendTo(self.runtime.eqMessage, self.runtime.ground, self, other));
+            System.err.println(" - 2with result: " + result);
+            return result;
+        }
     }
 
     public int hashCode(IokeObject self) {
@@ -492,13 +513,13 @@ public abstract class IokeData {
     }
 
     public String toString(IokeObject self) {
-        Object obj = self.findCell(null, null, "kind");
         int h = hashCode(self);
         String hash = Integer.toHexString(h).toUpperCase();
-        if(obj instanceof NullObject) {
+        if(self instanceof NullObject) {
             return "#<nul:" + hash + ">";
         }
 
+        Object obj = self.findCell(null, null, "kind");
         String kind = ((Text)IokeObject.data(obj)).getText();
         return "#<" + kind + ":" + hash + ">";
     }

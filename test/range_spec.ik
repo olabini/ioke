@@ -193,6 +193,13 @@ describe("Range",
       (3..5) should not == (2..5)
       (3..6) should not == (3..5)
     )
+
+    it("should do the comparison using recursive applications of ==", {pending: true},
+      x = Origin mimic
+      x == = method(o, o == 42)
+      (x..43) should == (42..43)
+      (41..x) should == (41..42)
+    )
   )
 
   describe("===", 

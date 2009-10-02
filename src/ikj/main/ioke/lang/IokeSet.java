@@ -6,6 +6,7 @@ package ioke.lang;
 import java.util.List;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.HashMap;
 import java.util.Set;
 
 import ioke.lang.exceptions.ControlFlow;
@@ -32,6 +33,29 @@ public class IokeSet extends IokeData {
 
         obj.setKind("Set");
         obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Enumerable"), null), runtime.nul, runtime.nul);
+
+        obj.registerMethod(runtime.newNativeMethod("returns true if the left hand side set is equal to the right hand side set.", new TypeCheckingNativeMethod("==") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
+                    .builder()
+                    .receiverMustMimic(runtime.set)
+                    .withRequiredPositional("other")
+                    .getArguments();
+
+                @Override
+                public TypeCheckingArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+                    Object other = args.get(0);
+                    return ((other instanceof IokeObject) &&
+                            (IokeObject.data(other) instanceof IokeSet) &&
+                            ((IokeSet)IokeObject.data(on)).set.equals(((IokeSet)IokeObject.data(other)).set)) ? context.runtime._true : context.runtime._false;
+                }
+            }));
+
 
         obj.registerMethod(obj.runtime.newNativeMethod("Returns a text inspection of the object", new TypeCheckingNativeMethod.WithNoArguments("inspect", runtime.set) {
                 @Override
@@ -207,13 +231,6 @@ public class IokeSet extends IokeData {
 
     public IokeData cloneData(IokeObject obj, IokeObject m, IokeObject context) {
         return new IokeSet(new HashSet<Object>(set));
-    }
-
-    @Override
-    public boolean isEqualTo(IokeObject self, Object other) {
-        return ((other instanceof IokeObject) && 
-                (IokeObject.data(other) instanceof IokeSet) 
-                && this.set.equals(((IokeSet)IokeObject.data(other)).set));
     }
 
     @Override
