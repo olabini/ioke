@@ -39,6 +39,19 @@ namespace Ioke.Lang {
             obj.Kind = "List";
             obj.Mimics(IokeObject.As(runtime.Mixins.GetCell(null, null, "Enumerable"), null), runtime.nul, runtime.nul);
 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns true if the left hand side list is equal to the right hand side list.",
+                                                       new TypeCheckingNativeMethod("==", TypeCheckingArgumentsDefinition.builder()
+                                                                                    .ReceiverMustMimic(runtime.List)
+                                                                                    .WithRequiredPositional("other")
+                                                                                    .Arguments,
+                                                                                    (method, on, args, keywords, context, message) => {
+                                                                                        IokeList d = (IokeList)IokeObject.dataOf(on);
+                                                                                        object other = args[0];
+                                                                                        return ((other is IokeObject) &&
+                                                                                                (IokeObject.dataOf(other) is IokeList) &&
+                                                                                                d.list.Equals(((IokeList)IokeObject.dataOf(other)).list)) ? context.runtime.True : context.runtime.False;
+                                                                                    })));
+
             obj.RegisterMethod(runtime.NewNativeMethod("takes either one or two or three arguments. if one argument is given, it should be a message chain that will be sent to each object in the list. the result will be thrown away. if two arguments are given, the first is an unevaluated name that will be set to each of the values in the list in succession, and then the second argument will be evaluated in a scope with that argument in it. if three arguments is given, the first one is an unevaluated name that will be set to the index of each element, and the other two arguments are the name of the argument for the value, and the actual code. the code will evaluate in a lexical context, and if the argument name is available outside the context, it will be shadowed. the method will return the list.", 
                                                        new NativeMethod("each", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositionalUnevaluated("indexOrArgOrCode")
@@ -782,12 +795,6 @@ namespace Ioke.Lang {
 
         public override IokeData CloneData(IokeObject obj, IokeObject m, IokeObject context) {
             return new IokeList(new SaneArrayList(list));
-        }
-
-        public override bool IsEqualTo(IokeObject self, object other) {
-            return ((other is IokeObject) && 
-                    (IokeObject.dataOf(other) is IokeList) &&
-                    this.list.Equals(((IokeList)IokeObject.dataOf(other)).list));
         }
 
         public override int HashCode(IokeObject self) {
