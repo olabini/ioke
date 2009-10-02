@@ -103,7 +103,7 @@ describe(Message,
       x4 should not == x3
     )
 
-    it("should include the arguments in tests for equality", {pending: true},
+    it("should include the arguments in tests for equality",
       x1 = '(foo() bar())
       x2 = '(foo(bar) bar())
       x3 = 'foo(bar x, bar x)
