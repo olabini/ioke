@@ -332,12 +332,21 @@ public class IokeObject implements TypeChecker {
         }
     }
 
+    private final static boolean contains(List<IokeObject> l, IokeObject obj) {
+        for(IokeObject p : l) {
+            if(p == obj) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private boolean isMimic(IokeObject pot) {
         if(this.marked) {
             return false;
         }
 
-        if(this.cells == pot.cells || mimics.contains(pot)) {
+        if(this.cells == pot.cells || contains(mimics, pot)) {
             return true;
         }
 
@@ -720,13 +729,13 @@ public class IokeObject implements TypeChecker {
     }
 
     public void mimicsWithoutCheck(IokeObject mimic) {
-        if(!this.mimics.contains(mimic)) {
+        if(!contains(this.mimics, mimic)) {
             this.mimics.add(mimic);
         }
     }
 
     public void mimicsWithoutCheck(int index, IokeObject mimic) {
-        if(!this.mimics.contains(mimic)) {
+        if(!contains(this.mimics, mimic)) {
             this.mimics.add(index, mimic);
         }
     }
@@ -735,7 +744,7 @@ public class IokeObject implements TypeChecker {
         checkFrozen("mimic!", message, context);
 
         mimic.data.checkMimic(mimic, message, context);
-        if(!this.mimics.contains(mimic)) {
+        if(!contains(this.mimics, mimic)) {
             this.mimics.add(mimic);
             if(mimic.hooks != null) {
                 Hook.fireMimicked(mimic, message, context, this);
@@ -751,7 +760,7 @@ public class IokeObject implements TypeChecker {
         checkFrozen("prependMimic!", message, context);
 
         mimic.data.checkMimic(mimic, message, context);
-        if(!this.mimics.contains(mimic)) {
+        if(!contains(this.mimics, mimic)) {
             this.mimics.add(index, mimic);
             if(mimic.hooks != null) {
                 Hook.fireMimicked(mimic, message, context, this);
