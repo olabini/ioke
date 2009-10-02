@@ -53,6 +53,11 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
     let add_all (l1 : IList) l2 =
         Seq.iter (fun arg -> l1.Add(arg) |> ignore) (Seq.cast l2 : seq<Object>)
 
+//    let IndexOf (objs:IList<IokeObject>) (obj:IokeObject) =
+//        match Seq.tryFindIndex (fun arg -> arg = obj) objs with
+//            | Some(num) -> num
+//            | None      -> -1
+
     let finish level (expressions : IList<IokeObject>) =
         match level.message with
             | null -> ()
@@ -383,7 +388,7 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
 
     let actual_detaching msgArgCount (msg : IokeObject) =
         let head = find_head msg
-        if not(head = msg) then
+        if not(Object.ReferenceEquals(head, msg)) then
             let argPart = Message.DeepCopy(head)
             match Message.GetPrev(msg) with
                 | null -> ()
