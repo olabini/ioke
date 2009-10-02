@@ -200,6 +200,8 @@ public class DefaultArgumentsDefinition {
         if(argCount < min || (max != -1 && argCount > (max+keySize))) {
             final int finalArgCount = argCount;
             if(argCount < min) {
+                System.err.println("OH NO... : ");
+                new Exception().printStackTrace();
                 final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
                                                                                    message, 
                                                                                    context, 
@@ -288,6 +290,8 @@ public class DefaultArgumentsDefinition {
         while(argCount < min || (max != -1 && argCount > max)) {
             final int finalArgCount = argCount;
             if(argCount < min) {
+                System.err.println("OH NO... : ");
+                new Exception().printStackTrace();
                 final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
                                                                              message, 
                                                                              context, 
