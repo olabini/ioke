@@ -5,6 +5,7 @@ package ioke.lang;
 
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 
 import ioke.lang.exceptions.ControlFlow;
 
@@ -37,6 +38,29 @@ public class DateTime extends IokeData {
 
         obj.setKind("DateTime");
         //        obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Comparing")), runtime.nul, runtime.nul);
+
+        obj.registerMethod(runtime.newNativeMethod("returns true if the left hand side datetime is equal to the right hand side datetime.", new TypeCheckingNativeMethod("==") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
+                    .builder()
+                    .receiverMustMimic(runtime.dateTime)
+                    .withRequiredPositional("other")
+                    .getArguments();
+
+                @Override
+                public TypeCheckingArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+                    DateTime d = (DateTime)IokeObject.data(on);
+                    Object other = args.get(0);
+                    return ((other instanceof IokeObject) &&
+                            (IokeObject.data(other) instanceof DateTime)
+                            && d.dateTime.equals(((DateTime)IokeObject.data(other)).dateTime)) ? context.runtime._true : context.runtime._false;
+                }
+            }));
 
         obj.registerMethod(runtime.newNativeMethod("Returns a new DateTime representing the current instant in time in the default TimeZone.", new NativeMethod.WithNoArguments("now") {
                 @Override
@@ -89,13 +113,6 @@ public class DateTime extends IokeData {
 
     public static String getNotice(Object on) throws ControlFlow {
         return ((DateTime)(IokeObject.data(on))).notice(on);
-    }
-
-    @Override
-    public boolean isEqualTo(IokeObject self, Object other) {
-        return ((other instanceof IokeObject) && 
-                (IokeObject.data(other) instanceof DateTime) 
-                && this.dateTime.equals(((DateTime)IokeObject.data(other)).dateTime));
     }
 
     @Override
