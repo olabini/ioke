@@ -47,6 +47,22 @@ namespace Ioke.Lang {
             obj.Kind = "Range";
             obj.Mimics(IokeObject.As(runtime.Mixins.GetCell(null, null, "Enumerable"), null), runtime.nul, runtime.nul);
 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns true if the left hand side range is equal to the right hand side range.",
+                                                       new TypeCheckingNativeMethod("==", TypeCheckingArgumentsDefinition.builder()
+                                                                                    .ReceiverMustMimic(runtime.Range)
+                                                                                    .WithRequiredPositional("other")
+                                                                                    .Arguments,
+                                                                                    (method, on, args, keywords, context, message) => {
+                                                                                        Range d = (Range)IokeObject.dataOf(on);
+                                                                                        object other = args[0];
+
+                                                                                        return ((other is IokeObject) &&
+                                                                                                (IokeObject.dataOf(other) is Range)
+                                                                                                && d.inclusive == ((Range)IokeObject.dataOf(other)).inclusive
+                                                                                                && d.from.Equals(((Range)IokeObject.dataOf(other)).from)
+                                                                                                && d.to.Equals(((Range)IokeObject.dataOf(other)).to)) ? context.runtime.True : context.runtime.False;
+                                                                                    })));
+
             obj.RegisterMethod(runtime.NewNativeMethod("will return a new inclusive Range based on the two arguments", 
                                                        new NativeMethod("inclusive", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositional("from")
@@ -284,14 +300,6 @@ namespace Ioke.Lang {
 
         public static string GetNotice(object on) {
             return ((Range)(IokeObject.dataOf(on))).Notice(on);
-        }
-
-        public override bool IsEqualTo(IokeObject self, object other) {
-            return ((other is IokeObject) && 
-                    (IokeObject.dataOf(other) is Range) 
-                    && this.inclusive == ((Range)IokeObject.dataOf(other)).inclusive
-                    && this.from.Equals(((Range)IokeObject.dataOf(other)).from)
-                    && this.to.Equals(((Range)IokeObject.dataOf(other)).to));
         }
 
         public string Inspect(object obj) {

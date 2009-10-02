@@ -10,6 +10,16 @@ namespace Ioke.Lang {
         public override void Init(IokeObject obj) {
             obj.Kind = "Symbol";
 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns true if the left hand side symbol is equal to the right hand side symbol.",
+                                                       new TypeCheckingNativeMethod("==", TypeCheckingArgumentsDefinition.builder()
+                                                                                    .ReceiverMustMimic(obj.runtime.Symbol)
+                                                                                    .WithRequiredPositional("other")
+                                                                                    .Arguments,
+                                                                                    (method, on, args, keywords, context, message) => {
+                                                                                        object other = args[0];
+                                                                                        return on == other ? context.runtime.True : context.runtime.False;
+                                                                                    })));
+
             obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns a text representation of the object", 
                                                            new TypeCheckingNativeMethod.WithNoArguments("asText", obj,
                                                                                                         (method, on, args, keywords, context, message) => {
