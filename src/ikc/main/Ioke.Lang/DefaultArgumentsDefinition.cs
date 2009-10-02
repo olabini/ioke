@@ -7,6 +7,17 @@ namespace Ioke.Lang {
     using Ioke.Lang.Util;
 
     public class DefaultArgumentsDefinition {
+        public static int IndexOf(IList objs, object obj) {
+            int i = 0;
+            foreach(object o in objs) {
+                if(o == obj) {
+                    return i;
+                }
+                i++;
+            }
+            return -1;
+        }
+
         public class Argument {
             string name;
             public Argument(string name) {
@@ -451,7 +462,7 @@ namespace Ioke.Lang {
                     arguments.Add(new OptionalArgument(name, m.next));
                 } else {
                     if(hadOptional) {
-                        int index = args.IndexOf(obj) + start;
+                        int index = IndexOf(args, obj) + start;
 
                         IokeObject condition = IokeObject.As(IokeObject.GetCellChain(runtime.Condition, 
                                                                                      message, 

@@ -21,6 +21,19 @@ namespace Ioke.Lang {
             obj.Kind = "DateTime";
             //        obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Comparing")), runtime.nul, runtime.nul);
 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns true if the left hand side datetime is equal to the right hand side datetime.",
+                                                       new TypeCheckingNativeMethod("==", TypeCheckingArgumentsDefinition.builder()
+                                                                                    .ReceiverMustMimic(runtime.DateTime)
+                                                                                    .WithRequiredPositional("other")
+                                                                                    .Arguments,
+                                                                                    (method, on, args, keywords, context, message) => {
+                                                                                        DateTime d = (DateTime)IokeObject.dataOf(on);
+                                                                                        object other = args[0];
+                                                                                        return ((other is IokeObject) &&
+                                                                                                (IokeObject.dataOf(other) is DateTime)
+                                                                                                && d.dateTime.Equals(((DateTime)IokeObject.dataOf(other)).dateTime)) ? context.runtime.True : context.runtime.False;
+                                                                                    })));
+
             obj.RegisterMethod(runtime.NewNativeMethod("Returns a new DateTime representing the current instant in time in the default TimeZone.", 
                                                        new TypeCheckingNativeMethod.WithNoArguments("now", obj,
                                                                                                     (method, on, args, keywords, context, message) => {
@@ -61,14 +74,6 @@ namespace Ioke.Lang {
         public static string GetNotice(object on) {
             return ((DateTime)(IokeObject.dataOf(on))).Notice(on);
         }
-
-        public override bool IsEqualTo(IokeObject self, object other) {
-            return ((other is IokeObject) && 
-                    (IokeObject.dataOf(other) is DateTime) 
-                    && this.dateTime.Equals(((DateTime)IokeObject.dataOf(other)).dateTime));
-        }
-
-
 
         public override string ToString() {
             return this.dateTime.ToString();

@@ -42,6 +42,20 @@ namespace Ioke.Lang {
 
             obj.Kind = "Dict";
             obj.Mimics(IokeObject.As(runtime.Mixins.GetCell(null, null, "Enumerable"), null), runtime.nul, runtime.nul);
+
+            obj.RegisterMethod(runtime.NewNativeMethod("returns true if the left hand side dictionary is equal to the right hand side dictionary.",
+                                                       new TypeCheckingNativeMethod("==", TypeCheckingArgumentsDefinition.builder()
+                                                                                    .ReceiverMustMimic(runtime.Dict)
+                                                                                    .WithRequiredPositional("other")
+                                                                                    .Arguments,
+                                                                                    (method, on, args, keywords, context, message) => {
+                                                                                        Dict d = (Dict)IokeObject.dataOf(on);
+                                                                                        object other = args[0];
+                                                                                        return ((other is IokeObject) &&
+                                                                                                (IokeObject.dataOf(other) is Dict)
+                                                                                                && d.dict.Equals(((Dict)IokeObject.dataOf(other)).dict)) ? context.runtime.True : context.runtime.False;
+                                                                                    })));
+
             obj.RegisterMethod(runtime.NewNativeMethod("takes one argument, that should be a default value, and returns a new mimic of the receiver, with the default value for that new dict set to the argument", 
                                                        new TypeCheckingNativeMethod("withDefault", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(obj)
@@ -208,12 +222,6 @@ namespace Ioke.Lang {
 
         public override IokeData CloneData(IokeObject obj, IokeObject m, IokeObject context) {
             return new Dict(new SaneHashtable(dict));
-        }
-
-        public override bool IsEqualTo(IokeObject self, object other) {
-            return ((other is IokeObject) && 
-                    (IokeObject.dataOf(other) is Dict) 
-                    && this.dict.Equals(((Dict)IokeObject.dataOf(other)).dict));
         }
 
         public override int HashCode(IokeObject self) {

@@ -214,7 +214,7 @@ namespace Ioke.Lang {
                                                                         (method, context, message, on, outer) => {
                                                                             IList args = new SaneArrayList();
                                                                             outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, args, new SaneDictionary<string, object>());
-                                                                            return IokeObject.Equals(on, args[0]) ? context.runtime.True : context.runtime.False;
+                                                                            return (IokeObject.As(on, context).Cells == IokeObject.As(args[0], context).Cells) ? context.runtime.True : context.runtime.False;
                                                                         })));
         obj.RegisterMethod(obj.runtime.NewNativeMethod("expects one evaluated text or symbol argument and returns a boolean indicating whether such a cell is reachable from this point.", 
                                                        new NativeMethod("cell?", DefaultArgumentsDefinition.builder()
