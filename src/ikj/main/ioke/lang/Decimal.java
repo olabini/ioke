@@ -88,6 +88,30 @@ public class Decimal extends IokeData {
         decimal.setKind("Number Decimal");
         runtime.decimal = decimal;
 
+        obj.registerMethod(runtime.newNativeMethod("returns true if the left hand side decimal is equal to the right hand side decimal.", new TypeCheckingNativeMethod("==") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
+                    .builder()
+                    .receiverMustMimic(runtime.decimal)
+                    .withRequiredPositional("other")
+                    .getArguments();
+
+                @Override
+                public TypeCheckingArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+                    Decimal d = (Decimal)IokeObject.data(on);
+                    Object other = args.get(0);
+                    return ((other instanceof IokeObject) &&
+                            (IokeObject.data(other) instanceof Decimal)
+                            && ((on == runtime.decimal && other == on) ||
+                                d.value.equals(((Decimal)IokeObject.data(other)).value))) ? context.runtime._true : context.runtime._false;
+                }
+            }));
+
         decimal.registerMethod(runtime.newNativeMethod("Returns a text representation of the object", new NativeMethod.WithNoArguments("asText") {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
@@ -335,14 +359,6 @@ public class Decimal extends IokeData {
             }));
     }
     
-    @Override
-    public boolean isEqualTo(IokeObject self, Object other) {
-        return ((other instanceof IokeObject) && 
-                (IokeObject.data(other) instanceof Decimal) 
-                && ((self == self.runtime.decimal && other == self) ||
-                    this.value.equals(((Decimal)IokeObject.data(other)).value)));
-    }
-
     @Override
     public int hashCode(IokeObject self) {
         return this.value.hashCode();
