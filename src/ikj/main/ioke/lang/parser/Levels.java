@@ -66,6 +66,17 @@ public class Levels {
             this.message = msg;
         }
 
+        public static int indexOf(List<IokeObject> objs, IokeObject obj) {
+            int i = 0;
+            for(IokeObject o : objs) {
+                if(o == obj) {
+                    return i;
+                }
+                i++;
+            }
+            return -1;
+        }
+
         public void finish(List<IokeObject> expressions) throws ControlFlow {
             if(message != null) {
                 Message.setNext(message, null);
@@ -74,7 +85,7 @@ public class Levels {
                     if(arg1 instanceof IokeObject) { 
                         IokeObject arg = IokeObject.as(arg1, null);
                         if(arg.getName().length() == 0 && arg.getArgumentCount() == 1 && Message.next(arg) == null) {
-                            int index = expressions.indexOf(arg);
+                            int index = indexOf(expressions, arg);
 
                             if(index != -1) {
                                 expressions.set(index, message);

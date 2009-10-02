@@ -114,17 +114,13 @@ public abstract class IokeData {
     }
 
     public final boolean isEqualTo(IokeObject self, Object other) throws ControlFlow {
-        // System.err.println("calling == on: " + self + " and " + other);
-
         Object cell = self.findCell(self.runtime.eqMessage, self.runtime.ground, "==");
 
         if(cell == self.runtime.nul) {
             boolean result = (other instanceof IokeObject) && (self.getCells() == IokeObject.as(other, self).getCells());
-            // System.err.println(" - 1with result: " + result);
             return result;
         } else {
             boolean result = IokeObject.isTrue(((Message)IokeObject.data(self.runtime.eqMessage)).sendTo(self.runtime.eqMessage, self.runtime.ground, self, other));
-            // System.err.println(" - 2with result: " + result);
             return result;
         }
     }
