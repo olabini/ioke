@@ -17,6 +17,8 @@ describe(List,
     List should mimic(Mixins Enumerable)
   )
   
+  it("should mimic Sequenced")
+
   describe("inspect",
     it("should validate type of receiver",
       List should checkReceiverTypeOn(:inspect)
@@ -940,6 +942,10 @@ describe(List,
       x = [1,2]
       x ?&([1,2,3]) should == [1,2,3]
     )
+  )
+
+  describe("seq",
+    it("should have tests")
   )
 
   describe("each", 

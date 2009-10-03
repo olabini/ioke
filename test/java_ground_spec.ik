@@ -2786,6 +2786,10 @@ describe("java:util:List",
     )
   )
 
+  describe("seq",
+    it("should have tests")
+  )
+
   describe("each",
     it("should work as expected",
       x = java:util:ArrayList new
@@ -2800,5 +2804,7 @@ describe("java:util:List",
   it("should be enumerable",
     java:util:List should mimic(Mixins Enumerable)
   )
+
+  it("should be Sequenced")
 )
 )
