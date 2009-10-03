@@ -1,6 +1,25 @@
 
 use("ispec")
 
+SequenceTester = Origin mimic do(
+  seq = method(
+    s = Sequence mimic
+    s val = [1,2,3,4]
+    s index = 0
+    s len = 4
+
+    s next = method(
+      result = @val[@index]
+      @index++
+      result
+    )
+
+    s next? = method(@index < @len)
+    s reset! = method(@index = 0)
+    s
+  )
+)
+
 SequenceHelper = Origin mimic do(
   initialize = method(@called = false)
   mapped = macro(@called = true. @callInfo = call. 42)
@@ -307,7 +326,19 @@ describe(Sequence,
       Sequence Map should mimic(Sequence)
     )
 
-    it("should have tests")
+    it("should be able to take one argument for mapping",
+      ss = Sequence Map create(SequenceTester seq, Ground, ['(*2)])
+      ss next should == 2
+      ss next should == 4
+      ss asList should == [6, 8]
+    )
+
+    it("should be able to take two arguments for mapping",
+      ss = Sequence Map create(SequenceTester seq, Ground, ['x, '(x*3)])
+      ss next should == 3
+      ss next should == 6
+      ss asList should == [9, 12]
+    )
   )
 
   describe("Sort",
