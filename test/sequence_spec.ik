@@ -4,6 +4,19 @@ use("ispec")
 SequenceHelper = Origin mimic do(
   initialize = method(@called = false)
   mapped = macro(@called = true. @callInfo = call. 42)
+  collected = macro(@called = true. @callInfo = call. 42)
+  sorted = macro(@called = true. @callInfo = call. 42)
+  sortedBy = macro(@called = true. @callInfo = call. 42)
+  folded = macro(@called = true. @callInfo = call. 42)
+  injected = macro(@called = true. @callInfo = call. 42)
+  reduced = macro(@called = true. @callInfo = call. 42)
+  filtered = macro(@called = true. @callInfo = call. 42)
+  selected = macro(@called = true. @callInfo = call. 42)
+  grepped = macro(@called = true. @callInfo = call. 42)
+  zipped = macro(@called = true. @callInfo = call. 42)
+  dropped = macro(@called = true. @callInfo = call. 42)
+  droppedWhile = macro(@called = true. @callInfo = call. 42)
+  rejected = macro(@called = true. @callInfo = call. 42)
 )
 
 describe(Mixins,
@@ -33,55 +46,185 @@ describe(Mixins,
     )
 
     describe("collected",
-      it("should resend the call with all arguments to the result of calling seq")
+      it("should resend the call with all arguments to the result of calling seq",
+        x = Origin mimic
+        x mimic!(Mixins Sequenced)
+        seqObj = SequenceHelper mimic
+        x mock!(:seq) andReturn(seqObj)
+
+        x collected(foo, bar x * 43) should == 42
+
+        seqObj called should be true
+        seqObj callInfo arguments should == ['foo, '(bar x * 43)]
+      )
     )
 
     describe("sorted",
-      it("should resend the call with all arguments to the result of calling seq")
+      it("should resend the call with all arguments to the result of calling seq",
+        x = Origin mimic
+        x mimic!(Mixins Sequenced)
+        seqObj = SequenceHelper mimic
+        x mock!(:seq) andReturn(seqObj)
+
+        x sorted(foo, bar x * 43) should == 42
+
+        seqObj called should be true
+        seqObj callInfo arguments should == ['foo, '(bar x * 43)]
+      )
     )
 
     describe("sortedBy",
-      it("should resend the call with all arguments to the result of calling seq")
+      it("should resend the call with all arguments to the result of calling seq",
+        x = Origin mimic
+        x mimic!(Mixins Sequenced)
+        seqObj = SequenceHelper mimic
+        x mock!(:seq) andReturn(seqObj)
+
+        x sortedBy(foo, bar x * 43) should == 42
+
+        seqObj called should be true
+        seqObj callInfo arguments should == ['foo, '(bar x * 43)]
+      )
     )
 
     describe("folded",
-      it("should resend the call with all arguments to the result of calling seq")
+      it("should resend the call with all arguments to the result of calling seq",
+        x = Origin mimic
+        x mimic!(Mixins Sequenced)
+        seqObj = SequenceHelper mimic
+        x mock!(:seq) andReturn(seqObj)
+
+        x folded(foo, bar x * 43) should == 42
+
+        seqObj called should be true
+        seqObj callInfo arguments should == ['foo, '(bar x * 43)]
+      )
     )
 
     describe("injected",
-      it("should resend the call with all arguments to the result of calling seq")
+      it("should resend the call with all arguments to the result of calling seq",
+        x = Origin mimic
+        x mimic!(Mixins Sequenced)
+        seqObj = SequenceHelper mimic
+        x mock!(:seq) andReturn(seqObj)
+
+        x injected(foo, bar x * 43) should == 42
+
+        seqObj called should be true
+        seqObj callInfo arguments should == ['foo, '(bar x * 43)]
+      )
     )
 
     describe("reduced",
-      it("should resend the call with all arguments to the result of calling seq")
+      it("should resend the call with all arguments to the result of calling seq",
+        x = Origin mimic
+        x mimic!(Mixins Sequenced)
+        seqObj = SequenceHelper mimic
+        x mock!(:seq) andReturn(seqObj)
+
+        x reduced(foo, bar x * 43) should == 42
+
+        seqObj called should be true
+        seqObj callInfo arguments should == ['foo, '(bar x * 43)]
+      )
     )
 
     describe("filtered",
-      it("should resend the call with all arguments to the result of calling seq")
+      it("should resend the call with all arguments to the result of calling seq",
+        x = Origin mimic
+        x mimic!(Mixins Sequenced)
+        seqObj = SequenceHelper mimic
+        x mock!(:seq) andReturn(seqObj)
+
+        x filtered(foo, bar x * 43) should == 42
+
+        seqObj called should be true
+        seqObj callInfo arguments should == ['foo, '(bar x * 43)]
+      )
     )
 
     describe("selected",
-      it("should resend the call with all arguments to the result of calling seq")
+      it("should resend the call with all arguments to the result of calling seq",
+        x = Origin mimic
+        x mimic!(Mixins Sequenced)
+        seqObj = SequenceHelper mimic
+        x mock!(:seq) andReturn(seqObj)
+
+        x selected(foo, bar x * 43) should == 42
+
+        seqObj called should be true
+        seqObj callInfo arguments should == ['foo, '(bar x * 43)]
+      )
     )
 
     describe("grepped",
-      it("should resend the call with all arguments to the result of calling seq")
+      it("should resend the call with all arguments to the result of calling seq",
+        x = Origin mimic
+        x mimic!(Mixins Sequenced)
+        seqObj = SequenceHelper mimic
+        x mock!(:seq) andReturn(seqObj)
+
+        x grepped(foo, bar x * 43) should == 42
+
+        seqObj called should be true
+        seqObj callInfo arguments should == ['foo, '(bar x * 43)]
+      )
     )
 
     describe("zipped",
-      it("should resend the call with all arguments to the result of calling seq")
+      it("should resend the call with all arguments to the result of calling seq",
+        x = Origin mimic
+        x mimic!(Mixins Sequenced)
+        seqObj = SequenceHelper mimic
+        x mock!(:seq) andReturn(seqObj)
+
+        x zipped(foo, bar x * 43) should == 42
+
+        seqObj called should be true
+        seqObj callInfo arguments should == ['foo, '(bar x * 43)]
+      )
     )
 
     describe("dropped",
-      it("should resend the call with all arguments to the result of calling seq")
+      it("should resend the call with all arguments to the result of calling seq",
+        x = Origin mimic
+        x mimic!(Mixins Sequenced)
+        seqObj = SequenceHelper mimic
+        x mock!(:seq) andReturn(seqObj)
+
+        x dropped(foo, bar x * 43) should == 42
+
+        seqObj called should be true
+        seqObj callInfo arguments should == ['foo, '(bar x * 43)]
+      )
     )
 
     describe("droppedWhile",
-      it("should resend the call with all arguments to the result of calling seq")
+      it("should resend the call with all arguments to the result of calling seq",
+        x = Origin mimic
+        x mimic!(Mixins Sequenced)
+        seqObj = SequenceHelper mimic
+        x mock!(:seq) andReturn(seqObj)
+
+        x droppedWhile(foo, bar x * 43) should == 42
+
+        seqObj called should be true
+        seqObj callInfo arguments should == ['foo, '(bar x * 43)]
+      )
     )
 
     describe("rejected",
-      it("should resend the call with all arguments to the result of calling seq")
+      it("should resend the call with all arguments to the result of calling seq",
+        x = Origin mimic
+        x mimic!(Mixins Sequenced)
+        seqObj = SequenceHelper mimic
+        x mock!(:seq) andReturn(seqObj)
+
+        x rejected(foo, bar x * 43) should == 42
+
+        seqObj called should be true
+        seqObj callInfo arguments should == ['foo, '(bar x * 43)]
+      )
     )
   )
 )
