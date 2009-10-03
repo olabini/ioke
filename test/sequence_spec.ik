@@ -19,7 +19,7 @@ describe(Mixins,
     )
 
     describe("mapped",
-      it("should resend the call with all arguments to the result of calling seq", {pending: true},
+      it("should resend the call with all arguments to the result of calling seq",
         x = Origin mimic
         x mimic!(Mixins Sequenced)
         seqObj = SequenceHelper mimic
