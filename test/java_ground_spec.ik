@@ -1625,6 +1625,8 @@ describe("Java Objects",
       ioke:lang:test:StaticMethods overloaded(true, 123.3) asText should == "overloaded(boolean, double)"
     )
 
+    it("should be possible to call a method that requests IokeObjects")
+
     it("should invoke a method with no arguments correctly",
       ioke:lang:test:StaticMethods overloaded asText should == "overloaded()"
     )
@@ -1788,6 +1790,8 @@ describe("Java Objects",
       i overloaded(true, 123) asText should == "overloaded(boolean, int)"
       i overloaded(true, 123.3) asText should == "overloaded(boolean, double)"
     )
+
+    it("should be possible to call a method that requests IokeObjects")
 
     it("should invoke a method with no arguments correctly",
       i = ioke:lang:test:InstanceMethods new
