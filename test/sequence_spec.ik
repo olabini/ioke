@@ -295,52 +295,82 @@ describe(Sequence,
   )
 
   describe("Filter",
-    it("should mimic Sequence")
+    it("should mimic Sequence",
+      Sequence Filter should mimic(Sequence)
+    )
+
     it("should have tests")
   )
 
   describe("Map",
-    it("should mimic Sequence")
+    it("should mimic Sequence",
+      Sequence Map should mimic(Sequence)
+    )
+
     it("should have tests")
   )
 
   describe("Sort",
-    it("should mimic Sequence")
+    it("should mimic Sequence",
+      Sequence Sort should mimic(Sequence)
+    )
+
     it("should have tests")
   )
 
   describe("SortBy",
-    it("should mimic Sequence")
+    it("should mimic Sequence",
+      Sequence SortBy should mimic(Sequence)
+    )
+
     it("should have tests")
   )
 
   describe("Fold",
-    it("should mimic Sequence")
+    it("should mimic Sequence",
+      Sequence Fold should mimic(Sequence)
+    )
+
     it("should have tests")
   )
 
   describe("Grep",
-    it("should mimic Sequence")
+    it("should mimic Sequence",
+      Sequence Grep should mimic(Sequence)
+    )
+
     it("should have tests")
   )
 
   describe("Zip",
-    it("should mimic Sequence")
+    it("should mimic Sequence",
+      Sequence Zip should mimic(Sequence)
+    )
+
     it("should have tests")
   )
 
   describe("Drop",
-    it("should mimic Sequence")
+    it("should mimic Sequence",
+      Sequence Drop should mimic(Sequence)
+    )
+
     it("should have tests")
   )
 
   describe("DropWhile",
-    it("should mimic Sequence")
+    it("should mimic Sequence",
+      Sequence DropWhile should mimic(Sequence)
+    )
+
     it("should have tests")
   )
 
   describe("Reject",
-    it("should mimic Sequence")
+    it("should mimic Sequence",
+      Sequence Reject should mimic(Sequence)
+    )
+
     it("should have tests")
   )
 )

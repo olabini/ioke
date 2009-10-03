@@ -17,3 +17,14 @@ Mixins Sequenced do(
   droppedWhile = macro(call resendToReceiver(self seq))
   rejected = macro(call resendToReceiver(self seq))
 )
+
+Sequence Filter = Sequence mimic
+Sequence Map    = Sequence mimic
+Sequence Fold   = Sequence mimic
+Sequence Sort   = Sequence mimic
+Sequence SortBy = Sequence mimic
+Sequence Zip    = Sequence mimic
+Sequence Reject = Sequence mimic
+Sequence Grep   = Sequence mimic
+Sequence Drop   = Sequence mimic
+Sequence DropWhile = Sequence mimic
