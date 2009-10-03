@@ -114,6 +114,26 @@ public class Call extends IokeData {
                 }
             }));
 
+        obj.registerMethod(runtime.newNativeMethod("takes one evaluated object and resends the current message with that object as the new receiver", new TypeCheckingNativeMethod("resendToReceiver") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
+                    .builder()
+                    .receiverMustMimic(runtime.call)
+                    .withRequiredPositional("newReceiver")
+                    .getArguments();
+
+                @Override
+                public TypeCheckingArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    Call c = (Call)IokeObject.data(on);
+                    Object recv = args.get(0);
+                    return ((Message)IokeObject.data(c.message)).sendTo(c.message, c.surroundingContext, recv);
+                }
+            }));
+
         obj.registerMethod(runtime.newNativeMethod("uhm. this is a strange one. really.", new TypeCheckingNativeMethod("resendToValue") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
