@@ -17,6 +17,8 @@ describe("Dict",
     Dict should mimic(Mixins Enumerable)
   )
 
+  it("should mimic Sequenced")
+
   describe("key?",
     it("should return false if there is no such key",
       {} key?(:foo) should be false
@@ -226,6 +228,10 @@ describe("Dict",
     it("should validate type of receiver",
       Dict should checkReceiverTypeOn(:keys)
     )
+  )
+
+  describe("seq",
+    it("should have tests")
   )
 
   describe("each", 

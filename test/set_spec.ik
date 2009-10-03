@@ -17,6 +17,8 @@ describe("Set",
     Set should mimic(Mixins Enumerable)
   )
 
+  it("should mimic Sequenced")
+
   describe("empty?", 
     it("should return true for an empty set", 
       x = set
@@ -76,6 +78,10 @@ describe("Set",
       x = set(1,2)
       x ?&([1,2,3]) should == [1,2,3]
     )
+  )
+
+  describe("seq",
+    it("should have tests")
   )
 
   describe("each", 

@@ -64,6 +64,9 @@ describe(DefaultBehavior,
 )
 
 describe("Range", 
+  it("should mimic Enumerable")
+  it("should mimic Sequenced")
+
   describe("from", 
     it("should return the from part of the range", 
       (13..0) from should == 13
@@ -110,6 +113,10 @@ describe("Range",
     it("should return true for an exclusive range", 
       (0...13) exclusive? should be true
     )
+  )
+
+  describe("seq",
+    it("should have tests")
   )
 
   describe("each",

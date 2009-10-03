@@ -10,6 +10,8 @@ describe(Message,
     Message should mimic(Mixins Enumerable)
   )
 
+  it("should mimic Sequenced")
+
   describe("OperatorTable",
     describe("withOperator",
       it("should temporarily add a new operator to the table, but then remove it",
@@ -453,6 +455,10 @@ describe(Message,
     it("should validate type of receiver",
       Message should checkReceiverTypeOn(:"->", 'foo)
     )
+  )
+
+  describe("seq",
+    it("should have tests")
   )
 
   describe("each",
