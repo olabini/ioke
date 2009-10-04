@@ -1,6 +1,30 @@
 IokeGround Sequence = Origin mimic
 Sequence mimic!(Mixins Enumerable)
 
+Sequence each = dmacro(
+  [chain]
+  while(next?,
+    chain evaluateOn(call ground, next)
+  )
+  @,
+
+  [argumentName, code]
+  lexicalCode = LexicalBlock createFrom(list(argumentName, code), call ground)
+  while(next?,
+    lexicalCode call(next)
+  )
+  @,
+
+  [indexArgumentName, argumentName, code]
+  lexicalCode = LexicalBlock createFrom(list(indexArgumentName, argumentName, code), call ground)
+  index = 0
+  while(next?,
+    lexicalCode call(index, next)
+    index++
+  )
+  @
+)
+
 Mixins Sequenced do(
   mapped = macro(call resendToReceiver(self seq))
   collected = macro(call resendToReceiver(self seq))
@@ -39,14 +63,11 @@ let(
     ),
 
   generateNextMethod, method(takeCurrentObject, returnObject,
-    "calling generateNextMethod with: #{takeCurrentObject} and #{returnObject}" println
     vv = 'method(
       n = @wrappedSequence next
       x = transformValue(cell(:n))
     )
-    "vv: #{vv}" println
     vv arguments[0] last -> returnObject
-    "vv2: #{vv}" println
     vv evaluateOn(@)
     ),
 
@@ -77,14 +98,14 @@ let(
     )
   )
 
-  Sequence Map    = sequenceObject(true, cell(:x))
-  Sequence Filter = Sequence mimic
-  Sequence Fold   = Sequence mimic
-  Sequence Sort   = Sequence mimic
-  Sequence SortBy = Sequence mimic
-  Sequence Zip    = Sequence mimic
-  Sequence Reject = Sequence mimic
-  Sequence Grep   = Sequence mimic
-  Sequence Drop   = Sequence mimic
+  Sequence Map       = sequenceObject(true, cell(:x))
+  Sequence Filter    = Sequence mimic
+  Sequence Fold      = Sequence mimic
+  Sequence Sort      = Sequence mimic
+  Sequence SortBy    = Sequence mimic
+  Sequence Zip       = Sequence mimic
+  Sequence Reject    = Sequence mimic
+  Sequence Grep      = Sequence mimic
+  Sequence Drop      = Sequence mimic
   Sequence DropWhile = Sequence mimic
 )

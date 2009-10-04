@@ -254,7 +254,51 @@ describe(Sequence,
   )
 
   describe("each",
-    it("should have tests")
+    it("should start from the point where the sequence is right now",
+      xx = SequenceTester seq
+      xx next should == 1
+      y = []
+      xx each(x, y << x)
+      y should == [2,3,4]
+    )
+
+    it("should be possible to give it just a message chain",
+      Ground y = []
+      Ground xs = method(y << self)
+      SequenceTester seq each(xs)
+      y should == [1,2,3,4]
+
+      x = 0
+      SequenceTester seq each(nil. x++)
+      x should == 4
+    )
+
+    it("should be possible to give it an argument name and code",
+      y = []
+      SequenceTester seq each(x, y << x)
+      y should == [1,2,3,4]
+    )
+
+    it("should return the sequence",
+      y = SequenceTester seq
+      (y each(x, x)) should be(y)
+    )
+
+    it("should establish a lexical context when invoking the methods. this context will be the same for all invocations.",
+      SequenceTester seq each(x_list, blarg = 32)
+      cell?(:x_list) should be false
+      cell?(:blarg) should be false
+
+      x = 14
+      SequenceTester seq each(x, blarg = 32)
+      x should == 14
+    )
+
+    it("should be possible to give it an extra argument to get the index",
+      y = []
+      SequenceTester seq each(i, x, y << [i, x])
+      y should == [[0, 1], [1, 2], [2, 3], [3, 4]]
+    )
   )
 
   describe("mapped",
