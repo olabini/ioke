@@ -974,7 +974,7 @@ describe(List,
 
     it("should return the object", 
       y = [1,2,3]
-      (y each(x, x)) should == y
+      (y each(x, x)) should be(y)
     )
     
     it("should establish a lexical context when invoking the methods. this context will be the same for all invocations.", 
