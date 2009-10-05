@@ -53,11 +53,6 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
     let add_all (l1 : IList) l2 =
         Seq.iter (fun arg -> l1.Add(arg) |> ignore) (Seq.cast l2 : seq<Object>)
 
-//    let IndexOf objs obj =
-//        match Seq.tryFindIndex (fun arg -> arg = obj) objs with
-//            | Some(num) -> num
-//            | None      -> -1
-
     let finish level (expressions : IList<IokeObject>) =
         match level.message with
             | null -> ()
