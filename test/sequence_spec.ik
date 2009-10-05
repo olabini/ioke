@@ -2,11 +2,14 @@
 use("ispec")
 
 SequenceTester = Origin mimic do(
+  val = [1,2,3,4,5,6,7,8]
+  len = 8
+
   seq = method(
     s = Sequence mimic
-    s val = [1,2,3,4]
+    s val = @val
     s index = 0
-    s len = 4
+    s len = @len
 
     s next = method(
       result = @val[@index]
@@ -259,24 +262,24 @@ describe(Sequence,
       xx next should == 1
       y = []
       xx each(x, y << x)
-      y should == [2,3,4]
+      y should == [2,3,4,5,6,7,8]
     )
 
     it("should be possible to give it just a message chain",
       Ground y = []
       Ground xs = method(y << self)
       SequenceTester seq each(xs)
-      y should == [1,2,3,4]
+      y should == [1,2,3,4,5,6,7,8]
 
       x = 0
       SequenceTester seq each(nil. x++)
-      x should == 4
+      x should == 8
     )
 
     it("should be possible to give it an argument name and code",
       y = []
       SequenceTester seq each(x, y << x)
-      y should == [1,2,3,4]
+      y should == [1,2,3,4,5,6,7,8]
     )
 
     it("should return the sequence",
@@ -297,7 +300,7 @@ describe(Sequence,
     it("should be possible to give it an extra argument to get the index",
       y = []
       SequenceTester seq each(i, x, y << [i, x])
-      y should == [[0, 1], [1, 2], [2, 3], [3, 4]]
+      y should == [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 8]]
     )
   )
 
@@ -362,7 +365,45 @@ describe(Sequence,
       Sequence Filter should mimic(Sequence)
     )
 
-    it("should have tests")
+    it("should take zero arguments and return a sequene with only the true values",
+      ss = Sequence Filter create(SequenceTester with(val: [1,2,3], len: 3) seq, Ground, [])
+      ss next should == 1
+      ss asList should == [2,3]
+
+      ss = Sequence Filter create(SequenceTester with(val: [nil,false,nil], len: 3) seq, Ground, [])
+      ss next? should be false
+      ss asList should == []
+
+      ss = Sequence Filter create(SequenceTester with(val: [nil,false,true], len: 3) seq, Ground, [])
+      ss next should be true
+      ss asList should == [true]
+    )
+
+    it("should take one argument that ends up being a predicate and return a sequence of the values that is true",
+      ss = Sequence Filter create(SequenceTester with(val: [1,2,3], len: 3) seq, Ground, ['(>1)])
+      ss next should == 2
+      ss asList should == [3]
+
+      ss = Sequence Filter create(SequenceTester with(val: [nil,false,nil], len: 3) seq, Ground, ['(nil?)])
+      ss asList should == [nil, nil]
+
+      ss = Sequence Filter create(SequenceTester with(val: [nil,false,true], len: 3) seq, Ground, ['(==2)])
+      ss next? should be false
+      ss asList should == []
+    )
+
+    it("should take two arguments that ends up being a predicate and return a sequence of the values that is true",
+      ss = Sequence Filter create(SequenceTester with(val: [1,2,3], len: 3) seq, Ground, ['x, '(x>1)])
+      ss next should == 2
+      ss asList should == [3]
+
+      ss = Sequence Filter create(SequenceTester with(val: [nil,false,nil], len: 3) seq, Ground, ['x, '(x nil?)])
+      ss asList should == [nil, nil]
+
+      ss = Sequence Filter create(SequenceTester with(val: [nil,false,true], len: 3) seq, Ground, ['x, '(x==2)])
+      ss next? should be false
+      ss asList should == []
+    )
   )
 
   describe("Map",
@@ -374,14 +415,14 @@ describe(Sequence,
       ss = Sequence Map create(SequenceTester seq, Ground, ['(*2)])
       ss next should == 2
       ss next should == 4
-      ss asList should == [6, 8]
+      ss asList should == [6, 8, 10, 12, 14, 16]
     )
 
     it("should be able to take two arguments for mapping",
       ss = Sequence Map create(SequenceTester seq, Ground, ['x, '(x*3)])
       ss next should == 3
       ss next should == 6
-      ss asList should == [9, 12]
+      ss asList should == [9, 12, 15, 18, 21, 24]
     )
   )
 
