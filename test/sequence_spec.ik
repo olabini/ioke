@@ -365,7 +365,7 @@ describe(Sequence,
       Sequence Filter should mimic(Sequence)
     )
 
-    it("should take zero arguments and return a sequene with only the true values",
+    it("should take zero arguments and return a sequence with only the true values",
       ss = Sequence Filter create(SequenceTester with(val: [1,2,3], len: 3) seq, Ground, [])
       ss next should == 1
       ss asList should == [2,3]
@@ -375,7 +375,7 @@ describe(Sequence,
       ss asList should == []
 
       ss = Sequence Filter create(SequenceTester with(val: [nil,false,true], len: 3) seq, Ground, [])
-      ss next should be true
+      ss next? should be true
       ss asList should == [true]
     )
 
