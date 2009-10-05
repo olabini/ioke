@@ -127,7 +127,6 @@ let(
   generateNextPMethod, method(takeCurrentObject, returnObject,
     ''method(
       if(@current?,
-        @current? = false
         true,
         while(@wrappedSequence next?,
           n = @wrappedSequence next
