@@ -28,11 +28,6 @@ Sequence each = dmacro(
 Mixins Sequenced do(
   mapped = macro(call resendToReceiver(self seq))
   collected = macro(call resendToReceiver(self seq))
-  sorted = macro(call resendToReceiver(self seq))
-  sortedBy = macro(call resendToReceiver(self seq))
-  folded = macro(call resendToReceiver(self seq))
-  injected = macro(call resendToReceiver(self seq))
-  reduced = macro(call resendToReceiver(self seq))
   filtered = macro(call resendToReceiver(self seq))
   selected = macro(call resendToReceiver(self seq))
   grepped = macro(call resendToReceiver(self seq))
@@ -186,11 +181,8 @@ let(
 
   Sequence Map       = sequenceObject(true,     cell(:x))
   Sequence Filter    = sequenceObject(cell(:x), cell(:n))
-  Sequence Fold      = Sequence mimic
-  Sequence Sort      = Sequence mimic
-  Sequence SortBy    = Sequence mimic
   Sequence Zip       = Sequence mimic
-  Sequence Reject    = Sequence mimic
+  Sequence Reject    = sequenceObject(!cell(:x), cell(:n))
   Sequence Grep      = Sequence mimic
   Sequence Drop      = Sequence mimic
   Sequence DropWhile = Sequence mimic
