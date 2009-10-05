@@ -372,7 +372,7 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
     let handle_unary_prefix_message (precedence, msgArgCount) (msg : IokeObject) =
         match (msgArgCount, Message.GetNext(msg), Message.GetName(msg), Message.GetPrev(msg)) with
             | (_, null, _, _) -> (precedence, msgArgCount)
-            | (0, _, (":" | "'" | "`"), _) | (0, _, "-", null) ->
+            | (0, _, (":" | "'" | "`" | "''"), _) | (0, _, "-", null) ->
                 let arg = Message.GetNext(msg)
                 Message.SetNext(msg, Message.GetNext(arg))
                 Message.SetNext(IokeObject.As(arg, null), null)
