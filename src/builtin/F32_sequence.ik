@@ -44,6 +44,72 @@ Mixins Sequenced do(
 
 
 
+; Sequence Filter do(
+;   next = method(
+;     if(@current?,
+;       @current? = false
+;       @current,
+;       while(@wrappedSequence next?,
+;         n = @wrappedSequence next
+;         x = transformValue(cell(:n))
+;         if(cell(:x),
+;           return(cell(:n)))
+;       )
+;     )
+;   )
+
+;   next? = method(
+;     if(@current?,
+;       @current? = false
+;       true,
+;       while(@wrappedSequence next?,
+;         n = @wrappedSequence next
+;         x = transformValue(cell(:n))
+;         if(cell(:x),
+;           @current? = true
+;           @current = cell(:n)
+;           return(true)
+;         )
+;       )
+;       false)
+;   )
+; )
+
+; Sequence Map do(
+;   next = method(
+;     if(@current?,
+;       @current? = false
+;       @current,
+;       while(@wrappedSequence next?,
+;         n = @wrappedSequence next
+;         x = transformValue(cell(:n))
+;         if(TAKE_CURRENT_VALUE?,
+;           return(RETURN_OBJECT))
+;       )
+;     )
+;   )
+
+;   next? = method(
+;     if(@current?,
+;       @current? = false
+;       true,
+;       while(@wrappedSequence next?,
+;         n = @wrappedSequence next
+;         x = transformValue(cell(:n))
+;         if(TAKE_CURRENT_VALUE?,
+;           @current? = true
+;           @current = RETURN_OBJECT
+;           return(true)
+;         )
+;       )
+;       false)
+;   )
+; )
+
+
+
+
+
 ; Sequence Map do(
 ;   next = method(
 ;     n = @wrappedSequence next
@@ -59,16 +125,35 @@ Mixins Sequenced do(
 
 let(
   generateNextPMethod, method(takeCurrentObject, returnObject,
-    method(@wrappedSequence next?)
+    ''method(
+      if(@current?,
+        @current? = false
+        true,
+        while(@wrappedSequence next?,
+          n = @wrappedSequence next
+          x = transformValue(cell(:n))
+          if(`takeCurrentObject,
+            @current? = true
+            @current = `returnObject
+            return(true)
+          )
+        )
+        false)
+      ) evaluateOn(@)
     ),
 
   generateNextMethod, method(takeCurrentObject, returnObject,
-    vv = 'method(
-      n = @wrappedSequence next
-      x = transformValue(cell(:n))
-    )
-    vv arguments[0] last -> returnObject
-    vv evaluateOn(@)
+    ''method(
+      if(@current?,
+        @current? = false
+        @current,
+        while(@wrappedSequence next?,
+          n = @wrappedSequence next
+          x = transformValue(cell(:n))
+          if(`takeCurrentObject,
+            return(`returnObject)))
+      )
+    ) evaluateOn(@)
     ),
 
   sequenceObject, dmacro(
@@ -79,7 +164,7 @@ let(
     s
     ),
 
-  Sequence Base   = Sequence mimic
+  Sequence Base   = Sequence mimic do(current? = false)
   Sequence Base create = method(wrappedSequence, context, messages,
     res = mimic
     res wrappedSequence = wrappedSequence
@@ -92,14 +177,16 @@ let(
   )
 
   Sequence Base transformValue = method(inputValue,
-    if(messages length == 1,
-      messages[0] evaluateOn(context, cell(:inputValue)),
-      lexicalBlock call(cell(:inputValue))
+    if(messages length == 0,
+      cell(:inputValue),
+      if(messages length == 1,
+        messages[0] evaluateOn(context, cell(:inputValue)),
+        lexicalBlock call(cell(:inputValue)))
     )
   )
 
-  Sequence Map       = sequenceObject(true, cell(:x))
-  Sequence Filter    = Sequence mimic
+  Sequence Map       = sequenceObject(true,     cell(:x))
+  Sequence Filter    = sequenceObject(cell(:x), cell(:n))
   Sequence Fold      = Sequence mimic
   Sequence Sort      = Sequence mimic
   Sequence SortBy    = Sequence mimic
