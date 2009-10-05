@@ -27,11 +27,6 @@ SequenceHelper = Origin mimic do(
   initialize = method(@called = false)
   mapped = macro(@called = true. @callInfo = call. 42)
   collected = macro(@called = true. @callInfo = call. 42)
-  sorted = macro(@called = true. @callInfo = call. 42)
-  sortedBy = macro(@called = true. @callInfo = call. 42)
-  folded = macro(@called = true. @callInfo = call. 42)
-  injected = macro(@called = true. @callInfo = call. 42)
-  reduced = macro(@called = true. @callInfo = call. 42)
   filtered = macro(@called = true. @callInfo = call. 42)
   selected = macro(@called = true. @callInfo = call. 42)
   grepped = macro(@called = true. @callInfo = call. 42)
@@ -75,76 +70,6 @@ describe(Mixins,
         x mock!(:seq) andReturn(seqObj)
 
         x collected(foo, bar x * 43) should == 42
-
-        seqObj called should be true
-        seqObj callInfo arguments should == ['foo, '(bar x * 43)]
-      )
-    )
-
-    describe("sorted",
-      it("should resend the call with all arguments to the result of calling seq",
-        x = Origin mimic
-        x mimic!(Mixins Sequenced)
-        seqObj = SequenceHelper mimic
-        x mock!(:seq) andReturn(seqObj)
-
-        x sorted(foo, bar x * 43) should == 42
-
-        seqObj called should be true
-        seqObj callInfo arguments should == ['foo, '(bar x * 43)]
-      )
-    )
-
-    describe("sortedBy",
-      it("should resend the call with all arguments to the result of calling seq",
-        x = Origin mimic
-        x mimic!(Mixins Sequenced)
-        seqObj = SequenceHelper mimic
-        x mock!(:seq) andReturn(seqObj)
-
-        x sortedBy(foo, bar x * 43) should == 42
-
-        seqObj called should be true
-        seqObj callInfo arguments should == ['foo, '(bar x * 43)]
-      )
-    )
-
-    describe("folded",
-      it("should resend the call with all arguments to the result of calling seq",
-        x = Origin mimic
-        x mimic!(Mixins Sequenced)
-        seqObj = SequenceHelper mimic
-        x mock!(:seq) andReturn(seqObj)
-
-        x folded(foo, bar x * 43) should == 42
-
-        seqObj called should be true
-        seqObj callInfo arguments should == ['foo, '(bar x * 43)]
-      )
-    )
-
-    describe("injected",
-      it("should resend the call with all arguments to the result of calling seq",
-        x = Origin mimic
-        x mimic!(Mixins Sequenced)
-        seqObj = SequenceHelper mimic
-        x mock!(:seq) andReturn(seqObj)
-
-        x injected(foo, bar x * 43) should == 42
-
-        seqObj called should be true
-        seqObj callInfo arguments should == ['foo, '(bar x * 43)]
-      )
-    )
-
-    describe("reduced",
-      it("should resend the call with all arguments to the result of calling seq",
-        x = Origin mimic
-        x mimic!(Mixins Sequenced)
-        seqObj = SequenceHelper mimic
-        x mock!(:seq) andReturn(seqObj)
-
-        x reduced(foo, bar x * 43) should == 42
 
         seqObj called should be true
         seqObj callInfo arguments should == ['foo, '(bar x * 43)]
@@ -312,26 +237,6 @@ describe(Sequence,
     it("should create a new Sequence Map with the arguments sent to it")
   )
 
-  describe("sorted",
-    it("should create a new Sequence Sort with the arguments sent to it")
-  )
-
-  describe("sortedBy",
-    it("should create a new Sequence SortBy with the arguments sent to it")
-  )
-
-  describe("folded",
-    it("should create a new Sequence Fold with the arguments sent to it")
-  )
-
-  describe("injected",
-    it("should create a new Sequence Fold with the arguments sent to it")
-  )
-
-  describe("reduced",
-    it("should create a new Sequence Fold with the arguments sent to it")
-  )
-
   describe("filtered",
     it("should create a new Sequence Filter with the arguments sent to it")
   )
@@ -426,30 +331,6 @@ describe(Sequence,
     )
   )
 
-  describe("Sort",
-    it("should mimic Sequence",
-      Sequence Sort should mimic(Sequence)
-    )
-
-    it("should have tests")
-  )
-
-  describe("SortBy",
-    it("should mimic Sequence",
-      Sequence SortBy should mimic(Sequence)
-    )
-
-    it("should have tests")
-  )
-
-  describe("Fold",
-    it("should mimic Sequence",
-      Sequence Fold should mimic(Sequence)
-    )
-
-    it("should have tests")
-  )
-
   describe("Grep",
     it("should mimic Sequence",
       Sequence Grep should mimic(Sequence)
@@ -487,6 +368,28 @@ describe(Sequence,
       Sequence Reject should mimic(Sequence)
     )
 
-    it("should have tests")
+    it("should take one argument that ends up being a predicate and return a sequence of the values that is false",
+      ss = Sequence Reject create(SequenceTester with(val: [1,2,3], len: 3) seq, Ground, ['(>1)])
+      ss asList should == [1]
+
+      ss = Sequence Reject create(SequenceTester with(val: [nil,false,nil], len: 3) seq, Ground, ['(nil?)])
+      ss asList should == [false]
+
+      ss = Sequence Reject create(SequenceTester with(val: [nil,false,true], len: 3) seq, Ground, ['(==2)])
+      ss next should == nil
+      ss asList should == [false, true]
+    )
+
+    it("should take two arguments that ends up being a predicate and return a sequence of the values that is false",
+      ss = Sequence Reject create(SequenceTester with(val: [1,2,3], len: 3) seq, Ground, ['x, '(x>1)])
+      ss asList should == [1]
+
+      ss = Sequence Reject create(SequenceTester with(val: [nil,false,nil], len: 3) seq, Ground, ['x, '(x nil?)])
+      ss asList should == [false]
+
+      ss = Sequence Reject create(SequenceTester with(val: [nil,false,true], len: 3) seq, Ground, ['x, '(x==2)])
+      ss next should be nil
+      ss asList should == [false, true]
+    )
   )
 )
