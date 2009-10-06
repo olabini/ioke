@@ -13,7 +13,7 @@ Mixins Enumerable sort = method(
   self asList sort)
 
 
-let(enumerableMapMethod, 
+let(enumerableMapMethod,
   dsyntax(
     [docstr, initCode, updateCode]
 
@@ -25,7 +25,7 @@ let(enumerableMapMethod,
         'updateCode)
       result,
 
-      [argName, theCode]  
+      [argName, theCode]
       'initCode
       lexicalCode = LexicalBlock createFrom(list(argName, theCode), call ground)
       self each(n,
@@ -33,18 +33,18 @@ let(enumerableMapMethod,
         'updateCode)
       result))),
 
-  Mixins Enumerable map = enumerableMapMethod("takes one or two arguments. if one argument is given, it will be evaluated as a message chain on each element in the enumerable, and then the result will be collected in a new List. if two arguments are given, the first one should be an unevaluated argument name, which will be bound inside the scope of executing the second piece of code. it's important to notice that the one argument form will establish no context, while the two argument form establishes a new lexical closure.", 
-    result = list(), 
+  Mixins Enumerable map = enumerableMapMethod("takes one or two arguments. if one argument is given, it will be evaluated as a message chain on each element in the enumerable, and then the result will be collected in a new List. if two arguments are given, the first one should be an unevaluated argument name, which will be bound inside the scope of executing the second piece of code. it's important to notice that the one argument form will establish no context, while the two argument form establishes a new lexical closure.",
+    result = list(),
     result << cell(:x))
 
-  Mixins Enumerable map:set = enumerableMapMethod("takes one or two arguments. if one argument is given, it will be evaluated as a message chain on each element in the enumerable, and then the result will be collected in a new Set. if two arguments are given, the first one should be an unevaluated argument name, which will be bound inside the scope of executing the second piece of code. it's important to notice that the one argument form will establish no context, while the two argument form establishes a new lexical closure.", 
-    result = set(), 
+  Mixins Enumerable map:set = enumerableMapMethod("takes one or two arguments. if one argument is given, it will be evaluated as a message chain on each element in the enumerable, and then the result will be collected in a new Set. if two arguments are given, the first one should be an unevaluated argument name, which will be bound inside the scope of executing the second piece of code. it's important to notice that the one argument form will establish no context, while the two argument form establishes a new lexical closure.",
+    result = set(),
     result << cell(:x))
 
-  Mixins Enumerable map:dict = enumerableMapMethod("takes one or two arguments. if one argument is given, it will be evaluated as a message chain on each element in the enumerable, and then the result will be collected in a new Dict. if the message chain returns a pair, that pair will be used as key and value. if it's something else, that value will be the key, and the value for it will be nil. if two arguments are given, the first one should be an unevaluated argument name, which will be bound inside the scope of executing the second piece of code. it's important to notice that the one argument form will establish no context, while the two argument form establishes a new lexical closure.", 
-    result = dict(), 
-    if(cell(:x) kind == "Pair", 
-      result[x key] = x value, 
+  Mixins Enumerable map:dict = enumerableMapMethod("takes one or two arguments. if one argument is given, it will be evaluated as a message chain on each element in the enumerable, and then the result will be collected in a new Dict. if the message chain returns a pair, that pair will be used as key and value. if it's something else, that value will be the key, and the value for it will be nil. if two arguments are given, the first one should be an unevaluated argument name, which will be bound inside the scope of executing the second piece of code. it's important to notice that the one argument form will establish no context, while the two argument form establishes a new lexical closure.",
+    result = dict(),
+    if(cell(:x) kind == "Pair",
+      result[x key] = x value,
       result[cell(:x)] = nil))
 )
 
@@ -62,7 +62,7 @@ Mixins Enumerable mapFn = method(
 
   result)
 
-let(enumerableDefaultMethod, 
+let(enumerableDefaultMethod,
   dsyntax(
     [docstr, initCode, repCode, returnCode]
 
@@ -76,7 +76,7 @@ let(enumerableDefaultMethod,
 
         [theCode]
         'initCode
-        self each(n, 
+        self each(n,
           x = theCode evaluateOn(call ground, cell(:n))
           'repCode)
         'returnCode,
@@ -84,27 +84,27 @@ let(enumerableDefaultMethod,
         [argName, theCode]
         'initCode
         lexicalCode = LexicalBlock createFrom(list(argName, theCode), call ground)
-        self each(n, 
+        self each(n,
           x = lexicalCode call(cell(:n))
           'repCode)
         'returnCode))),
 
   Mixins Enumerable any? = enumerableDefaultMethod("takes zero, one or two arguments. if zero arguments, returns true if any of the elements yielded by each is true, otherwise false. if one argument, expects it to be a message chain. if that message chain, when applied to the current element returns a true value, the method returns true. finally, if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and tested against the values in this element. if it returns true for any element, this method returns true, otherwise false.",
-    ., 
-    if(cell(:x), 
-      return(true)), 
+    .,
+    if(cell(:x),
+      return(true)),
     false)
 
-  Mixins Enumerable none? = enumerableDefaultMethod("takes zero, one or two arguments. if zero arguments, returns false if any of the elements yielded by each is true, otherwise true. if one argument, expects it to be a message chain. if that message chain, when applied to the current element returns a true value, the method returns false. finally, if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and tested against the values in this element. if it returns true for any element, this method returns false, otherwise true.", 
-    ., 
-    if(cell(:x), 
-      return(false)), 
+  Mixins Enumerable none? = enumerableDefaultMethod("takes zero, one or two arguments. if zero arguments, returns false if any of the elements yielded by each is true, otherwise true. if one argument, expects it to be a message chain. if that message chain, when applied to the current element returns a true value, the method returns false. finally, if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and tested against the values in this element. if it returns true for any element, this method returns false, otherwise true.",
+    .,
+    if(cell(:x),
+      return(false)),
     true)
 
-  Mixins Enumerable some = enumerableDefaultMethod("takes zero, one or two arguments. if zero arguments, returns the first element that is true, otherwise false. if one argument, expects it to be a message chain. if that message chain, when applied to the current element returns a true value, that value is return. finally, if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and tested against the values in this element. if it returns true for any element, that value will be returned, otherwise false.", 
-    ., 
+  Mixins Enumerable some = enumerableDefaultMethod("takes zero, one or two arguments. if zero arguments, returns the first element that is true, otherwise false. if one argument, expects it to be a message chain. if that message chain, when applied to the current element returns a true value, that value is return. finally, if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and tested against the values in this element. if it returns true for any element, that value will be returned, otherwise false.",
+    .,
     if(cell(:x),
-      return(it)), 
+      return(it)),
     false)
 
   Mixins Enumerable find = enumerableDefaultMethod("takes zero, one or two arguments. if zero arguments, returns the first element that is true, otherwise nil. if one argument, expects it to be a message chain. if that message chain, when applied to the current element returns a true value, the corresponding element is returned. finally, if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and tested against the values in this element. if it returns true for any element, the element will be retuend, otherwise nil.",
@@ -121,7 +121,7 @@ let(enumerableDefaultMethod,
 
   Mixins Enumerable all? = enumerableDefaultMethod("takes zero, one or two arguments. if zero arguments, returns false if any of the elements yielded by each is false, otherwise true. if one argument, expects it to be a message chain. if that message chain, when applied to the current element returns a false value, the method returns false. finally, if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and tested against the values in this element. if it returns false for any element, this method returns false, otherwise true.",
     .,
-    unless(cell(:x), 
+    unless(cell(:x),
       return(false)),
     true)
 
@@ -166,7 +166,7 @@ let(enumerableDefaultMethod,
 
   Mixins Enumerable reject = enumerableDefaultMethod("takes one or two arguments. if one argument is given, it will be applied as a message chain as a predicate. those elements that doesn't the predicate will be returned. if two arguments are given, they will be turned into a lexical block and used as a predicate to choose the elements that doesn't match.",
     result = list(),
-    unless(cell(:x), 
+    unless(cell(:x),
       result << cell(:n)),
     result)
 
@@ -187,7 +187,7 @@ let(enumerableDefaultMethod,
 
     result = list()
     collecting = false,
-    if(collecting, 
+    if(collecting,
       result << cell(:n),
       unless(cell(:x),
         collecting = true
@@ -204,7 +204,7 @@ Mixins Enumerable findIndex = dmacro("takes zero, one or two arguments. if zero 
   [theCode]
   self each(ix, n, if(theCode evaluateOn(call ground, cell(:n)), return(ix)))
   nil,
-  
+
   [argName, theCode]
   lexicalCode = LexicalBlock createFrom(list(argName, theCode), call ground)
   self each(ix, n, if(lexicalCode call(cell(:n)), return(ix)))
@@ -212,7 +212,7 @@ Mixins Enumerable findIndex = dmacro("takes zero, one or two arguments. if zero 
 
 Mixins Enumerable sortBy = dmacro(
   "takes one or two arguments that are used to transform the objects into something that can be sorted, then sorts based on that. if one argument, that argument is handled as a message chain, and if two arguments it will be turned into a lexical block and used.",
-  
+
   [theCode]
   map(x, list(theCode evaluateOn(call ground, cell(:x)), cell(:x))) sort map(second),
 
@@ -233,7 +233,7 @@ Mixins Enumerable inject = dmacro(
   self each(i, n,
     if(i == 0,
       sum = cell(:n),
-        
+
       call ground cell(elementName) = cell(:n)
       sum = theCode evaluateOn(call ground, cell(:sum))))
   return(sum),
@@ -246,7 +246,7 @@ Mixins Enumerable inject = dmacro(
   self each(i, n,
     if(i == 0,
       sum = cell(:n),
-        
+
       call ground cell(elementName) = cell(:n)
       sum = theCode evaluateOn(call ground, cell(:sum))))
 
@@ -283,7 +283,7 @@ Mixins Enumerable flatMap:set = macro(
 Mixins Enumerable flatMap:dict = macro(
   "expects to get the same kind of arguments as map:dict, and that each map operation returns a dict for key. these dicts will then be folded into a single dict.",
 
-  call resendToMethod("map:dict") fold({}, sum, arg, 
+  call resendToMethod("map:dict") fold({}, sum, arg,
     arg key each(val,
       sum[val key] = val value)
     sum)
@@ -295,7 +295,7 @@ Mixins Enumerable first = method(
 
   if(howMany,
     result = list()
-    self each(n, 
+    self each(n,
       if(howMany == 0, return(result))
       howMany--
       result << cell(:n))
@@ -308,7 +308,7 @@ Mixins Enumerable include? = method(
   "takes one argument and returns true if this element is in the collection. comparisons is done with ==.",
   toFind,
 
-  self each(n, 
+  self each(n,
     if(toFind == cell(:n),
       return(true)))
   return(false))
@@ -326,8 +326,8 @@ Mixins Enumerable drop = method(
 
   result = list()
   currentCount = howMany
-  self each(n, 
-    if(currentCount > 0, 
+  self each(n,
+    if(currentCount > 0,
       currentCount--,
       result << cell(:n)))
   result)
@@ -352,31 +352,42 @@ Mixins Enumerable cycle = dmacro(
     lexicalCode call(cell(:n)))
   if(internal empty?, return(nil))
   loop(internal each(x, lexicalCode call(cell(:x)))))
-    
+
 Mixins Enumerable zip = method(
   "takes zero or more arguments, where all arguments should be a list, except that the last might also be a lexical block. zip will create a list of lists, where each internal list is a combination of the current element, and the corresponding elements from all the lists. if the lists are shorter than this collection, nils will be supplied. if a lexical block is provided, it will be called with each list created, and if that's the case nil will be returned from zip",
   +listsAndFns,
-  
+
   theFn = listsAndFns last
   if(cell(:theFn) && (cell(:theFn) mimics?(LexicalBlock)),
     listsAndFns = listsAndFns[0..0-2]
-    self each(ix, n,
+    listsAndFns map!(x,
+      if(x mimics?(Sequence),
+        x,
+        x seq))
+    self each(n,
       internal = list(cell(:n))
-      listsAndFns each(n2, internal << cell(:n2)[ix])
+      listsAndFns each(n2,
+        val = if(n2 next?, n2 next, nil)
+        internal << cell(:val))
       cell(:theFn) call(internal))
     nil,
 
+    listsAndFns map!(x,
+      if(x mimics?(Sequence),
+        x,
+        x seq))
     result = list()
-    self each(ix, n,
+    self each(n,
       internal = list(cell(:n))
-      listsAndFns each(n2, internal << cell(:n2)[ix])
+      listsAndFns each(n2,
+        val = if(n2 next?, n2 next, nil)
+        internal << cell(:val))
       result << internal)
     result))
 
-
 Mixins Enumerable grep = dmacro(
   "takes one, two or three arguments. grep will first find any elements in the collection matching the first argument with '==='. if two or three arguments are given, these will be used to transform the matching object and then add the transformed version instead of the original element to the result list. the two argument version expects the second argument to be a message chain, and the three argument version expects it to be something that can be turned into a lexical block",
-  
+
   [>matchingAgainst]
   result = list()
   self each(n,
@@ -398,18 +409,18 @@ Mixins Enumerable grep = dmacro(
     if(matchingAgainst === cell(:n),
       result << lexicalCode call(cell(:n))))
   result)
-  
+
 
 Mixins Enumerable join = method(
   "returns a string created by converting each element of the array to text, separated by an optional separator",
   separator "",
-  
+
   result = ""
   self each(index, n,
     result += (n asText)
     if(index < count - 1, result += separator))
   result)
-  
+
 Mixins Enumerable aliasMethod("map", "collect")
 Mixins Enumerable aliasMethod("map", "collect:list")
 Mixins Enumerable aliasMethod("map", "map:list")
