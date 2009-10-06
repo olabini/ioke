@@ -419,7 +419,32 @@ describe(Sequence,
       Sequence DropWhile should mimic(Sequence)
     )
 
-    it("should have tests")
+    it("should take zero arguments and return everything after the point where a value is true",
+      ss = Sequence DropWhile create(SequenceTester with(val: [1,2,3], len: 3) seq, Ground, [])
+      ss asList should == []
+
+      ss = Sequence DropWhile create(SequenceTester with(val: [1,2,nil,false], len: 4) seq, Ground, [])
+      ss asList should == [nil, false]
+
+      ss = Sequence DropWhile create(SequenceTester with(val: [1,2,false,3,4,nil,false], len: 7) seq, Ground, [])
+      ss asList should == [false,3,4,nil,false]
+    )
+
+    it("should take one argument and apply it as a message chain, return a list with all elements after the block returns false",
+      ss = Sequence DropWhile create(SequenceTester with(val: [1,2,3], len: 3) seq, Ground, ['(<3)])
+      ss asList should == [3]
+
+      ss = Sequence DropWhile create(SequenceTester with(val: [1,2,3], len: 3) seq, Ground, ['(!=2)])
+      ss asList should == [2,3]
+    )
+
+    it("should take two arguments and apply the lexical block created from it, and return a list with all elements after the block returns false",
+      ss = Sequence DropWhile create(SequenceTester with(val: [1,2,3], len: 3) seq, Ground, ['x, '(x<3)])
+      ss asList should == [3]
+
+      ss = Sequence DropWhile create(SequenceTester with(val: [1,2,3], len: 3) seq, Ground, ['x, '(x != 2)])
+      ss asList should == [2,3]
+    )
   )
 
   describe("Reject",
