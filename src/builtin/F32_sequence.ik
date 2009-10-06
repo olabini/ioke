@@ -185,6 +185,6 @@ let(
   Sequence Zip       = Sequence mimic
   Sequence Reject    = sequenceObject(!cell(:x), cell(:n))
   Sequence Grep      = sequenceObject(restArguments[0] === cell(:n), cell(:x))
-  Sequence Drop      = Sequence mimic
+  Sequence Drop      = sequenceObject(if(restArguments[0] == 0, true, restArguments[0] = restArguments[0] - 1. false), cell(:n))
   Sequence DropWhile = Sequence mimic
 )

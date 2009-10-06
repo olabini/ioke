@@ -389,7 +389,29 @@ describe(Sequence,
       Sequence Drop should mimic(Sequence)
     )
 
-    it("should have tests")
+    it("should return a list without as many elements as requested",
+      ss = Sequence Drop create(SequenceTester with(val: [1,2,3], len: 3) seq, Ground, [], 0)
+      ss next should == 1
+      ss asList should == [2,3]
+
+      ss = Sequence Drop create(SequenceTester with(val: [1,2,3], len: 3) seq, Ground, [], 1)
+      ss next should == 2
+      ss asList should == [3]
+
+      ss = Sequence Drop create(SequenceTester with(val: [1,2,3], len: 3) seq, Ground, [], 2)
+      ss asList should == [3]
+
+      ss = Sequence Drop create(SequenceTester with(val: [1,2,3], len: 3) seq, Ground, [], 3)
+      ss asList should == []
+    )
+
+    it("should not drop more elements than the length of the collection",
+      ss = Sequence Drop create(SequenceTester with(val: [1,2,3], len: 3) seq, Ground, [], 4)
+      ss asList should == []
+
+      ss = Sequence Drop create(SequenceTester with(val: [1,2,3], len: 3) seq, Ground, [], 10)
+      ss asList should == []
+    )
   )
 
   describe("DropWhile",
