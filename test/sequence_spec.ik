@@ -230,7 +230,18 @@ describe(Sequence,
   )
 
   describe("mapped",
-    it("should create a new Sequence Map with the arguments sent to it")
+    it("should create a new Sequence Map with the arguments sent to it",
+      ss = SequenceTester with(val: [1,2,3], len: 3) seq
+      val = ss mapped(*2)
+      val should mimic(Sequence Map)
+      val wrappedSequence should be same(ss)
+      val messages should == ['(*2)]
+    )
+
+    it("should map the objects",
+      ss = SequenceTester with(val: [1,2,3], len: 3) seq
+      ss mapped(*2) asList should == [2,4,6]
+    )
   )
 
   describe("collected",
