@@ -344,7 +344,22 @@ describe(Sequence,
   )
 
   describe("dropped",
-    it("should create a new Sequence Drop with the arguments sent to it")
+    it("should create a new Sequence Drop with the arguments sent to it",
+      ss = SequenceTester with(val: [1,2,3,4,5,6,7,8], len: 8) seq
+      val = ss dropped(3)
+      val should mimic(Sequence Drop)
+      val wrappedSequence should be same(ss)
+      val messages should == []
+      val restArguments should == [3]
+    )
+
+    it("should drop the objects",
+      ss = SequenceTester with(val: [1,2,4,5,6,7,8], len: 7) seq
+      ss dropped(3) asList should == [5,6,7,8]
+
+      ss = SequenceTester with(val: [1,2,4,5,6,7,8], len: 7) seq
+      ss dropped(10) asList should == []
+    )
   )
 
   describe("droppedWhile",
