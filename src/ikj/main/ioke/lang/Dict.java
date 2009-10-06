@@ -260,6 +260,9 @@ public class Dict extends IokeData {
                     Runtime runtime = context.runtime;
                     Map<Object, Object> ls = Dict.getMap(on);
                     switch(message.getArgumentCount()) {
+                    case 0: {
+                        return ((Message)IokeObject.data(runtime.seqMessage)).sendTo(runtime.seqMessage, context, on);
+                    }
                     case 1: {
                         IokeObject code = IokeObject.as(message.getArguments().get(0), context);
 
