@@ -154,6 +154,9 @@ public class IokeList extends IokeData {
                     List<Object> ls = ((IokeList)IokeObject.data(onAsList)).list;
 
                     switch(message.getArgumentCount()) {
+                    case 0: {
+                        return ((Message)IokeObject.data(runtime.seqMessage)).sendTo(runtime.seqMessage, context, on);
+                    }
                     case 1: {
                         IokeObject code = IokeObject.as(message.getArguments().get(0), context);
 
