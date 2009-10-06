@@ -1,38 +1,23 @@
-
-List seq = method(
-  s = Sequence mimic do(
-    index = 0
-    next = method(
-      res = outer[@index]
-      @index++
-      res
-    )
-    next? = method(@index < outer length)
-  )
-  s outer = @
-  s
-)
-
 List second = method(
   "returns the second element of this list, or nil of the list has less than two entries",
-  
+
   [1])
 
 List third = method(
   "returns the third element of this list, or nil of the list has less than three entries",
-  
+
   [2])
 
 List last = method(
   "returns the last element of this list, or nil of the list is empty",
-  
+
   if(empty?, nil, [0-1]))
 
 List rest = method(
   "returns a list that contains all entries except for the first one, or the empty list if this list is empty.",
-  
-  if(empty?, 
-    DefaultBehavior [], 
+
+  if(empty?,
+    DefaultBehavior [],
     [1..0-1]))
 
 List butLast = method(
@@ -84,13 +69,13 @@ List compact = method(
 List assoc = method(
   "takes an object, and returns the first list in this list that has that object as its first element. if it can't be found, returns nil.",
   obj,
-  self find(el, 
+  self find(el,
     el mimics?(List) && el length > 0 && el[0] == obj))
 
 List rassoc = method(
   "takes an object, and returns the first list in this list that has that object as its second element. if it can't be found, returns nil.",
   obj,
-  self find(el, 
+  self find(el,
     el mimics?(List) && el length > 1 && el[1] == obj))
 
 List reverse = method(
@@ -108,7 +93,7 @@ List flatten = method(
 List cell("*") = method(
   "takes either a text or a number. if given a text, it works like join, while if it gets a number, it will return a new list repeated as many times as the number argument",
   sepOrRep,
-  
+
   if(sepOrRep mimics?(Text),
     self join(sepOrRep),
 

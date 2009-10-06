@@ -1,4 +1,3 @@
-IokeGround Sequence = Origin mimic
 Sequence mimic!(Mixins Enumerable)
 
 Sequence each = dmacro(
