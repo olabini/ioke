@@ -75,7 +75,7 @@ JavaGround java:lang:Class [] = method(dimension nil,
     baseType = if(clz class:array?,
       clz class:componentType,
       clz)
-    
+
     dimension++
     dims = list()
     dimension times(dims << 0)
@@ -120,7 +120,7 @@ JavaGround import = method(+rest, +:krest,
     name = rest[0] class:name split(":") last
     unless(self cell?(name),
       self cell(name) = rest[0]),
-    else, 
+    else,
     packageName = rest[0] asText
     rest[1..-1] each(cName,
       unless(self cell?(cName),
