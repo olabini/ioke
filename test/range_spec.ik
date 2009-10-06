@@ -68,7 +68,9 @@ describe("Range",
     Range should mimic(Mixins Enumerable)
   )
 
-  it("should mimic Sequenced")
+  it("should mimic Sequenced",
+    Range should mimic(Mixins Sequenced)
+  )
 
   describe("from",
     it("should return the from part of the range",
@@ -119,7 +121,46 @@ describe("Range",
   )
 
   describe("seq",
-    it("should have tests")
+    it("should return false when calling next? on a seq from an empty range",
+      (1..1) seq next? should be true
+      (1...2) seq next? should be true
+      (1...1) seq next? should be false
+    )
+
+    it("should return a Sequence",
+      (1..2) seq should mimic(Sequence)
+    )
+
+    it("should return an object that yields all objects in the range",
+      ss = (5..7) seq
+      ss next should == 5
+      ss next should == 6
+      ss next should == 7
+      ss next? should be false
+
+      ss = (2...6) seq
+      ss next should == 2
+      ss next should == 3
+      ss next should == 4
+      ss next should == 5
+      ss next? should be false
+
+      ss = (7..2) seq
+      ss next should == 7
+      ss next should == 6
+      ss next should == 5
+      ss next should == 4
+      ss next should == 3
+      ss next should == 2
+      ss next? should be false
+
+      ss = (6...2) seq
+      ss next should == 6
+      ss next should == 5
+      ss next should == 4
+      ss next should == 3
+      ss next? should be false
+    )
   )
 
   describe("each",

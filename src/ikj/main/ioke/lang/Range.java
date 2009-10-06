@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Iterator;
 
 import ioke.lang.exceptions.ControlFlow;
 
@@ -38,7 +39,7 @@ public class Range extends IokeData {
     public static boolean isInclusive(Object range) {
         return ((Range)IokeObject.data(range)).isInclusive();
     }
-    
+
     public IokeObject getFrom() {
         return from;
     }
@@ -46,17 +47,76 @@ public class Range extends IokeData {
     public IokeObject getTo() {
         return to;
     }
-    
+
     public boolean isInclusive() {
         return inclusive;
     }
+
+    private static class RangeIterator implements Iterator<Object> {
+        private IokeObject start;
+        private IokeObject end;
+        private final boolean inclusive;
+        private final boolean inverted;
+        private IokeObject context;
+        private IokeObject message;
+        private IokeObject messageToSend;
+        private final Runtime runtime;
+        private boolean oneIteration = false;
+        private boolean doLast = true;
+
+        public RangeIterator(IokeObject start, IokeObject end, boolean inclusive, boolean inverted, IokeObject context, IokeObject message) {
+            this.runtime = context.runtime;
+            this.start = start;
+            this.end = end;
+            this.inclusive = inclusive;
+            this.inverted = inverted;
+            this.context = context;
+            this.message = message;
+
+            messageToSend = runtime.succ;
+            if(inverted) {
+                messageToSend = runtime.pred;
+            }
+        }
+
+        public boolean hasNext() {
+            try {
+                boolean sameEndpoints = IokeObject.isTrue(((Message)IokeObject.data(runtime.eqMessage)).sendTo(runtime.eqMessage, context, start, end));
+                boolean shouldGoOver = (doLast && inclusive);
+                boolean sameStartPoint = sameEndpoints && inclusive && !oneIteration;
+                return !sameEndpoints || shouldGoOver || sameStartPoint;
+            } catch(ControlFlow cf) {}
+            throw new RuntimeException("(TODO: fix) - got an error. =(");
+        }
+
+        public Object next() {
+            IokeObject obj = start;
+            try {
+                if(!IokeObject.isTrue(((Message)IokeObject.data(runtime.eqMessage)).sendTo(runtime.eqMessage, context, start, end))) {
+                    oneIteration = true;
+                    start = (IokeObject)((Message)IokeObject.data(messageToSend)).sendTo(messageToSend, context, start);
+                    doLast = true;
+                    return obj;
+                } else {
+                    if(inclusive && doLast) {
+                        doLast = false;
+                        return obj;
+                    }
+                }
+            } catch(ControlFlow cf) {}
+            throw new RuntimeException("(TODO: fix) - iterating over end");
+        }
+
+        public void remove(){}
+    }
+
 
     @Override
     public void init(IokeObject obj) throws ControlFlow {
         final Runtime runtime = obj.runtime;
 
         obj.setKind("Range");
-        obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Enumerable"), null), runtime.nul, runtime.nul);
+        obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Sequenced"), null), runtime.nul, runtime.nul);
 
         obj.registerMethod(runtime.newNativeMethod("returns true if the left hand side range is equal to the right hand side range.", new TypeCheckingNativeMethod("==") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
@@ -182,6 +242,18 @@ public class Range extends IokeData {
                 }
             }));
 
+        obj.registerMethod(obj.runtime.newNativeMethod("returns a new sequence to iterate over this range", new TypeCheckingNativeMethod.WithNoArguments("seq", runtime.range) {
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    IokeObject obj = method.runtime.iteratorSequence.allocateCopy(null, null);
+                    obj.mimicsWithoutCheck(method.runtime.iteratorSequence);
+                    Range r = ((Range)IokeObject.data(on));
+                    RangeIterator ri = new RangeIterator(r.from, r.to, r.inclusive, r.inverted, context, message);
+                    obj.setData(new Sequence.IteratorSequence(ri));
+                    return obj;
+                }
+            }));
+
         obj.registerMethod(runtime.newNativeMethod("takes either one or two or three arguments. if one argument is given, it should be a message chain that will be sent to each object in the range. the result will be thrown away. if two arguments are given, the first is an unevaluated name that will be set to each of the values in the range in succession, and then the second argument will be evaluated in a scope with that argument in it. if three arguments is given, the first one is an unevaluated name that will be set to the index of each element, and the other two arguments are the name of the argument for the value, and the actual code. the code will evaluate in a lexical context, and if the argument name is available outside the context, it will be shadowed. the method will return the range.", new NativeMethod("each") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
@@ -211,6 +283,9 @@ public class Range extends IokeData {
                     }
 
                     switch(message.getArgumentCount()) {
+                    case 0: {
+                        return ((Message)IokeObject.data(runtime.seqMessage)).sendTo(runtime.seqMessage, context, on);
+                    }
                     case 1: {
                         IokeObject code = IokeObject.as(message.getArguments().get(0), context);
 
@@ -223,7 +298,7 @@ public class Range extends IokeData {
                         if(inclusive) {
                             ((Message)IokeObject.data(code)).evaluateCompleteWithReceiver(code, context, context.getRealContext(), current);
                         }
-                        
+
                         break;
                     }
                     case 2: {
@@ -354,7 +429,7 @@ public class Range extends IokeData {
                 }
             }));
     }
-    
+
     public IokeData cloneData(IokeObject obj, IokeObject m, IokeObject context) {
         return new Range(from, to, inclusive, inverted);
     }
