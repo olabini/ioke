@@ -2,6 +2,8 @@
 use("ispec")
 
 SequenceTester = Origin mimic do(
+  mimic!(Mixins Sequenced)
+
   val = [1,2,3,4,5,6,7,8]
   len = 8
 
@@ -44,8 +46,59 @@ describe(Mixins,
     )
 
     describe("each",
-      it("should be implemented in terms of 'seq'")
-      it("should return a Sequence if called with no arguments")
+      it("should be implemented in terms of 'seq'",
+        x = Origin mimic
+        x mimic!(Mixins Sequenced)
+        seqObj = SequenceHelper mimic
+        seqObj mock!(:next?) andReturn(false)
+        x mock!(:seq) andReturn(seqObj)
+        x each(42)
+      )
+
+      it("should be possible to call with one message chain that will be applied to all arguments",
+        Ground y = []
+        Ground xs = method(y << self)
+        SequenceTester each(xs)
+        y should == [1,2,3,4,5,6,7,8]
+
+        x = 0
+        SequenceTester each(nil. x++)
+        x should == 8
+      )
+
+      it("should be possible to call with one argument name and code that will be applied to all arguments",
+        y = []
+        SequenceTester each(x, y << x)
+        y should == [1,2,3,4,5,6,7,8]
+      )
+
+      it("should be possible to call with two argument names and code that will be applied to all arguments",
+        y = []
+        SequenceTester each(i, x, y << [i, x])
+        y should == [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 8]]
+      )
+
+      it("should return the object",
+        (SequenceTester each(x, x)) should be(SequenceTester)
+      )
+
+      it("should establish a lexical context when invoking the methods. this context will be the same for all invocations.",
+        SequenceTester each(x_list, blarg=32)
+        cell?(:x_list) should be false
+        cell?(:blarg) should be false
+
+        x=14
+        SequenceTester each(x, blarg=32)
+        x should == 14
+      )
+
+      it("should return a Sequence if called with no arguments",
+        x = Origin mimic
+        x mimic!(Mixins Sequenced)
+        seqObj = SequenceHelper mimic
+        x mock!(:seq) andReturn(seqObj)
+        x each should be same(seqObj)
+      )
     )
 
     describe("mapped",
