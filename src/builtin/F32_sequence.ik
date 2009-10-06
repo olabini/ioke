@@ -39,6 +39,7 @@ Mixins Sequenced do(
 
 Sequence mapped    = macro(Sequence Map create(@, call ground, call arguments))
 Sequence collected = macro(Sequence Map create(@, call ground, call arguments))
+Sequence filtered  = macro(Sequence Filter create(@, call ground, call arguments))
 
 let(
   generateNextPMethod, method(takeCurrentObject, returnObject,
