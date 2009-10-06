@@ -1,4 +1,18 @@
 
+List seq = method(
+  s = Sequence mimic do(
+    index = 0
+    next = method(
+      res = outer[@index]
+      @index++
+      res
+    )
+    next? = method(@index < outer length)
+  )
+  s outer = @
+  s
+)
+
 List second = method(
   "returns the second element of this list, or nil of the list has less than two entries",
   

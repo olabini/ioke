@@ -884,6 +884,11 @@ describe(Mixins,
         [1,2,3] zip([5,6,7,8]) should == [[1, 5], [2, 6], [3, 7]]
       )
 
+      it("should take one argument as a seq and zip the elements together", {pending: true},
+        [1,2,3] zip([5,6,7] seq) should == [[1, 5], [2, 6], [3, 7]]
+        [1,2,3] zip([5,6,7,8] seq) should == [[1, 5], [2, 6], [3, 7]]
+      )
+
       it("should supply nils if the second list isn't long enough", 
         [1,2,3] zip([5,6]) should == [[1, 5], [2, 6], [3, nil]]
       )
