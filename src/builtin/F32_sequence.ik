@@ -44,6 +44,7 @@ Sequence selected  = macro(Sequence Filter create(@, call ground, call arguments
 Sequence grepped   = method(toGrepAgainst, Sequence Grep create(@, Ground, [], toGrepAgainst))
 Sequence rejected  = macro(Sequence Reject create(@, call ground, call arguments))
 Sequence zipped    = method(+toZipAgainst, Sequence Zip create(@, Ground, [], *toZipAgainst))
+Sequence dropped   = method(howManyToDrop, Sequence Drop create(@, Ground, [], howManyToDrop))
 
 let(
   generateNextPMethod, method(takeCurrentObject, returnObject,
