@@ -32,7 +32,7 @@ public class IokeSet extends IokeData {
         final Runtime runtime = obj.runtime;
 
         obj.setKind("Set");
-        obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Enumerable"), null), runtime.nul, runtime.nul);
+        obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Sequenced"), null), runtime.nul, runtime.nul);
 
         obj.registerMethod(runtime.newNativeMethod("returns true if the left hand side set is equal to the right hand side set.", new TypeCheckingNativeMethod("==") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
@@ -164,6 +164,16 @@ public class IokeSet extends IokeData {
                 }
             }));
 
+        obj.registerMethod(obj.runtime.newNativeMethod("returns a new sequence to iterate over this set", new TypeCheckingNativeMethod.WithNoArguments("seq", runtime.set) {
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    IokeObject obj = method.runtime.iteratorSequence.allocateCopy(null, null);
+                    obj.mimicsWithoutCheck(method.runtime.iteratorSequence);
+                    obj.setData(new Sequence.IteratorSequence(((IokeSet)IokeObject.data(on)).set.iterator()));
+                    return obj;
+                }
+            }));
+
         obj.registerMethod(runtime.newNativeMethod("takes either one, two or three arguments. if one argument is given, it should be a message chain that will be sent to each object in the set. the result will be thrown away. if two arguments are given, the first is an unevaluated name that will be set to each of the values in the set in succession, and then the second argument will be evaluated in a scope with that argument in it. if three arguments is given, the first one is an unevaluated name that will be set to the index of each element, and the other two arguments are the name of the argument for the value, and the actual code. the code will evaluate in a lexical context, and if the argument name is available outside the context, it will be shadowed. the method will return the set. the iteration order is not defined.", new NativeMethod("each") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
@@ -185,6 +195,9 @@ public class IokeSet extends IokeData {
                     Set<Object> set = ((IokeSet)IokeObject.data(onAsSet)).set;
 
                     switch(message.getArgumentCount()) {
+                    case 0: {
+                        return ((Message)IokeObject.data(runtime.seqMessage)).sendTo(runtime.seqMessage, context, on);
+                    }
                     case 1: {
                         IokeObject code = IokeObject.as(message.getArguments().get(0), context);
 
