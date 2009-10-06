@@ -336,7 +336,21 @@ describe(Sequence,
   )
 
   describe("rejected",
-    it("should create a new Sequence Reject with the arguments sent to it")
+    it("should create a new Sequence Reject with the arguments sent to it",
+      ss = SequenceTester with(val: [1,2,3,4,5,6,7,8], len: 8) seq
+      val = ss rejected(>4)
+      val should mimic(Sequence Reject)
+      val wrappedSequence should be same(ss)
+      val messages should == ['(>4)]
+    )
+
+    it("should filter the objects",
+      ss = SequenceTester with(val: [1,2,3,4,5,6,7,8], len: 8) seq
+      ss rejected(>4) asList should == [1,2,3,4]
+
+      ss = SequenceTester with(val: [1,2,3,4,5,6,7,8], len: 8) seq
+      ss rejected(x, x>4) asList should == [1,2,3,4]
+    )
   )
 
   describe("Filter",
