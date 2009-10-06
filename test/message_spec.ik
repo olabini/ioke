@@ -1,16 +1,18 @@
 
 use("ispec")
 
-describe(Message, 
-  it("should have the correct kind", 
+describe(Message,
+  it("should have the correct kind",
     Message should have kind("Message")
   )
 
-  it("should mimic Enumerable", 
+  it("should mimic Enumerable",
     Message should mimic(Mixins Enumerable)
   )
 
-  it("should mimic Sequenced")
+  it("should mimic Sequenced",
+    Message should mimic(Mixins Sequenced)
+  )
 
   describe("OperatorTable",
     describe("withOperator",
@@ -18,7 +20,7 @@ describe(Message,
         Message OperatorTable withOperator("+++++", 42,
           Message OperatorTable operators[:"+++++"] should == 42
         )
-        
+
         Message OperatorTable operators[:"+++++"] should be nil
       )
 
@@ -36,7 +38,7 @@ describe(Message,
         Message OperatorTable withTrinaryOperator("+++++", 42,
           Message OperatorTable trinaryOperators[:"+++++"] should == 42
         )
-        
+
         Message OperatorTable trinaryOperators[:"+++++"] should be nil
       )
 
@@ -54,7 +56,7 @@ describe(Message,
         Message OperatorTable withInvertedOperator(":-:", 42,
           Message OperatorTable invertedOperators[:":-:"] should == 42
         )
-        
+
         Message OperatorTable invertedOperators[:":-:"] should be nil
       )
 
@@ -129,20 +131,20 @@ describe(Message,
     )
   )
 
-  describe("code", 
-    it("should return a text representation of itself", 
+  describe("code",
+    it("should return a text representation of itself",
       Message fromText("foo") code should == "foo"
     )
 
-    it("should return a text representation of itself with arguments", 
+    it("should return a text representation of itself with arguments",
       Message fromText("foo(123, 321)") code should == "foo(123, 321)"
     )
 
-    it("should return empty parenthesis for the empty message", 
+    it("should return empty parenthesis for the empty message",
       Message fromText("()") code should == "()"
     )
 
-    it("should include the next pointer if any exists", 
+    it("should include the next pointer if any exists",
       Message fromText("foo bar") code should == "foo bar"
     )
 
@@ -151,16 +153,16 @@ describe(Message,
     )
   )
 
-  describe("name", 
-    it("should return the name of something simple", 
+  describe("name",
+    it("should return the name of something simple",
       Message fromText("foo") name should == :foo
     )
 
-    it("should return an empty name", 
+    it("should return an empty name",
       Message fromText("()") name should == :""
     )
 
-    it("should return a name with a question mark", 
+    it("should return a name with a question mark",
       Message fromText("blarg?") name should == :"blarg?"
     )
 
@@ -169,18 +171,18 @@ describe(Message,
     )
   )
 
-  describe("name=", 
+  describe("name=",
     it("should validate type of receiver",
       Message should checkReceiverTypeOn(:"name=", "foo")
     )
   )
 
-  describe("next", 
-    it("should return nil if there is no next", 
+  describe("next",
+    it("should return nil if there is no next",
       Message fromText("foo") next should be nil
     )
 
-    it("should return the next pointer", 
+    it("should return the next pointer",
       Message fromText("foo bar") next name should == :bar
       Message fromText("foo(123, 321) bar") next name should == :bar
     )
@@ -190,12 +192,12 @@ describe(Message,
     )
   )
 
-  describe("prev", 
-    it("should return nil if there is no next", 
+  describe("prev",
+    it("should return nil if there is no next",
       Message fromText("foo") prev should be nil
     )
 
-    it("should return the prev pointer", 
+    it("should return the prev pointer",
       Message fromText("foo bar") next prev name should == :foo
       Message fromText("foo(123, 321) bar") next prev name should == :foo
     )
@@ -210,18 +212,18 @@ describe(Message,
       Message should checkReceiverTypeOn(:"prev=", "foo")
     )
   )
-  
-  describe("keyword?", 
-    it("should return true for a message that ends with a colon", 
+
+  describe("keyword?",
+    it("should return true for a message that ends with a colon",
       Message fromText("foo:") keyword? should be true
       Message fromText("bar::::") keyword? should be true
     )
 
-    it("should return false for something simple", 
+    it("should return false for something simple",
       Message fromText("foo") keyword? should be false
     )
 
-    it("should return false for the empty message", 
+    it("should return false for the empty message",
       Message fromText("()") keyword? should be false
     )
 
@@ -230,17 +232,17 @@ describe(Message,
     )
   )
 
-  describe("symbol?", 
-    it("should return true for a message that starts with a colon", 
+  describe("symbol?",
+    it("should return true for a message that starts with a colon",
       Message fromText(":foo") symbol? should be true
       Message fromText("::::bar") symbol? should be true
     )
 
-    it("should return false for something simple", 
+    it("should return false for something simple",
       Message fromText("foo") symbol? should be false
     )
 
-    it("should return false for the empty message", 
+    it("should return false for the empty message",
       Message fromText("()") symbol? should be false
     )
 
@@ -276,39 +278,39 @@ describe(Message,
       m evaluateOn(Ground, Ground) should be same(x)
     )
   )
-  
-  describe("sendTo", 
-    it("should be possible to create a message from text, with arguments and send that to a number", 
+
+  describe("sendTo",
+    it("should be possible to create a message from text, with arguments and send that to a number",
       Message fromText("+(200)") sendTo(20) should == 220
     )
-    
-    it("should possible to send a simple message that is not predefined", 
+
+    it("should possible to send a simple message that is not predefined",
       Ground f = method(self asText)
       Message fromText("f") sendTo(42) should == "42"
     )
-    
-    it("should only send one message and not follow the next pointer", 
+
+    it("should only send one message and not follow the next pointer",
       Message fromText("+(200) +(10) -(5)") sendTo(20) should == 220
     )
   )
 
-  describe("evaluateOn", 
-    it("should be possible to create a message from text, with arguments and send that to a number", 
+  describe("evaluateOn",
+    it("should be possible to create a message from text, with arguments and send that to a number",
       Message fromText("+(200)") evaluateOn(20) should == 220
     )
-    
-    it("should possible to send a simple message that is not predefined", 
+
+    it("should possible to send a simple message that is not predefined",
       Ground f = method(self asText)
       Message fromText("f") evaluateOn(42) should == "42"
     )
-    
-    it("should evaluate the full message chain", 
+
+    it("should evaluate the full message chain",
       Message fromText("+(200) +(10) -(5)") evaluateOn(20) should == 225
     )
   )
 
-  describe("fromText",  
-    it("should return a message from the text", 
+  describe("fromText",
+    it("should return a message from the text",
       Message fromText("foo") name should == :foo
       Message fromText("foo bar") next name should == :bar
     )
@@ -349,7 +351,7 @@ describe(Message,
       Message should checkReceiverTypeOn(:"prev=", 'foo)
     )
   )
-  
+
   describe("terminator?",
     it("should be true when it is a '.' message",
       msg = Message fromText(".")
@@ -374,7 +376,7 @@ describe(Message,
       msg << '(blarg mux)
       msg code should == "foo(x, blarg mux)"
     )
-    
+
     it("should return the original message",
       msg = '(foo(x))
       (msg << '(blarg mux)) should be same(msg)
@@ -395,25 +397,25 @@ describe(Message,
   )
 
   describe("arguments=",
-    it("should clear the arguments list if given nil", 
+    it("should clear the arguments list if given nil",
       msg = '(foo(x))
       msg arguments = nil
       msg code should == "foo"
     )
 
-    it("should set the only argument unless given a list", 
+    it("should set the only argument unless given a list",
       msg = '(foo(x,y))
       msg arguments = 'bar
       msg code should == "foo(bar)"
     )
 
-    it("should change the arguments list to the given list", 
+    it("should change the arguments list to the given list",
       msg = '(foo(x,y))
       other = '(me(i,j))
       msg arguments = other arguments
       msg code should == "foo(i, j)"
     )
-    
+
     it("should validate type of receiver",
       Message should checkReceiverTypeOn(:"arguments=", 'foo)
     )
@@ -458,11 +460,21 @@ describe(Message,
   )
 
   describe("seq",
-    it("should have tests")
+    it("should return a Sequence",
+      'foo seq should mimic(Sequence)
+    )
+
+    it("should return an object that yields all messages",
+      ss = '(foo bar quux) seq
+      ss next should == '(foo bar quux)
+      ss next should == '(bar quux)
+      ss next should == '(quux)
+      ss next? should be false
+    )
   )
 
   describe("each",
-    it("should always execute for itself", 
+    it("should always execute for itself",
       Ground x = 0
       'foo each(. Ground x++)
       Ground x should == 1
@@ -473,8 +485,8 @@ describe(Message,
       '(foo bar quux) each(m, result << m name)
       result should == [:foo, :bar, :quux]
     )
-    
-    it("should be possible to just give it a message chain, that will be invoked on each object", 
+
+    it("should be possible to just give it a message chain, that will be invoked on each object",
       Ground y = []
       Ground xs = method(y << self name)
       '(foo bar quux) each(xs)
@@ -484,19 +496,19 @@ describe(Message,
       '(foo bar quux) each(nil. x++)
       x should == 3
     )
-    
-    it("should be possible to give it an argument name, and code", 
+
+    it("should be possible to give it an argument name, and code",
       y = []
       '(foo bar quux) each(x, y << x name)
       y should == [:foo, :bar, :quux]
     )
 
-    it("should return the object", 
+    it("should return the object",
       y = '(foo bar quux)
       (y each(x, x)) should be same(y)
     )
-    
-    it("should establish a lexical context when invoking the methods. this context will be the same for all invocations.", 
+
+    it("should establish a lexical context when invoking the methods. this context will be the same for all invocations.",
       '(foo bar quux) each(x_list, blarg=32)
       cell?(:x_list) should be false
       cell?(:blarg) should be false
@@ -506,7 +518,7 @@ describe(Message,
       x should == 14
     )
 
-    it("should be possible to give it an extra argument to get the index", 
+    it("should be possible to give it an extra argument to get the index",
       y = []
       '(foo bar baz quux) each(i, x, y << [i, x name])
       y should == [[0, :foo], [1, :bar], [2, :baz], [3, :quux]]
@@ -518,7 +530,7 @@ describe(Message,
   )
 
   describe("walk",
-    it("should always execute for itself", 
+    it("should always execute for itself",
       Ground x = 0
       'foo(bar) walk(. Ground x++)
       Ground x should == 2
@@ -529,8 +541,8 @@ describe(Message,
       '(foo(bar) quux(bar)) walk(m, result << m name)
       result should == [:foo, :bar, :quux, :bar]
     )
-    
-    it("should be possible to just give it a message chain, and it will be invoked on each object recursively", 
+
+    it("should be possible to just give it a message chain, and it will be invoked on each object recursively",
       Ground y = []
       Ground xs = method(y << self name)
       '(foo bar(quux)) walk(xs)
@@ -540,19 +552,19 @@ describe(Message,
       '(foo bar(quux)) walk(nil. x++)
       x should == 3
     )
-    
-    it("should be possible to give it an argument name, and code", 
+
+    it("should be possible to give it an argument name, and code",
       y = []
       '(foo bar(quux)) walk(x, y << x name)
       y should == [:foo, :bar, :quux]
     )
 
-    it("should return the object", 
+    it("should return the object",
       y = '(foo bar(quux))
       (y walk(x, x)) should be same(y)
     )
-    
-    it("should establish a lexical context when invoking the methods. this context will be the same for all invocations.", 
+
+    it("should establish a lexical context when invoking the methods. this context will be the same for all invocations.",
       '(foo bar(quux)) walk(x_list, blarg=32)
       cell?(:x_list) should be false
       cell?(:blarg) should be false
@@ -566,7 +578,7 @@ describe(Message,
       Message should checkReceiverTypeOn(:walk)
     )
   )
-  
+
   describe("filename",
     it("should be preserved on mimic",
       m1 = '(foo)
@@ -574,7 +586,7 @@ describe(Message,
       m2 filename should == m1 filename
     )
   )
-  
+
   describe("line",
     it("should be preserved on mimic",
       m1 = '(foo)
@@ -582,12 +594,12 @@ describe(Message,
       m2 line should == m1 line
     )
   )
-  
+
   describe("position",
     it("should be preserved on mimic",
       m1 = '(foo)
       m2 = m1 mimic
       m2 position should == m1 position
     )
-  )	   
+  )
 )

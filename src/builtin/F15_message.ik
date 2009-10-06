@@ -1,7 +1,7 @@
 
 Message from = dmacro(
   "returns the message chain for the argument given",
-  
+
   [code]
   code deepCopy)
 
@@ -41,3 +41,17 @@ Message OperatorTable withInvertedOperator = dmacro(
   let(Message OperatorTable invertedOperators, Message OperatorTable invertedOperators merge(name => assoc),
     code evaluateOn(call ground, call ground)))
 
+Message mimic!(Mixins Sequenced)
+Message seq = method(
+  s = Sequence mimic do(
+    next = method(
+      obj = @currentMessage
+      @currentMessage = @currentMessage next
+      obj
+    )
+
+    next? = method(!(@currentMessage nil?))
+  )
+  s currentMessage = @
+  s
+)
