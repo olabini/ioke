@@ -324,7 +324,23 @@ describe(Sequence,
   )
 
   describe("zipped",
-    it("should create a new Sequence Zip with the arguments sent to it")
+    it("should create a new Sequence Zip with the arguments sent to it",
+      ss = SequenceTester with(val: [1,2,3,4,5,6,7,8], len: 8) seq
+      listSeq = [1,2,3,4] seq
+      val = ss zipped(listSeq)
+      val should mimic(Sequence Zip)
+      val wrappedSequence should be same(ss)
+      val messages should == []
+      val restArguments[0] should be same(listSeq)
+    )
+
+    it("should zip the objects",
+      ss = SequenceTester with(val: [1,2,4,5,6,7,8], len: 7) seq
+      ss zipped([1,2,3,4], [55,66,77]) asList should == [[1,1,55], [2,2,66],
+        [4, 3, 77],
+        [5, 4, nil], [6, nil, nil],
+        [7, nil, nil], [8, nil, nil]]
+    )
   )
 
   describe("dropped",
