@@ -182,7 +182,7 @@ let(
 
   Sequence Map       = sequenceObject(true,     cell(:x))
   Sequence Filter    = sequenceObject(cell(:x), cell(:n))
-  Sequence Zip       = Sequence mimic
+
   Sequence Reject    = sequenceObject(!cell(:x), cell(:n))
   Sequence Grep      = sequenceObject(restArguments[0] === cell(:n), cell(:x))
   Sequence Drop      = sequenceObject(if(restArguments[0] == 0, true, restArguments[0] = restArguments[0] - 1. false), cell(:n))
@@ -193,4 +193,22 @@ let(
         false),
       true),
     cell(:n)) do(collecting = false)
+
+  Sequence Zip       = sequenceObject(true,
+    resultList = list(cell(:n))
+    restArguments each(rr,
+      resultList << if(rr next?, rr next, nil))
+    resultList
+  )
+
+  Sequence Zip baseCreate = Sequence Base cell(:create)
+  Sequence Zip create = method(+args,
+    myNewSelf = baseCreate(*args)
+    myNewSelf restArguments map!(x,
+      if(x mimics?(Sequence),
+        x,
+        x seq)
+    )
+    myNewSelf
+  )
 )

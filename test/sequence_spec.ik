@@ -381,7 +381,39 @@ describe(Sequence,
       Sequence Zip should mimic(Sequence)
     )
 
-    it("should have tests")
+    it("should take zero arguments and just zip the elements",
+      ss = Sequence Zip create(SequenceTester with(val: [1,2,3], len: 3) seq, Ground, [])
+      ss next should == [1]
+      ss asList should == [[2], [3]]
+    )
+
+    it("should take one argument as a list and zip the elements together",
+      ss = Sequence Zip create(SequenceTester with(val: [1,2,3], len: 3) seq, Ground, [], [5,6,7])
+      ss next should == [1,5]
+      ss asList should == [[2,6], [3,7]]
+
+      ss = Sequence Zip create(SequenceTester with(val: [1,2,3], len: 3) seq, Ground, [], [5,6,7,8])
+      ss next should == [1,5]
+      ss asList should == [[2,6], [3,7]]
+    )
+
+    it("should take one argument as a seq and zip the elements together",
+      ss = Sequence Zip create(SequenceTester with(val: [1,2,3], len: 3) seq, Ground, [], SequenceTester with(val: [9,10,11], len: 3) seq)
+      ss next should == [1,9]
+      ss asList should == [[2,10], [3,11]]
+    )
+
+    it("should supply nils if the second list isn't long enough",
+      ss = Sequence Zip create(SequenceTester with(val: [1,2,3], len: 3) seq, Ground, [], [5,6])
+      ss next should == [1,5]
+      ss asList should == [[2,6], [3,nil]]
+    )
+
+    it("should zip together several lists",
+      ss = Sequence Zip create(SequenceTester with(val: [1,2,3], len: 3) seq, Ground, [], [5,6,7], [10,11,12], [15,16,17])
+      ss next should == [1,5,10,15]
+      ss asList should == [[2,6,11,16], [3,7,12,17]]
+    )
   )
 
   describe("Drop",
