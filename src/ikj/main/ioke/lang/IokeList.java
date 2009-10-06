@@ -42,7 +42,7 @@ public class IokeList extends IokeData {
         final Runtime runtime = obj.runtime;
 
         obj.setKind("List");
-        obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Enumerable"), null), runtime.nul, runtime.nul);
+        obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Sequenced"), null), runtime.nul, runtime.nul);
 
         obj.registerMethod(runtime.newNativeMethod("returns true if the left hand side list is equal to the right hand side list.", new TypeCheckingNativeMethod("==") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
@@ -77,6 +77,16 @@ public class IokeList extends IokeData {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return method.runtime.newText(IokeList.getNotice(on));
+                }
+            }));
+
+        obj.registerMethod(obj.runtime.newNativeMethod("returns a new sequence to iterate over this list", new TypeCheckingNativeMethod.WithNoArguments("seq", runtime.list) {
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    IokeObject obj = method.runtime.iteratorSequence.allocateCopy(null, null);
+                    obj.mimicsWithoutCheck(method.runtime.iteratorSequence);
+                    obj.setData(new Sequence.IteratorSequence(IokeList.getList(on).iterator()));
+                    return obj;
                 }
             }));
 
@@ -119,7 +129,7 @@ public class IokeList extends IokeData {
                     return context.runtime.newNumber(-1);
                 }
             }));
-            
+
             obj.registerMethod(runtime.newNativeMethod("takes either one or two or three arguments. if one argument is given, it should be a message chain that will be sent to each object in the list. the result will be thrown away. if two arguments are given, the first is an unevaluated name that will be set to each of the values in the list in succession, and then the second argument will be evaluated in a scope with that argument in it. if three arguments is given, the first one is an unevaluated name that will be set to the index of each element, and the other two arguments are the name of the argument for the value, and the actual code. the code will evaluate in a lexical context, and if the argument name is available outside the context, it will be shadowed. the method will return the list.", new NativeMethod("each") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
@@ -138,11 +148,11 @@ public class IokeList extends IokeData {
                     getArguments().checkArgumentCount(context, message, on);
 
                     Runtime runtime = context.runtime;
-                    
+
                     Object onAsList = context.runtime.list.convertToThis(on, message, context);
-                    
+
                     List<Object> ls = ((IokeList)IokeObject.data(onAsList)).list;
-                    
+
                     switch(message.getArgumentCount()) {
                     case 1: {
                         IokeObject code = IokeObject.as(message.getArguments().get(0), context);
@@ -417,8 +427,8 @@ public class IokeList extends IokeData {
                     Object arg = args.get(0);
 
                     if(IokeObject.data(arg) instanceof Range) {
-                        int first = Number.extractInt(Range.getFrom(arg), message, context); 
-                        
+                        int first = Number.extractInt(Range.getFrom(arg), message, context);
+
                         if(first < 0) {
                             return context.runtime.newList(new ArrayList<Object>());
                         }
@@ -438,18 +448,18 @@ public class IokeList extends IokeData {
                         }
 
                         if(last >= size) {
-                            
+
                             last = inclusive ? size-1 : size;
                         }
 
                         if(first > last || (!inclusive && first == last)) {
                             return context.runtime.newList(new ArrayList<Object>());
                         }
-                        
+
                         if(!inclusive) {
                             last--;
                         }
-                        
+
                         return context.runtime.newList(new ArrayList<Object>(o.subList(first, last+1)));
                     }
 
@@ -496,10 +506,10 @@ public class IokeList extends IokeData {
 
                     if(args.size()>1) {
                         while(index < 0) {
-                            final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
-                                                                                               message, 
-                                                                                               context, 
-                                                                                               "Error", 
+                            final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition,
+                                                                                               message,
+                                                                                               context,
+                                                                                               "Error",
                                                                                                "Index"), context).mimic(message, context);
                             condition.setCell("message", message);
                             condition.setCell("context", context);
@@ -511,9 +521,9 @@ public class IokeList extends IokeData {
                             context.runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
                                     public void run() throws ControlFlow {
                                         context.runtime.errorCondition(condition);
-                                    }}, 
+                                    }},
                                 context,
-                                new Restart.ArgumentGivingRestart("useValue") { 
+                                new Restart.ArgumentGivingRestart("useValue") {
                                     public List<String> getArgumentNames() {
                                         return new ArrayList<String>(Arrays.asList("newValue"));
                                     }
@@ -568,10 +578,10 @@ public class IokeList extends IokeData {
                     }
 
                     while(index < 0) {
-                        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
-                                                                                           message, 
-                                                                                           context, 
-                                                                                           "Error", 
+                        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition,
+                                                                                           message,
+                                                                                           context,
+                                                                                           "Error",
                                                                                            "Index"), context).mimic(message, context);
                         condition.setCell("message", message);
                         condition.setCell("context", context);
@@ -583,9 +593,9 @@ public class IokeList extends IokeData {
                         context.runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
                                 public void run() throws ControlFlow {
                                     context.runtime.errorCondition(condition);
-                                }}, 
+                                }},
                             context,
-                            new Restart.ArgumentGivingRestart("useValue") { 
+                            new Restart.ArgumentGivingRestart("useValue") {
                                 public List<String> getArgumentNames() {
                                     return new ArrayList<String>(Arrays.asList("newValue"));
                                 }
@@ -617,7 +627,7 @@ public class IokeList extends IokeData {
             }));
 
         obj.aliasMethod("at=", "[]=", null, null);
-        
+
         obj.registerMethod(runtime.newNativeMethod(
                 "takes as argument the index of the element to be removed and returns it. can be " +
                 "negative and will in that case index from the back of the list. if the index is " +
@@ -627,15 +637,15 @@ public class IokeList extends IokeData {
                 "depending on the range). the end of the range can be negative and will in that case " +
                 "index from the back of the list. if the start of the range is negative, or greater " +
                 "than the end, an empty list will be returned. if the end index exceeds the bounds " +
-                "of the list, its size will be used instead.", 
+                "of the list, its size will be used instead.",
                 new TypeCheckingNativeMethod("removeAt!") {
-                	
+
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                 	.builder()
                 	.receiverMustMimic(runtime.list)
                 	.withRequiredPositional("indexOrRange")
                 	.getArguments();
-            
+
                 @Override
                 public TypeCheckingArgumentsDefinition getArguments() {
                 	return ARGUMENTS;
@@ -646,8 +656,8 @@ public class IokeList extends IokeData {
                 	Object arg = args.get(0);
 
                 	if(IokeObject.data(arg) instanceof Range) {
-                    
-                		int first = Number.extractInt(Range.getFrom(arg), message, context); 
+
+                        int first = Number.extractInt(Range.getFrom(arg), message, context);
                 		if(first < 0) {
                 			return emptyList(context);
                 		}
@@ -665,35 +675,35 @@ public class IokeList extends IokeData {
                 		}
 
                 		boolean inclusive = Range.isInclusive(arg);
-                    
-                		if(last >= size) {                        
+
+                        if(last >= size) {
                 			last = inclusive ? size-1 : size;
                 		}
 
                 		if(first > last || (!inclusive && first == last)) {
                 			return emptyList(context);
                 		}
-                    
+
                 		if(!inclusive) {
                 			last--;
                 		}
-                    
+
                 		List<Object> result = new ArrayList<Object>();
                 		for(int i = 0; i <= last - first; i++) {
                 			result.add(receiver.remove(first));
                 		}
-                    
+
                 		return copyList(context, result);
                 	}
 
                 	if(!(IokeObject.data(arg) instanceof Number)) {
                 		arg = IokeObject.convertToNumber(arg, message, context);
                 	}
-               
+
                 	int index = ((Number)IokeObject.data(arg)).asJavaInteger();
                 	List<Object> receiver = getList(on);
                 	int size = receiver.size();
-                
+
                 	if(index < 0) {
                 		index = size + index;
                 	}
@@ -705,20 +715,20 @@ public class IokeList extends IokeData {
                 	}
                 }
             }));
-        
+
         obj.registerMethod(runtime.newNativeMethod(
                 "takes one or more arguments. removes all occurrences of the provided arguments from " +
                 "the list and returns the updated list. if an argument is not contained, the list " +
-                "remains unchanged. sending this method to an empty list has no effect.", 
+                "remains unchanged. sending this method to an empty list has no effect.",
                 new TypeCheckingNativeMethod("remove!") {
-                	
+
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                 	.builder()
                 	.receiverMustMimic(runtime.list)
                 	.withRequiredPositional("element")
                 	.withRest("elements")
                 	.getArguments();
-            
+
                 @Override
                 public TypeCheckingArgumentsDefinition getArguments() {
                 	return ARGUMENTS;
@@ -734,21 +744,21 @@ public class IokeList extends IokeData {
                 	return copyList(context, receiver);
                 }
             }));
-        
+
         obj.registerMethod(runtime.newNativeMethod(
                 "takes one or more arguments. removes the first occurrence of the provided arguments " +
                 "from the list and returns the updated list. if an argument is not contained, the list " +
                 "remains unchanged. arguments that are provided multiple times are treated as distinct " +
-                "elements. sending this message to an empty list has no effect.", 
+                "elements. sending this message to an empty list has no effect.",
                 new TypeCheckingNativeMethod("removeFirst!") {
-                	
+
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                 	.builder()
                 	.receiverMustMimic(runtime.list)
                 	.withRequiredPositional("element")
                 	.withRest("elements")
                 	.getArguments();
-            
+
                 @Override
                 public TypeCheckingArgumentsDefinition getArguments() {
                 	return ARGUMENTS;
@@ -811,7 +821,7 @@ public class IokeList extends IokeData {
                 public TypeCheckingArgumentsDefinition getArguments() {
                     return ARGUMENTS;
                 }
-                
+
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     List<Object> list = getList(on);
@@ -845,10 +855,10 @@ public class IokeList extends IokeData {
                     getArguments().checkArgumentCount(context, message, on);
                     Runtime runtime = context.runtime;
                     Object onAsList = context.runtime.list.convertToThis(on, message, context);
-                    
+
                     List<Object> ls = ((IokeList)IokeObject.data(onAsList)).list;
                     int size = ls.size();
-                    
+
                     switch(message.getArgumentCount()) {
                     case 1: {
                         IokeObject code = IokeObject.as(message.getArguments().get(0), context);
@@ -873,7 +883,7 @@ public class IokeList extends IokeData {
                     return on;
                 }
             }));
-            
+
         obj.aliasMethod("map!", "collect!", null, null);
 
         obj.registerMethod(runtime.newNativeMethod("takes one or two arguments, and will then use these arguments as code to decide what elements should be removed from the list. the method will return the receiver.", new NativeMethod("removeIf!") {
@@ -893,9 +903,9 @@ public class IokeList extends IokeData {
                     getArguments().checkArgumentCount(context, message, on);
                     Runtime runtime = context.runtime;
                     Object onAsList = context.runtime.list.convertToThis(on, message, context);
-                    
+
                     List<Object> ls = ((IokeList)IokeObject.data(onAsList)).list;
-                    
+
                     switch(message.getArgumentCount()) {
                     case 1: {
                         IokeObject code = IokeObject.as(message.getArguments().get(0), context);
@@ -926,7 +936,7 @@ public class IokeList extends IokeData {
                     return on;
                 }
             }));
-            
+
     }
 
     private static List<Object> flatten(List<Object> list) {
@@ -985,11 +995,11 @@ public class IokeList extends IokeData {
     public static String getNotice(Object on) throws ControlFlow {
         return ((IokeList)(IokeObject.data(on))).notice(on);
     }
-    
+
     public static IokeObject emptyList(IokeObject context) {
     	return context.runtime.newList(new ArrayList<Object>());
     }
-    
+
     public static IokeObject copyList(IokeObject context, List<Object> orig) {
     	return context.runtime.newList(new ArrayList<Object>(orig));
     }

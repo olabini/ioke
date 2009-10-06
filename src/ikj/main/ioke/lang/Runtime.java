@@ -47,7 +47,7 @@ public class Runtime extends IokeData {
     PrintWriter out;
     PrintWriter err;
     Reader in;
-    
+
     public IokeRegistry registry = new IokeRegistry(this);
     public ClassRegistry classRegistry = new ClassRegistry(this);
 
@@ -100,6 +100,9 @@ public class Runtime extends IokeData {
 
     public IokeObject javaArray = new IokeObject(this, "JavaArray is the common mimic that defines all the magic methods on native java arrays");
 
+    public IokeObject sequence = new IokeObject(this, "The root mimic of all the sequences in the system.");
+    public IokeObject iteratorSequence = new IokeObject(this, "The root mimic of all the iterator sequences in the system.", new Sequence.IteratorSequence(java.util.Arrays.asList().iterator()));
+
     public IokeObject integer = null;
     public IokeObject decimal = null;
     public IokeObject ratio = null;
@@ -150,7 +153,7 @@ public class Runtime extends IokeData {
     public IokeObject binXorMessage = newMessage("^");
     public IokeObject lshMessage = newMessage("<<");
     public IokeObject rshMessage = newMessage(">>");
-    public IokeObject ltMessage = newMessage("<"); 
+    public IokeObject ltMessage = newMessage("<");
     public IokeObject lteMessage = newMessage("<=");
     public IokeObject gtMessage = newMessage(">");
     public IokeObject gteMessage = newMessage(">=");
@@ -224,7 +227,7 @@ public class Runtime extends IokeData {
         _false.init();
         text.init();
         symbol.init();
-        number.init(); 
+        number.init();
         range.init();
         pair.init();
         dateTime.init();
@@ -311,6 +314,9 @@ public class Runtime extends IokeData {
         Reflector.init(this);
         Hook.init(this);
 
+        Sequence.init(sequence);
+        iteratorSequence.init();
+
         addBuiltinScript("benchmark", new Builtin() {
                 public IokeObject load(Runtime runtime, IokeObject context, IokeObject message) throws ControlFlow {
                     return ioke.lang.extensions.benchmark.Benchmark.create(runtime);
@@ -322,7 +328,7 @@ public class Runtime extends IokeData {
                     return ioke.lang.extensions.readline.Readline.create(runtime);
                 }
             });
-        
+
         try {
             evaluateString("use(\"builtin/A05_conditions\")", message, ground);
             evaluateString("use(\"builtin/A10_defaultBehavior\")", message, ground);
@@ -441,7 +447,7 @@ public class Runtime extends IokeData {
     public IokeObject getRestart() {
         return this.restart;
     }
- 
+
     public IokeObject getCondition() {
         return this.condition;
     }
@@ -479,7 +485,7 @@ public class Runtime extends IokeData {
     }
 
     private Map<String, Builtin> builtins = new HashMap<String, Builtin>();
-    
+
     public void addBuiltinScript(String name, Builtin builtin) {
         builtins.put(name, builtin);
     }
@@ -561,10 +567,10 @@ public class Runtime extends IokeData {
     }
 
     public void reportNativeException(Exception e, IokeObject message, IokeObject context) throws ControlFlow {
-        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(this.condition, 
-                                                                           message, 
-                                                                           context, 
-                                                                           "Error", 
+        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(this.condition,
+                                                                           message,
+                                                                           context,
+                                                                           "Error",
                                                                            "NativeException"), context).mimic(message, context);
         condition.setCell("message", message);
         condition.setCell("context", context);
@@ -849,13 +855,13 @@ public class Runtime extends IokeData {
                 symbolTable.put(name, obj);
             }
             return obj;
-        }            
+        }
     }
 
     public Object withRestartReturningArguments(RunnableWithControlFlow code, IokeObject context, Restart.JavaRestart... restarts) throws ControlFlow {
         List<RestartInfo> rrs = new ArrayList<RestartInfo>();
         BindIndex index = getBindIndex();
-        
+
         for(Restart.JavaRestart rjr : restarts) {
             IokeObject rr = IokeObject.as(((Message)IokeObject.data(mimic)).sendTo(mimic, context, restart), context);
             IokeObject.setCell(rr, "name", getSymbol(rjr.getName()), context);
@@ -867,7 +873,7 @@ public class Runtime extends IokeData {
 
             IokeObject.setCell(rr, "name", getSymbol(rjr.getName()), context);
             IokeObject.setCell(rr, "argumentNames", newList(args), context);
-            
+
             String report = rjr.report();
             if(report != null) {
                 IokeObject.setCell(rr, "report", evaluateString("fn(r, \"" + report + "\")", message, ground), context);
@@ -890,9 +896,9 @@ public class Runtime extends IokeData {
                 return result;
             } else {
                 throw e;
-            } 
+            }
         } finally {
-            unregisterRestarts(rrs); 
+            unregisterRestarts(rrs);
         }
     }
 
@@ -915,9 +921,9 @@ public class Runtime extends IokeData {
                 return;
             } else {
                 throw e;
-            } 
+            }
         } finally {
-            unregisterRestarts(rrs); 
+            unregisterRestarts(rrs);
         }
     }
 
@@ -940,7 +946,7 @@ public class Runtime extends IokeData {
             unregisterRescues(rescues);
         }
     }
-    
+
     public static class RescueInfo {
         public final IokeObject rescue;
         public final List<Object> applicableConditions;
@@ -1042,11 +1048,11 @@ public class Runtime extends IokeData {
             return new BindIndex(this.row, this.col+1);
         }
         public boolean lessThan(BindIndex other) {
-            return this.row < other.row || 
+            return this.row < other.row ||
                 (this.row == other.row && this.col < other.col);
         }
         public boolean greaterThan(BindIndex other) {
-            return this.row > other.row || 
+            return this.row > other.row ||
                 (this.row == other.row && this.col > other.col);
         }
 
@@ -1058,10 +1064,10 @@ public class Runtime extends IokeData {
     public BindIndex getBindIndex() {
         return new BindIndex(rescues.get().size());
     }
-    
+
     public List<HandlerInfo> findActiveHandlersFor(IokeObject condition, BindIndex stopIndex) {
         List<HandlerInfo> result = new ArrayList<HandlerInfo>();
-        
+
         for(List<HandlerInfo> lrp : handlers.get()) {
             for(HandlerInfo rp : lrp) {
                 if(rp.index.lessThan(stopIndex)) {
