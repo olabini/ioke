@@ -25,6 +25,37 @@ Sequence each = dmacro(
   @
 )
 
+Mixins Sequenced each = dmacro(
+  []
+  seq,
+
+  [chain]
+  s = seq
+  while(s next?,
+    chain evaluateOn(call ground, s next)
+  )
+  @,
+
+  [argumentName, code]
+  s = seq
+  lexicalCode = LexicalBlock createFrom(list(argumentName, code), call ground)
+  while(s next?,
+    lexicalCode call(s next)
+  )
+  @,
+
+  [indexArgumentName, argumentName, code]
+  s = seq
+  lexicalCode = LexicalBlock createFrom(list(indexArgumentName, argumentName, code), call ground)
+  index = 0
+  while(s next?,
+    lexicalCode call(index, s next)
+    index++
+  )
+  @
+)
+
+
 Mixins Sequenced do(
   mapped = macro(call resendToReceiver(self seq))
   collected = macro(call resendToReceiver(self seq))
