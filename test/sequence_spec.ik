@@ -336,7 +336,44 @@ describe(Sequence,
       Sequence Grep should mimic(Sequence)
     )
 
-    it("should have tests")
+    it("should take one argument and return everything that matches with ===",
+      ss = Sequence Grep create(SequenceTester with(val: [1,2,3,4,5,6,7,8,9], len: 9) seq, Ground, [], 2..5)
+      ss next should == 2
+      ss asList should == [3,4,5]
+
+      customObj = Origin mimic
+      customObj === = method(other, (other < 3) || (other > 5))
+      ss = Sequence Grep create(SequenceTester with(val: [1,2,3,4,5,6,7,8,9], len: 9) seq, Ground, [], customObj)
+      ss next should == 1
+      ss next should == 2
+      ss asList should == [6,7,8,9]
+    )
+
+    it("should take two arguments where the second argument is a message chain and return the result of calling that chain on everything that matches with ===",
+      ss = Sequence Grep create(SequenceTester with(val: [1,2,3,4,5,6,7,8,9], len: 9) seq, Ground, ['(+ 1)], 2..5)
+      ss next should == 3
+      ss asList should == [4,5,6]
+
+      customObj = Origin mimic
+      customObj === = method(other, (other < 3) || (other > 5))
+      ss = Sequence Grep create(SequenceTester with(val: [1,2,3,4,5,6,7,8,9], len: 9) seq, Ground, ['(+ 1)], customObj)
+      ss next should == 2
+      ss next should == 3
+      ss asList should == [7,8,9,10]
+    )
+
+    it("should take three arguments where the second and third arguments gets turned into a lexical block to apply to all that matches with ===",
+      ss = Sequence Grep create(SequenceTester with(val: [1,2,3,4,5,6,7,8,9], len: 9) seq, Ground, ['x, '((x + 1) asText)], 2..5)
+      ss next should == "3"
+      ss asList should == ["4","5","6"]
+
+      customObj = Origin mimic
+      customObj === = method(other, (other < 3) || (other > 5))
+      ss = Sequence Grep create(SequenceTester with(val: [1,2,3,4,5,6,7,8,9], len: 9) seq, Ground, ['x, '((x + 1) asText)], customObj)
+      ss next should == "2"
+      ss next should == "3"
+      ss asList should == ["7","8","9","10"]
+    )
   )
 
   describe("Zip",
