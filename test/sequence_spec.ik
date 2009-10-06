@@ -266,7 +266,24 @@ describe(Sequence,
   )
 
   describe("filtered",
-    it("should create a new Sequence Filter with the arguments sent to it")
+    it("should create a new Sequence Filter with the arguments sent to it",
+      ss = SequenceTester with(val: [1,2,3,4,5,6,7,8], len: 8) seq
+      val = ss filtered(>4)
+      val should mimic(Sequence Filter)
+      val wrappedSequence should be same(ss)
+      val messages should == ['(>4)]
+    )
+
+    it("should filter the objects",
+      ss = SequenceTester with(val: [true, false, nil, true, false, nil, 1], len: 7) seq
+      ss filtered asList should == [true, true, 1]
+
+      ss = SequenceTester with(val: [1,2,3,4,5,6,7,8], len: 8) seq
+      ss filtered(>4) asList should == [5,6,7,8]
+
+      ss = SequenceTester with(val: [1,2,3,4,5,6,7,8], len: 8) seq
+      ss filtered(x, x>4) asList should == [5,6,7,8]
+    )
   )
 
   describe("selected",
