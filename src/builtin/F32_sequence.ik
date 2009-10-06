@@ -42,6 +42,7 @@ Sequence collected = macro(Sequence Map create(@, call ground, call arguments))
 Sequence filtered  = macro(Sequence Filter create(@, call ground, call arguments))
 Sequence selected  = macro(Sequence Filter create(@, call ground, call arguments))
 Sequence grepped   = method(toGrepAgainst, Sequence Grep create(@, Ground, [], toGrepAgainst))
+Sequence rejected  = macro(Sequence Reject create(@, call ground, call arguments))
 
 let(
   generateNextPMethod, method(takeCurrentObject, returnObject,
