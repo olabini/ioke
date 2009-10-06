@@ -159,11 +159,12 @@ let(
     ),
 
   Sequence Base   = Sequence mimic do(current? = false)
-  Sequence Base create = method(wrappedSequence, context, messages,
+  Sequence Base create = method(wrappedSequence, context, messages, +rest,
     res = mimic
     res wrappedSequence = wrappedSequence
     res context = context
     res messages = messages
+    res restArguments = rest
     if(messages length == 2,
       res lexicalBlock = LexicalBlock createFrom(messages, context)
     )
@@ -183,7 +184,7 @@ let(
   Sequence Filter    = sequenceObject(cell(:x), cell(:n))
   Sequence Zip       = Sequence mimic
   Sequence Reject    = sequenceObject(!cell(:x), cell(:n))
-  Sequence Grep      = Sequence mimic
+  Sequence Grep      = sequenceObject(restArguments[0] === cell(:n), cell(:x))
   Sequence Drop      = Sequence mimic
   Sequence DropWhile = Sequence mimic
 )
