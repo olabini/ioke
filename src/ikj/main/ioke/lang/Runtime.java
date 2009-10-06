@@ -102,6 +102,7 @@ public class Runtime extends IokeData {
 
     public IokeObject sequence = new IokeObject(this, "The root mimic of all the sequences in the system.");
     public IokeObject iteratorSequence = new IokeObject(this, "The root mimic of all the iterator sequences in the system.", new Sequence.IteratorSequence(java.util.Arrays.asList().iterator()));
+    public IokeObject keyValueIteratorSequence = new IokeObject(this, "The root mimic of all the key-value-iterator sequences in the system.", new Sequence.KeyValueIteratorSequence(new HashMap().entrySet().iterator()));
 
     public IokeObject integer = null;
     public IokeObject decimal = null;
@@ -317,6 +318,7 @@ public class Runtime extends IokeData {
 
         Sequence.init(sequence);
         iteratorSequence.init();
+        keyValueIteratorSequence.init();
 
         addBuiltinScript("benchmark", new Builtin() {
                 public IokeObject load(Runtime runtime, IokeObject context, IokeObject message) throws ControlFlow {
