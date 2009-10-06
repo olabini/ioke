@@ -37,7 +37,8 @@ Mixins Sequenced do(
   rejected = macro(call resendToReceiver(self seq))
 )
 
-Sequence mapped = macro(Sequence Map create(@, call ground, call arguments))
+Sequence mapped    = macro(Sequence Map create(@, call ground, call arguments))
+Sequence collected = macro(Sequence Map create(@, call ground, call arguments))
 
 let(
   generateNextPMethod, method(takeCurrentObject, returnObject,
