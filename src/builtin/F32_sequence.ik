@@ -199,16 +199,16 @@ let(
     restArguments each(rr,
       resultList << if(rr next?, rr next, nil))
     resultList
-  )
-
-  Sequence Zip baseCreate = Sequence Base cell(:create)
-  Sequence Zip create = method(+args,
-    myNewSelf = baseCreate(*args)
-    myNewSelf restArguments map!(x,
-      if(x mimics?(Sequence),
-        x,
-        x seq)
+  ) do(
+    baseCreate = Sequence Base cell(:create)
+    create = method(+args,
+      myNewSelf = baseCreate(*args)
+      myNewSelf restArguments map!(x,
+        if(x mimics?(Sequence),
+          x,
+          x seq)
+      )
+      myNewSelf
     )
-    myNewSelf
   )
 )
