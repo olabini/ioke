@@ -308,7 +308,19 @@ describe(Sequence,
   )
 
   describe("grepped",
-    it("should create a new Sequence Grep with the arguments sent to it")
+    it("should create a new Sequence Grep with the arguments sent to it",
+      ss = SequenceTester with(val: [1,2,3,4,5,6,7,8], len: 8) seq
+      val = ss grepped(2..4)
+      val should mimic(Sequence Grep)
+      val wrappedSequence should be same(ss)
+      val messages should == []
+      val restArguments should == [2..4]
+    )
+
+    it("should grep the objects",
+      ss = SequenceTester with(val: [1,2,4,5,6,7,8], len: 7) seq
+      ss grepped(2..4) asList should == [2,4]
+    )
   )
 
   describe("zipped",
