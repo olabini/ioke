@@ -178,6 +178,7 @@ public class Runtime extends IokeData {
     public IokeObject mimicsChangedMessage = newMessage("mimicsChanged");
     public IokeObject mimickedMessage = newMessage("mimicked");
     public IokeObject seqMessage = newMessage("seq");
+    public IokeObject hashMessage = newMessage("hash");
 
     public Runtime() throws Exception {
         this(new PrintWriter(java.lang.System.out), new InputStreamReader(java.lang.System.in, "UTF-8"), new PrintWriter(java.lang.System.err));

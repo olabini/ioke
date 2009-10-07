@@ -23,7 +23,7 @@ public class IokeObject implements TypeChecker {
     private List<IokeObject> mimics = new ArrayList<IokeObject>();
 
     Collection<IokeObject> hooks = null;
-    
+
     private IokeData data;
 
     private boolean frozen = false;
@@ -51,10 +51,10 @@ public class IokeObject implements TypeChecker {
 
     private void checkFrozen(String modification, IokeObject message, IokeObject context) throws ControlFlow {
         if(frozen) {
-            final IokeObject condition = as(IokeObject.getCellChain(context.runtime.condition, 
-                                                                    message, 
+            final IokeObject condition = as(IokeObject.getCellChain(context.runtime.condition,
+                                                                    message,
                                                                     context,
-                                                                    "Error", 
+                                                                    "Error",
                                                                     "ModifyOnFrozen"), context).mimic(message, context);
             condition.setCell("message", message);
             condition.setCell("context", context);
@@ -198,10 +198,10 @@ public class IokeObject implements TypeChecker {
     public static Object findPlace(Object obj, IokeObject m, IokeObject context, String name) throws ControlFlow {
         Object result = findPlace(obj, name);
         if(result == m.runtime.nul) {
-            final IokeObject condition = as(IokeObject.getCellChain(m.runtime.condition, 
-                                                                    m, 
-                                                                    context, 
-                                                                    "Error", 
+            final IokeObject condition = as(IokeObject.getCellChain(m.runtime.condition,
+                                                                    m,
+                                                                    context,
+                                                                    "Error",
                                                                     "NoSuchCell"), context).mimic(m, context);
             condition.setCell("message", m);
             condition.setCell("context", context);
@@ -212,7 +212,7 @@ public class IokeObject implements TypeChecker {
                     public void run() throws ControlFlow {
                         condition.runtime.errorCondition(condition);
                     }});
-            
+
         }
         return result;
     }
@@ -371,7 +371,7 @@ public class IokeObject implements TypeChecker {
         }
         return current;
     }
-    
+
     public static Object getCell(Object on, IokeObject m, IokeObject context, String name) throws ControlFlow {
         return ((IokeObject)on).getCell(m, context, name);
     }
@@ -394,10 +394,10 @@ public class IokeObject implements TypeChecker {
         Object cell = this.findCell(m, context, name);
 
         while(cell == runtime.nul) {
-            final IokeObject condition = as(IokeObject.getCellChain(runtime.condition, 
-                                                                    m, 
-                                                                    context, 
-                                                                    "Error", 
+            final IokeObject condition = as(IokeObject.getCellChain(runtime.condition,
+                                                                    m,
+                                                                    context,
+                                                                    "Error",
                                                                     "NoSuchCell"), context).mimic(m, context);
             condition.setCell("message", m);
             condition.setCell("context", context);
@@ -409,9 +409,9 @@ public class IokeObject implements TypeChecker {
             runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
                     public void run() throws ControlFlow {
                         runtime.errorCondition(condition);
-                    }}, 
+                    }},
                 context,
-                new Restart.ArgumentGivingRestart("useValue") { 
+                new Restart.ArgumentGivingRestart("useValue") {
                     public String report() {
                         return "Use value for: " + outerName;
                     }
@@ -457,10 +457,10 @@ public class IokeObject implements TypeChecker {
                 Hook.fireCellRemoved(this, m, context, name, prev);
             }
         } else {
-            final IokeObject condition = as(IokeObject.getCellChain(runtime.condition, 
-                                                                    m, 
-                                                                    context, 
-                                                                    "Error", 
+            final IokeObject condition = as(IokeObject.getCellChain(runtime.condition,
+                                                                    m,
+                                                                    context,
+                                                                    "Error",
                                                                     "NoSuchCell"), context).mimic(m, context);
             condition.setCell("message", m);
             condition.setCell("context", context);
@@ -534,10 +534,10 @@ public class IokeObject implements TypeChecker {
         Object passed = null;
 
         while(cell == runtime.nul && (((cell = passed = clz.findCell(message, ctx, "pass")) == runtime.nul) ||  !clz.isApplicable(passed, message, ctx))) {
-            final IokeObject condition = as(IokeObject.getCellChain(runtime.condition, 
-                                                                    message, 
-                                                                    ctx, 
-                                                                    "Error", 
+            final IokeObject condition = as(IokeObject.getCellChain(runtime.condition,
+                                                                    message,
+                                                                    ctx,
+                                                                    "Error",
                                                                     "NoSuchCell"), ctx).mimic(message, ctx);
             condition.setCell("message", message);
             condition.setCell("context", ctx);
@@ -549,9 +549,9 @@ public class IokeObject implements TypeChecker {
             runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
                     public void run() throws ControlFlow {
                         runtime.errorCondition(condition);
-                    }}, 
+                    }},
                 ctx,
-                new Restart.ArgumentGivingRestart("useValue") { 
+                new Restart.ArgumentGivingRestart("useValue") {
                     public String report() {
                         return "Use value for: " + outerName;
                     }
@@ -605,10 +605,10 @@ public class IokeObject implements TypeChecker {
         Object passed = null;
 
         while(cell == runtime.nul && (((cell = passed = this.findCell(message, ctx, "pass")) == runtime.nul) || !isApplicable(passed, message, ctx))) {
-            final IokeObject condition = as(IokeObject.getCellChain(runtime.condition, 
-                                                                    message, 
-                                                                    ctx, 
-                                                                    "Error", 
+            final IokeObject condition = as(IokeObject.getCellChain(runtime.condition,
+                                                                    message,
+                                                                    ctx,
+                                                                    "Error",
                                                                     "NoSuchCell"), ctx).mimic(message, ctx);
             condition.setCell("message", message);
             condition.setCell("context", ctx);
@@ -620,9 +620,9 @@ public class IokeObject implements TypeChecker {
             runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
                     public void run() throws ControlFlow {
                         runtime.errorCondition(condition);
-                    }}, 
+                    }},
                 ctx,
-                new Restart.ArgumentGivingRestart("useValue") { 
+                new Restart.ArgumentGivingRestart("useValue") {
                     public String report() {
                         return "Use value for: " + outerName;
                     }
@@ -882,7 +882,7 @@ public class IokeObject implements TypeChecker {
     public Object convertToThis(Object on, IokeObject message, IokeObject context) throws ControlFlow {
     	return convertToThis(on, true, message, context);
     }
-    
+
     public Object convertToThis(Object on, boolean signalCondition, IokeObject message, IokeObject context) throws ControlFlow {
         if(on instanceof IokeObject) {
             if(IokeObject.data(on).getClass().equals(data.getClass())) {
@@ -902,10 +902,10 @@ public class IokeObject implements TypeChecker {
     public static Object ensureTypeIs(Class<?> clazz, IokeObject self, Object on, final IokeObject context, IokeObject message) throws ControlFlow {
         final Object[] receiver = new Object[] { on };
         while(!clazz.isInstance(IokeObject.data(receiver[0]))) {
-            final IokeObject condition = as(IokeObject.getCellChain(context.runtime.condition, 
-                                                                               message, 
-                                                                               context, 
-                                                                               "Error", 
+            final IokeObject condition = as(IokeObject.getCellChain(context.runtime.condition,
+                                                                               message,
+                                                                               context,
+                                                                               "Error",
                                                                                "Type",
                                                                                "IncorrectType"), context).mimic(message, context);
             condition.setCell("message", message);
@@ -916,9 +916,9 @@ public class IokeObject implements TypeChecker {
             context.runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
                 public void run() throws ControlFlow {
                     context.runtime.errorCondition(condition);
-                }}, 
+                }},
                 context,
-                new Restart.ArgumentGivingRestart("useValue") { 
+                new Restart.ArgumentGivingRestart("useValue") {
                     public List<String> getArgumentNames() {
                         return new ArrayList<String>(Arrays.asList("newValue"));
                     }
@@ -932,7 +932,7 @@ public class IokeObject implements TypeChecker {
         }
         return receiver[0];
     }
-    
+
     public IokeObject convertToRational(IokeObject m, IokeObject context, boolean signalCondition) throws ControlFlow {
         IokeObject result = data.convertToRational(this, m, context, false);
         if(result == null) {
@@ -1090,7 +1090,13 @@ public class IokeObject implements TypeChecker {
     }
 
     public int iokeHashCode() {
-        return data.hashCode(this);
+        try {
+            return data.hashCode(this);
+        } catch(Exception e) {
+            return -1;
+        } catch(ControlFlow e) {
+            return 0;
+        }
     }
 
     public List<Object> getArguments() throws ControlFlow {
