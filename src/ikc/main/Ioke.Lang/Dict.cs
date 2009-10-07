@@ -18,7 +18,7 @@ namespace Ioke.Lang {
         public static IDictionary GetMap(object dict) {
             return ((Dict)IokeObject.dataOf(dict)).Map;
         }
-        
+
         public IDictionary Map {
             get { return this.dict; }
         }
@@ -41,8 +41,22 @@ namespace Ioke.Lang {
             Runtime runtime = obj.runtime;
 
             obj.Kind = "Dict";
-            obj.Mimics(IokeObject.As(runtime.Mixins.GetCell(null, null, "Enumerable"), null), runtime.nul, runtime.nul);
-            obj.RegisterMethod(runtime.NewNativeMethod("takes one argument, that should be a default value, and returns a new mimic of the receiver, with the default value for that new dict set to the argument", 
+            obj.Mimics(IokeObject.As(runtime.Mixins.GetCell(null, null, "Sequenced"), null), runtime.nul, runtime.nul);
+
+            obj.RegisterMethod(runtime.NewNativeMethod("returns true if the left hand side dictionary is equal to the right hand side dictionary.",
+                                                       new TypeCheckingNativeMethod("==", TypeCheckingArgumentsDefinition.builder()
+                                                                                    .ReceiverMustMimic(runtime.Dict)
+                                                                                    .WithRequiredPositional("other")
+                                                                                    .Arguments,
+                                                                                    (method, on, args, keywords, context, message) => {
+                                                                                        Dict d = (Dict)IokeObject.dataOf(on);
+                                                                                        object other = args[0];
+                                                                                        return ((other is IokeObject) &&
+                                                                                                (IokeObject.dataOf(other) is Dict)
+                                                                                                && d.dict.Equals(((Dict)IokeObject.dataOf(other)).dict)) ? context.runtime.True : context.runtime.False;
+                                                                                    })));
+
+            obj.RegisterMethod(runtime.NewNativeMethod("takes one argument, that should be a default value, and returns a new mimic of the receiver, with the default value for that new dict set to the argument",
                                                        new TypeCheckingNativeMethod("withDefault", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(obj)
                                                                                     .WithRequiredPositional("defaultValue")
@@ -52,8 +66,8 @@ namespace Ioke.Lang {
                                                                                         SetDefaultValue(newDict, IokeObject.As(args[0], context));
                                                                                         return newDict;
                                                                                     })));
-            
-            obj.RegisterMethod(runtime.NewNativeMethod("creates a new Dict from the arguments provided, combined with the values in the receiver. the arguments provided will override those in the receiver. the rules for arguments are the same as for dict, except that dicts can also be provided. all positional arguments will be added before the keyword arguments.", 
+
+            obj.RegisterMethod(runtime.NewNativeMethod("creates a new Dict from the arguments provided, combined with the values in the receiver. the arguments provided will override those in the receiver. the rules for arguments are the same as for dict, except that dicts can also be provided. all positional arguments will be added before the keyword arguments.",
                                                        new TypeCheckingNativeMethod("merge", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(obj)
                                                                                     .WithRest("pairsAndDicts")
@@ -87,7 +101,7 @@ namespace Ioke.Lang {
 
             obj.AliasMethod("merge", "+", null, null);
 
-            obj.RegisterMethod(runtime.NewNativeMethod("takes one argument, the key of the element to return. if the key doesn't map to anything in the dict, returns the default value", 
+            obj.RegisterMethod(runtime.NewNativeMethod("takes one argument, the key of the element to return. if the key doesn't map to anything in the dict, returns the default value",
                                                        new TypeCheckingNativeMethod("at", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(obj)
                                                                                     .WithRequiredPositional("key")
@@ -101,13 +115,13 @@ namespace Ioke.Lang {
                                                                                         }
                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("returns true if this dict is empty, false otherwise", 
-                                                       new TypeCheckingNativeMethod.WithNoArguments("empty?", obj, 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns true if this dict is empty, false otherwise",
+                                                       new TypeCheckingNativeMethod.WithNoArguments("empty?", obj,
                                                                                                     (method, on, args, keywords, context, message) => {
                                                                                                         return Dict.GetMap(on).Count == 0 ? context.runtime.True : context.runtime.False;
                                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("takes one argument, the key to check if it is in the dict.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("takes one argument, the key to check if it is in the dict.",
                                                        new TypeCheckingNativeMethod("key?", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(obj)
                                                                                     .WithRequiredPositional("key")
@@ -116,7 +130,7 @@ namespace Ioke.Lang {
                                                                                         return (Dict.GetMap(on).Contains(args[0])) ? context.runtime.True : context.runtime.False;
                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("takes two arguments, the key of the element to set and the value to set it too. returns the value set", 
+            obj.RegisterMethod(runtime.NewNativeMethod("takes two arguments, the key of the element to set and the value to set it too. returns the value set",
                                                        new TypeCheckingNativeMethod("[]=", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(obj)
                                                                                     .WithRequiredPositional("key")
@@ -128,31 +142,40 @@ namespace Ioke.Lang {
                                                                                     })));
 
 
-            obj.RegisterMethod(runtime.NewNativeMethod("Returns the number of pairs contained in this dict.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("Returns the number of pairs contained in this dict.",
                                                        new TypeCheckingNativeMethod.WithNoArguments("size", obj,
                                                                                                     (method, on, args, keywords, context, message) => {
                                                                                                         return runtime.NewNumber(Dict.GetMap(on).Count);
                                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("Returns a text inspection of the object", 
+            obj.RegisterMethod(runtime.NewNativeMethod("Returns a text inspection of the object",
                                                        new TypeCheckingNativeMethod.WithNoArguments("inspect", obj,
                                                                                                     (method, on, args, keywords, context, message) => {
                                                                                                         return method.runtime.NewText(Dict.GetInspect(on));
                                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("Returns a brief text inspection of the object", 
+            obj.RegisterMethod(runtime.NewNativeMethod("Returns a brief text inspection of the object",
                                                        new TypeCheckingNativeMethod.WithNoArguments("notice", obj,
                                                                                                     (method, on, args, keywords, context, message) => {
                                                                                                         return method.runtime.NewText(Dict.GetNotice(on));
                                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("Returns all the keys of this dict", 
+            obj.RegisterMethod(runtime.NewNativeMethod("Returns all the keys of this dict",
                                                        new TypeCheckingNativeMethod.WithNoArguments("keys", obj,
                                                                                                     (method, on, args, keywords, context, message) => {
                                                                                                         return method.runtime.NewSet(Dict.GetKeys(on));
                                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("takes either one or two or three arguments. if one argument is given, it should be a message chain that will be sent to each object in the dict. the result will be thrown away. if two arguments are given, the first is an unevaluated name that will be set to each of the entries in the dict in succession, and then the second argument will be evaluated in a scope with that argument in it. if three arguments is given, the first one is an unevaluated name that will be set to the index of each element, and the other two arguments are the name of the argument for the value, and the actual code. the code will evaluate in a lexical context, and if the argument name is available outside the context, it will be shadowed. the method will return the dict. the entries yielded will be mimics of Pair.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns a new sequence to iterate over this dictionary",
+                                                       new TypeCheckingNativeMethod.WithNoArguments("seq", obj,
+                                                                                                    (method, on, args, keywords, context, message) => {
+                                                                                                        IokeObject ob = method.runtime.KeyValueIteratorSequence.AllocateCopy(null, null);
+                                                                                                        ob.MimicsWithoutCheck(method.runtime.KeyValueIteratorSequence);
+                                                                                                        ob.Data = new Sequence.KeyValueIteratorSequence(Dict.GetMap(on).GetEnumerator());
+                                                                                                        return ob;
+                                                                                                    })));
+
+            obj.RegisterMethod(runtime.NewNativeMethod("takes either one or two or three arguments. if one argument is given, it should be a message chain that will be sent to each object in the dict. the result will be thrown away. if two arguments are given, the first is an unevaluated name that will be set to each of the entries in the dict in succession, and then the second argument will be evaluated in a scope with that argument in it. if three arguments is given, the first one is an unevaluated name that will be set to the index of each element, and the other two arguments are the name of the argument for the value, and the actual code. the code will evaluate in a lexical context, and if the argument name is available outside the context, it will be shadowed. the method will return the dict. the entries yielded will be mimics of Pair.",
                                                        new NativeMethod("each", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositionalUnevaluated("indexOrArgOrCode")
                                                                         .WithOptionalPositionalUnevaluated("argOrCode")
@@ -161,9 +184,12 @@ namespace Ioke.Lang {
                                                                         (method, context, message, on, outer) => {
                                                                             outer.ArgumentsDefinition.CheckArgumentCount(context, message, on);
                                                                             on = runtime.Dict.ConvertToThis(on, message, context);
-                    
+
                                                                             var ls = Dict.GetMap(on);
                                                                             switch(message.Arguments.Count) {
+                                                                            case 0: {
+                                                                                return ((Message)IokeObject.dataOf(runtime.seqMessage)).SendTo(runtime.seqMessage, context, on);
+                                                                            }
                                                                             case 1: {
                                                                                 IokeObject code = IokeObject.As(message.Arguments[0], context);
 
@@ -208,12 +234,6 @@ namespace Ioke.Lang {
 
         public override IokeData CloneData(IokeObject obj, IokeObject m, IokeObject context) {
             return new Dict(new SaneHashtable(dict));
-        }
-
-        public override bool IsEqualTo(IokeObject self, object other) {
-            return ((other is IokeObject) && 
-                    (IokeObject.dataOf(other) is Dict) 
-                    && this.dict.Equals(((Dict)IokeObject.dataOf(other)).dict));
         }
 
         public override int HashCode(IokeObject self) {

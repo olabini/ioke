@@ -79,6 +79,24 @@ describe(Call,
     )
   )
 
+  describe("resendToReceiver",
+    it("it should resend the thing with the same arguments",
+      blarg = Origin mimic
+      blarg2 = Origin mimic
+      blarg x = lecro(call resendToReceiver(blarg2))
+      blarg2 x = method(a, b, c, [a, b, c])
+      w = 13
+
+      blarg x(1+w, w+w, w+3+w)[0] should == 14
+      blarg x(1+w, w+w, w+3+w)[1] should == 26
+      blarg x(1+w, w+w, w+3+w)[2] should == 29
+    )
+
+    it("should check the receiver type and signal an appropriate condition",
+      Call should checkReceiverTypeOn(:resendToReceiver, :f)
+    )
+  )
+
   describe("receiver", 
     it("should check the receiver type and signal an appropriate condition",
       Call should checkReceiverTypeOn(:receiver)

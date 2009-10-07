@@ -6,6 +6,7 @@ package ioke.lang;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.HashMap;
 
 import java.util.regex.Pattern;
 
@@ -26,6 +27,26 @@ public class Symbol extends IokeData {
     public void init(final IokeObject obj) throws ControlFlow {
         obj.setKind("Symbol");
         obj.mimics(IokeObject.as(obj.runtime.mixins.getCell(null, null, "Comparing"), null), obj.runtime.nul, obj.runtime.nul);
+
+        obj.registerMethod(obj.runtime.newNativeMethod("returns true if the left hand side symbol is equal to the right hand side symbol.", new TypeCheckingNativeMethod("==") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
+                    .builder()
+                    .receiverMustMimic(obj.runtime.symbol)
+                    .withRequiredPositional("other")
+                    .getArguments();
+
+                @Override
+                public TypeCheckingArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+                    Object other = args.get(0);
+                    return on == other ? context.runtime._true : context.runtime._false;
+                }
+            }));
 
         obj.registerMethod(obj.runtime.newNativeMethod("Returns a text representation of the object", new TypeCheckingNativeMethod.WithNoArguments("asText", obj.runtime.symbol) {
                 @Override
@@ -105,7 +126,7 @@ public class Symbol extends IokeData {
     public boolean isSymbol() {
         return true;
     }
-    
+
     @Override
     public IokeObject convertToSymbol(IokeObject self, IokeObject m, IokeObject context, boolean signalCondition) {
         return self;

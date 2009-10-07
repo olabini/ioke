@@ -20,7 +20,7 @@ namespace Ioke.Lang {
         public override void Init(IokeObject obj) {
             obj.Kind = "LexicalBlock";
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("takes two evaluated arguments, where this first one is a list of messages which will be used as the arguments and the code, and the second is the context where this lexical scope should be created in", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("takes two evaluated arguments, where this first one is a list of messages which will be used as the arguments and the code, and the second is the context where this lexical scope should be created in",
                                                            new NativeMethod("createFrom", DefaultArgumentsDefinition.builder()
                                                                             .WithRequiredPositional("messageList")
                                                                             .WithRequiredPositional("lexicalContext")
@@ -31,43 +31,42 @@ namespace Ioke.Lang {
                                                                                 outer.ArgumentsDefinition.GetEvaluatedArguments(_context, _message, on, positionalArgs, new SaneDictionary<string, object>());
                                                                                 var args = IokeList.GetList(positionalArgs[0]);
                                                                                 IokeObject ground = IokeObject.As(positionalArgs[1], _context);
-                                                                            
+
                                                                                 IokeObject code = IokeObject.As(args[args.Count-1], _context);
 
                                                                                 DefaultArgumentsDefinition def = DefaultArgumentsDefinition.CreateFrom(args, 0, args.Count-1, _message, on, _context);
                                                                                 return runtime.NewLexicalBlock(null, runtime.LexicalBlock, new LexicalBlock(ground, def, code));
                                                                             })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("invokes the block with the arguments provided, returning the result of the last expression in the block", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("invokes the block with the arguments provided, returning the result of the last expression in the block",
                                                            new NativeMethod("call", DefaultArgumentsDefinition.builder()
                                                                             .WithRestUnevaluated("arguments")
                                                                             .Arguments,
                                                                             (method, _context, _message, on, outer) => {
-                                                                                outer.ArgumentsDefinition.GetEvaluatedArguments(_context, _message, on, new SaneArrayList(), new SaneDictionary<string, object>());
                                                                                 return IokeObject.As(on, _context).Activate(_context, _message, on);
                                                                             })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the full code of this lexical block, as a Text", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the full code of this lexical block, as a Text",
                                                            new TypeCheckingNativeMethod.WithNoArguments("code", obj,
                                                                                                         (method, on, args, keywords, _context, _message) => {
                                                                                                             IokeObject objx = IokeObject.As(on, _context);
                                                                                                             string x = objx.IsActivatable ? "x" : "";
-                    
+
                                                                                                             string argstr = ((LexicalBlock)IokeObject.dataOf(on)).arguments.GetCode();
                                                                                                             return _context.runtime.NewText("fn" + x + "(" + argstr + Message.Code(((LexicalBlock)IokeObject.dataOf(on)).message) + ")");
                                                                                                         })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the code for the argument definition", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the code for the argument definition",
                                                            new TypeCheckingNativeMethod.WithNoArguments("argumentsCode", obj,
                                                                                                         (method, on, args, keywords, _context, _message) => {
                                                                                                             return _context.runtime.NewText(((AssociatedCode)IokeObject.dataOf(on)).ArgumentsCode);
                                                                                                         })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns a list of the keywords this block takes", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns a list of the keywords this block takes",
                                                            new TypeCheckingNativeMethod.WithNoArguments("keywords", obj,
                                                                                                         (method, on, args, keywords, _context, _message) => {
                                                                                                             var keywordList = new SaneArrayList();
-                    
+
                                                                                                             foreach(string keyword in ((LexicalBlock)IokeObject.dataOf(on)).arguments.Keywords) {
                                                                                                                 keywordList.Add(_context.runtime.GetSymbol(keyword.Substring(0, keyword.Length-1)));
                                                                                                             }
@@ -75,11 +74,11 @@ namespace Ioke.Lang {
                                                                                                             return _context.runtime.NewList(keywordList);
                                                                                                         })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns a list of the argument names the positional arguments this block takes", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns a list of the argument names the positional arguments this block takes",
                                                            new TypeCheckingNativeMethod.WithNoArguments("argumentNames", obj,
                                                                                                         (method, on, args, keywords, _context, _message) => {
                                                                                                             var names = new SaneArrayList();
-                    
+
                                                                                                             foreach(var arg in ((LexicalBlock)IokeObject.dataOf(on)).arguments.Arguments) {
                                                                                                                 if(!(arg is DefaultArgumentsDefinition.KeywordArgument)) {
                                                                                                                     names.Add(_context.runtime.GetSymbol(arg.Name));
@@ -88,25 +87,25 @@ namespace Ioke.Lang {
 
                                                                                                             return _context.runtime.NewList(names);
                                                                                                         })));
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the message chain for this block", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the message chain for this block",
                                                            new TypeCheckingNativeMethod.WithNoArguments("message", obj,
                                                                                                         (method, on, args, keywords, _context, _message) => {
                                                                                                             return ((AssociatedCode)IokeObject.dataOf(on)).Code;
                                                                                                         })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns a text inspection of the object", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns a text inspection of the object",
                                                            new TypeCheckingNativeMethod.WithNoArguments("inspect", obj,
                                                                                                         (method, on, args, keywords, _context, message) => {
                                                                                                             return _context.runtime.NewText(LexicalBlock.GetInspect(on));
                                                                                                         })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns a brief text inspection of the object", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns a brief text inspection of the object",
                                                            new TypeCheckingNativeMethod.WithNoArguments("notice", obj,
                                                                                                         (method, on, args, keywords, _context, message) => {
                                                                                                             return _context.runtime.NewText(LexicalBlock.GetNotice(on));
                                                                                                         })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns idiomatically formatted code for this lexical block", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns idiomatically formatted code for this lexical block",
                                                            new TypeCheckingNativeMethod.WithNoArguments("formattedCode", obj,
                                                                                                         (method, on, args, keywords, _context, message) => {
                                                                                                             return _context.runtime.NewText(((AssociatedCode)IokeObject.dataOf(on)).FormattedCode(method));
@@ -155,7 +154,9 @@ namespace Ioke.Lang {
 
             arguments.AssignArgumentValues(c, dynamicContext, message, on);
 
-            return ((Message)IokeObject.dataOf(this.message)).EvaluateCompleteWith(this.message, c, on);
+            object oo = ((Message)IokeObject.dataOf(this.message)).EvaluateCompleteWith(this.message, c, on);
+
+            return oo;
         }
 
         public override object ActivateWithData(IokeObject self, IokeObject dynamicContext, IokeObject message, object on, IDictionary<string, object> data) {
@@ -170,7 +171,7 @@ namespace Ioke.Lang {
 
             return ((Message)IokeObject.dataOf(this.message)).EvaluateCompleteWith(this.message, c, on);
         }
-        
+
         public static string GetInspect(object on) {
             return ((Inspectable)(IokeObject.dataOf(on))).Inspect(on);
         }

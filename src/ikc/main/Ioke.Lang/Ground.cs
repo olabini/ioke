@@ -46,8 +46,9 @@ namespace Ioke.Lang {
             iokeGround.RegisterCell("IO", runtime.Io);
             iokeGround.RegisterCell("FileSystem", runtime.FileSystem);
             iokeGround.RegisterCell("Regexp", runtime.Regexp);
+            iokeGround.RegisterCell("Sequence", runtime.Sequence);
 
-            iokeGround.RegisterMethod(runtime.NewNativeMethod("will return a text representation of the current stack trace", 
+            iokeGround.RegisterMethod(runtime.NewNativeMethod("will return a text representation of the current stack trace",
                                                               new NativeMethod.WithNoArguments("stackTraceAsText",
                                                                                                (method, context, message, on, outer) => {
                                                                                                    outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, new SaneArrayList(), new SaneDictionary<string, object>());

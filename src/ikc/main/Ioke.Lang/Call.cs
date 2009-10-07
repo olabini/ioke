@@ -38,6 +38,16 @@ namespace Ioke.Lang {
                                                                                         return ((Message)IokeObject.dataOf(m)).SendTo(m, c.surroundingContext, c.on);
                                                                                     })));
 
+            obj.RegisterMethod(runtime.NewNativeMethod("takes one evaluated object and resends the current message with that object as the new receiver",
+                                                       new TypeCheckingNativeMethod("resendToReceiver", TypeCheckingArgumentsDefinition.builder()
+                                                                                    .ReceiverMustMimic(runtime.Call)
+                                                                                    .WithRequiredPositional("newReceiver")
+                                                                                    .Arguments,
+                                                                                    (self, _on, args, keywords, context, _message) => {
+                                                                                        Call c = (Call)IokeObject.dataOf(_on);
+                                                                                        return ((Message)IokeObject.dataOf(c.message)).SendTo(c.message, c.surroundingContext, args[0]);
+                                                                                    })));
+
             obj.RegisterMethod(runtime.NewNativeMethod("returns a list of all the unevaluated arguments", 
                                                        new TypeCheckingNativeMethod.WithNoArguments("arguments", 
                                                                                                     runtime.Call,

@@ -1,9 +1,22 @@
 
 namespace Ioke.Lang.Util {
+    using Ioke.Lang;
     using System.Collections;
+    using System.Collections.Generic;
     using System.Text;
 
     public class SaneArrayList : ArrayList {
+        public static int IndexOf(IList<IokeObject> objs, IokeObject obj) {
+            int i = 0;
+            foreach(IokeObject o in objs) {
+                if(o == obj) {
+                    return i;
+                }
+                i++;
+            }
+            return -1;
+        }
+
         public SaneArrayList() : base() {}
         public SaneArrayList(ICollection ic) : base(ic) {}
         public SaneArrayList(int size) : base(size) {}

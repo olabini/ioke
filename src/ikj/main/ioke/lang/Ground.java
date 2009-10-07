@@ -57,8 +57,9 @@ public class Ground {
         iokeGround.registerCell("FileSystem", runtime.fileSystem);
         iokeGround.registerCell("Regexp", runtime.regexp);
         iokeGround.registerCell("JavaGround", runtime.javaGround);
+        iokeGround.registerCell("Sequence", runtime.sequence);
 
-        iokeGround.registerMethod(runtime.newNativeMethod("will return a text representation of the current stack trace", 
+        iokeGround.registerMethod(runtime.newNativeMethod("will return a text representation of the current stack trace",
                                                     new NativeMethod.WithNoArguments("stackTraceAsText") {
                                                         @Override
                                                         public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {

@@ -113,8 +113,16 @@ public abstract class IokeData {
         return obj;
     }
 
-    public boolean isEqualTo(IokeObject self, Object other) {
-        return (other instanceof IokeObject) && (self.getCells() == IokeObject.as(other, self).getCells());
+    public final boolean isEqualTo(IokeObject self, Object other) throws ControlFlow {
+        Object cell = self.findCell(self.runtime.eqMessage, self.runtime.ground, "==");
+
+        if(cell == self.runtime.nul) {
+            boolean result = (other instanceof IokeObject) && (self.getCells() == IokeObject.as(other, self).getCells());
+            return result;
+        } else {
+            boolean result = IokeObject.isTrue(((Message)IokeObject.data(self.runtime.eqMessage)).sendTo(self.runtime.eqMessage, self.runtime.ground, self, self.runtime.createMessage(Message.wrap(IokeObject.as(other, self)))));
+            return result;
+        }
     }
 
     public int hashCode(IokeObject self) {
@@ -492,13 +500,13 @@ public abstract class IokeData {
     }
 
     public String toString(IokeObject self) {
-        Object obj = self.findCell(null, null, "kind");
         int h = hashCode(self);
         String hash = Integer.toHexString(h).toUpperCase();
-        if(obj instanceof NullObject) {
+        if(self instanceof NullObject) {
             return "#<nul:" + hash + ">";
         }
 
+        Object obj = self.findCell(null, null, "kind");
         String kind = ((Text)IokeObject.data(obj)).getText();
         return "#<" + kind + ":" + hash + ">";
     }

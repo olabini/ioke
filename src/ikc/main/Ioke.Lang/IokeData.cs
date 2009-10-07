@@ -148,13 +148,13 @@ namespace Ioke.Lang {
         }
 
         public virtual string ToString(IokeObject self) {
-            object obj = self.FindCell(null, null, "kind");
             int h = HashCode(self);
             string hash = System.Convert.ToString(h, 16).ToUpper();
-            if(obj is NullObject) {
+            if(self is NullObject) {
                 return "#<nul:" + hash + ">";
             }
 
+            object obj = self.FindCell(null, null, "kind");
             string kind = ((Text)IokeObject.dataOf(obj)).GetText();
             return "#<" + kind + ":" + hash + ">";
         }
@@ -377,7 +377,15 @@ namespace Ioke.Lang {
         }
 
         public virtual bool IsEqualTo(IokeObject self, object other) {
-            return (other is IokeObject) && (self.Cells == IokeObject.As(other, self).Cells);
+            object cell = self.FindCell(self.runtime.eqMessage, self.runtime.Ground, "==");
+            if(cell == self.runtime.nul) {
+                bool result = (other is IokeObject) && (self.Cells == IokeObject.As(other, self).Cells);
+                return result;
+            } else {
+                bool result = IokeObject.IsObjectTrue(((Message)IokeObject.dataOf(self.runtime.eqMessage)).SendTo(self.runtime.eqMessage, self.runtime.Ground, self, self.runtime.CreateMessage(Message.Wrap(IokeObject.As(other, self)))));
+                return result;
+            }
+
         }
 
         public virtual int HashCode(IokeObject self) {
