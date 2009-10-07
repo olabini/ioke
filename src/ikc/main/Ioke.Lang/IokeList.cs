@@ -37,7 +37,7 @@ namespace Ioke.Lang {
             Runtime runtime = obj.runtime;
 
             obj.Kind = "List";
-            obj.Mimics(IokeObject.As(runtime.Mixins.GetCell(null, null, "Enumerable"), null), runtime.nul, runtime.nul);
+            obj.Mimics(IokeObject.As(runtime.Mixins.GetCell(null, null, "Sequenced"), null), runtime.nul, runtime.nul);
 
             obj.RegisterMethod(runtime.NewNativeMethod("returns true if the left hand side list is equal to the right hand side list.",
                                                        new TypeCheckingNativeMethod("==", TypeCheckingArgumentsDefinition.builder()
@@ -52,7 +52,16 @@ namespace Ioke.Lang {
                                                                                                 d.list.Equals(((IokeList)IokeObject.dataOf(other)).list)) ? context.runtime.True : context.runtime.False;
                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("takes either one or two or three arguments. if one argument is given, it should be a message chain that will be sent to each object in the list. the result will be thrown away. if two arguments are given, the first is an unevaluated name that will be set to each of the values in the list in succession, and then the second argument will be evaluated in a scope with that argument in it. if three arguments is given, the first one is an unevaluated name that will be set to the index of each element, and the other two arguments are the name of the argument for the value, and the actual code. the code will evaluate in a lexical context, and if the argument name is available outside the context, it will be shadowed. the method will return the list.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns a new sequence to iterate over this list",
+                                                       new TypeCheckingNativeMethod.WithNoArguments("seq", runtime.List,
+                                                                                                    (method, on, args, keywords, context, message) => {
+                                                                                                        IokeObject ob = method.runtime.IteratorSequence.AllocateCopy(null, null);
+                                                                                                        ob.MimicsWithoutCheck(method.runtime.IteratorSequence);
+                                                                                                        ob.Data = new Sequence.IteratorSequence(IokeList.GetList(on).GetEnumerator());
+                                                                                                        return ob;
+                                                                                                    })));
+
+            obj.RegisterMethod(runtime.NewNativeMethod("takes either one or two or three arguments. if one argument is given, it should be a message chain that will be sent to each object in the list. the result will be thrown away. if two arguments are given, the first is an unevaluated name that will be set to each of the values in the list in succession, and then the second argument will be evaluated in a scope with that argument in it. if three arguments is given, the first one is an unevaluated name that will be set to the index of each element, and the other two arguments are the name of the argument for the value, and the actual code. the code will evaluate in a lexical context, and if the argument name is available outside the context, it will be shadowed. the method will return the list.",
                                                        new NativeMethod("each", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositionalUnevaluated("indexOrArgOrCode")
                                                                         .WithOptionalPositionalUnevaluated("argOrCode")
@@ -64,9 +73,12 @@ namespace Ioke.Lang {
                                                                             object onAsList = context.runtime.List.ConvertToThis(on, message, context);
                                                                             var ls = ((IokeList)IokeObject.dataOf(onAsList)).list;
                                                                             switch(message.Arguments.Count) {
+                                                                            case 0: {
+                                                                                return ((Message)IokeObject.dataOf(runtime.seqMessage)).SendTo(runtime.seqMessage, context, on);
+                                                                            }
                                                                             case 1: {
                                                                                 IokeObject code = IokeObject.As(message.Arguments[0], context);
-                                                                                
+
                                                                                 foreach(object o in ls) {
                                                                                     ((Message)IokeObject.dataOf(code)).EvaluateCompleteWithReceiver(code, context, context.RealContext, o);
                                                                                 }
@@ -101,7 +113,7 @@ namespace Ioke.Lang {
                                                                             return onAsList;
                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("takes one argument, the index of the element to be returned. can be negative, and will in that case return indexed from the back of the list. if the index is outside the bounds of the list, will return nil. the argument can also be a range, and will in that case interpret the first index as where to start, and the second the end. the end can be negative and will in that case be from the end. if the first argument is negative, or after the second, an empty list will be returned. if the end point is larger than the list, the size of the list will be used as the end point.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("takes one argument, the index of the element to be returned. can be negative, and will in that case return indexed from the back of the list. if the index is outside the bounds of the list, will return nil. the argument can also be a range, and will in that case interpret the first index as where to start, and the second the end. the end can be negative and will in that case be from the end. if the first argument is negative, or after the second, an empty list will be returned. if the end point is larger than the list, the size of the list will be used as the end point.",
                                                        new TypeCheckingNativeMethod("at", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(runtime.List)
                                                                                     .WithRequiredPositional("index")
@@ -110,8 +122,8 @@ namespace Ioke.Lang {
                                                                                         object arg = args[0];
 
                                                                                         if(IokeObject.dataOf(arg) is Range) {
-                                                                                            int first = Number.ExtractInt(Range.GetFrom(arg), message, context); 
-                        
+                                                                                            int first = Number.ExtractInt(Range.GetFrom(arg), message, context);
+
                                                                                             if(first < 0) {
                                                                                                 return context.runtime.NewList(new SaneArrayList());
                                                                                             }
@@ -131,18 +143,18 @@ namespace Ioke.Lang {
                                                                                             }
 
                                                                                             if(last >= size) {
-                            
+
                                                                                                 last = inclusive ? size-1 : size;
                                                                                             }
 
                                                                                             if(first > last || (!inclusive && first == last)) {
                                                                                                 return context.runtime.NewList(new SaneArrayList());
                                                                                             }
-                        
+
                                                                                             if(!inclusive) {
                                                                                                 last--;
                                                                                             }
-                                                                                            
+
                                                                                             var l = new SaneArrayList();
                                                                                             for(int i = first; i<last+1; i++) {
                                                                                                 l.Add(o[i]);
@@ -169,26 +181,26 @@ namespace Ioke.Lang {
             obj.AliasMethod("at", "[]", null, null);
 
 
-            obj.RegisterMethod(runtime.NewNativeMethod("returns the size of this list", 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns the size of this list",
                                                        new TypeCheckingNativeMethod.WithNoArguments("size", runtime.List,
                                                                                                     (method, on, args, keywords, context, message) => {
                                                                                                         return context.runtime.NewNumber(((IokeList)IokeObject.dataOf(on)).List.Count);
                                                                                                     })));
             obj.AliasMethod("size", "length", null, null);
 
-            obj.RegisterMethod(runtime.NewNativeMethod("Returns a text inspection of the object", 
+            obj.RegisterMethod(runtime.NewNativeMethod("Returns a text inspection of the object",
                                                        new TypeCheckingNativeMethod.WithNoArguments("inspect", obj,
                                                                                                     (method, on, args, keywords, context, message) => {
                                                                                                         return method.runtime.NewText(IokeList.GetInspect(on));
                                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("Returns a brief text inspection of the object", 
+            obj.RegisterMethod(runtime.NewNativeMethod("Returns a brief text inspection of the object",
                                                        new TypeCheckingNativeMethod.WithNoArguments("notice", obj,
                                                                                                     (method, on, args, keywords, context, message) => {
                                                                                                         return method.runtime.NewText(IokeList.GetNotice(on));
                                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("Compares this object against the argument. The comparison is only based on the elements inside the lists, which are in turn compared using <=>.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("Compares this object against the argument. The comparison is only based on the elements inside the lists, which are in turn compared using <=>.",
                                                        new TypeCheckingNativeMethod("<=>", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(obj)
                                                                                     .WithRequiredPositional("other")
@@ -218,7 +230,7 @@ namespace Ioke.Lang {
                                                                                         return context.runtime.NewNumber(-1);
                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("takes one argument and adds it at the end of the list, and then returns the list", 
+            obj.RegisterMethod(runtime.NewNativeMethod("takes one argument and adds it at the end of the list, and then returns the list",
                                                        new TypeCheckingNativeMethod("<<", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(obj)
                                                                                     .WithRequiredPositional("value")
@@ -228,7 +240,7 @@ namespace Ioke.Lang {
                                                                                         return on;
                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("takes one argument and adds it at the end of the list, and then returns the list", 
+            obj.RegisterMethod(runtime.NewNativeMethod("takes one argument and adds it at the end of the list, and then returns the list",
                                                        new TypeCheckingNativeMethod("append!", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(obj)
                                                                                     .WithRequiredPositional("value")
@@ -241,7 +253,7 @@ namespace Ioke.Lang {
 
             obj.AliasMethod("append!", "push!", null, null);
 
-            obj.RegisterMethod(runtime.NewNativeMethod("takes one argument and adds it at the beginning of the list, and then returns the list", 
+            obj.RegisterMethod(runtime.NewNativeMethod("takes one argument and adds it at the beginning of the list, and then returns the list",
                                                        new TypeCheckingNativeMethod("prepend!", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(obj)
                                                                                     .WithRequiredPositional("value")
@@ -254,8 +266,8 @@ namespace Ioke.Lang {
 
             obj.AliasMethod("prepend!", "unshift!", null, null);
 
-            obj.RegisterMethod(runtime.NewNativeMethod("removes the last element from the list and returns it. returns nil if the list is empty.", 
-                                                       new TypeCheckingNativeMethod.WithNoArguments("pop!", obj, 
+            obj.RegisterMethod(runtime.NewNativeMethod("removes the last element from the list and returns it. returns nil if the list is empty.",
+                                                       new TypeCheckingNativeMethod.WithNoArguments("pop!", obj,
                                                                                                     (method, on, args, keywords, context, message) => {
                                                                                                         var l = ((IokeList)IokeObject.dataOf(on)).List;
                                                                                                         if(l.Count == 0) {
@@ -266,7 +278,7 @@ namespace Ioke.Lang {
                                                                                                         return result;
                                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("removes the first element from the list and returns it. returns nil if the list is empty.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("removes the first element from the list and returns it. returns nil if the list is empty.",
                                                        new TypeCheckingNativeMethod.WithNoArguments("shift!", obj,
                                                                                                     (method, on, args, keywords, context, message) => {
                                                                                                         var l = ((IokeList)IokeObject.dataOf(on)).List;
@@ -278,20 +290,20 @@ namespace Ioke.Lang {
                                                                                                         return result;
                                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("will remove all the entries from the list, and then returns the list", 
+            obj.RegisterMethod(runtime.NewNativeMethod("will remove all the entries from the list, and then returns the list",
                                                        new TypeCheckingNativeMethod.WithNoArguments("clear!", obj,
                                                                                                     (method, on, args, keywords, context, message) => {
                                                                                                         ((IokeList)IokeObject.dataOf(on)).List.Clear();
                                                                                                         return on;
                                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("returns true if this list is empty, false otherwise", 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns true if this list is empty, false otherwise",
                                                        new TypeCheckingNativeMethod.WithNoArguments("empty?", obj,
                                                                                                     (method, on, args, keywords, context, message) => {
                                                                                                         return ((IokeList)IokeObject.dataOf(on)).List.Count == 0 ? context.runtime.True : context.runtime.False;
                                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("returns true if the receiver includes the evaluated argument, otherwise false", 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns true if the receiver includes the evaluated argument, otherwise false",
                                                        new TypeCheckingNativeMethod("include?", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(obj)
                                                                                     .WithRequiredPositional("object")
@@ -300,7 +312,7 @@ namespace Ioke.Lang {
                                                                                         return ((IokeList)IokeObject.dataOf(on)).List.Contains(args[0]) ? context.runtime.True : context.runtime.False;
                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("adds the elements in the argument list to the current list, and then returns that list", 
+            obj.RegisterMethod(runtime.NewNativeMethod("adds the elements in the argument list to the current list, and then returns that list",
                                                        new TypeCheckingNativeMethod("concat!", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(obj)
                                                                                     .WithRequiredPositional("otherList").WhichMustMimic(obj)
@@ -312,7 +324,7 @@ namespace Ioke.Lang {
                                                                                         return on;
                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("returns a new list that contains the receivers elements and the elements of the list sent in as the argument.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns a new list that contains the receivers elements and the elements of the list sent in as the argument.",
                                                        new TypeCheckingNativeMethod("+", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(obj)
                                                                                     .WithRequiredPositional("otherList").WhichMustMimic(obj)
@@ -324,7 +336,7 @@ namespace Ioke.Lang {
                                                                                         return context.runtime.NewList(newList, IokeObject.As(on, context));
                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("returns a new list that contains all the elements from the receivers list, except for those that are in the argument list", 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns a new list that contains all the elements from the receivers list, except for those that are in the argument list",
                                                        new TypeCheckingNativeMethod("-", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(obj)
                                                                                     .WithRequiredPositional("otherList").WhichMustMimic(obj)
@@ -340,7 +352,7 @@ namespace Ioke.Lang {
                                                                                         return context.runtime.NewList(newList, IokeObject.As(on, context));
                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("returns a new sorted version of this list", 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns a new sorted version of this list",
                                                        new TypeCheckingNativeMethod.WithNoArguments("sort", obj,
                                                                                     (method, on, args, keywords, context, message) => {
                                                                                                         object newList = IokeObject.Mimic(on, message, context);
@@ -355,7 +367,7 @@ namespace Ioke.Lang {
                                                                                                         return newList;
                                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("sorts this list in place and then returns it", 
+            obj.RegisterMethod(runtime.NewNativeMethod("sorts this list in place and then returns it",
                                                        new TypeCheckingNativeMethod.WithNoArguments("sort!", obj,
                                                                                     (method, on, args, keywords, context, message) => {
                                                                                                         var ll = ((IokeList)IokeObject.dataOf(on)).List;
@@ -369,7 +381,7 @@ namespace Ioke.Lang {
                                                                                                         return on;
                                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("takes an index and zero or more objects to insert at that point. the index can be negative to index from the end of the list. if the index is positive and larger than the size of the list, the list will be filled with nils inbetween.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("takes an index and zero or more objects to insert at that point. the index can be negative to index from the end of the list. if the index is positive and larger than the size of the list, the list will be filled with nils inbetween.",
                                                        new TypeCheckingNativeMethod("insert!", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(obj)
                                                                                     .WithRequiredPositional("index").WhichMustMimic(runtime.Number)
@@ -385,17 +397,17 @@ namespace Ioke.Lang {
 
                                                                                         if(args.Count>1) {
                                                                                             while(index < 0) {
-                                                                                                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition, 
-                                                                                                                                                             message, 
-                                                                                                                                                             context, 
-                                                                                                                                                             "Error", 
+                                                                                                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition,
+                                                                                                                                                             message,
+                                                                                                                                                             context,
+                                                                                                                                                             "Error",
                                                                                                                                                              "Index"), context).Mimic(message, context);
                                                                                                 condition.SetCell("message", message);
                                                                                                 condition.SetCell("context", context);
                                                                                                 condition.SetCell("receiver", on);
                                                                                                 condition.SetCell("index", context.runtime.NewNumber(index));
 
-                                                                                                
+
                                                                                                 object[] newCell = new object[]{context.runtime.NewNumber(index)};
 
                                                                                                 context.runtime.WithRestartReturningArguments(()=>{context.runtime.ErrorCondition(condition);},
@@ -411,14 +423,14 @@ namespace Ioke.Lang {
                                                                                             for(int x = (index-size); x>0; x--) {
                                                                                                 l.Add(context.runtime.nil);
                                                                                             }
-                                                                                            
+
                                                                                             for(int i=1, j=args.Count; i<j; i++) l.Insert(index + i - 1, args[i]);
                                                                                         }
 
                                                                                         return on;
                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("takes two arguments, the index of the element to set, and the value to set. the index can be negative and will in that case set indexed from the end of the list. if the index is larger than the current size, the list will be expanded with nils. an exception will be raised if a abs(negative index) is larger than the size.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("takes two arguments, the index of the element to set, and the value to set. the index can be negative and will in that case set indexed from the end of the list. if the index is larger than the current size, the list will be expanded with nils. an exception will be raised if a abs(negative index) is larger than the size.",
                                                        new TypeCheckingNativeMethod("at=", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(obj)
                                                                                     .WithRequiredPositional("index")
@@ -437,10 +449,10 @@ namespace Ioke.Lang {
                                                                                         }
 
                                                                                         while(index < 0) {
-                                                                                            IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition, 
-                                                                                                                                                         message, 
-                                                                                                                                                         context, 
-                                                                                                                                                         "Error", 
+                                                                                            IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition,
+                                                                                                                                                         message,
+                                                                                                                                                         context,
+                                                                                                                                                         "Error",
                                                                                                                                                          "Index"), context).Mimic(message, context);
                                                                                             condition.SetCell("message", message);
                                                                                             condition.SetCell("context", context);
@@ -472,7 +484,7 @@ namespace Ioke.Lang {
                                                                                     })));
 
             obj.AliasMethod("at=", "[]=", null, null);
-        
+
             obj.RegisterMethod(runtime.NewNativeMethod(
                                                      "takes as argument the index of the element to be removed and returns it. can be " +
                                                      "negative and will in that case index from the back of the list. if the index is " +
@@ -482,7 +494,7 @@ namespace Ioke.Lang {
                                                      "depending on the range). the end of the range can be negative and will in that case " +
                                                      "index from the back of the list. if the start of the range is negative, or greater " +
                                                      "than the end, an empty list will be returned. if the end index exceeds the bounds " +
-                                                     "of the list, its size will be used instead.", 
+                                                     "of the list, its size will be used instead.",
                                                      new TypeCheckingNativeMethod("removeAt!", TypeCheckingArgumentsDefinition.builder()
                                                                                   .ReceiverMustMimic(obj)
                                                                                   .WithRequiredPositional("indexOrRange")
@@ -491,7 +503,7 @@ namespace Ioke.Lang {
                                                                                       object arg = args[0];
 
                                                                                       if(IokeObject.dataOf(arg) is Range) {
-                                                                                          int first = Number.ExtractInt(Range.GetFrom(arg), message, context); 
+                                                                                          int first = Number.ExtractInt(Range.GetFrom(arg), message, context);
                                                                                           if(first < 0) {
                                                                                               return EmptyList(context);
                                                                                           }
@@ -509,40 +521,40 @@ namespace Ioke.Lang {
                                                                                           }
 
                                                                                           bool inclusive = Range.IsInclusive(arg);
-                    
-                                                                                          if(last >= size) {                        
+
+                                                                                          if(last >= size) {
                                                                                               last = inclusive ? size-1 : size;
                                                                                           }
 
                                                                                           if(first > last || (!inclusive && first == last)) {
                                                                                               return EmptyList(context);
                                                                                           }
-                    
+
                                                                                           if(!inclusive) {
                                                                                               last--;
                                                                                           }
-                    
+
                                                                                           var result = new SaneArrayList();
                                                                                           for(int i = 0; i <= last - first; i++) {
                                                                                               result.Add(receiver[first]);
                                                                                               receiver.RemoveAt(first);
                                                                                           }
-                    
+
                                                                                           return CopyList(context, result);
                                                                                       }
 
                                                                                       if(!(IokeObject.dataOf(arg) is Number)) {
                                                                                           arg = IokeObject.ConvertToNumber(arg, message, context);
                                                                                       }
-               
+
                                                                                       int index = ((Number)IokeObject.dataOf(arg)).AsNativeInteger();
                                                                                       var receiver2 = GetList(on);
                                                                                       int size2 = receiver2.Count;
-                                                                                      
+
                                                                                       if(index < 0) {
                                                                                           index = size2 + index;
                                                                                       }
-                                                                                      
+
                                                                                       if(index >= 0 && index < size2) {
                                                                                           object result = receiver2[(int)index];
                                                                                           receiver2.RemoveAt((int)index);
@@ -551,11 +563,11 @@ namespace Ioke.Lang {
                                                                                           return context.runtime.nil;
                                                                                       }
                                                                                   })));
-        
+
             obj.RegisterMethod(runtime.NewNativeMethod(
                                                      "takes one or more arguments. removes all occurrences of the provided arguments from " +
                                                      "the list and returns the updated list. if an argument is not contained, the list " +
-                                                     "remains unchanged. sending this method to an empty list has no effect.", 
+                                                     "remains unchanged. sending this method to an empty list has no effect.",
                                                      new TypeCheckingNativeMethod("remove!", TypeCheckingArgumentsDefinition.builder()
                                                                                   .ReceiverMustMimic(obj)
                                                                                   .WithRequiredPositional("element")
@@ -577,12 +589,12 @@ namespace Ioke.Lang {
                                                                                       }
                                                                                       return on;
                                                                                   })));
-        
+
             obj.RegisterMethod(runtime.NewNativeMethod(
                                                      "takes one or more arguments. removes the first occurrence of the provided arguments " +
                                                      "from the list and returns the updated list. if an argument is not contained, the list " +
                                                      "remains unchanged. arguments that are provided multiple times are treated as distinct " +
-                                                     "elements. sending this message to an empty list has no effect.", 
+                                                     "elements. sending this message to an empty list has no effect.",
                                                      new TypeCheckingNativeMethod("removeFirst!", TypeCheckingArgumentsDefinition.builder()
                                                                                   .ReceiverMustMimic(obj)
                                                                                   .WithRequiredPositional("element")
@@ -599,7 +611,7 @@ namespace Ioke.Lang {
                                                                                       return on;
                                                                                   })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("removes all nils in this list, and then returns the list", 
+            obj.RegisterMethod(runtime.NewNativeMethod("removes all nils in this list, and then returns the list",
                                                        new TypeCheckingNativeMethod.WithNoArguments("compact!", obj,
                                                                                                     (method, on, args, keywords, context, message) => {
                                                                                                         var list = GetList(on);
@@ -614,7 +626,7 @@ namespace Ioke.Lang {
                                                                                                         return on;
                                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("reverses the elements in this list, then returns it", 
+            obj.RegisterMethod(runtime.NewNativeMethod("reverses the elements in this list, then returns it",
                                                        new TypeCheckingNativeMethod.WithNoArguments("reverse!", obj,
                                                                                                     (method, on, args, keywords, context, message) => {
                                                                                                         var list = GetList(on);
@@ -627,15 +639,15 @@ namespace Ioke.Lang {
                                                                                                         }
                                                                                                         return on;
                                                                                                     })));
-            
-            obj.RegisterMethod(runtime.NewNativeMethod("flattens all lists in this list recursively, then returns it", 
+
+            obj.RegisterMethod(runtime.NewNativeMethod("flattens all lists in this list recursively, then returns it",
                                                        new TypeCheckingNativeMethod.WithNoArguments("flatten!", obj,
                                                                                                     (method, on, args, keywords, context, message) => {
                                                                                                         SetList(on, Flatten(GetList(on)));
                                                                                                         return on;
                                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("returns a text composed of the asText representation of all elements in the list, separated by the separator. the separator defaults to an empty text.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns a text composed of the asText representation of all elements in the list, separated by the separator. the separator defaults to an empty text.",
                                                        new TypeCheckingNativeMethod("join", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(obj)
                                                                                     .WithOptionalPositional("separator", "")
@@ -654,7 +666,7 @@ namespace Ioke.Lang {
                                                                                         return context.runtime.NewText(result);
                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("takes one or two arguments, and will then use these arguments as code to transform each element in this list. the transform happens in place. finally the method will return the receiver.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("takes one or two arguments, and will then use these arguments as code to transform each element in this list. the transform happens in place. finally the method will return the receiver.",
                                                        new NativeMethod("map!", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositionalUnevaluated("argOrCode")
                                                                         .WithOptionalPositionalUnevaluated("code")
@@ -662,10 +674,10 @@ namespace Ioke.Lang {
                                                                         (method, context, message, on, outer) => {
                                                                             outer.ArgumentsDefinition.CheckArgumentCount(context, message, on);
                                                                             object onAsList = context.runtime.List.ConvertToThis(on, message, context);
-                    
+
                                                                             var ls = ((IokeList)IokeObject.dataOf(onAsList)).list;
                                                                             int size = ls.Count;
-                    
+
                                                                             switch(message.Arguments.Count) {
                                                                             case 1: {
                                                                                 IokeObject code = IokeObject.As(message.Arguments[0], context);
@@ -689,10 +701,10 @@ namespace Ioke.Lang {
                                                                             }
                                                                             return on;
                                                                         })));
-            
+
             obj.AliasMethod("map!", "collect!", null, null);
 
-            obj.RegisterMethod(runtime.NewNativeMethod("takes one or two arguments, and will then use these arguments as code to decide what elements should be removed from the list. the method will return the receiver.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("takes one or two arguments, and will then use these arguments as code to decide what elements should be removed from the list. the method will return the receiver.",
                                                        new NativeMethod("removeIf!", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositionalUnevaluated("argOrCode")
                                                                         .WithOptionalPositionalUnevaluated("code")
@@ -700,13 +712,13 @@ namespace Ioke.Lang {
                                                                         (method, context, message, on, outer) => {
                                                                             outer.ArgumentsDefinition.CheckArgumentCount(context, message, on);
                                                                             object onAsList = context.runtime.List.ConvertToThis(on, message, context);
-                    
+
                                                                             var ls = ((IokeList)IokeObject.dataOf(onAsList)).list;
-                    
+
                                                                             switch(message.Arguments.Count) {
                                                                             case 1: {
                                                                                 IokeObject code = IokeObject.As(message.Arguments[0], context);
-                                                                                
+
                                                                                 int count = ls.Count;
                                                                                 for(int i = 0; i<count; i++) {
                                                                                     object o1 = ls[i];
@@ -784,11 +796,11 @@ namespace Ioke.Lang {
         public static string GetNotice(object on) {
             return ((IokeList)(IokeObject.dataOf(on))).Notice(on);
         }
-    
+
         public static IokeObject EmptyList(IokeObject context) {
             return context.runtime.NewList(new SaneArrayList());
         }
-    
+
         public static IokeObject CopyList(IokeObject context, IList orig) {
             return context.runtime.NewList(new SaneArrayList(orig));
         }

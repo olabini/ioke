@@ -55,7 +55,7 @@ namespace Ioke.Lang.Parser
         }
 
         private IList parseExpressionChain() {
-            ArrayList chain = new ArrayList();
+            ArrayList chain = new SaneArrayList();
 
             IokeObject curr = parseExpressions();
             while(curr != null) {
@@ -544,7 +544,7 @@ namespace Ioke.Lang.Parser
 
             int rr;
             string name = "internal:createRegexp";
-            ArrayList args = new ArrayList();
+            ArrayList args = new SaneArrayList();
 
             while(true) {
                 switch(rr = peek()) {
@@ -655,7 +655,7 @@ namespace Ioke.Lang.Parser
 
             int rr;
             string name = "internal:createText";
-            ArrayList args = new ArrayList();
+            ArrayList args = new SaneArrayList();
 
             while(true) {
                 switch(rr = peek()) {

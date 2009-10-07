@@ -29,7 +29,7 @@ namespace Ioke.Lang {
         public static bool IsInclusive(object range) {
             return ((Range)IokeObject.dataOf(range)).IsInclusive();
         }
-    
+
         public IokeObject From {
             get { return from; }
         }
@@ -37,15 +37,64 @@ namespace Ioke.Lang {
         public IokeObject To {
             get { return to; }
         }
-    
+
         public bool IsInclusive() {
             return inclusive;
+        }
+
+        public class RangeIterator {
+            private IokeObject start;
+            private IokeObject end;
+            private readonly bool inclusive;
+            private IokeObject context;
+            //            private IokeObject message;
+            private IokeObject messageToSend;
+            private readonly Runtime runtime;
+            private bool oneIteration = false;
+            private bool doLast = true;
+
+            public RangeIterator(IokeObject start, IokeObject end, bool inclusive, bool inverted, IokeObject context, IokeObject message) {
+                this.runtime = context.runtime;
+                this.start = start;
+                this.end = end;
+                this.inclusive = inclusive;
+                this.context = context;
+                //                this.message = message;
+
+                messageToSend = runtime.succMessage;
+                if(inverted) {
+                    messageToSend = runtime.predMessage;
+                }
+            }
+
+            public bool hasNext() {
+                bool sameEndpoints = IokeObject.IsObjectTrue(((Message)IokeObject.dataOf(runtime.eqMessage)).SendTo(runtime.eqMessage, context, start, end));
+                bool shouldGoOver = (doLast && inclusive);
+                bool sameStartPoint = sameEndpoints && inclusive && !oneIteration;
+                return !sameEndpoints || shouldGoOver || sameStartPoint;
+            }
+
+            public object next() {
+                IokeObject obj = start;
+                if(!IokeObject.IsObjectTrue(((Message)IokeObject.dataOf(runtime.eqMessage)).SendTo(runtime.eqMessage, context, start, end))) {
+                    oneIteration = true;
+                    start = (IokeObject)((Message)IokeObject.dataOf(messageToSend)).SendTo(messageToSend, context, start);
+                    doLast = true;
+                    return obj;
+                } else {
+                    if(inclusive && doLast) {
+                        doLast = false;
+                        return obj;
+                    }
+                }
+                return null;
+            }
         }
 
         public override void Init(IokeObject obj) {
             Runtime runtime = obj.runtime;
             obj.Kind = "Range";
-            obj.Mimics(IokeObject.As(runtime.Mixins.GetCell(null, null, "Enumerable"), null), runtime.nul, runtime.nul);
+            obj.Mimics(IokeObject.As(runtime.Mixins.GetCell(null, null, "Sequenced"), null), runtime.nul, runtime.nul);
 
             obj.RegisterMethod(runtime.NewNativeMethod("returns true if the left hand side range is equal to the right hand side range.",
                                                        new TypeCheckingNativeMethod("==", TypeCheckingArgumentsDefinition.builder()
@@ -63,7 +112,7 @@ namespace Ioke.Lang {
                                                                                                 && d.to.Equals(((Range)IokeObject.dataOf(other)).to)) ? context.runtime.True : context.runtime.False;
                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("will return a new inclusive Range based on the two arguments", 
+            obj.RegisterMethod(runtime.NewNativeMethod("will return a new inclusive Range based on the two arguments",
                                                        new NativeMethod("inclusive", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositional("from")
                                                                         .WithRequiredPositional("to")
@@ -71,7 +120,7 @@ namespace Ioke.Lang {
                                                                         (method, context, message, on, outer) => {
                                                                             var args = new SaneArrayList();
                                                                             outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, args, new SaneDictionary<string, object>());
-                                                                             
+
                                                                             object from = args[0];
                                                                             object to = args[1];
 
@@ -88,7 +137,7 @@ namespace Ioke.Lang {
                                                                             return runtime.NewRange(IokeObject.As(from, context), IokeObject.As(to, context), true, inverted);
                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("will return a new exclusive Range based on the two arguments", 
+            obj.RegisterMethod(runtime.NewNativeMethod("will return a new exclusive Range based on the two arguments",
                                                        new NativeMethod("exclusive", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositional("from")
                                                                         .WithRequiredPositional("to")
@@ -96,7 +145,7 @@ namespace Ioke.Lang {
                                                                         (method, context, message, on, outer) => {
                                                                             var args = new SaneArrayList();
                                                                             outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, args, new SaneDictionary<string, object>());
-                                                                             
+
                                                                             object from = args[0];
                                                                             object to = args[1];
 
@@ -113,34 +162,44 @@ namespace Ioke.Lang {
                                                                             return runtime.NewRange(IokeObject.As(from, context), IokeObject.As(to, context), false, inverted);
                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("returns true if the receiver is an exclusive range, false otherwise", 
-                                                       new NativeMethod.WithNoArguments("exclusive?", 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns true if the receiver is an exclusive range, false otherwise",
+                                                       new NativeMethod.WithNoArguments("exclusive?",
                                                                                         (method, context, message, on, outer) => {
                                                                                             outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, new SaneArrayList(), new SaneDictionary<string, object>());
                                                                                             return ((Range)IokeObject.dataOf(on)).inclusive ? context.runtime.False : context.runtime.True;
                                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("returns true if the receiver is an inclusive range, false otherwise", 
-                                                       new NativeMethod.WithNoArguments("inclusive?", 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns true if the receiver is an inclusive range, false otherwise",
+                                                       new NativeMethod.WithNoArguments("inclusive?",
                                                                                         (method, context, message, on, outer) => {
                                                                                             outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, new SaneArrayList(), new SaneDictionary<string, object>());
                                                                                             return ((Range)IokeObject.dataOf(on)).inclusive ? context.runtime.True : context.runtime.False;
                                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("returns the 'from' part of the range", 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns the 'from' part of the range",
                                                        new TypeCheckingNativeMethod.WithNoArguments("from", obj,
                                                                                                     (method, on, args, keywords, context, message) => {
                                                                                                         return ((Range)IokeObject.dataOf(on)).from;
                                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("returns the 'to' part of the range", 
-                                                       new NativeMethod.WithNoArguments("to", 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns the 'to' part of the range",
+                                                       new NativeMethod.WithNoArguments("to",
                                                                                         (method, context, message, on, outer) => {
                                                                                             outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, new SaneArrayList(), new SaneDictionary<string, object>());
                                                                                             return ((Range)IokeObject.dataOf(on)).to;
                                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("takes either one or two or three arguments. if one argument is given, it should be a message chain that will be sent to each object in the range. the result will be thrown away. if two arguments are given, the first is an unevaluated name that will be set to each of the values in the range in succession, and then the second argument will be evaluated in a scope with that argument in it. if three arguments is given, the first one is an unevaluated name that will be set to the index of each element, and the other two arguments are the name of the argument for the value, and the actual code. the code will evaluate in a lexical context, and if the argument name is available outside the context, it will be shadowed. the method will return the range.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns a new sequence to iterate over this range",
+                                                       new TypeCheckingNativeMethod.WithNoArguments("seq", obj,
+                                                                                                    (method, on, args, keywords, context, message) => {
+                                                                                                        IokeObject ob = method.runtime.Iterator2Sequence.AllocateCopy(null, null);
+                                                                                                        ob.MimicsWithoutCheck(method.runtime.Iterator2Sequence);
+                                                                                                        Range r = ((Range)IokeObject.dataOf(on));
+                                                                                                        ob.Data = new Sequence.Iterator2Sequence(new RangeIterator(r.from, r.to, r.inclusive, r.inverted, context, message));
+                                                                                                        return ob;
+                                                                                                    })));
+
+            obj.RegisterMethod(runtime.NewNativeMethod("takes either one or two or three arguments. if one argument is given, it should be a message chain that will be sent to each object in the range. the result will be thrown away. if two arguments are given, the first is an unevaluated name that will be set to each of the values in the range in succession, and then the second argument will be evaluated in a scope with that argument in it. if three arguments is given, the first one is an unevaluated name that will be set to the index of each element, and the other two arguments are the name of the argument for the value, and the actual code. the code will evaluate in a lexical context, and if the argument name is available outside the context, it will be shadowed. the method will return the range.",
                                                        new NativeMethod("each", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositionalUnevaluated("indexOrArgOrCode")
                                                                         .WithOptionalPositionalUnevaluated("argOrCode")
@@ -158,6 +217,9 @@ namespace Ioke.Lang {
                                                                             }
 
                                                                             switch(message.Arguments.Count) {
+                                                                            case 0: {
+                                                                                return ((Message)IokeObject.dataOf(runtime.seqMessage)).SendTo(runtime.seqMessage, context, on);
+                                                                            }
                                                                             case 1: {
                                                                                 IokeObject code = IokeObject.As(message.Arguments[0], context);
 
@@ -170,7 +232,7 @@ namespace Ioke.Lang {
                                                                                 if(inclusive) {
                                                                                     ((Message)IokeObject.dataOf(code)).EvaluateCompleteWithReceiver(code, context, context.RealContext, current);
                                                                                 }
-                        
+
                                                                                 break;
                                                                             }
                                                                             case 2: {
@@ -220,7 +282,7 @@ namespace Ioke.Lang {
                                                                             return on;
                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("returns true if the argument is within the confines of this range. how this comparison is done depends on if the object mimics Comparing. If it does, < and > will be used. If not, all the available entries in this range will be enumerated using 'succ'/'pred' until either the end or the element we're looking for is found. in that case, comparison is done with '=='", 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns true if the argument is within the confines of this range. how this comparison is done depends on if the object mimics Comparing. If it does, < and > will be used. If not, all the available entries in this range will be enumerated using 'succ'/'pred' until either the end or the element we're looking for is found. in that case, comparison is done with '=='",
                                                        new NativeMethod("===", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositional("other")
                                                                         .Arguments,
@@ -275,14 +337,14 @@ namespace Ioke.Lang {
                                                                             }
                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("Returns a text inspection of the object", 
+            obj.RegisterMethod(runtime.NewNativeMethod("Returns a text inspection of the object",
                                                        new NativeMethod.WithNoArguments("inspect",
                                                                                         (method, context, message, on, outer) => {
                                                                                             outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, new SaneArrayList(), new SaneDictionary<string, object>());
                                                                                             return method.runtime.NewText(Range.GetInspect(on));
                                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("Returns a brief text inspection of the object", 
+            obj.RegisterMethod(runtime.NewNativeMethod("Returns a brief text inspection of the object",
                                                        new NativeMethod.WithNoArguments("notice",
                                                                                         (method, context, message, on, outer) => {
                                                                                             outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, new SaneArrayList(), new SaneDictionary<string, object>());

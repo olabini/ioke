@@ -56,9 +56,8 @@ public class Range extends IokeData {
         private IokeObject start;
         private IokeObject end;
         private final boolean inclusive;
-        private final boolean inverted;
         private IokeObject context;
-        private IokeObject message;
+        //        private IokeObject message;
         private IokeObject messageToSend;
         private final Runtime runtime;
         private boolean oneIteration = false;
@@ -69,9 +68,8 @@ public class Range extends IokeData {
             this.start = start;
             this.end = end;
             this.inclusive = inclusive;
-            this.inverted = inverted;
             this.context = context;
-            this.message = message;
+            //            this.message = message;
 
             messageToSend = runtime.succ;
             if(inverted) {
