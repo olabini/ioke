@@ -739,6 +739,32 @@ describe(List,
     )
   )
 
+  describe("hash",
+    it("should return the same number for equal lists",
+      [] hash should == [] hash
+      x = [1]
+      y = []
+      y << 1
+      x hash should == y hash
+      x hash should not == [] hash
+    )
+
+    it("should return different numbers for different lists",
+      [1] hash should not == ["1"] hash
+      [] hash should not == [1] hash
+      [1] hash should not == [] hash
+    )
+
+    it("should do the computation using recursive applications of hash",
+      x = Origin mimic
+      y = Origin mimic
+      [x] hash should not == [y]
+      x hash = method(42)
+      y hash = method(42)
+      [x] hash should == [y] hash
+    )
+  )
+
   describe("==",
     it("should return false when sent an argument that is not a list",
       [] should not == 1

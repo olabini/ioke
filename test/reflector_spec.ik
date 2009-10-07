@@ -108,7 +108,7 @@ describe(Reflector,
   )
 
   describe("other:kind?",
-    it("should return false if the kind doesn't match", 
+    it("should return false if the kind doesn't match",
       Reflector other:kind?(Text, "nil") should be false
       Reflector other:kind?(Text, "Number") should be false
       Reflector other:kind?("", "nil") should be false
@@ -116,11 +116,11 @@ describe(Reflector,
       Reflector other:kind?("", "System") should be false
     )
 
-    it("should return true if the current object has the kind", 
+    it("should return true if the current object has the kind",
       Reflector other:kind?(Text, "Text") should be true
     )
-    
-    it("should return true if the main mimic has the kind", 
+
+    it("should return true if the main mimic has the kind",
       Reflector other:kind?("", "Text") should be true
       Reflector other:kind?("", "DefaultBehavior") should be true
       Reflector other:kind?("", "Base") should be true
@@ -128,11 +128,11 @@ describe(Reflector,
       Reflector other:kind?("", "Origin") should be true
     )
 
-    it("should return true if another mimic has the kind", 
+    it("should return true if another mimic has the kind",
       Reflector other:kind?(123, "Mixins Comparing") should be true
     )
 
-    it("should handle a cycle of mimics correctly", 
+    it("should handle a cycle of mimics correctly",
       f = Origin mimic. f mimic!(f). Reflector other:kind?(f, "Origin") should be true
       f = Origin mimic. Origin mimic!(f). Reflector other:kind?(f, "Origin") should be true
       f = Origin mimic. Origin mimic!(f). Reflector other:kind?(f, "DefaultBehavior") should be true
@@ -219,7 +219,7 @@ describe(Reflector,
       y uniqueHexId should not == x uniqueHexId
 
       Reflector other:become!(x, y)
-      
+
       x uniqueHexId should == y uniqueHexId
       y uniqueHexId should == x uniqueHexId
     )
@@ -231,21 +231,21 @@ describe(Reflector,
       y should not be same(x)
 
       Reflector other:become!(x, y)
-      
+
       x should be same(y)
       y should be same(x)
     )
-    
+
     it("should give objects that mimic each other",
       x = Origin mimic
       y = Origin mimic
 
       Reflector other:become!(x, y)
-      
+
       x should be mimic(y)
       y should be mimic(x)
     )
-    
+
     it("should give objects that when modified will change each other",
       x = Origin mimic
       y = Origin mimic
@@ -269,7 +269,7 @@ describe(Reflector,
     it("should return false on something that isn't frozen",
       x = Origin mimic
       Reflector other:frozen?(x) should be false
-      
+
       x freeze!
 
       Reflector other:frozen?(x) should be true
@@ -317,7 +317,7 @@ describe(Reflector,
       Reflector other:freeze!(x)
 
       y become!(x)
-      
+
       y should be frozen
     )
   )
@@ -342,27 +342,27 @@ describe(Reflector,
   )
 
   describe("other:mimics?",
-    it("should return false if the object doesn't mimic the argument", 
+    it("should return false if the object doesn't mimic the argument",
       f = Origin mimic. Reflector other:mimics?(Origin, f) should be false
       f = Origin mimic. Reflector other:mimics?(DefaultBehavior, f) should be false
       f = Origin mimic. Reflector other:mimics?(12, f) should be false
       f = Origin mimic. Reflector other:mimics?(f, 12) should be false
     )
-    
-    it("should return true if the object is the same as the argument", 
+
+    it("should return true if the object is the same as the argument",
       f = Origin mimic. Reflector other:mimics?(f, f) should be true
       Reflector other:mimics?(Origin, Origin) should be true
     )
 
-    it("should return true if any of the mimics are the argument", 
+    it("should return true if any of the mimics are the argument",
       x = Origin mimic. y = x mimic. z = y mimic. Reflector other:mimics?(z, Origin) should be true
       x = Origin mimic. y = x mimic. z = y mimic. Reflector other:mimics?(z, x) should be true
       x = Origin mimic. y = x mimic. z = y mimic. Reflector other:mimics?(z, y) should be true
       x = Origin mimic. y = x mimic. z = y mimic. Reflector other:mimics?(z, z) should be true
       f = Origin mimic. Origin mimic!(f). x = Origin mimic. y = x mimic. z = y mimic. Reflector other:mimics?(z, f) should be true
     )
-    
-    it("should handle a cycle of mimics correctly", 
+
+    it("should handle a cycle of mimics correctly",
       x = Origin mimic. y = x mimic. z = y mimic. Origin mimic!(z). Reflector other:mimics?(z, Number) should be false
       x = Origin mimic. y = x mimic. z = y mimic. Origin mimic!(z). Reflector other:mimics?(z, Origin) should be true
       x = Origin mimic. y = x mimic. z = y mimic. Origin mimic!(z). Reflector other:mimics?(z, Base) should be true
@@ -371,24 +371,24 @@ describe(Reflector,
   )
 
   describe("other:mimic",
-    it("should be able to mimic Origin", 
+    it("should be able to mimic Origin",
       result = Reflector other:mimic(Origin)
       result should have kind("Origin")
       result should not be same(Origin)
     )
 
-    it("should be able to mimic Ground", 
+    it("should be able to mimic Ground",
       result = Reflector other:mimic(Ground)
       result should have kind("Ground")
       result should not be same(Ground)
     )
 
-    it("should be able to mimic Base", 
+    it("should be able to mimic Base",
       result = Reflector other:mimic(Base)
       result kind should == "Base"
     )
 
-    it("should be able to mimic Text", 
+    it("should be able to mimic Text",
       result = Reflector other:mimic(Text)
       result should have kind("Text")
       result should not be same(Text)
@@ -396,14 +396,14 @@ describe(Reflector,
   )
 
   describe("other:mimic!",
-    it("should add a new mimic to the list of mimics", 
+    it("should add a new mimic to the list of mimics",
       f = Origin mimic. g = Origin mimic. Reflector other:mimic!(f, g)
       f mimics length should == 2
       f mimics[0] should == Origin
       f mimics[1] should == g
     )
 
-    it("should not add a mimic that's already in the list", 
+    it("should not add a mimic that's already in the list",
       f = Origin mimic
       Reflector other:mimic!(f, Origin)
       Reflector other:mimic!(f, Origin)
@@ -412,30 +412,30 @@ describe(Reflector,
       f mimics length should == 1
     )
 
-    it("should not be able to mimic nil", 
+    it("should not be able to mimic nil",
       fn(Reflector other:mimic!(Origin mimic, nil)) should signal(Condition Error CantMimicOddball)
     )
-    
-    it("should not be able to mimic true", 
+
+    it("should not be able to mimic true",
       fn(Reflector other:mimic!(Origin mimic, true)) should signal(Condition Error CantMimicOddball)
     )
-    
-    it("should not be able to mimic false", 
+
+    it("should not be able to mimic false",
       fn(Reflector other:mimic!(Origin mimic, false)) should signal(Condition Error CantMimicOddball)
     )
-    
-    it("should not be able to mimic symbols", 
+
+    it("should not be able to mimic symbols",
       fn(Reflector other:mimic!(Origin mimic, :foo)) should signal(Condition Error CantMimicOddball)
     )
-    
-    it("should return the receiving object", 
+
+    it("should return the receiving object",
       f = Origin mimic
       Reflector other:mimic!(f, Origin) should == f
     )
   )
 
   describe("other:prependMimic!",
-    it("should add a new mimic to the list of mimics", 
+    it("should add a new mimic to the list of mimics",
       f = Origin mimic
       g = Origin mimic
       Reflector other:prependMimic!(f, g)
@@ -444,7 +444,7 @@ describe(Reflector,
       f mimics[0] should == g
     )
 
-    it("should not add a mimic that's already in the list", 
+    it("should not add a mimic that's already in the list",
       f = Origin mimic
       Reflector other:prependMimic!(f, Origin)
       Reflector other:prependMimic!(f, Origin)
@@ -453,46 +453,46 @@ describe(Reflector,
       f mimics length should == 1
     )
 
-    it("should not be able to mimic nil", 
+    it("should not be able to mimic nil",
       fn(Reflector other:prependMimic!(Origin mimic, nil)) should signal(Condition Error CantMimicOddball)
     )
-    
-    it("should not be able to mimic true", 
+
+    it("should not be able to mimic true",
       fn(Reflector other:prependMimic!(Origin mimic, true)) should signal(Condition Error CantMimicOddball)
     )
-    
-    it("should not be able to mimic false", 
+
+    it("should not be able to mimic false",
       fn(Reflector other:prependMimic!(Origin mimic, false)) should signal(Condition Error CantMimicOddball)
     )
-    
-    it("should not be able to mimic symbols", 
+
+    it("should not be able to mimic symbols",
       fn(Reflector other:prependMimic!(Origin mimic, :foo)) should signal(Condition Error CantMimicOddball)
     )
-    
-    it("should return the receiving object", 
+
+    it("should return the receiving object",
       f = Origin mimic
       Reflector other:prependMimic!(f, Origin) should == f
     )
   )
 
   describe("other:removeMimics!",
-    it("should not remove something it doesn't mimic", 
+    it("should not remove something it doesn't mimic",
       Reflector other:removeMimic!(Origin mimic, "foo") mimics should == [Origin]
     )
 
-    it("should return the object", 
+    it("should return the object",
       x = Origin mimic
       Reflector other:removeMimic!(x, 1) should == x
     )
-    
-    it("should remove any mimic it has", 
+
+    it("should remove any mimic it has",
       x = Origin mimic
       x mimics = DefaultBehavior cell(:mimics)
       Reflector other:removeMimic!(x, Origin)
       x mimics should == []
     )
 
-    it("should not remove any other mimic", 
+    it("should not remove any other mimic",
       x = Origin mimic
       y = Origin mimic
       x mimic!(y)
@@ -502,13 +502,13 @@ describe(Reflector,
   )
 
   describe("other:removeAllMimics!",
-    it("should return the object", 
+    it("should return the object",
       x = Origin mimic
       x uniqueHexId = DefaultBehavior cell(:uniqueHexId)
       Reflector other:removeAllMimics!(x) uniqueHexId should == x uniqueHexId
     )
 
-    it("should remove all mimics", 
+    it("should remove all mimics",
       x = Origin mimic
       x mimic!(Text)
       x mimics = DefaultBehavior cell(:mimics)
@@ -517,7 +517,7 @@ describe(Reflector,
   )
 
   describe("other:cell",
-    it("should be possible to get a cell using a Text argument", 
+    it("should be possible to get a cell using a Text argument",
       x = 42
       Reflector other:cell(identity, "x") should == x
 
@@ -525,61 +525,61 @@ describe(Reflector,
       Reflector other:cell(Text, "x") should == Text x
     )
 
-    it("should be possible to get a cell using a Symbol argument", 
+    it("should be possible to get a cell using a Symbol argument",
       x = 42
       Reflector other:cell(identity, :x) should == x
-      
+
       Text x = 42
       Reflector other:cell(Text, :x) should == Text x
     )
 
-    it("should be possible to get a cell with an empty name", 
+    it("should be possible to get a cell with an empty name",
       Reflector other:cell(identity, :"") kind should == "DefaultMethod"
     )
 
-    it("should report an error if trying to get a cell that doesn't exist in that object", 
+    it("should report an error if trying to get a cell that doesn't exist in that object",
       fn(Reflector other:cell(identity, :clurg)) should signal(Condition Error NoSuchCell)
       fn(Reflector other:cell(identity, "clurg")) should signal(Condition Error NoSuchCell)
     )
   )
 
   describe("other:cell=",
-    it("should be possible to set a cell using a Text argument", 
+    it("should be possible to set a cell using a Text argument",
       Reflector other:cell(Text, "murg") = 42
       Text murg should == 42
     )
 
-    it("should be possible to set a cell using a Symbol argument", 
+    it("should be possible to set a cell using a Symbol argument",
       Reflector other:cell(Text,:murg) = 42
       Text murg should == 42
     )
 
-    it("should be possible to set a cell with an empty name", 
+    it("should be possible to set a cell with an empty name",
       oldEmpty = cell("")
       Reflector other:cell(Text, "") = 42
       Text cell("") should == 42
       Text cell("") = cell(:oldEmpty)
     )
 
-    it("should be possible to set a cell with complicated expressions", 
+    it("should be possible to set a cell with complicated expressions",
       f = Origin mimic
       f b = "foobar"
       Reflector other:cell(Text, f b) = 42+24-3
       Text cell(:foobar) should == 63
     )
 
-    it("should be possible to set a cell that doesn't exist", 
+    it("should be possible to set a cell that doesn't exist",
       Reflector other:cell(Text, :murg) = 42
       Text murg should == 42
-    ) 
+    )
 
-    it("should be possible to set a cell that does exist", 
+    it("should be possible to set a cell that does exist",
       Ground x = 42
       Reflector other:cell(identity, :x) = 43
       x should == 43
     )
 
-    it("should be possible to set a cell that does exist in a mimic. this should not change the mimic value", 
+    it("should be possible to set a cell that does exist in a mimic. this should not change the mimic value",
       one = Origin mimic
       one x = 42
       two = one mimic
@@ -595,34 +595,34 @@ describe(Reflector,
   )
 
   describe("other:cell?",
-    it("should be possible to check for the existance of a cell using a text argument", 
+    it("should be possible to check for the existance of a cell using a text argument",
       x = 42
       Reflector other:cell?(identity, "x") should be true
     )
 
-    it("should be possible to check for the existance of a cell using a symbol argument", 
+    it("should be possible to check for the existance of a cell using a symbol argument",
       x = 42
       Reflector other:cell?(identity, :x) should be true
     )
 
-    it("should be possible to check for the existance of a cell with an empty name", 
+    it("should be possible to check for the existance of a cell with an empty name",
       Reflector other:cell?(identity, "") should be true
     )
 
-    it("should be possible to check for the existance of a cell that doesn't exist", 
+    it("should be possible to check for the existance of a cell that doesn't exist",
       Reflector other:cell?(identity, :murg) should be false
     )
 
-    it("should be possible to check for the existance of a cell that does exist", 
+    it("should be possible to check for the existance of a cell that does exist",
       Reflector other:cell?(identity, :Ground) should be true
     )
   )
 
   describe("other:cellNames",
-    it("should return the cell names of this object by default", 
-      x = Origin mimic. 
+    it("should return the cell names of this object by default",
+      x = Origin mimic.
       Reflector other:cellNames(x) should == []
-      
+
       x f = 13
       Reflector other:cellNames(x) should == [:f]
 
@@ -634,8 +634,8 @@ describe(Reflector,
       x f = 13
       Reflector other:cellNames(x) should == [:Why, :f]
     )
-    
-    it("should take a boolean, when given will make it return all cell names in both this and it's parents objects", 
+
+    it("should take a boolean, when given will make it return all cell names in both this and it's parents objects",
       baseNames = Base cells keys asList sort
       defaultBehaviorNames = DefaultBehavior cells keys sort
       defaultBehaviorAllNames = DefaultBehavior cells(true) keys sort
@@ -665,7 +665,7 @@ describe(Reflector,
       Reflector other:cellNames(Origin, true) sort should == originAllNames
 
       Text x = Origin mimic
-      Reflector other:cellNames(Text x, true) sort should == originAllNames 
+      Reflector other:cellNames(Text x, true) sort should == originAllNames
 
       Text x = Origin mimic
       Text x foxy_base_spec = 12
@@ -696,19 +696,20 @@ describe(Reflector,
     it("should take a boolean, when given will make it return all cells in both this and it's parents objects",
       x = Base mimic
       Reflector other:cells(x, true) should == {
-        kind: Base cell(:kind), 
-        mimic: Base cell(:mimic), 
-        :"=" => Base cell(:"="), 
-        :"==" => Base cell(:"=="), 
+        kind: Base cell(:kind),
+        mimic: Base cell(:mimic),
+        :"=" => Base cell(:"="),
+        :"==" => Base cell(:"=="),
+        hash: Base cell(:hash),
         documentation: Base cell(:documentation),
         :"documentation=" => Base cell(:"documentation="),
-        cell: Base cell(:cell), 
-        identity: Base cell(:identity), 
-        cellNames: Base cell(:cellNames), 
-        cells: Base cell(:cells), 
-        :"cell=" => Base cell(:"cell="), 
-        notice: "Base", 
-        inspect: "Base", 
+        cell: Base cell(:cell),
+        identity: Base cell(:identity),
+        cellNames: Base cell(:cellNames),
+        cells: Base cell(:cells),
+        :"cell=" => Base cell(:"cell="),
+        notice: "Base",
+        inspect: "Base",
         :"removeCell!" => Base cell(:"removeCell!"),
         :"undefineCell!" => Base cell(:"undefineCell!"),
         :"cellOwner?" => Base cell(:"cellOwner?"),
@@ -718,19 +719,20 @@ describe(Reflector,
       x = Base mimic
       x kind = "blarg"
       Reflector other:cells(x, true) should == {
-        kind: "blarg", 
-        mimic: Base cell(:mimic), 
-        :"=" => Base cell(:"="), 
-        :"==" => Base cell(:"=="), 
+        kind: "blarg",
+        mimic: Base cell(:mimic),
+        :"=" => Base cell(:"="),
+        :"==" => Base cell(:"=="),
+        hash: Base cell(:hash),
         documentation: Base cell(:documentation),
         :"documentation=" => Base cell(:"documentation="),
-        cell: Base cell(:cell), 
-        identity: Base cell(:identity), 
-        cellNames: Base cell(:cellNames), 
-        cells: Base cell(:cells), 
-        :"cell=" => Base cell(:"cell="), 
-        notice: "Base", 
-        inspect: "Base", 
+        cell: Base cell(:cell),
+        identity: Base cell(:identity),
+        cellNames: Base cell(:cellNames),
+        cells: Base cell(:cells),
+        :"cell=" => Base cell(:"cell="),
+        notice: "Base",
+        inspect: "Base",
         :"removeCell!" => Base cell(:"removeCell!"),
         :"undefineCell!" => Base cell(:"undefineCell!"),
         :"cellOwner?" => Base cell(:"cellOwner?"),
@@ -814,7 +816,7 @@ describe(Reflector,
     it("should only remove a cell on the current object",
       x = Origin mimic
       y = x mimic
-    
+
       x foo = "blurg"
       y foo = "blarg"
 
@@ -839,7 +841,7 @@ describe(Reflector,
     it("should stop the cell from showing up in cellNames",
       x = Origin mimic
       y = x mimic
-    
+
       x foo = "blurg"
       y foo = "blarg"
 
@@ -860,7 +862,7 @@ describe(Reflector,
     it("should stop the cell from showing up in cells",
       x = Origin mimic
       y = x mimic
-    
+
       x foo = "blurg"
       y foo = "blarg"
 
@@ -881,12 +883,12 @@ describe(Reflector,
     it("should stop the cell from being able to get with cell",
       x = Origin mimic
       y = x mimic
-    
+
       x foo = "blurg"
       y foo = "blarg"
 
       Reflector other:undefineCell!(y, :foo)
-      
+
       x cell(:foo) should == "blurg"
       fn(y cell(:foo)) should signal(Condition Error NoSuchCell)
 
@@ -898,7 +900,7 @@ describe(Reflector,
     it("should stop the cell from showing up with cellOwner",
       x = Origin mimic
       y = x mimic
-    
+
       x foo = "blurg"
       y foo = "blarg"
 
@@ -909,7 +911,7 @@ describe(Reflector,
     it("should stop the cell from showing up with cellOwner?",
       x = Origin mimic
       y = x mimic
-    
+
       x foo = "blurg"
       y foo = "blarg"
 
@@ -920,7 +922,7 @@ describe(Reflector,
     it("should be possible to remove the undefine with removeCell!",
       x = Origin mimic
       y = x mimic
-    
+
       x foo = "blurg"
       y foo = "blarg"
 

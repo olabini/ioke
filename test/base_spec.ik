@@ -8,6 +8,17 @@ describe("Base",
     )
   )
 
+  describe("hash",
+    it("should be different for different objects",
+      Origin mimic hash should not == Origin mimic hash
+    )
+
+    it("should be the same for the same object",
+      x = Origin mimic
+      x hash should == x hash
+    )
+  )
+
   describe("removeCell!",
     it("should remove the cell",
       x = Origin mimic
@@ -29,7 +40,7 @@ describe("Base",
     it("should only remove a cell on the current object",
       x = Origin mimic
       y = x mimic
-    
+
       x foo = "blurg"
       y foo = "blarg"
 
@@ -54,7 +65,7 @@ describe("Base",
 ;     it("should make the cell inaccessible",
 ;       x = Origin mimic
 ;       y = x mimic
-    
+
 ;       x foo = "blurg"
 ;       y foo = "blarg"
 
@@ -68,7 +79,7 @@ describe("Base",
     it("should stop the cell from showing up in cellNames",
       x = Origin mimic
       y = x mimic
-    
+
       x foo = "blurg"
       y foo = "blarg"
 
@@ -89,7 +100,7 @@ describe("Base",
     it("should stop the cell from showing up in cells",
       x = Origin mimic
       y = x mimic
-    
+
       x foo = "blurg"
       y foo = "blarg"
 
@@ -110,12 +121,12 @@ describe("Base",
     it("should stop the cell from being able to get with cell",
       x = Origin mimic
       y = x mimic
-    
+
       x foo = "blurg"
       y foo = "blarg"
 
       y undefineCell!(:foo)
-      
+
       x cell(:foo) should == "blurg"
       fn(y cell(:foo)) should signal(Condition Error NoSuchCell)
 
@@ -127,7 +138,7 @@ describe("Base",
     it("should stop the cell from showing up with cellOwner",
       x = Origin mimic
       y = x mimic
-    
+
       x foo = "blurg"
       y foo = "blarg"
 
@@ -138,7 +149,7 @@ describe("Base",
     it("should stop the cell from showing up with cellOwner?",
       x = Origin mimic
       y = x mimic
-    
+
       x foo = "blurg"
       y foo = "blarg"
 
@@ -149,7 +160,7 @@ describe("Base",
     it("should be possible to remove the undefine with removeCell!",
       x = Origin mimic
       y = x mimic
-    
+
       x foo = "blurg"
       y foo = "blarg"
 
@@ -236,19 +247,20 @@ describe("Base",
     it("should take a boolean, when given will make it return all cells in both this and it's parents objects",
       x = Base mimic
       x cells(true) should == {
-        kind: Base cell(:kind), 
-        mimic: Base cell(:mimic), 
-        :"=" => Base cell(:"="), 
-        :"==" => Base cell(:"=="), 
+        kind: Base cell(:kind),
+        mimic: Base cell(:mimic),
+        :"=" => Base cell(:"="),
+        :"==" => Base cell(:"=="),
+        hash: Base cell(:hash),
         documentation: Base cell(:documentation),
         :"documentation=" => Base cell(:"documentation="),
-        cell: Base cell(:cell), 
-        identity: Base cell(:identity), 
-        cellNames: Base cell(:cellNames), 
-        cells: Base cell(:cells), 
-        :"cell=" => Base cell(:"cell="), 
-        notice: "Base", 
-        inspect: "Base", 
+        cell: Base cell(:cell),
+        identity: Base cell(:identity),
+        cellNames: Base cell(:cellNames),
+        cells: Base cell(:cells),
+        :"cell=" => Base cell(:"cell="),
+        notice: "Base",
+        inspect: "Base",
         :"removeCell!" => Base cell(:"removeCell!"),
         :"undefineCell!" => Base cell(:"undefineCell!"),
         :"cellOwner?" => Base cell(:"cellOwner?"),
@@ -258,19 +270,20 @@ describe("Base",
       x = Base mimic
       x kind = "blarg"
       x cells(true) should == {
-        kind: "blarg", 
-        mimic: Base cell(:mimic), 
-        :"=" => Base cell(:"="), 
-        :"==" => Base cell(:"=="), 
+        kind: "blarg",
+        mimic: Base cell(:mimic),
+        :"=" => Base cell(:"="),
+        :"==" => Base cell(:"=="),
+        hash: Base cell(:hash),
         documentation: Base cell(:documentation),
         :"documentation=" => Base cell(:"documentation="),
-        cell: Base cell(:cell), 
-        identity: Base cell(:identity), 
-        cellNames: Base cell(:cellNames), 
-        cells: Base cell(:cells), 
-        :"cell=" => Base cell(:"cell="), 
-        notice: "Base", 
-        inspect: "Base", 
+        cell: Base cell(:cell),
+        identity: Base cell(:identity),
+        cellNames: Base cell(:cellNames),
+        cells: Base cell(:cells),
+        :"cell=" => Base cell(:"cell="),
+        notice: "Base",
+        inspect: "Base",
         :"removeCell!" => Base cell(:"removeCell!"),
         :"undefineCell!" => Base cell(:"undefineCell!"),
         :"cellOwner?" => Base cell(:"cellOwner?"),
@@ -280,10 +293,10 @@ describe("Base",
   )
 
   describe("cellNames",
-    it("should return the cell names of this object by default", 
-      x = Origin mimic. 
+    it("should return the cell names of this object by default",
+      x = Origin mimic.
       x cellNames should == []
-      
+
       x f = 13
       x cellNames should == [:f]
 
@@ -295,8 +308,8 @@ describe("Base",
       x f = 13
       x cellNames should == [:Why, :f]
     )
-    
-    it("should take a boolean, when given will make it return all cell names in both this and it's parents objects", 
+
+    it("should take a boolean, when given will make it return all cell names in both this and it's parents objects",
       baseNames = Base cells keys asList sort
       defaultBehaviorNames = DefaultBehavior cells keys sort
       defaultBehaviorAllNames = DefaultBehavior cells(true) keys sort
@@ -326,7 +339,7 @@ describe("Base",
       Origin cellNames(true) sort should == originAllNames
 
       Text x = Origin mimic
-      Text x cellNames(true) sort should == originAllNames 
+      Text x cellNames(true) sort should == originAllNames
 
       Text x = Origin mimic
       Text x foxy_base_spec = 12
@@ -335,31 +348,31 @@ describe("Base",
   )
 
   describe("cell?",
-    it("should be possible to check for the existance of a cell using a text argument", 
+    it("should be possible to check for the existance of a cell using a text argument",
       x = 42
       cell?("x") should be true
     )
 
-    it("should be possible to check for the existance of a cell using a symbol argument", 
+    it("should be possible to check for the existance of a cell using a symbol argument",
       x = 42
       cell?(:x) should be true
     )
 
-    it("should be possible to check for the existance of a cell with an empty name", 
+    it("should be possible to check for the existance of a cell with an empty name",
       cell?("") should be true
     )
 
-    it("should be possible to check for the existance of a cell that doesn't exist", 
+    it("should be possible to check for the existance of a cell that doesn't exist",
       cell?(:murg) should be false
     )
 
-    it("should be possible to check for the existance of a cell that does exist", 
+    it("should be possible to check for the existance of a cell that does exist",
       cell?(:Ground) should be true
     )
   )
-  
+
   describe("cell",
-    it("should be possible to get a cell using a Text argument", 
+    it("should be possible to get a cell using a Text argument",
       x = 42
       cell("x") should == x
 
@@ -367,26 +380,26 @@ describe("Base",
       Text cell("x") should == Text x
     )
 
-    it("should be possible to get a cell using a Symbol argument", 
+    it("should be possible to get a cell using a Symbol argument",
       x = 42
       cell(:x) should == x
-      
+
       Text x = 42
       Text cell(:x) should == Text x
     )
 
-    it("should be possible to get a cell with an empty name", 
+    it("should be possible to get a cell with an empty name",
       cell(:"") kind should == "DefaultMethod"
     )
 
-    it("should report an error if trying to get a cell that doesn't exist in that object", 
+    it("should report an error if trying to get a cell that doesn't exist in that object",
       fn(cell(:clurg)) should signal(Condition Error NoSuchCell)
       fn(cell("clurg")) should signal(Condition Error NoSuchCell)
     )
   )
 
   describe("cell=",
-    it("should be possible to set a cell using a Text argument", 
+    it("should be possible to set a cell using a Text argument",
       cell("blurg") = 42
       blurg should == 42
 
@@ -394,7 +407,7 @@ describe("Base",
       Text murg should == 42
     )
 
-    it("should be possible to set a cell using a Symbol argument", 
+    it("should be possible to set a cell using a Symbol argument",
       cell(:blurg) = 42
       blurg should == 42
 
@@ -402,34 +415,34 @@ describe("Base",
       Text murg should == 42
     )
 
-    it("should be possible to set a cell with an empty name", 
+    it("should be possible to set a cell with an empty name",
       oldEmpty = cell("")
       Text cell("") = 42
       Text cell("") should == 42
       Text cell("") = cell(:oldEmpty)
     )
 
-    it("should be possible to set a cell with complicated expressions", 
+    it("should be possible to set a cell with complicated expressions",
       f = Origin mimic
       f b = "foobar"
       Text cell(f b) = 42+24-3
       Text cell(:foobar) should == 63
     )
 
-    it("should be possible to set a cell that doesn't exist", 
+    it("should be possible to set a cell that doesn't exist",
       cell(:blurg) = 42
       blurg should == 42
       Text cell(:murg) = 42
       Text murg should == 42
-    ) 
+    )
 
-    it("should be possible to set a cell that does exist", 
+    it("should be possible to set a cell that does exist",
       Ground x = 42
       cell(:x) = 43
       x should == 43
     )
 
-    it("should be possible to set a cell that does exist in a mimic. this should not change the mimic value", 
+    it("should be possible to set a cell that does exist in a mimic. this should not change the mimic value",
       one = Origin mimic
       one x = 42
       two = one mimic
@@ -448,7 +461,7 @@ describe("Base",
     it("should return nil for a new object",
       Origin mimic documentation should be nil
     )
-    
+
     it("should return the documentation string for an object that has documentation",
       Origin documentation should == "Any object created from scratch should usually be derived from Origin."
     )
