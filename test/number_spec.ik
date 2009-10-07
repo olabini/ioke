@@ -40,7 +40,7 @@ describe("parsing",
       0xFAD23234235FFFFFF4434334534500000000000232345234FFDDDDDDD should == 422632681289240890518030477270484810255193915833100047461304598650333
     )
   )
-)    
+)
 
 describe(Number,
   it("should have the correct kind",
@@ -52,7 +52,7 @@ describe(Number,
   describe("zero?",
     it("should return true for int zero",
       0 should be zero)
-    
+
     it("should return true for real zero",
       0.0 should be zero)
 
@@ -86,7 +86,7 @@ describe(Number,
   describe("abs",
     it("should return zero for zero",
       0 abs should == 0)
-    
+
     it("should return the negation for negative number",
       -1 abs should == 1)
 
@@ -147,7 +147,7 @@ describe(Number,
         Number Rational should not === Number Real
         Number Rational should not === Origin
       )
-      
+
       it("should check for equalness if receiver is not Number Rational",
         0 should === 0
         0 should === 0.0
@@ -206,18 +206,18 @@ describe(Number,
       )
     )
 
-    describe("-", 
-      it("should return 0 for the difference between 0 and 0", 
+    describe("-",
+      it("should return 0 for the difference between 0 and 0",
         (0-0) should == 0
       )
-      
-      it("should return the difference between really large numbers", 
+
+      it("should return the difference between really large numbers",
         (123435334645674745675675757-123435334645674745675675756) should == 1
         (123435334645674745675675757-1) should == 123435334645674745675675756
         (123435334645674745675675757-24334534544345345345345) should == 123411000111130400330330412
       )
-      
-      it("should return the difference between smaller numbers", 
+
+      it("should return the difference between smaller numbers",
         (1-1) should == 0
         (0-1) should == -1
         (2-1) should == 1
@@ -225,8 +225,8 @@ describe(Number,
         (234-30) should == 204
         (30-35) should == -5
       )
-      
-      it("should return the difference between negative numbers", 
+
+      it("should return the difference between negative numbers",
         ((0-1)-1) should == -2
         ((0-1)-5) should == -6
         ((0-1)-(0-5)) should == 4
@@ -235,23 +235,23 @@ describe(Number,
         ((0-2545345345346547456756)-(0-2545345345346547456755)) should == -1
       )
 
-      it("should return the number when 0 is the argument", 
+      it("should return the number when 0 is the argument",
         (-1-0) should == -1
         (10-0) should == 10
         (1325234534634564564576367-0) should == 1325234534634564564576367
       )
-      
-      it("should convert itself to a decimal if the argument is a decimal", 
+
+      it("should convert itself to a decimal if the argument is a decimal",
         (1-0.6) should == 0.4
         (3-1.2) should == 1.8
       )
 
-      it("should convert its argument to a rational if its not a number or a decimal", 
+      it("should convert its argument to a rational if its not a number or a decimal",
         x = Origin mimic
         x asRational = method(42)
         (43 - x) should == 1
       )
-      
+
       it("should signal a condition if it can't be converted and there is no way of subtracting",
         fn(1 - Origin mimic) should signal(Condition Error Type IncorrectType)
       )
@@ -261,55 +261,55 @@ describe(Number,
       )
     )
 
-    describe("+", 
-      it("should return 0 for the sum of 0 and 0", 
+    describe("+",
+      it("should return 0 for the sum of 0 and 0",
         (0+0) should == 0
       )
 
-      it("should return the sum of really large numbers", 
+      it("should return the sum of really large numbers",
         (234235345636345634567345675467+1) should == 234235345636345634567345675468
         (21342342342345345+778626453756754687567865785678) should == 778626453756776029910208131023
         (234234+63456345745676574567571345456345645675674567878567856785678657856568768) should == 63456345745676574567571345456345645675674567878567856785678657856803002
       )
 
-      it("should return the sum of smaller numbers", 
+      it("should return the sum of smaller numbers",
         (1+1) should == 2
         (10+1) should == 11
         (15+15) should == 30
         (16+15) should == 31
       )
 
-      it("should return the sum of negative numbers", 
+      it("should return the sum of negative numbers",
         (1+(0-1)) should == 0
         ((0-1)+2) should == 1
         ((0-1)+(0-1)) should == -2
       )
 
-      it("should return the number when 0 is the receiver", 
+      it("should return the number when 0 is the receiver",
         (0+1) should == 1
         (0+(0-1)) should == -1
         (0+124423) should == 124423
         (0+34545636745678657856786786785678) should == 34545636745678657856786786785678
       )
 
-      it("should return the number when 0 is the argument", 
+      it("should return the number when 0 is the argument",
         (1+0) should == 1
         ((0-1)+0) should == -1
         (124423+0) should == 124423
         (34545636745678657856786786785678+0) should == 34545636745678657856786786785678
       )
 
-      it("should convert itself to a decimal if the argument is a decimal", 
+      it("should convert itself to a decimal if the argument is a decimal",
         (1+0.6) should == 1.6
         (3+1.2) should == 4.2
       )
 
-      it("should convert its argument to a rational if its not a number or a decimal", 
+      it("should convert its argument to a rational if its not a number or a decimal",
         x = Origin mimic
         x asRational = method(41)
         (1 + x) should == 42
       )
-      
+
       it("should signal a condition if it can't be converted and there is no way of adding",
         fn(1 + Origin mimic) should signal(Condition Error Type IncorrectType)
       )
@@ -319,42 +319,42 @@ describe(Number,
       )
     )
 
-    describe("*", 
-      it("should multiply with 0", 
+    describe("*",
+      it("should multiply with 0",
         (1*0) should == 0
         (34253453*0) should == 0
         (-1*0) should == 0
       )
 
-      it("should return the same number when multiplying with 1", 
+      it("should return the same number when multiplying with 1",
         (1*1) should == 1
         (34253453*1) should == 34253453
         (-1*1) should == -1
       )
 
-      it("should return a really large number when multiplying large numbers", 
+      it("should return a really large number when multiplying large numbers",
         (2345346456745722*12213212323899088545) should == 28644214249339912541248622627954490
       )
 
-      it("should return a negative number when multiplying with one negative number", 
+      it("should return a negative number when multiplying with one negative number",
         (-21*2) should == -42
       )
 
-      it("should return a positive number when multiplying with two negative numbers", 
+      it("should return a positive number when multiplying with two negative numbers",
         (-21* -2) should == 42
       )
 
-      it("should convert itself to a decimal if the argument is a decimal", 
+      it("should convert itself to a decimal if the argument is a decimal",
         (1*0.6) should == 0.6
         (3*1.2) should == 3.6
       )
 
-      it("should convert its argument to a rational if its not a number or a decimal", 
+      it("should convert its argument to a rational if its not a number or a decimal",
         x = Origin mimic
         x asRational = method(21)
         (2 * x) should == 42
       )
-      
+
       it("should signal a condition if it can't be converted and there is no way of multiplying",
         fn(1 * Origin mimic) should signal(Condition Error Type IncorrectType)
       )
@@ -364,7 +364,7 @@ describe(Number,
       )
     )
 
-    describe("**", 
+    describe("**",
       it("should return 1 for raising to 0",
         (1**0) should == 1
       )
@@ -382,13 +382,13 @@ describe(Number,
         (2 ** 40) should == 1099511627776
       )
 
-      it("should convert its argument to a rational if its not a number or a decimal", 
+      it("should convert its argument to a rational if its not a number or a decimal",
         x = Origin mimic
         x asRational = method(3)
         (2 ** x) should == 8
       )
 
-      it("should signal a condition if it isn't a rational and can't be converted", 
+      it("should signal a condition if it isn't a rational and can't be converted",
         fn(1 ** Origin mimic) should signal(Condition Error Type IncorrectType)
       )
 
@@ -396,19 +396,19 @@ describe(Number,
         Number Rational should checkReceiverTypeOn(:"**", 4)
       )
     )
-    
-    describe("/", 
-      it("should cause a condition when dividing with 0", 
+
+    describe("/",
+      it("should cause a condition when dividing with 0",
         fn(10/0) should signal(Condition Error Arithmetic DivisionByZero)
       )
 
-      it("should divide simple numbers", 
+      it("should divide simple numbers",
         (2/1)   should == 2
         (4/2)   should == 2
         (200/5) should == 40
       )
 
-      it("should return a rational when dividing uneven numbers", 
+      it("should return a rational when dividing uneven numbers",
         x = 8192/10
         x should mimic(Number Ratio)
         x should == (4096/5)
@@ -429,30 +429,30 @@ describe(Number,
         x should == (1/2)
       )
 
-      it("should divide negative numbers correctly", 
+      it("should divide negative numbers correctly",
         (-8200/10) should == -820
       )
 
-      it("should divide with a negative dividend correctly", 
+      it("should divide with a negative dividend correctly",
         (8200/ -10) == -820
       )
 
-      it("should divide a negative number with a negative dividend", 
+      it("should divide a negative number with a negative dividend",
         (-8200/ -10) == 820
       )
 
-      it("should convert itself to a decimal if the argument is a decimal", 
+      it("should convert itself to a decimal if the argument is a decimal",
         (1/0.5) should == 2.0
         (3/1.2) should == 2.5
       )
-      
-      it("should convert its argument to a number if its not a number or a decimal", 
+
+      it("should convert its argument to a number if its not a number or a decimal",
         x = Origin mimic
         x asRational = method(2)
         (42 / x) should == 21
       )
 
-      it("should signal a condition if it isn't a number and can't be converted", 
+      it("should signal a condition if it isn't a number and can't be converted",
         fn(1 / Origin mimic) should signal(Condition Error Type IncorrectType)
       )
 
@@ -461,47 +461,47 @@ describe(Number,
       )
     )
 
-    describe("==", 
-      it("should return true for the same number", 
+    describe("==",
+      it("should return true for the same number",
         x = 1. x should == x
         x = 10. x should == x
         x = (0-20). x should == x
       )
 
-      it("should not return true for unequal numbers", 
+      it("should not return true for unequal numbers",
         1 should not == 2
         1 should not == 200000
         1123223 should not == 65756756756
         (0-1) should not == 2
       )
-      
-      it("should return true for the result of equal number calculations", 
+
+      it("should return true for the result of equal number calculations",
         (1+1) should == 2
         (2+1) should == (1+2)
       )
-      
-      it("should work correctly when comparing zeroes", 
+
+      it("should work correctly when comparing zeroes",
         0 should == 0
         1 should not == 0
         0 should not == 1
       )
 
-      it("should work correctly when comparing negative numbers", 
+      it("should work correctly when comparing negative numbers",
         (-19) should == -19
         (-19) should not == -20
       )
 
-      it("should work correctly when comparing large positive numbers", 
+      it("should work correctly when comparing large positive numbers",
         123234534675676786789678985463456345 should == 123234534675676786789678985463456345
         8888856676776 should == 8888856676776
       )
 
-      it("should convert itself to a decimal if the argument is a decimal", 
+      it("should convert itself to a decimal if the argument is a decimal",
         2 should == 2.0
         2 should not == 2.1
       )
 
-      it("should return false for unrelated objects", 
+      it("should return false for unrelated objects",
         2 should not == "foo"
         2 should not == :blarg
       )
@@ -510,30 +510,30 @@ describe(Number,
         Number Rational should checkReceiverTypeOn(:"==", 4)
       )
     )
-    
-    describe("asText", 
-      it("should return a representation of 0", 
+
+    describe("asText",
+      it("should return a representation of 0",
         0 asText should == "0"
       )
 
-      it("should return a representation of a Ratio", 
+      it("should return a representation of a Ratio",
         (1/3) asText should == "1/3"
       )
 
-      it("should return a representation of a small positive number", 
+      it("should return a representation of a small positive number",
         1 asText should == "1"
         12 asText should == "12"
         9232423 asText should == "9232423"
       )
-      
-      it("should return a representation of a large positive number", 
+
+      it("should return a representation of a large positive number",
         65535 asText should == "65535"
         65536 asText should == "65536"
         1235345341231298989793249879238543956783485384758333478526 asText should == "1235345341231298989793249879238543956783485384758333478526"
         99999999999999999999999999 asText should == "99999999999999999999999999"
       )
 
-      it("should return a representation of a negative number", 
+      it("should return a representation of a negative number",
         (-65535) asText should == "-65535"
         (-65536) asText should == "-65536"
         (-1) asText should == "-1"
@@ -577,7 +577,7 @@ describe(Number,
         Number Decimal should not === Number Rational
         Number Decimal should not === Origin
       )
-      
+
       it("should check for equalness if receiver is not Number Decimal",
         0.0 should === 0.0
         0.0 should not === 1.0
@@ -596,47 +596,47 @@ describe(Number,
       10e6 should have kind("Number Decimal")
     )
 
-    describe("==", 
-      it("should return true for the same number", 
+    describe("==",
+      it("should return true for the same number",
         x = 1.0. x should == x
         x = 10.0. x should == x
         x = -20.0. x should == x
       )
 
-      it("should not return true for unequal numbers", 
+      it("should not return true for unequal numbers",
         1.1 should not == 2.0
         1.2 should not == 200000.0
         1123223.3233223 should not == 65756756756.0
         (-1.0) should not == 2.0
       )
-      
-      it("should return true for the result of equal number calculations", 
+
+      it("should return true for the result of equal number calculations",
         (1.0+1.0) should == 2.0
         (2.1+1.0) should == (1.1+2.0)
       )
 
-      it("should work correctly when comparing zeroes", 
+      it("should work correctly when comparing zeroes",
         0.0 should == 0.0
         1.0 should not == 0.0
         0.0 should not == 1.0
       )
 
-      it("should work correctly when comparing negative numbers", 
+      it("should work correctly when comparing negative numbers",
         (-19.1) should == (-19.1)
         (-19.0) should not == (-20.1)
       )
 
-      it("should work correctly when comparing large positive numbers", 
+      it("should work correctly when comparing large positive numbers",
         123234534675676786789678985463456345.234234 should == 123234534675676786789678985463456345.234234
         8888856676776.0101 should == 8888856676776.0101
       )
 
-      it("should convert its argument to a decimal if it is a rational", 
+      it("should convert its argument to a decimal if it is a rational",
         2.0 should == 2
         2.1 should not == 2
       )
 
-      it("should return false for comparisons against unrelated objects", 
+      it("should return false for comparisons against unrelated objects",
         2.1 should not == "foo"
         2.1 should not == :blarg
       )
@@ -650,9 +650,9 @@ describe(Number,
         {a: 1.0} should == {a: 1.0}
       )
     )
-    
-    describe("<=>", 
-      it("should return 0 for the same number", 
+
+    describe("<=>",
+      it("should return 0 for the same number",
         (0.0<=>0.0) should == 0
         (1.0<=>1.0) should == 0
         (10.0<=>10.0) should == 0
@@ -661,7 +661,7 @@ describe(Number,
         (1.2<=>1.2) should == 0
       )
 
-      it("should return 1 when the left number is larger than the right", 
+      it("should return 1 when the left number is larger than the right",
         (1.0<=>0.0) should == 1
         (2.0<=>1.0) should == 1
         (10.0<=>9.0) should == 1
@@ -672,7 +672,7 @@ describe(Number,
         (0.2<=>0.1) should == 1
       )
 
-      it("should return -1 when the left number is smaller than the right", 
+      it("should return -1 when the left number is smaller than the right",
         (0.0<=>1.0) should == -1
         (1.0<=>2.0) should == -1
         (9.0<=>10.0) should == -1
@@ -683,19 +683,19 @@ describe(Number,
         (0.1<=>0.2) should == -1
       )
 
-      it("should convert argument to a decimal if the argument is a rational", 
+      it("should convert argument to a decimal if the argument is a rational",
         (1.0<=>1) should == 0
         (1.1<=>1) should == 1
         (0.9<=>1) should == -1
       )
 
-      it("should convert its argument to a decimal if its not a rational or a decimal", 
+      it("should convert its argument to a decimal if its not a rational or a decimal",
         x = Origin mimic
         x asDecimal = method(42.0)
         (42.0 <=> x) should == 0
       )
-      
-      it("should return nil if it can't be converted and there is no way of comparing", 
+
+      it("should return nil if it can't be converted and there is no way of comparing",
         (1.0 <=> Origin mimic) should be nil
       )
 
@@ -704,26 +704,26 @@ describe(Number,
       )
     )
 
-    describe("-", 
-      it("should return 0.0 for the difference between 0.0 and 0.0", 
+    describe("-",
+      it("should return 0.0 for the difference between 0.0 and 0.0",
         (0.0-0.0) should == 0.0
       )
-      
-      it("should return the difference between really large numbers", 
+
+      it("should return the difference between really large numbers",
         (123435334645674745675675757.1-123435334645674745675675756.1) should == 1.0
         (123435334645674745675675757.2-1.1) should == 123435334645674745675675756.1
         (123435334645674745675675757.0-24334534544345345345345.0) should == 123411000111130400330330412.0
       )
-      
-      it("should return the difference between smaller numbers", 
+
+      it("should return the difference between smaller numbers",
         (0.0-1.0) should == -1.0
         (2.0-1.0) should == 1.0
         (10.0-5.0) should == 5.0
         (234.0-30.0) should == 204.0
         (30.0-35.0) should == -5.0
       )
-      
-      it("should return the difference between negative numbers", 
+
+      it("should return the difference between negative numbers",
         ((-1.0)-1.0) should == -2.0
         ((-1.0)-5.0) should == -6.0
         ((-1.0)-(-5.0)) should == 4.0
@@ -732,24 +732,24 @@ describe(Number,
         ((-2545345345346547456756.0)-(-2545345345346547456755.0)) should == -1.0
       )
 
-      it("should return the number when 0 is the argument", 
+      it("should return the number when 0 is the argument",
         ((-1.0)-0.0) should == -1.0
         (10.0-0.0) should == 10.0
         (1325234534634564564576367.0-0.0) should == 1325234534634564564576367.0
       )
 
-      it("should convert its argument to a decimal if its not a decimal", 
+      it("should convert its argument to a decimal if its not a decimal",
         (1.6-1) should == 0.6
         (3.2-2) should == 1.2
       )
 
-      it("should convert its argument to a decimal with asDecimal if its not a decimal and not a rational", 
+      it("should convert its argument to a decimal with asDecimal if its not a decimal and not a rational",
         x = Origin mimic
         x asDecimal = method(42.0)
         (43.4 - x) should == 1.4
       )
 
-      it("should signal a condition if it isn't a number and can't be converted", 
+      it("should signal a condition if it isn't a number and can't be converted",
         fn(1 - Origin mimic) should signal(Condition Error Type IncorrectType)
       )
 
@@ -758,56 +758,56 @@ describe(Number,
       )
     )
 
-    describe("+", 
-      it("should return 0.0 for the sum of 0.0 and 0.0", 
+    describe("+",
+      it("should return 0.0 for the sum of 0.0 and 0.0",
         (0.0+0.0) should == 0.0
       )
 
-      it("should return the sum of really large numbers", 
+      it("should return the sum of really large numbers",
         (234235345636345634567345675467.1+1.2) should == 234235345636345634567345675468.3
         (21342342342345345.0+778626453756754687567865785678.1) should == 778626453756776029910208131023.1
         (234234.0+63456345745676574567571345456345645675674567878567856785678657856568768.0) should == 63456345745676574567571345456345645675674567878567856785678657856803002.0
       )
 
-      it("should return the sum of smaller numbers", 
+      it("should return the sum of smaller numbers",
         (1.0+1.1) should == 2.1
         (10.0+1.0) should == 11.0
         (15.5+15.0) should == 30.5
         (16.0+15.0) should == 31.0
       )
 
-      it("should return the sum of negative numbers", 
+      it("should return the sum of negative numbers",
         (1.0+(0.0-1.0)) should == 0.0
         ((0.0-1.0)+2.0) should == 1.0
         ((0.0-1.0)+(0.0-1.0)) should == -2.0
       )
 
-      it("should return the number when 0.0 is the receiver", 
+      it("should return the number when 0.0 is the receiver",
         (0.0+1.0) should == 1.0
         (0.0+(0.0-1.0)) should == -1.0
         (0.0+124423.0) should == 124423.0
         (0.0+34545636745678657856786786785678.1) should == 34545636745678657856786786785678.1
       )
 
-      it("should return the number when 0.0 is the argument", 
+      it("should return the number when 0.0 is the argument",
         (1.3+0.0) should == 1.3
         ((0.0-1.0)+0.0) should == -1.0
         (124423.0+0.0) should == 124423.0
         (34545636745678657856786786785678.0+0.0) should == 34545636745678657856786786785678.0
       )
 
-      it("should convert its argument to a decimal if its not a decimal", 
+      it("should convert its argument to a decimal if its not a decimal",
         (0.6+1) should == 1.6
         (1.2+3) should == 4.2
       )
 
-      it("should convert its argument to a decimal with asDecimal if its not a decimal and not a rational", 
+      it("should convert its argument to a decimal with asDecimal if its not a decimal and not a rational",
         x = Origin mimic
         x asDecimal = method(41.1)
         (1.1 + x) should == 42.2
       )
-      
-      it("should signal a condition if it isn't a decimal and can't be converted", 
+
+      it("should signal a condition if it isn't a decimal and can't be converted",
         fn(1.0 + Origin mimic) should signal(Condition Error Type IncorrectType)
       )
 
@@ -815,44 +815,44 @@ describe(Number,
         Number Decimal should checkReceiverTypeOn(:"+", 2)
       )
     )
-    
-    describe("*", 
-      it("should multiply with 0.0", 
+
+    describe("*",
+      it("should multiply with 0.0",
         (1.0*0.0) should == 0.0
         (34253453.0*0.0) should == 0.0
         (-1.0*0.0) should == 0.0
       )
 
-      it("should return the same number when multiplying with 1.0", 
+      it("should return the same number when multiplying with 1.0",
         (1.0*1.0) should == 1.0
         (34253453.1*1.0) should == 34253453.1
         (-1.0*1.0) should == -1.0
       )
 
-      it("should return a really large number when multiplying large numbers", 
+      it("should return a really large number when multiplying large numbers",
         (2345346456745722.0*12213212323899088545.0) should == 28644214249339912541248622627954490.0
       )
 
-      it("should return a negative number when multiplying with one negative number", 
+      it("should return a negative number when multiplying with one negative number",
         (-21.0*2.0) should == -42.0
       )
 
-      it("should return a positive number when multiplying with two negative numbers", 
+      it("should return a positive number when multiplying with two negative numbers",
         (-21.0* -2.0) should == 42.0
       )
 
-      it("should convert its argument to a decimal if its not a decimal", 
+      it("should convert its argument to a decimal if its not a decimal",
         (0.6*2) should == 1.2
         (1.2*3) should == 3.6
       )
 
-      it("should convert its argument to a decimal with asDecimal if its not a decimal and not a rational", 
+      it("should convert its argument to a decimal with asDecimal if its not a decimal and not a rational",
         x = Origin mimic
         x asDecimal = method(21.2)
         (2.0 * x) should == 42.4
       )
-      
-      it("should signal a condition if it isn't a decimal and can't be converted", 
+
+      it("should signal a condition if it isn't a decimal and can't be converted",
         fn(1.0 * Origin mimic) should signal(Condition Error Type IncorrectType)
       )
 
@@ -860,46 +860,46 @@ describe(Number,
         Number Decimal should checkReceiverTypeOn(:"*", 2)
       )
     )
-    
-    describe("/", 
-      it("should cause a condition when dividing with 0.0", 
+
+    describe("/",
+      it("should cause a condition when dividing with 0.0",
         fn(10.0/0.0) should signal(Condition Error Arithmetic DivisionByZero)
       )
 
-      it("should divide simple numbers", 
+      it("should divide simple numbers",
         (2.0/1.0) should == 2.0
         (4.2/2.0) should == 2.1
         (200.0/5.0) should == 40.0
       )
 
-      it("should divide negative numbers correctly", 
+      it("should divide negative numbers correctly",
         (-8200.0/10.0) should == -820.0
       )
 
-      it("should divide with a negative dividend correctly", 
+      it("should divide with a negative dividend correctly",
         (8200.0/ -10.0) should == -820.0
       )
 
       it("should correctly handle a number that would generate an infinite expansion, by being inexact",
         (2.0/3.0) should == 0.6666666666666666666666666666666667
       )
-        
-      it("should divide a negative number with a negative dividend", 
+
+      it("should divide a negative number with a negative dividend",
         (-8200.0/ -10.0) should == 820.0
       )
 
-      it("should convert its argument to a decimal if its not a decimal", 
+      it("should convert its argument to a decimal if its not a decimal",
         (0.5/5) should == 0.1
         (3.4/2) should == 1.7
       )
-      
-      it("should convert its argument to a decimal with asDecimal if its not a decimal and not a rational", 
+
+      it("should convert its argument to a decimal with asDecimal if its not a decimal and not a rational",
         x = Origin mimic
         x asDecimal = method(2.0)
         (42.8 / x) should == 21.4
       )
 
-      it("should signal a condition if it isn't a decimal and can't be converted", 
+      it("should signal a condition if it isn't a decimal and can't be converted",
         fn(1.0 / Origin mimic) should signal(Condition Error Type IncorrectType)
       )
 
@@ -907,7 +907,7 @@ describe(Number,
         Number Decimal should checkReceiverTypeOn(:"/", 2)
       )
     )
-  )    
+  )
 
   describe(Number Integer,
     it("should have the correct kind",
@@ -927,32 +927,32 @@ describe(Number,
       0xFFF should have kind("Number Integer")
     )
 
-    describe("%", 
-      it("should return the number when taking the modulo of 0", 
+    describe("%",
+      it("should return the number when taking the modulo of 0",
         (0%0) should == 0
         (13%0) should == 13
         (-10%0) should == -10
       )
-      
-      it("should return the regular modulus", 
+
+      it("should return the regular modulus",
         (13%4) should == 1
         (4%13) should == 4
         (1%2) should == 1
-      ) 
+      )
 
-      it("should return modulus for negative numbers", 
+      it("should return modulus for negative numbers",
         (-13%4) should == 3
         (-13% -4) should == -1
         (13% -4) should == -3
       )
 
-      it("should convert its argument to a number if its not a number or a decimal", 
+      it("should convert its argument to a number if its not a number or a decimal",
         x = Origin mimic
         x asRational = method(3)
         (10 % x) should == 1
       )
 
-      it("should signal a condition if it isn't a number and can't be converted", 
+      it("should signal a condition if it isn't a number and can't be converted",
         fn(1 % Origin mimic) should signal(Condition Error Type IncorrectType)
       )
 
@@ -960,22 +960,22 @@ describe(Number,
         Number Integer should checkReceiverTypeOn(:"%", 2)
       )
     )
-    
-    describe("times", 
-      it("should not do anything for a negative number", 
+
+    describe("times",
+      it("should not do anything for a negative number",
         x = 0. (-1) times(x++). x should == 0
         x = 0. (-100) times(x++). x should == 0
       )
-      
-      it("should not do anything for 0", 
+
+      it("should not do anything for 0",
         x = 0. 0 times(x++). x should == 0
       )
 
-      it("should execute the block one time for 1", 
+      it("should execute the block one time for 1",
         x = 0. 1 times(x++). x should == 1
       )
 
-      it("should execute the block the same number of times as the receiver", 
+      it("should execute the block the same number of times as the receiver",
         x = 0. 12 times(x++). x should == 12
         x = 0. 343 times(x++). x should == 343
       )
@@ -985,31 +985,31 @@ describe(Number,
       )
     )
 
-    describe("&", 
-      it("should bitwise and two powers of 8", 
+    describe("&",
+      it("should bitwise and two powers of 8",
         (256&16) should == 0
       )
 
-      it("should bitwise and two zeroes", 
+      it("should bitwise and two zeroes",
         (0&0) should == 0
       )
 
-      it("should bitwise and other numbers", 
+      it("should bitwise and other numbers",
         (2010&5) should == 0
         (65535&1) should == 1
       )
 
-      it("should bitwise and large numbers", 
+      it("should bitwise and large numbers",
         (-1 & 2**64) should == 18446744073709551616
       )
 
-      it("should convert its argument to a number if its not a number or a decimal", 
+      it("should convert its argument to a number if its not a number or a decimal",
         x = Origin mimic
         x asRational = method(3)
         (10 & x) should == 2
       )
 
-      it("should signal a condition if it isn't a number and can't be converted", 
+      it("should signal a condition if it isn't a number and can't be converted",
         fn(1 & Origin mimic) should signal(Condition Error Type IncorrectType)
       )
 
@@ -1018,29 +1018,29 @@ describe(Number,
       )
     )
 
-    describe("|", 
-      it("should bitwise or two zeroes", 
+    describe("|",
+      it("should bitwise or two zeroes",
         (0|0) should == 0
       )
 
-      it("should bitwise or other numbers", 
+      it("should bitwise or other numbers",
         (1|0) should == 1
         (5|4) should == 5
         (5|6) should == 7
         (248|4096) should == 4344
       )
-      
-      it("should bitwise or negative and large numbers", 
+
+      it("should bitwise or negative and large numbers",
         (-1|2**64) should == -1
       )
 
-      it("should convert its argument to a number if its not a number or a decimal", 
+      it("should convert its argument to a number if its not a number or a decimal",
         x = Origin mimic
         x asRational = method(3)
         (10 | x) should == 11
       )
 
-      it("should signal a condition if it isn't a number and can't be converted", 
+      it("should signal a condition if it isn't a number and can't be converted",
         fn(1 | Origin mimic) should signal(Condition Error Type IncorrectType)
       )
 
@@ -1048,31 +1048,31 @@ describe(Number,
         Number Integer should checkReceiverTypeOn(:"|", 4)
       )
     )
-    
-    describe("^", 
-      it("should xor zeroes", 
+
+    describe("^",
+      it("should xor zeroes",
         (0^0) should == 0
       )
-      
-      it("should xor regular numbers", 
+
+      it("should xor regular numbers",
         (1^0) should == 1
         (1^1) should == 0
         (0^1) should == 1
         (3^5) should == 6
         (-2^ -255) should == 255
       )
-      
-      it("should xor large numbers", 
+
+      it("should xor large numbers",
         (-1 ^ 2**64) should == -18446744073709551617
       )
 
-      it("should convert its argument to a number if its not a number or a decimal", 
+      it("should convert its argument to a number if its not a number or a decimal",
         x = Origin mimic
         x asRational = method(3)
         (10 ^ x) should == 9
       )
 
-      it("should signal a condition if it isn't a number and can't be converted", 
+      it("should signal a condition if it isn't a number and can't be converted",
         fn(1 ^ Origin mimic) should signal(Condition Error Type IncorrectType)
       )
 
@@ -1081,7 +1081,7 @@ describe(Number,
       )
     )
 
-    describe(">>", 
+    describe(">>",
       it("returns self shifted the given amount of bits to the right",
         (7 >> 1) should == 3
         (4095 >> 3) should == 511
@@ -1092,19 +1092,19 @@ describe(Number,
         (7 >> -1) should == 7 << 1
         (4095 >> -3) should == 4095 << 3
       )
-      
+
       it("performs a right-shift if given a negative value as receiver",
         (-7 >> 1) should == -4
         (-4095 >> 3) should == -512
       )
 
-      it("should convert its argument to a number if its not a number or a decimal", 
+      it("should convert its argument to a number if its not a number or a decimal",
         x = Origin mimic
         x asRational = method(1)
         (7 >> x) should == 3
       )
 
-      it("should signal a condition if it isn't a number and can't be converted", 
+      it("should signal a condition if it isn't a number and can't be converted",
         fn(1 >> Origin mimic) should signal(Condition Error Type IncorrectType)
       )
 
@@ -1113,28 +1113,28 @@ describe(Number,
       )
     )
 
-    describe("<<", 
-      it("returns self shifted the given amount of bits to the left", 
+    describe("<<",
+      it("returns self shifted the given amount of bits to the left",
         (7<<2) should == 28
         (9<<4) should == 144
       )
-      
-      it("performs a right shift if given a negative value", 
+
+      it("performs a right shift if given a negative value",
         (7<< -2) should == 7>>2
         (9<< -4) should == 9>>4
       )
-      
-      it("should left shift a large number", 
+
+      it("should left shift a large number",
         (6<<255) should == 347376267711948586270712955026063723559809953996921692118372752023739388919808
       )
 
-      it("should convert its argument to a number if its not a number or a decimal", 
+      it("should convert its argument to a number if its not a number or a decimal",
         x = Origin mimic
         x asRational = method(2)
         (7 << x) should == 28
       )
 
-      it("should signal a condition if it isn't a number and can't be converted", 
+      it("should signal a condition if it isn't a number and can't be converted",
         fn(1 << Origin mimic) should signal(Condition Error Type IncorrectType)
       )
 
@@ -1143,26 +1143,26 @@ describe(Number,
       )
     )
 
-    describe("succ", 
-      it("should return the successor of 0", 
+    describe("succ",
+      it("should return the successor of 0",
         0 succ should == 1
       )
 
-      it("should return the successor of a small positive number", 
+      it("should return the successor of a small positive number",
         1 succ should == 2
         12 succ should == 13
         41 succ should == 42
         99 succ should == 100
       )
 
-      it("should return the successor of a large positive number", 
+      it("should return the successor of a large positive number",
         465467257434567 succ should == 465467257434568
         5999999999999999999 succ should == 6000000000000000000
         65535 succ should == 65536
         34565464575678567876852464563575468678567835678456865785678 succ should == 34565464575678567876852464563575468678567835678456865785679
       )
 
-      it("should return the successor of a negative number", 
+      it("should return the successor of a negative number",
         (-1) succ should == 0
         (-2) succ should == -1
         (-10) succ should == -9
@@ -1174,12 +1174,12 @@ describe(Number,
       )
     )
 
-    describe("pred", 
-      it("should return the predecessor of 0", 
+    describe("pred",
+      it("should return the predecessor of 0",
         0 pred should == -1
       )
 
-      it("should return the predecessor of a small positive number", 
+      it("should return the predecessor of a small positive number",
         1 pred should == 0
         2 pred should == 1
         12 pred should == 11
@@ -1187,14 +1187,14 @@ describe(Number,
         99 pred should == 98
       )
 
-      it("should return the predecessor of a large positive number", 
+      it("should return the predecessor of a large positive number",
         465467257434567 pred should == 465467257434566
         6000000000000000000 pred should == 5999999999999999999
         65536 pred should == 65535
         34565464575678567876852464563575468678567835678456865785678 pred should == 34565464575678567876852464563575468678567835678456865785677
       )
 
-      it("should return the predecessor of a negative number", 
+      it("should return the predecessor of a negative number",
         (-1) pred should == -2
         (-2) pred should == -3
         (-10) pred should == -11
@@ -1228,20 +1228,20 @@ describe(Number,
       Number Ratio should mimic(Number Rational)
     )
   )
-  
+
   describe(Number Infinity,
     it("should have the correct kind",
       Number Infinity kind should == "Number Infinity"
     )
-    
+
     it("should mimic Ratio",
       Number Infinity should mimic(Number Ratio)
     )
-    
+
     it("should be represented with a descriptive string",
       Number Infinity notice should == "Infinity"
     )
-    
+
     describe("inspect",
       it("should validate type of receiver",
         Number Infinity should checkReceiverTypeOn(:"inspect")
@@ -1256,19 +1256,19 @@ describe(Number,
         Number Infinity should checkReceiverTypeOn(:"notice")
       )
     )
-    
+
     describe("<",
       it("should not be less than, well, anything",
         (Number Infinity < 1) should not be true
       )
     )
-    
+
     describe(">",
       it("should be greater than, well, everything",
         (Number Infinity > 31489014839014839014893014839018439184903184390184310943104391048390184309) should be true
       )
     )
-    
+
     describe("==",
       it("should be equal to itself",
         Number Infinity should == Number Infinity
@@ -1282,7 +1282,7 @@ describe(Number,
         Number Infinity should not == 3.3
       )
     )
-    
+
     describe("mimic",
       it("cannot be mimiced")
     )
