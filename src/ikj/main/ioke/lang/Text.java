@@ -35,6 +35,14 @@ public class Text extends IokeData {
         obj.setKind("Text");
         obj.mimics(IokeObject.as(obj.runtime.mixins.getCell(null, null, "Comparing"), null), obj.runtime.nul, obj.runtime.nul);
 
+        obj.registerMethod(runtime.newNativeMethod("returns a hash for the text", new NativeMethod.WithNoArguments("hash") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                    return context.runtime.newNumber(((Text)IokeObject.data(on)).text.hashCode());
+                }
+            }));
+
         obj.registerMethod(runtime.newNativeMethod("returns true if the left hand side text is equal to the right hand side text.", new TypeCheckingNativeMethod("==") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
@@ -114,7 +122,7 @@ public class Text extends IokeData {
                     return method.runtime.newText(Text.getText(on).toUpperCase());
                 }
             }));
-        
+
         obj.registerMethod(obj.runtime.newNativeMethod("Returns a version of this text with leading and trailing whitespace removed", new TypeCheckingNativeMethod.WithNoArguments("trim", runtime.text) {
             @Override
             public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
@@ -134,7 +142,7 @@ public class Text extends IokeData {
                 public TypeCheckingArgumentsDefinition getArguments() {
                     return ARGUMENTS;
                 }
-                
+
                 @Override
                 public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
@@ -176,7 +184,7 @@ public class Text extends IokeData {
                 public TypeCheckingArgumentsDefinition getArguments() {
                     return ARGUMENTS;
                 }
-                
+
                 @Override
                 public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
@@ -212,7 +220,7 @@ public class Text extends IokeData {
                 public TypeCheckingArgumentsDefinition getArguments() {
                     return ARGUMENTS;
                 }
-                
+
                 @Override
                 public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
@@ -255,7 +263,7 @@ public class Text extends IokeData {
                 public TypeCheckingArgumentsDefinition getArguments() {
                     return ARGUMENTS;
                 }
-                
+
                 @Override
                 public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
@@ -327,10 +335,10 @@ public class Text extends IokeData {
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
                     Object arg = args.get(0);
                     IokeData data = IokeObject.data(arg);
-                    
+
                     if(data instanceof Range) {
-                        int first = Number.extractInt(Range.getFrom(arg), message, context); 
-                        
+                        int first = Number.extractInt(Range.getFrom(arg), message, context);
+
                         if(first < 0) {
                             return context.runtime.newText("");
                         }
@@ -350,18 +358,18 @@ public class Text extends IokeData {
                         }
 
                         if(last >= size) {
-                            
+
                             last = inclusive ? size-1 : size;
                         }
 
                         if(first > last || (!inclusive && first == last)) {
                             return context.runtime.newText("");
                         }
-                        
+
                         if(!inclusive) {
                             last--;
                         }
-                        
+
                         return context.runtime.newText(str.substring(first, last+1));
                     } else if(data instanceof Number) {
                         String str = getText(on);
@@ -383,17 +391,17 @@ public class Text extends IokeData {
                     return on;
                 }
             }));
-        
+
         obj.registerMethod(obj.runtime.newNativeMethod("Returns a symbol representing the Unicode category of the character", new NativeMethod.WithNoArguments("category") {
             @Override
             public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                 getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                 String character = getText(on);
                 if(character.length() == 1) {
-                  return context.runtime.getSymbol(Character.UnicodeBlock.of(character.codePointAt(0)).toString());                  
+                  return context.runtime.getSymbol(Character.UnicodeBlock.of(character.codePointAt(0)).toString());
                 }
-                
-                final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
+
+                final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition,
                                                                                    message,
                                                                                    context,
                                                                                    "Error",
@@ -432,7 +440,7 @@ public class Text extends IokeData {
     public String getText() {
         return text;
     }
-    
+
     public static void format(Object on, IokeObject message, IokeObject context, List<Object> positionalArgs, StringBuilder result) throws ControlFlow {
         formatString(Text.getText(on), 0, message, context, positionalArgs, result);
     }
@@ -461,7 +469,7 @@ public class Text extends IokeData {
                     if(formatIndex < formatLength) {
                         c = format.charAt(formatIndex++);
                         missingText.append(c);
-                        
+
                         switch(c) {
                         case '*':
                             splat = true;
@@ -481,7 +489,7 @@ public class Text extends IokeData {
                             final boolean doSplatPairs = splatPairs;
                             splat = false;
                             splatPairs = false;
-                            ((Message)IokeObject.data(context.runtime.each)).sendTo(context.runtime.each, context, arg, context.runtime.createMessage(new Message(context.runtime, "internal:collectDataForText#format") { 
+                            ((Message)IokeObject.data(context.runtime.each)).sendTo(context.runtime.each, context, arg, context.runtime.createMessage(new Message(context.runtime, "internal:collectDataForText#format") {
                                     private Object doEvaluation(IokeObject ctx, Object ground, Object receiver) throws ControlFlow {
                                         List<Object> args = null;
                                         if(doSplat) {
@@ -499,11 +507,11 @@ public class Text extends IokeData {
                                     @Override
                                     public Object evaluateCompleteWithReceiver(IokeObject self, IokeObject ctx, Object ground, Object receiver) throws ControlFlow {
                                         return doEvaluation(ctx, ground, receiver);
-                                    }                                
+                                    }
                                     @Override
                                     public Object evaluateCompleteWith(IokeObject self, IokeObject ctx, Object ground) throws ControlFlow {
                                         return doEvaluation(ctx, ground, ctx);
-                                    }                                
+                                    }
                                 }));
                             if(endLoop[0] == -1) {
                                 int opened = 1;
@@ -589,10 +597,10 @@ public class Text extends IokeData {
             return context.runtime.newNumber(tvalue);
         } catch(NumberFormatException e) {
             final Runtime runtime = context.runtime;
-            final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
-                                                                               message, 
-                                                                               context, 
-                                                                               "Error", 
+            final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition,
+                                                                               message,
+                                                                               context,
+                                                                               "Error",
                                                                                "Arithmetic",
                                                                                "NotParseable"), context).mimic(message, context);
             condition.setCell("message", message);
@@ -605,9 +613,9 @@ public class Text extends IokeData {
             runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
                     public void run() throws ControlFlow {
                         runtime.errorCondition(condition);
-                    }}, 
+                    }},
                 context,
-                new Restart.ArgumentGivingRestart("useValue") { 
+                new Restart.ArgumentGivingRestart("useValue") {
                     public String report() {
                         return "Use number instead of " + tvalue;
                     }
@@ -621,7 +629,7 @@ public class Text extends IokeData {
                         return context.runtime.nil;
                     }
                 },
-                new Restart.ArgumentGivingRestart("takeLongest") { 
+                new Restart.ArgumentGivingRestart("takeLongest") {
                     public String report() {
                         return "Parse the longest number possible from " + tvalue;
                     }
@@ -675,10 +683,10 @@ public class Text extends IokeData {
             return context.runtime.newDecimal(tvalue);
         } catch(NumberFormatException e) {
             final Runtime runtime = context.runtime;
-            final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
-                                                                               message, 
-                                                                               context, 
-                                                                               "Error", 
+            final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition,
+                                                                               message,
+                                                                               context,
+                                                                               "Error",
                                                                                "Arithmetic",
                                                                                "NotParseable"), context).mimic(message, context);
             condition.setCell("message", message);
@@ -691,9 +699,9 @@ public class Text extends IokeData {
             runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
                     public void run() throws ControlFlow {
                         runtime.errorCondition(condition);
-                    }}, 
+                    }},
                 context,
-                new Restart.ArgumentGivingRestart("useValue") { 
+                new Restart.ArgumentGivingRestart("useValue") {
                     public String report() {
                         return "Use number instead of " + tvalue;
                     }
@@ -707,7 +715,7 @@ public class Text extends IokeData {
                         return context.runtime.nil;
                     }
                 },
-                new Restart.ArgumentGivingRestart("takeLongest") { 
+                new Restart.ArgumentGivingRestart("takeLongest") {
                     public String report() {
                         return "Parse the longest number possible from " + tvalue;
                     }
@@ -769,7 +777,7 @@ public class Text extends IokeData {
             return newCell[0];
         }
     }
-    
+
     @Override
     public IokeObject convertToText(IokeObject self, IokeObject m, IokeObject context, boolean signalCondition) {
         return self;
@@ -778,11 +786,6 @@ public class Text extends IokeData {
     @Override
     public IokeObject tryConvertToText(IokeObject self, IokeObject m, IokeObject context) {
         return self;
-    }
-
-    @Override
-    public int hashCode(IokeObject self) {
-        return this.text.hashCode();
     }
 
     @Override
