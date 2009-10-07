@@ -48,7 +48,7 @@ public class Number extends IokeData {
         this.value = IntNum.make(0);
         kind = true;
     }
-    
+
     public static Number integer(String val) {
         return new Number(getFrom(val));
     }
@@ -132,20 +132,15 @@ public class Number extends IokeData {
         if(!(IokeObject.data(number) instanceof Number)) {
             number = IokeObject.convertToNumber(number, m, context);
         }
-        
-        return intValue(number).intValue();
-    }
 
-    @Override
-    public int hashCode(IokeObject self) {
-        return this.value.hashCode();
+        return intValue(number).intValue();
     }
 
     @Override
     public void init(IokeObject obj) throws ControlFlow {
         final Runtime runtime = obj.runtime;
         final IokeObject number = obj;
-        
+
         obj.setKind("Number");
         obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Comparing"), obj), runtime.nul, runtime.nul);
 
@@ -175,12 +170,20 @@ public class Number extends IokeData {
         decimal.mimicsWithoutCheck(real);
         decimal.init();
         number.registerCell("Decimal", decimal);
-        
+
         final IokeObject infinity = new IokeObject(runtime, "A value representing infinity", new Number(RatNum.infinity(1)));
         infinity.mimicsWithoutCheck(ratio);
         infinity.setKind("Number Infinity");
         number.registerCell("Infinity", infinity);
         runtime.infinity = infinity;
+
+        number.registerMethod(runtime.newNativeMethod("returns a hash for the number", new NativeMethod.WithNoArguments("hash") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                    return context.runtime.newNumber(((Number)IokeObject.data(on)).value.hashCode());
+                }
+            }));
 
         number.registerMethod(runtime.newNativeMethod("returns true if the left hand side number is equal to the right hand side number.", new TypeCheckingNativeMethod("==") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
@@ -206,7 +209,7 @@ public class Number extends IokeData {
                 }
             }));
 
-        
+
         rational.registerMethod(runtime.newNativeMethod("compares this number against the argument, returning -1, 0 or 1 based on which one is larger. if the argument is a decimal, the receiver will be converted into a form suitable for comparing against a decimal, and then compared - it's not specified whether this will actually call Decimal#<=> or not. if the argument is neither a Rational nor a Decimal, it tries to call asRational, and if that doesn't work it returns nil.", new TypeCheckingNativeMethod("<=>") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
@@ -224,7 +227,7 @@ public class Number extends IokeData {
                     Object arg = args.get(0);
 
                     IokeData data = IokeObject.data(arg);
-                    
+
                     if(data instanceof Decimal) {
                         return context.runtime.newNumber(Number.value(on).asBigDecimal().compareTo(Decimal.value(arg)));
                     } else {
@@ -321,7 +324,7 @@ public class Number extends IokeData {
                     Object arg = args.get(0);
 
                     IokeData data = IokeObject.data(arg);
-                    
+
                     if(data instanceof Decimal) {
                         return ((Message)IokeObject.data(context.runtime.minusMessage)).sendTo(context.runtime.minusMessage, context, context.runtime.newDecimal(((Number)IokeObject.data(on))), arg);
                     } else {
@@ -351,7 +354,7 @@ public class Number extends IokeData {
                     Object arg = args.get(0);
 
                     IokeData data = IokeObject.data(arg);
-                    
+
                     if(data instanceof Decimal) {
                         return ((Message)IokeObject.data(context.runtime.plusMessage)).sendTo(context.runtime.plusMessage, context, context.runtime.newDecimal(((Number)IokeObject.data(on))), arg);
                     } else {
@@ -381,7 +384,7 @@ public class Number extends IokeData {
                     Object arg = args.get(0);
 
                     IokeData data = IokeObject.data(arg);
-                    
+
                     if(data instanceof Decimal) {
                         return ((Message)IokeObject.data(context.runtime.multMessage)).sendTo(context.runtime.multMessage, context, context.runtime.newDecimal(((Number)IokeObject.data(on))), arg);
                     } else {
@@ -411,7 +414,7 @@ public class Number extends IokeData {
                     Object arg = args.get(0);
 
                     IokeData data = IokeObject.data(arg);
-                    
+
                     if(data instanceof Decimal) {
                         return ((Message)IokeObject.data(context.runtime.divMessage)).sendTo(context.runtime.divMessage, context, context.runtime.newDecimal(((Number)IokeObject.data(on))), arg);
                     } else {
@@ -420,10 +423,10 @@ public class Number extends IokeData {
                         }
 
                         while(Number.value(arg).isZero()) {
-                            final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
-                                                                                               message, 
-                                                                                               context, 
-                                                                                               "Error", 
+                            final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition,
+                                                                                               message,
+                                                                                               context,
+                                                                                               "Error",
                                                                                                "Arithmetic",
                                                                                                "DivisionByZero"), context).mimic(message, context);
                             condition.setCell("message", message);
@@ -435,9 +438,9 @@ public class Number extends IokeData {
                             context.runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
                                     public void run() throws ControlFlow {
                                         context.runtime.errorCondition(condition);
-                                    }}, 
+                                    }},
                                 context,
-                                new Restart.ArgumentGivingRestart("useValue") { 
+                                new Restart.ArgumentGivingRestart("useValue") {
                                     public List<String> getArgumentNames() {
                                         return new ArrayList<String>(Arrays.asList("newValue"));
                                     }
@@ -448,7 +451,7 @@ public class Number extends IokeData {
                                     }
                                 }
                                 );
-                        
+
                             arg = newCell[0];
                         }
 
@@ -474,7 +477,7 @@ public class Number extends IokeData {
                     Object arg = args.get(0);
 
                     IokeData data = IokeObject.data(arg);
-                    
+
                     if(!(data instanceof Number)) {
                         arg = IokeObject.convertToRational(arg, message, context, true);
                     }
@@ -500,7 +503,7 @@ public class Number extends IokeData {
                     Object arg = args.get(0);
 
                     IokeData data = IokeObject.data(arg);
-                    
+
                     if(!(data instanceof Number)) {
                         arg = IokeObject.convertToRational(arg, message, context, true);
                     }
@@ -527,7 +530,7 @@ public class Number extends IokeData {
                     Object arg = args.get(0);
 
                     IokeData data = IokeObject.data(arg);
-                    
+
                     if(!(data instanceof Number)) {
                         arg = IokeObject.convertToRational(arg, message, context, true);
                     }
@@ -553,7 +556,7 @@ public class Number extends IokeData {
                     Object arg = args.get(0);
 
                     IokeData data = IokeObject.data(arg);
-                    
+
                     if(!(data instanceof Number)) {
                         arg = IokeObject.convertToRational(arg, message, context, true);
                     }
@@ -579,7 +582,7 @@ public class Number extends IokeData {
                     Object arg = args.get(0);
 
                     IokeData data = IokeObject.data(arg);
-                    
+
                     if(!(data instanceof Number)) {
                         arg = IokeObject.convertToRational(arg, message, context, true);
                     }
@@ -605,7 +608,7 @@ public class Number extends IokeData {
                     Object arg = args.get(0);
 
                     IokeData data = IokeObject.data(arg);
-                    
+
                     if(!(data instanceof Number)) {
                         arg = IokeObject.convertToRational(arg, message, context, true);
                     }
@@ -631,7 +634,7 @@ public class Number extends IokeData {
                     Object arg = args.get(0);
 
                     IokeData data = IokeObject.data(arg);
-                    
+
                     if(!(data instanceof Number)) {
                         arg = IokeObject.convertToRational(arg, message, context, true);
                     }
@@ -674,7 +677,7 @@ public class Number extends IokeData {
                     return runtime.newNumber(IntNum.sub(Number.intValue(on),IntNum.one()));
                 }
             }));
-            
+
         infinity.registerMethod(obj.runtime.newNativeMethod("Returns a text inspection of the object", new TypeCheckingNativeMethod.WithNoArguments("inspect", infinity) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
@@ -688,7 +691,7 @@ public class Number extends IokeData {
                     return method.runtime.newText("Infinity");
                 }
             }));
-        
+
 
         integer.registerMethod(runtime.newNativeMethod("Expects one or two arguments. If one argument is given, executes it as many times as the value of the receiving number. If two arguments are given, the first will be an unevaluated name that will receive the current loop value on each repitition. the iteration length is limited to the positive maximum of a Java int", new NativeMethod("times") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
@@ -730,6 +733,6 @@ public class Number extends IokeData {
                         return result;
                     }
                 }
-            }));            
+            }));
     }
 }// Number

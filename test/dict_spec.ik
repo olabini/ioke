@@ -37,6 +37,34 @@ describe("Dict",
     )
   )
 
+
+  describe("hash",
+    it("should return the same number for equal dicts",
+      {} hash should == {} hash
+      x = {1 => 1}
+      y = {}
+      y[1] = 1
+      x hash should == y hash
+
+      {1 => 2} hash should == {1 => 2} hash
+    )
+
+    it("should return different numbers for different dicts",
+      {1 => 1} hash should not == {"1" => 1} hash
+    )
+
+    it("should do the computation using recursive applications of hash",
+      x = Origin mimic
+      y = Origin mimic
+      {x => 1} hash should not == {y => 1} hash
+      {1 => x} hash should not == {1 => y} hash
+      x hash = method(42)
+      y hash = method(42)
+      {x => 1} hash should == {y => 1} hash
+      {1 => x} hash should == {1 => y} hash
+    )
+  )
+
   describe("==",
     it("should return false when sent an argument that is not a dict",
       {} should not == 1
