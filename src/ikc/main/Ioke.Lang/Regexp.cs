@@ -55,6 +55,13 @@ namespace Ioke.Lang {
             regexpMatch.Init();
             obj.RegisterCell("Match", regexpMatch);
 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns a hash for the regexp",
+                                                           new NativeMethod.WithNoArguments("hash", (method, context, message, on, outer) => {
+                                                                   outer.ArgumentsDefinition.CheckArgumentCount(context, message, on);
+                                                                   Regexp r = (Regexp)IokeObject.dataOf(on);
+                                                                   return context.runtime.NewNumber(r.pattern.GetHashCode() + 13 * r.flags.GetHashCode());
+                                                               })));
+
             obj.RegisterMethod(runtime.NewNativeMethod("returns true if the left hand side pattern is equal to the right hand side pattern.",
                                                        new TypeCheckingNativeMethod("==", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(runtime.Regexp)
@@ -71,13 +78,13 @@ namespace Ioke.Lang {
                                                                                                   d.flags.Equals(((Regexp)IokeObject.dataOf(other)).flags)))) ? context.runtime.True : context.runtime.False;
                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("Returns the pattern use for this regular expression", 
+            obj.RegisterMethod(runtime.NewNativeMethod("Returns the pattern use for this regular expression",
                                                        new TypeCheckingNativeMethod.WithNoArguments("pattern", obj,
                                                                                                     (method, on, args, keywords, context, message) => {
                                                                                                         return context.runtime.NewText(GetPattern(on));
                                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("Takes one argument and tries to match that argument against the current pattern. Returns nil if no match can be done, or a Regexp Match object if a match succeeds", 
+            obj.RegisterMethod(runtime.NewNativeMethod("Takes one argument and tries to match that argument against the current pattern. Returns nil if no match can be done, or a Regexp Match object if a match succeeds",
                                                        new TypeCheckingNativeMethod("match", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(obj)
                                                                                     .WithRequiredPositional("other")
@@ -86,7 +93,7 @@ namespace Ioke.Lang {
                                                                                         IokeObject target = IokeObject.As(((Message)IokeObject.dataOf(context.runtime.asText)).SendTo(context.runtime.asText, context, args[0]), context);
                                                                                         string arg = Text.GetText(target);
                                                                                         Matcher m = ((Regexp)IokeObject.dataOf(on)).regexp.Matcher(arg);
-                    
+
                                                                                         if(m.Find()) {
                                                                                             IokeObject match = regexpMatch.AllocateCopy(message, context);
                                                                                             match.MimicsWithoutCheck(regexpMatch);
@@ -99,7 +106,7 @@ namespace Ioke.Lang {
 
             obj.AliasMethod("match", "=~", null, null);
 
-            obj.RegisterMethod(runtime.NewNativeMethod("Takes one argument that should be a text and returns a text that has all regexp meta characters quoted", 
+            obj.RegisterMethod(runtime.NewNativeMethod("Takes one argument that should be a text and returns a text that has all regexp meta characters quoted",
                                                        new NativeMethod("quote", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositional("text")
                                                                         .Arguments,
@@ -107,7 +114,7 @@ namespace Ioke.Lang {
                                                                             return context.runtime.NewText(Pattern.Quote(Text.GetText(((Message)IokeObject.dataOf(context.runtime.asText)).SendTo(context.runtime.asText, context, args[0]))));
                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("Takes one or two text arguments that describes the regular expression to create. the first text is the pattern and the second is the flags.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("Takes one or two text arguments that describes the regular expression to create. the first text is the pattern and the second is the flags.",
                                                        new NativeMethod("from", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositional("pattern")
                                                                         .WithOptionalPositional("flags", "")
@@ -122,7 +129,7 @@ namespace Ioke.Lang {
                                                                             return context.runtime.NewRegexp(pattern, flags, context, message);
                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("Takes one argument and tries to match that argument against the current pattern. Returns a list of all the texts that were matched.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("Takes one argument and tries to match that argument against the current pattern. Returns a list of all the texts that were matched.",
                                                        new TypeCheckingNativeMethod("allMatches", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(obj)
                                                                                     .WithRequiredPositional("other")
@@ -136,23 +143,23 @@ namespace Ioke.Lang {
                                                                                         while(iter.HasMore) {
                                                                                             result.Add(runtime.NewText(iter.NextMatch.Group(0)));
                                                                                         }
-                    
+
                                                                                         return runtime.NewList(result);
                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("Returns a text inspection of the object", 
+            obj.RegisterMethod(runtime.NewNativeMethod("Returns a text inspection of the object",
                                                        new TypeCheckingNativeMethod.WithNoArguments("inspect", obj,
                                                                                                     (method, on, args, keywords, context, message) => {
                                                                                                         return method.runtime.NewText(Regexp.GetInspect(on));
                                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("Returns a brief text inspection of the object", 
+            obj.RegisterMethod(runtime.NewNativeMethod("Returns a brief text inspection of the object",
                                                        new TypeCheckingNativeMethod.WithNoArguments("notice", obj,
                                                                                                     (method, on, args, keywords, context, message) => {
                                                                                                         return method.runtime.NewText(Regexp.GetNotice(on));
                                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("returns a list of all the named groups in this regular expression", 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns a list of all the named groups in this regular expression",
                                                        new TypeCheckingNativeMethod.WithNoArguments("names", obj,
                                                                                                     (method, on, args, keywords, context, message) => {
                                                                                                         var names = Regexp.GetRegexp(on).GroupNames;
@@ -167,7 +174,7 @@ namespace Ioke.Lang {
         public static string GetInspect(object on) {
             return ((Regexp)(IokeObject.dataOf(on))).Inspect(on);
         }
-        
+
         public static string GetNotice(object on) {
             return ((Regexp)(IokeObject.dataOf(on))).Notice(on);
         }
@@ -182,10 +189,6 @@ namespace Ioke.Lang {
 
         public override IokeObject ConvertToRegexp(IokeObject self, IokeObject m, IokeObject context) {
             return self;
-        }
-
-        public override int HashCode(IokeObject self) {
-            return this.pattern.GetHashCode() + this.flags.GetHashCode();
         }
     }
 }

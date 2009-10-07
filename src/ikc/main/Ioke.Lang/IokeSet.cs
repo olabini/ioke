@@ -19,6 +19,12 @@ namespace Ioke.Lang {
             obj.Kind = "Set";
             obj.Mimics(IokeObject.As(runtime.Mixins.GetCell(null, null, "Sequenced"), null), runtime.nul, runtime.nul);
 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns a hash for the set",
+                                                           new NativeMethod.WithNoArguments("hash", (method, context, message, on, outer) => {
+                                                                   outer.ArgumentsDefinition.CheckArgumentCount(context, message, on);
+                                                                   return context.runtime.NewNumber(((IokeSet)IokeObject.dataOf(on))._set.GetHashCode());
+                                                               })));
+
             obj.RegisterMethod(runtime.NewNativeMethod("returns true if the left hand side set is equal to the right hand side set.",
                                                        new TypeCheckingNativeMethod("==", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(runtime.Set)
@@ -170,10 +176,6 @@ namespace Ioke.Lang {
 
         public override IokeData CloneData(IokeObject obj, IokeObject m, IokeObject context) {
             return new IokeSet(new SaneHashSet<object>(_set));
-        }
-
-        public override int HashCode(IokeObject self) {
-            return this._set.GetHashCode();
         }
 
         public override string ToString() {

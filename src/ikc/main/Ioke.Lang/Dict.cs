@@ -43,6 +43,12 @@ namespace Ioke.Lang {
             obj.Kind = "Dict";
             obj.Mimics(IokeObject.As(runtime.Mixins.GetCell(null, null, "Sequenced"), null), runtime.nul, runtime.nul);
 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns a hash for the dictionary",
+                                                           new NativeMethod.WithNoArguments("hash", (method, context, message, on, outer) => {
+                                                                   outer.ArgumentsDefinition.CheckArgumentCount(context, message, on);
+                                                                   return context.runtime.NewNumber(((Dict)IokeObject.dataOf(on)).dict.GetHashCode());
+                                                               })));
+
             obj.RegisterMethod(runtime.NewNativeMethod("returns true if the left hand side dictionary is equal to the right hand side dictionary.",
                                                        new TypeCheckingNativeMethod("==", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(runtime.Dict)
@@ -234,10 +240,6 @@ namespace Ioke.Lang {
 
         public override IokeData CloneData(IokeObject obj, IokeObject m, IokeObject context) {
             return new Dict(new SaneHashtable(dict));
-        }
-
-        public override int HashCode(IokeObject self) {
-            return this.dict.GetHashCode();
         }
 
         public override string ToString() {

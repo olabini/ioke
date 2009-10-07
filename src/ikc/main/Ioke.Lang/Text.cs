@@ -9,7 +9,7 @@ namespace Ioke.Lang {
     using Ioke.Lang.Util;
 
     internal class UnicodeBlock {
-        private static readonly string blockData = 
+        private static readonly string blockData =
             "0000..007F:BASIC_LATIN;0080..00FF:LATIN_1_SUPPLEMENT;0100..017F:LATIN_EXTENDED_A;"
             +"0180..024F:LATIN_EXTENDED_B;0250..02AF:IPA_EXTENSIONS;02B0..02FF:SPACING_MODIFIER_LETTERS;"
             +"0300..036F:COMBINING_DIACRITICAL_MARKS;0370..03FF:GREEK;0400..04FF:CYRILLIC;0530..058F:ARMENIAN;"
@@ -46,7 +46,7 @@ namespace Ioke.Lang {
             foreach(string part in separate) {
                 string[] parts = part.Split(':');
                 string name = parts[1];
-                int firstIndex = Convert.ToInt32(parts[0].Substring(0,4), 16); 
+                int firstIndex = Convert.ToInt32(parts[0].Substring(0,4), 16);
                 int lastIndex = Convert.ToInt32(parts[0].Substring(6,4), 16);
                 for(; firstIndex <= lastIndex; firstIndex++) {
                     blocks[firstIndex] = name;
@@ -61,7 +61,7 @@ namespace Ioke.Lang {
 
     public class Text : IokeData {
         private readonly string text;
-        
+
         public Text(string text) {
             this.text = text;
         }
@@ -81,16 +81,18 @@ namespace Ioke.Lang {
         public override string ToString(IokeObject self) {
             return text;
         }
-        
-        public override int HashCode(IokeObject self) {
-            return this.text.GetHashCode();
-        }
 
         public override void Init(IokeObject obj) {
             Runtime runtime = obj.runtime;
-            
+
             obj.Kind = "Text";
             obj.Mimics(IokeObject.As(runtime.Mixins.GetCell(null, null, "Comparing"), null), runtime.nul, runtime.nul);
+
+            obj.RegisterMethod(runtime.NewNativeMethod("returns a hash for the text",
+                                                           new NativeMethod.WithNoArguments("hash", (method, context, message, on, outer) => {
+                                                                   outer.ArgumentsDefinition.CheckArgumentCount(context, message, on);
+                                                                   return context.runtime.NewNumber(((Text)IokeObject.dataOf(on)).text.GetHashCode());
+                                                               })));
 
             obj.RegisterMethod(runtime.NewNativeMethod("returns true if the left hand side text is equal to the right hand side text.",
                                                        new TypeCheckingNativeMethod("==", TypeCheckingArgumentsDefinition.builder()
@@ -107,14 +109,14 @@ namespace Ioke.Lang {
                                                                                                     d.text.Equals(((Text)IokeObject.dataOf(other)).text))) ? context.runtime.True : context.runtime.False;
                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("Returns a text representation of the object", 
+            obj.RegisterMethod(runtime.NewNativeMethod("Returns a text representation of the object",
                                                        new NativeMethod.WithNoArguments("asText",
                                                                                         (method, context, message, on, outer) => {
                                                                                             outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, new SaneArrayList(), new SaneDictionary<string, object>());
                                                                                             return on;
                                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("Takes any number of arguments, and expects the text receiver to contain format specifications. The currently supported specifications are only %s and %{, %}. These have several parameters that can be used. See the spec for more info about these. The format method will return a new text based on the content of the receiver, and the arguments given.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("Takes any number of arguments, and expects the text receiver to contain format specifications. The currently supported specifications are only %s and %{, %}. These have several parameters that can be used. See the spec for more info about these. The format method will return a new text based on the content of the receiver, and the arguments given.",
                                                        new TypeCheckingNativeMethod("format", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(obj)
                                                                                     .WithRest("replacements")
@@ -126,49 +128,49 @@ namespace Ioke.Lang {
                                                                                     })));
 
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("Converts the content of this text into a rational value", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("Converts the content of this text into a rational value",
                                                            new TypeCheckingNativeMethod.WithNoArguments("toRational", obj,
                                                                                                         (self, on, args, keywords, context, message) => {
                                                                                                             return Text.ToRational(on, context, message);
                                                                                                         })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("Converts the content of this text into a decimal value", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("Converts the content of this text into a decimal value",
                                                            new TypeCheckingNativeMethod.WithNoArguments("toDecimal", obj,
                                                                                                         (self, on, args, keywords, context, message) => {
                                                                                                             return Text.ToDecimal(on, context, message);
                                                                                                         })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns a text inspection of the object", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns a text inspection of the object",
                                                            new TypeCheckingNativeMethod.WithNoArguments("inspect", obj,
                                                                                                         (self, on, args, keywords, context, message) => {
                                                                                                             return self.runtime.NewText(Text.GetInspect(on));
                                                                                                         })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns a brief text inspection of the object", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns a brief text inspection of the object",
                                                            new TypeCheckingNativeMethod.WithNoArguments("notice", obj,
                                                                                                         (self, on, args, keywords, context, message) => {
                                                                                                             return self.runtime.NewText(Text.GetInspect(on));
                                                                                                         })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns a lower case version of this text", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns a lower case version of this text",
                                                            new TypeCheckingNativeMethod.WithNoArguments("lower", obj,
                                                                                                         (self, on, args, keywords, context, message) => {
                                                                                                             return self.runtime.NewText(Text.GetText(on).ToLower());
                                                                                                         })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns an upper case version of this text", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns an upper case version of this text",
                                                            new TypeCheckingNativeMethod.WithNoArguments("upper", obj,
                                                                                                         (self, on, args, keywords, context, message) => {
                                                                                                             return self.runtime.NewText(Text.GetText(on).ToUpper());
                                                                                                         })));
-            
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns a version of this text with leading and trailing whitespace removed", 
+
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns a version of this text with leading and trailing whitespace removed",
                                                            new TypeCheckingNativeMethod.WithNoArguments("trim", obj,
                                                                                                         (self, on, args, keywords, context, message) => {
                                                                                                             return self.runtime.NewText(Text.GetText(on).Trim());
                                                                                                         })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns an array of texts split around the argument", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns an array of texts split around the argument",
                                                            new TypeCheckingNativeMethod("split", TypeCheckingArgumentsDefinition.builder()
                                                                                         .ReceiverMustMimic(obj)
                                                                                         .WithOptionalPositional("splitAround", "")
@@ -198,8 +200,8 @@ namespace Ioke.Lang {
 
                                                                                             return context.runtime.NewList(r);
                                                                                         })));
-            
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("Takes two text arguments where the first is the substring to replace, and the second is the replacement to insert. Will only replace the first match, if any is found, and return a new Text with the result.", 
+
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("Takes two text arguments where the first is the substring to replace, and the second is the replacement to insert. Will only replace the first match, if any is found, and return a new Text with the result.",
                                                            new TypeCheckingNativeMethod("replace", TypeCheckingArgumentsDefinition.builder()
                                                                                         .ReceiverMustMimic(obj)
                                                                                         .WithRequiredPositional("pattern")
@@ -225,7 +227,7 @@ namespace Ioke.Lang {
                                                                                             return context.runtime.NewText(result);
                                                                                         })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("Takes two text arguments where the first is the substring to replace, and the second is the replacement to insert. Will replace all matches, if any is found, and return a new Text with the result.", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("Takes two text arguments where the first is the substring to replace, and the second is the replacement to insert. Will replace all matches, if any is found, and return a new Text with the result.",
                                                            new TypeCheckingNativeMethod("replaceAll", TypeCheckingArgumentsDefinition.builder()
                                                                                         .ReceiverMustMimic(obj)
                                                                                         .WithRequiredPositional("pattern")
@@ -251,13 +253,13 @@ namespace Ioke.Lang {
                                                                                             return context.runtime.NewText(result);
                                                                                         })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns the length of this text", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns the length of this text",
                                                            new TypeCheckingNativeMethod.WithNoArguments("length", obj,
                                                                                                         (self, on, args, keywords, context, message) => {
                                                                                                             return context.runtime.NewNumber(GetText(on).Length);
                                                                                                         })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("compares this text against the argument, returning -1, 0 or 1 based on which one is lexically larger", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("compares this text against the argument, returning -1, 0 or 1 based on which one is lexically larger",
                                                            new TypeCheckingNativeMethod("<=>", TypeCheckingArgumentsDefinition.builder()
                                                                                         .ReceiverMustMimic(obj)
                                                                                         .WithRequiredPositional("other")
@@ -290,7 +292,7 @@ namespace Ioke.Lang {
                                                                                             return context.runtime.NewNumber(result);
                                                                                         })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("takes one argument, that can be either an index or a range of two indicis. this slicing works the same as for Lists, so you can index from the end, both with the single index and with the range.", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("takes one argument, that can be either an index or a range of two indicis. this slicing works the same as for Lists, so you can index from the end, both with the single index and with the range.",
                                                            new TypeCheckingNativeMethod("[]", TypeCheckingArgumentsDefinition.builder()
                                                                                         .ReceiverMustMimic(obj)
                                                                                         .WithRequiredPositional("index")
@@ -298,10 +300,10 @@ namespace Ioke.Lang {
                                                                                         (self, on, args, keywords, context, message) => {
                                                                                             object arg = args[0];
                                                                                             IokeData data = IokeObject.dataOf(arg);
-                    
+
                                                                                             if(data is Range) {
-                                                                                                int first = Number.ExtractInt(Range.GetFrom(arg), message, context); 
-                        
+                                                                                                int first = Number.ExtractInt(Range.GetFrom(arg), message, context);
+
                                                                                                 if(first < 0) {
                                                                                                     return context.runtime.NewText("");
                                                                                                 }
@@ -327,11 +329,11 @@ namespace Ioke.Lang {
                                                                                                 if(first > last || (!inclusive && first == last)) {
                                                                                                     return context.runtime.NewText("");
                                                                                                 }
-                        
+
                                                                                                 if(!inclusive) {
                                                                                                     last--;
                                                                                                 }
-                        
+
                                                                                                 return context.runtime.NewText(str.Substring(first, (last+1)-first));
                                                                                             } else if(data is Number) {
                                                                                                 string str = GetText(on);
@@ -352,16 +354,16 @@ namespace Ioke.Lang {
 
                                                                                             return on;
                                                                                         })));
-        
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns a symbol representing the Unicode category of the character", 
+
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns a symbol representing the Unicode category of the character",
                                                            new TypeCheckingNativeMethod.WithNoArguments("category", obj,
                                                                                                         (self, on, args, keywords, context, message) => {
                                                                                                             string character = GetText(on);
                                                                                                             if(character.Length == 1) {
-                                                                                                                return context.runtime.GetSymbol(UnicodeBlock.Of(character[0]));                  
+                                                                                                                return context.runtime.GetSymbol(UnicodeBlock.Of(character[0]));
                                                                                                             }
-                
-                                                                                                            IokeObject condition = IokeObject.As(IokeObject.GetCellChain(runtime.Condition, 
+
+                                                                                                            IokeObject condition = IokeObject.As(IokeObject.GetCellChain(runtime.Condition,
                                                                                                                                                                          message,
                                                                                                                                                                          context,
                                                                                                                                                                          "Error",
@@ -374,7 +376,7 @@ namespace Ioke.Lang {
                                                                                                             runtime.ErrorCondition(condition);
                                                                                                             return null;
                                                                                                         })));
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns a new text where all the escapes in the current text have been evaluated - exactly as if another parsing step had been applied. This does not evaluate embedded code, though.", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns a new text where all the escapes in the current text have been evaluated - exactly as if another parsing step had been applied. This does not evaluate embedded code, though.",
                                                            new TypeCheckingNativeMethod.WithNoArguments("evaluateEscapes", obj,
                                                                                                         (self, on, args, keywords, context, message) => {
                                                                                                             return context.runtime.NewText(new StringUtils().ReplaceEscapes(GetText(on)));
@@ -406,11 +408,11 @@ namespace Ioke.Lang {
 
             public override object EvaluateCompleteWithReceiver(IokeObject self, IokeObject ctx, object ground, object receiver) {
                 return code(ctx, ground, receiver);
-            }                                
+            }
 
             public override object EvaluateCompleteWith(IokeObject self, IokeObject ctx, object ground) {
                 return code(ctx, ground, ctx);
-            }                                
+            }
         }
 
         private static int FormatString(string format, int index, IokeObject message, IokeObject context, IList positionalArgs, StringBuilder result) {
@@ -436,7 +438,7 @@ namespace Ioke.Lang {
                         if(formatIndex < formatLength) {
                             c = format[formatIndex++];
                             missingText.Append(c);
-                        
+
                             switch(c) {
                             case '*':
                                 splat = true;
@@ -456,9 +458,9 @@ namespace Ioke.Lang {
                                 bool doSplatPairs = splatPairs;
                                 splat = false;
                                 splatPairs = false;
-                                ((Message)IokeObject.dataOf(context.runtime.eachMessage)).SendTo(context.runtime.eachMessage, context, arg, 
+                                ((Message)IokeObject.dataOf(context.runtime.eachMessage)).SendTo(context.runtime.eachMessage, context, arg,
                                                                                                  context.runtime.CreateMessage(
-                                                                                                                               new EvaluatingMessage(context.runtime, "internal:collectDataForText#format", 
+                                                                                                                               new EvaluatingMessage(context.runtime, "internal:collectDataForText#format",
                                                                                                                                                      (ctx, ground, receiver) => {
                                                                                                                                                          IList args = null;
                                                                                                                                                          if(doSplat) {
@@ -562,7 +564,7 @@ namespace Ioke.Lang {
             public override string Report() {
                 return "Parse the longest number possible from " + namex;
             }
-            
+
             public override IList<string> ArgumentNames {
                 get { return new SaneList<string>(); }
             }
@@ -612,7 +614,7 @@ namespace Ioke.Lang {
             public override string Report() {
                 return "Parse the longest number possible from " + namex;
             }
-            
+
             public override IList<string> ArgumentNames {
                 get { return new SaneList<string>(); }
             }
@@ -672,10 +674,10 @@ namespace Ioke.Lang {
                 return context.runtime.NewNumber(tvalue);
             } catch(Exception) {
                 Runtime runtime = context.runtime;
-                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(runtime.Condition, 
-                                                                             message, 
-                                                                             context, 
-                                                                             "Error", 
+                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(runtime.Condition,
+                                                                             message,
+                                                                             context,
+                                                                             "Error",
                                                                              "Arithmetic",
                                                                              "NotParseable"), context).Mimic(message, context);
                 condition.SetCell("message", message);
@@ -699,10 +701,10 @@ namespace Ioke.Lang {
                 return context.runtime.NewDecimal(tvalue);
             } catch(Exception) {
                 Runtime runtime = context.runtime;
-                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(runtime.Condition, 
-                                                                             message, 
-                                                                             context, 
-                                                                             "Error", 
+                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(runtime.Condition,
+                                                                             message,
+                                                                             context,
+                                                                             "Error",
                                                                              "Arithmetic",
                                                                              "NotParseable"), context).Mimic(message, context);
                 condition.SetCell("message", message);
