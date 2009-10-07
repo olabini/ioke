@@ -24,10 +24,10 @@ public abstract class IokeData {
 
             @Override
             public void checkMimic(IokeObject obj, IokeObject m, IokeObject context) throws ControlFlow {
-                final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
-                                                                                   m, 
+                final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition,
+                                                                                   m,
                                                                                    context,
-                                                                                   "Error", 
+                                                                                   "Error",
                                                                                    "CantMimicOddball"), context).mimic(m, context);
                 condition.setCell("message", m);
                 condition.setCell("context", context);
@@ -56,10 +56,10 @@ public abstract class IokeData {
 
             @Override
             public void checkMimic(IokeObject obj, IokeObject m, IokeObject context) throws ControlFlow {
-                final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
-                                                                                   m, 
+                final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition,
+                                                                                   m,
                                                                                    context,
-                                                                                   "Error", 
+                                                                                   "Error",
                                                                                    "CantMimicOddball"), context).mimic(m, context);
                 condition.setCell("message", m);
                 condition.setCell("context", context);
@@ -84,10 +84,10 @@ public abstract class IokeData {
 
             @Override
             public void checkMimic(IokeObject obj, IokeObject m, IokeObject context) throws ControlFlow {
-                final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
-                                                                                   m, 
+                final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition,
+                                                                                   m,
                                                                                    context,
-                                                                                   "Error", 
+                                                                                   "Error",
                                                                                    "CantMimicOddball"), context).mimic(m, context);
                 condition.setCell("message", m);
                 condition.setCell("context", context);
@@ -125,8 +125,14 @@ public abstract class IokeData {
         }
     }
 
-    public int hashCode(IokeObject self) {
-        return System.identityHashCode(self.getCells());
+    public int hashCode(IokeObject self) throws ControlFlow {
+        Object cell = self.findCell(self.runtime.hashMessage, self.runtime.ground, "hash");
+
+        if(cell == self.runtime.nul) {
+            return System.identityHashCode(self.getCells());
+        } else {
+            return Number.extractInt(((Message)IokeObject.data(self.runtime.hashMessage)).sendTo(self.runtime.hashMessage, self.runtime.ground, self), self.runtime.hashMessage, self.runtime.ground);
+        }
     }
 
     public IokeData cloneData(IokeObject obj, IokeObject m, IokeObject context) {return this;}
@@ -136,10 +142,10 @@ public abstract class IokeData {
             return self;
         }
         if(signalCondition) {
-            final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
-                                                                               message, 
-                                                                               context, 
-                                                                               "Error", 
+            final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition,
+                                                                               message,
+                                                                               context,
+                                                                               "Error",
                                                                                "Type",
                                                                                "IncorrectType"), context).mimic(message, context);
             condition.setCell("message", message);
@@ -152,13 +158,13 @@ public abstract class IokeData {
             context.runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
                     public void run() throws ControlFlow {
                         context.runtime.errorCondition(condition);
-                    }}, 
+                    }},
                 context,
-                new Restart.ArgumentGivingRestart("useValue") { 
+                new Restart.ArgumentGivingRestart("useValue") {
                     public List<String> getArgumentNames() {
                         return new ArrayList<String>(Arrays.asList("newValue"));
                     }
-                                    
+
                     public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
                         newCell[0] = arguments.get(0);
                         return context.runtime.nil;
@@ -176,10 +182,10 @@ public abstract class IokeData {
             return self;
         }
         if(signalCondition) {
-            final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
-                                                                               message, 
-                                                                               context, 
-                                                                               "Error", 
+            final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition,
+                                                                               message,
+                                                                               context,
+                                                                               "Error",
                                                                                "Type",
                                                                                "IncorrectType"), context).mimic(message, context);
             condition.setCell("message", message);
@@ -192,13 +198,13 @@ public abstract class IokeData {
             context.runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
                     public void run() throws ControlFlow {
                         context.runtime.errorCondition(condition);
-                    }}, 
+                    }},
                 context,
-                new Restart.ArgumentGivingRestart("useValue") { 
+                new Restart.ArgumentGivingRestart("useValue") {
                     public List<String> getArgumentNames() {
                         return new ArrayList<String>(Arrays.asList("newValue"));
                     }
-                                    
+
                     public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
                         newCell[0] = arguments.get(0);
                         return context.runtime.nil;
@@ -213,10 +219,10 @@ public abstract class IokeData {
 
     public IokeObject convertToRational(IokeObject self, IokeObject m, final IokeObject context, boolean signalCondition) throws ControlFlow {
         if(signalCondition) {
-            final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
-                                                                               m, 
-                                                                               context, 
-                                                                               "Error", 
+            final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition,
+                                                                               m,
+                                                                               context,
+                                                                               "Error",
                                                                                "Type",
                                                                                "IncorrectType"), context).mimic(m, context);
             condition.setCell("message", m);
@@ -229,13 +235,13 @@ public abstract class IokeData {
             context.runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
                     public void run() throws ControlFlow {
                         context.runtime.errorCondition(condition);
-                    }}, 
+                    }},
                 context,
-                new Restart.ArgumentGivingRestart("useValue") { 
+                new Restart.ArgumentGivingRestart("useValue") {
                     public List<String> getArgumentNames() {
                         return new ArrayList<String>(Arrays.asList("newValue"));
                     }
-                                    
+
                     public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
                         newCell[0] = arguments.get(0);
                         return context.runtime.nil;
@@ -251,10 +257,10 @@ public abstract class IokeData {
 
     public IokeObject convertToDecimal(IokeObject self, IokeObject m, final IokeObject context, boolean signalCondition) throws ControlFlow {
         if(signalCondition) {
-            final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
-                                                                               m, 
-                                                                               context, 
-                                                                               "Error", 
+            final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition,
+                                                                               m,
+                                                                               context,
+                                                                               "Error",
                                                                                "Type",
                                                                                "IncorrectType"), context).mimic(m, context);
             condition.setCell("message", m);
@@ -267,9 +273,9 @@ public abstract class IokeData {
             context.runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
                     public void run() throws ControlFlow {
                         context.runtime.errorCondition(condition);
-                    }}, 
+                    }},
                 context,
-                new Restart.ArgumentGivingRestart("useValue") { 
+                new Restart.ArgumentGivingRestart("useValue") {
                     public List<String> getArgumentNames() {
                         return new ArrayList<String>(Arrays.asList("newValue"));
                     }
@@ -287,10 +293,10 @@ public abstract class IokeData {
     }
 
     public IokeObject convertToNumber(IokeObject self, IokeObject m, final IokeObject context) throws ControlFlow {
-        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
-                                                                           m, 
-                                                                           context, 
-                                                                           "Error", 
+        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition,
+                                                                           m,
+                                                                           context,
+                                                                           "Error",
                                                                            "Type",
                                                                            "IncorrectType"), context).mimic(m, context);
         condition.setCell("message", m);
@@ -303,9 +309,9 @@ public abstract class IokeData {
         context.runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
                 public void run() throws ControlFlow {
                     context.runtime.errorCondition(condition);
-                }}, 
+                }},
             context,
-            new Restart.ArgumentGivingRestart("useValue") { 
+            new Restart.ArgumentGivingRestart("useValue") {
                 public List<String> getArgumentNames() {
                     return new ArrayList<String>(Arrays.asList("newValue"));
                 }
@@ -324,10 +330,10 @@ public abstract class IokeData {
     }
     public IokeObject convertToText(IokeObject self, IokeObject m, final IokeObject context, boolean signalCondition) throws ControlFlow {
         if(signalCondition) {
-            final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
-                                                                               m, 
-                                                                               context, 
-                                                                               "Error", 
+            final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition,
+                                                                               m,
+                                                                               context,
+                                                                               "Error",
                                                                                "Type",
                                                                                "IncorrectType"), context).mimic(m, context);
             condition.setCell("message", m);
@@ -340,9 +346,9 @@ public abstract class IokeData {
             context.runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
                     public void run() throws ControlFlow {
                         context.runtime.errorCondition(condition);
-                    }}, 
+                    }},
                 context,
-                new Restart.ArgumentGivingRestart("useValue") { 
+                new Restart.ArgumentGivingRestart("useValue") {
                     public List<String> getArgumentNames() {
                         return new ArrayList<String>(Arrays.asList("newValue"));
                     }
@@ -360,10 +366,10 @@ public abstract class IokeData {
     }
     public IokeObject convertToSymbol(IokeObject self, IokeObject m, final IokeObject context, final boolean signalCondition) throws ControlFlow {
         if(signalCondition) {
-            final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
-                                                                               m, 
-                                                                               context, 
-                                                                               "Error", 
+            final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition,
+                                                                               m,
+                                                                               context,
+                                                                               "Error",
                                                                                "Type",
                                                                                "IncorrectType"), context).mimic(m, context);
             condition.setCell("message", m);
@@ -376,9 +382,9 @@ public abstract class IokeData {
             context.runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
                     public void run() throws ControlFlow {
                         context.runtime.errorCondition(condition);
-                    }}, 
+                    }},
                 context,
-                new Restart.ArgumentGivingRestart("useValue") { 
+                new Restart.ArgumentGivingRestart("useValue") {
                     public List<String> getArgumentNames() {
                         return new ArrayList<String>(Arrays.asList("newValue"));
                     }
@@ -395,10 +401,10 @@ public abstract class IokeData {
         return null;
     }
     public IokeObject convertToRegexp(IokeObject self, IokeObject m, final IokeObject context) throws ControlFlow {
-        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
-                                                                           m, 
-                                                                           context, 
-                                                                           "Error", 
+        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition,
+                                                                           m,
+                                                                           context,
+                                                                           "Error",
                                                                            "Type",
                                                                            "IncorrectType"), context).mimic(m, context);
         condition.setCell("message", m);
@@ -411,9 +417,9 @@ public abstract class IokeData {
         context.runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
                 public void run() throws ControlFlow {
                     context.runtime.errorCondition(condition);
-                }}, 
+                }},
             context,
-            new Restart.ArgumentGivingRestart("useValue") { 
+            new Restart.ArgumentGivingRestart("useValue") {
                 public List<String> getArgumentNames() {
                     return new ArrayList<String>(Arrays.asList("newValue"));
                 }
@@ -427,12 +433,12 @@ public abstract class IokeData {
 
         return IokeObject.convertToRegexp(newCell[0], m, context);
     }
-    
+
     private void report(Object self, IokeObject context, IokeObject message, String name) throws ControlFlow {
-        IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
-                                                                     message, 
-                                                                     context, 
-                                                                     "Error", 
+        IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition,
+                                                                     message,
+                                                                     context,
+                                                                     "Error",
                                                                      "Invocation",
                                                                      "NotActivatable"), context).mimic(message, context);
         condition.setCell("message", message);
@@ -500,17 +506,20 @@ public abstract class IokeData {
     }
 
     public String toString(IokeObject self) {
-        int h = hashCode(self);
-        String hash = Integer.toHexString(h).toUpperCase();
-        if(self instanceof NullObject) {
-            return "#<nul:" + hash + ">";
-        }
+        try {
+            int h = hashCode(self);
+            String hash = Integer.toHexString(h).toUpperCase();
+            if(self instanceof NullObject) {
+                return "#<nul:" + hash + ">";
+            }
 
-        Object obj = self.findCell(null, null, "kind");
-        String kind = ((Text)IokeObject.data(obj)).getText();
-        return "#<" + kind + ":" + hash + ">";
+            Object obj = self.findCell(null, null, "kind");
+            String kind = ((Text)IokeObject.data(obj)).getText();
+            return "#<" + kind + ":" + hash + ">";
+        } catch(ControlFlow e) {}
+        return "an error happened somewhere";
     }
-    
+
     public String getConvertMethod() {
     	return null;
     }

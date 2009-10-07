@@ -44,6 +44,14 @@ public class IokeList extends IokeData {
         obj.setKind("List");
         obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Sequenced"), null), runtime.nul, runtime.nul);
 
+        obj.registerMethod(runtime.newNativeMethod("returns a hash for the list", new NativeMethod.WithNoArguments("hash") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                    return context.runtime.newNumber(((IokeList)IokeObject.data(on)).list.hashCode());
+                }
+            }));
+
         obj.registerMethod(runtime.newNativeMethod("returns true if the left hand side list is equal to the right hand side list.", new TypeCheckingNativeMethod("==") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
@@ -1009,11 +1017,6 @@ public class IokeList extends IokeData {
 
     public IokeData cloneData(IokeObject obj, IokeObject m, IokeObject context) {
         return new IokeList(new ArrayList<Object>(list));
-    }
-
-    @Override
-    public int hashCode(IokeObject self) {
-        return this.list.hashCode();
     }
 
     @Override
