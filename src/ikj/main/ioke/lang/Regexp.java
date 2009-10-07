@@ -69,6 +69,15 @@ public class Regexp extends IokeData {
         regexpMatch.init();
         obj.registerCell("Match", regexpMatch);
 
+        obj.registerMethod(runtime.newNativeMethod("returns a hash for the regular expression", new NativeMethod.WithNoArguments("hash") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                    Regexp r = (Regexp)IokeObject.data(on);
+                    return context.runtime.newNumber(r.pattern.hashCode() + 13 * r.flags.hashCode());
+                }
+            }));
+
         obj.registerMethod(runtime.newNativeMethod("returns true if the left hand side pattern is equal to the right hand side pattern.", new TypeCheckingNativeMethod("==") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
@@ -118,7 +127,7 @@ public class Regexp extends IokeData {
                     IokeObject target = IokeObject.as(((Message)IokeObject.data(context.runtime.asText)).sendTo(context.runtime.asText, context, args.get(0)), context);
                     String arg = Text.getText(target);
                     Matcher m = ((Regexp)IokeObject.data(on)).regexp.matcher(arg);
-                    
+
                     if(m.find()) {
                         IokeObject match = regexpMatch.allocateCopy(message, context);
                         match.mimicsWithoutCheck(regexpMatch);
@@ -196,7 +205,7 @@ public class Regexp extends IokeData {
                     while(iter.hasMore()) {
                         result.add(runtime.newText(iter.nextMatch().group(0)));
                     }
-                    
+
                     return runtime.newList(result);
                 }
             }));
@@ -242,10 +251,5 @@ public class Regexp extends IokeData {
 
     public String notice(Object obj) throws ControlFlow {
         return "#/" + pattern + "/" + flags;
-    }
-
-    @Override
-    public int hashCode(IokeObject self) {
-        return this.pattern.hashCode() + this.flags.hashCode();
     }
 }// Regexp

@@ -125,7 +125,7 @@ public abstract class IokeData {
         }
     }
 
-    public int hashCode(IokeObject self) throws ControlFlow {
+    public final int hashCode(IokeObject self) throws ControlFlow {
         Object cell = self.findCell(self.runtime.hashMessage, self.runtime.ground, "hash");
 
         if(cell == self.runtime.nul) {

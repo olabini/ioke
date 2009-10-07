@@ -150,6 +150,33 @@ describe("Set",
     )
   )
 
+  describe("hash",
+    it("should return the same number for equal sets",
+      set hash should == set hash
+      x = set(1)
+      y = set
+      y << 1
+      set(1,2,1) hash should == set(2,2,2,2,1) hash
+      x hash should == y hash
+      x hash should not == set hash
+    )
+
+    it("should return different numbers for different sets",
+      set(1) hash should not == set("1") hash
+      set hash should not == set(1) hash
+      set(1) hash should not == set hash
+    )
+
+    it("should do the computation using recursive applications of hash",
+      x = Origin mimic
+      y = Origin mimic
+      set(x) hash should not == set(y) hash
+      x hash = method(42)
+      y hash = method(42)
+      set(x) hash should == set(y) hash
+    )
+  )
+
   describe("==",
     it("should return false when sent an argument that is not a set",
       set() should not == 1

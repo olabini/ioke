@@ -3,6 +3,7 @@
  */
 package ioke.lang;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
@@ -46,6 +47,14 @@ public class Dict extends IokeData {
 
         obj.setKind("Dict");
         obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Sequenced"), null), runtime.nul, runtime.nul);
+
+        obj.registerMethod(runtime.newNativeMethod("returns a hash for the dictionary", new NativeMethod.WithNoArguments("hash") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                    return context.runtime.newNumber(((Dict)IokeObject.data(on)).dict.hashCode());
+                }
+            }));
 
         obj.registerMethod(runtime.newNativeMethod("returns true if the left hand side dictionary is equal to the right hand side dictionary.", new TypeCheckingNativeMethod("==") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
@@ -316,11 +325,6 @@ public class Dict extends IokeData {
 
     public IokeData cloneData(IokeObject obj, IokeObject m, IokeObject context) {
         return new Dict(new HashMap<Object, Object>(dict));
-    }
-
-    @Override
-    public int hashCode(IokeObject self) {
-        return this.dict.hashCode();
     }
 
     @Override
