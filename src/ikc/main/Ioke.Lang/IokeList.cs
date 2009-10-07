@@ -39,6 +39,12 @@ namespace Ioke.Lang {
             obj.Kind = "List";
             obj.Mimics(IokeObject.As(runtime.Mixins.GetCell(null, null, "Sequenced"), null), runtime.nul, runtime.nul);
 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns a hash for the list",
+                                                           new NativeMethod.WithNoArguments("hash", (method, context, message, on, outer) => {
+                                                                   outer.ArgumentsDefinition.CheckArgumentCount(context, message, on);
+                                                                   return context.runtime.NewNumber(((IokeList)IokeObject.dataOf(on)).list.GetHashCode());
+                                                               })));
+
             obj.RegisterMethod(runtime.NewNativeMethod("returns true if the left hand side list is equal to the right hand side list.",
                                                        new TypeCheckingNativeMethod("==", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(runtime.List)
@@ -807,10 +813,6 @@ namespace Ioke.Lang {
 
         public override IokeData CloneData(IokeObject obj, IokeObject m, IokeObject context) {
             return new IokeList(new SaneArrayList(list));
-        }
-
-        public override int HashCode(IokeObject self) {
-            return this.list.GetHashCode();
         }
 
         public override string ToString() {

@@ -137,6 +137,7 @@ namespace Ioke.Lang {
         public IokeObject mimicsChangedMessage;
         public IokeObject mimickedMessage;
         public IokeObject seqMessage;
+        public IokeObject hashMessage;
 
         public readonly NullObject nul;
 
@@ -257,6 +258,7 @@ namespace Ioke.Lang {
             mimicsChangedMessage = NewMessage("mimicsChanged");
             mimickedMessage = NewMessage("mimicked");
             seqMessage = NewMessage("seq");
+            hashMessage = NewMessage("hash");
 
             nul = new NullObject(this);
 

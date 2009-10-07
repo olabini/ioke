@@ -87,25 +87,31 @@ namespace Ioke.Lang {
                                                                                                     d.value.Equals(((Decimal)IokeObject.dataOf(other)).value))) ? context.runtime.True : context.runtime.False;
                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("Returns a text representation of the object", 
+            obj.RegisterMethod(runtime.NewNativeMethod("Returns a text representation of the object",
                                                        new TypeCheckingNativeMethod.WithNoArguments("asText", obj,
                                                                                                     (method, on, args, keywords, context, message) => {
                                                                                                         return runtime.NewText(on.ToString());
                                                                                                     })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns a text inspection of the object", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns a text inspection of the object",
                                                            new TypeCheckingNativeMethod.WithNoArguments("inspect", obj,
                                                                                                         (method, on, args, keywords, context, message) => {
                                                                                                             return method.runtime.NewText(Decimal.GetInspect(on));
                                                                                                         })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns a brief text inspection of the object", 
-                                                           new TypeCheckingNativeMethod.WithNoArguments("notice", obj, 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns a brief text inspection of the object",
+                                                           new TypeCheckingNativeMethod.WithNoArguments("notice", obj,
                                                                                                         (method, on, args, keywords, context, message) => {
                                                                                                             return method.runtime.NewText(Decimal.GetInspect(on));
                                                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("compares this number against the argument, true if this number is the same, otherwise false", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns a hash for the decimal number",
+                                                           new NativeMethod.WithNoArguments("hash", (method, context, message, on, outer) => {
+                                                                   outer.ArgumentsDefinition.CheckArgumentCount(context, message, on);
+                                                                   return context.runtime.NewNumber(Decimal.GetValue(on).GetHashCode());
+                                                               })));
+
+            obj.RegisterMethod(runtime.NewNativeMethod("compares this number against the argument, true if this number is the same, otherwise false",
                                                        new TypeCheckingNativeMethod("==", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(obj)
                                                                                     .WithRequiredPositional("other")
@@ -121,7 +127,7 @@ namespace Ioke.Lang {
                                                                                         }
                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("compares this number against the argument, returning -1, 0 or 1 based on which one is larger. if the argument is a rational, it will be converted into a form suitable for comparing against a decimal, and then compared. if the argument is neither a Rational nor a Decimal, it tries to call asDecimal, and if that doesn't work it returns nil.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("compares this number against the argument, returning -1, 0 or 1 based on which one is larger. if the argument is a rational, it will be converted into a form suitable for comparing against a decimal, and then compared. if the argument is neither a Rational nor a Decimal, it tries to call asDecimal, and if that doesn't work it returns nil.",
                                                        new TypeCheckingNativeMethod("<=>", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(obj)
                                                                                     .WithRequiredPositional("other")
@@ -129,7 +135,7 @@ namespace Ioke.Lang {
                                                                                     (method, on, args, keywords, context, message) => {
                                                                                         object arg = args[0];
                                                                                         IokeData data = IokeObject.dataOf(arg);
-                    
+
                                                                                         if(data is Number) {
                                                                                             return context.runtime.NewNumber(Decimal.GetValue(on).CompareTo(Number.GetValue(arg).AsBigDecimal()));
                                                                                         } else {
@@ -152,7 +158,7 @@ namespace Ioke.Lang {
                                                                                         }
                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("returns the difference between this number and the argument. if the argument is a rational, it will be converted into a form suitable for subtracting against a decimal, and then subtracted. if the argument is neither a Rational nor a Decimal, it tries to call asDecimal, and if that fails it signals a condition.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns the difference between this number and the argument. if the argument is a rational, it will be converted into a form suitable for subtracting against a decimal, and then subtracted. if the argument is neither a Rational nor a Decimal, it tries to call asDecimal, and if that fails it signals a condition.",
                                                        new TypeCheckingNativeMethod("-", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(obj)
                                                                                     .WithRequiredPositional("subtrahend")
@@ -161,7 +167,7 @@ namespace Ioke.Lang {
                                                                                         object arg = args[0];
 
                                                                                         IokeData data = IokeObject.dataOf(arg);
-                    
+
                                                                                         if(data is Number) {
                                                                                             return context.runtime.NewDecimal(Decimal.GetValue(on).subtract(Number.GetValue(arg).AsBigDecimal()));
                                                                                         } else {
@@ -173,7 +179,7 @@ namespace Ioke.Lang {
                                                                                         }
                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("returns the sum of this number and the argument. if the argument is a rational, it will be converted into a form suitable for addition against a decimal, and then added. if the argument is neither a Rational nor a Decimal, it tries to call asDecimal, and if that fails it signals a condition.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns the sum of this number and the argument. if the argument is a rational, it will be converted into a form suitable for addition against a decimal, and then added. if the argument is neither a Rational nor a Decimal, it tries to call asDecimal, and if that fails it signals a condition.",
                                                        new TypeCheckingNativeMethod("+", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(obj)
                                                                                     .WithRequiredPositional("addend")
@@ -181,7 +187,7 @@ namespace Ioke.Lang {
                                                                                     (method, on, args, keywords, context, message) => {
                                                                                         object arg = args[0];
                                                                                         IokeData data = IokeObject.dataOf(arg);
-                    
+
                                                                                         if(data is Number) {
                                                                                             return context.runtime.NewDecimal(Decimal.GetValue(on).add(Number.GetValue(arg).AsBigDecimal()));
                                                                                         } else {
@@ -193,16 +199,16 @@ namespace Ioke.Lang {
                                                                                         }
                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("returns the product of this number and the argument. if the argument is a rational, the receiver will be converted into a form suitable for multiplying against a decimal, and then multiplied. if the argument is neither a Rational nor a Decimal, it tries to call asDecimal, and if that fails it signals a condition.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns the product of this number and the argument. if the argument is a rational, the receiver will be converted into a form suitable for multiplying against a decimal, and then multiplied. if the argument is neither a Rational nor a Decimal, it tries to call asDecimal, and if that fails it signals a condition.",
                                                        new TypeCheckingNativeMethod("*", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(obj)
                                                                                     .WithRequiredPositional("multiplier")
                                                                                     .Arguments,
                                                                                     (method, on, args, keywords, context, message) => {
                                                                                         object arg = args[0];
-                                                                                        
+
                                                                                         IokeData data = IokeObject.dataOf(arg);
-                    
+
                                                                                         if(data is Number) {
                                                                                             return context.runtime.NewDecimal(Decimal.GetValue(on).multiply(Number.GetValue(arg).AsBigDecimal()));
                                                                                         } else {
@@ -214,7 +220,7 @@ namespace Ioke.Lang {
                                                                                         }
                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("returns the quotient of this number and the argument.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns the quotient of this number and the argument.",
                                                        new TypeCheckingNativeMethod("/", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(obj)
                                                                                     .WithRequiredPositional("divisor")
@@ -222,7 +228,7 @@ namespace Ioke.Lang {
                                                                                     (method, on, args, keywords, context, message) => {
                                                                                         object arg = args[0];
                                                                                         IokeData data = IokeObject.dataOf(arg);
-                    
+
                                                                                         if(data is Number) {
                                                                                             return context.runtime.NewDecimal(Decimal.GetValue(on).divide(Number.GetValue(arg).AsBigDecimal()));
                                                                                         } else {
@@ -231,10 +237,10 @@ namespace Ioke.Lang {
                                                                                             }
 
                                                                                             while(Decimal.GetValue(arg).CompareTo(BigDecimal.ZERO) == 0) {
-                                                                                                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition, 
-                                                                                                                                                             message, 
-                                                                                                                                                             context, 
-                                                                                                                                                             "Error", 
+                                                                                                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition,
+                                                                                                                                                             message,
+                                                                                                                                                             context,
+                                                                                                                                                             "Error",
                                                                                                                                                              "Arithmetic",
                                                                                                                                                              "DivisionByZero"), context).Mimic(message, context);
                                                                                                 condition.SetCell("message", message);
@@ -258,10 +264,6 @@ namespace Ioke.Lang {
                                                                                             return context.runtime.NewDecimal(result);
                                                                                         }
                                                                                     })));
-        }
-
-        public override int HashCode(IokeObject self) {
-            return this.value.GetHashCode();
         }
     }
 }

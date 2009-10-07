@@ -20,10 +20,10 @@ namespace Ioke.Lang {
             }
 
             public override void CheckMimic(IokeObject obj, IokeObject m, IokeObject context) {
-                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition, 
-                                                                             m, 
+                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition,
+                                                                             m,
                                                                              context,
-                                                                             "Error", 
+                                                                             "Error",
                                                                              "CantMimicOddball"), context).Mimic(m, context);
                 condition.SetCell("message", m);
                 condition.SetCell("context", context);
@@ -46,10 +46,10 @@ namespace Ioke.Lang {
             }
 
             public override void CheckMimic(IokeObject obj, IokeObject m, IokeObject context) {
-                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition, 
-                                                                             m, 
+                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition,
+                                                                             m,
                                                                              context,
-                                                                             "Error", 
+                                                                             "Error",
                                                                              "CantMimicOddball"), context).Mimic(m, context);
                 condition.SetCell("message", m);
                 condition.SetCell("context", context);
@@ -68,10 +68,10 @@ namespace Ioke.Lang {
             }
 
             public override void CheckMimic(IokeObject obj, IokeObject m, IokeObject context) {
-                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition, 
-                                                                             m, 
+                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition,
+                                                                             m,
                                                                              context,
-                                                                             "Error", 
+                                                                             "Error",
                                                                              "CantMimicOddball"), context).Mimic(m, context);
                 condition.SetCell("message", m);
                 condition.SetCell("context", context);
@@ -100,10 +100,10 @@ namespace Ioke.Lang {
         public virtual void CheckMimic(IokeObject obj, IokeObject m, IokeObject context) {}
 
         private void report(object self, IokeObject context, IokeObject message, string name) {
-            IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition, 
-                                                                         message, 
-                                                                         context, 
-                                                                         "Error", 
+            IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition,
+                                                                         message,
+                                                                         context,
+                                                                         "Error",
                                                                          "Invocation",
                                                                          "NotActivatable"), context).Mimic(message, context);
             condition.SetCell("message", message);
@@ -185,10 +185,10 @@ namespace Ioke.Lang {
 
         public virtual IokeObject ConvertToText(IokeObject self, IokeObject m, IokeObject context, bool signalCondition) {
             if(signalCondition) {
-                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition, 
-                                                                                   m, 
-                                                                                   context, 
-                                                                                   "Error", 
+                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition,
+                                                                                   m,
+                                                                                   context,
+                                                                                   "Error",
                                                                                    "Type",
                                                                                    "IncorrectType"), context).Mimic(m, context);
                 condition.SetCell("message", m);
@@ -208,10 +208,10 @@ namespace Ioke.Lang {
 
         public virtual IokeObject ConvertToSymbol(IokeObject self, IokeObject m, IokeObject context, bool signalCondition) {
             if(signalCondition) {
-                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition, 
-                                                                             m, 
-                                                                             context, 
-                                                                             "Error", 
+                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition,
+                                                                             m,
+                                                                             context,
+                                                                             "Error",
                                                                              "Type",
                                                                              "IncorrectType"), context).Mimic(m, context);
                 condition.SetCell("message", m);
@@ -230,10 +230,10 @@ namespace Ioke.Lang {
         }
 
         public virtual IokeObject ConvertToRegexp(IokeObject self, IokeObject m, IokeObject context) {
-            IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition, 
-                                                                         m, 
-                                                                         context, 
-                                                                         "Error", 
+            IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition,
+                                                                         m,
+                                                                         context,
+                                                                         "Error",
                                                                          "Type",
                                                                          "IncorrectType"), context).Mimic(m, context);
             condition.SetCell("message", m);
@@ -250,10 +250,10 @@ namespace Ioke.Lang {
         }
 
         public virtual IokeObject ConvertToNumber(IokeObject self, IokeObject m, IokeObject context) {
-            IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition, 
-                                                                         m, 
-                                                                         context, 
-                                                                         "Error", 
+            IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition,
+                                                                         m,
+                                                                         context,
+                                                                         "Error",
                                                                          "Type",
                                                                          "IncorrectType"), context).Mimic(m, context);
             condition.SetCell("message", m);
@@ -275,10 +275,10 @@ namespace Ioke.Lang {
                 return self;
             }
             if(signalCondition) {
-                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition, 
-                                                                                   message, 
-                                                                                   context, 
-                                                                                   "Error", 
+                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition,
+                                                                                   message,
+                                                                                   context,
+                                                                                   "Error",
                                                                                    "Type",
                                                                                    "IncorrectType"), context).Mimic(message, context);
                 condition.SetCell("message", message);
@@ -302,10 +302,10 @@ namespace Ioke.Lang {
                 return self;
             }
             if(signalCondition) {
-                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition, 
-                                                                                   message, 
-                                                                                   context, 
-                                                                                   "Error", 
+                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition,
+                                                                                   message,
+                                                                                   context,
+                                                                                   "Error",
                                                                                    "Type",
                                                                                    "IncorrectType"), context).Mimic(message, context);
                 condition.SetCell("message", message);
@@ -326,10 +326,10 @@ namespace Ioke.Lang {
 
         public virtual IokeObject ConvertToRational(IokeObject self, IokeObject m, IokeObject context, bool signalCondition) {
             if(signalCondition) {
-                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition, 
-                                                                                   m, 
-                                                                                   context, 
-                                                                                   "Error", 
+                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition,
+                                                                                   m,
+                                                                                   context,
+                                                                                   "Error",
                                                                                    "Type",
                                                                                    "IncorrectType"), context).Mimic(m, context);
                 condition.SetCell("message", m);
@@ -350,10 +350,10 @@ namespace Ioke.Lang {
 
         public virtual IokeObject ConvertToDecimal(IokeObject self, IokeObject m, IokeObject context, bool signalCondition) {
             if(signalCondition) {
-                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition, 
-                                                                             m, 
-                                                                             context, 
-                                                                             "Error", 
+                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition,
+                                                                             m,
+                                                                             context,
+                                                                             "Error",
                                                                              "Type",
                                                                              "IncorrectType"), context).Mimic(m, context);
                 condition.SetCell("message", m);
@@ -385,11 +385,15 @@ namespace Ioke.Lang {
                 bool result = IokeObject.IsObjectTrue(((Message)IokeObject.dataOf(self.runtime.eqMessage)).SendTo(self.runtime.eqMessage, self.runtime.Ground, self, self.runtime.CreateMessage(Message.Wrap(IokeObject.As(other, self)))));
                 return result;
             }
-
         }
 
-        public virtual int HashCode(IokeObject self) {
-            return System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(self.Cells);
+        public int HashCode(IokeObject self) {
+            object cell = self.FindCell(self.runtime.hashMessage, self.runtime.Ground, "hash");
+            if(cell == self.runtime.nul) {
+                return System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(self.Cells);
+            } else {
+                return Number.ExtractInt(((Message)IokeObject.dataOf(self.runtime.hashMessage)).SendTo(self.runtime.hashMessage, self.runtime.Ground, self), self.runtime.hashMessage, self.runtime.Ground);
+            }
         }
     }
 }

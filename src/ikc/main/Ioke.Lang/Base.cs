@@ -23,7 +23,7 @@ namespace Ioke.Lang {
                         if(cutoff != current) {
                             foreach(IokeObject o in current.GetMimics()) toVisit.Add(o);
                         }
-                                
+
                         var mso = current.Cells;
 
                         foreach(string s in mso.Keys) {
@@ -41,7 +41,7 @@ namespace Ioke.Lang {
                         }
                     }
                 }
-                        
+
                 return runtime.NewList(names);
             } else {
                 var mso = IokeObject.As(on, context).Cells;
@@ -106,7 +106,7 @@ namespace Ioke.Lang {
 
         public static object AssignCell(IokeObject context, IokeObject message, object on, object first, object val) {
             string name = Text.GetText(((Message)IokeObject.dataOf(context.runtime.asText)).SendTo(context.runtime.asText, context, first));
-            
+
             if(val is IokeObject) {
                 if((IokeObject.dataOf(val) is Named) && ((Named)IokeObject.dataOf(val)).Name == null) {
                     ((Named)IokeObject.dataOf(val)).Name = name;
@@ -143,7 +143,7 @@ namespace Ioke.Lang {
         public static void Init(IokeObject obj) {
             obj.Kind = "Base";
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("expects two arguments, the first unevaluated, the second evaluated. assigns the result of evaluating the second argument in the context of the caller, and assigns this result to the name provided by the first argument. the first argument remains unevaluated. the result of the assignment is the value assigned to the name. if the second argument is a method-like object and it's name is not set, that name will be set to the name of the cell. TODO: add setf documentation here.", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("expects two arguments, the first unevaluated, the second evaluated. assigns the result of evaluating the second argument in the context of the caller, and assigns this result to the name provided by the first argument. the first argument remains unevaluated. the result of the assignment is the value assigned to the name. if the second argument is a method-like object and it's name is not set, that name will be set to the name of the cell. TODO: add setf documentation here.",
                                                            new NativeMethod("=", DefaultArgumentsDefinition.builder()
                                                                             .WithRequiredPositionalUnevaluated("place")
                                                                             .WithRequiredPositional("value")
@@ -167,7 +167,7 @@ namespace Ioke.Lang {
                                                                                             }
                                                                                         }
                                                                                     }
-                    
+
                                                                                     return value;
                                                                                 } else {
                                                                                     string newName = name + "=";
@@ -178,13 +178,13 @@ namespace Ioke.Lang {
                                                                                 }
                                                                             })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("will return a new derivation of the receiving object. Might throw exceptions if the object is an oddball object.", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("will return a new derivation of the receiving object. Might throw exceptions if the object is an oddball object.",
                                                            new NativeMethod.WithNoArguments("mimic", (method, context, message, on, outer) => {
                                                                    outer.ArgumentsDefinition.CheckArgumentCount(context, message, on);
                                                                    return IokeObject.As(on, context).Mimic(message, context);
                                                                })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("expects one evaluated text or symbol argument that names the cell to set, sets this cell to the result of evaluating the second argument, and returns the value set.", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("expects one evaluated text or symbol argument that names the cell to set, sets this cell to the result of evaluating the second argument, and returns the value set.",
                                                            new NativeMethod("cell=",
                                                                             DefaultArgumentsDefinition
                                                                             .builder()
@@ -196,7 +196,7 @@ namespace Ioke.Lang {
                                                                                 outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, args, new SaneDictionary<string, object>());
                                                                                 return AssignCell(context, message, on, args[0], args[1]);
                                                                             })));
-        obj.RegisterMethod(obj.runtime.NewNativeMethod("expects one evaluated text or symbol argument and returns the cell that matches that name, without activating even if it's activatable.", 
+        obj.RegisterMethod(obj.runtime.NewNativeMethod("expects one evaluated text or symbol argument and returns the cell that matches that name, without activating even if it's activatable.",
                                                        new NativeMethod("cell", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositional("cellName")
                                                                         .Arguments,
@@ -206,8 +206,14 @@ namespace Ioke.Lang {
                                                                                 string name = Text.GetText(((Message)IokeObject.dataOf(context.runtime.asText)).SendTo(context.runtime.asText, context, args[0]));
                                                                                 return IokeObject.GetCell(on, message, context, name);
                                                                         })));
-        
-        obj.RegisterMethod(obj.runtime.NewNativeMethod("returns true if the left hand side is equal to the right hand side. exactly what this means depend on the object. the default behavior of Ioke objects is to only be equal if they are the same instance.", 
+
+        obj.RegisterMethod(obj.runtime.NewNativeMethod("returns a hash for the object",
+                                                       new NativeMethod.WithNoArguments("hash", (method, context, message, on, outer) => {
+                                                               outer.ArgumentsDefinition.CheckArgumentCount(context, message, on);
+                                                               return context.runtime.NewNumber(System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(IokeObject.As(on, context).Cells));
+                                                           })));
+
+        obj.RegisterMethod(obj.runtime.NewNativeMethod("returns true if the left hand side is equal to the right hand side. exactly what this means depend on the object. the default behavior of Ioke objects is to only be equal if they are the same instance.",
                                                        new NativeMethod("==", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositional("other")
                                                                         .Arguments,
@@ -216,7 +222,7 @@ namespace Ioke.Lang {
                                                                             outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, args, new SaneDictionary<string, object>());
                                                                             return (IokeObject.As(on, context).Cells == IokeObject.As(args[0], context).Cells) ? context.runtime.True : context.runtime.False;
                                                                         })));
-        obj.RegisterMethod(obj.runtime.NewNativeMethod("expects one evaluated text or symbol argument and returns a boolean indicating whether such a cell is reachable from this point.", 
+        obj.RegisterMethod(obj.runtime.NewNativeMethod("expects one evaluated text or symbol argument and returns a boolean indicating whether such a cell is reachable from this point.",
                                                        new NativeMethod("cell?", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositional("cellName")
                                                                         .Arguments,
@@ -228,21 +234,21 @@ namespace Ioke.Lang {
                                                                             return IokeObject.FindCell(on, message, context, name) != context.runtime.nul ? context.runtime.True : context.runtime.False;
                                                                         })));
 
-        obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the documentation text of the object called on. anything can have a documentation text - this text will initially be nil.", 
+        obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the documentation text of the object called on. anything can have a documentation text - this text will initially be nil.",
                                                        new NativeMethod.WithNoArguments("documentation",
                                                                                         (method, context, message, on, outer) => {
                                                                                             outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, new SaneArrayList(), new SaneDictionary<string, object>());
                                                                                             return Documentation(context, message, on);
                                                                                         })));
 
-        obj.RegisterMethod(obj.runtime.NewNativeMethod("returns this object", 
+        obj.RegisterMethod(obj.runtime.NewNativeMethod("returns this object",
                                                        new NativeMethod.WithNoArguments("identity",
                                                                                         (method, context, message, on, outer) => {
                                                                                             outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, new SaneArrayList(), new SaneDictionary<string, object>());
                                                                                             return on;
                                                                                         })));
 
-        obj.RegisterMethod(obj.runtime.NewNativeMethod("sets the documentation string for a specific object.", 
+        obj.RegisterMethod(obj.runtime.NewNativeMethod("sets the documentation string for a specific object.",
                                                        new TypeCheckingNativeMethod("documentation=", TypeCheckingArgumentsDefinition.builder()
                                                                                     .WithRequiredPositional("text").WhichMustMimic(obj.runtime.Text).OrBeNil()
                                                                                     .Arguments,
@@ -250,7 +256,7 @@ namespace Ioke.Lang {
                                                                                         return SetDocumentation(context, message, on, args[0]);
                                                                                     })));
 
-        obj.RegisterMethod(obj.runtime.NewNativeMethod("expects one evaluated text or symbol argument and returns a boolean indicating whether this cell is owned by the receiver or not. the assumption is that the cell should exist. if it doesn't exist, a NoSuchCell condition will be signalled.", 
+        obj.RegisterMethod(obj.runtime.NewNativeMethod("expects one evaluated text or symbol argument and returns a boolean indicating whether this cell is owned by the receiver or not. the assumption is that the cell should exist. if it doesn't exist, a NoSuchCell condition will be signalled.",
                                                        new NativeMethod("cellOwner?", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositional("cellName")
                                                                         .Arguments,
@@ -261,7 +267,7 @@ namespace Ioke.Lang {
                                                                             return (IokeObject.FindPlace(on, message, context, name) == on) ? context.runtime.True : context.runtime.False;
                                                                         })));
 
-        obj.RegisterMethod(obj.runtime.NewNativeMethod("expects one evaluated text or symbol argument and returns the closest object that defines such a cell. if it doesn't exist, a NoSuchCell condition will be signalled.", 
+        obj.RegisterMethod(obj.runtime.NewNativeMethod("expects one evaluated text or symbol argument and returns the closest object that defines such a cell. if it doesn't exist, a NoSuchCell condition will be signalled.",
                                                        new NativeMethod("cellOwner", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositional("cellName")
                                                                         .Arguments,
@@ -276,7 +282,7 @@ namespace Ioke.Lang {
                                                                             return result;
                                                                         })));
 
-        obj.RegisterMethod(obj.runtime.NewNativeMethod("expects one evaluated text or symbol argument and removes that cell from the current receiver. if the current receiver has no such object, signals a condition. note that if another cell with that name is available in the mimic chain, it will still be accessible after calling this method. the method returns the receiver.", 
+        obj.RegisterMethod(obj.runtime.NewNativeMethod("expects one evaluated text or symbol argument and removes that cell from the current receiver. if the current receiver has no such object, signals a condition. note that if another cell with that name is available in the mimic chain, it will still be accessible after calling this method. the method returns the receiver.",
                                                        new NativeMethod("removeCell!", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositional("cellName")
                                                                         .Arguments,
@@ -288,7 +294,7 @@ namespace Ioke.Lang {
                                                                             return on;
                                                                         })));
 
-        obj.RegisterMethod(obj.runtime.NewNativeMethod("expects one evaluated text or symbol argument and makes that cell undefined in the current receiver. what that means is that from now on it will look like this cell doesn't exist in the receiver or any of its mimics. the cell will not show up if you call cellNames on the receiver or any of the receivers mimics. the undefined status can be removed by doing removeCell! on the correct cell name. a cell name that doesn't exist can still be undefined. the method returns the receiver.", 
+        obj.RegisterMethod(obj.runtime.NewNativeMethod("expects one evaluated text or symbol argument and makes that cell undefined in the current receiver. what that means is that from now on it will look like this cell doesn't exist in the receiver or any of its mimics. the cell will not show up if you call cellNames on the receiver or any of the receivers mimics. the undefined status can be removed by doing removeCell! on the correct cell name. a cell name that doesn't exist can still be undefined. the method returns the receiver.",
                                                        new NativeMethod("undefineCell!", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositional("cellName")
                                                                         .Arguments,
@@ -300,7 +306,7 @@ namespace Ioke.Lang {
                                                                             return on;
                                                                         })));
 
-        obj.RegisterMethod(obj.runtime.NewNativeMethod("takes one optional evaluated boolean argument, which defaults to false. if false, this method returns a list of the cell names of the receiver. if true, it returns the cell names of this object and all it's mimics recursively.", 
+        obj.RegisterMethod(obj.runtime.NewNativeMethod("takes one optional evaluated boolean argument, which defaults to false. if false, this method returns a list of the cell names of the receiver. if true, it returns the cell names of this object and all it's mimics recursively.",
                                                        new NativeMethod("cellNames", DefaultArgumentsDefinition.builder()
                                                                         .WithOptionalPositional("includeMimics", "false")
                                                                         .WithOptionalPositional("cutoff", "nil")
@@ -311,7 +317,7 @@ namespace Ioke.Lang {
                                                                             return CellNames(context, message, on, args.Count > 0 && IokeObject.IsObjectTrue(args[0]), (args.Count > 1) ? args[1] : null);
                                                                         })));
 
-        obj.RegisterMethod(obj.runtime.NewNativeMethod("takes one optional evaluated boolean argument, which defaults to false. if false, this method returns a dict of the cell names and values of the receiver. if true, it returns the cell names and values of this object and all it's mimics recursively.", 
+        obj.RegisterMethod(obj.runtime.NewNativeMethod("takes one optional evaluated boolean argument, which defaults to false. if false, this method returns a dict of the cell names and values of the receiver. if true, it returns the cell names and values of this object and all it's mimics recursively.",
                                                        new NativeMethod("cells", DefaultArgumentsDefinition.builder()
                                                                         .WithOptionalPositional("includeMimics", "false")
                                                                         .Arguments,
