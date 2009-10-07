@@ -36,7 +36,7 @@ public class Base {
                     if(cutoff != current) {
                         toVisit.addAll(current.getMimics());
                     }
-                                
+
                     Map<String, Object> mso = current.getCells();
 
                     for(String s : mso.keySet()) {
@@ -54,7 +54,7 @@ public class Base {
                     }
                 }
             }
-                        
+
             return runtime.newList(names);
         } else {
             Map<String, Object> mso = IokeObject.as(on, context).getCells();
@@ -87,7 +87,7 @@ public class Base {
                 if(!visited.containsKey(current)) {
                     visited.put(current, null);
                     toVisit.addAll(current.getMimics());
-                                
+
                     Map<String, Object> mso = current.getCells();
 
                     for(String s : mso.keySet()) {
@@ -188,7 +188,7 @@ public class Base {
                 }
             }));
 
-        base.registerMethod(base.runtime.newNativeMethod("will return a new derivation of the receiving object. Might throw exceptions if the object is an oddball object.", 
+        base.registerMethod(base.runtime.newNativeMethod("will return a new derivation of the receiving object. Might throw exceptions if the object is an oddball object.",
                                                        new NativeMethod.WithNoArguments("mimic") {
                                                            @Override
                                                            public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
@@ -231,7 +231,7 @@ public class Base {
                             }
                         }
 
-                    
+
                         return value;
                     } else {
                         String newName = name + "=";
@@ -434,7 +434,7 @@ public class Base {
                     List<Object> args = new ArrayList<Object>();
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
                     return assignCell(context, message, on, args.get(0), args.get(1));
-                    
+
                 }
             }));
 
@@ -455,6 +455,15 @@ public class Base {
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
                     Object other = args.get(0);
                     return (IokeObject.as(on, context).getCells() == IokeObject.as(other, context).getCells()) ? context.runtime._true : context.runtime._false;
+                }
+            }));
+
+        base.registerMethod(base.runtime.newNativeMethod("returns a hash for the object", new NativeMethod.WithNoArguments("hash") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+
+                    return context.runtime.newNumber(System.identityHashCode(IokeObject.getCells(on, context)));
                 }
             }));
     }
