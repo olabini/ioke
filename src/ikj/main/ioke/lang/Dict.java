@@ -45,7 +45,31 @@ public class Dict extends IokeData {
         final Runtime runtime = obj.runtime;
 
         obj.setKind("Dict");
-        obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Enumerable"), null), runtime.nul, runtime.nul);
+        obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Sequenced"), null), runtime.nul, runtime.nul);
+
+        obj.registerMethod(runtime.newNativeMethod("returns true if the left hand side dictionary is equal to the right hand side dictionary.", new TypeCheckingNativeMethod("==") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
+                    .builder()
+                    .receiverMustMimic(runtime.dict)
+                    .withRequiredPositional("other")
+                    .getArguments();
+
+                @Override
+                public TypeCheckingArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+                    Object other = args.get(0);
+                    return ((other instanceof IokeObject) &&
+                            (IokeObject.data(other) instanceof Dict) &&
+                            ((Dict)IokeObject.data(on)).dict.equals(((Dict)IokeObject.data(other)).dict)) ? context.runtime._true : context.runtime._false;
+                }
+            }));
+
+
         obj.registerMethod(runtime.newNativeMethod("takes one argument, that should be a default value, and returns a new mimic of the receiver, with the default value for that new dict set to the argument", new TypeCheckingNativeMethod("withDefault") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
@@ -202,6 +226,18 @@ public class Dict extends IokeData {
                 }
             }));
 
+
+        obj.registerMethod(obj.runtime.newNativeMethod("returns a new sequence to iterate over this dictionary", new TypeCheckingNativeMethod.WithNoArguments("seq", runtime.dict) {
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    IokeObject obj = method.runtime.keyValueIteratorSequence.allocateCopy(null, null);
+                    obj.mimicsWithoutCheck(method.runtime.keyValueIteratorSequence);
+                    obj.setData(new Sequence.KeyValueIteratorSequence(Dict.getMap(on).entrySet().iterator()));
+                    return obj;
+                }
+            }));
+
+
         obj.registerMethod(runtime.newNativeMethod("takes either one or two or three arguments. if one argument is given, it should be a message chain that will be sent to each object in the dict. the result will be thrown away. if two arguments are given, the first is an unevaluated name that will be set to each of the entries in the dict in succession, and then the second argument will be evaluated in a scope with that argument in it. if three arguments is given, the first one is an unevaluated name that will be set to the index of each element, and the other two arguments are the name of the argument for the value, and the actual code. the code will evaluate in a lexical context, and if the argument name is available outside the context, it will be shadowed. the method will return the dict. the entries yielded will be mimics of Pair.", new NativeMethod("each") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
@@ -220,10 +256,13 @@ public class Dict extends IokeData {
                     getArguments().checkArgumentCount(context, message, on);
 
                     on = runtime.dict.convertToThis(on, message, context);
-                    
+
                     Runtime runtime = context.runtime;
                     Map<Object, Object> ls = Dict.getMap(on);
                     switch(message.getArgumentCount()) {
+                    case 0: {
+                        return ((Message)IokeObject.data(runtime.seqMessage)).sendTo(runtime.seqMessage, context, on);
+                    }
                     case 1: {
                         IokeObject code = IokeObject.as(message.getArguments().get(0), context);
 
@@ -277,13 +316,6 @@ public class Dict extends IokeData {
 
     public IokeData cloneData(IokeObject obj, IokeObject m, IokeObject context) {
         return new Dict(new HashMap<Object, Object>(dict));
-    }
-
-    @Override
-    public boolean isEqualTo(IokeObject self, Object other) {
-        return ((other instanceof IokeObject) && 
-                (IokeObject.data(other) instanceof Dict) 
-                && this.dict.equals(((Dict)IokeObject.data(other)).dict));
     }
 
     @Override

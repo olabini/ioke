@@ -7,6 +7,17 @@ namespace Ioke.Lang {
     using Ioke.Lang.Util;
 
     public class DefaultArgumentsDefinition {
+        public static int IndexOf(IList objs, object obj) {
+            int i = 0;
+            foreach(object o in objs) {
+                if(o == obj) {
+                    return i;
+                }
+                i++;
+            }
+            return -1;
+        }
+
         public class Argument {
             string name;
             public Argument(string name) {
@@ -142,7 +153,7 @@ namespace Ioke.Lang {
 
             if(rest != null) {
                 any = true;
-                if(restUneval) { 
+                if(restUneval) {
                     sb.Append("+[").Append(rest).Append("], ");
                 } else {
                     sb.Append("+").Append(rest).Append(", ");
@@ -170,11 +181,11 @@ namespace Ioke.Lang {
             if(argCount < min || (max != -1 && argCount > (max+keySize))) {
                 int finalArgCount = argCount;
                 if(argCount < min) {
-                    IokeObject condition = IokeObject.As(IokeObject.GetCellChain(runtime.Condition, 
-                                                                                 message, 
-                                                                                 context, 
-                                                                                 "Error", 
-                                                                                 "Invocation", 
+                    IokeObject condition = IokeObject.As(IokeObject.GetCellChain(runtime.Condition,
+                                                                                 message,
+                                                                                 context,
+                                                                                 "Error",
+                                                                                 "Invocation",
                                                                                  "TooFewArguments"), context).Mimic(message, context);
                     condition.SetCell("message", message);
                     condition.SetCell("context", context);
@@ -183,11 +194,11 @@ namespace Ioke.Lang {
 
                     runtime.ErrorCondition(condition);
                 } else {
-                    IokeObject condition = IokeObject.As(IokeObject.GetCellChain(runtime.Condition, 
-                                                                                 message, 
-                                                                                 context, 
-                                                                                 "Error", 
-                                                                                 "Invocation", 
+                    IokeObject condition = IokeObject.As(IokeObject.GetCellChain(runtime.Condition,
+                                                                                 message,
+                                                                                 context,
+                                                                                 "Error",
+                                                                                 "Invocation",
                                                                                  "TooManyArguments"), context).Mimic(message, context);
                     condition.SetCell("message", message);
                     condition.SetCell("context", context);
@@ -232,17 +243,17 @@ namespace Ioke.Lang {
                             givenKeywords[Text.GetText(IokeObject.ConvertToText(me.Key, message, context, true)) + ":"] = me.Value;
                         }
                     } else {
-                        IokeObject condition = IokeObject.As(IokeObject.GetCellChain(runtime.Condition, 
-                                                                                     message, 
-                                                                                     context, 
-                                                                                     "Error", 
-                                                                                     "Invocation", 
+                        IokeObject condition = IokeObject.As(IokeObject.GetCellChain(runtime.Condition,
+                                                                                     message,
+                                                                                     context,
+                                                                                     "Error",
+                                                                                     "Invocation",
                                                                                      "NotSpreadable"), context).Mimic(message, context);
                         condition.SetCell("message", message);
                         condition.SetCell("context", context);
                         condition.SetCell("receiver", on);
                         condition.SetCell("given", result);
-                
+
                         IList outp = IokeList.GetList(runtime.WithRestartReturningArguments(()=>{runtime.ErrorCondition(condition);},
                                                                                             context,
                                                                                             new Restart.DefaultValuesGivingRestart("ignoreArgument", runtime.nil, 0),
@@ -261,17 +272,17 @@ namespace Ioke.Lang {
             while(argCount < min || (max != -1 && argCount > max)) {
                 int finalArgCount = argCount;
                 if(argCount < min) {
-                    IokeObject condition = IokeObject.As(IokeObject.GetCellChain(runtime.Condition, 
-                                                                                 message, 
-                                                                                 context, 
-                                                                                 "Error", 
-                                                                                 "Invocation", 
+                    IokeObject condition = IokeObject.As(IokeObject.GetCellChain(runtime.Condition,
+                                                                                 message,
+                                                                                 context,
+                                                                                 "Error",
+                                                                                 "Invocation",
                                                                                  "TooFewArguments"), context).Mimic(message, context);
                     condition.SetCell("message", message);
                     condition.SetCell("context", context);
                     condition.SetCell("receiver", on);
                     condition.SetCell("missing", runtime.NewNumber(min-argCount));
-                
+
                     IList newArguments = IokeList.GetList(runtime.WithRestartReturningArguments(()=>{runtime.ErrorCondition(condition);},
                                                                                                 context,
                                                                                                 new NewArgumentGivingRestart("provideExtraArguments"),
@@ -280,11 +291,11 @@ namespace Ioke.Lang {
                     foreach(object ox in newArguments) argumentsWithoutKeywords.Add(ox);
                     argCount += newArguments.Count;
                 } else {
-                    IokeObject condition = IokeObject.As(IokeObject.GetCellChain(runtime.Condition, 
-                                                                                 message, 
-                                                                                 context, 
-                                                                                 "Error", 
-                                                                                 "Invocation", 
+                    IokeObject condition = IokeObject.As(IokeObject.GetCellChain(runtime.Condition,
+                                                                                 message,
+                                                                                 context,
+                                                                                 "Error",
+                                                                                 "Invocation",
                                                                                  "TooManyArguments"), context).Mimic(message, context);
                     condition.SetCell("message", message);
                     condition.SetCell("context", context);
@@ -300,11 +311,11 @@ namespace Ioke.Lang {
             foreach(string k in keywords) intersection.Remove(k);
 
             if(krest == null && intersection.Count > 0) {
-                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(runtime.Condition, 
-                                                                             message, 
-                                                                             context, 
-                                                                             "Error", 
-                                                                             "Invocation", 
+                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(runtime.Condition,
+                                                                             message,
+                                                                             context,
+                                                                             "Error",
+                                                                             "Invocation",
                                                                              "MismatchedKeywords"), context).Mimic(message, context);
                 condition.SetCell("message", message);
                 condition.SetCell("context", context);
@@ -358,7 +369,7 @@ namespace Ioke.Lang {
             int ix = 0;
             for(int i=0, j=this.arguments.Count;i<j;i++) {
                 Argument a = this.arguments[i];
-            
+
                 if(a is KeywordArgument) {
                     string nm = a.Name + ":";
                     object result = null;
@@ -392,7 +403,7 @@ namespace Ioke.Lang {
                     object result = given;
                     krests[runtime.GetSymbol(s.Substring(0, s.Length-1))] = result;
                 }
-            
+
                 locals.SetCell(krest, runtime.NewDict(krests));
             }
 
@@ -451,20 +462,20 @@ namespace Ioke.Lang {
                     arguments.Add(new OptionalArgument(name, m.next));
                 } else {
                     if(hadOptional) {
-                        int index = args.IndexOf(obj) + start;
+                        int index = IndexOf(args, obj) + start;
 
-                        IokeObject condition = IokeObject.As(IokeObject.GetCellChain(runtime.Condition, 
-                                                                                     message, 
-                                                                                     context, 
-                                                                                     "Error", 
-                                                                                     "Invocation", 
+                        IokeObject condition = IokeObject.As(IokeObject.GetCellChain(runtime.Condition,
+                                                                                     message,
+                                                                                     context,
+                                                                                     "Error",
+                                                                                     "Invocation",
                                                                                      "ArgumentWithoutDefaultValue"), context).Mimic(message, context);
                         condition.SetCell("message", message);
                         condition.SetCell("context", context);
                         condition.SetCell("receiver", on);
                         condition.SetCell("argumentName", runtime.GetSymbol(m.Name));
                         condition.SetCell("index", runtime.NewNumber(index));
-                
+
                         IList newValue = IokeList.GetList(runtime.WithRestartReturningArguments(()=>{runtime.ErrorCondition(condition);},
                                                                                                 context,
                                                                                                 new NewArgumentGivingRestart("provideDefaultValue", "defaultValue"),

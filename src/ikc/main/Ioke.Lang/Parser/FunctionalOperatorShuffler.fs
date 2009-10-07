@@ -63,7 +63,7 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
                     | ( :? IokeObject as arg) :: [] ->
                         match (arg, message) with
                             | Detach ->
-                                match expressions.IndexOf(arg) with
+                                match SaneArrayList.IndexOf(expressions, arg) with
                                     | -1 -> ()
                                     | index -> expressions.[index] <- message
                                 message.Arguments.Clear()
@@ -247,7 +247,7 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
 
     let mutable stack : Level list = []
 
-    let (pool : Level array) = Array.zero_create OP_LEVEL_MAX
+    let (pool : Level array) = Array.zeroCreate OP_LEVEL_MAX
 
     let mutable currentLevel = 0
     
@@ -372,7 +372,7 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
     let handle_unary_prefix_message (precedence, msgArgCount) (msg : IokeObject) =
         match (msgArgCount, Message.GetNext(msg), Message.GetName(msg), Message.GetPrev(msg)) with
             | (_, null, _, _) -> (precedence, msgArgCount)
-            | (0, _, (":" | "'" | "`"), _) | (0, _, "-", null) ->
+            | (0, _, (":" | "'" | "`" | "''"), _) | (0, _, "-", null) ->
                 let arg = Message.GetNext(msg)
                 Message.SetNext(msg, Message.GetNext(arg))
                 Message.SetNext(IokeObject.As(arg, null), null)
@@ -383,7 +383,7 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
 
     let actual_detaching msgArgCount (msg : IokeObject) =
         let head = find_head msg
-        if not(head = msg) then
+        if not(Object.ReferenceEquals(head, msg)) then
             let argPart = Message.DeepCopy(head)
             match Message.GetPrev(msg) with
                 | null -> ()
@@ -470,7 +470,7 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
             Message.SetNext(attaching, Message.GetNext(last))
             Message.SetNext(msg, Message.GetNext(last))
             
-            if last <> msg then
+            if not(Object.ReferenceEquals(last, msg)) then
                 Message.SetNext(last, null)
         else
             Message.SetNext(attaching, Message.GetNext(msg))

@@ -137,14 +137,6 @@ public class Number extends IokeData {
     }
 
     @Override
-    public boolean isEqualTo(IokeObject self, Object other) {
-        return ((other instanceof IokeObject) && 
-                (IokeObject.data(other) instanceof Number) 
-                && (((kind || ((Number)IokeObject.data(other)).kind) ? self == other :
-                     this.value.equals(((Number)IokeObject.data(other)).value))));
-    }
-
-    @Override
     public int hashCode(IokeObject self) {
         return this.value.hashCode();
     }
@@ -189,6 +181,31 @@ public class Number extends IokeData {
         infinity.setKind("Number Infinity");
         number.registerCell("Infinity", infinity);
         runtime.infinity = infinity;
+
+        number.registerMethod(runtime.newNativeMethod("returns true if the left hand side number is equal to the right hand side number.", new TypeCheckingNativeMethod("==") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
+                    .builder()
+                    .receiverMustMimic(runtime.number)
+                    .withRequiredPositional("other")
+                    .getArguments();
+
+                @Override
+                public TypeCheckingArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+                    Number d = (Number)IokeObject.data(on);
+                    Object other = args.get(0);
+                    return ((other instanceof IokeObject) &&
+                            (IokeObject.data(other) instanceof Number)
+                            && (((d.kind || ((Number)IokeObject.data(other)).kind) ? on == other :
+                                 d.value.equals(((Number)IokeObject.data(other)).value)))) ? context.runtime._true : context.runtime._false;
+                }
+            }));
+
         
         rational.registerMethod(runtime.newNativeMethod("compares this number against the argument, returning -1, 0 or 1 based on which one is larger. if the argument is a decimal, the receiver will be converted into a form suitable for comparing against a decimal, and then compared - it's not specified whether this will actually call Decimal#<=> or not. if the argument is neither a Rational nor a Decimal, it tries to call asRational, and if that doesn't work it returns nil.", new TypeCheckingNativeMethod("<=>") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition

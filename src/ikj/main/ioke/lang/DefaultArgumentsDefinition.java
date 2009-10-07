@@ -459,6 +459,17 @@ public class DefaultArgumentsDefinition {
         return new DefaultArgumentsDefinition(new ArrayList<Argument>(), new ArrayList<String>(), null, null, 0, 0, false);
     }
 
+    public static int indexOf(List<Object> objs, Object obj) {
+        int i = 0;
+        for(Object o : objs) {
+            if(o == obj) {
+                return i;
+            }
+            i++;
+        }
+        return -1;
+    }
+
     public static DefaultArgumentsDefinition createFrom(List<Object> args, int start, int len, final IokeObject message, final Object on, final IokeObject context) throws ControlFlow {
         final Runtime runtime = context.runtime;
         List<Argument> arguments = new ArrayList<Argument>();
@@ -503,7 +514,7 @@ public class DefaultArgumentsDefinition {
                 arguments.add(new OptionalArgument(name, m.next));
             } else {
                 if(hadOptional) {
-                    int index = args.indexOf(obj) + start;
+                    int index = indexOf(args, obj) + start;
 
 
                     final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 

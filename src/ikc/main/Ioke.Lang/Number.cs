@@ -88,13 +88,6 @@ namespace Ioke.Lang {
         
             return IntValue(number).intValue();
         }
-
-        public override bool IsEqualTo(IokeObject self, object other) {
-            return ((other is IokeObject) && 
-                    (IokeObject.dataOf(other) is Number) 
-                    && (((kind || ((Number)IokeObject.dataOf(other)).kind) ? self == other :
-                         this.value.Equals(((Number)IokeObject.dataOf(other)).value))));
-        }
         
         public override int HashCode(IokeObject self) {
             return this.value.GetHashCode();
@@ -151,6 +144,22 @@ namespace Ioke.Lang {
             infinity.Kind = "Number Infinity";
             number.RegisterCell("Infinity", infinity);
             runtime.Infinity = infinity;
+
+            number.RegisterMethod(runtime.NewNativeMethod("returns true if the left hand side number is equal to the right hand side number.",
+                                                       new TypeCheckingNativeMethod("==", TypeCheckingArgumentsDefinition.builder()
+                                                                                    .ReceiverMustMimic(runtime.Number)
+                                                                                    .WithRequiredPositional("other")
+                                                                                    .Arguments,
+                                                                                    (method, on, args, keywords, context, message) => {
+                                                                                        Number d = (Number)IokeObject.dataOf(on);
+                                                                                        object other = args[0];
+
+                                                                                        return ((other is IokeObject) &&
+                                                                                                (IokeObject.dataOf(other) is Number)
+                                                                                                && (((d.kind || ((Number)IokeObject.dataOf(other)).kind) ? on == other :
+                                                                                                     d.value.Equals(((Number)IokeObject.dataOf(other)).value)))) ? context.runtime.True : context.runtime.False;
+                                                                                    })));
+
 
             rational.RegisterMethod(runtime.NewNativeMethod("compares this number against the argument, returning -1, 0 or 1 based on which one is larger. if the argument is a decimal, the receiver will be converted into a form suitable for comparing against a decimal, and then compared - it's not specified whether this will actually call Decimal#<=> or not. if the argument is neither a Rational nor a Decimal, it tries to call asRational, and if that doesn't work it returns nil.", 
                                                             new TypeCheckingNativeMethod("<=>", TypeCheckingArgumentsDefinition.builder()

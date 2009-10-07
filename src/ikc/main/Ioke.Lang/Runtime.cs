@@ -30,7 +30,7 @@ namespace Ioke.Lang {
 
         public IOperatorShufflerFactory operatorShufflerFactory;
         public Globber globber = new Ioke.Lang.Util.DefaultGlobber();
-        
+
         public TextWriter Out;
         public TextWriter Error;
         public TextReader In;
@@ -74,7 +74,11 @@ namespace Ioke.Lang {
         public IokeObject Arity;
         public IokeObject LexicalMacro;
         public IokeObject DateTime;
-        
+        public IokeObject Sequence;
+        public IokeObject IteratorSequence;
+        public IokeObject Iterator2Sequence;
+        public IokeObject KeyValueIteratorSequence;
+
         public IokeObject asText;
         public IokeObject opShuffle;
         public IokeObject printlnMessage;
@@ -132,14 +136,15 @@ namespace Ioke.Lang {
         public IokeObject mimicRemovedMessage;
         public IokeObject mimicsChangedMessage;
         public IokeObject mimickedMessage;
-        
+        public IokeObject seqMessage;
+
         public readonly NullObject nul;
 
         public IokeObject Integer = null;
         public IokeObject Decimal = null;
         public IokeObject Ratio = null;
         public IokeObject Infinity = null;
-        
+
         public Runtime(IOperatorShufflerFactory shuffler) : this(shuffler, Console.Out, Console.In, Console.Error) {
         }
 
@@ -189,6 +194,10 @@ namespace Ioke.Lang {
             Arity = new IokeObject(this, "Arity provides information about the arguments needed to activate a value.", new Arity((DefaultArgumentsDefinition) null));
             LexicalMacro = new IokeObject(this, "LexicalMacro is the instance all lexical macros in the system are derived from.", new LexicalMacro((string)null));
             DateTime = new IokeObject(this, "A DateTime represents the current date and time in a particular time zone.", new DateTime(0));
+            Sequence = new IokeObject(this, "The root mimic of all the sequences in the system.");
+            IteratorSequence = new IokeObject(this, "The root mimic of all the iterator sequences in the system.", new Sequence.IteratorSequence(null));
+            Iterator2Sequence = new IokeObject(this, "The root mimic of all the iterator sequences in the system.", new Sequence.Iterator2Sequence(null));
+            KeyValueIteratorSequence = new IokeObject(this, "The root mimic of all the key-value-iterator sequences in the system.", new Sequence.KeyValueIteratorSequence(null));
 
             asText = NewMessage("asText");
             opShuffle = NewMessage("shuffleOperators");
@@ -230,7 +239,7 @@ namespace Ioke.Lang {
             rshMessage = NewMessage(">>");
             eqqMessage = NewMessage("===");
             asDecimalMessage = NewMessage("asDecimal");
-            ltMessage = NewMessage("<"); 
+            ltMessage = NewMessage("<");
             lteMessage = NewMessage("<=");
             gtMessage = NewMessage(">");
             gteMessage = NewMessage(">=");
@@ -247,6 +256,7 @@ namespace Ioke.Lang {
             mimicRemovedMessage = NewMessage("mimicRemoved");
             mimicsChangedMessage = NewMessage("mimicsChanged");
             mimickedMessage = NewMessage("mimicked");
+            seqMessage = NewMessage("seq");
 
             nul = new NullObject(this);
 
@@ -267,7 +277,7 @@ namespace Ioke.Lang {
             False.Init();
             Text.Init();
             Symbol.Init();
-            Number.Init(); 
+            Number.Init();
             Range.Init();
             Pair.Init();
             DateTime.Init();
@@ -343,9 +353,14 @@ namespace Ioke.Lang {
 
             Ioke.Lang.Restart.Init(this.Restart);
             this.Restart.MimicsWithoutCheck(this.Origin);
-            
+
             Reflector.Init(this);
             Hook.Init(this);
+
+            Ioke.Lang.Sequence.Init(this.Sequence);
+            this.IteratorSequence.Init();
+            this.Iterator2Sequence.Init();
+            this.KeyValueIteratorSequence.Init();
 
             AddBuiltinScript("benchmark", new Builtin.Delegate((runtime, context, message) => {
                         return Ioke.Lang.Extensions.Benchmark.Benchmark.Create(runtime);
@@ -354,7 +369,7 @@ namespace Ioke.Lang {
             AddBuiltinScript("readline", new Builtin.Delegate((runtime, context, message) => {
                         return Ioke.Lang.Extensions.Readline.Readline.Create(runtime);
                     }));
-        
+
             try {
                 EvaluateString("use(\"builtin/A05_conditions\")", Message, Ground);
                 EvaluateString("use(\"builtin/A10_defaultBehavior\")", Message, Ground);
@@ -406,11 +421,11 @@ namespace Ioke.Lang {
                 ((IokeSystem)IokeObject.dataOf(System)).CurrentWorkingDirectory = value;
             }
         }
-        
+
         public void AddArgument(string arg) {
             ((IokeSystem)IokeObject.dataOf(System)).AddArgument(arg);
         }
-        
+
         public IokeObject NewText(string text) {
             IokeObject obj = this.Text.AllocateCopy(null, null);
             obj.MimicsWithoutCheck(this.Text);
@@ -431,7 +446,7 @@ namespace Ioke.Lang {
             obj.Data = new IokeList(list);
             return obj;
         }
-        
+
         public IokeObject NewList(IList list, IokeObject orig) {
             IokeObject obj = orig.AllocateCopy(null, null);
             obj.MimicsWithoutCheck(orig);
@@ -513,7 +528,7 @@ namespace Ioke.Lang {
         public IokeObject NewFromOrigin() {
             return this.Origin.Mimic(null, null);
         }
-        
+
         public IokeObject NewRange(IokeObject from, IokeObject to, bool inclusive, bool inverted) {
             IokeObject obj = this.Range.AllocateCopy(null, null);
             obj.MimicsWithoutCheck(this.Range);
@@ -600,7 +615,7 @@ namespace Ioke.Lang {
         }
 
         private IDictionary<string, Builtin> builtins = new SaneDictionary<string, Builtin>();
-    
+
         public void AddBuiltinScript(string name, Builtin builtin) {
             builtins[name] = builtin;
         }
@@ -682,10 +697,10 @@ namespace Ioke.Lang {
         }
 
         public void ReportNativeException(Exception e, IokeObject message, IokeObject context) {
-            IokeObject condition = IokeObject.As(IokeObject.GetCellChain(this.Condition, 
-                                                                         message, 
-                                                                         context, 
-                                                                         "Error", 
+            IokeObject condition = IokeObject.As(IokeObject.GetCellChain(this.Condition,
+                                                                         message,
+                                                                         context,
+                                                                         "Error",
                                                                          "NativeException"), context).Mimic(message, context);
             condition.SetCell("message", message);
             condition.SetCell("context", context);
@@ -718,7 +733,7 @@ namespace Ioke.Lang {
                 obj.MimicsWithoutCheck(this.Symbol);
                 symbolTable[name] = obj;
                 return obj;
-            }            
+            }
         }
 
         public void TearDown() {
@@ -751,7 +766,7 @@ namespace Ioke.Lang {
         public object WithRestartReturningArguments(RunnableWithControlFlow code, IokeObject context, params Restart.NativeRestart[] restarts) {
             IList<RestartInfo> rrs = new SaneList<RestartInfo>();
             BindIndex index = GetBindIndex();
-        
+
             foreach(Restart.NativeRestart rjr in restarts) {
                 IokeObject rr = IokeObject.As(((Message)IokeObject.dataOf(this.mimicMessage)).SendTo(this.mimicMessage, context, this.Restart), context);
                 IokeObject.SetCell(rr, "name", GetSymbol(rjr.Name), context);
@@ -763,7 +778,7 @@ namespace Ioke.Lang {
 
                 IokeObject.SetCell(rr, "name", GetSymbol(rjr.Name), context);
                 IokeObject.SetCell(rr, "argumentNames", NewList(args), context);
-            
+
                 string report = rjr.Report();
                 if(report != null) {
                     IokeObject.SetCell(rr, "report", EvaluateString("fn(r, \"" + report + "\")", this.Message, this.Ground), context);
@@ -785,9 +800,9 @@ namespace Ioke.Lang {
                     return result;
                 } else {
                     throw e;
-                } 
+                }
             } finally {
-                UnregisterRestarts(rrs); 
+                UnregisterRestarts(rrs);
             }
         }
 
@@ -809,9 +824,9 @@ namespace Ioke.Lang {
                     return;
                 } else {
                     throw e;
-                } 
+                }
             } finally {
-                UnregisterRestarts(rrs); 
+                UnregisterRestarts(rrs);
             }
         }
 
@@ -953,11 +968,11 @@ namespace Ioke.Lang {
                 return new BindIndex(this.row, this.col+1);
             }
             public bool LessThan(BindIndex other) {
-                return this.row < other.row || 
+                return this.row < other.row ||
                     (this.row == other.row && this.col < other.col);
             }
             public bool GreaterThan(BindIndex other) {
-                return this.row > other.row || 
+                return this.row > other.row ||
                     (this.row == other.row && this.col > other.col);
             }
 
@@ -969,10 +984,10 @@ namespace Ioke.Lang {
         public BindIndex GetBindIndex() {
             return new BindIndex(Rescues.Count);
         }
-    
+
         public IList<HandlerInfo> FindActiveHandlersFor(IokeObject condition, BindIndex stopIndex) {
             var result = new SaneList<HandlerInfo>();
-        
+
             foreach(IList<HandlerInfo> lrp in Handlers) {
                 foreach(HandlerInfo rp in lrp) {
                     if(rp.index.LessThan(stopIndex)) {

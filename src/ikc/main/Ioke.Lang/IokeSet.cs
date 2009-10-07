@@ -17,15 +17,28 @@ namespace Ioke.Lang {
             Runtime runtime = obj.runtime;
 
             obj.Kind = "Set";
-            obj.Mimics(IokeObject.As(runtime.Mixins.GetCell(null, null, "Enumerable"), null), runtime.nul, runtime.nul);
+            obj.Mimics(IokeObject.As(runtime.Mixins.GetCell(null, null, "Sequenced"), null), runtime.nul, runtime.nul);
 
-            obj.RegisterMethod(runtime.NewNativeMethod("Returns a text inspection of the object", 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns true if the left hand side set is equal to the right hand side set.",
+                                                       new TypeCheckingNativeMethod("==", TypeCheckingArgumentsDefinition.builder()
+                                                                                    .ReceiverMustMimic(runtime.Set)
+                                                                                    .WithRequiredPositional("other")
+                                                                                    .Arguments,
+                                                                                    (method, on, args, keywords, context, message) => {
+                                                                                        IokeSet d = (IokeSet)IokeObject.dataOf(on);
+                                                                                        object other = args[0];
+                                                                                        return ((other is IokeObject) &&
+                                                                                                (IokeObject.dataOf(other) is IokeSet)
+                                                                                                && d._set.Equals(((IokeSet)IokeObject.dataOf(other))._set)) ? context.runtime.True : context.runtime.False;
+                                                                                    })));
+
+            obj.RegisterMethod(runtime.NewNativeMethod("Returns a text inspection of the object",
                                                        new TypeCheckingNativeMethod.WithNoArguments("inspect", obj,
                                                                                                     (method, on, args, keywords, context, message) => {
                                                                                                         return method.runtime.NewText(IokeSet.GetInspect(on));
                                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("Converts this set to use identity semantics, and then returns it.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("Converts this set to use identity semantics, and then returns it.",
                                                        new TypeCheckingNativeMethod.WithNoArguments("withIdentitySemantics!", obj,
                                                                                                     (method, on, args, keywords, context, message) => {
                                                                                                         IokeSet ss = (IokeSet)IokeObject.dataOf(on);
@@ -33,19 +46,19 @@ namespace Ioke.Lang {
                                                                                                         return on;
                                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("Returns a brief text inspection of the object", 
+            obj.RegisterMethod(runtime.NewNativeMethod("Returns a brief text inspection of the object",
                                                        new TypeCheckingNativeMethod.WithNoArguments("notice", obj,
                                                                                                     (method, on, args, keywords, context, message) => {
                                                                                                         return method.runtime.NewText(IokeSet.GetNotice(on));
                                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("returns true if this set is empty, false otherwise", 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns true if this set is empty, false otherwise",
                                                        new TypeCheckingNativeMethod.WithNoArguments("empty?", obj,
                                                                                                     (method, on, args, keywords, context, message) => {
                                                                                                         return ((IokeSet)IokeObject.dataOf(on)).Set.Count == 0 ? context.runtime.True : context.runtime.False;
                                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("Adds the argument to this set, if it's not already in the set. Returns the set after adding the object.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("Adds the argument to this set, if it's not already in the set. Returns the set after adding the object.",
                                                        new TypeCheckingNativeMethod("<<", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(obj)
                                                                                     .WithRequiredPositional("value")
@@ -55,7 +68,7 @@ namespace Ioke.Lang {
                                                                                         return on;
                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("Removes the argument from the set, if it's in the set. Returns the set after removing the object.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("Removes the argument from the set, if it's in the set. Returns the set after removing the object.",
                                                        new TypeCheckingNativeMethod("remove!", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(obj)
                                                                                     .WithRequiredPositional("value")
@@ -65,7 +78,7 @@ namespace Ioke.Lang {
                                                                                         return on;
                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("returns a new set that contains the receivers elements and the elements of the set sent in as the argument.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns a new set that contains the receivers elements and the elements of the set sent in as the argument.",
                                                        new TypeCheckingNativeMethod("+", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(obj)
                                                                                     .WithRequiredPositional("otherSet").WhichMustMimic(obj)
@@ -77,7 +90,7 @@ namespace Ioke.Lang {
                                                                                         return context.runtime.NewSet(newSet);
                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("returns true if the receiver includes the evaluated argument, otherwise false", 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns true if the receiver includes the evaluated argument, otherwise false",
                                                        new TypeCheckingNativeMethod("include?", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(obj)
                                                                                     .WithRequiredPositional("object")
@@ -86,7 +99,17 @@ namespace Ioke.Lang {
                                                                                         return ((IokeSet)IokeObject.dataOf(on)).Set.Contains(args[0]) ? context.runtime.True : context.runtime.False;
                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("takes either one, two or three arguments. if one argument is given, it should be a message chain that will be sent to each object in the set. the result will be thrown away. if two arguments are given, the first is an unevaluated name that will be set to each of the values in the set in succession, and then the second argument will be evaluated in a scope with that argument in it. if three arguments is given, the first one is an unevaluated name that will be set to the index of each element, and the other two arguments are the name of the argument for the value, and the actual code. the code will evaluate in a lexical context, and if the argument name is available outside the context, it will be shadowed. the method will return the set. the iteration order is not defined.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns a new sequence to iterate over this set",
+                                                       new TypeCheckingNativeMethod.WithNoArguments("seq", obj,
+                                                                                                    (method, on, args, keywords, context, message) => {
+                                                                                                        IokeObject ob = method.runtime.IteratorSequence.AllocateCopy(null, null);
+                                                                                                        ob.MimicsWithoutCheck(method.runtime.IteratorSequence);
+                                                                                                        ob.Data = new Sequence.IteratorSequence(((IokeSet)IokeObject.dataOf(on))._set.GetEnumerator());
+                                                                                                        return ob;
+                                                                                                    })));
+
+
+            obj.RegisterMethod(runtime.NewNativeMethod("takes either one, two or three arguments. if one argument is given, it should be a message chain that will be sent to each object in the set. the result will be thrown away. if two arguments are given, the first is an unevaluated name that will be set to each of the values in the set in succession, and then the second argument will be evaluated in a scope with that argument in it. if three arguments is given, the first one is an unevaluated name that will be set to the index of each element, and the other two arguments are the name of the argument for the value, and the actual code. the code will evaluate in a lexical context, and if the argument name is available outside the context, it will be shadowed. the method will return the set. the iteration order is not defined.",
                                                        new NativeMethod("each", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositionalUnevaluated("indexOrArgOrCode")
                                                                         .WithOptionalPositionalUnevaluated("argOrCode")
@@ -99,6 +122,9 @@ namespace Ioke.Lang {
                                                                             var _set = ((IokeSet)IokeObject.dataOf(onAsSet))._set;
 
                                                                             switch(message.Arguments.Count) {
+                                                                            case 0: {
+                                                                                return ((Message)IokeObject.dataOf(runtime.seqMessage)).SendTo(runtime.seqMessage, context, on);
+                                                                            }
                                                                             case 1: {
                                                                                 IokeObject code = IokeObject.As(message.Arguments[0], context);
 
@@ -146,12 +172,6 @@ namespace Ioke.Lang {
             return new IokeSet(new SaneHashSet<object>(_set));
         }
 
-        public override bool IsEqualTo(IokeObject self, object other) {
-            return ((other is IokeObject) && 
-                    (IokeObject.dataOf(other) is IokeSet) 
-                    && this._set.Equals(((IokeSet)IokeObject.dataOf(other))._set));
-        }
-
         public override int HashCode(IokeObject self) {
             return this._set.GetHashCode();
         }
@@ -163,7 +183,7 @@ namespace Ioke.Lang {
         public override string ToString(IokeObject obj) {
             return _set.ToString();
         }
-        
+
         public static string GetInspect(object on) {
             return ((IokeSet)(IokeObject.dataOf(on))).Inspect(on);
         }

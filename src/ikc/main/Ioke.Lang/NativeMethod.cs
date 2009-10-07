@@ -5,7 +5,7 @@ namespace Ioke.Lang {
 
     using Ioke.Lang.Util;
 
-    public class NativeMethod : Method {
+    public class NativeMethod : Method, CanRun {
         public delegate object RawActivate (IokeObject method, IokeObject context, IokeObject message, object on, NativeMethod outer);
         public delegate object ArgsActivate (IokeObject self, object on, IList args, IDictionary<string, object> keywords, IokeObject context, IokeObject message);
 

@@ -128,13 +128,13 @@ describe("Java Objects",
     it("should call java.lang.Object#equals",
       x = ioke:lang:test:EqualsTest new
       y = ioke:lang:test:EqualsTest new
-      
+
       x should == y
 
       x theProperty = "oh noes"
 
       x should not == y
-      
+
       y theProperty = "oh noes"
 
       x should == y
@@ -1928,7 +1928,7 @@ describe("Java Objects",
       i = java:util:ArrayList new
       i add("foo")
       i add("bar")
-      
+
       ;; this test might look weird. the reason is that ArrayList doesn't implement its own toString.
       ;; that implementation is in a super class. the problem is that the Class#toString method will be found
       ;; first, so this will cause an invocation problem currently. that shouldn't happen.
@@ -1992,31 +1992,31 @@ describe("Java Objects",
 
     it("should coerce Text correctly to String",
       ioke:lang:test:Constructors new("foo") getData asText should == "Constructors(String)"
-    )      
+    )
 
     it("should coerce Symbol correctly to String",
       ioke:lang:test:Constructors new(:foo) getData asText should == "Constructors(String)"
-    )      
+    )
 
     it("should coerce Rational correctly to int",
       ioke:lang:test:Constructors new(4242) getData asText should == "Constructors(int)"
-    )      
+    )
 
     it("should coerce Decimal correctly to double",
       ioke:lang:test:Constructors new(4242.42) getData asText should == "Constructors(double)"
-    )      
+    )
 
     it("should coerce true correctly to boolean",
       ioke:lang:test:Constructors new(true) getData asText should == "Constructors(boolean)"
-    )      
+    )
 
     it("should coerce false correctly to boolean",
       ioke:lang:test:Constructors new(false) getData asText should == "Constructors(boolean)"
-    )      
+    )
 
     it("should coerce nil correctly to string",
       ioke:lang:test:Constructors new(nil) getData asText should == "Constructors(null: String)"
-    )      
+    )
 
     it("should coerce something else correctly to Object",
       ioke:lang:test:Constructors new(1..40) getData asText should == "Constructors(Object)"
@@ -2598,9 +2598,9 @@ describe("Java Objects",
       it("should be possible to coerce a List into an array",
         x = java:lang:Object[] from(["blah", "blurg", "blerg", nil])
         x[0] should == "blah"
-        x[1] should == "blurg" 
+        x[1] should == "blurg"
         x[2] should == "blerg"
-        x[3] should be nil 
+        x[3] should be nil
       )
 
       it("should be possible to convert an array into a List",

@@ -6,6 +6,7 @@ package ioke.lang;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.HashMap;
 import java.util.Set;
 
 import org.jregex.Matcher;
@@ -67,6 +68,31 @@ public class Regexp extends IokeData {
         regexpMatch.mimicsWithoutCheck(runtime.origin);
         regexpMatch.init();
         obj.registerCell("Match", regexpMatch);
+
+        obj.registerMethod(runtime.newNativeMethod("returns true if the left hand side pattern is equal to the right hand side pattern.", new TypeCheckingNativeMethod("==") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
+                    .builder()
+                    .receiverMustMimic(runtime.regexp)
+                    .withRequiredPositional("other")
+                    .getArguments();
+
+                @Override
+                public TypeCheckingArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+                    Object other = args.get(0);
+                    return (((other instanceof IokeObject) &&
+                             (IokeObject.data(other) instanceof Regexp) &&
+                             ((on == context.runtime.regexp || other == context.runtime.regexp) ? on == other :
+                              (((Regexp)IokeObject.data(on)).pattern.equals(((Regexp)IokeObject.data(other)).pattern) &&
+                               ((Regexp)IokeObject.data(on)).flags.equals(((Regexp)IokeObject.data(other)).flags))))) ?
+                        context.runtime._true : context.runtime._false;
+                }
+            }));
 
         obj.registerMethod(runtime.newNativeMethod("Returns the pattern use for this regular expression", new TypeCheckingNativeMethod.WithNoArguments("pattern", runtime.regexp) {
                 @Override
@@ -216,15 +242,6 @@ public class Regexp extends IokeData {
 
     public String notice(Object obj) throws ControlFlow {
         return "#/" + pattern + "/" + flags;
-    }
-
-    @Override
-    public boolean isEqualTo(IokeObject self, Object other) {
-        return ((other instanceof IokeObject) && 
-                (IokeObject.data(other) instanceof Regexp) &&
-                ((self == self.runtime.regexp || other == self.runtime.regexp) ? self == other :
-                 (this.pattern.equals(((Regexp)IokeObject.data(other)).pattern) &&
-                  this.flags.equals(((Regexp)IokeObject.data(other)).flags))));
     }
 
     @Override

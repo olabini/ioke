@@ -73,6 +73,20 @@ namespace Ioke.Lang {
             obj.Kind = "Number Decimal";
             runtime.Decimal = obj;
 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns true if the left hand side decimal is equal to the right hand side decimal.",
+                                                       new TypeCheckingNativeMethod("==", TypeCheckingArgumentsDefinition.builder()
+                                                                                    .ReceiverMustMimic(runtime.Decimal)
+                                                                                    .WithRequiredPositional("other")
+                                                                                    .Arguments,
+                                                                                    (method, on, args, keywords, context, message) => {
+                                                                                        Decimal d = (Decimal)IokeObject.dataOf(on);
+                                                                                        object other = args[0];
+                                                                                        return ((other is IokeObject) &&
+                                                                                                (IokeObject.dataOf(other) is Decimal)
+                                                                                                && ((on == context.runtime.Decimal && other == on) ||
+                                                                                                    d.value.Equals(((Decimal)IokeObject.dataOf(other)).value))) ? context.runtime.True : context.runtime.False;
+                                                                                    })));
+
             obj.RegisterMethod(runtime.NewNativeMethod("Returns a text representation of the object", 
                                                        new TypeCheckingNativeMethod.WithNoArguments("asText", obj,
                                                                                                     (method, on, args, keywords, context, message) => {
@@ -244,13 +258,6 @@ namespace Ioke.Lang {
                                                                                             return context.runtime.NewDecimal(result);
                                                                                         }
                                                                                     })));
-        }
-
-        public override bool IsEqualTo(IokeObject self, object other) {
-            return ((other is IokeObject) && 
-                    (IokeObject.dataOf(other) is Decimal) 
-                    && ((self == self.runtime.Decimal && other == self) ||
-                        this.value.Equals(((Decimal)IokeObject.dataOf(other)).value)));
         }
 
         public override int HashCode(IokeObject self) {

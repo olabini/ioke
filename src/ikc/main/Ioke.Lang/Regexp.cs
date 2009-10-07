@@ -55,6 +55,22 @@ namespace Ioke.Lang {
             regexpMatch.Init();
             obj.RegisterCell("Match", regexpMatch);
 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns true if the left hand side pattern is equal to the right hand side pattern.",
+                                                       new TypeCheckingNativeMethod("==", TypeCheckingArgumentsDefinition.builder()
+                                                                                    .ReceiverMustMimic(runtime.Regexp)
+                                                                                    .WithRequiredPositional("other")
+                                                                                    .Arguments,
+                                                                                    (method, on, args, keywords, context, message) => {
+                                                                                        Regexp d = (Regexp)IokeObject.dataOf(on);
+                                                                                        object other = args[0];
+
+                                                                                        return ((other is IokeObject) &&
+                                                                                                (IokeObject.dataOf(other) is Regexp) &&
+                                                                                                ((on == context.runtime.Regexp || other == context.runtime.Regexp) ? on == other :
+                                                                                                 (d.pattern.Equals(((Regexp)IokeObject.dataOf(other)).pattern) &&
+                                                                                                  d.flags.Equals(((Regexp)IokeObject.dataOf(other)).flags)))) ? context.runtime.True : context.runtime.False;
+                                                                                    })));
+
             obj.RegisterMethod(runtime.NewNativeMethod("Returns the pattern use for this regular expression", 
                                                        new TypeCheckingNativeMethod.WithNoArguments("pattern", obj,
                                                                                                     (method, on, args, keywords, context, message) => {
@@ -166,14 +182,6 @@ namespace Ioke.Lang {
 
         public override IokeObject ConvertToRegexp(IokeObject self, IokeObject m, IokeObject context) {
             return self;
-        }
-
-        public override bool IsEqualTo(IokeObject self, object other) {
-            return ((other is IokeObject) && 
-                    (IokeObject.dataOf(other) is Regexp) &&
-                    ((self == self.runtime.Regexp || other == self.runtime.Regexp) ? self == other :
-                     (this.pattern.Equals(((Regexp)IokeObject.dataOf(other)).pattern) &&
-                      this.flags.Equals(((Regexp)IokeObject.dataOf(other)).flags))));
         }
 
         public override int HashCode(IokeObject self) {
