@@ -19,9 +19,11 @@ Number Rational do(=== = generateMatchMethod(==))
 Number Decimal  do(=== = generateMatchMethod(==))
 
 Number Integer odd? = method(
+  "Returns true if this number is odd, false otherwise",
   (@ % 2) != 0
 )
 
 Number Integer even? = method(
+  "Returns true if this number is even, false otherwise",
   (@ % 2) == 0
 )
