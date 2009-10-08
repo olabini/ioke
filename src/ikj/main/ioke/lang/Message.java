@@ -75,6 +75,11 @@ public class Message extends IokeData {
         return ((Message)IokeObject.data(message)).type == Type.TERMINATOR;
     }
 
+    public static boolean isFirstOnLine(Object message) {
+        Message m = (Message)IokeObject.data(message);
+        return m.prev == null || isTerminator(m.prev);
+    }
+
     public static void cacheValue(Object message, Object cachedValue) throws ControlFlow {
         ((Message)IokeObject.data(message)).cached = cachedValue;
     }
@@ -96,7 +101,7 @@ public class Message extends IokeData {
         copySourceLocation(message, copy);
         Message orgMsg = (Message)IokeObject.data(message);
         Message copyMsg = (Message)IokeObject.data(copy);
-        
+
         copyMsg.type = orgMsg.type;
         copyMsg.cached = orgMsg.cached;
 
@@ -143,7 +148,7 @@ public class Message extends IokeData {
     public static String getStackTraceText(Object _message) throws ControlFlow {
         IokeObject message = IokeObject.as(_message, null);
         IokeObject start = message;
-        
+
         while(prev(start) != null && prev(start).getLine() == message.getLine()) {
             start = prev(start);
         }
@@ -154,8 +159,8 @@ public class Message extends IokeData {
         if(ix > -1) {
             ix--;
         }
-        
-        return String.format(" %-48.48s %s", 
+
+        return String.format(" %-48.48s %s",
                              (ix == -1 ? s1 : s1.substring(0,ix)),
                              "[" + message.getFile() + ":" + message.getLine() + ":" + message.getPosition() + "]");
     }
@@ -178,14 +183,14 @@ public class Message extends IokeData {
                     return context.runtime.newList(((Message)IokeObject.data(on)).arguments);
                 }
             }));
-        
+
         message.registerMethod(message.runtime.newNativeMethod("Returns a formatted code representation of the object", new TypeCheckingNativeMethod.WithNoArguments("formattedCode", message) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return method.runtime.newText(Message.formattedCode(IokeObject.as(on, context), 0, context));
                 }
             }));
-        
+
         message.registerMethod(message.runtime.newNativeMethod("returns the name of this message", new TypeCheckingNativeMethod.WithNoArguments("name", message) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
@@ -273,7 +278,7 @@ public class Message extends IokeData {
                     getArguments().checkArgumentCount(context, message, on);
 
                     Object onAsMessage = context.runtime.message.convertToThis(on, message, context);
-                    
+
                     Runtime runtime = context.runtime;
                     switch(message.getArgumentCount()) {
                     case 1: {
@@ -337,13 +342,13 @@ public class Message extends IokeData {
                     Object o = args.get(0);
                     String name = null;
                     if(IokeObject.data(o) instanceof Symbol) {
-                        name = Symbol.getText(o); 
+                        name = Symbol.getText(o);
                     } else if(IokeObject.data(o) instanceof Text) {
                         name = Text.getText(o);
                     } else {
                         name = Text.getText(IokeObject.convertToText(o, message, context, true));
                     }
-                    
+
                     Message.setName(IokeObject.as(on, context), name);
                     return o;
                 }
@@ -373,7 +378,7 @@ public class Message extends IokeData {
                     return o;
                 }
             }));
-        
+
         message.registerMethod(message.runtime.newNativeMethod("sets the prev pointer of the message and then returns that pointer", new TypeCheckingNativeMethod("prev=") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
@@ -398,21 +403,21 @@ public class Message extends IokeData {
                     return o;
                 }
             }));
-        
+
         message.registerMethod(message.runtime.newNativeMethod("returns the file name where this message is written", new TypeCheckingNativeMethod.WithNoArguments("filename", message) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return method.runtime.newText(((Message)IokeObject.data(on)).file);
                 }
             }));
-        
+
         message.registerMethod(message.runtime.newNativeMethod("returns the line where this message is written", new TypeCheckingNativeMethod.WithNoArguments("line", message) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return method.runtime.newNumber(((Message)IokeObject.data(on)).line);
                 }
             }));
-        
+
         message.registerMethod(message.runtime.newNativeMethod("returns the position on the line where this message is written", new TypeCheckingNativeMethod.WithNoArguments("position", message) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
@@ -431,7 +436,7 @@ public class Message extends IokeData {
                     }
                 }
             }));
-        
+
         message.registerMethod(message.runtime.newNativeMethod("returns the last message in the chain", new TypeCheckingNativeMethod.WithNoArguments("last", message) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
@@ -442,7 +447,7 @@ public class Message extends IokeData {
                     return current;
                 }
             }));
-        
+
         message.registerMethod(message.runtime.newNativeMethod("returns the previous message in the chain, or nil", new TypeCheckingNativeMethod.WithNoArguments("prev", message) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
@@ -454,14 +459,14 @@ public class Message extends IokeData {
                     }
                 }
             }));
-        
+
         message.registerMethod(message.runtime.newNativeMethod("returns true when this message is a terminator, otherwise false", new TypeCheckingNativeMethod.WithNoArguments("terminator?", message) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return Message.isTerminator(on) ? context.runtime._true : context.runtime._false;
                 }
             }));
-        
+
         message.registerMethod(message.runtime.newNativeMethod("returns a string that describes this message as a stack trace elemtn", new TypeCheckingNativeMethod.WithNoArguments("asStackTraceText", message) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
@@ -514,7 +519,7 @@ public class Message extends IokeData {
                     return ((Message)IokeObject.data(msg)).sendTo(msg, realContext, realReceiver);
                 }
             }));
-        
+
         message.registerMethod(message.runtime.newNativeMethod("evaluates the argument and adds it to the argument list of this message. it then returns the receiving message.", new NativeMethod("appendArgument") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
@@ -639,7 +644,7 @@ public class Message extends IokeData {
                     return ((Message)IokeObject.data(msg)).evaluateCompleteWithReceiver(msg, messageGround, messageGround, receiver);
                 }
             }));
-        
+
         message.registerMethod(message.runtime.newNativeMethod("takes one index, and a context and returns the evaluated argument at that index.", new NativeMethod("evalArgAt") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
@@ -660,7 +665,7 @@ public class Message extends IokeData {
                     return ((Message)IokeObject.data(_m)).getEvaluatedArgument(_m, index, newContext);
                 }
             }));
-        
+
         message.registerMethod(message.runtime.newNativeMethod("Will rearrange this message and all submessages to follow regular C style operator precedence rules. Will use Message OperatorTable to guide this operation. The operation is mutating, but should not change anything if done twice.", new NativeMethod.WithNoArguments("shuffleOperators") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
@@ -679,7 +684,7 @@ public class Message extends IokeData {
                                     }
                                 }
                             } while((n = Message.next(n)) != null);
-                        
+
                             levels.nextMessage(expressions);
                         }
                     }
@@ -1178,7 +1183,7 @@ public class Message extends IokeData {
         StringBuilder base = new StringBuilder();
 
         currentCode(base);
-        
+
         if(next != null) {
             if(this.type != Type.TERMINATOR) {
                 base.append(" ");
@@ -1194,7 +1199,7 @@ public class Message extends IokeData {
         StringBuilder base = new StringBuilder();
 
         currentFormattedCode(base, indent, ctx);
-        
+
         if(next != null) {
             if(this.type != Type.TERMINATOR) {
                 base.append(" ");
@@ -1241,7 +1246,7 @@ public class Message extends IokeData {
         StringBuilder base = new StringBuilder();
 
         currentCode(base);
-        
+
         return base.toString();
     }
 
@@ -1347,12 +1352,12 @@ public class Message extends IokeData {
     public String codeSequenceTo(String name) throws ControlFlow {
         if(this.name.equals(name)) {
             return "";
-        } 
+        }
 
         StringBuilder base = new StringBuilder();
 
         currentCode(base);
-        
+
         if(next != null && !next.getName().equals(name)) {
             base.append(" ");
             base.append(Message.codeSequenceTo(next, name));

@@ -18,7 +18,7 @@ type Level =
     { mutable message    : IokeObject;
       mutable level      : LevelType;
       mutable precedence : int; }
-    
+
 type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:IokeObject) =
     let OP_LEVEL_MAX = 32
 
@@ -31,7 +31,7 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
             | {level = Arg}    -> Message.AddArg(level.message, msg)
             | {level = New}    -> level.message <- msg
             | {level = Unused} -> ()
-            
+
     let awaitingFirstArg level msg precedence =
         level.level <- Arg
         level.message <- msg
@@ -86,13 +86,13 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
         ("*",   2);
         ("/",   2);
         ("%",   2);
-        
+
         ("+",   3);
         ("-",   3);
-        
+
         ("<<",  4);
         (">>",  4);
-        
+
         ("<=>",  5);
         (">",   5);
         ("<",   5);
@@ -102,18 +102,18 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
         ("≥",  5);
         ("<>",  5);
         ("<>>",  5);
-        
+
         ("==",  6);
         ("!=",  6);
         ("≠",  6);
         ("===",  6);
         ("=~",  6);
         ("!~",  6);
-        
+
         ("&",   7);
-        
+
         ("^",   8);
-        
+
         ("|",   9);
 
         ("&&",  10);
@@ -121,7 +121,7 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
 
         ("||",  11);
         ("?|",  11);
-        
+
         ("..",  12);
         ("...",  12);
         ("=>",  12);
@@ -180,10 +180,10 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
         ("||=",  13);
         ("<<=", 13);
         (">>=", 13);
-        
+
         ("<-",  14);
 
-        ("return", 14);  
+        ("return", 14);
         ("import", 14)
         ]
 
@@ -233,7 +233,7 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
             let result = creator runtime
             opTable.SetCell(name, runtime.NewDict(result))
             result
-            
+
         match IokeObject.As(opTable.FindCell(message, context, name), null) with
             | x when x = (runtime.nul :> IokeObject) -> create_new ()
             | operators ->
@@ -250,7 +250,7 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
     let (pool : Level array) = Array.zeroCreate OP_LEVEL_MAX
 
     let mutable currentLevel = 0
-    
+
     let reset () =
         currentLevel <- 1
         for i = 0 to OP_LEVEL_MAX - 1 do
@@ -325,7 +325,7 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
                             helper ()
                         | _ -> ()
         helper ()
-    
+
 
     let attachAndReplace self msg =
         attach self msg
@@ -340,7 +340,7 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
         currentLevel <- currentLevel + 1
         awaitingFirstArg level msg precedence
         stack <- level :: stack
-        
+
     let detach (msg : IokeObject) =
         let brackets = runtime.NewMessage("")
         Message.CopySourceLocation(msg, brackets)
@@ -364,15 +364,15 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
                 else
                     current
 
-    let find_last = find_direction (fun next -> Message.GetNext(next)) 
-    let find_head = find_direction (fun head -> Message.GetPrev(head)) 
+    let find_last = find_direction (fun next -> Message.GetNext(next))
+    let find_head = find_direction (fun head -> Message.GetPrev(head))
 
     // : "str" bar   becomes   :("str") bar
     // -foo bar      becomes   -(foo) bar
     let handle_unary_prefix_message (precedence, msgArgCount) (msg : IokeObject) =
-        match (msgArgCount, Message.GetNext(msg), Message.GetName(msg), Message.GetPrev(msg)) with
+        match (msgArgCount, Message.GetNext(msg), Message.GetName(msg), Message.IsFirstOnLine(msg)) with
             | (_, null, _, _) -> (precedence, msgArgCount)
-            | (0, _, (":" | "'" | "`" | "''"), _) | (0, _, "-", null) ->
+            | (0, _, (":" | "'" | "`" | "''"), _) | (0, _, "-", true) ->
                 let arg = Message.GetNext(msg)
                 Message.SetNext(msg, Message.GetNext(arg))
                 Message.SetNext(IokeObject.As(arg, null), null)
@@ -422,11 +422,11 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
     let restructure_assignment_operation msgArgCount (msg : IokeObject) messageName (expressions : IList<IokeObject>) argCountForOp =
         let currentLevel = CurrentLevel ()
         let attaching = currentLevel.message
-            
+
         if attaching = null then
-            let condition = IokeObject.As(IokeObject.GetCellChain(runtime.Condition, 
-                                                                  message, 
-                                                                  context, 
+            let condition = IokeObject.As(IokeObject.GetCellChain(runtime.Condition,
+                                                                  message,
+                                                                  context,
                                                                   [|"Error";
                                                                    "Parser";
                                                                    "OpShuffle"|]), context).Mimic(message, context)
@@ -435,7 +435,7 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
             condition.SetCell("receiver", context)
             condition.SetCell("text", runtime.NewText("Can't create trinary expression without lvalue"))
             runtime.ErrorCondition(condition)
-                
+
 
         // a = b .
         let copyOfMessage = Message.Copy(attaching)
@@ -446,7 +446,7 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
         attaching.Arguments.Clear()
         // a = b .  ->  a(a) = b .
         Message.AddArg(attaching, copyOfMessage)
-            
+
         let expectedArgs = argCountForOp
 
         // a(a) = b .  ->  =(a) = b .
@@ -457,7 +457,7 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
         // =(a) = b .
         // =(a) = or =("a") = .
         let mn = Message.GetNext(msg)
-            
+
         if expectedArgs > 1 then
             // =(a) = b c .  ->  =(a, b c .) = b c .
             Message.AddArg(attaching, mn)
@@ -465,18 +465,18 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
             // process the value (b c d) later  (=(a, b c d) = b c d .)
             if Message.GetNext(msg) <> null && not(Message.IsTerminator(Message.GetNext(msg))) then
                 expressions.Insert(0, Message.GetNext(msg))
-                
+
             let last = find_last msg;
             Message.SetNext(attaching, Message.GetNext(last))
             Message.SetNext(msg, Message.GetNext(last))
-            
+
             if not(Object.ReferenceEquals(last, msg)) then
                 Message.SetNext(last, null)
         else
             Message.SetNext(attaching, Message.GetNext(msg))
 
     let is_assignment_operation argCountForOp msgArgCount msg =
-        argCountForOp <> -1 && (msgArgCount = 0 || Message.typeOf(msg) = Message.Type.DETACH) && not((Message.GetNext(msg) <> null) && Message.GetName(Message.GetNext(msg)).Equals("="))        
+        argCountForOp <> -1 && (msgArgCount = 0 || Message.typeOf(msg) = Message.Type.DETACH) && not((Message.GetNext(msg) <> null) && Message.GetName(Message.GetNext(msg)).Equals("="))
 
     let attachMessage (msg : IokeObject) (expressions : IList<IokeObject>) =
         let messageName = Message.GetName(msg)
@@ -507,7 +507,7 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
                     attachAndReplace (CurrentLevel ()) msg
         else
             attachAndReplace (CurrentLevel ()) msg
-                
+
     interface IOperatorShuffler with
         member this.Attach(msg, expressions) = attachMessage msg expressions
         member this.NextMessage(expressions) = nextMessage expressions

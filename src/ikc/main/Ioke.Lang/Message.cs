@@ -56,6 +56,11 @@ namespace Ioke.Lang {
             return ((Message)IokeObject.dataOf(message)).type == Type.TERMINATOR;
         }
 
+        public static bool IsFirstOnLine(object message) {
+            Message m = (Message)IokeObject.dataOf(message);
+            return m.prev == null || IsTerminator(m.prev);
+        }
+
         public static IList GetArguments(object o) {
             return ((Message)IokeObject.dataOf(o)).arguments;
         }
@@ -64,12 +69,12 @@ namespace Ioke.Lang {
             if(!(argument is IokeObject)) {
                 return argument;
             }
-            
+
             IokeObject o = IokeObject.As(argument, context);
             if(!o.IsMessage) {
                 return o;
             }
-            
+
             return ((Message)IokeObject.dataOf(o)).EvaluateCompleteWithoutExplicitReceiver(o, context, context.RealContext);
         }
 
@@ -100,7 +105,7 @@ namespace Ioke.Lang {
             CopySourceLocation(message, copy);
             Message orgMsg = (Message)IokeObject.dataOf(message);
             Message copyMsg = (Message)IokeObject.dataOf(copy);
-        
+
             copyMsg.type = orgMsg.type;
             copyMsg.cached = orgMsg.cached;
 
@@ -131,7 +136,7 @@ namespace Ioke.Lang {
         public static void CacheValue(object message, object cachedValue) {
             ((Message)IokeObject.dataOf(message)).cached = cachedValue;
         }
-        
+
         public static string GetFile(object message) {
             return IokeObject.As(message, null).File;
         }
@@ -328,7 +333,7 @@ namespace Ioke.Lang {
             StringBuilder b = new StringBuilder();
 
             CurrentFormattedCode(b, indent, ctx);
-        
+
             if(next != null) {
                 if(this.type != Type.TERMINATOR) {
                     b.Append(" ");
@@ -339,7 +344,7 @@ namespace Ioke.Lang {
 
             return b.ToString();
         }
-        
+
         public static string ThisCode(IokeObject message) {
             return ((Message)IokeObject.dataOf(message)).ThisCode();
         }
@@ -354,12 +359,12 @@ namespace Ioke.Lang {
             StringBuilder b = new StringBuilder();
 
             CurrentCode(b);
-        
+
             if(next != null) {
                 if(this.type != Type.TERMINATOR) {
                     b.Append(" ");
                 }
-                
+
                 b.Append(Code(next));
             }
 
@@ -504,7 +509,7 @@ namespace Ioke.Lang {
             if(cached != null) {
                 return cached;
             }
-            
+
             IokeObject m = self.AllocateCopy(self, context);
             m.MimicsWithoutCheck(context.runtime.Message);
             m.Arguments.Clear();
@@ -691,15 +696,15 @@ namespace Ioke.Lang {
                                             }
                                         }
                                     } while((n = Message.GetNext(n)) != null);
-                        
+
                                     levels.NextMessage(expressions);
                                 }
                             }
-                            
+
                             return on;
                         })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("Takes one or more evaluated arguments and sends this message chain to where the first argument is ground, and if there are more arguments, the second is the receiver, and the rest will be the arguments", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("Takes one or more evaluated arguments and sends this message chain to where the first argument is ground, and if there are more arguments, the second is the receiver, and the rest will be the arguments",
                                                                new NativeMethod("evaluateOn", DefaultArgumentsDefinition.builder()
                                                                                 .WithRequiredPositional("ground")
                                                                                 .WithOptionalPositional("receiver", "ground")
@@ -720,42 +725,42 @@ namespace Ioke.Lang {
                                                                                             on = m;
                                                                                         }
                                                                                     }
-                    
+
                                                                                     IokeObject msg = IokeObject.As(on, context);
                                                                                     return ((Message)IokeObject.dataOf(msg)).EvaluateCompleteWithReceiver(msg, messageGround, messageGround, receiver);
                                                                                 })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns a deep clone of this message chain, starting at the current point.", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns a deep clone of this message chain, starting at the current point.",
                                                            new TypeCheckingNativeMethod.WithNoArguments("deepCopy", obj,
                                                                                                         (method, on, args, keywords, context, message) => {
                                                                                                             return Message.DeepCopy(on);
                                                                                                         })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns a code representation of the object", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns a code representation of the object",
                                                            new TypeCheckingNativeMethod.WithNoArguments("code", obj,
                                                                                                         (method, on, args, keywords, context, message) => {
                                                                                                             return method.runtime.NewText(((Message)IokeObject.dataOf(on)).Code());
                                                            })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns the unevaluated arguments for this message", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns the unevaluated arguments for this message",
                                                            new TypeCheckingNativeMethod.WithNoArguments("arguments", obj,
                                                                                                         (method, on, args, keywords, context, message) => {
                                                                                                             return context.runtime.NewList(((Message)IokeObject.dataOf(on)).arguments);
                                                            })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns a formatted code representation of the object", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns a formatted code representation of the object",
                                                            new TypeCheckingNativeMethod.WithNoArguments("formattedCode", obj,
                                                                                                         (method, on, args, keywords, context, message) => {
                                                                                                             return method.runtime.NewText(Message.FormattedCode(IokeObject.As(on, context), 0, context));
                                                            })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the name of this message", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the name of this message",
                                                            new TypeCheckingNativeMethod.WithNoArguments("name", obj,
                                                                                                         (method, on, args, keywords, context, message) => {
                                                                                                             return method.runtime.GetSymbol(((Message)IokeObject.dataOf(on)).name);
                                                            })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("sets the name of the message and then returns that name", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("sets the name of the message and then returns that name",
                                                            new TypeCheckingNativeMethod("name=", TypeCheckingArgumentsDefinition.builder()
                                                                                         .ReceiverMustMimic(obj)
                                                                                         .WithRequiredPositional("newName")
@@ -764,18 +769,18 @@ namespace Ioke.Lang {
                                                                                             object o = args[0];
                                                                                             string name = null;
                                                                                             if(IokeObject.dataOf(o) is Symbol) {
-                                                                                                name = Symbol.GetText(o); 
+                                                                                                name = Symbol.GetText(o);
                                                                                             } else if(IokeObject.dataOf(o) is Text) {
                                                                                                 name = Text.GetText(o);
                                                                                             } else {
                                                                                                 name = Text.GetText(IokeObject.ConvertToText(o, message, context, true));
                                                                                             }
-                    
+
                                                                                             Message.SetName(IokeObject.As(on, context), name);
                                                                                             return o;
                                                                                         })));
-            
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("sets the next pointer of the message and then returns that pointer", 
+
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("sets the next pointer of the message and then returns that pointer",
                                                            new TypeCheckingNativeMethod("next=", TypeCheckingArgumentsDefinition.builder()
                                                                                         .ReceiverMustMimic(obj)
                                                                                         .WithRequiredPositional("newNext")
@@ -790,10 +795,10 @@ namespace Ioke.Lang {
                                                                                             }
                                                                                             return o;
                                                                                         })));
-        
 
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("sets the prev pointer of the message and then returns that pointer", 
+
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("sets the prev pointer of the message and then returns that pointer",
                                                            new TypeCheckingNativeMethod("prev=", TypeCheckingArgumentsDefinition.builder()
                                                                                         .ReceiverMustMimic(obj)
                                                                                         .WithRequiredPositional("newPrev")
@@ -809,25 +814,25 @@ namespace Ioke.Lang {
                                                                                             return o;
                                                                                         })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the file name where this message is written", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the file name where this message is written",
                                                            new TypeCheckingNativeMethod.WithNoArguments("filename", obj,
                                                                                                         (method, on, args, keywords, context, message) => {
                                                                                                             return method.runtime.NewText(((Message)IokeObject.dataOf(on)).file);
                                                                                                         })));
-        
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the line where this message is written", 
+
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the line where this message is written",
                                                            new TypeCheckingNativeMethod.WithNoArguments("line", obj,
                                                                                                         (method, on, args, keywords, context, message) => {
                                                                                                             return method.runtime.NewNumber(((Message)IokeObject.dataOf(on)).line);
                                                                                                         })));
-        
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the position on the line where this message is written", 
+
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the position on the line where this message is written",
                                                            new TypeCheckingNativeMethod.WithNoArguments("position", obj,
                                                                                                         (method, on, args, keywords, context, message) => {
                                                                                                             return method.runtime.NewNumber(((Message)IokeObject.dataOf(on)).pos);
                                                                                                         })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the next message in the chain, or nil", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the next message in the chain, or nil",
                                                            new TypeCheckingNativeMethod.WithNoArguments("next", obj,
                                                                                                         (method, on, args, keywords, context, message) => {
                                                                                                             IokeObject next = ((Message)IokeObject.dataOf(on)).next;
@@ -838,7 +843,7 @@ namespace Ioke.Lang {
                                                                                                             }
                                                                                                         })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the last message in the chain", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the last message in the chain",
                                                            new TypeCheckingNativeMethod.WithNoArguments("last", obj,
                                                                                                         (method, on, args, keywords, context, message) => {
                                                                                                             IokeObject current = IokeObject.As(on, context);
@@ -847,8 +852,8 @@ namespace Ioke.Lang {
                                                                                                             }
                                                                                                             return current;
                                                                                                         })));
-        
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the previous message in the chain, or nil", 
+
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the previous message in the chain, or nil",
                                                            new TypeCheckingNativeMethod.WithNoArguments("prev", obj,
                                                                                                         (method, on, args, keywords, context, message) => {
                                                                                                             IokeObject prev = ((Message)IokeObject.dataOf(on)).prev;
@@ -858,13 +863,13 @@ namespace Ioke.Lang {
                                                                                                                 return prev;
                                                                                                             }
                                                                                                         })));
-        
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns true when this message is a terminator, otherwise false", 
+
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns true when this message is a terminator, otherwise false",
                                                            new TypeCheckingNativeMethod.WithNoArguments("terminator?", obj,
                                                                                                         (method, on, args, keywords, context, message) => {
                                                                                                             return Message.IsTerminator(on) ? context.runtime.True : context.runtime.False;
                                                                                                         })));
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("takes one index, and a context and returns the evaluated argument at that index.", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("takes one index, and a context and returns the evaluated argument at that index.",
                                                            new NativeMethod("evalArgAt", DefaultArgumentsDefinition.builder()
                                                                             .WithRequiredPositional("argumentIndex")
                                                                             .WithRequiredPositional("context")
@@ -876,7 +881,7 @@ namespace Ioke.Lang {
                                                                                 return ((Message)IokeObject.dataOf(_m)).GetEvaluatedArgument(_m, index, newContext);
                                                                             })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("Takes one evaluated argument and returns a message that wraps the value of that argument.", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("Takes one evaluated argument and returns a message that wraps the value of that argument.",
                                                            new NativeMethod("wrap", DefaultArgumentsDefinition.builder()
                                                                             .WithRequiredPositional("value")
                                                                             .Arguments,
@@ -884,7 +889,7 @@ namespace Ioke.Lang {
                                                                                 return context.runtime.CreateMessage(Message.Wrap(IokeObject.As(args[0], context)));
                                                                             })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("evaluates the argument and makes it the new next pointer of the receiver. it also modifies the argument so its prev pointer points back to this message. if the argument is nil, the next pointer will be erased. it then returns the receiving message.", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("evaluates the argument and makes it the new next pointer of the receiver. it also modifies the argument so its prev pointer points back to this message. if the argument is nil, the next pointer will be erased. it then returns the receiving message.",
                                                            new TypeCheckingNativeMethod("->", TypeCheckingArgumentsDefinition.builder()
                                                                                         .ReceiverMustMimic(obj)
                                                                                         .WithRequiredPositional("nextMessage")
@@ -901,7 +906,7 @@ namespace Ioke.Lang {
                                                                                             return arg;
                                                                                         })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("evaluates the argument and adds it to the beginning of the argument list of this message. it then returns the receiving message.", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("evaluates the argument and adds it to the beginning of the argument list of this message. it then returns the receiving message.",
                                                            new NativeMethod(">>", DefaultArgumentsDefinition.builder()
                                                                             .WithRequiredPositional("newArgument")
                                                                             .Arguments,
@@ -910,7 +915,7 @@ namespace Ioke.Lang {
                                                                                 return on;
                                                                             })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("evaluates the argument and adds it to the argument list of this message. it then returns the receiving message.", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("evaluates the argument and adds it to the argument list of this message. it then returns the receiving message.",
                                                            new NativeMethod("appendArgument", DefaultArgumentsDefinition.builder()
                                                                             .WithRequiredPositional("newArgument")
                                                                             .Arguments,
@@ -920,24 +925,24 @@ namespace Ioke.Lang {
                                                                             })));
             obj.AliasMethod("appendArgument", "<<", null, null);
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns a string that describes this message as a stack trace elemtn", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns a string that describes this message as a stack trace elemtn",
                                                            new TypeCheckingNativeMethod.WithNoArguments("asStackTraceText", obj,
                                                                                                         (method, on, args, keywords, context, message) => {
                                                                                                             return context.runtime.NewText(Message.GetStackTraceText(on));
                                                                                                         })));
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns true if this message is a keyword parameter or not", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns true if this message is a keyword parameter or not",
                                                            new TypeCheckingNativeMethod.WithNoArguments("keyword?", obj,
                                                                                                         (method, on, args, keywords, context, message) => {
                                                                                                             return ((Message)IokeObject.dataOf(on)).IsKeyword() ? context.runtime.True : context.runtime.False;
                                                                                                         })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns true if this message is a symbol message or not", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns true if this message is a symbol message or not",
                                                            new TypeCheckingNativeMethod.WithNoArguments("symbol?", obj,
                                                                                                         (method, on, args, keywords, context, message) => {
                                                                                                             return ((Message)IokeObject.dataOf(on)).IsSymbolMessage ? context.runtime.True : context.runtime.False;
                                                                                                         })));
-            
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("takes either one or two arguments. if one argument is given, it should be a message chain that will be sent to each message in the chain, recursively. the result will be thrown away. if two arguments are given, the first is an unevaluated name that will be set to each of the messages in the chain in succession, and then the second argument will be evaluated in a scope with that argument in it. the code will evaluate in a lexical context, and if the argument name is available outside the context, it will be shadowed. the method will return the original message.", 
+
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("takes either one or two arguments. if one argument is given, it should be a message chain that will be sent to each message in the chain, recursively. the result will be thrown away. if two arguments are given, the first is an unevaluated name that will be set to each of the messages in the chain in succession, and then the second argument will be evaluated in a scope with that argument in it. the code will evaluate in a lexical context, and if the argument name is available outside the context, it will be shadowed. the method will return the original message.",
                                                            new NativeMethod("walk", DefaultArgumentsDefinition.builder()
                                                                             .WithOptionalPositionalUnevaluated("argOrCode")
                                                                             .WithOptionalPositionalUnevaluated("code")
@@ -966,7 +971,7 @@ namespace Ioke.Lang {
 
                                                                             })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("takes either one or two or three arguments. if one argument is given, it should be a message chain that will be sent to each message in the chain. the result will be thrown away. if two arguments are given, the first is an unevaluated name that will be set to each of the messages in the chain in succession, and then the second argument will be evaluated in a scope with that argument in it. if three arguments is given, the first one is an unevaluated name that will be set to the index of each message, and the other two arguments are the name of the argument for the value, and the actual code. the code will evaluate in a lexical context, and if the argument name is available outside the context, it will be shadowed. the method will return the original message.", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("takes either one or two or three arguments. if one argument is given, it should be a message chain that will be sent to each message in the chain. the result will be thrown away. if two arguments are given, the first is an unevaluated name that will be set to each of the messages in the chain in succession, and then the second argument will be evaluated in a scope with that argument in it. if three arguments is given, the first one is an unevaluated name that will be set to the index of each message, and the other two arguments are the name of the argument for the value, and the actual code. the code will evaluate in a lexical context, and if the argument name is available outside the context, it will be shadowed. the method will return the original message.",
                                                            new NativeMethod("each",  DefaultArgumentsDefinition.builder()
                                                                             .WithRequiredPositionalUnevaluated("indexOrArgOrCode")
                                                                             .WithOptionalPositionalUnevaluated("argOrCode")
@@ -976,7 +981,7 @@ namespace Ioke.Lang {
                                                                                 outer.ArgumentsDefinition.CheckArgumentCount(context, message, on);
 
                                                                                 object onAsMessage = context.runtime.Message.ConvertToThis(on, message, context);
-                    
+
                                                                                 Runtime runtime = context.runtime;
                                                                                 switch(message.Arguments.Count) {
                                                                                 case 1: {
@@ -1022,7 +1027,7 @@ namespace Ioke.Lang {
                                                                                 return onAsMessage;
                                                                             })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("Takes one evaluated argument and sends this message to that argument", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("Takes one evaluated argument and sends this message to that argument",
                                                            new NativeMethod("sendTo", DefaultArgumentsDefinition.builder()
                                                                             .WithRequiredPositional("newReceiver")
                                                                             .WithOptionalPositional("context", "nil")
@@ -1038,7 +1043,7 @@ namespace Ioke.Lang {
                                                                                 return ((Message)IokeObject.dataOf(msg)).SendTo(msg, realContext, realReceiver);
                                                                             })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("sets the arguments for this message. if given nil the arguments list will be creared, otherwise the list given as arguments will be used. it then returns the receiving message.", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("sets the arguments for this message. if given nil the arguments list will be creared, otherwise the list given as arguments will be used. it then returns the receiving message.",
                                                            new TypeCheckingNativeMethod("arguments=", TypeCheckingArgumentsDefinition.builder()
                                                                                         .ReceiverMustMimic(obj)
                                                                                         .WithRequiredPositional("newArguments")
@@ -1058,7 +1063,7 @@ namespace Ioke.Lang {
                                                                                             return on;
                                                                                         })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("Takes one evaluated argument and returns the message resulting from parsing and operator shuffling the resulting message.", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("Takes one evaluated argument and returns the message resulting from parsing and operator shuffling the resulting message.",
                                                            new TypeCheckingNativeMethod("fromText", TypeCheckingArgumentsDefinition.builder()
                                                                                         .WithRequiredPositional("code").WhichMustMimic(obj.runtime.Text)
                                                                                         .Arguments,
@@ -1067,7 +1072,7 @@ namespace Ioke.Lang {
                                                                                             return Message.NewFromStream(context.runtime, new StringReader(code), message, context);
                                                                                         })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("Takes one evaluated argument and executes the contents of that text in the current context and returns the result of that.", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("Takes one evaluated argument and executes the contents of that text in the current context and returns the result of that.",
                                                            new TypeCheckingNativeMethod("doText", TypeCheckingArgumentsDefinition.builder()
                                                                                         .WithRequiredPositional("code").WhichMustMimic(obj.runtime.Text)
                                                                                         .Arguments,
@@ -1080,7 +1085,7 @@ namespace Ioke.Lang {
         public static string GetStackTraceText(object _message) {
             IokeObject message = IokeObject.As(_message, null);
             IokeObject start = message;
-        
+
             while(GetPrev(start) != null && GetPrev(start).Line == message.Line) {
                 start = GetPrev(start);
             }
@@ -1091,12 +1096,12 @@ namespace Ioke.Lang {
             if(ix > -1) {
                 ix--;
             }
-        
-            return string.Format(" {0,-48} {1}", 
+
+            return string.Format(" {0,-48} {1}",
                                  (ix == -1 ? s1 : s1.Substring(0,ix)),
                                  "[" + message.File + ":" + message.Line + ":" + message.Position + "]");
         }
-        
+
         private static void WalkWithoutExplicitReceiver(object onAsMessage, LexicalContext c, string name, IokeObject code) {
             object o = onAsMessage;
             while(o != null) {
@@ -1108,7 +1113,7 @@ namespace Ioke.Lang {
                 o = GetNext(o);
             }
         }
-        
+
         private static void WalkWithReceiver(IokeObject context, object onAsMessage, IokeObject code) {
             object o = onAsMessage;
             while(o != null) {

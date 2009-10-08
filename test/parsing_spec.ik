@@ -290,6 +290,11 @@ bar" should == "foobar"
   )
 
   describe("shuffling",
+    it("should handle - correctly even if it's not the first line",
+      -100 succ should == -99
+      -100 succ should == -99
+    )
+
     it("should shuffle a ` without arguments",
       Message fromText("`foo") code should == "`(foo)"
       Message fromText("`42") code should == "`(42)"
