@@ -1206,6 +1206,40 @@ describe(Number,
       )
     )
 
+    describe("even?",
+      it("should return true if the number is even",
+        4 even? should == true
+        0 even? should == true
+        (-2) even? should == true
+        (-10) even? should == true
+        1000000000000 even? should == true
+     )
+
+      it("should return false if the number is not even",
+        1 even? should == false
+        5 even? should == false
+        (-1) even? should == false
+        (-1999999999999) even? should == false
+      )
+    )
+
+    describe("odd?",
+      it("should return false if the number is not odd",
+       4 odd? should == false
+       0 odd? should == false
+       (-2) odd? should == false
+       (-10) odd? should == false
+       1000000000000 odd? should == false
+      )
+
+      it("should return true if the number is odd",
+       1 odd? should == true
+       5 odd? should == true
+       (-1) odd? should == true
+       (-1999999999999) odd? should == true
+      )
+    )
+
     describe("inspect",
       it("should validate type of receiver",
         Number Integer should checkReceiverTypeOn(:inspect)
