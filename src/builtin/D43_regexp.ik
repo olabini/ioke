@@ -7,3 +7,9 @@ Regexp cell("!~") = method(
   if(self =~ text,
     false,
     true))
+
+Regexp Match do(
+  offsets = method(
+    (0...length) map(n, offset(n))
+  )
+)

@@ -40,7 +40,7 @@ describe(Regexp,
         #/foo/ match("foo") names should == []
         #/f(o)o/ match("foo") names should == []
       )
-    
+
       it("should return a list of all the names, ordered from beginning parenthesis",
         #/({foo}bar)/ match("bar") names should == [:foo]
         #/({foo}bar)({quux}.)/ match("bar1") names should == [:foo, :quux]
@@ -110,6 +110,27 @@ describe(Regexp,
       it("should validate type of receiver",
         Regexp Match should checkReceiverTypeOn(:end)
       )
+    )
+
+    describe("offsets",
+      it("should return one offset for a regexp with no groups",
+        (#/foo/ =~ "foobar") offsets    should == [0 => 3]
+        (#/foo/ =~ "abcfoobar") offsets should == [3 => 6]
+      )
+
+      it("should return offsets for all groups that were matched",
+        (#/(..) (..) (..)/ =~ "fooab cd efbar") offsets should == [3 => 11, 3 => 5, 6 => 8, 9 => 11]
+      )
+
+      it("should return nil for a group that wasn't matched",
+        (#/(..)((..))?/ =~ "ab") offsets should == [0 => 2, 0 => 2, nil, nil]
+      )
+    )
+
+    describe("namedOffsets",
+      it("should return an empty dict for a regexp with no groups")
+      it("should return a dict with all named groups")
+      it("should return nil for a group that wasn't matched")
     )
 
     describe("offset",
@@ -420,7 +441,7 @@ describe(Regexp,
       #/foo/ names should == []
       #/f(o)o/ names should == []
     )
-    
+
     it("should return a list of all the names, ordered from beginning parenthesis",
       #/({foo}bar)/ names should == [:foo]
       #/({foo}bar)({quux}.)/ names should == [:foo, :quux]
@@ -442,7 +463,7 @@ describe(Regexp,
       Regexp should not === "foo"
       Regexp should not === (#/foo/..#/bar/)
     )
-    
+
     it("should check for match if receiver is not Regexp",
       #/foo/ should === "foo"
       #/fo{1,2}/ should === "foo"
@@ -475,7 +496,7 @@ describe(Regexp,
       Regexp should checkReceiverTypeOn(:allMatches, "foo")
     )
   )
-  
+
   describe("inspect",
     it("should inspect correctly for a simple regexp",
       #/foo/ inspect should == "#/foo/"
@@ -626,35 +647,35 @@ describe(Regexp,
     it("should work for regexps with flags",
       #r[foo]x should == #/foo/x
     )
-  )    
+  )
 
   describe("interpolation",
-    it("should parse correctly with a simple number inside of it", 
+    it("should parse correctly with a simple number inside of it",
       m = parse("#/foo \#{1} bar/")
       m should == "internal:compositeRegexp(foo , 1,  bar, )"
     )
 
-    it("should parse correctly with a complex expression", 
+    it("should parse correctly with a complex expression",
       m = parse("#/foo \#{29*5+foo bar} bar/")
       m should == "internal:compositeRegexp(foo , 29 *(5) +(foo bar),  bar, )"
     )
 
-    it("should parse correctly with interpolation at the beginning of the text", 
+    it("should parse correctly with interpolation at the beginning of the text",
       m = parse("#/\#{1} bar/")
       m should == "internal:compositeRegexp(, 1,  bar, )"
     )
 
-    it("should parse correctly with interpolation at the end of the text", 
+    it("should parse correctly with interpolation at the end of the text",
       m = parse("#/foo \#{1}/")
       m should == "internal:compositeRegexp(foo , 1, , )"
     )
 
-    it("should parse correctly with more than one interpolation", 
+    it("should parse correctly with more than one interpolation",
       m = parse("#/foo \#{1} bar \#{2} quux \#{3}/")
       m should == "internal:compositeRegexp(foo , 1,  bar , 2,  quux , 3, , )"
     )
 
-    it("should parse correctly with nested interpolations", 
+    it("should parse correctly with nested interpolations",
       m = parse("#/foo \#{#/fux \#{32} bar/ bletch} bar/")
       m should == "internal:compositeRegexp(foo , internal:compositeRegexp(fux , 32,  bar, ) bletch,  bar, )"
     )
@@ -721,7 +742,7 @@ describe(Regexp,
       "\nhi" should not match(r)
     )
   )
-  
+
   describe("escapes",
     describe("\\A",
       it("should match the beginning of the text",
