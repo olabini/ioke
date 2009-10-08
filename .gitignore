@@ -30,3 +30,5 @@ version_data.properties
 cobertura.ser
 .tmtags
 nbproject
+\#*#
+\.\#*
