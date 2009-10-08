@@ -128,9 +128,18 @@ describe(Regexp,
     )
 
     describe("namedOffsets",
-      it("should return an empty dict for a regexp with no groups")
-      it("should return a dict with all named groups")
-      it("should return nil for a group that wasn't matched")
+      it("should return an empty dict for a regexp with no groups",
+        (#/foo/ =~ "foobar") namedOffsets should == {}
+        (#/foo(...)/ =~ "foobar") namedOffsets should == {}
+      )
+
+      it("should return a dict with all named groups",
+        (#/({one}..) ({two}..) ({three}..)/ =~ "fooab cd efbar") namedOffsets should == {one: 3 => 5, two: 6 => 8, three: 9 => 11}
+      )
+
+      it("should return nil for a group that wasn't matched",
+        (#/({no}..)(({way}..))?/ =~ "ab") namedOffsets should == {no: 0 => 2, way: nil}
+      )
     )
 
     describe("offset",
