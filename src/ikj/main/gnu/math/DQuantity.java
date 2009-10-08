@@ -45,7 +45,7 @@ public class DQuantity extends Quantity implements Externalizable
 
   public static DQuantity divide (DQuantity x, DQuantity y)
   {
-    double factor = x.factor / y.factor; 
+    double factor = x.factor / y.factor;
     Unit unit = Unit.divide(x.unit(), y.unit());
     return new DQuantity (factor, unit);
   }

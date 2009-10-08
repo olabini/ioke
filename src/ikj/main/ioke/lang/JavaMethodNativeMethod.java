@@ -84,7 +84,7 @@ public class JavaMethodNativeMethod extends ioke.lang.Method implements NativeIm
             return context.runtime.nil;
         }
     }
-    
+
     @Override
     public String inspect(Object self) {
         return "method(" + methods[0].getDeclaringClass().getName() + "_" + methods[0].getName() + ")";

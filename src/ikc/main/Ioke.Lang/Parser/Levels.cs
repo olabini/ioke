@@ -54,15 +54,15 @@ namespace Ioke.Lang.Parser {
                     Message.SetNext(message, null);
                     if(message.Arguments.Count == 1) {
                         object arg1 = message.Arguments[0];
-                        if(arg1 is IokeObject) { 
+                        if(arg1 is IokeObject) {
                             IokeObject arg = IokeObject.As(arg1, null);
                             if(arg.Name.Length == 0 && arg.Arguments.Count == 1 && Message.GetNext(arg) == null) {
                                 int index = expressions.IndexOf(arg);
 
                                 if(index != -1) {
                                     expressions[index] = message;
-                                } 
-                           
+                                }
+
                                 message.Arguments.Clear();
                                 foreach(object o in arg.Arguments) message.Arguments.Add(o);
                                 arg.Arguments.Clear();
@@ -77,16 +77,16 @@ namespace Ioke.Lang.Parser {
         }
 
         Runtime runtime;
-        
+
         IDictionary operatorTable;
         IDictionary trinaryOperatorTable;
         IDictionary invertedOperatorTable;
 
         IList<Level> stack;
-        
+
         IokeObject _message;
         IokeObject _context;
-        
+
         int currentLevel;
         Level[] pool = new Level[OP_LEVEL_MAX];
 
@@ -285,7 +285,7 @@ namespace Ioke.Lang.Parser {
             this.stack = new SaneList<Level>();
             this.Reset();
         }
-        
+
         public IDictionary GetOpTable(IokeObject opTable, string name, OpTableCreator creator) {
             IokeObject operators = IokeObject.As(opTable.FindCell(_message, _context, name), null);
             if(operators != runtime.nul && (IokeObject.dataOf(operators) is Dict)) {
@@ -337,7 +337,7 @@ namespace Ioke.Lang.Parser {
                         return -1;
                     }
                 }
-            
+
                 return -1;
             }
 
@@ -381,13 +381,13 @@ namespace Ioke.Lang.Parser {
             level.SetAwaitingFirstArg(msg, precedence);
             stack.Insert(0, level);
         }
-    
+
         private void Detach(IokeObject msg) {
             IokeObject brackets = runtime.NewMessage("");
             Message.CopySourceLocation(msg, brackets);
             foreach(object arg in msg.Arguments) brackets.Arguments.Add(arg);
             msg.Arguments.Clear();
-        
+
             // Insert the brackets message between msg and its next message
             Message.SetNext(brackets, Message.GetNext(msg));
             Message.SetNext(msg, brackets);
@@ -398,16 +398,16 @@ namespace Ioke.Lang.Parser {
             IokeObject messageSymbol = runtime.GetSymbol(messageName);
             int precedence = LevelForOp(messageName, messageSymbol, msg);
             int argCountForOp = ArgCountForOp(messageName, messageSymbol, msg);
-        
+
             int msgArgCount = msg.Arguments.Count;
 
             bool inverted = IsInverted(messageSymbol);
-        
+
             /*
             // : "str" bar   becomes   :("str") bar
             // -foo bar      becomes   -(foo) bar
             */
-            if(msgArgCount == 0 && Message.GetNext(msg) != null && ((messageName.Equals(":") || messageName.Equals("`") || messageName.Equals("'")) || 
+            if(msgArgCount == 0 && Message.GetNext(msg) != null && ((messageName.Equals(":") || messageName.Equals("`") || messageName.Equals("'")) ||
                                                                     (messageName.Equals("-") && Message.GetPrev(msg) == null))) {
                 precedence = -1;
                 object arg = Message.GetNext(msg);
@@ -428,10 +428,10 @@ namespace Ioke.Lang.Parser {
                 while(Message.GetPrev(head) != null && !Message.IsTerminator(Message.GetPrev(head))) {
                     head = Message.GetPrev(head);
                 }
-            
+
                 if(head != msg) {
                     IokeObject argPart = Message.DeepCopy(head);
-            
+
                     if(Message.GetPrev(msg) != null) {
                         Message.SetNext(Message.GetPrev(msg), null);
                     }
@@ -453,7 +453,7 @@ namespace Ioke.Lang.Parser {
                     }
                     Message.SetNext(last, msg);
                     Message.SetPrev(msg, last);
-            
+
                     head.Become(next, null, null);
                 }
             }
@@ -475,12 +475,12 @@ namespace Ioke.Lang.Parser {
                 IokeObject attaching = currentLevel.message;
                 string setCellName;
 
-                if(attaching == null) { // = b . 
-                    IokeObject condition = IokeObject.As(IokeObject.GetCellChain(runtime.Condition, 
-                                                                                 _message, 
-                                                                                 _context, 
-                                                                                 "Error", 
-                                                                                 "Parser", 
+                if(attaching == null) { // = b .
+                    IokeObject condition = IokeObject.As(IokeObject.GetCellChain(runtime.Condition,
+                                                                                 _message,
+                                                                                 _context,
+                                                                                 "Error",
+                                                                                 "Parser",
                                                                                  "OpShuffle"), _context).Mimic(_message, _context);
                     condition.SetCell("message", _message);
                     condition.SetCell("context", _context);
@@ -499,7 +499,7 @@ namespace Ioke.Lang.Parser {
                 attaching.Arguments.Clear();
                 // a = b .  ->  a(a) = b .
                 Message.AddArg(attaching, copyOfMessage);
-            
+
                 setCellName = messageName;
                 int expectedArgs = argCountForOp;
 
@@ -511,12 +511,12 @@ namespace Ioke.Lang.Parser {
                 // =(a) = b .
                 // =(a) = or =("a") = .
                 IokeObject mn = Message.GetNext(msg);
-            
-                if(expectedArgs > 1 && (mn == null || Message.IsTerminator(mn))) { 
+
+                if(expectedArgs > 1 && (mn == null || Message.IsTerminator(mn))) {
                     // TODO: error, "compile error: %s must be followed by a value.", messageName
                 }
 
-                if(expectedArgs > 1) { 
+                if(expectedArgs > 1) {
                     // =(a) = b c .  ->  =(a, b c .) = b c .
                     Message.AddArg(attaching, mn);
 
@@ -532,7 +532,7 @@ namespace Ioke.Lang.Parser {
 
                     Message.SetNext(attaching, Message.GetNext(last));
                     Message.SetNext(msg, Message.GetNext(last));
-            
+
                     if(last != msg) {
                         Message.SetNext(last, null);
                     }

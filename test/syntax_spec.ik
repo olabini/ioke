@@ -3,18 +3,18 @@ use("ispec")
 
 describe(DefaultBehavior,
   describe("syntax",
-    it("should name itself after the slot it's assigned to if it has no name", 
+    it("should name itself after the slot it's assigned to if it has no name",
       x = syntax(nil)
       cell(:x) name should == "x"
     )
-    
-    it("should not change it's name if it already has a name", 
+
+    it("should not change it's name if it already has a name",
       x = syntax(nil)
       y = cell(:x)
       cell(:y) name should == "x"
     )
-    
-    it("should know it's own name", 
+
+    it("should know it's own name",
       (x = syntax(nil)) name should == "x"
     )
   )
@@ -24,7 +24,7 @@ describe("DefaultSyntax",
   it("should just remove itself if nil is returned",
     Ground syntaxTest = []
     ss = syntax(syntaxTest << :called. nil)
-    
+
     3 times(syntaxTest << :times1. ss. syntaxTest << :times2.)
 
     syntaxTest should == [:times1, :called, :times2, :times1, :times2, :times1, :times2]
@@ -57,7 +57,7 @@ describe("DefaultSyntax",
     syntaxTest should == [:called]
   )
 
-  it("should be possible to give it a documentation string", 
+  it("should be possible to give it a documentation string",
     syntax("foo is bar", nil) documentation should == "foo is bar"
   )
 
@@ -65,7 +65,7 @@ describe("DefaultSyntax",
     fn(DefaultSyntax) should signal(Condition Error Invocation NotActivatable)
   )
 
-  it("should have @ return the receiving object inside of a macro", 
+  it("should have @ return the receiving object inside of a macro",
     Ground syntaxTest = []
     obj = Origin mimic
     obj atSign = syntax(syntaxTest << @. nil)
@@ -75,7 +75,7 @@ describe("DefaultSyntax",
     syntaxTest should == [obj, obj2]
   )
 
-  it("should have @@ return the executing syntax inside of a syntax", 
+  it("should have @@ return the executing syntax inside of a syntax",
     Ground syntaxTest = []
     obj = Origin mimic
     obj atAtSign = syntax(syntaxTest << @@. nil)
@@ -85,7 +85,7 @@ describe("DefaultSyntax",
     syntaxTest should == [obj cell(:atAtSign), obj2 cell(:atAtSign)]
   )
 
-  it("should have 'self' return the receiving object inside of a macro", 
+  it("should have 'self' return the receiving object inside of a macro",
     Ground syntaxTest = []
     obj = Origin mimic
     obj atSign = syntax(syntaxTest << self. nil)
@@ -95,31 +95,31 @@ describe("DefaultSyntax",
     syntaxTest should == [obj, obj2]
   )
 
-  it("should have 'call' defined inside the call to the macro", 
+  it("should have 'call' defined inside the call to the macro",
     Ground syntaxTest = []
     syntax(syntaxTest << call. nil) call
     syntaxTest[0] should have kind("Call")
   )
-  
-  it("should not evaluate it's arguments by default", 
+
+  it("should not evaluate it's arguments by default",
     x=42
     syntax(nil) call(x=13)
     x should == 42
   )
 
-  it("should take any kinds of arguments", 
+  it("should take any kinds of arguments",
     x = syntax(nil)
     x(13, 42, foo: 42*13)
   )
 
-  it("should be possible to return from it prematurely, with return", 
+  it("should be possible to return from it prematurely, with return",
     Ground x_syntax_spec = 42
     m = syntax(if(true, return(nil)). Ground x_syntax_spec = 24)
     m()
     x_syntax_spec should == 42
   )
 
-  it("should return even from inside of a lexical block", 
+  it("should return even from inside of a lexical block",
     Ground x_syntax_spec = 42
     Ground x = method(block, block call)
     m = syntax(

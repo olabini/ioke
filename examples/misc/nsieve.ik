@@ -1,7 +1,7 @@
 nsieve = method(n,
   primes = (0..n) collect(true)
   count = 0
-  
+
   (2...n) each(i,
     if(primes[i],
       k = 2 * i
@@ -19,7 +19,7 @@ System ifMain(
   if(System programArguments size != 1,
     error!("usage: nsieve.ik <exponent>")
   )
-  
+
   exponent = System programArguments first toRational
   (exponent..0) each(n,
     nsieve((2 ** n) * 10000)

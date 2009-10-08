@@ -15,9 +15,9 @@ public class Dimensions
    * The BaseUnits are in order of their index, and the last
    * element is Unit.Empty. */
   BaseUnit[] bases;
-  
+
   /** For each baseunit in bases[i], powers[i] is the corresponding exponent.
-   * It is never zero (as long as i is less than the index of Unit.Empty). */    
+   * It is never zero (as long as i is less than the index of Unit.Empty). */
   short[] powers;
 
   int hash_code;
@@ -142,7 +142,7 @@ public class Dimensions
   }
 
   public static Dimensions product (Dimensions a, int mul_a,
-				    Dimensions b, int mul_b) 
+				    Dimensions b, int mul_b)
   {
     int hash = a.hashCode () * mul_a + b.hashCode () * mul_b;
     int index = (hash & 0x7FFFFFFF) % hashTable.length;

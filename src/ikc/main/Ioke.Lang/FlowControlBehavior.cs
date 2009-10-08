@@ -10,7 +10,7 @@ namespace Ioke.Lang {
             Runtime runtime = obj.runtime;
             obj.Kind = "DefaultBehavior FlowControl";
 
-            obj.RegisterMethod(runtime.NewNativeMethod("evaluates the first arguments, and then evaluates the second argument if the result was true, otherwise the last argument. returns the result of the call, or the result if it's not true.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("evaluates the first arguments, and then evaluates the second argument if the result was true, otherwise the last argument. returns the result of the call, or the result if it's not true.",
                                                        new NativeMethod("if", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositional("condition")
                                                                         .WithOptionalPositionalUnevaluated("then")
@@ -39,7 +39,7 @@ namespace Ioke.Lang {
                                                                             }
                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("evaluates the first arguments, and then evaluates the second argument if the result was false, otherwise the last argument. returns the result of the call, or the result if it's true.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("evaluates the first arguments, and then evaluates the second argument if the result was false, otherwise the last argument. returns the result of the call, or the result if it's true.",
                                                        new NativeMethod("unless", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositional("condition")
                                                                         .WithOptionalPositionalUnevaluated("then")
@@ -68,14 +68,14 @@ namespace Ioke.Lang {
                                                                             }
                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("takes zero or more place and value pairs and one code argument, establishes a new lexical scope and binds the places to the values given. if the place is a simple name, it will just be created as a new binding in the lexical scope. if it is a place specification, that place will be temporarily changed - but guaranteed to be changed back after the lexical scope is finished. the let-form returns the final result of the code argument.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("takes zero or more place and value pairs and one code argument, establishes a new lexical scope and binds the places to the values given. if the place is a simple name, it will just be created as a new binding in the lexical scope. if it is a place specification, that place will be temporarily changed - but guaranteed to be changed back after the lexical scope is finished. the let-form returns the final result of the code argument.",
                                                        new NativeMethod("let", DefaultArgumentsDefinition.builder()
                                                                         .WithRestUnevaluated("placesAndValues")
                                                                         .WithRequiredPositionalUnevaluated("code")
                                                                         .Arguments,
                                                                         (method, context, message, on, outer) => {
                                                                             outer.ArgumentsDefinition.CheckArgumentCount(context, message, on);
-                                                                            
+
                                                                             var args = message.Arguments;
                                                                             LexicalContext lc = new LexicalContext(context.runtime, context.RealContext, "Let lexical activation context", message, context);
                                                                             int ix = 0;
@@ -105,7 +105,7 @@ namespace Ioke.Lang {
                                                                                         if(place != realPlace) {
                                                                                             wherePlace = Message.GetEvaluatedArgument(place, context);
                                                                                         }
-                                
+
                                                                                         object originalValue = runtime.WithReturningRescue(context, null, () => {return ((Message)IokeObject.dataOf(realPlace)).SendTo(realPlace, context, wherePlace);});
                                                                                         if(realPlace.Arguments.Count != 0) {
                                                                                             string newName = realPlace.Name + "=";
@@ -163,14 +163,14 @@ namespace Ioke.Lang {
 
 
 
-            obj.RegisterMethod(runtime.NewNativeMethod("breaks out of the enclosing context. if an argument is supplied, this will be returned as the result of the object breaking out of", 
+            obj.RegisterMethod(runtime.NewNativeMethod("breaks out of the enclosing context. if an argument is supplied, this will be returned as the result of the object breaking out of",
                                                        new NativeMethod("break", DefaultArgumentsDefinition.builder()
                                                                         .WithOptionalPositional("value", "nil")
                                                                         .Arguments,
                                                                         (method, context, message, on, outer) => {
                                                                             IList args = new SaneArrayList();
                                                                             outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, args, new SaneDictionary<string, object>());
-                                                                            
+
                                                                             object value = runtime.nil;
                                                                             if(message.Arguments.Count > 0) {
                                                                                 value = ((Message)IokeObject.dataOf(message)).GetEvaluatedArgument(message, 0, context);
@@ -178,7 +178,7 @@ namespace Ioke.Lang {
                                                                             throw new ControlFlow.Break(value);
                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("returns from the enclosing method/macro. if an argument is supplied, this will be returned as the result of the method/macro breaking out of.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns from the enclosing method/macro. if an argument is supplied, this will be returned as the result of the method/macro breaking out of.",
                                                        new NativeMethod("return", DefaultArgumentsDefinition.builder()
                                                                         .WithOptionalPositional("value", "nil")
                                                                         .Arguments,
@@ -196,8 +196,8 @@ namespace Ioke.Lang {
 
                                                                             throw new ControlFlow.Return(value, ctx);
                                                                         })));
-            
-            obj.RegisterMethod(runtime.NewNativeMethod("breaks out of the enclosing context and continues from that point again.", 
+
+            obj.RegisterMethod(runtime.NewNativeMethod("breaks out of the enclosing context and continues from that point again.",
                                                        new NativeMethod.WithNoArguments("continue",
                                                                                         (method, context, message, on, outer) => {
                                                                                             outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, new SaneArrayList(), new SaneDictionary<string, object>());
@@ -205,7 +205,7 @@ namespace Ioke.Lang {
                                                                                         })));
 
 
-            obj.RegisterMethod(runtime.NewNativeMethod("until the first argument evaluates to something true, loops and evaluates the next argument", 
+            obj.RegisterMethod(runtime.NewNativeMethod("until the first argument evaluates to something true, loops and evaluates the next argument",
                                                        new NativeMethod("until", DefaultArgumentsDefinition.builder()
                                                                         .WithOptionalPositionalUnevaluated("condition")
                                                                         .WithRestUnevaluated("body")
@@ -238,7 +238,7 @@ namespace Ioke.Lang {
                                                                             return ret;
                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("while the first argument evaluates to something true, loops and evaluates the next argument", 
+            obj.RegisterMethod(runtime.NewNativeMethod("while the first argument evaluates to something true, loops and evaluates the next argument",
                                                        new NativeMethod("while", DefaultArgumentsDefinition.builder()
                                                                         .WithOptionalPositionalUnevaluated("condition")
                                                                         .WithRestUnevaluated("body")
@@ -271,7 +271,7 @@ namespace Ioke.Lang {
                                                                             return ret;
                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("loops forever - executing it's argument over and over until interrupted in some way.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("loops forever - executing it's argument over and over until interrupted in some way.",
                                                        new NativeMethod("loop", DefaultArgumentsDefinition.builder()
                                                                         .WithRestUnevaluated("body")
                                                                         .Arguments,
@@ -294,7 +294,7 @@ namespace Ioke.Lang {
                                                                             }
                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("will execute and return the value of the first argument. after the code has run, all the remaining blocks of code are guaranteed to run in order even if a non-local flow control happens inside the main code. if any code in the ensure blocks generate a new non-local flow control, the rest of the ensure blocks in that specific ensure invocation are not guaranteed to run.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("will execute and return the value of the first argument. after the code has run, all the remaining blocks of code are guaranteed to run in order even if a non-local flow control happens inside the main code. if any code in the ensure blocks generate a new non-local flow control, the rest of the ensure blocks in that specific ensure invocation are not guaranteed to run.",
                                                        new NativeMethod("ensure", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositionalUnevaluated("code")
                                                                         .WithRestUnevaluated("ensureBlocks")

@@ -1,6 +1,6 @@
 RPS = Origin mimic do(
   scores = {} withDefault(0)
-  
+
   throws = dmacro([player, throw]
 
     cond(
@@ -19,7 +19,7 @@ RPS = Origin mimic do(
           (@p1 value == :scissors && @p2 value == :rock),
             scores[@p2 key] += 1
             "#{p2 key} wins" println,
-            
+
           "Draw" println
         )
     )

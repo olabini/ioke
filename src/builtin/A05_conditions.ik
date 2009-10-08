@@ -38,7 +38,7 @@ Condition Error text = "condition reported"
 
 Condition report = method(
   "default implementation of reporting that only prints the name of the condition, and a stack trace",
-  
+
   "#{self text} (#{self kind})
 
 #{context stackTraceAsText}")
@@ -46,7 +46,7 @@ Condition report = method(
 
 Condition Error NativeException report = method(
   "returns a representation of this error, showing some information about the native exception",
-  
+
   stackTrace = "%[  %s\n%]" format(self exceptionStackTrace)
 
   "#{self exceptionType}: #{self exceptionMessage} (#{self kind})
@@ -58,7 +58,7 @@ Condition Error NativeException report = method(
 
 Condition Error Load report = method(
   "returns a representation of this error, showing the name of the module that couldn't be loaded, and if an ioexception occured, the message and stack trace of this",
-  
+
   "couldn't load module '#{moduleName}' (#{self kind})
 
 #{message asStackTraceText}

@@ -1,13 +1,13 @@
 
 use("ispec")
 
-describe(FileSystem, 
-  it("should have the correct kind", 
+describe(FileSystem,
+  it("should have the correct kind",
     FileSystem should have kind("FileSystem")
   )
 
   describe("exists?",
-    it("should return false for something that doesn't exit", 
+    it("should return false for something that doesn't exit",
       FileSystem exists?("flux_flog") should be false
       FileSystem exists?("src/flux_flog") should be false
       FileSystem exists?("flux_flog/builtin") should be false
@@ -26,47 +26,47 @@ describe(FileSystem,
   )
 
   describe("file?",
-    it("should return false for something that doesn't exit", 
+    it("should return false for something that doesn't exit",
       FileSystem file?("flux_flog") should be false
     )
 
-    it("should return true for a file", 
+    it("should return true for a file",
       FileSystem file?("build.xml") should be true
     )
 
-    it("should return true for a file inside of a directory", 
+    it("should return true for a file inside of a directory",
       FileSystem file?("src/builtin/A10_defaultBehavior.ik") should be true
     )
 
-    it("should return false for a directory", 
+    it("should return false for a directory",
       FileSystem file?("src") should be false
       FileSystem file?("src/") should be false
     )
 
-    it("should return false for a directory inside another directory", 
+    it("should return false for a directory inside another directory",
       FileSystem file?("src/builtin") should be false
     )
   )
 
-  describe("directory?", 
-    it("should return false for something that doesn't exit", 
+  describe("directory?",
+    it("should return false for something that doesn't exit",
       FileSystem directory?("flux_flog") should be false
     )
 
-    it("should return false for a file", 
+    it("should return false for a file",
       FileSystem directory?("build.xml") should be false
     )
 
-    it("should return false for a file inside of a directory", 
+    it("should return false for a file inside of a directory",
       FileSystem directory?("src/builtin/A10_defaultBehavior.ik") should be false
     )
 
-    it("should return true for a directory", 
+    it("should return true for a directory",
       FileSystem directory?("src") should be true
       FileSystem directory?("src/") should be true
     )
 
-    it("should return true for a directory inside another directory", 
+    it("should return true for a directory inside another directory",
       FileSystem directory?("src/builtin") should be true
     )
   )
@@ -127,25 +127,25 @@ describe(FileSystem,
       FileSystem should not have file("test/file_to_remove")
     )
   )
-  
-  describe("[]", 
-    it("should glob correctly", 
+
+  describe("[]",
+    it("should glob correctly",
       [
         [ [ "test/_test" ],                                 "test/_test" ],
         [ [ "test/_test/" ],                                "test/_test/" ],
         [ [ "test/_test/_file1", "test/_test/_file2" ],     "test/_test/*" ],
         [ [ "test/_test/_file1", "test/_test/_file2" ],     "test/_test/_file*" ],
         [ [  ],                                             "test/_test/frog*" ],
-        
+
         [ [ "test/_test/_file1", "test/_test/_file2" ],     "test/**/_file*" ],
-        
+
         [ [ "test/_test/_file1", "test/_test/_file2" ],     "test/_test/_file[0-9]*" ],
         [ [ ],                                              "test/_test/_file[a-z]*" ],
-        
+
         [ [ "test/_test/_file1", "test/_test/_file2" ],     "test/_test/_file{0,1,2,3}" ],
         [ [ ],                                              "test/_test/_file{4,5,6,7}" ],
-        
-        [ [ "test/_test/_file1", "test/_test/_file2" ],     "test/**/_f*[il]l*" ],    
+
+        [ [ "test/_test/_file1", "test/_test/_file2" ],     "test/**/_f*[il]l*" ],
         [ [ "test/_test/_file1", "test/_test/_file2" ],     "test/**/_f*[il]e[0-9]" ],
         [ [ "test/_test/_file1"              ],             "test/**/_f*[il]e[01]" ],
         [ [ "test/_test/_file1"              ],             "test/**/_f*[il]e[01]*" ],
@@ -162,7 +162,7 @@ describe(FileSystem,
         FileSystem parentOf("C:\\") should be nil
       )
 
-      it("should return the parent of a relative directory", 
+      it("should return the parent of a relative directory",
         FileSystem parentOf("src\\builtin") should == "src"
       )
 
@@ -175,7 +175,7 @@ describe(FileSystem,
         FileSystem parentOf("/") should be nil
       )
 
-      it("should return the parent of a relative directory", 
+      it("should return the parent of a relative directory",
         FileSystem parentOf("src/builtin") should == "src"
       )
 
@@ -188,16 +188,16 @@ describe(FileSystem,
       )
     )
   )
-  
+
   describe("readFully",
     it("should correctly read in a blank file",
       FileSystem readFully("test/fixtures/blank.txt") should == ""
     )
-    
+
     it("should correctly read in a list of names",
       if(System windows?,
-	FileSystem readFully("test/fixtures/names.txt") should == "Ola\r\nMartin\r\nSam\r\nCarlos\r\nBrian\r\nFelipe",
-	FileSystem readFully("test/fixtures/names.txt") should == "Ola\nMartin\nSam\nCarlos\nBrian\nFelipe")
+        FileSystem readFully("test/fixtures/names.txt") should == "Ola\r\nMartin\r\nSam\r\nCarlos\r\nBrian\r\nFelipe",
+        FileSystem readFully("test/fixtures/names.txt") should == "Ola\nMartin\nSam\nCarlos\nBrian\nFelipe")
     )
   )
 

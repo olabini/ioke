@@ -1,29 +1,29 @@
 /**
  * Copyright (c) 2001, Sergey A. Samokhodkin
  * All rights reserved.
- * 
- * Redistribution and use in source and binary forms, with or without modification, 
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
- * 
- * - Redistributions of source code must retain the above copyright notice, 
- * this list of conditions and the following disclaimer. 
- * - Redistributions in binary form 
- * must reproduce the above copyright notice, this list of conditions and the following 
+ *
+ * - Redistributions of source code must retain the above copyright notice,
+ * this list of conditions and the following disclaimer.
+ * - Redistributions in binary form
+ * must reproduce the above copyright notice, this list of conditions and the following
  * disclaimer in the documentation and/or other materials provided with the distribution.
- * - Neither the name of jregex nor the names of its contributors may be used 
- * to endorse or promote products derived from this software without specific prior 
- * written permission. 
- * 
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY 
- * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES 
- * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
- * IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT 
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; 
- * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY 
+ * - Neither the name of jregex nor the names of its contributors may be used
+ * to endorse or promote products derived from this software without specific prior
+ * written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
+ * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ * IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
  * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * @version 1.2_01
  */
 
@@ -89,7 +89,7 @@ public class PathPattern extends Pattern{
                     "|"+
                   grp(SPCHAR_G,"[.()\\{\\}+|^$\\[\\]\\\\]")
                );
-   
+
    private static final Replacer spCharProcessor=new Replacer(
       spCharPattern,
       new Substitution(){
@@ -133,31 +133,31 @@ public class PathPattern extends Pattern{
          }
       }
    );
-   
+
    private String str;
    private String root;
    private File rootf;
    private PathElementMask queue,last;
-   
+
    public PathPattern(String ptn){
       this(ptn,DEFAULT);
    }
-   
+
    public PathPattern(String ptn,boolean icase){
       this(ptn,icase? DEFAULT|IGNORE_CASE: DEFAULT);
    }
-   
+
    public PathPattern(String path,int flags){
       this(null,path,flags);
    }
-   
+
    public PathPattern(File dir,String path,boolean icase){
       this(null,path,icase? DEFAULT|IGNORE_CASE: DEFAULT);
    }
-   
+
    public PathPattern(File dir,String path,int flags){
       if(path==null || path.length()==0)throw new IllegalArgumentException("empty path not allowed");
-      
+
       str=path;
       RETokenizer tok=new RETokenizer(fs.matcher(path),true);
       String s=tok.nextToken();
@@ -182,7 +182,7 @@ public class PathPattern extends Pattern{
       compile(spCharProcessor.replace(path),flags);
 //System.out.println(spCharProcessor.replace(path));
    }
-   
+
    private void addElement(PathElementMask mask){
       if(queue==null){
         queue=last=mask;
@@ -191,13 +191,13 @@ public class PathPattern extends Pattern{
          last=(last.next=mask);
       }
    }
-   
+
    public Enumeration enumerateFiles(){
       PathElementEnumerator fe=queue.newEnumerator();
       fe.setDir(rootf!=null? rootf: new File(root));
       return fe;
    }
-   
+
    public File[] files(){
       Enumeration e=enumerateFiles();
       Vector v=new Vector();
@@ -206,26 +206,26 @@ public class PathPattern extends Pattern{
       v.copyInto(files);
       return files;
    }
-   
+
   /**
    * @deprecated Is meaningless with regard to variable paths (since v.1.2)
    */
    public String[] names(){
       return null;
    }
-   
+
   /**
-   * @deprecated Is meaningless with regard to  variable paths (since v.1.2) 
+   * @deprecated Is meaningless with regard to  variable paths (since v.1.2)
    */
    public File directory(){
       return null;
    }
-   
+
    private static PathElementMask newMask(String s,int flags,boolean dirsOnly){
       if(s==null || s.length()==0)throw new IllegalArgumentException("Error: empty path element not allowed");
       if(s.indexOf('*')<0 && s.indexOf('?')<0){
          //if((flags&IGNORE_CASE)==0) return PathElementMask.fixedMask(s,dirsOnly);
-         //just a dirty trick, 
+         //just a dirty trick,
          //on windows this could be a disk name ("D:"),
          //and so won't be listed, so the RegularMask won't help
          if((flags&IGNORE_CASE)==0 || s.indexOf(':')>=0) return PathElementMask.fixedMask(s,dirsOnly);
@@ -235,11 +235,11 @@ public class PathPattern extends Pattern{
       else if(s.equals("**")) return PathElementMask.anyPath(dirsOnly);
       else return PathElementMask.regularMask(s,flags,dirsOnly);
    }
-   
+
    public String toString(){
       return str;
    }
-   
+
    //public static void main(String[] args)throws Exception{
    //   PathPattern path=new PathPattern(args.length>0? args[0]: "/**/*tmp*/**",true);
    //   //PathPattern path=new PathPattern(args.length>0? args[0]: "*/*",true);

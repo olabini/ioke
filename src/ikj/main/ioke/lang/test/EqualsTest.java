@@ -18,8 +18,8 @@ public class EqualsTest {
     public boolean equals(Object other) {
         if(other instanceof EqualsTest) {
             return
-                (this.theProperty == null) ? 
-                (((EqualsTest)other).theProperty == null) : 
+                (this.theProperty == null) ?
+                (((EqualsTest)other).theProperty == null) :
                 this.theProperty.equals(((EqualsTest)other).theProperty);
         }
         return false;

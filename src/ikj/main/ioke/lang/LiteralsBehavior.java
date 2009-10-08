@@ -38,7 +38,7 @@ public class LiteralsBehavior {
                     List<Object> args = new ArrayList<Object>();
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
                     Object o = args.get(0);
-                    
+
                     String name = null;
                     if(IokeObject.data(o) instanceof Text) {
                         name = Text.getText(o);

@@ -3,13 +3,13 @@ use("game")
 
 describe("Game",
   describe("next",
-  
+
     it("should kill cells surrounded by fewer than two live neighbours",
       game = Game mimic reset
       game grid cells[1][1] alive = true
       game next
       game grid cells[1][1] alive should == false
-      
+
       game = Game mimic reset
       game grid cells[0][1] alive = true
       game grid cells[1][1] alive = true
@@ -31,7 +31,7 @@ describe("Game",
 
       game next
 
-      game grid cells[1][1] alive should == false    
+      game grid cells[1][1] alive should == false
     )
 
     it("should make cells surrounded by two or three live neighbours survive",
@@ -39,7 +39,7 @@ describe("Game",
 
       game grid cells[0][1] alive = true
       game grid cells[1][1] alive = true
-      game grid cells[2][1] alive = true      
+      game grid cells[2][1] alive = true
       game grid cells[0][0] alive = true
 
       game next
@@ -52,7 +52,7 @@ describe("Game",
 
       game grid cells[0][1] alive = true
       game grid cells[1][1] alive = false
-      game grid cells[2][1] alive = true      
+      game grid cells[2][1] alive = true
       game grid cells[0][0] alive = true
 
       game next
@@ -60,7 +60,7 @@ describe("Game",
       game grid cells[1][1] alive should == true
     )
   )
-  
+
   describe("grid",
     it("should contain cells",
       Game grid cells should != nil
@@ -70,7 +70,7 @@ describe("Game",
       Game grid cells size should == 3
       Game grid cells first size should == 3
     )
-    
+
     describe("cells",
       describe("0x0",
         it("should not have a northern neighbour",

@@ -16,7 +16,7 @@ import ioke.lang.exceptions.ControlFlow;
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
 public class Main {
-    private final static String HELP = 
+    private final static String HELP =
         "Usage: ioke [switches] -- [programfile] [arguments]\n" +
         " -Cdirectory     execute with directory as CWD\n" +
         " -d              debug, set debug flag\n" +
@@ -89,11 +89,11 @@ public class Main {
                                 cwd = arg.substring(2);
                             }
                         } else {
-                            final IokeObject condition = IokeObject.as(IokeObject.getCellChain(r.condition, 
-                                                                                               message, 
-                                                                                               context, 
-                                                                                               "Error", 
-                                                                                               "CommandLine", 
+                            final IokeObject condition = IokeObject.as(IokeObject.getCellChain(r.condition,
+                                                                                               message,
+                                                                                               context,
+                                                                                               "Error",
+                                                                                               "CommandLine",
                                                                                                "DontUnderstandOption"), null).mimic(message, context);
                             condition.setCell("message", message);
                             condition.setCell("context", context);
@@ -121,13 +121,13 @@ public class Main {
             for(String script : scripts) {
                 r.evaluateStream("-e", new StringReader(script), message, context);
             }
-            
+
             if(readStdin) {
                 ((IokeSystem)IokeObject.data(r.system)).setCurrentProgram("<stdin>");
                 r.evaluateStream("<stdin>", new InputStreamReader(System.in, "UTF-8"), message, context);
             }
 
-            if(args.length > start) { 
+            if(args.length > start) {
                 if(args.length > (start+1)) {
                     for(int i=start+1,j=args.length; i<j; i++) {
                         r.addArgument(args[i]);
@@ -176,7 +176,7 @@ public class Main {
             String version = props.getProperty("ioke.build.versionString");
             String date = props.getProperty("ioke.build.date");
             String commit = props.getProperty("ioke.build.commit");
-            
+
             return version + " [" + date + " -- " + commit + "]";
         } catch(Exception e) {
         }
@@ -184,7 +184,7 @@ public class Main {
         return "";
     }
 
-    private final static String COPYRIGHT = 
+    private final static String COPYRIGHT =
         "Copyright (c) 2008 Ola Bini, ola.bini@gmail.com\n"+
         "\n"+
         "Permission is hereby granted, free of charge, to any person obtaining a copy\n"+

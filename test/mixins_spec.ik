@@ -1,9 +1,9 @@
 
 use("ispec")
 
-describe(Mixins, 
-  describe("cells", 
-    it("should return the cells of this object by default", 
+describe(Mixins,
+  describe("cells",
+    it("should return the cells of this object by default",
       x = Mixins mimic. x cells should == {}
 
       x = Mixins mimic. x f = 13. x cells should == {f: 13}
@@ -14,8 +14,8 @@ describe(Mixins,
     )
   )
 
-  describe("cellNames", 
-    it("should return the cell names of this object by default", 
+  describe("cellNames",
+    it("should return the cell names of this object by default",
       x = Mixins mimic. x cellNames should == []
 
       x = Mixins mimic. x f = 13. x cellNames should == [:f]
@@ -26,8 +26,8 @@ describe(Mixins,
     )
   )
 
-  describe("cell", 
-    it("should be possible to get a cell using a Text argument", 
+  describe("cell",
+    it("should be possible to get a cell using a Text argument",
       Mixins x = 42
       Mixins cell("x") should == Mixins x
 
@@ -35,7 +35,7 @@ describe(Mixins,
       Mixins Comparing cell("x") should == Mixins Comparing x
     )
 
-    it("should be possible to get a cell using a Symbol argument", 
+    it("should be possible to get a cell using a Symbol argument",
       Mixins x = 42
       Mixins cell(:x) should == Mixins x
 
@@ -43,7 +43,7 @@ describe(Mixins,
       Mixins Comparing cell(:x) should == Mixins Comparing x
     )
 
-    it("should report an error if trying to get a cell that doesn't exist in that object", 
+    it("should report an error if trying to get a cell that doesn't exist in that object",
       fn(Mixins cell(:mixins_spec_non_existing)) should signal(Condition Error NoSuchCell)
       fn(Mixins cell("mixins_spec_non_existing")) should signal(Condition Error NoSuchCell)
 
@@ -52,8 +52,8 @@ describe(Mixins,
     )
   )
 
-  describe("cell=", 
-    it("should be possible to set a cell using a Text argument", 
+  describe("cell=",
+    it("should be possible to set a cell using a Text argument",
       Mixins cell("blurg") = 42
       Mixins blurg should == 42
 
@@ -61,7 +61,7 @@ describe(Mixins,
       Mixins Comparing murg should == 43
     )
 
-    it("should be possible to set a cell using a Symbol argument", 
+    it("should be possible to set a cell using a Symbol argument",
       Mixins cell(:blurg) = 42
       Mixins blurg should == 42
 
@@ -69,29 +69,29 @@ describe(Mixins,
       Mixins Comparing murg should == 43
     )
 
-    it("should be possible to set a cell with an empty name", 
+    it("should be possible to set a cell with an empty name",
       oldEmpty = cell("")
       Mixins Comparing cell("") = 42
       Mixins Comparing cell("") should == 42
       Mixins Comparing cell("") = cell(:oldEmpty)
     )
 
-    it("should be possible to set a cell with complicated expressions", 
+    it("should be possible to set a cell with complicated expressions",
       f = Origin mimic
       f b = "foobar"
       Mixins cell(f b) = 42+24-3
       Mixins cell(:foobar) should == 63
     )
 
-    it("should be possible to set a cell that doesn't exist", 
+    it("should be possible to set a cell that doesn't exist",
       Mixins cell(:blurg) = 42
       Mixins blurg should == 42
 
       Mixins Comparing cell(:murg) = 43
       Mixins Comparing murg should == 43
-    ) 
+    )
 
-    it("should be possible to set a cell that does exist", 
+    it("should be possible to set a cell that does exist",
       Mixins x = 42
       Mixins cell(:x) = 43
       Mixins x should == 43
@@ -101,7 +101,7 @@ describe(Mixins,
       Mixins Comparing x should == 44
     )
 
-    it("should be possible to set a cell that does exist in a mimic. this should not change the mimic value", 
+    it("should be possible to set a cell that does exist in a mimic. this should not change the mimic value",
       one = Mixins mimic
       one x = 42
       two = one mimic

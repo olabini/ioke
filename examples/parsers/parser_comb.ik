@@ -19,7 +19,7 @@ IParse = Origin mimic do(
 
     cell(:"*") = method(
       IParse RepeatingParser with(context: context, repeat: self)
-    )      
+    )
 
     cell(:"'") = dmacro([name]
       IParse ParserParser with(context: context, name: name name)
@@ -184,8 +184,8 @@ IParse = Origin mimic do(
   Parser = macro(
     context = ParserContext mimic
     args = call arguments
-    args each(each(a, 
-        if(a arguments length > 1, 
+    args each(each(a,
+        if(a arguments length > 1,
           insertSequencers(a arguments[1]))))
     args each(evaluateOn(context, context))
 ;    IParse "%*[%s: %s\n%]" format(context cells map(c, [c key, c value inspect])) print

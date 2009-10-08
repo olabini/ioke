@@ -125,7 +125,7 @@ public class FileSystem {
                     } else {
                         f = new File(context.runtime.getCurrentWorkingDirectory(), name);
                     }
-                    
+
                     return f.isDirectory() ? context.runtime._true : context.runtime._false;
                 }
             }));
@@ -165,7 +165,7 @@ public class FileSystem {
                         reader.close();
                     } catch(IOException e) {
                     }
-                    
+
                     return context.runtime.newText(sb.toString());
                 }
             }));
@@ -193,7 +193,7 @@ public class FileSystem {
                     } else {
                         f = new File(context.runtime.getCurrentWorkingDirectory(), name);
                     }
-                    
+
                     return f.isFile() ? context.runtime._true : context.runtime._false;
                 }
             }));
@@ -221,7 +221,7 @@ public class FileSystem {
                     } else {
                         f = new File(context.runtime.getCurrentWorkingDirectory(), name);
                     }
-                    
+
                     return f.exists() ? context.runtime._true : context.runtime._false;
                 }
             }));
@@ -249,7 +249,7 @@ public class FileSystem {
                     } else {
                         f = new File(context.runtime.getCurrentWorkingDirectory(), name);
                     }
-                    
+
                     String parent = f.getParent();
                     if(parent == null) {
                         return context.runtime.nil;
@@ -404,10 +404,10 @@ public class FileSystem {
                             msg = "Can't create directory '" + name + "' since there already exists a directory with that name";
                         }
 
-                        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
-                                                                                           message, 
-                                                                                           context, 
-                                                                                           "Error", 
+                        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition,
+                                                                                           message,
+                                                                                           context,
+                                                                                           "Error",
                                                                                            "IO"), context).mimic(message, context);
                         condition.setCell("message", message);
                         condition.setCell("context", context);
@@ -463,10 +463,10 @@ public class FileSystem {
                             msg = "Can't remove directory '" + name + "' since it doesn't exist";
                         }
 
-                        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
-                                                                                           message, 
-                                                                                           context, 
-                                                                                           "Error", 
+                        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition,
+                                                                                           message,
+                                                                                           context,
+                                                                                           "Error",
                                                                                            "IO"), context).mimic(message, context);
                         condition.setCell("message", message);
                         condition.setCell("context", context);
@@ -518,10 +518,10 @@ public class FileSystem {
                             msg = "Can't remove file '" + name + "' since it doesn't exist";
                         }
 
-                        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
-                                                                                           message, 
-                                                                                           context, 
-                                                                                           "Error", 
+                        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition,
+                                                                                           message,
+                                                                                           context,
+                                                                                           "Error",
                                                                                            "IO"), context).mimic(message, context);
                         condition.setCell("message", message);
                         condition.setCell("context", context);

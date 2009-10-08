@@ -1,29 +1,29 @@
 /**
  * Copyright (c) 2001, Sergey A. Samokhodkin
  * All rights reserved.
- * 
- * Redistribution and use in source and binary forms, with or without modification, 
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
- * 
- * - Redistributions of source code must retain the above copyright notice, 
- * this list of conditions and the following disclaimer. 
- * - Redistributions in binary form 
- * must reproduce the above copyright notice, this list of conditions and the following 
+ *
+ * - Redistributions of source code must retain the above copyright notice,
+ * this list of conditions and the following disclaimer.
+ * - Redistributions in binary form
+ * must reproduce the above copyright notice, this list of conditions and the following
  * disclaimer in the documentation and/or other materials provided with the distribution.
- * - Neither the name of jregex nor the names of its contributors may be used 
- * to endorse or promote products derived from this software without specific prior 
- * written permission. 
- * 
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY 
- * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES 
- * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
- * IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT 
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; 
- * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY 
+ * - Neither the name of jregex nor the names of its contributors may be used
+ * to endorse or promote products derived from this software without specific prior
+ * written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
+ * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ * IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
  * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * @version 1.2_01
  */
 
@@ -62,31 +62,31 @@ public class Matcher implements MatchResult{
    * @see Matcher#find(int)
    */
    public static final int ANCHOR_START=1;
-   
+
   /**
    * The same effect as "\\G".
    * @see Matcher#find(int)
    */
    public static final int ANCHOR_LASTMATCH=2;
-   
+
   /**
    * The same effect as "$" without REFlags.MULTILINE.
    * @see Matcher#find(int)
    */
    public static final int ANCHOR_END=4;
-   
+
   /**
    * Experimental option; if a text ends up before the end of a pattern,report a match.
    * @see Matcher#find(int)
    */
    public static final int ACCEPT_INCOMPLETE=8;
-   
+
    //see search(ANCHOR_START|...)
    private static Term startAnchor=new Term(TermType.START);
-   
+
    //see search(ANCHOR_LASTMATCH|...)
    private static Term lastMatchAnchor=new Term(TermType.LAST_MATCH_END);
-   
+
    private Pattern re;
    private int[] counters;
    private MemReg[] memregs;
@@ -94,28 +94,28 @@ public class Matcher implements MatchResult{
    private int counterCount;
    private int memregCount;
    private int lookaheadCount;
-   
+
    private char[] data;
    private int offset,end,wOffset,wEnd;
    private boolean shared;
-   
+
    private SearchEntry top;           //stack entry
    private SearchEntry first;         //object pool entry
    private SearchEntry defaultEntry;  //called when moving the window
-   
+
    private boolean called;
-   
+
    private int minQueueLength;
-   
+
    private String cache;
-   
+
    //cache may be longer than the actual data
    //and contrariwise; so cacheOffset may have both signs.
    //cacheOffset is actually -(data offset).
-   private int cacheOffset,cacheLength;   
-   
+   private int cacheOffset,cacheLength;
+
    private MemReg prefixBounds,suffixBounds,targetBounds;
-   
+
    Matcher(Pattern regex){
       this.re=regex;
       //int memregCount=(memregs=new MemReg[regex.memregs]).length;
@@ -127,7 +127,7 @@ public class Matcher implements MatchResult{
       //for(int i=0;i<lookaheadCount;i++){
       //   this.lookaheads[i]=new LAEntry();
       //}
-      
+
       int memregCount,counterCount,lookaheadCount;
       if((memregCount=regex.memregs)>0){
          MemReg[] memregs=new MemReg[memregCount];
@@ -136,9 +136,9 @@ public class Matcher implements MatchResult{
          }
          this.memregs=memregs;
       }
-      
+
       if((counterCount=regex.counters)>0) counters=new int[counterCount];
-      
+
       if((lookaheadCount=regex.lookaheads)>0){
          LAEntry[] lookaheads=new LAEntry[lookaheadCount];
          for(int i=0;i<lookaheadCount;i++){
@@ -146,16 +146,16 @@ public class Matcher implements MatchResult{
          }
          this.lookaheads=lookaheads;
       }
-      
+
       this.memregCount=memregCount;
       this.counterCount=counterCount;
       this.lookaheadCount=lookaheadCount;
-      
+
       first=new SearchEntry();
       defaultEntry=new SearchEntry();
       minQueueLength=regex.stringRepr.length()/2;  // just evaluation!!!
    }
-   
+
   /**
    * This method allows to efficiently pass data between matchers.
    * Note that a matcher may pass data to itself:<pre>
@@ -188,8 +188,8 @@ public class Matcher implements MatchResult{
       }
       init();
    }
-   
-   
+
+
   /**
    * Supplies a text to search in/match with.
    * Resets current search position to zero.
@@ -202,7 +202,7 @@ public class Matcher implements MatchResult{
    public void setTarget(String text){
       setTarget(text,0,text.length());
    }
-   
+
   /**
    * Supplies a text to search in/match with, as a part of String.
    * Resets current search position to zero.
@@ -223,14 +223,14 @@ public class Matcher implements MatchResult{
       text.getChars(start,len,mychars,0); //(srcBegin,srcEnd,dst[],dstBegin)
       offset=0;
       end=len;
-      
+
       cache=text;
       cacheOffset=-start;
       cacheLength=text.length();
-      
+
       init();
    }
-   
+
   /**
    * Supplies a text to search in/match with, as a part of char array.
    * Resets current search position to zero.
@@ -245,7 +245,7 @@ public class Matcher implements MatchResult{
    public void setTarget(char[] text,int start,int len){
       setTarget(text,start,len,true);
    }
-   
+
   /**
    * To be used with much care.
    * Supplies a text to search in/match with, as a part of a char array, as above, but also allows to permit
@@ -273,8 +273,8 @@ public class Matcher implements MatchResult{
       this.shared=shared;
       init();
    }
-   
-   
+
+
   /**
    * Supplies a text to search in/match with through a stream.
    * Resets current search position to zero.
@@ -305,7 +305,7 @@ public class Matcher implements MatchResult{
       }
       setTarget(mychars,0,count,shared);
    }
-   
+
    private void setAll(Reader in)throws IOException{
       char[] mychars=data;
       int free;
@@ -331,7 +331,7 @@ public class Matcher implements MatchResult{
       }
       setTarget(mychars,0,count,shared);
    }
-   
+
    private final String getString(int start,int end){
       String src=cache;
       if(src!=null){
@@ -349,17 +349,17 @@ public class Matcher implements MatchResult{
       }
       return new String(data,start,end-start);
    }
-   
+
   /* Matching */
-   
+
   /**
    * Tells whether the entire target matches the beginning of the pattern.
    * The whole pattern is also regarded as its beginning.<br>
-   * This feature allows to find a mismatch by examining only a beginning part of 
-   * the target (as if the beginning of the target doesn't match the beginning of the pattern, then the entire target 
+   * This feature allows to find a mismatch by examining only a beginning part of
+   * the target (as if the beginning of the target doesn't match the beginning of the pattern, then the entire target
    * also couldn't match).<br>
    * For example the following assertions yield <code>true<code>:<pre>
-   *   Pattern p=new Pattern("abcd"); 
+   *   Pattern p=new Pattern("abcd");
    *   p.matcher("").matchesPrefix();
    *   p.matcher("a").matchesPrefix();
    *   p.matcher("ab").matchesPrefix();
@@ -377,7 +377,7 @@ public class Matcher implements MatchResult{
       setPosition(0);
       return search(ANCHOR_START|ACCEPT_INCOMPLETE|ANCHOR_END);
    }
-   
+
   /**
    * Just an old name for isPrefix().<br>
    * Retained for backwards compatibility.
@@ -386,11 +386,11 @@ public class Matcher implements MatchResult{
    public final boolean isStart(){
       return matchesPrefix();
    }
-   
+
   /**
    * Tells whether a current target matches the whole pattern.
    * For example the following yields the <code>true<code>:<pre>
-   *   Pattern p=new Pattern("\\w+"); 
+   *   Pattern p=new Pattern("\\w+");
    *   p.matcher("a").matches();
    *   p.matcher("ab").matches();
    *   p.matcher("abc").matches();
@@ -407,7 +407,7 @@ public class Matcher implements MatchResult{
 if(called) setPosition(0);
       return search(ANCHOR_START|ANCHOR_END);
    }
-   
+
   /**
    * Just a combination of setTarget(String) and matches().
    * @param s the target string;
@@ -417,7 +417,7 @@ if(called) setPosition(0);
       setTarget(s);
       return search(ANCHOR_START|ANCHOR_END);
    }
-   
+
   /**
    * Allows to set a position the subsequent find()/find(int) will start from.
    * @param pos the position to start from;
@@ -438,7 +438,7 @@ if(called) setPosition(0);
        called=false;
        flush();
    }
-   
+
   /**
    * Searches through a target for a matching substring, starting from just after the end of last match.
    * If there wasn't any search performed, starts from zero.
@@ -448,7 +448,7 @@ if(called) setPosition(0);
       if(called) skip();
       return search(0);
    }
-   
+
   /**
    * Searches through a target for a matching substring, starting from just after the end of last match.
    * If there wasn't any search performed, starts from zero.
@@ -459,15 +459,15 @@ if(called) setPosition(0);
       if(called) skip();
       return search(anchors);
    }
-   
-   
+
+
   /**
    * The same as  findAll(int), but with default behaviour;
    */
    public MatchIterator findAll(){
       return findAll(0);
    }
-   
+
   /**
    * Returns an iterator over the matches found by subsequently calling find(options), the search starts from the zero position.
    */
@@ -500,7 +500,7 @@ if(called) setPosition(0);
          }
       };
    }
-   
+
   /**
    * Continues to search from where the last search left off.
    * The same as proceed(0).
@@ -509,7 +509,7 @@ if(called) setPosition(0);
    public final boolean proceed(){
       return proceed(0);
    }
-   
+
   /**
    * Continues to search from where the last search left off using specified options:<pre>
    * Matcher m=new Pattern("\\w+").matcher("abc");
@@ -531,7 +531,7 @@ if(called) setPosition(0);
    *       String match=m.group(0);
    *       if(isOdd(Integer.parseInt(match))) System.out.println(match);
    *    }
-   *    
+   *
    *    static boolean isOdd(int i){
    *       return (i&1)>0;
    *    }
@@ -554,7 +554,7 @@ if(called) setPosition(0);
       }
       return search(0);
    }
-   
+
   /**
    * Sets the current search position just after the end of last match.
    */
@@ -562,11 +562,11 @@ if(called) setPosition(0);
       int we=wEnd;
       if(wOffset==we){ //requires special handling
          //if no variants at 'wOutside',advance pointer and clear
-         if(top==null){ 
+         if(top==null){
             wOffset++;
             flush();
          }
-         //otherwise, if there exist a variant, 
+         //otherwise, if there exist a variant,
          //don't clear(), i.e. allow it to match
          return;
       }
@@ -577,7 +577,7 @@ if(called) setPosition(0);
       //rflush(); //rflush() works faster on simple regexes (with a small group/branch number)
       flush();
    }
-   
+
    private final void init(){
       //wOffset=-1;
 //System.out.println("init(): offset="+offset+", end="+end);
@@ -586,14 +586,14 @@ if(called) setPosition(0);
       called=false;
       flush();
    }
-   
+
   /**
    * Resets the internal state.
    */
    private final void flush(){
       top=null;
       defaultEntry.reset(0);
-      
+
 /*
 int c=0;
 SearchEntry se=first;
@@ -604,7 +604,7 @@ while(se!=null){
 System.out.println("queue: allocated="+c+", truncating to "+minQueueLength);
 new Exception().printStackTrace();
 */
-      
+
       first.reset(minQueueLength);
       //first.reset(0);
       for(int i=memregs.length-1;i>0;i--){
@@ -617,7 +617,7 @@ new Exception().printStackTrace();
       }
       called=false;
    }
-   
+
    //reverse flush
    //may work significantly faster,
    //need testing
@@ -633,47 +633,47 @@ new Exception().printStackTrace();
       }
       SearchEntry.popState(defaultEntry,memregs,counters);
    }
-   
+
   /**
    */
    public String toString(){
       return getString(wOffset,wEnd);
    }
-   
+
    public Pattern pattern(){
       return re;
    }
-   
+
    public String target(){
       return getString(offset,end);
    }
-   
+
   /**
    */
    public char[] targetChars(){
       shared=true;
       return data;
    }
-   
+
   /**
    */
    public int targetStart(){
       return offset;
    }
-   
+
   /**
    */
    public int targetEnd(){
       return end;
    }
-   
+
    public char charAt(int i){
       int in=this.wOffset;
       int out=this.wEnd;
       if(in<0 || out<in) throw new IllegalStateException("unassigned");
       return data[in+i];
    }
-   
+
    public char charAt(int i,int groupId){
       MemReg mr=bounds(groupId);
       if(mr==null) throw new IllegalStateException("group #"+groupId+" is not assigned");
@@ -681,41 +681,41 @@ new Exception().printStackTrace();
       if(i<0 || i>(mr.out-in)) throw new StringIndexOutOfBoundsException(""+i);
       return data[in+i];
    }
-   
+
    public final int length(){
       return wEnd-wOffset;
    }
-   
+
   /**
    */
    public final int start(){
       return wOffset-offset;
    }
-   
+
   /**
    */
    public final int end(){
       return wEnd-offset;
    }
-   
+
   /**
    */
    public String prefix(){
       return getString(offset,wOffset);
    }
-   
+
   /**
    */
    public String suffix(){
       return getString(wEnd,end);
    }
-   
+
   /**
    */
    public int groupCount(){
       return memregs.length;
    }
-   
+
   /**
    */
    public String group(int n){
@@ -723,7 +723,7 @@ new Exception().printStackTrace();
       if(mr==null) return null;
       return getString(mr.in,mr.out);
    }
-   
+
   /**
    */
    public String group(String name){
@@ -731,7 +731,7 @@ new Exception().printStackTrace();
       if(id==null) throw new IllegalArgumentException("<"+name+"> isn't defined");
       return group(id.intValue());
    }
-   
+
   /**
    */
    public boolean getGroup(int n,TextBuffer tb){
@@ -741,7 +741,7 @@ new Exception().printStackTrace();
       tb.append(data,in=mr.in,mr.out-in);
       return true;
    }
-   
+
   /**
    */
    public boolean getGroup(String name,TextBuffer tb){
@@ -749,7 +749,7 @@ new Exception().printStackTrace();
       if(id==null) throw new IllegalArgumentException("unknown group: \""+name+"\"");
       return getGroup(id.intValue(),tb);
    }
-   
+
   /**
    */
    public boolean getGroup(int n,StringBuffer sb){
@@ -759,7 +759,7 @@ new Exception().printStackTrace();
       sb.append(data,in=mr.in,mr.out-in);
       return true;
    }
-   
+
   /**
    */
    public boolean getGroup(String name,StringBuffer sb){
@@ -767,7 +767,7 @@ new Exception().printStackTrace();
       if(id==null) throw new IllegalArgumentException("unknown group: \""+name+"\"");
       return getGroup(id.intValue(),sb);
    }
-   
+
   /**
    */
    public String[] groups(){
@@ -783,7 +783,7 @@ new Exception().printStackTrace();
       }
       return groups;
    }
-   
+
   /**
    */
    public Vector groupv(){
@@ -802,7 +802,7 @@ new Exception().printStackTrace();
       }
       return v;
    }
-   
+
    private final MemReg bounds(int id){
 //System.out.println("Matcher.bounds("+id+"):");
       MemReg mr;
@@ -836,19 +836,19 @@ new Exception().printStackTrace();
       if((in=mr.in)<0 || mr.out<in) return null;
       return mr;
    }
-   
+
   /**
    */
    public final boolean isCaptured(){
       return wOffset>=0 && wEnd>=wOffset;
    }
-   
+
   /**
    */
    public final boolean isCaptured(int id){
       return bounds(id)!=null;
    }
-   
+
   /**
    */
    public final boolean isCaptured(String groupName){
@@ -856,26 +856,26 @@ new Exception().printStackTrace();
       if(id==null) throw new IllegalArgumentException("unknown group: \""+groupName+"\"");
       return isCaptured(id.intValue());
    }
-   
+
   /**
    */
    public final int length(int id){
       MemReg mr=bounds(id);
       return mr.out-mr.in;
    }
-   
+
   /**
    */
    public final int start(int id){
       return bounds(id).in-offset;
    }
-   
+
   /**
    */
    public final int end(int id){
       return bounds(id).out-offset;
    }
-   
+
    private final boolean search(int anchors){
       called=true;
       final int end=this.end;
@@ -883,26 +883,26 @@ new Exception().printStackTrace();
       char[] data=this.data;
       int wOffset=this.wOffset;
       int wEnd=this.wEnd;
-      
+
       MemReg[] memregs=this.memregs;
       int[] counters=this.counters;
       LAEntry[] lookaheads=this.lookaheads;
-      
+
       //int memregCount=memregs.length;
       //int cntCount=counters.length;
       int memregCount=this.memregCount;
       int cntCount=this.counterCount;
-      
+
       SearchEntry defaultEntry=this.defaultEntry;
       SearchEntry first=this.first;
       SearchEntry top=this.top;
       SearchEntry actual=null;
       int cnt,regLen;
       int i;
-      
+
       final boolean matchEnd=(anchors&ANCHOR_END)>0;
       final boolean allowIncomplete=(anchors&ACCEPT_INCOMPLETE)>0;
-      
+
       Pattern re=this.re;
       Term root=re.root;
       Term term;
@@ -930,7 +930,7 @@ new Exception().printStackTrace();
       }
       cnt=actual.cnt;
       regLen=actual.regLen;
-      
+
       main:
       while(wOffset<=end){
          matchHere:
@@ -997,7 +997,7 @@ new Exception().printStackTrace();
                case VOID:
                   term=term.next;
                   continue matchHere;
-               
+
                case CHAR:
                   //can only be 1-char-wide
                   //  \/
@@ -1006,7 +1006,7 @@ new Exception().printStackTrace();
                   i++;
                   term=term.next;
                   continue matchHere;
-               
+
                case ANY_CHAR:
                   //can only be 1-char-wide
                   //  \/
@@ -1014,7 +1014,7 @@ new Exception().printStackTrace();
                   i++;
                   term=term.next;
                   continue matchHere;
-               
+
                case ANY_CHAR_NE:
                   //can only be 1-char-wide
                   //  \/
@@ -1022,14 +1022,14 @@ new Exception().printStackTrace();
                   i++;
                   term=term.next;
                   continue matchHere;
-               
+
                case END:
                   if(i>=end){  //meets
                      term=term.next;
                      continue matchHere;
                   }
-                  break; 
-                  
+                  break;
+
                case END_EOL:  //perl's $
                   if(i>=end){  //meets
                      term=term.next;
@@ -1039,14 +1039,14 @@ new Exception().printStackTrace();
                      boolean matches=
                         i>=end |
                         ((i+1)==end && data[i]=='\n');
-                        
+
                      if(matches){
                         term=term.next;
                         continue matchHere;
                      }
-                     else break; 
+                     else break;
                   }
-                  
+
                case LINE_END:
                   if(i>=end){  //meets
                      term=term.next;
@@ -1066,42 +1066,42 @@ new Exception().printStackTrace();
                         continue matchHere;
                      }
                   }
-                  break; 
-                  
+                  break;
+
                case START: //Perl's "^"
                   if(i==offset){  //meets
                      term=term.next;
                      continue matchHere;
                   }
-                  //break; 
-                  
+                  //break;
+
                   //changed on 27-04-2002
                   //due to a side effect: if ALLOW_INCOMPLETE is enabled,
-                  //the anchorStart moves up to the end and succeeds 
+                  //the anchorStart moves up to the end and succeeds
                   //(see comments at the last lines of matchHere, ~line 1830)
                   //Solution: if there are some entries on the stack ("^a|b$"),
                   //try them; otherwise it's a final 'no'
                   //if(top!=null) break;
                   //else break main;
-                  
+
                   //changed on 25-05-2002
-                  //rationale: if the term is startAnchor, 
-                  //it's the root term by definition, 
-                  //so if it doesn't match, the entire pattern 
+                  //rationale: if the term is startAnchor,
+                  //it's the root term by definition,
+                  //so if it doesn't match, the entire pattern
                   //couldn't match too;
-                  //otherwise we could have the following problem: 
+                  //otherwise we could have the following problem:
                   //"c|^a" against "abc" finds only "a"
                   if(top!=null) break;
                   if(term!=startAnchor) break;
                   else break main;
-                  
+
                case LAST_MATCH_END:
                   if(i==wEnd || wEnd == -1){  //meets
                      term=term.next;
                      continue matchHere;
                   }
                   break main; //return false
-                  
+
                case LINE_START:
                   if(i==offset){  //meets
                      term=term.next;
@@ -1122,8 +1122,8 @@ new Exception().printStackTrace();
                         continue matchHere;
                      }
                   }
-                  break; 
-                  
+                  break;
+
                case BITSET:{
                   //can only be 1-char-wide
                   //  \/
@@ -1204,7 +1204,7 @@ new Exception().printStackTrace();
 //System.out.println("    ch1Meets="+ch1Meets);
                   }
                   if(ch1Meets^inv) break;
-                  
+
                   //if(i>=offset && i<end){
                   if(i<end){
                      c= data[i];
@@ -1214,7 +1214,7 @@ new Exception().printStackTrace();
                   if(!ch2Meets^inv) break;
 
 //System.out.println("    Ok");
-                  
+
                   term=term.next;
                   continue matchHere;
                }
@@ -1223,7 +1223,7 @@ new Exception().printStackTrace();
                   boolean[][] bitset2=term.bitset2;
                   boolean inv=term.inverse;
                   int j=i-1;
-                  
+
                   //if(j>=offset && j<end){
                   if(j>=offset){
                      c= data[j];
@@ -1231,7 +1231,7 @@ new Exception().printStackTrace();
                      ch1Meets= bits!=null && bits[c&0xff];
                   }
                   if(ch1Meets^inv) break;
-                  
+
                   //if(i>=offset && i<end){
                   if(i<end){
                      c= data[i];
@@ -1239,7 +1239,7 @@ new Exception().printStackTrace();
                      ch2Meets= bits!=null && bits[c&0xff];
                   }
                   if(!ch2Meets^inv) break;
-                  
+
                   term=term.next;
                   continue matchHere;
                }
@@ -1255,10 +1255,10 @@ new Exception().printStackTrace();
                      term=term.next;
                      continue matchHere;
                   }
-                  
+
                   // don't prevent us from reaching the 'end'
                   if((i+rLen)>end) break;
-                  
+
                   if(compareRegions(data,sampleOffset,i,rLen,end)){
                      i+=rLen;
                      term=term.next;
@@ -1278,10 +1278,10 @@ new Exception().printStackTrace();
                      term=term.next;
                      continue matchHere;
                   }
-                  
+
                   // don't prevent us from reaching the 'end'
                   if((i+rLen)>end) break;
-                  
+
                   if(compareRegionsI(data,sampleOffset,i,rLen,end)){
                      i+=rLen;
                      term=term.next;
@@ -1297,7 +1297,7 @@ new Exception().printStackTrace();
                      continue;
                   }
                   i+=cnt;
-                  
+
                   //branch out the backtracker (that is term.failNext, see make*())
                   actual.cnt=cnt;
                   actual.term=term.failNext;
@@ -1316,7 +1316,7 @@ new Exception().printStackTrace();
                   cnt=repeat(data,i,end,term.target);
                   if(cnt<term.minCount) break;
                   i+=cnt;
-                  
+
                   //branch out the backtracker (that is term.failNext, see make*())
                   actual.cnt=cnt;
                   actual.term=term.failNext;
@@ -1337,7 +1337,7 @@ new Exception().printStackTrace();
                   cnt=repeat(data,i,out1<out2? out1: out2,term.target);
                   if(cnt<term.minCount) break;
                   i+=cnt;
-                  
+
                   //branch out the backtracker (that is term.failNext, see make*())
                   actual.cnt=cnt;
                   actual.term=term.failNext;
@@ -1366,16 +1366,16 @@ new Exception().printStackTrace();
                      term=term.next;
                      continue matchHere;
                   }
-                  
+
                   cnt=0;
-                  
+
                   while(compareRegions(data,i,sampleOffset,bitset,end)){
                      cnt++;
                      i+=bitset;
                   }
-                  
+
                   if(cnt<term.minCount) break;
-                  
+
                   actual.cnt=cnt;
                   actual.term=term.failNext;
                   actual.index=i;
@@ -1404,7 +1404,7 @@ new Exception().printStackTrace();
                      term=term.next;
                      continue matchHere;
                   }
-                  
+
                   cnt=0;
                   int countBack=term.maxCount;
                   while(countBack>0 && compareRegions(data,i,sampleOffset,bitset,end)){
@@ -1412,9 +1412,9 @@ new Exception().printStackTrace();
                      i+=bitset;
                      countBack--;
                   }
-                  
+
                   if(cnt<term.minCount) break;
-                  
+
                   actual.cnt=cnt;
                   actual.term=term.failNext;
                   actual.index=i;
@@ -1447,7 +1447,7 @@ new Exception().printStackTrace();
                      continue;
                   }
                   else break;
-               
+
                case BACKTRACK_MIN:
 //System.out.println("<<");
                   cnt=actual.cnt;
@@ -1467,7 +1467,7 @@ new Exception().printStackTrace();
                      continue;
                   }
                   else break;
-               
+
                case BACKTRACK_FIND_MIN:{
 //System.out.print("<<<[cnt=");
                   cnt=actual.cnt;
@@ -1487,7 +1487,7 @@ new Exception().printStackTrace();
                      int back=findBack(data,i+term.distance,cnt-minCnt,term.target);
 //System.out.print("[back="+back+"]");
                      if(back<0) break;
-                     
+
                      //cnt-=back;
                      //i-=back;
                      if((cnt-=back)<=minCnt){
@@ -1497,12 +1497,12 @@ new Exception().printStackTrace();
                         continue;
                      }
                      i-=back;
-                     
+
                      actual.cnt=cnt;
                      actual.index=i;
-                     
+
                      if(term.eat)i++;
-                     
+
                      actual.term=term;
                      actual=(top=actual).on;
                      if(actual==null){
@@ -1515,7 +1515,7 @@ new Exception().printStackTrace();
                   }
                   else break;
                }
-               
+
                case BACKTRACK_FINDREG_MIN:{
 //System.out.print("<<<[cnt=");
                   cnt=actual.cnt;
@@ -1541,7 +1541,7 @@ new Exception().printStackTrace();
                      //if(back<0) break;
                      /*@since 1.2*/
                      int back;
-                     if(sampleOff<0 || sampleLen<0){ 
+                     if(sampleOff<0 || sampleLen<0){
                      //the group is not def., as in the case of '(\w+)\1'
                      //treat as usual BACKTRACK_MIN
                         cnt--;
@@ -1570,9 +1570,9 @@ new Exception().printStackTrace();
                      i-=back;
                      actual.cnt=cnt;
                      actual.index=i;
-                     
+
                      if(term.eat)i+=sampleLen;
-                     
+
                      actual.term=term;
                      actual=(top=actual).on;
                      if(actual==null){
@@ -1585,7 +1585,7 @@ new Exception().printStackTrace();
                   }
                   else break;
                }
-               
+
                case BACKTRACK_REG_MIN:
 //System.out.println("<<");
                   cnt=actual.cnt;
@@ -1607,7 +1607,7 @@ new Exception().printStackTrace();
                      continue;
                   }
                   else break;
-               
+
                case GROUP_IN:{
                   memreg=term.memreg;
                   //memreg=0 is a regex itself; we don't need to handle it
@@ -1616,7 +1616,7 @@ new Exception().printStackTrace();
                      //MemReg mr=memregs[memreg];
                      //saveMemregState((top!=null)? top: defaultEntry,memreg,mr);
                      //mr.in=i;
-                     
+
                      memregs[memreg].tmp=i; //assume
                   }
                   term=term.next;
@@ -1627,7 +1627,7 @@ new Exception().printStackTrace();
                   //see above
                   if(memreg>0){
                      //if(term.saveState)saveMemregState((top!=null)? top: defaultEntry,memreg,memregs);
-                     
+
                      MemReg mr=memregs[memreg];
                      SearchEntry.saveMemregState((top!=null)? top: defaultEntry,memreg,mr);
                      mr.in=mr.tmp; //commit
@@ -1635,7 +1635,7 @@ new Exception().printStackTrace();
                   }
                   term=term.next;
                   continue;
-               
+
                case PLOOKBEHIND_IN:{
                   int tmp=i-term.distance;
                   if(tmp<offset) break;
@@ -1684,7 +1684,7 @@ new Exception().printStackTrace();
                   LAEntry le=lookaheads[term.lookaheadId];
                   le.actual=actual;
                   le.top=top;
-                  
+
                   actual.term=term.failNext;
                   actual.index=i;
                   i=tmp;
@@ -1701,7 +1701,7 @@ new Exception().printStackTrace();
                   LAEntry le=lookaheads[term.lookaheadId];
                   le.actual=actual;
                   le.top=top;
-                  
+
                   actual.term=term.failNext;
                   actual.index=i;
                   actual=(top=actual).on;
@@ -1710,7 +1710,7 @@ new Exception().printStackTrace();
                      top.on=actual;
                      actual.sub=top;
                   }
-                  
+
                   term=term.next;
                   continue;
                }
@@ -1731,7 +1731,7 @@ new Exception().printStackTrace();
                   le.index=i;
                   le.actual=actual;
                   le.top=top;
-                  
+
                   actual.term=term.failNext;
                   actual.index=i;
                   actual=(top=actual).on;
@@ -1740,9 +1740,9 @@ new Exception().printStackTrace();
                      top.on=actual;
                      actual.sub=top;
                   }
-                  
+
                   i=tmp;
-                  
+
                   term=term.next;
                   continue;
                }
@@ -1751,7 +1751,7 @@ new Exception().printStackTrace();
                   le.index=i;
                   le.actual=actual;
                   le.top=top;
-                  
+
                   actual.term=term.failNext;
                   actual.index=i;
                   actual=(top=actual).on;
@@ -1760,7 +1760,7 @@ new Exception().printStackTrace();
                      top.on=actual;
                      actual.sub=top;
                   }
-                  
+
                   term=term.next;
                   continue;
                }
@@ -1811,14 +1811,14 @@ new Exception().printStackTrace();
                   cnt++;
                   term=term.next;
                   continue;
-               
+
                case CNT_GT_EQ:
                   if(cnt>=term.maxCount){
                      term=term.next;
                      continue;
                   }
                   else break;
-               
+
                case READ_CNT_LT:
                   cnt=actual.cnt;
                   if(cnt<term.maxCount){
@@ -1826,7 +1826,7 @@ new Exception().printStackTrace();
                      continue;
                   }
                   else break;
-               
+
                case CRSTORE_CRINC:{
                	 int cntvalue=counters[cntreg=term.cntreg];
                   SearchEntry.saveCntState((top!=null)? top: defaultEntry,cntreg,cntvalue);
@@ -1853,24 +1853,24 @@ new Exception().printStackTrace();
                      continue;
                   }
                   else break;
-                               
+
                default:
                   throw new Error("unknown term type: "+term.type);
             }
-            
+
             //if(top==null) break matchHere;
             if(allowIncomplete && i==end){
                //an attempt to implement matchesPrefix()
                //not sure it's a good way
-               //27-04-2002: just as expencted, 
-               //the side effect was found (and POSSIBLY fixed); 
+               //27-04-2002: just as expencted,
+               //the side effect was found (and POSSIBLY fixed);
                //see the case START
                return true;
             }
             if(top==null){
                break matchHere;
             }
-            
+
             //pop the stack
             top=(actual=top).sub;
             term=actual.term;
@@ -1880,9 +1880,9 @@ new Exception().printStackTrace();
                SearchEntry.popState(actual,memregs,counters);
             }
          }
-         
+
          if(defaultEntry.isState)SearchEntry.popState(defaultEntry,memregs,counters);
-         
+
          term=root;
          //wOffset++;
          //i=wOffset;
@@ -1890,10 +1890,10 @@ new Exception().printStackTrace();
       }
       this.wOffset=wOffset;
       this.top=top;
-      
+
       return false;
    }
-   
+
    private static final boolean compareRegions(char[] arr, int off1, int off2, int len,int out){
 //System.out.print("out="+out+", off1="+off1+", off2="+off2+", len="+len+", reg1="+new String(arr,off1,len)+", reg2="+new String(arr,off2,len));
       int p1=off1+len-1;
@@ -1911,7 +1911,7 @@ new Exception().printStackTrace();
 //System.out.println(" : yes");
       return true;
    }
-   
+
    private static final boolean compareRegionsI(char[] arr, int off1, int off2, int len,int out){
       int p1=off1+len-1;
       int p2=off2+len-1;
@@ -1926,7 +1926,7 @@ new Exception().printStackTrace();
       }
       return true;
    }
-   
+
    //repeat while matches
    private static final int repeat(char[] data,int off,int out,Term term){
 //System.out.print("off="+off+", out="+out+", term="+term);
@@ -1985,7 +1985,7 @@ new Exception().printStackTrace();
       }
       throw new Error("this kind of term can't be quantified:"+term.type);
    }
-   
+
    //repeat while doesn't match
    private static final int find(char[] data,int off,int out,Term term){
 //System.out.print("off="+off+", out="+out+", term="+term);
@@ -2034,8 +2034,8 @@ new Exception().printStackTrace();
       }
       throw new IllegalArgumentException("can't seek this kind of term:"+term.type);
    }
-   
-   
+
+
    private static final int findReg(char[] data,int off,int regOff,int regLen,Term term,int out){
 //System.out.print("off="+off+", out="+out+", term="+term);
       if(off>=out) return -1;
@@ -2055,7 +2055,7 @@ new Exception().printStackTrace();
       else throw new IllegalArgumentException("wrong findReg() target:"+term.type);
       return off-i;
    }
-   
+
    private static final int findBack(char[] data,int off,int maxCount,Term term){
  //System.out.print("off="+off+", maxCount="+maxCount+", term="+term);
       switch(term.type){
@@ -2065,7 +2065,7 @@ new Exception().printStackTrace();
             int iMin=off-maxCount;
             for(;;){
                if(data[--i]==c) break;
-               if(i<=iMin) return -1; 
+               if(i<=iMin) return -1;
             }
 //System.out.println(", returning "+(off-i));
             return off-i;
@@ -2105,7 +2105,7 @@ new Exception().printStackTrace();
       }
       throw new IllegalArgumentException("can't find this kind of term:"+term.type);
    }
-   
+
    private static final int findBackReg(char[] data,int off,int regOff,int regLen,int maxCount,Term term,int out){
       //assume that the cases when regLen==0 or maxCount==0 are handled by caller
       int i=off;
@@ -2139,7 +2139,7 @@ new Exception().printStackTrace();
       else throw new IllegalArgumentException("wrong findBackReg() target type :"+term.type);
       return off-i;
    }
-   
+
    public String toString_d(){
       StringBuffer s=new StringBuffer();
       s.append("counters: ");
@@ -2148,23 +2148,23 @@ new Exception().printStackTrace();
       s.append("\r\nmemregs: ");
       s.append(memregs.length);
       for(int i=0;i<memregs.length;i++) s.append("\r\n #"+i+": ["+memregs[i].in+","+memregs[i].out+"](\""+getString(memregs[i].in,memregs[i].out)+"\")");
-   
+
       s.append("\r\ndata: ");
       if(data!=null)s.append(data.length);
       else s.append("[none]");
-      
+
       s.append("\r\noffset: ");
       s.append(offset);
-   
+
       s.append("\r\nend: ");
       s.append(end);
-   
+
       s.append("\r\nwOffset: ");
       s.append(wOffset);
-   
+
       s.append("\r\nwEnd: ");
       s.append(wEnd);
-   
+
       s.append("\r\nregex: ");
       s.append(re);
       return s.toString();
@@ -2176,24 +2176,24 @@ class SearchEntry{
    int index;
    int cnt;
    int regLen;
-   
+
    boolean isState;
-   
+
    SearchEntry sub,on;
-   
+
    private static class MState{
       int index,in,out;
       MState next,prev;
    }
-   
+
    private static class CState{
       int index,value;
       CState next,prev;
    }
-   
+
    private MState mHead,mCurrent;
    private CState cHead,cCurrent;
-   
+
    final static void saveMemregState(SearchEntry entry,int memreg, MemReg mr){
 //System.out.println("saveMemregState("+entry+","+memreg+"):");
       entry.isState=true;
@@ -2216,7 +2216,7 @@ class SearchEntry{
       current.out=mr.out;
       entry.mCurrent=current;
    }
-   
+
    final static void saveCntState(SearchEntry entry,int cntreg,int value){
       entry.isState=true;
       CState current=entry.cCurrent;
@@ -2237,7 +2237,7 @@ class SearchEntry{
       current.value=value;
       entry.cCurrent=current;
    }
-   
+
    final static void popState(SearchEntry entry, MemReg[] memregs, int[] counters){
 //System.out.println("popState("+entry+"):");
       MState ms=entry.mCurrent;
@@ -2256,15 +2256,15 @@ class SearchEntry{
       entry.cCurrent=null;
       entry.isState=false;
    }
-   
+
    final void reset(int restQueue){
       term=null;
       index=cnt=regLen=0;
-      
+
       mCurrent=null;
       cCurrent=null;
       isState=false;
-      
+
       SearchEntry on=this.on;
       if(on!=null){
          if(restQueue>0) on.reset(restQueue-1);
@@ -2273,20 +2273,20 @@ class SearchEntry{
             on.sub=null;
          }
       }
-      //sub=on=null;      
+      //sub=on=null;
    }
 }
 
 class MemReg{
    int index;
-   
+
    int in=-1,out=-1;
    int tmp=-1;  //for assuming at GROUP_IN
-   
+
    MemReg(int index){
       this.index=index;
    }
-   
+
    void reset(){
       in=out=-1;
    }

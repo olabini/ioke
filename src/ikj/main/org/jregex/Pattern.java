@@ -1,29 +1,29 @@
 /**
  * Copyright (c) 2001, Sergey A. Samokhodkin
  * All rights reserved.
- * 
- * Redistribution and use in source and binary forms, with or without modification, 
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
- * 
- * - Redistributions of source code must retain the above copyright notice, 
- * this list of conditions and the following disclaimer. 
- * - Redistributions in binary form 
- * must reproduce the above copyright notice, this list of conditions and the following 
+ *
+ * - Redistributions of source code must retain the above copyright notice,
+ * this list of conditions and the following disclaimer.
+ * - Redistributions in binary form
+ * must reproduce the above copyright notice, this list of conditions and the following
  * disclaimer in the documentation and/or other materials provided with the distribution.
- * - Neither the name of jregex nor the names of its contributors may be used 
- * to endorse or promote products derived from this software without specific prior 
- * written permission. 
- * 
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY 
- * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES 
- * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
- * IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT 
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; 
- * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY 
+ * - Neither the name of jregex nor the names of its contributors may be used
+ * to endorse or promote products derived from this software without specific prior
+ * written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
+ * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ * IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
  * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * @version 1.2_01
  */
 
@@ -57,11 +57,11 @@ import java.util.*;
  * <li><b>REFlags.XML_SCHEMA</b> - permits XML Schema regular expressions syntax extentions.
  * <p>
  * <b>Multithreading</b><br>
- * Pattern instances are thread-safe, i.e. the same Pattern object may be used 
- * by any number of threads simultaniously. On the other hand, the Matcher objects 
- * are NOT thread safe, so, given a Pattern instance, each thread must obtain 
+ * Pattern instances are thread-safe, i.e. the same Pattern object may be used
+ * by any number of threads simultaniously. On the other hand, the Matcher objects
+ * are NOT thread safe, so, given a Pattern instance, each thread must obtain
  * and use its own Matcher.
- * 
+ *
  * @see        REFlags
  * @see        Matcher
  * @see        Matcher#setTarget(java.lang.String)
@@ -80,23 +80,23 @@ import java.util.*;
 
 public class Pattern implements Serializable,REFlags{
    String stringRepr;
-   
+
    // tree entry
    Term root,root0;
-   
+
    // required number of memory slots
    int memregs;
-   
+
    // required number of iteration counters
    int counters;
-   
+
    // number of lookahead groups
    int lookaheads;
-   
+
    Map namedGroupMap;
-   
+
    protected Pattern() throws PatternSyntaxException{}
-   
+
   /**
    * Compiles an expression with default flags.
    * @param      <code>regex</code>   the Perl5-compatible regular expression string.
@@ -111,7 +111,7 @@ public class Pattern implements Serializable,REFlags{
    public Set getGroupNames() {
       return namedGroupMap.keySet();
    }
-      
+
   /**
    * Compiles a regular expression using Perl5-style flags.
    * The flag string should consist of letters 'i','m','s','x','u','X'(the case is significant) and a hyphen.
@@ -133,7 +133,7 @@ public class Pattern implements Serializable,REFlags{
       stringRepr=regex;
       compile(regex,parseFlags(flags));
    }
-   
+
   /**
    * Compiles a regular expression using REFlags.
    * The <code>flags</code> parameter is a bitwise OR of the folloing values:
@@ -153,7 +153,7 @@ public class Pattern implements Serializable,REFlags{
    public Pattern(String regex, int flags) throws PatternSyntaxException{
       compile(regex,flags);
    }
-   
+
   /*
    //java.util.regex.* compatibility
    public static Pattern compile(String regex,int flags) throws PatternSyntaxException{
@@ -162,7 +162,7 @@ public class Pattern implements Serializable,REFlags{
       return flags;
    }
    */
-   
+
    protected void compile(String regex,int flags) throws PatternSyntaxException{
       stringRepr=regex;
       Term.makeTree(regex,flags,this);
@@ -201,14 +201,14 @@ public class Pattern implements Serializable,REFlags{
             }
         }
     }
-   
+
   /**
    * How many capturing groups this expression includes?
    */
    public int groupCount(){
       return memregs;
    }
-   
+
   /**
    * Get numeric id for a group name.
    * @return <code>null</code> if no such name found.
@@ -218,18 +218,18 @@ public class Pattern implements Serializable,REFlags{
    public Integer groupId(String name){
       return ((Integer)namedGroupMap.get(name));
    }
-   
+
   /**
    * A shorthand for Pattern.matcher(String).matches().<br>
    * @param s the target
-   * @return true if the entire target matches the pattern 
+   * @return true if the entire target matches the pattern
    * @see Matcher#matches()
    * @see Matcher#matches(String)
    */
    public boolean matches(String s){
       return matcher(s).matches();
    }
-   
+
   /**
    * A shorthand for Pattern.matcher(String).matchesPrefix().<br>
    * @param s the target
@@ -239,7 +239,7 @@ public class Pattern implements Serializable,REFlags{
    public boolean startsWith(String s){
       return matcher(s).matchesPrefix();
    }
-   
+
   /**
    * Returns a targetless matcher.
    * Don't forget to supply a target.
@@ -247,7 +247,7 @@ public class Pattern implements Serializable,REFlags{
    public Matcher matcher(){
       return new Matcher(this);
    }
-   
+
   /**
    * Returns a matcher for a specified string.
    */
@@ -256,7 +256,7 @@ public class Pattern implements Serializable,REFlags{
       m.setTarget(s);
       return m;
    }
-      
+
   /**
    * Returns a matcher for a specified region.
    */
@@ -265,7 +265,7 @@ public class Pattern implements Serializable,REFlags{
       m.setTarget(data,start,end);
       return m;
    }
-      
+
   /**
    * Returns a matcher for a match result (in a performance-friendly way).
    * <code>groupId</code> parameter specifies which group is a target.
@@ -281,7 +281,7 @@ public class Pattern implements Serializable,REFlags{
       }
       return m;
    }
-      
+
   /**
    * Just as above, yet with symbolic group name.
    * @exception NullPointerException if there is no group with such name
@@ -292,7 +292,7 @@ public class Pattern implements Serializable,REFlags{
       int group=id.intValue();
       return matcher(res,group);
    }
-      
+
   /**
    * Returns a matcher taking a text stream as target.
    * <b>Note that this is not a true POSIX-style stream matching</b>, i.e. the whole length of the text is preliminary read and stored in a char array.
@@ -306,7 +306,7 @@ public class Pattern implements Serializable,REFlags{
       m.setTarget(text,length);
       return m;
    }
-   
+
   /**
    * Returns a replacer of a pattern by specified perl-like expression.
    * Such replacer will substitute all occurences of a pattern by an evaluated expression
@@ -329,9 +329,9 @@ public class Pattern implements Serializable,REFlags{
    public Replacer replacer(String expr){
       return new Replacer(this,expr);
    }
-   
+
   /**
-   * Returns a replacer will substitute all occurences of a pattern 
+   * Returns a replacer will substitute all occurences of a pattern
    * through applying a user-defined substitution model.
    * @param model a Substitution object which is in charge for match substitution
    * @see Replacer
@@ -339,52 +339,52 @@ public class Pattern implements Serializable,REFlags{
    public Replacer replacer(Substitution model){
       return new Replacer(this,model);
    }
-   
+
   /**
    * Tokenizes a text by an occurences of the pattern.
    * Note that a series of adjacent matches are regarded as a single separator.
    * The same as new RETokenizer(Pattern,String);
-   * @see RETokenizer 
+   * @see RETokenizer
    * @see RETokenizer#RETokenizer(jregex.Pattern,java.lang.String)
-   * 
+   *
    */
    public RETokenizer tokenizer(String text){
       return new RETokenizer(this,text);
    }
-   
+
   /**
    * Tokenizes a specified region by an occurences of the pattern.
    * Note that a series of adjacent matches are regarded as a single separator.
    * The same as new RETokenizer(Pattern,char[],int,int);
-   * @see RETokenizer 
+   * @see RETokenizer
    * @see RETokenizer#RETokenizer(jregex.Pattern,char[],int,int)
    */
    public RETokenizer tokenizer(char[] data,int off,int len){
       return new RETokenizer(this,data,off,len);
    }
-   
+
   /**
    * Tokenizes a specified region by an occurences of the pattern.
    * Note that a series of adjacent matches are regarded as a single separator.
    * The same as new RETokenizer(Pattern,Reader,int);
-   * @see RETokenizer 
+   * @see RETokenizer
    * @see RETokenizer#RETokenizer(jregex.Pattern,java.io.Reader,int)
    */
    public RETokenizer tokenizer(Reader in,int length) throws IOException{
       return new RETokenizer(this,in,length);
    }
-   
+
    public String toString(){
       return stringRepr;
    }
-   
+
   /**
    * Returns a less or more readable representation of a bytecode for the pattern.
    */
    public String toString_d(){
       return root.toStringAll();
    }
-   
+
    static int parseFlags(String flags)throws PatternSyntaxException{
       boolean enable=true;
       int len=flags.length();
@@ -406,7 +406,7 @@ public class Pattern implements Serializable,REFlags{
       }
       return result;
    }
-   
+
    static int parseFlags(char[] data,int start,int len)throws PatternSyntaxException{
       boolean enable=true;
       int result=DEFAULT;
@@ -427,7 +427,7 @@ public class Pattern implements Serializable,REFlags{
       }
       return result;
    }
-   
+
    private static int getFlag(char c)throws PatternSyntaxException{
        switch(c){
        case 'i':

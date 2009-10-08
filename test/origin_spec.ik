@@ -7,11 +7,11 @@ describe(Origin,
       oldSystemOutPrint = System out cell(:print)
       Ground expected = nil
       System out print = method(arg, Ground expected = arg)
-      
+
       "foobarz" print
 
       System out print = cell(:oldSystemOutPrint)
-      
+
       expected should == "foobarz"
     )
   )
@@ -21,11 +21,11 @@ describe(Origin,
       oldSystemOutPrintln = System out cell(:println)
       Ground expected = nil
       System out println = method(arg, Ground expected = arg)
-      
+
       "foobarz" println
 
       System out println = cell(:oldSystemOutPrintln)
-      
+
       expected should == "foobarz"
     )
   )
@@ -49,7 +49,7 @@ describe(Origin,
       x should not === y
       x should not === Origin
       x should not === z
-      
+
       z should not === z
       z should === x
     )
@@ -105,6 +105,6 @@ describe(Origin,
       Origin eval("sam = 1. boris = 5. sooze = 10. sam + boris + sooze") should == 16
     )
   )
-      
+
 )
-  
+

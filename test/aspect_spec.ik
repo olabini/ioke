@@ -72,7 +72,7 @@ describe(DefaultBehavior,
           x before(:foo5) << fn(accesses << :six)
           fn(x foo5) should signal(Condition Error Default)
           accesses should == [:six, :five, :four]
-          
+
         )
 
         it("should be possible to specify for a cell that doesn't exist",
@@ -261,7 +261,7 @@ describe(DefaultBehavior,
           y quux17
           accesses should == [:foo17]
         )
-        
+
         it("should take a regular expression",
           X = Origin mimic
           Y = X mimic
@@ -373,7 +373,7 @@ describe(DefaultBehavior,
             x before(:foo5) add(:floxie, fn(accesses << :six))
             fn(x foo5) should signal(Condition Error Default)
             accesses should == [:six, :five, :four]
-            
+
           )
 
           it("should be possible to specify for a cell that doesn't exist",
@@ -562,7 +562,7 @@ describe(DefaultBehavior,
             y quux17
             accesses should == [:foo17]
           )
-          
+
           it("should take a regular expression",
             X = Origin mimic
             Y = X mimic
@@ -818,7 +818,7 @@ describe(DefaultBehavior,
           x after(:foo5) << fn(accesses << :six)
           fn(x foo5) should signal(Condition Error Default)
           accesses should == [:one, :two, :three, :four]
-          
+
         )
 
         it("should be possible to specify for a cell that doesn't exist",
@@ -1007,7 +1007,7 @@ describe(DefaultBehavior,
           y quux17
           accesses should == [:foo17]
         )
-        
+
         it("should take a regular expression",
           X = Origin mimic
           Y = X mimic
@@ -1119,7 +1119,7 @@ describe(DefaultBehavior,
             x after(:foo5) add(:floxie, fn(accesses << :six))
             fn(x foo5) should signal(Condition Error Default)
             accesses should == [:one, :two, :three, :four]
-            
+
           )
 
           it("should be possible to specify for a cell that doesn't exist",
@@ -1308,7 +1308,7 @@ describe(DefaultBehavior,
             y quux17
             accesses should == [:foo17]
           )
-          
+
           it("should take a regular expression",
             X = Origin mimic
             Y = X mimic
@@ -1556,11 +1556,11 @@ describe(DefaultBehavior,
       it("should return an Aspect Pointcut",
         Origin mimic around(:foo) should have kind("DefaultBehavior Aspects Pointcut")
       )
-      
+
       it("should execute a block instead of a cell access",
         x = Origin mimic do(
           foo = 42)
-        
+
         accesses = []
         x around(:foo) << fn(accesses << :called)
 
@@ -1572,7 +1572,7 @@ describe(DefaultBehavior,
       it("should execute a method instead of a cell access",
         x = Origin mimic do(
           foo = 42)
-        
+
         Ground accesses = []
         x around(:foo) << method(accesses << :called)
 
@@ -1584,7 +1584,7 @@ describe(DefaultBehavior,
       it("should execute a method instead of a cell access with the current receiver",
         x = Origin mimic do(
           foo = 42)
-        
+
         Ground accesses = []
         x around(:foo) << method(accesses << self)
 
@@ -1616,7 +1616,7 @@ describe(DefaultBehavior,
         Ground accesses = []
         x = Origin mimic do(
           foo = method(val, accesses << [:realMethodInvoked, val]. 18))
-        x around(:foo) << method(var, 
+        x around(:foo) << method(var,
           accesses << [:aroundBefore, var]
           xx = aspectCall(42)
           accesses << [:aroundAfter, xx]
@@ -1629,7 +1629,7 @@ describe(DefaultBehavior,
         Ground accesses = []
         x = Origin mimic do(
           foo = method(val, accesses << [:realMethodInvoked, val]. 18))
-        x around(:foo) << method(var, 
+        x around(:foo) << method(var,
           accesses << [:aroundBefore, var]
           xx = aspectCall(42)
           accesses << [:aroundAfter, xx]

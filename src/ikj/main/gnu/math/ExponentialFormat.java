@@ -169,11 +169,11 @@ public class ExponentialFormat extends java.text.Format
 	int dd = d - n;
 	if (general && (n >= 0 && dd >= 0))
 	  {
-	    // "arg is printed as if by the format directives 
+	    // "arg is printed as if by the format directives
 	    //    ~ww,dd,0,overflowchar,padcharF~ee@T "
 	    digits = d;
 	    k = n;
-	    showExponent = false; 
+	    showExponent = false;
 	  }
 	else if (fracUnspecified)
 	  {

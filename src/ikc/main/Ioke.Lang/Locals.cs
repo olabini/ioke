@@ -35,7 +35,7 @@ namespace Ioke.Lang {
             obj.SetCell("cellOwner",         obj.runtime.Base.Cells["cellOwner"]);
             obj.SetCell("identity",         obj.runtime.Base.Cells["identity"]);
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("will pass along the call to the real self object of this context.", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("will pass along the call to the real self object of this context.",
                                                            new NativeMethod("pass", DefaultArgumentsDefinition.builder()
                                                                             .WithRestUnevaluated("arguments")
                                                                             .Arguments,
@@ -47,7 +47,7 @@ namespace Ioke.Lang {
                                                                                 return context.runtime.nil;
                                                                             })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("will return a text representation of the current stack trace", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("will return a text representation of the current stack trace",
                                                            new NativeMethod.WithNoArguments("stackTraceAsText",
                                                                                             (method, context, m, on, outer) => {
                                                                                                 outer.ArgumentsDefinition.CheckArgumentCount(context, m, on);
@@ -58,7 +58,7 @@ namespace Ioke.Lang {
                                                                                                 while("Locals".Equals(current.GetKind(m, context))) {
                                                                                                     IokeObject message = IokeObject.As(IokeObject.GetCell(current, m, context, "currentMessage"), context);
                                                                                                     IokeObject start = message;
-                                                                   
+
                                                                                                     while(Message.GetPrev(start) != null && Message.GetPrev(start).Line == message.Line) {
                                                                                                         start = Message.GetPrev(start);
                                                                                                     }
@@ -70,7 +70,7 @@ namespace Ioke.Lang {
                                                                                                         ix--;
                                                                                                     }
 
-                                                                                                    sb.Append(string.Format(" {0,-48} {1}\n", 
+                                                                                                    sb.Append(string.Format(" {0,-48} {1}\n",
                                                                                                                             (ix == -1 ? s1 : s1.Substring(0,ix)),
                                                                                                                             "[" + message.File + ":" + message.Line + ":" + message.Position + GetContextMessageName(IokeObject.As(current.Cells["surroundingContext"], context)) + "]"));
 

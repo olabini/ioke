@@ -69,7 +69,7 @@ public class DateTime extends Quantity implements Cloneable
     int extraComponents = oldComponents & ~newComponents;
     if ((extraComponents & TIME_MASK) != 0)
       {
-        copy.calendar.clear(Calendar.HOUR_OF_DAY); 
+        copy.calendar.clear(Calendar.HOUR_OF_DAY);
         copy.calendar.clear(Calendar.MINUTE);
         copy.calendar.clear(Calendar.SECOND);
       }
@@ -497,8 +497,8 @@ public class DateTime extends Quantity implements Cloneable
         r.calendar.setTimeInMillis(millis);
         if ((mask & TIME_MASK) == 0)
           {
-            r.calendar.set(Calendar.HOUR_OF_DAY, 0); 
-            r.calendar.set(Calendar.MINUTE, 0); 
+            r.calendar.set(Calendar.HOUR_OF_DAY, 0);
+            r.calendar.set(Calendar.MINUTE, 0);
             r.calendar.set(Calendar.SECOND, 0);
             r.nanoSeconds = 0;
           }
@@ -535,7 +535,7 @@ public class DateTime extends Quantity implements Cloneable
             month = 11 - (month % 12);
             daysInMonth = daysInMonth(month, 1);
           }
-        
+
         if (day > daysInMonth)
           day = daysInMonth;
         r.calendar.set(year, month, day);

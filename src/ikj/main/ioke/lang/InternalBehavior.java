@@ -119,7 +119,7 @@ public class InternalBehavior {
                     if((IokeObject.data(on) instanceof Text) || (IokeObject.data(on) instanceof Regexp)) {
                         addObject(on, sb, context);
                     }
-                    
+
                     int size = args.size();
 
                     for(Object o : args.subList(0, size-1)) {

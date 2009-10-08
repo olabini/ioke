@@ -99,10 +99,10 @@ public class Symbol extends IokeData {
 
     @Override
     public void checkMimic(IokeObject obj, IokeObject m, IokeObject context) throws ControlFlow {
-        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
-                                                                           m, 
+        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition,
+                                                                           m,
                                                                            context,
-                                                                           "Error", 
+                                                                           "Error",
                                                                            "CantMimicOddball"), context).mimic(m, context);
         condition.setCell("message", m);
         condition.setCell("context", context);

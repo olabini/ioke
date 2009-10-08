@@ -21,7 +21,7 @@ public class LexicalContext extends IokeObject {
 
         setKind("LexicalContext");
     }
-    
+
     @Override
     public void init() {
     }
@@ -68,7 +68,7 @@ public class LexicalContext extends IokeObject {
     @Override
     protected Object markingFindCell(IokeObject m, IokeObject context, String name) {
         Object nn = super.markingFindCell(m, context, name);
-        
+
         if(nn == runtime.nul) {
             return IokeObject.findCell(surroundingContext, m, context, name);
         } else {

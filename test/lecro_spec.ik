@@ -1,25 +1,25 @@
 
 use("ispec")
 
-describe(DefaultBehavior, 
-  describe("lecro", 
-    it("should return a lecro that returns nil when called with no arguments", 
+describe(DefaultBehavior,
+  describe("lecro",
+    it("should return a lecro that returns nil when called with no arguments",
       lecro call should be nil
       lecro() call should be nil
     )
-    
-    it("should name itself after the slot it's assigned to if it has no name", 
+
+    it("should name itself after the slot it's assigned to if it has no name",
       x = lecro(nil)
       cell(:x) name should == "x"
     )
-    
-    it("should not change it's name if it already has a name", 
+
+    it("should not change it's name if it already has a name",
       x = lecro(nil)
       y = cell(:x)
       cell(:y) name should == "x"
     )
-    
-    it("should know it's own name", 
+
+    it("should know it's own name",
       (x = lecro(nil)) name should == "x"
     )
 
@@ -28,24 +28,24 @@ describe(DefaultBehavior,
     )
   )
 
-  describe("lecrox", 
-    it("should return a lecro that returns nil when called with no arguments", 
+  describe("lecrox",
+    it("should return a lecro that returns nil when called with no arguments",
       lecrox call should be nil
       lecrox() call should be nil
     )
-    
-    it("should name itself after the slot it's assigned to if it has no name", 
+
+    it("should name itself after the slot it's assigned to if it has no name",
       x = lecrox(nil)
       cell(:x) name should == "x"
     )
-    
-    it("should not change it's name if it already has a name", 
+
+    it("should not change it's name if it already has a name",
       x = lecrox(nil)
       y = cell(:x)
       cell(:y) name should == "x"
     )
-    
-    it("should know it's own name", 
+
+    it("should know it's own name",
       (x = lecrox(nil)) name should == "x"
     )
 
@@ -55,8 +55,8 @@ describe(DefaultBehavior,
   )
 )
 
-describe("LexicalMacro", 
-  it("should be possible to give it a documentation string", 
+describe("LexicalMacro",
+  it("should be possible to give it a documentation string",
     lecro("foo is bar", nil) documentation should == "foo is bar"
   )
 
@@ -64,23 +64,23 @@ describe("LexicalMacro",
     fn(LexicalMacro) should signal(Condition Error Invocation NotActivatable)
   )
 
-  it("should have 'call' defined inside the call to the macro", 
+  it("should have 'call' defined inside the call to the macro",
     result = lecro(call) call
     result should have kind("Call")
   )
-  
-  it("should not evaluate it's arguments by default", 
+
+  it("should not evaluate it's arguments by default",
     x=42
     lecro(nil) call(x=13)
     x should == 42
   )
 
-  it("should take any kinds of arguments", 
+  it("should take any kinds of arguments",
     x = lecro(nil)
     x(13, 42, foo: 42*13) should be nil
   )
 
-  it("should return the last value in the macro", 
+  it("should return the last value in the macro",
     x = lecro(nil. 42+13)
     x should == 55
   )

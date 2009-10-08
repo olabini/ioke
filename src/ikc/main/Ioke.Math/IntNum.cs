@@ -203,7 +203,7 @@ namespace Ioke.Math {
                 return (x_len > y_len)!=x_negative ? 1 : -1;
             return MPN.cmp (x.words, y.words, x_len);
         }
- 
+
         /** Return -1, 0, or 1, depending on which value is greater. */
         public static int compare (IntNum x, long y)
         {
@@ -962,7 +962,7 @@ namespace Ioke.Math {
         {
             if (x.isZero () || y.isZero ())
                 return IntNum.zero ();
-            x = IntNum.abs (x); 
+            x = IntNum.abs (x);
             y = IntNum.abs (y);
             IntNum quotient = new IntNum ();
             divide (times (x, y), gcd (x, y), quotient, null, TRUNCATE);
@@ -1109,7 +1109,7 @@ namespace Ioke.Math {
 
             return -1;
         }
-        
+
 
         public void format (int radix, StringBuilder buffer)
         {
@@ -1269,7 +1269,7 @@ namespace Ioke.Math {
             // but slightly more expensive, for little practical gain.
             if (len + radix <= 28)
                 return IntNum.make (Convert.ToInt64(s, radix));
-    
+
             int byte_len = 0;
             byte[] bytes = new byte[len];
             bool negative = false;
@@ -1407,7 +1407,7 @@ namespace Ioke.Math {
                     else if (ml == 52 && (m & (1L << 53)) != 0)
                         exp++;
                 }
-	
+
             // Discard the rounding bit
             m >>= 1;
 
@@ -1454,7 +1454,7 @@ namespace Ioke.Math {
          * Assumes words.length >= (this.words == null ? 1 : this.ival).
          * Result is zero-extended, but need not be a valid 2's complement number.
          */
-    
+
         public void getAbsolute (int[] words)
         {
             int len;

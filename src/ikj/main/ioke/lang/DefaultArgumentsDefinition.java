@@ -171,7 +171,7 @@ public class DefaultArgumentsDefinition {
 
         if(rest != null) {
             any = true;
-            if(restUneval) { 
+            if(restUneval) {
                 sb.append("+[").append(rest).append("], ");
             } else {
                 sb.append("+").append(rest).append(", ");
@@ -200,11 +200,11 @@ public class DefaultArgumentsDefinition {
         if(argCount < min || (max != -1 && argCount > (max+keySize))) {
             final int finalArgCount = argCount;
             if(argCount < min) {
-                final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
-                                                                                   message, 
-                                                                                   context, 
-                                                                                   "Error", 
-                                                                                   "Invocation", 
+                final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition,
+                                                                                   message,
+                                                                                   context,
+                                                                                   "Error",
+                                                                                   "Invocation",
                                                                                    "TooFewArguments"), context).mimic(message, context);
                 condition.setCell("message", message);
                 condition.setCell("context", context);
@@ -215,11 +215,11 @@ public class DefaultArgumentsDefinition {
              } else {
                 runtime.withReturningRestart("ignoreExtraArguments", context, new RunnableWithControlFlow() {
                         public void run() throws ControlFlow {
-                            IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
-                                                                                         message, 
-                                                                                         context, 
-                                                                                         "Error", 
-                                                                                         "Invocation", 
+                            IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition,
+                                                                                         message,
+                                                                                         context,
+                                                                                         "Error",
+                                                                                         "Invocation",
                                                                                          "TooManyArguments"), context).mimic(message, context);
                             condition.setCell("message", message);
                             condition.setCell("context", context);
@@ -255,21 +255,21 @@ public class DefaultArgumentsDefinition {
                         givenKeywords.put(Text.getText(IokeObject.convertToText(me.getKey(), message, context, true)) + ":", me.getValue());
                     }
                 } else {
-                    final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
-                                                                                       message, 
-                                                                                       context, 
-                                                                                       "Error", 
-                                                                                       "Invocation", 
+                    final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition,
+                                                                                       message,
+                                                                                       context,
+                                                                                       "Error",
+                                                                                       "Invocation",
                                                                                        "NotSpreadable"), context).mimic(message, context);
                     condition.setCell("message", message);
                     condition.setCell("context", context);
                     condition.setCell("receiver", on);
                     condition.setCell("given", result);
-                
+
                     List<Object> outp = IokeList.getList(runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
                             public void run() throws ControlFlow {
                                 runtime.errorCondition(condition);
-                            }}, 
+                            }},
                             context,
                             new Restart.DefaultValuesGivingRestart("ignoreArgument", runtime.nil, 0),
                             new Restart.DefaultValuesGivingRestart("takeArgumentAsIs", IokeObject.as(result, context), 1)
@@ -284,25 +284,25 @@ public class DefaultArgumentsDefinition {
             }
         }
 
-        
+
         while(argCount < min || (max != -1 && argCount > max)) {
             final int finalArgCount = argCount;
             if(argCount < min) {
-                final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
-                                                                             message, 
-                                                                             context, 
-                                                                             "Error", 
-                                                                             "Invocation", 
+                final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition,
+                                                                             message,
+                                                                             context,
+                                                                             "Error",
+                                                                             "Invocation",
                                                                              "TooFewArguments"), context).mimic(message, context);
                 condition.setCell("message", message);
                 condition.setCell("context", context);
                 condition.setCell("receiver", on);
                 condition.setCell("missing", runtime.newNumber(min-argCount));
-                
+
                 List<Object> newArguments = IokeList.getList(runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
                         public void run() throws ControlFlow {
                             runtime.errorCondition(condition);
-                        }}, 
+                        }},
                         context,
                         new Restart.ArgumentGivingRestart("provideExtraArguments") {
                             public List<String> getArgumentNames() {
@@ -321,11 +321,11 @@ public class DefaultArgumentsDefinition {
              } else {
                 runtime.withReturningRestart("ignoreExtraArguments", context, new RunnableWithControlFlow() {
                         public void run() throws ControlFlow {
-                            IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
-                                                                                         message, 
-                                                                                         context, 
-                                                                                         "Error", 
-                                                                                         "Invocation", 
+                            IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition,
+                                                                                         message,
+                                                                                         context,
+                                                                                         "Error",
+                                                                                         "Invocation",
                                                                                          "TooManyArguments"), context).mimic(message, context);
                             condition.setCell("message", message);
                             condition.setCell("context", context);
@@ -344,11 +344,11 @@ public class DefaultArgumentsDefinition {
         if(krest == null && !intersection.isEmpty()) {
             runtime.withReturningRestart("ignoreExtraKeywords", context, new RunnableWithControlFlow() {
                     public void run() throws ControlFlow {
-                        IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
-                                                                                     message, 
-                                                                                     context, 
-                                                                                     "Error", 
-                                                                                     "Invocation", 
+                        IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition,
+                                                                                     message,
+                                                                                     context,
+                                                                                     "Error",
+                                                                                     "Invocation",
                                                                                      "MismatchedKeywords"), context).mimic(message, context);
                         condition.setCell("message", message);
                         condition.setCell("context", context);
@@ -404,7 +404,7 @@ public class DefaultArgumentsDefinition {
         int ix = 0;
         for(int i=0, j=this.arguments.size();i<j;i++) {
             Argument a = this.arguments.get(i);
-            
+
             if(a instanceof KeywordArgument) {
                 Object given = givenKeywords.get(a.getName() + ":");
                 Object result = null;
@@ -437,7 +437,7 @@ public class DefaultArgumentsDefinition {
                 Object result = given;
                 krests.put(runtime.getSymbol(s.substring(0, s.length()-1)), result);
             }
-            
+
             locals.setCell(krest, runtime.newDict(krests));
         }
 
@@ -517,22 +517,22 @@ public class DefaultArgumentsDefinition {
                     int index = indexOf(args, obj) + start;
 
 
-                    final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
-                                                                                       message, 
-                                                                                       context, 
-                                                                                       "Error", 
-                                                                                       "Invocation", 
+                    final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition,
+                                                                                       message,
+                                                                                       context,
+                                                                                       "Error",
+                                                                                       "Invocation",
                                                                                        "ArgumentWithoutDefaultValue"), context).mimic(message, context);
                     condition.setCell("message", message);
                     condition.setCell("context", context);
                     condition.setCell("receiver", on);
                     condition.setCell("argumentName", runtime.getSymbol(m.getName(null)));
                     condition.setCell("index", runtime.newNumber(index));
-                
+
                     List<Object> newValue = IokeList.getList(runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
                             public void run() throws ControlFlow {
                                 runtime.errorCondition(condition);
-                            }}, 
+                            }},
                         context,
                         // Maybe also provide an unevaluated message...
                             new Restart.ArgumentGivingRestart("provideDefaultValue") {

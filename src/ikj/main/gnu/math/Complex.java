@@ -76,7 +76,7 @@ public abstract class Complex extends Quantity
   }
 
   public Numeric abs ()
-  {  
+  {
     /* #ifdef JAVA5 */
     // return new DFloNum(Math.hypot(doubleRealValue(), doubleImagValue()));
     /* #else */
@@ -129,7 +129,7 @@ public abstract class Complex extends Quantity
   Dimesions dims() { return unit().dims; }
   */
 
-  
+
   public String toString (int radix)
   {
     // Note: The r4rs read syntax does not allow unsigned pure
@@ -243,7 +243,7 @@ public abstract class Complex extends Quantity
   {
     return DComplex.log(doubleRealValue(), doubleImagValue());
   }
-  
+
   public Complex sqrt ()
   {
     return DComplex.sqrt(doubleRealValue(), doubleImagValue());

@@ -6,7 +6,7 @@ namespace Ioke.Lang.Util {
         public SaneHashSet() : base() {}
         public SaneHashSet(ICollection<T> ic) : base(ic) {}
         public SaneHashSet(ICollection<T> ic, IEqualityComparer<T> iec) : base(ic, iec) {}
-        
+
         public override bool Equals(object other) {
             if(this == other) {
                 return true;

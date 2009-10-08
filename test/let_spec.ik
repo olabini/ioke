@@ -26,7 +26,7 @@ describe(DefaultBehavior,
         let(probably_not_existing_name, 42,
           probably_not_existing_name*2) should == 84
       )
-      
+
       it("should shadow an existing name",
         wow_this_is_a_test = 42
         let(wow_this_is_a_test, 43, wow_this_is_a_test) should == 43
@@ -71,4 +71,4 @@ describe(DefaultBehavior,
     )
   )
 )
-  
+

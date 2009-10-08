@@ -11,7 +11,7 @@ namespace Ioke.Lang {
             public WithNoArguments(string name, object mimic, RawActivate activate) : base(name, TypeCheckingArgumentsDefinition.EmptyButReceiverMustMimic(mimic), activate) {}
             public WithNoArguments(string name, object mimic, ArgsActivate activate) : base(name, TypeCheckingArgumentsDefinition.EmptyButReceiverMustMimic(mimic), activate) {}
         }
-   
+
         public TypeCheckingNativeMethod(string name, TypeCheckingArgumentsDefinition arguments, ArgsActivate activate) : base(name, arguments, TypeCheckingRawActivate, activate) {}
         TypeCheckingNativeMethod(string name, TypeCheckingArgumentsDefinition arguments, RawActivate activate) : base(name, arguments, activate, null) {}
 

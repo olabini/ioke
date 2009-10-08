@@ -1,4 +1,4 @@
-ack = method(m, n, 
+ack = method(m, n,
   cond(
     m < 1, n + 1,
     n < 1, ack(m - 1, 1),

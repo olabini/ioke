@@ -39,7 +39,7 @@ public class DefaultMethod extends Method implements AssociatedCode {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     List<Object> keywordList = new ArrayList<Object>();
-                    
+
                     for(String keyword : ((DefaultMethod)IokeObject.data(on)).arguments.getKeywords()) {
                         keywordList.add(context.runtime.getSymbol(keyword.substring(0, keyword.length()-1)));
                     }
@@ -47,14 +47,14 @@ public class DefaultMethod extends Method implements AssociatedCode {
                     return context.runtime.newList(keywordList);
                 }
             }));
-        
+
         defaultMethod.registerMethod(defaultMethod.runtime.newNativeMethod("returns the message chain for this method", new NativeMethod.WithNoArguments("message") {
                 @Override
                 public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return ((AssociatedCode)IokeObject.data(IokeObject.ensureTypeIs(AssociatedCode.class, self, on, context, message))).getCode();
                 }
             }));
-        
+
         defaultMethod.registerMethod(defaultMethod.runtime.newNativeMethod("returns the code for the argument definition", new NativeMethod.WithNoArguments("argumentsCode") {
                 @Override
                 public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
@@ -121,10 +121,10 @@ public class DefaultMethod extends Method implements AssociatedCode {
     @Override
     public Object activateWithCall(final IokeObject self, IokeObject context, IokeObject message, Object on, Object call) throws ControlFlow {
         if(code == null) {
-            IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
-                                                                         message, 
-                                                                         context, 
-                                                                         "Error", 
+            IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition,
+                                                                         message,
+                                                                         context,
+                                                                         "Error",
                                                                          "Invocation",
                                                                          "NotActivatable"), context).mimic(message, context);
             condition.setCell("message", message);
@@ -177,10 +177,10 @@ public class DefaultMethod extends Method implements AssociatedCode {
     @Override
     public Object activateWithCallAndData(final IokeObject self, IokeObject context, IokeObject message, Object on, Object call, Map<String, Object> data) throws ControlFlow {
         if(code == null) {
-            IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
-                                                                         message, 
-                                                                         context, 
-                                                                         "Error", 
+            IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition,
+                                                                         message,
+                                                                         context,
+                                                                         "Error",
                                                                          "Invocation",
                                                                          "NotActivatable"), context).mimic(message, context);
             condition.setCell("message", message);
@@ -237,10 +237,10 @@ public class DefaultMethod extends Method implements AssociatedCode {
     @Override
     public Object activate(final IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
         if(code == null) {
-            IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
-                                                                         message, 
-                                                                         context, 
-                                                                         "Error", 
+            IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition,
+                                                                         message,
+                                                                         context,
+                                                                         "Error",
                                                                          "Invocation",
                                                                          "NotActivatable"), context).mimic(message, context);
             condition.setCell("message", message);
@@ -293,10 +293,10 @@ public class DefaultMethod extends Method implements AssociatedCode {
     @Override
     public Object activateWithData(final IokeObject self, IokeObject context, IokeObject message, Object on, Map<String, Object> data) throws ControlFlow {
         if(code == null) {
-            IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
-                                                                         message, 
-                                                                         context, 
-                                                                         "Error", 
+            IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition,
+                                                                         message,
+                                                                         context,
+                                                                         "Error",
                                                                          "Invocation",
                                                                          "NotActivatable"), context).mimic(message, context);
             condition.setCell("message", message);

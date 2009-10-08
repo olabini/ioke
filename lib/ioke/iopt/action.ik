@@ -14,7 +14,7 @@ IOpt Action do(
          @cell(:valueToActivate) kind?("LexicalMacro"),
          kargs[:"@"] = kargs[:self] = receiver)
       call activateValue(@cell(:valueToActivate), receiver, *kargs))
-    
+
   );ValueActivation
 
   CellActivation = IOpt Action mimic do (
@@ -27,9 +27,9 @@ IOpt Action do(
 
     argumentsCode = method(
       if(receiver, receiver cell(cellName) argumentsCode, nil))
-    
+
     call = macro(call resendToValue(receiver cell(cellName), receiver))
-    
+
   );CellActivation
 
   CellAssignment = IOpt Action mimic do (
@@ -40,7 +40,7 @@ IOpt Action do(
       @argumentsCode = cellName asText)
 
     call = method(value, receiver cell(cellName) = value)
-    
+
   );CellAssinment
 
   MessageEvaluation = IOpt Action mimic do (
@@ -56,7 +56,7 @@ IOpt Action do(
 
       [>value]
       messageToEval evaluateOn(call ground with(it: value), receiver))
-    
+
   );MessageEvaluation
 
   initialize = method(
@@ -67,8 +67,8 @@ IOpt Action do(
   receiver = method(if(@cell?(:iopt), iopt iopt:receiver || iopt))
 
   <=> = method("Compare by priority", other, priority <=> other priority)
-  
-  cell("priority=") = method("Set the option priority. 
+
+  cell("priority=") = method("Set the option priority.
     Default priority level is 0.
     Negative values are higher priority for options that
     must be processed before those having priority(0).
@@ -84,20 +84,20 @@ IOpt Action do(
     self)
 
   consume = method("Take arguments for this action according to its arity.
-    
+
     The argv list must have its first element be one of the options handled by this action
     otherwise a NoActionForOption will be signaled.
-    
-    This method returns an object with the following cells: 
+
+    This method returns an object with the following cells:
 
       option: The option that was processed
       remnant: The elements from argv that were not taken as arguments for this action.
       positional: A list of positional arguments for this action.
       keywords: A dict of keyword arguments for this action.
-      
+
     ", argv, handler iopt iopt:ion(argv first), untilNextOption: true, coerce: nil,
     if(handler nil? || !options include?(handler option),
-      error!(NoActionForOption, 
+      error!(NoActionForOption,
         text: "Cannot handle option %s not in %s" format(
           if(handler, handler option, argv first), options inspect),
         option: if(handler, handler option, argv first)))
@@ -113,7 +113,7 @@ IOpt Action do(
       if(coerce == false || @coerce == false, txt,
         (coerce || @coerce || IOpt CommandLine Coerce mimic) coerce(txt)))
 
-    shouldContinue = fn(arg, 
+    shouldContinue = fn(arg,
       cond(
         ;; if we have found the next option
         untilNextOption && iopt[arg], false,
@@ -126,8 +126,8 @@ IOpt Action do(
 
         ;; keyword argument
         iopt iopt:key(arg),
-        klist length < arity keywords length, 
-        
+        klist length < arity keywords length,
+
         ;; positional argument
         args length < arity positionals length
       )
@@ -138,19 +138,19 @@ IOpt Action do(
       if(opt && opt action && opt short,
         remnant = [handler short + handler immediate] + remnant
         handler immediate = nil))
-      
+
     if(handler immediate && arity max abs > 0,
       args << coerced(handler immediate))
 
     idx = remnant findIndex(arg,
       cond(
         !shouldContinue(arg), true,
-        
-        (key = iopt iopt:key(arg)) && 
+
+        (key = iopt iopt:key(arg)) &&
         (arity krest || arity keywords include?(:(key name))),
         keyword = :(key name)
         if(kmap key?(keyword),
-          error!(OptionKeywordAlreadyProvided, 
+          error!(OptionKeywordAlreadyProvided,
             text: "Keyword #{keyword} was specified more than once.",
             keyword: keyword),
           kmap[keyword] = coerced(key immediate)
@@ -161,7 +161,7 @@ IOpt Action do(
         klist << currentKey
         kmap[currentKey] = coerced(arg)
         currentKey = nil,
-        
+
         args << coerced(arg)
         false))
 

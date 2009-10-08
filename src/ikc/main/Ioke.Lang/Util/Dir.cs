@@ -48,7 +48,7 @@ namespace Ioke.Lang.Util {
                 char c = pattern[pat++];
                 switch(c) {
                 case '?':
-                    if(s >= send || (pathname && IsDirSep(path[s])) || 
+                    if(s >= send || (pathname && IsDirSep(path[s])) ||
                        (period && path[s] == '.' && (s == 0 || (pathname && IsDirSep(path[s-1]))))) {
                         return FNM_NOMATCH;
                     }
@@ -122,7 +122,7 @@ namespace Ioke.Lang.Util {
                                 return FNM_NOMATCH;
                             }
                         }
-                        
+
                     }
                     s++;
                     break;
@@ -262,10 +262,10 @@ namespace Ioke.Lang.Util {
         }
 
         private class GlobPattern {
-            internal readonly string path;        
+            internal readonly string path;
             internal readonly int begin;
             internal readonly int end;
-        
+
             internal int flags;
             internal int index;
 
@@ -277,38 +277,38 @@ namespace Ioke.Lang.Util {
                 this.end = end;
                 this.flags = flags;
             }
-        
+
             public int FindClosingIndexOf(int leftTokenIndex) {
                 if(leftTokenIndex == -1 || leftTokenIndex > end) return -1;
-            
+
                 char leftToken = path[leftTokenIndex];
                 char rightToken;
-            
+
                 switch (leftToken) {
                 case '{': rightToken = '}'; break;
                 case '[': rightToken = ']'; break;
                 default: return -1;
                 }
-            
+
                 int nest = 1; // leftToken made us start as nest 1
                 index = leftTokenIndex + 1;
                 while(HasNext()) {
                     char c = Next();
-                
+
                     if(c == leftToken) {
                         nest++;
                     } else if(c == rightToken && --nest == 0) {
                         return Index;
                     }
                 }
-            
+
                 return -1;
             }
-        
+
             public bool HasNext() {
                 return index < end;
             }
-        
+
             public void Reset() {
                 index = begin;
             }
@@ -317,12 +317,12 @@ namespace Ioke.Lang.Util {
                 get { return index - 1; }
                 set { this.index = value; }
             }
-            
+
             public int IndexOf(char c) {
                 while (HasNext()) if (Next() == c) return Index;
                 return -1;
             }
-        
+
             public char Next() {
                 return path[index++];
             }
@@ -334,7 +334,7 @@ namespace Ioke.Lang.Util {
             internal GlobFunc func;
             internal int c = -1;
             internal IList<string> v;
-        
+
             public GlobArgs(GlobFunc func, IList<string> arg) {
                 this.func = func;
                 this.v = arg;
@@ -358,9 +358,9 @@ namespace Ioke.Lang.Util {
             int rbrace = pattern.FindClosingIndexOf(lbrace);// index of right-most brace
 
             // No or mismatched braces..Move along..nothing to see here
-            if(lbrace == -1 || rbrace == -1) return PushGlobs(cwd, result, pattern); 
+            if(lbrace == -1 || rbrace == -1) return PushGlobs(cwd, result, pattern);
 
-            // Peel onion...make subpatterns out of outer layer of glob and recall with each subpattern 
+            // Peel onion...make subpatterns out of outer layer of glob and recall with each subpattern
             // Example: foo{a{c},b}bar -> fooa{c}bar, foobbar
             string buf = "";
             int middleRegionIndex;
@@ -378,7 +378,7 @@ namespace Ioke.Lang.Util {
                 int status = PushBraces(cwd, result, new GlobPattern(buf, 0, buf.Length, pattern.flags));
                 if(status != 0) return status;
             }
-        
+
             return 0; // All braces pushed..
         }
 
@@ -419,15 +419,15 @@ namespace Ioke.Lang.Util {
 
         private static int RemoveBackslashes(StringBuilder pattern, int index, int len) {
             int t = index;
-        
+
             for (; index < len; index++, t++) {
                 if (pattern[index] == '\\' && ++index == len) break;
-            
+
                 string ss = pattern.ToString().Substring(index, 1);
                 pattern.Remove(t, 1);
                 pattern.Insert(t, ss);
             }
-        
+
             return t;
         }
 
@@ -435,13 +435,13 @@ namespace Ioke.Lang.Util {
             for (int i = begin; i < end; i++) {
                 if (pattern[i] == ch) return i;
             }
-        
+
             return -1;
         }
 
         private static string ExtractPath(string pattern, int begin, int end) {
             int len = end - begin;
-        
+
             if (len > 1 && pattern[end-1] == '/' && (!DOSISH || (len < 2 || pattern[end-2] != ':'))) len--;
 
             return pattern.Substring(begin, len);
@@ -450,26 +450,26 @@ namespace Ioke.Lang.Util {
         private static string ExtractElem(string pattern, int begin, int end) {
             int elementEnd = strchr(pattern, begin, end, '/');
             if (elementEnd == -1) elementEnd = end;
-        
+
             return ExtractPath(pattern, begin, elementEnd);
         }
 
         private static bool BASE(string _base) {
-            return DOSISH ? 
+            return DOSISH ?
                 (_base.Length > 0 && !((IsDirSep(_base[0]) && _base.Length < 2) || (_base.Length > 2 && _base[1] == ':' && IsDirSep(_base[2]) && _base.Length < 4)))
                 :
                 (_base.Length > 0 && !(IsDirSep(_base[0]) && _base.Length < 2));
         }
-    
+
         private static string[] Files(DirectoryInfo directory) {
             FileSystemInfo[] files = directory.GetFileSystemInfos();
-        
+
             string[] filesPlusDotFiles = new string[files.Length + 2];
             filesPlusDotFiles[0] = ".";
             filesPlusDotFiles[1] = "..";
             for(int i=0, j=files.Length; i<j; i++)
                 filesPlusDotFiles[i+2] = files[i].Name;
-            
+
             return filesPlusDotFiles;
         }
 
@@ -498,7 +498,7 @@ namespace Ioke.Lang.Util {
                     if(new FileInfo(ss).Exists || new DirectoryInfo(ss).Exists) {
                         status = func(pattern, begin, end, arg);
                     }
-                } else if((end - begin) > 0) { // Length check is a hack.  We should not be reeiving "" as a filename ever. 
+                } else if((end - begin) > 0) { // Length check is a hack.  We should not be reeiving "" as a filename ever.
                     string ss2 = pattern.Substring(begin, end-begin);
                     if(new FileInfo(ss2).Exists || new DirectoryInfo(ss2).Exists) {
                         status = func(pattern, begin, end - begin, arg);
@@ -518,7 +518,7 @@ namespace Ioke.Lang.Util {
                 if(HasMagic(bytes2, p, m == -1 ? end : m, flags)) {
                     do {
                         string _base = ExtractPath(bytes2, begin, p);
-                        string dir = begin == p ? "." : _base; 
+                        string dir = begin == p ? "." : _base;
                         string magic = ExtractElem(bytes2,p,end);
                         bool recursive = false;
                         try {

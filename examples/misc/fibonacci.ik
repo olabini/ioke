@@ -1,5 +1,5 @@
 recursiveFib = method(n,
-  if((0..1) include?(n), 
+  if((0..1) include?(n),
     n,
     recursiveFib(n - 1) + recursiveFib(n - 2)
   )

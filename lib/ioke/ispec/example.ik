@@ -8,38 +8,38 @@ ISpec do(
       self description = name
       self fullDescription = "#{self context fullName} #{name}"
     )
-    
+
     fail? = method(
       tags[:fail]
     )
-    
+
     pending? = method(
       tags[:pending] || !code
     )
-    
+
     run = method(
       "runs tests with given reporter",
       reporter,
-      
+
       executionError = nil
       reporter exampleStarted(self)
 
       bind(
-        rescue(Ground Condition Error, 
+        rescue(Ground Condition Error,
           fn(c, executionError ||= c)),
-        rescue(ISpec Condition, 
+        rescue(ISpec Condition,
           fn(c, executionError ||= c)),
-        handle(Ground Condition,  
+        handle(Ground Condition,
           fn(c, c example = self)),
-          
+
         if(pending?,
           if(code,
             error!(ISpec ExamplePending, text: "Disabled example"),
-            
+
             error!(ISpec ExamplePending, text: "Not Yet Implemented")
           )
         )
-        
+
         if(fail?,
           error!(ISpec Condition, text: "Forced fail")
         )
@@ -53,7 +53,7 @@ ISpec do(
 
       (executionError nil?) || (executionError mimics?(ISpec ExamplePending))
     )
-    
+
     stackTraceAsText = method(condition,
       message = if(condition cell?(:shouldMessage),
         condition shouldMessage,

@@ -1,11 +1,11 @@
 IOpt CommandLine = Origin mimic do(
-  
+
   initialize = method("Parses the command line arguments given on argv using iopt to handle options.
     This method takes the following arguments:
 
     stopAt: When non nil, it must be a text, indicating when to stop processing arguments.
     You can use this to have your program ignore arguments before -- like many unix programs.
-    
+
     argUntilNextOption: When true, option argument processing will stop when next option is seen.
 
         Suppose you have an option named --foo taking one required argument and
@@ -16,7 +16,7 @@ IOpt CommandLine = Origin mimic do(
         parsed command line would result in two actions, each having no arguments.
 
         If an argument looks like an option but that option has not been registered on the
-        iopt object, then it would be treated just as any other argument. e.g. 
+        iopt object, then it would be treated just as any other argument. e.g.
         Parsing --foo --man would create just an action for --foo taking argument '--man'
 
     includeUnknownOption: When true, unknown options will be included in the programArguments list.
@@ -31,9 +31,9 @@ IOpt CommandLine = Origin mimic do(
         unknownOptions: A list of elements from argv that look like options but arent.
         programArguments: A list of elements from argv that are neither an option nor par of an option arguments
         rest: A list arguments found after stopAt
-    ", 
+    ",
     iopt, argv, coerce: nil, argUntilNextOption: true, includeUnknownOption: true, stopAt: nil,
-    
+
     @iopt = iopt
     @argv = argv
     @options = list()
@@ -41,7 +41,7 @@ IOpt CommandLine = Origin mimic do(
     @programArguments = list()
     @rest = list()
     ary = argv
-    
+
     if(stopAt,
       ary = argv takeWhile(a, case(a, stopAt, false, true))
       @rest = argv[ary length succ .. -1])
@@ -64,11 +64,11 @@ IOpt CommandLine = Origin mimic do(
         ;; not an option like argument
         programArguments << ary first
         ary = ary rest))
-    
+
     );initialize
 
   empty? = method(options empty?)
-  
+
   include? = method(+options, options all?(opt, @options any?(o, opt === o option)))
 
   execute = method("Execute the actions by priority",
@@ -80,20 +80,20 @@ IOpt CommandLine = Origin mimic do(
       coercions each(pair,
         @cell("coerce_#{pair key}?") = if(
           pair value key cell?(:activatable) && pair value key activatable,
-          pair value key, 
+          pair value key,
           match = pair value key
           fn(t, match === t))
         @cell("coerce_#{pair key}") = pair value value)
       all = names + coercions keys asList
       unless(all empty?, @all = all)
     )
-    
+
     coerce = method(txt,
       all each(name,
-        if(send("coerce_#{name}?", txt), 
+        if(send("coerce_#{name}?", txt),
           return( send("coerce_#{name}", txt) )))
       txt)
-    
+
   ) mimic (
     nil:     "nil" => method(t, nil),
     boolean: #/^(true|false)$/ => method(t, t == "true"),
@@ -103,6 +103,6 @@ IOpt CommandLine = Origin mimic do(
       if(#/^-/ === t, n negation, n)),
     decimal: #/^[+-]?\d+\.(\d+)?([eE]\d*)?$/ => method(t, t toDecimal)
   ); Coerce
-  
+
  );CommandLine
 

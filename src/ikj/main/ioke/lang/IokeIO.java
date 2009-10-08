@@ -53,7 +53,7 @@ public class IokeIO extends IokeData {
     public static BufferedReader getReader(Object arg) {
         return ((IokeIO)IokeObject.data(arg)).reader;
     }
-    
+
     @Override
     public void init(IokeObject obj) throws ControlFlow {
         final Runtime runtime = obj.runtime;
@@ -84,10 +84,10 @@ public class IokeIO extends IokeData {
                         IokeIO.getWriter(on).flush();
                     } catch(IOException e) {
                         final Runtime runtime = context.runtime;
-                        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
-                                                                                           message, 
-                                                                                           context, 
-                                                                                           "Error", 
+                        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition,
+                                                                                           message,
+                                                                                           context,
+                                                                                           "Error",
                                                                                            "IO"), context).mimic(message, context);
                         condition.setCell("message", message);
                         condition.setCell("context", context);
@@ -130,10 +130,10 @@ public class IokeIO extends IokeData {
                         IokeIO.getWriter(on).flush();
                     } catch(IOException e) {
                         final Runtime runtime = context.runtime;
-                        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
-                                                                                           message, 
-                                                                                           context, 
-                                                                                           "Error", 
+                        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition,
+                                                                                           message,
+                                                                                           context,
+                                                                                           "Error",
                                                                                            "IO"), context).mimic(message, context);
                         condition.setCell("message", message);
                         condition.setCell("context", context);
@@ -164,10 +164,10 @@ public class IokeIO extends IokeData {
                         return Message.newFromStream(context.runtime, new StringReader(line), message, context);
                     } catch(IOException e) {
                         final Runtime runtime = context.runtime;
-                        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
-                                                                                           message, 
-                                                                                           context, 
-                                                                                           "Error", 
+                        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition,
+                                                                                           message,
+                                                                                           context,
+                                                                                           "Error",
                                                                                            "IO"), context).mimic(message, context);
                         condition.setCell("message", message);
                         condition.setCell("context", context);

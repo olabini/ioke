@@ -26,7 +26,7 @@ public class JavaArgumentsDefinition {
     private int min;
     private int max;
     private boolean special;
-    
+
     public JavaArgumentsDefinition(Member[] members, Class[][] parameterTypes, int min, int max) {
         this(members, parameterTypes, min, max, false);
     }
@@ -109,7 +109,7 @@ public class JavaArgumentsDefinition {
             if(aTypes.length != bTypes.length) {
                 return aTypes.length - bTypes.length;
             }
-            
+
             // Comparison of each parameter in turn. The first one to be different will decide the full ordering
 
             for(int i=0,j=aTypes.length; i<j; i++) {
@@ -130,7 +130,7 @@ public class JavaArgumentsDefinition {
             if(aTypes.length != bTypes.length) {
                 return aTypes.length - bTypes.length;
             }
-            
+
             // Comparison of each parameter in turn. The first one to be different will decide the full ordering
 
             for(int i=0,j=aTypes.length; i<j; i++) {
@@ -213,7 +213,7 @@ public class JavaArgumentsDefinition {
 
         return new JavaArgumentsDefinition(new Field[]{f}, params, 1, 1);
     }
-    
+
     private static class JavaArgumentDefinition {
         public final Class type;
         public final Class altType;
@@ -258,21 +258,21 @@ public class JavaArgumentsDefinition {
                 } else if(IokeObject.data(result) instanceof Dict) {
                     // Ignore for now
                 } else {
-                    final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
-                                                                                       message, 
-                                                                                       context, 
-                                                                                       "Error", 
-                                                                                       "Invocation", 
+                    final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition,
+                                                                                       message,
+                                                                                       context,
+                                                                                       "Error",
+                                                                                       "Invocation",
                                                                                        "NotSpreadable"), context).mimic(message, context);
                     condition.setCell("message", message);
                     condition.setCell("context", context);
                     condition.setCell("receiver", on);
                     condition.setCell("given", result);
-                
+
                     List<Object> outp = IokeList.getList(runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
                             public void run() throws ControlFlow {
                                 runtime.errorCondition(condition);
-                            }}, 
+                            }},
                             context,
                             new Restart.DefaultValuesGivingRestart("ignoreArgument", runtime.nil, 0),
                             new Restart.DefaultValuesGivingRestart("takeArgumentAsIs", IokeObject.as(result, context), 1)

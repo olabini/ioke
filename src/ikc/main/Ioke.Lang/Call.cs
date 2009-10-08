@@ -25,7 +25,7 @@ namespace Ioke.Lang {
             Runtime runtime = obj.runtime;
             obj.Kind = "Call";
 
-            obj.RegisterMethod(runtime.NewNativeMethod("takes one evaluated text or symbol argument and resends the current message to that method/macro on the current receiver.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("takes one evaluated text or symbol argument and resends the current message to that method/macro on the current receiver.",
                                                        new TypeCheckingNativeMethod("resendToMethod", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(runtime.Call)
                                                                                     .WithRequiredPositional("cellName")
@@ -48,43 +48,43 @@ namespace Ioke.Lang {
                                                                                         return ((Message)IokeObject.dataOf(c.message)).SendTo(c.message, c.surroundingContext, args[0]);
                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("returns a list of all the unevaluated arguments", 
-                                                       new TypeCheckingNativeMethod.WithNoArguments("arguments", 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns a list of all the unevaluated arguments",
+                                                       new TypeCheckingNativeMethod.WithNoArguments("arguments",
                                                                                                     runtime.Call,
                                                                                                     (method, _on, args, keywords, context, _message) => {
                                                                                                         return context.runtime.NewList(((Call)IokeObject.dataOf(_on)).message.Arguments);
                                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("returns the ground of the place this call originated", 
-                                                       new TypeCheckingNativeMethod.WithNoArguments("ground", 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns the ground of the place this call originated",
+                                                       new TypeCheckingNativeMethod.WithNoArguments("ground",
                                                                                                     runtime.Call,
                                                                                                     (method, _on, args, keywords, context, _message) => {
                                                                                                         return ((Call)IokeObject.dataOf(_on)).surroundingContext;
                                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("returns the receiver of the call", 
-                                                       new TypeCheckingNativeMethod.WithNoArguments("receiver", 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns the receiver of the call",
+                                                       new TypeCheckingNativeMethod.WithNoArguments("receiver",
                                                                                                     runtime.Call,
                                                                                                     (method, _on, args, keywords, context, _message) => {
                                                                                                         return ((Call)IokeObject.dataOf(_on)).on;
                                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("returns the currently executing context", 
-                                                       new TypeCheckingNativeMethod.WithNoArguments("currentContext", 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns the currently executing context",
+                                                       new TypeCheckingNativeMethod.WithNoArguments("currentContext",
                                                                                                     runtime.Call,
                                                                                                     (method, _on, args, keywords, context, _message) => {
                                                                                                         return ((Call)IokeObject.dataOf(_on)).ctx;
                                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("returns the message that started this call", 
-                                                       new TypeCheckingNativeMethod.WithNoArguments("message", 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns the message that started this call",
+                                                       new TypeCheckingNativeMethod.WithNoArguments("message",
                                                                                                     runtime.Call,
                                                                                                     (method, _on, args, keywords, context, _message) => {
                                                                                                         return ((Call)IokeObject.dataOf(_on)).message;
                                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("returns a list of the result of evaluating all the arguments to this call", 
-                                                       new TypeCheckingNativeMethod.WithNoArguments("evaluatedArguments", 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns a list of the result of evaluating all the arguments to this call",
+                                                       new TypeCheckingNativeMethod.WithNoArguments("evaluatedArguments",
                                                                                                     runtime.Call,
                                                                                                     (method, _on, args, keywords, context, _message) => {
                                                                                                         IokeObject msg = ((Call)IokeObject.dataOf(_on)).message;
@@ -92,7 +92,7 @@ namespace Ioke.Lang {
                                                                                                     })));
 
 
-            obj.RegisterMethod(runtime.NewNativeMethod("uhm. this is a strange one. really.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("uhm. this is a strange one. really.",
                                                        new TypeCheckingNativeMethod("resendToValue", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(runtime.Call)
                                                                                     .WithRequiredPositional("value")
@@ -108,7 +108,7 @@ namespace Ioke.Lang {
                                                                                         return IokeObject.GetOrActivate(args[0], c.surroundingContext, c.message, self);
                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("uhm. this one isn't too bad.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("uhm. this one isn't too bad.",
                                                        new TypeCheckingNativeMethod("activateValue", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(runtime.Call)
                                                                                     .WithRequiredPositional("value")
@@ -125,7 +125,7 @@ namespace Ioke.Lang {
                                                                                         return IokeObject.As(args[0], context).ActivateWithData(c.surroundingContext, c.message, self, keys);
                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("I really ought to write documentation for these methods, but I don't know how to describe what they do.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("I really ought to write documentation for these methods, but I don't know how to describe what they do.",
                                                        new TypeCheckingNativeMethod("activateValueWithCachedArguments", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(runtime.Call)
                                                                                     .WithRequiredPositional("value")

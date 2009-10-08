@@ -215,7 +215,7 @@ public class IntNum extends RatNum implements Externalizable
       return (x_len > y_len)!=x_negative ? 1 : -1;
     return MPN.cmp (x.words, y.words, x_len);
   }
- 
+
   /** Return -1, 0, or 1, depending on which value is greater. */
  public static int compare (IntNum x, long y)
   {
@@ -971,7 +971,7 @@ public class IntNum extends RatNum implements Externalizable
   {
     if (x.isZero () || y.isZero ())
       return IntNum.zero ();
-    x = IntNum.abs (x); 
+    x = IntNum.abs (x);
     y = IntNum.abs (y);
     IntNum quotient = new IntNum ();
     divide (times (x, y), gcd (x, y), quotient, null, TRUNCATE);
@@ -1240,7 +1240,7 @@ public class IntNum extends RatNum implements Externalizable
     // but slightly more expensive, for little practical gain.
     if (len + radix <= 28)
       return IntNum.make (Long.parseLong (s, radix));
-    
+
     int byte_len = 0;
     byte[] bytes = new byte[len];
     boolean negative = false;
@@ -1379,7 +1379,7 @@ public class IntNum extends RatNum implements Externalizable
 	else if (ml == 52 && (m & (1L << 53)) != 0)
 	  exp++;
       }
-	
+
     // Discard the rounding bit
     m >>= 1;
 
@@ -1426,7 +1426,7 @@ public class IntNum extends RatNum implements Externalizable
    * Assumes words.length >= (this.words == null ? 1 : this.ival).
    * Result is zero-extended, but need not be a valid 2's complement number.
    */
-    
+
   public void getAbsolute (int[] words)
   {
     int len;
@@ -1547,9 +1547,9 @@ public class IntNum extends RatNum implements Externalizable
 	while (--nwords >= 0)
 	  out.writeInt(words[nwords]);
       }
-    
+
   }
- 
+
   public void readExternal(ObjectInput in)
     throws IOException, ClassNotFoundException
   {

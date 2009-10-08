@@ -44,7 +44,7 @@ public class TypeCheckingArgumentsDefinition extends DefaultArgumentsDefinition 
                 if(ix < argumentsWithoutKeywords.size()) {
                     argumentsWithoutKeywords.set(ix, mustMimic.
                                                  get(i).
-                                                 convertToMimic(argumentsWithoutKeywords.get(ix), 
+                                                 convertToMimic(argumentsWithoutKeywords.get(ix),
                                                                 message, context, true));
                     ix++;
                 }
@@ -61,7 +61,7 @@ public class TypeCheckingArgumentsDefinition extends DefaultArgumentsDefinition 
     public static TypeCheckingArgumentsDefinition emptyButReceiverMustMimic(Object mimic) {
         return new TypeCheckingArgumentsDefinition(new ArrayList<Argument>(), new ArrayList<String>(), null, null, 0, 0, false, new ArrayList<TypeChecker>(), (IokeObject)mimic);
     }
-    
+
     public static class Builder extends DefaultArgumentsDefinition.Builder {
         public static class OrNil {
             public final Object realKind;
@@ -163,7 +163,7 @@ public class TypeCheckingArgumentsDefinition extends DefaultArgumentsDefinition 
 
         @Override
         public TypeCheckingArgumentsDefinition getArguments() {
-            next(); 
+            next();
             return new TypeCheckingArgumentsDefinition(arguments, keywords,
                     rest, krest, min, max, restUneval, mustMimic,
                     receiverMustMimic);

@@ -28,7 +28,7 @@ public class BitOps
 	  : (((x.words[wordno]) >> bitno) & 1) != 0;
       }
   }
- 
+
   /** Return true iff an IntNum and an int have any true bits in common. */
   public static boolean test (IntNum x, int y)
   {

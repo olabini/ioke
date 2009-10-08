@@ -129,14 +129,14 @@ describe(DefaultBehavior,
       it("should destructure and evaluate part of destructuring",
         foo = dmacro(
           [x, >y, z] [x code, y, z code])
-        
+
         foo(abc foo, 42+17, murgicox) should == ["abc foo", 59, "murgicox"]
       )
 
       it("should destructure a rest argument correctly",
         foo = dmacro(
           [+rest] rest map(code))
-        
+
         foo should == []
         foo(aha) should == ["aha"]
         foo(abc foo, 42+17, murgicox) should == ["abc foo", "42 +(17)", "murgicox"]
@@ -145,14 +145,14 @@ describe(DefaultBehavior,
           [one, two] nil,
           [one, two, +rest] rest map(code)
         )
-        
+
         foo(abc foo, 42+17, murgicox) should == ["murgicox"]
       )
 
       it("should destructure an evaluated rest argument correctly",
         foo = dmacro(
           [+>rest] rest)
-        
+
         foo should == []
         foo("str") should == ["str"]
         xx = 42
@@ -162,14 +162,14 @@ describe(DefaultBehavior,
           [one, two] nil,
           [one, two, +>rest] rest
         )
-        
+
         foo(abc foo, murgicox, 42+17) should == [59]
       )
 
       it("should generate an error if not matching could happen",
         foo = dmacro(
           [] nil)
-        
+
         fn(foo(1)) should signal(Condition Error Invocation NoMatch)
       )
 

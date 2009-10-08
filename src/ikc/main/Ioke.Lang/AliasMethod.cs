@@ -38,7 +38,7 @@ namespace Ioke.Lang {
                 }
             }
         }
-    
+
         public string ArgumentsCode {
             get {
                 if(realMethod is AssociatedCode) {

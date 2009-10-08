@@ -68,21 +68,21 @@ Pattern = Origin mimic do(
 
       pat == nil || input == nil,
         if(pat == input, bindings, noMatch!),
-      
-      variable?(pat), 
+
+      variable?(pat),
         doMatch(pat next, input next, matchVariable(pat, input, bindings, fn(i, i name asText))),
 
       segmentPattern?(pat),
         matchSegment(pat, input, bindings),
-        
+
       pat name asText lower == input name asText lower,
         doMatch(pat next, input next, bindings),
-    
+
         noMatch!))
 
   flatten = method("Takes a message chain and modifies it to be flattened. this means all the arguments will be spliced into it instead",
     msgChain,
-    
+
     if(msgChain,
       msgChain each(m,
         if(m arguments length > 0 && !(#/^internal:/ =~ m name),
@@ -104,7 +104,7 @@ Pattern = Origin mimic do(
   matchSimple = method(input, bindings {},
     bind(restart(noMatch, fn(nil)),
       doMatch(self pattern, flatten(input), bindings)))
-    
+
 
   ; more or less an equivalent of common lisp sublis
   subst = method("Takes one dict of replacements, where the key should be the name of the message to replace, and the value a new message chain to insert instead of it. Returns a new copy without modifying any of the chains given",
@@ -131,7 +131,7 @@ Pattern = Origin mimic do(
 System ifMain(
   use("ispec")
   p1 = Pattern from(I need a :X)
-  p1 match(I need a vacation) should == {X: "vacation"} 
+  p1 match(I need a vacation) should == {X: "vacation"}
   p1 match(I really need a vacation) should be nil
   Pattern from(I :X need a :Y) match(I would need a vacation) should == {X: "would", Y: "vacation"}
   Pattern subst({:":X" => 'vacation}, '(what would it mean to you if you got a :X ?)) code should == "what would it mean to you if you got a vacation ?"

@@ -42,7 +42,7 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
     public String getFormattedCode(Object self) throws ControlFlow {
         return "syntax(\n  " + Message.formattedCode(code, 2, (IokeObject)self) + ")";
     }
-    
+
     @Override
     public void init(final IokeObject syntax) throws ControlFlow {
         syntax.setKind("DefaultSyntax");
@@ -54,7 +54,7 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
                     return context.runtime.newText(((DefaultSyntax)IokeObject.data(on)).name);
                 }
             }));
-        
+
         syntax.registerMethod(syntax.runtime.newNativeMethod("activates this syntax with the arguments given to call", new NativeMethod("call") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
@@ -71,7 +71,7 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
                     return IokeObject.as(on, context).activate(context, message, context.getRealContext());
                 }
             }));
-        
+
         syntax.registerMethod(syntax.runtime.newNativeMethod("returns the result of activating this syntax without actually doing the replacement or execution part.", new NativeMethod("expand") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
@@ -89,14 +89,14 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
                     return ((DefaultSyntax)IokeObject.data(onAsSyntax)).expand(IokeObject.as(onAsSyntax, context), context, message, context.getRealContext(), null);
                 }
             }));
-        
+
         syntax.registerMethod(syntax.runtime.newNativeMethod("returns the message chain for this syntax", new NativeMethod.WithNoArguments("message") {
                 @Override
                 public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return ((AssociatedCode)IokeObject.data(IokeObject.ensureTypeIs(AssociatedCode.class, self, on, context, message))).getCode();
                 }
             }));
-        
+
         syntax.registerMethod(syntax.runtime.newNativeMethod("returns the code for the argument definition", new NativeMethod.WithNoArguments("argumentsCode") {
                 @Override
                 public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
@@ -110,7 +110,7 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
                     return context.runtime.newText(DefaultSyntax.getInspect(on));
                 }
             }));
-        
+
         syntax.registerMethod(syntax.runtime.newNativeMethod("Returns a brief text inspection of the object", new TypeCheckingNativeMethod.WithNoArguments("notice", syntax) {
                 @Override
                 public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
@@ -176,10 +176,10 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
 
     private Object expand(final IokeObject self, IokeObject context, IokeObject message, Object on, Map<String, Object> data) throws ControlFlow {
         if(code == null) {
-            IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
-                                                                         message, 
-                                                                         context, 
-                                                                         "Error", 
+            IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition,
+                                                                         message,
+                                                                         context,
+                                                                         "Error",
                                                                          "Invocation",
                                                                          "NotActivatable"), context).mimic(message, context);
             condition.setCell("message", message);
@@ -228,10 +228,10 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
 
     private Object expandWithCall(final IokeObject self, IokeObject context, IokeObject message, Object on, Object call, Map<String, Object> data) throws ControlFlow {
         if(code == null) {
-            IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
-                                                                         message, 
-                                                                         context, 
-                                                                         "Error", 
+            IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition,
+                                                                         message,
+                                                                         context,
+                                                                         "Error",
                                                                          "Invocation",
                                                                          "NotActivatable"), context).mimic(message, context);
             condition.setCell("message", message);

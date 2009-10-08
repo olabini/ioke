@@ -19,16 +19,16 @@ ISpec do(
       newContext afters = []
       newContext
     )
-    
+
     initialize = method(
       self specs = []
     )
-    
+
     after = macro(
       "takes one code argument and evaluates it on context after each test in the context"
       afters << call arguments first
     )
-    
+
     before = macro(
       "takes one code argument and evaluates it on context before every test in the context"
       befores << call arguments first
@@ -38,9 +38,9 @@ ISpec do(
       "returns the name of this context, prepended with the surrounding names",
       [if(surrounding, surrounding fullName), describesWhat] compact join(" ")
     )
-    
+
     aliasMethod("fullName", "fullDescription")
-    
+
     description = method(describesWhat)
 
     onlyWhen = dmacro(
@@ -61,25 +61,25 @@ ISpec do(
       )
       success
     )
-    
+
     aftersWithSurrounding = method(
       if(surrounding,
         afters + surrounding afters,
         afters
       )
     )
-    
+
     beforesWithSurrounding = method(
       if(surrounding,
         surrounding befores + befores,
         befores
       )
     )
-    
+
     runAfters = method(
       aftersWithSurrounding each(evaluateOn(self))
     )
-    
+
     runBefores = method(
       beforesWithSurrounding each(evaluateOn(self))
     )
@@ -91,7 +91,7 @@ ISpec do(
       code = if(call arguments length > 1,
         call arguments last
       )
-      
+
       tags = if(call arguments length == 3,
         call argAt(1)
       )

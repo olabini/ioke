@@ -38,7 +38,7 @@ nil aliasMethod("or", "?|")
 
 nil and = dmacro(
   "Does not evaluate argument and returns nil",
-  
+
   [then]
   nil)
 nil aliasMethod("and", "&&")
@@ -86,52 +86,52 @@ DefaultBehavior Boolean cell("?&") = dmacro(
 DefaultBehavior Boolean ! = method(
   "returns true if the argument is false, and false if it's true",
   arg,
-  
+
   arg not)
 
 ;; ---- nil?
 
 DefaultBehavior Boolean nil? = method(
-  "returns false.", 
+  "returns false.",
 
   false)
 
 nil nil? = method(
-  "returns true.", 
+  "returns true.",
 
   true)
 
 ;; ---- false?
 
 DefaultBehavior Boolean false? = method(
-  "returns false.", 
+  "returns false.",
 
   false)
 
 false false? = method(
-  "returns true.", 
+  "returns true.",
 
   true)
 
 nil false? = method(
-  "returns true.", 
+  "returns true.",
 
   true)
 
 ;; ---- true?
 
 DefaultBehavior Boolean true? = method(
-  "returns true", 
+  "returns true",
 
   true)
 
 false true? = method(
-  "returns false", 
+  "returns false",
 
   false)
 
 nil true? = method(
-  "returns false", 
+  "returns false",
 
   false)
 
@@ -242,7 +242,7 @@ nil nor = dmacro(
 
 DefaultBehavior Boolean nand = dmacro(
   "Evaluates its argument and returns the inverse of it",
-  
+
   [>other]
   if(other, false, true))
 

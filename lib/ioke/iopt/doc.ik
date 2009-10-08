@@ -5,7 +5,7 @@ Introduction.
   IOpt is a tool for command line option analysis. It tries to
   take advantage of Ioke's homoiconic nature, to provide a DSL
   interface and make you write less.
-  
+
   IOpt has been influenced by similar tools like ruby's optparse,
   trying to make command line parsing as easy as possible for ioke
   programs, but still providing great degree of control over
@@ -13,7 +13,7 @@ Introduction.
 
   Features:
 
-  - Doesn't impose an option style, by default IOpt provides support 
+  - Doesn't impose an option style, by default IOpt provides support
     for unix style options (short and long), but you can easily define
     how an option looks like for your application.
 
@@ -27,7 +27,7 @@ Introduction.
   - Support for clustered short options, eg if -x -v -f are short options
     you can feed -xvf to your program.
 
-  - Options can take arguments directly from command line.  
+  - Options can take arguments directly from command line.
     These can be any of those supported by Ioke, thus your
     options can take required arguments, optionals, keywords, and
     +rest, +:krest arguments just like any other ioke method.
@@ -35,12 +35,12 @@ Introduction.
   - Option Arguments can be coerced to Ioke objects.
     By default IOpt recognizes option arguments that are literals
        nil, true, false, symbols, numbers.
-    It is also pretty easy to create your own coercing strategies 
+    It is also pretty easy to create your own coercing strategies
     so you could for example transform "yes" or "no" to true/false,
     or something more advanced. Coercion can be customized per
     option, so that you can adapt how arguments are send to the
     action.
-    
+
 
 Basic Usage
 
@@ -78,14 +78,14 @@ Basic Usage
 
      ; Print the application version before any option with more positive prio.
      opt on("--version", "Print version and exit", version println) priority = -5
-     
+
      ; An option taking one required argument, and calling app loadConfig
      opt on("-c", "--config", "Use config file", path,
        FileSystem withOpenFile(path, fn(f, self loadConfig(f))))
-     
+
      ; Store a cell in app
      opt on("-s", "--style", "Set output style", :@style)
-     
+
      ; increase app verbosity. takes an optional argument
      opt on("-v", "Increase verbosity", value 1,
        @verbosity += value)
@@ -100,7 +100,7 @@ Basic Usage
      ; if output is host:port then it will be converted to a java socket.
      ;
      ; This action priority is greater than the default (0), that means
-     ; it will be executed after higher (more negative) actions, thus 
+     ; it will be executed after higher (more negative) actions, thus
      ; if the user specified --style, this action will be executing having
      ; the user specified style already set.
      opt on("-o", "--output", :outStrategy) coercing (
@@ -122,7 +122,7 @@ Basic Usage
      ;; app -vvvv --version -c ~/.appConfig -o -
      ;; app -v4 -o there append:yes -s xml
      ;; app -o nihon.jp:2200 --style origami
- 
+
 More Advanced Usage
 
   If you need more control over how options are handled, IOpt provides
@@ -133,12 +133,12 @@ More Advanced Usage
 
     Some times you would like to process the command line actions yourself,
   maybe you want to be sure no option is given twice, or that some option
-  is always required, or have mutually exclusive actions, etc. You can 
+  is always required, or have mutually exclusive actions, etc. You can
   implement all of this by obtaining an IOpt CommandLine object, that
   represents the parsed command line, including all options found, etc.
-  
+
       cl = opt parse(argv, stopAt: "--", includeUnknownOption: false)
-      unless(cl unknownOptions emtpy?, 
+      unless(cl unknownOptions emtpy?,
         error!("Unknown options: %[%s %\]" format(cl unknownOptions)))
       unless(cl include?("--required"),
         error!("The --required option must be present!"))
@@ -151,6 +151,6 @@ More Advanced Usage
       fileOption args positional[0\] = "IDontMindUserInput.txt"
       fileOption action priority = -99 ; set higher priority
       cl execute
-  
+
 ]; documentation
-  
+

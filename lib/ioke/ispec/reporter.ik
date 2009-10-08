@@ -8,7 +8,7 @@ ISpec do(
         newFailure example = example
         newFailure condition = condition
         newFailure)
-      
+
       header = method(
         if(expectationNotMet?,
           "'#{example fullDescription}' FAILED",
@@ -68,12 +68,12 @@ ISpec do(
       formatters each(startDump)
       dumpPending
       dumpFailures
-      formatters each(f, 
+      formatters each(f,
         f dumpSummary(duration, examples length, failures length, pendingCount)
         f close)
 
       failures length)
-    
+
     dumpFailures = method(
       if(failures empty?, return)
 

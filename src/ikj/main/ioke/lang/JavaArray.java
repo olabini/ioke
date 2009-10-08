@@ -151,7 +151,7 @@ public class JavaArray {
         boolean isIokeObject = obj instanceof IokeObject;
         boolean isWrapper = isIokeObject && IokeObject.data(obj) instanceof JavaWrapper;
         boolean clzIsAbstract = Modifier.isAbstract(clz.getModifiers()) || clz.isInterface();
-        //                     System.err.println("called []=(" + index + ", " + obj + ")"); 
+        //                     System.err.println("called []=(" + index + ", " + obj + ")");
         //                     System.err.println("clz: " + clz);
         //                     System.err.println("isIokeObject: " + isIokeObject);
         //                     System.err.println("isWrapper: " + isWrapper);
@@ -278,6 +278,6 @@ public class JavaArray {
                 }
             }
         }
-        
+
     }
 }// JavaArray

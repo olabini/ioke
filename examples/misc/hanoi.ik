@@ -15,7 +15,7 @@ hanoi = method(n,
 System ifMain(
   if(System programArguments size == 1,
     hanoi(System programArguments first toRational),
-    
-    "usage: hanoi n, where 0 < n <= 10" println    
+
+    "usage: hanoi n, where 0 < n <= 10" println
   )
 )

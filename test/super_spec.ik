@@ -2,12 +2,12 @@
 use("ispec")
 
 describe(DefaultBehavior,
-  describe("super", 
-    it("should not be available if no super method is there", 
+  describe("super",
+    it("should not be available if no super method is there",
       fn(method(super) call) should signal(Condition Error NoSuchCell)
     )
 
-    it("should return the super value if it is not method", 
+    it("should return the super value if it is not method",
       x = Origin mimic
       x foo = 42
       x2 = x mimic
@@ -15,7 +15,7 @@ describe(DefaultBehavior,
       x2 foo should == 42
     )
 
-    it("should call the super method with the same self", 
+    it("should call the super method with the same self",
       x = Origin mimic
       x foo = method([self])
       x2 = x mimic
@@ -23,7 +23,7 @@ describe(DefaultBehavior,
       x2 foo should == [x2]
     )
 
-    it("should be possible to give different arguments to super", 
+    it("should be possible to give different arguments to super",
       x = Origin mimic
       x foo = method(+args, args)
       x2 = x mimic
@@ -31,8 +31,8 @@ describe(DefaultBehavior,
       x2 foo should == [1, 2, 3]
     )
 
-    it("should be possible to call super several times in a row", 
-      Ground called_super_spec = [] 
+    it("should be possible to call super several times in a row",
+      Ground called_super_spec = []
       x = Origin mimic
       x foo = method(called_super_spec << "foo1")
       x2 = x mimic

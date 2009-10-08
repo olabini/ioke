@@ -1,7 +1,7 @@
 namespace Ioke.Lang.Util {
     using System;
     using System.Text;
-    
+
     public class StringUtils {
         public string ReplaceEscapes(string s) {
             if(s.IndexOf('\\') == -1) {

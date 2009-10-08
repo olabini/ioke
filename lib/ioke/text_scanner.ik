@@ -3,8 +3,8 @@ TextScanner = Origin mimic do(
     text,
     @text = text  ;The text to be scanned
 
-    @position = 0 ;The position of the scan pointer. In the initial or 'reset' position, this value is zero. 
-                  ;In the 'terminated' position (i.e. the text has been completely scanned), 
+    @position = 0 ;The position of the scan pointer. In the initial or 'reset' position, this value is zero.
+                  ;In the 'terminated' position (i.e. the text has been completely scanned),
                   ;this value is the length of the text
 
     @internal:matchData = nil  ;The result of the last match
@@ -73,9 +73,9 @@ TextScanner = Origin mimic do(
 
   internal:scan = method("Internal scanning method used as the core of the external methods",
     pattern, matchFromPointer: true, advancePointer: true, returnPositionToMatch: false,
-    
+
     if(matchFromPointer, pattern =  internal:alterPatternToMatchFromHead(pattern))
-    
+
     @internal:matchData = pattern match(rest)
 
     if(internal:matchData,
@@ -86,11 +86,11 @@ TextScanner = Origin mimic do(
       if(advancePointer, @position += internal:matchData end)
 
       if(returnPositionToMatch,
-        unless(fromPositionToMatch == "", 
+        unless(fromPositionToMatch == "",
           @match = fromPositionToMatch
           return fromPositionToMatch),
 
-        unless(fullMatch == "", 
+        unless(fullMatch == "",
           @match = fullMatch
           return fullMatch)))
 

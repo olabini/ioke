@@ -16,12 +16,12 @@ namespace Ioke.Math {
         internal int form; // values for this must fit in a byte
         internal bool lostDigits;
         internal int roundingMode;
- 
+
         private const int DEFAULT_FORM=SCIENTIFIC;
         private const int DEFAULT_DIGITS=9;
         private const bool DEFAULT_LOSTDIGITS=false;
         private const int DEFAULT_ROUNDINGMODE=ROUND_HALF_UP;
- 
+
         private const int MIN_DIGITS=0;
         private const int MAX_DIGITS=999999999;
         private static readonly int[] ROUNDS=new int[]{ROUND_HALF_UP,ROUND_UNNECESSARY,ROUND_CEILING,ROUND_DOWN,ROUND_FLOOR,ROUND_HALF_DOWN,ROUND_HALF_EVEN,ROUND_UP};
@@ -34,11 +34,11 @@ namespace Ioke.Math {
         public MathContext(int setdigits, int setform) : this(setdigits,setform,DEFAULT_LOSTDIGITS,DEFAULT_ROUNDINGMODE) {}
         public MathContext(int setdigits, int setform, bool setlostdigits) : this(setdigits,setform,setlostdigits,DEFAULT_ROUNDINGMODE) {}
         public MathContext(int setdigits, int setform, bool setlostdigits, int setroundingmode) {
-            if (setdigits!=DEFAULT_DIGITS) 
+            if (setdigits!=DEFAULT_DIGITS)
                 {
-                    if (setdigits<MIN_DIGITS) 
+                    if (setdigits<MIN_DIGITS)
                         throw new System.ArgumentException("Digits too small:"+" "+setdigits);
-                    if (setdigits>MAX_DIGITS) 
+                    if (setdigits>MAX_DIGITS)
                         throw new System.ArgumentException("Digits too large:"+" "+setdigits);
                 }
             {
@@ -50,7 +50,7 @@ namespace Ioke.Math {
                     throw new System.ArgumentException("Bad form value:"+" "+setform);
                 }
             }
-            if ((!(isValidRound(setroundingmode)))) 
+            if ((!(isValidRound(setroundingmode))))
                 throw new System.ArgumentException("Bad roundingMode value:"+" "+setroundingmode);
             digits=setdigits;
             form=setform;
@@ -61,7 +61,7 @@ namespace Ioke.Math {
         public int getDigits(){
             return digits;
         }
- 
+
         public int getForm(){
             return form;
         }
@@ -69,7 +69,7 @@ namespace Ioke.Math {
         public bool getLostDigits(){
             return lostDigits;
         }
- 
+
         public int getRoundingMode(){
             return roundingMode;
         }
@@ -95,7 +95,7 @@ namespace Ioke.Math {
             }
             return "digits="+digits+" "+"form="+formstr+" "+"lostDigits="+(lostDigits?"1":"0")+" "+"roundingMode="+roundword;
         }
- 
+
         private static bool isValidRound(int testround){
             for(int i = ROUNDS.Length, r=0; i>0; i--, r++) {
                 if(testround == ROUNDS[r]) {

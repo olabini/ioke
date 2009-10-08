@@ -16,14 +16,14 @@ namespace Ioke.Lang {
             obj.RegisterCell("argumentNames", runtime.EvaluateString("method(self code argumentNames)", runtime.Message, runtime.Ground));
         }
 
-        public abstract class NativeRestart { 
+        public abstract class NativeRestart {
             protected string name;
             public string Name {
                 get { return name; }
             }
 
             public abstract IList<string> ArgumentNames { get; }
-            
+
             public virtual string Report() {
                 return null;
             }

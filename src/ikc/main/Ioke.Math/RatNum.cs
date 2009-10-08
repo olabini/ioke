@@ -44,7 +44,7 @@ namespace Ioke.Math {
         public override int GetHashCode() {
             return intValue();
         }
-        
+
         /* Assumes x and y are both canonicalized. */
         public static bool equals (RatNum x, RatNum y)
         {

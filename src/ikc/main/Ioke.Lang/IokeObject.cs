@@ -12,7 +12,7 @@ namespace Ioke.Lang {
         IList<IokeObject> mimics;
 
         public List<IokeObject> hooks;
-    
+
         IokeData data;
 
         bool frozen = false;
@@ -64,10 +64,10 @@ namespace Ioke.Lang {
 
         private void CheckFrozen(string modification, IokeObject message, IokeObject context) {
             if(frozen) {
-                IokeObject condition = As(IokeObject.GetCellChain(context.runtime.Condition, 
-                                                                  message, 
+                IokeObject condition = As(IokeObject.GetCellChain(context.runtime.Condition,
+                                                                  message,
                                                                   context,
-                                                                  "Error", 
+                                                                  "Error",
                                                                   "ModifyOnFrozen"), context).Mimic(message, context);
                 condition.SetCell("message", message);
                 condition.SetCell("context", context);
@@ -76,7 +76,7 @@ namespace Ioke.Lang {
                 context.runtime.ErrorCondition(condition);
             }
         }
-        
+
         public static bool Same(object one, object two) {
             if((one is IokeObject) && (two is IokeObject)) {
                 return object.ReferenceEquals(As(one, null).cells, As(two, null).cells);
@@ -170,10 +170,10 @@ namespace Ioke.Lang {
                     Hook.FireCellRemoved(this, m, context, name, prev);
                 }
             } else {
-                IokeObject condition = As(IokeObject.GetCellChain(runtime.Condition, 
-                                                                  m, 
-                                                                  context, 
-                                                                  "Error", 
+                IokeObject condition = As(IokeObject.GetCellChain(runtime.Condition,
+                                                                  m,
+                                                                  context,
+                                                                  "Error",
                                                                   "NoSuchCell"), context).Mimic(m, context);
                 condition.SetCell("message", m);
                 condition.SetCell("context", context);
@@ -231,16 +231,16 @@ namespace Ioke.Lang {
         public static object FindPlace(object obj, IokeObject m, IokeObject context, string name) {
             object result = FindPlace(obj, name);
             if(result == m.runtime.nul) {
-                IokeObject condition = As(IokeObject.GetCellChain(m.runtime.Condition, 
-                                                                  m, 
-                                                                  context, 
-                                                                  "Error", 
+                IokeObject condition = As(IokeObject.GetCellChain(m.runtime.Condition,
+                                                                  m,
+                                                                  context,
+                                                                  "Error",
                                                                   "NoSuchCell"), context).Mimic(m, context);
                 condition.SetCell("message", m);
                 condition.SetCell("context", context);
                 condition.SetCell("receiver", obj);
                 condition.SetCell("cellName", m.runtime.GetSymbol(name));
-                
+
                 m.runtime.WithReturningRestart("ignore", context, () => {condition.runtime.ErrorCondition(condition);});
             }
             return result;
@@ -304,7 +304,7 @@ namespace Ioke.Lang {
         public readonly static System.Text.RegularExpressions.Regex SLIGHTLY_BAD_CHARS = new System.Text.RegularExpressions.Regex("[!=\\.\\-\\+&|\\{\\[]");
         public virtual void Assign(string name, object value, IokeObject context, IokeObject message) {
             CheckFrozen("=", message, context);
-            
+
             if(!SLIGHTLY_BAD_CHARS.Match(name).Success && FindCell(message, context, name + "=") != runtime.nul) {
                 IokeObject msg = runtime.CreateMessage(new Message(runtime, name + "=", runtime.CreateMessage(Message.Wrap(As(value, context)))));
                 ((Message)IokeObject.dataOf(msg)).SendTo(msg, context, this);
@@ -331,9 +331,9 @@ namespace Ioke.Lang {
         }
 
         public virtual object Self {
-            get { 
+            get {
                 if(cells.ContainsKey("self"))
-                    return this.cells["self"]; 
+                    return this.cells["self"];
                 return null;
             }
         }
@@ -342,10 +342,10 @@ namespace Ioke.Lang {
             object cell = this.FindCell(m, context, name);
 
             while(cell == runtime.nul) {
-                IokeObject condition = As(IokeObject.GetCellChain(runtime.Condition, 
-                                                                  m, 
-                                                                  context, 
-                                                                  "Error", 
+                IokeObject condition = As(IokeObject.GetCellChain(runtime.Condition,
+                                                                  m,
+                                                                  context,
+                                                                  "Error",
                                                                   "NoSuchCell"), context).Mimic(m, context);
                 condition.SetCell("message", m);
                 condition.SetCell("context", context);
@@ -608,14 +608,14 @@ namespace Ioke.Lang {
             return data.ActivateWithCallAndData(this, context, message, on, c, d1);
         }
 
-        public class UseValue : Restart.ArgumentGivingRestart { 
+        public class UseValue : Restart.ArgumentGivingRestart {
             string variableName;
             object[] place;
             public UseValue(string variableName, object[] place) : base("useValue") {
                 this.variableName = variableName;
                 this.place = place;
             }
-            
+
             public override string Report() {
                 return "Use value for: " + variableName;
             }
@@ -630,7 +630,7 @@ namespace Ioke.Lang {
             }
         }
 
-        private class StoreValue : Restart.ArgumentGivingRestart { 
+        private class StoreValue : Restart.ArgumentGivingRestart {
             string variableName;
             object[] place;
             IokeObject obj;
@@ -639,7 +639,7 @@ namespace Ioke.Lang {
                 this.place = place;
                 this.obj = obj;
             }
-            
+
             public override string Report() {
                 return "Store value for: " + variableName;
             }
@@ -668,10 +668,10 @@ namespace Ioke.Lang {
             object passed = null;
 
             while(cell == runtime.nul && (((cell = passed = this.FindCell(message, ctx, "pass")) == runtime.nul) || !IsApplicable(passed, message, ctx))) {
-                IokeObject condition = As(IokeObject.GetCellChain(runtime.Condition, 
-                                                                  message, 
-                                                                  ctx, 
-                                                                  "Error", 
+                IokeObject condition = As(IokeObject.GetCellChain(runtime.Condition,
+                                                                  message,
+                                                                  ctx,
+                                                                  "Error",
                                                                   "NoSuchCell"), ctx).Mimic(message, ctx);
                 condition.SetCell("message", message);
                 condition.SetCell("context", ctx);
@@ -692,7 +692,7 @@ namespace Ioke.Lang {
         public static bool IsKind(object on, string kind, IokeObject context) {
             return As(on, context).IsKind(kind);
         }
-        
+
         public static bool IsMimic(object on, IokeObject potentialMimic, IokeObject context) {
             return As(on, context).IsMimic(potentialMimic);
         }
@@ -921,7 +921,7 @@ namespace Ioke.Lang {
         public object ConvertToThis(object on, IokeObject message, IokeObject context) {
             return ConvertToThis(on, true, message, context);
         }
-    
+
         public object ConvertToThis(object on, bool signalCondition, IokeObject message, IokeObject context) {
             if(on is IokeObject) {
                 if(IokeObject.dataOf(on).GetType().Equals(data.GetType())) {

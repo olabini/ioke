@@ -111,10 +111,10 @@ public class IokeSystem extends IokeData {
                     loaded.add(name);
                     return true;
                 } catch(Throwable e) {
-                    final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
-                                                                                       message, 
-                                                                                       context, 
-                                                                                       "Error", 
+                    final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition,
+                                                                                       message,
+                                                                                       context,
+                                                                                       "Error",
                                                                                        "Load"), context).mimic(message, context);
                     condition.setCell("message", message);
                     condition.setCell("context", context);
@@ -133,9 +133,9 @@ public class IokeSystem extends IokeData {
                     runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
                             public void run() throws ControlFlow {
                                 runtime.errorCondition(condition);
-                            }}, 
+                            }},
                         context,
-                        new Restart.ArgumentGivingRestart("continueLoadChain") { 
+                        new Restart.ArgumentGivingRestart("continueLoadChain") {
                             public List<String> getArgumentNames() {
                                 return new ArrayList<String>();
                             }
@@ -207,10 +207,10 @@ public class IokeSystem extends IokeData {
                     }
                 }
             } catch(Throwable e) {
-                final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
-                                                                                   message, 
-                                                                                   context, 
-                                                                                   "Error", 
+                final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition,
+                                                                                   message,
+                                                                                   context,
+                                                                                   "Error",
                                                                                    "Load"), context).mimic(message, context);
                 condition.setCell("message", message);
                 condition.setCell("context", context);
@@ -229,9 +229,9 @@ public class IokeSystem extends IokeData {
                 runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
                         public void run() throws ControlFlow {
                             runtime.errorCondition(condition);
-                        }}, 
+                        }},
                     context,
-                    new Restart.ArgumentGivingRestart("continueLoadChain") { 
+                    new Restart.ArgumentGivingRestart("continueLoadChain") {
                         public List<String> getArgumentNames() {
                             return new ArrayList<String>();
                         }
@@ -311,10 +311,10 @@ public class IokeSystem extends IokeData {
                         }
                     }
                 } catch(Throwable e) {
-                    final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
-                                                                                       message, 
-                                                                                       context, 
-                                                                                       "Error", 
+                    final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition,
+                                                                                       message,
+                                                                                       context,
+                                                                                       "Error",
                                                                                        "Load"), context).mimic(message, context);
                     condition.setCell("message", message);
                     condition.setCell("context", context);
@@ -333,9 +333,9 @@ public class IokeSystem extends IokeData {
                     runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
                             public void run() throws ControlFlow {
                                 runtime.errorCondition(condition);
-                            }}, 
+                            }},
                         context,
-                        new Restart.ArgumentGivingRestart("continueLoadChain") { 
+                        new Restart.ArgumentGivingRestart("continueLoadChain") {
                             public List<String> getArgumentNames() {
                                 return new ArrayList<String>();
                             }
@@ -362,11 +362,11 @@ public class IokeSystem extends IokeData {
                 }
             }
         }
-        
-        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
-                                                                           message, 
-                                                                           context, 
-                                                                           "Error", 
+
+        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition,
+                                                                           message,
+                                                                           context,
+                                                                           "Error",
                                                                            "Load"), context).mimic(message, context);
         condition.setCell("message", message);
         condition.setCell("context", context);
@@ -379,7 +379,7 @@ public class IokeSystem extends IokeData {
                 }});
         return false;
     }
-    
+
     public IokeData cloneData(IokeObject obj, IokeObject m, IokeObject context) {
         return new IokeSystem();
     }
@@ -432,7 +432,7 @@ public class IokeSystem extends IokeData {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> args = new ArrayList<Object>();
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
-                    
+
                     String name = Text.getText(((Message)IokeObject.data(runtime.asText)).sendTo(runtime.asText, context, args.get(0)));
                     if(FEATURES.contains(name)) {
                         return runtime._true;

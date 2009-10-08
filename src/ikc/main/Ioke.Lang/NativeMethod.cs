@@ -55,13 +55,13 @@ namespace Ioke.Lang {
         }
 
         private static object NoActivator(IokeObject self, object on, IList args, IDictionary<string, object> keywords, IokeObject context, IokeObject message) {
-            IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition, 
-                                                                         message, 
-                                                                         context, 
-                                                                         "Error", 
+            IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition,
+                                                                         message,
+                                                                         context,
+                                                                         "Error",
                                                                          "Invocation",
                                                                          "NotActivatable"), context).Mimic(message, context);
-        
+
             condition.SetCell("message", message);
             condition.SetCell("context", context);
             condition.SetCell("receiver", on);

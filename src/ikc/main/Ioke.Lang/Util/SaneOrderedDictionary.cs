@@ -6,7 +6,7 @@ namespace Ioke.Lang.Util {
 
     public class SaneOrderedDictionary : OrderedDictionary {
         public SaneOrderedDictionary() : base() {}
-        
+
         public override bool Equals(object other) {
             if(this == other) {
                 return true;

@@ -4,43 +4,43 @@ use("iopt")
 describe(IOpt,
 
 
-  describe("iopt:ion", 
-    
-    it("should recognize a short option", 
+  describe("iopt:ion",
+
+    it("should recognize a short option",
       m = IOpt iopt:ion("-f")
       m should not be nil
       m long should be nil
       m option should == "-f"
       m immediate should be nil)
-    
-    it("should recognize a long option", 
+
+    it("should recognize a long option",
       m = IOpt iopt:ion("--foo")
       m should not be nil
       m long should not be nil
       m option should == "--foo"
       m immediate should be nil)
-    
-    it("should not recognize something that is not an option", 
+
+    it("should not recognize something that is not an option",
       IOpt iopt:ion("foo") should be nil
       IOpt iopt:ion("- foo") should be nil
       IOpt iopt:ion(" -foo") should be nil
       IOpt iopt:ion("--@foo") should be nil
       IOpt iopt:ion("--fo@") should be nil)
-    
+
     it("should obtain the immediate value for a short option using =",
       m = IOpt iopt:ion("-f=22")
       m should not be nil
       m long should be nil
       m option should == "-f"
       m immediate should == "22")
-    
+
     it("should obtain the immediate value for a short option using =",
       m = IOpt iopt:ion("-f22=moo")
       m should not be nil
       m long should be nil
       m option should == "-f22"
       m immediate should == "moo")
-    
+
     it("should obtain the immediate value for a short option",
       m = IOpt iopt:ion("-f22")
       m should not be nil
@@ -54,7 +54,7 @@ describe(IOpt,
         m long should not be nil
         m option should == "--foo"
         m immediate should == "bar")
-      
+
   );iopt:ion
 
   describe("iopt:key",
@@ -79,12 +79,12 @@ describe(IOpt,
       m immediate should == "jojo")
   );iopt:key
 
-  describe("[]", 
-      
-    it("should return nil for a non existing option", 
+  describe("[]",
+
+    it("should return nil for a non existing option",
       o = IOpt mimic
       o["-f"] should be nil)
-    
+
     it("should return the action that handles an option",
       a = IOpt Action mimic
       o = IOpt mimic
@@ -92,16 +92,16 @@ describe(IOpt,
       o["-f"] should == a
       o["-f22"] should == a
       o["-f=22"] should == a)
-    
+
     it("should signal error if the option has not associated an action",
       o = IOpt mimic
       o cell("iopt:actions")["-f"] = :foo
       fn(o["-f"]) should signal(IOpt NoActionForOption))
-    
+
    );[]
 
    describe("[]=",
-    
+
      it("should create an action by assigning a value to an option",
        o = IOpt mimic
        o["-f"] = fn()
@@ -137,7 +137,7 @@ describe(IOpt,
       a = o["-f"]
       o["--foo"] = a
       o["--foo"] should == a)
-    
+
     it("should alias an action by assigning an existing option to a new one",
       o = IOpt mimic
       o["-f"] = fn
@@ -148,13 +148,13 @@ describe(IOpt,
     it("should signal error if the option being aliased does not exist",
       o = IOpt mimic
       fn(o["--foo"] = "-f") should signal(IOpt NoActionForOption))
-    
+
     it("should be possible to assign multiple options for a single action",
       o = IOpt mimic
       o["-f", "--foo"] = fn
       o["-f"] should == o["--foo"])
 
-    it("should remove an action by assigning nil to its options", 
+    it("should remove an action by assigning nil to its options",
       o = IOpt mimic
       o["-f", "--foo", "--bar"] = fn
       a = o["-f"]
@@ -163,17 +163,17 @@ describe(IOpt,
       o["--foo", "--bar"] = nil
       o["--foo"] should be nil
       o["--bar"] should be nil)
-    
+
    );[]=
 
-   describe("on", 
+   describe("on",
 
-    it("should return self if no args given", 
+    it("should return self if no args given",
       o = IOpt mimic
       o on should == o)
 
-    describe("when given options as first arguments", 
-      
+    describe("when given options as first arguments",
+
       it("should create a lexical block to handle the option",
         o = IOpt mimic
         o on("-h", "--help", "Display Help", @print. System exit)
@@ -196,7 +196,7 @@ describe(IOpt,
           o = IOpt mimic
           o on("--call", "Activating a cell on o", :pleaseCallMe!)
           o["--call"] should mimic(IOpt Action CellActivation))
-        
+
       )
     )
 
@@ -220,7 +220,7 @@ describe(IOpt,
     )
 
     describe("when given an object as first argument",
-      
+
       it("should create a lexical block having that object as receiver",
         v = Origin mimic
         o = IOpt mimic
@@ -244,7 +244,7 @@ describe(IOpt,
           o on(v, "--call", "Activating a cell on v", :pleaseCallMe!)
           o["--call"] should mimic(IOpt Action CellActivation)
           o["--call"] receiver should == v)
-  
+
       )
     )
 
@@ -259,7 +259,7 @@ describe(IOpt,
       o["-h"] should mimic(IOpt Action ValueActivation)
       o["-h"] cell(:valueToActivate) should be same(o cell(:showHelp)))
 
-    describe("when given options as first arguments", 
+    describe("when given options as first arguments",
       it("should create an Action ValueActivation",
         o = IOpt mimic
         o on("-h", "--help") = fn("Display Help", @print. System exit)
@@ -278,7 +278,7 @@ describe(IOpt,
           o pleaseCallMe! = method(:called)
           o on("--call") = :pleaseCallMe!
           o["--call"] should mimic(IOpt Action CellActivation))
-        
+
       )
     )
 
@@ -302,7 +302,7 @@ describe(IOpt,
     )
 
     describe("when given an object as first argument",
-      
+
       it("should create an Action ValueActivation having a receiver",
         v = Origin mimic
         o = IOpt mimic
@@ -326,10 +326,10 @@ describe(IOpt,
           o on(v, "--call", "Activating a cell on v") = :pleaseCallMe!
           o["--call"] should mimic(IOpt Action CellActivation)
           o["--call"] receiver should == v)
-  
+
       )
     )
-   
+
  );on=
 
  describe("parse!",
@@ -343,7 +343,7 @@ describe(IOpt,
      o on("-e", order << :e)
      o parse!(["-d", "-e", "-c", "-a", "-b"])
      order should == [:b, :c, :e, :a, :d])
-   
+
    it("should not modify original arguments and store them on argv cell",
      o = IOpt mimic
      o on("-a", nil)
@@ -362,7 +362,7 @@ describe(IOpt,
  )
 
  describe("help",
-   it("should have a Help Simple Plain by default", 
+   it("should have a Help Simple Plain by default",
      o = IOpt mimic
      h = o help(:plain)
      h should not be nil)
@@ -377,7 +377,7 @@ describe(IOpt Action ValueActivation,
     f = fn("BlaBla", nil)
     a = IOpt Action ValueActivation mimic(cell(:f))
     a documentation should == "BlaBla")
-  
+
   it("should obtain the argument names from the valueToActivate",
     f = fn(a, b "yes", +c, d:, f: 22, +:g, nil)
     a = IOpt Action ValueActivation mimic(cell(:f)) arity
@@ -401,11 +401,11 @@ describe(IOpt Action ValueActivation,
     a receiver = o
     a call()
     v should == [o, o])
-  
+
 );IOpt Action ValueActivation
 
-describe(IOpt Action CellActivation, 
-  
+describe(IOpt Action CellActivation,
+
   it("should obtain the documentation from the named cell",
     o = Origin mimic do(foo = method("Fooing", bar, @baz = bar))
     a = IOpt Action CellActivation mimic(:foo)
@@ -428,11 +428,11 @@ describe(IOpt Action CellActivation,
     a receiver = o
     a call(24)
     o baz should == 24)
-  
+
 ); IOpt Action CellActivation
 
 describe(IOpt Action CellAssignment,
-  
+
   it("should use a default documentation for setting named cell",
     o = Origin mimic
     a = IOpt Action CellAssignment mimic(:foo)
@@ -453,7 +453,7 @@ describe(IOpt Action CellAssignment,
     a receiver = o
     a call(24)
     o foo should == 24)
-  
+
 ); IOpt Action CellAssignmnet
 
 describe(IOpt Action MessageEvaluation,
@@ -570,7 +570,7 @@ describe(IOpt Action,
       c remnant should == ["--jaja", "--jiji"]
       c positional should == ["jojo", "-hey", "you:notKey"]
       c keywords should be empty)
-    
+
     it("should take keyword arguments before next option",
       o = IOpt mimic
       a = IOpt Action mimic do(options << "-f")
@@ -593,7 +593,7 @@ describe(IOpt Action,
       a = o["-f"] = method(self)
       a perform(a consume(["-f"])) should == o
     )
-    
+
     it("should take receiver from the iopt object given as second argument",
       o = IOpt mimic
       o["-f"] = method(self)
@@ -610,11 +610,11 @@ describe(IOpt Action,
       a = u["-f"]
       a perform(a consume(["-f"]), u) should == v
     )
-    
+
   )
 ); IOpt Action
 
-describe(IOpt CommandLine, 
+describe(IOpt CommandLine,
 
   it("should include unknown options (default)",
     o = IOpt mimic
@@ -673,17 +673,17 @@ describe(IOpt CommandLine,
     f option should == "--foo"
     f args positional should == ["--bar"]
     f args keywords should be empty)
-  
+
   it("should stop processing command line when found value for stopAt",
     o = IOpt mimic
     o on("-f", v, nil)
-    c = IOpt CommandLine mimic(o, 
+    c = IOpt CommandLine mimic(o,
       ["-f", "--bar", "man", "--bat", "--", "jojo"], stopAt: "--")
     c should include("-f")
     c unknownOptions should == ["--bat"]
     c programArguments should == ["man", "--bat"]
     c rest should == ["jojo"]
-    c = IOpt CommandLine mimic(o, 
+    c = IOpt CommandLine mimic(o,
       ["-f", "--bar", "man", "--bat", "--"], stopAt: "--")
     c programArguments should == ["man", "--bat"]
     c rest should be empty)
@@ -691,7 +691,7 @@ describe(IOpt CommandLine,
   it("should coerce option arguments that are literals (default)",
     o = IOpt mimic
     o on("-f", +r, nil)
-    c = IOpt CommandLine mimic(o, 
+    c = IOpt CommandLine mimic(o,
       ["-f", "true", "false", "nil", ":symbol", "24", "-12", "+12", "text"])
     f = c options first
     f option should == "-f"
@@ -715,7 +715,7 @@ describe(IOpt CommandLine,
   it("should not coerce option arguments when given coerce: false",
     o = IOpt mimic
     o on("-f", +r, nil)
-    c = IOpt CommandLine mimic(o, 
+    c = IOpt CommandLine mimic(o,
       ["-f", "true", "false", "nil", ":symbol", "24", "text"],
       coerce: false)
     f = c options first
@@ -734,7 +734,7 @@ describe(IOpt CommandLine,
       yesno: #/^si|no$/ => method(t, t == "si")
     )
 
-    c = IOpt CommandLine mimic(o, 
+    c = IOpt CommandLine mimic(o,
       ["-n", "true", "-y", "no", "nil", "-s", "si", "nil"])
     f = c options first
     f option should == "-n"
@@ -746,7 +746,7 @@ describe(IOpt CommandLine,
     f option should == "-s"
     f args positional should == [true, nil])
 
-  it("should correctly parse clustered short options", 
+  it("should correctly parse clustered short options",
     o = IOpt mimic
     o on("-a", nil)
     o on("-b", nil)

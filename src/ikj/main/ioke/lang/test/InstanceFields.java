@@ -104,7 +104,7 @@ public class InstanceFields {
     final float packagePrivateFloatFieldFinal = 434.2F;
     final double packagePrivateDoubleFieldFinal = 3432435.22;
     final boolean packagePrivateBooleanFieldFinal = true;
-    
+
     private String privateStringField;
     public String get_privateStringField(){ return privateStringField; }
     private Object privateObjectField;

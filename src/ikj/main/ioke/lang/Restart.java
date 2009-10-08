@@ -32,7 +32,7 @@ public class Restart {
         }
 
         public abstract List<String> getArgumentNames();
-        
+
         public String report() {
             return null;
         }

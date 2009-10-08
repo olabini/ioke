@@ -40,7 +40,7 @@ the result of this code will be the result of the macro.
 if no patterns match, a Condition Error Invocation condition
 will be signalled.
 
-the patterns can take several basic forms. the first form is 
+the patterns can take several basic forms. the first form is
 that of a simple name, like this:
 
   [arg]
@@ -106,7 +106,7 @@ values:
 
   [arg1 2+2, >arg2 2+2]
 
-will match an empty argument list, and in that case give arg1 the 
+will match an empty argument list, and in that case give arg1 the
 message chain corresponding to 2+2, while arg2 will be set to the
 value 4.",
 
@@ -173,7 +173,7 @@ DefaultBehavior Definitions destructuring generateAssigns = method(thePattern, w
       name = arg arguments[0] name,
       if(arg next,
         optional = it))
-    
+
     assgn = message(:"=")
     assgn << message(name)
     if(restArg,
@@ -196,7 +196,7 @@ DefaultBehavior Definitions destructuring generateAssigns = method(thePattern, w
           ''(call arguments[`index]))
         theTest << assgnPart
         assgn << theTest,
- 
+
         assgnPart = if(evaluateArg,
           ''(call argAt(`index)),
           ''(call arguments[`index]))

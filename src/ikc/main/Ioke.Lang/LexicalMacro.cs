@@ -24,14 +24,14 @@ namespace Ioke.Lang {
             obj.Kind = "LexicalMacro";
             obj.RegisterCell("activatable", obj.runtime.True);
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the name of the lecro", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the name of the lecro",
                                                            new NativeMethod.WithNoArguments("name",
                                                                                             (method, _context, message, on, outer) => {
                                                                                                 outer.ArgumentsDefinition.GetEvaluatedArguments(_context, message, on, new SaneArrayList(), new SaneDictionary<string, object>());
                                                                                                 return _context.runtime.NewText(((LexicalMacro)IokeObject.dataOf(on)).name);
                                                                                             })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("activates this lecro with the arguments given to call", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("activates this lecro with the arguments given to call",
                                                            new NativeMethod("call", DefaultArgumentsDefinition.builder()
                                                                             .WithRestUnevaluated("arguments")
                                                                             .Arguments,
@@ -39,35 +39,35 @@ namespace Ioke.Lang {
                                                                                 return IokeObject.As(on, _context).Activate(_context, message, _context.RealContext);
                                                                             })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the message chain for this lecro", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the message chain for this lecro",
                                                            new NativeMethod.WithNoArguments("message",
                                                                                             (method, _context, message, on, outer) => {
                                                                                                 outer.ArgumentsDefinition.GetEvaluatedArguments(_context, message, on, new SaneArrayList(), new SaneDictionary<string, object>());
                                                                                                 return ((AssociatedCode)IokeObject.dataOf(on)).Code;
                                                                                             })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the code for the argument definition", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the code for the argument definition",
                                                            new NativeMethod.WithNoArguments("argumentsCode",
                                                                                             (method, _context, message, on, outer) => {
                                                                                                 outer.ArgumentsDefinition.GetEvaluatedArguments(_context, message, on, new SaneArrayList(), new SaneDictionary<string, object>());
                                                                                                 return _context.runtime.NewText(((AssociatedCode)IokeObject.dataOf(on)).ArgumentsCode);
                                                                                             })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns a text inspection of the object", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns a text inspection of the object",
                                                            new NativeMethod.WithNoArguments("inspect",
                                                                                             (method, _context, message, on, outer) => {
                                                                                                 outer.ArgumentsDefinition.GetEvaluatedArguments(_context, message, on, new SaneArrayList(), new SaneDictionary<string, object>());
                                                                                                 return _context.runtime.NewText(LexicalMacro.GetInspect(on));
                                                                                             })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns a brief text inspection of the object", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns a brief text inspection of the object",
                                                            new NativeMethod.WithNoArguments("notice",
                                                                                             (method, _context, message, on, outer) => {
                                                                                                 outer.ArgumentsDefinition.GetEvaluatedArguments(_context, message, on, new SaneArrayList(), new SaneDictionary<string, object>());
                                                                                                 return _context.runtime.NewText(LexicalMacro.GetNotice(on));
                                                                                             })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the full code of this lecro, as a Text", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the full code of this lecro, as a Text",
                                                            new NativeMethod.WithNoArguments("code",
                                                                                             (method, _context, message, on, outer) => {
                                                                                                 outer.ArgumentsDefinition.GetEvaluatedArguments(_context, message, on, new SaneArrayList(), new SaneDictionary<string, object>());
@@ -79,7 +79,7 @@ namespace Ioke.Lang {
                                                                                                 }
                                                                                             })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns idiomatically formatted code for this lecro", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns idiomatically formatted code for this lecro",
                                                            new NativeMethod.WithNoArguments("formattedCode",
                                                                                             (method, _context, message, on, outer) => {
                                                                                                 outer.ArgumentsDefinition.GetEvaluatedArguments(_context, message, on, new SaneArrayList(), new SaneDictionary<string, object>());
@@ -152,10 +152,10 @@ namespace Ioke.Lang {
 
         public override object ActivateWithCallAndData(IokeObject self, IokeObject dynamicContext, IokeObject message, object on, object call, IDictionary<string, object> data) {
             if(code == null) {
-                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(dynamicContext.runtime.Condition, 
-                                                                             message, 
-                                                                             dynamicContext, 
-                                                                             "Error", 
+                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(dynamicContext.runtime.Condition,
+                                                                             message,
+                                                                             dynamicContext,
+                                                                             "Error",
                                                                              "Invocation",
                                                                              "NotActivatable"), dynamicContext).Mimic(message, dynamicContext);
                 condition.SetCell("message", message);
@@ -181,10 +181,10 @@ namespace Ioke.Lang {
 
         public override object ActivateWithCall(IokeObject self, IokeObject dynamicContext, IokeObject message, object on, object call) {
             if(code == null) {
-                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(dynamicContext.runtime.Condition, 
-                                                                             message, 
-                                                                             dynamicContext, 
-                                                                             "Error", 
+                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(dynamicContext.runtime.Condition,
+                                                                             message,
+                                                                             dynamicContext,
+                                                                             "Error",
                                                                              "Invocation",
                                                                              "NotActivatable"), dynamicContext).Mimic(message, dynamicContext);
                 condition.SetCell("message", message);
@@ -206,10 +206,10 @@ namespace Ioke.Lang {
 
         public override object Activate(IokeObject self, IokeObject dynamicContext, IokeObject message, object on) {
             if(code == null) {
-                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(dynamicContext.runtime.Condition, 
-                                                                             message, 
-                                                                             dynamicContext, 
-                                                                             "Error", 
+                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(dynamicContext.runtime.Condition,
+                                                                             message,
+                                                                             dynamicContext,
+                                                                             "Error",
                                                                              "Invocation",
                                                                              "NotActivatable"), dynamicContext).Mimic(message, dynamicContext);
                 condition.SetCell("message", message);
@@ -231,10 +231,10 @@ namespace Ioke.Lang {
 
         public override object ActivateWithData(IokeObject self, IokeObject dynamicContext, IokeObject message, object on, IDictionary<string, object> data) {
             if(code == null) {
-                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(dynamicContext.runtime.Condition, 
-                                                                             message, 
-                                                                             dynamicContext, 
-                                                                             "Error", 
+                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(dynamicContext.runtime.Condition,
+                                                                             message,
+                                                                             dynamicContext,
+                                                                             "Error",
                                                                              "Invocation",
                                                                              "NotActivatable"), dynamicContext).Mimic(message, dynamicContext);
                 condition.SetCell("message", message);

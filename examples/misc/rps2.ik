@@ -6,12 +6,12 @@ RPS = Origin mimic do(
     RPS Player with(name: call message name asText, field: self))
 
   scores = {} withDefault(0)
-  
+
   Player throws = macro(
     field plays << (self name => call message next name)
     call message -> call message next next
   )
-  
+
   win = method(p,
     scores[p key] += 1
     "#{p key} wins" println)
@@ -32,7 +32,7 @@ RPS = Origin mimic do(
       [:paper, :scissors], win(p2),
       [:scissors, :rock], win(p2),
       else, draw)
-    
+
     field
   )
 )

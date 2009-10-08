@@ -74,13 +74,13 @@ public abstract class NativeMethod extends Method implements CanRun {
 
     public Object activate(IokeObject self, Object on, List<Object> args,
             Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
-        IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
-                                                                     message, 
-                                                                     context, 
-                                                                     "Error", 
+        IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition,
+                                                                     message,
+                                                                     context,
+                                                                     "Error",
                                                                      "Invocation",
                                                                      "NotActivatable"), context).mimic(message, context);
-        
+
         condition.setCell("message", message);
         condition.setCell("context", context);
         condition.setCell("receiver", on);
@@ -90,7 +90,7 @@ public abstract class NativeMethod extends Method implements CanRun {
 
         return self.runtime.nil;
     }
-    
+
     private String getDominantClassName() {
         String name = getClass().getName();
         int dollar = name.indexOf("$");

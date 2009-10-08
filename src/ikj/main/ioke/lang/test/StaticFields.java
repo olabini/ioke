@@ -103,7 +103,7 @@ public class StaticFields {
     static final float packagePrivateFloatFieldFinal = 434.2F;
     static final double packagePrivateDoubleFieldFinal = 3432435.22;
     static final boolean packagePrivateBooleanFieldFinal = true;
-    
+
     private static String privateStringField;
     public static String get_privateStringField(){ return privateStringField; }
     private static Object privateObjectField;
