@@ -21,7 +21,7 @@ import ioke.lang.exceptions.ControlFlow;
 
 /**
  * Based on Levels from Io IoMessage_opShuffle.c
- * 
+ *
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
 public class Levels {
@@ -82,15 +82,15 @@ public class Levels {
                 Message.setNext(message, null);
                 if(message.getArgumentCount() == 1) {
                     Object arg1 = message.getArguments().get(0);
-                    if(arg1 instanceof IokeObject) { 
+                    if(arg1 instanceof IokeObject) {
                         IokeObject arg = IokeObject.as(arg1, null);
                         if(arg.getName().length() == 0 && arg.getArgumentCount() == 1 && Message.next(arg) == null) {
                             int index = indexOf(expressions, arg);
 
                             if(index != -1) {
                                 expressions.set(index, message);
-                            } 
-                           
+                            }
+
                             message.getArguments().clear();
                             message.getArguments().addAll(arg.getArguments());
                             arg.getArguments().clear();
@@ -256,7 +256,7 @@ public class Levels {
 		new OpTable("::",  12),
 		new OpTable(":::",  12)
     };
-    
+
     public static interface OpTableCreator {
         Map<Object, Object> create(Runtime runtime);
     }
@@ -354,7 +354,7 @@ public class Levels {
                     return -1;
                 }
             }
-            
+
             return -1;
         }
 
@@ -396,13 +396,13 @@ public class Levels {
         level.setAwaitingFirstArg(msg, precedence);
         stack.add(0, level);
     }
-    
+
     private void detach(IokeObject msg) throws ControlFlow {
         IokeObject brackets = runtime.newMessage("");
         Message.copySourceLocation(msg, brackets);
         brackets.getArguments().addAll(msg.getArguments());
         msg.getArguments().clear();
-        
+
         // Insert the brackets message between msg and its next message
         Message.setNext(brackets, Message.next(msg));
         Message.setNext(msg, brackets);
@@ -415,17 +415,17 @@ public class Levels {
         IokeObject messageSymbol = runtime.getSymbol(messageName);
         int precedence = levelForOp(messageName, messageSymbol, msg);
         int argCountForOp = argCountForOp(messageName, messageSymbol, msg);
-        
+
         int msgArgCount = msg.getArgumentCount();
 
         boolean inverted = isInverted(messageSymbol);
-        
+
         /*
         // : "str" bar   becomes   :("str") bar
         // -foo bar      becomes   -(foo) bar
         */
         if(msgArgCount == 0 && Message.next(msg) != null && ((messageName.equals(":") || messageName.equals("`") || messageName.equals("'") || messageName.equals("''")) ||
-                                                             (messageName.equals("-") && Message.prev(msg) == null))) {
+                                                             (messageName.equals("-") && Message.isFirstOnLine(msg)))) {
             precedence = -1;
             Object arg = Message.next(msg);
             Message.setNext(msg, Message.next(arg));
@@ -445,10 +445,10 @@ public class Levels {
             while(Message.prev(head) != null && !Message.isTerminator(Message.prev(head))) {
                 head = Message.prev(head);
             }
-            
+
             if(head != msg) {
                 IokeObject argPart = Message.deepCopy(head);
-            
+
                 if(Message.prev(msg) != null) {
                     Message.setNext(Message.prev(msg), null);
                 }
@@ -470,7 +470,7 @@ public class Levels {
                 }
                 Message.setNext(last, msg);
                 Message.setPrev(msg, last);
-            
+
                 head.become(next, null, null);
             }
         }
@@ -492,12 +492,12 @@ public class Levels {
             IokeObject attaching = currentLevel.message;
             String setCellName;
 
-            if(attaching == null) { // = b . 
-                final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
-                                                                                   _message, 
-                                                                                   _context, 
-                                                                                   "Error", 
-                                                                                   "Parser", 
+            if(attaching == null) { // = b .
+                final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition,
+                                                                                   _message,
+                                                                                   _context,
+                                                                                   "Error",
+                                                                                   "Parser",
                                                                                    "OpShuffle"), _context).mimic(_message, _context);
                 condition.setCell("message", _message);
                 condition.setCell("context", _context);
@@ -516,7 +516,7 @@ public class Levels {
             attaching.getArguments().clear();
 			// a = b .  ->  a(a) = b .
             Message.addArg(attaching, copyOfMessage);
-            
+
             setCellName = messageName;
             int expectedArgs = argCountForOp;
 
@@ -528,12 +528,12 @@ public class Levels {
             // =(a) = b .
 			// =(a) = or =("a") = .
             IokeObject mn = Message.next(msg);
-            
-            if(expectedArgs > 1 && (mn == null || Message.isTerminator(mn))) { 
+
+            if(expectedArgs > 1 && (mn == null || Message.isTerminator(mn))) {
                 // TODO: error, "compile error: %s must be followed by a value.", messageName
             }
 
-            if(expectedArgs > 1) { 
+            if(expectedArgs > 1) {
                 // =(a) = b c .  ->  =(a, b c .) = b c .
                 Message.addArg(attaching, mn);
 
@@ -549,7 +549,7 @@ public class Levels {
 
                 Message.setNext(attaching, Message.next(last));
                 Message.setNext(msg, Message.next(last));
-            
+
                 if(last != msg) {
                     Message.setNext(last, null);
                 }
