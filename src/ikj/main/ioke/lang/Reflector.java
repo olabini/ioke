@@ -462,10 +462,10 @@ public class Reflector {
                     IokeObject other = IokeObject.as(args.get(1), context);
 
                     if(args.get(0) == context.runtime.nil || args.get(0) == context.runtime._true || args.get(0) == context.runtime._false) {
-                        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
-                                                                                           message, 
+                        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition,
+                                                                                           message,
                                                                                            context,
-                                                                                           "Error", 
+                                                                                           "Error",
                                                                                            "CantMimicOddball"), context).mimic(message, context);
                         condition.setCell("message", message);
                         condition.setCell("context", context);
@@ -474,7 +474,7 @@ public class Reflector {
                     }
 
                     me.become(other, message, context);
-                    
+
                     return args.get(0);
                 }
             }));

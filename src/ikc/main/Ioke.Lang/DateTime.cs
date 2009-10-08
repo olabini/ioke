@@ -34,13 +34,13 @@ namespace Ioke.Lang {
                                                                                                 && d.dateTime.Equals(((DateTime)IokeObject.dataOf(other)).dateTime)) ? context.runtime.True : context.runtime.False;
                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("Returns a new DateTime representing the current instant in time in the default TimeZone.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("Returns a new DateTime representing the current instant in time in the default TimeZone.",
                                                        new TypeCheckingNativeMethod.WithNoArguments("now", obj,
                                                                                                     (method, on, args, keywords, context, message) => {
                                                                                                         return method.runtime.NewDateTime(System.DateTime.Now);
                                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("Expects to get one DateTime as argument, and returns the difference between this instant and that instant, in milliseconds.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("Expects to get one DateTime as argument, and returns the difference between this instant and that instant, in milliseconds.",
                                                        new TypeCheckingNativeMethod("-", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(obj)
                                                                                     .WithRequiredPositional("subtrahend").WhichMustMimic(obj)
@@ -50,13 +50,13 @@ namespace Ioke.Lang {
                                                                                         return context.runtime.NewNumber(diff);
                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("Returns a text inspection of the object", 
+            obj.RegisterMethod(runtime.NewNativeMethod("Returns a text inspection of the object",
                                                        new TypeCheckingNativeMethod.WithNoArguments("inspect", obj,
                                                                                                     (method, on, args, keywords, context, message) => {
                                                                                                         return method.runtime.NewText(DateTime.GetInspect(on));
                                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("Returns a brief text inspection of the object", 
+            obj.RegisterMethod(runtime.NewNativeMethod("Returns a brief text inspection of the object",
                                                        new TypeCheckingNativeMethod.WithNoArguments("notice", obj,
                                                                                                     (method, on, args, keywords, context, message) => {
                                                                                                         return method.runtime.NewText(DateTime.GetNotice(on));

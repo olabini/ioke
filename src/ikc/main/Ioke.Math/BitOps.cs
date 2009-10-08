@@ -16,7 +16,7 @@ namespace Ioke.Math {
                         : (((x.words[wordno]) >> bitno) & 1) != 0;
                 }
         }
- 
+
         /** Return true iff an IntNum and an int have any true bits in common. */
         public static bool test (IntNum x, int y)
         {

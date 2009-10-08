@@ -1,7 +1,7 @@
 
 Text cell("+") = method(
   "concatenates two different texts",
-  other, 
+  other,
 
   "#{self}#{other}")
 
@@ -9,14 +9,14 @@ Text empty? = method(
   "returns true if the length of this text is exactly zero, otherwise false",
 
   length == 0)
-  
+
 Text camelCase = method("creates a new text in camel case form based on the receiver. i.e. hello there world in camel case form is represented as helloThereWorld. Accepts a regular expression as an optional parameter to define word boundaries (the default is whitespace and underscores)",
   separator: #/[\s_]+/,
 
   sliced = self split(separator)
   sliced map!(word, word[0..0] upper + word[1..-1])
   if(sliced size > 0, sliced[0] = sliced[0][0..0] lower + sliced[0][1..-1])
-  sliced join  
+  sliced join
 )
 
 Text capitalize = method("creates a new text which is identical to the receiver except that the first character is converted to uppercase",
@@ -54,7 +54,7 @@ Text do(=== = generateMatchMethod(==))
 
 Text chars = method(
 	"returns a list of each character in this text",
-	
+
 	self split(""))
 
 Text ?| = dmacro(
@@ -72,7 +72,7 @@ Text ?& = dmacro(
   unless(empty?,
     call argAt(0),
     self))
-  
+
 Text script = method("returns a symbol representing the script (from the Unicode Character Database) of the first character of this Text"
   if(self length != 1, error!("Text does not contain exactly one character"))
   case(self[0],

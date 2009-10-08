@@ -67,16 +67,16 @@ public class FlowControlBehavior {
                                 if(place != realPlace) {
                                     wherePlace = Message.getEvaluatedArgument(place, context);
                                 }
-                                
+
                                 final IokeObject _realPlace = realPlace;
                                 final Object _wherePlace = wherePlace;
-                                
+
                                 Object originalValue = runtime.withReturningRescue(context, null, new RunnableWithReturnAndControlFlow() {
                                         public Object run() throws ControlFlow {
                                             return ((Message)IokeObject.data(_realPlace)).sendTo(_realPlace, context, _wherePlace);
                                         }
                                     });
-                            
+
                                 if(realPlace.getArguments().size() != 0) {
                                     String newName = realPlace.getName() + "=";
                                     List<Object> arguments = new ArrayList<Object>(realPlace.getArguments());
@@ -399,7 +399,7 @@ public class FlowControlBehavior {
                 @Override
                 public Object activate(IokeObject method, final IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().checkArgumentCount(context, message, on);
-                    
+
                     final Runtime runtime = context.runtime;
                     List<Object> args = message.getArguments();
                     int argCount = args.size();

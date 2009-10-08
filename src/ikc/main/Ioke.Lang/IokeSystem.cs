@@ -7,7 +7,7 @@ namespace Ioke.Lang {
     using System.Reflection;
 
     using Ioke.Lang.Util;
-    
+
     public class IokeSystem : IokeData {
         public class AtExitInfo {
             public readonly IokeObject context;
@@ -46,7 +46,7 @@ namespace Ioke.Lang {
         }
 
         public string CurrentWorkingDirectory {
-            get { 
+            get {
                 return currentWorkingDirectory;
             }
             set {
@@ -88,7 +88,7 @@ namespace Ioke.Lang {
 
         public override void Init(IokeObject obj) {
             Runtime runtime = obj.runtime;
-            
+
             obj.Kind = "System";
 
             if(currentWorkingDirectory == null) {
@@ -119,7 +119,7 @@ namespace Ioke.Lang {
 
             obj.RegisterCell("currentDebugger", runtime.nil);
 
-            obj.RegisterMethod(runtime.NewNativeMethod("takes one text or symbol argument and returns a boolean indicating whether the named feature is available on this runtime.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("takes one text or symbol argument and returns a boolean indicating whether the named feature is available on this runtime.",
                                                        new NativeMethod("feature?", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositional("feature")
                                                                         .Arguments,
@@ -134,35 +134,35 @@ namespace Ioke.Lang {
                                                                             }
                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("returns the current file executing", 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns the current file executing",
                                                        new NativeMethod.WithNoArguments("currentFile",
                                                                                         (method, context, message, on, outer) => {
                                                                                             outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, new SaneArrayList(), new SaneDictionary<string, object>());
                                                                                             return runtime.NewText(((IokeSystem)IokeObject.dataOf(on)).currentFile[0]);
                                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("returns true if running on windows, otherwise false", 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns true if running on windows, otherwise false",
                                                        new NativeMethod.WithNoArguments("windows?",
                                                                                         (method, context, message, on, outer) => {
                                                                                             outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, new SaneArrayList(), new SaneDictionary<string, object>());
                                                                                             return DOSISH ? runtime.True : runtime.False;
                                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("returns the current load path", 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns the current load path",
                                                        new NativeMethod.WithNoArguments("loadPath",
                                                                                         (method, context, message, on, outer) => {
                                                                                             outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, new SaneArrayList(), new SaneDictionary<string, object>());
                                                                                             return ((IokeSystem)IokeObject.dataOf(on)).loadPath;
                                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("returns a random number", 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns a random number",
                                                        new NativeMethod.WithNoArguments("randomNumber",
                                                                                         (method, context, message, on, outer) => {
                                                                                             outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, new SaneArrayList(), new SaneDictionary<string, object>());
                                                                                             return context.runtime.NewNumber(((IokeSystem)IokeObject.dataOf(on)).random.Next());
                                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("returns the current directory that the code is executing in", 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns the current directory that the code is executing in",
                                                        new NativeMethod.WithNoArguments("currentDirectory",
                                                                                         (method, context, message, on, outer) => {
                                                                                             outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, new SaneArrayList(), new SaneDictionary<string, object>());
@@ -181,7 +181,7 @@ namespace Ioke.Lang {
                                                                                             return context.runtime.nil;
                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("forcibly exits the currently running interpreter. takes one optional argument that defaults to 1 - which is the value to return from the process, if the process is exited.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("forcibly exits the currently running interpreter. takes one optional argument that defaults to 1 - which is the value to return from the process, if the process is exited.",
                                                        new NativeMethod("exit", DefaultArgumentsDefinition.builder()
                                                                         .WithOptionalPositional("other", "1")
                                                                         .Arguments,
@@ -203,8 +203,8 @@ namespace Ioke.Lang {
                                                                         })));
 
             obj.RegisterCell("programArguments", programArguments);
-        
-            obj.RegisterMethod(runtime.NewNativeMethod("returns result of evaluating first argument", 
+
+            obj.RegisterMethod(runtime.NewNativeMethod("returns result of evaluating first argument",
                                                        new NativeMethod("ifMain", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositionalUnevaluated("code")
                                                                         .Arguments,
@@ -218,7 +218,7 @@ namespace Ioke.Lang {
                                                                             }
                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("adds a new piece of code that should be executed on exit", 
+            obj.RegisterMethod(runtime.NewNativeMethod("adds a new piece of code that should be executed on exit",
                                                        new NativeMethod("atExit", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositionalUnevaluated("code")
                                                                         .Arguments,
@@ -232,8 +232,8 @@ namespace Ioke.Lang {
         private static readonly string[] SUFFIXES = {".ik"};
         private static readonly string[] SUFFIXES_WITH_BLANK = {"", ".ik"};
 
-        public readonly static bool DOSISH = !(System.Environment.OSVersion.Platform == System.PlatformID.Unix || 
-                                               System.Environment.OSVersion.Platform == System.PlatformID.MacOSX || 
+        public readonly static bool DOSISH = !(System.Environment.OSVersion.Platform == System.PlatformID.Unix ||
+                                               System.Environment.OSVersion.Platform == System.PlatformID.MacOSX ||
                                                System.Environment.OSVersion.Platform == System.PlatformID.Xbox);
 
         private class BooleanGivingRestart : Restart.ArgumentGivingRestart {
@@ -268,10 +268,10 @@ namespace Ioke.Lang {
                         loaded.Add(name);
                         return true;
                     } catch(Exception e) {
-                        IokeObject condition = IokeObject.As(IokeObject.GetCellChain(runtime.Condition, 
-                                                                                     message, 
-                                                                                     context, 
-                                                                                     "Error", 
+                        IokeObject condition = IokeObject.As(IokeObject.GetCellChain(runtime.Condition,
+                                                                                     message,
+                                                                                     context,
+                                                                                     "Error",
                                                                                      "Load"), context).Mimic(message, context);
                         condition.SetCell("message", message);
                         condition.SetCell("context", context);
@@ -287,8 +287,8 @@ namespace Ioke.Lang {
 
                         bool[] continueLoadChain = new bool[]{false};
 
-                        runtime.WithRestartReturningArguments(()=>{runtime.ErrorCondition(condition);}, 
-                                                              context, 
+                        runtime.WithRestartReturningArguments(()=>{runtime.ErrorCondition(condition);},
+                                                              context,
                                                               new BooleanGivingRestart("continueLoadChain", continueLoadChain, true, runtime),
                                                               new BooleanGivingRestart("ignoreLoadError", continueLoadChain, false, runtime));
                         if(!continueLoadChain[0]) {
@@ -338,10 +338,10 @@ namespace Ioke.Lang {
                 } catch(FileNotFoundException) {
                     // ignore
                 } catch(Exception e) {
-                    IokeObject condition = IokeObject.As(IokeObject.GetCellChain(runtime.Condition, 
-                                                                                 message, 
-                                                                                 context, 
-                                                                                 "Error", 
+                    IokeObject condition = IokeObject.As(IokeObject.GetCellChain(runtime.Condition,
+                                                                                 message,
+                                                                                 context,
+                                                                                 "Error",
                                                                                  "Load"), context).Mimic(message, context);
                     condition.SetCell("message", message);
                     condition.SetCell("context", context);
@@ -357,8 +357,8 @@ namespace Ioke.Lang {
 
                     bool[] continueLoadChain = new bool[]{false};
 
-                    runtime.WithRestartReturningArguments(()=>{runtime.ErrorCondition(condition);}, 
-                                                          context, 
+                    runtime.WithRestartReturningArguments(()=>{runtime.ErrorCondition(condition);},
+                                                          context,
                                                           new BooleanGivingRestart("continueLoadChain", continueLoadChain, true, runtime),
                                                           new BooleanGivingRestart("ignoreLoadError", continueLoadChain, false, runtime));
                     if(!continueLoadChain[0]) {
@@ -412,10 +412,10 @@ namespace Ioke.Lang {
                     } catch(FileNotFoundException) {
                         // ignore
                     } catch(Exception e) {
-                        IokeObject condition = IokeObject.As(IokeObject.GetCellChain(runtime.Condition, 
-                                                                                     message, 
-                                                                                     context, 
-                                                                                     "Error", 
+                        IokeObject condition = IokeObject.As(IokeObject.GetCellChain(runtime.Condition,
+                                                                                     message,
+                                                                                     context,
+                                                                                     "Error",
                                                                                      "Load"), context).Mimic(message, context);
                         condition.SetCell("message", message);
                         condition.SetCell("context", context);
@@ -431,8 +431,8 @@ namespace Ioke.Lang {
 
                         bool[] continueLoadChain = new bool[]{false};
 
-                        runtime.WithRestartReturningArguments(()=>{runtime.ErrorCondition(condition);}, 
-                                                              context, 
+                        runtime.WithRestartReturningArguments(()=>{runtime.ErrorCondition(condition);},
+                                                              context,
                                                               new BooleanGivingRestart("continueLoadChain", continueLoadChain, true, runtime),
                                                               new BooleanGivingRestart("ignoreLoadError", continueLoadChain, false, runtime));
                         if(!continueLoadChain[0]) {
@@ -441,11 +441,11 @@ namespace Ioke.Lang {
                     }
                 }
             }
-        
-            IokeObject condition2 = IokeObject.As(IokeObject.GetCellChain(runtime.Condition, 
-                                                                          message, 
-                                                                          context, 
-                                                                          "Error", 
+
+            IokeObject condition2 = IokeObject.As(IokeObject.GetCellChain(runtime.Condition,
+                                                                          message,
+                                                                          context,
+                                                                          "Error",
                                                                           "Load"), context).Mimic(message, context);
             condition2.SetCell("message", message);
             condition2.SetCell("context", context);

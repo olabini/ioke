@@ -35,8 +35,8 @@ namespace Ioke.Lang {
             Runtime runtime = obj.runtime;
             obj.Kind = "IO";
 
-            obj.RegisterMethod(runtime.NewNativeMethod("Prints a text representation of the argument and a newline to the current IO object", 
-                                                       new TypeCheckingNativeMethod("println", 
+            obj.RegisterMethod(runtime.NewNativeMethod("Prints a text representation of the argument and a newline to the current IO object",
+                                                       new TypeCheckingNativeMethod("println",
                                                                                     TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(runtime.Io)
                                                                                     .WithOptionalPositional("object", "nil")
@@ -46,14 +46,14 @@ namespace Ioke.Lang {
                                                                                             if(args.Count > 0) {
                                                                                                 IokeIO.GetWriter(on).Write(((Message)IokeObject.dataOf(context.runtime.asText)).SendTo(context.runtime.asText, context, args[0]).ToString());
                                                                                             }
-                                                                                            
+
                                                                                             IokeIO.GetWriter(on).Write("\n");
                                                                                             IokeIO.GetWriter(on).Flush();
                                                                                         } catch(IOException e) {
-                                                                                            IokeObject condition = IokeObject.As(IokeObject.GetCellChain(runtime.Condition, 
-                                                                                                                                                         message, 
-                                                                                                                                                         context, 
-                                                                                                                                                         "Error", 
+                                                                                            IokeObject condition = IokeObject.As(IokeObject.GetCellChain(runtime.Condition,
+                                                                                                                                                         message,
+                                                                                                                                                         context,
+                                                                                                                                                         "Error",
                                                                                                                                                          "IO"), context).Mimic(message, context);
                                                                                             condition.SetCell("message", message);
                                                                                             condition.SetCell("context", context);
@@ -72,8 +72,8 @@ namespace Ioke.Lang {
                                                                                         return context.runtime.nil;
                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("Prints a text representation of the argument to the current IO object", 
-                                                       new TypeCheckingNativeMethod("print", 
+            obj.RegisterMethod(runtime.NewNativeMethod("Prints a text representation of the argument to the current IO object",
+                                                       new TypeCheckingNativeMethod("print",
                                                                                     TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(runtime.Io)
                                                                                     .WithRequiredPositional("object")
@@ -83,10 +83,10 @@ namespace Ioke.Lang {
                                                                                             IokeIO.GetWriter(on).Write(((Message)IokeObject.dataOf(context.runtime.asText)).SendTo(context.runtime.asText, context, args[0]).ToString());
                                                                                             IokeIO.GetWriter(on).Flush();
                                                                                         } catch(IOException e) {
-                                                                                            IokeObject condition = IokeObject.As(IokeObject.GetCellChain(runtime.Condition, 
-                                                                                                                                                         message, 
-                                                                                                                                                         context, 
-                                                                                                                                                         "Error", 
+                                                                                            IokeObject condition = IokeObject.As(IokeObject.GetCellChain(runtime.Condition,
+                                                                                                                                                         message,
+                                                                                                                                                         context,
+                                                                                                                                                         "Error",
                                                                                                                                                          "IO"), context).Mimic(message, context);
                                                                                             condition.SetCell("message", message);
                                                                                             condition.SetCell("context", context);
@@ -105,17 +105,17 @@ namespace Ioke.Lang {
                                                                                         return context.runtime.nil;
                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("tries to read as much as possible and return a message chain representing what's been read", 
+            obj.RegisterMethod(runtime.NewNativeMethod("tries to read as much as possible and return a message chain representing what's been read",
                                                        new TypeCheckingNativeMethod.WithNoArguments("read", obj,
                                                                                                     (self, on, args, keywords, context, message) => {
                                                                                                         try {
                                                                                                             string line = IokeIO.GetReader(on).ReadLine();
                                                                                                             return Message.NewFromStream(context.runtime, new StringReader(line), message, context);
                                                                                                         } catch(IOException e) {
-                                                                                                            IokeObject condition = IokeObject.As(IokeObject.GetCellChain(runtime.Condition, 
-                                                                                                                                                                         message, 
-                                                                                                                                                                         context, 
-                                                                                                                                                                         "Error", 
+                                                                                                            IokeObject condition = IokeObject.As(IokeObject.GetCellChain(runtime.Condition,
+                                                                                                                                                                         message,
+                                                                                                                                                                         context,
+                                                                                                                                                                         "Error",
                                                                                                                                                                          "IO"), context).Mimic(message, context);
                                                                                                             condition.SetCell("message", message);
                                                                                                             condition.SetCell("context", context);

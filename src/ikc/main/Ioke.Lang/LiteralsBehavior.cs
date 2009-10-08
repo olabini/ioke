@@ -9,19 +9,19 @@ namespace Ioke.Lang {
             Runtime runtime = obj.runtime;
             obj.Kind = "DefaultBehavior Literals";
 
-            obj.RegisterMethod(runtime.NewNativeMethod("Takes one evaluated argument that is expected to be a Text, and returns the symbol corresponding to that text", 
+            obj.RegisterMethod(runtime.NewNativeMethod("Takes one evaluated argument that is expected to be a Text, and returns the symbol corresponding to that text",
                                                        new NativeMethod(":", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositional("symbolText")
                                                                         .Arguments,
                                                                         (method, context, message, on, outer) => {
                                                                             var args = new SaneArrayList();
                                                                             outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, args, new SaneDictionary<string, object>());
-                                                                            
+
                                                                             string sym = Text.GetText(((Message)IokeObject.dataOf(runtime.asText)).SendTo(runtime.asText, context, args[0]));
                                                                             return runtime.GetSymbol(sym);
                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("Takes one evaluated argument and returns a new Pair of the receiver and the argument", 
+            obj.RegisterMethod(runtime.NewNativeMethod("Takes one evaluated argument and returns a new Pair of the receiver and the argument",
                                                        new NativeMethod("=>", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositional("other")
                                                                         .Arguments,
@@ -31,7 +31,7 @@ namespace Ioke.Lang {
                                                                             return context.runtime.NewPair(on, args[0]);
                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("returns a new message with the name given as argument to this method.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns a new message with the name given as argument to this method.",
                                                        new NativeMethod("message", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositional("name")
                                                                         .Arguments,
@@ -40,7 +40,7 @@ namespace Ioke.Lang {
                                                                             outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, args, new SaneDictionary<string, object>());
 
                                                                             object o = args[0];
-                    
+
                                                                             string name = null;
                                                                             if(IokeObject.dataOf(o) is Text) {
                                                                                 name = Text.GetText(o);
@@ -57,7 +57,7 @@ namespace Ioke.Lang {
                                                                             return ret;
                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("creates a new Set from the result of evaluating all arguments provided.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("creates a new Set from the result of evaluating all arguments provided.",
                                                        new NativeMethod("set", DefaultArgumentsDefinition.builder()
                                                                         .WithRest("elements")
                                                                         .Arguments,
@@ -67,7 +67,7 @@ namespace Ioke.Lang {
                                                                             return context.runtime.NewSet(args);
                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("creates a new Dict from the arguments provided. these arguments can be two different things - either a keyword argument, or a pair. if it's a keyword argument, the entry added to the dict for it will be a symbol with the name from the keyword, without the ending colon. if it's not a keyword, it is expected to be an evaluated pair, where the first part of the pair is the key, and the second part is the value.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("creates a new Dict from the arguments provided. these arguments can be two different things - either a keyword argument, or a pair. if it's a keyword argument, the entry added to the dict for it will be a symbol with the name from the keyword, without the ending colon. if it's not a keyword, it is expected to be an evaluated pair, where the first part of the pair is the key, and the second part is the value.",
                                                        new NativeMethod("dict",  DefaultArgumentsDefinition.builder()
                                                                         .WithRest("pairs")
                                                                         .WithKeywordRest("keywordPairs")

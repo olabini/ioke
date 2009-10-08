@@ -87,7 +87,7 @@ namespace Ioke.Lang {
             obj.MimicsWithoutCheck(aspects);
             obj.RegisterCell("Aspects", aspects);
 
-            obj.RegisterMethod(runtime.NewNativeMethod("takes one or more evaluated string argument. will import the files corresponding to each of the strings named based on the Ioke loading behavior that can be found in the documentation for the loadBehavior cell on System.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("takes one or more evaluated string argument. will import the files corresponding to each of the strings named based on the Ioke loading behavior that can be found in the documentation for the loadBehavior cell on System.",
                                                        new NativeMethod("use", DefaultArgumentsDefinition.builder()
                                                                         .WithOptionalPositional("module", "false")
                                                                         .Arguments,

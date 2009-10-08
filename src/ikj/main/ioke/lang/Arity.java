@@ -58,17 +58,17 @@ public class Arity extends IokeData {
     @Override
     public void init(final IokeObject arity) throws ControlFlow {
         arity.setKind("Arity");
-        
+
         arity.setCell("taking:nothing", getArity(arity, Taking.Nothing));
         arity.setCell("taking:everything", getArity(arity, Taking.Everything));
-        
+
         arity.registerMethod(arity.runtime.newNativeMethod("Create an Arity object from the given messages. The list of unevaluated messages given to this method will be used as if they were the arguments part of a DefaultMethod definition.", new TypeCheckingNativeMethod("from") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(arity)
                     .withRestUnevaluated("arguments")
                     .getArguments();
-                
+
                 @Override
                 public TypeCheckingArgumentsDefinition getArguments() {
                     return ARGUMENTS;
@@ -77,7 +77,7 @@ public class Arity extends IokeData {
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> args = message.getArguments();
-                    if (args.size() == 0) { 
+                    if (args.size() == 0) {
                         return takingNothing(self);
                     }
                     DefaultArgumentsDefinition def = DefaultArgumentsDefinition.createFrom(args, 0, args.size(), message, on, context);
@@ -86,7 +86,7 @@ public class Arity extends IokeData {
             }));
 
         arity.registerMethod(arity.runtime.newNativeMethod("returns the names for positional arguments", new TypeCheckingNativeMethod("positionals") {
-                
+
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .withOptionalPositional("includeOptionals", "true")
@@ -138,7 +138,7 @@ public class Arity extends IokeData {
                     Arity a = (Arity) IokeObject.data(on);
                     if (a.argumentsDefinition != null) {
                         String name = a.argumentsDefinition.getKrestName();
-                        if (name == null) { 
+                        if (name == null) {
                             return method.runtime.nil;
                         } else {
                             return method.runtime.getSymbol(name);
@@ -180,5 +180,5 @@ public class Arity extends IokeData {
             }));
 
     }
-    
+
 }

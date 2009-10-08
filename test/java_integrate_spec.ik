@@ -8,7 +8,7 @@ describe("JavaGround",
       it("should be possible to create a simple implementation of a simple interface",
         OneObject = integrate(ioke:lang:test:SimpleInterface)
         OneObject doSomething = method("called from a simple integration")
-        
+
         OtherObject = OneObject mimic
         OtherObject doSomething = method("called from another simple integration")
 
@@ -30,7 +30,7 @@ describe("JavaGround",
         FirstObject = integrate(ioke:lang:test:SimpleClass)
         SecondObject = FirstObject mimic
         SecondObject doTheThing = method("SecondObject implementation")
-        
+
         OtherObject = SecondObject mimic
         OtherObject doTheThing = method("OtherObject implementation")
 
@@ -43,7 +43,7 @@ describe("JavaGround",
         ioke:lang:test:SimpleClassUser useObject(FirstObject new) asText should == "SimpleClass implementation"
         ioke:lang:test:SimpleClassUser useObject(SecondObject new) asText should == "SecondObject implementation"
         ioke:lang:test:SimpleClassUser useObject(OtherObject new) asText should == "OtherObject implementation"
-        ioke:lang:test:SimpleClassUser useObject(otherObject) asText should == "otherObject implementation" 
+        ioke:lang:test:SimpleClassUser useObject(otherObject) asText should == "otherObject implementation"
 
         ; this is a bit unintuitive, but it's the way it has to be
         ioke:lang:test:SimpleClassUser useObject(anotherObject) asText should == "otherObject implementation"
@@ -338,7 +338,7 @@ describe("JavaGround",
   describe("coercing lexical blocks to interfaces",
     it("should work for a simple one-method interface returning boolean",
       called = []
-      ioke:lang:test:SimpleUser useBooleanInterface(fn(called << :once. false)) should == false 
+      ioke:lang:test:SimpleUser useBooleanInterface(fn(called << :once. false)) should == false
       ioke:lang:test:SimpleUser useBooleanInterface(fn(called << :twice. true)) should == true
       called should == [:once, :twice]
     )

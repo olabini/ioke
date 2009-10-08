@@ -2,13 +2,13 @@
 namespace Ioke.Lang {
     using System;
     using System.Collections.Generic;
-    using System.IO; 
+    using System.IO;
     using Ioke.Lang.Parser;
     using Ioke.Lang.Parser.Functional;
     using Ioke.Lang.Util;
 
     public class IokeMain {
-        private const string HELP = 
+        private const string HELP =
             "Usage: ioke [switches] -- [programfile] [arguments]\n" +
             " -Cdirectory     execute with directory as CWD\n" +
             " -d              debug, set debug flag\n" +
@@ -23,7 +23,7 @@ namespace Ioke.Lang {
             string current = System.Reflection.Assembly.GetExecutingAssembly().Location;
             string iokeHome = new FileInfo(current).Directory.Parent.FullName;
             string iokeLib = Path.Combine(iokeHome, "lib");
-            
+
             Runtime r = new Runtime(new FunctionalOperatorShufflerFactory());
             r.Init();
 
@@ -87,11 +87,11 @@ namespace Ioke.Lang {
                                     cwd = arg.Substring(2);
                                 }
                             } else {
-                                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(r.Condition, 
-                                                                                             message, 
-                                                                                             context, 
-                                                                                             "Error", 
-                                                                                             "CommandLine", 
+                                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(r.Condition,
+                                                                                             message,
+                                                                                             context,
+                                                                                             "Error",
+                                                                                             "CommandLine",
                                                                                              "DontUnderstandOption"), null).Mimic(message, context);
                                 condition.SetCell("message", message);
                                 condition.SetCell("context", context);
@@ -102,7 +102,7 @@ namespace Ioke.Lang {
                         }
                     }
                 }
-                
+
                 if(cwd != null) {
                     r.CurrentWorkingDirectory = cwd;
                 }
@@ -123,13 +123,13 @@ namespace Ioke.Lang {
                 foreach(string script in scripts) {
                     r.EvaluateStream("-e", new StringReader(script), message, context);
                 }
-                
+
                 if(readStdin) {
                     ((IokeSystem)IokeObject.dataOf(r.System)).CurrentProgram = "<stdin>";
                     r.EvaluateStream("<stdin>", Console.In, message, context);
                 }
 
-                if(args.Length > start) { 
+                if(args.Length > start) {
                     if(args.Length > (start+1)) {
                         for(int i=start+1,j=args.Length; i<j; i++) {
                             r.AddArgument(args[i]);
@@ -199,7 +199,7 @@ namespace Ioke.Lang {
             return "";
         }
 
-        private const string COPYRIGHT = 
+        private const string COPYRIGHT =
             "Copyright (c) 2009 Ola Bini, ola.bini@gmail.com\n"+
             "\n"+
             "Permission is hereby granted, free of charge, to any person obtaining a copy\n"+

@@ -20,7 +20,7 @@ namespace Ioke.Lang {
             obj.Kind = "DefaultMacro";
             obj.RegisterCell("activatable", obj.runtime.True);
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the name of the macro", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the name of the macro",
                                                            new TypeCheckingNativeMethod.WithNoArguments("name", obj,
                                                                                                         (method, on, args, keywords, _context, message) => {
                                                                                                             return _context.runtime.NewText(((DefaultMacro)IokeObject.dataOf(on)).name);
@@ -28,7 +28,7 @@ namespace Ioke.Lang {
 
 
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("activates this macro with the arguments given to call", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("activates this macro with the arguments given to call",
                                                            new NativeMethod("call", DefaultArgumentsDefinition.builder()
                                                                             .WithRestUnevaluated("arguments")
                                                                             .Arguments,
@@ -37,32 +37,32 @@ namespace Ioke.Lang {
                                                                             })));
 
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the message chain for this macro", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the message chain for this macro",
                                                            new TypeCheckingNativeMethod.WithNoArguments("message", obj,
                                                                                                         (method, on, args, keywords, _context, message) => {
                                                                                                             return ((DefaultMacro)IokeObject.dataOf(on)).Code;
                                                                                                         })));
 
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the code for the argument definition", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the code for the argument definition",
                                                            new TypeCheckingNativeMethod.WithNoArguments("argumentsCode", obj,
                                                                                                         (method, on, args, keywords, _context, message) => {
                                                                                                             return _context.runtime.NewText(((AssociatedCode)IokeObject.dataOf(on)).ArgumentsCode);
                                                                                                         })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns a text inspection of the object", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns a text inspection of the object",
                                                            new TypeCheckingNativeMethod.WithNoArguments("inspect", obj,
                                                                                                         (method, on, args, keywords, _context, message) => {
                                                                                                             return _context.runtime.NewText(DefaultMacro.GetInspect(on));
                                                                                                         })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns a brief text inspection of the object", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns a brief text inspection of the object",
                                                            new TypeCheckingNativeMethod.WithNoArguments("notice", obj,
                                                                                                         (method, on, args, keywords, _context, message) => {
                                                                                                             return _context.runtime.NewText(DefaultMacro.GetNotice(on));
                                                                                                         })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the full code of this macro, as a Text", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the full code of this macro, as a Text",
                                                            new TypeCheckingNativeMethod.WithNoArguments("code", obj,
                                                                                                         (method, on, args, keywords, _context, message) => {
                                                                                                             IokeData data = IokeObject.dataOf(on);
@@ -73,7 +73,7 @@ namespace Ioke.Lang {
                                                                                                             }
                                                                                                         })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns idiomatically formatted code for this macro", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns idiomatically formatted code for this macro",
                                                            new TypeCheckingNativeMethod.WithNoArguments("formattedCode", obj,
                                                                                                         (method, on, args, keywords, _context, message) => {
                                                                                                             return _context.runtime.NewText(((AssociatedCode)IokeObject.dataOf(on)).FormattedCode(method));
@@ -127,10 +127,10 @@ namespace Ioke.Lang {
 
         public override object ActivateWithCallAndData(IokeObject self, IokeObject context, IokeObject message, object on, object call, IDictionary<string, object> data) {
             if(code == null) {
-                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition, 
-                                                                             message, 
-                                                                             context, 
-                                                                             "Error", 
+                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition,
+                                                                             message,
+                                                                             context,
+                                                                             "Error",
                                                                              "Invocation",
                                                                              "NotActivatable"), context).Mimic(message, context);
                 condition.SetCell("message", message);
@@ -172,10 +172,10 @@ namespace Ioke.Lang {
 
         public override object ActivateWithCall(IokeObject self, IokeObject context, IokeObject message, object on, object call) {
             if(code == null) {
-                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition, 
-                                                                             message, 
-                                                                             context, 
-                                                                             "Error", 
+                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition,
+                                                                             message,
+                                                                             context,
+                                                                             "Error",
                                                                              "Invocation",
                                                                              "NotActivatable"), context).Mimic(message, context);
                 condition.SetCell("message", message);
@@ -212,10 +212,10 @@ namespace Ioke.Lang {
 
         public override object Activate(IokeObject self, IokeObject context, IokeObject message, object on) {
             if(code == null) {
-                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition, 
-                                                                             message, 
-                                                                             context, 
-                                                                             "Error", 
+                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition,
+                                                                             message,
+                                                                             context,
+                                                                             "Error",
                                                                              "Invocation",
                                                                              "NotActivatable"), context).Mimic(message, context);
                 condition.SetCell("message", message);
@@ -252,10 +252,10 @@ namespace Ioke.Lang {
 
         public override object ActivateWithData(IokeObject self, IokeObject context, IokeObject message, object on, IDictionary<string, object> data) {
             if(code == null) {
-                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition, 
-                                                                             message, 
-                                                                             context, 
-                                                                             "Error", 
+                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition,
+                                                                             message,
+                                                                             context,
+                                                                             "Error",
                                                                              "Invocation",
                                                                              "NotActivatable"), context).Mimic(message, context);
                 condition.SetCell("message", message);
@@ -278,7 +278,7 @@ namespace Ioke.Lang {
             c.SetCell("currentMessage", message);
             c.SetCell("surroundingContext", context);
             c.SetCell("call", context.runtime.NewCallFrom(c, message, context, IokeObject.As(on, context)));
-            
+
             foreach(var d in data) {
                 string s = d.Key;
                 c.SetCell(s.Substring(0, s.Length-1), d.Value);

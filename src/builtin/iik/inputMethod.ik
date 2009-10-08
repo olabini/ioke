@@ -21,11 +21,11 @@ IIk do(
 
   bind(
     rescue(Condition Error Load, fn(ignored, nil)),
-    
+
     use("readline")
     ReadlineInputMethod = Origin mimic do(
       mimic!(Readline)
-      
+
       new = method(
         "returns a newly initalized readline input method",
 
@@ -40,7 +40,7 @@ IIk do(
         if(theString = readline(prompt, false),
           unless(theString empty?, HISTORY << theString)
           line[lineNumber++] = "#{theString}\n",
-          
+
           eof? = true
           false))
 

@@ -17,7 +17,7 @@ import ioke.lang.exceptions.ControlFlow;
  *
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
-public class JavaConstructorNativeMethod extends ioke.lang.Method implements NativeImplementedMethod { 
+public class JavaConstructorNativeMethod extends ioke.lang.Method implements NativeImplementedMethod {
     private Constructor[] ctors;
     private JavaArgumentsDefinition arguments;
     private boolean special;
@@ -60,7 +60,7 @@ public class JavaConstructorNativeMethod extends ioke.lang.Method implements Nat
             return context.runtime.nil;
         }
     }
-    
+
     @Override
     public String inspect(Object self) {
         return "method(" + ctors[0].getDeclaringClass().getName() + "_new)";

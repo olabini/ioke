@@ -2,7 +2,7 @@ use("blank_slate")
 
 ISpec do(
   UnexpectedInvocation = ISpec Condition mimic
-  
+
   StubWrangler = Origin mimic do(
     initialize = method(@stubs = [])
 
@@ -24,12 +24,12 @@ ISpec do(
         error!(ISpec UnexpectedInvocation, text: buildInvocationFailureText(object, cellName, posArgs, namedArgs)),
         foundStub invoke)
     )
-    
+
     buildInvocationFailureText = method(object, cellName, posArgs, namedArgs,
       "couldn't find matching mock or stub for #{cellName} with arguments #{posArgs}, #{namedArgs}.\nSimilar expectations:\n" +
       on(object) select(stub, stub cellName == cellName) map(stub,
         " - #{stub kind} #{stub cellName}
-          (#{if(stub expectedArgs == ISpec Stub AnyArgs, "any arguments", stub expectedArgs join(", "))}) 
+          (#{if(stub expectedArgs == ISpec Stub AnyArgs, "any arguments", stub expectedArgs join(", "))})
           returning #{stub returnValues join(", ")}
           (#{if(stub satisfied?, "satisfied", "not yet satisfied")})" replaceAll(#/\n/, "")) ifEmpty(["none"]) join("\n")
     )
@@ -50,7 +50,7 @@ ISpec do(
 
   Stub = Origin mimic do(
     AnyArgs = Origin mimic
-    
+
     create = method(object, cellName,
       stub = self with(owner: object, cellName: cellName asText, returnValues: [], expectedArgs: AnyArgs, toSignal: Ground nil)
       stub performStub!
@@ -64,9 +64,9 @@ ISpec do(
       "Modifies the expectation so that the expected cell must be called with the given arguments.
       Arguments may be either positional or named. Positional arguments must be given in the order
       in which they are expected to be invoked.",
-      
+
       +posArgs, +:namedArgs,
-      
+
       @expectedArgs = [ posArgs, namedArgs ]
       self
     )
@@ -86,15 +86,15 @@ ISpec do(
       One or more return values may be specified. If one value is given, that value will always
       be returned upon invocation. If multiple values are given, each will be returned upon
       successive invocation in the order in which they were given.",
-      
-      +returnValues, 
+
+      +returnValues,
       @returnValues = @returnValues + returnValues
       self
     )
-    
+
     andSignal = method(
       "Modifies the expectation to signal the given condition upon invocation.",
-      
+
       signal,
       @toSignal = signal
       self
@@ -132,52 +132,52 @@ ISpec do(
       mock negated? = false
       mock
     )
-    
+
     times = method(
       "Modify the expectation to indicate that it must be invoked the given number of times.
       The given argument may be either a number or a range of numbers.",
-      n, 
+      n,
       @expectedCalls = if(n cell?(:include?), n, (n..n))
       self
     )
-    
+
     never = method(
-      "Modify the expectation to indicate that it must never be invoked.", 
+      "Modify the expectation to indicate that it must never be invoked.",
       times(0))
-      
+
     once = method(
-      "Modify the expectation to indicate that it must be invoked once.", 
+      "Modify the expectation to indicate that it must be invoked once.",
       times(1))
-      
+
     twice = method(
       "Modify the expectation to indicate that it must be invoked twice.",
       times(2))
-      
+
     atLeastOnce = method(
-      "Modify the expectation to indicate that it must be invoked at least once.", 
+      "Modify the expectation to indicate that it must be invoked at least once.",
       times(1..(Number Infinity)))
-      
+
     anyNumberOfTimes = method(
-      "Modify the expectation to indicate that it may be invoked any number of times.", 
+      "Modify the expectation to indicate that it may be invoked any number of times.",
       times(0..(Number Infinity)))
-    
+
     negate! = method(
       "Invert the call count expectations of this mock.",
       self negated? = true. self
     )
-    
+
     invoke = method(@actualCalls += 1. super)
-    
-    satisfied? = method(      
+
+    satisfied? = method(
       @expectedCalls include?(@actualCalls) xor negated?
     )
-    
+
     invocable? = method(
       if(@negated?,
         (@actualCalls + 1) < (@expectedCalls from),
         @actualCalls < (@expectedCalls to))
     )
-    
+
     matches? = method(posArgs, namedArgs,
       super(posArgs, namedArgs) && invocable?
     )
@@ -187,8 +187,8 @@ ISpec do(
         "between #{@expectedCalls from} and #{expectedCalls to} time(s)",
         ordinalize(@expectedCalls))
       actualMessage = ordinalize(@actualCalls)
-        
-      error!(ISpec UnexpectedInvocation, 
+
+      error!(ISpec UnexpectedInvocation,
         text: "'#{@cellName}' expected to be called #{expectedMessage}, but it was called #{actualMessage}")
     )
 
@@ -199,7 +199,7 @@ ISpec do(
         "exactly #{n} times")
     )
   )
-  
+
   ExtendedDefaultBehavior do(
     stub! = method("adds a stub to this object", cellName nil, +:cellNamesAndReturnValues,
       if(!cellName nil?,
@@ -217,44 +217,44 @@ ISpec do(
       ISpec stubs on(self)
     )
   )
-  
+
   DescribeContext do(
     after(ISpec stubs verifyAndClear!)
-    
+
     mock! = macro("Creates a new mock object that mimics BlankSlate.",
       buildStubWithMethod(:mock!, call arguments, call ground)
     )
-  
+
     stub! = macro("Creates a new stub object that mimics BlankSlate.",
       buildStubWithMethod(:stub!, call arguments, call ground)
     )
-    
+
     buildStubWithMethod = method(stubMethod, callArguments, callGround,
       stubObject = ISpec StubTemplate mimic
-    
+
       callArguments each(expectation,
         if(expectation name asText =~ #/:$/, ; hash syntax
           stubObject send(stubMethod, expectation name asText replace(#/:$/, "")) andReturn(expectation next evaluateOn(callGround)),
-          
+
           stubExpectation = stubObject send(stubMethod, expectation name) withArgs(*(expectation arguments map(evaluateOn(callGround))))
           furtherExpectations = expectation next
           unless(furtherExpectations nil? || furtherExpectations terminator?, furtherExpectations sendTo(stubExpectation))
         )
       )
-      stubObject      
+      stubObject
     )
   )
-  
+
   StubTemplate = BlankSlate mimic do(
     pass = macro(
       __invoke__(call message name, *(call arguments))
     )
-  
+
     __invoke__ = method(cellName, +posArgs, +:namedArgs,
       ISpec stubs invoke(self, cellName, posArgs, namedArgs)
     )
   )
-  
+
   ShouldContext signalMock! = method(
     failFn = fn(ISpec stubs verifyAndClear!(Ground false). self realValue call. ISpec stubs verifyAndClear!(Ground true))
     signalled = Origin with(text: "no unexpected invocations")
@@ -279,17 +279,17 @@ ISpec do(
       Origin mimic do(pass = method(nil)) ; Ensure rest of message chain is a no-op.
     )
   )
-  
+
   ShouldContext slurpExpectations = method(expectations, furtherExpectations, ground,
     expectations map(expectation,
       mock = generateMock(expectation, ground)
       unless(furtherExpectations nil? || furtherExpectations terminator?, furtherExpectations sendTo(mock))
       mock)
   )
-  
+
   ShouldContext generateMock = method(message, ground,
     self realValue mock!(message name) withArgs(*(message arguments map(evaluateOn(ground))))
-  )  
+  )
 
   NotShouldContext receive = macro(
     if(call arguments empty?,

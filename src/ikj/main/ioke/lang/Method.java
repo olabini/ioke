@@ -23,7 +23,7 @@ public class Method extends IokeData implements Named, Inspectable {
     public Method(IokeObject context) {
         this((String)null);
     }
-    
+
     @Override
     public void init(IokeObject method) throws ControlFlow {
         method.setKind("Method");
@@ -99,10 +99,10 @@ public class Method extends IokeData implements Named, Inspectable {
 
     @Override
     public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-        IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
-                                                                     message, 
-                                                                     context, 
-                                                                     "Error", 
+        IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition,
+                                                                     message,
+                                                                     context,
+                                                                     "Error",
                                                                      "Invocation",
                                                                      "NotActivatable"), context).mimic(message, context);
         condition.setCell("message", message);

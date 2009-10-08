@@ -181,10 +181,10 @@ public class LexicalMacro extends IokeData implements AssociatedCode, Named, Ins
     @Override
     public Object activateWithCallAndData(final IokeObject self, IokeObject dynamicContext, IokeObject message, Object on, Object call, Map<String, Object> data) throws ControlFlow {
         if(code == null) {
-            IokeObject condition = IokeObject.as(IokeObject.getCellChain(dynamicContext.runtime.condition, 
-                                                                         message, 
-                                                                         dynamicContext, 
-                                                                         "Error", 
+            IokeObject condition = IokeObject.as(IokeObject.getCellChain(dynamicContext.runtime.condition,
+                                                                         message,
+                                                                         dynamicContext,
+                                                                         "Error",
                                                                          "Invocation",
                                                                          "NotActivatable"), dynamicContext).mimic(message, dynamicContext);
             condition.setCell("message", message);
@@ -211,10 +211,10 @@ public class LexicalMacro extends IokeData implements AssociatedCode, Named, Ins
     @Override
     public Object activateWithCall(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on, Object call) throws ControlFlow {
         if(code == null) {
-            IokeObject condition = IokeObject.as(IokeObject.getCellChain(dynamicContext.runtime.condition, 
-                                                                         message, 
-                                                                         dynamicContext, 
-                                                                         "Error", 
+            IokeObject condition = IokeObject.as(IokeObject.getCellChain(dynamicContext.runtime.condition,
+                                                                         message,
+                                                                         dynamicContext,
+                                                                         "Error",
                                                                          "Invocation",
                                                                          "NotActivatable"), dynamicContext).mimic(message, dynamicContext);
             condition.setCell("message", message);
@@ -237,10 +237,10 @@ public class LexicalMacro extends IokeData implements AssociatedCode, Named, Ins
     @Override
     public Object activate(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on) throws ControlFlow {
         if(code == null) {
-            IokeObject condition = IokeObject.as(IokeObject.getCellChain(dynamicContext.runtime.condition, 
-                                                                         message, 
-                                                                         dynamicContext, 
-                                                                         "Error", 
+            IokeObject condition = IokeObject.as(IokeObject.getCellChain(dynamicContext.runtime.condition,
+                                                                         message,
+                                                                         dynamicContext,
+                                                                         "Error",
                                                                          "Invocation",
                                                                          "NotActivatable"), dynamicContext).mimic(message, dynamicContext);
             condition.setCell("message", message);
@@ -263,10 +263,10 @@ public class LexicalMacro extends IokeData implements AssociatedCode, Named, Ins
     @Override
     public Object activateWithData(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on, Map<String, Object> data) throws ControlFlow {
         if(code == null) {
-            IokeObject condition = IokeObject.as(IokeObject.getCellChain(dynamicContext.runtime.condition, 
-                                                                         message, 
-                                                                         dynamicContext, 
-                                                                         "Error", 
+            IokeObject condition = IokeObject.as(IokeObject.getCellChain(dynamicContext.runtime.condition,
+                                                                         message,
+                                                                         dynamicContext,
+                                                                         "Error",
                                                                          "Invocation",
                                                                          "NotActivatable"), dynamicContext).mimic(message, dynamicContext);
             condition.setCell("message", message);

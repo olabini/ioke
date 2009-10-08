@@ -18,7 +18,7 @@ public class IokeRegistry {
     private static interface Creator {
         IokeObject create(Object javaObject);
     }
-    
+
     public Runtime runtime;
 
     private final Map<Object, IokeObject> wrappedObjects = new MapMaker()
@@ -29,7 +29,7 @@ public class IokeRegistry {
     public IokeRegistry(final Runtime runtime) {
         this.runtime = runtime;
     }
-    
+
     public static void makeWrapped(Object on, IokeObject wrapped, IokeObject context) {
         context.runtime.registry.makeWrapped(on, wrapped);
     }
@@ -39,7 +39,7 @@ public class IokeRegistry {
             wrappedObjects.put(on, wrapped);
         }
     }
-    
+
     public IokeObject wrap(Object on) {
         if(on == null) {
             return runtime.nil;
@@ -60,7 +60,7 @@ public class IokeRegistry {
         if(on == null) {
             return runtime.nil;
         }
-        
+
         if(!wrappedObjects.containsKey(on)) {
             IokeObject val = runtime.createIntegratedJavaWrapper(on);
             wrappedObjects.put(on, val);

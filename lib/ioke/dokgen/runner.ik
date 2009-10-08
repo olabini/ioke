@@ -23,7 +23,7 @@ DokGen do(
 
     combineWithSpecs = true
     specsPattern = "test/**/*_spec.ik"
-    
+
     collected = Collected from({}, {"IokeGround" => IokeGround, "Ground" => Ground}, {})
 
     collect(IokeGround, collected)

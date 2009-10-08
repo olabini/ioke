@@ -46,11 +46,11 @@ namespace Ioke.Lang {
         public override void Init(IokeObject obj) {
             obj.Kind = "DefaultMethod";
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns a list of the keywords this method takes", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns a list of the keywords this method takes",
                                                            new TypeCheckingNativeMethod.WithNoArguments("keywords", obj,
                                                                                                         (method, on, args, keywords, _context, message) => {
                                                                                                             var keywordList = new SaneArrayList();
-                    
+
                                                                                                             foreach(string keyword in ((DefaultMethod)IokeObject.dataOf(on)).arguments.Keywords) {
                                                                                                                 keywordList.Add(_context.runtime.GetSymbol(keyword.Substring(0, keyword.Length-1)));
                                                                                                             }
@@ -58,19 +58,19 @@ namespace Ioke.Lang {
                                                                                                             return _context.runtime.NewList(keywordList);
                                                                                                         })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the message chain for this method", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the message chain for this method",
                                                            new TypeCheckingNativeMethod.WithNoArguments("message", obj,
                                                                                                         (method, on, args, keywords, _context, message) => {
                                                                                                             return ((AssociatedCode)IokeObject.dataOf(on)).Code;
                                                                                                         })));
-         
-             obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the code for the argument definition", 
+
+             obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the code for the argument definition",
                                                            new TypeCheckingNativeMethod.WithNoArguments("argumentsCode", obj,
                                                                                                         (method, on, args, keywords, _context, message) => {
                                                                                                             return _context.runtime.NewText(((AssociatedCode)IokeObject.dataOf(on)).ArgumentsCode);
                                                                                                         })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns idiomatically formatted code for this method", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns idiomatically formatted code for this method",
                                                            new TypeCheckingNativeMethod.WithNoArguments("formattedCode", obj,
                                                                                                         (method, on, args, keywords, _context, message) => {
                                                                                                             return _context.runtime.NewText(((AssociatedCode)IokeObject.dataOf(on)).FormattedCode(method));
@@ -78,7 +78,7 @@ namespace Ioke.Lang {
         }
 
         IokeObject CreateSuperCallFor(IokeObject out_self, IokeObject out_context, IokeObject out_message, object out_on, object out_superCell) {
-            return out_context.runtime.NewNativeMethod("will call the super method of the current message on the same receiver", 
+            return out_context.runtime.NewNativeMethod("will call the super method of the current message on the same receiver",
                                                        new NativeMethod("super", DefaultArgumentsDefinition.builder()
                                                                         .WithRestUnevaluated("arguments")
                                                                         .Arguments,
@@ -93,10 +93,10 @@ namespace Ioke.Lang {
 
         public override object ActivateWithCall(IokeObject self, IokeObject context, IokeObject message, object on, object call) {
             if(code == null) {
-                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition, 
-                                                                             message, 
-                                                                             context, 
-                                                                             "Error", 
+                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition,
+                                                                             message,
+                                                                             context,
+                                                                             "Error",
                                                                              "Invocation",
                                                                              "NotActivatable"), context).Mimic(message, context);
                 condition.SetCell("message", message);
@@ -111,7 +111,7 @@ namespace Ioke.Lang {
             IokeObject c = context.runtime.Locals.Mimic(message, context);
             c.SetCell("self", on);
             c.SetCell("@", on);
-            c.RegisterMethod(c.runtime.NewNativeMethod("will return the currently executing method receiver", 
+            c.RegisterMethod(c.runtime.NewNativeMethod("will return the currently executing method receiver",
                                                        new NativeMethod.WithNoArguments("@@",
                                                                                         (method, _context, _message, _on, outer) => {
                                                                                             outer.ArgumentsDefinition.GetEvaluatedArguments(_context, _message, _on, new SaneArrayList(), new SaneDictionary<string, object>());
@@ -144,10 +144,10 @@ namespace Ioke.Lang {
 
         public override object ActivateWithCallAndData(IokeObject self, IokeObject context, IokeObject message, object on, object call, IDictionary<string, object> data) {
             if(code == null) {
-                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition, 
-                                                                             message, 
-                                                                             context, 
-                                                                             "Error", 
+                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition,
+                                                                             message,
+                                                                             context,
+                                                                             "Error",
                                                                              "Invocation",
                                                                              "NotActivatable"), context).Mimic(message, context);
                 condition.SetCell("message", message);
@@ -163,7 +163,7 @@ namespace Ioke.Lang {
             IokeObject c = context.runtime.Locals.Mimic(message, context);
             c.SetCell("self", on);
             c.SetCell("@", on);
-            c.RegisterMethod(c.runtime.NewNativeMethod("will return the currently executing method receiver", 
+            c.RegisterMethod(c.runtime.NewNativeMethod("will return the currently executing method receiver",
                                                        new NativeMethod.WithNoArguments("@@",
                                                                                         (method, _context, _message, _on, outer) => {
                                                                                             outer.ArgumentsDefinition.GetEvaluatedArguments(_context, _message, _on, new SaneArrayList(), new SaneDictionary<string, object>());
@@ -200,10 +200,10 @@ namespace Ioke.Lang {
 
         public override object Activate(IokeObject self, IokeObject context, IokeObject message, object on) {
             if(code == null) {
-                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition, 
-                                                                             message, 
-                                                                             context, 
-                                                                             "Error", 
+                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition,
+                                                                             message,
+                                                                             context,
+                                                                             "Error",
                                                                              "Invocation",
                                                                              "NotActivatable"), context).Mimic(message, context);
                 condition.SetCell("message", message);
@@ -218,7 +218,7 @@ namespace Ioke.Lang {
             IokeObject c = context.runtime.Locals.Mimic(message, context);
             c.SetCell("self", on);
             c.SetCell("@", on);
-            c.RegisterMethod(c.runtime.NewNativeMethod("will return the currently executing method receiver", 
+            c.RegisterMethod(c.runtime.NewNativeMethod("will return the currently executing method receiver",
                                                        new NativeMethod.WithNoArguments("@@",
                                                                                         (method, _context, _message, _on, outer) => {
                                                                                             outer.ArgumentsDefinition.GetEvaluatedArguments(_context, _message, _on, new SaneArrayList(), new SaneDictionary<string, object>());
@@ -251,10 +251,10 @@ namespace Ioke.Lang {
 
         public override object ActivateWithData(IokeObject self, IokeObject context, IokeObject message, object on, IDictionary<string, object> data) {
             if(code == null) {
-                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition, 
-                                                                             message, 
-                                                                             context, 
-                                                                             "Error", 
+                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition,
+                                                                             message,
+                                                                             context,
+                                                                             "Error",
                                                                              "Invocation",
                                                                              "NotActivatable"), context).Mimic(message, context);
                 condition.SetCell("message", message);
@@ -270,7 +270,7 @@ namespace Ioke.Lang {
             IokeObject c = context.runtime.Locals.Mimic(message, context);
             c.SetCell("self", on);
             c.SetCell("@", on);
-            c.RegisterMethod(c.runtime.NewNativeMethod("will return the currently executing method receiver", 
+            c.RegisterMethod(c.runtime.NewNativeMethod("will return the currently executing method receiver",
                                                        new NativeMethod.WithNoArguments("@@",
                                                                                         (method, _context, _message, _on, outer) => {
                                                                                             outer.ArgumentsDefinition.GetEvaluatedArguments(_context, _message, _on, new SaneArrayList(), new SaneDictionary<string, object>());

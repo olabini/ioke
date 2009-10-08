@@ -13,7 +13,7 @@ namespace Ioke.Lang {
             bool IEqualityComparer<object>.Equals(object x, object y) {
                 return object.ReferenceEquals(x, y);
             }
-            
+
             public int GetHashCode(object obj) {
                 return System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(obj);
             }

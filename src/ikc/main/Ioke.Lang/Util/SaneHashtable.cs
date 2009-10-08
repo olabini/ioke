@@ -7,7 +7,7 @@ namespace Ioke.Lang.Util {
         public SaneHashtable(IDictionary id) : base(id) {}
         public SaneHashtable(IEqualityComparer iec) : base(iec) {}
         public SaneHashtable(int size) : base(size) {}
-        
+
         public override bool Equals(object other) {
             if(this == other) {
                 return true;

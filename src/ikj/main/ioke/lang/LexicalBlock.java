@@ -59,7 +59,7 @@ public class LexicalBlock extends IokeData implements AssociatedCode {
 
                     List<Object> positionalArgs = new ArrayList<Object>();
                     getArguments().getEvaluatedArguments(dynamicContext, message, on, positionalArgs, new HashMap<String, Object>());
-                    
+
                     List<Object> args = IokeList.getList(positionalArgs.get(0));
                     IokeObject ground = IokeObject.as(positionalArgs.get(1), dynamicContext);
 
@@ -93,7 +93,7 @@ public class LexicalBlock extends IokeData implements AssociatedCode {
                     getArguments().getEvaluatedArguments(dynamicContext, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     IokeObject obj = IokeObject.as(on, dynamicContext);
                     String x = obj.isActivatable() ? "x" : "";
-                    
+
                     String args = ((LexicalBlock)IokeObject.data(on)).arguments.getCode();
                     return context.runtime.newText("fn" + x + "(" + args + Message.code(((LexicalBlock)IokeObject.data(on)).message) + ")");
                 }
@@ -112,7 +112,7 @@ public class LexicalBlock extends IokeData implements AssociatedCode {
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     List<Object> keywords = new ArrayList<Object>();
-                    
+
                     for(String keyword : ((LexicalBlock)IokeObject.data(on)).arguments.getKeywords()) {
                         keywords.add(context.runtime.getSymbol(keyword.substring(0, keyword.length()-1)));
                     }
@@ -126,7 +126,7 @@ public class LexicalBlock extends IokeData implements AssociatedCode {
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     List<Object> names = new ArrayList<Object>();
-                    
+
                     for(DefaultArgumentsDefinition.Argument arg :  ((LexicalBlock)IokeObject.data(on)).arguments.getArguments()) {
                         if(!(arg instanceof DefaultArgumentsDefinition.KeywordArgument)) {
                             names.add(context.runtime.getSymbol(arg.getName()));

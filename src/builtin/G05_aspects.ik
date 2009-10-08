@@ -1,11 +1,11 @@
 
-DefaultBehavior Aspects before = method(+joinPoints, matching:, except:, 
+DefaultBehavior Aspects before = method(+joinPoints, matching:, except:,
   Pointcut with(receiver: self, joinPoints: joinPoints, matching: cell(:matching), except: except, type: :before))
 
-DefaultBehavior Aspects after = method(+joinPoints, matching:, except:, 
+DefaultBehavior Aspects after = method(+joinPoints, matching:, except:,
   Pointcut with(receiver: self, joinPoints: joinPoints, matching: cell(:matching), except: except, type: :after))
 
-DefaultBehavior Aspects around = method(+joinPoints, matching:, except:, 
+DefaultBehavior Aspects around = method(+joinPoints, matching:, except:,
   Pointcut with(receiver: self, joinPoints: joinPoints, matching: cell(:matching), except: except, type: :around))
 
 DefaultBehavior Aspects Pointcut = Origin mimic
@@ -51,8 +51,8 @@ DefaultBehavior Aspects Pointcut removeFromJoins = method(excepts, joins,
 )
 
 DefaultBehavior Aspects Pointcut addAdviceOnCell = method(cellName, advice, adviceName nil,
-  primary = if(self cell(:receiver) cell?(cellName), 
-    self cell(:receiver) cell(cellName), 
+  primary = if(self cell(:receiver) cell?(cellName),
+    self cell(:receiver) cell(cellName),
     macro(
       bind(restart(useValue, fn(newValue, newValue)),
         error!(Condition Error NoSuchCell, message: call message, context: call ground, receiver: call receiver, cellName: call message name))
@@ -156,7 +156,7 @@ DefaultBehavior Aspects Pointcut add = method(name, advice,
 
 Condition Error NoSuchAdvice = Condition Error mimic
 
-DefaultBehavior Aspects Pointcut removeFirstNamedAdvice = method(cellName, name, 
+DefaultBehavior Aspects Pointcut removeFirstNamedAdvice = method(cellName, name,
   currVal = self cell(:receiver) cell(cellName)
   while(advice?(cell(:currVal)),
     if(cell(:currVal) cell?(:adviceName) && cell(:currVal) adviceName == name && cell(:currVal) pointcut type == self type,
@@ -171,7 +171,7 @@ DefaultBehavior Aspects Pointcut removeFirstNamedAdvice = method(cellName, name,
       )
       return
     )
-    
+
     currVal = cell(:currVal) cell(:primary)
   )
 
@@ -179,7 +179,7 @@ DefaultBehavior Aspects Pointcut removeFirstNamedAdvice = method(cellName, name,
     error!(Condition Error NoSuchAdvice, cellName: cellName, adviceName: name))
 )
 
-DefaultBehavior Aspects Pointcut removeAllNamedAdvice = method(cellName, name, 
+DefaultBehavior Aspects Pointcut removeAllNamedAdvice = method(cellName, name,
   currVal = self cell(:receiver) cell(cellName)
   while(advice?(cell(:currVal)),
     if(cell(:currVal) cell?(:adviceName) && cell(:currVal) adviceName == name && cell(:currVal) pointcut type == self type,
@@ -193,12 +193,12 @@ DefaultBehavior Aspects Pointcut removeAllNamedAdvice = method(cellName, name,
           cell(:currVal) cell(:primary) removeCell!(:outerAdvice))
       )
     )
-    
+
     currVal = cell(:currVal) cell(:primary)
   )
 )
 
-DefaultBehavior Aspects Pointcut remove = method(name, 
+DefaultBehavior Aspects Pointcut remove = method(name,
   joins = set(*joinPoints)
   addToJoins(self cell(:matching), joins)
   removeFromJoins(self cell(:except), joins)
@@ -208,7 +208,7 @@ DefaultBehavior Aspects Pointcut remove = method(name,
   self
 )
 
-DefaultBehavior Aspects Pointcut removeAll = method(name, 
+DefaultBehavior Aspects Pointcut removeAll = method(name,
   joins = set(*joinPoints)
   addToJoins(self cell(:matching), joins)
   removeFromJoins(self cell(:except), joins)

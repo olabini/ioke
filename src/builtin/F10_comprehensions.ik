@@ -57,14 +57,14 @@ DefaultBehavior FlowControl cell(:for) transform = method(arguments, mapName, fl
 
       mapMessage << generator
       generatorLast next = mapMessage
-      
+
       if(first == nil,
         first = generatorSource,
 
         current << withAssignments(assignments, generatorSource)
         assignments = [])
       current = mapMessage,
-      
+
       if(assignment?(msg),
         assignments << msg,
 

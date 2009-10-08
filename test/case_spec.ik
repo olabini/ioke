@@ -293,7 +293,7 @@ describe(DefaultBehavior,
 
       it("should return an object that returns true from ===",
         (case:else() === :x) should be true
-        (case:else() === nil) should be true 
+        (case:else() === nil) should be true
         (case:else() === 42) should be true
       )
    )
@@ -305,7 +305,7 @@ describe(DefaultBehavior,
 
       it("should return an object that returns true from ===",
         (case:otherwise() === :x) should be true
-        (case:otherwise() === nil) should be true 
+        (case:otherwise() === nil) should be true
         (case:otherwise() === 42) should be true
       )
     )

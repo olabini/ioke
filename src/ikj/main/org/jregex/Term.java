@@ -1,29 +1,29 @@
 /**
  * Copyright (c) 2001, Sergey A. Samokhodkin
  * All rights reserved.
- * 
- * Redistribution and use in source and binary forms, with or without modification, 
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
- * 
- * - Redistributions of source code must retain the above copyright notice, 
- * this list of conditions and the following disclaimer. 
- * - Redistributions in binary form 
- * must reproduce the above copyright notice, this list of conditions and the following 
+ *
+ * - Redistributions of source code must retain the above copyright notice,
+ * this list of conditions and the following disclaimer.
+ * - Redistributions in binary form
+ * must reproduce the above copyright notice, this list of conditions and the following
  * disclaimer in the documentation and/or other materials provided with the distribution.
- * - Neither the name of jregex nor the names of its contributors may be used 
- * to endorse or promote products derived from this software without specific prior 
- * written permission. 
- * 
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY 
- * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES 
- * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
- * IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT 
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; 
- * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY 
+ * - Neither the name of jregex nor the names of its contributors may be used
+ * to endorse or promote products derived from this software without specific prior
+ * written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
+ * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ * IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
  * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * @version 1.2_01
  */
 
@@ -35,36 +35,36 @@ class Term implements REFlags{
    public enum TermType {
        //runtime Term types
        CHAR, BITSET, BITSET2, ANY_CHAR, ANY_CHAR_NE,
-       
+
        REG, REG_I, FIND, FINDREG, SUCCESS,
-       
+
        /*optimization-transparent types*/
        BOUNDARY, DIRECTION, UBOUNDARY, UDIRECTION,
-       
+
        GROUP_IN, GROUP_OUT, VOID,
-       
+
        START, END, END_EOL, LINE_START, LINE_END, LAST_MATCH_END,
-       
+
        CNT_SET_0, CNT_INC, CNT_GT_EQ, READ_CNT_LT,
 
        // CTSTORE_CRINC: store on 'actual' search entry
        CRSTORE_CRINC, CR_SET_0, CR_LT, CR_GT_EQ,
-       
+
        /*optimization-nontransparent types*/
        BRANCH, BRANCH_STORE_CNT, BRANCH_STORE_CNT_AUX1,
-       
+
        // INDEPENDENT_IN: functionally the same as NLOOKAHEAD_IN
-       PLOOKAHEAD_IN, PLOOKAHEAD_OUT, NLOOKAHEAD_IN, NLOOKAHEAD_OUT, PLOOKBEHIND_IN, 
+       PLOOKAHEAD_IN, PLOOKAHEAD_OUT, NLOOKAHEAD_IN, NLOOKAHEAD_OUT, PLOOKBEHIND_IN,
        PLOOKBEHIND_OUT, NLOOKBEHIND_IN, NLOOKBEHIND_OUT, INDEPENDENT_IN, INDEPENDENT_OUT,
-       
+
        REPEAT_0_INF, REPEAT_MIN_INF, REPEAT_MIN_MAX, REPEAT_REG_MIN_INF, REPEAT_REG_MIN_MAX,
-       
+
        BACKTRACK_0, BACKTRACK_MIN, BACKTRACK_FIND_MIN, BACKTRACK_FINDREG_MIN, BACKTRACK_REG_MIN,
-       
+
        MEMREG_CONDITION, LOOKAHEAD_CONDITION_IN, LOOKAHEAD_CONDITION_OUT, LOOKBEHIND_CONDITION_IN,
        LOOKBEHIND_CONDITION_OUT
    }
-   
+
    // compiletime: length of vars[] (see makeTree())
    static final int VARS_LENGTH=4;
 
@@ -73,39 +73,39 @@ class Term implements REFlags{
    private static final int CNTREG_COUNT=1;   //refers current counters number
    private static final int DEPTH=2;      //refers current depth: (((depth=3)))
    private static final int LOOKAHEAD_COUNT=3;    //refers current memreg index
-   
+
    private static final int LIMITS_LENGTH=3;
    private static final int LIMITS_PARSE_RESULT_INDEX=2;
    private static final int LIMITS_OK=1;
    private static final int LIMITS_FAILURE=2;
-   
+
    //static CustomParser[] customParsers=new CustomParser[256];
-   
-   // **** CONTROL FLOW **** 
+
+   // **** CONTROL FLOW ****
 
    // next-to-execute and next-if-failed commands;
    Term next,failNext;
-   
+
    // **** TYPES ****
-   
+
    TermType type=TermType.VOID;
    boolean inverse;
-   
+
    // used with type=CHAR
    char c;
-   
+
    // used with type=FIND
    int distance;
    boolean eat;
-   
+
    // used with type=BITSET(2);
    boolean[] bitset;
    boolean[][] bitset2;
    boolean[] categoryBitset;  //types(unicode categories)
-   
+
    // used with type=BALANCE;
    char[] brackets;
-   
+
    // used for optimization with type=BITSET,BITSET2
    int weight;
 
@@ -120,56 +120,56 @@ class Term implements REFlags{
    // max|min number of iterations
    // used with CNT_GT_EQ ,REPEAT_* etc.;
    int minCount,maxCount;
-   
+
    // used with REPEAT_*,REPEAT_REG_*;
    Term target;
-   
+
    // a counter slot to increment & compare with maxCount (CNT_INC etc.);
    int cntreg=0;
-   
+
    // lookahead group id;
    int lookaheadId;
-   
+
    // **** COMPILE HELPERS ****
 
    protected Term prev,in,out,out1,first,current;
-   
+
    //new!!
    protected Term branchOut;
-   
+
    //protected  boolean newBranch=false,closed=false;
    //protected  boolean newBranch=false;
 
    //for debugging
    static int instances;
    int instanceNum;
-   
+
    Term(){
       //for debugging
       instanceNum=instances;
       instances++;
       in=out=this;
    }
-   
+
    Term(TermType type){
       this();
       this.type=type;
    }
-   
+
    static void makeTree(String s, int flags,Pattern re) throws PatternSyntaxException{
       char[] data=s.toCharArray();
       makeTree(data,0,data.length,flags,re);
    }
-   
+
    static void makeTree(char[] data,int offset,int end,
          int flags,Pattern re) throws PatternSyntaxException{
       // memreg,counter,depth,lookahead
       int[] vars={1,0,0,0}; //don't use counters[0]
-      
+
       //collect iterators for subsequent optimization
       List iterators=new ArrayList();
       Map groupNames=new LinkedHashMap();
-      
+
       Pretokenizer t=new Pretokenizer(data,offset,end);
       Term term=makeTree(t,data,vars,flags,new Group(),iterators,groupNames);
       // term=(0-...-0)
@@ -177,23 +177,23 @@ class Term implements REFlags{
       // convert closing outer bracket into success term
       term.out.type=TermType.SUCCESS;
       // term=(0-...-!!!
-      
+
       //throw out opening bracket
       Term first=term.next;
       // term=...-!!!
-      
-      // Optimisation: 
+
+      // Optimisation:
       Term optimized=first;
       Optimizer opt=Optimizer.find(first);
       if(opt!=null) optimized=opt.makeFirst(first);
-      
+
       java.util.Iterator en=iterators.iterator();
       while(en.hasNext()){
          Iterator i=(Iterator)en.next();
          i.optimize();
       }
       // ===
-      
+
       re.root=optimized;
       re.root0=first;
       re.memregs=vars[MEMREG_COUNT];
@@ -342,7 +342,7 @@ class Term implements REFlags{
          }
       }
    }
-   
+
    static int makeNumber(int off, int out, char[] data){
       int n=0;
       for(int i=off;i<out;i++){
@@ -353,7 +353,7 @@ class Term implements REFlags{
       }
       return n;
    }
-   
+
    protected void append(int offset,int end,char[] data,
          int[] vars,int flags,List iterators,Map gmap) throws PatternSyntaxException{
 //System.out.println("append("+new String(data,offset,end-offset)+")");
@@ -384,7 +384,7 @@ class Term implements REFlags{
                              makeLazyStar(vars,current);
                current=replaceCurrent(tmp);
                break;
-               
+
             case '+':
                if(current==null) throw new PatternSyntaxException("missing term before +");
                i++;
@@ -403,7 +403,7 @@ class Term implements REFlags{
                                makeLazyPlus(vars,current);
                current=replaceCurrent(tmp);
                break;
-               
+
             case '?':
                if(current==null) throw new PatternSyntaxException("missing term before ?");
                i++;
@@ -418,12 +418,12 @@ class Term implements REFlags{
                        throw new PatternSyntaxException("nested *?+ in regexp");
                    }
                }
-               
+
                tmp=greedy? makeGreedyQMark(vars,current):
                                makeLazyQMark(vars,current);
                current=replaceCurrent(tmp);
                break;
-               
+
             case '{':
                limits[0]=0;
                limits[1]=-1;
@@ -460,7 +460,7 @@ class Term implements REFlags{
                      continue;
                   }
                }
-               
+
             case ' ':
             case '\t':
             case '\r':
@@ -470,12 +470,12 @@ class Term implements REFlags{
                   continue;
                }
                //else go on as default
-               
+
             //symbolic items
             default:
                tmp=new Term();
                i=parseTerm(data,i,end,tmp,flags);
-               
+
                if(tmp.type==TermType.END && i<end){
                    if((flags&IGNORE_SPACES)>0) {
                        i++;
@@ -496,7 +496,7 @@ class Term implements REFlags{
                        throw new PatternSyntaxException("'$' is not a last term in the group: <"+new String(data,offset,end-offset)+">");
                    }
                }
-               //"\A" 
+               //"\A"
                //if(tmp.type==START && i>(offset+1)){
                //   throw new PatternSyntaxException("'^' is not a first term in the group: <"+new String(data,offset,end-offset)+">");
                //}
@@ -512,8 +512,8 @@ class Term implements REFlags{
 //System.out.println("current="+current);
 //System.out.println();
    }
-   
-   
+
+
    private static int parseGroupId(char[] data, int i, int end, Term term, Map gmap) throws PatternSyntaxException{
       int id;
       int nstart=i;
@@ -538,15 +538,15 @@ class Term implements REFlags{
          i++;
          if(i==end) throw new PatternSyntaxException("'}' expected");
       }
-      
+
       int c=data[i++];
-      
+
       if(c!='}') throw new PatternSyntaxException("'}' expected");
-      
+
       term.memreg=id;
       return i;
    }
-   
+
    protected Term append(Term term) throws PatternSyntaxException{
 //System.out.println("append("+term.toStringAll()+"), this="+toStringAll());
       //Term prev=this.prev;
@@ -570,7 +570,7 @@ class Term implements REFlags{
 //System.out.println();
       return term;
    }
-   
+
    protected Term replaceCurrent(Term term) throws PatternSyntaxException{
 //System.out.println("replaceCurrent("+term+"), current="+current+", current.prev="+current.prev);
       //Term prev=this.prev;
@@ -629,12 +629,12 @@ class Term implements REFlags{
 //System.out.println("prev="+this.prev);
 //System.out.println();
    }
-   
+
    private final static void link(Term term,Term next){
       linkd(term,next.in);
       next.prev=term;
    }
-   
+
    private final static void linkd(Term term,Term next){
 //System.out.println("linkDirectly(\""+term+"\" -> \""+next+"\")");
       Term prev_out=term.out;
@@ -653,7 +653,7 @@ class Term implements REFlags{
          prev_branch.failNext=next;
       }
    }
-   
+
    protected void startNewBranch() throws PatternSyntaxException{
 //System.out.println("newBranch()");
 //System.out.println("before startNewBranch(), this="+toStringAll());
@@ -684,12 +684,12 @@ class Term implements REFlags{
             Term b=new Branch();
             b.next=term.in;
             term.out.next=b;
-            
+
             b.in=b;
             b.out=null;
             b.out1=null;
             b.branchOut=b;
-            
+
             return b;
          }
          default:{
@@ -711,24 +711,24 @@ class Term implements REFlags{
             Term b=new Branch();
             b.failNext=term.in;
             term.out.next=b;
-            
+
             b.in=b;
             b.out=b;
             b.out1=null;
             b.branchOut=null;
-            
+
             return b;
          }
          default:{
             Term b=new Branch();
             b.failNext=term;
             term.next=b;
-            
+
             b.in=b;
             b.out=b;
             b.out1=null;
             b.branchOut=null;
-            
+
             return b;
          }
       }
@@ -750,14 +750,14 @@ class Term implements REFlags{
             Term b=new Branch();
             b.next=term.in;
             term.out.next=b;
-            
+
             b.in=term.in;
             b.out=null;
             b.out1=null;
             b.branchOut=b;
 
 //System.out.println("   returning "+b.in);
-            
+
             return b;
          }
          default:{
@@ -765,7 +765,7 @@ class Term implements REFlags{
          }
       }
    }
-   
+
    private final static Term makeLazyPlus(int[] vars,Term term){
       //vars[STACK_SIZE]++;
       switch(term.type){
@@ -778,12 +778,12 @@ class Term implements REFlags{
             Term b=new Branch();
             term.out.next=b;
             b.failNext=term.in;
-            
+
             b.in=term.in;
             b.out=b;
             b.out1=null;
             b.branchOut=null;
-            
+
             return b;
          }
          case REG:
@@ -791,12 +791,12 @@ class Term implements REFlags{
             Term b=new Branch();
             term.next=b;
             b.failNext=term;
-            
+
             b.in=term;
             b.out=b;
             b.out1=null;
             b.branchOut=null;
-            
+
             return b;
          }
       }
@@ -813,29 +813,29 @@ class Term implements REFlags{
          case GROUP_IN:{
             Term b=new Branch();
             b.next=term.in;
-            
+
             b.in=b;
             b.out=term.out;
             b.out1=null;
             b.branchOut=b;
-            
+
             return b;
          }
          case REG:
          default:{
             Term b=new Branch();
             b.next=term;
-            
+
             b.in=b;
             b.out=term;
             b.out1=null;
             b.branchOut=b;
-            
+
             return b;
          }
       }
    }
-   
+
    private final static Term makeLazyQMark(int[] vars,Term term){
       //vars[STACK_SIZE]++;
       switch(term.type){
@@ -847,24 +847,24 @@ class Term implements REFlags{
          case GROUP_IN:{
             Term b=new Branch();
             b.failNext=term.in;
-            
+
             b.in=b;
             b.out=b;
             b.out1=term.out;
             b.branchOut=null;
-            
+
             return b;
          }
          case REG:
          default:{
             Term b=new Branch();
             b.failNext=term;
-            
+
             b.in=b;
             b.out=b;
             b.out1=term;
             b.branchOut=null;
-            
+
             return b;
          }
       }
@@ -885,12 +885,12 @@ class Term implements REFlags{
             Term reset=new Term(TermType.CR_SET_0);
                reset.cntreg=cntreg;
             Term b=new Term(TermType.BRANCH);
-            
+
             Term inc=new Term(TermType.CRSTORE_CRINC);
                inc.cntreg=cntreg;
-            
+
             reset.next=b;
-            
+
             if(n>=0){
                Term lt=new Term(TermType.CR_LT);
                   lt.cntreg=cntreg;
@@ -903,13 +903,13 @@ class Term implements REFlags{
             }
             term.out.next=inc;
             inc.next=b;
-            
+
             if(m>=0){
                Term gt=new Term(TermType.CR_GT_EQ);
                   gt.cntreg=cntreg;
                   gt.maxCount=m;
                b.failNext=gt;
-               
+
                reset.in=reset;
                reset.out=gt;
                reset.out1=null;
@@ -946,9 +946,9 @@ class Term implements REFlags{
             Term b=new Term(TermType.BRANCH);
             Term inc=new Term(TermType.CRSTORE_CRINC);
                inc.cntreg=cntreg;
-               
+
             reset.next=b;
-            
+
             if(n>=0){
                Term lt=new Term(TermType.CR_LT);
                   lt.cntreg=cntreg;
@@ -961,18 +961,18 @@ class Term implements REFlags{
             }
             term.out.next=inc;
             inc.next=b;
-            
+
             if(m>=0){
                Term gt=new Term(TermType.CR_GT_EQ);
                   gt.cntreg=cntreg;
                   gt.maxCount=m;
                b.next=gt;
-               
+
                reset.in=reset;
                reset.out=gt;
                reset.out1=null;
                reset.branchOut=null;
-               
+
                return reset;
             }
             else{
@@ -980,7 +980,7 @@ class Term implements REFlags{
                reset.out=b;
                reset.out1=null;
                reset.branchOut=null;
-               
+
                return reset;
             }
          }
@@ -989,9 +989,9 @@ class Term implements REFlags{
             Term reset=new Term(TermType.CNT_SET_0);
             Term b=new Branch(TermType.BRANCH_STORE_CNT);
             Term inc=new Term(TermType.CNT_INC);
-            
+
             reset.next=b;
-            
+
             if(n>=0){
                Term lt=new Term(TermType.READ_CNT_LT);
                   lt.maxCount=n;
@@ -1005,17 +1005,17 @@ class Term implements REFlags{
                term.next=inc;
                inc.next=term;
             }
-            
+
             if(m>=0){
                Term gt=new Term(TermType.CNT_GT_EQ);
                   gt.maxCount=m;
                b.next=gt;
-               
+
                reset.in=reset;
                reset.out=gt;
                reset.out1=null;
                reset.branchOut=null;
-               
+
                return reset;
             }
             else{
@@ -1023,14 +1023,14 @@ class Term implements REFlags{
                reset.out=b;
                reset.out1=null;
                reset.branchOut=null;
-               
+
                return reset;
             }
          }
       }
    }
-   
-   
+
+
    private final int parseTerm(char[] data, int i, int out, Term term,
               int flags) throws PatternSyntaxException{
       char c=data[i++];
@@ -1038,20 +1038,20 @@ class Term implements REFlags{
       switch(c){
          case '[':
             return CharacterClass.parseClass(data,i,out,term,(flags&IGNORE_CASE)>0,(flags&IGNORE_SPACES)>0,(flags&UNICODE)>0,(flags&XML_SCHEMA)>0);
-            
+
          case '.':
             term.type=(flags&DOTALL)>0? TermType.ANY_CHAR: TermType.ANY_CHAR_NE;
             break;
-            
+
          case '$':
             //term.type=mods[MULTILINE_IND]? LINE_END: END; //??
             term.type=(flags&MULTILINE)>0? TermType.LINE_END: TermType.END_EOL;
             break;
-            
+
          case '^':
             term.type=(flags&MULTILINE)>0? TermType.LINE_START: TermType.START;
             break;
-            
+
          case '\\':
             if(i>=out) throw new PatternSyntaxException("Escape without a character");
             c=data[i++];
@@ -1075,7 +1075,7 @@ class Term implements REFlags{
                case '\\':
                   c='\\';
                   break;
-               
+
                case 'u':
                    if(i+4 >= out) throw new PatternSyntaxException("To few characters for u-escape");
 
@@ -1084,7 +1084,7 @@ class Term implements REFlags{
                           (CharacterClass.toHexDigit(data[i++])<<4)+
                            CharacterClass.toHexDigit(data[i++]));
                   break;
-                  
+
                case 'v':
                    if(i+6 >= out) throw new PatternSyntaxException("To few characters for u-escape");
                   c=(char)((CharacterClass.toHexDigit(data[i++])<<24)+
@@ -1094,7 +1094,7 @@ class Term implements REFlags{
                           (CharacterClass.toHexDigit(data[i++])<<4)+
                            CharacterClass.toHexDigit(data[i++]));
                   break;
-                  
+
                case 'x':{   // hex 2-digit number -> char
                    if(i >= out) throw new PatternSyntaxException("To few characters for x-escape");
                   int hex=0;
@@ -1129,7 +1129,7 @@ class Term implements REFlags{
                   }
                   c=(char)oct;
                   break;
-                  
+
                case 'm':   // decimal number -> char
                   int dec=0;
                   for(;;){
@@ -1145,7 +1145,7 @@ class Term implements REFlags{
                   i--;
                   c=(char)dec;
                   break;
-                  
+
                case 'c':   // ctrl-char
                   c=(char)(data[i++]&0x1f);
                   break;
@@ -1170,7 +1170,7 @@ class Term implements REFlags{
                case 'w':   // letter
                   CharacterClass.makeWordChar(term,inv,(flags&UNICODE)>0);
                   return i;
-                  
+
                case 'B':   // non-(word boundary)
                   inv=true;
                   // go on
@@ -1180,32 +1180,32 @@ class Term implements REFlags{
                case '<':   // non-(word boundary)
                   CharacterClass.makeWordStart(term,(flags&UNICODE)>0);
                   return i;
-                  
+
                case '>':   // word boundary
                   CharacterClass.makeWordEnd(term,(flags&UNICODE)>0);
                   return i;
                case 'A':   // text beginning
                   term.type=TermType.START;
                   return i;
-                  
+
                case 'Z':   // text end
                   term.type=TermType.END_EOL;
                   return i;
-                  
+
                case 'z':   // text end
                   term.type=TermType.END;
                   return i;
-                  
+
                case 'G':   // end of last match
                   term.type=TermType.LAST_MATCH_END;
                   return i;
-                  
+
                case 'P':   // \\P{..}
                   inv=true;
                case 'p':   // \\p{..}
                   i=CharacterClass.parseName(data,i,out,term,inv,(flags&IGNORE_SPACES)>0);
                   return i;
-                  
+
                default:
                   if(c>='1' && c<='9'){
                      int n=c-'0';
@@ -1230,7 +1230,7 @@ class Term implements REFlags{
             term.type=TermType.CHAR;
             term.c=c;
             break;
-            
+
          default:
             if((flags&IGNORE_CASE)==0){
                term.type=TermType.CHAR;
@@ -1281,7 +1281,7 @@ class Term implements REFlags{
       }
       throw new PatternSyntaxException("malformed quantifier");
    }
-   
+
    public String toString(){
       StringBuffer b=new StringBuffer(100);
       b.append(instanceNum);
@@ -1320,37 +1320,37 @@ class Term implements REFlags{
             break;
          case START:
             b.append("abs.start");
-            break;            
+            break;
          case END:
             b.append("abs.end");
-            break;            
+            break;
          case END_EOL:
             b.append("abs.end-eol");
-            break;            
+            break;
          case LINE_START:
             b.append("line start");
-            break;            
+            break;
          case LINE_END:
             b.append("line end");
-            break;            
+            break;
          case LAST_MATCH_END:
             if(inverse)b.append("non-");
             b.append("BOUNDARY");
-            break;            
+            break;
          case BOUNDARY:
             if(inverse)b.append("non-");
             b.append("BOUNDARY");
-            break;            
+            break;
          case UBOUNDARY:
             if(inverse)b.append("non-");
             b.append("UBOUNDARY");
-            break;            
+            break;
          case DIRECTION:
             b.append("DIRECTION");
-            break;            
+            break;
          case UDIRECTION:
             b.append("UDIRECTION");
-            break;            
+            break;
          case FIND:
             b.append(">>>{");
             b.append(target);
@@ -1360,7 +1360,7 @@ class Term implements REFlags{
                b.append(",eat");
             }
             b.append(", ");
-            break;            
+            break;
          case REPEAT_0_INF:
             b.append("rpt{");
             b.append(target);
@@ -1370,7 +1370,7 @@ class Term implements REFlags{
                b.append(failNext.instanceNum);
                b.append(", ");
             }
-            break;            
+            break;
          case REPEAT_MIN_INF:
             b.append("rpt{");
             b.append(target);
@@ -1382,7 +1382,7 @@ class Term implements REFlags{
                b.append(failNext.instanceNum);
                b.append(", ");
             }
-            break;            
+            break;
          case REPEAT_MIN_MAX:
             b.append("rpt{");
             b.append(target);
@@ -1396,7 +1396,7 @@ class Term implements REFlags{
                b.append(failNext.instanceNum);
                b.append(", ");
             }
-            break;            
+            break;
          case REPEAT_REG_MIN_INF:
             b.append("rpt{$");
             b.append(memreg);
@@ -1408,7 +1408,7 @@ class Term implements REFlags{
                b.append(failNext.instanceNum);
                b.append(", ");
             }
-            break;            
+            break;
          case REPEAT_REG_MIN_MAX:
             b.append("rpt{$");
             b.append(memreg);
@@ -1422,15 +1422,15 @@ class Term implements REFlags{
                b.append(failNext.instanceNum);
                b.append(", ");
             }
-            break;            
+            break;
          case BACKTRACK_0:
             b.append("back(0)");
-            break;            
+            break;
          case BACKTRACK_MIN:
             b.append("back(");
             b.append(minCount);
             b.append(")");
-            break;            
+            break;
          case BACKTRACK_REG_MIN:
             b.append("back");
             b.append("_$");
@@ -1438,7 +1438,7 @@ class Term implements REFlags{
             b.append("(");
             b.append(minCount);
             b.append(")");
-            break;            
+            break;
          case GROUP_IN:
             b.append('(');
             if(memreg>0)b.append(memreg);
@@ -1600,11 +1600,11 @@ class Term implements REFlags{
       //b.append("\r\n");
       return b.toString();
    }
-   
+
    public String toStringAll(){
       return toStringAll(new Vector());
    }
-   
+
    public String toStringAll(Vector v){
       v.addElement(new Integer(instanceNum));
       String s=toString();
@@ -1638,23 +1638,23 @@ class Pretokenizer{
    static final int FLAGS=11;
    static final int CLASS_GROUP=12;
    static final int NAMED_GROUP=13;
-   
+
    int tOffset,tOutside,skip;
    int offset,end;
    int c;
-   
+
    int ttype=START;
-   
+
    char[] data;
-   
+
    //results
    private int flags;
    private boolean flagsChanged;
-   
+
    char[] brackets;
    String groupName;
    boolean groupDeclared;
-   
+
    Pretokenizer(char[] data,int offset,int end){
       if(offset<0 || end>data.length) throw new IndexOutOfBoundsException("offset="+offset+", end="+end+", length="+data.length);
       this.offset=offset;
@@ -1665,20 +1665,20 @@ class Pretokenizer{
 
       this.data=data;
    }
-   
+
    int flags(int def){
       return flagsChanged? flags: def;
    }
-   
+
    void next() throws PatternSyntaxException{
       int tOffset=this.tOutside;
       int skip=this.skip;
-      
+
       tOffset+=skip;
       flagsChanged=false;
-      
-      int end=this.end; 
-      char[] data=this.data; 
+
+      int end=this.end;
+      char[] data=this.data;
       boolean esc=false;
       for(int i=tOffset;i<end;i++){
          if(esc){
@@ -1758,7 +1758,7 @@ class Pretokenizer{
               	              case 'X':
 //System.out.println("case '+-imsxuX' ("+c2+")");
               	                 continue mLoop;
-              	                 
+
               	              case ':':
               	                 mOff=i+2;
               	                 mLen=p-mOff;
@@ -1794,7 +1794,7 @@ class Pretokenizer{
                     skip++;
                     if(p==end)throw new PatternSyntaxException("malformed named group");
                  }
-                 
+
                  if(c=='='){
                     isDecl=false;
                     c=data[++p];
@@ -1802,7 +1802,7 @@ class Pretokenizer{
                     if(p==end)throw new PatternSyntaxException("malformed named group");
                  }
                  else isDecl=true;
-                 
+
                  nstart=p;
                  while(Character.isJavaIdentifierPart(c)){
                     c=data[++p];
@@ -1816,7 +1816,7 @@ class Pretokenizer{
                     if(p==end)throw new PatternSyntaxException("malformed named group");
                  }
                  if(c!='}') throw new PatternSyntaxException("'}' expected at "+(p-i)+" in "+new String(data,i,end-i));
-                 
+
                  this.groupName=new String(data,nstart,nend-nstart);
                  this.groupDeclared=isDecl;
                  ttype=NAMED_GROUP;
@@ -1880,16 +1880,16 @@ class Group extends Term{
    Group(){
       this(0);
    }
-   
+
    Group(int memreg){
       type=TermType.GROUP_IN;
       this.memreg=memreg;
-      
+
       //used in append()
       current=null;
       in=this;
       prev=null;
-      
+
       out=new Term();
       out.type=TermType.GROUP_OUT;
       out.memreg=memreg;
@@ -1900,14 +1900,14 @@ class ConditionalExpr extends Group{
    protected Term node;
    protected boolean newBranchStarted=false;
    protected boolean linkAsBranch=true;
-   
+
    ConditionalExpr(Lookahead la){
       super(0);
 //System.out.println("ConditionalExpr("+la+")");
       /*
       * This all is rather tricky.
       * See how this types are handled in Matcher.
-      * The shortcoming is that we strongly rely upon 
+      * The shortcoming is that we strongly rely upon
       * the internal structure of Lookahead.
       */
       la.in.type=TermType.LOOKAHEAD_CONDITION_IN;
@@ -1915,35 +1915,35 @@ class ConditionalExpr extends Group{
       if(la.isPositive){
          node=la.in;
          linkAsBranch=true;
-         
+
          //empty 2'nd branch
          node.failNext=out;
       }
       else{
          node=la.out;
          linkAsBranch=false;
-         
+
          //empty 2'nd branch
          node.next=out;
       }
-      
+
       //node.prev=in;
       //in.next=node;
-      
+
       la.prev=in;
       in.next=la;
-      
+
       current=la;
       //current=node;
    }
-   
+
    ConditionalExpr(Lookbehind lb){
       super(0);
 //System.out.println("ConditionalExpr("+la+")");
       /*
       * This all is rather tricky.
       * See how this types are handled in Matcher.
-      * The shortcoming is that we strongly rely upon 
+      * The shortcoming is that we strongly rely upon
       * the internal structure of Lookahead.
       */
       lb.in.type=TermType.LOOKBEHIND_CONDITION_IN;
@@ -1951,25 +1951,25 @@ class ConditionalExpr extends Group{
       if(lb.isPositive){
          node=lb.in;
          linkAsBranch=true;
-         
+
          //empty 2'nd branch
          node.failNext=out;
       }
       else{
          node=lb.out;
          linkAsBranch=false;
-         
+
          //empty 2'nd branch
          node.next=out;
       }
-      
+
       lb.prev=in;
       in.next=lb;
-      
+
       current=lb;
       //current=node;
    }
-   
+
    ConditionalExpr(int memreg){
       super(0);
 //System.out.println("ConditionalExpr("+memreg+")");
@@ -1978,19 +1978,19 @@ class ConditionalExpr extends Group{
       condition.out=condition;
       condition.out1=null;
       condition.branchOut=null;
-      
+
       //default branch
       condition.failNext=out;
-      
+
       node=current=condition;
       linkAsBranch=true;
-      
+
       condition.prev=in;
       in.next=condition;
-      
+
       current=condition;
    }
-   
+
    protected void startNewBranch() throws PatternSyntaxException{
       if(newBranchStarted) throw new PatternSyntaxException("attempt to set a 3'd choice in a conditional expr.");
       Term node=this.node;
@@ -2022,7 +2022,7 @@ class IndependentGroup extends Term{
 
 class Lookahead extends Term{
    final boolean isPositive;
-   
+
    Lookahead(int id,boolean isPositive){
       this.isPositive=isPositive;
       in=this;
@@ -2034,7 +2034,7 @@ class Lookahead extends Term{
       else{
          type=TermType.NLOOKAHEAD_IN;
          out.type=TermType.NLOOKAHEAD_OUT;
-         branchOut=this; 
+         branchOut=this;
       }
       lookaheadId=id;
       out.lookaheadId=id;
@@ -2044,7 +2044,7 @@ class Lookahead extends Term{
 class Lookbehind extends Term{
    final boolean isPositive;
    private int prevDistance=-1;
-   
+
    Lookbehind(int id,boolean isPositive){
       distance=0;
       this.isPositive=isPositive;
@@ -2057,22 +2057,22 @@ class Lookbehind extends Term{
       else{
          type=TermType.NLOOKBEHIND_IN;
          out.type=TermType.NLOOKBEHIND_OUT;
-         branchOut=this; 
+         branchOut=this;
       }
       lookaheadId=id;
       out.lookaheadId=id;
    }
-   
+
    protected Term append(Term t) throws PatternSyntaxException{
       distance+=length(t);
       return super.append(t);
    }
-   
+
    protected Term replaceCurrent(Term t) throws PatternSyntaxException{
       distance+=length(t)-length(current);
       return super.replaceCurrent(t);
    }
-   
+
    private static int length(Term t) throws PatternSyntaxException{
       TermType type=t.type;
       switch(type){
@@ -2092,13 +2092,13 @@ class Lookbehind extends Term{
             throw new PatternSyntaxException("variable length element within a lookbehind assertion");
       }
    }
-   
+
    protected void startNewBranch() throws PatternSyntaxException{
       prevDistance=distance;
       distance=0;
       super.startNewBranch();
    }
-   
+
    protected void close() throws PatternSyntaxException{
       int pd=prevDistance;
       if(pd>=0){
@@ -2109,7 +2109,7 @@ class Lookbehind extends Term{
 }
 
 class Iterator extends Term{
-   
+
    Iterator(Term term,int min,int max,List collection) throws PatternSyntaxException{
       collection.add(this);
       switch(term.type){
@@ -2135,13 +2135,13 @@ class Iterator extends Term{
                minCount=back.minCount=min;
                maxCount=max;
             }
-            
+
             failNext=back;
-            
+
             in=this;
             out=this;
             out1=back;
-            branchOut=null;   
+            branchOut=null;
             return;
          }
          case REG:{
@@ -2159,20 +2159,20 @@ class Iterator extends Term{
                minCount=back.minCount=min;
                maxCount=max;
             }
-            
+
             failNext=back;
-            
+
             in=this;
             out=this;
             out1=back;
-            branchOut=null;   
-            return; 
+            branchOut=null;
+            return;
          }
          default:
             throw new PatternSyntaxException("can't iterate this type: "+term.type);
       }
    }
-   
+
    void optimize(){
 //System.out.println("optimizing myself: "+this);
 //BACKTRACK_MIN_REG_FIND

@@ -199,7 +199,7 @@ public class JavaIntegration {
             mv.visitInsn(ICONST_0);
             Label els = new Label();
             mv.visitJumpInsn(IF_ICMPNE, els);
-            
+
             mv.visitVarInsn(ALOAD, 0);
             Class[] params = m.getParameterTypes();
             int i=1;
@@ -233,11 +233,11 @@ public class JavaIntegration {
         mv.visitTypeInsn(ANEWARRAY, "java/lang/Object");
         for(Class pType : params) {
             mv.visitInsn(DUP);
-            mv.visitIntInsn(BIPUSH, i-1); 
+            mv.visitIntInsn(BIPUSH, i-1);
             loadParameterWithConversion(mv, pType, i++);
             mv.visitInsn(AASTORE);
         }
-        
+
         mv.visitLdcInsn(m.getName());
 
         if(retType == Void.TYPE) {
@@ -274,7 +274,7 @@ public class JavaIntegration {
             mv.visitTypeInsn(CHECKCAST, p(retType));
             mv.visitInsn(ARETURN);
         }
-        
+
         mv.visitMaxs(1,1);
         mv.visitEnd();
     }
@@ -310,7 +310,7 @@ public class JavaIntegration {
         String current = baseName + (number++);
 
         while(NAMES.containsKey(current)) {
-            current = baseName + (number++);      
+            current = baseName + (number++);
         }
 
         NAMES.put(current, "dummy");

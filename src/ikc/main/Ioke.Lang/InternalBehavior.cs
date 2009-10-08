@@ -9,8 +9,8 @@ namespace Ioke.Lang {
             Runtime runtime = obj.runtime;
             obj.Kind = "DefaultBehavior Internal";
 
-            obj.RegisterMethod(runtime.NewNativeMethod("expects one 'strange' argument. creates a new instance of Text with the given Java String backing it.", 
-                                                       new NativeMethod("internal:createText", 
+            obj.RegisterMethod(runtime.NewNativeMethod("expects one 'strange' argument. creates a new instance of Text with the given Java String backing it.",
+                                                       new NativeMethod("internal:createText",
                                                                         DefaultArgumentsDefinition
                                                                         .builder()
                                                                         .WithRequiredPositionalUnevaluated("text")
@@ -35,8 +35,8 @@ namespace Ioke.Lang {
                                                                             }
                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("expects one 'strange' argument. creates a new instance of Number that represents the number found in the strange argument.", 
-                                                       new NativeMethod("internal:createNumber", 
+            obj.RegisterMethod(runtime.NewNativeMethod("expects one 'strange' argument. creates a new instance of Number that represents the number found in the strange argument.",
+                                                       new NativeMethod("internal:createNumber",
                                                                         DefaultArgumentsDefinition
                                                                         .builder()
                                                                         .WithRequiredPositionalUnevaluated("number")
@@ -56,21 +56,21 @@ namespace Ioke.Lang {
                                                                             } else if(o is int) {
                                                                                 value = runtime.NewNumber((int)o);
                                                                             }
-                                                                            
+
                                                                             if(cache) {
                                                                                 Message.CacheValue(message, value);
                                                                             }
                                                                             return value;
                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("takes zero or more arguments, calls asText on non-text arguments, and then concatenates them and returns the result.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("takes zero or more arguments, calls asText on non-text arguments, and then concatenates them and returns the result.",
                                                        new NativeMethod("internal:concatenateText", DefaultArgumentsDefinition.builder()
                                                                         .WithRest("textSegments")
                                                                         .Arguments,
                                                                         (method, context, message, on, outer) => {
                                                                             var args = new SaneArrayList();
                                                                             outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, args, new SaneDictionary<string, object>());
-                                                                        
+
                                                                             StringBuilder sb = new StringBuilder();
 
                                                                             foreach(object o in args) {
@@ -87,8 +87,8 @@ namespace Ioke.Lang {
 
                                                                             return context.runtime.NewText(sb.ToString());
                                                                         })));
-        
-            obj.RegisterMethod(runtime.NewNativeMethod("takes one or more arguments. it expects the last argument to be a text of flags, while the rest of the arguments are either texts or regexps or nil. if text, it will be inserted verbatim into the result regexp. if regexp it will be inserted into a group that make sure the flags of the regexp is preserved. if nil, nothing will be inserted.", 
+
+            obj.RegisterMethod(runtime.NewNativeMethod("takes one or more arguments. it expects the last argument to be a text of flags, while the rest of the arguments are either texts or regexps or nil. if text, it will be inserted verbatim into the result regexp. if regexp it will be inserted into a group that make sure the flags of the regexp is preserved. if nil, nothing will be inserted.",
                                                        new NativeMethod("internal:compositeRegexp", DefaultArgumentsDefinition.builder()
                                                                         .WithRest("regexpSegments")
                                                                         .Arguments,
@@ -100,7 +100,7 @@ namespace Ioke.Lang {
                                                                             if((IokeObject.dataOf(on) is Text) || (IokeObject.dataOf(on) is Regexp)) {
                                                                                 AddObject(on, sb, context);
                                                                             }
-                    
+
                                                                             int size = args.Count;
 
                                                                             foreach(object o in ArrayList.Adapter(args).GetRange(0, size-1)) {
@@ -120,8 +120,8 @@ namespace Ioke.Lang {
 
                                                                             return context.runtime.NewRegexp(sb.ToString(), flags, context, message);
                                                                         })));
-        
-            obj.RegisterMethod(runtime.NewNativeMethod("expects two 'strange' arguments. creates a new mimic of Regexp with the given Java String backing it.", 
+
+            obj.RegisterMethod(runtime.NewNativeMethod("expects two 'strange' arguments. creates a new mimic of Regexp with the given Java String backing it.",
                                                        new NativeMethod("internal:createRegexp", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositionalUnevaluated("regexp")
                                                                         .WithRequiredPositionalUnevaluated("flags")
@@ -144,7 +144,7 @@ namespace Ioke.Lang {
                                                                             }
                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("expects one 'strange' argument. creates a new instance of Decimal that represents the number found in the strange argument.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("expects one 'strange' argument. creates a new instance of Decimal that represents the number found in the strange argument.",
                                                      new NativeMethod("internal:createDecimal", DefaultArgumentsDefinition.builder()
                                                                     .WithRequiredPositionalUnevaluated("decimal")
                                                                     .Arguments,

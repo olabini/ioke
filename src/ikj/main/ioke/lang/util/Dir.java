@@ -57,7 +57,7 @@ public class Dir {
             char c = bytes.charAt(pat++);
             switch(c) {
             case '?':
-                if(s >= send || (pathname && isdirsep(string.charAt(s))) || 
+                if(s >= send || (pathname && isdirsep(string.charAt(s))) ||
                    (period && string.charAt(s) == '.' && (s == 0 || (pathname && isdirsep(string.charAt(s-1)))))) {
                     return FNM_NOMATCH;
                 }
@@ -96,7 +96,7 @@ public class Dir {
                 }
                 return FNM_NOMATCH;
             case '[':
-                if(s >= send || (pathname && isdirsep(string.charAt(s)) || 
+                if(s >= send || (pathname && isdirsep(string.charAt(s)) ||
                                  (period && string.charAt(s) == '.' && (s == 0 || (pathname && isdirsep(string.charAt(s-1))))))) {
                     return FNM_NOMATCH;
                 }
@@ -126,13 +126,13 @@ public class Dir {
                         if(Character.toLowerCase(c) != Character.toLowerCase(string.charAt(s))) {
                             return FNM_NOMATCH;
                         }
-                        
+
                     } else {
                         if(c != string.charAt(s)) {
                             return FNM_NOMATCH;
                         }
                     }
-                    
+
                 }
                 s++;
                 break;
@@ -144,7 +144,7 @@ public class Dir {
     public static int fnmatch(
             String bytes, int pstart, int pend,
             String string, int sstart, int send, int flags) {
-        
+
         // This method handles '**/' patterns and delegates to
         // fnmatch_helper for the main work.
 
@@ -275,19 +275,19 @@ public class Dir {
 
         return result;
     }
-    
+
     private static class GlobPattern {
-        final String string;        
+        final String string;
         final int begin;
         final int end;
-        
+
         int flags;
         int index;
 
         public GlobPattern(String string, int flags) {
             this(string, 0, string.length(), flags);
         }
-        
+
         public GlobPattern(String string, int index, int end, int flags) {
             this.string = string;
             this.index = index;
@@ -295,57 +295,57 @@ public class Dir {
             this.end = end;
             this.flags = flags;
         }
-        
+
         public int findClosingIndexOf(int leftTokenIndex) {
             if (leftTokenIndex == -1 || leftTokenIndex > end) return -1;
-            
+
             char leftToken = string.charAt(leftTokenIndex);
             char rightToken;
-            
+
             switch (leftToken) {
             case '{': rightToken = '}'; break;
             case '[': rightToken = ']'; break;
             default: return -1;
             }
-            
+
             int nest = 1; // leftToken made us start as nest 1
             index = leftTokenIndex + 1;
             while (hasNext()) {
                 char c = next();
-                
+
                 if (c == leftToken) {
                     nest++;
                 } else if (c == rightToken && --nest == 0) {
                     return index();
                 }
             }
-            
+
             return -1;
         }
-        
+
         public boolean hasNext() {
             return index < end;
         }
-        
+
         public void reset() {
             index = begin;
         }
-        
+
         public void setIndex(int value) {
             index = value;
         }
-        
+
         // Get index of last read byte
         public int index() {
             return index - 1;
         }
-        
+
         public int indexOf(char c) {
             while (hasNext()) if (next() == c) return index();
-            
+
             return -1;
         }
-        
+
         public char next() {
             return string.charAt(index++);
         }
@@ -360,7 +360,7 @@ public class Dir {
         GlobFunc func;
         int c = -1;
         List<String> v;
-        
+
         public GlobArgs(GlobFunc func, List<String> arg) {
             this.func = func;
             this.v = arg;
@@ -388,9 +388,9 @@ public class Dir {
         int rbrace = pattern.findClosingIndexOf(lbrace);// index of right-most brace
 
         // No or mismatched braces..Move along..nothing to see here
-        if (lbrace == -1 || rbrace == -1) return push_globs(cwd, result, pattern); 
+        if (lbrace == -1 || rbrace == -1) return push_globs(cwd, result, pattern);
 
-        // Peel onion...make subpatterns out of outer layer of glob and recall with each subpattern 
+        // Peel onion...make subpatterns out of outer layer of glob and recall with each subpattern
         // Example: foo{a{c},b}bar -> fooa{c}bar, foobbar
         String buf = "";
         int middleRegionIndex;
@@ -408,7 +408,7 @@ public class Dir {
             int status = push_braces(cwd, result, new GlobPattern(buf, 0, buf.length(), pattern.flags));
             if(status != 0) return status;
         }
-        
+
         return 0; // All braces pushed..
     }
 
@@ -448,13 +448,13 @@ public class Dir {
 
     private static int remove_backslashes(StringBuilder bytes, int index, int len) {
         int t = index;
-        
+
         for (; index < len; index++, t++) {
             if (bytes.charAt(index) == '\\' && ++index == len) break;
-            
+
             bytes.replace(t, t+1, bytes.substring(index, index+1));
         }
-        
+
         return t;
     }
 
@@ -462,13 +462,13 @@ public class Dir {
         for (int i = begin; i < end; i++) {
             if (bytes.charAt(i) == ch) return i;
         }
-        
+
         return -1;
     }
 
     private static String extract_path(String bytes, int begin, int end) {
         int len = end - begin;
-        
+
         if (len > 1 && bytes.charAt(end-1) == '/' && (!DOSISH || (len < 2 || bytes.charAt(end-2) != ':'))) len--;
 
         return bytes.substring(begin, begin+len);
@@ -477,24 +477,24 @@ public class Dir {
     private static String extract_elem(String bytes, int begin, int end) {
         int elementEnd = strchr(bytes, begin, end, '/');
         if (elementEnd == -1) elementEnd = end;
-        
+
         return extract_path(bytes, begin, elementEnd);
     }
 
     private static boolean BASE(String base) {
-        return DOSISH ? 
+        return DOSISH ?
             (base.length() > 0 && !((isdirsep(base.charAt(0)) && base.length() < 2) || (base.length() > 2 && base.charAt(1) == ':' && isdirsep(base.charAt(2)) && base.length() < 4)))
             :
             (base.length() > 0 && !(isdirsep(base.charAt(0)) && base.length() < 2));
     }
-    
+
     private static boolean isJarFilePath(String bytes, int begin, int end) {
         return end > 6 && bytes.substring(begin, begin+5).equals("file:");
     }
 
     private static String[] files(File directory) {
         String[] files = directory.list();
-        
+
         if (files != null) {
             String[] filesPlusDotFiles = new String[files.length + 2];
             System.arraycopy(files, 0, filesPlusDotFiles, 2, files.length);
@@ -545,14 +545,14 @@ public class Dir {
                 String jar = bytes.subSequence(begin+ix+1, end).toString();
                 try {
                     JarFile jf = new JarFile(st);
-                    
+
                     if (jar.startsWith("/")) jar = jar.substring(1);
                     if (jf.getEntry(jar + "/") != null) jar = jar + "/";
                     if (jf.getEntry(jar) != null) {
                         status = func.call(bytes.toString(), begin, end, arg);
                     }
                 } catch(Exception e) {}
-            } else if ((end - begin) > 0) { // Length check is a hack.  We should not be reeiving "" as a filename ever. 
+            } else if ((end - begin) > 0) { // Length check is a hack.  We should not be reeiving "" as a filename ever.
                 if (new File(cwd, bytes.subSequence(begin, end).toString()).exists()) {
                     status = func.call(bytes.toString(), begin, end - begin, arg);
                 }
@@ -571,7 +571,7 @@ public class Dir {
             if(has_magic(bytes2, p, m == -1 ? end : m, flags)) {
                 finalize: do {
                     String base = extract_path(bytes2, begin, p);
-                    String dir = begin == p ? "." : base; 
+                    String dir = begin == p ? "." : base;
                     String magic = extract_elem(bytes2,p,end);
                     boolean recursive = false;
                     String jar = null;

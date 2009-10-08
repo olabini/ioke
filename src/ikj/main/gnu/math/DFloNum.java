@@ -28,11 +28,11 @@ public class DFloNum extends RealNum implements Externalizable
     // rational value and then converting to floating-point, and the
     // exact rational value represented by either string "0.0" or
     // "-0.0" is 0.
-    
+
     // This is apparently a bug in the spec, which I've reported
     // to sun.  As of 1.1, the sun implementation returns -0.0,
     // but the linux port returns 0.0.
-    
+
     // To be safe, we check for this case.
     if (value == 0.0 && s.charAt (0) == '-')
       value = -0.0;
@@ -62,7 +62,7 @@ public class DFloNum extends RealNum implements Externalizable
   {
     // take from java.lang.Double.equals:
     return (obj != null)
-      && (obj instanceof DFloNum) 
+      && (obj instanceof DFloNum)
       && (Double.doubleToLongBits(((DFloNum)obj).value)
 	  == Double.doubleToLongBits(value));
   }
@@ -151,9 +151,9 @@ public class DFloNum extends RealNum implements Externalizable
     if (Double.isInfinite (y))
       {
 	int result = y >= 0.0 ? -1 : 1;
-	if (! x_den.isZero()) 
+	if (! x_den.isZero())
 	  return result;  // x is finite
-	if (x_num.isZero()) 
+	if (x_num.isZero())
 	  return -2;  // indeterminate x
 	result >>= 1;
 	return x_num.isNegative() ? result : ~result;
@@ -335,7 +335,7 @@ public class DFloNum extends RealNum implements Externalizable
   }
 
   static double InvLog10 = 1.0 / Math.log(10);
-  
+
   static double log10 (double x) { return Math.log(x) * InvLog10; }
   */
 }

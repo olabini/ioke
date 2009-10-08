@@ -15,7 +15,7 @@ namespace Ioke.Lang {
 
             Kind = "LexicalContext";
         }
-    
+
         public override void Init() {
         }
 
@@ -55,7 +55,7 @@ namespace Ioke.Lang {
 
         protected override object MarkingFindCell(IokeObject m, IokeObject context, string name) {
             object nn = base.MarkingFindCell(m, context, name);
-        
+
             if(nn == runtime.nul) {
                 return IokeObject.FindCell(surroundingContext, m, context, name);
             } else {

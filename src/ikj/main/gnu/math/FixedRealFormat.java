@@ -20,7 +20,7 @@ public class FixedRealFormat extends java.text.Format
   public void setMaximumFractionDigits(int d) { this.d = d; }
   public void setMinimumIntegerDigits(int i) { this.i = i; }
 
-  // These should not be public.  FIXME. 
+  // These should not be public.  FIXME.
   public int width;
   public int scale;
   public char padChar;

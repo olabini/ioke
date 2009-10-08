@@ -48,38 +48,38 @@ namespace Ioke.Lang {
                                                                                                 && d.second.Equals(((Pair)IokeObject.dataOf(other)).second)) ? context.runtime.True : context.runtime.False;
                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("Returns the first value", 
+            obj.RegisterMethod(runtime.NewNativeMethod("Returns the first value",
                                                        new TypeCheckingNativeMethod.WithNoArguments("first", obj,
                                                                                                     (method, on, args, keywords, context, message) => {
                                                                                                         return ((Pair)IokeObject.dataOf(on)).first;
                                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("Returns the first value", 
+            obj.RegisterMethod(runtime.NewNativeMethod("Returns the first value",
                                                        new TypeCheckingNativeMethod.WithNoArguments("key", obj,
                                                                                                     (method, on, args, keywords, context, message) => {
                                                                                                         return ((Pair)IokeObject.dataOf(on)).first;
                                                                                                     })));
 
 
-            obj.RegisterMethod(runtime.NewNativeMethod("Returns the second value", 
+            obj.RegisterMethod(runtime.NewNativeMethod("Returns the second value",
                                                        new TypeCheckingNativeMethod.WithNoArguments("second", obj,
                                                                                                     (method, on, args, keywords, context, message) => {
                                                                                                         return ((Pair)IokeObject.dataOf(on)).second;
                                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("Returns the second value", 
+            obj.RegisterMethod(runtime.NewNativeMethod("Returns the second value",
                                                        new TypeCheckingNativeMethod.WithNoArguments("value", obj,
                                                                                                     (method, on, args, keywords, context, message) => {
                                                                                                         return ((Pair)IokeObject.dataOf(on)).second;
                                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("Returns a text inspection of the object", 
+            obj.RegisterMethod(runtime.NewNativeMethod("Returns a text inspection of the object",
                                                        new TypeCheckingNativeMethod.WithNoArguments("inspect", obj,
                                                                                                     (method, on, args, keywords, context, message) => {
                                                                                                         return method.runtime.NewText(Pair.GetInspect(on));
                                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("Returns a brief text inspection of the object", 
+            obj.RegisterMethod(runtime.NewNativeMethod("Returns a brief text inspection of the object",
                                                        new TypeCheckingNativeMethod.WithNoArguments("notice", obj,
                                                                                                     (method, on, args, keywords, context, message) => {
                                                                                                         return method.runtime.NewText(Pair.GetNotice(on));

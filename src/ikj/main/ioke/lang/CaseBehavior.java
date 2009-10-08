@@ -25,7 +25,7 @@ public class CaseBehavior {
             IokeObject cp = Message.deepCopy(when);
             replaceAllCaseNames(cp, context, message, caseMimic);
             return cp;
-        } 
+        }
 
         return IokeObject.as(when, context);
     }
@@ -90,6 +90,6 @@ public class CaseBehavior {
                     return runtime.nil;
                 }
             }));
-        
+
     }
 }

@@ -39,8 +39,8 @@ namespace Ioke.Lang.Extensions.Readline {
 
             IokeObject history = runtime.NewFromOrigin();
             rl.SetCell("HISTORY", history);
-        
-            rl.RegisterMethod(runtime.NewNativeMethod("will print a prompt to standard out and then try to read a line with working readline functionality. takes two arguments, the first is the string to prompt, the second is a boolean that says whether we should add the read string to history or not", 
+
+            rl.RegisterMethod(runtime.NewNativeMethod("will print a prompt to standard out and then try to read a line with working readline functionality. takes two arguments, the first is the string to prompt, the second is a boolean that says whether we should add the read string to history or not",
                                                       new NativeMethod("readline", DefaultArgumentsDefinition.builder()
                                                                        .WithRequiredPositional("prompt")
                                                                        .WithRequiredPositional("addToHistory?")
@@ -62,10 +62,10 @@ namespace Ioke.Lang.Extensions.Readline {
                                                                                    line = method.runtime.NewText(v);
                                                                                }
                                                                            } catch(IOException e) {
-                                                                               IokeObject condition = IokeObject.As(IokeObject.GetCellChain(runtime.Condition, 
-                                                                                                                                            message, 
-                                                                                                                                            context, 
-                                                                                                                                            "Error", 
+                                                                               IokeObject condition = IokeObject.As(IokeObject.GetCellChain(runtime.Condition,
+                                                                                                                                            message,
+                                                                                                                                            context,
+                                                                                                                                            "Error",
                                                                                                                                             "IO"), context).Mimic(message, context);
                                                                                condition.SetCell("message", message);
                                                                                condition.SetCell("context", context);
@@ -83,7 +83,7 @@ namespace Ioke.Lang.Extensions.Readline {
                                                                            return line;
                                                                        })));
 
-            history.RegisterMethod(runtime.NewNativeMethod("will add a new line to the history", 
+            history.RegisterMethod(runtime.NewNativeMethod("will add a new line to the history",
                                                            new NativeMethod("<<", DefaultArgumentsDefinition.builder()
                                                                             .WithRequiredPositional("line")
                                                                             .Arguments,

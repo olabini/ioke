@@ -5,7 +5,7 @@ Eliza = Origin mimic do(
   p = dsyntax(
     [pattern]
     ''(Pattern from('pattern)))
-  
+
   Rules = [
     p(*(:x) hello *(:y)) => ['(How do you do. Please state your problem)],
     p(*(:x) I want *(:y)) => [
@@ -34,7 +34,7 @@ Eliza = Origin mimic do(
   )
 
   useElizaRules = method(input,
-    Rules some(rule, 
+    Rules some(rule,
       result = rule first matchSimple(input)
       if(result,
         Pattern subst(result fold({}, sum, pair, sum[:(pair key inspect)] = Message fromText(pair value). sum), randomElement(rule second))

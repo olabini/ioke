@@ -25,7 +25,7 @@ public class RegexpMatch extends IokeData {
         this.mr = mr;
         this.target = target;
     }
-    
+
     public static Object getTarget(Object on) throws ControlFlow {
         return ((RegexpMatch)IokeObject.data(on)).target;
     }
@@ -143,7 +143,7 @@ public class RegexpMatch extends IokeData {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     int index = 0;
-                    
+
                     if(args.size() > 0) {
                         Object arg = args.get(0);
                         if(IokeObject.data(arg) instanceof Number) {
@@ -154,7 +154,7 @@ public class RegexpMatch extends IokeData {
                             if(ix == null) {
                                 return context.runtime.newNumber(-1);
                             }
-                            
+
                             index = ix;
                         }
                     }
@@ -182,7 +182,7 @@ public class RegexpMatch extends IokeData {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     int index = 0;
-                    
+
                     if(args.size() > 0) {
                         Object arg = args.get(0);
                         if(IokeObject.data(arg) instanceof Number) {
@@ -193,7 +193,7 @@ public class RegexpMatch extends IokeData {
                             if(ix == null) {
                                 return context.runtime.newNumber(-1);
                             }
-                            
+
                             index = ix;
                         }
                     }
@@ -221,7 +221,7 @@ public class RegexpMatch extends IokeData {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     int index = 0;
-                    
+
                     if(args.size() > 0) {
                         Object arg = args.get(0);
                         if(IokeObject.data(arg) instanceof Number) {
@@ -232,7 +232,7 @@ public class RegexpMatch extends IokeData {
                             if(ix == null) {
                                 return context.runtime.nil;
                             }
-                            
+
                             index = ix;
                         }
                     }
@@ -275,8 +275,8 @@ public class RegexpMatch extends IokeData {
                         int size = mr.groupCount();
 
                         if(IokeObject.data(arg) instanceof Range) {
-                            int first = Number.extractInt(Range.getFrom(arg), message, context); 
-                        
+                            int first = Number.extractInt(Range.getFrom(arg), message, context);
+
                             if(first < 0) {
                                 return context.runtime.newList(new ArrayList<Object>());
                             }
@@ -300,11 +300,11 @@ public class RegexpMatch extends IokeData {
                             if(first > last || (!inclusive && first == last)) {
                                 return context.runtime.newList(new ArrayList<Object>());
                             }
-                        
+
                             if(!inclusive) {
                                 last--;
                             }
-                        
+
                             List<Object> result = new ArrayList<Object>();
                             for(int i = first; i < last+1; i++) {
                                 if(!mr.isCaptured(i)) {
@@ -316,7 +316,7 @@ public class RegexpMatch extends IokeData {
 
                             return context.runtime.newList(result);
                         }
-                        
+
                         if(!(IokeObject.data(arg) instanceof Number)) {
                             arg = IokeObject.convertToNumber(arg, message, context);
                         }
@@ -339,23 +339,23 @@ public class RegexpMatch extends IokeData {
                     .builder()
                     .receiverMustMimic(obj)
                     .getArguments();
-                
+
                 @Override
                 public TypeCheckingArgumentsDefinition getArguments() {
                     return ARGUMENTS;
                 }
-                
+
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     MatchResult mr = getMatchResult(on);
                     String name = Message.name(message);
-                    
+
                     Integer ix = Regexp.getRegexp(getRegexp(on)).groupId(name);
                     if(ix == null) {
-                        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(message.runtime.condition, 
-                                                                                           message, 
-                                                                                           context, 
-                                                                                           "Error", 
+                        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(message.runtime.condition,
+                                                                                           message,
+                                                                                           context,
+                                                                                           "Error",
                                                                                            "NoSuchCell"), context).mimic(message, context);
                         condition.setCell("message", message);
                         condition.setCell("context", context);
@@ -377,6 +377,6 @@ public class RegexpMatch extends IokeData {
                     }
                 }
             }));
-        
+
     }
 }

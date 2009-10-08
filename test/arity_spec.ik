@@ -2,73 +2,73 @@
 use("ispec")
 
 describe("Arity",
-  
+
   it("should have the correct kind",
     Arity kind should == "Arity")
 
-  it("should be obtained from a DefaultMacro arity", 
+  it("should be obtained from a DefaultMacro arity",
     a = macro(nil)
     cell(:a) arity should == Arity taking:everything
   )
 
-  it("should be obtained from a DefaultSyntax arity", 
+  it("should be obtained from a DefaultSyntax arity",
     a = syntax(nil)
     cell(:a) arity should == Arity taking:everything
   )
 
-  it("should be obtained from a DefaultLecro arity", 
+  it("should be obtained from a DefaultLecro arity",
     a = lecro(nil)
     cell(:a) arity should == Arity taking:everything
   )
 
-  it("should be obtained from a DefaultMethod arity", 
+  it("should be obtained from a DefaultMethod arity",
     a = method(nil)
     cell(:a) arity should == Arity taking:nothing
   )
 
-  it("should be obtained from a DefaultMethod arity", 
+  it("should be obtained from a DefaultMethod arity",
     a = method(a, b, nil)
     cell(:a) arity required should == [:a, :b]
   )
 
-  it("should be obtained from a LexicalBlock", 
+  it("should be obtained from a LexicalBlock",
     a = fn()
     cell(:a) arity should == Arity taking:nothing
   )
 
-  it("should be obtained from a LexicalBlock", 
-    a = fn(a, b, nil) 
+  it("should be obtained from a LexicalBlock",
+    a = fn(a, b, nil)
     cell(:a) arity required should == [:a, :b]
   )
 
-  describe("take:nothing", 
-    it("should be the arity for empty argumentsCode", 
+  describe("take:nothing",
+    it("should be the arity for empty argumentsCode",
       Arity fromArgumentsCode("") should == Arity taking:nothing
     )
-    
+
     it("should be an Arity",
       Arity taking:nothing should mimic(Arity)
     )
 
-    it("should not equal taking:everything", 
+    it("should not equal taking:everything",
       Arity taking:nothing should not == Arity taking:everything
     )
 
-    it("should not equal Arity", 
+    it("should not equal Arity",
       Arity taking:nothing should not == Arity
     )
   )
-    
+
   describe("take:everything",
-    it("should be the arity for ... argumentsCode", 
+    it("should be the arity for ... argumentsCode",
       Arity fromArgumentsCode("...") should == Arity taking:everything
     )
 
-    it("should be an Arity", 
+    it("should be an Arity",
       Arity taking:everything should mimic(Arity)
     )
 
-    it("should not equal taking:nothing", 
+    it("should not equal taking:nothing",
       Arity taking:everything should not == Arity taking:nothing
     )
 
@@ -77,12 +77,12 @@ describe("Arity",
     )
   )
 
-  describe("takeNothing?", 
-    it("should be true for taking:nothing", 
+  describe("takeNothing?",
+    it("should be true for taking:nothing",
       Arity taking:nothing should takeNothing
     )
 
-    it("should be false for taking:everything", 
+    it("should be false for taking:everything",
       Arity taking:everything should not takeNothing
     )
 
@@ -91,12 +91,12 @@ describe("Arity",
     )
   )
 
-  describe("takeEverything?", 
-    it("should be false for taking:nothing", 
+  describe("takeEverything?",
+    it("should be false for taking:nothing",
       Arity taking:nothing should not takeEverything
     )
 
-    it("should be true for taking:everything", 
+    it("should be true for taking:everything",
       Arity taking:everything should takeEverything
     )
 
@@ -110,7 +110,7 @@ describe("Arity",
   )
 
   describe("from",
-    
+
     it("should return an empty arity if given no arguments",
       Arity from should == Arity taking:nothing
     )
@@ -121,18 +121,18 @@ describe("Arity",
       a should not == Arity taking:nothing
       a should not == Arity taking:everything
     )
-    
+
   )
 
-  describe("fromArgumentsCode", 
-    it("should return an empty arity if given nil", 
+  describe("fromArgumentsCode",
+    it("should return an empty arity if given nil",
       Arity fromArgumentsCode(nil) should == Arity taking:nothing
     )
 
     it("should return an empty arity if given an empty text",
       Arity fromArgumentsCode("") should == Arity taking:nothing
     )
-    
+
     it("should return taking:everything for ...",
       Arity fromArgumentsCode("...") should == Arity taking:everything
     )
@@ -159,56 +159,56 @@ describe("Arity",
     it("should return ... for taking:everything",
       Arity taking:everything asText should == "...")
 
-    it("should return the argumentsCode for a simple arg", 
+    it("should return the argumentsCode for a simple arg",
       Arity from(one) asText should == "one"
     )
 
-    it("should return the argumentsCode for a simple keyword", 
+    it("should return the argumentsCode for a simple keyword",
       Arity from(two: 2) asText should == "two: 2"
     )
 
-    it("should return the argumentsCode having rest arg", 
+    it("should return the argumentsCode having rest arg",
       Arity from(one, two: 2, +rest) asText should == "one, two: 2, +rest"
     )
 
-    it("should return the argumentsCode having krest arg", 
+    it("should return the argumentsCode having krest arg",
       Arity from(one, two: 2, +rest, +:krest) asText should == "one, two: 2, +rest, +:krest"
     )
 
   )
 
-  describe("positionals", 
-    it("should return empty for taking:nothing", 
+  describe("positionals",
+    it("should return empty for taking:nothing",
       Arity taking:nothing positionals should be empty
     )
 
-    it("should return empty for taking:everything", 
+    it("should return empty for taking:everything",
       Arity taking:everything positionals should be empty
     )
 
-    it("should return positional argument names including optionals by default", 
+    it("should return positional argument names including optionals by default",
       Arity from(a, b, c 1, +d) positionals should == [:a, :b, :c]
     )
 
-    it("should return positional argument names including optionals if given true", 
+    it("should return positional argument names including optionals if given true",
       Arity from(a, b, c 1, +d) positionals(true) should == [:a, :b, :c]
     )
 
-    it("should return positional argument names excluding optionals if given false", 
+    it("should return positional argument names excluding optionals if given false",
       Arity from(a, b, c 1, +d) positionals(false) should == [:a, :b]
     )
   )
 
-  describe("keywords", 
-    it("should return empty for taking:nothing", 
+  describe("keywords",
+    it("should return empty for taking:nothing",
       Arity taking:nothing keywords should be empty
     )
 
-    it("should return empty for taking:everything", 
+    it("should return empty for taking:everything",
       Arity taking:everything keywords should be empty
     )
 
-    it("should return keyword argument names", 
+    it("should return keyword argument names",
       Arity from(a:, b: c, +:d) keywords should == [:a, :b]
     )
   )
@@ -243,85 +243,85 @@ describe("Arity",
     it("should return the symbol name for the krest argument",
       Arity from(foo, +:bar) krest should == :bar
     )
-    
+
   )
-  
+
   describe("required",
-    it("should return empty for taking:nothing", 
+    it("should return empty for taking:nothing",
       Arity taking:nothing required should be empty
     )
-    
-    it("should return empty for taking:everything", 
+
+    it("should return empty for taking:everything",
       Arity taking:everything required should be empty
     )
-    
-    it("should return required positional names", 
+
+    it("should return required positional names",
       Arity from(a, b, c 1, +d) required should == [:a, :b]
     )
   )
-  
-  describe("min", 
-    it("should be 0 for taking:nothing", 
+
+  describe("min",
+    it("should be 0 for taking:nothing",
       Arity taking:nothing min should == 0
     )
-    
-    it("should be 0 for taking:everything", 
+
+    it("should be 0 for taking:everything",
       Arity taking:everything min should == 0
     )
-    
-    it("should return minimum number of required arguments", 
+
+    it("should return minimum number of required arguments",
       Arity from(a, b, c 1, +d) min should == 2
     )
   )
 
-  describe("max", 
-    it("should be 0 for taking:nothing", 
+  describe("max",
+    it("should be 0 for taking:nothing",
       Arity taking:nothing max should == 0
     )
-    
-    it("should be -1 for taking:everything", 
+
+    it("should be -1 for taking:everything",
       Arity taking:everything max should == -1
     )
-    
-    it("should return max number of required arguments", 
+
+    it("should return max number of required arguments",
       Arity from(a, b) max should == 2
     )
 
-    it("should return max number of required arguments including optionals", 
+    it("should return max number of required arguments including optionals",
       Arity from(a, b, c 1) max should == 3
     )
 
-    it("should return max number of required arguments including rest", 
+    it("should return max number of required arguments including rest",
       Arity from(a, b, c 1, +d) max should == -4
     )
 
-    it("should return negative when rest present", 
+    it("should return negative when rest present",
       Arity from(+d) max should == -1
     )
   )
 
-  describe("takeKeyword?", 
-    it("should be false for taking:nothing", 
+  describe("takeKeyword?",
+    it("should be false for taking:nothing",
       Arity taking:nothing takeKeyword?(:foo) should be false
     )
 
-    it("should be false for taking:everything", 
+    it("should be false for taking:everything",
       Arity taking:nothing takeKeyword?(:foo) should be false
     )
 
-    it("should be false for arity having no keywords", 
+    it("should be false for arity having no keywords",
       Arity from(a, b 2) takeKeyword?(:foo) should be false
     )
 
-    it("should be true for arity having the keyword", 
+    it("should be true for arity having the keyword",
       Arity from(a, b 2, foo:) takeKeyword?(:foo) should be true
     )
 
-    it("should be false for arity missing the keyword", 
+    it("should be false for arity missing the keyword",
       Arity from(a, b 2, bar:) takeKeyword?(:foo) should be false
     )
 
-    it("should be false for arity taking krest", 
+    it("should be false for arity taking krest",
       Arity from(a, b 2, +:bar) takeKeyword?(:foo) should be true
     )
   )
@@ -346,10 +346,10 @@ describe("Arity",
       a should mimic(Arity Arguments)
       a positional should == [22]
     )
-    
+
   )
 
-  describe("satisfied?", 
+  describe("satisfied?",
     it("should not evaluate by default",
       o = Origin mimic do (m = method(@evaled = true) )
       Arity from(n) satisfied?(nono) should be true
@@ -357,7 +357,7 @@ describe("Arity",
     )
   )
 
-  describe("satisfiedOn?", 
+  describe("satisfiedOn?",
     it("should evaluate by default",
       o = Origin mimic do (m = method(@evaled = true) )
       Arity from(n) satisfiedOn?(o, m) should be true
@@ -365,7 +365,7 @@ describe("Arity",
     )
   )
 
-  describe("apply", 
+  describe("apply",
     it("should not evaluate by default",
       o = Origin mimic do (m = method(@evaled = true) )
       a = Arity from(n) apply(m)
@@ -375,7 +375,7 @@ describe("Arity",
     )
   )
 
-  describe("applyOn", 
+  describe("applyOn",
     it("should evaluate by default",
       o = Origin mimic do (m = method(@evaled = true) )
       a = Arity from(n) applyOn(o, m)
@@ -385,13 +385,13 @@ describe("Arity",
     )
   )
 
-  describe("Arguments", 
+  describe("Arguments",
     describe("positional",
-      it("should be empty for taking:nothing", 
+      it("should be empty for taking:nothing",
           Arity taking:nothing applyOn(Origin mimic, 1) positional should be empty
         )
 
-        it("should be empty for taking:everything", 
+        it("should be empty for taking:everything",
           Arity taking:everything applyOn(Origin mimic, 1) positional should be empty
         )
 
@@ -399,7 +399,7 @@ describe("Arity",
           a = Arity from(a, b 1, +c) applyOn(Origin mimic, 1, 2, 3)
           a positional should == [1, 2]
         )
-        
+
         it("should be empty if no positional arguments given",
           a = Arity from(a 0, b 1, +c, +:krest) applyOn(Origin mimic, o: 1, p: 2)
           a positional should be empty
@@ -407,11 +407,11 @@ describe("Arity",
       )
 
     describe("keywords",
-      it("should be empty for taking:nothing", 
+      it("should be empty for taking:nothing",
           Arity taking:nothing applyOn(Origin mimic, a: 1) keywords should be empty
         )
 
-        it("should be empty for taking:everything", 
+        it("should be empty for taking:everything",
           Arity taking:everything applyOn(Origin mimic, a: 1) keywords should be empty
         )
 
@@ -421,7 +421,7 @@ describe("Arity",
           a keywords[:a] should == 1
           a keywords[:b] should == 3
         )
-        
+
         it("should be empty if no keyword arguments given",
           a = Arity from(a 0, b 1, +c, +:krest) applyOn(Origin mimic, 2, 3)
           a keywords should be empty
@@ -429,11 +429,11 @@ describe("Arity",
       )
 
       describe("rest",
-        it("should be empty for taking:nothing", 
+        it("should be empty for taking:nothing",
           Arity taking:nothing applyOn(Origin mimic, 1, 2) rest should be empty
         )
 
-        it("should be include elements for taking:everything", 
+        it("should be include elements for taking:everything",
           Arity taking:everything applyOn(Origin mimic, 1, 2) rest should == [1, 2]
         )
 
@@ -446,7 +446,7 @@ describe("Arity",
           a = Arity from(a:, b: 1, +d, +:c) applyOn(Origin mimic, a: 1, d: 2, b: 3, 9)
           a rest should == [9]
         )
-        
+
         it("should be empty if no rest arguments given",
           a = Arity from(a 0, b 1, +c) applyOn(Origin mimic, 2, 3)
           a rest should be empty
@@ -454,11 +454,11 @@ describe("Arity",
       )
 
       describe("krest",
-        it("should be empty for taking:nothing", 
+        it("should be empty for taking:nothing",
           Arity taking:nothing applyOn(Origin mimic, 1, 2) krest should be empty
         )
 
-        it("should be include elements for taking:everything", 
+        it("should be include elements for taking:everything",
           a = Arity taking:everything applyOn(Origin mimic, a: 1, b: 2)
           a krest size should == 2
           a krest[:a] should == 1
@@ -475,7 +475,7 @@ describe("Arity",
           a krest size should == 1
           a krest[:d] should == 2
         )
-        
+
         it("should be empty if no krest arguments given",
           a = Arity from(a 0, b 1, +c, +:k) applyOn(Origin mimic, 2, 3)
           a krest should be empty
@@ -483,12 +483,12 @@ describe("Arity",
       )
 
       describe("extraPositional",
-        it("should include values for taking:nothing", 
-          a = Arity taking:nothing applyOn(Origin mimic, 1, 2) 
+        it("should include values for taking:nothing",
+          a = Arity taking:nothing applyOn(Origin mimic, 1, 2)
           a extraPositional should == [1, 2]
         )
 
-        it("should be empty for taking:everything", 
+        it("should be empty for taking:everything",
           a = Arity taking:everything applyOn(Origin mimic, 1, 2)
           a extraPositional should be empty
         )
@@ -502,7 +502,7 @@ describe("Arity",
           a = Arity from(a:, b: 1, +:c) applyOn(Origin mimic, a: 1, d: 2, b: 3, 9)
           a extraPositional should == [9]
         )
-        
+
         it("should be empty if no extra positional arguments given",
           a = Arity from(a 0, b 1, +:k) applyOn(Origin mimic, 2, 3, f: 22)
           a extraPositional should be empty
@@ -510,15 +510,15 @@ describe("Arity",
       )
 
       describe("extraKeywords",
-        
-        it("should include values for taking:nothing", 
-          a = Arity taking:nothing applyOn(Origin mimic, a: 1, b: 2) 
+
+        it("should include values for taking:nothing",
+          a = Arity taking:nothing applyOn(Origin mimic, a: 1, b: 2)
           a extraKeywords size should == 2
           a extraKeywords[:a] should == 1
           a extraKeywords[:b] should == 2
         )
 
-        it("should be empty for taking:everything", 
+        it("should be empty for taking:everything",
           a = Arity taking:everything applyOn(Origin mimic, a: 1, b: 2)
           a extraKeywords should be empty
         )
@@ -533,22 +533,22 @@ describe("Arity",
           a extraKeywords size should == 1
           a extraKeywords[:d] should == 2
         )
-        
+
         it("should be empty if no extra keyword arguments given",
           a = Arity from(a 0, b 1, f: 1, +c) applyOn(Origin mimic, 2, 3, f: 22, 9, 9)
           a extraKeywords should be empty
         )
       )
-      
+
 
       describe("missing",
-        
-        it("should be empty for taking:nothing", 
-          a = Arity taking:nothing applyOn(Origin mimic, 1, b: 2) 
+
+        it("should be empty for taking:nothing",
+          a = Arity taking:nothing applyOn(Origin mimic, 1, b: 2)
           a missing should be empty
         )
 
-        it("should be empty for taking:everything", 
+        it("should be empty for taking:everything",
           a = Arity taking:everything applyOn(Origin mimic, 1, b: 2)
           a missing should be empty
         )
@@ -569,22 +569,22 @@ describe("Arity",
 
       describe("order",
 
-        it("should be zero for taking:nothing without args", 
-          a = Arity taking:nothing applyOn(Origin mimic) 
+        it("should be zero for taking:nothing without args",
+          a = Arity taking:nothing applyOn(Origin mimic)
           a order should == 0
         )
-        
-        it("should be positive for taking:nothing with args", 
-          a = Arity taking:nothing applyOn(Origin mimic, 1, b: 2) 
+
+        it("should be positive for taking:nothing with args",
+          a = Arity taking:nothing applyOn(Origin mimic, 1, b: 2)
           a order should == 2
         )
 
-        it("should be zero for taking:everything without args", 
+        it("should be zero for taking:everything without args",
           a = Arity taking:everything applyOn(Origin mimic)
           a order should == 0
         )
 
-        it("should be zero for taking:everything with args", 
+        it("should be zero for taking:everything with args",
           a = Arity taking:everything applyOn(Origin mimic, 1, b: 2)
           a order should == 0
         )
@@ -600,6 +600,6 @@ describe("Arity",
         )
 
       )
-    
+
   )
 )

@@ -40,7 +40,7 @@ public class DefaultMacro extends IokeData implements Named, Inspectable, Associ
     public String getFormattedCode(Object self) throws ControlFlow {
         return "macro(\n  " + Message.formattedCode(code, 2, (IokeObject)self) + ")";
     }
-    
+
     @Override
     public void init(IokeObject macro) throws ControlFlow {
         macro.setKind("DefaultMacro");
@@ -52,7 +52,7 @@ public class DefaultMacro extends IokeData implements Named, Inspectable, Associ
                     return context.runtime.newText(((DefaultMacro)IokeObject.data(on)).name);
                 }
             }));
-        
+
         macro.registerMethod(macro.runtime.newNativeMethod("activates this macro with the arguments given to call", new NativeMethod("call") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
@@ -69,35 +69,35 @@ public class DefaultMacro extends IokeData implements Named, Inspectable, Associ
                     return IokeObject.as(on, context).activate(context, message, context.getRealContext());
                 }
             }));
-        
+
         macro.registerMethod(macro.runtime.newNativeMethod("returns the message chain for this macro", new TypeCheckingNativeMethod.WithNoArguments("message", macro) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return ((AssociatedCode)IokeObject.data(on)).getCode();
                 }
             }));
-        
+
         macro.registerMethod(macro.runtime.newNativeMethod("returns the code for the argument definition", new TypeCheckingNativeMethod.WithNoArguments("argumentsCode", macro) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return context.runtime.newText(((AssociatedCode)IokeObject.data(on)).getArgumentsCode());
                 }
             }));
-        
+
         macro.registerMethod(macro.runtime.newNativeMethod("Returns a text inspection of the object", new TypeCheckingNativeMethod.WithNoArguments("inspect", macro) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return context.runtime.newText(DefaultMacro.getInspect(on));
                 }
             }));
-        
+
         macro.registerMethod(macro.runtime.newNativeMethod("Returns a brief text inspection of the object", new TypeCheckingNativeMethod.WithNoArguments("notice", macro) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return context.runtime.newText(DefaultMacro.getNotice(on));
                 }
             }));
-        
+
         macro.registerMethod(macro.runtime.newNativeMethod("returns the full code of this macro, as a Text", new TypeCheckingNativeMethod.WithNoArguments("code", macro) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
@@ -158,10 +158,10 @@ public class DefaultMacro extends IokeData implements Named, Inspectable, Associ
     @Override
     public Object activateWithCallAndData(final IokeObject self, IokeObject context, IokeObject message, Object on, Object call, Map<String, Object> data) throws ControlFlow {
         if(code == null) {
-            IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
-                                                                         message, 
-                                                                         context, 
-                                                                         "Error", 
+            IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition,
+                                                                         message,
+                                                                         context,
+                                                                         "Error",
                                                                          "Invocation",
                                                                          "NotActivatable"), context).mimic(message, context);
             condition.setCell("message", message);
@@ -205,10 +205,10 @@ public class DefaultMacro extends IokeData implements Named, Inspectable, Associ
     @Override
     public Object activateWithCall(final IokeObject self, IokeObject context, IokeObject message, Object on, Object call) throws ControlFlow {
         if(code == null) {
-            IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
-                                                                         message, 
-                                                                         context, 
-                                                                         "Error", 
+            IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition,
+                                                                         message,
+                                                                         context,
+                                                                         "Error",
                                                                          "Invocation",
                                                                          "NotActivatable"), context).mimic(message, context);
             condition.setCell("message", message);
@@ -248,10 +248,10 @@ public class DefaultMacro extends IokeData implements Named, Inspectable, Associ
     @Override
     public Object activate(final IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
         if(code == null) {
-            IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
-                                                                         message, 
-                                                                         context, 
-                                                                         "Error", 
+            IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition,
+                                                                         message,
+                                                                         context,
+                                                                         "Error",
                                                                          "Invocation",
                                                                          "NotActivatable"), context).mimic(message, context);
             condition.setCell("message", message);
@@ -291,10 +291,10 @@ public class DefaultMacro extends IokeData implements Named, Inspectable, Associ
     @Override
     public Object activateWithData(final IokeObject self, IokeObject context, IokeObject message, Object on, Map<String, Object> data) throws ControlFlow {
         if(code == null) {
-            IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
-                                                                         message, 
-                                                                         context, 
-                                                                         "Error", 
+            IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition,
+                                                                         message,
+                                                                         context,
+                                                                         "Error",
                                                                          "Invocation",
                                                                          "NotActivatable"), context).mimic(message, context);
             condition.setCell("message", message);

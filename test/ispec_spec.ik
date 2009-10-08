@@ -68,7 +68,7 @@ describe(ISpec DescribeContext,
       )
     )
   )
-  
+
   describe("with before block defining variables",
     before(
       test = true
@@ -77,7 +77,7 @@ describe(ISpec DescribeContext,
     it("should have access to variables in test",
       test should be true
     )
-    
+
     describe("in nested context",
       before(
         test2 = true
@@ -90,7 +90,7 @@ describe(ISpec DescribeContext,
       )
     )
   )
-  
+
   describe("with after block checking for variables",
     after(
       test should be true
@@ -170,7 +170,7 @@ describe(ISpec Runner OptionParser,
 
         if(System feature?(:java),
           parser options formatters first output kind should == "java:io:PrintStream"),
-        
+
         if(FileSystem file?("file"),
           FileSystem removeFile!("file")))
     )

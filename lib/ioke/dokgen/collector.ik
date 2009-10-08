@@ -6,7 +6,7 @@ DokGen do(
     KindsToAvoid << JavaGround)
 
   collect = method(
-    current, collected, 
+    current, collected,
     visited set,
     idGenerator fn(current, fn(current++)) call(0),
 
@@ -19,18 +19,18 @@ DokGen do(
             collect(c value, collected, visited, idGenerator)),
 
           id = idGenerator call
-          if(code?(c value), 
+          if(code?(c value),
             fname = c value message filename
             (collected collectedFiles[fname] ||= []) << [cell(:current), c key, c value, id])
           (collected collectedCells[c key asText] ||= []) << [cell(:current), c key, c value, id, {}]))))
-        
+
   kindName? = method(name,
     if((#/^[A-Z]/ =~ name) || ([:nil, :true, :false] include?(name)),
       true,
       false))
 
   code? = method(val,
-    ((cell(:val) kind?("DefaultMethod")) || 
+    ((cell(:val) kind?("DefaultMethod")) ||
       (cell(:val) kind?("LexicalBlock")) ||
       (cell(:val) kind?("DefaultMacro")) ||
       (cell(:val) kind?("LexicalMacro")) ||

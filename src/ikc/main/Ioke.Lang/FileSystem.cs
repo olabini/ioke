@@ -13,7 +13,7 @@ namespace Ioke.Lang {
 
         public class IokeFile : IokeIO {
             //            private FileInfo file;
-            
+
             public IokeFile(FileInfo file) : base(null, null) {
                 //                this.file = file;
 
@@ -30,8 +30,8 @@ namespace Ioke.Lang {
 
                 obj.Kind = "FileSystem File";
 
-                obj.RegisterMethod(runtime.NewNativeMethod("Closes any open stream to this file", 
-                                                           new TypeCheckingNativeMethod.WithNoArguments("close", obj, 
+                obj.RegisterMethod(runtime.NewNativeMethod("Closes any open stream to this file",
+                                                           new TypeCheckingNativeMethod.WithNoArguments("close", obj,
                                                                                                         (method, on, args, keywords, context, message) => {
                                                                                                             try {
                                                                                                                 TextWriter writer = IokeIO.GetWriter(on);
@@ -54,7 +54,7 @@ namespace Ioke.Lang {
             file.Init();
             obj.RegisterCell("File", file);
 
-            obj.RegisterMethod(runtime.NewNativeMethod("Tries to interpret the given arguments as strings describing file globs, and returns an array containing the result of applying these globs.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("Tries to interpret the given arguments as strings describing file globs, and returns an array containing the result of applying these globs.",
                                                        new NativeMethod("[]", DefaultArgumentsDefinition.builder()
                                                                         .WithRest("globTexts")
                                                                         .Arguments,
@@ -70,7 +70,7 @@ namespace Ioke.Lang {
                                                                             return context.runtime.NewList(result);
                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("Takes one string argument and returns true if it's the relative or absolute name of a directory, and false otherwise.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("Takes one string argument and returns true if it's the relative or absolute name of a directory, and false otherwise.",
                                                        new NativeMethod("directory?", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositional("directoryName")
                                                                         .Arguments,
@@ -85,11 +85,11 @@ namespace Ioke.Lang {
                                                                             } else {
                                                                                 f = new DirectoryInfo(Path.Combine(context.runtime.CurrentWorkingDirectory, name));
                                                                             }
-                    
+
                                                                             return f.Exists ? context.runtime.True : context.runtime.False;
                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("Takes one string argument that should be a file name, and returns a text of the contents of this file.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("Takes one string argument that should be a file name, and returns a text of the contents of this file.",
                                                        new NativeMethod("readFully", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositional("fileName")
                                                                         .Arguments,
@@ -108,7 +108,7 @@ namespace Ioke.Lang {
                                                                             return context.runtime.NewText(File.ReadAllText(f.FullName));
                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("Takes one string argument and returns true if it's the relative or absolute name of a file, and false otherwise.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("Takes one string argument and returns true if it's the relative or absolute name of a file, and false otherwise.",
                                                        new NativeMethod("file?", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositional("fileName")
                                                                         .Arguments,
@@ -123,18 +123,18 @@ namespace Ioke.Lang {
                                                                             } else {
                                                                                 f = new FileInfo(Path.Combine(context.runtime.CurrentWorkingDirectory, name));
                                                                             }
-                    
+
                                                                             return f.Exists ? context.runtime.True : context.runtime.False;
                                                                         })));
-            
-            obj.RegisterMethod(runtime.NewNativeMethod("Takes one string argument and returns true if it's the relative or absolute name of something that exists.", 
+
+            obj.RegisterMethod(runtime.NewNativeMethod("Takes one string argument and returns true if it's the relative or absolute name of something that exists.",
                                                        new NativeMethod("exists?", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositional("entryName")
                                                                         .Arguments,
                                                                         (method, context, message, on, outer) => {
                                                                             var args = new SaneArrayList();
                                                                             outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, args, new SaneDictionary<string, object>());
-                                                                            
+
                                                                             string name = Text.GetText(args[0]);
                                                                             string nx = null;
                                                                             if(IokeSystem.IsAbsoluteFileName(name)) {
@@ -142,11 +142,11 @@ namespace Ioke.Lang {
                                                                             } else {
                                                                                 nx = Path.Combine(context.runtime.CurrentWorkingDirectory, name);
                                                                             }
-                    
+
                                                                             return (new FileInfo(nx).Exists || new DirectoryInfo(nx).Exists) ? context.runtime.True : context.runtime.False;
                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("Takes one string argument that should be the path of a file or directory, and returns the parent of it - or nil if there is no parent.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("Takes one string argument that should be the path of a file or directory, and returns the parent of it - or nil if there is no parent.",
                                                        new NativeMethod("parentOf", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositional("entryName")
                                                                         .Arguments,
@@ -161,7 +161,7 @@ namespace Ioke.Lang {
                                                                             } else {
                                                                                 nx = Path.Combine(context.runtime.CurrentWorkingDirectory, name);
                                                                             }
-                    
+
                                                                             string parent = Path.GetDirectoryName(nx);
                                                                             if(parent == null) {
                                                                                 return context.runtime.nil;
@@ -180,7 +180,7 @@ namespace Ioke.Lang {
                                                                             return context.runtime.NewText(parent);
                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("Takes a file name and a lexical block - opens the file, ensures that it exists and then yields the file to the block. Finally it closes the file after the block has finished executing, and then returns the result of the block.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("Takes a file name and a lexical block - opens the file, ensures that it exists and then yields the file to the block. Finally it closes the file after the block has finished executing, and then returns the result of the block.",
                                                        new NativeMethod("withOpenFile", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositional("fileName")
                                                                         .WithRequiredPositional("code")
@@ -217,7 +217,7 @@ namespace Ioke.Lang {
                                                                             return result;
                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("Copies a file. Takes two text arguments, where the first is the name of the file to copy and the second is the name of the destination. If the destination is a directory, the file will be copied with the same name, and if it's a filename, the file will get a new name", 
+            obj.RegisterMethod(runtime.NewNativeMethod("Copies a file. Takes two text arguments, where the first is the name of the file to copy and the second is the name of the destination. If the destination is a directory, the file will be copied with the same name, and if it's a filename, the file will get a new name",
                                                        new NativeMethod("copyFile", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositional("fileName")
                                                                         .WithRequiredPositional("destination")
@@ -241,7 +241,7 @@ namespace Ioke.Lang {
                                                                             } else {
                                                                                 nx = Path.Combine(context.runtime.CurrentWorkingDirectory, name2);
                                                                             }
-                                                                            
+
                                                                             if(new DirectoryInfo(nx).Exists) {
                                                                                 nx = Path.Combine(nx, f.Name);
                                                                             }
@@ -255,7 +255,7 @@ namespace Ioke.Lang {
                                                                             return context.runtime.nil;
                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("Takes one string argument and creates a directory with that name. It also takes an optional second argument. If it's true, will try to create all necessary directories inbetween. Default is false. Will signal a condition if the directory already exists, or if there's a file with that name.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("Takes one string argument and creates a directory with that name. It also takes an optional second argument. If it's true, will try to create all necessary directories inbetween. Default is false. Will signal a condition if the directory already exists, or if there's a file with that name.",
                                                        new NativeMethod("createDirectory!", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositional("directoryName")
                                                                         .WithOptionalPositional("createPath", "false")
@@ -280,10 +280,10 @@ namespace Ioke.Lang {
                                                                                     msg = "Can't create directory '" + name + "' since there already exists a file with that name";
                                                                                 }
 
-                                                                                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(runtime.Condition, 
-                                                                                                                                             message, 
-                                                                                                                                             context, 
-                                                                                                                                             "Error", 
+                                                                                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(runtime.Condition,
+                                                                                                                                             message,
+                                                                                                                                             context,
+                                                                                                                                             "Error",
                                                                                                                                              "IO"), context).Mimic(message, context);
                                                                                 condition.SetCell("message", message);
                                                                                 condition.SetCell("context", context);
@@ -297,7 +297,7 @@ namespace Ioke.Lang {
                                                                             return context.runtime.nil;
                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("Takes one string argument and removes a directory with that name. Will signal a condition if the directory doesn't exist, or if there's a file with that name.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("Takes one string argument and removes a directory with that name. Will signal a condition if the directory doesn't exist, or if there's a file with that name.",
                                                        new NativeMethod("removeDirectory!", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositional("directoryName")
                                                                         .Arguments,
@@ -321,10 +321,10 @@ namespace Ioke.Lang {
                                                                                     msg = "Can't remove directory '" + name + "' since it is a file";
                                                                                 }
 
-                                                                                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(runtime.Condition, 
-                                                                                                                                             message, 
-                                                                                                                                             context, 
-                                                                                                                                             "Error", 
+                                                                                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(runtime.Condition,
+                                                                                                                                             message,
+                                                                                                                                             context,
+                                                                                                                                             "Error",
                                                                                                                                              "IO"), context).Mimic(message, context);
                                                                                 condition.SetCell("message", message);
                                                                                 condition.SetCell("context", context);
@@ -337,8 +337,8 @@ namespace Ioke.Lang {
                                                                             Directory.Delete(nf);
                                                                             return context.runtime.nil;
                                                                         })));
-            
-            obj.RegisterMethod(runtime.NewNativeMethod("Takes one string argument and removes a file with that name. Will signal a condition if the file doesn't exist, or if there's a directory with that name.", 
+
+            obj.RegisterMethod(runtime.NewNativeMethod("Takes one string argument and removes a file with that name. Will signal a condition if the file doesn't exist, or if there's a directory with that name.",
                                                        new NativeMethod("removeFile!", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositional("fileName")
                                                                         .Arguments,
@@ -362,10 +362,10 @@ namespace Ioke.Lang {
                                                                                     msg = "Can't remove file '" + name + "' since it is a directory";
                                                                                 }
 
-                                                                                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(runtime.Condition, 
-                                                                                                                                             message, 
-                                                                                                                                             context, 
-                                                                                                                                             "Error", 
+                                                                                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(runtime.Condition,
+                                                                                                                                             message,
+                                                                                                                                             context,
+                                                                                                                                             "Error",
                                                                                                                                              "IO"), context).Mimic(message, context);
                                                                                 condition.SetCell("message", message);
                                                                                 condition.SetCell("context", context);

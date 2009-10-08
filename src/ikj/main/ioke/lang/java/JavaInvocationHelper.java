@@ -54,7 +54,7 @@ public class JavaInvocationHelper {
         }
 
         try {
-            IokeObject msg = runtime.createMessage(newMessage); 
+            IokeObject msg = runtime.createMessage(newMessage);
 
             Object result = ((Message)IokeObject.data(msg)).sendTo(msg, runtime.ground, pr);
             if(result instanceof Byte) {
@@ -79,7 +79,7 @@ public class JavaInvocationHelper {
         }
 
         try {
-            IokeObject msg = runtime.createMessage(newMessage); 
+            IokeObject msg = runtime.createMessage(newMessage);
             Object result = ((Message)IokeObject.data(msg)).sendTo(msg, runtime.ground, pr);
             if(result instanceof Integer) {
                 return Integer.valueOf((Integer)result);
@@ -103,7 +103,7 @@ public class JavaInvocationHelper {
         }
 
         try {
-            IokeObject msg = runtime.createMessage(newMessage); 
+            IokeObject msg = runtime.createMessage(newMessage);
             Object result = ((Message)IokeObject.data(msg)).sendTo(msg, runtime.ground, pr);
             if(result instanceof Short) {
                 return Short.valueOf((Short)result);
@@ -127,7 +127,7 @@ public class JavaInvocationHelper {
         }
 
         try {
-            IokeObject msg = runtime.createMessage(newMessage); 
+            IokeObject msg = runtime.createMessage(newMessage);
             Object result = ((Message)IokeObject.data(msg)).sendTo(msg, runtime.ground, pr);
             if(result instanceof Character) {
                 return Character.valueOf((Character)result);
@@ -151,7 +151,7 @@ public class JavaInvocationHelper {
         }
 
         try {
-            IokeObject msg = runtime.createMessage(newMessage); 
+            IokeObject msg = runtime.createMessage(newMessage);
             Object result = ((Message)IokeObject.data(msg)).sendTo(msg, runtime.ground, pr);
             if(result instanceof Boolean) {
                 return Boolean.valueOf((Boolean)result);
@@ -177,7 +177,7 @@ public class JavaInvocationHelper {
         }
 
         try {
-            IokeObject msg = runtime.createMessage(newMessage); 
+            IokeObject msg = runtime.createMessage(newMessage);
             Object result = ((Message)IokeObject.data(msg)).sendTo(msg, runtime.ground, pr);
             if(result instanceof Long) {
                 return Long.valueOf((Long)result);
@@ -201,7 +201,7 @@ public class JavaInvocationHelper {
         }
 
         try {
-            IokeObject msg = runtime.createMessage(newMessage); 
+            IokeObject msg = runtime.createMessage(newMessage);
             Object result = ((Message)IokeObject.data(msg)).sendTo(msg, runtime.ground, pr);
 
             if(result instanceof Float) {
@@ -226,7 +226,7 @@ public class JavaInvocationHelper {
         }
 
         try {
-            IokeObject msg = runtime.createMessage(newMessage); 
+            IokeObject msg = runtime.createMessage(newMessage);
             Object result = ((Message)IokeObject.data(msg)).sendTo(msg, runtime.ground, pr);
 
             if(result instanceof Double) {
@@ -245,14 +245,14 @@ public class JavaInvocationHelper {
     public static Object objectInvocation(IokeJavaIntegrated object, Object[] args, String name, Class expectedType) {
         IokeObject pr = object.__get_IokeProxy();
         Runtime runtime = object.__get_IokeRuntime();
-        
+
         Message newMessage = new Message(runtime, name);
         for(Object arg : args) {
             newMessage.getArguments(null).add(runtime.createMessage(Message.wrap(arg, runtime)));
         }
 
         try {
-            IokeObject msg = runtime.createMessage(newMessage); 
+            IokeObject msg = runtime.createMessage(newMessage);
             return tryConvertTo(((Message)IokeObject.data(msg)).sendTo(msg, runtime.ground, pr), expectedType, runtime);
         } catch(Throwable e) {
             return null;

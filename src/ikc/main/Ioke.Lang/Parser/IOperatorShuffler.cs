@@ -6,7 +6,7 @@ namespace Ioke.Lang.Parser {
     public interface IOperatorShufflerFactory {
         IOperatorShuffler Create(IokeObject msg, IokeObject context, IokeObject message);
     }
-    
+
     public interface IOperatorShuffler {
         void Attach(IokeObject msg, IList<IokeObject> expressions);
         void NextMessage(IList<IokeObject> expressions);

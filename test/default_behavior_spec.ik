@@ -2,15 +2,15 @@
 use("ispec")
 
 describe(DefaultBehavior,
-  describe("internal:concatenateText", 
-    it("should combine several strings", 
+  describe("internal:concatenateText",
+    it("should combine several strings",
       internal:concatenateText("foo", "bar", "flux") should == "foobarflux"
 
       x = "str"
       internal:concatenateText("foo", x, "flux") should == "foostrflux"
     )
 
-    it("should combine strings with the text representation of other stuff", 
+    it("should combine strings with the text representation of other stuff",
       internal:concatenateText("foo", 123, "flux") should == "foo123flux"
       internal:concatenateText([1,2,3], "foo") should == "[1, 2, 3]foo"
     )
@@ -29,117 +29,117 @@ describe(DefaultBehavior,
       #/foo #{"bar"}/m should == #/foo bar/m
     )
   )
-  
-  describe("internal:createText", 
-    it("should be possible to invoke from Ioke with a regular String", 
+
+  describe("internal:createText",
+    it("should be possible to invoke from Ioke with a regular String",
       internal:createText("foo") should == "foo"
     )
   )
 
-  describe("same?", 
-    it("should return false for different objects", 
+  describe("same?",
+    it("should return false for different objects",
       Origin mimic should not be same(Origin mimic)
     )
 
-    it("should return true for the same objects", 
+    it("should return true for the same objects",
       x = Origin mimic
       x should be same(x)
     )
   )
-  
-  describe("uniqueHexId", 
-    it("should return different ids for different objects", 
+
+  describe("uniqueHexId",
+    it("should return different ids for different objects",
       Origin mimic uniqueHexId should not == Origin mimic uniqueHexId
     )
 
-    it("should return the same id for the same object", 
+    it("should return the same id for the same object",
       x = Origin mimic
       x uniqueHexId should == x uniqueHexId
     )
   )
-  
-  describe("in?", 
-    it("should call 'include?' on the argument with itself as argument", 
+
+  describe("in?",
+    it("should call 'include?' on the argument with itself as argument",
       x = Origin mimic
       x include? = method(arg, [arg, 42])
       y = Origin mimic
       y in?(x) should == [y, 42]
     )
-    
-    it("should return true if the object is in a list", 
+
+    it("should return true if the object is in a list",
       1 in?([1,2,3]) should be true
     )
 
-    it("should return false if the object is not in a list", 
+    it("should return false if the object is not in a list",
       1 in?([2, 3, 4]) should be false
     )
   )
-  
-  describe("derive", 
-    it("should be able to derive from Origin", 
+
+  describe("derive",
+    it("should be able to derive from Origin",
       result = Origin derive
       result should have kind("Origin")
       result should not be same(Origin)
     )
 
-    it("should be able to derive from Ground", 
+    it("should be able to derive from Ground",
       result = Ground derive
       result should have kind("Ground")
       result should not be same(Ground)
     )
 
-    it("should be able to derive from Text", 
+    it("should be able to derive from Text",
       result = Text derive
       result should have kind("Text")
       result should not be same(Text)
     )
   )
-  
-  describe("break", 
-    it("should have nil as value by default", 
+
+  describe("break",
+    it("should have nil as value by default",
       loop(break) should be nil
     )
 
-    it("should take a return value", 
+    it("should take a return value",
       loop(break(42)) should == 42
     )
   )
-  
-  describe("return", 
-    it("should have nil as value by default", 
+
+  describe("return",
+    it("should have nil as value by default",
       method(return) call should be nil
     )
 
-    it("should take a return value", 
+    it("should take a return value",
       method(return(42)) call should == 42
     )
   )
-  
-  describe("until", 
-    it("should not do anything if initial argument is true", 
+
+  describe("until",
+    it("should not do anything if initial argument is true",
       x = 42
       until(true, x = 43)
       x should == 42
     )
-    
-    it("should loop until the argument becomes true", 
+
+    it("should loop until the argument becomes true",
       x=42
       until(x == 45, x++)
       x should == 45
     )
-    
-    it("should return the last statement value", 
+
+    it("should return the last statement value",
       x=42
       until(x==43, x++. "blurg") should == "blurg"
     )
-    
-    it("should be interrupted by break", 
+
+    it("should be interrupted by break",
       x=42
       until(x==50, x++. if(x==45, break))
       x should == 45
     )
-    
-    it("should be continued by continue", 
+
+    it("should be continued by continue",
       count=0
       x=42
       until(x==50, count++. if(x==45, x = 47. continue). x++.)
@@ -147,141 +147,141 @@ describe(DefaultBehavior,
       count should == 7
     )
 
-    it("should return nil if no arguments provided", 
+    it("should return nil if no arguments provided",
       until() should be nil
     )
   )
 
-  describe("while", 
-    it("should not do anything if initial argument is false", 
+  describe("while",
+    it("should not do anything if initial argument is false",
       x = 42
       while(false, x=43)
       x should == 42
     )
-    
-    it("should loop until the argument becomes false", 
+
+    it("should loop until the argument becomes false",
       x = 42
       while(x<45, x++)
       x should == 45
     )
-    
-    it("should return the last statement value", 
+
+    it("should return the last statement value",
       x=42
       while(x<43, x++. "blurg") should == "blurg"
     )
-    
-    it("should be interrupted by break", 
+
+    it("should be interrupted by break",
       x=42
       while(x<50, x++. if(x==45, break))
       x should == 45
     )
 
-    it("should be continued by continue", 
+    it("should be continued by continue",
       count=0. x=42. while(x<50, count++. if(x==45, x = 47. continue). x++.)
       x should == 50
       count should == 7
     )
-    
-    it("should return nil if no arguments provided", 
+
+    it("should return nil if no arguments provided",
       while() should be nil
     )
   )
-  
-  describe("loop", 
-    it("should loop until interrupted by break", 
+
+  describe("loop",
+    it("should loop until interrupted by break",
       x=42
       loop(x++. if(x==45, break))
       x should == 45
     )
   )
 
-  describe("if", 
-    it("should evaluate it's first element once", 
+  describe("if",
+    it("should evaluate it's first element once",
       x=42
       if(x++)
       x should == 43
     )
-    
-    it("should return it's second argument if the first element evaluates to true", 
+
+    it("should return it's second argument if the first element evaluates to true",
       if(true, 42, 43) should == 42
     )
 
-    it("should return it's third argument if the first element evaluates to false", 
+    it("should return it's third argument if the first element evaluates to false",
       if(false, 42, 43) should == 43
     )
-    
-    it("should return the result of evaluating the first argument if there are no more arguments", 
+
+    it("should return the result of evaluating the first argument if there are no more arguments",
       if(44) should == 44
     )
-    
-    it("should return the result of evaluating the first argument if it is false and there are only two arguments", 
+
+    it("should return the result of evaluating the first argument if it is false and there are only two arguments",
       if(false) should be false
       if(nil) should be nil
     )
-    
-    it("should assign the test result to the variable it", 
+
+    it("should assign the test result to the variable it",
       if(42, it) should == 42
       if(nil, 42, it) should be nil
       if(false, 42, it) should be false
       if("str", 42, it) should == 42
     )
 
-    it("should have a lexical context for the it variable", 
+    it("should have a lexical context for the it variable",
       if(42, fn(it)) call should == 42
     )
 
-    it("should be possible to nest it variables lexically", 
+    it("should be possible to nest it variables lexically",
       if(42, [it, if(13, [it, if(nil, 44, it), it])]) should == [42, [13, nil, 13]]
     )
   )
 
-  describe("unless", 
-    it("should evaluate it's first element once", 
+  describe("unless",
+    it("should evaluate it's first element once",
       x=42
       unless(x++)
       x should == 43
     )
-    
-    it("should return it's second argument if the first element evaluates to false", 
+
+    it("should return it's second argument if the first element evaluates to false",
       unless(false, 42, 43) should == 42
     )
 
-    it("should return it's third argument if the first element evaluates to true", 
+    it("should return it's third argument if the first element evaluates to true",
       unless(true, 42, 43) should == 43
     )
-    
-    it("should return the result of evaluating the first argument if there are no more arguments", 
+
+    it("should return the result of evaluating the first argument if there are no more arguments",
       unless(44) should == 44
 )
-    
-    it("should return the result of evaluating the first argument if it is true and there are only two arguments", 
+
+    it("should return the result of evaluating the first argument if it is true and there are only two arguments",
       unless(true, 13) should be true
     )
-    
-    it("should assign the test result to the variable it", 
+
+    it("should assign the test result to the variable it",
       unless(42, nil, it) should == 42
       unless(nil, it, 42) should be nil
       unless(false, it, 42) should be false
       unless("str", it, 42) should == 42
     )
 
-    it("should have a lexical context for the it variable", 
+    it("should have a lexical context for the it variable",
       unless(42, nil, fn(it)) call should == 42
     )
 
-    it("should be possible to nest it variables lexically", 
+    it("should be possible to nest it variables lexically",
       unless(42, nil, [it, unless(13, nil, [it, unless(nil, it, 44), it])]) should == [42, [13, nil, 13]]
     )
   )
- 
-  describe("asText", 
-    it("should call toString and return the text from that", 
+
+  describe("asText",
+    it("should call toString and return the text from that",
       Origin mimic asText should match(#/^#<Origin:[0-9A-F]+>$/)
     )
   )
 
-  describe("do", 
-    it("should execute a piece of code inside an object", 
+  describe("do",
+    it("should execute a piece of code inside an object",
       r = Origin mimic
       r do(
         s = 42
@@ -292,79 +292,79 @@ describe(DefaultBehavior,
       r t should == "str"
     )
   )
-  
-  describe("nil?", 
-    it("should return true for nil", 
+
+  describe("nil?",
+    it("should return true for nil",
       nil nil? should be true
     )
 
-    it("should return false for false", 
+    it("should return false for false",
       false nil? should be false
     )
-    
-    it("should return false for true", 
+
+    it("should return false for true",
       true nil? should be false
     )
-    
-    it("should return false for a Number", 
+
+    it("should return false for a Number",
       123 nil? should be false
     )
-    
-    it("should return false for a Text", 
+
+    it("should return false for a Text",
       "flurg" nil? should be false
     )
   )
 
-  describe("true?", 
-    it("should return false for nil", 
+  describe("true?",
+    it("should return false for nil",
       nil true? should be false
     )
 
-    it("should return false for false", 
+    it("should return false for false",
       false true? should be false
     )
-    
-    it("should return true for true", 
+
+    it("should return true for true",
       true true? should be true
     )
-    
-    it("should return true for a Number", 
+
+    it("should return true for a Number",
       123 true? should be true
     )
-    
-    it("should return true for a Text", 
+
+    it("should return true for a Text",
       "flurg" true? should be true
     )
   )
 
-  describe("false?", 
-    it("should return true for nil", 
+  describe("false?",
+    it("should return true for nil",
       nil false? should be true
     )
 
-    it("should return true for false", 
+    it("should return true for false",
       false false? should be true
     )
-    
-    it("should return false for true", 
+
+    it("should return false for true",
       true false? should be false
     )
-    
-    it("should return false for a Number", 
+
+    it("should return false for a Number",
       123 false? should be false
     )
-    
-    it("should return false for a Text", 
+
+    it("should return false for a Text",
       "flurg" false? should be false
     )
   )
 
-  describe("mimics", 
-    it("should return a list with Origin for a simple mimic", 
+  describe("mimics",
+    it("should return a list with Origin for a simple mimic",
       Origin mimic mimics should == [Origin]
     )
 
-    it("should return a list with all mimics", 
+    it("should return a list with all mimics",
       X = Origin mimic
       Y = Origin mimic
       Z = Origin mimic
@@ -375,14 +375,14 @@ describe(DefaultBehavior,
     )
   )
 
-  describe("removeAllMimics!", 
-    it("should return the object", 
+  describe("removeAllMimics!",
+    it("should return the object",
       x = Origin mimic
       x uniqueHexId = DefaultBehavior cell(:uniqueHexId)
       x removeAllMimics! uniqueHexId should == x uniqueHexId
     )
 
-    it("should remove all mimics", 
+    it("should remove all mimics",
       x = Origin mimic
       x mimic!(Text)
       x mimics = DefaultBehavior cell(:mimics)
@@ -390,24 +390,24 @@ describe(DefaultBehavior,
     )
   )
 
-  describe("removeMimic!", 
-    it("should not remove something it doesn't mimic", 
+  describe("removeMimic!",
+    it("should not remove something it doesn't mimic",
       Origin mimic removeMimic!("foo") mimics should == [Origin]
     )
 
-    it("should return the object", 
+    it("should return the object",
       x = Origin mimic
       x removeMimic!(1) should == x
     )
-    
-    it("should remove any mimic it has", 
+
+    it("should remove any mimic it has",
       x = Origin mimic
       x mimics = DefaultBehavior cell(:mimics)
       x removeMimic!(Origin)
       x mimics should == []
     )
 
-    it("should not remove any other mimic", 
+    it("should not remove any other mimic",
       x = Origin mimic
       y = Origin mimic
       x mimic!(y)
@@ -415,10 +415,10 @@ describe(DefaultBehavior,
       x mimics should == [Origin]
     )
   )
-  
-  
-  describe("prependMimic!", 
-    it("should add a new mimic to the list of mimics", 
+
+
+  describe("prependMimic!",
+    it("should add a new mimic to the list of mimics",
       f = Origin mimic
       g = Origin mimic
       f prependMimic!(g)
@@ -427,7 +427,7 @@ describe(DefaultBehavior,
       f mimics[0] should == g
     )
 
-    it("should not add a mimic that's already in the list", 
+    it("should not add a mimic that's already in the list",
       f = Origin mimic
       f prependMimic!(Origin)
       f prependMimic!(Origin)
@@ -436,30 +436,30 @@ describe(DefaultBehavior,
       f mimics length should == 1
     )
 
-    it("should not be able to mimic nil", 
+    it("should not be able to mimic nil",
       fn(Origin mimic prependMimic!(nil)) should signal(Condition Error CantMimicOddball)
     )
-    
-    it("should not be able to mimic true", 
+
+    it("should not be able to mimic true",
       fn(Origin mimic prependMimic!(true)) should signal(Condition Error CantMimicOddball)
     )
-    
-    it("should not be able to mimic false", 
+
+    it("should not be able to mimic false",
       fn(Origin mimic prependMimic!(false)) should signal(Condition Error CantMimicOddball)
     )
-    
-    it("should not be able to mimic symbols", 
+
+    it("should not be able to mimic symbols",
       fn(Origin mimic prependMimic!(:foo)) should signal(Condition Error CantMimicOddball)
     )
-    
-    it("should return the receiving object", 
+
+    it("should return the receiving object",
       f = Origin mimic
       f prependMimic!(Origin) should == f
     )
   )
-  
-  describe("kind?", 
-    it("should return false if the kind doesn't match", 
+
+  describe("kind?",
+    it("should return false if the kind doesn't match",
       Text kind?("nil") should be false
       Text kind?("Number") should be false
       "" kind?("nil") should be false
@@ -467,11 +467,11 @@ describe(DefaultBehavior,
       "" kind?("System") should be false
     )
 
-    it("should return true if the current object has the kind", 
+    it("should return true if the current object has the kind",
       Text kind?("Text") should be true
     )
-    
-    it("should return true if the main mimic has the kind", 
+
+    it("should return true if the main mimic has the kind",
       "" kind?("Text") should be true
       "" kind?("DefaultBehavior") should be true
       "" kind?("Base") should be true
@@ -479,11 +479,11 @@ describe(DefaultBehavior,
       "" kind?("Origin") should be true
     )
 
-    it("should return true if another mimic has the kind", 
+    it("should return true if another mimic has the kind",
       123 kind?("Mixins Comparing") should be true
     )
 
-    it("should handle a cycle of mimics correctly", 
+    it("should handle a cycle of mimics correctly",
       f = Origin mimic. f mimic!(f). f kind?("Origin") should be true
       f = Origin mimic. Origin mimic!(f). f kind?("Origin") should be true
       f = Origin mimic. Origin mimic!(f). f kind?("DefaultBehavior") should be true
@@ -493,29 +493,29 @@ describe(DefaultBehavior,
       fn("" kind?([])) should signal(Condition Error Type IncorrectType)
     )
   )
-  
-  describe("mimics?", 
-    it("should return false if the object doesn't mimic the argument", 
+
+  describe("mimics?",
+    it("should return false if the object doesn't mimic the argument",
       f = Origin mimic. Origin mimics?(f) should be false
       f = Origin mimic. DefaultBehavior mimics?(f) should be false
       f = Origin mimic. 12 mimics?(f) should be false
       f = Origin mimic. f mimics?(12) should be false
     )
-    
-    it("should return true if the object is the same as the argument", 
+
+    it("should return true if the object is the same as the argument",
       f = Origin mimic. f mimics?(f) should be true
       Origin mimics?(Origin) should be true
     )
 
-    it("should return true if any of the mimics are the argument", 
+    it("should return true if any of the mimics are the argument",
       x = Origin mimic. y = x mimic. z = y mimic. z mimics?(Origin) should be true
       x = Origin mimic. y = x mimic. z = y mimic. z mimics?(x) should be true
       x = Origin mimic. y = x mimic. z = y mimic. z mimics?(y) should be true
       x = Origin mimic. y = x mimic. z = y mimic. z mimics?(z) should be true
       f = Origin mimic. Origin mimic!(f). x = Origin mimic. y = x mimic. z = y mimic. z mimics?(f) should be true
     )
-    
-    it("should handle a cycle of mimics correctly", 
+
+    it("should handle a cycle of mimics correctly",
       x = Origin mimic. y = x mimic. z = y mimic. Origin mimic!(z). z mimics?(Number) should be false
       x = Origin mimic. y = x mimic. z = y mimic. Origin mimic!(z). z mimics?(Origin) should be true
       x = Origin mimic. y = x mimic. z = y mimic. Origin mimic!(z). z mimics?(Base) should be true
@@ -523,44 +523,44 @@ describe(DefaultBehavior,
     )
   )
 
-  describe("is?", 
-    it("should return false if the object doesn't mimic the argument", 
+  describe("is?",
+    it("should return false if the object doesn't mimic the argument",
       f = Origin mimic. Origin is?(f) should be false
       f = Origin mimic. DefaultBehavior is?(f) should be false
       f = Origin mimic. 12 is?(f) should be false
       f = Origin mimic. f is?(12) should be false
     )
-    
-    it("should return true if the object is the same as the argument", 
+
+    it("should return true if the object is the same as the argument",
       f = Origin mimic. f is?(f) should be true
       Origin is?(Origin) should be true
     )
 
-    it("should return true if any of the mimics are the argument", 
+    it("should return true if any of the mimics are the argument",
       x = Origin mimic. y = x mimic. z = y mimic. z is?(Origin) should be true
       x = Origin mimic. y = x mimic. z = y mimic. z is?(x) should be true
       x = Origin mimic. y = x mimic. z = y mimic. z is?(y) should be true
       x = Origin mimic. y = x mimic. z = y mimic. z is?(z) should be true
       f = Origin mimic. Origin mimic!(f). x = Origin mimic. y = x mimic. z = y mimic. z is?(f) should be true
     )
-    
-    it("should handle a cycle of mimics correctly", 
+
+    it("should handle a cycle of mimics correctly",
       x = Origin mimic. y = x mimic. z = y mimic. Origin mimic!(z). z is?(Number) should be false
       x = Origin mimic. y = x mimic. z = y mimic. Origin mimic!(z). z is?(Origin) should be true
       x = Origin mimic. y = x mimic. z = y mimic. Origin mimic!(z). z is?(Base) should be true
       x = Origin mimic. x mimic!(x). x is?(Origin) should be true
     )
   )
-  
-  describe("mimic!", 
-    it("should add a new mimic to the list of mimics", 
+
+  describe("mimic!",
+    it("should add a new mimic to the list of mimics",
       f = Origin mimic. g = Origin mimic. f mimic!(g)
       f mimics length should == 2
       f mimics[0] should == Origin
       f mimics[1] should == g
     )
 
-    it("should not add a mimic that's already in the list", 
+    it("should not add a mimic that's already in the list",
       f = Origin mimic
       f mimic!(Origin)
       f mimic!(Origin)
@@ -569,34 +569,34 @@ describe(DefaultBehavior,
       f mimics length should == 1
     )
 
-    it("should not be able to mimic nil", 
+    it("should not be able to mimic nil",
       fn(Origin mimic mimic!(nil)) should signal(Condition Error CantMimicOddball)
     )
-    
-    it("should not be able to mimic true", 
+
+    it("should not be able to mimic true",
       fn(Origin mimic mimic!(true)) should signal(Condition Error CantMimicOddball)
     )
-    
-    it("should not be able to mimic false", 
+
+    it("should not be able to mimic false",
       fn(Origin mimic mimic!(false)) should signal(Condition Error CantMimicOddball)
     )
-    
-    it("should not be able to mimic symbols", 
+
+    it("should not be able to mimic symbols",
       fn(Origin mimic mimic!(:foo)) should signal(Condition Error CantMimicOddball)
     )
-    
-    it("should return the receiving object", 
+
+    it("should return the receiving object",
       f = Origin mimic
       f mimic!(Origin) should == f
     )
   )
-  
-  describe("with", 
-    it("should just mimic an object if no arguments given", 
+
+  describe("with",
+    it("should just mimic an object if no arguments given",
       Origin with cellNames should == []
     )
 
-    it("should set the given keywords as cells", 
+    it("should set the given keywords as cells",
       Origin with(foo: 13) cellNames should == [:foo]
       Origin with(foo: 13) cells should == {foo: 13}
       Origin with(foo: 13, bar: 14) cellNames should == [:foo, :bar]
@@ -604,8 +604,8 @@ describe(DefaultBehavior,
     )
   )
 
-  describe("!", 
-    it("should return the result of calling not on the object", 
+  describe("!",
+    it("should return the result of calling not on the object",
       x = Origin mimic
       x not = method(53)
       !x should == 53
@@ -616,196 +616,196 @@ describe(DefaultBehavior,
     )
   )
 
-  describe("not", 
-    it("should return nil for a number", 
+  describe("not",
+    it("should return nil for a number",
       123 not should be nil
     )
 
-    it("should return nil for a text", 
+    it("should return nil for a text",
       "foo" not should be nil
     )
   )
 
-  describe("and", 
-    it("should evaluate it's argument", 
+  describe("and",
+    it("should evaluate it's argument",
       x=41
       13 and(x=42)
       x should == 42
     )
 
-    it("should return the result of the argument", 
+    it("should return the result of the argument",
       5353 and(42) should == 42
     )
 
-    it("should be available in infix", 
+    it("should be available in infix",
       ("flurg" and 43) should == 43
     )
   )
 
-  describe("&&", 
-    it("should evaluate it's argument", 
+  describe("&&",
+    it("should evaluate it's argument",
       x=41
       13 &&(x=42)
       x should == 42
     )
 
-    it("should return the result of the argument", 
+    it("should return the result of the argument",
       5353 &&(42) should == 42
     )
 
-    it("should be available in infix", 
+    it("should be available in infix",
       ("flurg" && 43) should == 43
     )
   )
 
-  describe("?&", 
-    it("should evaluate it's argument", 
+  describe("?&",
+    it("should evaluate it's argument",
       x=41
       13 ?&(x=42)
       x should == 42
     )
 
-    it("should return the result of the argument", 
+    it("should return the result of the argument",
       5353 ?&(42) should == 42
     )
 
-    it("should be available in infix", 
+    it("should be available in infix",
       ("flurg" ?& 43) should == 43
     )
   )
-  
-  describe("or", 
-    it("should not evaluate it's argument", 
+
+  describe("or",
+    it("should not evaluate it's argument",
       x=41
       123 or(x=42)
       x should == 41
     )
 
-    it("should return the receiver", 
+    it("should return the receiver",
       "murg" or(42) should == "murg"
     )
 
-    it("should be available in infix", 
+    it("should be available in infix",
       (444 or 43) should == 444
     )
   )
 
-  describe("||", 
-    it("should not evaluate it's argument", 
+  describe("||",
+    it("should not evaluate it's argument",
       x=41
       123 ||(x=42)
       x should == 41
     )
 
-    it("should return the receiver", 
+    it("should return the receiver",
       "murg" ||(42) should == "murg"
     )
 
-    it("should be available in infix", 
+    it("should be available in infix",
       (444 || 43) should == 444
     )
   )
 
-  describe("?|", 
-    it("should not evaluate it's argument", 
+  describe("?|",
+    it("should not evaluate it's argument",
       x=41
       123 ?|(x=42)
       x should == 41
     )
 
-    it("should return the receiver", 
+    it("should return the receiver",
       "murg" ?|(42) should == "murg"
     )
 
-    it("should be available in infix", 
+    it("should be available in infix",
       (444 ?| 43) should == 444
     )
   )
-  
-  describe("xor", 
-    it("should evaluate it's argument", 
+
+  describe("xor",
+    it("should evaluate it's argument",
       x=41
       30 xor(x=42)
       x should == 42
     )
 
-    it("should return false if the argument is true", 
+    it("should return false if the argument is true",
       (30 xor(true)) should be false
     )
 
-    it("should return true if the argument is false", 
+    it("should return true if the argument is false",
       (30 xor(false)) should be true
     )
 
-    it("should return true if the argument is nil", 
+    it("should return true if the argument is nil",
       (30 xor(nil)) should be true
     )
-    
-    it("should be available in infix", 
+
+    it("should be available in infix",
       (30 xor 43) should be false
     )
   )
 
-  describe("nor", 
-    it("should not evaluate it's argument", 
+  describe("nor",
+    it("should not evaluate it's argument",
       x=41
       30 nor(x=42)
       x should == 41
     )
 
-    it("should return false", 
+    it("should return false",
       30 nor(42) should be false
     )
 
-    it("should be available in infix", 
+    it("should be available in infix",
       (30 nor 43) should be false
     )
   )
 
-  describe("nand", 
-    it("should evaluate it's argument", 
+  describe("nand",
+    it("should evaluate it's argument",
       x=41
       30 nand(x=42)
       x should == 42
     )
 
-    it("should return false if the argument evaluates to true", 
+    it("should return false if the argument evaluates to true",
       (30 nand(42)) should be false
     )
-    
-    it("should return true if the argument evaluates to false", 
+
+    it("should return true if the argument evaluates to false",
       (30 nand(false)) should be true
     )
-    
-    it("should return true if the argument evaluates to nil", 
+
+    it("should return true if the argument evaluates to nil",
       (30 nand(nil)) should be true
     )
 
-    it("should be available in infix", 
+    it("should be available in infix",
       (30 nand 43) should be false
     )
   )
-  
-  describe("genSym", 
-    it("should generate a new thing every time called", 
+
+  describe("genSym",
+    it("should generate a new thing every time called",
       genSym should not == genSym
     )
 
-    it("should generate a symbol", 
+    it("should generate a symbol",
       genSym should have kind("Symbol")
     )
   )
-  
-  describe("message", 
-    it("should return a new message", 
+
+  describe("message",
+    it("should return a new message",
       message("foo") should have kind("Message")
     )
-    
-    it("should take a text argument", 
+
+    it("should take a text argument",
       message("foo") name should == :foo
     )
 
-    it("should take a symbol argument", 
+    it("should take a symbol argument",
       message(:foo) name should == :foo
     )
   )
@@ -890,7 +890,7 @@ describe(DefaultBehavior,
       y uniqueHexId should not == x uniqueHexId
 
       x become!(y)
-      
+
       x uniqueHexId should == y uniqueHexId
       y uniqueHexId should == x uniqueHexId
     )
@@ -902,21 +902,21 @@ describe(DefaultBehavior,
       y should not be same(x)
 
       x become!(y)
-      
+
       x should be same(y)
       y should be same(x)
     )
-    
+
     it("should give objects that mimic each other",
       x = Origin mimic
       y = Origin mimic
 
       x become!(y)
-      
+
       x should be mimic(y)
       y should be mimic(x)
     )
-    
+
     it("should give objects that when modified will change each other",
       x = Origin mimic
       y = Origin mimic
@@ -940,7 +940,7 @@ describe(DefaultBehavior,
     it("should return false on something that isn't frozen",
       x = Origin mimic
       x should not be frozen
-      
+
       x freeze!
 
       x should be frozen
@@ -994,7 +994,7 @@ describe(DefaultBehavior,
       x freeze!
 
       y become!(x)
-      
+
       y should be frozen
     )
   )
@@ -1017,7 +1017,7 @@ describe(DefaultBehavior,
       x should not be frozen
     )
   )
-  
+
   describe("send",
     it("should invoke the method named",
       x = Origin mimic do(

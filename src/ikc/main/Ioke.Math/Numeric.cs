@@ -1,5 +1,5 @@
 
-namespace Ioke.Math { 
+namespace Ioke.Math {
     using System;
     public abstract class Numeric : IComparable {
         public abstract double doubleValue();

@@ -48,24 +48,24 @@ namespace Ioke.Lang {
 
         public override void Init(IokeObject obj) {
             obj.Kind = "Arity";
-        
+
             obj.SetCell("taking:nothing", GetArity(obj, Taking.Nothing));
             obj.SetCell("taking:everything", GetArity(obj, Taking.Everything));
-        
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("Create an Arity object from the given messages. The list of unevaluated messages given to this method will be used as if they were the arguments part of a DefaultMethod definition.", 
+
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("Create an Arity object from the given messages. The list of unevaluated messages given to this method will be used as if they were the arguments part of a DefaultMethod definition.",
                                                            new TypeCheckingNativeMethod("from", TypeCheckingArgumentsDefinition.builder()
                                                                                         .ReceiverMustMimic(obj)
                                                                                         .WithRestUnevaluated("arguments")
                                                                                         .Arguments,
                                                                                         (self, on, args, keywords, context, message) => {
-                                                                                            if (message.Arguments.Count == 0) { 
+                                                                                            if (message.Arguments.Count == 0) {
                                                                                                 return TakingNothing(self);
                                                                                             }
                                                                                             DefaultArgumentsDefinition def = DefaultArgumentsDefinition.CreateFrom(message.Arguments, 0, message.Arguments.Count, message, on, context);
                                                                                             return GetArity(self, def);
                                                                                         })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the names for positional arguments", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the names for positional arguments",
                                                            new TypeCheckingNativeMethod("positionals", TypeCheckingArgumentsDefinition.builder()
                                                                                         .WithOptionalPositional("includeOptionals", "true")
                                                                                         .Arguments,
@@ -88,7 +88,7 @@ namespace Ioke.Lang {
                                                                                             return method.runtime.NewList(names);
                                                                                         })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the names for keyword arguments", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the names for keyword arguments",
                                                            new TypeCheckingNativeMethod.WithNoArguments("keywords", obj,
                                                                                                         (method, on, args, keywords, context, message) => {
                                                                                                             Arity a = (Arity)IokeObject.dataOf(on);
@@ -101,13 +101,13 @@ namespace Ioke.Lang {
                                                                                                             return method.runtime.NewList(names);
                                                                                                         })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the symbol name for the krest argument.", 
-                                                           new TypeCheckingNativeMethod.WithNoArguments("krest", obj, 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the symbol name for the krest argument.",
+                                                           new TypeCheckingNativeMethod.WithNoArguments("krest", obj,
                                                                                                         (method, on, args, keywords, context, message) => {
                                                                                                             Arity a = (Arity)IokeObject.dataOf(on);
                                                                                                             if(a.argumentsDefinition != null) {
                                                                                                                 string name = a.argumentsDefinition.KrestName;
-                                                                                                                if(name == null) { 
+                                                                                                                if(name == null) {
                                                                                                                     return method.runtime.nil;
                                                                                                                 } else {
                                                                                                                     return method.runtime.GetSymbol(name);
@@ -117,7 +117,7 @@ namespace Ioke.Lang {
                                                                                                             }
                                                                                                         })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the symbol name for the rest argument.", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the symbol name for the rest argument.",
                                                            new TypeCheckingNativeMethod.WithNoArguments("rest", obj,
                                                                                                         (method, on, args, keywords, context, message) => {
                                                                                                             Arity a = (Arity)IokeObject.dataOf(on);
@@ -133,7 +133,7 @@ namespace Ioke.Lang {
                                                                                                             }
                                                                                                         })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the text representation of this arity", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the text representation of this arity",
                                                            new TypeCheckingNativeMethod.WithNoArguments("asText", obj,
                                                                                                         (method, on, args, keywords, context, message) => {
                                                                                                             Arity a = (Arity) IokeObject.dataOf(on);

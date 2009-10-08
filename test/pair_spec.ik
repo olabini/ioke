@@ -65,12 +65,12 @@ describe(Pair,
       ((1=>1) <=> (1=>2)) should == (1<=>2)
       ((1=>4) <=> (1=>3)) should == (4<=>3))
   )
-  
+
   describe("inspect",
     it("should return the inspect of something inside it",
       ("foo" => method(blarg fux)) inspect should == "\"foo\" => method(blarg fux)"
     )
-    
+
     it("should return a simple string for something simple",
       (1 => 2) inspect should == "1 => 2"
     )

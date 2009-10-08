@@ -8,7 +8,7 @@ package ioke.lang.test;
  */
 public class InstanceMethods {
     public InstanceMethods() {}
-    
+
     public String overloaded(String s) {
         if(s == null) {
             return "overloaded(null: String)";

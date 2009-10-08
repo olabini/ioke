@@ -25,8 +25,8 @@ DokGen do(
     copyReadmeIfAvailable = method(dir,
       if(FileSystem exists?("README"),
 
-        generateFromTemplate(Templates Readme, 
-          out: "#{dir}/files/README.html", 
+        generateFromTemplate(Templates Readme,
+          out: "#{dir}/files/README.html",
           content: FileSystem readFully("README"),
           basePath: "../"),
 
@@ -36,7 +36,7 @@ DokGen do(
     copyStationary = method(file, dir,
       FileSystem copyFile("#{System currentDirectory}/htmlGenerator/stationary/#{file}", dir)
     )
-    
+
     generateFromTemplate = method(template, out:, +:krest,
       FileSystem withOpenFile(out, fn(f, template generateIntoFile(f, *krest)))
     )
@@ -47,8 +47,8 @@ DokGen do(
 
       content = "%*[<a href=\"files/%s\">%s</a><br />\n%]" format(names)
 
-      generateFromTemplate(Templates FileFrame, 
-        out: "#{dir}/fr_file_index.html", 
+      generateFromTemplate(Templates FileFrame,
+        out: "#{dir}/fr_file_index.html",
         content: content)
     )
 
@@ -61,21 +61,21 @@ DokGen do(
       allKinds = kinds keys sort map(x, [x replaceAll(" ", "/"), x])
 
       content = "%*[<a href=\"kinds/%s.html\">%s</a><br />\n%]" format(allKinds)
-      generateFromTemplate(Templates KindFrame, 
-        out: "#{dir}/fr_kind_index.html", 
+      generateFromTemplate(Templates KindFrame,
+        out: "#{dir}/fr_kind_index.html",
         content: content)
     )
 
     generateCellFrame = method(dir, cells,
       cellData = []
-      cells keys sort each(c, 
+      cells keys sort each(c,
         xx = cells[c] sortBy(cc, [cc[0] kind, cc[3]])
         xx each(ccc,
           cellData << [ccc[0] kind replaceAll(" ", "/"), ccc[3], makeTextHtmlSafe(c asText), ccc[0] kind]))
 
       content = "%*[<a href=\"kinds/%s.html#C00%s\">%s (%s)</a><br />\n%]" format(cellData)
-      generateFromTemplate(Templates CellFrame, 
-        out: "#{dir}/fr_cell_index.html", 
+      generateFromTemplate(Templates CellFrame,
+        out: "#{dir}/fr_cell_index.html",
         content: content)
     )
 
@@ -107,9 +107,9 @@ DokGen do(
 
       names = (kindSpecs keys sort) - [kindName]
       mainSpecs = kindSpecs[kindName]
-      
+
       kindSpecsContent = ""
-      
+
       specIndex = 0
 
       if(mainSpecs,
@@ -202,14 +202,14 @@ DokGen do(
       FileSystem ensureDirectory(parent)
       methods = []
       macros = []
-      
+
       ;; we need to sort on both the method name, the surrounding kind and the unique ID
-      ;; since we need to guarantee a ordering. 
+      ;; since we need to guarantee a ordering.
       ;; bad things will happen if the sort starts looking at the other elements in the list
       info sortBy(x, [x[1], x[0] kind, x[3]]) each(v,
-        if(v[2] kind?("DefaultMacro"), 
+        if(v[2] kind?("DefaultMacro"),
           macros << [v[0] kind replaceAll(" ", "/"), v[3], makeTextHtmlSafe(v[1] asText), v[0] kind],
-          if(v[2] kind?("Method"), 
+          if(v[2] kind?("Method"),
             methods << [v[0] kind replaceAll(" ", "/"), v[3], makeTextHtmlSafe(v[1] asText), v[0] kind])))
 
       methodContent = "%*[<li><a href=\"#{beforeLinks}kinds/%s.html#C00%s\">%s (%s)</a><br /></li>\n%]" format(methods)

@@ -1,29 +1,29 @@
 /**
  * Copyright (c) 2001, Sergey A. Samokhodkin
  * All rights reserved.
- * 
- * Redistribution and use in source and binary forms, with or without modification, 
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
- * 
- * - Redistributions of source code must retain the above copyright notice, 
- * this list of conditions and the following disclaimer. 
- * - Redistributions in binary form 
- * must reproduce the above copyright notice, this list of conditions and the following 
+ *
+ * - Redistributions of source code must retain the above copyright notice,
+ * this list of conditions and the following disclaimer.
+ * - Redistributions in binary form
+ * must reproduce the above copyright notice, this list of conditions and the following
  * disclaimer in the documentation and/or other materials provided with the distribution.
- * - Neither the name of jregex nor the names of its contributors may be used 
- * to endorse or promote products derived from this software without specific prior 
- * written permission. 
- * 
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY 
- * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES 
- * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
- * IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT 
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; 
- * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY 
+ * - Neither the name of jregex nor the names of its contributors may be used
+ * to endorse or promote products derived from this software without specific prior
+ * written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
+ * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ * IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
  * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * @version 1.2_01
  */
 
@@ -43,17 +43,17 @@ class Bitset implements UnicodeConstants{
          b.set(i&0xff);
       }
    }
-   
+
    private boolean positive=true;
    private boolean isLarge=false;
-   
+
    boolean[] block0;  //1-byte bit set
    private static final boolean[] emptyBlock0=new boolean[BLOCK_SIZE];
-   
+
    Block[] blocks;  //2-byte bit set
-   
+
    private int weight;
-   
+
    final void reset(){
       positive=true;
       block0=null;
@@ -61,7 +61,7 @@ class Bitset implements UnicodeConstants{
       isLarge=false;
       weight=0;
    }
-   
+
    final static void unify(Bitset bs,Term term){
       if(bs.isLarge){
          term.type=TermType.BITSET2;
@@ -78,15 +78,15 @@ class Bitset implements UnicodeConstants{
    final void setPositive(boolean b){
       positive=b;
    }
-   
+
    final boolean isPositive(){
       return positive;
    }
-   
+
    final boolean isLarge(){
       return isLarge;
    }
-   
+
    private final void enableLargeMode(){
       if(isLarge) return;
       Block[] blocks=new Block[BLOCK_COUNT];
@@ -96,11 +96,11 @@ class Bitset implements UnicodeConstants{
       }
       isLarge=true;
    }
-   
+
    final int getWeight(){
       return positive? weight: MAX_WEIGHT-weight;
    }
-   
+
    final void setWordChar(boolean unicode){
       if(unicode){
          setCategory(Lu);
@@ -117,7 +117,7 @@ class Bitset implements UnicodeConstants{
          setChar('_');
       }
    }
-   
+
    final void setDigit(boolean unicode){
       if(unicode){
          setCategory(Nd);
@@ -126,7 +126,7 @@ class Bitset implements UnicodeConstants{
          setRange('0','9');
       }
    }
-   
+
    final void setSpace(boolean unicode){
       if(unicode){
          setCategory(Zs);
@@ -141,22 +141,22 @@ class Bitset implements UnicodeConstants{
          setChar('\f');
       }
    }
-   
+
    final void setCategory(int c){
       if(!isLarge) enableLargeMode();
       Block[] catBits=categoryBits[c];
       weight+=Block.add(this.blocks,catBits,0,BLOCK_COUNT-1,false);
 //System.out.println("["+this+"].setCategory("+c+"): weight="+weight);
    }
-   
+
    final void setChars(String chars){
       for(int i=chars.length()-1;i>=0;i--) setChar(chars.charAt(i));
    }
-   
+
    final void setChar(char c){
       setRange(c,c);
    }
-   
+
    final void setRange(char c1,char c2){
 //System.out.println("["+this+"].setRange("+c1+","+c2+"):");
 //if(c1>31 && c1<=126 && c2>31 && c2<=126) System.out.println("setRange('"+c1+"','"+c2+"'):");
@@ -186,15 +186,15 @@ class Bitset implements UnicodeConstants{
          weight+=set(block0,true,c1,c2);
       }
    }
-   
+
    final void add(Bitset bs){
       add(bs,false);
    }
-   
+
    final void add(Bitset bs,boolean inverse){
       weight+=addImpl(this,bs,!bs.positive^inverse);
    }
-   
+
    private final static int addImpl(Bitset bs1, Bitset bs2, boolean inv){
       int s=0;
       if(!bs1.isLarge && !bs2.isLarge && !inv){
@@ -211,16 +211,16 @@ class Bitset implements UnicodeConstants{
       }
       return s;
    }
-   
+
    final void subtract(Bitset bs){
       subtract(bs,false);
    }
-   
+
    final void subtract(Bitset bs,boolean inverse){
 //System.out.println("["+this+"].subtract(["+bs+"],"+inverse+"):");
       weight+=subtractImpl(this,bs,!bs.positive^inverse);
    }
-   
+
    private final static int subtractImpl(Bitset bs1,Bitset bs2,boolean inv){
       int s=0;
       if(!bs1.isLarge && !bs2.isLarge && !inv){
@@ -238,16 +238,16 @@ class Bitset implements UnicodeConstants{
       }
       return s;
    }
-   
+
    final void intersect(Bitset bs){
       intersect(bs,false);
    }
-   
+
    final void intersect(Bitset bs,boolean inverse){
 //System.out.println("["+this+"].intersect(["+bs+"],"+inverse+"):");
       subtract(bs,!inverse);
    }
-   
+
    static final int add(boolean[] bs1,boolean[] bs2,int from,int to,boolean inv){
 //System.out.println("Bitset.add(boolean[],boolean[],"+inv+"):");
       int s=0;
@@ -261,7 +261,7 @@ class Bitset implements UnicodeConstants{
       }
       return s;
    }
-   
+
    static final int subtract(boolean[] bs1,boolean[] bs2,int from,int to,boolean inv){
 //System.out.println("Bitset.subtract(boolean[],boolean[],"+inv+"):");
       int s=0;
@@ -275,7 +275,7 @@ class Bitset implements UnicodeConstants{
       }
       return s;
    }
-   
+
    static final int set(boolean[] arr,boolean value,int from,int to){
       int s=0;
       for(int i=from;i<=to;i++){
@@ -285,14 +285,14 @@ class Bitset implements UnicodeConstants{
       }
       return s;
    }
-   
+
    public String toString(){
       StringBuffer sb=new StringBuffer();
       if(!positive) sb.append('^');
-      
+
       if(isLarge) sb.append(CharacterClass.stringValue2(Block.toBitset2(blocks)));
       else if(block0!=null) sb.append(CharacterClass.stringValue0(block0));
-      
+
       sb.append('(');
       sb.append(getWeight());
       sb.append(')');
@@ -305,14 +305,14 @@ class Block implements UnicodeConstants{
    //private boolean[] bits;
    boolean[] bits;
    private boolean shared=false;
-   
+
    Block(){}
-   
+
    Block(boolean[] bits){
       this.bits=bits;
       shared=true;
    }
-   
+
    final boolean set(int c){
 //System.out.println("Block.add("+CharacterClass.stringValue2(toBitset2(targets))+","+CharacterClass.stringValue2(toBitset2(addends))+","+from*BLOCK_SIZE+","+to*BLOCK_SIZE+","+inv+"):");
       if(isFull) return false;
@@ -323,15 +323,15 @@ class Block implements UnicodeConstants{
          bits[c]=true;
          return true;
       }
-      
+
       if(bits[c]) return false;
-      
+
       if(shared) bits=copyBits(this);
-      
+
       bits[c]=true;
       return true;
    }
-   
+
    final boolean get(int c){
       if(isFull) return true;
       boolean[] bits=this.bits;
@@ -340,7 +340,7 @@ class Block implements UnicodeConstants{
       }
       return bits[c];
    }
-   
+
    final static int add(Block[] targets,Block[] addends,int from,int to,boolean inv){
 //System.out.println("Block.add("+CharacterClass.stringValue2(toBitset2(targets))+","+CharacterClass.stringValue2(toBitset2(addends))+","+from*BLOCK_SIZE+","+to*BLOCK_SIZE+","+inv+"):");
 //System.out.println("Block.add():");
@@ -350,15 +350,15 @@ class Block implements UnicodeConstants{
 //System.out.println("   "+i+": ");
 //System.out.println("     target="+(target==null? "null": i==0? CharacterClass.stringValue0(target.bits): "{"+count(target.bits,0,BLOCK_SIZE-1)+"}"));
 //System.out.println("     addend="+(addend==null? "null": i==0? CharacterClass.stringValue0(addend.bits): "{"+count(addend.bits,0,BLOCK_SIZE-1)+"}"));
-         if(addend==null){ 
+         if(addend==null){
             if(!inv) continue;
          }
          else if(addend.isFull && inv) continue;
-         
+
          Block target=targets[i];
          if(target==null) targets[i]=target=new Block();
          else if(target.isFull) continue;
-         
+
          s+=add(target,addend,inv);
 //System.out.println("     result="+(target==null? "null": i==0? CharacterClass.stringValue0(target.bits): "{"+count(target.bits,0,BLOCK_SIZE-1)+"}"));
 //System.out.println("     s="+s);
@@ -366,7 +366,7 @@ class Block implements UnicodeConstants{
 //System.out.println("   s="+s);
       return s;
    }
-   
+
    private final static int add(Block target,Block addend,boolean inv){
 //System.out.println("Block.add(Block,Block):");
       //there is provided that !target.isFull
@@ -423,20 +423,20 @@ class Block implements UnicodeConstants{
          }
       }
    }
-   
+
    final static int subtract(Block[] targets,Block[] subtrahends,int from,int to,boolean inv){
 //System.out.println("Block.subtract(Block[],Block[],"+inv+"):");
       int s=0;
       for(int i=from;i<=to;i++){
 //System.out.println("   "+i+": ");
-         
+
          Block target=targets[i];
          if(target==null || (!target.isFull && target.bits==null)) continue;
 //System.out.println("     target="+(target==null? "null": i==0? CharacterClass.stringValue0(target.bits): "{"+ (target.isFull? BLOCK_SIZE: count(target.bits,0,BLOCK_SIZE-1))+"}"));
-         
+
          Block subtrahend=subtrahends[i];
 //System.out.println("     subtrahend="+(subtrahend==null? "null": i==0? CharacterClass.stringValue0(subtrahend.bits): "{"+(subtrahend.isFull? BLOCK_SIZE: count(subtrahend.bits,0,BLOCK_SIZE-1))+"}"));
-         
+
          if(subtrahend==null){
             if(!inv) continue;
             else{
@@ -460,7 +460,7 @@ class Block implements UnicodeConstants{
 //System.out.println("   s="+s);
       return s;
    }
-   
+
    private final static int subtract(Block target,Block subtrahend,boolean inv){
       boolean[] targetbits,subbits;
 //System.out.println("subtract(Block,Block,"+inv+")");
@@ -509,7 +509,7 @@ class Block implements UnicodeConstants{
          }
       }
    }
-   
+
    private static boolean[] copyBits(Block block){
       boolean[] bits=new boolean[BLOCK_SIZE];
       System.arraycopy(block.bits,0,bits,0,BLOCK_SIZE);
@@ -517,19 +517,19 @@ class Block implements UnicodeConstants{
       block.shared=false;
       return bits;
    }
-   
+
    private static boolean[] fullBits(boolean[] bits){
       if(bits==null) bits=new boolean[BLOCK_SIZE];
       System.arraycopy(FULL_BITS,0,bits,0,BLOCK_SIZE);
       return bits;
    }
-   
+
    private static boolean[] emptyBits(boolean[] bits){
       if(bits==null) bits=new boolean[BLOCK_SIZE];
       else System.arraycopy(EMPTY_BITS,0,bits,0,BLOCK_SIZE);
       return bits;
    }
-   
+
    final static int count(boolean[] arr, int from, int to){
       int s=0;
       for(int i=from;i<=to;i++){
@@ -537,7 +537,7 @@ class Block implements UnicodeConstants{
       }
       return s;
    }
-   
+
    final static boolean[][] toBitset2(Block[] blocks){
       int len=blocks.length;
       boolean[][] result=new boolean[len][];
@@ -551,7 +551,7 @@ class Block implements UnicodeConstants{
       }
       return result;
    }
-   
+
    private final static boolean[] EMPTY_BITS=new boolean[BLOCK_SIZE];
    private final static boolean[] FULL_BITS=new boolean[BLOCK_SIZE];
    static{

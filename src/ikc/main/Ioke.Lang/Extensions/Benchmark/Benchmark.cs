@@ -15,7 +15,7 @@ namespace Ioke.Lang.Extensions.Benchmark {
             runtime.Ground.SetCell("Benchmark", bm);
             bm.MimicsWithoutCheck(runtime.Origin);
 
-            bm.RegisterMethod(runtime.NewNativeMethod("expects two optional numbers, x (default 10) and y (default 1), and a block of code to run, and will run benchmark this block x times, while looping y times in each benchmark. after each loop will print the timings for this loop", 
+            bm.RegisterMethod(runtime.NewNativeMethod("expects two optional numbers, x (default 10) and y (default 1), and a block of code to run, and will run benchmark this block x times, while looping y times in each benchmark. after each loop will print the timings for this loop",
                                                       new NativeMethod("report", DefaultArgumentsDefinition.builder()
                                                                        .WithOptionalPositional("repetitions", "10")
                                                                        .WithOptionalPositional("loops", "1")

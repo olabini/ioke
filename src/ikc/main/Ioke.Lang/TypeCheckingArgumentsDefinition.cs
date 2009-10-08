@@ -143,7 +143,7 @@ namespace Ioke.Lang {
 
             public new TypeCheckingArgumentsDefinition Arguments {
                 get {
-                    Next(); 
+                    Next();
                     return new TypeCheckingArgumentsDefinition(arguments, keywords, rest, krest, min, max, restUneval, mustMimic, receiverMustMimic);
                 }
             }

@@ -5,7 +5,7 @@ namespace Ioke.Lang {
             Runtime runtime = obj.runtime;
             obj.Kind = "DefaultBehavior Assignment";
 
-            obj.RegisterMethod(runtime.NewNativeMethod("expects one argument, which is the unevaluated name of the cell to work on. will retrieve the current value of this cell, call 'succ' to that value and then send = to the current receiver with the name and the resulting value.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("expects one argument, which is the unevaluated name of the cell to work on. will retrieve the current value of this cell, call 'succ' to that value and then send = to the current receiver with the name and the resulting value.",
                                                        new NativeMethod("++", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositionalUnevaluated("place")
                                                                         .Arguments,
@@ -18,7 +18,7 @@ namespace Ioke.Lang {
                                                                             return ((Message)IokeObject.dataOf(runtime.setValueMessage)).SendTo(runtime.setValueMessage, context, on, nameMessage, value);
                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("expects one argument, which is the unevaluated name of the cell to work on. will retrieve the current value of this cell, call 'pred' to that value and then send = to the current receiver with the name and the resulting value.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("expects one argument, which is the unevaluated name of the cell to work on. will retrieve the current value of this cell, call 'pred' to that value and then send = to the current receiver with the name and the resulting value.",
                                                        new NativeMethod("--", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositionalUnevaluated("place")
                                                                         .Arguments,
@@ -31,7 +31,7 @@ namespace Ioke.Lang {
                                                                             return ((Message)IokeObject.dataOf(runtime.setValueMessage)).SendTo(runtime.setValueMessage, context, on, nameMessage, value);
                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("expects two arguments, the first unevaluated, the second evaluated. the first argument should be the name of a cell. if that cell doesn't exist or the value it contains is not true, that cell will be set to the second argument, otherwise nothing will happen. the second argument will NOT be evaluated if the place is not assigned. the result of the expression is the value of the cell. it will use = for this assignment. this method also work together with forms such as []=.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("expects two arguments, the first unevaluated, the second evaluated. the first argument should be the name of a cell. if that cell doesn't exist or the value it contains is not true, that cell will be set to the second argument, otherwise nothing will happen. the second argument will NOT be evaluated if the place is not assigned. the result of the expression is the value of the cell. it will use = for this assignment. this method also work together with forms such as []=.",
                                                        new NativeMethod("||=", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositionalUnevaluated("place")
                                                                         .WithRequiredPositional("else")
@@ -58,8 +58,8 @@ namespace Ioke.Lang {
                                                                                 }
                                                                             }
                                                                         })));
-            
-            obj.RegisterMethod(runtime.NewNativeMethod("expects two arguments, the first unevaluated, the second evaluated. the first argument should be the name of a cell. if that cell exist and the value it contains is a true one, that cell will be set to the second argument, otherwise nothing will happen. the second argument will NOT be evaluated if the place is not assigned. the result of the expression is the value of the cell. it will use = for this assignment. this method also work together with forms such as []=.", 
+
+            obj.RegisterMethod(runtime.NewNativeMethod("expects two arguments, the first unevaluated, the second evaluated. the first argument should be the name of a cell. if that cell exist and the value it contains is a true one, that cell will be set to the second argument, otherwise nothing will happen. the second argument will NOT be evaluated if the place is not assigned. the result of the expression is the value of the cell. it will use = for this assignment. this method also work together with forms such as []=.",
                                                        new NativeMethod("&&=", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositionalUnevaluated("place")
                                                                         .WithRequiredPositional("then")
@@ -87,14 +87,14 @@ namespace Ioke.Lang {
                                                                             }
                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("expects two arguments, the first unevaluated, the second evaluated. the first argument should be the name of a cell. the value of that cell will be retreived and then the + method will be called on it. finally, the result of the call to + will be assigned to the same name in the current scope. it will use = for this assignment. the result of the expression is the same as the result of the assignment. this method also work together with forms such as []=.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("expects two arguments, the first unevaluated, the second evaluated. the first argument should be the name of a cell. the value of that cell will be retreived and then the + method will be called on it. finally, the result of the call to + will be assigned to the same name in the current scope. it will use = for this assignment. the result of the expression is the same as the result of the assignment. this method also work together with forms such as []=.",
                                                        new NativeMethod("+=", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositionalUnevaluated("place")
                                                                         .WithRequiredPositional("addend")
                                                                         .Arguments,
                                                                         (method, context, message, on, outer) => {
                                                                             outer.ArgumentsDefinition.CheckArgumentCount(context, message, on);
-                                                                            
+
                                                                             IokeObject m1 = IokeObject.As(Message.GetArguments(message)[0], context);
                                                                             string name = m1.Name;
 
@@ -109,14 +109,14 @@ namespace Ioke.Lang {
                                                                             }
                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("expects two arguments, the first unevaluated, the second evaluated. the first argument should be the name of a cell. the value of that cell will be retreived and then the - method will be called on it. finally, the result of the call to - will be assigned to the same name in the current scope. it will use = for this assignment. the result of the expression is the same as the result of the assignment. this method also work together with forms such as []=.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("expects two arguments, the first unevaluated, the second evaluated. the first argument should be the name of a cell. the value of that cell will be retreived and then the - method will be called on it. finally, the result of the call to - will be assigned to the same name in the current scope. it will use = for this assignment. the result of the expression is the same as the result of the assignment. this method also work together with forms such as []=.",
                                                        new NativeMethod("-=", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositionalUnevaluated("place")
                                                                         .WithRequiredPositional("subtrahend")
                                                                         .Arguments,
                                                                         (method, context, message, on, outer) => {
                                                                             outer.ArgumentsDefinition.CheckArgumentCount(context, message, on);
-                                                                            
+
                                                                             IokeObject m1 = IokeObject.As(Message.GetArguments(message)[0], context);
                                                                             string name = m1.Name;
 
@@ -131,14 +131,14 @@ namespace Ioke.Lang {
                                                                             }
                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("expects two arguments, the first unevaluated, the second evaluated. the first argument should be the name of a cell. the value of that cell will be retreived and then the * method will be called on it. finally, the result of the call to * will be assigned to the same name in the current scope. it will use = for this assignment. the result of the expression is the same as the result of the assignment. this method also work together with forms such as []=.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("expects two arguments, the first unevaluated, the second evaluated. the first argument should be the name of a cell. the value of that cell will be retreived and then the * method will be called on it. finally, the result of the call to * will be assigned to the same name in the current scope. it will use = for this assignment. the result of the expression is the same as the result of the assignment. this method also work together with forms such as []=.",
                                                        new NativeMethod("*=", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositionalUnevaluated("place")
                                                                         .WithRequiredPositional("multiplier")
                                                                         .Arguments,
                                                                         (method, context, message, on, outer) => {
                                                                             outer.ArgumentsDefinition.CheckArgumentCount(context, message, on);
-                                                                            
+
                                                                             IokeObject m1 = IokeObject.As(Message.GetArguments(message)[0], context);
                                                                             string name = m1.Name;
 
@@ -153,14 +153,14 @@ namespace Ioke.Lang {
                                                                             }
                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("expects two arguments, the first unevaluated, the second evaluated. the first argument should be the name of a cell. the value of that cell will be retreived and then the / method will be called on it. finally, the result of the call to / will be assigned to the same name in the current scope. it will use = for this assignment. the result of the expression is the same as the result of the assignment. this method also work together with forms such as []=.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("expects two arguments, the first unevaluated, the second evaluated. the first argument should be the name of a cell. the value of that cell will be retreived and then the / method will be called on it. finally, the result of the call to / will be assigned to the same name in the current scope. it will use = for this assignment. the result of the expression is the same as the result of the assignment. this method also work together with forms such as []=.",
                                                        new NativeMethod("/=", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositionalUnevaluated("place")
                                                                         .WithRequiredPositional("divisor")
                                                                         .Arguments,
                                                                         (method, context, message, on, outer) => {
                                                                             outer.ArgumentsDefinition.CheckArgumentCount(context, message, on);
-                                                                            
+
                                                                             IokeObject m1 = IokeObject.As(Message.GetArguments(message)[0], context);
                                                                             string name = m1.Name;
 
@@ -175,14 +175,14 @@ namespace Ioke.Lang {
                                                                             }
                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("expects two arguments, the first unevaluated, the second evaluated. the first argument should be the name of a cell. the value of that cell will be retreived and then the % method will be called on it. finally, the result of the call to % will be assigned to the same name in the current scope. it will use = for this assignment. the result of the expression is the same as the result of the assignment. this method also work together with forms such as []=.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("expects two arguments, the first unevaluated, the second evaluated. the first argument should be the name of a cell. the value of that cell will be retreived and then the % method will be called on it. finally, the result of the call to % will be assigned to the same name in the current scope. it will use = for this assignment. the result of the expression is the same as the result of the assignment. this method also work together with forms such as []=.",
                                                        new NativeMethod("%=", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositionalUnevaluated("place")
                                                                         .WithRequiredPositional("divisor")
                                                                         .Arguments,
                                                                         (method, context, message, on, outer) => {
                                                                             outer.ArgumentsDefinition.CheckArgumentCount(context, message, on);
-                                                                            
+
                                                                             IokeObject m1 = IokeObject.As(Message.GetArguments(message)[0], context);
                                                                             string name = m1.Name;
 
@@ -197,14 +197,14 @@ namespace Ioke.Lang {
                                                                             }
                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("expects two arguments, the first unevaluated, the second evaluated. the first argument should be the name of a cell. the value of that cell will be retreived and then the ** method will be called on it. finally, the result of the call to ** will be assigned to the same name in the current scope. it will use = for this assignment. the result of the expression is the same as the result of the assignment. this method also work together with forms such as []=.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("expects two arguments, the first unevaluated, the second evaluated. the first argument should be the name of a cell. the value of that cell will be retreived and then the ** method will be called on it. finally, the result of the call to ** will be assigned to the same name in the current scope. it will use = for this assignment. the result of the expression is the same as the result of the assignment. this method also work together with forms such as []=.",
                                                        new NativeMethod("**=", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositionalUnevaluated("place")
                                                                         .WithRequiredPositional("exponent")
                                                                         .Arguments,
                                                                         (method, context, message, on, outer) => {
                                                                             outer.ArgumentsDefinition.CheckArgumentCount(context, message, on);
-                                                                            
+
                                                                             IokeObject m1 = IokeObject.As(Message.GetArguments(message)[0], context);
                                                                             string name = m1.Name;
 
@@ -219,14 +219,14 @@ namespace Ioke.Lang {
                                                                             }
                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("expects two arguments, the first unevaluated, the second evaluated. the first argument should be the name of a cell. the value of that cell will be retreived and then the & method will be called on it. finally, the result of the call to & will be assigned to the same name in the current scope. it will use = for this assignment. the result of the expression is the same as the result of the assignment. this method also work together with forms such as []=.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("expects two arguments, the first unevaluated, the second evaluated. the first argument should be the name of a cell. the value of that cell will be retreived and then the & method will be called on it. finally, the result of the call to & will be assigned to the same name in the current scope. it will use = for this assignment. the result of the expression is the same as the result of the assignment. this method also work together with forms such as []=.",
                                                        new NativeMethod("&=", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositionalUnevaluated("place")
                                                                         .WithRequiredPositional("other")
                                                                         .Arguments,
                                                                         (method, context, message, on, outer) => {
                                                                             outer.ArgumentsDefinition.CheckArgumentCount(context, message, on);
-                                                                            
+
                                                                             IokeObject m1 = IokeObject.As(Message.GetArguments(message)[0], context);
                                                                             string name = m1.Name;
 
@@ -241,14 +241,14 @@ namespace Ioke.Lang {
                                                                             }
                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("expects two arguments, the first unevaluated, the second evaluated. the first argument should be the name of a cell. the value of that cell will be retreived and then the | method will be called on it. finally, the result of the call to | will be assigned to the same name in the current scope. it will use = for this assignment. the result of the expression is the same as the result of the assignment. this method also work together with forms such as []=.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("expects two arguments, the first unevaluated, the second evaluated. the first argument should be the name of a cell. the value of that cell will be retreived and then the | method will be called on it. finally, the result of the call to | will be assigned to the same name in the current scope. it will use = for this assignment. the result of the expression is the same as the result of the assignment. this method also work together with forms such as []=.",
                                                        new NativeMethod("|=", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositionalUnevaluated("place")
                                                                         .WithRequiredPositional("other")
                                                                         .Arguments,
                                                                         (method, context, message, on, outer) => {
                                                                             outer.ArgumentsDefinition.CheckArgumentCount(context, message, on);
-                                                                            
+
                                                                             IokeObject m1 = IokeObject.As(Message.GetArguments(message)[0], context);
                                                                             string name = m1.Name;
 
@@ -263,14 +263,14 @@ namespace Ioke.Lang {
                                                                             }
                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("expects two arguments, the first unevaluated, the second evaluated. the first argument should be the name of a cell. the value of that cell will be retreived and then the ^ method will be called on it. finally, the result of the call to ^ will be assigned to the same name in the current scope. it will use = for this assignment. the result of the expression is the same as the result of the assignment. this method also work together with forms such as []=.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("expects two arguments, the first unevaluated, the second evaluated. the first argument should be the name of a cell. the value of that cell will be retreived and then the ^ method will be called on it. finally, the result of the call to ^ will be assigned to the same name in the current scope. it will use = for this assignment. the result of the expression is the same as the result of the assignment. this method also work together with forms such as []=.",
                                                        new NativeMethod("^=", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositionalUnevaluated("place")
                                                                         .WithRequiredPositional("other")
                                                                         .Arguments,
                                                                         (method, context, message, on, outer) => {
                                                                             outer.ArgumentsDefinition.CheckArgumentCount(context, message, on);
-                                                                            
+
                                                                             IokeObject m1 = IokeObject.As(Message.GetArguments(message)[0], context);
                                                                             string name = m1.Name;
 
@@ -285,14 +285,14 @@ namespace Ioke.Lang {
                                                                             }
                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("expects two arguments, the first unevaluated, the second evaluated. the first argument should be the name of a cell. the value of that cell will be retreived and then the << method will be called on it. finally, the result of the call to << will be assigned to the same name in the current scope. it will use = for this assignment. the result of the expression is the same as the result of the assignment. this method also work together with forms such as []=.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("expects two arguments, the first unevaluated, the second evaluated. the first argument should be the name of a cell. the value of that cell will be retreived and then the << method will be called on it. finally, the result of the call to << will be assigned to the same name in the current scope. it will use = for this assignment. the result of the expression is the same as the result of the assignment. this method also work together with forms such as []=.",
                                                        new NativeMethod("<<=", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositionalUnevaluated("place")
                                                                         .WithRequiredPositional("other")
                                                                         .Arguments,
                                                                         (method, context, message, on, outer) => {
                                                                             outer.ArgumentsDefinition.CheckArgumentCount(context, message, on);
-                                                                            
+
                                                                             IokeObject m1 = IokeObject.As(Message.GetArguments(message)[0], context);
                                                                             string name = m1.Name;
 
@@ -307,14 +307,14 @@ namespace Ioke.Lang {
                                                                             }
                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("expects two arguments, the first unevaluated, the second evaluated. the first argument should be the name of a cell. the value of that cell will be retreived and then the >> method will be called on it. finally, the result of the call to >> will be assigned to the same name in the current scope. it will use = for this assignment. the result of the expression is the same as the result of the assignment. this method also work together with forms such as []=.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("expects two arguments, the first unevaluated, the second evaluated. the first argument should be the name of a cell. the value of that cell will be retreived and then the >> method will be called on it. finally, the result of the call to >> will be assigned to the same name in the current scope. it will use = for this assignment. the result of the expression is the same as the result of the assignment. this method also work together with forms such as []=.",
                                                        new NativeMethod(">>=", DefaultArgumentsDefinition.builder()
                                                                         .WithRequiredPositionalUnevaluated("place")
                                                                         .WithRequiredPositional("other")
                                                                         .Arguments,
                                                                         (method, context, message, on, outer) => {
                                                                             outer.ArgumentsDefinition.CheckArgumentCount(context, message, on);
-                                                                            
+
                                                                             IokeObject m1 = IokeObject.As(Message.GetArguments(message)[0], context);
                                                                             string name = m1.Name;
 

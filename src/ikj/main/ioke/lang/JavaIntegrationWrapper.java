@@ -10,5 +10,5 @@ package ioke.lang;
 public class JavaIntegrationWrapper {
     public static JavaWrapper wrapWithMethods(Class<?> clz, IokeObject obj, Runtime runtime) {
         return JavaWrapper.wrapWithMethods(clz, obj, runtime, true);
-    }    
+    }
 }// JavaIntegrationWrapper

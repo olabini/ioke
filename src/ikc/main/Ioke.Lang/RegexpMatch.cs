@@ -17,7 +17,7 @@ namespace Ioke.Lang {
             this.mr = mr;
             this.target = target;
         }
-    
+
         public static object GetTarget(object on) {
             return ((RegexpMatch)IokeObject.dataOf(on)).target;
         }
@@ -34,13 +34,13 @@ namespace Ioke.Lang {
             Runtime runtime = obj.runtime;
             obj.Kind = "Regexp Match";
 
-            obj.RegisterMethod(runtime.NewNativeMethod("Returns the target that this match was created against", 
+            obj.RegisterMethod(runtime.NewNativeMethod("Returns the target that this match was created against",
                                                        new TypeCheckingNativeMethod.WithNoArguments("target", obj,
                                                                                                     (method, on, args, keywords, context, message) => {
                                                                                                         return GetTarget(on);
                                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("returns a list of all the named groups in the regular expression used to create this match", 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns a list of all the named groups in the regular expression used to create this match",
                                                        new TypeCheckingNativeMethod.WithNoArguments("names", obj,
                                                                                                     (method, on, args, keywords, context, message) => {
                                                                                                         var names = Regexp.GetRegexp(GetRegexp(on)).GroupNames;
@@ -51,19 +51,19 @@ namespace Ioke.Lang {
                                                                                                         return context.runtime.NewList(theNames);
                                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("returns the part of the target before the text that matched", 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns the part of the target before the text that matched",
                                                        new TypeCheckingNativeMethod.WithNoArguments("beforeMatch", obj,
                                                                                                     (method, on, args, keywords, context, message) => {
                                                                                                         return context.runtime.NewText(GetMatchResult(on).Prefix);
                                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("returns the part of the target after the text that matched", 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns the part of the target after the text that matched",
                                                        new TypeCheckingNativeMethod.WithNoArguments("afterMatch", obj,
                                                                                                     (method, on, args, keywords, context, message) => {
                                                                                                         return context.runtime.NewText(GetMatchResult(on).Suffix);
                                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("returns the text that matched", 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns the text that matched",
                                                        new TypeCheckingNativeMethod.WithNoArguments("match", obj,
                                                                                                     (method, on, args, keywords, context, message) => {
                                                                                                         return context.runtime.NewText(GetMatchResult(on).Group(0));
@@ -71,13 +71,13 @@ namespace Ioke.Lang {
 
             obj.AliasMethod("match", "asText", null, null);
 
-            obj.RegisterMethod(runtime.NewNativeMethod("returns the number of groups available in this match", 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns the number of groups available in this match",
                                                        new TypeCheckingNativeMethod.WithNoArguments("length", obj,
                                                                                                     (method, on, args, keywords, context, message) => {
                                                                                                         return context.runtime.NewNumber(GetMatchResult(on).GroupCount);
                                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("returns a list of all groups captured in this match. if a group is not matched it will be nil in the list. the actual match text is not included in this list.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns a list of all groups captured in this match. if a group is not matched it will be nil in the list. the actual match text is not included in this list.",
                                                        new TypeCheckingNativeMethod.WithNoArguments("captures", obj,
                                                                                                     (method, on, args, keywords, context, message) => {
                                                                                                         var groups = new SaneArrayList();
@@ -94,7 +94,7 @@ namespace Ioke.Lang {
                                                                                                         return context.runtime.NewList(groups);
                                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("returns a list of all groups captured in this match. if a group is not matched it will be nil in the list. the actual match text is the first element in the list.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns a list of all groups captured in this match. if a group is not matched it will be nil in the list. the actual match text is the first element in the list.",
                                                        new TypeCheckingNativeMethod.WithNoArguments("asList", obj,
                                                                                                     (method, on, args, keywords, context, message) => {
                                                                                                         var groups = new SaneArrayList();
@@ -111,14 +111,14 @@ namespace Ioke.Lang {
                                                                                                         return context.runtime.NewList(groups);
                                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("Takes one optional argument that should be either a number or a symbol. this should be the name or index of a group to return the start index for. if no index is supplied, 0 is the default. if the group in question wasn't matched, returns -1.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("Takes one optional argument that should be either a number or a symbol. this should be the name or index of a group to return the start index for. if no index is supplied, 0 is the default. if the group in question wasn't matched, returns -1.",
                                                        new TypeCheckingNativeMethod("start", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(obj)
                                                                                     .WithOptionalPositional("index", "0")
                                                                                     .Arguments,
                                                                                     (method, on, args, keywords, context, message) => {
                                                                                         int index = 0;
-                    
+
                                                                                         if(args.Count > 0) {
                                                                                             object arg = args[0];
                                                                                             if(IokeObject.dataOf(arg) is Number) {
@@ -142,14 +142,14 @@ namespace Ioke.Lang {
                                                                                         }
                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("Takes one optional argument that should be either a number or a symbol. this should be the name or index of a group to return the end index for. if no index is supplied, 0 is the default. if the group in question wasn't matched, returns -1.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("Takes one optional argument that should be either a number or a symbol. this should be the name or index of a group to return the end index for. if no index is supplied, 0 is the default. if the group in question wasn't matched, returns -1.",
                                                        new TypeCheckingNativeMethod("end", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(obj)
                                                                                     .WithOptionalPositional("index", "0")
                                                                                     .Arguments,
                                                                                     (method, on, args, keywords, context, message) => {
                                                                                         int index = 0;
-                    
+
                                                                                         if(args.Count > 0) {
                                                                                             object arg = args[0];
                                                                                             if(IokeObject.dataOf(arg) is Number) {
@@ -173,14 +173,14 @@ namespace Ioke.Lang {
                                                                                         }
                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("Takes one optional argument that should be either a number or a symbol. this should be the name or index of a group to return the start and end index for. if no index is supplied, 0 is the default. if the group in question wasn't matched, returns nil, otherwise a pair of the start and end indices.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("Takes one optional argument that should be either a number or a symbol. this should be the name or index of a group to return the start and end index for. if no index is supplied, 0 is the default. if the group in question wasn't matched, returns nil, otherwise a pair of the start and end indices.",
                                                        new TypeCheckingNativeMethod("offset", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(obj)
                                                                                     .WithOptionalPositional("index", "0")
                                                                                     .Arguments,
                                                                                     (method, on, args, keywords, context, message) => {
                                                                                         int index = 0;
-                    
+
                                                                                         if(args.Count > 0) {
                                                                                             object arg = args[0];
                                                                                             if(IokeObject.dataOf(arg) is Number) {
@@ -204,7 +204,7 @@ namespace Ioke.Lang {
                                                                                         }
                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("Takes one indexing argument that should be either a number, a range, a text or a symbol. if it's a number or a range of numbers, these will specify the index of the capture to return. 0 is the whole match. negative indices are interpreted in the usual way. if the range is out of range it will only use as many groups as there are. if it's a text or a sym it will be interpreted as a the name of a named group to return. if an index isn't correct or wasn't matched, it returns nil in those places.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("Takes one indexing argument that should be either a number, a range, a text or a symbol. if it's a number or a range of numbers, these will specify the index of the capture to return. 0 is the whole match. negative indices are interpreted in the usual way. if the range is out of range it will only use as many groups as there are. if it's a text or a sym it will be interpreted as a the name of a named group to return. if an index isn't correct or wasn't matched, it returns nil in those places.",
                                                        new TypeCheckingNativeMethod("[]", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(obj)
                                                                                     .WithRequiredPositional("index")
@@ -230,8 +230,8 @@ namespace Ioke.Lang {
                                                                                             int size = mr.GroupCount;
 
                                                                                             if(IokeObject.dataOf(arg) is Range) {
-                                                                                                int first = Number.ExtractInt(Range.GetFrom(arg), message, context); 
-                        
+                                                                                                int first = Number.ExtractInt(Range.GetFrom(arg), message, context);
+
                                                                                                 if(first < 0) {
                                                                                                     return context.runtime.NewList(new SaneArrayList());
                                                                                                 }
@@ -255,11 +255,11 @@ namespace Ioke.Lang {
                                                                                                 if(first > last || (!inclusive && first == last)) {
                                                                                                     return context.runtime.NewList(new SaneArrayList());
                                                                                                 }
-                        
+
                                                                                                 if(!inclusive) {
                                                                                                     last--;
                                                                                                 }
-                        
+
                                                                                                 var result = new SaneArrayList();
                                                                                                 for(int i = first; i < last+1; i++) {
                                                                                                     if(!mr.IsCaptured(i)) {
@@ -271,7 +271,7 @@ namespace Ioke.Lang {
 
                                                                                                 return context.runtime.NewList(result);
                                                                                             }
-                        
+
                                                                                             if(!(IokeObject.dataOf(arg) is Number)) {
                                                                                                 arg = IokeObject.ConvertToNumber(arg, message, context);
                                                                                             }
@@ -288,22 +288,22 @@ namespace Ioke.Lang {
                                                                                         }
                                                                                     })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("will get the named group corresponding to the name of the message, or nil if the named group hasn't been matched. will signal a condition if no such group is defined.", 
+            obj.RegisterMethod(runtime.NewNativeMethod("will get the named group corresponding to the name of the message, or nil if the named group hasn't been matched. will signal a condition if no such group is defined.",
                                                        new TypeCheckingNativeMethod("pass", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(obj)
                                                                                     .Arguments,
                                                                                     (method, on, args, keywords, context, message) => {
                                                                                         MatchResult mr = GetMatchResult(on);
                                                                                         string name = Message.GetName(message);
-                    
+
                                                                                         int ix = -1;
                                                                                         try {
                                                                                             ix = Regexp.GetRegexp(GetRegexp(on)).GroupId(name);
                                                                                         } catch(Exception) {
-                                                                                            IokeObject condition = IokeObject.As(IokeObject.GetCellChain(message.runtime.Condition, 
-                                                                                                                                                         message, 
-                                                                                                                                                         context, 
-                                                                                                                                                         "Error", 
+                                                                                            IokeObject condition = IokeObject.As(IokeObject.GetCellChain(message.runtime.Condition,
+                                                                                                                                                         message,
+                                                                                                                                                         context,
+                                                                                                                                                         "Error",
                                                                                                                                                          "NoSuchCell"), context).Mimic(message, context);
                                                                                             condition.SetCell("message", message);
                                                                                             condition.SetCell("context", context);

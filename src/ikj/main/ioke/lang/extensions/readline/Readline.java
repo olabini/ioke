@@ -67,7 +67,7 @@ public abstract class Readline {
 
         IokeObject history = runtime.newFromOrigin();
         rl.setCell("HISTORY", history);
-        
+
         rl.registerMethod(runtime.newNativeMethod("will print a prompt to standard out and then try to read a line with working readline functionality. takes two arguments, the first is the string to prompt, the second is a boolean that says whether we should add the read string to history or not", new NativeMethod("readline") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
@@ -84,7 +84,7 @@ public abstract class Readline {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> args = new ArrayList<Object>();
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
-                    
+
                     Object line = method.runtime.nil;
                     try {
                         if(holder.readline == null) {
@@ -102,10 +102,10 @@ public abstract class Readline {
                         }
                     } catch(IOException e) {
                         final Runtime runtime = context.runtime;
-                        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition, 
-                                                                                           message, 
-                                                                                           context, 
-                                                                                           "Error", 
+                        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition,
+                                                                                           message,
+                                                                                           context,
+                                                                                           "Error",
                                                                                            "IO"), context).mimic(message, context);
                         condition.setCell("message", message);
                         condition.setCell("context", context);
@@ -142,7 +142,7 @@ public abstract class Readline {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> args = new ArrayList<Object>();
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
-                    
+
                     for(Object o : args) {
                         holder.history.addToHistory(Text.getText(o));
                     }

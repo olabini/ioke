@@ -43,7 +43,7 @@ public class Locals {
         obj.setCell("cellOwner", obj.runtime.base.getCells().get("cellOwner"));
         obj.setCell("identity",  obj.runtime.base.getCells().get("identity"));
 
-        obj.registerMethod(obj.runtime.newNativeMethod("will pass along the call to the real self object of this context.", 
+        obj.registerMethod(obj.runtime.newNativeMethod("will pass along the call to the real self object of this context.",
                                                        new NativeMethod("pass") {
                                                            private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                                                                .builder()
@@ -66,7 +66,7 @@ public class Locals {
                                                                return context.runtime.nil;
                                                            }}));
 
-        obj.registerMethod(obj.runtime.newNativeMethod("will return a text representation of the current stack trace", 
+        obj.registerMethod(obj.runtime.newNativeMethod("will return a text representation of the current stack trace",
                                                        new NativeMethod.WithNoArguments("stackTraceAsText") {
                                                            @Override
                                                            public Object activate(IokeObject method, IokeObject context, IokeObject m, Object on) throws ControlFlow {
@@ -78,7 +78,7 @@ public class Locals {
                                                                while("Locals".equals(current.getKind(m, context))) {
                                                                    IokeObject message = IokeObject.as(IokeObject.getCell(current, m, context, "currentMessage"), context);
                                                                    IokeObject start = message;
-                                                                   
+
                                                                    while(Message.prev(start) != null && Message.prev(start).getLine() == message.getLine()) {
                                                                        start = Message.prev(start);
                                                                    }

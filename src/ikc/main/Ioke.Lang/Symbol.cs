@@ -20,25 +20,25 @@ namespace Ioke.Lang {
                                                                                         return on == other ? context.runtime.True : context.runtime.False;
                                                                                     })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns a text representation of the object", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns a text representation of the object",
                                                            new TypeCheckingNativeMethod.WithNoArguments("asText", obj,
                                                                                                         (method, on, args, keywords, context, message) => {
                                                                                                             return method.runtime.NewText(Symbol.GetText(on));
                                                                                                         })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns a text inspection of the object", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns a text inspection of the object",
                                                            new TypeCheckingNativeMethod.WithNoArguments("inspect", obj,
                                                                                                         (method, on, args, keywords, context, message) => {
                                                                                                             return method.runtime.NewText(Symbol.GetInspect(on));
                                                                                                         })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns a brief text inspection of the object", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns a brief text inspection of the object",
                                                            new TypeCheckingNativeMethod.WithNoArguments("notice", obj,
                                                                                                         (method, on, args, keywords, context, message) => {
                                                                                                             return method.runtime.NewText(Symbol.GetInspect(on));
                                                                                                         })));
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("compares this symbol against the argument, returning -1, 0 or 1 based on which one is lexically larger", 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("compares this symbol against the argument, returning -1, 0 or 1 based on which one is lexically larger",
                                                            new TypeCheckingNativeMethod ("<=>", TypeCheckingArgumentsDefinition.builder()
                                                                                          .ReceiverMustMimic(obj)
                                                                                          .WithRequiredPositional("other")
@@ -72,10 +72,10 @@ namespace Ioke.Lang {
         public override bool IsSymbol {get{return true;}}
 
         public override void CheckMimic(IokeObject obj, IokeObject m, IokeObject context) {
-            IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition, 
-                                                                         m, 
+            IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition,
+                                                                         m,
                                                                          context,
-                                                                         "Error", 
+                                                                         "Error",
                                                                          "CantMimicOddball"), context).Mimic(m, context);
             condition.SetCell("message", m);
             condition.SetCell("context", context);

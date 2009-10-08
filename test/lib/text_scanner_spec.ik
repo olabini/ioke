@@ -25,7 +25,7 @@ describe(TextScanner,
       t text
       t position should == originalPosition
     )
-     
+
     it("should not modify the match",
       t = TextScanner mimic("original matchable text")
       originalMatch = t match
@@ -45,14 +45,14 @@ describe(TextScanner,
       t delimeter = #/new delimeter/
       t delimeter should == #/new delimeter/
     )
-    
+
     it("should not advance the pointer position",
       t = TextScanner mimic("original matchable text")
       originalPosition = t position
       t delimiter
       t position should == originalPosition
     )
-     
+
     it("should not modify the match",
       t = TextScanner mimic("original matchable text")
       originalMatch = t match
@@ -66,20 +66,20 @@ describe(TextScanner,
       t = TextScanner mimic("original text")
       t match should == nil
     )
-    
+
     it("should return the last matched text after scanning has been performed",
       t = TextScanner mimic("original text")
       t hasNext?
       t match should have kind("Text")
     )
-    
+
     it("should not advance the pointer position",
       t = TextScanner mimic("original matchable text")
       originalPosition = t position
       t match
       t position should == originalPosition
     )
-     
+
     it("should not modify the match",
       t = TextScanner mimic("original matchable text")
       originalMatch = t match
@@ -119,15 +119,15 @@ describe(TextScanner,
         t next should == "whitespace"
         t next should == "separated"
         t next should == "tokens"
-        t next should == nil         
+        t next should == nil
       )
-     
+
       it("should return the entire text if the delimiter can't be found",
         t = TextScanner mimic("original-text-with-hyphen-separated-words")
         t next should == "original-text-with-hyphen-separated-words"
         t next should == nil
       )
-     
+
       it("should advance the pointer position",
         t = TextScanner mimic("original text")
         originalPosition = t position
@@ -141,7 +141,7 @@ describe(TextScanner,
         t match should == "original"
       )
     )
-     
+
     describe("with a bespoke delimiter",
       it("should be able tokenise the text appropriately",
         t = TextScanner mimic("original-text-with-hyphen-separated-words")
@@ -155,7 +155,7 @@ describe(TextScanner,
         t next should == nil
       )
     )
-     
+
     describe("whilst changing the delimiter mid scanning",
       it("should be able to tokenise the text appropriately",
         t = TextScanner mimic("text with a--mix-of---space-and (multiple)hyphen separated words")
@@ -188,7 +188,7 @@ describe(TextScanner,
       t hasNext? should == "original"
       t hasNext? should == "original"
     )
-    
+
     it("should not advance the pointer position",
       t = TextScanner mimic("original text")
       originalPosition = t position
@@ -202,7 +202,7 @@ describe(TextScanner,
       t match should == "original"
     )
   )
-  
+
   describe("rest",
     it("should return all of the text before any scanning has taken place",
       t = TextScanner mimic("original text")
@@ -246,7 +246,7 @@ describe(TextScanner,
       t scan(#/umb.*/) should == "umbrella is asymetric"
       t position should == "my umbrella is asymetric" length
     )
-    
+
     it("should update the match",
       t = TextScanner mimic("original text")
       t scan(#/original/)
@@ -280,7 +280,7 @@ describe(TextScanner,
         t positionScan(#/original/)
         t position should == "original" length
       )
-       
+
       it("should update the match if a match is found",
         t = TextScanner mimic("original text")
         t search(#/text/)
@@ -334,7 +334,7 @@ describe(TextScanner,
         t search(#/matchable/)
         t position should == "original matchable" length
       )
-       
+
       it("should update the match if a match is found",
         t = TextScanner mimic("original text")
         t search(#/text/)
@@ -357,7 +357,7 @@ describe(TextScanner,
         t match should == originalMatch
       )
     )
-    
+
   )
 
   describe("positionSearch",
@@ -378,7 +378,7 @@ describe(TextScanner,
       t positionSearch(#/text/) should == "original matchable text" length
       t position should == "original matchable text" length
     )
-    
+
     it("should return nil if the pattern given could not be found in the rest of the text",
       t = TextScanner mimic("original matchable text")
       t positionSearch(#/blimp/) should == nil
@@ -390,7 +390,7 @@ describe(TextScanner,
         t positionSearch(#/matchable/)
         t position should == "original matchable" length
       )
-       
+
       it("should update the match if a match is found",
         t = TextScanner mimic("original text")
         t positionSearch(#/text/)

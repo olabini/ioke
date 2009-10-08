@@ -12,7 +12,7 @@ import java.io.*;
  */
 
 public class DComplex extends Complex implements Externalizable
-{ 
+{
   double real;
   double imag;
 
@@ -171,10 +171,10 @@ public class DComplex extends Complex implements Externalizable
 
   // The code below is adapted from f2c's libF77, and is subject to this
   // copyright:
- 
+
   /****************************************************************
     Copyright 1990, 1991, 1992, 1993 by AT&T Bell Laboratories and Bellcore.
- 
+
     Permission to use, copy, modify, and distribute this software
     and its documentation for any purpose and without fee is hereby
     granted, provided that the above copyright notice appear in all
@@ -184,7 +184,7 @@ public class DComplex extends Complex implements Externalizable
     Bellcore or any of their entities not be used in advertising or
     publicity pertaining to distribution of the software without
     specific, written prior permission.
- 
+
     AT&T and Bellcore disclaim all warranties with regard to this
     software, including all implied warranties of merchantability
     and fitness.  In no event shall AT&T or Bellcore be liable for
@@ -218,7 +218,7 @@ public class DComplex extends Complex implements Externalizable
       }
     return new DComplex (nr / d, ni / d);
   }
-  
+
   public static Complex sqrt (double x_re, double x_im)
   {
     /* #ifdef JAVA5 */
@@ -252,18 +252,18 @@ public class DComplex extends Complex implements Externalizable
    *
    * Developed at SunSoft, a Sun Microsystems, Inc. business.
    * Permission to use, copy, modify, and distribute this
-   * software is freely granted, provided that this notice 
+   * software is freely granted, provided that this notice
    * is preserved.
    * ====================================================
    */
   /* __ieee754_hypot(x,y)
    *
-   * Method :                  
-   *      If (assume round-to-nearest) z=x*x+y*y 
-   *      has error less than sqrt(2)/2 ulp, than 
+   * Method :
+   *      If (assume round-to-nearest) z=x*x+y*y
+   *      has error less than sqrt(2)/2 ulp, than
    *      sqrt(z) has error less than 1 ulp (exercise).
    *
-   *      So, compute sqrt(x*x+y*y) with some care as 
+   *      So, compute sqrt(x*x+y*y) with some care as
    *      follows to get the error below 1 ulp:
    *
    *      Assume x>y>0;
@@ -273,10 +273,10 @@ public class DComplex extends Complex implements Externalizable
    *      where x1 = x with lower 32 bits cleared, x2 = x-x1; else
    *      2. if x <= 2y use
    *              t1*y1+((x-y)*(x-y)+(t1*y2+t2*y))
-   *      where t1 = 2x with lower 32 bits cleared, t2 = 2x-t1, 
+   *      where t1 = 2x with lower 32 bits cleared, t2 = 2x-t1,
    *      y1= y with lower 32 bits chopped, y2 = y-y1.
-   *              
-   *      NOTE: scaling may be necessary if some argument is too 
+   *
+   *      NOTE: scaling may be necessary if some argument is too
    *            large or too tiny
    *
    * Special cases:
@@ -284,8 +284,8 @@ public class DComplex extends Complex implements Externalizable
    *      hypot(x,y) is NAN if x or y is NAN.
    *
    * Accuracy:
-   *      hypot(x,y) returns sqrt(x^2+y^2) with error less 
-   *      than 1 ulps (units in the last place) 
+   *      hypot(x,y) returns sqrt(x^2+y^2) with error less
+   *      than 1 ulps (units in the last place)
    */
 
   /* #ifndef JAVA5 */
@@ -329,7 +329,7 @@ public class DComplex extends Complex implements Externalizable
     if (hb < 0x20b00000)
       {   // b < 2**-500
         if (hb <= 0x000fffff)
-          {      // subnormal b or 0  
+          {      // subnormal b or 0
             if (lb == 0)
               return a;
             t1 = Double.longBitsToDouble(0x7fd0000000000000L); // t1=2^1022
@@ -357,7 +357,7 @@ public class DComplex extends Complex implements Externalizable
       {
         t1 = Double.longBitsToDouble ((long) ha << 32);
         t2 = a-t1;
-        w  = t1*t1-(b*(-b)-t2*(a+t1)); 
+        w  = t1*t1-(b*(-b)-t2*(a+t1));
       }
     else
       {

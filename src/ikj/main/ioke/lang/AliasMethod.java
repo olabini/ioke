@@ -49,7 +49,7 @@ public class AliasMethod extends IokeData implements Named, Inspectable, Associa
             return ((AliasMethod)realMethod).getCodeString();
         }
     }
-    
+
     public String getArgumentsCode() {
         if(realMethod instanceof AssociatedCode) {
             return ((AssociatedCode)realMethod).getArgumentsCode();

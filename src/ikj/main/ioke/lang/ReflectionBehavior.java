@@ -263,10 +263,10 @@ public class ReflectionBehavior {
                     IokeObject other = IokeObject.as(args.get(0), context);
 
                     if(on == context.runtime.nil || on == context.runtime._true || on == context.runtime._false) {
-                        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition, 
-                                                                                           message, 
+                        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition,
+                                                                                           message,
                                                                                            context,
-                                                                                           "Error", 
+                                                                                           "Error",
                                                                                            "CantMimicOddball"), context).mimic(message, context);
                         condition.setCell("message", message);
                         condition.setCell("context", context);
@@ -275,7 +275,7 @@ public class ReflectionBehavior {
                     }
 
                     me.become(other, message, context);
-                    
+
                     return on;
                 }
             }));
