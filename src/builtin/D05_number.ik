@@ -17,3 +17,11 @@ Number          do(=== = generateMatchMethod(==))
 Number Real     do(=== = generateMatchMethod(==))
 Number Rational do(=== = generateMatchMethod(==))
 Number Decimal  do(=== = generateMatchMethod(==))
+
+Number Integer odd? = method(
+  (@ % 2) != 0
+)
+
+Number Integer even? = method(
+  (@ % 2) == 0
+)
