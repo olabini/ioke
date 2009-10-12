@@ -32,3 +32,5 @@ cobertura.ser
 nbproject
 \#*#
 \.\#*
+/maven/ikj/target
+/maven/ikj-lib/target
