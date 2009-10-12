@@ -164,6 +164,11 @@ describe("Range",
   )
 
   describe("each",
+    it("should return a seq when given no arguments",
+      x = (1..5) each
+      x should mimic(Sequence)
+    )
+
     it("should not do anything for an empty list",
       x = 0
       (0...0) each(. x++)
