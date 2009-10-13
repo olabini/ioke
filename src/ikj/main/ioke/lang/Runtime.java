@@ -579,6 +579,7 @@ public class Runtime extends IokeData {
         condition.setCell("message", message);
         condition.setCell("context", context);
         condition.setCell("receiver", context);
+        condition.setCell("rootException", e);
         condition.setCell("exceptionType", newText(e.getClass().getName()));
 
         if(e.getMessage() != null) {
