@@ -6,6 +6,7 @@ package ioke.lang;
 import java.io.Reader;
 import java.io.StringReader;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -658,10 +659,43 @@ public class Message extends IokeData {
                 }
 
                 @Override
-                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, final IokeObject context, final IokeObject message) throws ControlFlow {
                     int index = Number.extractInt(args.get(0), message, context);
                     IokeObject newContext = IokeObject.as(args.get(1), context);
                     IokeObject _m =  IokeObject.as(on, context);
+                    int argCount = _m.getArgumentCount();
+                    while(index < 0 || index >= argCount) {
+                        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition,
+                                                                                           message,
+                                                                                           context,
+                                                                                           "Error",
+                                                                                           "Index"), context).mimic(message, context);
+                        condition.setCell("message", message);
+                        condition.setCell("context", context);
+                        condition.setCell("receiver", on);
+                        condition.setCell("index", context.runtime.newNumber(index));
+
+                        final int[] newCell = new int[]{index};
+
+                        context.runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
+                                public void run() throws ControlFlow {
+                                    context.runtime.errorCondition(condition);
+                                }},
+                            context,
+                            new Restart.ArgumentGivingRestart("useValue") {
+                                public List<String> getArgumentNames() {
+                                    return new ArrayList<String>(Arrays.asList("newValue"));
+                                }
+
+                                public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
+                                    newCell[0] = Number.extractInt(arguments.get(0), message, context);
+                                    return context.runtime.nil;
+                                }
+                            }
+                            );
+
+                        index = newCell[0];
+                    }
                     return ((Message)IokeObject.data(_m)).getEvaluatedArgument(_m, index, newContext);
                 }
             }));

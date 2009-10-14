@@ -878,6 +878,27 @@ namespace Ioke.Lang {
                                                                                 int index = Number.ExtractInt(args[0], message, context);
                                                                                 IokeObject newContext = IokeObject.As(args[1], context);
                                                                                 IokeObject _m =  IokeObject.As(on, context);
+                                                                                int argCount = _m.Arguments.Count;
+                                                                                while(index < 0 || index >= argCount) {
+                                                                                    IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition,
+                                                                                                                                                 message,
+                                                                                                                                                 context,
+                                                                                                                                                 "Error",
+                                                                                                                                                 "Index"), context).Mimic(message, context);
+                                                                                    condition.SetCell("message", message);
+                                                                                    condition.SetCell("context", context);
+                                                                                    condition.SetCell("receiver", on);
+                                                                                    condition.SetCell("index", context.runtime.NewNumber(index));
+
+                                                                                    object[] newCell = new object[]{context.runtime.NewNumber(index)};
+
+                                                                                    context.runtime.WithRestartReturningArguments(()=>{context.runtime.ErrorCondition(condition);},
+                                                                                                                                  context,
+                                                                                                                                  new IokeObject.UseValue("index", newCell));
+
+                                                                                    index = Number.ExtractInt(newCell[0], message, context);
+                                                                                }
+
                                                                                 return ((Message)IokeObject.dataOf(_m)).GetEvaluatedArgument(_m, index, newContext);
                                                                             })));
 

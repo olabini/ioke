@@ -30,10 +30,10 @@ describe(Call,
       x(23+44) should ==  67
     )
 
-;     it("should raise an error if no arg at the index specified was available",
-;       x = macro(call argAt(0))
-;       fn(x) should signal(Condition Warning)
-;     )
+    it("should raise an error if no arg at the index specified was available",
+      x = macro(call argAt(0))
+      fn(x) should signal(Condition Error Index)
+    )
   )
 
   describe("arguments",
