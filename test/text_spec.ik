@@ -1173,12 +1173,12 @@ fert\
     )
 
     describe("octal",
-;       it("should replace any octal letter in a string with only it",
-;         (0..255) each(number,
-;           "#{number.to_s(8)}" length should == 1
-;           "#{number.to_s(8)}"[0] should == number
-;         )
-;       )
+      ; it("should replace any octal letter in a string with only it",
+      ;   (0..255) each(number,
+      ;     "#{number.to_s(8)}" length should == 1
+      ;     "#{number.to_s(8)}"[0] should == number
+      ;   )
+      ; )
 
 ;       it("should replace a octal letter at the beginning of a string",
 ;         (0..255) each(number,

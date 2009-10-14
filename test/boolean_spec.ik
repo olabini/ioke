@@ -28,9 +28,9 @@ describe(true,
       x=41. true and(x=42). x should == 42
     )
 
-;     it("should complain if no argument is given",
-;       fn(true and()) should signal(Condition Error NativeException)
-;     )
+    it("should complain if no argument is given",
+      fn(true and()) should signal(Condition Error Index)
+    )
 
     it("should return the result of the argument",
       (true and(42)) should == 42
@@ -116,9 +116,9 @@ describe(true,
       x=41. true xor(x=42). x should == 42
     )
 
-;     it("should complain if no argument is given",
-;       fn(true xor()) should signal(Condition Warning)
-;     )
+    it("should complain if no argument is given",
+      fn(true xor()) should signal(Condition Error Invocation NoMatch)
+    )
 
     it("should return false if the argument is true",
       (true xor(true)) should be false
@@ -156,9 +156,9 @@ describe(true,
       x=41. true nand(x=42). x should == 42
     )
 
-;     it("should complain if no argument is given",
-;       fn(true nand()) should signal(Condition Warning)
-;     )
+    it("should complain if no argument is given",
+      fn(true nand()) should signal(Condition Error Invocation NoMatch)
+    )
 
     it("should return false if the argument evaluates to true",
       (true nand(42)) should be false
@@ -267,9 +267,9 @@ describe(false,
       x=41. false xor(x=42). x should == 42
     )
 
-;     it("should complain if no argument is given",
-;       fn(false xor()) should signal(Condition Warning)
-;     )
+    it("should complain if no argument is given",
+      fn(false xor()) should signal(Condition Error Invocation NoMatch)
+    )
 
     it("should return true if the argument is true",
       (false xor(true)) should be true
@@ -352,9 +352,9 @@ describe(false,
       x=41. false nor(x=42). x should == 42
     )
 
-;     it("should complain if no argument is given",
-;       fn(false nor()) should signal(Condition Warning)
-;     )
+    it("should complain if no argument is given",
+      fn(false nor()) should signal(Condition Error Invocation NoMatch)
+    )
 
     it("should return false if the argument is true",
       (false nor(42)) should be false

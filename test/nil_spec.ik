@@ -77,9 +77,9 @@ describe("nil",
       x=41. nil or(x=42). x should == 42
     )
 
-;     it("should complain if no argument is given",
-;       fn(nil or()) should signal(Condition Error NativeException)
-;     )
+    it("should complain if no argument is given",
+      fn(nil or()) should signal(Condition Error Index)
+    )
 
     it("should return the result of the argument",
       (nil or(42)) should == 42
@@ -123,9 +123,9 @@ describe("nil",
       x=41. nil xor(x=42). x should == 42
     )
 
-;     it("should complain if no argument is given",
-;       fn(nil xor()) should signal(Condition Error NativeException)
-;     )
+    it("should complain if no argument is given",
+      fn(nil xor()) should signal(Condition Error Invocation NoMatch)
+    )
 
     it("should return true if the argument is true",
       (nil xor(true)) should be true
@@ -149,9 +149,9 @@ describe("nil",
       x=41. nil nor(x=42). x should == 42
     )
 
-;     it("should complain if no argument is given",
-;       fn(nil nor()) should signal(Condition Error NativeException)
-;     )
+    it("should complain if no argument is given",
+      fn(nil nor()) should signal(Condition Error Invocation NoMatch)
+    )
 
     it("should return false if the argument is true",
       (nil nor(42)) should be false
