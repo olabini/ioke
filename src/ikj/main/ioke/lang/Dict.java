@@ -250,7 +250,7 @@ public class Dict extends IokeData {
         obj.registerMethod(runtime.newNativeMethod("takes either one or two or three arguments. if one argument is given, it should be a message chain that will be sent to each object in the dict. the result will be thrown away. if two arguments are given, the first is an unevaluated name that will be set to each of the entries in the dict in succession, and then the second argument will be evaluated in a scope with that argument in it. if three arguments is given, the first one is an unevaluated name that will be set to the index of each element, and the other two arguments are the name of the argument for the value, and the actual code. the code will evaluate in a lexical context, and if the argument name is available outside the context, it will be shadowed. the method will return the dict. the entries yielded will be mimics of Pair.", new NativeMethod("each") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
-                    .withRequiredPositionalUnevaluated("indexOrArgOrCode")
+                    .withOptionalPositionalUnevaluated("indexOrArgOrCode")
                     .withOptionalPositionalUnevaluated("argOrCode")
                     .withOptionalPositionalUnevaluated("code")
                     .getArguments();

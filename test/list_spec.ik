@@ -991,6 +991,11 @@ describe(List,
   )
 
   describe("each",
+    it("should return a seq when given no arguments",
+      x = [] each
+      x should mimic(Sequence)
+    )
+
     it("should not do anything for an empty list",
       x = 0
       [] each(. x++)

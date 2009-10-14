@@ -994,7 +994,7 @@ namespace Ioke.Lang {
 
             obj.RegisterMethod(obj.runtime.NewNativeMethod("takes either one or two or three arguments. if one argument is given, it should be a message chain that will be sent to each message in the chain. the result will be thrown away. if two arguments are given, the first is an unevaluated name that will be set to each of the messages in the chain in succession, and then the second argument will be evaluated in a scope with that argument in it. if three arguments is given, the first one is an unevaluated name that will be set to the index of each message, and the other two arguments are the name of the argument for the value, and the actual code. the code will evaluate in a lexical context, and if the argument name is available outside the context, it will be shadowed. the method will return the original message.",
                                                            new NativeMethod("each",  DefaultArgumentsDefinition.builder()
-                                                                            .WithRequiredPositionalUnevaluated("indexOrArgOrCode")
+                                                                            .WithOptionalPositionalUnevaluated("indexOrArgOrCode")
                                                                             .WithOptionalPositionalUnevaluated("argOrCode")
                                                                             .WithOptionalPositionalUnevaluated("code")
                                                                             .Arguments,
@@ -1005,6 +1005,9 @@ namespace Ioke.Lang {
 
                                                                                 Runtime runtime = context.runtime;
                                                                                 switch(message.Arguments.Count) {
+                                                                                case 0: {
+                                                                                    return ((Message)IokeObject.dataOf(runtime.seqMessage)).SendTo(runtime.seqMessage, context, on);
+                                                                                }
                                                                                 case 1: {
                                                                                     IokeObject code = IokeObject.As(message.Arguments[0], context);
                                                                                     object o = onAsMessage;
