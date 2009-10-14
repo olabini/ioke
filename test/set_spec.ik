@@ -103,6 +103,11 @@ describe("Set",
   )
 
   describe("each",
+    it("should return a seq when given no arguments",
+      x = #{} each
+      x should mimic(Sequence)
+    )
+
     it("should not do anything for an empty set",
       x = 0. set() each(. x++). x should == 0
     )

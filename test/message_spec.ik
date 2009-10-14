@@ -474,6 +474,11 @@ describe(Message,
   )
 
   describe("each",
+    it("should return a seq when given no arguments",
+      x = 'foo each
+      x should mimic(Sequence)
+    )
+
     it("should always execute for itself",
       Ground x = 0
       'foo each(. Ground x++)
