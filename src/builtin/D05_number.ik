@@ -27,3 +27,7 @@ Number Integer even? = method(
   "Returns true if this number is even, false otherwise",
   (@ % 2) == 0
 )
+
+Number Infinity mimic = method(
+  error!(Condition Error CantMimicOddball mimic)
+)

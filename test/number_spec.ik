@@ -1318,7 +1318,9 @@ describe(Number,
     )
 
     describe("mimic",
-      it("cannot be mimiced")
+      it("cannot be mimiced",
+        fn(Number Infinity mimic) should signal(Condition Error CantMimicOddball)
+      )
     )
   )
 )
