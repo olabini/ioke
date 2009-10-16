@@ -74,6 +74,9 @@ public class JavaWrapper extends IokeData {
                     lm = allMethods.get(name);
                 }
                 lm.add(m);
+                try {
+                    m.setAccessible(true);
+                } catch(Exception e) {}
             }
 
             for(Method m : clz.getDeclaredMethods()) {
