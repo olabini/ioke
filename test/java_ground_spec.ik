@@ -1770,7 +1770,9 @@ describe("Java Objects",
       val barValue? should be false
     )
 
-    it("should signal a condition if it can't find a matching method")
+    it("should signal a condition if it can't find a matching method",
+      fn(ioke:lang:test:StaticMethods overloaded("sending", "in", "wrong", "args")) should signal(Condition Error Java NoMatch)
+    )
   )
 
   describe("methods",
@@ -1985,7 +1987,10 @@ describe("Java Objects",
       formatter format(date) should not be nil
     )
 
-    it("should signal a condition if it can't find a matching method")
+    it("should signal a condition if it can't find a matching method",
+      i = ioke:lang:test:InstanceMethods new
+      fn(i overloaded("sending", "in", "wrong", "args")) should signal(Condition Error Java NoMatch)
+    )
   )
 
   describe("constructors",
@@ -2091,7 +2096,10 @@ describe("Java Objects",
       ioke:lang:test:Constructors new((java:lang:Object)nil) getData asText should == "Constructors(null: Object)"
     )
 
-    it("should signal a condition if it can't find a matching method")
+    it("should signal a condition if it can't find a matching method",
+      fn(ioke:lang:test:Constructors new("sending", "in", "wrong", "args")) should signal(Condition Error Java NoMatch)
+    )
+
 ;     it("should be possible to supply arguments by name")
   )
 
