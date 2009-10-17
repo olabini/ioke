@@ -1,6 +1,18 @@
 
 if(System feature?(:java),
 
+Condition Error Java = Condition Error mimic
+Condition Error Java NoMatch = Condition Error Java mimic
+Condition Error Java NoMatch mimic!(Condition Error Invocation NoMatch)
+
+Condition Error Java NoMatch report = method(
+  "returns a representation of this error",
+
+  "couldn't find a matching method for arguments #{given inspect} from methods #{alternatives inspect} (#{self kind})
+
+#{message asStackTraceText}
+#{context stackTraceAsText}")
+
 JavaGround notice  = "JavaGround"
 JavaGround inspect = "JavaGround"
 

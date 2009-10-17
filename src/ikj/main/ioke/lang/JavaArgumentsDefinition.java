@@ -566,12 +566,34 @@ public class JavaArgumentsDefinition {
             }
         }
 
-        // error that no matching method could be found here. wait for specs for this, of course
-//         System.err.println("- Running with: " + members[i]);
         if(i == members.length) {
-            System.err.println("couldn't find matching for " + java.util.Arrays.asList((Object[])members) + " for arguments: " + resultArguments);
+            final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition,
+                                                                               message,
+                                                                               context,
+                                                                               "Error",
+                                                                               "Java",
+                                                                               "NoMatch"), context).mimic(message, context);
+            condition.setCell("message", message);
+            condition.setCell("context", context);
+            condition.setCell("receiver", on);
+
+            List<Object> tries = new ArrayList<Object>(members.length);
+            for(Object o : members) {
+                tries.add(runtime.newText(o.toString()));
+            }
+
+            condition.setCell("alternatives", runtime.newList(tries));
+
+            List<Object> argsGiven = new ArrayList<Object>();
+            for(JavaArgumentDefinition jad : resultArguments) {
+                argsGiven.add(jad.obj);
+            }
+
+            condition.setCell("given", runtime.newList(argsGiven));
+
+            runtime.errorCondition(condition);
         }
-//         System.err.println("using: " + members[i] + " for: " + resultArguments + " with args: " + args);
+
         if(special) {
             args.add(0, on);
         }
