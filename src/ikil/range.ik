@@ -1,5 +1,5 @@
 
-IKIL(
+IKIL {
   ;; will create fields and constructor automatically
   ;; will create an init method that makes sure it inits the correct things
   ;; will add accessors for all the fields
@@ -52,4 +52,4 @@ IKIL(
       append(globalNotice(to))
       }
   )
-)
+}

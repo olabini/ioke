@@ -51,8 +51,6 @@ public class Ground {
         iokeGround.registerCell("Message", runtime.message);
         iokeGround.registerCell("Call", runtime.call);
         iokeGround.registerCell("Condition", runtime.condition);
-        iokeGround.registerCell("Rescue", runtime.rescue);
-        iokeGround.registerCell("Handler", runtime.handler);
         iokeGround.registerCell("IO", runtime.io);
         iokeGround.registerCell("FileSystem", runtime.fileSystem);
         iokeGround.registerCell("Regexp", runtime.regexp);

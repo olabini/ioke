@@ -326,8 +326,6 @@ namespace Ioke.Lang {
             this.Set.MimicsWithoutCheck(Origin);
 
             Condition.MimicsWithoutCheck(Origin);
-            Rescue.MimicsWithoutCheck(Origin);
-            Handler.MimicsWithoutCheck(Origin);
 
             Io.MimicsWithoutCheck(Origin);
 

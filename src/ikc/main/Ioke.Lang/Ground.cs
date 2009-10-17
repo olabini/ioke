@@ -41,8 +41,6 @@ namespace Ioke.Lang {
             iokeGround.RegisterCell("Message", runtime.Message);
             iokeGround.RegisterCell("Call", runtime.Call);
             iokeGround.RegisterCell("Condition", runtime.Condition);
-            iokeGround.RegisterCell("Rescue", runtime.Rescue);
-            iokeGround.RegisterCell("Handler", runtime.Handler);
             iokeGround.RegisterCell("IO", runtime.Io);
             iokeGround.RegisterCell("FileSystem", runtime.FileSystem);
             iokeGround.RegisterCell("Regexp", runtime.Regexp);
