@@ -3,6 +3,8 @@
  */
 package ioke.lang.test;
 
+import ioke.lang.IokeObject;
+
 /**
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
@@ -23,6 +25,10 @@ public class InstanceMethods {
         } else {
             return "overloaded(Object)";
         }
+    }
+
+    public IokeObject simpleTry(IokeObject obj) {
+        return obj;
     }
 
     public String overloaded() {

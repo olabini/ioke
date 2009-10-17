@@ -1625,7 +1625,12 @@ describe("Java Objects",
       ioke:lang:test:StaticMethods overloaded(true, 123.3) asText should == "overloaded(boolean, double)"
     )
 
-    it("should be possible to call a method that requests IokeObjects")
+    it("should be possible to call a method that requests IokeObjects",
+      str = "hello"
+      num = 42.5
+      ioke:lang:test:StaticMethods simpleTry(str) should be(str)
+      ioke:lang:test:StaticMethods simpleTry(num) should be(num)
+    )
 
     it("should invoke a method with no arguments correctly",
       ioke:lang:test:StaticMethods overloaded asText should == "overloaded()"
@@ -1764,6 +1769,8 @@ describe("Java Objects",
       val isBarValue() should be false
       val barValue? should be false
     )
+
+    it("should signal a condition if it can't find a matching method")
   )
 
   describe("methods",
@@ -1791,7 +1798,13 @@ describe("Java Objects",
       i overloaded(true, 123.3) asText should == "overloaded(boolean, double)"
     )
 
-    it("should be possible to call a method that requests IokeObjects")
+    it("should be possible to call a method that requests IokeObjects",
+      str = "hello"
+      num = 42.5
+      i = ioke:lang:test:InstanceMethods new
+      i simpleTry(str) should be(str)
+      i simpleTry(num) should be(num)
+    )
 
     it("should invoke a method with no arguments correctly",
       i = ioke:lang:test:InstanceMethods new
@@ -1971,6 +1984,8 @@ describe("Java Objects",
       formatter = java:text:SimpleDateFormat new("dd/MM/yyyy")
       formatter format(date) should not be nil
     )
+
+    it("should signal a condition if it can't find a matching method")
   )
 
   describe("constructors",
@@ -1988,6 +2003,13 @@ describe("Java Objects",
 
     it("should invoke an empty constructor correctly",
       ioke:lang:test:Constructors new getData asText should == "Constructors()"
+    )
+
+    it("should be possible to construct from an IokeObject",
+      str = "hello"
+      num = 42.5
+      ioke:lang:test:Constructors2 new(str) getData should be(str)
+      ioke:lang:test:Constructors2 new(num) getData should be(num)
     )
 
     it("should coerce Text correctly to String",
@@ -2069,6 +2091,7 @@ describe("Java Objects",
       ioke:lang:test:Constructors new((java:lang:Object)nil) getData asText should == "Constructors(null: Object)"
     )
 
+    it("should signal a condition if it can't find a matching method")
 ;     it("should be possible to supply arguments by name")
   )
 
