@@ -506,6 +506,10 @@ public class JavaArgumentsDefinition {
                             args.clear();
                             continue nextMethod;
                         }
+                    } else if(clz == IokeObject.class) {
+                        if(obj instanceof IokeObject) {
+                            args.add(obj);
+                        }
                     } else if(clz == Object.class) {
                         // Accept anything
                         if(obj == runtime.nil) {
