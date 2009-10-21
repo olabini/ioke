@@ -135,7 +135,6 @@ describe(Tuple,
       tuple asList should == []
       tuple(1,2,3) asList should == [1,2,3]
       tuple(3,3) asList should == [3,3]
-      tuple(3,tuple(3, 4)) asList should == [3, tuple(3,4)]
     )
   )
 

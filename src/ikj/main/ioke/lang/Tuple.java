@@ -133,6 +133,13 @@ public class Tuple extends IokeData {
                     return method.runtime.newNumber(((Tuple)IokeObject.data(on)).elements.length);
                 }
             }));
+
+        obj.registerMethod(runtime.newNativeMethod("Returns the a list representation of this tuple", new TypeCheckingNativeMethod.WithNoArguments("asList", runtime.tuple) {
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    return method.runtime.newList(new ArrayList<Object>(java.util.Arrays.asList(((Tuple)IokeObject.data(on)).elements)));
+                }
+            }));
     }
 
     public static String getInspect(Object on) throws ControlFlow {
