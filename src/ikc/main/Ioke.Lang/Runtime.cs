@@ -68,6 +68,7 @@ namespace Ioke.Lang {
         public IokeObject Mixins;
         public IokeObject _Runtime;
         public IokeObject Pair;
+        public IokeObject Tuple;
         public IokeObject Regexp;
         public IokeObject FileSystem;
         public IokeObject Set;
@@ -189,6 +190,7 @@ namespace Ioke.Lang {
             Mixins = new IokeObject(this, "Mixins is the name space for most mixins in the system. DefaultBehavior is the notable exception.");
             _Runtime = new IokeObject(this, "Runtime gives meta-circular access to the currently executing Ioke runtime.", this);
             Pair = new IokeObject(this, "A pair is a collection of two objects of any kind. They are used among other things to represent Dict entries.", new Pair(nil, nil));
+            Tuple = new IokeObject(this, "A tuple is a collection of objects of any kind. It is immutable and supports destructuring.", new Tuple(new object[0]));
             Regexp = new IokeObject(this, "A regular expression allows you to matching text against a pattern.", Ioke.Lang.Regexp.Create("", ""));
             FileSystem = new IokeObject(this, "Gives access to things related to the file system.");
             Set = new IokeObject(this, "A set is an unordered collection of objects that contains no duplicates.", new IokeSet());
@@ -282,6 +284,7 @@ namespace Ioke.Lang {
             Number.Init();
             Range.Init();
             Pair.Init();
+            Tuple.Init();
             DateTime.Init();
             LexicalContext.Init();
             List.Init();
@@ -387,6 +390,7 @@ namespace Ioke.Lang {
                 EvaluateString("use(\"builtin/D25_list\")", Message, Ground);
                 EvaluateString("use(\"builtin/D30_dict\")", Message, Ground);
                 EvaluateString("use(\"builtin/D35_pair\")", Message, Ground);
+                EvaluateString("use(\"builtin/D37_tuple\")", Message, Ground);
                 EvaluateString("use(\"builtin/D40_text\")", Message, Ground);
                 EvaluateString("use(\"builtin/D43_regexp\")", Message, Ground);
                 EvaluateString("use(\"builtin/D45_fileSystem\")", Message, Ground);
