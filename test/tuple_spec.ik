@@ -27,7 +27,7 @@ describe(Tuple,
   )
 
   it("should be possible to mimic",
-    x = Tupler mimic
+    x = Tuple mimic
     x should not be same(Tuple)
     x should mimic(Tuple)
     x should have kind("Tuple")
