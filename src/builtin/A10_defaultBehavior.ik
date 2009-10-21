@@ -1,10 +1,11 @@
 
 DefaultBehavior FlowControl cell("") = method(
   "returns result of evaluating first argument",
-  n,
+  +args,
 
-  ; We need to use cell here, to not activate a method-like object
-  cell(:n))
+  if(args length == 1,
+    args[0],
+    tuple(*args)))
 
 DefaultBehavior Boolean - = method(
   "returns the negation of the argument",

@@ -1,5 +1,10 @@
 
 Tuple mimic!(Mixins Comparing)
+Tuple createFrom = method(
+  "Returns a tuple, assuming the arguments are the right length for it",
+  args,
+
+  Tuple)
 
 Tuple Two   = Tuple mimic
 Tuple Two private:initializeWith(nil, nil)
@@ -7,6 +12,14 @@ Tuple Two first  = Tuple private:accessor(0)
 Tuple Two _1     = Tuple private:accessor(0)
 Tuple Two second = Tuple private:accessor(1)
 Tuple Two _2     = Tuple private:accessor(1)
+
+Tuple Two createFrom = method(
+  "Returns a tuple, assuming the arguments are the right length for it",
+  args,
+
+  t = mimic
+  t private:initializeWith(*args)
+  t)
 
 Tuple Three = Tuple Two mimic
 Tuple Three private:initializeWith(nil, nil, nil)
@@ -45,3 +58,40 @@ Tuple Nine _9      = Tuple private:accessor(8)
 
 Tuple Many  = Tuple Nine mimic
 
+Tuple Many createFrom = method(
+  "Returns a tuple, assuming the arguments are the right length for it",
+  args,
+
+  t = mimic
+  t private:initializeWith(*args)
+  len = args length
+  (10..len) each(index,
+    t cell(:"_#{index}") = Tuple private:accessor(index-1)
+  )
+  t)
+
+DefaultBehavior Literals tuple = method(
+  "Takes zero or more arguments and return an appropriate tuple from those arguments",
+  +args,
+  len = args length
+  tup = if(len == 0,
+    Tuple,
+    if(len == 2,
+      Tuple Two,
+      if(len == 3,
+        Tuple Three,
+        if(len == 4,
+          Tuple Four,
+          if(len == 5,
+            Tuple Five,
+            if(len == 6,
+              Tuple Six,
+              if(len == 7,
+                Tuple Seven,
+                if(len == 8,
+                  Tuple Eight,
+                  if(len == 9,
+                    Tuple Nine,
+                    Tuple Many)))))))))
+  tup createFrom(args)
+)

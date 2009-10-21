@@ -76,5 +76,87 @@ public class Tuple extends IokeData {
                         });
                 }
             }));
+
+        obj.registerMethod(runtime.newNativeMethod("Compares this object against the argument. The comparison is only based on the elements inside the tuple, which are in turn compared using <=>.", new TypeCheckingNativeMethod("<=>") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
+                    .builder()
+                    .receiverMustMimic(runtime.tuple)
+                    .withRequiredPositional("other")
+                    .getArguments();
+
+                @Override
+                public TypeCheckingArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    Object arg = args.get(0);
+                    Object[] one = ((Tuple)IokeObject.data(on)).elements;
+                    Object[] two = ((Tuple)IokeObject.data(arg)).elements;
+
+                    int len = Math.min(one.length, two.length);
+                    SpaceshipComparator sc = new SpaceshipComparator(context, message);
+
+                    for(int i = 0; i < len; i++) {
+                        int v = sc.compare(one[i], two[i]);
+                        if(v != 0) {
+                            return context.runtime.newNumber(v);
+                        }
+                    }
+
+                    len = one.length - two.length;
+
+                    if(len == 0) return context.runtime.newNumber(0);
+                    if(len > 0) return context.runtime.newNumber(1);
+                    return context.runtime.newNumber(-1);
+                }
+            }));
+
+        obj.registerMethod(runtime.newNativeMethod("Returns a text inspection of the object", new TypeCheckingNativeMethod.WithNoArguments("inspect", runtime.tuple) {
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                  return method.runtime.newText(Tuple.getInspect(on));
+                }
+            }));
+
+        obj.registerMethod(runtime.newNativeMethod("Returns a brief text inspection of the object", new TypeCheckingNativeMethod.WithNoArguments("notice", runtime.tuple) {
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    return method.runtime.newText(Tuple.getNotice(on));
+                }
+            }));
+    }
+
+    public static String getInspect(Object on) throws ControlFlow {
+        return ((Tuple)(IokeObject.data(on))).inspect(on);
+    }
+
+    public static String getNotice(Object on) throws ControlFlow {
+        return ((Tuple)(IokeObject.data(on))).notice(on);
+    }
+
+    public String inspect(Object obj) throws ControlFlow {
+        StringBuilder sb = new StringBuilder();
+        sb.append("(");
+        String sep = "";
+        for(Object o : elements) {
+            sb.append(sep).append(IokeObject.inspect(o));
+            sep = ", ";
+        }
+        sb.append(")");
+        return sb.toString();
+    }
+
+    public String notice(Object obj) throws ControlFlow {
+        StringBuilder sb = new StringBuilder();
+        sb.append("(");
+        String sep = "";
+        for(Object o : elements) {
+            sb.append(sep).append(IokeObject.notice(o));
+            sep = ", ";
+        }
+        sb.append(")");
+        return sb.toString();
     }
 }
