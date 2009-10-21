@@ -6,6 +6,8 @@ Tuple createFrom = method(
 
   Tuple)
 
+Tuple asTuple = method(self)
+
 Tuple Two   = Tuple mimic
 Tuple Two private:initializeWith(nil, nil)
 Tuple Two first  = Tuple private:accessor(0)

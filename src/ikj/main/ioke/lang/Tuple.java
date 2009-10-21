@@ -126,6 +126,13 @@ public class Tuple extends IokeData {
                     return method.runtime.newText(Tuple.getNotice(on));
                 }
             }));
+
+        obj.registerMethod(runtime.newNativeMethod("Returns the arity of this tuple", new TypeCheckingNativeMethod.WithNoArguments("arity", runtime.tuple) {
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    return method.runtime.newNumber(((Tuple)IokeObject.data(on)).elements.length);
+                }
+            }));
     }
 
     public static String getInspect(Object on) throws ControlFlow {
