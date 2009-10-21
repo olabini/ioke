@@ -81,6 +81,7 @@ public class Runtime extends IokeData {
     public IokeObject set = new IokeObject(this, "A set is an unordered collection of objects that contains no duplicates.", new IokeSet());
     public IokeObject range = new IokeObject(this, "A range is a collection of two objects of the same kind. This Range can be either inclusive or exclusive.", new Range(nil, nil, false, false));
     public IokeObject pair = new IokeObject(this, "A pair is a collection of two objects of any kind. They are used among other things to represent Dict entries.", new Pair(nil, nil));
+    public IokeObject tuple = new IokeObject(this, "A tuple is a collection of objects of any kind. It is immutable and supports destructuring.", new Tuple(new Object[0]));
     public IokeObject call = new IokeObject(this, "A call is the runtime structure that includes the specific information for a call, that is available inside a DefaultMacro.", new Call());
     public LexicalContext lexicalContext = new LexicalContext(this, ground, "A lexical activation context.", null, ground);
     public IokeObject dateTime = new IokeObject(this, "A DateTime represents the current date and time in a particular time zone.", new DateTime(0));
@@ -233,6 +234,7 @@ public class Runtime extends IokeData {
         number.init();
         range.init();
         pair.init();
+        tuple.init();
         dateTime.init();
         lexicalContext.init();
         list.init();
@@ -348,6 +350,7 @@ public class Runtime extends IokeData {
             evaluateString("use(\"builtin/D25_list\")", message, ground);
             evaluateString("use(\"builtin/D30_dict\")", message, ground);
             evaluateString("use(\"builtin/D35_pair\")", message, ground);
+            evaluateString("use(\"builtin/D37_tuple\")", message, ground);
             evaluateString("use(\"builtin/D40_text\")", message, ground);
             evaluateString("use(\"builtin/D43_regexp\")", message, ground);
             evaluateString("use(\"builtin/D45_fileSystem\")", message, ground);
