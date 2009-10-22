@@ -122,7 +122,31 @@ describe("assignment",
       fn((val1, val2) = (1,2,3)) should signal(Condition Error DestructuringMismatch)
     )
 
-    it("should be able to destructure recursively")
+    it("should be able to destructure recursively",
+      x = (1, (2, 3, 4, 5), 6, (7, (8, (9, 10), 11), 12), 13)
+
+      (a, b, c, d, e) = x
+      a should == 1
+      b should == (2, 3, 4, 5)
+      c should == 6
+      d should == (7, (8, (9, 10), 11), 12)
+      e should == 13
+
+      (x0, (x1, x2, x3, x4), x5, (x6, (x7, x8, x9), x10), x11) = x
+      x0 should == 1
+      x1 should == 2
+      x2 should == 3
+      x3 should == 4
+      x4 should == 5
+      x5 should == 6
+      x6 should == 7
+      x7 should == 8
+      x8 should == (9, 10)
+      x9 should == 11
+      x10 should == 12
+      x11 should == 13
+    )
+
     it("should be able to destructure recursively using asTuple")
     it("should be able to use _ inside of a recursive structure")
 
