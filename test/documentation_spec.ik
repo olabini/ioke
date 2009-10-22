@@ -8,7 +8,7 @@ describe(DefaultBehavior,
     )
 
     it("should be correct for =",
-      cell(:"=") documentation should == "expects two arguments, the first unevaluated, the second evaluated. assigns the result of evaluating the second argument in the context of the caller, and assigns this result to the name provided by the first argument. the first argument remains unevaluated. the result of the assignment is the value assigned to the name. if the second argument is a method-like object and it's name is not set, that name will be set to the name of the cell. TODO: add setf documentation here."
+      cell(:"=") documentation should == "expects two or more arguments, the first arguments unevaluated, the last evaluated. assigns the result of evaluating the last argument in the context of the caller, and assigns this result to the name/s provided by the first arguments. the first arguments remains unevaluated. the result of the assignment is the value assigned to the name. if the last argument is a method-like object and it's name is not set, that name will be set to the name of the cell."
     )
 
     it("should be correct for asText",
