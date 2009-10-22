@@ -1,8 +1,6 @@
 
 use("ispec")
 
-;; -- Possible add asTuple to Enumerable... would be useful to handle what the rhs is for pattern matching
-
 describe(DefaultBehavior,
   describe("tuple",
     it("should return the right kind of tuple for up to nine elements",
