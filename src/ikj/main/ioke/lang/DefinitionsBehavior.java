@@ -41,7 +41,7 @@ public class DefinitionsBehavior {
                     List<Object> args = message.getArguments();
 
                     if(args.size() == 0) {
-                        final Message mx = new Message(context.runtime, "nil", null, Message.Type.MESSAGE);
+                        final Message mx = new Message(context.runtime, "nil", null, false);
                         mx.setFile(Message.file(message));
                         mx.setLine(Message.line(message));
                         mx.setPosition(Message.position(message));
@@ -84,7 +84,7 @@ public class DefinitionsBehavior {
                     List<Object> args = message.getArguments();
 
                     if(args.size() == 0) {
-                        final Message mx = new Message(context.runtime, "nil", null, Message.Type.MESSAGE);
+                        final Message mx = new Message(context.runtime, "nil", null, false);
                         mx.setFile(Message.file(message));
                         mx.setLine(Message.line(message));
                         mx.setPosition(Message.position(message));
@@ -125,7 +125,7 @@ public class DefinitionsBehavior {
                     List<Object> args = message.getArguments();
 
                     if(args.size() == 0) {
-                        final Message mx = new Message(context.runtime, "nil", null, Message.Type.MESSAGE);
+                        final Message mx = new Message(context.runtime, "nil", null, false);
                         mx.setFile(Message.file(message));
                         mx.setLine(Message.line(message));
                         mx.setPosition(Message.position(message));
@@ -166,7 +166,7 @@ public class DefinitionsBehavior {
                     List<Object> args = message.getArguments();
 
                     if(args.size() == 0) {
-                        final Message mx = new Message(context.runtime, "nil", null, Message.Type.MESSAGE);
+                        final Message mx = new Message(context.runtime, "nil", null, false);
                         mx.setFile(Message.file(message));
                         mx.setLine(Message.line(message));
                         mx.setPosition(Message.position(message));

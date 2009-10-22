@@ -32,7 +32,7 @@ public class Main {
         Runtime r = new Runtime();
         r.init();
         final IokeObject context = r.ground;
-        final Message mx = new Message(r, ".", null, Message.Type.TERMINATOR);
+        final Message mx = new Message(r, ".", null, true);
         mx.setLine(0);
         mx.setPosition(0);
         final IokeObject message = r.createMessage(mx);

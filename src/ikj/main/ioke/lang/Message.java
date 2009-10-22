@@ -20,13 +20,12 @@ import ioke.lang.exceptions.ControlFlow;
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
 public class Message extends IokeData {
-    public static enum Type {MESSAGE, DETACH, TERMINATOR, SEPARATOR, START_INTERPOLATION, START_RE_INTERPOLATION, END_INTERPOLATION, END_RE_INTERPOLATION, MIDDLE_INTERPOLATION, MIDDLE_RE_INTERPOLATION};
+    private boolean isTerminator;
 
     private String name;
     private String file;
     private int line;
     private int pos;
-    private Type type = Type.MESSAGE;
 
     private List<Object> arguments = new ArrayList<Object>();
 
@@ -36,19 +35,19 @@ public class Message extends IokeData {
     private Object cached = null;
 
     public Message(Runtime runtime, String name) {
-        this(runtime, name, null, Type.MESSAGE);
+        this(runtime, name, null, false);
     }
 
-    Message(Runtime runtime, String name, Type type) {
-        this(runtime, name, null, type);
+    Message(Runtime runtime, String name, boolean isTerminator) {
+        this(runtime, name, null, isTerminator);
     }
 
     public Message(Runtime runtime, String name, Object arg1) {
-        this(runtime, name, arg1, Type.MESSAGE);
+        this(runtime, name, arg1, false);
     }
 
-    public Message(Runtime runtime, String name, Object arg1, Type type) {
-        this.type = type;
+    public Message(Runtime runtime, String name, Object arg1, boolean isTerminator) {
+        this.isTerminator = isTerminator;
         this.name = name;
 
         this.file = ((IokeSystem)IokeObject.data(runtime.system)).currentFile();
@@ -73,7 +72,7 @@ public class Message extends IokeData {
     }
 
     public static boolean isTerminator(Object message) {
-        return ((Message)IokeObject.data(message)).type == Type.TERMINATOR;
+        return ((Message)IokeObject.data(message)).isTerminator;
     }
 
     public static boolean isFirstOnLine(Object message) {
@@ -103,7 +102,7 @@ public class Message extends IokeData {
         Message orgMsg = (Message)IokeObject.data(message);
         Message copyMsg = (Message)IokeObject.data(copy);
 
-        copyMsg.type = orgMsg.type;
+        copyMsg.isTerminator = orgMsg.isTerminator;
         copyMsg.cached = orgMsg.cached;
 
         List<Object> newArgs = new ArrayList<Object>();
@@ -138,12 +137,8 @@ public class Message extends IokeData {
         return ((Message)IokeObject.data(message)).arguments.get(1);
     }
 
-    public static Type type(IokeObject message) {
-        return ((Message)IokeObject.data(message)).type;
-    }
-
-    public static void setType(IokeObject message, Type type) {
-        ((Message)IokeObject.data(message)).type = type;
+    public static void setIsTerminator(Object message, boolean isTerminator) {
+        ((Message)IokeObject.data(message)).isTerminator = isTerminator;
     }
 
     public static String getStackTraceText(Object _message) throws ControlFlow {
@@ -926,7 +921,7 @@ public class Message extends IokeData {
     public IokeData cloneData(IokeObject obj, IokeObject message, IokeObject context) {
         Message m = new Message(obj.runtime, name);
         m.arguments = new ArrayList<Object>(((Message)IokeObject.data(obj)).arguments);
-        m.type = ((Message)IokeObject.data(obj)).type;
+        m.isTerminator = ((Message)IokeObject.data(obj)).isTerminator;
         m.file = ((Message)IokeObject.data(obj)).file;
         m.line = ((Message)IokeObject.data(obj)).line;
         m.pos = ((Message)IokeObject.data(obj)).pos;
@@ -950,7 +945,7 @@ public class Message extends IokeData {
             IokeObject m = parser.parseFully();
 
             if(m == null) {
-                Message mx = new Message(runtime, ".", null, Type.TERMINATOR);
+                Message mx = new Message(runtime, ".", null, true);
                 mx.setLine(0);
                 mx.setPosition(0);
                 return runtime.createMessage(mx);
@@ -1222,7 +1217,7 @@ public class Message extends IokeData {
         currentCode(base);
 
         if(next != null) {
-            if(this.type != Type.TERMINATOR) {
+            if(!this.isTerminator) {
                 base.append(" ");
             }
 
@@ -1238,7 +1233,7 @@ public class Message extends IokeData {
         currentFormattedCode(base, indent, ctx);
 
         if(next != null) {
-            if(this.type != Type.TERMINATOR) {
+            if(!this.isTerminator) {
                 base.append(" ");
             }
 
@@ -1298,7 +1293,7 @@ public class Message extends IokeData {
             base.append(this.arguments.get(0));
         } else if(cached != null && this.name.equals("cachedResult")) {
             base.append(cached);
-        } else if(this.type == Type.TERMINATOR) {
+        } else if(this.isTerminator) {
             base.append(".\n");
         } else {
             base.append(this.name);
@@ -1347,7 +1342,7 @@ public class Message extends IokeData {
             base.append(this.arguments.get(0));
             base.append(" = ");
             base.append(Message.formattedCode(IokeObject.as(this.arguments.get(1), ctx), indent+2, ctx));
-        } else if(this.type == Type.TERMINATOR) {
+        } else if(this.isTerminator) {
             base.append("\n");
             for(int i=0;i<indent;i++) {
                 base.append(" ");
