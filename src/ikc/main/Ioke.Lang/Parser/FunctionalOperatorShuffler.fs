@@ -341,16 +341,6 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
         awaitingFirstArg level msg precedence
         stack <- level :: stack
 
-    let detach (msg : IokeObject) =
-        let brackets = runtime.NewMessage("")
-        Message.CopySourceLocation(msg, brackets)
-        add_all brackets.Arguments msg.Arguments
-        msg.Arguments.Clear()
-
-        Message.SetNext(brackets, Message.GetNext(msg))
-        Message.SetNext(msg, brackets)
-
-
     let nextMessage expressions =
         stack |> List.iter (fun hd -> finish hd expressions)
         reset ()
@@ -404,13 +394,9 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
         msgArgCount
 
     let handle_detach_of_message (precedence, msgArgCount) inverted (msg : IokeObject) =
-        match (inverted, msgArgCount, Message.typeOf(msg) = Message.Type.DETACH) with
-            | (true, 0, _) | (true, _, true) ->
-                if Message.typeOf(msg) = Message.Type.DETACH then
-                    detach msg
-                    (precedence, actual_detaching 0 msg)
-                else
-                    (precedence, actual_detaching msgArgCount msg)
+        match (inverted, msgArgCount) with
+            | (true, 0) ->
+                (precedence, actual_detaching msgArgCount msg)
             | _ -> (precedence, msgArgCount)
 
 
@@ -476,7 +462,7 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
             Message.SetNext(attaching, Message.GetNext(msg))
 
     let is_assignment_operation argCountForOp msgArgCount msg =
-        argCountForOp <> -1 && (msgArgCount = 0 || Message.typeOf(msg) = Message.Type.DETACH) && not((Message.GetNext(msg) <> null) && Message.GetName(Message.GetNext(msg)).Equals("="))
+        argCountForOp <> -1 && (msgArgCount = 0) && not((Message.GetNext(msg) <> null) && Message.GetName(Message.GetNext(msg)).Equals("="))
 
     let attachMessage (msg : IokeObject) (expressions : IList<IokeObject>) =
         let messageName = Message.GetName(msg)
@@ -486,11 +472,7 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
         let (precedence, msgArgCount) = handle_detach_of_message (handle_unary_prefix_message (levelForOp messageName messageSymbol msg, msg.Arguments.Count) msg) inverted msg
 
         if is_assignment_operation argCountForOp msgArgCount msg then
-            if msgArgCount <> 0 && Message.typeOf(msg) = Message.Type.DETACH then
-                detach msg
-                restructure_assignment_operation 0 msg messageName expressions argCountForOp
-            else
-                restructure_assignment_operation msgArgCount msg messageName expressions argCountForOp
+            restructure_assignment_operation msgArgCount msg messageName expressions argCountForOp
         elif Message.IsTerminator(msg) then
             popDownTo (OP_LEVEL_MAX-1) expressions
             attachAndReplace (CurrentLevel ()) msg
@@ -499,12 +481,7 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
                 popDownTo precedence expressions
                 attachToTopAndPush msg precedence
             else
-                if Message.typeOf(msg) = Message.Type.DETACH then
-                    detach msg
-                    popDownTo precedence expressions
-                    attachToTopAndPush msg precedence
-                else
-                    attachAndReplace (CurrentLevel ()) msg
+                attachAndReplace (CurrentLevel ()) msg
         else
             attachAndReplace (CurrentLevel ()) msg
 

@@ -382,17 +382,6 @@ namespace Ioke.Lang.Parser {
             stack.Insert(0, level);
         }
 
-        private void Detach(IokeObject msg) {
-            IokeObject brackets = runtime.NewMessage("");
-            Message.CopySourceLocation(msg, brackets);
-            foreach(object arg in msg.Arguments) brackets.Arguments.Add(arg);
-            msg.Arguments.Clear();
-
-            // Insert the brackets message between msg and its next message
-            Message.SetNext(brackets, Message.GetNext(msg));
-            Message.SetNext(msg, brackets);
-        }
-
         public void Attach(IokeObject msg, IList<IokeObject> expressions) {
             string messageName = Message.GetName(msg);
             IokeObject messageSymbol = runtime.GetSymbol(messageName);
@@ -418,12 +407,7 @@ namespace Ioke.Lang.Parser {
             }
 
 
-            if(inverted && (msgArgCount == 0 || Message.typeOf(msg) == Message.Type.DETACH)) {
-                if(Message.typeOf(msg) == Message.Type.DETACH) {
-                    Detach(msg);
-                    msgArgCount = 0;
-                }
-
+            if(inverted && (msgArgCount == 0)) {
                 IokeObject head = msg;
                 while(Message.GetPrev(head) != null && !Message.IsTerminator(Message.GetPrev(head))) {
                     head = Message.GetPrev(head);
@@ -465,12 +449,7 @@ namespace Ioke.Lang.Parser {
             // =      msg
             // b c    Message.next(msg)
             */
-            if(argCountForOp != -1 && (msgArgCount == 0 || Message.typeOf(msg) == Message.Type.DETACH) && !((Message.GetNext(msg) != null) && Message.GetName(Message.GetNext(msg)).Equals("="))) {
-                if(msgArgCount != 0 && Message.typeOf(msg) == Message.Type.DETACH) {
-                    Detach(msg);
-                    msgArgCount = 0;
-                }
-
+            if(argCountForOp != -1 && (msgArgCount == 0) && !((Message.GetNext(msg) != null) && Message.GetName(Message.GetNext(msg)).Equals("="))) {
                 Level currentLevel = CurrentLevel();
                 IokeObject attaching = currentLevel.message;
                 string setCellName;
@@ -547,13 +526,7 @@ namespace Ioke.Lang.Parser {
                     PopDownTo(precedence, expressions);
                     AttachToTopAndPush(msg, precedence);
                 } else {
-                    if(Message.typeOf(msg) == Message.Type.DETACH) {
-                        Detach(msg);
-                        PopDownTo(precedence, expressions);
-                        AttachToTopAndPush(msg, precedence);
-                    } else {
-                        AttachAndReplace(CurrentLevel(), msg);
-                    }
+                    AttachAndReplace(CurrentLevel(), msg);
                 }
             } else {
                 AttachAndReplace(CurrentLevel(), msg);

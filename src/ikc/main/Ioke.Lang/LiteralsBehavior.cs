@@ -51,7 +51,7 @@ namespace Ioke.Lang {
                                                                             Message m = new Message(context.runtime, name);
                                                                             IokeObject ret = context.runtime.CreateMessage(m);
                                                                             if(".".Equals(name)) {
-                                                                                Message.SetType(ret, Message.Type.TERMINATOR);
+                                                                                Message.SetIsTerminator(ret, true);
                                                                             }
                                                                             Message.CopySourceLocation(message, ret);
                                                                             return ret;

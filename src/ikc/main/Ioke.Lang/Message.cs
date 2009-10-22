@@ -9,13 +9,11 @@ namespace Ioke.Lang {
     using Ioke.Lang.Util;
 
     public class Message : IokeData {
-        public enum Type {MESSAGE, DETACH, TERMINATOR, SEPARATOR, START_INTERPOLATION, START_RE_INTERPOLATION, END_INTERPOLATION, END_RE_INTERPOLATION, MIDDLE_INTERPOLATION, MIDDLE_RE_INTERPOLATION}
-
         string name;
         string file;
         int line;
         int pos;
-        Type type = Type.MESSAGE;
+        bool isTerminator = false;
 
         IList arguments;
 
@@ -53,7 +51,7 @@ namespace Ioke.Lang {
         }
 
         public static bool IsTerminator(object message) {
-            return ((Message)IokeObject.dataOf(message)).type == Type.TERMINATOR;
+            return ((Message)IokeObject.dataOf(message)).isTerminator;
         }
 
         public static bool IsFirstOnLine(object message) {
@@ -106,7 +104,7 @@ namespace Ioke.Lang {
             Message orgMsg = (Message)IokeObject.dataOf(message);
             Message copyMsg = (Message)IokeObject.dataOf(copy);
 
-            copyMsg.type = orgMsg.type;
+            copyMsg.isTerminator = orgMsg.isTerminator;
             copyMsg.cached = orgMsg.cached;
 
             IList newArgs = new SaneArrayList();
@@ -157,8 +155,8 @@ namespace Ioke.Lang {
             ((Message)IokeObject.dataOf(message)).file = file;
         }
 
-        public static void SetType(object message, Type type) {
-            ((Message)IokeObject.dataOf(message)).type = type;
+        public static void SetIsTerminator(object message, bool isTerminator) {
+            ((Message)IokeObject.dataOf(message)).isTerminator = isTerminator;
         }
 
         public static void SetLine(object message, int line) {
@@ -221,10 +219,6 @@ namespace Ioke.Lang {
             return pos;
         }
 
-        public static Type typeOf(IokeObject message) {
-            return ((Message)IokeObject.dataOf(message)).type;
-        }
-
         public override IList Arguments(IokeObject self) {
             return arguments;
         }
@@ -256,17 +250,17 @@ namespace Ioke.Lang {
             IokeObject.As(message, null).Arguments.Add(arg);
         }
 
-        public Message(Runtime runtime, string name) : this(runtime, name, null, Type.MESSAGE) {
+        public Message(Runtime runtime, string name) : this(runtime, name, null, false) {
         }
 
-        Message(Runtime runtime, string name, Type type) : this(runtime, name, null, type) {
+        Message(Runtime runtime, string name, bool isTerm) : this(runtime, name, null, isTerm) {
         }
 
-        public Message(Runtime runtime, string name, object arg1) : this(runtime, name, arg1, Type.MESSAGE) {
+        public Message(Runtime runtime, string name, object arg1) : this(runtime, name, arg1, false) {
         }
 
-        public Message(Runtime runtime, string name, object arg1, Type type) {
-            this.type = type;
+        public Message(Runtime runtime, string name, object arg1, bool isTerm) {
+            this.isTerminator = isTerm;
             this.name = name;
             this.arguments = new SaneArrayList();
             this.file = ((IokeSystem)IokeObject.dataOf(runtime.System)).CurrentFile;
@@ -279,7 +273,7 @@ namespace Ioke.Lang {
         public override IokeData CloneData(IokeObject obj, IokeObject message, IokeObject context) {
             Message m = new Message(obj.runtime, name);
             m.arguments = new SaneArrayList(((Message)IokeObject.dataOf(obj)).arguments);
-            m.type = ((Message)IokeObject.dataOf(obj)).type;
+            m.isTerminator = ((Message)IokeObject.dataOf(obj)).isTerminator;
             m.file = ((Message)IokeObject.dataOf(obj)).file;
             m.line = ((Message)IokeObject.dataOf(obj)).line;
             m.pos = ((Message)IokeObject.dataOf(obj)).pos;
@@ -298,7 +292,7 @@ namespace Ioke.Lang {
                 IokeObject m = parser.ParseFully();
 
                 if(m == null) {
-                    Message mx = new Message(runtime, ".", null, Type.TERMINATOR);
+                    Message mx = new Message(runtime, ".", null, true);
                     mx.Line = 0;
                     mx.Position = 0;
                     return runtime.CreateMessage(mx);
@@ -335,7 +329,7 @@ namespace Ioke.Lang {
             CurrentFormattedCode(b, indent, ctx);
 
             if(next != null) {
-                if(this.type != Type.TERMINATOR) {
+                if(!this.isTerminator) {
                     b.Append(" ");
                 }
 
@@ -361,7 +355,7 @@ namespace Ioke.Lang {
             CurrentCode(b);
 
             if(next != null) {
-                if(this.type != Type.TERMINATOR) {
+                if(!this.isTerminator) {
                     b.Append(" ");
                 }
 
@@ -382,7 +376,7 @@ namespace Ioke.Lang {
                 b.Append(this.arguments[0]);
             } else if(cached != null && this.name.Equals("cachedResult")) {
                 b.Append(cached);
-            } else if(this.type == Type.TERMINATOR) {
+            } else if(this.isTerminator) {
                 b.Append(".\n");
             } else {
                 b.Append(this.name);
@@ -431,7 +425,7 @@ namespace Ioke.Lang {
                 b.Append(this.arguments[0]);
                 b.Append(" = ");
                 b.Append(Message.FormattedCode(IokeObject.As(this.arguments[1], ctx), indent+2, ctx));
-            } else if(this.type == Type.TERMINATOR) {
+            } else if(this.isTerminator) {
                 b.Append("\n");
                 for(int i=0;i<indent;i++) {
                     b.Append(" ");
