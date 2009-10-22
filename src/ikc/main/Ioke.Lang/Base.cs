@@ -140,41 +140,113 @@ namespace Ioke.Lang {
             return arg;
         }
 
+        private static object RecursiveDestructuring(IList places, int numPlaces, IokeObject message, IokeObject context, object on, object toTuple) {
+            object tupledValue = ((Message)IokeObject.dataOf(context.runtime.asTuple)).SendTo(context.runtime.asTuple, context, toTuple);
+            object[] values = Tuple.GetElements(tupledValue);
+            int numValues = values.Length;
+
+            int min = System.Math.Min(numValues, numPlaces);
+
+            bool hadEndingUnderscore = false;
+
+            for(int i=0; i<min; i++) {
+                IokeObject m1 = IokeObject.As(places[i], context);
+                string name = m1.Name;
+                if(name.Equals("_")) {
+                    if(i == numPlaces - 1) {
+                        hadEndingUnderscore = true;
+                    }
+                } else {
+                    if(m1.Arguments.Count == 0) {
+                        object value = values[i];
+
+                        IokeObject.Assign(on, name, value, context, message);
+
+                        if(value is IokeObject) {
+                            if((IokeObject.dataOf(value) is Named) && ((Named)IokeObject.dataOf(value)).Name == null) {
+                                ((Named)IokeObject.dataOf(value)).Name = name;
+                            } else if(name.Length > 0 && char.IsUpper(name[0]) && !(IokeObject.As(value, context).HasKind)) {
+                                if(on == context.runtime.Ground || on == context.runtime.IokeGround) {
+                                    IokeObject.As(value, context).Kind = name;
+                                } else {
+                                    IokeObject.As(value, context).Kind = IokeObject.As(on, context).GetKind(message, context) + " " + name;
+                                }
+                            }
+                        }
+                    } else if(name.Equals("")) {
+                        var newArgs = m1.Arguments;
+                        RecursiveDestructuring(newArgs, newArgs.Count, message, context, on, values[i]);
+                    } else {
+                        string newName = name + "=";
+                        IList arguments = new SaneArrayList(m1.Arguments);
+                        arguments.Add(context.runtime.CreateMessage(Message.Wrap(IokeObject.As(values[i], context))));
+                        IokeObject msg = context.runtime.NewMessageFrom(message, newName, arguments);
+                        ((Message)IokeObject.dataOf(msg)).SendTo(msg, context, on);
+                    }
+                }
+            }
+
+            if(numPlaces > min || (numValues > min && !hadEndingUnderscore)) {
+                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition,
+                                                                             message,
+                                                                             context,
+                                                                             "Error",
+                                                                             "DestructuringMismatch"), context).Mimic(message, context);
+                condition.SetCell("message", message);
+                condition.SetCell("context", context);
+                condition.SetCell("receiver", on);
+
+                context.runtime.ErrorCondition(condition);
+            }
+
+            return tupledValue;
+        }
+
+
         public static void Init(IokeObject obj) {
             obj.Kind = "Base";
 
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("expects two arguments, the first unevaluated, the second evaluated. assigns the result of evaluating the second argument in the context of the caller, and assigns this result to the name provided by the first argument. the first argument remains unevaluated. the result of the assignment is the value assigned to the name. if the second argument is a method-like object and it's name is not set, that name will be set to the name of the cell. TODO: add setf documentation here.",
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("expects two or more arguments, the first arguments unevaluated, the last evaluated. assigns the result of evaluating the last argument in the context of the caller, and assigns this result to the name/s provided by the first arguments. the first arguments remains unevaluated. the result of the assignment is the value assigned to the name. if the last argument is a method-like object and it's name is not set, that name will be set to the name of the cell.",
                                                            new NativeMethod("=", DefaultArgumentsDefinition.builder()
                                                                             .WithRequiredPositionalUnevaluated("place")
+                                                                            .WithRestUnevaluated("morePlacesForDestructuring")
                                                                             .WithRequiredPositional("value")
                                                                             .Arguments,
                                                                             (method, context, message, on, outer) => {
                                                                                 outer.ArgumentsDefinition.CheckArgumentCount(context, message, on);
-                                                                                IokeObject m1 = IokeObject.As(Message.GetArguments(message)[0], context);
-                                                                                string name = m1.Name;
-                                                                                if(m1.Arguments.Count == 0) {
-                                                                                    object value = ((Message)IokeObject.dataOf(message)).GetEvaluatedArgument(message, 1, context);
-                                                                                    IokeObject.Assign(on, name, value, context, message);
+                                                                                var args = message.Arguments;
+                                                                                if(args.Count == 2) {
+                                                                                    IokeObject m1 = IokeObject.As(Message.GetArguments(message)[0], context);
+                                                                                    string name = m1.Name;
+                                                                                    if(m1.Arguments.Count == 0) {
+                                                                                        object value = ((Message)IokeObject.dataOf(message)).GetEvaluatedArgument(message, 1, context);
+                                                                                        IokeObject.Assign(on, name, value, context, message);
 
-                                                                                    if(value is IokeObject) {
-                                                                                        if((IokeObject.dataOf(value) is Named) && ((Named)IokeObject.dataOf(value)).Name == null) {
-                                                                                            ((Named)IokeObject.dataOf(value)).Name = name;
-                                                                                        } else if(name.Length > 0 && char.IsUpper(name[0]) && !(IokeObject.As(value, context).HasKind)) {
-                                                                                            if(on == context.runtime.Ground || on == context.runtime.IokeGround) {
-                                                                                                IokeObject.As(value, context).Kind = name;
-                                                                                            } else {
-                                                                                                IokeObject.As(value, context).Kind = IokeObject.As(on, context).GetKind(message, context) + " " + name;
+                                                                                        if(value is IokeObject) {
+                                                                                            if((IokeObject.dataOf(value) is Named) && ((Named)IokeObject.dataOf(value)).Name == null) {
+                                                                                                ((Named)IokeObject.dataOf(value)).Name = name;
+                                                                                            } else if(name.Length > 0 && char.IsUpper(name[0]) && !(IokeObject.As(value, context).HasKind)) {
+                                                                                                if(on == context.runtime.Ground || on == context.runtime.IokeGround) {
+                                                                                                    IokeObject.As(value, context).Kind = name;
+                                                                                                } else {
+                                                                                                    IokeObject.As(value, context).Kind = IokeObject.As(on, context).GetKind(message, context) + " " + name;
+                                                                                                }
                                                                                             }
                                                                                         }
-                                                                                    }
 
-                                                                                    return value;
+                                                                                        return value;
+                                                                                    } else {
+                                                                                        string newName = name + "=";
+                                                                                        IList arguments = new SaneArrayList(m1.Arguments);
+                                                                                        arguments.Add(Message.GetArguments(message)[1]);
+                                                                                        IokeObject msg = context.runtime.NewMessageFrom(message, newName, arguments);
+                                                                                        return ((Message)IokeObject.dataOf(msg)).SendTo(msg, context, on);
+                                                                                    }
                                                                                 } else {
-                                                                                    string newName = name + "=";
-                                                                                    IList arguments = new SaneArrayList(m1.Arguments);
-                                                                                    arguments.Add(Message.GetArguments(message)[1]);
-                                                                                    IokeObject msg = context.runtime.NewMessageFrom(message, newName, arguments);
-                                                                                    return ((Message)IokeObject.dataOf(msg)).SendTo(msg, context, on);
+                                                                                    int lastIndex = args.Count - 1;
+                                                                                    int numPlaces = lastIndex;
+
+                                                                                    return RecursiveDestructuring(args, numPlaces, message, context, on, Message.GetEvaluatedArgument(args[lastIndex], context));
                                                                                 }
                                                                             })));
 
