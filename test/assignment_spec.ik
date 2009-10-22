@@ -147,7 +147,23 @@ describe("assignment",
       x11 should == 13
     )
 
-    it("should be able to destructure recursively using asTuple")
+    it("should be able to destructure recursively using asTuple",
+      (x0, (x1, x2, x3, x4), x5, (x6, (x7, (x8_1, x8_2), x9), x10), x11) = (1, [2, 3, 4, 5], 6, (7, (8, 9 => 10, 11), 12), 13)
+      x0 should == 1
+      x1 should == 2
+      x2 should == 3
+      x3 should == 4
+      x4 should == 5
+      x5 should == 6
+      x6 should == 7
+      x7 should == 8
+      x8_1 should == 9
+      x8_2 should == 10
+      x9 should == 11
+      x10 should == 12
+      x11 should == 13
+    )
+
     it("should be able to use _ inside of a recursive structure")
 
     it("should make the assignments in parallel, so you can switch values easily",
