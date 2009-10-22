@@ -245,6 +245,12 @@ public class Base {
                             } else if(name.equals("")) {
                                 List<Object> newArgs = m1.getArguments();
                                 recursiveDestructuring(newArgs, newArgs.size(), message, context, on, values[i]);
+                            } else {
+                                String newName = name + "=";
+                                List<Object> arguments = new ArrayList<Object>(m1.getArguments());
+                                arguments.add(context.runtime.createMessage(Message.wrap(IokeObject.as(values[i], context))));
+                                IokeObject msg = context.runtime.newMessageFrom(message, newName, arguments);
+                                ((Message)IokeObject.data(msg)).sendTo(msg, context, on);
                             }
                         }
                     }

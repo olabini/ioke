@@ -191,8 +191,35 @@ describe("assignment",
       cval should == 35
     )
 
-    it("should allow for places inside of the assignment specification")
-    it("should be possible to use places inside of a recursive assignment")
+    it("should allow for places inside of the assignment specification",
+      (cell(:a), b, cell(:c)) = (42, 45, 48)
+
+      a should == 42
+      b should == 45
+      c should == 48
+
+      x = [1,2,3]
+      x ([2], [1], [0]) = (42, 55, 77)
+      x should == [77, 55, 42]
+    )
+
+    it("should be possible to use places inside of a recursive assignment",
+      (a, (cell(:b), c), d) = (11, (21, 31), 41)
+      a should == 11
+      b should == 21
+      c should == 31
+      d should == 41
+    )
+
+    it("should do the assignment to places in parallell",
+      aval = 42
+      bval = 35
+      cval = 222
+      (cell(:aval), cell(:bval), cell(:cval)) = (cval, aval, bval)
+      aval should == 222
+      bval should == 42
+      cval should == 35
+    )
   )
 
   describe("+=",
