@@ -104,10 +104,27 @@ describe("assignment",
       cont z should == 1
     )
 
-    it("should allow _ to be used to mark any remaining values")
+    it("should allow _ to be used to mark any remaining values",
+      (val1, _) = (1,2,3,4)
+      val1 should == 1
+      cell?(:"_") should be false
+    )
+
+    it("should allow _ to be used in more than one place",
+      (val1, _, val2, _, val3, _) = (1,2,3,4,5,6,7,8,9)
+      val1 should == 1
+      val2 should == 3
+      val3 should == 5
+      cell?(:"_") should be false
+    )
+
+    it("should report an error if the destructuring doesn't match up",
+      fn((val1, val2) = (1,2,3)) should signal(Condition Error DestructuringMismatch)
+    )
+
     it("should be able to destructure recursively")
     it("should be able to destructure recursively using asTuple")
-    it("should make the assignments in one parallell, so you can switch values easily")
+    it("should make the assignments in parallel, so you can switch values easily")
     it("should allow for places inside of the assignment specification")
   )
 
