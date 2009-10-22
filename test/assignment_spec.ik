@@ -124,8 +124,20 @@ describe("assignment",
 
     it("should be able to destructure recursively")
     it("should be able to destructure recursively using asTuple")
-    it("should make the assignments in parallel, so you can switch values easily")
+    it("should be able to use _ inside of a recursive structure")
+
+    it("should make the assignments in parallel, so you can switch values easily",
+      aval = 42
+      bval = 35
+      cval = 222
+      (aval, bval, cval) = (cval, aval, bval)
+      aval should == 222
+      bval should == 42
+      cval should == 35
+    )
+
     it("should allow for places inside of the assignment specification")
+    it("should be possible to use places inside of a recursive assignment")
   )
 
   describe("+=",
