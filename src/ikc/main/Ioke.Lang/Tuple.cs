@@ -12,6 +12,10 @@ namespace Ioke.Lang {
             this.elements = elements;
         }
 
+        public static object[] GetElements(object o) {
+            return ((Tuple)IokeObject.dataOf(o)).elements;
+        }
+
         public override void Init(IokeObject obj) {
             Runtime runtime = obj.runtime;
             obj.Kind = "Tuple";

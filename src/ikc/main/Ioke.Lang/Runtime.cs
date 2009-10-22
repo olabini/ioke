@@ -81,6 +81,7 @@ namespace Ioke.Lang {
         public IokeObject KeyValueIteratorSequence;
 
         public IokeObject asText;
+        public IokeObject asTuple;
         public IokeObject opShuffle;
         public IokeObject printlnMessage;
         public IokeObject outMessage;
@@ -203,6 +204,7 @@ namespace Ioke.Lang {
             KeyValueIteratorSequence = new IokeObject(this, "The root mimic of all the key-value-iterator sequences in the system.", new Sequence.KeyValueIteratorSequence(null));
 
             asText = NewMessage("asText");
+            asTuple = NewMessage("asTuple");
             opShuffle = NewMessage("shuffleOperators");
             printlnMessage = NewMessage("println");
             outMessage = NewMessage("out");
