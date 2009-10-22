@@ -92,7 +92,18 @@ describe("assignment",
       cont z should == 1
     )
 
-    it("should use asTuple on the right hand side to get the values")
+    it("should use asTuple on the right hand side to get the values",
+      (val1, val2) = 42 => 25
+      val1 should == 42
+      val2 should == 25
+
+      cont = Origin mimic
+      cont (x, y, z) = [3,2,1]
+      cont x should == 3
+      cont y should == 2
+      cont z should == 1
+    )
+
     it("should allow _ to be used to mark any remaining values")
     it("should be able to destructure recursively")
     it("should be able to destructure recursively using asTuple")
