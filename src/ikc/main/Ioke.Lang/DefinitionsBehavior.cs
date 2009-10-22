@@ -20,7 +20,7 @@ namespace Ioke.Lang {
                                                                             var args = message.Arguments;
 
                                                                             if(args.Count == 0) {
-                                                                                Message mx = new Message(context.runtime, "nil", null, Message.Type.MESSAGE);
+                                                                                Message mx = new Message(context.runtime, "nil", null, false);
                                                                                 mx.File = Message.GetFile(message);
                                                                                 mx.Line = Message.GetLine(message);
                                                                                 mx.Position = Message.GetPosition(message);
@@ -55,7 +55,7 @@ namespace Ioke.Lang {
                                                                             var args = message.Arguments;
 
                                                                             if(args.Count == 0) {
-                                                                                Message mx = new Message(context.runtime, "nil", null, Message.Type.MESSAGE);
+                                                                                Message mx = new Message(context.runtime, "nil", null, false);
                                                                                 mx.File = Message.GetFile(message);
                                                                                 mx.Line = Message.GetLine(message);
                                                                                 mx.Position = Message.GetPosition(message);
@@ -144,7 +144,7 @@ namespace Ioke.Lang {
                                                                             var args = message.Arguments;
 
                                                                             if(args.Count == 0) {
-                                                                                Message mx = new Message(context.runtime, "nil", null, Message.Type.MESSAGE);
+                                                                                Message mx = new Message(context.runtime, "nil", null, false);
                                                                                 mx.File = Message.GetFile(message);
                                                                                 mx.Line = Message.GetLine(message);
                                                                                 mx.Position = Message.GetPosition(message);
@@ -175,7 +175,7 @@ namespace Ioke.Lang {
                                                                             var args = message.Arguments;
 
                                                                             if(args.Count == 0) {
-                                                                                Message mx = new Message(context.runtime, "nil", null, Message.Type.MESSAGE);
+                                                                                Message mx = new Message(context.runtime, "nil", null, false);
                                                                                 mx.File = Message.GetFile(message);
                                                                                 mx.Line = Message.GetLine(message);
                                                                                 mx.Position = Message.GetPosition(message);

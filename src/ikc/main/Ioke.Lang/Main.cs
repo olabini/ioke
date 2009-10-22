@@ -28,7 +28,7 @@ namespace Ioke.Lang {
             r.Init();
 
             IokeObject context = r.Ground;
-            Message mx = new Message(r, ".", null, Message.Type.TERMINATOR);
+            Message mx = new Message(r, ".", null, true);
             mx.Line = 0;
             mx.Position = 0;
             IokeObject message = r.CreateMessage(mx);

@@ -514,7 +514,7 @@ namespace Ioke.Lang.Parser
                 }
             }
 
-            Message m = new Message(runtime, ".", null, Message.Type.TERMINATOR);
+            Message m = new Message(runtime, ".", null, true);
             m.Line = l;
             m.Position = cc;
             return runtime.CreateMessage(m);
