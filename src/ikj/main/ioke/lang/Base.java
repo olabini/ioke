@@ -250,29 +250,50 @@ public class Base {
                         int numPlaces = lastIndex;
                         Object[] values = Tuple.getElements(tupledValue);
                         int numValues = values.length;
-                        int min = Math.min(numPlaces, numValues);
+
+                        int min = Math.min(numValues, numPlaces);
+
+                        boolean hadEndingUnderscore = false;
 
                         for(int i=0; i<min; i++) {
                             IokeObject m1 = IokeObject.as(args.get(i), context);
-
                             String name = m1.getName();
-                            if(m1.getArguments().size() == 0) {
-                                Object value = values[i];
+                            if(name.equals("_")) {
+                                if(i == numPlaces - 1) {
+                                    hadEndingUnderscore = true;
+                                }
+                            } else {
+                                if(m1.getArguments().size() == 0) {
+                                    Object value = values[i];
 
-                                IokeObject.assign(on, name, value, context, message);
+                                    IokeObject.assign(on, name, value, context, message);
 
-                                if(value instanceof IokeObject) {
-                                    if((IokeObject.data(value) instanceof Named) && ((Named)IokeObject.data(value)).getName() == null) {
-                                        ((Named)IokeObject.data(value)).setName(name);
-                                    } else if(name.length() > 0 && Character.isUpperCase(name.charAt(0)) && !IokeObject.as(value, context).hasKind()) {
-                                        if(on == context.runtime.ground) {
-                                            IokeObject.as(value, context).setKind(name);
-                                        } else {
-                                            IokeObject.as(value, context).setKind(IokeObject.as(on, context).getKind(message, context) + " " + name);
+                                    if(value instanceof IokeObject) {
+                                        if((IokeObject.data(value) instanceof Named) && ((Named)IokeObject.data(value)).getName() == null) {
+                                            ((Named)IokeObject.data(value)).setName(name);
+                                        } else if(name.length() > 0 && Character.isUpperCase(name.charAt(0)) && !IokeObject.as(value, context).hasKind()) {
+                                            if(on == context.runtime.ground) {
+                                                IokeObject.as(value, context).setKind(name);
+                                            } else {
+                                                IokeObject.as(value, context).setKind(IokeObject.as(on, context).getKind(message, context) + " " + name);
+                                            }
                                         }
                                     }
                                 }
                             }
+                        }
+
+                        if(numPlaces > min || (numValues > min && !hadEndingUnderscore)) {
+                            IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition,
+                                                                                         message,
+                                                                                         context,
+                                                                                         "Error",
+                                                                                         "DestructuringMismatch"), context).mimic(message, context);
+                            condition.setCell("message", message);
+                            condition.setCell("context", context);
+                            condition.setCell("receiver", on);
+
+                            context.runtime.errorCondition(condition);
                         }
 
                         return tupledValue;

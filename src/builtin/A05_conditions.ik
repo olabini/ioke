@@ -14,6 +14,7 @@ Condition Error RestartNotActive = Condition Error mimic
 Condition Error CommandLine      = Condition Error mimic
 Condition Error NativeException  = Condition Error mimic
 Condition Error Parser           = Condition Error mimic
+Condition Error DestructuringMismatch = Condition Error mimic
 
 
 Condition Error Parser Syntax                          = Condition Error Parser mimic
@@ -31,6 +32,7 @@ Condition Error Invocation TooManyArguments            = Condition Error Invocat
 Condition Error Invocation MismatchedKeywords          = Condition Error Invocation mimic
 Condition Error Invocation NotSpreadable               = Condition Error Invocation mimic
 Condition Error Invocation NoMatch                     = Condition Error Invocation mimic
+
 
 Condition Error Type IncorrectType = Condition Error Type mimic
 
