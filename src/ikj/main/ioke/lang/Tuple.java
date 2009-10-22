@@ -77,6 +77,46 @@ public class Tuple extends IokeData {
                 }
             }));
 
+        obj.registerMethod(runtime.newNativeMethod("returns true if the left hand side tuple is equal to the right hand side tuple.", new TypeCheckingNativeMethod("==") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
+                    .builder()
+                    .receiverMustMimic(runtime.tuple)
+                    .withRequiredPositional("other")
+                    .getArguments();
+
+                @Override
+                public TypeCheckingArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject self, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+                    Tuple d = (Tuple)IokeObject.data(on);
+                    Object other = args.get(0);
+                    boolean notResult = false;
+                    if((other instanceof IokeObject) &&
+                       (IokeObject.data(other) instanceof Tuple)) {
+                        Tuple d2 = (Tuple)IokeObject.data(other);
+                        int len = d.elements.length;
+                        if(len == d2.elements.length) {
+                            for(int i=0; i<len; i++) {
+                                if(!d.elements[i].equals(d2.elements[i])) {
+                                    notResult = true;
+                                    break;
+                                }
+                            }
+                        } else {
+                            notResult = true;
+                        }
+                    } else {
+                        notResult = true;
+                    }
+
+                    return !notResult ? context.runtime._true : context.runtime._false;
+                }
+            }));
+
         obj.registerMethod(runtime.newNativeMethod("Compares this object against the argument. The comparison is only based on the elements inside the tuple, which are in turn compared using <=>.", new TypeCheckingNativeMethod("<=>") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()

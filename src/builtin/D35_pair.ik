@@ -12,3 +12,7 @@ Pair <=> = method(
 
 Pair do(=== = generateMatchMethod(==))
 
+Pair asTuple = method(
+  "returns a tuple with the same content as this pair",
+  tuple(first, second)
+)

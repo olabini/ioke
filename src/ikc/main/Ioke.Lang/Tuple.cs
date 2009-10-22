@@ -44,6 +44,37 @@ namespace Ioke.Lang {
                                                                                     })));
 
 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns true if the left hand side tuple is equal to the right hand side tuple.",
+                                                       new TypeCheckingNativeMethod("==", TypeCheckingArgumentsDefinition.builder()
+                                                                                    .ReceiverMustMimic(obj)
+                                                                                    .WithRequiredPositional("other")
+                                                                                    .Arguments,
+                                                                                    (method, on, args, keywords, context, message) => {
+                                                                                        object other = args[0];
+                                                                                        var d = ((Tuple)IokeObject.dataOf(on)).elements;
+
+                                                                                        bool notResult = false;
+                                                                                        if((other is IokeObject) &&
+                                                                                           (IokeObject.dataOf(other) is Tuple)) {
+                                                                                            var d2 = ((Tuple)IokeObject.dataOf(other)).elements;
+                                                                                            int len = d.Length;
+                                                                                            if(len == d2.Length) {
+                                                                                                for(int i=0; i<len; i++) {
+                                                                                                    if(!d[i].Equals(d2[i])) {
+                                                                                                        notResult = true;
+                                                                                                        break;
+                                                                                                    }
+                                                                                                }
+                                                                                            } else {
+                                                                                                notResult = true;
+                                                                                            }
+                                                                                        } else {
+                                                                                            notResult = true;
+                                                                                        }
+
+                                                                                        return !notResult ? context.runtime.True : context.runtime.False;
+                                                                                    })));
+
             obj.RegisterMethod(runtime.NewNativeMethod("Compares this object against the argument. The comparison is only based on the elements inside the tuple, which are in turn compared using <=>.",
                                                        new TypeCheckingNativeMethod("<=>", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(obj)
