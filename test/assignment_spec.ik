@@ -164,7 +164,22 @@ describe("assignment",
       x11 should == 13
     )
 
-    it("should be able to use _ inside of a recursive structure")
+    it("should report an error if the destructuring doesn't match up in a recursive structure",
+      fn((val1, (val2, val3, val4), val5) = (1,(2, 3),3)) should signal(Condition Error DestructuringMismatch)
+    )
+
+    it("should be able to use _ inside of a recursive structure",
+      (x0, (x1, _), x5, (x6, _, x10), x11) = (1, (2, 3, 4, 5), 6, (7, (8, (9, 10), 11), 12), 13)
+
+      x0 should == 1
+      x1 should == 2
+      x5 should == 6
+      x6 should == 7
+      x10 should == 12
+      x11 should == 13
+
+      cell?(:"_") should be false
+    )
 
     it("should make the assignments in parallel, so you can switch values easily",
       aval = 42
