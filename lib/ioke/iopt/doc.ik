@@ -103,7 +103,7 @@ Basic Usage
      ; it will be executed after higher (more negative) actions, thus
      ; if the user specified --style, this action will be executing having
      ; the user specified style already set.
-     opt on("-o", "--output", :outStrategy) coercing (
+     opt on("-o", "--output", :outStrategy) coercing(
        english: #/^yes|no$/ => method(t, t == "yes"),
        japanese: #/^hai|iie$/ => method(t, t == "hai"),
        net: #/:\\d+$/ => method(t,

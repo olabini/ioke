@@ -482,7 +482,10 @@ public class Levels {
         // =      msg
         // b c    Message.next(msg)
         */
-        if(argCountForOp != -1 && (msgArgCount == 0 || Message.type(msg) == Message.Type.DETACH) && !((Message.next(msg) != null) && Message.name(Message.next(msg)).equals("="))) {
+        if(argCountForOp != -1 &&
+           (msgArgCount == 0 || Message.type(msg) == Message.Type.DETACH) &&
+           !((Message.next(msg) != null) && Message.name(Message.next(msg)).equals("="))) {
+
             if(msgArgCount != 0 && Message.type(msg) == Message.Type.DETACH) {
                 detach(msg);
                 msgArgCount = 0;

@@ -5,7 +5,7 @@ nsieve = method(n,
   (2...n) each(i,
     if(primes[i],
       k = 2 * i
-      while (k < n,
+      while(k < n,
         primes[k] = false
         k = k + i
       )
