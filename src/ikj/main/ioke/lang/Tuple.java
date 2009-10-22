@@ -21,6 +21,10 @@ public class Tuple extends IokeData {
         this.elements = elements;
     }
 
+    public static Object[] getElements(Object o) {
+        return ((Tuple)IokeObject.data(o)).elements;
+    }
+
     @Override
     public void init(IokeObject obj) throws ControlFlow {
         final Runtime runtime = obj.runtime;

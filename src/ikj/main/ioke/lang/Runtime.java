@@ -115,6 +115,7 @@ public class Runtime extends IokeData {
     public IokeObject asRational = newMessage("asRational");
     public IokeObject asDecimal = newMessage("asDecimal");
     public IokeObject asSymbol = newMessage("asSymbol");
+    public IokeObject asTuple = newMessage("asTuple");
     public IokeObject mimic = newMessage("mimic");
     public IokeObject spaceShip = newMessage("<=>");
     public IokeObject succ = newMessage("succ");

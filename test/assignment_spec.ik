@@ -80,7 +80,7 @@ describe("assignment",
   )
 
   describe("with destructuring",
-    it("should assign all the values in tuple to all the names on the left hand side", {pending: true},
+    it("should assign all the values in tuple to all the names on the left hand side",
       (val1, val2) = (42, 25)
       val1 should == 42
       val2 should == 25
@@ -95,6 +95,7 @@ describe("assignment",
     it("should use asTuple on the right hand side to get the values")
     it("should allow _ to be used to mark any remaining values")
     it("should be able to destructure recursively")
+    it("should be able to destructure recursively using asTuple")
     it("should make the assignments in one parallell, so you can switch values easily")
     it("should allow for places inside of the assignment specification")
   )
