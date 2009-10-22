@@ -90,7 +90,7 @@ describe("LexicalMacro",
     lecro(x) call should == 26
 
     x = Origin mimic
-    x do (
+    x do(
       y = 42
       z = lecro(y+1) call)
     x z should == 43
@@ -98,7 +98,7 @@ describe("LexicalMacro",
 
   it("should have access to variables in the scope it was defined, in more complicated do",
     x = Origin mimic
-    x do (
+    x do(
       y = 42
       z = lecro(y+2))
     x z should == 44
@@ -106,7 +106,7 @@ describe("LexicalMacro",
 
   it("should have access to variables in the scope it was defined, in more nested blocks",
     x = Origin mimic
-    x do (
+    x do(
       y = 42
       z = lecro(lecro(y+3) call))
     x z should == 45

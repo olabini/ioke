@@ -964,6 +964,7 @@ public class IokeParser {
                     m.setLine(l);
                     m.setPosition(cc);
                     IokeObject mx = runtime.createMessage(m);
+
                     if(rr == '(') {
                         read();
                         List<Object> args = parseExpressionChain();
@@ -1006,18 +1007,11 @@ public class IokeParser {
                     m.setPosition(cc);
                     IokeObject mx = runtime.createMessage(m);
 
-                    int rr2 = rr;
-                    readWhiteSpace();
-                    rr = peek();
-
                     if(rr == '(') {
                         read();
                         List<Object> args = parseExpressionChain();
                         parseCharacter(')');
                         Message.setArguments(mx, args);
-                        if(rr != rr2) {
-                            Message.setType(mx, Message.Type.DETACH);
-                        }
                     }
                     return mx;
                 }
@@ -1169,17 +1163,12 @@ public class IokeParser {
         m.setPosition(cc);
         IokeObject mx = runtime.createMessage(m);
         //System.err.println("creating new message: " + sb.toString());
-        int rr2 = rr;
-        readWhiteSpace();
-        rr = peek();
+
         if(rr == '(') {
             read();
             List<Object> args = parseExpressionChain();
             parseCharacter(')');
             Message.setArguments(mx, args);
-            if(rr != rr2) {
-                Message.setType(mx, Message.Type.DETACH);
-            }
         }
 
         //System.err.println("-parseRegularMessageSend() : " + mx);

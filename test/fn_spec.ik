@@ -57,7 +57,7 @@ describe(DefaultBehavior,
       fn(x) call should == 26
 
       x = Origin mimic
-      x do (
+      x do(
         y = 42
         z = fn(y+1) call)
       x z should == 43
@@ -65,7 +65,7 @@ describe(DefaultBehavior,
 
     it("should have access to variables in the scope it was defined, in more complicated do",
       x = Origin mimic
-      x do (
+      x do(
         y = 42
         z = fn(y+2))
       x z call should == 44
@@ -73,7 +73,7 @@ describe(DefaultBehavior,
 
     it("should have access to variables in the scope it was defined, in more nested blocks",
       x = Origin mimic
-      x do (
+      x do(
         y = 42
         z = fn(fn(y+3) call))
       x z call should == 45

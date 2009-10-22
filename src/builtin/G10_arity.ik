@@ -1,4 +1,4 @@
-Arity do (
+Arity do(
 
   fromArgumentsCode = method(argumentsCode,
     case(argumentsCode,
@@ -127,7 +127,7 @@ Arity do (
     o
   )
 
-  Arguments = Origin mimic do (
+  Arguments = Origin mimic do(
 
     documentation = "Arity argument assignment.
     This object must be populated by using an Arity mimic.

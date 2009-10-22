@@ -120,7 +120,7 @@ ISpec do(
           if(System feature?(:java),
             formatter output = java:io:PrintStream new(to)))
         @options formatters << formatter
-      ) do (
+      ) do(
         cell(:documentation) = method(
           doc = list("Specify the output format to use.")
           doc << "Use the to: keyword argument to tell where to write output,"

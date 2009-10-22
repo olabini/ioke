@@ -75,6 +75,23 @@ describe("assignment",
   )
 
   describe("with destructuring",
+    it("should assign all the values in tuple to all the names on the left hand side", {pending: true},
+      (val1, val2) = (42, 25)
+      val1 should == 42
+      val2 should == 25
+
+      cont = Origin mimic
+      cont (x, y, z) = (3,2,1)
+      cont x should == 3
+      cont y should == 2
+      cont z should == 1
+    )
+
+    it("should use asTuple on the right hand side to get the values")
+    it("should allow _ to be used to mark any remaining values")
+    it("should be able to destructure recursively")
+    it("should make the assignments in one parallell, so you can switch values easily")
+    it("should allow for places inside of the assignment specification")
   )
 
   describe("+=",
@@ -88,10 +105,6 @@ describe("assignment",
 
     it("should parse correctly with receiver without even more spaces and arguments",
       m = parse("foo(1)+=12")
-      m should == "+=(foo(1), 12)")
-
-    it("should parse correctly with receiver with spaces and arguments",
-      m = parse("foo (1) += 12")
       m should == "+=(foo(1), 12)")
 
     it("should parse correctly with complicated expression on left hand side",
@@ -116,10 +129,6 @@ describe("assignment",
       m = parse("foo(1)-=12")
       m should == "-=(foo(1), 12)")
 
-    it("should parse correctly with receiver with spaces and arguments",
-      m = parse("foo (1) -= 12")
-      m should == "-=(foo(1), 12)")
-
     it("should parse correctly with complicated expression on left hand side",
       m = parse("foo(1) -= 12+13+53+(x f(123))")
       m should == "-=(foo(1), 12 +(13) +(53 +(x f(123))))")
@@ -128,8 +137,6 @@ describe("assignment",
       m = parse("foo(1) -= 12+13+53+(x f(123))\n1")
       m should == "-=(foo(1), 12 +(13) +(53 +(x f(123)))) .\n1")
   )
-
-
 
   describe("/=",
     it("should parse correctly without receiver, with arguments",
@@ -144,11 +151,6 @@ describe("assignment",
 
     it("should parse correctly with receiver without even more spaces and arguments",
       m = parse("foo(1)/=12")
-      m should == "/=(foo(1), 12)"
-    )
-
-    it("should parse correctly with receiver with spaces and arguments",
-      m = parse("foo (1) /= 12")
       m should == "/=(foo(1), 12)"
     )
 
@@ -179,11 +181,6 @@ describe("assignment",
       m should == "*=(foo(1), 12)"
     )
 
-    it("should parse correctly with receiver with spaces and arguments",
-      m = parse("foo (1) *= 12")
-      m should == "*=(foo(1), 12)"
-    )
-
     it("should parse correctly with complicated expression on left hand side",
       m = parse("foo(1) *= 12+13+53+(x f(123))")
       m should == "*=(foo(1), 12 +(13) +(53 +(x f(123))))"
@@ -208,11 +205,6 @@ describe("assignment",
 
     it("should parse correctly with receiver without even more spaces and arguments",
       m = parse("foo(1)**=12")
-      m should == "**=(foo(1), 12)"
-    )
-
-    it("should parse correctly with receiver with spaces and arguments",
-      m = parse("foo (1) **= 12")
       m should == "**=(foo(1), 12)"
     )
 
@@ -243,11 +235,6 @@ describe("assignment",
       m should == "%=(foo(1), 12)"
     )
 
-    it("should parse correctly with receiver with spaces and arguments",
-      m = parse("foo (1) %= 12")
-      m should == "%=(foo(1), 12)"
-    )
-
     it("should parse correctly with complicated expression on left hand side",
       m = parse("foo(1) %= 12+13+53+(x f(123))")
       m should == "%=(foo(1), 12 +(13) +(53 +(x f(123))))"
@@ -272,11 +259,6 @@ describe("assignment",
 
     it("should parse correctly with receiver without even more spaces and arguments",
       m = parse("foo(1)&=12")
-      m should == "&=(foo(1), 12)"
-    )
-
-    it("should parse correctly with receiver with spaces and arguments",
-      m = parse("foo (1) &= 12")
       m should == "&=(foo(1), 12)"
     )
 
@@ -307,11 +289,6 @@ describe("assignment",
       m should == "&&=(foo(1), 12)"
     )
 
-    it("should parse correctly with receiver with spaces and arguments",
-      m = parse("foo (1) &&= 12")
-      m should == "&&=(foo(1), 12)"
-    )
-
     it("should parse correctly with complicated expression on left hand side",
       m = parse("foo(1) &&= 12+13+53+(x f(123))")
       m should == "&&=(foo(1), 12 +(13) +(53 +(x f(123))))"
@@ -336,11 +313,6 @@ describe("assignment",
 
     it("should parse correctly with receiver without even more spaces and arguments",
       m = parse("foo(1)|=12")
-      m should == "|=(foo(1), 12)"
-    )
-
-    it("should parse correctly with receiver with spaces and arguments",
-      m = parse("foo (1) |= 12")
       m should == "|=(foo(1), 12)"
     )
 
@@ -371,11 +343,6 @@ describe("assignment",
       m should == "||=(foo(1), 12)"
     )
 
-    it("should parse correctly with receiver with spaces and arguments",
-      m = parse("foo (1) ||= 12")
-      m should == "||=(foo(1), 12)"
-    )
-
     it("should parse correctly with complicated expression on left hand side",
       m = parse("foo(1) ||= 12+13+53+(x f(123))")
       m should == "||=(foo(1), 12 +(13) +(53 +(x f(123))))"
@@ -400,11 +367,6 @@ describe("assignment",
 
     it("should parse correctly with receiver without even more spaces and arguments",
       m = parse("foo(1)^=12")
-      m should == "^=(foo(1), 12)"
-    )
-
-    it("should parse correctly with receiver with spaces and arguments",
-      m = parse("foo (1) ^= 12")
       m should == "^=(foo(1), 12)"
     )
 
@@ -435,11 +397,6 @@ describe("assignment",
       m should == ">>=(foo(1), 12)"
     )
 
-    it("should parse correctly with receiver with spaces and arguments",
-      m = parse("foo (1) >>= 12")
-      m should == ">>=(foo(1), 12)"
-    )
-
     it("should parse correctly with complicated expression on left hand side",
       m = parse("foo(1) >>= 12+13+53+(x f(123))")
       m should == ">>=(foo(1), 12 +(13) +(53 +(x f(123))))"
@@ -467,11 +424,6 @@ describe("assignment",
       m should == "<<=(foo(1), 12)"
     )
 
-    it("should parse correctly with receiver with spaces and arguments",
-      m = parse("foo (1) <<= 12")
-      m should == "<<=(foo(1), 12)"
-    )
-
     it("should parse correctly with complicated expression on left hand side",
       m = parse("foo(1) <<= 12+13+53+(x f(123))")
       m should == "<<=(foo(1), 12 +(13) +(53 +(x f(123))))"
@@ -496,11 +448,6 @@ describe("assignment",
 
     it("should parse correctly with receiver without even more spaces and arguments",
       m = parse("foo(1)=12")
-      m should == "=(foo(1), 12)"
-    )
-
-    it("should parse correctly with receiver with spaces and arguments",
-      m = parse("foo (1) = 12")
       m should == "=(foo(1), 12)"
     )
 

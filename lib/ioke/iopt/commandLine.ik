@@ -74,7 +74,7 @@ IOpt CommandLine = Origin mimic do(
   execute = method("Execute the actions by priority",
     options sort each(o, o action perform(o args, iopt)))
 
-  Coerce = Origin mimic do (
+  Coerce = Origin mimic do(
 
     initialize = method(+names, +:coercions,
       coercions each(pair,
@@ -94,7 +94,7 @@ IOpt CommandLine = Origin mimic do(
           return( send("coerce_#{name}", txt) )))
       txt)
 
-  ) mimic (
+  ) mimic(
     nil:     "nil" => method(t, nil),
     boolean: #/^(true|false)$/ => method(t, t == "true"),
     symbol:  #/^:\w+$/ => method(t, :(t[1..-1])),

@@ -1,7 +1,7 @@
 IOpt Action = Origin mimic
 IOpt Action do(
 
-  ValueActivation = IOpt Action mimic do (
+  ValueActivation = IOpt Action mimic do(
     initialize = method(valueToActivate,
       super()
       @valueToActivate = cell(:valueToActivate)
@@ -17,7 +17,7 @@ IOpt Action do(
 
   );ValueActivation
 
-  CellActivation = IOpt Action mimic do (
+  CellActivation = IOpt Action mimic do(
     initialize = method(cellName,
       super()
       @cellName = cellName)
@@ -32,7 +32,7 @@ IOpt Action do(
 
   );CellActivation
 
-  CellAssignment = IOpt Action mimic do (
+  CellAssignment = IOpt Action mimic do(
     initialize = method(cellName,
       super()
       @cellName = cellName
@@ -43,7 +43,7 @@ IOpt Action do(
 
   );CellAssinment
 
-  MessageEvaluation = IOpt Action mimic do (
+  MessageEvaluation = IOpt Action mimic do(
     initialize = method(messageToEval,
       super()
       @documentation = "Evaluate message #{messageToEval code}"

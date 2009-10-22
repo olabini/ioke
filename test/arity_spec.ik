@@ -341,7 +341,7 @@ describe("Arity",
     )
 
     it("should evaluate arguments if given a context",
-      o = Origin mimic do (m = method(22))
+      o = Origin mimic do(m = method(22))
       a = Arity from(n) arguments('(foo(m)), context: o)
       a should mimic(Arity Arguments)
       a positional should == [22]
@@ -351,7 +351,7 @@ describe("Arity",
 
   describe("satisfied?",
     it("should not evaluate by default",
-      o = Origin mimic do (m = method(@evaled = true) )
+      o = Origin mimic do(m = method(@evaled = true) )
       Arity from(n) satisfied?(nono) should be true
       o cell?(:evaled) should be false
     )
@@ -359,7 +359,7 @@ describe("Arity",
 
   describe("satisfiedOn?",
     it("should evaluate by default",
-      o = Origin mimic do (m = method(@evaled = true) )
+      o = Origin mimic do(m = method(@evaled = true) )
       Arity from(n) satisfiedOn?(o, m) should be true
       o cell?(:evaled) should be true
     )
@@ -367,7 +367,7 @@ describe("Arity",
 
   describe("apply",
     it("should not evaluate by default",
-      o = Origin mimic do (m = method(@evaled = true) )
+      o = Origin mimic do(m = method(@evaled = true) )
       a = Arity from(n) apply(m)
       a should mimic(Arity Arguments)
       o cell?(:evaled) should be false
@@ -377,7 +377,7 @@ describe("Arity",
 
   describe("applyOn",
     it("should evaluate by default",
-      o = Origin mimic do (m = method(@evaled = true) )
+      o = Origin mimic do(m = method(@evaled = true) )
       a = Arity from(n) applyOn(o, m)
       a should mimic(Arity Arguments)
       o cell?(:evaled) should be true
