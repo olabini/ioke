@@ -62,6 +62,16 @@ describe(Mixins,
       )
     )
 
+    describe("asTuple",
+      it("should return a tuple from a list",
+        [1,2,3] asTuple should == tuple(1,2,3)
+      )
+
+      it("should return a tuple based on all things yielded to each",
+        CustomEnumerable asTuple should == tuple("3first", "1second", "2third")
+      )
+    )
+
     describe("map",
       it("should return an empty list for an empty enumerable",
         [] map(x, x+2) should == []

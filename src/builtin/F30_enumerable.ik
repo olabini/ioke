@@ -8,6 +8,11 @@ Mixins Enumerable asList = method(
   self each(n, result << cell(:n))
   result)
 
+Mixins Enumerable asTuple = method(
+  "will return a tuple created from calling each on the receiver until everything has been yielded. ",
+
+  tuple(*asList))
+
 Mixins Enumerable sort = method(
   "will return a sorted list of all the entries of this enumerable object",
   self asList sort)
