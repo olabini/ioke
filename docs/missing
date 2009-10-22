@@ -4,8 +4,6 @@ Things missing from Ioke that it needs to have:
 - Tree template restructuring
 - Cane
 - Concurrency
-- Destructuring assignment with ()
 - Units
 - IO, Sockets
-- Tuples
 - IIk - saving history to file
