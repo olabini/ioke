@@ -196,10 +196,11 @@ public class Base {
                                                                return IokeObject.as(on, context).mimic(message, context);
                                                            }}));
 
-        base.registerMethod(base.runtime.newNativeMethod("expects two arguments, the first unevaluated, the second evaluated. assigns the result of evaluating the second argument in the context of the caller, and assigns this result to the name provided by the first argument. the first argument remains unevaluated. the result of the assignment is the value assigned to the name. if the second argument is a method-like object and it's name is not set, that name will be set to the name of the cell. TODO: add setf documentation here.", new NativeMethod("=") {
+        base.registerMethod(base.runtime.newNativeMethod("expects two or more arguments, the first arguments unevaluated, the last evaluated. assigns the result of evaluating the last argument in the context of the caller, and assigns this result to the name/s provided by the first arguments. the first arguments remains unevaluated. the result of the assignment is the value assigned to the name. if the last argument is a method-like object and it's name is not set, that name will be set to the name of the cell.", new NativeMethod("=") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
                     .withRequiredPositionalUnevaluated("place")
+                    .withRestUnevaluated("morePlacesForDestructuring")
                     .withRequiredPositional("value")
                     .getArguments();
 
@@ -212,33 +213,69 @@ public class Base {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().checkArgumentCount(context, message, on);
 
-                    IokeObject m1 = IokeObject.as(Message.getArg1(message), context);
-                    String name = m1.getName();
-                    if(m1.getArguments().size() == 0) {
-                        Object value = ((Message)IokeObject.data(message)).getEvaluatedArgument(message, 1, context);
+                    List<Object> args = IokeObject.as(message, context).getArguments();
+                    if(args.size() == 2) {
+                        IokeObject m1 = IokeObject.as(args.get(0), context);
 
-                        IokeObject.assign(on, name, value, context, message);
+                        String name = m1.getName();
+                        if(m1.getArguments().size() == 0) {
+                            Object value = Message.getEvaluatedArgument(args.get(1), context);
 
-                        if(value instanceof IokeObject) {
-                            if((IokeObject.data(value) instanceof Named) && ((Named)IokeObject.data(value)).getName() == null) {
-                                ((Named)IokeObject.data(value)).setName(name);
-                            } else if(name.length() > 0 && Character.isUpperCase(name.charAt(0)) && !IokeObject.as(value, context).hasKind()) {
-                                if(on == context.runtime.ground) {
-                                    IokeObject.as(value, context).setKind(name);
-                                } else {
-                                    IokeObject.as(value, context).setKind(IokeObject.as(on, context).getKind(message, context) + " " + name);
+                            IokeObject.assign(on, name, value, context, message);
+
+                            if(value instanceof IokeObject) {
+                                if((IokeObject.data(value) instanceof Named) && ((Named)IokeObject.data(value)).getName() == null) {
+                                    ((Named)IokeObject.data(value)).setName(name);
+                                } else if(name.length() > 0 && Character.isUpperCase(name.charAt(0)) && !IokeObject.as(value, context).hasKind()) {
+                                    if(on == context.runtime.ground) {
+                                        IokeObject.as(value, context).setKind(name);
+                                    } else {
+                                        IokeObject.as(value, context).setKind(IokeObject.as(on, context).getKind(message, context) + " " + name);
+                                    }
+                                }
+                            }
+
+
+                            return value;
+                        } else {
+                            String newName = name + "=";
+                            List<Object> arguments = new ArrayList<Object>(m1.getArguments());
+                            arguments.add(args.get(1));
+                            IokeObject msg = context.runtime.newMessageFrom(message, newName, arguments);
+                            return ((Message)IokeObject.data(msg)).sendTo(msg, context, on);
+                        }
+                    } else {
+                        int lastIndex = args.size() - 1;
+                        Object tupledValue = ((Message)IokeObject.data(context.runtime.asTuple)).sendTo(context.runtime.asTuple, context, Message.getEvaluatedArgument(args.get(lastIndex), context));
+                        int numPlaces = lastIndex;
+                        Object[] values = Tuple.getElements(tupledValue);
+                        int numValues = values.length;
+                        int min = Math.min(numPlaces, numValues);
+
+                        for(int i=0; i<min; i++) {
+                            IokeObject m1 = IokeObject.as(args.get(i), context);
+
+                            String name = m1.getName();
+                            if(m1.getArguments().size() == 0) {
+                                Object value = values[i];
+
+                                IokeObject.assign(on, name, value, context, message);
+
+                                if(value instanceof IokeObject) {
+                                    if((IokeObject.data(value) instanceof Named) && ((Named)IokeObject.data(value)).getName() == null) {
+                                        ((Named)IokeObject.data(value)).setName(name);
+                                    } else if(name.length() > 0 && Character.isUpperCase(name.charAt(0)) && !IokeObject.as(value, context).hasKind()) {
+                                        if(on == context.runtime.ground) {
+                                            IokeObject.as(value, context).setKind(name);
+                                        } else {
+                                            IokeObject.as(value, context).setKind(IokeObject.as(on, context).getKind(message, context) + " " + name);
+                                        }
+                                    }
                                 }
                             }
                         }
 
-
-                        return value;
-                    } else {
-                        String newName = name + "=";
-                        List<Object> arguments = new ArrayList<Object>(m1.getArguments());
-                        arguments.add(Message.getArg2(message));
-                        IokeObject msg = context.runtime.newMessageFrom(message, newName, arguments);
-                        return ((Message)IokeObject.data(msg)).sendTo(msg, context, on);
+                        return tupledValue;
                     }
                 }
             }));
