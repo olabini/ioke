@@ -2,7 +2,6 @@
 use("ispec")
 
 ;; -- Possible add asTuple to Enumerable... would be useful to handle what the rhs is for pattern matching
-;; -- Pair should define asTuple too, of course.
 
 describe(DefaultBehavior,
   describe("tuple",
@@ -90,6 +89,34 @@ describe(Tuple,
       (tuple(1,2) <=> tuple(1,2,3)) should == -1
       (tuple(1,2,3) <=> tuple(1,3,3)) should == -1
       (tuple(1,3,3) <=> tuple(1,2,3)) should == 1
+    )
+  )
+
+  describe("==",
+    it("should check equality",
+      (tuple == tuple) should be true
+      (tuple == tuple(1,2)) should be false
+      (tuple(1,2) == tuple) should be false
+      (tuple(1,2) == tuple(1,2)) should be true
+      (tuple(1,2,3) == tuple(1,2)) should be false
+      (tuple(1,2) == tuple(1,2,3)) should be false
+      (tuple(1,2,3) == tuple(1,3,3)) should be false
+      (tuple(1,3,3) == tuple(1,2,3)) should be false
+      (tuple(1,tuple(1,2),3) == tuple(1,tuple(1,2),3)) should be true
+    )
+  )
+
+  describe("!=",
+    it("should check inequality",
+      (tuple != tuple) should be false
+      (tuple != tuple(1,2)) should be true
+      (tuple(1,2) != tuple) should be true
+      (tuple(1,2) != tuple(1,2)) should be false
+      (tuple(1,2,3) != tuple(1,2)) should be true
+      (tuple(1,2) != tuple(1,2,3)) should be true
+      (tuple(1,2,3) != tuple(1,3,3)) should be true
+      (tuple(1,3,3) != tuple(1,2,3)) should be true
+      (tuple(1,tuple(1,2),3) != tuple(1,tuple(1,2),3)) should be false
     )
   )
 

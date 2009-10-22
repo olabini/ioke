@@ -55,6 +55,13 @@ describe(Pair,
     )
   )
 
+  describe("asTuple",
+    it("should return a tuple with the two elements in it",
+      (1 => 2) asTuple should == tuple(1,2)
+      ("blarg" => :foo) asTuple should == tuple("blarg",:foo)
+    )
+  )
+
   describe("<=>",
     it("should first compare the first value and return the result of that",
       ((1=>1) <=> (2=>1)) should == (1<=>2)
