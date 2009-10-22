@@ -74,6 +74,11 @@ describe("assignment",
     m should == "Ground =(.., method)"
   )
 
+  it("should not undetach things with spaces inbetween",
+    m = parse("foo (1) = 42")
+    m should == "foo =((1), 42)"
+  )
+
   describe("with destructuring",
     it("should assign all the values in tuple to all the names on the left hand side", {pending: true},
       (val1, val2) = (42, 25)

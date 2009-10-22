@@ -999,18 +999,11 @@ namespace Ioke.Lang.Parser
                         m.Position = cc;
                         IokeObject mx = runtime.CreateMessage(m);
 
-                        int rr2 = rr;
-                        readWhiteSpace();
-                        rr = peek();
-
                         if(rr == '(') {
                             read();
                             IList args = parseExpressionChain();
                             parseCharacter(')');
                             Message.SetArguments(mx, args);
-                            if(rr != rr2) {
-                                Message.SetType(mx, Message.Type.DETACH);
-                            }
                         }
                         return mx;
                     }
@@ -1159,17 +1152,12 @@ namespace Ioke.Lang.Parser
             m.Line = l;
             m.Position = cc;
             IokeObject mx = runtime.CreateMessage(m);
-            int rr2 = rr;
-            readWhiteSpace();
-            rr = peek();
+
             if(rr == '(') {
                 read();
                 IList args = parseExpressionChain();
                 parseCharacter(')');
                 Message.SetArguments(mx, args);
-                if(rr != rr2) {
-                    Message.SetType(mx, Message.Type.DETACH);
-                }
             }
 
             return mx;

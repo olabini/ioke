@@ -397,17 +397,6 @@ public class Levels {
         stack.add(0, level);
     }
 
-    private void detach(IokeObject msg) throws ControlFlow {
-        IokeObject brackets = runtime.newMessage("");
-        Message.copySourceLocation(msg, brackets);
-        brackets.getArguments().addAll(msg.getArguments());
-        msg.getArguments().clear();
-
-        // Insert the brackets message between msg and its next message
-        Message.setNext(brackets, Message.next(msg));
-        Message.setNext(msg, brackets);
-    }
-
     public void attach(IokeObject msg, List<IokeObject> expressions) throws ControlFlow {
         // TODO: fix all places with setNext to do setPrev too!!!
 
@@ -435,12 +424,7 @@ public class Levels {
         }
 
 
-        if(inverted && (msgArgCount == 0 || Message.type(msg) == Message.Type.DETACH)) {
-            if(Message.type(msg) == Message.Type.DETACH) {
-                detach(msg);
-                msgArgCount = 0;
-            }
-
+        if(inverted && msgArgCount == 0) {
             IokeObject head = msg;
             while(Message.prev(head) != null && !Message.isTerminator(Message.prev(head))) {
                 head = Message.prev(head);
@@ -483,14 +467,8 @@ public class Levels {
         // b c    Message.next(msg)
         */
         if(argCountForOp != -1 &&
-           (msgArgCount == 0 || Message.type(msg) == Message.Type.DETACH) &&
+           (msgArgCount == 0) &&
            !((Message.next(msg) != null) && Message.name(Message.next(msg)).equals("="))) {
-
-            if(msgArgCount != 0 && Message.type(msg) == Message.Type.DETACH) {
-                detach(msg);
-                msgArgCount = 0;
-            }
-
             Level currentLevel = currentLevel();
             IokeObject attaching = currentLevel.message;
             String setCellName;
@@ -567,13 +545,7 @@ public class Levels {
                 popDownTo(precedence, expressions);
                 attachToTopAndPush(msg, precedence);
             } else {
-                if(Message.type(msg) == Message.Type.DETACH) {
-                    detach(msg);
-                    popDownTo(precedence, expressions);
-                    attachToTopAndPush(msg, precedence);
-                } else {
-                    attachAndReplace(currentLevel(), msg);
-                }
+                attachAndReplace(currentLevel(), msg);
             }
         } else {
             attachAndReplace(currentLevel(), msg);

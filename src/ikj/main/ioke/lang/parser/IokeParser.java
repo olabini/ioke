@@ -514,7 +514,7 @@ public class IokeParser {
             }
         }
 
-        Message m = new Message(runtime, ".", null, Message.Type.TERMINATOR);
+        Message m = new Message(runtime, ".", null, true);
         m.setLine(l);
         m.setPosition(cc);
         //System.err.println("-parseTerminator()");
