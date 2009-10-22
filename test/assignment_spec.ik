@@ -74,6 +74,9 @@ describe("assignment",
     m should == "Ground =(.., method)"
   )
 
+  describe("with destructuring",
+  )
+
   describe("+=",
     it("should parse correctly without receiver, with arguments",
       m = parse("(1) += 12")
