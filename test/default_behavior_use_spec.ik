@@ -37,7 +37,5 @@ describe(DefaultBehavior,
     it("should raise exception if it can't find something",
       fn(use("blarg")) should signal(Condition Error Load)
     )
-
-    it("should expand tilde for the home directory")
   )
 )
