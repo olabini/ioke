@@ -118,7 +118,7 @@ public class FileSystem {
                     List<Object> args = new ArrayList<Object>();
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
 
-                    String name = Text.getText(args.get(0));
+                    String name = IokeSystem.withReplacedHomeDirectory(Text.getText(args.get(0)));
                     File f = null;
                     if(IokeSystem.isAbsoluteFileName(name)) {
                         f = new File(name);
@@ -186,7 +186,7 @@ public class FileSystem {
                     List<Object> args = new ArrayList<Object>();
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
 
-                    String name = Text.getText(args.get(0));
+                    String name = IokeSystem.withReplacedHomeDirectory(Text.getText(args.get(0)));
                     File f = null;
                     if(IokeSystem.isAbsoluteFileName(name)) {
                         f = new File(name);
@@ -214,7 +214,7 @@ public class FileSystem {
                     List<Object> args = new ArrayList<Object>();
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
 
-                    String name = Text.getText(args.get(0));
+                    String name = IokeSystem.withReplacedHomeDirectory(Text.getText(args.get(0)));
                     File f = null;
                     if(IokeSystem.isAbsoluteFileName(name)) {
                         f = new File(name);

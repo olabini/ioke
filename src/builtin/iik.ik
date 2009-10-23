@@ -24,6 +24,9 @@ IIk = Origin mimic do(
 
     System currentDebugger = IokeDebugger with(io: io, out: out)
 
+    if(FileSystem exists?("~/.iikrc"),
+      use("~/.iikrc"))
+
     bind(
       rescue(IIk Exit, fn(c, out println("Bye."))),
       restart(quit, fn()),
