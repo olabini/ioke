@@ -46,6 +46,11 @@ public class IokeSystem extends IokeData {
 
     private Random random = new Random();
 
+    private final static String userHome = System.getProperty("user.home");
+    public static String withReplacedHomeDirectory(String input) {
+        return input.replaceAll("^~", userHome);
+    }
+
     public void pushCurrentFile(String filename) {
         currentFile.add(0, filename);
     }
