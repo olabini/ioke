@@ -189,7 +189,7 @@ namespace Ioke.Lang {
                                                                             var args = new SaneArrayList();
                                                                             outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, args, new SaneDictionary<string, object>());
 
-                                                                            string name = Text.GetText(args[0]);
+                                                                            string name = IokeSystem.WithReplacedHomeDirectory(Text.GetText(args[0]));
                                                                             FileInfo f = null;
                                                                             if(IokeSystem.IsAbsoluteFileName(name)) {
                                                                                 f = new FileInfo(name);
