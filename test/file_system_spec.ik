@@ -156,7 +156,19 @@ describe(FileSystem,
     )
 
     onlyWhen(FileSystemTestConfig cell?(:homeDirectory),
-      it("should expand tilde for the home directory")
+      it("should expand tilde for the home directory",
+        realname = "#{FileSystemTestConfig homeDirectory}/.__something_that_should_only_exist_for_file_system_ioke_tests"
+        fname = "~/.__something_that_should_only_exist_for_file_system_ioke_tests"
+        FileSystem directory?(realname) should be false
+        ensure(
+          FileSystem createDirectory!(fname)
+          FileSystem directory?(realname) should be true
+          ,
+          bind(rescue(Condition Error, fn(ignored, nil)),
+            FileSystem removeDirectory!(realname))
+        )
+        FileSystem directory?(realname) should be false
+      )
     )
   )
 
@@ -177,7 +189,20 @@ describe(FileSystem,
     )
 
     onlyWhen(FileSystemTestConfig cell?(:homeDirectory),
-      it("should expand tilde for the home directory")
+      it("should expand tilde for the home directory",
+        realname = "#{FileSystemTestConfig homeDirectory}/.__something_that_should_only_exist_for_file_system_ioke_tests"
+        fname = "~/.__something_that_should_only_exist_for_file_system_ioke_tests"
+        FileSystem directory?(realname) should be false
+        ensure(
+          FileSystem createDirectory!(realname)
+          FileSystem removeDirectory!(fname)
+          FileSystem directory?(realname) should be false
+          ,
+          bind(rescue(Condition Error, fn(ignored, nil)),
+            FileSystem removeDirectory!(realname))
+        )
+        FileSystem directory?(realname) should be false
+      )
     )
   )
 
@@ -197,7 +222,20 @@ describe(FileSystem,
     )
 
     onlyWhen(FileSystemTestConfig cell?(:homeDirectory),
-      it("should expand tilde for the home directory")
+      it("should expand tilde for the home directory",
+        realname = "#{FileSystemTestConfig homeDirectory}/.__something_that_should_only_exist_for_file_system_ioke_tests"
+        fname = "~/.__something_that_should_only_exist_for_file_system_ioke_tests"
+        FileSystem exists?(realname) should be false
+        ensure(
+          FileSystem withOpenFile(realname, fn(f, f print("hello")))
+          FileSystem removeFile!(fname)
+          FileSystem exists?(realname) should be false
+          ,
+          bind(rescue(Condition Error, fn(ignored, nil)),
+            FileSystem removeFile!(realname))
+        )
+        FileSystem exists?(realname) should be false
+      )
     )
   )
 
@@ -229,7 +267,23 @@ describe(FileSystem,
     )
 
     onlyWhen(FileSystemTestConfig cell?(:homeDirectory),
-      it("should expand tilde for the home directory")
+      it("should expand tilde for the home directory",
+        realname = "#{FileSystemTestConfig homeDirectory}/.__something_that_should_only_exist_for_file_system_ioke_tests"
+        realname2 = "#{FileSystemTestConfig homeDirectory}/.__something_that_should_only_exist_for_file_system2_ioke_tests"
+        fname = "~/.__*_ioke_tests"
+        FileSystem exists?(realname) should be false
+        FileSystem exists?(realname2) should be false
+        ensure(
+          FileSystem withOpenFile(realname, fn(f, f print("hello")))
+          FileSystem withOpenFile(realname2, fn(f, f print("hello")))
+          FileSystem[fname] sort should == [realname, realname2] sort
+          ,
+          bind(rescue(Condition Error, fn(ignored, nil)),
+            FileSystem removeFile!(realname))
+          bind(rescue(Condition Error, fn(ignored, nil)),
+            FileSystem removeFile!(realname2))
+        )
+      )
     )
   )
 
@@ -278,7 +332,17 @@ describe(FileSystem,
     )
 
     onlyWhen(FileSystemTestConfig cell?(:homeDirectory),
-      it("should expand tilde for the home directory")
+      it("should expand tilde for the home directory",
+        realname = "#{FileSystemTestConfig homeDirectory}/.__something_that_should_only_exist_for_file_system_ioke_tests"
+        fname = "~/.__something_that_should_only_exist_for_file_system_ioke_tests"
+        ensure(
+          FileSystem withOpenFile(realname, fn(f, f print("hello you are a strange man!")))
+          FileSystem readFully(fname) should == "hello you are a strange man!"
+          ,
+          bind(rescue(Condition Error, fn(ignored, nil)),
+            FileSystem removeFile!(realname))
+        )
+      )
     )
   )
 
