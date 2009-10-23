@@ -62,7 +62,7 @@ namespace Ioke.Lang {
                                                                             var args = new SaneArrayList();
                                                                             outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, args, new SaneDictionary<string, object>());
 
-                                                                            var dirs = FileSystem.Glob(context.runtime, Text.GetText(args[0]));
+                                                                            var dirs = FileSystem.Glob(context.runtime, IokeSystem.WithReplacedHomeDirectory(Text.GetText(args[0])));
                                                                             var result = new SaneArrayList();
                                                                             foreach(string s in dirs) {
                                                                                 result.Add(context.runtime.NewText(s));
@@ -78,7 +78,7 @@ namespace Ioke.Lang {
                                                                             var args = new SaneArrayList();
                                                                             outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, args, new SaneDictionary<string, object>());
 
-                                                                            string name = Text.GetText(args[0]);
+                                                                            string name = IokeSystem.WithReplacedHomeDirectory(Text.GetText(args[0]));
                                                                             DirectoryInfo f = null;
                                                                             if(IokeSystem.IsAbsoluteFileName(name)) {
                                                                                 f = new DirectoryInfo(name);
@@ -97,7 +97,7 @@ namespace Ioke.Lang {
                                                                             var args = new SaneArrayList();
                                                                             outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, args, new SaneDictionary<string, object>());
 
-                                                                            string name = Text.GetText(args[0]);
+                                                                            string name = IokeSystem.WithReplacedHomeDirectory(Text.GetText(args[0]));
                                                                             FileInfo f = null;
                                                                             if(IokeSystem.IsAbsoluteFileName(name)) {
                                                                                 f = new FileInfo(name);
@@ -116,7 +116,7 @@ namespace Ioke.Lang {
                                                                             var args = new SaneArrayList();
                                                                             outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, args, new SaneDictionary<string, object>());
 
-                                                                            string name = Text.GetText(args[0]);
+                                                                            string name = IokeSystem.WithReplacedHomeDirectory(Text.GetText(args[0]));
                                                                             FileInfo f = null;
                                                                             if(IokeSystem.IsAbsoluteFileName(name)) {
                                                                                 f = new FileInfo(name);
@@ -135,7 +135,7 @@ namespace Ioke.Lang {
                                                                             var args = new SaneArrayList();
                                                                             outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, args, new SaneDictionary<string, object>());
 
-                                                                            string name = Text.GetText(args[0]);
+                                                                            string name = IokeSystem.WithReplacedHomeDirectory(Text.GetText(args[0]));
                                                                             string nx = null;
                                                                             if(IokeSystem.IsAbsoluteFileName(name)) {
                                                                                 nx = name;
@@ -189,7 +189,7 @@ namespace Ioke.Lang {
                                                                             var args = new SaneArrayList();
                                                                             outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, args, new SaneDictionary<string, object>());
 
-                                                                            string name = Text.GetText(args[0]);
+                                                                            string name = IokeSystem.WithReplacedHomeDirectory(Text.GetText(args[0]));
                                                                             FileInfo f = null;
                                                                             if(IokeSystem.IsAbsoluteFileName(name)) {
                                                                                 f = new FileInfo(name);
@@ -264,7 +264,7 @@ namespace Ioke.Lang {
                                                                             var args = new SaneArrayList();
                                                                             outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, args, new SaneDictionary<string, object>());
 
-                                                                            string name = Text.GetText(args[0]);
+                                                                            string name = IokeSystem.WithReplacedHomeDirectory(Text.GetText(args[0]));
                                                                             DirectoryInfo f = null;
                                                                             if(IokeSystem.IsAbsoluteFileName(name)) {
                                                                                 f = new DirectoryInfo(name);
@@ -305,7 +305,7 @@ namespace Ioke.Lang {
                                                                             var args = new SaneArrayList();
                                                                             outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, args, new SaneDictionary<string, object>());
 
-                                                                            string name = Text.GetText(args[0]);
+                                                                            string name = IokeSystem.WithReplacedHomeDirectory(Text.GetText(args[0]));
                                                                             string nf = null;
                                                                             if(IokeSystem.IsAbsoluteFileName(name)) {
                                                                                 nf = name;
@@ -346,7 +346,7 @@ namespace Ioke.Lang {
                                                                             var args = new SaneArrayList();
                                                                             outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, args, new SaneDictionary<string, object>());
 
-                                                                            string name = Text.GetText(args[0]);
+                                                                            string name = IokeSystem.WithReplacedHomeDirectory(Text.GetText(args[0]));
                                                                             string nf = null;
                                                                             if(IokeSystem.IsAbsoluteFileName(name)) {
                                                                                 nf = name;

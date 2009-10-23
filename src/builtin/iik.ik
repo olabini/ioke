@@ -24,6 +24,15 @@ IIk = Origin mimic do(
 
     System currentDebugger = IokeDebugger with(io: io, out: out)
 
+    FileSystem["~/.iikrc"] each(x, use(x))
+
+    if(io mimics?(ReadlineInputMethod),
+      FileSystem["~/.iikhistory"] each(x,
+        h = io HISTORY
+        FileSystem readFully(x) split("\n") map(replaceAll("\r", "")) each(val,
+          h << val)
+    ))
+
     bind(
       rescue(IIk Exit, fn(c, out println("Bye."))),
       restart(quit, fn()),
@@ -33,6 +42,9 @@ IIk = Origin mimic do(
           restart(abort, fn()),
 
           data = io gets
+
+          FileSystem withOpenFile("~/.iikhistory", fn(f,
+              unless(data empty?, f print(data))))
 
           if(!data || (io eof?), invokeRestart(:quit))
 

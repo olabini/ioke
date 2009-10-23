@@ -35,6 +35,12 @@ namespace Ioke.Lang {
             currentFile.Add("<init>");
         }
 
+        public static readonly string UserHome = System.Environment.GetEnvironmentVariable("HOME");
+
+        public static string WithReplacedHomeDirectory(string input) {
+            return input.Replace("~", UserHome);
+        }
+
         public static IList<AtExitInfo> GetAtExits(object on) {
             return ((IokeSystem)IokeObject.dataOf(on)).atExit;
         }
