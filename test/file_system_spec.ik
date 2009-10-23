@@ -1,6 +1,19 @@
 
 use("ispec")
 
+FileSystemTestConfig = Origin mimic
+if(FileSystem exists?(".file_system_test_config.ik"),
+  use(".file_system_test_config.ik"),
+
+  warn!("You haven't specified a configuration file for testing the file system.
+This should reside in the base of the Ioke distribution, be called .file_system_test_config.ik
+and contain something like this:
+
+FileSystemTestConfig homeDirectory = \"/your/home/directory\"
+
+")
+)
+
 describe(FileSystem,
   it("should have the correct kind",
     FileSystem should have kind("FileSystem")
@@ -22,6 +35,22 @@ describe(FileSystem,
       FileSystem exists?("src") should be true
       FileSystem exists?("src/") should be true
       FileSystem exists?("src/builtin") should be true
+    )
+
+    onlyWhen(FileSystemTestConfig cell?(:homeDirectory),
+      it("should expand tilde for the home directory",
+        realname = "#{FileSystemTestConfig homeDirectory}/.__something_that_should_only_exist_for_file_system_ioke_tests"
+        fname = "~/.__something_that_should_only_exist_for_file_system_ioke_tests"
+        FileSystem exists?(fname) should be false
+        ensure(
+          FileSystem withOpenFile(realname, fn(f, f println("hello")))
+          FileSystem exists?(fname) should be true
+          ,
+          bind(rescue(Condition Error, fn(ignored, nil)),
+            FileSystem removeFile!(realname))
+        )
+        FileSystem exists?(fname) should be false
+      )
     )
   )
 
@@ -46,6 +75,22 @@ describe(FileSystem,
     it("should return false for a directory inside another directory",
       FileSystem file?("src/builtin") should be false
     )
+
+    onlyWhen(FileSystemTestConfig cell?(:homeDirectory),
+      it("should expand tilde for the home directory",
+        realname = "#{FileSystemTestConfig homeDirectory}/.__something_that_should_only_exist_for_file_system_ioke_tests"
+        fname = "~/.__something_that_should_only_exist_for_file_system_ioke_tests"
+        FileSystem file?(fname) should be false
+        ensure(
+          FileSystem withOpenFile(realname, fn(f, f println("hello")))
+          FileSystem file?(fname) should be true
+          ,
+          bind(rescue(Condition Error, fn(ignored, nil)),
+            FileSystem removeFile!(realname))
+        )
+        FileSystem file?(fname) should be false
+      )
+    )
   )
 
   describe("directory?",
@@ -68,6 +113,22 @@ describe(FileSystem,
 
     it("should return true for a directory inside another directory",
       FileSystem directory?("src/builtin") should be true
+    )
+
+    onlyWhen(FileSystemTestConfig cell?(:homeDirectory),
+      it("should expand tilde for the home directory",
+        realname = "#{FileSystemTestConfig homeDirectory}/.__something_that_should_only_exist_for_file_system_ioke_tests"
+        fname = "~/.__something_that_should_only_exist_for_file_system_ioke_tests"
+        FileSystem directory?(fname) should be false
+        ensure(
+          FileSystem createDirectory!(realname)
+          FileSystem directory?(fname) should be true
+          ,
+          bind(rescue(Condition Error, fn(ignored, nil)),
+            FileSystem removeDirectory!(realname))
+        )
+        FileSystem directory?(fname) should be false
+      )
     )
   )
 
@@ -93,6 +154,10 @@ describe(FileSystem,
       bind(rescue(Condition, fn(c, nil)), ; ignore failures
         FileSystem removeDirectory!("test/newly_created_dir"))
     )
+
+    onlyWhen(FileSystemTestConfig cell?(:homeDirectory),
+      it("should expand tilde for the home directory")
+    )
   )
 
   describe("removeDirectory!",
@@ -110,6 +175,10 @@ describe(FileSystem,
 
       FileSystem should not have directory("test/dir_to_remove")
     )
+
+    onlyWhen(FileSystemTestConfig cell?(:homeDirectory),
+      it("should expand tilde for the home directory")
+    )
   )
 
   describe("removeFile!",
@@ -125,6 +194,10 @@ describe(FileSystem,
       FileSystem withOpenFile("test/file_to_remove", fn(f, f println("hello"))) ;; setup
       FileSystem removeFile!("test/file_to_remove")
       FileSystem should not have file("test/file_to_remove")
+    )
+
+    onlyWhen(FileSystemTestConfig cell?(:homeDirectory),
+      it("should expand tilde for the home directory")
     )
   )
 
@@ -153,6 +226,10 @@ describe(FileSystem,
         ] each(theList,
         FileSystem[theList second] sort should == theList first sort
       )
+    )
+
+    onlyWhen(FileSystemTestConfig cell?(:homeDirectory),
+      it("should expand tilde for the home directory")
     )
   )
 
@@ -198,6 +275,10 @@ describe(FileSystem,
       if(System windows?,
         FileSystem readFully("test/fixtures/names.txt") should == "Ola\r\nMartin\r\nSam\r\nCarlos\r\nBrian\r\nFelipe",
         FileSystem readFully("test/fixtures/names.txt") should == "Ola\nMartin\nSam\nCarlos\nBrian\nFelipe")
+    )
+
+    onlyWhen(FileSystemTestConfig cell?(:homeDirectory),
+      it("should expand tilde for the home directory")
     )
   )
 
