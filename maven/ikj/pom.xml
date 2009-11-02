@@ -46,17 +46,17 @@
   <distributionManagement>
     <repository>
       <id>codehaus.org</id>
-      <name>JtestR Central Repository</name>
-      <url>dav:https://dav.codehaus.org/repository/jtestr/</url>
+      <name>Ioke Central Repository</name>
+      <url>dav:https://dav.codehaus.org/repository/ioke/</url>
     </repository>
     <snapshotRepository>
       <id>codehaus.org</id>
-      <name>JtestR Dev Repository</name>
-      <url>dav:https://dav.codehaus.org/snapshots.repository/jtestr/</url>
+      <name>Ioke Dev Repository</name>
+      <url>dav:https://dav.codehaus.org/snapshots.repository/ioke/</url>
     </snapshotRepository>
     <site>
       <id>codehaus.org</id>
-      <url>dav:https://dav.codehaus.org/jtestr/</url>
+      <url>dav:https://dav.codehaus.org/ioke/</url>
     </site>
   </distributionManagement>
 </project>
