@@ -92,10 +92,11 @@ Message Rewriter Unification addUnification = method(name, msg,
 )
 
 Message Rewriter Unification internal:unify = method(pattern, msg,
+;  "internal:unify(#{pattern code}, #{msg code}" println
   p = pattern
   m = msg
 
-  while(p,
+  while(p && m,
     if(p symbol?,
       addUnification(p name, m),
       unless(p name == m name,
@@ -103,7 +104,10 @@ Message Rewriter Unification internal:unify = method(pattern, msg,
       )
     )
 
-    pattern arguments zip(m arguments) each(pm,
+    if(p arguments length != m arguments length,
+      return(false))
+
+    p arguments zip(m arguments) each(pm,
       unless(internal:unify(pm first, pm second),
         return(false)))
 

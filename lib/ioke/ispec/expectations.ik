@@ -1,5 +1,10 @@
 
 ISpec do(
+  inspectionOf = method(val,
+    if(val mimics?(Message),
+      val code,
+      val inspect))
+
   ShouldContext = Origin mimic
   ShouldContext __mimic__ = Origin cell(:mimic)
   ShouldContext ____default_value____ = Origin mimic
@@ -35,8 +40,8 @@ ISpec do(
   ShouldContext == = method(value,
     unless(realValue == value,
       if(realValue kind == "List" && value kind == "List",
-        error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to == #{value inspect}. difference: #{(realValue - value) inspect}. #{realValue length} vs #{value length}", shouldMessage: self shouldMessage),
-        error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to == #{value inspect}", shouldMessage: self shouldMessage))))
+        error!(ISpec ExpectationNotMet, text: "expected #{ISpec inspectionOf(realValue)} to == #{ISpec inspectionOf(value)}. difference: #{(realValue - value) inspect}. #{realValue length} vs #{value length}", shouldMessage: self shouldMessage),
+        error!(ISpec ExpectationNotMet, text: "expected #{ISpec inspectionOf(realValue)} to == #{ISpec inspectionOf(value)}", shouldMessage: self shouldMessage))))
 
   ShouldContext close = method(value, epsilon 0.0001,
     unless(((realValue - value) < epsilon) && ((realValue - value) > -epsilon),
@@ -136,7 +141,7 @@ ISpec do(
 
   NotShouldContext == = method(value,
     if(realValue == value,
-      error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to not == #{value inspect}", shouldMessage: self shouldMessage)))
+      error!(ISpec ExpectationNotMet, text: "expected #{ISpec inspectionOf(realValue)} to not == #{ISpec inspectionOf(value)}", shouldMessage: self shouldMessage)))
 
   NotShouldContext close = method(value, epsilon 0.0001,
     if(((realValue - value) < epsilon) && ((realValue - value) > -epsilon),
