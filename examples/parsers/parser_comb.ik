@@ -184,11 +184,12 @@ IParse = Origin mimic do(
   Parser = macro(
     context = ParserContext mimic
     args = call arguments
+    args each(code println)
     args each(each(a,
         if(a arguments length > 1,
           insertSequencers(a arguments[1]))))
+    args each(code println)
     args each(evaluateOn(context, context))
-;    IParse "%*[%s: %s\n%]" format(context cells map(c, [c key, c value inspect])) print
     context
   )
 )

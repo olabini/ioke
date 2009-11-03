@@ -144,8 +144,6 @@ Message Rewriter rewriteWith = method(u, pattern,
   p = pattern
   while(p,
     res = if(p symbol?,
-      if(u unifications[p name] nil?,
-        "UNKNOWN UNIFICATION for #{u inspect} for key: #{p name inspect}" println)
       u unifications[p name] mimic,
       p mimic)
 

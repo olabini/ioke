@@ -86,5 +86,32 @@ describe(Message,
         '(:q :p) => '(:p :q :q)
         ) should == msg rewrite('(:x(:y)) => '(:x :y)) rewrite('(:q :p) => '(:p :q :q))
     )
+
+    it("should be possible to grab more than one thing using the :all: pattern",
+      msg = '(foo bar bax quux blax)
+
+      output = msg rewrite(
+        '(:x :all:2:y) => '(:x(:y)))
+
+      output should == '(foo(bar bax) quux blax)
+    )
+
+    it("should be possible to grab the rest using the :rest: pattern",
+      msg = '(foo bar bax quux)
+
+      output = msg rewrite(
+        '(:x :rest:y) => '(:x(:y)))
+
+      output should == '(foo(bar bax quux))
+    )
+
+    it("should be possible to grab only up to the terminator with the rest pattern",
+      msg = '(foo bar bax quux. fluxie blarb)
+
+      output = msg rewrite(
+        '(:x :rest:y) => '(:x(:y)))
+
+      output should == '(foo(bar bax quux). fluxie blarb)
+    )
   )
 )
