@@ -32,5 +32,51 @@ describe(Message,
 
       output should == '(foo bar)
     )
+
+    it("should duplicate something if needed",
+      msg = 'foo(bar)
+
+      output = msg rewrite(
+        '(:x(:y)) => '(:x :y :y))
+
+      output should == '(foo bar bar)
+    )
+
+    it("should ignore pieces before it can't do anything with",
+      msg = '(bux(blarg) foo bar)
+
+      output = msg rewrite(
+        '(:x :y) => '(:x(:y)))
+
+      output should == '(bux(blarg) foo(bar))
+    )
+
+    it("should ignore pieces after it can't do anything with",
+      msg = '(foo bar bux(blarg))
+
+      output = msg rewrite(
+        '(:x :y) => '(:x(:y)))
+
+      output should == '(foo(bar) bux(blarg))
+    )
+
+    it("should apply the same pattern at more than one place",
+      msg = '(foo(bar) qux(bar) blarg foo(muxie))
+
+      output = msg rewrite(
+        '(:x(:y)) => '(:x :y))
+
+      output should == '(foo bar qux bar blarg foo muxie)
+    )
+
+
+    it("should match a fixed thing on the left hand side",
+      msg = '(foo(bar) blux(barg))
+
+      output = msg rewrite(
+        '(foo(:y)) => '(foo :y))
+
+      output should == '(foo bar blux(barg))
+    )
   )
 )
