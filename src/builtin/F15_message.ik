@@ -63,19 +63,27 @@ Message Rewriter rewrite = method(msg, patterns,
   current = nil
   pattern = patterns first
 
-  m = match(msg, pattern key)
+  m_msg = msg
 
-  result = if(m,
-    rewriteWith(m, pattern value),
-    msg mimic
-  )
+  while(m_msg,
+    m = match(m_msg, pattern key)
 
-  if(start nil?,
-    start = result
-    current = start last,
+    result = if(m,
+      rewriteWith(m, pattern value),
+      m_msg mimic
+    )
 
-    current -> result
-    current = current last
+    if(start nil?,
+      start = result
+      current = start last,
+
+      current -> result
+      current = current last
+    )
+
+    if(m,
+      m nexts times(if(m_msg, m_msg = m_msg next)),
+      m_msg = m_msg next)
   )
 
   start
@@ -84,6 +92,7 @@ Message Rewriter rewrite = method(msg, patterns,
 Message Rewriter Unification = Origin mimic do(
   initialize = method(
     @unifications = {}
+    @nexts = 0
   )
 )
 
@@ -91,12 +100,16 @@ Message Rewriter Unification addUnification = method(name, msg,
   unifications[name] = msg
 )
 
-Message Rewriter Unification internal:unify = method(pattern, msg,
+Message Rewriter Unification internal:unify = method(pattern, msg, countNexts false,
 ;  "internal:unify(#{pattern code}, #{msg code}" println
   p = pattern
   m = msg
 
-  while(p && m,
+  while(p,
+    unless(m,
+      return(false)
+    )
+
     if(p symbol?,
       addUnification(p name, m),
       unless(p name == m name,
@@ -113,13 +126,15 @@ Message Rewriter Unification internal:unify = method(pattern, msg,
 
     p = p next
     m = m next
+    if(countNexts,
+      @nexts = @nexts + 1)
   )
   true
 )
 
 Message Rewriter Unification tryUnify = method(pattern, msg,
   u = mimic
-  if(u internal:unify(pattern, msg),
+  if(u internal:unify(pattern, msg, true),
     u,
     false)
 )
@@ -130,6 +145,8 @@ Message Rewriter rewriteWith = method(u, pattern,
   p = pattern
   while(p,
     res = if(p symbol?,
+      if(u unifications[p name] nil?,
+        "UNKNOWN UNIFICATION for #{u inspect} for key: #{p name inspect}" println)
       u unifications[p name] mimic,
       p mimic)
 
