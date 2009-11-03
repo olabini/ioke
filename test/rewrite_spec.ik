@@ -78,5 +78,13 @@ describe(Message,
 
       output should == '(foo bar blux(barg))
     )
+
+    it("should apply two patterns in a row, just as if you had called them each by its own",
+      msg = '(foo(bar) bar(bax))
+      msg rewrite(
+        '(:x(:y)) => '(:x :y),
+        '(:q :p) => '(:p :q :q)
+        ) should == msg rewrite('(:x(:y)) => '(:x :y)) rewrite('(:q :p) => '(:p :q :q))
+    )
   )
 )
