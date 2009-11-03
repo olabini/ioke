@@ -58,10 +58,9 @@ Message seq = method(
 
 Message Rewriter = Origin mimic
 
-Message Rewriter rewrite = method(msg, patterns,
+Message Rewriter rewrite = method(msg, pattern,
   start = nil
   current = nil
-  pattern = patterns first
 
   m_msg = msg
 
@@ -169,5 +168,8 @@ Message Rewriter match = method(msg, pattern,
 )
 
 Message rewrite = method("Takes zero or more pairs of message chains, that describe how rewriting of the current message chain should happen. The message patterns can use symbols to match variable pieces of the pattern.", +patterns,
-  Rewriter rewrite(self, patterns)
+  patterns inject(self,
+    current,
+    pattern,
+    Rewriter rewrite(current, pattern))
 )
