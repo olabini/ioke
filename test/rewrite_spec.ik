@@ -96,11 +96,11 @@ describe(Message,
       output should == '(foo(bar bax) quux blax)
     )
 
-    it("should be possible to grab the rest using the :rest: pattern",
+    it("should be possible to grab the rest using the :all: pattern",
       msg = '(foo bar bax quux)
 
       output = msg rewrite(
-        '(:x :rest:y) => '(:x(:y)))
+        '(:x :all:y) => '(:x(:y)))
 
       output should == '(foo(bar bax quux))
     )
@@ -109,7 +109,7 @@ describe(Message,
       msg = '(foo bar bax quux. fluxie blarb)
 
       output = msg rewrite(
-        '(:x :rest:y) => '(:x(:y)))
+        '(:x :all:y) => '(:x(:y)))
 
       output should == '(foo(bar bax quux). fluxie blarb)
     )
