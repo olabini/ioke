@@ -190,6 +190,61 @@ describe(LexicalBlock,
     )
   )
 
+  describe("&",
+    it("should take a block and return a new one that combines them using boolean logic",
+      x = fn(a, a > 5)
+      y = fn(a, a < 10)
+      res = x & y
+      res call(0) should be false
+      res call(1) should be false
+      res call(2) should be false
+      res call(3) should be false
+      res call(4) should be false
+      res call(5) should be false
+      res call(6) should be true
+      res call(7) should be true
+      res call(8) should be true
+      res call(9) should be true
+      res call(10) should be false
+      res call(11) should be false
+      res call(12) should be false
+    )
+  )
+
+  describe("|",
+    it("should take a block and return a new one that combines them using boolean logic",
+      x = fn(a, a < 5)
+      y = fn(a, a > 10)
+      res = x | y
+      res call(0) should be true
+      res call(1) should be true
+      res call(2) should be true
+      res call(3) should be true
+      res call(4) should be true
+      res call(5) should be false
+      res call(6) should be false
+      res call(7) should be false
+      res call(8) should be false
+      res call(9) should be false
+      res call(10) should be false
+      res call(11) should be true
+      res call(12) should be true
+    )
+  )
+
+  describe("complement",
+    it("should return a new block that is the complement of the original one",
+      x = fn(a, a < 5)
+      res = x complement
+      res call(0) should be false
+      res call(4) should be false
+      res call(5) should be true
+      res call(6) should be true
+      res call(7) should be true
+      res call(8) should be true
+    )
+  )
+
   it("should report arity failures with regular arguments",
     noargs = fnx(nil)
     onearg = fnx(x, nil)
