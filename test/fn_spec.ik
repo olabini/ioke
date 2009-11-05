@@ -174,6 +174,22 @@ describe(DefaultBehavior,
 )
 
 describe(LexicalBlock,
+  describe("->",
+    it("should take a block and return a new one that combines them",
+      x = fn(a, a + 10)
+      y = fn(a, a * 5)
+      (x -> y) call(32) should == 210
+    )
+  )
+
+  describe("<-",
+    it("should take a block and return a new one that combines them",
+      x = fn(a, a + 10)
+      y = fn(a, a * 5)
+      (x <- y) call(32) should == 170
+    )
+  )
+
   it("should report arity failures with regular arguments",
     noargs = fnx(nil)
     onearg = fnx(x, nil)
