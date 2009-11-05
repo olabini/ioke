@@ -34,6 +34,10 @@ public class StaticMethods {
         return obj;
     }
 
+    public static String aChar(char i) {
+        return "char(" + String.valueOf(i) + ")";
+    }
+
     public static String overloaded() {
         return "overloaded()";
     }

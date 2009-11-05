@@ -409,6 +409,16 @@ describe(Sequence,
       ss = SequenceTester with(val: [1,2,4,5,6,7,8], len: 7) seq
       ss indexed asList should == [[0,1], [1,2], [2,4], [3,5], [4,6], [5,7], [6,8]]
     )
+
+    it("should take an optional from: parameter",
+      ss = SequenceTester with(val: [1,2,4,5,6,7,8], len: 7) seq
+      ss indexed(from: 10) asList should == [[10,1], [11,2], [12,4], [13,5], [14,6], [15,7], [16,8]]
+    )
+
+    it("should take an optional step: parameter",
+      ss = SequenceTester with(val: [1,2,4,5,6,7,8], len: 7) seq
+      ss indexed(step: 3) asList should == [[0,1], [3,2], [6,4], [9,5], [12,6], [15,7], [18,8]]
+    )
   )
 
   describe("dropped",
@@ -586,7 +596,7 @@ describe(Sequence,
     )
 
     it("should take zero arguments and just index the elements",
-      ss = Sequence Index create(SequenceTester with(val: [1,2,3], len: 3) seq, Ground, [])
+      ss = Sequence Index create(SequenceTester with(val: [1,2,3], len: 3) seq, Ground, [], 0, 1)
       ss next should == [0, 1]
       ss asList should == [[1,2], [2,3]]
     )
