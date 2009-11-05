@@ -1640,6 +1640,10 @@ describe("Java Objects",
       ioke:lang:test:StaticMethods overloaded("foo") asText should == "overloaded(String)"
     )
 
+    it("should coerce Text correctly to char",
+      ioke:lang:test:StaticMethods aChar("f") asText should == "char(f)"
+    )
+
     it("should coerce Symbol correctly to String",
       ioke:lang:test:StaticMethods overloaded(:foo) asText should == "overloaded(String)"
     )
@@ -1811,6 +1815,11 @@ describe("Java Objects",
     it("should invoke a method with no arguments correctly",
       i = ioke:lang:test:InstanceMethods new
       i overloaded asText should == "overloaded()"
+    )
+
+    it("should coerce Text correctly to char",
+      i = ioke:lang:test:InstanceMethods new
+      i aChar("f") asText should == "char(f)"
     )
 
     it("should coerce Text correctly to String",

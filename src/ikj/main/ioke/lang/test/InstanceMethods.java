@@ -31,6 +31,10 @@ public class InstanceMethods {
         return obj;
     }
 
+    public String aChar(char i) {
+        return "char(" + String.valueOf(i) + ")";
+    }
+
     public String overloaded() {
         return "overloaded()";
     }

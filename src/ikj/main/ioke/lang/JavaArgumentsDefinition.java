@@ -397,6 +397,8 @@ public class JavaArgumentsDefinition {
                             args.add(JavaWrapper.getObject(obj));
                         } else if(isIokeObject && IokeObject.data(obj) instanceof Number) {
                             args.add(new Character((char)Number.intValue(obj).intValue()));
+                        } else if(isIokeObject && IokeObject.data(obj) instanceof Text && Text.getText(obj).length() == 1) {
+                            args.add(new Character(Text.getText(obj).charAt(0)));
                         } else if(!clz.isPrimitive() && obj == runtime.nil) {
                             args.add(null);
                         } else {
