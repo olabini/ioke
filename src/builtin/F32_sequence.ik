@@ -65,6 +65,7 @@ Mixins Sequenced do(
   dropped = macro(call resendToReceiver(self seq))
   droppedWhile = macro(call resendToReceiver(self seq))
   rejected = macro(call resendToReceiver(self seq))
+  indexed = macro(call resendToReceiver(self seq))
 )
 
 Sequence mapped    = macro(Sequence Map create(@, call ground, call arguments))
@@ -76,6 +77,7 @@ Sequence rejected  = macro(Sequence Reject create(@, call ground, call arguments
 Sequence zipped    = method(+toZipAgainst, Sequence Zip create(@, Ground, [], *toZipAgainst))
 Sequence dropped   = method(howManyToDrop, Sequence Drop create(@, Ground, [], howManyToDrop))
 Sequence droppedWhile = macro(Sequence DropWhile create(@, call ground, call arguments))
+Sequence indexed   = method(Sequence Index create(@, Ground, []))
 
 let(
   generateNextPMethod, method(takeCurrentObject, returnObject,
@@ -167,6 +169,19 @@ let(
           x,
           x seq)
       )
+      myNewSelf
+    )
+  )
+
+  Sequence Index       = sequenceObject(true,
+    result = list(@index, cell(:n))
+    @index = @index + 1
+    result
+  ) do(
+    baseCreate = Sequence Base cell(:create)
+    create = method(+args,
+      myNewSelf = baseCreate(*args)
+      myNewSelf index = 0
       myNewSelf
     )
   )

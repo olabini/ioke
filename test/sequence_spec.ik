@@ -396,6 +396,21 @@ describe(Sequence,
     )
   )
 
+  describe("indexed",
+    it("should create a new Sequence Index with the arguments sent to it",
+      ss = SequenceTester with(val: [1,2,3,4,5,6,7,8], len: 8) seq
+      val = ss indexed
+      val should mimic(Sequence Index)
+      val wrappedSequence should be same(ss)
+      val messages should == []
+    )
+
+    it("should index the objects",
+      ss = SequenceTester with(val: [1,2,4,5,6,7,8], len: 7) seq
+      ss indexed asList should == [[0,1], [1,2], [2,4], [3,5], [4,6], [5,7], [6,8]]
+    )
+  )
+
   describe("dropped",
     it("should create a new Sequence Drop with the arguments sent to it",
       ss = SequenceTester with(val: [1,2,3,4,5,6,7,8], len: 8) seq
@@ -562,6 +577,18 @@ describe(Sequence,
       ss next should == "2"
       ss next should == "3"
       ss asList should == ["7","8","9","10"]
+    )
+  )
+
+  describe("Index",
+    it("should mimic Sequence",
+      Sequence Index should mimic(Sequence)
+    )
+
+    it("should take zero arguments and just index the elements",
+      ss = Sequence Index create(SequenceTester with(val: [1,2,3], len: 3) seq, Ground, [])
+      ss next should == [0, 1]
+      ss asList should == [[1,2], [2,3]]
     )
   )
 
