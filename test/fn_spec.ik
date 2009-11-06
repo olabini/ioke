@@ -245,6 +245,30 @@ describe(LexicalBlock,
     )
   )
 
+  describe("iterate",
+    it("should return a sequence",
+      fn() iterate should mimic(Sequence)
+    )
+
+    it("should be possible to define a sequence of fibonacci",
+      fibseq = fn(a, b, [b, a + b]) iterate(0, 1) mapped(first)
+      fibseq next should == 0
+      fibseq next should == 1
+      fibseq next should == 1
+      fibseq next should == 2
+      fibseq next should == 3
+      fibseq next should == 5
+      fibseq next should == 8
+      fibseq next should == 13
+      fibseq next should == 21
+      fibseq next should == 34
+      fibseq next should == 55
+      fibseq next should == 89
+      fibseq next should == 144
+      fibseq next should == 233
+    )
+  )
+
   it("should report arity failures with regular arguments",
     noargs = fnx(nil)
     onearg = fnx(x, nil)

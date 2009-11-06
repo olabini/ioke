@@ -1,4 +1,3 @@
-
 FibSequence = Sequence with(
   initialize: method(
     @index = 0
@@ -23,6 +22,10 @@ FibSequence = Sequence with(
 
 fib = method("Returns a sequence that generates all the fibonacci numbers",
   FibSequence mimic
+)
+
+fib2 = method(
+  fn(a, b, [b, a + b]) iterate(0, 1) mapped(first)
 )
 
 ; find the index of the first fibonacci number larger than a thousand
