@@ -101,9 +101,17 @@ Message Rewriter Unification addUnification = method(name, msg,
     name = :(it realName)
     unifications[name] = (msg, count)
     count,
-    unifications[name] = (msg, 1)
-    1)
-)
+    if(name asText =~ #/^:all({realName}:.+)$/,
+      name = :(it realName)
+      count = 0
+      curr = msg
+      until(curr nil? || curr terminator?,
+        curr = curr next
+        count++)
+      unifications[name] = (msg, count)
+      count,
+      unifications[name] = (msg, 1)
+      1)))
 
 Message Rewriter Unification internal:unify = method(pattern, msg, countNexts false,
 ;  "internal:unify(#{pattern code}, #{msg code}" println

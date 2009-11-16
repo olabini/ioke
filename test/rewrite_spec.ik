@@ -109,7 +109,7 @@ describe(Message,
       msg = '(foo bar bax quux. fluxie blarb)
 
       output = msg rewrite(
-        '(:x :all:y) => '(:x(:y)))
+        '(foo :all:y) => '(foo(:y)))
 
       output should == '(foo(bar bax quux). fluxie blarb)
     )
