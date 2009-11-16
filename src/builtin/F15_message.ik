@@ -96,7 +96,13 @@ Message Rewriter Unification = Origin mimic do(
 )
 
 Message Rewriter Unification addUnification = method(name, msg,
-  unifications[name] = msg
+  if(name asText =~ #/^:all:({count}\d+)({realName}:.+)$/,
+    count = it count toRational
+    name = :(it realName)
+    unifications[name] = (msg, count)
+    count,
+    unifications[name] = (msg, 1)
+    1)
 )
 
 Message Rewriter Unification internal:unify = method(pattern, msg, countNexts false,
@@ -109,8 +115,10 @@ Message Rewriter Unification internal:unify = method(pattern, msg, countNexts fa
       return(false)
     )
 
+    amount = 1
+
     if(p symbol?,
-      addUnification(p name, m),
+      amount = addUnification(p name, m),
       unless(p name == m name,
         return(false)
       )
@@ -124,9 +132,13 @@ Message Rewriter Unification internal:unify = method(pattern, msg, countNexts fa
         return(false)))
 
     p = p next
-    m = m next
+    amount times(
+      unless(m,
+        return(false))
+      m = m next)
+
     if(countNexts,
-      @nexts = @nexts + 1)
+      @nexts = @nexts + amount)
   )
   true
 )
@@ -144,7 +156,15 @@ Message Rewriter rewriteWith = method(u, pattern,
   p = pattern
   while(p,
     res = if(p symbol?,
-      u unifications[p name] mimic,
+      (msg, count) = u unifications[p name]
+      res = msg mimic
+      curr = msg
+      (1...count) each(n,
+        curr = curr next
+        newObj = curr mimic
+        res last -> newObj
+      )
+      res,
       p mimic)
 
     res arguments = p arguments map(a,
@@ -153,7 +173,7 @@ Message Rewriter rewriteWith = method(u, pattern,
     if(start nil?,
       start = res
       current = start,
-      current -> res
+      current last -> res
       current = current last)
 
     p = p next

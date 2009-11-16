@@ -113,5 +113,14 @@ describe(Message,
 
       output should == '(foo(bar bax quux). fluxie blarb)
     )
+
+    it("should be possible to grab up to a point with until",
+      msg = '(foo bar bax quux)
+
+      output = msg rewrite(
+        '(:x :until:bax:y) => '(:x(:y)))
+
+      output should == '(foo(bar bax) quux)
+    )
   )
 )
