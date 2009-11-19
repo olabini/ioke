@@ -426,6 +426,10 @@ Mixins Enumerable join = method(
     if(index < count - 1, result += separator))
   result)
 
+Mixins Enumerable sum = method(
+  "returns an object created by summing all objects in the enumerable using the + operator. the default value for an empty enumerable will be nil.",
+  inject(+))
+
 Mixins Enumerable aliasMethod("map", "collect")
 Mixins Enumerable aliasMethod("map", "collect:list")
 Mixins Enumerable aliasMethod("map", "map:list")

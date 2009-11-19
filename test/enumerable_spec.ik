@@ -1022,5 +1022,25 @@ describe(Mixins,
         )
       )
     )
+
+    describe("sum",
+      it("should return nil for an empty enumerable",
+        [] sum should be nil
+        (1...1) sum should be nil
+        #{} sum should be nil
+      )
+
+      it("should return the object in question for a one-object enumerable",
+        [42] sum should == 42
+        (1..1) sum should == 1
+        #{5} sum should == 5
+        ["str"] sum should == "str"
+      )
+
+      it("should use the + operator to sum things",
+        [32, 5, 111, 464] sum should == (32+5+111+464)
+        ["foo", "bar", "bax"] sum should == "foobarbax"
+      )
+    )
   )
 )
