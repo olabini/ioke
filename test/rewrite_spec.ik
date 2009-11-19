@@ -122,5 +122,21 @@ describe(Message,
 
       output should == '(foo(bar bax) quux)
     )
+
+    it("should handle calls to internal: as if it was a non-argument thing",
+      msg = '(foo(1))
+
+      output = msg rewrite(
+        '(:x(:y)) => '(:x bar(:y)))
+
+      output should == '(foo bar(1))
+
+      msg = '(foo("flux"))
+
+      output = msg rewrite(
+        '(:x(:y)) => '(:x bar(:y)))
+
+      output should == '(foo bar("flux"))
+    )
   )
 )

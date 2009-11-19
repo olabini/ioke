@@ -181,14 +181,22 @@ IParse = Origin mimic do(
           msg -> newMsg))
   )
 
+  try1 = method(msg,
+    msg code println
+    msg rewrite(
+      '(..(:x)) => '(.. foo(:x))
+    ) code println
+
+    "" println
+  )
+
   Parser = macro(
     context = ParserContext mimic
     args = call arguments
-    args each(code println)
     args each(each(a,
         if(a arguments length > 1,
+          try1(a arguments[1])
           insertSequencers(a arguments[1]))))
-    args each(code println)
     args each(evaluateOn(context, context))
     context
   )

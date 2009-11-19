@@ -131,6 +131,9 @@ Message Rewriter Unification addUnification = method(name, msg,
         unifications[name] = (msg, 1)
         1))))
 
+Message Rewriter Unification internal:eitherLiteral? = method(pattern, msg, nil)
+Message Rewriter Unification internal:unifyLiterals = method(pattern, msg, nil)
+
 Message Rewriter Unification internal:unify = method(pattern, msg, countNexts false,
   p = pattern
   m = msg
@@ -154,9 +157,12 @@ Message Rewriter Unification internal:unify = method(pattern, msg, countNexts fa
     if(p arguments length != m arguments length,
       return(false))
 
-    p arguments zip(m arguments) each(pm,
-      unless(internal:unify(pm first, pm second),
-        return(false)))
+    if(internal:eitherLiteral?(p, m),
+      unless(internal:unifyLiterals(p, m),
+        return(false)),
+      p arguments zip(m arguments) each(pm,
+        unless(internal:unify(pm first, pm second),
+          return(false))))
 
     p = p next
     amount times(

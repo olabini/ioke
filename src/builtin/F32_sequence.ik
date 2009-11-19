@@ -141,7 +141,6 @@ let(
 
   Sequence Map       = sequenceObject(true,     cell(:x))
   Sequence Filter    = sequenceObject(cell(:x), cell(:n))
-
   Sequence Reject    = sequenceObject(!cell(:x), cell(:n))
   Sequence Grep      = sequenceObject(restArguments[0] === cell(:n), cell(:x))
   Sequence Drop      = sequenceObject(if(restArguments[0] == 0, true, restArguments[0] = restArguments[0] - 1. false), cell(:n))
