@@ -112,6 +112,30 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
             <tr>
               <td style="width:10em"></td>
               <td>
+<pre class="code">
+<span style="color: #b0c4de;">Ioke</span> <span style="color: #00bfff;">=</span> <span style="color: #606060;">LanguageExperiment</span> <span style="color: #449900;">with</span>(
+  <span style="color: #7777d4;">goal:</span> <span style="color: #7777d4;">:expressiveness</span><span style="color: #006666;">,</span>
+  <span style="color: #7777d4;">data:</span> as(code)<span style="color: #006666;">,</span>
+  <span style="color: #7777d4;">code:</span> as(data)<span style="color: #006666;">,</span>
+  <span style="color: #7777d4;">features:</span> [
+    <span style="color: #7777d4;">:dynamic</span><span style="color: #006666;">,</span>
+    <span style="color: #7777d4;">:object_oriented</span><span style="color: #006666;">,</span>
+    <span style="color: #7777d4;">:prototype_based</span><span style="color: #006666;">,</span>
+    <span style="color: #7777d4;">:homoiconic</span><span style="color: #006666;">,</span>
+    <span style="color: #7777d4;">:macros</span>
+  ]<span style="color: #006666;">,</span>
+  <span style="color: #7777d4;">runtimes:</span> (<span style="color: #606060;">JVM</span><span style="color: #006666;">,</span> <span style="color: #606060;">CLR</span>)<span style="color: #006666;">,</span>
+  <span style="color: #7777d4;">inspirations:</span> <span style="color: #449900;">set</span>(<span style="color: #606060;">Io</span><span style="color: #006666;">,</span> <span style="color: #606060;">Smalltalk</span><span style="color: #006666;">,</span> <span style="color: #606060;">Ruby</span><span style="color: #006666;">,</span> <span style="color: #606060;">Lisp</span>)
+)
+
+<span style="color: #b0c4de;">hello</span> <span style="color: #00bfff;">=</span> <span style="color: #6495ed;">method</span>(name<span style="color: #006666;">,</span>
+  <span style="color: #0050a0;">"hello, </span><span style="color: #449900;">#{name}</span><span style="color: #0050a0;">!"</span> <span style="color: #449900;">println</span>)
+
+<span style="color: #606060;">Ioke</span> inspirations select(
+  features include?(<span style="color: #7777d4;">:object_oriented</span>)
+) each(x<span style="color: #006666;">,</span> hello(x name))
+</pre>
+
                 <p>Ioke is a <i>folding</i> language. It allows you to write highly expressive code that writes code. Ioke allows you to create abstractions at any level, and expressiveness is the ultimate goal of the language.</p>
 
                 <p>Ioke is a dynamic language targeted at virtual machines, currently the Java Virtual Machine and the Common Language Runtime. It's been designed from scratch to be a highly flexible general purpose language. It is a prototype-based programming language that is inspired by <a href="http://iolanguage.com">Io</a>, <a href="http://smalltalk.org">Smalltalk</a>, <a href="http://lisp.org">Lisp</a> and <a href="http://ruby-lang.org">Ruby</a>.</p>
