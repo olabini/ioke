@@ -479,6 +479,37 @@ describe(Sequence,
     )
   )
 
+  describe("+",
+    it("should return a new sequence that first runs the lhs sequence then the rhs sequence";, pending: true,
+;      ([1,2,3] seq + [5, 6, 7, 8] seq) take(5) should == [1,2,3,5,6]
+    )
+  )
+
+  describe("intersect",
+    it("should have tests")
+  )
+
+  describe("%",
+    it("should behave as intersect (or interject)")
+  )
+
+  describe("interject",
+    it("should have tests")
+  )
+
+  describe("&",
+    it("should behave as intersect (or interject)")
+  )
+
+  ; Implementation:
+  ; Sequence infinity = method(from: 0, step: 1,
+  ;   fn(n, n + step) iterate(from))
+  describe("infinity",
+    it("should return a new infinity sequence every time called")
+    it("should be possible to define where the sequence starts from")
+    it("should be possible to define what step the sequence uses")
+  )
+
   describe("Filter",
     it("should mimic Sequence",
       Sequence Filter should mimic(Sequence)
