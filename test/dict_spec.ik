@@ -150,6 +150,35 @@ describe("Dict",
     )
   )
 
+  describe("mergeWith",
+    it("should take one dictionary and merge that using replacement",
+      {foo: "bar"} mergeWith({}) should == {foo: "bar"}
+      {foo: "bar"} mergeWith({qux: 42}) should == {foo: "bar", qux: 42}
+      {foo: "bar", qux: 16} mergeWith({qux: 42}) should == {foo: "bar", qux: 42}
+    )
+
+    it("should take two argument where the second argument is the code to handle the merge",
+      {foo: 42} mergeWith({}, +) should == {foo: 42}
+      {foo: 42} mergeWith({foo: 2}, +) should == {foo: 44}
+      {foo: 42} mergeWith({bar: 2}, +) should == {foo: 42, bar: 2}
+      {foo: 42, bar: 25} mergeWith({foo: 2, bar: 2}, +) should == {foo: 44, bar: 27}
+    )
+
+    it("should take three arguments where the second argument is the name of the left hand side object",
+      {foo: 42} mergeWith({}, x, x +) should == {foo: 42}
+      {foo: 42} mergeWith({foo: 2}, x, x +) should == {foo: 44}
+      {foo: 42} mergeWith({bar: 2}, x, x +) should == {foo: 42, bar: 2}
+      {foo: 42, bar: 25} mergeWith({foo: 2, bar: 2}, x, x +) should == {foo: 44, bar: 27}
+    )
+
+    it("should take four arguments where the second argument is the name of the left hand side object and the third argument is the right hand side object",
+      {foo: 42} mergeWith({}, x, y, x + y) should == {foo: 42}
+      {foo: 42} mergeWith({foo: 2}, x, y, x + y) should == {foo: 44}
+      {foo: 42} mergeWith({bar: 2}, x, y, x + y) should == {foo: 42, bar: 2}
+      {foo: 42, bar: 25} mergeWith({foo: 2, bar: 2}, x, y, x + y) should == {foo: 44, bar: 27}
+    )
+  )
+
   describe("merge",
     it("should return an equal dict if given an empty dict",
       {foo: "bar"} merge({}) should == {foo: "bar"}
