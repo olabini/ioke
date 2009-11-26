@@ -480,8 +480,8 @@ describe(Sequence,
   )
 
   describe("+",
-    it("should return a new sequence that first runs the lhs sequence then the rhs sequence";, pending: true,
-;      ([1,2,3] seq + [5, 6, 7, 8] seq) take(5) should == [1,2,3,5,6]
+    it("should return a new sequence that first runs the lhs sequence then the rhs sequence",
+      ([1,2,3] seq + [5, 6, 7, 8] seq) take(5) should == [1,2,3,5,6]
     )
   )
 

@@ -78,6 +78,7 @@ Sequence zipped    = method(+toZipAgainst, Sequence Zip create(@, Ground, [], *t
 Sequence dropped   = method(howManyToDrop, Sequence Drop create(@, Ground, [], howManyToDrop))
 Sequence droppedWhile = macro(Sequence DropWhile create(@, call ground, call arguments))
 Sequence indexed   = method(from: 0, step: 1, Sequence Index create(@, Ground, [], from, step))
+Sequence + = method(other, Sequence Combination create(@, other))
 
 let(
   generateNextPMethod, method(takeCurrentObject, returnObject,
@@ -184,6 +185,30 @@ let(
       myNewSelf index = myNewSelf restArguments[0]
       myNewSelf step = myNewSelf restArguments[1]
       myNewSelf
+    )
+  )
+
+  Sequence Combination = Sequence mimic do(
+    create = method(left, right,
+      newObj = mimic
+      newObj current = left
+      newObj right? = true
+      newObj right = right
+      newObj
+    )
+
+    next = method(
+      if(current next?,
+        current next,
+        if(right?,
+          @current = right
+          @right? = false
+          current next,
+          nil))
+    )
+
+    next? = method(
+      current next? || (right? && right next?)
     )
   )
 )
