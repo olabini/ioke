@@ -501,13 +501,44 @@ describe(Sequence,
     it("should behave as intersect (or interject)")
   )
 
-  ; Implementation:
-  ; Sequence infinity = method(from: 0, step: 1,
-  ;   fn(n, n + step) iterate(from))
   describe("infinity",
-    it("should return a new infinity sequence every time called")
-    it("should be possible to define where the sequence starts from")
-    it("should be possible to define what step the sequence uses")
+    it("should return a Sequence",
+      Sequence infinity should mimic(Sequence)
+    )
+
+    it("should return a new infinity sequence every time called",
+      Sequence infinity should not be(Sequence infinity)
+    )
+
+    it("should default to start from zero",
+      Sequence infinity next should == 0
+    )
+
+    it("should default to use step 1",
+      xx = Sequence infinity
+      xx next should == 0
+      xx next should == 1
+      xx next should == 2
+    )
+
+    it("should be possible to define where the sequence starts from",
+      xx = Sequence infinity(from: 42)
+      xx next should == 42
+      xx next should == 43
+      xx next should == 44
+    )
+
+    it("should be possible to define what step the sequence uses",
+      xx = Sequence infinity(step: 2)
+      xx next should == 0
+      xx next should == 2
+      xx next should == 4
+
+      xx = Sequence infinity(step: -1)
+      xx next should == 0
+      xx next should == -1
+      xx next should == -2
+    )
   )
 
   describe("Filter",

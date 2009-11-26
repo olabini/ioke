@@ -212,3 +212,8 @@ let(
     )
   )
 )
+
+Sequence infinity = method(
+  "Returns a new sequence that starts from zero and steps forever",
+  from: 0, step: 1,
+  fn(n, [n + step]) iterate(from) mapped(first))
