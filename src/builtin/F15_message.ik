@@ -95,24 +95,24 @@ Message Rewriter Unification = Origin mimic do(
   )
 )
 
-Message Rewriter Unification addUnification = method(name, msg,
-  if(name asText =~ #/^:all:({count}\d+)({realName}:.+)$/,
-    count = it count toRational
-    name = :(it realName)
-    unifications[name] = (msg, count)
+Message Rewriter Unification addUnification = method(name, p, msg,
+  if(name == :":all" && p arguments length == 2,
+    count = p arguments[0] evaluateOn(Ground)
+    nm = :(p arguments[1] name)
+    unifications[nm] = (msg, count)
     count,
-    if(name asText =~ #/^:all({realName}:.+)$/,
-      name = :(it realName)
+    if(name == :":all" && p arguments length == 1,
+      nm = :(p arguments[0] name)
       count = 0
       curr = msg
       until(curr nil? || curr terminator?,
         curr = curr next
         count++)
-      unifications[name] = (msg, count)
+      unifications[nm] = (msg, count)
       count,
-      if(name asText =~ #/^:until:({stopName}[^:]+)({realName}:.+)$/,
-        stopsym = :(it stopName)
-        name = :(it realName)
+      if(name == :":until" && p arguments length == 2,
+        stopsym = :(p arguments[0] name)
+        nm = :(p arguments[1] name)
 
         count = 0
         curr = msg
@@ -126,13 +126,17 @@ Message Rewriter Unification addUnification = method(name, msg,
 
         count++
 
-        unifications[name] = (msg, count)
+        unifications[nm] = (msg, count)
         count,
         unifications[name] = (msg, 1)
         1))))
 
 Message Rewriter Unification internal:eitherLiteral? = method(pattern, msg, nil)
 Message Rewriter Unification internal:unifyLiterals = method(pattern, msg, nil)
+
+Message Rewriter Unification internal:macroSymbol? = method(p,
+  p name == :":all" || p name == :":until"
+)
 
 Message Rewriter Unification internal:unify = method(pattern, msg, countNexts false,
   p = pattern
@@ -146,23 +150,26 @@ Message Rewriter Unification internal:unify = method(pattern, msg, countNexts fa
     amount = 1
 
     if(p symbol?,
-      amount = addUnification(p name, m)
+      amount = addUnification(p name, p, m)
       if(amount == -1,
         return(false)),
+
       unless(p name == m name,
         return(false)
       )
+
     )
 
-    if(p arguments length != m arguments length,
-      return(false))
+    unless(internal:macroSymbol?(p),
+      if(p arguments length != m arguments length,
+        return(false))
 
-    if(internal:eitherLiteral?(p, m),
-      unless(internal:unifyLiterals(p, m),
-        return(false)),
-      p arguments zip(m arguments) each(pm,
-        unless(internal:unify(pm first, pm second),
-          return(false))))
+      if(internal:eitherLiteral?(p, m),
+        unless(internal:unifyLiterals(p, m),
+          return(false)),
+        p arguments zip(m arguments) each(pm,
+          unless(internal:unify(pm first, pm second),
+            return(false)))))
 
     p = p next
     amount times(
