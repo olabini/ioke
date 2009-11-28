@@ -91,7 +91,7 @@ describe(Message,
       msg = '(foo bar bax quux blax)
 
       output = msg rewrite(
-        '(:x :all:2:y) => '(:x(:y)))
+        '(:x :all(2,:y)) => '(:x(:y)))
 
       output should == '(foo(bar bax) quux blax)
     )
@@ -100,7 +100,7 @@ describe(Message,
       msg = '(foo bar bax quux)
 
       output = msg rewrite(
-        '(:x :all:y) => '(:x(:y)))
+        '(:x :all(:y)) => '(:x(:y)))
 
       output should == '(foo(bar bax quux))
     )
@@ -109,7 +109,7 @@ describe(Message,
       msg = '(foo bar bax quux. fluxie blarb)
 
       output = msg rewrite(
-        '(foo :all:y) => '(foo(:y)))
+        '(foo :all(:y)) => '(foo(:y)))
 
       output should == '(foo(bar bax quux). fluxie blarb)
     )
@@ -118,7 +118,7 @@ describe(Message,
       msg = '(foo bar bax quux)
 
       output = msg rewrite(
-        '(:x :until:bax:y) => '(:x(:y)))
+        '(:x :until(bax, :y)) => '(:x(:y)))
 
       output should == '(foo(bar bax) quux)
     )
