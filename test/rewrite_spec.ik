@@ -139,9 +139,47 @@ describe(Message,
       output should == '(foo bar("flux"))
     )
 
-    it("should be possible to unify on specific literals")
-    it("should be possible to insert a new literal")
-    it("should be possible to specify unmatched names with :not")
-    it("should be possible to unify on the unmatched name")
+    it("should be possible to unify on specific literals",
+      msg = 'foo(42)
+
+      output = msg rewrite(
+        '(:x(42)) => '(bar(:x)))
+
+      output should == '(bar(foo))
+    )
+
+    it("should be possible to insert a new literal",
+      msg = 'foo
+
+      output = msg rewrite(
+        '(:x) => '(foo bar(:x(42))))
+
+      output should == '(foo bar(foo(42)))
+    )
+
+    it("should be possible to specify unmatched names with :not",
+      msg = '(foo bar quux)
+
+      output = msg rewrite(
+        '(:not(foo) :x) => '(foo :x))
+
+      output should == '(foo foo quux)
+
+      msg = '(foo bar baz bletch quux)
+
+      output = msg rewrite(
+        '(:not(foo, bar, baz) :x) => '(fox :x))
+
+      output should == '(foo bar baz fox quux)
+    )
+
+    it("should be possible to unify on the unmatched name",
+      msg = '(foo bar quux)
+
+      output = msg rewrite(
+        '(:not(foo, :y) :x) => '(:x :y))
+
+      output should == '(foo quux bar)
+    )
   )
 )

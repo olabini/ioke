@@ -96,40 +96,58 @@ Message Rewriter Unification = Origin mimic do(
 )
 
 Message Rewriter Unification addUnification = method(name, p, msg,
-  if(name == :":all" && p arguments length == 2,
+  case([name, p arguments length],
+    [:":all", 2],
     count = p arguments[0] evaluateOn(Ground)
     nm = :(p arguments[1] name)
     unifications[nm] = (msg, count)
     count,
-    if(name == :":all" && p arguments length == 1,
-      nm = :(p arguments[0] name)
-      count = 0
-      curr = msg
-      until(curr nil? || curr terminator?,
-        curr = curr next
-        count++)
-      unifications[nm] = (msg, count)
-      count,
-      if(name == :":until" && p arguments length == 2,
-        stopsym = :(p arguments[0] name)
-        nm = :(p arguments[1] name)
 
-        count = 0
-        curr = msg
+    [:":all", 1],
+    nm = :(p arguments[0] name)
+    count = 0
+    curr = msg
+    until(curr nil? || curr terminator?,
+      curr = curr next
+      count++)
+    unifications[nm] = (msg, count)
+    count,
 
-        until(curr nil? || curr name == stopsym,
-          curr = curr next
-          count++)
+    [:":until", 2],
+    stopsym = :(p arguments[0] name)
+    nm = :(p arguments[1] name)
 
-        if(curr nil?,
-          return(-1))
+    count = 0
+    curr = msg
 
-        count++
+    until(curr nil? || curr name == stopsym,
+      curr = curr next
+      count++)
 
-        unifications[nm] = (msg, count)
-        count,
-        unifications[name] = (msg, 1)
-        1))))
+    if(curr nil?,
+      return(-1))
+
+    count++
+
+    unifications[nm] = (msg, count)
+    count,
+
+    else,
+    if(name == :":not" && p arguments length > 0,
+      capture = nil
+      avoidNames = p arguments map(name)
+      if(p arguments last symbol?,
+        capture = p arguments last
+        avoidNames removeAt!(avoidNames size - 1))
+
+      if(avoidNames include?(msg name),
+        -1,
+        if(capture,
+          unifications[capture name] = (msg, 1))
+        1)
+      ,
+      unifications[name] = (msg, 1)
+      1)))
 
 Message Rewriter Unification internal:literal? = method(msg,
   if(msg name asText =~ #/^internal:/,
@@ -158,7 +176,7 @@ Message Rewriter Unification internal:unifyLiterals = method(pattern, msg,
 )
 
 Message Rewriter Unification internal:macroSymbol? = method(p,
-  (p name == :":all" || p name == :":until") && p arguments length > 0
+  (p name == :":all" || p name == :":until" || p name == :":not") && p arguments length > 0
 )
 
 Message Rewriter Unification internal:unify = method(pattern, msg, countNexts false,
