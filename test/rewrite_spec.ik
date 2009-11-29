@@ -138,5 +138,10 @@ describe(Message,
 
       output should == '(foo bar("flux"))
     )
+
+    it("should be possible to unify on specific literals")
+    it("should be possible to insert a new literal")
+    it("should be possible to specify unmatched names with :not")
+    it("should be possible to unify on the unmatched name")
   )
 )

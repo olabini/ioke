@@ -131,11 +131,34 @@ Message Rewriter Unification addUnification = method(name, p, msg,
         unifications[name] = (msg, 1)
         1))))
 
-Message Rewriter Unification internal:eitherLiteral? = method(pattern, msg, nil)
-Message Rewriter Unification internal:unifyLiterals = method(pattern, msg, nil)
+Message Rewriter Unification internal:literal? = method(msg,
+  if(msg name asText =~ #/^internal:/,
+    true,
+    false))
+
+Message Rewriter Unification internal:eitherLiteral? = method(pattern, msg,
+  internal:literal?(pattern) || internal:literal?(msg))
+
+Message Rewriter Unification internal:unifyLiterals = method(pattern, msg,
+  patternLiteral = internal:literal?(pattern)
+  msgLiteral     = internal:literal?(msg)
+
+  ; this pattern is exhaustive, since we know that at least one of the arguments HAS to be a literal
+  case([patternLiteral, msgLiteral],
+    [false, true],
+    if(pattern symbol?,
+      true,   ; we have already captured this with the unification of the message
+      false), ; we can't unify since one thing is a literal and the other thing is just a regular message
+    [true, false],
+    false,    ; this case always fails, since the right hand side is not a literal it can never match a literal in the pattern
+    [true, true],
+    ; this is where we make sure we have the same message structure of literals
+    pattern name == msg name && pattern arguments == msg arguments
+  )
+)
 
 Message Rewriter Unification internal:macroSymbol? = method(p,
-  p name == :":all" || p name == :":until"
+  (p name == :":all" || p name == :":until") && p arguments length > 0
 )
 
 Message Rewriter Unification internal:unify = method(pattern, msg, countNexts false,
@@ -161,12 +184,11 @@ Message Rewriter Unification internal:unify = method(pattern, msg, countNexts fa
     )
 
     unless(internal:macroSymbol?(p),
-      if(p arguments length != m arguments length,
-        return(false))
-
       if(internal:eitherLiteral?(p, m),
         unless(internal:unifyLiterals(p, m),
           return(false)),
+        if(p arguments length != m arguments length,
+          return(false))
         p arguments zip(m arguments) each(pm,
           unless(internal:unify(pm first, pm second),
             return(false)))))
@@ -207,8 +229,9 @@ Message Rewriter rewriteWith = method(u, pattern,
       res,
       p mimic)
 
-    res arguments = p arguments map(a,
-      rewriteWith(u, a))
+    unless(u internal:literal?(res),
+      res arguments = p arguments map(a,
+        rewriteWith(u, a)))
 
     if(start nil?,
       start = res
