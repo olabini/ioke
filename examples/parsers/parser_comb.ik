@@ -182,12 +182,9 @@ IParse = Origin mimic do(
   )
 
   try1 = method(msg,
-    msg code println
     msg rewrite(
-      '(..(:x)) => '(.. foo(:x))
+      '(:not(internal:createNumber, internal:createText, +, .., ..., *, |, (), :x)) => '('(:x))
     ) code println
-
-    "" println
   )
 
   Parser = macro(
@@ -195,8 +192,12 @@ IParse = Origin mimic do(
     args = call arguments
     args each(each(a,
         if(a arguments length > 1,
+          a arguments[1] code println
           try1(a arguments[1])
-          insertSequencers(a arguments[1]))))
+          insertSequencers(a arguments[1])
+          a arguments[1] code println
+          "" println
+)))
     args each(evaluateOn(context, context))
     context
   )
