@@ -182,7 +182,7 @@ IParse = Origin mimic do(
   )
 
   try1 = method(msg,
-    msg rewrite(
+    msg rewrite:recursively(
       '(:not(internal:createNumber, internal:createText, +, .., ..., *, |, (), :x)) => '('(:x))
     ) code println
   )
