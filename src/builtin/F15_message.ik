@@ -58,7 +58,7 @@ Message seq = method(
 
 Message Rewriter = Origin mimic
 
-Message Rewriter rewrite = method(msg, pattern,
+Message Rewriter rewrite = method(msg, pattern, recurse false,
   start = nil
   current = nil
 
@@ -71,6 +71,12 @@ Message Rewriter rewrite = method(msg, pattern,
       rewriteWith(m, pattern value),
       m_msg mimic
     )
+
+    if(recurse && !(Unification internal:literal?(result)),
+      result arguments = m_msg arguments map(mm,
+        if(Unification internal:literal?(mm),
+          mm,
+          rewrite(mm, pattern, true))))
 
     if(start nil?,
       start = result
@@ -271,4 +277,11 @@ Message rewrite = method("Takes zero or more pairs of message chains, that descr
     current,
     pattern,
     Rewriter rewrite(current, pattern))
+)
+
+Message rewrite:recursively = method("Takes zero or more pairs of message chains, that describe how rewriting of the current message chain should happen. The message patterns can use symbols to match variable pieces of the pattern.", +patterns,
+  patterns inject(self,
+    current,
+    pattern,
+    Rewriter rewrite(current, pattern, true))
 )

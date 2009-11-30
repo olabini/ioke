@@ -181,5 +181,14 @@ describe(Message,
 
       output should == '(foo quux bar)
     )
+
+    it("should work recursively",
+      msg = '(foo x bar(foo y))
+
+      output = msg rewrite:recursively(
+        '(foo :b) => '(:b foo))
+
+      output should == '(x foo bar(y foo))
+    )
   )
 )
