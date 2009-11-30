@@ -739,7 +739,7 @@ namespace Ioke.Lang {
             obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns the unevaluated arguments for this message",
                                                            new TypeCheckingNativeMethod.WithNoArguments("arguments", obj,
                                                                                                         (method, on, args, keywords, context, message) => {
-                                                                                                            return context.runtime.NewList(((Message)IokeObject.dataOf(on)).arguments);
+                                                                                                            return context.runtime.NewList(new SaneArrayList(((Message)IokeObject.dataOf(on)).arguments));
                                                            })));
 
             obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns a formatted code representation of the object",

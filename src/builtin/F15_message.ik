@@ -65,6 +65,18 @@ Message Rewriter rewrite = method(msg, pattern, recurse false,
   m_msg = msg
 
   while(m_msg,
+    ; do unification and changes on arguments before doing on top level. if doing recursively, we need to do it from inside out really.
+    ; how to do that while preserving our match structure though? maybe temporarily switch out the arguments of m_msg?
+    ; that would be evil, but could work...
+
+    oldArguments = m_msg arguments
+
+    if(recurse && !(Unification internal:literal?(m_msg)),
+      m_msg arguments = m_msg arguments map(mm,
+        if(Unification internal:literal?(mm),
+          mm,
+          rewrite(mm, pattern, true))))
+
     m = match(m_msg, pattern key)
 
     result = if(m,
@@ -72,11 +84,7 @@ Message Rewriter rewrite = method(msg, pattern, recurse false,
       m_msg mimic
     )
 
-    if(recurse && !(Unification internal:literal?(result)),
-      result arguments = m_msg arguments map(mm,
-        if(Unification internal:literal?(mm),
-          mm,
-          rewrite(mm, pattern, true))))
+    m_msg arguments = oldArguments
 
     if(start nil?,
       start = result

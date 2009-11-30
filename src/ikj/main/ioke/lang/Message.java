@@ -176,7 +176,7 @@ public class Message extends IokeData {
         message.registerMethod(message.runtime.newNativeMethod("Returns the unevaluated arguments for this message", new TypeCheckingNativeMethod.WithNoArguments("arguments", message) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
-                    return context.runtime.newList(((Message)IokeObject.data(on)).arguments);
+                    return context.runtime.newList(new ArrayList<Object>(((Message)IokeObject.data(on)).arguments));
                 }
             }));
 
