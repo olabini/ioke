@@ -131,6 +131,16 @@ describe(Message,
     )
   )
 
+  describe("arguments",
+    it("should return the actual arguments list - modifying this will modify the original list",
+      msg = 'foo(x)
+      arg = msg arguments
+      arg << 'y
+      msg code should == "foo(x, y)"
+    )
+  )
+
+
   describe("code",
     it("should return a text representation of itself",
       Message fromText("foo") code should == "foo"
@@ -397,6 +407,33 @@ describe(Message,
   )
 
   describe("arguments=",
+    it("should not modify the list - but create a new one instead when the list is cleared",
+      msg = 'foo(x)
+      args = msg arguments
+
+      msg arguments = nil
+
+      args should == ['x]
+    )
+
+    it("should not modify the list - but create a new one instead when the list is set to one element",
+      msg = 'foo(x)
+      args = msg arguments
+
+      msg arguments = 'bax
+
+      args should == ['x]
+    )
+
+    it("should not modify the list - but create a new one instead when the list is set to one element",
+      msg = 'foo(x)
+      args = msg arguments
+
+      msg arguments = ['bax]
+
+      args should == ['x]
+    )
+
     it("should clear the arguments list if given nil",
       msg = '(foo(x))
       msg arguments = nil
