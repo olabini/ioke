@@ -11,6 +11,18 @@ DefaultBehavior FlowControl for:dict = syntax(
   DefaultBehavior FlowControl cell(:for) transform(call arguments, "map:dict", "flatMap:dict")
 )
 
+DefaultBehavior FlowControl p:for = syntax(
+  DefaultBehavior FlowControl cell(:for) transform(call arguments, "p:map", "p:flatMap")
+)
+
+DefaultBehavior FlowControl p:for:set = syntax(
+  DefaultBehavior FlowControl cell(:for) transform(call arguments, "p:map:set", "p:flatMap:set")
+)
+
+DefaultBehavior FlowControl p:for:dict = syntax(
+  DefaultBehavior FlowControl cell(:for) transform(call arguments, "p:map:dict", "p:flatMap:dict")
+)
+
 DefaultBehavior FlowControl cell(:for) generator? = method(msg,
   (msg next) && (msg next name == :"<-"))
 

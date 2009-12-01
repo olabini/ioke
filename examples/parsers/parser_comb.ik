@@ -32,6 +32,7 @@ IParse = Origin mimic do(
         nil)
     )
   )
+
   TextParser   = BaseParser mimic do(
     inspect = method("#{text inspect}")
     match = method(str, start, end,
@@ -40,6 +41,7 @@ IParse = Origin mimic do(
         start)
     )
   )
+
   NumberParser = BaseParser mimic do(
     inspect = method("#{number inspect}")
     match = method(str, start, end,
@@ -49,6 +51,7 @@ IParse = Origin mimic do(
       )
     )
   )
+
   RangeParser  = BaseParser mimic do(
     inspect = method(dots = if(inclusive, "..", "..."). "#{start inspect}#{dots}#{end inspect}")
     match = method(str, start, end,
@@ -63,6 +66,7 @@ IParse = Origin mimic do(
         start + 1,
         start))
   )
+
   OrParser     = BaseParser mimic do(
     inspect = method("(#{first inspect} | #{second inspect})")
     match = method(str, start, end,
@@ -72,6 +76,7 @@ IParse = Origin mimic do(
         self second match(str, start, end))
     )
   )
+
   SequenceParser     = BaseParser mimic do(
     inspect = method("#{first inspect} #{second inspect}")
     match = method(str, start, end,
@@ -86,6 +91,7 @@ IParse = Origin mimic do(
         return start)
     )
   )
+
   RepeatingParser     = BaseParser mimic do(
     inspect = method("(#{repeat inspect})*")
     match = method(str, start, end,
@@ -98,6 +104,7 @@ IParse = Origin mimic do(
       currentStart
     )
   )
+
   ParserParser        = BaseParser mimic do(
     inspect = method("#{name}")
     match = method(str, start, end,
@@ -112,43 +119,62 @@ IParse = Origin mimic do(
     internal:createText   = method(raw, IParse TextParser with(context: self, text: super(raw)))
     internal:createNumber = method(raw, IParse NumberParser with(context: self, number: super(raw)))
   )
+
   ParserContext cell(:"'") = dmacro([name]
     IParse ParserParser with(context: self, name: name name)
   )
 
-  isSpecialName = method(name,
+  specialName? = method(name,
     case(name,
       or(:"+", :"|", :"..", :"...", :"*", :"", :"'", #/^internal:/),
       true,
       false))
 
   quoteMessageName = method(msg,
-    if(!isSpecialName(msg name),
-        newMsg = Message from(')
-        newMsg << Message fromText(msg name asText)
-        newMsg -> msg next
-        msg become!(newMsg)
+    unless(ispecialName?(msg name),
+      newMsg = Message fromText("'(#{msg name})")
+      newMsg -> msg next
+      msg become!(newMsg)
     )
   )
 
-  insertSequencers = method(msg,
-    if(msg arguments length > 0 && !isSpecialName(msg name),
-      nx = msg next
-      newMsg = message("")
-      newMsg << msg arguments[0]
-      msg -> newMsg
-      msg arguments clear!
-      newMsg -> nx,
+  insertGroupingMessage = method(msg,
+    nx = msg next
+    newMsg = message("")
+    newMsg << msg arguments[0]
+    msg -> newMsg
+    msg arguments clear!
+    newMsg -> nx
+  )
 
+  insertExplicitSequencing = method(msg,
+    newMsg = '(+)
+    end = nil
+    current = msg next
+    while(current,
+      if(current name == :"|",
+        end = current
+        break
+      )
+      current = current next)
+    if(end,
+      end prev -> nil
+      newMsg -> end)
+    newMsg << msg next
+    msg -> newMsg
+  )
+
+  insertSequencers = method(msg,
+    if(msg arguments length > 0 && !specialName?(msg name),
+      insertGroupingMessage(msg),
       if(msg name == :"" && msg arguments length > 0,
           insertSequencers(msg arguments[0])))
 
-    quoteMessageName(msg)
-
     if(msg next,
       name = msg next name
+      if(name == :"", msg next name = :"+")
       case(name,
-        or(:"+", :"|", :"..", :"..."),
+        or(:"+", :"|", :"..", :"...", :""),
           insertSequencers(msg next arguments[0])
           insertSequencers(msg next),
         :"*",
@@ -157,41 +183,41 @@ IParse = Origin mimic do(
             msg next arguments clear!
             insertSequencers(msg next)
           ),
-        :"",
-          msg next name = :"+"
-          insertSequencers(msg next arguments[0])
-          insertSequencers(msg next)
-          ,
         else,
           insertSequencers(msg next)
-          quoteMessageName(msg)
-          newMsg = '(+)
-          end = nil
-          current = msg next
-          while(current,
-            if(current name == :"|",
-              end = current
-              break
-            )
-            current = current next)
-          if(end,
-            end prev -> nil
-            newMsg -> end)
-          newMsg << msg next
-          msg -> newMsg))
+          insertExplicitSequencing(msg)
+      ))
   )
+
+  quoteMessageNames = method(msg,
+    msg rewrite:recursively(
+      '(:not(
+          internal:createNumber,
+          internal:createText,
+          +,
+          ..,
+          ...,
+          *,
+          |,
+          ',
+          (),  ; this is the empty message
+          :x   ; the name to capture everything as so we can insert later
+          )) => '('(:x))))
 
   Parser = macro(
     context = ParserContext mimic
     args = call arguments
     args each(each(a,
         if(a arguments length > 1,
-          insertSequencers(a arguments[1]))))
+          a arguments[1] = quoteMessageNames(a arguments[1])
+          insertSequencers(a arguments[1])
+    )))
     args each(evaluateOn(context, context))
-;    IParse "%*[%s: %s\n%]" format(context cells map(c, [c key, c value inspect])) print
     context
   )
 )
+
+;; USAGE --------------------------------------------------------------------------
 
 IParse Parser(
   digit   = 0..9

@@ -599,7 +599,7 @@ public class Message extends IokeData {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     Object arg = args.get(0);
-                    IokeObject.as(on, method).getArguments().clear();
+                    setArguments(IokeObject.as(on, method), new ArrayList<Object>());
                     if(arg == context.runtime.nil) {
                         // no arguments for this message
                     } else if (IokeObject.data(arg) instanceof IokeList) {
@@ -775,23 +775,6 @@ public class Message extends IokeData {
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     String code = Text.getText(args.get(0));
                     return context.runtime.evaluateString(code, message, context);
-                }
-            }));
-
-        message.registerMethod(message.runtime.newNativeMethod("Takes zero or more pairs of message chains, that describe how rewriting of the current message chain should happen. The message patterns can use symbols to match variable pieces of the pattern.", new TypeCheckingNativeMethod("rewrite!") {
-                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
-                    .builder()
-                    .withRest("patterns")
-                    .getArguments();
-
-                @Override
-                public TypeCheckingArgumentsDefinition getArguments() {
-                    return ARGUMENTS;
-                }
-
-                @Override
-                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
-                    return new Rewriter(context, message).rewrite(on, args);
                 }
             }));
     }

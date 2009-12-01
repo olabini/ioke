@@ -1068,7 +1068,7 @@ namespace Ioke.Lang {
                                                                                         .Arguments,
                                                                                         (method, on, args, keywords, context, message) => {
                                                                                             object arg = args[0];
-                                                                                            IokeObject.As(on, method).Arguments.Clear();
+                                                                                            SetArguments(on, new SaneArrayList());
                                                                                             if(arg == context.runtime.nil) {
                                                                                                 // no arguments for this message
                                                                                             } else if (IokeObject.dataOf(arg) is IokeList) {
