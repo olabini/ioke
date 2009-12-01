@@ -1,3 +1,4 @@
+
 Account = Origin mimic do(
   transfer = method(amount, from: self, to:,
     from balance -= amount
