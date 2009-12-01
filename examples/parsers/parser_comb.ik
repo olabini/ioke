@@ -130,14 +130,6 @@ IParse = Origin mimic do(
       true,
       false))
 
-  quoteMessageName = method(msg,
-    unless(ispecialName?(msg name),
-      newMsg = Message fromText("'(#{msg name})")
-      newMsg -> msg next
-      msg become!(newMsg)
-    )
-  )
-
   insertGroupingMessage = method(msg,
     nx = msg next
     newMsg = message("")
