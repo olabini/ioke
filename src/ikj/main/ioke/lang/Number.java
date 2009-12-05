@@ -177,6 +177,11 @@ public class Number extends IokeData {
         number.registerCell("Infinity", infinity);
         runtime.infinity = infinity;
 
+        final IokeObject infinity2 = new IokeObject(runtime, "A value representing infinity", new Number(RatNum.infinity(1)));
+        infinity2.mimicsWithoutCheck(ratio);
+        infinity2.setKind("Number \u221E");
+        number.registerCell("\u221E", infinity2);
+
         number.registerMethod(runtime.newNativeMethod("returns a hash for the number", new NativeMethod.WithNoArguments("hash") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
@@ -291,7 +296,7 @@ public class Number extends IokeData {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     Object arg = args.get(0);
-                    if(on == rational || arg == rational || on == integer || arg == integer || on == ratio || arg == ratio || on == infinity || arg == infinity) {
+                    if(on == rational || arg == rational || on == integer || arg == integer || on == ratio || arg == ratio || on == infinity || arg == infinity || on == infinity2 || arg == infinity2) {
                         if(arg == on) {
                             return context.runtime._true;
                         }
@@ -689,6 +694,20 @@ public class Number extends IokeData {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return method.runtime.newText("Infinity");
+                }
+            }));
+
+        infinity2.registerMethod(obj.runtime.newNativeMethod("Returns a text inspection of the object", new TypeCheckingNativeMethod.WithNoArguments("inspect", infinity2) {
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    return method.runtime.newText("\u221E");
+                }
+            }));
+
+        infinity2.registerMethod(obj.runtime.newNativeMethod("Returns a brief text inspection of the object", new TypeCheckingNativeMethod.WithNoArguments("notice", infinity2) {
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    return method.runtime.newText("\u221E");
                 }
             }));
 

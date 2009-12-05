@@ -536,8 +536,8 @@ bar" should == "foobar"
     describe("unicode mathematical operator: ∘",
       it("should parse it correctly",
         x = Origin mimic
-        x ∘ = method(42)
-        x ∘ should == 42
+        x ∘ = method(other, 42)
+        (x ∘ 5) should == 42
       )
     )
 
@@ -672,16 +672,16 @@ bar" should == "foobar"
     describe("unicode mathematical operator: ∩",
       it("should parse it correctly",
         x = Origin mimic
-        x ∩ = method(42)
-        x ∩ should == 42
+        x ∩ = method(v, 42)
+        (x ∩ 2) should == 42
       )
     )
 
     describe("unicode mathematical operator: ∪",
       it("should parse it correctly",
         x = Origin mimic
-        x ∪ = method(42)
-        x ∪ should == 42
+        x ∪ = method(v, 42)
+        (x ∪ 2) should == 42
       )
     )
 
@@ -1384,16 +1384,16 @@ bar" should == "foobar"
     describe("unicode mathematical operator: ⊂",
       it("should parse it correctly",
         x = Origin mimic
-        x ⊂ = method(42)
-        x ⊂ should == 42
+        x ⊂ = method(v, 42)
+        (x ⊂ 2) should == 42
       )
     )
 
     describe("unicode mathematical operator: ⊃",
       it("should parse it correctly",
         x = Origin mimic
-        x ⊃ = method(42)
-        x ⊃ should == 42
+        x ⊃ = method(v, 42)
+        (x ⊃ 2) should == 42
       )
     )
 
@@ -1416,16 +1416,16 @@ bar" should == "foobar"
     describe("unicode mathematical operator: ⊆",
       it("should parse it correctly",
         x = Origin mimic
-        x ⊆ = method(42)
-        x ⊆ should == 42
+        x ⊆ = method(v, 42)
+        (x ⊆ 2) should == 42
       )
     )
 
     describe("unicode mathematical operator: ⊇",
       it("should parse it correctly",
         x = Origin mimic
-        x ⊇ = method(42)
-        x ⊇ should == 42
+        x ⊇ = method(v, 42)
+        (x ⊇ 2) should == 42
       )
     )
 

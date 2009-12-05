@@ -501,6 +501,48 @@ describe(Sequence,
     it("should behave as intersect (or interject)")
   )
 
+  describe("ℕ",
+    it("should return a Sequence",
+      Sequence ℕ should mimic(Sequence)
+    )
+
+    it("should return a new infinity sequence every time called",
+      Sequence ℕ should not be(Sequence ℕ)
+    )
+
+    it("should start from zero",
+      Sequence ℕ next should == 0
+    )
+
+    it("should use step 1",
+      xx = Sequence ℕ
+      xx next should == 0
+      xx next should == 1
+      xx next should == 2
+    )
+  )
+
+  describe("ω",
+    it("should return a Sequence",
+      Sequence ω should mimic(Sequence)
+    )
+
+    it("should return a new infinity sequence every time called",
+      Sequence ω should not be(Sequence ℕ)
+    )
+
+    it("should start from zero",
+      Sequence ω next should == 0
+    )
+
+    it("should use step 1",
+      xx = Sequence ω
+      xx next should == 0
+      xx next should == 1
+      xx next should == 2
+    )
+  )
+
   describe("infinity",
     it("should return a Sequence",
       Sequence infinity should mimic(Sequence)

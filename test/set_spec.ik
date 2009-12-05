@@ -308,6 +308,62 @@ describe("Set",
     )
   )
 
+  ; union
+  describe("∪",
+    it("should add two sets",
+      (#{} ∪ #{1,3}) should == #{1, 3}
+      (#{} ∪ #{}) should == #{}
+      (set(1,2) ∪ set(1,3)) should == set(1,2,3)
+    )
+  )
+
+  ; intersection
+  describe("∩",
+    it("should have tests")
+  )
+
+  ; set membership
+  describe("∈",
+    it("should be inverted")
+    it("should have tests")
+  )
+
+  ; set membership
+  describe("∉",
+    it("should be inverted")
+    it("should have tests")
+  )
+
+  ; subset
+  describe("⊆",
+    it("should have tests")
+  )
+
+  ; proper subset
+  describe("⊂",
+    it("should have tests")
+  )
+
+  ; superset
+  describe("⊇",
+    it("should have tests")
+  )
+
+  ; proper superset
+  describe("⊃",
+    it("should have tests")
+  )
+
+  ; symmetric difference
+  describe("∆",
+    it("should have tests")
+  )
+
+  ; set-theoretic complement
+  describe("∖",
+    it("should have tests")
+  )
+
   describe("remove!",
     it("should remove entry from set",
       set(1,2) remove!(1) should == set(2)
@@ -368,6 +424,10 @@ describe("Literal syntax for set",
 )
 
 describe("DefaultBehavior",
+  describe("∅",
+    it("should return a new empty set")
+  )
+
   describe("set",
     it("should create a new empty set when given no arguments",
       x = set

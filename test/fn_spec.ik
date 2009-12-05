@@ -182,6 +182,14 @@ describe(LexicalBlock,
     )
   )
 
+  describe("∘",
+    it("should take a block and return a new one that combines them",
+      f = fn(a, a + 10)
+      g = fn(a, a * 5)
+      (f ∘ g) call(32) should == f(g(32))
+    )
+  )
+
   describe("<-",
     it("should take a block and return a new one that combines them",
       x = fn(a, a + 10)

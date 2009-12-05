@@ -216,3 +216,12 @@ Sequence infinity = method(
   "Returns a new sequence that starts from zero and steps forever",
   from: 0, step: 1,
   fn(n, [n + step]) iterate(from) mapped(first))
+
+Sequence ℕ = method(
+  "Returns a new sequence of all the natural numbers",
+  fn(n, [n + 1]) iterate(0) mapped(first))
+
+Sequence ω = method(
+  "Returns a new sequence of all the natural numbers",
+  fn(n, [n + 1]) iterate(0) mapped(first))
+

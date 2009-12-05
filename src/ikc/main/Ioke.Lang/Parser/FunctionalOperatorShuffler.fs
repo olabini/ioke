@@ -89,6 +89,8 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
 
         ("+",   3);
         ("-",   3);
+        ("∩",   3);
+        ("∪",   3);
 
         ("<<",  4);
         (">>",  4);
@@ -102,6 +104,10 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
         ("≥",  5);
         ("<>",  5);
         ("<>>",  5);
+        ("⊂",  5);
+        ("⊃",  5);
+        ("⊆",  5);
+        ("⊇",  5);
 
         ("==",  6);
         ("!=",  6);
@@ -127,6 +133,7 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
         ("=>",  12);
         ("<->",  12);
         ("->",  12);
+        ("∘", 12);
         ("+>",  12);
         ("!>",  12);
         ("&>",  12);
