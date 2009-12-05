@@ -135,6 +135,8 @@ public class Levels {
 
 		new OpTable("+",   3),
 		new OpTable("-",   3),
+        new OpTable("\u2229", 3),
+        new OpTable("\u222A", 3),
 
 		new OpTable("<<",  4),
 		new OpTable(">>",  4),
@@ -148,6 +150,10 @@ public class Levels {
 		new OpTable("\u2265",  5),
 		new OpTable("<>",  5),
 		new OpTable("<>>",  5),
+        new OpTable("\u2282", 5),
+        new OpTable("\u2283", 5),
+        new OpTable("\u2286", 5),
+        new OpTable("\u2287", 5),
 
 		new OpTable("==",  6),
 		new OpTable("!=",  6),
@@ -173,6 +179,7 @@ public class Levels {
 		new OpTable("=>",  12),
 		new OpTable("<->",  12),
 		new OpTable("->",  12),
+        new OpTable("\u2218", 12),
 		new OpTable("+>",  12),
 		new OpTable("!>",  12),
 		new OpTable("&>",  12),

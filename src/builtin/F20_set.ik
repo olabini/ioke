@@ -24,3 +24,9 @@ Set ?& = dmacro(
     self))
 
 Set do(=== = generateMatchMethod(include?))
+
+Set ∪ = method(
+  "returns a new set that is the set-theoretic union of this set and the argument set",
+  other,
+
+  self + other)
