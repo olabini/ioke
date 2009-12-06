@@ -544,11 +544,11 @@ describe(Sequence,
 
   describe("&",
     it("should create a new sequence",
-      ([1,2,3] seq & 1..5) should mimic(Sequence)
+      ([1,2,3] seq & (1..5)) should mimic(Sequence)
     )
 
     it("should take an enumerable",
-      ([1,2,3] seq & 5..15) asList should == [1,5,2,6,3,7]
+      ([1,2,3] seq & (5..15)) asList should == [1,5,2,6,3,7]
     )
 
     it("should take a seq",
@@ -564,7 +564,7 @@ describe(Sequence,
     )
 
     it("should interleave the elements of the argument with the elements of the sequence",
-      (["foo", "bar", "quux"] seq & 1..3) asList should == ["foo", 1, "bar", 2, "quux", 3]
+      (["foo", "bar", "quux"] seq & (1..3)) asList should == ["foo", 1, "bar", 2, "quux", 3]
     )
   )
 

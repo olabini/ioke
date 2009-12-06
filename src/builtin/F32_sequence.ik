@@ -83,6 +83,7 @@ Sequence +            = method(other, Sequence Combination create(@, other))
 Sequence interpose    = method(inbetween, Sequence Interpose create(@, inbetween))
 Sequence cell("%")    = method(inbetween, Sequence Interpose create(@, inbetween))
 Sequence interleave   = method(right, Sequence Interleave create(@, right))
+Sequence cell("&")    = method(right, Sequence Interleave create(@, right))
 
 let(
   generateNextPMethod, method(takeCurrentObject, returnObject,
