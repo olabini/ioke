@@ -69,19 +69,20 @@ Mixins Sequenced do(
   interpose = macro(call resendToReceiver(self seq))
 )
 
-Sequence mapped    = macro(Sequence Map create(@, call ground, call arguments))
-Sequence collected = macro(Sequence Map create(@, call ground, call arguments))
-Sequence filtered  = macro(Sequence Filter create(@, call ground, call arguments))
-Sequence selected  = macro(Sequence Filter create(@, call ground, call arguments))
-Sequence grepped   = method(toGrepAgainst, Sequence Grep create(@, Ground, [], toGrepAgainst))
-Sequence rejected  = macro(Sequence Reject create(@, call ground, call arguments))
-Sequence zipped    = method(+toZipAgainst, Sequence Zip create(@, Ground, [], *toZipAgainst))
-Sequence dropped   = method(howManyToDrop, Sequence Drop create(@, Ground, [], howManyToDrop))
+Sequence mapped       = macro(Sequence Map create(@, call ground, call arguments))
+Sequence collected    = macro(Sequence Map create(@, call ground, call arguments))
+Sequence filtered     = macro(Sequence Filter create(@, call ground, call arguments))
+Sequence selected     = macro(Sequence Filter create(@, call ground, call arguments))
+Sequence grepped      = method(toGrepAgainst, Sequence Grep create(@, Ground, [], toGrepAgainst))
+Sequence rejected     = macro(Sequence Reject create(@, call ground, call arguments))
+Sequence zipped       = method(+toZipAgainst, Sequence Zip create(@, Ground, [], *toZipAgainst))
+Sequence dropped      = method(howManyToDrop, Sequence Drop create(@, Ground, [], howManyToDrop))
 Sequence droppedWhile = macro(Sequence DropWhile create(@, call ground, call arguments))
-Sequence indexed   = method(from: 0, step: 1, Sequence Index create(@, Ground, [], from, step))
-Sequence +         = method(other, Sequence Combination create(@, other))
-Sequence interpose = method(inbetween, Sequence Interpose create(@, inbetween))
-Sequence cell("%") = method(inbetween, Sequence Interpose create(@, inbetween))
+Sequence indexed      = method(from: 0, step: 1, Sequence Index create(@, Ground, [], from, step))
+Sequence +            = method(other, Sequence Combination create(@, other))
+Sequence interpose    = method(inbetween, Sequence Interpose create(@, inbetween))
+Sequence cell("%")    = method(inbetween, Sequence Interpose create(@, inbetween))
+Sequence interleave   = method(right, Sequence Interleave create(@, right))
 
 let(
   generateNextPMethod, method(takeCurrentObject, returnObject,
@@ -233,6 +234,30 @@ let(
 
     next? = method(
       realSeq next?
+    )
+  )
+
+  Sequence Interleave = Sequence mimic do(
+    create = method(left, right,
+      newObj = mimic
+      newObj left = left
+      newObj right = if(right mimics?(Sequence), right, right seq)
+      newObj left? = true
+      newObj
+    )
+
+    next = method(
+      if(left?,
+        @left? = false
+        left next,
+        @left? = true
+        right next)
+    )
+
+    next? = method(
+      leftNext? = left next?
+      rightNext? = right next?
+      (leftNext? && rightNext?) || (!left? && rightNext?)
     )
   )
 )

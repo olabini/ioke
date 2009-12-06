@@ -517,14 +517,28 @@ describe(Sequence,
 
   ; TODO add "interleave" on Enumerable too
   describe("interleave",
-    it("should create a new sequence")
-    it("should take an enumerable")
-    it("should take a seq")
-    it("should only take as many elements as needed from the self")
-    it("should only take as many elements as needed from the argument")
+    it("should create a new sequence",
+      [1,2,3] seq interleave(1..5) should mimic(Sequence)
+    )
 
-    it("should interleave the elements of the argument with the elements of the sequence";,
-;      ["foo", "bar", "quux"] seq interleave(1..3) asList should == ["foo", 1, "bar", 2, "quux", 3]
+    it("should take an enumerable",
+      [1,2,3] seq interleave(5..15) asList should == [1,5,2,6,3,7]
+    )
+
+    it("should take a seq",
+      [1,2,3] seq interleave((5..15) seq) asList should == [1,5,2,6,3,7]
+    )
+
+    it("should only take as many elements as needed from the self",
+      [1,2,3,4,5,6] seq interleave([10,11]) asList should == [1,10,2,11]
+    )
+
+    it("should only take as many elements as needed from the argument",
+      [1,2] seq interleave([10,11,12,13,14,15]) asList should == [1,10,2,11]
+    )
+
+    it("should interleave the elements of the argument with the elements of the sequence",
+      ["foo", "bar", "quux"] seq interleave(1..3) asList should == ["foo", 1, "bar", 2, "quux", 3]
     )
   )
 
