@@ -79,8 +79,9 @@ Sequence zipped    = method(+toZipAgainst, Sequence Zip create(@, Ground, [], *t
 Sequence dropped   = method(howManyToDrop, Sequence Drop create(@, Ground, [], howManyToDrop))
 Sequence droppedWhile = macro(Sequence DropWhile create(@, call ground, call arguments))
 Sequence indexed   = method(from: 0, step: 1, Sequence Index create(@, Ground, [], from, step))
-Sequence + = method(other, Sequence Combination create(@, other))
+Sequence +         = method(other, Sequence Combination create(@, other))
 Sequence interpose = method(inbetween, Sequence Interpose create(@, inbetween))
+Sequence cell("%") = method(inbetween, Sequence Interpose create(@, inbetween))
 
 let(
   generateNextPMethod, method(takeCurrentObject, returnObject,

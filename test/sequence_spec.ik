@@ -506,7 +506,13 @@ describe(Sequence,
   )
 
   describe("%",
-    it("should behave as interpose")
+    it("should create a new sequence",
+      ([1,2,3] seq % 42) should mimic(Sequence)
+    )
+
+    it("should interpose the argument inbetween the elements of the original sequence",
+      (["foo", "bar", "quux"] seq % "|") asList should == ["foo", "|", "bar", "|", "quux"]
+    )
   )
 
   ; TODO add "interleave" on Enumerable too
