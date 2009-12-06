@@ -171,6 +171,16 @@ describe(Mixins,
       )
     )
 
+    describe("interpose",
+      it("should return a new sequence",
+        [1,2,3] interpose(42) should mimic(Sequence)
+      )
+
+      it("should return a sequence that has the element interposed",
+        [1,2,3] interpose(42) asList should == [1,42,2,42,3]
+      )
+    )
+
     describe("zipped",
       it("should resend the call with all arguments to the result of calling seq",
         x = Origin mimic
@@ -485,20 +495,35 @@ describe(Sequence,
     )
   )
 
-  describe("intersect",
-    it("should have tests")
+  describe("interpose",
+    it("should create a new sequence",
+      [1,2,3] seq interpose(42) should mimic(Sequence)
+    )
+
+    it("should interpose the argument inbetween the elements of the original sequence",
+      ["foo", "bar", "quux"] seq interpose("|") asList should == ["foo", "|", "bar", "|", "quux"]
+    )
   )
 
   describe("%",
-    it("should behave as intersect (or interject)")
+    it("should behave as interpose")
   )
 
-  describe("interject",
-    it("should have tests")
+  ; TODO add "interleave" on Enumerable too
+  describe("interleave",
+    it("should create a new sequence")
+    it("should take an enumerable")
+    it("should take a seq")
+    it("should only take as many elements as needed from the self")
+    it("should only take as many elements as needed from the argument")
+
+    it("should interleave the elements of the argument with the elements of the sequence";,
+;      ["foo", "bar", "quux"] seq interleave(1..3) asList should == ["foo", 1, "bar", 2, "quux", 3]
+    )
   )
 
   describe("&",
-    it("should behave as intersect (or interject)")
+    it("should behave as interleave")
   )
 
   describe("ℕ",

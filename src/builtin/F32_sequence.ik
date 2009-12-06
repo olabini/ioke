@@ -66,6 +66,7 @@ Mixins Sequenced do(
   droppedWhile = macro(call resendToReceiver(self seq))
   rejected = macro(call resendToReceiver(self seq))
   indexed = macro(call resendToReceiver(self seq))
+  interpose = macro(call resendToReceiver(self seq))
 )
 
 Sequence mapped    = macro(Sequence Map create(@, call ground, call arguments))
@@ -79,6 +80,7 @@ Sequence dropped   = method(howManyToDrop, Sequence Drop create(@, Ground, [], h
 Sequence droppedWhile = macro(Sequence DropWhile create(@, call ground, call arguments))
 Sequence indexed   = method(from: 0, step: 1, Sequence Index create(@, Ground, [], from, step))
 Sequence + = method(other, Sequence Combination create(@, other))
+Sequence interpose = method(inbetween, Sequence Interpose create(@, inbetween))
 
 let(
   generateNextPMethod, method(takeCurrentObject, returnObject,
@@ -208,6 +210,28 @@ let(
 
     next? = method(
       current next? || (right? && right next?)
+    )
+  )
+
+  Sequence Interpose = Sequence mimic do(
+    create = method(realSeq, inbetween,
+      newObj = mimic
+      newObj realSeq = realSeq
+      newObj inbetween = inbetween
+      newObj takeInbetween = false
+      newObj
+    )
+
+    next = method(
+      if(takeInbetween,
+        @takeInbetween = false
+        inbetween,
+        @takeInbetween = true
+        realSeq next)
+    )
+
+    next? = method(
+      realSeq next?
     )
   )
 )
