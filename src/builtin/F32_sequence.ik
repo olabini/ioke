@@ -67,6 +67,7 @@ Mixins Sequenced do(
   rejected = macro(call resendToReceiver(self seq))
   indexed = macro(call resendToReceiver(self seq))
   interpose = macro(call resendToReceiver(self seq))
+  interleave = macro(call resendToReceiver(self seq))
 )
 
 Sequence mapped       = macro(Sequence Map create(@, call ground, call arguments))

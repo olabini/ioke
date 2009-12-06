@@ -181,6 +181,32 @@ describe(Mixins,
       )
     )
 
+    describe("interleave",
+      it("should create a new sequence",
+        [1,2,3] interleave(1..5) should mimic(Sequence)
+      )
+
+      it("should take an enumerable",
+        [1,2,3] interleave(5..15) asList should == [1,5,2,6,3,7]
+      )
+
+      it("should take a seq",
+        [1,2,3] interleave((5..15) seq) asList should == [1,5,2,6,3,7]
+      )
+
+      it("should only take as many elements as needed from the self",
+        [1,2,3,4,5,6] interleave([10,11]) asList should == [1,10,2,11]
+      )
+
+      it("should only take as many elements as needed from the argument",
+        [1,2] interleave([10,11,12,13,14,15]) asList should == [1,10,2,11]
+      )
+
+      it("should interleave the elements of the argument with the elements of the sequence",
+        ["foo", "bar", "quux"] interleave(1..3) asList should == ["foo", 1, "bar", 2, "quux", 3]
+      )
+    )
+
     describe("zipped",
       it("should resend the call with all arguments to the result of calling seq",
         x = Origin mimic
