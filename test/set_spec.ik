@@ -376,22 +376,118 @@ describe("Set",
 
   ; subset
   describe("⊆",
-    it("should have tests")
+    it("should always return true when sent to an empty set",
+      (#{} ⊆ #{}) should be true
+      (#{} ⊆ #{1}) should be true
+      (#{} ⊆ #{"42", "55"}) should be true
+    )
+
+    it("should return true if all the elements are within the other set",
+      (#{2} ⊆ #{1,2,3}) should be true
+      (#{"bar", "foo"} ⊆ #{"foo", "bar", "quux"}) should be true
+    )
+
+    it("should return true if the sets are the same",
+      x = #{42, 55, 18}
+      (x ⊆ x) should be true
+    )
+
+    it("should return true if the sets are equal",
+      (#{42, 55, 18} ⊆ #{42, 55, 18}) should be true
+    )
+
+    it("should return false if at least one element isn't in the argument set",
+      (#{1} ⊆ #{}) should be false
+      (#{1} ⊆ #{2}) should be false
+      (#{1, 2, 3} ⊆ #{1, 2}) should be false
+    )
   )
 
   ; proper subset
   describe("⊂",
-    it("should have tests")
+    it("should always return true when sent to an empty set except if both sets are empty",
+      (#{} ⊂ #{1}) should be true
+      (#{} ⊂ #{"42", "55"}) should be true
+    )
+
+    it("should return true if all the elements are within the other set",
+      (#{2} ⊂ #{1,2,3}) should be true
+      (#{"bar", "foo"} ⊂ #{"foo", "bar", "quux"}) should be true
+    )
+
+    it("should return false if the sets are the same",
+      x = #{42, 55, 18}
+      (x ⊂ x) should be false
+    )
+
+    it("should return false if the sets are equal",
+      (#{} ⊂ #{}) should be false
+      (#{42, 55, 18} ⊂ #{42, 55, 18}) should be false
+    )
+
+    it("should return false if at least one element isn't in the argument set",
+      (#{1} ⊂ #{}) should be false
+      (#{1} ⊂ #{2}) should be false
+      (#{1, 2, 3} ⊂ #{1, 2}) should be false
+    )
   )
 
   ; superset
   describe("⊇",
-    it("should have tests")
+    it("should always return true when the argument is an empty set",
+      (#{} ⊇ #{}) should be true
+      (#{1} ⊇ #{}) should be true
+      (#{"42", "55"} ⊇ #{}) should be true
+    )
+
+    it("should return true if all the elements are within the other set",
+      (#{1,2,3} ⊇ #{2}) should be true
+      (#{"bar", "foo", "quux"} ⊇ #{"foo", "bar"}) should be true
+    )
+
+    it("should return true if the sets are the same",
+      x = #{42, 55, 18}
+      (x ⊇ x) should be true
+    )
+
+    it("should return true if the sets are equal",
+      (#{42, 55, 18} ⊇ #{42, 55, 18}) should be true
+    )
+
+    it("should return false if at least one element isn't in the argument set",
+      (#{} ⊇ #{1}) should be false
+      (#{2} ⊇ #{1}) should be false
+      (#{1, 2} ⊇ #{1, 2, 3}) should be false
+    )
   )
 
   ; proper superset
   describe("⊃",
-    it("should have tests")
+    it("should always return true when the argument is the empty set, except if both sets are empty",
+      (#{1} ⊃ #{}) should be true
+      (#{"42", "55"} ⊃ #{}) should be true
+    )
+
+    it("should return true if all the elements are within the other set",
+      (#{1,2,3} ⊃ #{2}) should be true
+      (#{"bar", "foo", "quux"} ⊃ #{"foo", "bar"}) should be true
+    )
+
+    it("should return false if the sets are the same",
+      x = #{42, 55, 18}
+      (x ⊃ x) should be false
+    )
+
+    it("should return false if the sets are equal",
+      (#{} ⊃ #{}) should be false
+      (#{42, 55, 18} ⊃ #{42, 55, 18}) should be false
+    )
+
+    it("should return false if at least one element isn't in the argument set",
+      (#{} ⊃ #{1}) should be false
+      (#{2} ⊃ #{1}) should be false
+      (#{1, 2} ⊃ #{1, 2, 3}) should be false
+    )
   )
 
   ; symmetric difference
