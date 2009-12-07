@@ -108,6 +108,54 @@ namespace Ioke.Lang {
                                                                                         return context.runtime.NewSet(newSet);
                                                                                     })));
 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns true if this set is a subset of the argument set",
+                                                       new TypeCheckingNativeMethod("⊆", TypeCheckingArgumentsDefinition.builder()
+                                                                                    .ReceiverMustMimic(obj)
+                                                                                    .WithRequiredPositional("otherSet").WhichMustMimic(obj)
+                                                                                    .Arguments,
+                                                                                    (method, on, args, keywords, context, message) => {
+                                                                                        var one = ((IokeSet)IokeObject.dataOf(args[0])).Set;
+                                                                                        var two = ((IokeSet)IokeObject.dataOf(on)).Set;
+                                                                                        var result = two.IsSubsetOf(one);
+                                                                                        return result ? context.runtime.True : context.runtime.False;
+                                                                                    })));
+
+            obj.RegisterMethod(runtime.NewNativeMethod("returns true if this set is a proper subset of the argument set",
+                                                       new TypeCheckingNativeMethod("⊂", TypeCheckingArgumentsDefinition.builder()
+                                                                                    .ReceiverMustMimic(obj)
+                                                                                    .WithRequiredPositional("otherSet").WhichMustMimic(obj)
+                                                                                    .Arguments,
+                                                                                    (method, on, args, keywords, context, message) => {
+                                                                                        var one = ((IokeSet)IokeObject.dataOf(args[0])).Set;
+                                                                                        var two = ((IokeSet)IokeObject.dataOf(on)).Set;
+                                                                                        var result = two.IsProperSubsetOf(one);
+                                                                                        return result ? context.runtime.True : context.runtime.False;
+                                                                                    })));
+
+            obj.RegisterMethod(runtime.NewNativeMethod("returns true if this set is a superset of the argument set",
+                                                       new TypeCheckingNativeMethod("⊇", TypeCheckingArgumentsDefinition.builder()
+                                                                                    .ReceiverMustMimic(obj)
+                                                                                    .WithRequiredPositional("otherSet").WhichMustMimic(obj)
+                                                                                    .Arguments,
+                                                                                    (method, on, args, keywords, context, message) => {
+                                                                                        var one = ((IokeSet)IokeObject.dataOf(args[0])).Set;
+                                                                                        var two = ((IokeSet)IokeObject.dataOf(on)).Set;
+                                                                                        var result = two.IsSupersetOf(one);
+                                                                                        return result ? context.runtime.True : context.runtime.False;
+                                                                                    })));
+
+            obj.RegisterMethod(runtime.NewNativeMethod("returns true if this set is a proper superset of the argument set",
+                                                       new TypeCheckingNativeMethod("⊃", TypeCheckingArgumentsDefinition.builder()
+                                                                                    .ReceiverMustMimic(obj)
+                                                                                    .WithRequiredPositional("otherSet").WhichMustMimic(obj)
+                                                                                    .Arguments,
+                                                                                    (method, on, args, keywords, context, message) => {
+                                                                                        var one = ((IokeSet)IokeObject.dataOf(args[0])).Set;
+                                                                                        var two = ((IokeSet)IokeObject.dataOf(on)).Set;
+                                                                                        var result = two.IsProperSupersetOf(one);
+                                                                                        return result ? context.runtime.True : context.runtime.False;
+                                                                                    })));
+
             obj.RegisterMethod(runtime.NewNativeMethod("returns true if the receiver includes the evaluated argument, otherwise false",
                                                        new TypeCheckingNativeMethod("include?", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(obj)

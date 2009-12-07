@@ -176,6 +176,86 @@ public class IokeSet extends IokeData {
                 }
             }));
 
+        obj.registerMethod(runtime.newNativeMethod("returns true if this set is a subset of the argument set", new TypeCheckingNativeMethod("\u2286") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
+                    .builder()
+                    .receiverMustMimic(runtime.set)
+                    .withRequiredPositional("otherSet").whichMustMimic(runtime.set)
+                    .getArguments();
+
+                @Override
+                public TypeCheckingArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    boolean result = ((IokeSet)IokeObject.data(args.get(0))).getSet().containsAll(((IokeSet)IokeObject.data(on)).getSet());
+                    return result ? context.runtime._true : context.runtime._false;
+                }
+            }));
+
+        obj.registerMethod(runtime.newNativeMethod("returns true if this set is a proper subset of the argument set", new TypeCheckingNativeMethod("\u2282") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
+                    .builder()
+                    .receiverMustMimic(runtime.set)
+                    .withRequiredPositional("otherSet").whichMustMimic(runtime.set)
+                    .getArguments();
+
+                @Override
+                public TypeCheckingArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    Set<Object> one = ((IokeSet)IokeObject.data(args.get(0))).getSet();
+                    Set<Object> two = ((IokeSet)IokeObject.data(on)).getSet();
+                    boolean result = one.containsAll(two);
+                    return (result && two.size() < one.size()) ? context.runtime._true : context.runtime._false;
+                }
+            }));
+
+        obj.registerMethod(runtime.newNativeMethod("returns true if this set is a superset of the argument set", new TypeCheckingNativeMethod("\u2287") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
+                    .builder()
+                    .receiverMustMimic(runtime.set)
+                    .withRequiredPositional("otherSet").whichMustMimic(runtime.set)
+                    .getArguments();
+
+                @Override
+                public TypeCheckingArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    boolean result = ((IokeSet)IokeObject.data(on)).getSet().containsAll(((IokeSet)IokeObject.data(args.get(0))).getSet());
+                    return result ? context.runtime._true : context.runtime._false;
+                }
+            }));
+
+        obj.registerMethod(runtime.newNativeMethod("returns true if this set is a proper superset of the argument set", new TypeCheckingNativeMethod("\u2283") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
+                    .builder()
+                    .receiverMustMimic(runtime.set)
+                    .withRequiredPositional("otherSet").whichMustMimic(runtime.set)
+                    .getArguments();
+
+                @Override
+                public TypeCheckingArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    Set<Object> one = ((IokeSet)IokeObject.data(args.get(0))).getSet();
+                    Set<Object> two = ((IokeSet)IokeObject.data(on)).getSet();
+                    boolean result = two.containsAll(one);
+                    return (result && two.size() > one.size()) ? context.runtime._true : context.runtime._false;
+                }
+            }));
+
         obj.registerMethod(obj.runtime.newNativeMethod("returns true if the receiver includes the evaluated argument, otherwise false", new TypeCheckingNativeMethod("include?") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
