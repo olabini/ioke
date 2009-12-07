@@ -42,3 +42,8 @@ Set cell("∉") = method(
   element,
 
   !include?(element))
+
+DefaultBehavior Literals cell("∅") = method(
+  "returns a new empty set",
+
+  #{})
