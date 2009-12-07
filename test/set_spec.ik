@@ -465,7 +465,17 @@ describe("Literal syntax for set",
 
 describe("DefaultBehavior",
   describe("∅",
-    it("should return a new empty set")
+    it("should return a new empty set",
+      x = ∅
+      x should have kind("Set")
+      x should not be same(Set)
+      x should mimic(Set)
+
+      x = ∅()
+      x should have kind("Set")
+      x should not be same(Set)
+      x should mimic(Set)
+    )
   )
 
   describe("set",
