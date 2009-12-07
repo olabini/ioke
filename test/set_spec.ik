@@ -490,16 +490,6 @@ describe("Set",
     )
   )
 
-  ; symmetric difference
-  describe("∆",
-    it("should have tests")
-  )
-
-  ; set-theoretic complement
-  describe("∖",
-    it("should have tests")
-  )
-
   describe("remove!",
     it("should remove entry from set",
       set(1,2) remove!(1) should == set(2)
