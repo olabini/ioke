@@ -214,6 +214,8 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
         ]
 
     let defaultInvertedOperators = [
+        ("∈", 12);
+        ("∉", 12);
         ("::", 12);
         (":::", 12)
         ]

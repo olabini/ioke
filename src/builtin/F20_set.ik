@@ -30,3 +30,15 @@ Set ∪ = method(
   other,
 
   self + other)
+
+Set cell("∈") = method(
+  "returns true if the argument is in the set",
+  element,
+
+  include?(element))
+
+Set cell("∉") = method(
+  "returns false if the argument is in the set",
+  element,
+
+  !include?(element))

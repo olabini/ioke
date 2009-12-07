@@ -155,6 +155,27 @@ public class IokeSet extends IokeData {
                 }
             }));
 
+        obj.registerMethod(runtime.newNativeMethod("returns a new set that is the intersection of the receiver and the argument.", new TypeCheckingNativeMethod("\u2229") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
+                    .builder()
+                    .receiverMustMimic(runtime.set)
+                    .withRequiredPositional("otherSet").whichMustMimic(runtime.set)
+                    .getArguments();
+
+                @Override
+                public TypeCheckingArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    Set<Object> newSet = new HashSet<Object>();
+                    newSet.addAll(((IokeSet)IokeObject.data(on)).getSet());
+                    newSet.retainAll(((IokeSet)IokeObject.data(args.get(0))).getSet());
+                    return context.runtime.newSet(newSet);
+                }
+            }));
+
         obj.registerMethod(obj.runtime.newNativeMethod("returns true if the receiver includes the evaluated argument, otherwise false", new TypeCheckingNativeMethod("include?") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()

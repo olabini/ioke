@@ -319,19 +319,59 @@ describe("Set",
 
   ; intersection
   describe("∩",
-    it("should have tests")
+    it("should return the empty set if one of the sets is empty",
+      (#{} ∩ #{1,3}) should == #{}
+      (#{1,3} ∩ #{}) should == #{}
+    )
+
+    it("should return the empty set if there is no intersection",
+      (#{} ∩ #{}) should == #{}
+      (#{1} ∩ #{2}) should == #{}
+      (#{5,6} ∩ #{1,3}) should == #{}
+    )
+
+    it("should return a set of all the things in both sets",
+      (#{1,2} ∩ #{2,3}) should == #{2}
+      (#{1,2,3,4} ∩ #{1,2,3,4,5}) should == #{1,2,3,4}
+    )
   )
 
   ; set membership
   describe("∈",
-    it("should be inverted")
-    it("should have tests")
+    it("should return false if the thing is not in the set",
+      (1 ∈ #{}) should be false
+      (42 ∈ #{1,2,3}) should be false
+      (#{1} ∈ #{1,2,3}) should be false
+    )
+
+    it("should return true if the thing is in the set",
+      (1 ∈ #{1}) should be true
+      (#{1} ∈ #{#{1}}) should be true
+      (42 ∈ #{1,2,42,3}) should be true
+    )
+
+    it("should be possible to call in canonical form",
+      #{1} ∈(1) should be true
+    )
   )
 
-  ; set membership
+  ; set non-membership
   describe("∉",
-    it("should be inverted")
-    it("should have tests")
+    it("should return true if the thing is not in the set",
+      (1 ∉ #{}) should be true
+      (42 ∉ #{1,2,3}) should be true
+      (#{1} ∉ #{1,2,3}) should be true
+    )
+
+    it("should return false if the thing is in the set",
+      (1 ∉ #{1}) should be false
+      (#{1} ∉ #{#{1}}) should be false
+      (42 ∉ #{1,2,42,3}) should be false
+    )
+
+    it("should be possible to call in canonical form",
+      #{1} ∉(42) should be true
+    )
   )
 
   ; subset
