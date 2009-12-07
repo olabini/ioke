@@ -96,6 +96,18 @@ namespace Ioke.Lang {
                                                                                         return context.runtime.NewSet(newSet);
                                                                                     })));
 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns a new set that is the intersection of the receiver and the argument.",
+                                                       new TypeCheckingNativeMethod("∩", TypeCheckingArgumentsDefinition.builder()
+                                                                                    .ReceiverMustMimic(obj)
+                                                                                    .WithRequiredPositional("otherSet").WhichMustMimic(obj)
+                                                                                    .Arguments,
+                                                                                    (method, on, args, keywords, context, message) => {
+                                                                                        var newSet = new SaneHashSet<object>();
+                                                                                        newSet.UnionWith(((IokeSet)IokeObject.dataOf(on)).Set);
+                                                                                        newSet.IntersectWith(((IokeSet)IokeObject.dataOf(args[0])).Set);
+                                                                                        return context.runtime.NewSet(newSet);
+                                                                                    })));
+
             obj.RegisterMethod(runtime.NewNativeMethod("returns true if the receiver includes the evaluated argument, otherwise false",
                                                        new TypeCheckingNativeMethod("include?", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(obj)

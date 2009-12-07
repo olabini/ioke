@@ -408,16 +408,16 @@ bar" should == "foobar"
     describe("unicode mathematical operator: ∈",
       it("should parse it correctly",
         x = Origin mimic
-        x ∈ = method(42)
-        x ∈ should == 42
+        x cell("∈") = method(v,42)
+        (2 ∈ x) should == 42
       )
     )
 
     describe("unicode mathematical operator: ∉",
       it("should parse it correctly",
         x = Origin mimic
-        x ∉ = method(42)
-        x ∉ should == 42
+        x cell("∉") = method(v,42)
+        (2 ∉ x) should == 42
       )
     )
 

@@ -260,6 +260,8 @@ public class Levels {
     };
 
     public static OpTable[] defaultInvertedOperators = new OpTable[]{
+		new OpTable("\u2208",  12),
+		new OpTable("\u2209",  12),
 		new OpTable("::",  12),
 		new OpTable(":::",  12)
     };
