@@ -14,6 +14,7 @@ import ioke.lang.java.ClassRegistry;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.StringReader;
@@ -183,7 +184,7 @@ public class Runtime extends IokeData {
     public IokeObject hashMessage = newMessage("hash");
 
     public Runtime() throws Exception {
-        this(new PrintWriter(java.lang.System.out), new InputStreamReader(java.lang.System.in, "UTF-8"), new PrintWriter(java.lang.System.err));
+        this(new PrintWriter(new OutputStreamWriter(java.lang.System.out, "UTF-8")), new InputStreamReader(java.lang.System.in, "UTF-8"), new PrintWriter(new OutputStreamWriter(java.lang.System.err, "UTF-8")));
     }
 
     public Runtime(PrintWriter out, Reader in, PrintWriter err) {
