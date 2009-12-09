@@ -108,7 +108,7 @@ let(
     ''method(
       if(@current?,
         @current? = false
-        @current,
+        @ cell(:current),
         while(@wrappedSequence next?,
           n = @wrappedSequence next
           x = transformValue(cell(:n))

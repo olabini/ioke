@@ -66,8 +66,21 @@ describe("Struct",
     x foo should == "blarg"
   )
 
-  it("should create something that has the values given to it by a mix of positional and keyword arguments")
-  it("should handle activatable values correctly")
+  it("should create something that has the values given to it by a mix of positional and keyword arguments",
+    X = Struct(:foo, :bar, :quux)
+    x = X(42, quux: 55, bar: "blarg")
+    x foo should == 42
+    x quux should == 55
+    x bar should == "blarg"
+  )
+
+  it("should handle activatable values correctly",
+    X = Struct(:foo)
+    x = X(method(error!("blah")))
+    x cell(:foo) kind should == "DefaultMethod"
+    fn(x foo) should signal(Condition Error)
+  )
+
   it("should be possible to create a struct with nonstandard cell names")
   it("should be possible to call a struct instance and get a new instance that is similar to this")
   it("should return something that is a sequence")
