@@ -81,10 +81,39 @@ describe("Struct",
     fn(x foo) should signal(Condition Error)
   )
 
-  it("should be possible to create a struct with nonstandard cell names")
-  it("should be possible to call a struct instance and get a new instance that is similar to this")
-  it("should return something that is a sequence")
-  it("should return something that is enumerable")
+  it("should be possible to create a struct with nonstandard cell names",
+    X = Struct(:"blarg fogus")
+    x = X(42)
+    x cell(:"blarg fogus") should == 42
+  )
+
+  it("should be possible to call a struct instance and get a new instance that is similar to this",
+    X = Struct(:foo, :bar)
+    x = X(42, 55)
+    y = x(foo: 66)
+    x foo should == 42
+    x bar should == 55
+    y foo should == 66
+    y bar should == 55
+  )
+
+  it("should return something that is a sequence",
+    X = Struct(:foo, :bar, :quux)
+    x = X(42, 55, 66)
+    x should mimic(Mixins Sequenced)
+    x seq asList should == [:foo => 42, :bar => 55, :quux => 66]
+    x bar = 6464
+    x seq asList should == [:foo => 42, :bar => 6464, :quux => 66]
+  )
+
+  it("should return something that is enumerable",
+    X = Struct(:foo, :bar, :quux)
+    x = X(42, 55, 66)
+    x should mimic(Mixins Enumerable)
+    x asList should == [:foo => 42, :bar => 55, :quux => 66]
+    x bar = 6464
+    x asList should == [:foo => 42, :bar => 6464, :quux => 66]
+  )
 
   describe("create",
     it("should return a new instance of the struct")
@@ -93,11 +122,13 @@ describe("Struct",
   )
 
   describe("attributeNames",
-    it("should have tests")
+    it("should return all positional attribute names")
+    it("should return all defaulted attribute names")
+    it("should have all the defaulted attribute names after the positional attribute names")
   )
 
   describe("attributes",
-    it("should have tests")
+    it("should return all the attributes with values as a dictionary")
   )
 
   describe("valuesAt",
