@@ -373,6 +373,7 @@ public class Runtime extends IokeData {
             evaluateString("use(\"builtin/G50_hook\")", message, ground);
 
             evaluateString("use(\"builtin/H10_lexicalBlock\")", message, ground);
+            evaluateString("use(\"builtin/H50_struct\")", message, ground);
 
             evaluateString("use(\"builtin/J05_javaGround\")", message, ground);
         } catch(ControlFlow cf) {
