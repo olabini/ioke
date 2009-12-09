@@ -413,6 +413,7 @@ namespace Ioke.Lang {
                 EvaluateString("use(\"builtin/G50_hook\")", Message, Ground);
 
                 EvaluateString("use(\"builtin/H10_lexicalBlock\")", Message, Ground);
+                EvaluateString("use(\"builtin/H50_struct\")", Message, Ground);
             } catch(ControlFlow cf) {
                 Console.Error.WriteLine("Internal problem: " + cf);
             }
