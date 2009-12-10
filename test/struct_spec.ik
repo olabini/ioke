@@ -261,11 +261,51 @@ describe("Struct",
   )
 
   describe("==",
-    it("should defer equality to the defined attributes")
+    it("should defer equality to the defined attributes",
+      X = Struct(:foo, :bar, :quux)
+      x = X(42, 55)
+      x2 = X(42, 55)
+
+      x should == x2
+
+      x foo = 43
+      x should not == x2
+
+      x foo = 42
+      x bar = 56
+      x should not == x2
+
+      x bar = 55
+      x quux = "blurg"
+      x should not == x2
+
+      x quux = nil
+      x should == x2
+    )
   )
 
   describe("hash",
-    it("should defer hashing to the defined attributes")
+    it("should defer hashing to the defined attributes",
+      X = Struct(:foo, :bar, :quux)
+      x = X(42, 55)
+      x2 = X(42, 55)
+
+      x hash should == x2 hash
+
+      x foo = 43
+      x hash should not == x2 hash
+
+      x foo = 42
+      x bar = 56
+      x hash should not == x2 hash
+
+      x bar = 55
+      x quux = "blurg"
+      x hash should not == x2 hash
+
+      x quux = nil
+      x hash should == x2 hash
+    )
   )
 
   describe("asText",

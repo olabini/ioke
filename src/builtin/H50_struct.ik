@@ -54,3 +54,9 @@ Struct cell("[]=") = method(index, value,
     attributeNames[index],
     index)
   @cell(ix) = value)
+
+Struct cell("==") = method(other,
+  (other mimics?(Struct) &&
+    attributes == other attributes))
+
+Struct hash = method(attributes hash)
