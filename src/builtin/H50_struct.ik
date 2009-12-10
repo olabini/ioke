@@ -48,3 +48,9 @@ Struct cell("[]") = method(index,
     attributeNames[index],
     index)
   @cell(ix))
+
+Struct cell("[]=") = method(index, value,
+  ix = if(index mimics?(Number),
+    attributeNames[index],
+    index)
+  @cell(ix) = value)
