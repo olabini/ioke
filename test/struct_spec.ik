@@ -170,11 +170,57 @@ describe("Struct",
   )
 
   describe("valuesAt",
-    it("should have tests")
+    it("should return an empty array when given no arguments",
+      X = Struct(:foo, :bar, :quux)
+      x = X(42, 55)
+      x valuesAt should == []
+      x valuesAt() should == []
+    )
+
+    it("should use positional arguments zero-indexed",
+      X = Struct(:foo, :bar, :quux)
+      x = X(42, 55)
+      x valuesAt(2, 0) should == [nil, 42]
+    )
+
+    it("should return an array with a specified positional attribute",
+      X = Struct(:foo, :bar, :quux)
+      x = X(42, 55)
+      x valuesAt(1) should == [55]
+    )
+
+    it("should return an array with a specified keyword attribute",
+      X = Struct(:foo, :bar, :quux)
+      x = X(42, 55)
+      x valuesAt(:bar) should == [55]
+
+      Y = Struct(foo: 42, bar: 5555, six: 'seven)
+      y = Y(bar: 32)
+      y valuesAt(:six) should == ['seven]
+    )
+
+    it("should return an array with all the elements specified by position",
+      X = Struct(:foo, :bar, :quux)
+      x = X(42, 55)
+      x valuesAt(1, 1, 1, 0, 1, 0) should == [55, 55, 55, 42, 55, 42]
+    )
+
+    it("should return an array with all the elements specified by keyword",
+      Y = Struct(foo: 42, bar: 5555, six: 'seven)
+      y = Y(bar: 32)
+      y valuesAt(:six, :bar, :foo, :six) should == ['seven, 32, 42, 'seven]
+    )
+
+    it("should be possible to mix positional and keyword arguments",
+      X = Struct(:foo, :bar, :quux)
+      x = X(42, 55)
+      x valuesAt(1, :foo, 1, 0, :bar, 0) should == [55, 42, 55, 42, 55, 42]
+    )
   )
 
   describe("[]",
-    it("should have tests")
+    it("should take a positional zero-indexed argument")
+    it("should take a keyword argument")
   )
 
   describe("[]=",
