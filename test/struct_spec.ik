@@ -122,9 +122,26 @@ describe("Struct",
   )
 
   describe("attributeNames",
-    it("should return all positional attribute names")
-    it("should return all defaulted attribute names")
-    it("should have all the defaulted attribute names after the positional attribute names")
+    it("should return all positional attribute names",
+      X = Struct(:foo, :bar, :quux)
+      X attributeNames should == [:foo, :bar, :quux]
+      x = X(42, 55)
+      x attributeNames should == [:foo, :bar, :quux]
+    )
+
+    it("should return all defaulted attribute names",
+      X = Struct(foo: 42, bar: 55)
+      X attributeNames should == [:foo, :bar]
+      x = X(42, 55)
+      x attributeNames should == [:foo, :bar]
+    )
+
+    it("should have all the defaulted attribute names after the positional attribute names",
+      X = Struct(:foo, mama: "hoho", :bar, blux: 42, :quux)
+      X attributeNames should == [:foo, :bar, :quux, :mama, :blux]
+      x = X(42, 55)
+      x attributeNames should == [:foo, :bar, :quux, :mama, :blux]
+    )
   )
 
   describe("attributes",
