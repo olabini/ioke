@@ -219,8 +219,21 @@ describe("Struct",
   )
 
   describe("[]",
-    it("should take a positional zero-indexed argument")
-    it("should take a keyword argument")
+    it("should take a positional zero-indexed argument",
+      X = Struct(:foo, :bar, :quux)
+      x = X(42, 55)
+      x[0] should == 42
+      x[1] should == 55
+      x[2] should be nil
+    )
+
+    it("should take a keyword argument",
+      X = Struct(:foo, :bar, :quux)
+      x = X(42, 55)
+      x[:foo] should == 42
+      x[:bar] should == 55
+      x[:quux] should be nil
+    )
   )
 
   describe("[]=",
