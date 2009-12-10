@@ -11,6 +11,7 @@ Struct = fn(+attributes, +:attributesWithDefaultValues,
       result cell(vv first) = vv second)
     result
   )
+  val attributeNames = attributeNames
   val mimic!(Struct)
   val)
 
@@ -20,4 +21,9 @@ Struct createWithValuesFrom = method(orig, attributeNames, newValues, newKeyword
     newKeywordValues seq) each(vv,
     res cell(vv first) = vv second)
   res
+)
+
+Struct mimic!(Mixins Sequenced)
+Struct seq = method(
+  attributeNames mapped(name, name => @cell(name))
 )
