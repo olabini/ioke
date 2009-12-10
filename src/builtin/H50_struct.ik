@@ -9,11 +9,13 @@ Struct = fn(+attributes, +:attributesWithDefaultValues,
   val)
 
 Struct attributeNames = []
+Struct structInstance? = false
 
 Struct internal:createInitial = method(val, attributeNames, attributes, attributesWithDefaultValues, values, keywordValues,
   result = fn(+newVals, +:newKeywordVals,
     Struct internal:createDerived(result, attributeNames, newVals, newKeywordVals))
   result prependMimic!(val)
+  result structInstance? = true
   (attributesWithDefaultValues seq +
     attributes zipped(values) +
     keywordValues seq) each(vv,
@@ -64,10 +66,16 @@ Struct cell("==") = method(other,
 Struct hash = method(attributes hash)
 
 Struct asText = method(
-  "(#{attributeNames map(name, "#{name}: #{@cell(name)}") join(", ")})")
+  if(structInstance?,
+    "(#{attributeNames map(name, "#{name}: #{@cell(name)}") join(", ")})",
+    "Struct(#{attributeNames join(", ")})"))
 
 Struct notice = method(
-  "(#{attributeNames map(name, "#{name}: #{@cell(name) notice}") join(", ")})")
+  if(structInstance?,
+    "(#{attributeNames map(name, "#{name}: #{@cell(name) notice}") join(", ")})",
+    "Struct(#{attributeNames join(", ")})"))
 
 Struct inspect = method(
-  "(#{attributeNames map(name, "#{name}: #{@cell(name) inspect}") join(", ")})")
+  if(structInstance?,
+    "(#{attributeNames map(name, "#{name}: #{@cell(name) inspect}") join(", ")})",
+    "Struct(#{attributeNames join(", ")})"))
