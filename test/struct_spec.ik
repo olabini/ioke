@@ -145,7 +145,11 @@ describe("Struct",
   )
 
   describe("attributes",
-    it("should return all the attributes with values as a dictionary")
+    it("should return all the attributes with values as a dictionary",
+      X = Struct(:foo, mama: "hoho", :bar, blux: 42, :quux)
+      x = X(42, 55)
+      x attributes should == {foo: 42, bar: 55, quux: nil, mama: "hoho", blux: 42}
+    )
   )
 
   describe("valuesAt",

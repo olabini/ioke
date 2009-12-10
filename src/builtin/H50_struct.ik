@@ -6,7 +6,7 @@ Struct = fn(+attributes, +:attributesWithDefaultValues,
       Struct createWithValuesFrom(result, attributeNames, newVals, newKeywordVals))
     result mimic!(val)
     (attributesWithDefaultValues seq +
-      values zipped(attributes) mapped(reverse) +
+      attributes zipped(values) +
       keywordValues seq) each(vv,
       result cell(vv first) = vv second)
     result
@@ -26,4 +26,8 @@ Struct createWithValuesFrom = method(orig, attributeNames, newValues, newKeyword
 Struct mimic!(Mixins Sequenced)
 Struct seq = method(
   attributeNames mapped(name, name => @cell(name))
+)
+
+Struct attributes = method(
+  attributeNames fold({}, d, x, d[x] = @cell(x). d)
 )
