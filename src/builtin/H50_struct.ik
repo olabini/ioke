@@ -5,13 +5,13 @@ Struct = fn(+attributes, +:attributesWithDefaultValues,
     Struct internal:createInitial(val, attributeNames, attributes, attributesWithDefaultValues, values, keywordValues)
   )
   val attributeNames = attributeNames
-  val mimic!(Struct)
+  val prependMimic!(Struct)
   val)
 
 Struct internal:createInitial = method(val, attributeNames, attributes, attributesWithDefaultValues, values, keywordValues,
   result = fn(+newVals, +:newKeywordVals,
     Struct internal:createDerived(result, attributeNames, newVals, newKeywordVals))
-  result mimic!(val)
+  result prependMimic!(val)
   (attributesWithDefaultValues seq +
     attributes zipped(values) +
     keywordValues seq) each(vv,
@@ -38,3 +38,13 @@ Struct seq = method(
 Struct attributes = method(
   attributeNames fold({}, d, x, d[x] = @cell(x). d)
 )
+
+Struct valuesAt = method(+indices,
+  indices map(ix,
+    self[ix]))
+
+Struct cell("[]") = method(index,
+  ix = if(index mimics?(Number),
+    attributeNames[index],
+    index)
+  @cell(ix))
