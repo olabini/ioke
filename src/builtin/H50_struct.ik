@@ -8,6 +8,8 @@ Struct = fn(+attributes, +:attributesWithDefaultValues,
   val prependMimic!(Struct)
   val)
 
+Struct attributeNames = []
+
 Struct internal:createInitial = method(val, attributeNames, attributes, attributesWithDefaultValues, values, keywordValues,
   result = fn(+newVals, +:newKeywordVals,
     Struct internal:createDerived(result, attributeNames, newVals, newKeywordVals))
@@ -60,3 +62,12 @@ Struct cell("==") = method(other,
     attributes == other attributes))
 
 Struct hash = method(attributes hash)
+
+Struct asText = method(
+  "(#{attributeNames map(name, "#{name}: #{@cell(name)}") join(", ")})")
+
+Struct notice = method(
+  "(#{attributeNames map(name, "#{name}: #{@cell(name) notice}") join(", ")})")
+
+Struct inspect = method(
+  "(#{attributeNames map(name, "#{name}: #{@cell(name) inspect}") join(", ")})")
