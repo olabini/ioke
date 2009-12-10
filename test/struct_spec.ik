@@ -237,7 +237,27 @@ describe("Struct",
   )
 
   describe("[]=",
-    it("should have tests")
+    it("should take a positional zero-indexed argument",
+      X = Struct(:foo, :bar, :quux)
+      x = X(42, 55)
+      x[0] = 15345
+      x[1] = 444
+      x[2] = 11133
+      x foo should == 15345
+      x bar should == 444
+      x quux should == 11133
+    )
+
+    it("should take a keyword argument",
+      X = Struct(:foo, :bar, :quux)
+      x = X(42, 55)
+      x[:foo] = 15345
+      x[:bar] = 444
+      x[:quux] = 11133
+      x foo should == 15345
+      x bar should == 444
+      x quux should == 11133
+    )
   )
 
   describe("==",
