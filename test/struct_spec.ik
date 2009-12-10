@@ -116,9 +116,26 @@ describe("Struct",
   )
 
   describe("create",
-    it("should return a new instance of the struct")
-    it("should take positional arguments")
-    it("should take keyword arguments")
+    it("should return a new instance of the struct",
+      X = Struct(:foo, :bar, :quux)
+      x = X create
+      x should mimic(X)
+      x should not be(X)
+    )
+
+    it("should take positional arguments",
+      X = Struct(:foo, :bar, :quux)
+      x = X create(42, 55)
+      x foo should == 42
+      x bar should == 55
+    )
+
+    it("should take keyword arguments",
+      X = Struct(foo:, bar:, quux:)
+      x = X create(bar: 42, foo: 55)
+      x bar should == 42
+      x foo should == 55
+    )
   )
 
   describe("attributeNames",
