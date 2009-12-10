@@ -309,14 +309,36 @@ describe("Struct",
   )
 
   describe("asText",
-    it("should return a text representation based on the attributes")
+    it("should return a text representation based on the attributes",
+      X = Struct(:foo, :bar, :quux)
+      x = X(42, 55)
+      x asText should == "(foo: 42, bar: 55, quux: nil)"
+      x quux = "blarg"
+      x asText should == "(foo: 42, bar: 55, quux: blarg)"
+    )
   )
 
   describe("inspect",
-    it("should return an inspect representation based on the attributes")
+    it("should return an inspect representation based on the attributes",
+      X = Struct(:foo, :bar, :quux)
+      x = X(method("blarg"), 55)
+      x inspect should == "(foo: foo:method(\"blarg\"), bar: 55, quux: nil)"
+      x foo = ["blarg"]
+      x bar = ["blurg"]
+      x quux = ["blerg"]
+      x inspect should == "(foo: [\"blarg\"], bar: [\"blurg\"], quux: [\"blerg\"])"
+    )
   )
 
   describe("notice",
-    it("should return a notice representation based on the attributes")
+    it("should return a notice representation based on the attributes",
+      X = Struct(:foo, :bar, :quux)
+      x = X(method("blarg"), 55)
+      x notice should == "(foo: foo:method(...), bar: 55, quux: nil)"
+      x foo = ["blarg"]
+      x bar = ["blurg"]
+      x quux = ["blerg"]
+      x notice should == "(foo: [\"blarg\"], bar: [\"blurg\"], quux: [\"blerg\"])"
+    )
   )
 )
