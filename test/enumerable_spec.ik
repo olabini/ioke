@@ -664,9 +664,29 @@ describe(Mixins,
     )
 
     describe("findAll:dict",
-      it("should take zero arguments and return a dict with only the true values")
-      it("should take one argument that ends up being a predicate and return a dict of the values that is true")
-      it("should take two arguments that ends up being a predicate and return a dict of the values that is true")
+      it("should take zero arguments and return a dict with only the true values",
+        [1,2,3] findAll:dict should == {1 => nil, 2 => nil, 3 => nil}
+        [nil,false,nil] findAll:dict should == {}
+        [nil,false,true] findAll:dict should == {true => nil}
+        {nil => 42, true => 55, blah: 222} findAll:dict should == {nil => 42, true => 55, blah: 222}
+        CustomEnumerable findAll:dict should == {"3first" => nil, "2third" => nil, "1second" => nil}
+      )
+
+      it("should take one argument that ends up being a predicate and return a dict of the values that is true",
+        [1,2,3] findAll:dict(>1) should == {2 => nil, 3 => nil}
+        [nil,false,nil] findAll:dict(nil?) should == {nil => nil}
+        [nil,false,true] findAll:dict(==2) should == {}
+        {foo: 42, bar: 2324, quux: 42} findAll:dict(value == 42) should == {foo: 42, quux: 42}
+        CustomEnumerable findAll:dict([0...1] != "1") should == {"3first" => nil, "2third" => nil}
+      )
+
+      it("should take two arguments that ends up being a predicate and return a dict of the values that is true",
+        [1,2,3] findAll:dict(x, x>1) should == {2 => nil, 3 => nil}
+        [nil,false,nil] findAll:dict(x, x nil?) should == {nil => nil}
+        [nil,false,true] findAll:dict(x, x==2) should == {}
+        {foo: 42, bar: 2324, quux: 42} findAll:dict(x, x value == 42) should == {foo: 42, quux: 42}
+        CustomEnumerable findAll:dict(x, x != "2third") should == {"3first" => nil, "1second" => nil}
+      )
     )
 
     describe("findAll:set",
@@ -716,9 +736,29 @@ describe(Mixins,
     )
 
     describe("filter:dict",
-      it("should take zero arguments and return a dict with only the true values")
-      it("should take one argument that ends up being a predicate and return a dict of the values that is true")
-      it("should take two arguments that ends up being a predicate and return a dict of the values that is true")
+      it("should take zero arguments and return a dict with only the true values",
+        [1,2,3] filter:dict should == {1 => nil, 2 => nil, 3 => nil}
+        [nil,false,nil] filter:dict should == {}
+        [nil,false,true] filter:dict should == {true => nil}
+        {nil => 42, true => 55, blah: 222} filter:dict should == {nil => 42, true => 55, blah: 222}
+        CustomEnumerable filter:dict should == {"3first" => nil, "2third" => nil, "1second" => nil}
+      )
+
+      it("should take one argument that ends up being a predicate and return a dict of the values that is true",
+        [1,2,3] filter:dict(>1) should == {2 => nil, 3 => nil}
+        [nil,false,nil] filter:dict(nil?) should == {nil => nil}
+        [nil,false,true] filter:dict(==2) should == {}
+        {foo: 42, bar: 2324, quux: 42} filter:dict(value == 42) should == {foo: 42, quux: 42}
+        CustomEnumerable filter:dict([0...1] != "1") should == {"3first" => nil, "2third" => nil}
+      )
+
+      it("should take two arguments that ends up being a predicate and return a dict of the values that is true",
+        [1,2,3] filter:dict(x, x>1) should == {2 => nil, 3 => nil}
+        [nil,false,nil] filter:dict(x, x nil?) should == {nil => nil}
+        [nil,false,true] filter:dict(x, x==2) should == {}
+        {foo: 42, bar: 2324, quux: 42} filter:dict(x, x value == 42) should == {foo: 42, quux: 42}
+        CustomEnumerable filter:dict(x, x != "2third") should == {"3first" => nil, "1second" => nil}
+      )
     )
 
     describe("filter:set",
