@@ -153,6 +153,14 @@ let(enumerableDefaultMethod,
       result << cell(:n)),
     result)
 
+  Mixins Enumerable select:dict = enumerableDefaultMethod("takes zero, one or two arguments. if zero arguments, will return a dict with all the values that are true in the original collection. if one argument is given, it will be applied as a message chain, that should be a predicate. those elements that match the predicate will be returned. if two arguments are given, they will be turned into a lexical block and used as a predicate to choose elements.",
+    result = dict(),
+    if(cell(:x),
+      if(cell(:n) mimics?(Pair),
+        result[n key] = n value,
+        result[cell(:n)] = nil)),
+    result)
+
   Mixins Enumerable select:set = enumerableDefaultMethod("takes zero, one or two arguments. if zero arguments, will return a set with all the values that are true in the original collection. if one argument is given, it will be applied as a message chain, that should be a predicate. those elements that match the predicate will be returned. if two arguments are given, they will be turned into a lexical block and used as a predicate to choose elements.",
     result = set(),
     if(cell(:x),
