@@ -180,9 +180,23 @@ describe(Mixins,
     )
 
     describe("mapFn:set",
-      it("should take zero arguments and just return the elements in a set")
-      it("should take one lexical block argument and apply that to each element, and return the result in a set")
-      it("should take several lexical blocks and chain them together")
+      it("should take zero arguments and just return the elements in a set",
+        [1, 2, 3] mapFn:set should == #{1, 2, 3}
+        CustomEnumerable mapFn:set should == #{"3first", "1second", "2third"}
+      )
+
+      it("should take one lexical block argument and apply that to each element, and return the result in a set",
+        x = fn(arg, arg+2). [1, 2, 3] mapFn:set(x) should == #{3, 4, 5}
+        x = fn(arg, arg[0..2])
+        CustomEnumerable mapFn:set(x) should == #{"3fi", "1se", "2th"}
+      )
+
+      it("should take several lexical blocks and chain them together",
+        x = fn(arg, arg+2). x2 = fn(arg, arg*2). [1, 2, 3] mapFn:set(x, x2) should == #{6, 8, 10}
+        x = fn(arg, arg[0..2])
+        x2 = fn(arg, arg + "flurg")
+        CustomEnumerable mapFn:set(x, x2) should == #{"3fiflurg", "1seflurg", "2thflurg"}
+      )
     )
 
     describe("collect",
