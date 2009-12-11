@@ -153,6 +153,12 @@ let(enumerableDefaultMethod,
       result << cell(:n)),
     result)
 
+  Mixins Enumerable select:set = enumerableDefaultMethod("takes zero, one or two arguments. if zero arguments, will return a set with all the values that are true in the original collection. if one argument is given, it will be applied as a message chain, that should be a predicate. those elements that match the predicate will be returned. if two arguments are given, they will be turned into a lexical block and used as a predicate to choose elements.",
+    result = set(),
+    if(cell(:x),
+      result << cell(:n)),
+    result)
+
   Mixins Enumerable all? = enumerableDefaultMethod("takes zero, one or two arguments. if zero arguments, returns false if any of the elements yielded by each is false, otherwise true. if one argument, expects it to be a message chain. if that message chain, when applied to the current element returns a false value, the method returns false. finally, if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and tested against the values in this element. if it returns false for any element, this method returns false, otherwise true.",
     .,
     unless(cell(:x),
