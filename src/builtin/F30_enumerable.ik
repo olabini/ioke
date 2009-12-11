@@ -505,5 +505,7 @@ Mixins Enumerable aliasMethod("inject", "reduce")
 Mixins Enumerable aliasMethod("inject", "fold")
 Mixins Enumerable aliasMethod("select", "findAll")
 Mixins Enumerable aliasMethod("select", "filter")
+Mixins Enumerable aliasMethod("select:set", "findAll:set")
+Mixins Enumerable aliasMethod("select:set", "filter:set")
 Mixins Enumerable aliasMethod("include?", "member?")
 

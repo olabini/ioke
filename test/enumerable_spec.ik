@@ -650,9 +650,26 @@ describe(Mixins,
     )
 
     describe("findAll:set",
-      it("should take zero arguments and return a set with only the true values")
-      it("should take one argument that ends up being a predicate and return a set of the values that is true")
-      it("should take two arguments that ends up being a predicate and return a set of the values that is true")
+      it("should take zero arguments and return a set with only the true values",
+        [1,2,3] findAll:set should == #{1,2,3}
+        [nil,false,nil] findAll:set should == #{}
+        [nil,false,true] findAll:set should == #{true}
+        CustomEnumerable findAll:set should == set(*(CustomEnumerable asList))
+      )
+
+      it("should take one argument that ends up being a predicate and return a set of the values that is true",
+        [1,2,3] findAll:set(>1) should == #{2,3}
+        [nil,false,nil] findAll:set(nil?) should == #{nil}
+        [nil,false,true] findAll:set(==2) should == #{}
+        CustomEnumerable findAll:set([0...1] != "1") should == #{"3first", "2third"}
+      )
+
+      it("should take two arguments that ends up being a predicate and return a set of the values that is true",
+        [1,2,3] findAll:set(x, x>1) should == #{2,3}
+        [nil,false,nil] findAll:set(x, x nil?) should == #{nil}
+        [nil,false,true] findAll:set(x, x==2) should == #{}
+        CustomEnumerable findAll:set(x, x != "2third") should == #{"3first", "1second"}
+      )
     )
 
     describe("filter",
@@ -685,9 +702,26 @@ describe(Mixins,
     )
 
     describe("filter:set",
-      it("should take zero arguments and return a set with only the true values")
-      it("should take one argument that ends up being a predicate and return a set of the values that is true")
-      it("should take two arguments that ends up being a predicate and return a set of the values that is true")
+      it("should take zero arguments and return a set with only the true values",
+        [1,2,3] filter:set should == #{1,2,3}
+        [nil,false,nil] filter:set should == #{}
+        [nil,false,true] filter:set should == #{true}
+        CustomEnumerable filter:set should == set(*(CustomEnumerable asList))
+      )
+
+      it("should take one argument that ends up being a predicate and return a set of the values that is true",
+        [1,2,3] filter:set(>1) should == #{2,3}
+        [nil,false,nil] filter:set(nil?) should == #{nil}
+        [nil,false,true] filter:set(==2) should == #{}
+        CustomEnumerable filter:set([0...1] != "1") should == #{"3first", "2third"}
+      )
+
+      it("should take two arguments that ends up being a predicate and return a set of the values that is true",
+        [1,2,3] filter:set(x, x>1) should == #{2,3}
+        [nil,false,nil] filter:set(x, x nil?) should == #{nil}
+        [nil,false,true] filter:set(x, x==2) should == #{}
+        CustomEnumerable filter:set(x, x != "2third") should == #{"3first", "1second"}
+      )
     )
 
     describe("all?",
