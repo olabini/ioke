@@ -445,6 +445,32 @@ Mixins Enumerable grep = dmacro(
   result)
 
 
+Mixins Enumerable grep:set = dmacro(
+  "takes one, two or three arguments. grep will first find any elements in the collection matching the first argument with '==='. if two or three arguments are given, these will be used to transform the matching object and then add the transformed version instead of the original element to the result set. the two argument version expects the second argument to be a message chain, and the three argument version expects it to be something that can be turned into a lexical block",
+
+  [>matchingAgainst]
+  result = set()
+  self each(n,
+    if(matchingAgainst === cell(:n),
+      result << cell(:n)))
+  result,
+
+  [>matchingAgainst, theCode]
+  result = set()
+  self each(n,
+    if(matchingAgainst === cell(:n),
+      result << theCode evaluateOn(call ground, cell(:n))))
+  result,
+
+  [>matchingAgainst, argName, theCode]
+  result = set()
+  lexicalCode = LexicalBlock createFrom(list(argName, theCode), call ground)
+  self each(n,
+    if(matchingAgainst === cell(:n),
+      result << lexicalCode call(cell(:n))))
+  result)
+
+
 Mixins Enumerable join = method(
   "returns a string created by converting each element of the array to text, separated by an optional separator",
   separator "",
