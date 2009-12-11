@@ -1116,9 +1116,29 @@ describe(Mixins,
     )
 
     describe("grep:set",
-      it("should take one argument and return everything that matches with ===")
-      it("should take two arguments where the second argument is a message chain and return the result of calling that chain on everything that matches with ===")
-      it("should take three arguments where the second and third arguments gets turned into a lexical block to apply to all that matches with ===")
+      it("should take one argument and return everything that matches with ===",
+        [1,2,3,4,5,6,7,8,9] grep:set(2..5) should == #{2,3,4,5}
+
+        customObj = Origin mimic
+        customObj === = method(other, (other < 3) || (other > 5))
+        [1,2,3,4,5,6,7,8,9] grep:set(customObj) should == #{1,2,6,7,8,9}
+      )
+
+      it("should take two arguments where the second argument is a message chain and return the result of calling that chain on everything that matches with ===",
+        [1,2,3,4,5,6,7,8,9] grep:set(2..5, + 1) should == #{3,4,5,6}
+
+        customObj = Origin mimic
+        customObj === = method(other, (other < 3) || (other > 5))
+        [1,2,3,4,5,6,7,8,9] grep:set(customObj, + 1) should == #{2,3,7,8,9,10}
+      )
+
+      it("should take three arguments where the second and third arguments gets turned into a lexical block to apply to all that matches with ===",
+        [1,2,3,4,5,6,7,8,9] grep:set(2..5, x, (x + 1) asText) should == #{"3","4","5","6"}
+
+        customObj = Origin mimic
+        customObj === = method(other, (other < 3) || (other > 5))
+        [1,2,3,4,5,6,7,8,9] grep:set(customObj, x, (x+1) asText) should == #{"2","3","7","8","9","10"}
+      )
     )
 
     describe("max",
