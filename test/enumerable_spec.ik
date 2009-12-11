@@ -790,8 +790,21 @@ describe(Mixins,
     )
 
     describe("reject:dict",
-      it("should take one argument that ends up being a predicate and return a dict of the values that is false")
-      it("should take two arguments that ends up being a predicate and return a dict of the values that is false")
+      it("should take one argument that ends up being a predicate and return a dict of the values that is false",
+        [1,2,3] reject:dict(>1) should == {1 => nil}
+        [nil,false,nil] reject:dict(nil?) should == {false => nil}
+        [nil,false,true] reject:dict(==2) should == {nil => nil,false => nil,true => nil}
+        {:foo => 42, 2 => 55} reject:dict(key == 2) should == {:foo => 42}
+        CustomEnumerable reject:dict([0...1] == "1") should == {"3first" => nil, "2third" => nil}
+      )
+
+      it("should take two arguments that ends up being a predicate and return a dict of the values that is false",
+        [1,2,3] reject:dict(x, x>1) should == {1 => nil}
+        [nil,false,nil] reject:dict(x, x nil?) should == {false => nil}
+        [nil,false,true] reject:dict(x, x==2) should == {nil => nil,false => nil,true => nil}
+        {:foo => 42, 2 => 55} reject:dict(x, x key == 2) should == {:foo => 42}
+        CustomEnumerable reject:dict(x, x == "2third") should == {"3first" => nil, "1second" => nil}
+      )
     )
 
     describe("reject:set",

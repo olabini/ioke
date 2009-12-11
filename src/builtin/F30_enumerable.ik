@@ -210,6 +210,14 @@ let(enumerableDefaultMethod,
       result << cell(:n)),
     result)
 
+  Mixins Enumerable reject:dict = enumerableDefaultMethod("takes one or two arguments. if one argument is given, it will be applied as a message chain as a predicate. those elements that doesn't the predicate will be returned. if two arguments are given, they will be turned into a lexical block and used as a predicate to choose the elements that doesn't match.",
+    result = dict(),
+    unless(cell(:x),
+      if(cell(:n) mimics?(Pair),
+        result[n key] = n value,
+        result[cell(:n)] = nil)),
+    result)
+
   Mixins Enumerable partition = enumerableDefaultMethod("takes zero, one or two arguments. if zero arguments, will return a list containing two list, where the first list contains all true values, and the second all the false values. if one argument is given, it will be used as a predicate message chain, and the return lists will be based on the result of this predicate. finally, if three arguments are given, they will be turned into a lexical block and used as a predicate to determine the result value.",
     resultTrue = list()
     resultFalse = list(),
