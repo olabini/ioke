@@ -592,9 +592,29 @@ describe(Mixins,
     )
 
     describe("select:dict",
-      it("should take zero arguments and return a dict with only the true values")
-      it("should take one argument that ends up being a predicate and return a dict of the values that is true")
-      it("should take two arguments that ends up being a predicate and return a dict of the values that is true")
+      it("should take zero arguments and return a dict with only the true values",
+        [1,2,3] select:dict should == {1 => nil, 2 => nil, 3 => nil}
+        [nil,false,nil] select:dict should == {}
+        [nil,false,true] select:dict should == {true => nil}
+        {nil => 42, true => 55, blah: 222} select:dict should == {nil => 42, true => 55, blah: 222}
+        CustomEnumerable select:dict should == {"3first" => nil, "2third" => nil, "1second" => nil}
+      )
+
+      it("should take one argument that ends up being a predicate and return a dict of the values that is true",
+        [1,2,3] select:dict(>1) should == {2 => nil, 3 => nil}
+        [nil,false,nil] select:dict(nil?) should == {nil => nil}
+        [nil,false,true] select:dict(==2) should == {}
+        {foo: 42, bar: 2324, quux: 42} select:dict(value == 42) should == {foo: 42, quux: 42}
+        CustomEnumerable select:dict([0...1] != "1") should == {"3first" => nil, "2third" => nil}
+      )
+
+      it("should take two arguments that ends up being a predicate and return a dict of the values that is true",
+        [1,2,3] select:dict(x, x>1) should == {2 => nil, 3 => nil}
+        [nil,false,nil] select:dict(x, x nil?) should == {nil => nil}
+        [nil,false,true] select:dict(x, x==2) should == {}
+        {foo: 42, bar: 2324, quux: 42} select:dict(x, x value == 42) should == {foo: 42, quux: 42}
+        CustomEnumerable select:dict(x, x != "2third") should == {"3first" => nil, "1second" => nil}
+      )
     )
 
     describe("select:set",
