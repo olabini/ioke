@@ -83,6 +83,19 @@ Mixins Enumerable mapFn:dict = method(
 
   result)
 
+Mixins Enumerable mapFn:set = method(
+  "takes zero or more arguments that evaluates to lexical blocks. these blocks should all take one argument. these blocks will be chained together and applied on each element in the receiver. the final result will be collected into a set. the evaluation happens left-to-right, meaning the first method invoked will be the first argument.",
+  +blocks,
+
+  result = set()
+
+  self each(n,
+    current = cell(:n)
+    blocks each(b, current = cell(:b) call(cell(:current)))
+    result << current)
+
+  result)
+
 let(enumerableDefaultMethod,
   dsyntax(
     [docstr, initCode, repCode, returnCode]
