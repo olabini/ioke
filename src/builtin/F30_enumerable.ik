@@ -366,6 +366,19 @@ Mixins Enumerable first = method(
     self each(n, return(cell(:n)))
     return(nil)))
 
+Mixins Enumerable first:dict = method(
+  "takes one argument. the argument should be a number describing how many elements to get. the return value will be a dict",
+  howMany,
+
+  result = dict()
+  self each(n,
+    if(howMany == 0, return(result))
+    howMany--
+    if(cell(:n) mimics?(Pair),
+      result[n key] = n value,
+      result[cell(:n)] = nil))
+  return(result))
+
 Mixins Enumerable include? = method(
   "takes one argument and returns true if this element is in the collection. comparisons is done with ==.",
   toFind,

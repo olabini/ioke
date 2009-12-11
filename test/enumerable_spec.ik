@@ -910,8 +910,23 @@ describe(Mixins,
     )
 
     describe("first:dict",
-      it("should take an argument of how many to return")
-      it("should return the first n elements for a non-empty collection")
+      it("should take an argument of how many to return",
+        set first:dict(0) should == {}
+        set first:dict(1) should == {}
+        set first:dict(2) should == {}
+      )
+
+      it("should return the first n elements for a non-empty collection",
+        set(42) first:dict(0) should == {}
+        set(42) first:dict(1) should == {42 => nil}
+        set(42) first:dict(2) should == {42 => nil}
+        [42, 44, 46] first:dict(2) should == {42 => nil, 44 => nil}
+        set(42, 44, 46) first:dict(3) should == {42 => nil, 44 => nil, 46 => nil}
+        {foo: 42, bar: 66} first:dict(0) should == {}
+        {foo: 42, bar: 66} first:dict(2) should == {foo: 42, bar: 66}
+        {foo: 42, bar: 66} first:dict(3) should == {foo: 42, bar: 66}
+        CustomEnumerable first:dict(2) should == {"3first" => nil, "1second" => nil}
+      )
     )
 
     describe("first:set",
