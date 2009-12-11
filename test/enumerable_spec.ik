@@ -287,15 +287,43 @@ describe(Mixins,
     )
 
     describe("collectFn:dict",
-      it("should take zero arguments and just return the elements in a dict")
-      it("should take one lexical block argument and apply that to each element, and return the result in a dict")
-      it("should take several lexical blocks and chain them together")
+      it("should take zero arguments and just return the elements in a dict",
+        [1, 2, 3] collectFn:dict should == {1 => nil,  2 => nil, 3 => nil}
+        CustomEnumerable collectFn:dict should == {"3first" => nil, "1second" => nil, "2third" => nil}
+      )
+
+      it("should take one lexical block argument and apply that to each element, and return the result in a dict",
+        x = fn(arg, arg => arg + 2). [1, 2, 3] collectFn:dict(x) should == {1 => 3, 2 => 4, 3 => 5}
+        x = fn(arg, arg[0..2] => arg[0..0])
+        CustomEnumerable collectFn:dict(x) should == {"3fi" => "3" , "1se" => "1", "2th" => "2"}
+      )
+
+      it("should take several lexical blocks and chain them together",
+        x = fn(arg, arg => arg+2). x2 = fn(arg, arg value => arg key). [1, 2, 3] collectFn:dict(x, x2) should == {3 => 1, 4 => 2, 5 => 3}
+        x = fn(arg, arg[0..2])
+        x2 = fn(arg, arg  => "flurg")
+        CustomEnumerable collectFn:dict(x, x2) should == {"3fi" => "flurg", "1se" => "flurg", "2th" => "flurg"}
+      )
     )
 
     describe("collectFn:set",
-      it("should take zero arguments and just return the elements in a set")
-      it("should take one lexical block argument and apply that to each element, and return the result in a set")
-      it("should take several lexical blocks and chain them together")
+      it("should take zero arguments and just return the elements in a set",
+        [1, 2, 3] collectFn:set should == #{1, 2, 3}
+        CustomEnumerable collectFn:set should == #{"3first", "1second", "2third"}
+      )
+
+      it("should take one lexical block argument and apply that to each element, and return the result in a set",
+        x = fn(arg, arg+2). [1, 2, 3] collectFn:set(x) should == #{3, 4, 5}
+        x = fn(arg, arg[0..2])
+        CustomEnumerable collectFn:set(x) should == #{"3fi", "1se", "2th"}
+      )
+
+      it("should take several lexical blocks and chain them together",
+        x = fn(arg, arg+2). x2 = fn(arg, arg*2). [1, 2, 3] collectFn:set(x, x2) should == #{6, 8, 10}
+        x = fn(arg, arg[0..2])
+        x2 = fn(arg, arg + "flurg")
+        CustomEnumerable collectFn:set(x, x2) should == #{"3fiflurg", "1seflurg", "2thflurg"}
+      )
     )
 
     describe("any?",
