@@ -171,12 +171,12 @@ describe(Mixins,
         CustomEnumerable mapFn:dict(x) should == {"3fi" => "3" , "1se" => "1", "2th" => "2"}
       )
 
-      it("should take several lexical blocks and chain them together")
-      ;   x = fn(arg, arg+2). x2 = fn(arg, arg*2). [1, 2, 3] mapFn(x, x2) should == [6, 8, 10]
-      ;   x = fn(arg, arg[0..2])
-      ;   x2 = fn(arg, arg + "flurg")
-      ;   CustomEnumerable mapFn(x, x2) should == ["3fiflurg", "1seflurg", "2thflurg"]
-      ; )
+      it("should take several lexical blocks and chain them together",
+        x = fn(arg, arg => arg+2). x2 = fn(arg, arg value => arg key). [1, 2, 3] mapFn:dict(x, x2) should == {3 => 1, 4 => 2, 5 => 3}
+        x = fn(arg, arg[0..2])
+        x2 = fn(arg, arg  => "flurg")
+        CustomEnumerable mapFn:dict(x, x2) should == {"3fi" => "flurg", "1se" => "flurg", "2th" => "flurg"}
+      )
     )
 
     describe("mapFn:set",
