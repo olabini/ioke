@@ -67,6 +67,22 @@ Mixins Enumerable mapFn = method(
 
   result)
 
+Mixins Enumerable mapFn:dict = method(
+  "takes zero or more arguments that evaluates to lexical blocks. these blocks should all take one argument. these blocks will be chained together and applied on each element in the receiver. the final result will be collected into a dict. the evaluation happens left-to-right, meaning the first method invoked will be the first argument.",
+  +blocks,
+
+  result = dict()
+
+  self each(n,
+    current = cell(:n)
+    blocks each(b, current = cell(:b) call(cell(:current)))
+    if(cell(:current) mimics?(Pair),
+      result[current key] = current value,
+      result[cell(:current)] = nil)
+  )
+
+  result)
+
 let(enumerableDefaultMethod,
   dsyntax(
     [docstr, initCode, repCode, returnCode]
