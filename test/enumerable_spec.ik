@@ -159,6 +159,32 @@ describe(Mixins,
       )
     )
 
+    describe("mapFn:dict",
+      it("should take zero arguments and just return the elements in a dict",
+        [1, 2, 3] mapFn:dict should == {1 => nil,  2 => nil, 3 => nil}
+        CustomEnumerable mapFn:dict should == {"3first" => nil, "1second" => nil, "2third" => nil}
+      )
+
+      it("should take one lexical block argument and apply that to each element, and return the result in a dict",
+        x = fn(arg, arg => arg + 2). [1, 2, 3] mapFn:dict(x) should == {1 => 3, 2 => 4, 3 => 5}
+        x = fn(arg, arg[0..2] => arg[0..0])
+        CustomEnumerable mapFn:dict(x) should == {"3fi" => "3" , "1se" => "1", "2th" => "2"}
+      )
+
+      it("should take several lexical blocks and chain them together")
+      ;   x = fn(arg, arg+2). x2 = fn(arg, arg*2). [1, 2, 3] mapFn(x, x2) should == [6, 8, 10]
+      ;   x = fn(arg, arg[0..2])
+      ;   x2 = fn(arg, arg + "flurg")
+      ;   CustomEnumerable mapFn(x, x2) should == ["3fiflurg", "1seflurg", "2thflurg"]
+      ; )
+    )
+
+    describe("mapFn:set",
+      it("should take zero arguments and just return the elements in a set")
+      it("should take one lexical block argument and apply that to each element, and return the result in a set")
+      it("should take several lexical blocks and chain them together")
+    )
+
     describe("collect",
       it("should return an empty list for an empty enumerable",
         [] collect(x, x+2) should == []
@@ -244,6 +270,18 @@ describe(Mixins,
         x2 = fn(arg, arg + "flurg")
         CustomEnumerable collectFn(x, x2) should == ["3fiflurg", "1seflurg", "2thflurg"]
       )
+    )
+
+    describe("collectFn:dict",
+      it("should take zero arguments and just return the elements in a dict")
+      it("should take one lexical block argument and apply that to each element, and return the result in a dict")
+      it("should take several lexical blocks and chain them together")
+    )
+
+    describe("collectFn:set",
+      it("should take zero arguments and just return the elements in a set")
+      it("should take one lexical block argument and apply that to each element, and return the result in a set")
+      it("should take several lexical blocks and chain them together")
     )
 
     describe("any?",
@@ -511,6 +549,18 @@ describe(Mixins,
       )
     )
 
+    describe("select:dict",
+      it("should take zero arguments and return a dict with only the true values")
+      it("should take one argument that ends up being a predicate and return a dict of the values that is true")
+      it("should take two arguments that ends up being a predicate and return a dict of the values that is true")
+    )
+
+    describe("select:set",
+      it("should take zero arguments and return a set with only the true values")
+      it("should take one argument that ends up being a predicate and return a set of the values that is true")
+      it("should take two arguments that ends up being a predicate and return a set of the values that is true")
+    )
+
     describe("findAll",
       it("should take zero arguments and return a list with only the true values",
         [1,2,3] findAll should == [1,2,3]
@@ -534,6 +584,18 @@ describe(Mixins,
       )
     )
 
+    describe("findAll:dict",
+      it("should take zero arguments and return a dict with only the true values")
+      it("should take one argument that ends up being a predicate and return a dict of the values that is true")
+      it("should take two arguments that ends up being a predicate and return a dict of the values that is true")
+    )
+
+    describe("findAll:set",
+      it("should take zero arguments and return a set with only the true values")
+      it("should take one argument that ends up being a predicate and return a set of the values that is true")
+      it("should take two arguments that ends up being a predicate and return a set of the values that is true")
+    )
+
     describe("filter",
       it("should take zero arguments and return a list with only the true values",
         [1,2,3] filter should == [1,2,3]
@@ -555,6 +617,18 @@ describe(Mixins,
         [nil,false,true] filter(x, x==2) should == []
         CustomEnumerable filter(x, x != "2third") should == ["3first", "1second"]
       )
+    )
+
+    describe("filter:dict",
+      it("should take zero arguments and return a dict with only the true values")
+      it("should take one argument that ends up being a predicate and return a dict of the values that is true")
+      it("should take two arguments that ends up being a predicate and return a dict of the values that is true")
+    )
+
+    describe("filter:set",
+      it("should take zero arguments and return a set with only the true values")
+      it("should take one argument that ends up being a predicate and return a set of the values that is true")
+      it("should take two arguments that ends up being a predicate and return a set of the values that is true")
     )
 
     describe("all?",
@@ -622,6 +696,16 @@ describe(Mixins,
       )
     )
 
+    describe("reject:dict",
+      it("should take one argument that ends up being a predicate and return a dict of the values that is false")
+      it("should take two arguments that ends up being a predicate and return a dict of the values that is false")
+    )
+
+    describe("reject:set",
+      it("should take one argument that ends up being a predicate and return a dict of the values that is false")
+      it("should take two arguments that ends up being a predicate and return a dict of the values that is false")
+    )
+
     describe("first",
       it("should return nil for an empty collection",
         set first should be nil
@@ -646,6 +730,16 @@ describe(Mixins,
         set(42, 44, 46) first(3) sort should == [42, 44, 46]
         CustomEnumerable first(2) should == ["3first", "1second"]
       )
+    )
+
+    describe("first:dict",
+      it("should take an argument of how many to return")
+      it("should return the first n elements for a non-empty collection")
+    )
+
+    describe("first:set",
+      it("should take an argument of how many to return")
+      it("should return the first n elements for a non-empty collection")
     )
 
     describe("one?",
@@ -717,6 +811,18 @@ describe(Mixins,
       )
     )
 
+    describe("partition:dict",
+      it("should take zero arguments and just divide all the true and false values")
+      it("should take one argument that is a predicate that is applied to each element in the enumeration")
+      it("should take two arguments that will be turned into a lexical block and applied")
+    )
+
+    describe("partition:set",
+      it("should take zero arguments and just divide all the true and false values")
+      it("should take one argument that is a predicate that is applied to each element in the enumeration")
+      it("should take two arguments that will be turned into a lexical block and applied")
+    )
+
     describe("include?",
       it("should return true if the element is in the enumeration",
         [1,2,3] include?(2) should be true
@@ -757,6 +863,16 @@ describe(Mixins,
       )
     )
 
+    describe("take:dict",
+      it("should return a dict with as many elements as requested")
+      it("should not take more elements than the length of the collection")
+    )
+
+    describe("take:set",
+      it("should return a set with as many elements as requested")
+      it("should not take more elements than the length of the collection")
+    )
+
     describe("takeWhile",
       it("should take zero arguments and return everything up until the point where a value is false",
         [1,2,3] takeWhile should == [1,2,3]
@@ -778,6 +894,18 @@ describe(Mixins,
       )
     )
 
+    describe("takeWhile:dict",
+      it("should take zero arguments and return everything up until the point where a value is false")
+      it("should take one argument and apply it as a message chain, return a dict with all elements until the block returns false")
+      it("should take two arguments and apply the lexical block created from it, and return a dict with all elements until the block returns false")
+    )
+
+    describe("takeWhile:set",
+      it("should take zero arguments and return everything up until the point where a value is false")
+      it("should take one argument and apply it as a message chain, return a set with all elements until the block returns false")
+      it("should take two arguments and apply the lexical block created from it, and return a set with all elements until the block returns false")
+    )
+
     describe("drop",
       it("should return a list without as many elements as requested",
         [1,2,3] drop(0) should == [1,2,3]
@@ -792,6 +920,16 @@ describe(Mixins,
         [1,2,3] drop(10) should == []
         CustomEnumerable drop(200) should == []
       )
+    )
+
+    describe("drop:dict",
+      it("should return a dict without as many elements as requested")
+      it("should not drop more elements than the length of the collection")
+    )
+
+    describe("drop:set",
+      it("should return a set without as many elements as requested")
+      it("should not drop more elements than the length of the collection")
     )
 
     describe("dropWhile",
@@ -813,6 +951,18 @@ describe(Mixins,
         [1,2,3] dropWhile(x, x != 2) should == [2,3]
         CustomEnumerable dropWhile(x, x != "2third") should == ["2third"]
       )
+    )
+
+    describe("dropWhile:dict",
+      it("should take zero arguments and return everything after the point where a value is true")
+      it("should take one argument and apply it as a message chain, return a dict with all elements after the block returns false")
+      it("should take two arguments and apply the lexical block created from it, and return a dict with all elements after the block returns false")
+    )
+
+    describe("dropWhile:set",
+      it("should take zero arguments and return everything after the point where a value is true")
+      it("should take one argument and apply it as a message chain, return a dict with all elements after the block returns false")
+      it("should take two arguments and apply the lexical block created from it, and return a dict with all elements after the block returns false")
     )
 
     describe("cycle",
@@ -917,6 +1067,14 @@ describe(Mixins,
       )
     )
 
+    describe("zip:set",
+      it("should take zero arguments and just zip the elements")
+      it("should take one argument as a list and zip the elements together")
+      it("should take one argument as a seq and zip the elements together")
+      it("should supply nils if the second list isn't long enough")
+      it("should zip together several lists")
+    )
+
     describe("grep",
       it("should take one argument and return everything that matches with ===",
         [1,2,3,4,5,6,7,8,9] grep(2..5) should == [2,3,4,5]
@@ -941,6 +1099,12 @@ describe(Mixins,
         customObj === = method(other, (other < 3) || (other > 5))
         [1,2,3,4,5,6,7,8,9] grep(customObj, x, (x+1) asText) should == ["2","3","7","8","9","10"]
       )
+    )
+
+    describe("grep:set",
+      it("should take one argument and return everything that matches with ===")
+      it("should take two arguments where the second argument is a message chain and return the result of calling that chain on everything that matches with ===")
+      it("should take three arguments where the second and third arguments gets turned into a lexical block to apply to all that matches with ===")
     )
 
     describe("max",
