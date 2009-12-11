@@ -598,9 +598,26 @@ describe(Mixins,
     )
 
     describe("select:set",
-      it("should take zero arguments and return a set with only the true values")
-      it("should take one argument that ends up being a predicate and return a set of the values that is true")
-      it("should take two arguments that ends up being a predicate and return a set of the values that is true")
+      it("should take zero arguments and return a set with only the true values",
+        [1,2,3] select:set should == #{1,2,3}
+        [nil,false,nil] select:set should == #{}
+        [nil,false,true] select:set should == #{true}
+        CustomEnumerable select:set should == set(*(CustomEnumerable asList))
+      )
+
+      it("should take one argument that ends up being a predicate and return a set of the values that is true",
+        [1,2,3] select:set(>1) should == #{2,3}
+        [nil,false,nil] select:set(nil?) should == #{nil}
+        [nil,false,true] select:set(==2) should == #{}
+        CustomEnumerable select:set([0...1] != "1") should == #{"3first", "2third"}
+      )
+
+      it("should take two arguments that ends up being a predicate and return a set of the values that is true",
+        [1,2,3] select:set(x, x>1) should == #{2,3}
+        [nil,false,nil] select:set(x, x nil?) should == #{nil}
+        [nil,false,true] select:set(x, x==2) should == #{}
+        CustomEnumerable select:set(x, x != "2third") should == #{"3first", "1second"}
+      )
     )
 
     describe("findAll",
