@@ -808,8 +808,19 @@ describe(Mixins,
     )
 
     describe("reject:set",
-      it("should take one argument that ends up being a predicate and return a dict of the values that is false")
-      it("should take two arguments that ends up being a predicate and return a dict of the values that is false")
+      it("should take one argument that ends up being a predicate and return a list of the values that is false",
+        [1,2,3] reject:set(>1) should == #{1}
+        [nil,false,nil] reject:set(nil?) should == #{false}
+        [nil,false,true] reject:set(==2) should == #{nil,false,true}
+        CustomEnumerable reject:set([0...1] == "1") should == #{"3first", "2third"}
+      )
+
+      it("should take two arguments that ends up being a predicate and return a list of the values that is false",
+        [1,2,3] reject:set(x, x>1) should == #{1}
+        [nil,false,nil] reject:set(x, x nil?) should == #{false}
+        [nil,false,true] reject:set(x, x==2) should == #{nil,false,true}
+        CustomEnumerable reject:set(x, x == "2third") should == #{"3first", "1second"}
+      )
     )
 
     describe("first",
