@@ -930,8 +930,20 @@ describe(Mixins,
     )
 
     describe("first:set",
-      it("should take an argument of how many to return")
-      it("should return the first n elements for a non-empty collection")
+      it("should take an argument of how many to return",
+        set first:set(0) should == #{}
+        set first:set(1) should == #{}
+        set first:set(2) should == #{}
+      )
+
+      it("should return the first n elements for a non-empty collection",
+        set(42) first:set(0) should == #{}
+        set(42) first:set(1) should == #{42}
+        set(42) first:set(2) should == #{42}
+        [42, 44, 46] first:set(2) should == #{42, 44}
+        set(42, 44, 46) first:set(3) should == #{42, 44, 46}
+        CustomEnumerable first:set(2) should == #{"3first", "1second"}
+      )
     )
 
     describe("one?",
