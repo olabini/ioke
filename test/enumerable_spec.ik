@@ -1105,13 +1105,37 @@ describe(Mixins,
     )
 
     describe("take:dict",
-      it("should return a dict with as many elements as requested")
-      it("should not take more elements than the length of the collection")
+      it("should return a dict with as many elements as requested",
+        [1,2,3] take:dict(0) should == {}
+        [1,2,3] take:dict(1) should == {1 => nil}
+        [1,2,3] take:dict(2) should == {1 => nil, 2 => nil}
+        [1,2,3] take:dict(3) should == {1 => nil, 2 => nil, 3 => nil}
+        {foo: 42, bar: 66} take:dict(0) should == {}
+        {foo: 42, bar: 66} take:dict(2) should == {foo: 42, bar: 66}
+        CustomEnumerable take:dict(2) should == {"3first" => nil, "1second" => nil}
+      )
+
+      it("should not take more elements than the length of the collection",
+        [1,2,3] take:dict(4) should == {1 => nil, 2 => nil, 3 => nil}
+        [1,2,3] take:dict(10) should == {1 => nil, 2 => nil, 3 => nil}
+        CustomEnumerable take:dict(200) should == {"3first" => nil, "1second" => nil, "2third" => nil}
+      )
     )
 
     describe("take:set",
-      it("should return a set with as many elements as requested")
-      it("should not take more elements than the length of the collection")
+      it("should return a set with as many elements as requested",
+        [1,2,3] take:set(0) should == #{}
+        [1,2,3] take:set(1) should == #{1}
+        [1,2,3] take:set(2) should == #{1,2}
+        [1,2,3] take:set(3) should == #{1,2,3}
+        CustomEnumerable take:set(2) should == #{"3first", "1second"}
+      )
+
+      it("should not take more elements than the length of the collection",
+        [1,2,3] take:set(4) should == #{1,2,3}
+        [1,2,3] take:set(10) should == #{1,2,3}
+        CustomEnumerable take:set(200) should == #{"3first", "1second", "2third"}
+      )
     )
 
     describe("takeWhile",
