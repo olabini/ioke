@@ -464,6 +464,17 @@ Mixins Enumerable take = method(
 
   self first(howMany))
 
+Mixins Enumerable take:dict = method(
+  "takes one argument and returns a dict with as many elements from the collection, or all elements if the requested number is larger than the size.",
+  howMany,
+
+  self first:dict(howMany))
+
+Mixins Enumerable take:set = method(
+  "takes one argument and returns a set with as many elements from the collection, or all elements if the requested number is larger than the size.",
+  howMany,
+
+  self first:set(howMany))
 
 Mixins Enumerable drop = method(
   "takes one argument and returns a list of all the elements in this object except for how many that should be avoided.",
