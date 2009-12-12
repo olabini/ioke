@@ -1221,13 +1221,38 @@ describe(Mixins,
     )
 
     describe("drop:dict",
-      it("should return a dict without as many elements as requested")
-      it("should not drop more elements than the length of the collection")
+      it("should return a dict without as many elements as requested",
+        [1,2,3] drop:dict(0) should == {1 => nil, 2 => nil, 3 => nil}
+        [1,2,3] drop:dict(1) should == {2 => nil, 3 => nil}
+        [1,2,3] drop:dict(2) should == {3 => nil}
+        [1,2,3] drop:dict(3) should == {}
+        [:foo => 42, :bar => 55, :quux => 2323] drop:dict(0) should == {:foo => 42, :bar => 55, :quux => 2323}
+        [:foo => 42, :bar => 55, :quux => 2323] drop:dict(1) should == {:bar => 55, :quux => 2323}
+        [:foo => 42, :bar => 55, :quux => 2323] drop:dict(2) should == {:quux => 2323}
+        CustomEnumerable drop:dict(2) should == {"2third" => nil}
+      )
+
+      it("should not drop more elements than the length of the collection",
+        [1,2,3] drop:dict(4) should == {}
+        [1,2,3] drop:dict(10) should == {}
+        CustomEnumerable drop:dict(200) should == {}
+      )
     )
 
     describe("drop:set",
-      it("should return a set without as many elements as requested")
-      it("should not drop more elements than the length of the collection")
+      it("should return a set without as many elements as requested",
+        [1,2,3] drop:set(0) should == #{1,2,3}
+        [1,2,3] drop:set(1) should == #{2,3}
+        [1,2,3] drop:set(2) should == #{3}
+        [1,2,3] drop:set(3) should == #{}
+        CustomEnumerable drop:set(2) should == #{"2third"}
+      )
+
+      it("should not drop more elements than the length of the collection",
+        [1,2,3] drop:set(4) should == #{}
+        [1,2,3] drop:set(10) should == #{}
+        CustomEnumerable drop:set(200) should == #{}
+      )
     )
 
     describe("dropWhile",
