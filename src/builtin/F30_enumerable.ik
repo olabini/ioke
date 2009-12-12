@@ -288,6 +288,32 @@ let(enumerableDefaultMethod,
         collecting = true
         result << cell(:n))),
     result)
+
+  Mixins Enumerable dropWhile:dict = enumerableDefaultMethod("takes zero, one or two arguments. it will evaluate a predicate once for each element, and avoid all the elements until the predicate returns false for the first time, then it will start collecting data. if zero arguments, the predicate is the element itself. if one argument, expects it to be a message chain to apply as a predicate. if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and used as the predicate.",
+
+    result = dict()
+    collecting = false,
+    if(collecting,
+      if(cell(:n) mimics?(Pair),
+        result[n key] = n value,
+        result[cell(:n)] = nil),
+      unless(cell(:x),
+        collecting = true
+        if(cell(:n) mimics?(Pair),
+          result[n key] = n value,
+          result[cell(:n)] = nil))),
+    result)
+
+  Mixins Enumerable dropWhile:set = enumerableDefaultMethod("takes zero, one or two arguments. it will evaluate a predicate once for each element, and avoid all the elements until the predicate returns false for the first time, then it will start collecting data. if zero arguments, the predicate is the element itself. if one argument, expects it to be a message chain to apply as a predicate. if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and used as the predicate.",
+
+    result = set()
+    collecting = false,
+    if(collecting,
+      result << cell(:n),
+      unless(cell(:x),
+        collecting = true
+        result << cell(:n))),
+    result)
 )
 
 Mixins Enumerable findIndex = dmacro("takes zero, one or two arguments. if zero arguments, returns the index of the first element that is true, otherwise nil. if one argument, expects it to be a message chain. if that message chain, when applied to the current element returns a true value, the corresponding element index is returned. finally, if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and tested against the values in this element. if it returns true for any element, the element index will be returned, otherwise nil.",

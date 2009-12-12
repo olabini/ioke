@@ -1228,15 +1228,48 @@ describe(Mixins,
     )
 
     describe("dropWhile:dict",
-      it("should take zero arguments and return everything after the point where a value is true")
-      it("should take one argument and apply it as a message chain, return a dict with all elements after the block returns false")
-      it("should take two arguments and apply the lexical block created from it, and return a dict with all elements after the block returns false")
+      it("should take zero arguments and return everything after the point where a value is true",
+        [1,2,3] dropWhile:dict should == {}
+        [1,2,nil,false] dropWhile:dict should == {nil => nil, false => nil}
+        [1,2,false,3,4,nil,false] dropWhile:dict should == {false => nil, 3 => nil ,4 => nil, nil => nil}
+        [:foo => 42, :bar => 55, :quux => 1242] takeWhile:dict should == {foo: 42, bar: 55, quux: 1242}
+        CustomEnumerable dropWhile:dict should == {}
+      )
+
+      it("should take one argument and apply it as a message chain, return a dict with all elements after the block returns false",
+        [1,2,3] dropWhile:dict(<3) should == {3 => nil}
+        [1,2,3] dropWhile:dict(!=2) should == {2 => nil, 3 => nil}
+        [:foo => 42, :bar => 55, :quux => 1242] dropWhile:dict(value < 56) should == {quux: 1242}
+        CustomEnumerable dropWhile:dict(!="2third") should == {"2third" => nil}
+      )
+
+      it("should take two arguments and apply the lexical block created from it, and return a dict with all elements after the block returns false",
+        [1,2,3] dropWhile:dict(x, x<3) should == {3 => nil}
+        [1,2,3] dropWhile:dict(x, x != 2) should == {2 => nil, 3 => nil}
+        [:foo => 42, :bar => 55, :quux => 1242] dropWhile:dict(x, x value < 56) should == {quux: 1242}
+        CustomEnumerable dropWhile:dict(x, x != "2third") should == {"2third" => nil}
+      )
     )
 
     describe("dropWhile:set",
-      it("should take zero arguments and return everything after the point where a value is true")
-      it("should take one argument and apply it as a message chain, return a dict with all elements after the block returns false")
-      it("should take two arguments and apply the lexical block created from it, and return a dict with all elements after the block returns false")
+      it("should take zero arguments and return everything after the point where a value is true",
+        [1,2,3] dropWhile:set should == #{}
+        [1,2,nil,false] dropWhile:set should == #{nil,false}
+        [1,2,false,3,4,nil,false] dropWhile:set should == #{false,3,4,nil}
+        CustomEnumerable dropWhile:set should == #{}
+      )
+
+      it("should take one argument and apply it as a message chain, return a set with all elements after the block returns false",
+        [1,2,3] dropWhile:set(<3) should == #{3}
+        [1,2,3] dropWhile:set(!=2) should == #{2,3}
+        CustomEnumerable dropWhile:set(!="2third") should == #{"2third"}
+      )
+
+      it("should take two arguments and apply the lexical block created from it, and return a set with all elements after the block returns false",
+        [1,2,3] dropWhile:set(x, x<3) should == #{3}
+        [1,2,3] dropWhile:set(x, x != 2) should == #{2,3}
+        CustomEnumerable dropWhile:set(x, x != "2third") should == #{"2third"}
+      )
     )
 
     describe("cycle",
