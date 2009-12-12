@@ -1424,11 +1424,27 @@ describe(Mixins,
     )
 
     describe("zip:set",
-      it("should take zero arguments and just zip the elements")
-      it("should take one argument as a list and zip the elements together")
-      it("should take one argument as a seq and zip the elements together")
-      it("should supply nils if the second list isn't long enough")
-      it("should zip together several lists")
+      it("should take zero arguments and just zip the elements",
+        [1,2,3] zip:set should == [#{1}, #{2}, #{3}]
+      )
+
+      it("should take one argument as a list and zip the elements together",
+        [1,2,3] zip:set([5,6,7]) should == [#{1, 5}, #{2, 6}, #{3, 7}]
+        [1,2,3] zip:set([5,6,7,8]) should == [#{1, 5}, #{2, 6}, #{3, 7}]
+      )
+
+      it("should take one argument as a seq and zip the elements together",
+        [1,2,3] zip:set([5,6,7] seq) should == [#{1, 5}, #{2, 6}, #{3, 7}]
+        [1,2,3] zip:set([5,6,7,8] seq) should == [#{1, 5}, #{2, 6}, #{3, 7}]
+      )
+
+      it("should supply nils if the second list isn't long enough",
+        [1,2,3] zip:set([5,6]) should == [#{1, 5}, #{2, 6}, #{3, nil}]
+      )
+
+      it("should zip together several lists",
+        [1,2,3] zip:set([5,6,7],[10,11,12],[15,16,17]) should == [#{1,5,10,15}, #{2,6,11,16}, #{3,7,12,17}]
+      )
     )
 
     describe("grep",

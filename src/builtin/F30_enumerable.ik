@@ -566,6 +566,23 @@ Mixins Enumerable zip = method(
       result << internal)
     result))
 
+Mixins Enumerable zip:set = method(
+  "takes zero or more arguments, where all arguments should be lists or sequences. zip:set will create a list of set, where each internal set is a combination of the current element, and the corresponding elements from all the lists. if the lists are shorter than this collection, nils will be supplied.",
+  +lists,
+
+  lists map!(x,
+    if(x mimics?(Sequence),
+      x,
+      x seq))
+  result = list()
+  self each(n,
+    internal = set(cell(:n))
+    lists each(n2,
+      val = if(n2 next?, n2 next, nil)
+      internal << cell(:val))
+    result << internal)
+  result)
+
 Mixins Enumerable grep = dmacro(
   "takes one, two or three arguments. grep will first find any elements in the collection matching the first argument with '==='. if two or three arguments are given, these will be used to transform the matching object and then add the transformed version instead of the original element to the result list. the two argument version expects the second argument to be a message chain, and the three argument version expects it to be something that can be turned into a lexical block",
 
