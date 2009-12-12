@@ -488,6 +488,31 @@ Mixins Enumerable drop = method(
       result << cell(:n)))
   result)
 
+Mixins Enumerable drop:dict = method(
+  "takes one argument and returns a dict of all the elements in this object except for how many that should be avoided.",
+  howMany,
+
+  result = dict()
+  currentCount = howMany
+  self each(n,
+    if(currentCount > 0,
+      currentCount--,
+      if(cell(:n) mimics?(Pair),
+        result[n key] = n value,
+        result[cell(:n)] = nil)))
+  result)
+
+Mixins Enumerable drop:set = method(
+  "takes one argument and returns a set of all the elements in this object except for how many that should be avoided.",
+  howMany,
+
+  result = set()
+  currentCount = howMany
+  self each(n,
+    if(currentCount > 0,
+      currentCount--,
+      result << cell(:n)))
+  result)
 
 Mixins Enumerable cycle = dmacro(
   "takes one or two arguments and cycles over the elements of this collection. the cycling will be done by calling each once and collecting the result, and then using this to continue cycling. if one argument is given, it should be a message chain to apply. if two arguments are given, they will be turned into a lexical block and applied. if the collection is empty, returns nil.",
