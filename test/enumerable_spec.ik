@@ -1016,15 +1016,52 @@ describe(Mixins,
     )
 
     describe("partition:dict",
-      it("should take zero arguments and just divide all the true and false values")
-      it("should take one argument that is a predicate that is applied to each element in the enumeration")
-      it("should take two arguments that will be turned into a lexical block and applied")
+      it("should take zero arguments and just divide all the true and false values",
+        [1,2,3] partition:dict should == [{1=>nil,2=>nil,3=>nil},{}]
+        [nil,false,nil] partition:dict should == [{}, {nil=>nil, false=>nil}]
+        [nil,false,true] partition:dict should == [{true=>nil}, {nil=>nil, false=>nil}]
+        {foo: 42, bar: 55} partition:dict should == [{foo: 42, bar: 55}, {}]
+        CustomEnumerable partition:dict should == [{"3first"=>nil, "1second"=>nil, "2third"=>nil}, {}]
+      )
+
+      it("should take one argument that is a predicate that is applied to each element in the enumeration",
+        [1,2,3] partition:dict(==2) should == [{2=>nil}, {1=>nil,3=>nil}]
+        [nil,false,nil] partition:dict(nil?) should  == [{nil=>nil}, {false=>nil}]
+        [nil,false,true] partition:dict(==2) should == [{}, {nil=>nil, false=>nil, true=>nil}]
+        {foo: 42, bar: 55} partition:dict(value == 55) should == [{bar: 55}, {foo: 42}]
+        CustomEnumerable partition:dict(!= "foo") should == [{"3first"=>nil, "1second"=>nil, "2third"=>nil}, {}]
+      )
+
+      it("should take two arguments that will be turned into a lexical block and applied",
+        [1,2,3] partition:dict(x, x==2) should == [{2=>nil}, {1=>nil,3=>nil}]
+        [nil,false,nil] partition:dict(x, x nil?) should == [{nil=>nil}, {false=>nil}]
+        [nil,false,true] partition:dict(x, x==2) should == [{}, {nil=>nil, false=>nil, true=>nil}]
+        {foo: 42, bar: 55} partition:dict(x, x value == 55) should == [{bar: 55}, {foo: 42}]
+        CustomEnumerable partition:dict(x, x != "foo") should == [{"3first"=>nil, "1second"=>nil, "2third"=>nil}, {}]
+      )
     )
 
     describe("partition:set",
-      it("should take zero arguments and just divide all the true and false values")
-      it("should take one argument that is a predicate that is applied to each element in the enumeration")
-      it("should take two arguments that will be turned into a lexical block and applied")
+      it("should take zero arguments and just divide all the true and false values",
+        [1,2,3] partition:set should == [set(1,2,3),set()]
+        [nil,false,nil] partition:set should == [set(), set(nil, false)]
+        [nil,false,true] partition:set should == [set(true), set(nil, false)]
+        CustomEnumerable partition:set should == [set("3first", "1second", "2third"), set()]
+      )
+
+      it("should take one argument that is a predicate that is applied to each element in the enumeration",
+        [1,2,3] partition:set(==2) should == [#{2}, #{1,3}]
+        [nil,false,nil] partition:set(nil?) should  == [#{nil}, #{false}]
+        [nil,false,true] partition:set(==2) should == [#{}, #{nil, false, true}]
+        CustomEnumerable partition:set(!= "foo") should == [#{"3first", "1second", "2third"}, #{}]
+      )
+
+      it("should take two arguments that will be turned into a lexical block and applied",
+        [1,2,3] partition:set(x, x==2) should == [#{2}, #{1,3}]
+        [nil,false,nil] partition:set(x, x nil?) should == [#{nil}, #{false}]
+        [nil,false,true] partition:set(x, x==2) should == [#{}, #{nil, false, true}]
+        CustomEnumerable partition:set(x, x != "foo") should == [#{"3first", "1second", "2third"}, #{}]
+      )
     )
 
     describe("include?",

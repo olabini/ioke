@@ -238,6 +238,23 @@ let(enumerableDefaultMethod,
     if(cell(:x), resultTrue, resultFalse) << cell(:n),
     list(resultTrue, resultFalse))
 
+  Mixins Enumerable partition:set = enumerableDefaultMethod("takes zero, one or two arguments. if zero arguments, will return a list containing two sets, where the first set contains all true values, and the second all the false values. if one argument is given, it will be used as a predicate message chain, and the return sets will be based on the result of this predicate. finally, if three arguments are given, they will be turned into a lexical block and used as a predicate to determine the result value.",
+    resultTrue = set()
+    resultFalse = set(),
+    if(cell(:x), resultTrue, resultFalse) << cell(:n),
+    list(resultTrue, resultFalse))
+
+  Mixins Enumerable partition:dict = enumerableDefaultMethod("takes zero, one or two arguments. if zero arguments, will return a list containing two dicts, where the first dict contains all true values, and the second all the false values. if one argument is given, it will be used as a predicate message chain, and the return dicts will be based on the result of this predicate. finally, if three arguments are given, they will be turned into a lexical block and used as a predicate to determine the result value.",
+    resultTrue = dict()
+    resultFalse = dict(),
+
+    place = if(cell(:x), resultTrue, resultFalse)
+    if(cell(:n) mimics?(Pair),
+      place[n key] = n value,
+      place[cell(:n)] = nil),
+
+    list(resultTrue, resultFalse))
+
   Mixins Enumerable takeWhile = enumerableDefaultMethod("takes zero, one or two arguments. it will evaluate a predicate once for each element, and collect all the elements until the predicate returns false for the first time. at that point the collected list will be returned. if zero arguments, the predicate is the element itself. if one argument, expects it to be a message chain to apply as a predicate. if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and used as the predicate.",
     result = list(),
     if(cell(:x),
