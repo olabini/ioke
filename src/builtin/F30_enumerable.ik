@@ -262,6 +262,22 @@ let(enumerableDefaultMethod,
       return(result)),
     result)
 
+  Mixins Enumerable takeWhile:set = enumerableDefaultMethod("takes zero, one or two arguments. it will evaluate a predicate once for each element, and collect all the elements until the predicate returns false for the first time. at that point the collected set will be returned. if zero arguments, the predicate is the element itself. if one argument, expects it to be a message chain to apply as a predicate. if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and used as the predicate.",
+    result = set(),
+    if(cell(:x),
+      result << cell(:n),
+      return(result)),
+    result)
+
+  Mixins Enumerable takeWhile:dict = enumerableDefaultMethod("takes zero, one or two arguments. it will evaluate a predicate once for each element, and collect all the elements until the predicate returns false for the first time. at that point the collected dict will be returned. if zero arguments, the predicate is the element itself. if one argument, expects it to be a message chain to apply as a predicate. if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and used as the predicate.",
+    result = dict(),
+    if(cell(:x),
+      if(cell(:n) mimics?(Pair),
+        result[n key] = n value,
+        result[cell(:n)] = nil),
+      return(result)),
+    result)
+
   Mixins Enumerable dropWhile = enumerableDefaultMethod("takes zero, one or two arguments. it will evaluate a predicate once for each element, and avoid all the elements until the predicate returns false for the first time, then it will start collecting data. if zero arguments, the predicate is the element itself. if one argument, expects it to be a message chain to apply as a predicate. if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and used as the predicate.",
 
     result = list()

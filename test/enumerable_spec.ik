@@ -1136,15 +1136,48 @@ describe(Mixins,
     )
 
     describe("takeWhile:dict",
-      it("should take zero arguments and return everything up until the point where a value is false")
-      it("should take one argument and apply it as a message chain, return a dict with all elements until the block returns false")
-      it("should take two arguments and apply the lexical block created from it, and return a dict with all elements until the block returns false")
+      it("should take zero arguments and return everything up until the point where a value is false",
+        [1,2,3] takeWhile:dict should == {1=>nil,2=>nil,3=>nil}
+        [1,2,nil,false] takeWhile:dict should == {1=>nil,2=>nil}
+        [1,2,false,3,4,nil,false] takeWhile:dict should == {1=>nil,2=>nil}
+        {foo: 42, bar: 55} takeWhile:dict should == {foo: 42, bar: 55}
+        CustomEnumerable takeWhile:dict should == {"3first"=>nil, "1second"=>nil, "2third"=>nil}
+      )
+
+      it("should take one argument and apply it as a message chain, return a list with all elements until the block returns false",
+        [1,2,3] takeWhile:dict(<3) should == {1=>nil,2=>nil}
+        [1,2,3] takeWhile:dict(!=2) should == {1=>nil}
+        [:foo => 42, :bar => 55, :quux => 1242] takeWhile:dict(value < 56) should == {foo: 42, bar: 55}
+        CustomEnumerable takeWhile:dict(!="2third") should == {"3first"=>nil, "1second"=>nil}
+      )
+
+      it("should take two arguments and apply the lexical block created from it, and return a list with all elements until the block returns false",
+        [1,2,3] takeWhile:dict(x, x<3) should == {1=>nil,2=>nil}
+        [1,2,3] takeWhile:dict(x, x != 2) should == {1=>nil}
+        [:foo => 42, :bar => 55, :quux => 1242] takeWhile:dict(x, x value < 56) should == {foo: 42, bar: 55}
+        CustomEnumerable takeWhile:dict(x, x != "2third") should == {"3first"=>nil, "1second"=>nil}
+      )
     )
 
     describe("takeWhile:set",
-      it("should take zero arguments and return everything up until the point where a value is false")
-      it("should take one argument and apply it as a message chain, return a set with all elements until the block returns false")
-      it("should take two arguments and apply the lexical block created from it, and return a set with all elements until the block returns false")
+      it("should take zero arguments and return everything up until the point where a value is false",
+        [1,2,3] takeWhile:set should == #{1,2,3}
+        [1,2,nil,false] takeWhile:set should == #{1,2}
+        [1,2,false,3,4,nil,false] takeWhile:set should == #{1,2}
+        CustomEnumerable takeWhile:set should == #{"3first", "1second", "2third"}
+      )
+
+      it("should take one argument and apply it as a message chain, return a list with all elements until the block returns false",
+        [1,2,3] takeWhile:set(<3) should == #{1,2}
+        [1,2,3] takeWhile:set(!=2) should == #{1}
+        CustomEnumerable takeWhile:set(!="2third") should == #{"3first", "1second"}
+      )
+
+      it("should take two arguments and apply the lexical block created from it, and return a list with all elements until the block returns false",
+        [1,2,3] takeWhile:set(x, x<3) should == #{1,2}
+        [1,2,3] takeWhile:set(x, x != 2) should == #{1}
+        CustomEnumerable takeWhile:set(x, x != "2third") should == #{"3first", "1second"}
+      )
     )
 
     describe("drop",
