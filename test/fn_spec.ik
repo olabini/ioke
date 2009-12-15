@@ -12,6 +12,16 @@ describe(DefaultBehavior,
     )
   )
 
+  describe("λ",
+    it("should be possible to create a new LexicalBlock with it",
+      λ call should be nil
+    )
+
+    it("should be possible to create a new LexicalBlock with it that returns a value",
+      λ(42) call should == 42
+    )
+  )
+
   describe("fnx",
     it("should be possible to give it a documentation string",
       fnx("foo is bar", nil) documentation should == "foo is bar"

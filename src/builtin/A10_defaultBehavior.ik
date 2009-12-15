@@ -1,3 +1,5 @@
+DefaultBehavior Definitions aliasMethod("fn", "ʎ")
+DefaultBehavior Definitions aliasMethod("fn", "λ")
 
 DefaultBehavior FlowControl cell("") = method(
   "returns result of evaluating first argument",
@@ -24,6 +26,7 @@ DefaultBehavior Definitions fnx = macro(
 
   call resendToMethod("fn") do(
     activatable = true))
+
 
 DefaultBehavior Definitions lecrox = macro(
   "does the same things as lecro, but returns something that is not activatable.",

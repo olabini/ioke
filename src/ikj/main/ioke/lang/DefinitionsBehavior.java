@@ -188,33 +188,6 @@ public class DefinitionsBehavior {
                 }
             }));
 
-        obj.registerMethod(runtime.newNativeMethod("creates a new lexical block that can be executed at will, while retaining a reference to the lexical closure it was created in. it will always update variables if they exist. there is currently no way of introducing shadowing variables in the local context. new variables can be created though, just like in a method. a lexical block mimics LexicalBlock, and can take arguments. at the moment these are restricted to required arguments, but support for the same argument types as DefaultMethod will come. same as fn()", new NativeMethod("\u028E") {
-                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
-                    .builder()
-                    .withOptionalPositionalUnevaluated("documentation")
-                    .withRestUnevaluated("argumentsAndBody")
-                    .getArguments();
-
-                @Override
-                public DefaultArgumentsDefinition getArguments() {
-                    return ARGUMENTS;
-                }
-
-                @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().checkArgumentCount(context, message, on);
-
-                    List<Object> args = message.getArguments();
-                    if(args.isEmpty()) {
-                        return runtime.newLexicalBlock(null, runtime.lexicalBlock, new LexicalBlock(context, DefaultArgumentsDefinition.empty(), method.runtime.nilMessage));
-                    }
-
-                    IokeObject code = IokeObject.as(args.get(args.size()-1), context);
-
-                    DefaultArgumentsDefinition def = DefaultArgumentsDefinition.createFrom(args, 0, args.size()-1, message, on, context);
-                    return runtime.newLexicalBlock(null, runtime.lexicalBlock, new LexicalBlock(context, def, code));
-                }
-            }));
 
         obj.registerMethod(runtime.newNativeMethod("creates a new lexical block that can be executed at will, while retaining a reference to the lexical closure it was created in. it will always update variables if they exist. there is currently no way of introducing shadowing variables in the local context. new variables can be created though, just like in a method. a lexical block mimics LexicalBlock, and can take arguments. at the moment these are restricted to required arguments, but support for the same argument types as DefaultMethod will come.", new NativeMethod("fn") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
