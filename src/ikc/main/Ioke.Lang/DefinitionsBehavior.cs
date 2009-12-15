@@ -106,34 +106,6 @@ namespace Ioke.Lang {
                                                                             return runtime.NewLexicalBlock(doc, runtime.LexicalBlock, new LexicalBlock(context, def, code));
                                                                         })));
 
-            obj.RegisterMethod(runtime.NewNativeMethod("creates a new lexical block that can be executed at will, while retaining a reference to the lexical closure it was created in. it will always update variables if they exist. there is currently no way of introducing shadowing variables in the local context. new variables can be created though, just like in a method. a lexical block mimics LexicalBlock, and can take arguments. at the moment these are restricted to required arguments, but support for the same argument types as DefaultMethod will come. same as fn()",
-                                                       new NativeMethod("\u028E", DefaultArgumentsDefinition.builder()
-                                                                        .WithOptionalPositionalUnevaluated("documentation")
-                                                                        .WithRestUnevaluated("argumentsAndBody")
-                                                                        .Arguments,
-                                                                        (method, context, message, on, outer) => {
-                                                                            outer.ArgumentsDefinition.CheckArgumentCount(context, message, on);
-                                                                            var args = message.Arguments;
-
-                                                                            if(args.Count == 0) {
-                                                                                return runtime.NewLexicalBlock(null, runtime.LexicalBlock, new LexicalBlock(context, DefaultArgumentsDefinition.Empty(), method.runtime.nilMessage));
-                                                                            }
-
-                                                                            string doc = null;
-
-                                                                            int start = 0;
-                                                                            if(args.Count > 1 && ((IokeObject)Message.GetArguments(message)[0]).Name.Equals("internal:createText")) {
-                                                                                start++;
-                                                                                string s = ((string)((IokeObject)args[0]).Arguments[0]);
-                                                                                doc = s;
-                                                                            }
-
-                                                                            IokeObject code = IokeObject.As(args[args.Count-1], context);
-
-                                                                            DefaultArgumentsDefinition def = DefaultArgumentsDefinition.CreateFrom(args, start, args.Count-1, message, on, context);
-                                                                            return runtime.NewLexicalBlock(doc, runtime.LexicalBlock, new LexicalBlock(context, def, code));
-                                                                        })));
-
             obj.RegisterMethod(runtime.NewNativeMethod("expects one code argument, optionally preceeded by a documentation string. will create a new LexicalMacro based on the code and return it.",
                                                        new NativeMethod("lecro", DefaultArgumentsDefinition.builder()
                                                                         .WithOptionalPositionalUnevaluated("documentation")
