@@ -10,6 +10,7 @@ use("ispec/describeContext")
 use("ispec/example")
 use("ispec/runner")
 use("ispec/mocking")
+use("ispec/comparisonCompactor")
 
 ISpec ispec_options = method(
   parser = ISpec Runner OptionParser create(System err, System out)

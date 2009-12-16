@@ -110,6 +110,103 @@ describe(ISpec DescribeContext,
 )
 
 describe(ISpec,
+  describe("ComparisonCompactor",
+    it("should display a message as part of the compacting message",
+      failure = ISpec ComparisonCompactor compact(0, "b", "c", message: "a")
+      failure should == "a expected:<[b]> but was:<[c]>"
+    )
+
+    it("should compact the same starting sequence",
+      failure = ISpec ComparisonCompactor compact(1, "ba", "bc")
+      failure should == "expected:<b[a]> but was:<b[c]>"
+    )
+
+    it("should compact the same ending sequence",
+      failure = ISpec ComparisonCompactor compact(1, "ab", "cb")
+      failure should == "expected:<[a]b> but was:<[c]b>"
+    )
+
+    it("should compact the same sequence",
+      failure = ISpec ComparisonCompactor compact(1, "ab", "ab")
+      failure should == "expected:<ab> but was:<ab>"
+    )
+
+    it("should compact with different middle and no context",
+      failure = ISpec ComparisonCompactor compact(0, "abc", "adc")
+      failure should == "expected:<...[b]...> but was:<...[d]...>"
+    )
+
+    it("should compact with different middle and context",
+      failure = ISpec ComparisonCompactor compact(1, "abc", "adc")
+      failure should == "expected:<a[b]c> but was:<a[d]c>"
+    )
+
+    it("should compact with different middle, context and ellipses",
+      failure = ISpec ComparisonCompactor compact(1, "abcde", "abfde")
+      failure should == "expected:<...b[c]d...> but was:<...b[f]d...>"
+    )
+
+    it("should compact when sharing the same start sequence completed with context",
+      failure = ISpec ComparisonCompactor compact(2, "ab", "abc")
+      failure should == "expected:<ab[]> but was:<ab[c]>"
+    )
+
+    it("should compact when sharing the same start sequence completed without context",
+      failure = ISpec ComparisonCompactor compact(0, "bc", "abc")
+      failure should == "expected:<[]...> but was:<[a]...>"
+    )
+
+    it("should compact when sharing the same start sequence completed with context",
+      failure = ISpec ComparisonCompactor compact(2, "bc", "abc")
+      failure should == "expected:<[]bc> but was:<[a]bc>"
+    )
+
+    it("should compact when sharing overlapping matches",
+      failure = ISpec ComparisonCompactor compact(0, "abc", "abbc")
+      failure should == "expected:<...[]...> but was:<...[b]...>"
+    )
+
+    it("should compact when sharing overlapping matches with context",
+      failure = ISpec ComparisonCompactor compact(2, "abc", "abbc")
+      failure should == "expected:<ab[]c> but was:<ab[b]c>"
+    )
+
+    it("should compact when sharing more overlapping matches",
+      failure = ISpec ComparisonCompactor compact(0, "abcdde", "abcde")
+      failure should == "expected:<...[d]...> but was:<...[]...>"
+    )
+
+    it("should compact when sharing more overlapping matches with context",
+      failure = ISpec ComparisonCompactor compact(2, "abcdde", "abcde")
+      failure should == "expected:<...cd[d]e> but was:<...cd[]e>"
+    )
+
+    it("should compact when comparing with nil",
+      failure = ISpec ComparisonCompactor compact(0, "a", nil)
+      failure should == "expected:<a> but was:<nil>"
+    )
+
+    it("should compact when comparing with nil with context",
+      failure = ISpec ComparisonCompactor compact(2, "a", nil)
+      failure should == "expected:<a> but was:<nil>"
+    )
+
+    it("should compact when comparing with expected nil",
+      failure = ISpec ComparisonCompactor compact(0, nil, "a")
+      failure should == "expected:<nil> but was:<a>"
+    )
+
+    it("should compact when comparing with nil with context",
+      failure = ISpec ComparisonCompactor compact(2, nil, "a")
+      failure should == "expected:<nil> but was:<a>"
+    )
+
+    it("should compact repeated pieces into a working message",
+      failure = ISpec ComparisonCompactor compact(10, "S&P500", "0")
+      failure should == "expected:<[S&P50]0> but was:<[]0>"
+    )
+  )
+
   describe("in context with pending example",
     it("should be pending", {pending: true},
       error!("Pending example is not pending")
