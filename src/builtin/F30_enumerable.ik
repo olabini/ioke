@@ -314,6 +314,13 @@ let(enumerableDefaultMethod,
         collecting = true
         result << cell(:n))),
     result)
+
+  Mixins Enumerable groupBy = enumerableDefaultMethod("takes zero, one or two arguments. it will evaluate all the elements in the enumerable and return a dictionary where the keys will be the result of evaluating the arguments and the value will be a list of all the original values that match that key.",
+    result = dict(),
+    if(result key?(cell(:x)),
+      result[cell(:x)] << cell(:n),
+      result[cell(:x)] = list(cell(:n))),
+    result)
 )
 
 Mixins Enumerable findIndex = dmacro("takes zero, one or two arguments. if zero arguments, returns the index of the first element that is true, otherwise nil. if one argument, expects it to be a message chain. if that message chain, when applied to the current element returns a true value, the corresponding element index is returned. finally, if two arguments are given, the first argument is an unevaluated name and the second is a code element. these will together be turned into a lexical block and tested against the values in this element. if it returns true for any element, the element index will be returned, otherwise nil.",
@@ -651,13 +658,7 @@ Mixins Enumerable sum = method(
 
 Mixins Enumerable group = method(
   "returns a dict where all the keys are distinct elements in the enumerable, and each value is a list of all the values that are equivalent",
-  result = {}
-  self each(n,
-    if(result key?(cell(:n)),
-      result[cell(:n)] << cell(:n),
-      result[cell(:n)] = list(cell(:n))))
-  result
-)
+  groupBy)
 
 Mixins Enumerable aliasMethod("map", "collect")
 Mixins Enumerable aliasMethod("map", "collect:list")

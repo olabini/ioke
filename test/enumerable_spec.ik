@@ -1615,5 +1615,33 @@ describe(Mixins,
         {foo: 42, bar: 55} group should == {(:foo => 42) => [:foo => 42], (:bar => 55) => [:bar => 55]}
       )
     )
+
+    describe("groupBy",
+      it("should return an empty dict for an empty enumerable",
+        [] groupBy should == {}
+        (1...1) groupBy should == {}
+        #{} groupBy should == {}
+      )
+
+      it("should return a dict with all distinct values as keys",
+        [:abc, :cde :foo, :cde] groupBy keys should == #{:abc, :cde, :foo}
+      )
+
+      it("should group all the same values into a list",
+        [1,2,3,2,3,3,5,5,5,5,5] groupBy should == {1 => [1], 2 => [2, 2], 3 => [3, 3, 3], 5 => [5, 5, 5, 5, 5]}
+        {foo: 42, bar: 55} groupBy should == {(:foo => 42) => [:foo => 42], (:bar => 55) => [:bar => 55]}
+      )
+
+      it("should take one argument that is a message chain. the result of this will be the grouping factor and used as key",
+        [1,2,3,2,3,3,5,5,5,5,5] groupBy(-1) should == {0 => [1], 1 => [2, 2], 2 => [3, 3, 3], 4 => [5, 5, 5, 5, 5]}
+        [1,2,3,2,3,3,5,5,5,5,5] groupBy(asText) should == {"1" => [1], "2" => [2, 2], "3" => [3, 3, 3], "5" => [5, 5, 5, 5, 5]}
+      )
+
+      it("should take two arguments that is an argument name and code. the result of this will be the grouping factor and used as key",
+        [1,2,3,2,3,3,5,5,5,5,5] groupBy(x, x-1) should == {0 => [1], 1 => [2, 2], 2 => [3, 3, 3], 4 => [5, 5, 5, 5, 5]}
+        [1,2,3,2,3,3,5,5,5,5,5] groupBy(x, x asText) should == {"1" => [1], "2" => [2, 2], "3" => [3, 3, 3], "5" => [5, 5, 5, 5, 5]}
+        [1,2,3,2,3,3,5,5,5,5,5] groupBy(x, x%2 == 0) should == {true => [2,2], false => [1,3,3,3,5,5,5,5,5]}
+      )
+    )
   )
 )
