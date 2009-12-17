@@ -649,6 +649,16 @@ Mixins Enumerable sum = method(
   "returns an object created by summing all objects in the enumerable using the + operator. the default value for an empty enumerable will be nil.",
   inject(+))
 
+Mixins Enumerable group = method(
+  "returns a dict where all the keys are distinct elements in the enumerable, and each value is a list of all the values that are equivalent",
+  result = {}
+  self each(n,
+    if(result key?(cell(:n)),
+      result[cell(:n)] << cell(:n),
+      result[cell(:n)] = list(cell(:n))))
+  result
+)
+
 Mixins Enumerable aliasMethod("map", "collect")
 Mixins Enumerable aliasMethod("map", "collect:list")
 Mixins Enumerable aliasMethod("map", "map:list")
