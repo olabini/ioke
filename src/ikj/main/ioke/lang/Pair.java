@@ -3,6 +3,7 @@
  */
 package ioke.lang;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
@@ -45,6 +46,16 @@ public class Pair extends IokeData {
         obj.setKind("Pair");
         obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Enumerable"), null), runtime.nul, runtime.nul);
         obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Comparing"), null), runtime.nul, runtime.nul);
+
+        obj.registerMethod(runtime.newNativeMethod("returns a hash for the pair", new NativeMethod.WithNoArguments("hash") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                    int one = ((Pair)IokeObject.data(on)).first.hashCode();
+                    int two = ((Pair)IokeObject.data(on)).second.hashCode();
+                    return context.runtime.newNumber(one + 13*two);
+                }
+            }));
 
         obj.registerMethod(runtime.newNativeMethod("returns true if the left hand side pair is equal to the right hand side pair.", new TypeCheckingNativeMethod("==") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
