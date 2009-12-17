@@ -1598,5 +1598,22 @@ describe(Mixins,
         ["foo", "bar", "bax"] sum should == "foobarbax"
       )
     )
+
+    describe("group",
+      it("should return an empty dict for an empty enumerable",
+        [] group should == {}
+        (1...1) group should == {}
+        #{} group should == {}
+      )
+
+      it("should return a dict with all distinct values as keys",
+        [:abc, :cde :foo, :cde] group keys should == #{:abc, :cde, :foo}
+      )
+
+      it("should group all the same values into a list",
+        [1,2,3,2,3,3,5,5,5,5,5] group should == {1 => [1], 2 => [2, 2], 3 => [3, 3, 3], 5 => [5, 5, 5, 5, 5]}
+        {foo: 42, bar: 55} group should == {(:foo => 42) => [:foo => 42], (:bar => 55) => [:bar => 55]}
+      )
+    )
   )
 )
