@@ -99,6 +99,13 @@ describe(Pair,
       Pair should checkReceiverTypeOn(:notice)
     )
   )
+
+  describe("hash",
+    it("should be derived from the constituent elements",
+      (1 => 2) hash should == (1 => 2) hash
+      (1 => 2) hash should not == (1 => 1) hash
+    )
+  )
 )
 
 describe(DefaultBehavior,

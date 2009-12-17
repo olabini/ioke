@@ -33,6 +33,14 @@ namespace Ioke.Lang {
             obj.Mimics(IokeObject.As(runtime.Mixins.GetCell(null, null, "Enumerable"), null), runtime.nul, runtime.nul);
             obj.Mimics(IokeObject.As(runtime.Mixins.GetCell(null, null, "Comparing"), null), runtime.nul, runtime.nul);
 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("returns a hash for the pair",
+                                                           new NativeMethod.WithNoArguments("hash", (method, context, message, on, outer) => {
+                                                                   outer.ArgumentsDefinition.CheckArgumentCount(context, message, on);
+                                                                   var one = ((Pair)IokeObject.dataOf(on)).first.GetHashCode();
+                                                                   var two = ((Pair)IokeObject.dataOf(on)).second.GetHashCode();
+                                                                   return context.runtime.NewNumber(one + 13*two);
+                                                               })));
+
             obj.RegisterMethod(runtime.NewNativeMethod("returns true if the left hand side pair is equal to the right hand side pair.",
                                                        new TypeCheckingNativeMethod("==", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(runtime.Pair)
