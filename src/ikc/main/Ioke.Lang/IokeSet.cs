@@ -129,6 +129,9 @@ namespace Ioke.Lang {
                                                                                         var one = ((IokeSet)IokeObject.dataOf(args[0])).Set;
                                                                                         var two = ((IokeSet)IokeObject.dataOf(on)).Set;
                                                                                         var result = two.IsProperSubsetOf(one);
+                                                                                        if(one.Count == 0 && two.Count == 0) {
+                                                                                            result = false;
+                                                                                        }
                                                                                         return result ? context.runtime.True : context.runtime.False;
                                                                                     })));
 
