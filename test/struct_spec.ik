@@ -148,9 +148,9 @@ describe("Struct",
 
     it("should return all defaulted attribute names",
       X = Struct(foo: 42, bar: 55)
-      X attributeNames should == [:foo, :bar]
+      X attributeNames sort should == [:foo, :bar] sort
       x = X(42, 55)
-      x attributeNames should == [:foo, :bar]
+      x attributeNames sort should == [:foo, :bar] sort
     )
 
     it("should have all the defaulted attribute names after the positional attribute names",
