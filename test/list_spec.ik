@@ -1851,6 +1851,18 @@ describe(List,
       List should checkReceiverTypeOn(:pop!)
     )
   )
+
+  describe("random",
+    it("should return an element from the list",
+      l = [:sam, :sooze, :beans]
+      r = l random
+      l should include(r)
+    )
+
+    it("should return nil if the list is empty",
+      [] random should be nil
+    )
+  )
 )
 
 describe("DefaultBehavior",
