@@ -1,5 +1,56 @@
 
+use("iopt")
+
 DokGen do(
+  Options = Origin mimic do(
+    create = method(
+      self with(imports: [], uses: [], hasHelp?: false,
+        outputDir: "dok", combineWithSpecs?: true, specsPattern: "test/**/*_spec.ik",
+        collectBeforeTests: false
+      )
+    )
+
+    shouldRun? = method(!hasHelp?)
+
+    run = method(
+      imports each(i, System loadPath << i)
+      uses each(u, use(u))
+
+      collected = DokGen Collected from({}, {"IokeGround" => IokeGround, "Ground" => Ground}, {})
+      DokGen collect(IokeGround, collected)
+      if(combineWithSpecs?,
+        DokGen collectSpecs(specsPattern, collected collectedSpecs, collected)
+      )
+      DokGen generate(outputDir, collected)
+    )
+  )
+
+  OptionParser = IOpt mimic do(
+    create = method(
+      newOP = self mimic
+      newOP options = DokGen Options create
+      newOP)
+
+    banner = "Usage: dokgen [options]"
+
+    on("-h", "--help", "Display usage.", @options hasHelp? = true)
+
+    on("-I", "Add the specified directory to the load path before running anything", import,
+      @options imports << import)
+
+    on("-u", "Use the specified file before doing testing", ufile,
+      @options uses << ufile)
+
+    order = method(argv,
+      parse!(argv)
+      options)
+
+    order! = method(argv,
+      order(argv)
+      if(options hasHelp?, System out println(self). System exit(0))
+      options)
+  )
+
   Collected = [{},{},{},{}] mimic do(
     from = method(files, kinds, cells, specs {},
       newObj = self mimic
@@ -16,22 +67,11 @@ DokGen do(
   )
 
   document = method(
-    "Takes a list of command line arguments, parses these and then builds up the documentation about all data in the system",
-    arguments,
+    "Builds up the documentation about all data in the system",
 
-    outputDir = "dok"
-
-    combineWithSpecs = true
-    specsPattern = "test/**/*_spec.ik"
-
-    collected = Collected from({}, {"IokeGround" => IokeGround, "Ground" => Ground}, {})
-
-    collect(IokeGround, collected)
-
-    if(combineWithSpecs,
-      collectSpecs(specsPattern, collected collectedSpecs, collected)
+    if(dok_options shouldRun?,
+      dok_options run,
+      dok_options banner println
     )
-
-    generate(outputDir, collected)
   )
 )
