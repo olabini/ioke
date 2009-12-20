@@ -59,8 +59,9 @@ Struct cell("[]=") = method(index, value,
     index)
   @cell(ix) = value)
 
+Struct do(=== = generateMatchMethod(==))
 Struct cell("==") = method(other,
-  (other mimics?(Struct) &&
+  (Struct === cell(:other) &&
     attributes == other attributes))
 
 Struct hash = method(attributes hash)

@@ -5,12 +5,12 @@ Message from = dmacro(
   [code]
   code deepCopy)
 
-Message == = method(other,
-  other mimics?(Message)           &&
-     @name == other name           &&
-     @arguments == other arguments &&
-     @next == other next)
 
+Message == = method(other,
+  cell(:other) kind == "Message"          &&
+     @name == other name                  &&
+     @arguments == other arguments        &&
+     @next == other next)
 
 Message do(=== = generateMatchMethod(==))
 

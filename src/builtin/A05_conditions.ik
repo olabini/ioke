@@ -129,7 +129,14 @@ Condition Error Invocation NotSpreadable report = method(
 Condition Error Invocation NotActivatable report = method(
   "returns a representation of this error",
 
-  "can't activate value '#{noticeFor(receiver)}' for method #{methodName} (#{self kind})")
+  msg = if(cell?(:reportMsg),
+    reportMsg,
+    "can't activate value '#{noticeFor(receiver)}' for method #{methodName} (#{self kind})")
+
+  "#{msg}
+
+#{message asStackTraceText}
+#{context stackTraceAsText}")
 
 Condition Error Invocation NoMatch report = method(
   "returns a representation of this error",

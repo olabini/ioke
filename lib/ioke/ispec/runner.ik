@@ -151,7 +151,7 @@ ISpec do(
       on("-c", "--color", "--colour", "Use colored output (default: true).", boolean true,
         @options useColour = boolean)
 
-      on("-e", "--example", "Only execute examples marching name",
+      on("-e", "--example", "Only execute examples matching name",
         "or if given a file, those listed in it", name_or_file,
         if(FileSystem file?(name_or_file),
           @options onlyMatching += FileSystem readFully(name_or_file) split("\n"),
