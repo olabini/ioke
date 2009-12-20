@@ -122,3 +122,9 @@ List random = method(
   if(length > 0,
     [System randomNumber % length],
     nil))
+
+List randomIndex = method(
+  "returns the index of a random element from the list. Returns nil if the list is empty.",
+  if(length > 0,
+    System randomNumber % length,
+    nil))
