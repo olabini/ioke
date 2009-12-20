@@ -1962,6 +1962,24 @@ describe(List,
       l should == [:sam, :sooze, :beans]
     )
   )
+
+  describe("shuffle",
+    it("should return a list of the same length",
+      l = [:sam, :sooze, :beans]
+      l shuffle length should == 3
+    )
+
+    it("should return a list containing the same elements",
+      l = [:sam, :sooze, :beans]
+      l sort should == l shuffle sort
+    )
+
+    it("should not modify the original list",
+      l = (0..100) asList
+      l shuffle
+      l should == (0..100) asList
+    )
+  )
 )
 
 describe("DefaultBehavior",

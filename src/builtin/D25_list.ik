@@ -168,3 +168,7 @@ List choose = method(
       next: fnx(left--. outerList random)),
 
     random))
+
+List shuffle = method(
+  "return a new list containing the same elements as the original list with their positions distributed randomly.",
+  pick(length))
