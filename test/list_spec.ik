@@ -1902,6 +1902,37 @@ describe(List,
       l should == [:sam, :sooze, :beans]
     )
   )
+
+  describe("pick!",
+    it("should take zero arguments and remove and return a random element from the list",
+      l = [:sam, :sooze, :beans]
+      p = l pick!
+      [:sam, :sooze, :beans] should include(p)
+    )
+
+    it("should take one argument and return a subset list of that length, padded with nils if necessary",
+      [:sam, :sooze, :beans] pick!(1) length should == 1
+      [:sam, :sooze, :beans] pick!(2) length should == 2
+      [:sam, :sooze, :beans] pick!(100) length should == 100
+
+      [:sam, :sooze, :beans] pick!(2) each(el, [:sam, :sooze, :beans] should include(el))
+      [:sam, :sooze, :beans] pick!(3) sort should == [:sam, :sooze, :beans] sort
+
+      ([:sam, :sooze, :beans] pick!(7) - [:sam, :sooze, :beans]) should == [nil, nil, nil, nil]
+    )
+
+    it("should modify the original list",
+      l = [:sam, :sooze, :beans]
+      l pick!
+      l should not == [:sam, :sooze, :beans]
+      l size should == 2
+
+      l2 = [:sam, :sooze, :beans]
+      l2 pick!(2)
+      l2 should not == [:sam, :sooze, :beans]
+      l2 size should == 1
+    )
+  )
 )
 
 describe("DefaultBehavior",

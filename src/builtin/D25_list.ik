@@ -141,3 +141,17 @@ List pick = method(
     result,
 
     random))
+
+List pick! = method(
+  "picks and removes a random element from the list. If a quantity is specified it modifies the list by removing that many random elements and returning them in a new list. If the specified quantity is greater than the length of the list, the returned list will be padded with nils.",
+  quantity nil,
+
+  if(quantity,
+    result = list()
+    quantity times(
+      if(length > 0,
+        result << removeAt!(randomIndex),
+        result << nil))
+    result,
+
+    removeAt!(randomIndex)))
