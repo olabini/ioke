@@ -1875,6 +1875,33 @@ describe(List,
       [] randomIndex should be nil
     )
   )
+
+  describe("pick",
+    it("should take zero arguments and return a random element from the list",
+      l = [:sam, :sooze, :beans]
+      p = l pick
+      l should include(p)
+    )
+
+    it("should take one argument and return a subset list of that length, padded with nils if necessary",
+      l = [:sam, :sooze, :beans]
+
+      l pick(1) length should == 1
+      l pick(2) length should == 2
+      l pick(100) length should == 100
+
+      l pick(2) each(el, l should include(el))
+      l pick(l length) sort should == l sort
+
+      (l pick(7) - l) should == [nil, nil, nil, nil]
+    )
+
+    it("should not modify the original list",
+      l = [:sam, :sooze, :beans]
+      l pick(2)
+      l should == [:sam, :sooze, :beans]
+    )
+  )
 )
 
 describe("DefaultBehavior",

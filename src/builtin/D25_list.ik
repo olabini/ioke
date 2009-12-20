@@ -128,3 +128,16 @@ List randomIndex = method(
   if(length > 0,
     System randomNumber % length,
     nil))
+
+List pick = method(
+  "picks a random element from the list. If a quantity is specified it returns a list of that size picked randomly which is a subset of the original list. If the specified quantity is greater than the length of the list, the returned list will be padded with nils.",
+  quantity nil,
+
+  if(quantity,
+    result = list()
+    notPicked = self mimic
+    quantity times(
+      result << notPicked removeAt!(System randomNumber % (notPicked length)))
+    result,
+
+    random))
