@@ -126,7 +126,7 @@ DokGen do(
       cell(:theKind) cells each(cc,
         if(cells[cc key asText],
           vex = cells[cc key asText] find(val, (cell(:theKind) == val[0]) && (cell(:theKind) kind == val[0] kind))
-          if((cc value cell?(:activatable)) && (cc value cell(:activatable)),
+          if((cc value cell?(:activatable)) && (cc value cell(:activatable)) && vex,
             theKey = "#{vex[0] kind} #{cc key}"
             activeCells << [cc key, cc value, vex, vex[2] argumentsCode],
             inactiveCells << [cc key, cc value, vex])))
