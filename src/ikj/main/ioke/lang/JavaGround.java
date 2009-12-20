@@ -25,6 +25,8 @@ public class JavaGround {
         final Runtime runtime = obj.runtime;
         obj.setKind("JavaGround");
         obj.mimicsWithoutCheck(IokeObject.as(runtime.defaultBehavior.getCells().get("BaseBehavior"), null));
+        obj.setCell("mimics?",               ((IokeObject)runtime.defaultBehavior.getCells().get("Reflection")).getCells().get("mimics?"));
+
         obj.registerCell("JavaArray", runtime.javaArray);
 
         obj.registerMethod(runtime.newNativeMethod("takes an internal name for a Java type and returns that object.", new TypeCheckingNativeMethod("primitiveJavaClass!") {
