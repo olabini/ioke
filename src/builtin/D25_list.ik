@@ -155,3 +155,16 @@ List pick! = method(
     result,
 
     removeAt!(randomIndex)))
+
+List choose = method(
+  "chooses a random element from the list. If a quantity is specified it returns a sequence of random elements each chosen from the complete list (and therefore may contain duplicates)",
+  quantity nil,
+
+  if(quantity,
+    outerList = self
+    left = quantity
+    Sequence with(
+      next?: fnx(left > 0),
+      next: fnx(left--. outerList random)),
+
+    random))
