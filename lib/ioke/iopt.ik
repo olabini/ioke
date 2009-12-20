@@ -76,7 +76,7 @@ IOpt do(
     value  - Will create an Action ValueActivation that will activate the given
              value, this can anything like Method, LexicalContext, Macros, etc.
     ",
-    options = set()
+    options = list()
     call arguments butLast each(i, a,
       a = call argAt(i)
       unless(m = iopt:ion(a),

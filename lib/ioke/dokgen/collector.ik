@@ -38,8 +38,9 @@ DokGen do(
 
   collectSpecs = method(specsPattern, collectedSpecs, collected,
     use("ispec")
-
+    ISpec Runner registerAtExitHook = nil
     ISpec Options shouldRun? = false
+    ISpec ispec_options = ISpec Options create(System out, System err)
     ISpec shouldExit? = false
 
     FileSystem[specsPattern] each(f, use(f))

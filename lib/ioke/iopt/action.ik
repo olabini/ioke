@@ -60,7 +60,7 @@ IOpt Action do(
   );MessageEvaluation
 
   initialize = method(
-    @options = set()
+    @options = list()
     @priority = 0
   )
 
