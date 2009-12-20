@@ -7,6 +7,7 @@ ISpec do(
       self with(errorStream: err, outStream: out,
         formatters: [], files: [], directories: [],
         loadPatterns: [], onlyMatching: [], onlyLines: [],
+        imports: [], uses: [],
         missingFiles: [], useColour: true, hasHelp?: false))
 
     shouldRun? = method(
@@ -50,6 +51,9 @@ ISpec do(
     )
 
     runExamples = method(
+      imports each(i, System loadPath << i)
+      uses each(u, use(u))
+
       files each(f, use(f))
       directories each(d,
         FileSystem["#{d}/{#{loadPatterns join(",")}}"] each(f, use(f)))
@@ -159,6 +163,12 @@ ISpec do(
 
       on("-l", "--line", "Only execute examples defined at line_number", line_number,
         @options onlyLines << line_number)
+
+      on("-I", "Add the specified directory to the load path before running anything", import,
+        @options imports << import)
+
+      on("-u", "Use the specified file before doing testing", ufile,
+        @options uses << ufile)
 
       order = method(argv,
         parse!(argv)
