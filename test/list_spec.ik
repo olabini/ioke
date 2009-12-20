@@ -1863,6 +1863,18 @@ describe(List,
       [] random should be nil
     )
   )
+
+  describe("randomIndex",
+    it("should return an integer within the range (0..list length)",
+      l = [:sam, :sooze, :beans]
+      r = l randomIndex
+      (0..l length) asList should include(r)
+    )
+
+    it("should return nil if the list is empty",
+      [] randomIndex should be nil
+    )
+  )
 )
 
 describe("DefaultBehavior",
