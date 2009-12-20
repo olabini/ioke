@@ -1933,6 +1933,35 @@ describe(List,
       l2 size should == 1
     )
   )
+
+  describe("choose",
+    it("should take zero arguments and return a random element from the list",
+      l = [:sam, :sooze, :beans]
+      p = l choose
+      l should include(p)
+    )
+
+    it("should take one argument specifying the quantity and return a sequence containing that many random elements",
+      l = [:sam, :sooze, :beans]
+      s = l choose(3)
+      s next? should == true
+      taken = s take(3)
+      taken length should == 3
+      taken each(el, l should include(el))
+    )
+
+    it("should not modify the original list",
+      l = [:sam, :sooze, :beans]
+      l choose
+      l length should == 3
+      l should == [:sam, :sooze, :beans]
+
+      l = [:sam, :sooze, :beans]
+      l choose(3)
+      l length should == 3
+      l should == [:sam, :sooze, :beans]
+    )
+  )
 )
 
 describe("DefaultBehavior",
