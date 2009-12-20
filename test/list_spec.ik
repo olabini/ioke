@@ -1980,6 +1980,24 @@ describe(List,
       l should == (0..100) asList
     )
   )
+
+  describe("shuffle!",
+    it("should not change the length of the list",
+      l = [:sam, :sooze, :beans]
+      l shuffle!
+      l length should == 3
+    )
+
+    it("should not change the elements in the list",
+      l = [:sam, :sooze, :beans]
+      sorted = l sort
+      l sort should == sorted
+    )
+
+    it("should modify the list so that the elements are not in the same order (unless we're amazingly lucky/unlucky)",
+      (0..1000) asList shuffle! should not == (0..1000) asList
+    )
+  )
 )
 
 describe("DefaultBehavior",
