@@ -41,6 +41,20 @@ DokGen do(
     on("-u", "Use the specified file before doing testing", ufile,
       @options uses << ufile)
 
+    on("-o", "--output", "The directory to place generated files in. Everything in this directory will be overwritten", dir,
+      @options outputDir = dir)
+
+    on("-S", "--nospec", "Don't combine documentation with specs. This implies -t.",
+      @options combineWithSpecs? = false
+      @options collectBeforeTests = true
+    )
+
+    on("-s", "--specs", "Use the specified pattern to find specs to load", pattern,
+      @options specsPattern = pattern)
+
+    on("-t", "--traverse", "Collect by traversal instead of by using the specs",
+      @options collectBeforeTests = true)
+
     order = method(argv,
       parse!(argv)
       options)
