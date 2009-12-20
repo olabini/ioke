@@ -172,3 +172,11 @@ List choose = method(
 List shuffle = method(
   "return a new list containing the same elements as the original list with their positions distributed randomly.",
   pick(length))
+
+List shuffle! = method(
+  "shuffles the list by randomly distributing the position of its elements",
+  notPicked = self mimic
+  notPicked length times(index,
+    randomIndex = System randomNumber % (notPicked length)
+    [index] = notPicked removeAt!(randomIndex))
+  self)
