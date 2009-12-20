@@ -170,14 +170,14 @@ if the match method is called 'matchFoo' and the receiver is called Foo, will ge
 
 method(other,
   if(self same?(Foo),
-    other mimics?(Foo),
+    Reflector other:mimics?(other, Foo),
     self matchFoo(other)))
 ",
   otherMethod = call arguments[0]
 
   ''(method(other,
       if(self same?(`self),
-        other mimics?(`self),
+        Reflector other:mimics?(cell(:other), `self),
         bind(rescue(Condition Error, fn(c, false)),
           self `(otherMethod) (other))))))
 
