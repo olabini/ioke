@@ -38,6 +38,8 @@ DokGen do(
     )
 
     generateFromTemplate = method(template, out:, +:krest,
+      bind(rescue(Condition Error, fn(ignored, nil)),
+        FileSystem removeFile!(out))
       FileSystem withOpenFile(out, fn(f, template generateIntoFile(f, *krest)))
     )
 
@@ -195,6 +197,8 @@ DokGen do(
 
     generateFileFile = method(dir, sourceFileName, info,
       segments = sourceFileName split("/")
+      if(sourceFileName[0..0] == "/",
+        segments prepend!(""))
       beforeLinks = "../" * (segments length)
 
       htmlFile = "#{dir}/files/#{htmlizeName(sourceFileName)}"
