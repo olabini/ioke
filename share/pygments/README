@@ -1,0 +1,22 @@
+Ioke Pygments Lexer
+===================
+
+Sam Aaron (samaaron@gmail.com)
+
+Quickstart
+----------
+
+1. Get a copy of the Pygments source
+2. Crack it open and navigate to: pygments/lexers
+3. Fire up your super best editor and open agile.py
+4. Add IokeLexer to __all__ at the top of the file
+5. Insert the IokeLexer with the other class definitions
+6. Refer to lexer.py in *this* directory for the details
+7. Run 'python _mapping.py' from within pygments/lexers
+8. Make sure that your pygmentize command points to your modified source dir
+9. Run the pygmentize command as usual - you can refer to ioke as ioke or ik.
+10. Enjoy.
+11. Make someone else smile today.
+
+
+
