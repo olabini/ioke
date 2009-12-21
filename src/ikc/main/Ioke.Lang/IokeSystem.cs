@@ -168,6 +168,13 @@ namespace Ioke.Lang {
                                                                                             return context.runtime.NewNumber(((IokeSystem)IokeObject.dataOf(on)).random.Next());
                                                                                         })));
 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns the current working directory",
+                                                       new NativeMethod.WithNoArguments("currentWorkingDirectory",
+                                                                                        (method, context, message, on, outer) => {
+                                                                                            outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, new SaneArrayList(), new SaneDictionary<string, object>());
+                                                                                            return context.runtime.NewText(context.runtime.CurrentWorkingDirectory);
+                                                                                    })));
+
             obj.RegisterMethod(runtime.NewNativeMethod("returns the current directory that the code is executing in",
                                                        new NativeMethod.WithNoArguments("currentDirectory",
                                                                                         (method, context, message, on, outer) => {

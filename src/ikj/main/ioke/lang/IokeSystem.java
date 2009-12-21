@@ -501,6 +501,14 @@ public class IokeSystem extends IokeData {
                 }
             }));
 
+        obj.registerMethod(runtime.newNativeMethod("returns the current working directory", new NativeMethod.WithNoArguments("currentWorkingDirectory") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                    return context.runtime.newText(context.runtime.getCurrentWorkingDirectory());
+                }
+            }));
+
         obj.registerMethod(runtime.newNativeMethod("forcibly exits the currently running interpreter. takes one optional argument that defaults to 1 - which is the value to return from the process, if the process is exited.", new NativeMethod("exit") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
