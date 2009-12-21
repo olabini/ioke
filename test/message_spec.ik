@@ -129,6 +129,14 @@ describe(Message,
       x4 should not == x2
       x4 should == x3
     )
+
+    it("should work when given base as argument",
+      ('foo == Base) should be false
+    )
+
+    it("should work when given basebehavior as argument",
+      ('foo == DefaultBehavior BaseBehavior) should be false
+    )
   )
 
   describe("arguments",

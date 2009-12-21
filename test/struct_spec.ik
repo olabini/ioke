@@ -282,6 +282,14 @@ describe("Struct",
       x quux = nil
       x should == x2
     )
+
+    it("should work when given base as argument",
+      (Struct(:x) create(42) == Base) should be false
+    )
+
+    it("should work when given basebehavior as argument",
+      (Struct(:x) create(42) == DefaultBehavior BaseBehavior) should be false
+    )
   )
 
   describe("hash",
