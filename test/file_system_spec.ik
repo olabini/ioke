@@ -346,6 +346,30 @@ describe(FileSystem,
     )
   )
 
+  describe("readLines",
+    it("should correctly read in a blank file as an empty list",
+      FileSystem readLines("test/fixtures/blank.txt") should == []
+    )
+
+    it("should correctly read in a list of names",
+      FileSystem readLines("test/fixtures/names.txt") should == ["Ola", "Martin", "Sam", "Carlos", "Brian", "Felipe"]
+    )
+
+    onlyWhen(FileSystemTestConfig cell?(:homeDirectory),
+      it("should expand tilde for the home directory",
+        realname = "#{FileSystemTestConfig homeDirectory}/.__something_that_should_only_exist_for_file_system_ioke_tests"
+        fname = "~/.__something_that_should_only_exist_for_file_system_ioke_tests"
+        ensure(
+          FileSystem withOpenFile(realname, fn(f, f print("hello you are a strange man!")))
+          FileSystem readLines(fname) should == "hello you are a strange man!"
+          ,
+          bind(rescue(Condition Error, fn(ignored, nil)),
+            FileSystem removeFile!(realname))
+        )
+      )
+    )
+  )
+
   describe(FileSystem File,
     it("should have the right kind",
       FileSystem File should have kind("FileSystem File"))

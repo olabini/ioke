@@ -116,3 +116,67 @@ List rindex = method(
     if(self[index] == obj,
       return index))
   nil)
+
+List random = method(
+  "returns a random element from the list. Returns nil if the list is empty.",
+  if(length > 0,
+    [System randomNumber % length],
+    nil))
+
+List randomIndex = method(
+  "returns the index of a random element from the list. Returns nil if the list is empty.",
+  if(length > 0,
+    System randomNumber % length,
+    nil))
+
+List pick = method(
+  "picks a random element from the list. If a quantity is specified it returns a list of that size picked randomly which is a subset of the original list. If the specified quantity is greater than the length of the list, the returned list will be padded with nils.",
+  quantity nil,
+
+  if(quantity,
+    result = list()
+    notPicked = self mimic
+    quantity times(
+      result << notPicked removeAt!(System randomNumber % (notPicked length)))
+    result,
+
+    random))
+
+List pick! = method(
+  "picks and removes a random element from the list. If a quantity is specified it modifies the list by removing that many random elements and returning them in a new list. If the specified quantity is greater than the length of the list, the returned list will be padded with nils.",
+  quantity nil,
+
+  if(quantity,
+    result = list()
+    quantity times(
+      if(length > 0,
+        result << removeAt!(randomIndex),
+        result << nil))
+    result,
+
+    removeAt!(randomIndex)))
+
+List choose = method(
+  "chooses a random element from the list. If a quantity is specified it returns a sequence of random elements each chosen from the complete list (and therefore may contain duplicates)",
+  quantity nil,
+
+  if(quantity,
+    outerList = self
+    left = quantity
+    Sequence with(
+      next?: fnx(left > 0),
+      next: fnx(left--. outerList random)),
+
+    random))
+
+List shuffle = method(
+  "return a new list containing the same elements as the original list with their positions distributed randomly.",
+  pick(length))
+
+List shuffle! = method(
+  "shuffles the list by randomly distributing the position of its elements",
+  notPicked = self mimic
+  notPicked length times(index,
+    randomIndex = System randomNumber % (notPicked length)
+    [index] = notPicked removeAt!(randomIndex))
+  self)

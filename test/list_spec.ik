@@ -1851,6 +1851,153 @@ describe(List,
       List should checkReceiverTypeOn(:pop!)
     )
   )
+
+  describe("random",
+    it("should return an element from the list",
+      l = [:sam, :sooze, :beans]
+      r = l random
+      l should include(r)
+    )
+
+    it("should return nil if the list is empty",
+      [] random should be nil
+    )
+  )
+
+  describe("randomIndex",
+    it("should return an integer within the range (0..list length)",
+      l = [:sam, :sooze, :beans]
+      r = l randomIndex
+      (0..l length) asList should include(r)
+    )
+
+    it("should return nil if the list is empty",
+      [] randomIndex should be nil
+    )
+  )
+
+  describe("pick",
+    it("should take zero arguments and return a random element from the list",
+      l = [:sam, :sooze, :beans]
+      p = l pick
+      l should include(p)
+    )
+
+    it("should take one argument and return a subset list of that length, padded with nils if necessary",
+      l = [:sam, :sooze, :beans]
+
+      l pick(1) length should == 1
+      l pick(2) length should == 2
+      l pick(100) length should == 100
+
+      l pick(2) each(el, l should include(el))
+      l pick(l length) sort should == l sort
+
+      (l pick(7) - l) should == [nil, nil, nil, nil]
+    )
+
+    it("should not modify the original list",
+      l = [:sam, :sooze, :beans]
+      l pick(2)
+      l should == [:sam, :sooze, :beans]
+    )
+  )
+
+  describe("pick!",
+    it("should take zero arguments and remove and return a random element from the list",
+      l = [:sam, :sooze, :beans]
+      p = l pick!
+      [:sam, :sooze, :beans] should include(p)
+    )
+
+    it("should take one argument and return a subset list of that length, padded with nils if necessary",
+      [:sam, :sooze, :beans] pick!(1) length should == 1
+      [:sam, :sooze, :beans] pick!(2) length should == 2
+      [:sam, :sooze, :beans] pick!(100) length should == 100
+
+      [:sam, :sooze, :beans] pick!(2) each(el, [:sam, :sooze, :beans] should include(el))
+      [:sam, :sooze, :beans] pick!(3) sort should == [:sam, :sooze, :beans] sort
+
+      ([:sam, :sooze, :beans] pick!(7) - [:sam, :sooze, :beans]) should == [nil, nil, nil, nil]
+    )
+
+    it("should modify the original list",
+      l = [:sam, :sooze, :beans]
+      l pick!
+      l should not == [:sam, :sooze, :beans]
+      l size should == 2
+
+      l2 = [:sam, :sooze, :beans]
+      l2 pick!(2)
+      l2 should not == [:sam, :sooze, :beans]
+      l2 size should == 1
+    )
+  )
+
+  describe("choose",
+    it("should take zero arguments and return a random element from the list",
+      l = [:sam, :sooze, :beans]
+      p = l choose
+      l should include(p)
+    )
+
+    it("should take one argument specifying the quantity and return a sequence containing that many random elements",
+      l = [:sam, :sooze, :beans]
+      s = l choose(3)
+      s next? should == true
+      taken = s take(3)
+      taken length should == 3
+      taken each(el, l should include(el))
+    )
+
+    it("should not modify the original list",
+      l = [:sam, :sooze, :beans]
+      l choose
+      l length should == 3
+      l should == [:sam, :sooze, :beans]
+
+      l = [:sam, :sooze, :beans]
+      l choose(3)
+      l length should == 3
+      l should == [:sam, :sooze, :beans]
+    )
+  )
+
+  describe("shuffle",
+    it("should return a list of the same length",
+      l = [:sam, :sooze, :beans]
+      l shuffle length should == 3
+    )
+
+    it("should return a list containing the same elements",
+      l = [:sam, :sooze, :beans]
+      l sort should == l shuffle sort
+    )
+
+    it("should not modify the original list",
+      l = (0..100) asList
+      l shuffle
+      l should == (0..100) asList
+    )
+  )
+
+  describe("shuffle!",
+    it("should not change the length of the list",
+      l = [:sam, :sooze, :beans]
+      l shuffle!
+      l length should == 3
+    )
+
+    it("should not change the elements in the list",
+      l = [:sam, :sooze, :beans]
+      sorted = l sort
+      l sort should == sorted
+    )
+
+    it("should modify the list so that the elements are not in the same order (unless we're amazingly lucky/unlucky)",
+      (0..1000) asList shuffle! should not == (0..1000) asList
+    )
+  )
 )
 
 describe("DefaultBehavior",
