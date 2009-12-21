@@ -16,10 +16,16 @@ DokGen do(
       imports each(i, System loadPath << i)
       uses each(u, use(u))
 
-      collected = DokGen Collected from({}, {"IokeGround" => IokeGround, "Ground" => Ground}, {})
-      DokGen collect(IokeGround, collected)
-      if(combineWithSpecs?,
-        DokGen collectSpecs(specsPattern, collected collectedSpecs, collected)
+      collected = DokGen Collected from({}, {}, {})
+      if(collectBeforeTests,
+        collected collectedKinds["IokeGround"] = IokeGround
+        collected collectedKinds["Ground"] = Ground
+        DokGen collect(IokeGround, collected)
+        if(combineWithSpecs?,
+          DokGen collectSpecs(specsPattern, collected collectedSpecs, collected)
+        )
+        ,
+        DokGen collectSpecsOnly(specsPattern, collected)
       )
       DokGen generate(outputDir, collected)
     )

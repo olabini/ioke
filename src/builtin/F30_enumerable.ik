@@ -364,7 +364,7 @@ Mixins Enumerable inject = dmacro(
 
       call ground cell(elementName) = cell(:n)
       sum = theCode evaluateOn(call ground, cell(:sum))))
-  return(sum),
+  return(cell(:sum)),
 
 
   [argName, theCode]
@@ -378,7 +378,7 @@ Mixins Enumerable inject = dmacro(
       call ground cell(elementName) = cell(:n)
       sum = theCode evaluateOn(call ground, cell(:sum))))
 
-  return(sum),
+  return(cell(:sum)),
 
 
   [sumArgName, argName, theCode]
@@ -389,14 +389,14 @@ Mixins Enumerable inject = dmacro(
       sum = cell(:n),
       sum = lexicalCode call(cell(:sum), cell(:n))))
 
-  return(sum),
+  return(cell(:sum)),
 
 
   [>sum, sumArgName, argName, theCode]
   lexicalCode = LexicalBlock createFrom(list(sumArgName, argName, theCode), call ground)
   self each(n,
     sum = lexicalCode call(cell(:sum), cell(:n)))
-  return(sum))
+  return(cell(:sum)))
 
 Mixins Enumerable flatMap = macro(
   "expects to get the same kind of arguments as map, and that each map operation returns a list. these lists will then be folded into a single list.",
