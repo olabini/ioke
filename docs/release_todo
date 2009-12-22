@@ -3,7 +3,6 @@
 - package everything into a small ball
 - upload final version
 - upload ioke doks.
-- tag repository
 - write announcements (include info about contributors)
  - twitter
  - kenai lists
@@ -11,4 +10,5 @@
  - jvm lang list
  - blog
  - TW internal lists
+- tag repository
 - update version to be next snapshot version
