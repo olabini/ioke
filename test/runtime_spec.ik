@@ -31,7 +31,7 @@ describe(Runtime,
 
       onlyWhen(System feature?(:clr),
         it("should be the correct version",
-          Runtime version versionNumber should == [0,2,0]
+          Runtime version versionNumber should == [0,4,0]
         )
       )
     )
