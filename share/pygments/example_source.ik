@@ -44,8 +44,11 @@ Ioke inspirations select(
 -23.4445e10
 
 ;keywords
-break cond continue do ensure for for:dict for:set if let loop return
-until while with
+break cond continue do ensure for for:dict for:set if let loop p:for
+p:for:dict p:for:set return until while with
+
+;origin
+eval mimic print println
 
 ;ground
 stackTraceAsText
@@ -87,21 +90,8 @@ restart signal! warn!
 nil false true
 
 ;names
-Kinds Arity Arguments Base Call Condition Default Error Arithmetic
-DivisionByZero NotParseable CantMimicOddball CommandLine
-DontUnderstandOption Default IO Index Invocation
-ArgumentWithoutDefaultValue MismatchedKeywords NoMatch NotActivatable
-NotSpreadable TooFewArguments TooManyArguments Load ModifyOnFrozen
-NativeException NoSuchAdvice NoSuchCell Parser pShuffle
-RestartNotActive Type IncorrectType Warning Default DateTime
-DefaultBehavior Aspects Pointcut Assignment BaseBehavior Boolean Case
-AndCombiner Else NAndCombiner NOrCombiner NotCombiner OrCombiner
-XOrCombiner Conditions Definitions FlowControl Internal Literals
-Reflection DefaultMacro DefaultMethod DefaultSyntax Dict FileSystem
-File Ground Handler IO IokeGround LexicalBlock LexicalMacro List
-Message OperatorTable Method Mixins Comparing Enumerable NativeMethod
-Number Decimal Integer Ratio Rational Real Origin Pair Range
-Regexp Match Rescue Restart Runtime Set Symbol System Text
+Arity Base Call Condition DateTime Aspects Pointcut Assignment BaseBehavior Boolean Case AndCombiner Else NAndCombiner NOrCombiner NotCombiner OrCombiner XOrCombiner Conditions Definitions FlowControl Internal Literals Reflection DefaultMacro DefaultMethod DefaultSyntax Dict FileSystem Ground Handler Hook IO IokeGround Struct LexicalBlock LexicalMacro List Message Method Mixins NativeMethod Number Origin Pair Range Reflector Regexp Regexp Match Rescue Restart Runtime Sequence Set Symbol System Text Tuple
+
 
 ;function defs
 generateMatchMethod aliasMethod λ ʎ fnx fn method dmacro dlecro syntax
