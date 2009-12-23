@@ -82,10 +82,13 @@ class IokeLexer(RegexLexer):
             (r'[a-zA-Z_][a-zA-Z0-9_!:?]*(?=[\s]*[+*/-]?=[^=].*($|\.))', Name.Variable),
 
             # keywords
-            (r'(break|cond|continue|do|ensure|for|for:dict|for:set|if|let|loop|return|unless|until|while|with)(?![a-zA-Z0-9!:_?])', Keyword.Reserved),
+            (r'(break|cond|continue|do|ensure|for|for:dict|for:set|if|let|loop|p:for|p:for:dict|p:for:set|return|unless|until|while|with)(?![a-zA-Z0-9!:_?])', Keyword.Reserved),
 
-            # Assorted other keywords
-            (r'(mimic)', Keyword),
+            # Origin
+            (r'(eval|mimic|print|println)(?![a-zA-Z0-9!:_?])', Keyword),
+
+            # Base
+            (r'(cell\?|cellNames|cellOwner\?|cellOwner|cells|cell|documentation|hash|identity|mimic|removeCell\!|undefineCell\!)(?![a-zA-Z0-9!:_?])', Keyword),
 
             # Ground
             (r'(stackTraceAsText)(?![a-zA-Z0-9!:_?])', Keyword),
@@ -103,8 +106,8 @@ class IokeLexer(RegexLexer):
             (r'(after|around|before)(?![a-zA-Z0-9!:_?])', Keyword.Reserved),
 
             # DefaultBehaviour
-            (r'(destructuring|kind|cellDescriptionDict|cellSummary|genSym|inspect|notice)(?![a-zA-Z0-9!:_?])', Keyword),
-            (r'(use)', Keyword.Reserved),
+            (r'(kind|cellDescriptionDict|cellSummary|genSym|inspect|notice)(?![a-zA-Z0-9!:_?])', Keyword),
+            (r'(use|destructuring)', Keyword.Reserved),
 
             #DefaultBehavior BaseBehavior
             (r'(cell\?|cellOwner\?|cellOwner|cellNames|cells|cell|documentation|identity|removeCell!|undefineCell)(?![a-zA-Z0-9!:_?])', Keyword),
@@ -119,7 +122,7 @@ class IokeLexer(RegexLexer):
             (r'(nil|false|true)(?![a-zA-Z0-9!:_?])', Name.Constant),
 
             # names
-            (r'(Kinds|Arity|Arguments|Base|Call|Condition|Default|Error|Arithmetic|DivisionByZero|NotParseable|CantMimicOddball|CommandLine|DontUnderstandOption|Default|IO|Index|Invocation|ArgumentWithoutDefaultValue|MismatchedKeywords|NoMatch|NotActivatable|NotSpreadable|TooFewArguments|TooManyArguments|Load|ModifyOnFrozen|NativeException|NoSuchAdvice|NoSuchCell|Parser|pShuffle|RestartNotActive|Type|IncorrectType|Warning|Default|DateTime|DefaultBehavior|Aspects|Pointcut|Assignment|BaseBehavior|Boolean|Case|AndCombiner|Else|NAndCombiner|NOrCombiner|NotCombiner|OrCombiner|XOrCombiner|Conditions|Definitions|FlowControl|Internal|Literals|Reflection|DefaultMacro|DefaultMethod|DefaultSyntax|Dict|FileSystem|File|Ground|Handler|IO|IokeGround|LexicalBlock|LexicalMacro|List|Message|OperatorTable|Method|Mixins|Comparing|Enumerable|NativeMethod|Number|Decimal|Integer|Ratio|Rational|Real|Origin|Pair|Range|Regexp|Match|Rescue|Restart|Runtime|Set|Symbol|System|Text)(?![a-zA-Z0-9!:_?])', Name.Builtin),
+            (r'(Arity|Base|Call|Condition|DateTime|Aspects|Pointcut|Assignment|BaseBehavior|Boolean|Case|AndCombiner|Else|NAndCombiner|NOrCombiner|NotCombiner|OrCombiner|XOrCombiner|Conditions|Definitions|FlowControl|Internal|Literals|Reflection|DefaultMacro|DefaultMethod|DefaultSyntax|Dict|FileSystem|Ground|Handler|Hook|IO|IokeGround|Struct|LexicalBlock|LexicalMacro|List|Message|Method|Mixins|NativeMethod|Number|Origin|Pair|Range|Reflector|Regexp|Regexp Match|Rescue|Restart|Runtime|Sequence|Set|Symbol|System|Text|Tuple)(?![a-zA-Z0-9!:_?])', Name.Builtin),
 
             # functions
             (ur'(generateMatchMethod|aliasMethod|\u03bb|\u028E|fnx|fn|method|dmacro|dlecro|syntax|macro|dlecrox|lecrox|lecro|syntax)(?![a-zA-Z0-9!:_?])', Name.Function),
