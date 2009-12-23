@@ -49,7 +49,7 @@ type FunctionalOperatorShuffler(msg:IokeObject, context:IokeObject, message:Ioke
             | _ -> None
 
 
-    let into_list l = List.of_seq(Seq.cast l : seq<Object>)
+    let into_list l = List.ofSeq(Seq.cast l : seq<Object>)
     let add_all (l1 : IList) l2 =
         Seq.iter (fun arg -> l1.Add(arg) |> ignore) (Seq.cast l2 : seq<Object>)
 
