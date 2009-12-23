@@ -1,0 +1,53 @@
+Ioke P released
+---------------
+
+Ioke is a language that is designed to be as expressive as possible. It is a dynamic language targeted at the Java Virtual Machine. There also exists a version for the CLR. It's been designed from scratch to be a highly flexible general purpose language. It is a prototype-based programming language that is inspired by Io, Smalltalk, Lisp and Ruby.
+
+Homepage: http://ioke.org
+Download: http://ioke.org/download.html
+Programming guide: http://ioke.org/wiki/index.php/Guide
+Wiki: http://ioke.org/wiki
+
+The two specific releases that encompass Ioke P are ikj 0.4.0 and ikc 0.4.0.
+
+Ioke P is the fourth release of Ioke. It includes many new features compared to Ioke E:
+
+- Number Infinity
+- eval
+- Reflector
+- Hooks
+- First class Runtime
+- New parser
+- Tuples
+- Structs
+- Destructuring assignment
+- Message rewriting
+- Functional composition
+- Sequences
+- Dictionary and Set versions of Enumerable methods
+- Enumerable group, Enumerable groupBy
+- Set operations for union, intersection, membership, subset and superset testing
+- ISpec stubbing and mocking
+- IIk history
+- DokGen on separate projects
+
+Ioke P also includes a large amount of bug fixes.
+
+Features:
+- Expressiveness first
+- Strong, dynamic typing
+- Prototype based object orientation
+- Homoiconic language
+- Simple syntax
+- Powerful macro facilities
+- Condition system
+- Aspects
+- Java integration
+- Developed using TDD
+- Documentation system that combines documentation with specs
+- Runs on both the JVM and the CLR
+
+The many things added in Ioke P could not have been done without the support of all the Ioke contributors. Thank you!
+
+Regards
+Ola Bini    - ola.bini@gmail.com

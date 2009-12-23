@@ -14,10 +14,10 @@ FileSystem do(
 
   readLines = method(
     "reads the full content of a file and returns a list containing each line of the file as a separate element of the list.",
-    fileName,
+    filename,
 
     if(System windows?,
       readFully(filename) split("\r\n"),
-      readFully(fileName) split)
+      readFully(filename) split("\n"))
   )
 )

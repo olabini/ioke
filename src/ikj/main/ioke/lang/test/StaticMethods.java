@@ -278,6 +278,10 @@ public class StaticMethods {
         return "overloaded(double, boolean)";
     }
 
+    public static String overloaded(boolean x, byte i) {
+        return "overloaded(boolean, byte)";
+    }
+
     public static String overloaded(boolean x, int i) {
         return "overloaded(boolean, int)";
     }

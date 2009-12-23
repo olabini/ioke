@@ -97,7 +97,7 @@ namespace Ioke.Lang {
                                                                                     })));
 
             obj.RegisterMethod(runtime.NewNativeMethod("returns a new set that is the intersection of the receiver and the argument.",
-                                                       new TypeCheckingNativeMethod("∩", TypeCheckingArgumentsDefinition.builder()
+                                                       new TypeCheckingNativeMethod("\u2229", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(obj)
                                                                                     .WithRequiredPositional("otherSet").WhichMustMimic(obj)
                                                                                     .Arguments,
@@ -109,7 +109,7 @@ namespace Ioke.Lang {
                                                                                     })));
 
             obj.RegisterMethod(runtime.NewNativeMethod("returns true if this set is a subset of the argument set",
-                                                       new TypeCheckingNativeMethod("⊆", TypeCheckingArgumentsDefinition.builder()
+                                                       new TypeCheckingNativeMethod("\u2286", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(obj)
                                                                                     .WithRequiredPositional("otherSet").WhichMustMimic(obj)
                                                                                     .Arguments,
@@ -121,7 +121,7 @@ namespace Ioke.Lang {
                                                                                     })));
 
             obj.RegisterMethod(runtime.NewNativeMethod("returns true if this set is a proper subset of the argument set",
-                                                       new TypeCheckingNativeMethod("⊂", TypeCheckingArgumentsDefinition.builder()
+                                                       new TypeCheckingNativeMethod("\u2282", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(obj)
                                                                                     .WithRequiredPositional("otherSet").WhichMustMimic(obj)
                                                                                     .Arguments,
@@ -136,7 +136,7 @@ namespace Ioke.Lang {
                                                                                     })));
 
             obj.RegisterMethod(runtime.NewNativeMethod("returns true if this set is a superset of the argument set",
-                                                       new TypeCheckingNativeMethod("⊇", TypeCheckingArgumentsDefinition.builder()
+                                                       new TypeCheckingNativeMethod("\u2287", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(obj)
                                                                                     .WithRequiredPositional("otherSet").WhichMustMimic(obj)
                                                                                     .Arguments,
@@ -148,7 +148,7 @@ namespace Ioke.Lang {
                                                                                     })));
 
             obj.RegisterMethod(runtime.NewNativeMethod("returns true if this set is a proper superset of the argument set",
-                                                       new TypeCheckingNativeMethod("⊃", TypeCheckingArgumentsDefinition.builder()
+                                                       new TypeCheckingNativeMethod("\u2283", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(obj)
                                                                                     .WithRequiredPositional("otherSet").WhichMustMimic(obj)
                                                                                     .Arguments,

@@ -25,13 +25,13 @@ describe(Runtime,
     describe("versionNumber",
       onlyWhen(System feature?(:java),
         it("should be the correct version",
-          Runtime version versionNumber should == [0,4,0]
+          Runtime version versionNumber should == [0,4,1]
         )
       )
 
       onlyWhen(System feature?(:clr),
         it("should be the correct version",
-          Runtime version versionNumber should == [0,2,0]
+          Runtime version versionNumber should == [0,4,1]
         )
       )
     )
