@@ -141,11 +141,6 @@ namespace Ioke.Lang {
             number.RegisterCell("Infinity", infinity);
             runtime.Infinity = infinity;
 
-            IokeObject infinity2 = new IokeObject(runtime, "A value representing infinity", new Number(RatNum.infinity(1)));
-            infinity2.MimicsWithoutCheck(ratio);
-            infinity2.Kind = "Number ∞";
-            number.RegisterCell("∞", infinity2);
-
             number.RegisterMethod(runtime.NewNativeMethod("returns a hash for the number",
                                                            new NativeMethod.WithNoArguments("hash", (method, context, message, on, outer) => {
                                                                    outer.ArgumentsDefinition.CheckArgumentCount(context, message, on);
@@ -223,7 +218,7 @@ namespace Ioke.Lang {
                                                                                          .Arguments,
                                                                                          (method, on, args, keywords, context, message) => {
                                                                                              object arg = args[0];
-                                                                                             if(on == rational || arg == rational || on == integer || arg == integer || on == ratio || arg == ratio || on == infinity || arg == infinity || on == infinity2 || arg == infinity2) {
+                                                                                             if(on == rational || arg == rational || on == integer || arg == integer || on == ratio || arg == ratio || on == infinity || arg == infinity) {
                                                                                                  if(arg == on) {
                                                                                                      return context.runtime.True;
                                                                                                  }
@@ -277,18 +272,6 @@ namespace Ioke.Lang {
                                                             new TypeCheckingNativeMethod.WithNoArguments("notice", infinity,
                                                                                                          (method, on, args, keywords, context, message) => {
                                                                                                              return runtime.NewText("Infinity");
-                                                                                                         })));
-
-            infinity2.RegisterMethod(runtime.NewNativeMethod("Returns a text inspection of the object",
-                                                            new TypeCheckingNativeMethod.WithNoArguments("inspect", infinity2,
-                                                                                                         (method, on, args, keywords, context, message) => {
-                                                                                                             return runtime.NewText("∞");
-                                                                                                         })));
-
-            infinity2.RegisterMethod(runtime.NewNativeMethod("Returns a brief text inspection of the object",
-                                                            new TypeCheckingNativeMethod.WithNoArguments("notice", infinity2,
-                                                                                                         (method, on, args, keywords, context, message) => {
-                                                                                                             return runtime.NewText("∞");
                                                                                                          })));
 
             rational.RegisterMethod(runtime.NewNativeMethod("returns the addition of this number and the argument. if the argument is a decimal, the receiver will be converted into a form suitable for addition against a decimal, and then added. if the argument is neither a Rational nor a Decimal, it tries to call asRational, and if that fails it signals a condition.",

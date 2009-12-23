@@ -31,7 +31,3 @@ Number Integer even? = method(
 Number Infinity mimic = method(
   error!(Condition Error CantMimicOddball mimic)
 )
-
-Number ∞ mimic = method(
-  error!(Condition Error CantMimicOddball mimic)
-)
